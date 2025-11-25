@@ -9,7 +9,7 @@
 CSetInsiderSentiment::CSetInsiderSentiment(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
-	m_Symbol = _T(" ");
+	m_Symbol = " ";
 	m_Date = 19800101;
 	m_Change = 0;
 	m_mspr = 0.0;

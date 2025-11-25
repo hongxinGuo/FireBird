@@ -6,6 +6,6 @@
 
 class CSetFinnhubStockDayLine final : public CVirtualSetHistoryCandleBasic {
 public:
-	CSetFinnhubStockDayLine(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_dayline"), CDatabase* pDatabase = nullptr)
+	CSetFinnhubStockDayLine(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_stock_dayline", CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {}
 };

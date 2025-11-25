@@ -4,6 +4,6 @@
 
 class CSetWeekLineExtendInfo : public CVirtualSetHistoryCandleExtend {
 public:
-	CSetWeekLineExtendInfo(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("WeekLineinfo"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetHistoryCandleExtend(strSchema, strTable, pDatabase) { }
+	CSetWeekLineExtendInfo(const CString& strSchema = "ChinaMarket", const CString& strTable = "WeekLineinfo", CDatabase* pDatabase = nullptr)
+		: CVirtualSetHistoryCandleExtend(strSchema, strTable, pDatabase) {}
 };

@@ -303,8 +303,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 7:
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 3000) << _T("只要出现买卖盘，卖一和买一的撤单就不计算");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 0) << _T("由于是强买入（此例高于卖四），故卖一、卖二、卖三、卖四和卖五的撤单都不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 3000) << "只要出现买卖盘，卖一和买一的撤单就不计算";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 0) << "由于是强买入（此例高于卖四），故卖一、卖二、卖三、卖四和卖五的撤单都不计";
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
 			EXPECT_EQ(m_stock.GetGuadan(9980), 9600);
@@ -318,7 +318,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 3000);
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("由于是正常买入，故卖一的撤单不计");
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "由于是正常买入，故卖一的撤单不计";
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
 			EXPECT_EQ(m_stock.GetGuadan(9980), 9600);
@@ -332,7 +332,7 @@ namespace FireBirdTest {
 			break;
 		case 11:
 			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 2800);
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("由于是进攻型买入，故卖一和卖二的撤单不计");
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "由于是进攻型买入，故卖一和卖二的撤单不计";
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
 			EXPECT_EQ(m_stock.GetGuadan(9980), 9600);
@@ -345,8 +345,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 12:
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 2400) << _T("买一、买二和买三的撤单不计");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("只要有成交，卖一的撤单就不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 2400) << "买一、买二和买三的撤单不计";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "只要有成交，卖一的撤单就不计";
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
 			EXPECT_EQ(m_stock.GetGuadan(9980), 9600);
@@ -359,8 +359,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 13:
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 1600) << _T("买一、买二、买三和买四的撤单不计");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("只要有成交，卖一的撤单就不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 1600) << "买一、买二、买三和买四的撤单不计";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "只要有成交，卖一的撤单就不计";
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
 			EXPECT_EQ(m_stock.GetGuadan(9980), 9600);
@@ -373,8 +373,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 14:
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 0) << _T("买一、买二、买三、买四和卖五的撤单都不计");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("只要有成交，卖一的撤单就不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 0) << "买一、买二、买三、买四和卖五的撤单都不计";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "只要有成交，卖一的撤单就不计";
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
 			EXPECT_EQ(m_stock.GetGuadan(9980), 9600);
@@ -512,7 +512,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fNeedCheck.at(9));
 			break;
 		case 7: // 有成交，强买入（比卖二价高，此例高于卖四），卖单出现撤单，买单也出现撤单。
-			EXPECT_FALSE(fNeedCheck.at(0)) << _T("所有的卖单都受影响，无需检查挂单");
+			EXPECT_FALSE(fNeedCheck.at(0)) << "所有的卖单都受影响，无需检查挂单";
 			EXPECT_FALSE(fNeedCheck.at(1));
 			EXPECT_FALSE(fNeedCheck.at(2));
 			EXPECT_FALSE(fNeedCheck.at(3));
@@ -792,43 +792,43 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_stock.GetCurrentCanceledBuyVolume(), 3000);
 			EXPECT_EQ(m_stock.GetCurrentCanceledSellVolume(), 100);
 			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 3000); // 只要出现买卖盘，卖一和买一的撤单就不计算。
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 100) << _T("由于是强买入（此例低于卖四），故卖一、卖二、卖三和卖四的撤单不计");
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 100) << "由于是强买入（此例低于卖四），故卖一、卖二、卖三和卖四的撤单不计";
 			break;
 		case 7:
 			EXPECT_EQ(m_stock.GetCurrentCanceledBuyVolume(), 3000);
 			EXPECT_EQ(m_stock.GetCurrentCanceledSellVolume(), 0);
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 3000) << _T("只要出现买卖盘，卖一和买一的撤单就不计算");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 0) << _T("由于是强买入（此例高于卖四），故卖一、卖二、卖三、卖四和卖五的撤单都不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 3000) << "只要出现买卖盘，卖一和买一的撤单就不计算";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 0) << "由于是强买入（此例高于卖四），故卖一、卖二、卖三、卖四和卖五的撤单都不计";
 			break;
 		case 10:
 			EXPECT_EQ(m_stock.GetCurrentCanceledBuyVolume(), 3000);
 			EXPECT_EQ(m_stock.GetCurrentCanceledSellVolume(), 1500);
 			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 3000);
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("由于是正常买入，故卖一的撤单不计");
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "由于是正常买入，故卖一的撤单不计";
 			break;
 		case 11:
 			EXPECT_EQ(m_stock.GetCurrentCanceledBuyVolume(), 2800);
 			EXPECT_EQ(m_stock.GetCurrentCanceledSellVolume(), 1500);
 			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 2800);
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("由于是进攻型买入，故卖一和卖二的撤单不计");
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "由于是进攻型买入，故卖一和卖二的撤单不计";
 			break;
 		case 12:
 			EXPECT_EQ(m_stock.GetCurrentCanceledBuyVolume(), 2400);
 			EXPECT_EQ(m_stock.GetCurrentCanceledSellVolume(), 1500);
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 2400) << _T("买一、买二、买三的撤单不计");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("只要有成交，卖一的撤单就不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 2400) << "买一、买二、买三的撤单不计";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "只要有成交，卖一的撤单就不计";
 			break;
 		case 13:
 			EXPECT_EQ(m_stock.GetCurrentCanceledBuyVolume(), 1600);
 			EXPECT_EQ(m_stock.GetCurrentCanceledSellVolume(), 1500);
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 1600) << _T("买一、买二、买三和买四的撤单不计");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("只要有成交，卖一的撤单就不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 1600) << "买一、买二、买三和买四的撤单不计";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "只要有成交，卖一的撤单就不计";
 			break;
 		case 14:
 			EXPECT_EQ(m_stock.GetCurrentCanceledBuyVolume(), 0);
 			EXPECT_EQ(m_stock.GetCurrentCanceledSellVolume(), 1500);
-			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 0) << _T("买一、买二、买三、买四和买五的撤单都不计");
-			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << _T("只要有成交，卖一的撤单就不计");
+			EXPECT_EQ(m_stock.GetCanceledBuyVolume(), 0) << "买一、买二、买三、买四和买五的撤单都不计";
+			EXPECT_EQ(m_stock.GetCanceledSellVolume(), 1500) << "只要有成交，卖一的撤单就不计";
 			break;
 		default:
 			ASSERT(0);

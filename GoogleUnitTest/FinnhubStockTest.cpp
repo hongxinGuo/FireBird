@@ -63,15 +63,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetExchangeCode) {
-		EXPECT_EQ(stock.GetExchangeCode(), _T("US"));
-		stock.SetExchangeCode(_T("SS"));
-		EXPECT_EQ(stock.GetExchangeCode(), _T("SS"));
+		EXPECT_EQ(stock.GetExchangeCode(), "US");
+		stock.SetExchangeCode("SS");
+		EXPECT_EQ(stock.GetExchangeCode(), "SS");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetSymbol) {
-		EXPECT_EQ(stock.GetSymbol(), _T(""));
-		stock.SetSymbol(_T("600000.SS"));
-		EXPECT_EQ(stock.GetSymbol(), _T("600000.SS"));
+		EXPECT_EQ(stock.GetSymbol(), "");
+		stock.SetSymbol("600000.SS");
+		EXPECT_EQ(stock.GetSymbol(), "600000.SS");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTransactionTime) {
@@ -357,69 +357,69 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetDescription) {
-		EXPECT_EQ(stock.GetDescription(), _T(""));
-		stock.SetDescription(_T("abcdef"));
-		EXPECT_EQ(stock.GetDescription(), _T("abcdef"));
+		EXPECT_EQ(stock.GetDescription(), "");
+		stock.SetDescription("abcdef");
+		EXPECT_EQ(stock.GetDescription(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetDisplaySymbol) {
-		EXPECT_EQ(stock.GetDisplaySymbol(), _T(""));
-		stock.SetDisplaySymbol(_T("abcdef"));
-		EXPECT_EQ(stock.GetDisplaySymbol(), _T("abcdef"));
+		EXPECT_EQ(stock.GetDisplaySymbol(), "");
+		stock.SetDisplaySymbol("abcdef");
+		EXPECT_EQ(stock.GetDisplaySymbol(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetType) {
-		EXPECT_EQ(stock.GetType(), _T(" "));
-		stock.SetType(_T("abcdef"));
-		EXPECT_EQ(stock.GetType(), _T("abcdef"));
+		EXPECT_EQ(stock.GetType(), " ");
+		stock.SetType("abcdef");
+		EXPECT_EQ(stock.GetType(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetMic) {
-		EXPECT_EQ(stock.GetMic(), _T(" "));
-		stock.SetMic(_T("abcdef"));
-		EXPECT_EQ(stock.GetMic(), _T("abcdef"));
+		EXPECT_EQ(stock.GetMic(), " ");
+		stock.SetMic("abcdef");
+		EXPECT_EQ(stock.GetMic(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFigi) {
-		EXPECT_EQ(stock.GetFigi(), _T(" "));
-		stock.SetFigi(_T("abcdef"));
-		EXPECT_EQ(stock.GetFigi(), _T("abcdef"));
+		EXPECT_EQ(stock.GetFigi(), " ");
+		stock.SetFigi("abcdef");
+		EXPECT_EQ(stock.GetFigi(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCurrency) {
-		EXPECT_EQ(stock.GetCurrency(), _T(" "));
-		stock.SetCurrency(_T("abcdef"));
-		EXPECT_EQ(stock.GetCurrency(), _T("abcdef"));
+		EXPECT_EQ(stock.GetCurrency(), " ");
+		stock.SetCurrency("abcdef");
+		EXPECT_EQ(stock.GetCurrency(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetAddress) {
-		EXPECT_EQ(stock.GetAddress(), _T(" "));
-		stock.SetAddress(_T("abcdef"));
-		EXPECT_EQ(stock.GetAddress(), _T("abcdef"));
+		EXPECT_EQ(stock.GetAddress(), " ");
+		stock.SetAddress("abcdef");
+		EXPECT_EQ(stock.GetAddress(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCity) {
-		EXPECT_EQ(stock.GetCity(), _T(" "));
-		stock.SetCity(_T("abcdef"));
-		EXPECT_EQ(stock.GetCity(), _T("abcdef"));
+		EXPECT_EQ(stock.GetCity(), " ");
+		stock.SetCity("abcdef");
+		EXPECT_EQ(stock.GetCity(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCountry) {
-		EXPECT_EQ(stock.GetCountry(), _T(" "));
-		stock.SetCountry(_T("abcdef"));
-		EXPECT_EQ(stock.GetCountry(), _T("abcdef"));
+		EXPECT_EQ(stock.GetCountry(), " ");
+		stock.SetCountry("abcdef");
+		EXPECT_EQ(stock.GetCountry(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCusip) {
-		EXPECT_EQ(stock.GetCusip(), _T(" "));
-		stock.SetCusip(_T("abcdef"));
-		EXPECT_EQ(stock.GetCusip(), _T("abcdef"));
+		EXPECT_EQ(stock.GetCusip(), " ");
+		stock.SetCusip("abcdef");
+		EXPECT_EQ(stock.GetCusip(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetSedol) {
-		EXPECT_EQ(stock.GetSedol(), _T(" "));
-		stock.SetSedol(_T("abcdef"));
-		EXPECT_EQ(stock.GetSedol(), _T("abcdef"));
+		EXPECT_EQ(stock.GetSedol(), " ");
+		stock.SetSedol("abcdef");
+		EXPECT_EQ(stock.GetSedol(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetEmployeeTotal) {
@@ -429,39 +429,39 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGgroup) {
-		EXPECT_EQ(stock.GetGgroup(), _T(" "));
-		stock.SetGgroup(_T("abcdef"));
-		EXPECT_EQ(stock.GetGgroup(), _T("abcdef"));
+		EXPECT_EQ(stock.GetGgroup(), " ");
+		stock.SetGgroup("abcdef");
+		EXPECT_EQ(stock.GetGgroup(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGind) {
-		EXPECT_EQ(stock.GetGind(), _T(" "));
-		stock.SetGind(_T("abcdef"));
-		EXPECT_EQ(stock.GetGind(), _T("abcdef"));
+		EXPECT_EQ(stock.GetGind(), " ");
+		stock.SetGind("abcdef");
+		EXPECT_EQ(stock.GetGind(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGsector) {
-		EXPECT_EQ(stock.GetGsector(), _T(" "));
-		stock.SetGsector(_T("abcdef"));
-		EXPECT_EQ(stock.GetGsector(), _T("abcdef"));
+		EXPECT_EQ(stock.GetGsector(), " ");
+		stock.SetGsector("abcdef");
+		EXPECT_EQ(stock.GetGsector(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGsubind) {
-		EXPECT_EQ(stock.GetGsubind(), _T(" "));
-		stock.SetGsubind(_T("abcdef"));
-		EXPECT_EQ(stock.GetGsubind(), _T("abcdef"));
+		EXPECT_EQ(stock.GetGsubind(), " ");
+		stock.SetGsubind("abcdef");
+		EXPECT_EQ(stock.GetGsubind(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetIPODate) {
-		EXPECT_EQ(stock.GetIPODate(), _T(" "));
-		stock.SetIPODate(_T("abcdef"));
-		EXPECT_EQ(stock.GetIPODate(), _T("abcdef"));
+		EXPECT_EQ(stock.GetIPODate(), " ");
+		stock.SetIPODate("abcdef");
+		EXPECT_EQ(stock.GetIPODate(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetIsin) {
-		EXPECT_EQ(stock.GetIsin(), _T(" "));
-		stock.SetIsin(_T("abcdef"));
-		EXPECT_EQ(stock.GetIsin(), _T("abcdef"));
+		EXPECT_EQ(stock.GetIsin(), " ");
+		stock.SetIsin("abcdef");
+		EXPECT_EQ(stock.GetIsin(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetMarketCapitalization) {
@@ -471,39 +471,39 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaics) {
-		EXPECT_EQ(stock.GetNaics(), _T(" "));
-		stock.SetNaics(_T("abcdef"));
-		EXPECT_EQ(stock.GetNaics(), _T("abcdef"));
+		EXPECT_EQ(stock.GetNaics(), " ");
+		stock.SetNaics("abcdef");
+		EXPECT_EQ(stock.GetNaics(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsNationalIndustry) {
-		EXPECT_EQ(stock.GetNaicsNationalIndustry(), _T(" "));
-		stock.SetNaicsNationalIndustry(_T("abcdef"));
-		EXPECT_EQ(stock.GetNaicsNationalIndustry(), _T("abcdef"));
+		EXPECT_EQ(stock.GetNaicsNationalIndustry(), " ");
+		stock.SetNaicsNationalIndustry("abcdef");
+		EXPECT_EQ(stock.GetNaicsNationalIndustry(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsSector) {
-		EXPECT_EQ(stock.GetNaicsSector(), _T(" "));
-		stock.SetNaicsSector(_T("abcdef"));
-		EXPECT_EQ(stock.GetNaicsSector(), _T("abcdef"));
+		EXPECT_EQ(stock.GetNaicsSector(), " ");
+		stock.SetNaicsSector("abcdef");
+		EXPECT_EQ(stock.GetNaicsSector(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsSubsector) {
-		EXPECT_EQ(stock.GetNaicsSubsector(), _T(" "));
-		stock.SetNaicsSubsector(_T("abcdef"));
-		EXPECT_EQ(stock.GetNaicsSubsector(), _T("abcdef"));
+		EXPECT_EQ(stock.GetNaicsSubsector(), " ");
+		stock.SetNaicsSubsector("abcdef");
+		EXPECT_EQ(stock.GetNaicsSubsector(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetName) {
-		EXPECT_EQ(stock.GetName(), _T(" "));
-		stock.SetName(_T("abcdef"));
-		EXPECT_EQ(stock.GetName(), _T("abcdef"));
+		EXPECT_EQ(stock.GetName(), " ");
+		stock.SetName("abcdef");
+		EXPECT_EQ(stock.GetName(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetPhone) {
-		EXPECT_EQ(stock.GetPhone(), _T(" "));
-		stock.SetPhone(_T("abcdef"));
-		EXPECT_EQ(stock.GetPhone(), _T("abcdef"));
+		EXPECT_EQ(stock.GetPhone(), " ");
+		stock.SetPhone("abcdef");
+		EXPECT_EQ(stock.GetPhone(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetShareOutstanding) {
@@ -513,48 +513,48 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetState) {
-		EXPECT_EQ(stock.GetState(), _T(" "));
-		stock.SetState(_T("abcdef"));
-		EXPECT_EQ(stock.GetState(), _T("abcdef"));
+		EXPECT_EQ(stock.GetState(), " ");
+		stock.SetState("abcdef");
+		EXPECT_EQ(stock.GetState(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetWebURL) {
-		EXPECT_EQ(stock.GetWebURL(), _T(" "));
-		stock.SetWebURL(_T("abcdef"));
-		EXPECT_EQ(stock.GetWebURL(), _T("abcdef"));
+		EXPECT_EQ(stock.GetWebURL(), " ");
+		stock.SetWebURL("abcdef");
+		EXPECT_EQ(stock.GetWebURL(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetLogo) {
-		EXPECT_EQ(stock.GetLogo(), _T(" "));
-		stock.SetLogo(_T("abcdef"));
-		EXPECT_EQ(stock.GetLogo(), _T("abcdef"));
+		EXPECT_EQ(stock.GetLogo(), " ");
+		stock.SetLogo("abcdef");
+		EXPECT_EQ(stock.GetLogo(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTicker) {
-		EXPECT_EQ(stock.GetTicker(), _T(" "));
-		stock.SetTicker(_T("abcdef"));
-		EXPECT_EQ(stock.GetTicker(), _T("abcdef"));
+		EXPECT_EQ(stock.GetTicker(), " ");
+		stock.SetTicker("abcdef");
+		EXPECT_EQ(stock.GetTicker(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFinnhubIndustry) {
-		EXPECT_EQ(stock.GetFinnhubIndustry(), _T(" "));
-		stock.SetFinnhubIndustry(_T("abcdef"));
-		EXPECT_EQ(stock.GetFinnhubIndustry(), _T("abcdef"));
+		EXPECT_EQ(stock.GetFinnhubIndustry(), " ");
+		stock.SetFinnhubIndustry("abcdef");
+		EXPECT_EQ(stock.GetFinnhubIndustry(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetPeer) {
 		EXPECT_TRUE(stock.GetPeer().empty());
-		const json jSon = json::parse(_T("[\"abcdef\",\"000001.SS\"]"));
+		const json jSon = json::parse("[\"abcdef\",\"000001.SS\"]");
 		stock.SetPeer(jSon);
 		const json jSon2 = stock.GetPeer();
 		const string s1 = jSon2.dump();
-		EXPECT_EQ(s1, _T("[\"abcdef\",\"000001.SS\"]"));
+		EXPECT_EQ(s1, "[\"abcdef\",\"000001.SS\"]");
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUSMarket) {
-		stock.SetExchangeCode(_T("SS"));
+		stock.SetExchangeCode("SS");
 		EXPECT_FALSE(stock.IsUSMarket());
-		stock.SetExchangeCode(_T("US"));
+		stock.SetExchangeCode("US");
 		EXPECT_TRUE(stock.IsUSMarket());
 	}
 
@@ -721,34 +721,34 @@ namespace FireBirdTest {
 		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20200101); // 这个日期早于数据库中的最早日期，需要添加进数据库
 		pDayLine->SetClose(10010);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个日期为新日期，需要添加进数据库
 		pDayLine->SetClose(12345);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210123); // 这个日期为新日期，需要添加进数据库
 		pDayLine->SetClose(10030);
 		pvDayLine->push_back(pDayLine);
 
-		stock.SetSymbol(_T("A"));
+		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
 		stock.UpdateDayLine(pvDayLine);
 
 		stock.SaveDayLineDB();
 
-		setDayLine.m_strFilter = _T("[Symbol] = 'A'");
-		setDayLine.m_strSort = _T("[Date]");
+		setDayLine.m_strFilter = "[Symbol] = 'A'";
+		setDayLine.m_strSort = "[Date]";
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(setDayLine.m_Date == 20200101);
@@ -789,27 +789,27 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20200101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);
 		pvDayLine->push_back(pDayLine);
 
-		stock.SetSymbol(_T("A"));
+		stock.SetSymbol("A");
 		stock.SetDayLineStartDate(20200101); // 日线开始日期不晚于当前日线数据日期
 		stock.SetDayLineEndDate(20210123); // 日线结束日期不早于当前日线数据日期
 		stock.UpdateDayLine(pvDayLine);
@@ -829,11 +829,11 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineStartDate(), 20200101) << "日线开始日期已更新为较早日期";
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 		ASSERT_GE(gl_systemMessage.DayLineInfoSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopDayLineInfoMessage(), _T("A日线资料存储完成"));
+		EXPECT_EQ(gl_systemMessage.PopDayLineInfoMessage(), "A日线资料存储完成");
 
 		// 清除添加的数据，恢复原状
-		setDayLine.m_strFilter = _T("[Symbol] = 'A'");
-		setDayLine.m_strSort = _T("[Date]");
+		setDayLine.m_strFilter = "[Symbol] = 'A'";
+		setDayLine.m_strSort = "[Date]";
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(setDayLine.m_Date == 20200101);
@@ -856,40 +856,40 @@ namespace FireBirdTest {
 		CSetInsiderTransaction setInsiderTransaction;
 
 		CInsiderTransactionPtr pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = _T("B");
-		pInsiderTransaction->m_strPersonName = _T("a b c");
+		pInsiderTransaction->m_strSymbol = "B";
+		pInsiderTransaction->m_strPersonName = "a b c";
 		pInsiderTransaction->m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = _T("A");
-		pInsiderTransaction->m_strPersonName = _T("a b c d");
+		pInsiderTransaction->m_strSymbol = "A";
+		pInsiderTransaction->m_strPersonName = "a b c d";
 		pInsiderTransaction->m_lTransactionDate = 20210101; // 这个内部交易人员名称不符，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = _T("A");
-		pInsiderTransaction->m_strPersonName = _T("a b c");
+		pInsiderTransaction->m_strSymbol = "A";
+		pInsiderTransaction->m_strPersonName = "a b c";
 		pInsiderTransaction->m_lTransactionDate = 20210107;
-		pInsiderTransaction->m_strTransactionCode = _T("M"); // 这个数据库中有，无需添加
+		pInsiderTransaction->m_strTransactionCode = "M"; // 这个数据库中有，无需添加
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = _T("A");
-		pInsiderTransaction->m_strPersonName = _T("a b c");
+		pInsiderTransaction->m_strSymbol = "A";
+		pInsiderTransaction->m_strPersonName = "a b c";
 		pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期较新，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = _T("A");
+		pInsiderTransaction->m_strSymbol = "A";
 		pInsiderTransaction->m_lTransactionDate = 20210107;
-		pInsiderTransaction->m_strPersonName = _T("a b c");
-		pInsiderTransaction->m_strTransactionCode = _T("S"); // 这个交易类型不符，需要添加进数据库
+		pInsiderTransaction->m_strPersonName = "a b c";
+		pInsiderTransaction->m_strTransactionCode = "S"; // 这个交易类型不符，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
 
-		stock.SetSymbol(_T("A"));
+		stock.SetSymbol("A");
 		stock.SetInsiderTransactionUpdateDate(20210123);
 		stock.UpdateInsiderTransaction(vInsiderTransaction);
 
 		stock.UpdateInsiderTransactionDB();
 
-		setInsiderTransaction.m_strFilter = _T("[Symbol] = 'B'");
+		setInsiderTransaction.m_strFilter = "[Symbol] = 'B'";
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setInsiderTransaction.IsEOF());
@@ -897,7 +897,7 @@ namespace FireBirdTest {
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
 
-		setInsiderTransaction.m_strFilter = _T("[PersonName] = 'a b c d'");
+		setInsiderTransaction.m_strFilter = "[PersonName] = 'a b c d'";
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setInsiderTransaction.IsEOF());
@@ -905,7 +905,7 @@ namespace FireBirdTest {
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
 
-		setInsiderTransaction.m_strFilter = _T("[TransactionDate] = '20210124'");
+		setInsiderTransaction.m_strFilter = "[TransactionDate] = '20210124'";
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setInsiderTransaction.IsEOF());
@@ -913,7 +913,7 @@ namespace FireBirdTest {
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
 
-		setInsiderTransaction.m_strFilter = _T("[TransactionCode] = 'S'");
+		setInsiderTransaction.m_strFilter = "[TransactionCode] = 'S'";
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setInsiderTransaction.IsEOF());
@@ -928,30 +928,30 @@ namespace FireBirdTest {
 		CSetInsiderSentiment setInsiderSentiment;
 
 		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = _T("B"); // 这个股票代码不符，不可能出现此种情况，故而不需要添加进数据库
+		pInsiderSentiment->m_strSymbol = "B"; // 这个股票代码不符，不可能出现此种情况，故而不需要添加进数据库
 		pInsiderSentiment->m_lDate = 20200101;
 		vInsiderSentiment.push_back(pInsiderSentiment);
 		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = _T("A");
+		pInsiderSentiment->m_strSymbol = "A";
 		pInsiderSentiment->m_lDate = 20200101; // 这个数据库中有，无需添加
 		vInsiderSentiment.push_back(pInsiderSentiment);
 		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = _T("A");
+		pInsiderSentiment->m_strSymbol = "A";
 		pInsiderSentiment->m_lDate = 20210101; // 这个日期不符，需要添加进数据库
 		vInsiderSentiment.push_back(pInsiderSentiment);
 
-		stock.SetSymbol(_T("A"));
+		stock.SetSymbol("A");
 		stock.SetInsiderSentimentUpdateDate(20210101);
 		stock.UpdateInsiderSentiment(vInsiderSentiment);
 
 		stock.UpdateInsiderSentimentDB();
 
-		setInsiderSentiment.m_strFilter = _T("[Symbol] = 'B'");
+		setInsiderSentiment.m_strFilter = "[Symbol] = 'B'";
 		setInsiderSentiment.Open();
 		EXPECT_TRUE(setInsiderSentiment.IsEOF()) << "股票B没有存储进了数据库";
 		setInsiderSentiment.Close();
 
-		setInsiderSentiment.m_strFilter = _T("[Date] = '20210101'");
+		setInsiderSentiment.m_strFilter = "[Date] = '20210101'";
 		setInsiderSentiment.Open();
 		setInsiderSentiment.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setInsiderSentiment.IsEOF()) << "新日期存储进了数据库";
@@ -964,18 +964,18 @@ namespace FireBirdTest {
 		const auto pvCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 		CSetCompanyNews setCompanyNews;
 
-		stock.SetSymbol(_T("RIG"));
+		stock.SetSymbol("RIG");
 
 		CCompanyNewsPtr pCompanyNews = make_shared<CFinnhubCompanyNews>();
-		pCompanyNews->m_strCompanySymbol = _T("RIG");
+		pCompanyNews->m_strCompanySymbol = "RIG";
 		pCompanyNews->m_llDateTime = 19800101;
-		pCompanyNews->m_strCategory = _T("test");
+		pCompanyNews->m_strCategory = "test";
 		pCompanyNews->m_iNewsID = 4;
 		pvCompanyNews->push_back(pCompanyNews);
 		pCompanyNews = make_shared<CFinnhubCompanyNews>();
-		pCompanyNews->m_strCompanySymbol = _T("RIG");
+		pCompanyNews->m_strCompanySymbol = "RIG";
 		pCompanyNews->m_llDateTime = 20200101;
-		pCompanyNews->m_strCategory = _T("test");
+		pCompanyNews->m_strCategory = "test";
 		pCompanyNews->m_iNewsID = 5;
 		pvCompanyNews->push_back(pCompanyNews);
 
@@ -983,7 +983,7 @@ namespace FireBirdTest {
 		stock.UpdateCompanyNewsDB();
 
 		int iCount = 0;
-		setCompanyNews.m_strFilter = _T("[category] = 'test'");
+		setCompanyNews.m_strFilter = "[category] = 'test'";
 		setCompanyNews.Open();
 		setCompanyNews.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setCompanyNews.IsEOF()) << "已经加入了两个category为test的数据";
@@ -1002,27 +1002,27 @@ namespace FireBirdTest {
 		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210102); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);
 		pvDayLine->push_back(pDayLine);
 
-		stock.SetSymbol(_T("A"));
+		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
 		stock.UpdateDayLine(pvDayLine);
 
@@ -1048,27 +1048,27 @@ namespace FireBirdTest {
 		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210102); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);
 		pvDayLine->push_back(pDayLine);
 
-		stock.SetSymbol(_T("A"));
+		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
 		stock.UpdateDayLine(pvDayLine);
 
@@ -1116,13 +1116,13 @@ namespace FireBirdTest {
 		vector<CEPSSurprisePtr> vEPS;
 		auto pEPS = make_shared<CEPSSurprise>();
 
-		pEPS->m_strSymbol = _T("600601.SS");
+		pEPS->m_strSymbol = "600601.SS";
 		pEPS->m_lDate = 20200101;
 		pEPS->m_dActual = 1.0;
 		pEPS->m_dEstimate = 1.1;
 		vEPS.push_back(pEPS);
 		pEPS = make_shared<CEPSSurprise>();
-		pEPS->m_strSymbol = _T("600601.SS");
+		pEPS->m_strSymbol = "600601.SS";
 		pEPS->m_lDate = 20200401;
 		pEPS->m_dActual = 2.0;
 		pEPS->m_dEstimate = 2.1;
@@ -1137,13 +1137,13 @@ namespace FireBirdTest {
 		vector<CEPSSurprisePtr> vEPS;
 		auto pEPS = make_shared<CEPSSurprise>();
 
-		pEPS->m_strSymbol = _T("600601.US");
+		pEPS->m_strSymbol = "600601.US";
 		pEPS->m_lDate = 20200101;
 		pEPS->m_dActual = 1.0;
 		pEPS->m_dEstimate = 1.1;
 		vEPS.push_back(pEPS);
 		pEPS = make_shared<CEPSSurprise>();
-		pEPS->m_strSymbol = _T("600601.US");
+		pEPS->m_strSymbol = "600601.US";
 		pEPS->m_lDate = 20200401;
 		pEPS->m_dActual = 2.0;
 		pEPS->m_dEstimate = 2.1;
@@ -1158,7 +1158,7 @@ namespace FireBirdTest {
 
 		CSetEPSSurprise setEPSSurprise;
 		int i = 0;
-		setEPSSurprise.m_strFilter = _T("[Symbol] = '600601.US'");
+		setEPSSurprise.m_strFilter = "[Symbol] = '600601.US'";
 		setEPSSurprise.Open();
 		setEPSSurprise.m_pDatabase->BeginTrans();
 		while (!setEPSSurprise.IsEOF()) {
@@ -1178,19 +1178,19 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockTest, TestUpdateSECFilingsDB1) {
 		CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
 		auto pSECFiling = make_shared<CSECFiling>();
-		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
-		pSECFiling->m_strAccessNumber = _T("0"); // 新存取号，比原有的都小
+		pSECFiling->m_strSymbol = "MFI"; // 已存在代码
+		pSECFiling->m_strAccessNumber = "0"; // 新存取号，比原有的都小
 		pvSECFilings->push_back(pSECFiling);
 		pSECFiling = make_shared<CSECFiling>();
-		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
-		pSECFiling->m_strAccessNumber = _T("0000814133-03-000033"); // 已存在存取号
+		pSECFiling->m_strSymbol = "MFI"; // 已存在代码
+		pSECFiling->m_strAccessNumber = "0000814133-03-000033"; // 已存在存取号
 		pvSECFilings->push_back(pSECFiling);
 		pSECFiling = make_shared<CSECFiling>();
-		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
-		pSECFiling->m_strAccessNumber = _T("1000950135-08-002549"); // 新存取号，比原有的都大
+		pSECFiling->m_strSymbol = "MFI"; // 已存在代码
+		pSECFiling->m_strAccessNumber = "1000950135-08-002549"; // 新存取号，比原有的都大
 		pvSECFilings->push_back(pSECFiling);
 
-		stock.SetSymbol(_T("MFI"));
+		stock.SetSymbol("MFI");
 		stock.SetSECFilings(pvSECFilings);
 		stock.SetUpdateSECFilingsDB(true);
 		stock.SetUpdateSECFilings(false);
@@ -1198,8 +1198,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.UpdateSECFilingsDB());
 
 		CSetSECFilings setSECFilings;
-		setSECFilings.m_strFilter = _T("[symbol] = 'MFI'");
-		setSECFilings.m_strSort = _T("[accessNumber]");
+		setSECFilings.m_strFilter = "[symbol] = 'MFI'";
+		setSECFilings.m_strSort = "[accessNumber]";
 		setSECFilings.Open();
 		setSECFilings.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(setSECFilings.m_AccessNumber.Compare(_T("0")) == 0);
@@ -1224,27 +1224,27 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";
 
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210102); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);
 		pvDayLine->push_back(pDayLine);
 
-		stock.SetSymbol(_T("A"));
+		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
 		stock.UpdateDayLine(pvDayLine);
 
@@ -1360,29 +1360,29 @@ namespace FireBirdTest {
 		string sTime = fmt::format("{:Ld}", tt);
 		string sTimeOld = fmt::format("{:Ld}", ttOld);
 
-		stock.SetSymbol(_T("600601.SS"));
+		stock.SetSymbol("600601.SS");
 		stock.SetDayLineEndDate(20180101); // 早于20190102
-		string sMiddle2 = _T("600601.SS&resolution=D&from=") + sTimeOld + _T("&to=") + sTime;
+		string sMiddle2 = "600601.SS&resolution=D&from=" + sTimeOld + "&to=" + sTime;
 		EXPECT_TRUE(stock.GetFinnhubDayLineInquiryParam(tt) == sMiddle2) << "免费账户最多只能申请一年的日线数据";
 		EXPECT_EQ(stock.GetFinnhubDayLineInquiryParam(tt), sMiddle2) << "免费账户最多只能申请一年的日线数据";
 
-		stock.SetSymbol(_T("600601.SS"));
+		stock.SetSymbol("600601.SS");
 		stock.SetDayLineEndDate(20190501); // 晚于20190102
 		ttOld = gl_pWorldMarket->TransferToUTCTime(20190501);
 		sTimeOld = fmt::format("{:Ld}", ttOld);
-		string sParam = "600601.SS&resolution=D&from=" + sTimeOld + _T("&to=") + sTime;
+		string sParam = "600601.SS&resolution=D&from=" + sTimeOld + "&to=" + sTime;
 		EXPECT_TRUE(stock.GetFinnhubDayLineInquiryParam(tt) == sMiddle2) << "检查一年的数据";
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam) {
-		stock.SetSymbol(_T("600601.SS"));
+		stock.SetSymbol("600601.SS");
 		const string strParam = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
 
 		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(20180101, 20200101) == strParam);
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam2) {
-		stock.SetSymbol(_T("600601.SS"));
+		stock.SetSymbol("600601.SS");
 		const string strParam = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
 
 		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(19800101, 20200101) == strParam);
@@ -1392,38 +1392,38 @@ namespace FireBirdTest {
 		CFinnhubStock stock2;
 		CSetFinnhubStock setFinnhubStock;
 
-		stock.SetSymbol(_T("000001.US"));
-		stock.SetExchangeCode(_T("US"));
-		stock.SetDescription(_T("US Stock"));
-		stock.SetDisplaySymbol(_T("DisplaySymbol"));
-		stock.SetType(_T("Ordinary share"));
-		stock.SetMic(_T("abcdef"));
-		stock.SetFigi(_T("12345678"));
-		stock.SetCurrency(_T("US Dollar"));
-		stock.SetAddress(_T("Irvine CA US"));
-		stock.SetCity(_T("Irvine"));
-		stock.SetCountry(_T("US"));
-		stock.SetCusip(_T("abcd"));
-		stock.SetSedol(_T("a1b2"));
-		stock.SetExchangeCode(_T("US"));
-		stock.SetGgroup(_T("a2b3"));
-		stock.SetGind(_T("Steel"));
-		stock.SetGsector(_T("company"));
-		stock.SetGsubind(_T("C2B3"));
-		stock.SetIPODate(_T("20202020"));
-		stock.SetIsin(_T("B2C4"));
-		stock.SetNaics(_T("bcdefgh"));
-		stock.SetNaicsNationalIndustry(_T("USA"));
-		stock.SetNaicsSector(_T("Alumium"));
-		stock.SetNaicsSubsector(_T("abc"));
-		stock.SetName(_T("Unknown"));
-		stock.SetPhone(_T("001000000"));
-		stock.SetState(_T("CA"));
-		stock.SetTicker(_T("000001.US"));
-		stock.SetWebURL(_T("http://abc.com"));
-		stock.SetLogo(_T("abc.jpg"));
-		stock.SetFinnhubIndustry(_T("UK"));
-		stock.SetPeer(_T("abdef"));
+		stock.SetSymbol("000001.US");
+		stock.SetExchangeCode("US");
+		stock.SetDescription("US Stock");
+		stock.SetDisplaySymbol("DisplaySymbol");
+		stock.SetType("Ordinary share");
+		stock.SetMic("abcdef");
+		stock.SetFigi("12345678");
+		stock.SetCurrency("US Dollar");
+		stock.SetAddress("Irvine CA US");
+		stock.SetCity("Irvine");
+		stock.SetCountry("US");
+		stock.SetCusip("abcd");
+		stock.SetSedol("a1b2");
+		stock.SetExchangeCode("US");
+		stock.SetGgroup("a2b3");
+		stock.SetGind("Steel");
+		stock.SetGsector("company");
+		stock.SetGsubind("C2B3");
+		stock.SetIPODate("20202020");
+		stock.SetIsin("B2C4");
+		stock.SetNaics("bcdefgh");
+		stock.SetNaicsNationalIndustry("USA");
+		stock.SetNaicsSector("Alumium");
+		stock.SetNaicsSubsector("abc");
+		stock.SetName("Unknown");
+		stock.SetPhone("001000000");
+		stock.SetState("CA");
+		stock.SetTicker("000001.US");
+		stock.SetWebURL("http://abc.com");
+		stock.SetLogo("abc.jpg");
+		stock.SetFinnhubIndustry("UK");
+		stock.SetPeer("abdef");
 		stock.SetShareOutstanding(1.14);
 		stock.SetEmployeeTotal(101023);
 		stock.SetMarketCapitalization(34324.234);
@@ -1445,7 +1445,7 @@ namespace FireBirdTest {
 		setFinnhubStock.m_pDatabase->CommitTrans();
 		setFinnhubStock.Close();
 
-		setFinnhubStock.m_strFilter = _T("[Symbol] = '000001.US'");
+		setFinnhubStock.m_strFilter = "[Symbol] = '000001.US'";
 		setFinnhubStock.Open();
 		stock2.Load(setFinnhubStock);
 		setFinnhubStock.m_pDatabase->BeginTrans();

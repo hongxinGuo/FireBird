@@ -5,7 +5,7 @@
 CSetFinnhubStockBasicFinancialMetric::CSetFinnhubStockBasicFinancialMetric(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
-	m_symbol = _T("");
+	m_symbol = "";
 	m_13WeekPriceReturnDaily = 0;
 	m_26WeekPriceReturnDaily = 0;
 	m_52WeekPriceReturnDaily = 0;

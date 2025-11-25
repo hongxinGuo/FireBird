@@ -32,31 +32,31 @@ vector<CMarketTaskPtr> CMarketTaskQueue::GetTasks() {
 }
 
 void CMarketTaskQueue::CreateIndexMap() {
-	gl_mapMarketMapIndex[CHINA_MARKET_CREATE_TASK__] = _T("生成明日各项任务");
-	gl_mapMarketMapIndex[WORLD_MARKET_CREATE_TASK__] = _T("生成明日各项任务");
-	gl_mapMarketMapIndex[RELOAD_SYSTEM__] = _T("每星期日晚上9时退出系统并重启");
+	gl_mapMarketMapIndex[CHINA_MARKET_CREATE_TASK__] = "生成明日各项任务";
+	gl_mapMarketMapIndex[WORLD_MARKET_CREATE_TASK__] = "生成明日各项任务";
+	gl_mapMarketMapIndex[RELOAD_SYSTEM__] = "每星期日晚上9时退出系统并重启";
 
 	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[CHINA_MARKET_RESET__] = "市场重置";
 	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM] = "中国市场系统检查";
-	gl_mapMarketMapIndex[CHINA_MARKET_LOAD_TEMP_RT_DATA__] = _T("装载本日临时存储的实时数据");
-	gl_mapMarketMapIndex[CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__] = _T("分配并处理实时数据");
-	gl_mapMarketMapIndex[CHINA_MARKET_SAVE_TEMP_RT_DATA__] = _T("保存实时数据");
-	gl_mapMarketMapIndex[CHINA_MARKET_BUILD_TODAY_DATABASE__] = _T("创建今日数据");
-	gl_mapMarketMapIndex[CHINA_MARKET_VALIDATE_TODAY_DATABASE__] = _T("检测今日数据完整性");
-	gl_mapMarketMapIndex[CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__] = _T("计算10日强度股票集");
+	gl_mapMarketMapIndex[CHINA_MARKET_LOAD_TEMP_RT_DATA__] = "装载本日临时存储的实时数据";
+	gl_mapMarketMapIndex[CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__] = "分配并处理实时数据";
+	gl_mapMarketMapIndex[CHINA_MARKET_SAVE_TEMP_RT_DATA__] = "保存实时数据";
+	gl_mapMarketMapIndex[CHINA_MARKET_BUILD_TODAY_DATABASE__] = "创建今日数据";
+	gl_mapMarketMapIndex[CHINA_MARKET_VALIDATE_TODAY_DATABASE__] = "检测今日数据完整性";
+	gl_mapMarketMapIndex[CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__] = "计算10日强度股票集";
 
-	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_OPTION_DB__] = _T("更新系统选项数据库");
-	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__] = _T("更新股票简介数据库");
-	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__] = _T("更新自选股数据库");
-	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_STOCK_SECTION__] = _T("更新全段股票数据库");
+	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_OPTION_DB__] = "更新系统选项数据库";
+	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__] = "更新股票简介数据库";
+	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__] = "更新自选股数据库";
+	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_STOCK_SECTION__] = "更新全段股票数据库";
 
-	gl_mapMarketMapIndex[CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__] = _T("更新日线历史数据");
-	gl_mapMarketMapIndex[CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__] = _T("系统状态监测");
-	gl_mapMarketMapIndex[CHINA_MARKET_PREPARING_MARKET_OPEN__] = _T("开市准备");
+	gl_mapMarketMapIndex[CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__] = "更新日线历史数据";
+	gl_mapMarketMapIndex[CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__] = "系统状态监测";
+	gl_mapMarketMapIndex[CHINA_MARKET_PREPARING_MARKET_OPEN__] = "开市准备";
 
 	//即时任务
-	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_CURRENT_STOCK__] = _T("即时：更新当前股票");
+	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_CURRENT_STOCK__] = "即时：更新当前股票";
 
 	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[WORLD_MARKET_RESET__] = "市场重置";

@@ -55,7 +55,7 @@ public:
 	char GetCurrentPosData() const { return m_sDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(const char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
-	bool IsVoidJson() const noexcept { return m_sDataBuffer == _T("{}") || m_sDataBuffer == _T("[]"); }
+	bool IsVoidJson() const noexcept { return m_sDataBuffer == "{}" || m_sDataBuffer == "[]"; }
 
 	//
 	string_view GetCurrentSinaData();

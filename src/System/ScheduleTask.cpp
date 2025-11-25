@@ -201,17 +201,17 @@ void TaskSchedulePer100ms() {
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 		//todo 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
 	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
-		string str = _T("ScheduleMarketTask unhandled exception founded : ");
+		string str = "ScheduleMarketTask unhandled exception founded : ";
 		str += e->what();
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	catch (CException* e) {
-		char buffer[1000];
-		string str = _T("ScheduleMarketTask unhandled CException founded : ");
+		WCHAR buffer[1000];
+		string str = "ScheduleMarketTask unhandled CException founded : ";
 		e->GetErrorMessage(buffer, 1);
-		str += buffer;
+		str +=ToUTF8( buffer);
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
@@ -244,10 +244,10 @@ void TaskSchedulePerSecond() {
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	catch (CException* e) {	// 此处截获本体指针，以备处理完后删除之。
-		char buffer[1000];
-		string str = _T("TaskSchedulePerSecond unhandled CException founded : ");
+		WCHAR buffer[1000];
+		string str = "TaskSchedulePerSecond unhandled CException founded : ";
 		e->GetErrorMessage(buffer, 1);
-		str += buffer;
+		str += ToUTF8(buffer);
 		gl_systemMessage.PushErrorMessage(str);
 		gl_errorLogger->error("{}", str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。

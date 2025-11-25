@@ -45,10 +45,10 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockSinaRTDataSourceTest, TestInitialize) {
-		EXPECT_EQ(SinaDataSource.GetHeaders(), _T("Referer:https://finance.sina.com.cn\r\n")) << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
-		EXPECT_EQ(SinaDataSource.GetInquiryFunction(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
-		EXPECT_EQ(SinaDataSource.GetInquiryToken(), _T(""));
-		EXPECT_EQ(SinaDataSource.GetInquiringNumber(), 850) << _T("新浪默认值");
+		EXPECT_EQ(SinaDataSource.GetHeaders(), "Referer:https://finance.sina.com.cn\r\n") << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
+		EXPECT_EQ(SinaDataSource.GetInquiryFunction(), "https://hq.sinajs.cn/list=") << "新浪实时数据服务器已使用https";
+		EXPECT_EQ(SinaDataSource.GetInquiryToken(), "");
+		EXPECT_EQ(SinaDataSource.GetInquiringNumber(), 850) << "新浪默认值";
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestGenerateInquiryMessage) {
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockSinaRTDataSourceTest, TestIsAErrorMessageData1) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(_T("Forbidden"));
+		pwd->Test_SetBuffer_("Forbidden");
 		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
 		SinaDataSource.SetHTTPStatusCode(200);
 
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockSinaRTDataSourceTest, TestIsAErrorMessageData2) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(_T("Forbidden"));
+		pwd->Test_SetBuffer_("Forbidden");
 		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
 
 		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED__, SinaDataSource.IsAErrorMessageData(pwd));

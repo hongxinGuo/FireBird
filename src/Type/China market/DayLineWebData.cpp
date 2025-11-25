@@ -13,7 +13,7 @@ CDayLineWebData::CDayLineWebData() {
 }
 
 void CDayLineWebData::Reset() {
-	m_strStockCode = _T("");
+	m_strStockCode = "";
 	m_sDataBuffer.resize(0);
 	m_vTempDayLine.resize(0);
 	m_lCurrentPos = 0;
@@ -40,7 +40,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 		svData = GetCurrentNeteaseData();
 		pCurrentDayLine = ProcessOneNeteaseDayLine(svData);
 		if (pCurrentDayLine == nullptr) {
-			TRACE(_T("%s日线数据出错\n"), m_strStockCode.c_str());
+			TRACE("%s日线数据出错\n", m_strStockCode.c_str());
 			// 清除已暂存的日线数据
 			m_vTempDayLine.clear();
 			return false; // 数据出错，放弃载入
@@ -59,7 +59,7 @@ string_view CDayLineWebData::GetCurrentNeteaseData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lEnd = svCurrentTotal.find_first_of(0x0d);
 	if (lEnd > svCurrentTotal.length()) {
-		throw std::exception(_T("GetCurrentNeteaseDayLine() out of range"));
+		throw std::exception("GetCurrentNeteaseDayLine() out of range");
 	}
 	m_lCurrentPos += lEnd + 2; // 将当前位置移至当前数据结束处之后
 	return svCurrentTotal.substr(0, lEnd + 2); // 包括最后的两个字符：\r\n
@@ -84,7 +84,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 		size_t lCurrentPos = 0;
 		// 日期
 		sv = GetNextField(svData, lCurrentPos, ',');
-		sscanf_s(sv.data(), _T("%04d-%02d-%02d"), &year, &month, &day);
+		sscanf_s(sv.data(), "%04d-%02d-%02d", &year, &month, &day);
 		const long lMarketDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 		pDayLine->SetTime(gl_pChinaMarket->TransferToUTCTime(lMarketDate));
 		pDayLine->SetDate(lMarketDate);
@@ -170,7 +170,7 @@ bool CDayLineWebData::SkipNeteaseDayLineInformationHeader(const string& sDataBuf
 
 void CDayLineWebData::ReportDayLineDownLoaded() {
 	//string strTemp = GetSymbol();
-	//strTemp += _T("日线下载完成.");
+	//strTemp += "日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 

@@ -19,11 +19,11 @@
 #include "WorldMarket.h"
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/news?");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/news?";
 }
 
 string CProductTiingoMarketNews::CreateMessage() {
-	m_strInquiringSymbol = _T("All");
+	m_strInquiringSymbol = "All";
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
@@ -82,31 +82,31 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 		for (auto item : doc) {
 			auto itemValue = item.value();
 			pMarketNews = make_shared<CTiingoMarketNews>();
-			s1 = simdjsonGetStringView(itemValue, _T("source"));
+			s1 = simdjsonGetStringView(itemValue, "source");
 			pMarketNews->m_strSource = s1;
-			s1 = simdjsonGetStringView(itemValue, _T("crawlDate"));
-			sscanf_s(s1.c_str(), _T("%04i-%02i-%02iT%02i:%02i:%02i.%fZ"), &year, &month, &day, &hour, &minute, &second, &f);
+			s1 = simdjsonGetStringView(itemValue, "crawlDate");
+			sscanf_s(s1.c_str(), "%04i-%02i-%02iT%02i:%02i:%02i.%fZ", &year, &month, &day, &hour, &minute, &second, &f);
 			pMarketNews->m_llCrawlDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
-			s1 = simdjsonGetStringView(itemValue, _T("description"));
+			s1 = simdjsonGetStringView(itemValue, "description");
 			pMarketNews->m_strDescription = s1;
-			s1 = simdjsonGetStringView(itemValue, _T("url"));
+			s1 = simdjsonGetStringView(itemValue, "url");
 			pMarketNews->m_strUrl = s1;
-			long l = simdjsonGetInt64(itemValue, _T("id"));
+			long l = simdjsonGetInt64(itemValue, "id");
 			pMarketNews->m_lId = l;
-			s1 = simdjsonGetStringView(itemValue, _T("title"));
+			s1 = simdjsonGetStringView(itemValue, "title");
 			pMarketNews->m_strTitle = s1;
-			s1 = simdjsonGetStringView(itemValue, _T("publishedDate"));
-			sscanf_s(s1.c_str(), _T("%04i-%02i-%02iT%02i:%02i:%02iZ"), &year, &month, &day, &hour, &minute, &second);
+			s1 = simdjsonGetStringView(itemValue, "publishedDate");
+			sscanf_s(s1.c_str(), "%04i-%02i-%02iT%02i:%02i:%02iZ", &year, &month, &day, &hour, &minute, &second);
 			pMarketNews->m_LLPublishDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 
-			//auto jArray = simdjsonGetArray(itemValue, _T("tickers"));
-			for (auto value : itemValue[_T("tickers")]) {
+			//auto jArray = simdjsonGetArray(itemValue, "tickers");
+			for (auto value : itemValue["tickers"]) {
 				auto s2 = value.get_string().value();
 				string s4(s2.data(), s2.length());
 				pMarketNews->m_strTickers = s4;
 				break; // 只存储第一个证券代码
 			}
-			auto array = simdjsonGetArray(itemValue, _T("tags"));
+			auto array = simdjsonGetArray(itemValue, "tags");
 			auto s = array.raw_json().value();
 			string sTemp(s.data(), s.length());
 			pMarketNews->m_strTags = sTemp;
@@ -115,27 +115,27 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 			iCount++;
 		}
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo market news "), error.what());
+		ReportJSonErrorToSystemMessage("Tiingo market news ", error.what());
 	}
 
 	return pvTiingoMarketNews;
 }
 
 void CProductTiingoMarketNews::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateMarketNews(false);
-	gl_systemMessage.PushInformationMessage(_T("Tiingo market news updated"));
+	gl_systemMessage.PushInformationMessage("Tiingo market news updated");
 
 	if (IsNoRightToAccess()) { // 免费账户
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("free Tiingo account"));
+		gl_systemMessage.PushInnerSystemInformationMessage("free Tiingo account");
 		gl_pTiingoDataSource->SetUpdateFinancialState(false); // 不允许申请金融数据
 		// Note 02/01/2005后，tiingo.com不再提供全部的IEX盘后数据，放弃使用。
 		//gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, gl_pWorldMarket->GetMarketCloseTime()); //闭市后后执行
 	}
 	else {
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Paid Tiingo account"));
+		gl_systemMessage.PushInnerSystemInformationMessage("Paid Tiingo account");
 		gl_pTiingoDataSource->SetUpdateFinancialState(true); // 申请金融数据
 	}
 }

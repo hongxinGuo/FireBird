@@ -35,31 +35,31 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(AccessoryTest, TestIsAStock2) {
-		EXPECT_TRUE(IsShareA(_T("600000.SS")));
-		EXPECT_TRUE(IsShareA(_T("601198.SS")));
-		EXPECT_FALSE(IsShareA(_T("602102.SS")));
-		EXPECT_FALSE(IsShareA(_T("603604.SS")));
-		EXPECT_FALSE(IsShareA(_T("604604.SS")));
-		EXPECT_FALSE(IsShareA(_T("605604.SS")));
-		EXPECT_FALSE(IsShareA(_T("606604.SS")));
-		EXPECT_FALSE(IsShareA(_T("607604.SS")));
-		EXPECT_FALSE(IsShareA(_T("608604.SS")));
-		EXPECT_FALSE(IsShareA(_T("609604.SS")));
+		EXPECT_TRUE(IsShareA("600000.SS"));
+		EXPECT_TRUE(IsShareA("601198.SS"));
+		EXPECT_FALSE(IsShareA("602102.SS"));
+		EXPECT_FALSE(IsShareA("603604.SS"));
+		EXPECT_FALSE(IsShareA("604604.SS"));
+		EXPECT_FALSE(IsShareA("605604.SS"));
+		EXPECT_FALSE(IsShareA("606604.SS"));
+		EXPECT_FALSE(IsShareA("607604.SS"));
+		EXPECT_FALSE(IsShareA("608604.SS"));
+		EXPECT_FALSE(IsShareA("609604.SS"));
 
-		EXPECT_FALSE(IsShareA(_T("600000.SZ")));
-		EXPECT_FALSE(IsShareA(_T("000001.SA")));
-		EXPECT_FALSE(IsShareA(_T("000001.AZ")));
-		EXPECT_FALSE(IsShareA(_T("200001.SZ")));
-		EXPECT_TRUE(IsShareA(_T("000001.SZ")));
-		EXPECT_TRUE(IsShareA(_T("002389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("003389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("004389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("005389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("006389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("007389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("008389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("009389.SZ")));
-		EXPECT_FALSE(IsShareA(_T("001389.SZ")));
+		EXPECT_FALSE(IsShareA("600000.SZ"));
+		EXPECT_FALSE(IsShareA("000001.SA"));
+		EXPECT_FALSE(IsShareA("000001.AZ"));
+		EXPECT_FALSE(IsShareA("200001.SZ"));
+		EXPECT_TRUE(IsShareA("000001.SZ"));
+		EXPECT_TRUE(IsShareA("002389.SZ"));
+		EXPECT_FALSE(IsShareA("003389.SZ"));
+		EXPECT_FALSE(IsShareA("004389.SZ"));
+		EXPECT_FALSE(IsShareA("005389.SZ"));
+		EXPECT_FALSE(IsShareA("006389.SZ"));
+		EXPECT_FALSE(IsShareA("007389.SZ"));
+		EXPECT_FALSE(IsShareA("008389.SZ"));
+		EXPECT_FALSE(IsShareA("009389.SZ"));
+		EXPECT_FALSE(IsShareA("001389.SZ"));
 	}
 
 	class CChinaStockTest : public Test {
@@ -117,23 +117,23 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestGetDescription) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetDescription(), _T(""));
-		stock.SetDescription(_T("SSabcdefg"));
-		EXPECT_EQ(stock.GetDescription(), _T("SSabcdefg"));
+		EXPECT_EQ(stock.GetDescription(), "");
+		stock.SetDescription("SSabcdefg");
+		EXPECT_EQ(stock.GetDescription(), "SSabcdefg");
 	}
 
 	TEST_F(CChinaStockTest, TestGetExchangeCode) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetExchangeCode(), _T(""));
-		stock.SetExchangeCode(_T("SS"));
-		EXPECT_EQ(stock.GetExchangeCode(), _T("SS"));
+		EXPECT_EQ(stock.GetExchangeCode(), "");
+		stock.SetExchangeCode("SS");
+		EXPECT_EQ(stock.GetExchangeCode(), "SS");
 	}
 
 	TEST_F(CChinaStockTest, TestGetSymbol) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetSymbol(), _T(""));
-		stock.SetSymbol(_T("600000.SS"));
-		EXPECT_EQ(stock.GetSymbol(), _T("600000.SS"));
+		EXPECT_EQ(stock.GetSymbol(), "");
+		stock.SetSymbol("600000.SS");
+		EXPECT_EQ(stock.GetSymbol(), "600000.SS");
 	}
 
 	TEST_F(CChinaStockTest, TestGetTransactionTime) {
@@ -330,8 +330,8 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestInitialize) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetSymbol(), _T(""));
-		EXPECT_EQ(stock.GetDisplaySymbol(), _T(""));
+		EXPECT_EQ(stock.GetSymbol(), "");
+		EXPECT_EQ(stock.GetDisplaySymbol(), "");
 		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		EXPECT_TRUE(stock.IsNotChecked());
@@ -354,20 +354,20 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0);
 		EXPECT_EQ(stock.GetTotalValue(), 0);
 		EXPECT_EQ(stock.GetCurrentValue(), 0);
-		stock.SetSymbol(_T("abcde"));
-		stock.SetDisplaySymbol(_T("dcba"));
+		stock.SetSymbol("abcde");
+		stock.SetDisplaySymbol("dcba");
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
-		EXPECT_EQ(stock.GetSymbol(), _T("abcde"));
-		EXPECT_EQ(stock.GetDisplaySymbol(), _T("dcba"));
+		EXPECT_EQ(stock.GetSymbol(), "abcde");
+		EXPECT_EQ(stock.GetDisplaySymbol(), "dcba");
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 	}
 
 	TEST_F(CChinaStockTest, TestGetDisplaySymbol) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetDisplaySymbol(), _T(""));
-		stock.SetDisplaySymbol(_T("浦发银行"));
-		EXPECT_EQ(stock.GetDisplaySymbol(), _T("浦发银行"));
+		EXPECT_EQ(stock.GetDisplaySymbol(), "");
+		stock.SetDisplaySymbol("浦发银行");
+		EXPECT_EQ(stock.GetDisplaySymbol(), "浦发银行");
 	}
 
 	TEST_F(CChinaStockTest, TestGetHighLimit) {
@@ -446,9 +446,9 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		constexpr long lDate = 21091101;
 		const time_t tt = ConvertToTTime(lDate, gl_pChinaMarket->GetTimeZone(), 150000);
-		const string strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
+		const string strDate = "21091101"; // 最好设置此日期为未来，以防止误操作实际数据库
 
-		stock.SetSymbol(_T("600000.SS"));
+		stock.SetSymbol("600000.SS");
 		stock.SetDisplaySymbol("浦东发展");
 		stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.ConvertToDate()作比较
 		stock.SetLastClose(101010);
@@ -465,7 +465,7 @@ namespace FireBirdTest {
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] =");
+		setDayLineBasicInfo.m_strFilter = "[Date] =";
 		setDayLineBasicInfo.m_strFilter += strDate.c_str();
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -475,7 +475,7 @@ namespace FireBirdTest {
 		}
 		setDayLineBasicInfo.m_pDatabase->CommitTrans();
 		setDayLineBasicInfo.Close();
-		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1"); // 存储新数据时无需查询旧数据，故而使用最简单的主索引ID
+		setDayLineBasicInfo.m_strFilter = "[ID] = 1"; // 存储新数据时无需查询旧数据，故而使用最简单的主索引ID
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		stock.AppendTodayBasicInfo(&setDayLineBasicInfo);
@@ -1051,19 +1051,19 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestSaveStockCodeDB) {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
-		stock.SetDescription(_T("abcdefg"));
-		stock.SetExchangeCode(_T("SS"));
-		stock.SetSymbol(_T("400000.SS")); // 这个必须用未曾使用过的股票代码，已利于随后删除
-		stock.SetDisplaySymbol(_T("未使用过"));
+		stock.SetDescription("abcdefg");
+		stock.SetExchangeCode("SS");
+		stock.SetSymbol("400000.SS"); // 这个必须用未曾使用过的股票代码，已利于随后删除
+		stock.SetDisplaySymbol("未使用过");
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		stock.SetDayLineStartDate(19900101);
-		setChinaStockSymbol.m_strFilter = _T("[ID] = 1");
+		setChinaStockSymbol.m_strFilter = "[ID] = 1";
 		setChinaStockSymbol.Open();
 		stock.AppendSymbol(setChinaStockSymbol);
 		setChinaStockSymbol.Close();
 
-		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '400000.SS'");
+		setChinaStockSymbol.m_strFilter = "[Symbol] = '400000.SS'";
 		setChinaStockSymbol.Open();
 		EXPECT_STREQ(setChinaStockSymbol.m_Description, _T("abcdefg"));
 		EXPECT_STREQ(setChinaStockSymbol.m_Exchange, _T("SS"));
@@ -1085,7 +1085,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
-		EXPECT_EQ(stock.GetSymbol(), _T("000001.SS"));
+		EXPECT_EQ(stock.GetSymbol(), "000001.SS");
 		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.UpdateSymbol(setChinaStockSymbol);
 		setChinaStockSymbol.Close();
@@ -1105,17 +1105,17 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsNotChecked());
-		setChinaStockSymbol.m_strSort = _T("[ID]");
+		setChinaStockSymbol.m_strSort = "[ID]";
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
-		EXPECT_EQ(stock.GetSymbol(), _T("000001.SS")) << "第一个股票";
-		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate.GetString());
+		EXPECT_EQ(stock.GetSymbol(), "000001.SS") << "第一个股票";
+		CreateJsonWithNlohmann(jsonUpdateDate, ToUTF8(setChinaStockSymbol.m_UpdateDate));
 
-		EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate[_T("DayLineStartDate")]);
-		EXPECT_EQ(stock.GetDayLineEndDate(), jsonUpdateDate[_T("DayLineEndDate")]);
+		EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
+		EXPECT_EQ(stock.GetDayLineEndDate(), jsonUpdateDate["DayLineEndDate"]);
 		setChinaStockSymbol.Close();
 	}
 
@@ -1129,30 +1129,30 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsNotChecked());
-		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
+		setChinaStockSymbol.m_strFilter = "[Symbol] = '000003.SZ'";
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
-		EXPECT_EQ(stock.GetSymbol(), _T("000003.SZ"));
+		EXPECT_EQ(stock.GetSymbol(), "000003.SZ");
 		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
-		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate.GetString());
+		CreateJsonWithNlohmann(jsonUpdateDate, ToUTF8(setChinaStockSymbol.m_UpdateDate));
 
-		//todo EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate[_T("DayLineStartDate")]);
+		//todo EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
 		//todo EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		setChinaStockSymbol.Close();
 	}
 
 	TEST_F(CChinaStockTest, TestCheckNeedProcessRTData) {
 		CChinaStock stock;
-		stock.SetSymbol(_T("000001.SS"));
+		stock.SetSymbol("000001.SS");
 		stock.CheckNeedProcessRTData();
 		EXPECT_FALSE(stock.IsNeedProcessRTData());
-		stock.SetSymbol(_T("001000.SS"));
+		stock.SetSymbol("001000.SS");
 		stock.CheckNeedProcessRTData();
 		EXPECT_TRUE(stock.IsNeedProcessRTData());
-		stock.SetSymbol(_T("000001.SZ"));
+		stock.SetSymbol("000001.SZ");
 		stock.CheckNeedProcessRTData();
 		EXPECT_TRUE(stock.IsNeedProcessRTData());
-		stock.SetSymbol(_T("999000.SZ"));
+		stock.SetSymbol("999000.SZ");
 		stock.CheckNeedProcessRTData();
 		EXPECT_FALSE(stock.IsNeedProcessRTData());
 	}
@@ -1211,16 +1211,16 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestRTDataDeque) {
 		const auto pData = make_shared<CWebRTData>();
-		pData->SetSymbol(_T("600008.SS"));
+		pData->SetSymbol("600008.SS");
 		const auto pData1 = make_shared<CWebRTData>();
-		pData1->SetSymbol(_T("600009.SS"));
+		pData1->SetSymbol("600009.SS");
 		CChinaStock stock;
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
 		stock.PushRTData(pData);
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
 		stock.PushRTData(pData1);
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 2);
-		EXPECT_EQ(pData->GetSymbol(), _T("600008.SS"));
+		EXPECT_EQ(pData->GetSymbol(), "600008.SS");
 		CWebRTDataPtr pData2 = stock.PopRTData();
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
 	}
@@ -1251,7 +1251,7 @@ namespace FireBirdTest {
 		CChinaStock stock;
 
 		pStock->SetHavingFirstRTData(true);
-		pStock->SetSymbol(_T("600000.SS"));
+		pStock->SetSymbol("600000.SS");
 		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(20191101));
 		pStock->SetLastClose(101010);
 		pStock->SetOpen(202020);
@@ -1333,7 +1333,7 @@ namespace FireBirdTest {
 		pStock->SetCanceledSellVolumeAbove200000(77);
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setDayLineTemp.m_strFilter = _T("[Date] = 20191101");
+		setDayLineTemp.m_strFilter = "[Date] = 20191101";
 		setDayLineTemp.Open();
 		setDayLineTemp.m_pDatabase->BeginTrans();
 		while (!setDayLineTemp.IsEOF()) {
@@ -1352,100 +1352,100 @@ namespace FireBirdTest {
 		setDayLineTemp.m_pDatabase->CommitTrans();
 		setDayLineTemp.Close();
 
-		setDayLineTemp.m_strFilter = _T("[Date] = 20191101");
+		setDayLineTemp.m_strFilter = "[Date] = 20191101";
 		setDayLineTemp.Open();
 		EXPECT_EQ(setDayLineTemp.m_Date, 20191101);
-		EXPECT_STREQ(setDayLineTemp.m_Symbol, pStock->GetSymbol().c_str());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_LastClose), static_cast<double>(pStock->GetLastClose()) / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Open), static_cast<double>(pStock->GetOpen()) / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_High), static_cast<double>(pStock->GetHigh()) / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Low), static_cast<double>(pStock->GetLow()) / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Close), static_cast<double>(pStock->GetNew()) / pStock->GetRatio());
-		EXPECT_EQ(atoll(setDayLineTemp.m_Volume), pStock->GetVolume());
-		EXPECT_EQ(atoll(setDayLineTemp.m_Amount), pStock->GetAmount());
-		EXPECT_EQ(atof(setDayLineTemp.m_UpAndDown), static_cast<double>(pStock->GetUpDown()) / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_UpDownRate), pStock->GetUpDownRate());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CurrentValue), pStock->GetCurrentValue());
-		EXPECT_EQ(atoll(setDayLineTemp.m_TotalValue), pStock->GetTotalValue());
+		EXPECT_TRUE(pStock->GetSymbol().compare(ToUTF8(setDayLineTemp.m_Symbol)) == 0);
+		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_LastClose), static_cast<double>(pStock->GetLastClose()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_Open), static_cast<double>(pStock->GetOpen()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_High), static_cast<double>(pStock->GetHigh()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_Low), static_cast<double>(pStock->GetLow()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_Close), static_cast<double>(pStock->GetNew()) / pStock->GetRatio());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_Volume), pStock->GetVolume());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_Amount), pStock->GetAmount());
+		EXPECT_EQ(_tstof(setDayLineTemp.m_UpAndDown), static_cast<double>(pStock->GetUpDown()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_UpDownRate), pStock->GetUpDownRate());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CurrentValue), pStock->GetCurrentValue());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_TotalValue), pStock->GetTotalValue());
 
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackBuyAbove200000), pStock->GetAttackBuyAbove200000());
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackBuyBelow200000), pStock->GetAttackBuyBelow200000());
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackBuyBelow50000), pStock->GetAttackBuyBelow50000());
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackBuyVolume), pStock->GetAttackBuyVolume());
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackSellAbove200000), pStock->GetAttackSellAbove200000());
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackSellBelow200000), pStock->GetAttackSellBelow200000());
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackSellBelow50000), pStock->GetAttackSellBelow50000());
-		EXPECT_EQ(atol(setDayLineTemp.m_AttackSellVolume), pStock->GetAttackSellVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackBuyAbove200000), pStock->GetAttackBuyAbove200000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackBuyBelow200000), pStock->GetAttackBuyBelow200000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackBuyBelow50000), pStock->GetAttackBuyBelow50000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackBuyVolume), pStock->GetAttackBuyVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackSellAbove200000), pStock->GetAttackSellAbove200000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackSellBelow200000), pStock->GetAttackSellBelow200000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackSellBelow50000), pStock->GetAttackSellBelow50000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_AttackSellVolume), pStock->GetAttackSellVolume());
 
-		EXPECT_EQ(atol(setDayLineTemp.m_OrdinaryBuyVolume), pStock->GetOrdinaryBuyVolume());
-		EXPECT_EQ(atol(setDayLineTemp.m_OrdinarySellVolume), pStock->GetOrdinarySellVolume());
-		EXPECT_EQ(atol(setDayLineTemp.m_CanceledBuyVolume), pStock->GetCanceledBuyVolume());
-		EXPECT_EQ(atol(setDayLineTemp.m_CanceledSellVolume), pStock->GetCanceledSellVolume());
-		EXPECT_EQ(atol(setDayLineTemp.m_StrongBuyVolume), pStock->GetStrongBuyVolume());
-		EXPECT_EQ(atol(setDayLineTemp.m_StrongSellVolume), pStock->GetStrongSellVolume());
-		EXPECT_EQ(atol(setDayLineTemp.m_UnknownVolume), pStock->GetUnknownVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_OrdinaryBuyVolume), pStock->GetOrdinaryBuyVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_OrdinarySellVolume), pStock->GetOrdinarySellVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_CanceledBuyVolume), pStock->GetCanceledBuyVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_CanceledSellVolume), pStock->GetCanceledSellVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_StrongBuyVolume), pStock->GetStrongBuyVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_StrongSellVolume), pStock->GetStrongSellVolume());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_UnknownVolume), pStock->GetUnknownVolume());
 
-		EXPECT_EQ(atol(setDayLineTemp.m_TransactionNumber), pStock->GetTransactionNumber());
-		EXPECT_EQ(atol(setDayLineTemp.m_TransactionNumberAbove200000), pStock->GetTransactionNumberAbove200000());
-		EXPECT_EQ(atol(setDayLineTemp.m_TransactionNumberBelow200000), pStock->GetTransactionNumberBelow200000());
-		EXPECT_EQ(atol(setDayLineTemp.m_TransactionNumberBelow50000), pStock->GetTransactionNumberBelow50000());
-		EXPECT_EQ(atol(setDayLineTemp.m_TransactionNumberBelow5000), pStock->GetTransactionNumberBelow5000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_TransactionNumber), pStock->GetTransactionNumber());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_TransactionNumberAbove200000), pStock->GetTransactionNumberAbove200000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_TransactionNumberBelow200000), pStock->GetTransactionNumberBelow200000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_TransactionNumberBelow50000), pStock->GetTransactionNumberBelow50000());
+		EXPECT_EQ(_tstol(setDayLineTemp.m_TransactionNumberBelow5000), pStock->GetTransactionNumberBelow5000());
 
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow5000), pStock->GetOrdinaryBuyVolumeBelow5000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow10000), pStock->GetOrdinaryBuyVolumeBelow10000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow20000), pStock->GetOrdinaryBuyVolumeBelow20000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow50000), pStock->GetOrdinaryBuyVolumeBelow50000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow100000), pStock->GetOrdinaryBuyVolumeBelow100000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow200000), pStock->GetOrdinaryBuyVolumeBelow200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyVolumeAbove200000), pStock->GetOrdinaryBuyVolumeAbove200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellVolumeBelow5000), pStock->GetOrdinarySellVolumeBelow5000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellVolumeBelow10000), pStock->GetOrdinarySellVolumeBelow10000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellVolumeBelow20000), pStock->GetOrdinarySellVolumeBelow20000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellVolumeBelow50000), pStock->GetOrdinarySellVolumeBelow50000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellVolumeBelow100000), pStock->GetOrdinarySellVolumeBelow100000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellVolumeBelow200000), pStock->GetOrdinarySellVolumeBelow200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellVolumeAbove200000), pStock->GetOrdinarySellVolumeAbove200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow5000), pStock->GetOrdinaryBuyNumberBelow5000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow10000), pStock->GetOrdinaryBuyNumberBelow10000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow20000), pStock->GetOrdinaryBuyNumberBelow20000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow50000), pStock->GetOrdinaryBuyNumberBelow50000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow100000), pStock->GetOrdinaryBuyNumberBelow100000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow200000), pStock->GetOrdinaryBuyNumberBelow200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinaryBuyNumberAbove200000), pStock->GetOrdinaryBuyNumberAbove200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellNumberBelow5000), pStock->GetOrdinarySellNumberBelow5000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellNumberBelow10000), pStock->GetOrdinarySellNumberBelow10000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellNumberBelow20000), pStock->GetOrdinarySellNumberBelow20000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellNumberBelow50000), pStock->GetOrdinarySellNumberBelow50000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellNumberBelow100000), pStock->GetOrdinarySellNumberBelow100000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellNumberBelow200000), pStock->GetOrdinarySellNumberBelow200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_OrdinarySellNumberAbove200000), pStock->GetOrdinarySellNumberAbove200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow5000), pStock->GetOrdinaryBuyVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow10000), pStock->GetOrdinaryBuyVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow20000), pStock->GetOrdinaryBuyVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow50000), pStock->GetOrdinaryBuyVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow100000), pStock->GetOrdinaryBuyVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow200000), pStock->GetOrdinaryBuyVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyVolumeAbove200000), pStock->GetOrdinaryBuyVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellVolumeBelow5000), pStock->GetOrdinarySellVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellVolumeBelow10000), pStock->GetOrdinarySellVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellVolumeBelow20000), pStock->GetOrdinarySellVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellVolumeBelow50000), pStock->GetOrdinarySellVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellVolumeBelow100000), pStock->GetOrdinarySellVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellVolumeBelow200000), pStock->GetOrdinarySellVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellVolumeAbove200000), pStock->GetOrdinarySellVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyNumberBelow5000), pStock->GetOrdinaryBuyNumberBelow5000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyNumberBelow10000), pStock->GetOrdinaryBuyNumberBelow10000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyNumberBelow20000), pStock->GetOrdinaryBuyNumberBelow20000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyNumberBelow50000), pStock->GetOrdinaryBuyNumberBelow50000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyNumberBelow100000), pStock->GetOrdinaryBuyNumberBelow100000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyNumberBelow200000), pStock->GetOrdinaryBuyNumberBelow200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinaryBuyNumberAbove200000), pStock->GetOrdinaryBuyNumberAbove200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellNumberBelow5000), pStock->GetOrdinarySellNumberBelow5000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellNumberBelow10000), pStock->GetOrdinarySellNumberBelow10000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellNumberBelow20000), pStock->GetOrdinarySellNumberBelow20000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellNumberBelow50000), pStock->GetOrdinarySellNumberBelow50000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellNumberBelow100000), pStock->GetOrdinarySellNumberBelow100000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellNumberBelow200000), pStock->GetOrdinarySellNumberBelow200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_OrdinarySellNumberAbove200000), pStock->GetOrdinarySellNumberAbove200000());
 
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledBuyVolumeBelow5000), pStock->GetCanceledBuyVolumeBelow5000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledBuyVolumeBelow10000), pStock->GetCanceledBuyVolumeBelow10000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledBuyVolumeBelow20000), pStock->GetCanceledBuyVolumeBelow20000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledBuyVolumeBelow50000), pStock->GetCanceledBuyVolumeBelow50000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledBuyVolumeBelow100000), pStock->GetCanceledBuyVolumeBelow100000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledBuyVolumeBelow200000), pStock->GetCanceledBuyVolumeBelow200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledBuyVolumeAbove200000), pStock->GetCanceledBuyVolumeAbove200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledSellVolumeBelow5000), pStock->GetCanceledSellVolumeBelow5000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledSellVolumeBelow10000), pStock->GetCanceledSellVolumeBelow10000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledSellVolumeBelow20000), pStock->GetCanceledSellVolumeBelow20000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledSellVolumeBelow50000), pStock->GetCanceledSellVolumeBelow50000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledSellVolumeBelow100000), pStock->GetCanceledSellVolumeBelow100000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledSellVolumeBelow200000), pStock->GetCanceledSellVolumeBelow200000());
-		EXPECT_EQ(atoll(setDayLineTemp.m_CanceledSellVolumeAbove200000), pStock->GetCanceledSellVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledBuyVolumeBelow5000), pStock->GetCanceledBuyVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledBuyVolumeBelow10000), pStock->GetCanceledBuyVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledBuyVolumeBelow20000), pStock->GetCanceledBuyVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledBuyVolumeBelow50000), pStock->GetCanceledBuyVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledBuyVolumeBelow100000), pStock->GetCanceledBuyVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledBuyVolumeBelow200000), pStock->GetCanceledBuyVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledBuyVolumeAbove200000), pStock->GetCanceledBuyVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledSellVolumeBelow5000), pStock->GetCanceledSellVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledSellVolumeBelow10000), pStock->GetCanceledSellVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledSellVolumeBelow20000), pStock->GetCanceledSellVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledSellVolumeBelow50000), pStock->GetCanceledSellVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledSellVolumeBelow100000), pStock->GetCanceledSellVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledSellVolumeBelow200000), pStock->GetCanceledSellVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setDayLineTemp.m_CanceledSellVolumeAbove200000), pStock->GetCanceledSellVolumeAbove200000());
 
 		setDayLineTemp.Close();
 
 		EXPECT_EQ(stock.GetLastSavedVolume(), 0) << "未装载临时数据前，此变量为零";
 
-		setDayLineTemp.m_strFilter = _T("[Date] = 20191101");
+		setDayLineTemp.m_strFilter = "[Date] = 20191101";
 		setDayLineTemp.Open();
 		stock.LoadTodaySavedInfo(&setDayLineTemp);
 		setDayLineTemp.Close();
 
 		EXPECT_EQ(stock.GetTransactionTime(), 0);
-		EXPECT_EQ(stock.GetSymbol(), _T(""));
+		EXPECT_EQ(stock.GetSymbol(), "");
 		EXPECT_EQ(stock.GetLastClose(), 0);
 		EXPECT_EQ(stock.GetOpen(), 0);
 		EXPECT_EQ(stock.GetHigh(), 0);
@@ -1527,7 +1527,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetCanceledSellVolumeBelow200000(), pStock->GetCanceledSellVolumeBelow200000());
 		EXPECT_EQ(stock.GetCanceledSellVolumeAbove200000(), pStock->GetCanceledSellVolumeAbove200000());
 
-		setDayLineTemp.m_strFilter = _T("[Date] = 20191101");
+		setDayLineTemp.m_strFilter = "[Date] = 20191101";
 		setDayLineTemp.Open();
 		setDayLineTemp.m_pDatabase->BeginTrans();
 		while (!setDayLineTemp.IsEOF()) {
@@ -1546,9 +1546,9 @@ namespace FireBirdTest {
 
 		pStock->SetHavingFirstRTData(true);
 		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(20191101));
-		pStock->SetExchangeCode(_T("SS"));
-		pStock->SetSymbol(_T("600000.SS"));
-		pStock->SetDisplaySymbol(_T("浦东银行"));
+		pStock->SetExchangeCode("SS");
+		pStock->SetSymbol("600000.SS");
+		pStock->SetDisplaySymbol("浦东银行");
 		pStock->SetLastClose(101010);
 		pStock->SetOpen(202020);
 		pStock->SetHigh(303030);
@@ -1718,14 +1718,14 @@ namespace FireBirdTest {
 		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
 		CDayLine stock;
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600011.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600011.SS");
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(21900101);
 
 		pid = make_shared<CDayLine>();
 		pid->SetDate(21900101);
-		pid->SetStockSymbol(_T("600011.SS"));
-		pid->SetDisplaySymbol(_T("首创股份"));
+		pid->SetStockSymbol("600011.SS");
+		pid->SetDisplaySymbol("首创股份");
 		pid->SetLastClose(335345);
 		pid->SetOpen(1000000);
 		pid->SetHigh(434543);
@@ -1742,7 +1742,7 @@ namespace FireBirdTest {
 		pStock->StoreDayLine(pid);
 
 		pStock->SetDayLineEndDate(21890101);
-		pStock->SetSymbol(_T("600011.SS"));
+		pStock->SetSymbol("600011.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineBasicInfo();
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
@@ -1817,7 +1817,7 @@ namespace FireBirdTest {
 		pStock->SetCanceledSellVolumeAbove200000(77);
 
 		CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
-		setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
+		setDayLineExtendInfo.m_strFilter = "[ID] = 1";
 		setDayLineExtendInfo.Open();
 		setDayLineExtendInfo.m_pDatabase->BeginTrans();
 		pStock->AppendTodayExtendInfo(&setDayLineExtendInfo);
@@ -1832,7 +1832,7 @@ namespace FireBirdTest {
 		pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
 		EXPECT_EQ(pDayLine->GetMarketTime(), 0);
-		EXPECT_EQ(pDayLine->GetStockSymbol(), _T("600011.SS"));
+		EXPECT_EQ(pDayLine->GetStockSymbol(), "600011.SS");
 		EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
 		EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -1912,7 +1912,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pStock->GetCanceledSellVolumeBelow200000(), pStock->GetCanceledSellVolumeBelow200000());
 		EXPECT_EQ(pStock->GetCanceledSellVolumeAbove200000(), pStock->GetCanceledSellVolumeAbove200000());
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21900101");
+		setDayLineBasicInfo.m_strFilter = "[Date] = 21900101";
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {
@@ -1922,7 +1922,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.m_pDatabase->CommitTrans();
 		setDayLineBasicInfo.Close();
 
-		setDayLineExtendInfo.m_strFilter = _T("[Date] = 21900101");
+		setDayLineExtendInfo.m_strFilter = "[Date] = 21900101";
 		setDayLineExtendInfo.Open();
 		setDayLineExtendInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineExtendInfo.IsEOF()) {
@@ -1940,7 +1940,7 @@ namespace FireBirdTest {
 		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
 		CDayLine dayLine;
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600016.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600016.SS");
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
@@ -1951,8 +1951,8 @@ namespace FireBirdTest {
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21111201);
-			pid->SetStockSymbol(_T("600016.SS"));
-			pid->SetDisplaySymbol(_T("首创股份"));
+			pid->SetStockSymbol("600016.SS");
+			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -1969,37 +1969,37 @@ namespace FireBirdTest {
 			pStock->StoreDayLine(pid);
 		}
 		pStock->SetDayLineEndDate(10190101);
-		pStock->SetSymbol(_T("600016.SS"));
+		pStock->SetSymbol("600016.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineBasicInfo();
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
+		setDayLineBasicInfo.m_strFilter = "[Date] = 21111201";
 		setDayLineBasicInfo.Open();
 		for (int i = 0; i < 10; i++) {
 			// 第一个数据日期为19910101
 			dayLine.LoadBasicData(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i + 1);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetDate());
-			EXPECT_TRUE(setDayLineBasicInfo.m_Symbol.Compare(pid->GetStockSymbol().c_str()) == 0);
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Low) * pid->GetRatio(), pid->GetLow());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Close) * pid->GetRatio(), pid->GetClose());
-			EXPECT_EQ(atoll(setDayLineBasicInfo.m_Volume), pid->GetVolume());
-			EXPECT_EQ(atoll(setDayLineBasicInfo.m_Amount), pid->GetAmount());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_UpAndDown), pid->GetUpDown());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
-			EXPECT_EQ(atoll(setDayLineBasicInfo.m_TotalValue), pid->GetTotalValue());
-			EXPECT_EQ(atoll(setDayLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_RS), pid->GetRS());
+			EXPECT_TRUE(pid->GetStockSymbol().compare(ToUTF8(setDayLineBasicInfo.m_Symbol)) == 0);
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Low) * pid->GetRatio(), pid->GetLow());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Close) * pid->GetRatio(), pid->GetClose());
+			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_Volume), pid->GetVolume());
+			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_Amount), pid->GetAmount());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_UpAndDown), pid->GetUpDown());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
+			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_TotalValue), pid->GetTotalValue());
+			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
+			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_RS), pid->GetRS());
 			setDayLineBasicInfo.MoveNext();
 		}
 		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
+		setDayLineBasicInfo.m_strFilter = "[Date] = 21111201";
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {
@@ -2009,7 +2009,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.m_pDatabase->CommitTrans();
 		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 19910101");
+		setDayLineBasicInfo.m_strFilter = "[Date] = 19910101";
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setDayLineBasicInfo.IsEOF());
@@ -2023,13 +2023,13 @@ namespace FireBirdTest {
 		CDayLinePtr pid;
 		CChinaStock stock;
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600010.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600010.SS");
 
 		for (int i = 0; i < 8; i++) {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21121201);
-			pid->SetStockSymbol(_T("600010.SS"));
-			pid->SetDisplaySymbol(_T("首创股份"));
+			pid->SetStockSymbol("600010.SS");
+			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(100000 + i);
 			pid->SetHigh(45234543);
@@ -2045,13 +2045,13 @@ namespace FireBirdTest {
 			pid->SetRS(14.5);
 			pStock->StoreDayLine(pid);
 		}
-		pStock->SetSymbol(_T("600010.SS"));
+		pStock->SetSymbol("600010.SS");
 		pStock->SetDayLineEndDate(10190101);
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineBasicInfo();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '600010.SS'");
-		setDayLineBasicInfo.m_strSort = _T("[Date]");
+		setDayLineBasicInfo.m_strFilter = "[Symbol] = '600010.SS'";
+		setDayLineBasicInfo.m_strSort = "[Date]";
 		setDayLineBasicInfo.Open();
 		stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
 		for (int i = 0; i < 8; i++) {
@@ -2075,7 +2075,7 @@ namespace FireBirdTest {
 		}
 		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21121201");
+		setDayLineBasicInfo.m_strFilter = "[Date] = 21121201";
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {
@@ -2089,13 +2089,13 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate) {
 		CChinaStock stock;
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600004.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600004.SS");
 
 		for (int i = 0; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000 + 2);
-			pid->SetStockSymbol(_T("600004.SS"));
-			pid->SetDisplaySymbol(_T("白云机场"));
+			pid->SetStockSymbol("600004.SS");
+			pid->SetDisplaySymbol("白云机场");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2111,7 +2111,7 @@ namespace FireBirdTest {
 			pid->SetRS(14.5);
 			pStock->StoreDayLine(pid);
 		}
-		pStock->SetSymbol(_T("600004.SS"));
+		pStock->SetSymbol("600004.SS");
 		pStock->SetDayLineStartDate(19920102);
 		pStock->SetDayLineEndDate(20800100);
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -2127,13 +2127,13 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate3) {
 		CChinaStock stock;
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000);
-			pid->SetStockSymbol(_T("600008.SS"));
-			pid->SetDisplaySymbol(_T("首创股份"));
+			pid->SetStockSymbol("600008.SS");
+			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2149,13 +2149,13 @@ namespace FireBirdTest {
 			pid->SetRS(14.5);
 			pStock->StoreDayLine(pid);
 		}
-		pStock->SetSymbol(_T("600008.SS"));
+		pStock->SetSymbol("600008.SS");
 		pStock->SetDayLineStartDate(19900101);
 		pStock->SetDayLineEndDate(20800102);
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
-		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900101 + 100000) << _T("当起始日期为19900101时，需要更新之");
+		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900101 + 100000) << "当起始日期为19900101时，需要更新之";
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "此标识也被设置";
 
@@ -2165,13 +2165,13 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate2) {
 		CChinaStock stock;
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000);
-			pid->SetStockSymbol(_T("600008.SS"));
-			pid->SetDisplaySymbol(_T("首创股份"));
+			pid->SetStockSymbol("600008.SS");
+			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2187,7 +2187,7 @@ namespace FireBirdTest {
 			pid->SetRS(14.5);
 			pStock->StoreDayLine(pid);
 		}
-		pStock->SetSymbol(_T("600008.SS"));
+		pStock->SetSymbol("600008.SS");
 		pStock->SetDayLineStartDate(19900102);
 		pStock->SetDayLineEndDate(20800102);
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -2209,11 +2209,11 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestReportDayLineDownLoaded) {
 		CChinaStock stock;
-		stock.SetSymbol(_T("600008.SS"));
+		stock.SetSymbol("600008.SS");
 		stock.ReportDayLineDownLoaded();
 		//EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		//string str = gl_systemMessage.PopDayLineInfoMessage();
-		//EXPECT_STREQ(str, _T("sh600008日线下载完成."));
+		//EXPECT_STREQ(str, "sh600008日线下载完成.");
 	}
 
 	TEST_F(CChinaStockTest, TestStoreDayLine) {
@@ -2257,7 +2257,7 @@ namespace FireBirdTest {
 		CChinaStock stock;
 
 		stock.SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(19900101));
-		stock.SetSymbol(_T("600601.SS"));
+		stock.SetSymbol("600601.SS");
 		stock.SetTransactionNumber(1);
 		stock.SetTransactionNumberBelow5000(2);
 		stock.SetTransactionNumberBelow50000(3);
@@ -2325,7 +2325,7 @@ namespace FireBirdTest {
 		stock.SetCanceledSellVolumeAbove200000(77);
 
 		CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
-		setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
+		setDayLineExtendInfo.m_strFilter = "[ID] = 1";
 		setDayLineExtendInfo.Open();
 		setDayLineExtendInfo.m_pDatabase->BeginTrans();
 		stock.AppendTodayExtendInfo(&setDayLineExtendInfo);
@@ -2333,12 +2333,12 @@ namespace FireBirdTest {
 		setDayLineExtendInfo.Close();
 
 		CDayLine dayLine;
-		setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '600601.SS'");
+		setDayLineExtendInfo.m_strFilter = "[Symbol] = '600601.SS'";
 		setDayLineExtendInfo.Open();
 		dayLine.LoadExtendData(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
 		EXPECT_EQ(dayLine.GetMarketTime(), 0);
-		EXPECT_EQ(dayLine.GetStockSymbol(), _T(""));
+		EXPECT_EQ(dayLine.GetStockSymbol(), "");
 		EXPECT_EQ(dayLine.GetTransactionNumber(), stock.GetTransactionNumber());
 		EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), stock.GetTransactionNumberBelow5000());
 		EXPECT_EQ(dayLine.GetTransactionNumberBelow50000(), stock.GetTransactionNumberBelow50000());
@@ -2427,14 +2427,14 @@ namespace FireBirdTest {
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
 		CWeekLinePtr pid;
 		CWeekLine stock;
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600016.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600016.SS");
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CWeekLine>();
 			pid->SetDate(21100501);
-			pid->SetStockSymbol(_T("600016.SS"));
-			pid->SetDisplaySymbol(_T("首创股份"));
+			pid->SetStockSymbol("600016.SS");
+			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2450,37 +2450,37 @@ namespace FireBirdTest {
 			pid->SetRS(14.5);
 			pStock->StoreWeekLine(pid);
 		}
-		pStock->SetSymbol(_T("600016.SS"));
+		pStock->SetSymbol("600016.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveWeekLine();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100501");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100501";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		for (int i = 0; i < 10; i++) {
 			stock.LoadBasicData(&setWeekLineBasicInfo);
 			pid = pStock->GetWeekLine(i);
 			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetDate());
-			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol().c_str());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Low) * pid->GetRatio(), pid->GetLow());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Close) * pid->GetRatio(), pid->GetClose());
-			EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Volume), pid->GetVolume());
-			EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Amount), pid->GetAmount());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpAndDown), pid->GetUpDown());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
-			EXPECT_EQ(atoll(setWeekLineBasicInfo.m_TotalValue), pid->GetTotalValue());
-			EXPECT_EQ(atoll(setWeekLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RS), pid->GetRS());
+			EXPECT_TRUE(pid->GetStockSymbol().compare(ToUTF8( setWeekLineBasicInfo.m_Symbol)) == 0);
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Low) * pid->GetRatio(), pid->GetLow());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Close) * pid->GetRatio(), pid->GetClose());
+			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_Volume), pid->GetVolume());
+			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_Amount), pid->GetAmount());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_UpAndDown), pid->GetUpDown());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
+			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_TotalValue), pid->GetTotalValue());
+			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
+			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_RS), pid->GetRS());
 			setWeekLineBasicInfo.MoveNext();
 		}
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100501");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100501";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setWeekLineBasicInfo.IsEOF()) {
@@ -2496,13 +2496,13 @@ namespace FireBirdTest {
 		CWeekLinePtr pid;
 		CChinaStock stock;
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600010.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600010.SS");
 
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CWeekLine>();
 			pid->SetDate(21101201);
-			pid->SetStockSymbol(_T("600010.SS"));
-			pid->SetDisplaySymbol(_T("首创股份"));
+			pid->SetStockSymbol("600010.SS");
+			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2518,11 +2518,11 @@ namespace FireBirdTest {
 			pid->SetRS(14.5);
 			pStock->StoreWeekLine(pid);
 		}
-		pStock->SetSymbol(_T("600010.SS"));
+		pStock->SetSymbol("600010.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveWeekLine();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21101201";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
@@ -2548,7 +2548,7 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21101201";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setWeekLineBasicInfo.IsEOF()) {
@@ -2561,13 +2561,13 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestIsAStock) {
 		const auto pStock2 = make_shared<CChinaStock>();
-		pStock2->SetSymbol(_T("600000.SS"));
+		pStock2->SetSymbol("600000.SS");
 		EXPECT_TRUE(pStock2->IsShareA());
-		pStock2->SetSymbol(_T("600000.SA"));
+		pStock2->SetSymbol("600000.SA");
 		EXPECT_FALSE(pStock2->IsShareA());
-		pStock2->SetSymbol(_T("000001.SZ"));
+		pStock2->SetSymbol("000001.SZ");
 		EXPECT_TRUE(pStock2->IsShareA());
-		pStock2->SetSymbol(_T("10001.SZ"));
+		pStock2->SetSymbol("10001.SZ");
 		EXPECT_FALSE(pStock2->IsShareA());
 	}
 

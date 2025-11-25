@@ -6,7 +6,7 @@
 
 class CSetNaicsIndustry : public CVirtualRecordset {
 public:
-	CSetNaicsIndustry(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("naics_industry"), CDatabase* pDatabase = nullptr);
+	CSetNaicsIndustry(const CString& strSchema = "WorldMarket", const CString& strTable = "naics_industry", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -19,10 +19,10 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };  // 索引用，自动生成。
-	CString m_Naics{ _T("") };
-	CString m_NationalIndustry{ _T("") };
-	CString m_Sector{ _T("") };
-	CString m_SubSector{ _T("") };
+	CString m_Naics{ "" };
+	CString m_NationalIndustry{ "" };
+	CString m_Sector{ "" };
+	CString m_SubSector{ "" };
 
 	// 重写
 	// 向导生成的虚函数重写

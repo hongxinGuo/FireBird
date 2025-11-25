@@ -39,7 +39,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 
-			m_pVirtualDataSource->SetInquiringString(_T(""));
+			m_pVirtualDataSource->SetInquiringString("");
 			m_pVirtualDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();

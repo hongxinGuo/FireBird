@@ -37,28 +37,28 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoForexWebSocketTest, TestGetURL) {
-		EXPECT_EQ(gl_pTiingoForexWebSocket->GetURL(), _T("wss://api.tiingo.com/fx"));
+		EXPECT_EQ(gl_pTiingoForexWebSocket->GetURL(), "wss://api.tiingo.com/fx");
 	}
 
 	TEST_F(CTiingoForexWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
-		vSymbol.push_back(_T("A"));
-		vSymbol.push_back(_T("AA"));
-		vSymbol.push_back(_T("AAL"));
-		vSymbol.push_back(_T("AAPL"));
+		vSymbol.push_back("A");
+		vSymbol.push_back("AA");
+		vSymbol.push_back("AAL");
+		vSymbol.push_back("AAPL");
 		string sSymbol = gl_pTiingoForexWebSocket->CreateMessage(vSymbol);
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(sSymbol);
 		} catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
-		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
+		EXPECT_TRUE(jsonMessage["eventName"] == "subscribe");
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 5);
-		EXPECT_EQ(jsonMessage["authorization"], _T("c897a00b7cfc2630d235316a4683156"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(0), _T("a"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(1), _T("aa"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(2), _T("aal"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(3), _T("aapl"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(4), _T("gbpaud"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(5), _T("eurusd"));
+		EXPECT_EQ(jsonMessage["authorization"], "c897a00b7cfc2630d235316a4683156");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(0), "a");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(1), "aa");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(2), "aal");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(3), "aapl");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(4), "gbpaud");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(5), "eurusd");
 	}
 }

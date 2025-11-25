@@ -85,24 +85,24 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol1) {
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol(_T("AAPL"));
-		pStock->SetExchangeCode(_T("US"));
+		pStock->SetSymbol("AAPL");
+		pStock->SetExchangeCode("US");
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol2) {
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol(_T("600601.SS"));
-		pStock->SetExchangeCode(_T("SS"));
+		pStock->SetSymbol("600601.SS");
+		pStock->SetExchangeCode("SS");
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol3) {
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol(_T("600601SS"));
-		pStock->SetExchangeCode(_T("SS"));
+		pStock->SetSymbol("600601SS");
+		pStock->SetExchangeCode("SS");
 
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}

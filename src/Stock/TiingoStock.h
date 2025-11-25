@@ -210,23 +210,23 @@ public:
 	vector<double> m_vClose; // 收盘价
 
 protected:
-	string m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
+	string m_strTiingoPermaTicker{ "" }; // Tiingo永久代码标识
 	//string m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
-	string m_strName{ _T("") };
+	string m_strName{ "" };
 	// bool m_fIsActive{ false }; // 这个使用VirtualStock中的m_fActive来代替
 	double m_fDividend{ 0 };
 	double m_fSplitFactor{ 1 };
 	bool m_fIsADR{ false };
-	string m_strTiingoSector{ _T("") };
-	string m_strTiingoIndustry{ _T("") };
+	string m_strTiingoSector{ "" };
+	string m_strTiingoIndustry{ "" };
 	INT32 m_iSicCode{ 0 };
-	string m_strSicSector{ _T("") };
-	string m_strSicIndustry{ _T("") };
-	string m_strReportingCurrency{ _T("") };
-	string m_strLocation{ _T("") };
-	string m_strCompanyWebSite{ _T("") };
-	string m_strSECFilingWebSite{ _T("") };
-	string m_strDataProviderPermaTicker{ _T("") };
+	string m_strSicSector{ "" };
+	string m_strSicIndustry{ "" };
+	string m_strReportingCurrency{ "" };
+	string m_strLocation{ "" };
+	string m_strCompanyWebSite{ "" };
+	string m_strSECFilingWebSite{ "" };
+	string m_strDataProviderPermaTicker{ "" };
 
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
 

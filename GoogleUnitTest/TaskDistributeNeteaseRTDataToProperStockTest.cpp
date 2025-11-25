@@ -26,17 +26,17 @@ namespace FireBirdTest {
 	};
 
 	// 正常实时数据，但时间比较旧（一样）
-	NeteaseData rtData2(2, _T("000001.SZ"), NETEASE_RT_WEB_DATA_, true, -10);
+	NeteaseData rtData2(2, "000001.SZ", NETEASE_RT_WEB_DATA_, true, -10);
 	// 正常数据，更新的时间
-	NeteaseData rtData3(3, _T("600601.SS"), NETEASE_RT_WEB_DATA_, true, 0);
+	NeteaseData rtData3(3, "600601.SS", NETEASE_RT_WEB_DATA_, true, 0);
 	// 非活跃股票，更新的时间
-	NeteaseData rtData4(4, _T("600000.SS"), NETEASE_RT_WEB_DATA_, true, 0);
+	NeteaseData rtData4(4, "600000.SS", NETEASE_RT_WEB_DATA_, true, 0);
 	// 在本测试集的开始，故意设置sh600008的状态为非活跃
-	NeteaseData rtData5(5, _T("600008.SS"), NETEASE_RT_WEB_DATA_, true, -5);
+	NeteaseData rtData5(5, "600008.SS", NETEASE_RT_WEB_DATA_, true, -5);
 	// 新股票代码
-	NeteaseData rtData6(6, _T("000000.NT"), NETEASE_RT_WEB_DATA_, true, 0);
-	//NeteaseData rtData7(7, _T("140000"),SINA_RT_WEB_DATA_, true, 10101010);
-	//NeteaseData rtData8(8, _T("1400000"),SINA_RT_WEB_DATA_, true, 10101010);
+	NeteaseData rtData6(6, "000000.NT", NETEASE_RT_WEB_DATA_, true, 0);
+	//NeteaseData rtData7(7, "140000"),SINA_RT_WEB_DATA_, true, 10101010);
+	//NeteaseData rtData8(8, "1400000"),SINA_RT_WEB_DATA_, true, 10101010);
 
 	static time_t s_tCurrentMarketTime;
 
@@ -46,14 +46,14 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
+			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
 			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
 			s_tCurrentMarketTime = GetUTCTime();
 		}
 
 		static void TearDownTestSuite() {
-			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
+			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 			pStock->SetActive(true);
 
 			SCOPED_TRACE("");
@@ -112,7 +112,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsRTDataNeedCalculate());
 		switch (m_iCount) {
 		case 1:
-			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << _T("无效实时数据，报错后直接返回");
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "无效实时数据，报错后直接返回";
 			break;
 		case 2:
 			EXPECT_EQ(gl_pChinaMarket->GetTransactionTime(), s_tCurrentMarketTime - 10);

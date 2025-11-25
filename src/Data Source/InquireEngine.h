@@ -64,8 +64,8 @@ protected:
 	string m_sBuffer{}; // 接收到数据的缓冲区
 	long m_lByteRead{ 0 }; // 接收到的字符数.
 
-	string m_strInquiry{ _T("") }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
-	string m_strHeaders{ _T("") };
+	string m_strInquiry{ "" }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
+	string m_strHeaders{ "" };
 
 	long m_lContentLength{ 0 }; // 预期的网络数据长度（使用QueryInfo(HTTP_QUERY_CONTENT_LENGTH)得到的数据）
 

@@ -40,27 +40,27 @@ namespace FireBirdTest {
 		string m_pData;
 	};
 
-	TiingoWebSocketData tiingoForexData1(1, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"eurnok\",\"2019-07-05T15:49:15.157000+00:00\",5000000.0,9.6764,9.678135,5000000.0,9.67987]}"));
-	TiingoWebSocketData tiingoForexData2(2, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
-	TiingoWebSocketData tiingoForexData4(4, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
-	TiingoWebSocketData tiingoForexData5(5, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	TiingoWebSocketData tiingoForexData1(1, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"eurnok\",\"2019-07-05T15:49:15.157000+00:00\",5000000.0,9.6764,9.678135,5000000.0,9.67987]}");
+	TiingoWebSocketData tiingoForexData2(2, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
+	TiingoWebSocketData tiingoForexData4(4, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
+	TiingoWebSocketData tiingoForexData5(5, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	// data名称错为'dta'
-	TiingoWebSocketData tiingoForexData6(6, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"dta\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	TiingoWebSocketData tiingoForexData6(6, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"dta\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	// data首项必须为‘fx'
-	TiingoWebSocketData tiingoForexData7(7, _T(""), _T("{\"messageType\":\"A\",\"service\":\"ifx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	TiingoWebSocketData tiingoForexData7(7, "", "{\"messageType\":\"A\",\"service\":\"ifx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	// messageType错误
-	TiingoWebSocketData tiingoForexData8(8, _T(""), _T("{\"messageType\":\"B\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	TiingoWebSocketData tiingoForexData8(8, "", "{\"messageType\":\"B\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	// json格式错误
-	TiingoWebSocketData tiingoForexData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	TiingoWebSocketData tiingoForexData9(9, "", "\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	// heart beat
 	TiingoWebSocketData tiingoForexData10(
-		10, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
+		10, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
 	// authentication
-	TiingoWebSocketData tiingoForexData11(11, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
+	TiingoWebSocketData tiingoForexData11(11, "", "{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}");
 	// subscribe
-	TiingoWebSocketData tiingoForexData12(12, _T(""), _T("{\"data\":{\"tickers\":[\"*\",\"FXCM:EUR/USD\",\"IC MARKETS:2\",\"OANDA:USD_JPY\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+	TiingoWebSocketData tiingoForexData12(12, "", "{\"data\":{\"tickers\":[\"*\",\"FXCM:EUR/USD\",\"IC MARKETS:2\",\"OANDA:USD_JPY\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
 	// error message
-	TiingoWebSocketData tiingoForexData13(13, _T(""), _T("{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}"));
+	TiingoWebSocketData tiingoForexData13(13, "", "{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}");
 
 	class ProcessOneTiingoForexWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
-			EXPECT_TRUE(pForex->m_sSymbol == _T("eurnok"));
+			EXPECT_TRUE(pForex->m_sSymbol == "eurnok");
 			EXPECT_DOUBLE_EQ(pForex->m_dBidSize, 5000000);
 			EXPECT_DOUBLE_EQ(pForex->m_dBidPrice, 9.6764);
 			EXPECT_DOUBLE_EQ(pForex->m_dMidPrice, 9.678135);
@@ -137,42 +137,40 @@ namespace FireBirdTest {
 		case 12: // subscribe
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(tiingoForexWebSocket.m_vCurrentInquireSymbol.size(), 4);
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(1) == _T("FXCM:EUR/USD"));
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(2) == _T("IC MARKETS:2"));
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(3) == _T("OANDA:USD_JPY"));
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(0) == "*");
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(1) == "FXCM:EUR/USD");
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(2) == "IC MARKETS:2");
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(3) == "OANDA:USD_JPY");
 			break;
 		case 13: // error message
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(tiingoForexWebSocket.GetStatusCode(), 400);
-			EXPECT_TRUE(tiingoForexWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
+			EXPECT_TRUE(tiingoForexWebSocket.GetStatusMessage() == "thresholdLevel not valid");
 			break;
 		default:
 			break;
 		}
 	}
 
-	TiingoWebSocketData tiingoCryptoData1(1, _T(""), _T(
-		                                      "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
-	TiingoWebSocketData tiingoCryptoData2(2, _T(""), _T(
-		                                      "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"T\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}"));
+	TiingoWebSocketData tiingoCryptoData1(1, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
+	TiingoWebSocketData tiingoCryptoData2(2, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"T\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}");
 	// heart beat
 	TiingoWebSocketData tiingoCryptoData3(
-		3, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
+		3, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
 	// authentication
-	TiingoWebSocketData tiingoCryptoData4(4, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
+	TiingoWebSocketData tiingoCryptoData4(4, "", "{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}");
 	// messageType必须为'A' 'H' 或者'I'
-	TiingoWebSocketData tiingoCryptoData5(5, _T(""), _T("{\"messageType\":\"B\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
+	TiingoWebSocketData tiingoCryptoData5(5, "", "{\"messageType\":\"B\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
 	// data错为'dta'
-	TiingoWebSocketData tiingoCryptoData6(6, _T(""), _T("{\"messageType\":\"A\",\"service\":\"crypto_data\",\"dta\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
+	TiingoWebSocketData tiingoCryptoData6(6, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"dta\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
 	// data第一项必须为'Q'或者'T'
-	TiingoWebSocketData tiingoCryptoData7(7, _T(""), _T("{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"A\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}"));
+	TiingoWebSocketData tiingoCryptoData7(7, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"A\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}");
 	// json格式错误
-	TiingoWebSocketData tiingoCryptoData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
+	TiingoWebSocketData tiingoCryptoData9(9, "", "\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
 	// subscribe
-	TiingoWebSocketData tiingoCryptoData10(10, _T(""), _T("{\"data\":{\"tickers\":[\"*\",\"BINANCE:IDEXBUSD\",\"BITTREX:USDT-ADA\",\"HITBTC:XRPEOS\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+	TiingoWebSocketData tiingoCryptoData10(10, "", "{\"data\":{\"tickers\":[\"*\",\"BINANCE:IDEXBUSD\",\"BITTREX:USDT-ADA\",\"HITBTC:XRPEOS\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
 	// error message
-	TiingoWebSocketData tiingoCryptoData11(11, _T(""), _T("{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}"));
+	TiingoWebSocketData tiingoCryptoData11(11, "", "{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}");
 
 	class ProcessOneTiingoCryptoWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
@@ -214,8 +212,8 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
-			EXPECT_TRUE(pCrypto->m_strExchange == _T("bitfinex"));
-			EXPECT_TRUE(pCrypto->m_sSymbol == _T("neojpy"));
+			EXPECT_TRUE(pCrypto->m_strExchange == "bitfinex");
+			EXPECT_TRUE(pCrypto->m_sSymbol == "neojpy");
 			EXPECT_DOUBLE_EQ(pCrypto->m_dBidSize, 38.11162867);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dBidPrice, 787.82);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dMidPrice, 787.83);
@@ -229,8 +227,8 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
-			EXPECT_TRUE(pCrypto->m_strExchange == _T("binance"));
-			EXPECT_TRUE(pCrypto->m_sSymbol == _T("evxbtc"));
+			EXPECT_TRUE(pCrypto->m_strExchange == "binance");
+			EXPECT_TRUE(pCrypto->m_sSymbol == "evxbtc");
 			EXPECT_DOUBLE_EQ(pCrypto->m_dBidSize, 0);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dBidPrice, 0);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dMidPrice, 0);
@@ -261,15 +259,15 @@ namespace FireBirdTest {
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.size(), 4);
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(1) == _T("BINANCE:IDEXBUSD"));
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(2) == _T("BITTREX:USDT-ADA"));
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(3) == _T("HITBTC:XRPEOS"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(0) == "*");
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(1) == "BINANCE:IDEXBUSD");
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(2) == "BITTREX:USDT-ADA");
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(3) == "HITBTC:XRPEOS");
 			break;
 		case 11: // error message
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(tiingoCryptoWebSocket.GetStatusCode(), 400);
-			EXPECT_TRUE(tiingoCryptoWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.GetStatusMessage() == "thresholdLevel not valid");
 			break;
 		default:
 			break;
@@ -277,33 +275,24 @@ namespace FireBirdTest {
 	}
 
 	// 正确数据
-	TiingoWebSocketData tiingoIEXData1(1, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",\"vym\",85.025]}"));
-	TiingoWebSocketData tiingoIEXData2(2, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.594808294-05:00\",\"wes\",50.123]}"));
+	TiingoWebSocketData tiingoIEXData1(1, "", "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",\"vym\",85.025]}");
+	TiingoWebSocketData tiingoIEXData2(2, "","{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.594808294-05:00\",\"wes\",50.123]}");
 	// authentication
-	TiingoWebSocketData tiingoIEXData3(3, _T(""), _T(
-		                                   "{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+	TiingoWebSocketData tiingoIEXData3(3, "", "{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
 	// Heart beat
-	TiingoWebSocketData tiingoIEXData4(
-		4, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
+	TiingoWebSocketData tiingoIEXData4(4, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
 	// messageType只能为'A''I''H'
-	TiingoWebSocketData tiingoIEXData5(5, _T(""), _T(
-		                                   "{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	TiingoWebSocketData tiingoIEXData5(5, "", "{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}");
 	// 错误。service的名称不为"iex",
-	TiingoWebSocketData tiingoIEXData7(7, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	TiingoWebSocketData tiingoIEXData7(7, "", "{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}");
 	// service错为servi
-	TiingoWebSocketData tiingoIEXData8(8, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
+	TiingoWebSocketData tiingoIEXData8(8, "", "{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}");
 	// json格式错误
-	TiingoWebSocketData tiingoIEXData9(9, _T(""), _T(
-		                                   "\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",81.58]}"));
+	TiingoWebSocketData tiingoIEXData9(9, "","\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",81.58]}");
 	// subscribe
-	TiingoWebSocketData tiingoIEXData10(10, _T(""), _T(
-		                                    "{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+	TiingoWebSocketData tiingoIEXData10(10, "","{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
 	// error message
-	TiingoWebSocketData tiingoIEXData11(11, _T(""), _T("{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}"));
+	TiingoWebSocketData tiingoIEXData11(11, "", "{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}");
 
 	class ProcessOneTiingoIEXWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
@@ -345,14 +334,14 @@ namespace FireBirdTest {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
-			EXPECT_TRUE(pTiingoIEX->m_sSymbol == _T("vym"));
+			EXPECT_TRUE(pTiingoIEX->m_sSymbol == "vym");
 			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 85.025);
 			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime()) << "只有有效数据才设置心跳时间";
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
-			EXPECT_TRUE(pTiingoIEX->m_sSymbol == _T("wes"));
+			EXPECT_TRUE(pTiingoIEX->m_sSymbol == "wes");
 			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 50.123);
 			break;
 		case 3: // authentication
@@ -379,15 +368,15 @@ namespace FireBirdTest {
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentInquireSymbol.size(), 4);
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(1) == _T("uso"));
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(2) == _T("msft"));
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(3) == _T("tnk"));
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(0) == "*");
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(1) == "uso");
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(2) == "msft");
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(3) == "tnk");
 			break;
 		case 11: // error message
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(tiingoIEXWebSocket.GetStatusCode(), 400);
-			EXPECT_TRUE(tiingoIEXWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
+			EXPECT_TRUE(tiingoIEXWebSocket.GetStatusMessage() == "thresholdLevel not valid");
 			break;
 		default:
 			break;

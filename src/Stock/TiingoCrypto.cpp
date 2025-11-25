@@ -6,13 +6,13 @@ CTiingoCrypto::CTiingoCrypto() {
 }
 
 void CTiingoCrypto::Load(const CSetTiingoCrypto& setTiingoCrypto) {
-	m_strSymbol = setTiingoCrypto.m_Ticker;
-	m_strName = setTiingoCrypto.m_Name;
-	m_strDescription = setTiingoCrypto.m_Description;
-	m_strBaseCurrency = setTiingoCrypto.m_BaseCurrency;
-	m_strQuoteCurrency = setTiingoCrypto.m_QuoteCurrency;
+	m_strSymbol = ToUTF8(setTiingoCrypto.m_Ticker);
+	m_strName = ToUTF8(setTiingoCrypto.m_Name);
+	m_strDescription = ToUTF8(setTiingoCrypto.m_Description);
+	m_strBaseCurrency = ToUTF8(setTiingoCrypto.m_BaseCurrency);
+	m_strQuoteCurrency = ToUTF8(setTiingoCrypto.m_QuoteCurrency);
 
-	LoadUpdateDate(setTiingoCrypto.m_UpdateDate.GetString());
+	LoadUpdateDate(ToUTF8(setTiingoCrypto.m_UpdateDate));
 }
 
 void CTiingoCrypto::Append(CSetTiingoCrypto& setTiingoCrypto) {
@@ -27,9 +27,9 @@ void CTiingoCrypto::Save(CSetTiingoCrypto& setTiingoCrypto) {
 		|| (m_strDescription.length() > 100)
 		|| (m_strBaseCurrency.length() > 20)
 		|| (m_strQuoteCurrency.length() > 20)) {
-		string s = _T("Tiingo Crypto ");
+		string s = "Tiingo Crypto ";
 		s += m_strSymbol;
-		s += _T(" ×Ö·û´®Ì«³¤");
+		s += " ×Ö·û´®Ì«³¤";
 		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strName = m_strName.substr(0, 99);

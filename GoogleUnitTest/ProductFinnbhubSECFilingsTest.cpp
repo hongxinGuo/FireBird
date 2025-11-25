@@ -39,7 +39,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubSECFilingsTest, TestInitialize) {
 		EXPECT_EQ(companySECFilings.GetIndex(), 0);
-		EXPECT_EQ(companySECFilings.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/filings?symbol="));
+		EXPECT_EQ(companySECFilings.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/filings?symbol=");
 	}
 
 	TEST_F(CFinnhubSECFilingsTest, TestCreatMessage) {
@@ -53,11 +53,11 @@ namespace FireBirdTest {
 	}
 
 	// 不足三个字符
-	Test_FinnhubWebData SECFilings102(3, _T("AAPL"), _T("{}"));
+	Test_FinnhubWebData SECFilings102(3, "AAPL", "{}");
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData SECFilings103(4, _T("AAPL"), _T("{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]"));
+	Test_FinnhubWebData SECFilings103(4, "AAPL", "{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]");
 	// 正确的数据
-	Test_FinnhubWebData SECFilings110(10, _T("AAPL"), _T("[{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]"));
+	Test_FinnhubWebData SECFilings110(10, "AAPL", "[{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]");
 
 	class ParseFinnhubSECFilingsTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -107,14 +107,14 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(pvSECFilings->size(), 1);
-			EXPECT_EQ(pvSECFilings->at(0)->m_strSymbol, _T("AAPL"));
-			EXPECT_EQ(pvSECFilings->at(0)->m_strAccessNumber, _T("0000320193-24-000056"));
+			EXPECT_EQ(pvSECFilings->at(0)->m_strSymbol, "AAPL");
+			EXPECT_EQ(pvSECFilings->at(0)->m_strAccessNumber, "0000320193-24-000056");
 			EXPECT_EQ(pvSECFilings->at(0)->m_iCIK, 320193);
-			EXPECT_EQ(pvSECFilings->at(0)->m_strForm, _T("4"));
+			EXPECT_EQ(pvSECFilings->at(0)->m_strForm, "4");
 			EXPECT_EQ(pvSECFilings->at(0)->m_iAcceptedDate, 1713205871 - gl_pWorldMarket->GetTimeZone());
 			EXPECT_EQ(pvSECFilings->at(0)->m_iFiledDate, 1713139200 - gl_pWorldMarket->GetTimeZone());
-			EXPECT_EQ(pvSECFilings->at(0)->m_strFilingURL, _T("https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html"));
-			EXPECT_EQ(pvSECFilings->at(0)->m_strReportURL, _T("https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml"));
+			EXPECT_EQ(pvSECFilings->at(0)->m_strFilingURL, "https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html");
+			EXPECT_EQ(pvSECFilings->at(0)->m_strReportURL, "https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml");
 			break;
 		default:
 			break;

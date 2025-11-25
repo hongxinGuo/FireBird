@@ -21,11 +21,11 @@ void CContainerTiingoCryptoSymbol::Reset() {
 bool CContainerTiingoCryptoSymbol::LoadDB() {
 	CSetTiingoCrypto setCryptoSymbol;
 
-	setCryptoSymbol.m_strSort = _T("[Ticker]");
+	setCryptoSymbol.m_strSort = "[Ticker]";
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(setCryptoSymbol.m_Ticker.GetString())) {
+		if (!IsSymbol(ToUTF8(setCryptoSymbol.m_Ticker))) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
 			pSymbol->Load(setCryptoSymbol);
 			Add(pSymbol);
@@ -45,12 +45,12 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 	if (IsUpdateProfileDB()) {
 		try {
 			CSetTiingoCrypto setWorldCrypto;
-			setWorldCrypto.m_strSort = _T("[Ticker]");
+			setWorldCrypto.m_strSort = "[Ticker]";
 			setWorldCrypto.Open();
 			setWorldCrypto.m_pDatabase->BeginTrans();
 			while (!setWorldCrypto.IsEOF()) {	//更新原有的代码集状态
-				if (IsSymbol(setWorldCrypto.m_Ticker.GetString())) {
-					const CTiingoCryptoPtr pCrypto = GetCrypto(setWorldCrypto.m_Ticker.GetString());
+				if (IsSymbol(ToUTF8(setWorldCrypto.m_Ticker))) {
+					const CTiingoCryptoPtr pCrypto = GetCrypto(ToUTF8(setWorldCrypto.m_Ticker));
 					ASSERT(pCrypto != nullptr);
 					if (pCrypto->IsUpdateProfileDB()) {
 						pCrypto->Update(setWorldCrypto);

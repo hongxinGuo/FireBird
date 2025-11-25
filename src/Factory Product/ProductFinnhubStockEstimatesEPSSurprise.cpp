@@ -11,7 +11,7 @@
 #include "WebData.h"
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/earnings?symbol=";
 }
 
 string CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
@@ -49,16 +49,16 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pEPSSurprise = make_shared<CEPSSurprise>();
-			s = jsonGetString(it, _T("symbol"));
+			s = jsonGetString(it, "symbol");
 			pEPSSurprise->m_strSymbol = s;
-			s = jsonGetString(it,_T("period"));
+			s = jsonGetString(it,"period");
 			pEPSSurprise->m_lDate = XferToYYYYMMDD(s);
-			pEPSSurprise->m_dEstimate = jsonGetDouble(it, _T("estimate"));
-			pEPSSurprise->m_dActual = jsonGetDouble(it, _T("actual"));
+			pEPSSurprise->m_dEstimate = jsonGetDouble(it, "estimate");
+			pEPSSurprise->m_dActual = jsonGetDouble(it, "actual");
 			pvEPSSurprise->push_back(pEPSSurprise);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub EPS Surprise ", e.what());
 		return pvEPSSurprise;
 	}
 	std::ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),

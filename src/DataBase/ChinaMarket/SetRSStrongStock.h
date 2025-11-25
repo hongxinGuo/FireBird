@@ -3,7 +3,7 @@
 
 class CSetRSStrongStock : public CVirtualRecordset {
 public:
-	CSetRSStrongStock(long lIndex, const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("selected_rs_"), CDatabase* pDatabase = nullptr);
+	CSetRSStrongStock(long lIndex, const CString& strSchema = "ChinaMarket", const CString& strTable = "selected_rs_", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -15,7 +15,7 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	CString m_Symbol{ _T("") };
+	CString m_Symbol{ "" };
 
 	// 重写
 	// 向导生成的虚函数重写

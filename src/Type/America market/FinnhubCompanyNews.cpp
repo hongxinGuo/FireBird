@@ -5,14 +5,14 @@
 CFinnhubCompanyNews::CFinnhubCompanyNews() {
 	m_llDateTime = 0;
 	m_iNewsID = 0;
-	m_strCategory = _T("");
-	m_strCompanySymbol = _T("");
-	m_strHeadLine = _T("");
-	m_strImage = _T("");
-	m_strRelatedSymbol = _T("");
-	m_strSource = _T("");
-	m_strSummary = _T("");
-	m_strURL = _T("");
+	m_strCategory = "";
+	m_strCompanySymbol = "";
+	m_strHeadLine = "";
+	m_strImage = "";
+	m_strRelatedSymbol = "";
+	m_strSource = "";
+	m_strSummary = "";
+	m_strURL = "";
 }
 
 void CFinnhubCompanyNews::Append(CSetCompanyNews& setCompanyNews) const {
@@ -41,14 +41,14 @@ void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) const {
 }
 
 void CFinnhubCompanyNews::Load(const CSetCompanyNews& setCompanyNews) {
-	m_strCompanySymbol = setCompanyNews.m_CompanySymbol;
-	m_strCategory = setCompanyNews.m_Category;
-	m_llDateTime = atoll(setCompanyNews.m_DateTime);
-	m_strHeadLine = setCompanyNews.m_HeadLine;
+	m_strCompanySymbol = ToUTF8(setCompanyNews.m_CompanySymbol);
+	m_strCategory = ToUTF8(setCompanyNews.m_Category);
+	m_llDateTime = _tstoll(setCompanyNews.m_DateTime);
+	m_strHeadLine = ToUTF8(setCompanyNews.m_HeadLine);
 	m_iNewsID = setCompanyNews.m_NewsID;
-	m_strImage = setCompanyNews.m_Image;
-	m_strRelatedSymbol = setCompanyNews.m_RelatedSymbol;
-	m_strSource = setCompanyNews.m_Source;
-	m_strSummary = setCompanyNews.m_Summary;
-	m_strURL = setCompanyNews.m_URL;
+	m_strImage = ToUTF8(setCompanyNews.m_Image);
+	m_strRelatedSymbol = ToUTF8(setCompanyNews.m_RelatedSymbol);
+	m_strSource = ToUTF8(setCompanyNews.m_Source);
+	m_strSummary = ToUTF8(setCompanyNews.m_Summary);
+	m_strURL = ToUTF8(setCompanyNews.m_URL);
 }

@@ -20,19 +20,19 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason);
 		break;
 	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Open"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Forex WebSocket Open");
 		break;
 	case ix::WebSocketMessageType::Close:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Close"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Forex WebSocket Close");
 		break;
 	case ix::WebSocketMessageType::Fragment:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Fragment"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Forex WebSocket Fragment");
 		break;
 	case ix::WebSocketMessageType::Ping:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Ping"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Forex WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Pong"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Forex WebSocket Pong");
 		break;
 	default: // error
 		break;
@@ -41,7 +41,7 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 
 CTiingoForexWebSocket::CTiingoForexWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_url = _T("wss://api.tiingo.com/fx");
+	m_url = "wss://api.tiingo.com/fx";
 }
 
 CTiingoForexWebSocket::~CTiingoForexWebSocket() {
@@ -95,7 +95,7 @@ void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
 	json jsonMessage;
-	jsonMessage["eventName"] = _T("subscribe");
+	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	for (auto str : vSymbol) {
@@ -103,8 +103,8 @@ string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 		vSymbol2.push_back(str);
 	}
 	jsonMessage["eventData"]["tickers"] = vSymbol2;
-	jsonMessage["eventData"]["tickers"].emplace_back(_T("gbpaud"));// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	jsonMessage["eventData"]["tickers"].emplace_back(_T("eurusd"));// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
+	jsonMessage["eventData"]["tickers"].emplace_back("gbpaud");// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
+	jsonMessage["eventData"]["tickers"].emplace_back("eurusd");// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 
 	return jsonMessage.dump();
 }
@@ -141,37 +141,37 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			string sString;
 			json::iterator it;
 			json js2, js3, js4;
-			sType = jsonGetString(js, _T("messageType"));
+			sType = jsonGetString(js, "messageType");
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
-				js2 = jsonGetChild(js, _T("data"));
+				js2 = jsonGetChild(js, "data");
 				try { // {"data":{"tickers": ["*", "uso", "msft", "tnk"] , "thresholdLevel" : "0"}, "messageType" : "I", "response" : {"code":200, "message" : "Success"}}
-					js3 = js2.at(_T("tickers"));
+					js3 = js2.at("tickers");
 					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
 						strSymbol = jsonGetString(it3);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
-				js3 = jsonGetChild(js, _T("response"));
-				m_iStatusCode = js3.at(_T("code"));
-				m_statusMessage = js3.at(_T("message"));
+				js3 = jsonGetChild(js, "response");
+				m_iStatusCode = js3.at("code");
+				m_statusMessage = js3.at("message");
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
-				js4 = jsonGetChild(js, _T("response"));
-				m_iStatusCode = js4.at(_T("code"));
-				m_statusMessage = js4.at(_T("message"));
+				js4 = jsonGetChild(js, "response");
+				m_iStatusCode = js4.at("code");
+				m_statusMessage = js4.at("message");
 				break;
 			case 'A': // new data
-				sService = jsonGetString(js, _T("service"));
-				if (sService != _T("fx")) return false; // 只有此项
+				sService = jsonGetString(js, "service");
+				if (sService != "fx") return false; // 只有此项
 				pForexData = make_shared<CTiingoForexSocket>();
-				js2 = jsonGetChild(js, _T("data"));
+				js2 = jsonGetChild(js, "data");
 				it = js2.begin();
 				sMessageType = it->get<string>(); // 必须是‘Q’
 				pForexData->m_chMessageType = sMessageType.at(0);
@@ -191,7 +191,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				break;
 			default:
 				// error
-				gl_systemMessage.PushErrorMessage(_T("Tiingo Forex WebSocket type Error"));
+				gl_systemMessage.PushErrorMessage("Tiingo Forex WebSocket type Error");
 				return false;
 			}
 		}
@@ -200,7 +200,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			return false;
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e.what());
+		ReportJSonErrorToSystemMessage("Tiingo Forex WebSocket ", e.what());
 		return false;
 	}
 

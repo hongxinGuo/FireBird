@@ -5,11 +5,11 @@
 class CMarketStatus final {
 public:
 	CMarketStatus() {
-		m_strExchange = _T("");
-		m_strHoliday = _T("");
+		m_strExchange = "";
+		m_strHoliday = "";
 		m_bOpen = false;
-		m_strSession = _T("");
-		m_strTimeZone = _T("");
+		m_strSession = "";
+		m_strTimeZone = "";
 		m_tt = 0;
 	}
 	~CMarketStatus() = default;

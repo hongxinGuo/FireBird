@@ -27,10 +27,10 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 
 	const size_t lSize = Size();
 	if (strStockSymbol.length() > 0) {
-		pSetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
+		pSetHistoryCandleBasic->m_strFilter = "[Symbol] = '";
 		pSetHistoryCandleBasic->m_strFilter += strStockSymbol.c_str();
-		pSetHistoryCandleBasic->m_strFilter += _T("'");
-		pSetHistoryCandleBasic->m_strSort = _T("[Date]");
+		pSetHistoryCandleBasic->m_strFilter += "'";
+		pSetHistoryCandleBasic->m_strSort = "[Date]";
 
 		if (pSetHistoryCandleBasic->Open()) {
 			long lLastDate = 0;
@@ -53,7 +53,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 			pSetHistoryCandleBasic->Close();
 		}
 	}
-	pSetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
+	pSetHistoryCandleBasic->m_strFilter = "[ID] = 1";
 	if (pSetHistoryCandleBasic->Open()) {
 		pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 		if (lSizeOfOldDayLine > 0) {// ÓÐ¾ÉÊý¾Ý
@@ -94,7 +94,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) const {
 	ASSERT(!m_vHistoryData.empty());
 
-	pSetHistoryCandleExtend->m_strFilter = _T("[ID] = 1");
+	pSetHistoryCandleExtend->m_strFilter = "[ID] = 1";
 	if (pSetHistoryCandleExtend->Open()) {
 		pSetHistoryCandleExtend->m_pDatabase->BeginTrans();
 		for (const auto& pData : m_vHistoryData) { pData->AppendExtendData(pSetHistoryCandleExtend); }

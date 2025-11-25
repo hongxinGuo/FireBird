@@ -11,10 +11,10 @@
 CSetNaicsIndustry::CSetNaicsIndustry(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
-	m_Naics = _T("");
-	m_NationalIndustry = _T("");
-	m_Sector = _T("");
-	m_SubSector = _T("");
+	m_Naics = "";
+	m_NationalIndustry = "";
+	m_Sector = "";
+	m_SubSector = "";
 	m_nFields = 5;
 }
 

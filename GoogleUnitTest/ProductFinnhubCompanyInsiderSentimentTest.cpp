@@ -38,7 +38,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestInitialize) {
 		EXPECT_EQ(companyInsiderSentiment.GetIndex(), 0);
-		EXPECT_EQ(companyInsiderSentiment.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol="));
+		EXPECT_EQ(companyInsiderSentiment.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
 	}
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
@@ -49,22 +49,20 @@ namespace FireBirdTest {
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket);
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_EQ(companyInsiderSentiment.CreateMessage(),
-		          (companyInsiderSentiment.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + _T("&from=1980-01-01&to=") + sCurrentDate));
+		          (companyInsiderSentiment.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateInsiderSentiment()) << "接收到的数处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderSentiment(true);
 	}
 
 	// 正确数据
-	Test_FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T("{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	Test_FinnhubWebData finnhubWebData142(2, "AAPL", "{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
 	// 缺乏 data项
-	Test_FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T(
-		                                      "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	Test_FinnhubWebData finnhubWebData143(3, "AAPL", "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
 	// 缺乏 Symbol项
-	Test_FinnhubWebData finnhubWebData144(4, _T("AAPL"), _T(
-		                                      "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	Test_FinnhubWebData finnhubWebData144(4, "AAPL", "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
 	// 空数据
-	Test_FinnhubWebData finnhubWebData145(5, _T("AAPL"), _T("{\"data\":[], \"symbol\":\"QNICF\"}"));
+	Test_FinnhubWebData finnhubWebData145(5, "AAPL", "{\"data\":[], \"symbol\":\"QNICF\"}");
 
 	class ProcessFinnhubInsiderSentimentTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -279,7 +277,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_strSymbol, _T("TSLA")) << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_strSymbol, "TSLA") << "数据按日期排列，此第一条排到了第二位";
 			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << "使用有效日期：每月的第一天，故而要加一";
 			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lChange, 5540);
 			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1)->m_mspr, 12.209097);

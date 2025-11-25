@@ -60,7 +60,7 @@ UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculating
 	}
 	else {
 		gl_systemConfiguration.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。
-		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
+		gl_systemMessage.PushInformationMessage("中止了重新计算日线相对强度的过程");
 	}
 	pMarket->SetCalculatingWeekLineRS(false); // 本线程顺利退出，处于非运行状态
 

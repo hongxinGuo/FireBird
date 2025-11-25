@@ -6,13 +6,13 @@ CSetRSStrongStock::CSetRSStrongStock(long lIndex, const CString& strSchema, cons
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
 	m_lIndex = lIndex;
-	m_Symbol = _T("");
+	m_Symbol = "";
 	m_nFields = 1;
 }
 
 CString CSetRSStrongStock::GetDefaultSQL() {
-	string s = _T("[");
-	s += m_Table;
+	string s = "[";
+	s += ToUTF8(m_Table);
 
 	ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
 	s += fmt::format("{:Ld}]", m_lIndex);

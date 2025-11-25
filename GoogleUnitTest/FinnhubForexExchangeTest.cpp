@@ -38,11 +38,11 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexExchangeTest, TestInitialize) {
 		EXPECT_EQ(forexExchange.GetIndex(), 0);
-		EXPECT_EQ(forexExchange.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/exchange?"));
+		EXPECT_EQ(forexExchange.GetInquiryFunction(), "https://finnhub.io/api/v1/forex/exchange?");
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestCreatMessage) {
-		EXPECT_EQ(forexExchange.CreateMessage(), _T("https://finnhub.io/api/v1/forex/exchange?"));
+		EXPECT_EQ(forexExchange.CreateMessage(), "https://finnhub.io/api/v1/forex/exchange?");
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestProcessWebData) {
@@ -57,21 +57,21 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 		const string str = gl_systemMessage.PopInformationMessage();
-		EXPECT_EQ(str, _T("Finnhub forex exchange updated"));
+		EXPECT_EQ(str, "Finnhub forex exchange updated");
 
 		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData72(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData72(2, "", "\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]");
 	// 格式不对
-	Test_FinnhubWebData finnhubWebData73(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData73(3, "", "[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]");
 	// 空数据
-	Test_FinnhubWebData finnhubWebData74(4, _T(""), _T("{}"));
+	Test_FinnhubWebData finnhubWebData74(4, "", "{}");
 	// 无权访问数据
-	Test_FinnhubWebData finnhubWebData75(5, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
+	Test_FinnhubWebData finnhubWebData75(5, "", "{\"error\":\"You don't have access to this resource.\"}");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData80(10, "", "[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]");
 
 	class ParseFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -119,8 +119,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 10:
-			EXPECT_EQ(m_pvExchange->at(0), _T("new exchange"));
-			EXPECT_EQ(m_pvExchange->at(1), _T("fxcm"));
+			EXPECT_EQ(m_pvExchange->at(0), "new exchange");
+			EXPECT_EQ(m_pvExchange->at(1), "fxcm");
 			EXPECT_EQ(m_pvExchange->size(), 8);
 			break;
 		default:
@@ -179,7 +179,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 12) << "加入了new exchange这个新的交易所";
 
-			EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.Delete(_T("new exchange"))); // 清除new exchange这个新加入的
+			EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.Delete("new exchange")); // 清除new exchange这个新加入的
 			break;
 		default:
 			break;

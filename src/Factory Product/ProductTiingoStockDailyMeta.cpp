@@ -17,16 +17,16 @@
 #include "WorldMarket.h"
 
 CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
 string CProductTiingoStockDailyMeta::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	m_strInquiringSymbol = pStock->GetSymbol();
 
-	m_strInquiry = m_strInquiryFunction + m_strInquiringSymbol + _T("?");
+	m_strInquiry = m_strInquiryFunction + m_strInquiringSymbol + "?";
 	return m_strInquiry;
 }
 
@@ -46,8 +46,8 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
 		}
 		else {
-			string str2 = _T("Tiingo stock daily meta not match: ");
-			str2 += pStock->GetSymbol() + _T("  ") + pStock2->GetSymbol();
+			string str2 = "Tiingo stock daily meta not match: ";
+			str2 += pStock->GetSymbol() + "  " + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str2);
 			gl_errorLogger->warn("{}", str2);
 		}
@@ -90,13 +90,13 @@ CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta
 		s1 = simdjsonGetStringView(doc, "description");
 		pTiingoStockDailyMeta->m_strDescription = s1;
 		s1 = simdjsonGetStringView(doc, "startDate", "1900-01-01"); // 如果没有日线开始日期（即没有日线数据），则设置为19000101
-		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+		sscanf_s(s1.c_str(), "%04d-%02d-%02d", &year, &month, &day);
 		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = year * 10000 + month * 100 + day;
 		s1 = simdjsonGetStringView(doc, "endDate", "1900-01-01"); // 如果没有日线结束日期（即没有日线数据），则设置为19000101
-		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+		sscanf_s(s1.c_str(), "%04d-%02d-%02d", &year, &month, &day);
 		pTiingoStockDailyMeta->m_lHistoryDayLineEndDate = year * 10000 + month * 100 + day;
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo ticker daily: "), error.what());
+		ReportJSonErrorToSystemMessage("Tiingo ticker daily: ", error.what());
 		pTiingoStockDailyMeta = nullptr;
 	}
 

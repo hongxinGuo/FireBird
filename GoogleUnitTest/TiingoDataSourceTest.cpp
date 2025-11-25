@@ -74,7 +74,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData1) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(_T("abcde")); // 无关紧要
+		pWebData->Test_SetBuffer_("abcde"); // 无关紧要
 		m_pTiingoDataSource->SetHTTPStatusCode(200); // 正常
 		auto pProduct = make_shared<CProductDummy>();
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
@@ -84,7 +84,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData2) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(_T("{\"detail\":\"You do not have permission to access the News API\"}")); // 无权申请
+		pWebData->Test_SetBuffer_("{\"detail\":\"You do not have permission to access the News API\"}"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // error
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 	}
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData3) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(_T("{\"detail\":\"Please supply a token\"}")); // 无权申请
+		pWebData->Test_SetBuffer_("{\"detail\":\"Please supply a token\"}"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 403 forbidden
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
@@ -108,7 +108,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_MISSING_API_KEY__);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo missing API key"));
+		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Tiingo missing API key");
 
 		// 恢复原状
 		//gl_systemMessage.PopErrorMessage();
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData4) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(_T("{\"detail\":\"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.\"}")); // 无权申请
+		pWebData->Test_SetBuffer_("{\"detail\":\"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.\"}"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
@@ -134,7 +134,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData5) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(_T("{\"detail\":\"Not handled\"}")); // 无权申请
+		pWebData->Test_SetBuffer_("{\"detail\":\"Not handled\"}"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
@@ -158,7 +158,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateCompanySymbol());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockProfile"));
+		EXPECT_STREQ(typeid(*p).name(), "class CProductTiingoStockProfile");
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 
 		// 恢复原状
@@ -173,7 +173,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateCryptoSymbol());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoCryptoSymbol"));
+		EXPECT_STREQ(typeid(*p).name(), "class CProductTiingoCryptoSymbol");
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 	}
 
@@ -186,7 +186,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateFundamentalDefinition());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoFundamentalDefinition"));
+		EXPECT_STREQ(typeid(*p).name(), "class CProductTiingoFundamentalDefinition");
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 	}
 
@@ -211,7 +211,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
 		CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
+		EXPECT_STREQ(typeid(*p).name(), "class CProductTiingoStockDayLine");
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateDayLine());
@@ -221,7 +221,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateDayLine());
 		//lStockIndex = gl_dataContainerFinnhubStock.GetOffset(tiingoSymbol2);
 		p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
+		EXPECT_STREQ(typeid(*p).name(), "class CProductTiingoStockDayLine");
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
 
@@ -231,7 +231,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoStockDayLineUpdated(), 0);
 		const string str = gl_systemMessage.PopInformationMessage();
-		EXPECT_EQ(str, _T("0 Tiingo stock dayLine Updated"));
+		EXPECT_EQ(str, "0 Tiingo stock dayLine Updated");
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
@@ -270,7 +270,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
 		CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoFinancialState"));
+		EXPECT_STREQ(typeid(*p).name(), "class CProductTiingoFinancialState");
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsUpdateFinancialState()) << "待数据处理后方重置此标识";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateFinancialState());
@@ -280,7 +280,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateFinancialState());
 		//lStockIndex = gl_dataContainerFinnhubStock.GetOffset(tiingoSymbol2);
 		p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoFinancialState"));
+		EXPECT_STREQ(typeid(*p).name(), "class CProductTiingoFinancialState");
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateFinancialState()) << "待数据处理后方重置此标识";
 
@@ -289,7 +289,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateFinancialState()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateFinancialState()) << "股票都查询完了";
 		const string str = gl_systemMessage.PopInformationMessage();
-		EXPECT_EQ(str, _T("Tiingo financial statements Updated"));
+		EXPECT_EQ(str, "Tiingo financial statements Updated");
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {

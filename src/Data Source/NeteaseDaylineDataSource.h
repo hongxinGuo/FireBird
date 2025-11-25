@@ -23,10 +23,10 @@ public:
 
 	void SetDownLoadingStockCode(const string& strStockCode);
 	string GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
-	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
+	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = ""; }
 
 protected:
-	string m_strDownLoadingStockCode{ _T("") };
+	string m_strDownLoadingStockCode{ "" };
 };
 
 using CNeteaseDayLineDataSourcePtr = shared_ptr<CNeteaseDayLineDataSource>;

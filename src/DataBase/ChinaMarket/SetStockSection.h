@@ -5,7 +5,7 @@
 
 class CSetStockSection : public CVirtualRecordset {
 public:
-	CSetStockSection(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("Stock_Code_Section"), CDatabase* pDatabase = nullptr);
+	CSetStockSection(const CString& strSchema = "ChinaMarket", const CString& strTable = "Stock_Code_Section", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -21,7 +21,7 @@ public:
 	BOOL m_Active{ false };
 	int m_Market{ 0 };
 	long m_IndexNumber{ 0 };
-	CString m_Comment{ _T("") };
+	CString m_Comment{ "" };
 	// 重写
 	// 向导生成的虚函数重写
 public:

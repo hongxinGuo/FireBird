@@ -24,7 +24,7 @@ string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbo
 }
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +33,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoStockDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ASSERT(pStock->IsActive()); // 活跃股票
@@ -47,7 +47,7 @@ string CProductTiingoStockDayLine::CreateMessage() {
 }
 
 void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 
@@ -119,8 +119,8 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	if (!IsValidData(pWebData)) return pvDayLine;
 
 	try {
-		s = js.at(_T("detail")); // 是否有报错信息
-		string strMessage = _T("Tiingo stock dayLine ");
+		s = js.at("detail"); // 是否有报错信息
+		string strMessage = "Tiingo stock dayLine ";
 		strMessage += s;
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
@@ -131,22 +131,22 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			CTiingoStock stock;
 			auto pDayLine = make_shared<CTiingoDayLine>();
-			//pDayLine->SetExchange(_T("US")); // 所有的Tiingo证券皆为美国市场。
-			s = jsonGetString(it, _T("date"));
+			//pDayLine->SetExchange("US"); // 所有的Tiingo证券皆为美国市场。
+			s = jsonGetString(it, "date");
 			long lTemp = XferToYYYYMMDD(s);
 			pDayLine->SetDate(lTemp);
-			double dTemp = jsonGetDouble(it,_T("close"));
+			double dTemp = jsonGetDouble(it,"close");
 			pDayLine->SetClose(dTemp * stock.GetRatio());
-			dTemp = jsonGetDouble(it,_T("high"));
+			dTemp = jsonGetDouble(it,"high");
 			pDayLine->SetHigh(dTemp * stock.GetRatio());
-			dTemp = jsonGetDouble(it, _T("low"));
+			dTemp = jsonGetDouble(it, "low");
 			pDayLine->SetLow(dTemp * stock.GetRatio());
-			dTemp = jsonGetDouble(it, _T("open"));
+			dTemp = jsonGetDouble(it, "open");
 			pDayLine->SetOpen(dTemp * stock.GetRatio());
-			lTemp = jsonGetLong(it, _T("volume"));
-			dTemp = jsonGetDouble(it, _T("divCash"));
+			lTemp = jsonGetLong(it, "volume");
+			dTemp = jsonGetDouble(it, "divCash");
 			pDayLine->SetDividend(dTemp);
-			dTemp = jsonGetDouble(it, _T("splitFactor"));
+			dTemp = jsonGetDouble(it, "splitFactor");
 			pDayLine->SetSplitFactor(dTemp);
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
@@ -154,7 +154,7 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	} catch (json::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
-		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());
+		ReportJSonErrorToSystemMessage("Tiingo Stock DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
 	std::ranges::sort(*pvDayLine, [](const CTiingoDayLinePtr& pData1, const CTiingoDayLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); }); // 以日期早晚顺序排列。

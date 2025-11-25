@@ -30,12 +30,12 @@
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
+		TRACE("ChinaMarket市场变量只允许存在一个实例\n");
 	}
-	m_strMarketId = _T("SS");
+	m_strMarketId = "SS";
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
 	ASSERT(m_exchange != nullptr);
-	m_strLocalMarketTimeZone = _T("Asia/Shanghai");
+	m_strLocalMarketTimeZone = "Asia/Shanghai";
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
@@ -61,7 +61,7 @@ CChinaMarket::CChinaMarket() {
 CChinaMarket::~CChinaMarket() {
 	if (gl_pCurrentStock == nullptr) {
 		if (gl_systemConfiguration.GetCurrentStock().length() > 0) {
-			gl_systemConfiguration.SetCurrentStock(_T(""));
+			gl_systemConfiguration.SetCurrentStock("");
 			gl_systemConfiguration.SetUpdateDB(true);
 		}
 	}
@@ -73,7 +73,7 @@ CChinaMarket::~CChinaMarket() {
 
 void CChinaMarket::ResetMarket() {
 	m_fResettingMarket = true;
-	string s = _T("重置中国股市于北京标准时间：") + GetStringOfMarketTime();
+	string s = "重置中国股市于北京标准时间：" + GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(s);
 	gl_ProcessChinaMarketRTData.acquire();
 	while (gl_ThreadStatus.IsSavingThreadRunning()) { Sleep(1); }
@@ -88,7 +88,7 @@ void CChinaMarket::ResetMarket() {
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
 
-	if (gl_systemConfiguration.GetCurrentStock() != _T("")) {
+	if (gl_systemConfiguration.GetCurrentStock() != "") {
 		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__);
 	}
 
@@ -283,7 +283,7 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 		const auto lMax = gl_dataContainerChinaStock.Size() > 12000 ? gl_dataContainerChinaStock.Size() * 2 : 24000;
 		if (m_llRTDataReceived > lMax) {
 			SetSystemReady(true);
-			gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
+			gl_systemMessage.PushInformationMessage("中国股票市场初始化完毕");
 		}
 	}
 	if (!IsSystemReady()) AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, GetNextSecond(lCurrentTime));
@@ -384,7 +384,7 @@ void CChinaMarket::CreateStock(const string& strStockCode, const string& strStoc
 	pStock->SetNeedProcessRTData(fProcessRTData);
 	gl_dataContainerChinaStock.Add(pStock);
 	ASSERT(pStock->IsUpdateDayLine());
-	string str = _T("china Market生成新代码");
+	string str = "china Market生成新代码";
 	str += pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 }
@@ -484,8 +484,8 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const string& str) con
 	const string strNetease = str.substr(0, 7);
 	string strStockCode = XferNeteaseToStandard(strNetease);
 	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
-		string strReport = _T("网易日线查询股票代码错误：");
-		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.c_str());
+		string strReport = "网易日线查询股票代码错误：";
+		TRACE("网易日线查询股票代码错误：%s\n", strStockCode.c_str());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
 		return false;
@@ -512,7 +512,7 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 }
 
 void CChinaMarket::TaskSetCurrentStock() {
-	if (gl_systemConfiguration.GetCurrentStock() != _T("")) { // 当前有选择股票
+	if (gl_systemConfiguration.GetCurrentStock() != "") { // 当前有选择股票
 		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock())) {
 			auto pStock = gl_dataContainerChinaStock.GetStock(gl_systemConfiguration.GetCurrentStock());
 			pStock->SetSelected(true);
@@ -673,7 +673,7 @@ void CChinaMarket::TaskUpdateTempRTDB(long lCurrentTime) {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("update temp RT data\n");
 			gl_ProcessChinaMarketRTData.acquire();
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("update temp RT data"));
+			gl_systemMessage.SetChinaMarketSavingFunction("update temp RT data");
 			gl_dataContainerChinaStock.UpdateTempRTDB();
 			gl_ProcessChinaMarketRTData.release();
 			gl_UpdateChinaMarketDB.release();
@@ -744,10 +744,10 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("choice10RS1\n");
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("choice 10 RS1"));
-			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
+			gl_systemMessage.SetChinaMarketSavingFunction("choice 10 RS1");
+			gl_systemMessage.PushInformationMessage("开始计算10日RS1\n");// 添加一个注释
 			if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
-				gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
+				gl_systemMessage.PushInformationMessage("10日RS1计算完毕\n");
 				this->SetUpdatedDateFor10DaysRS1(this->GetMarketDate());
 				this->SetUpdateOptionDB(true); // 更新选项数据库
 			}
@@ -765,10 +765,10 @@ bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("choice10RS\n");
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("choice 10 RS"));
-			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
+			gl_systemMessage.SetChinaMarketSavingFunction("choice 10 RS");
+			gl_systemMessage.PushInformationMessage("开始计算10日RS2\n");// 添加一个注释
 			if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
-				gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
+				gl_systemMessage.PushInformationMessage("10日RS2计算完毕\n");
 				this->SetUpdatedDateFor10DaysRS2(this->GetMarketDate());
 				this->SetUpdateOptionDB(true); // 更新选项数据库
 			}
@@ -795,7 +795,7 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("Process today stock\n");
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("process today stock"));
+			gl_systemMessage.SetChinaMarketSavingFunction("process today stock");
 			this->ProcessTodayStock();
 			TRACE("Processed today stock\n");
 			gl_UpdateChinaMarketDB.release();
@@ -822,7 +822,7 @@ void CChinaMarket::ProcessTodayStock() {
 			SetUpdateOptionDB(true); // 更新状态
 		}
 	}
-	string s = ConvertDateToChineseTimeStampString(lDate) + _T("的实时数据处理完毕");
+	string s = ConvertDateToChineseTimeStampString(lDate) + "的实时数据处理完毕";
 	gl_systemMessage.PushInformationMessage(s);
 }
 
@@ -926,7 +926,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("chinamarket update stock profile\n");
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("update stock profile"));
+			gl_systemMessage.SetChinaMarketSavingFunction("update stock profile");
 			gl_dataContainerChinaStock.UpdateStockProfileDB();
 			TRACE("chinamarket updated stock profile\n");
 			gl_UpdateChinaMarketDB.release();
@@ -941,7 +941,7 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 
 	gl_runtime.thread_executor()->post([this] {
 		gl_UpdateChinaMarketDB.acquire();
-		gl_systemMessage.SetChinaMarketSavingFunction(_T("update option"));
+		gl_systemMessage.SetChinaMarketSavingFunction("update option");
 		this->UpdateOptionDB();
 		gl_UpdateChinaMarketDB.release();
 	});
@@ -954,7 +954,7 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("update chosen stock\n");
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("update chose stock"));
+			gl_systemMessage.SetChinaMarketSavingFunction("update chose stock");
 			this->AppendChosenStockDB();
 			TRACE("updated chosen stock\n");
 			gl_UpdateChinaMarketDB.release();
@@ -969,7 +969,7 @@ bool CChinaMarket::TaskUpdateStockSection() {
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("update stockSection\n");
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("update stockSection"));
+			gl_systemMessage.SetChinaMarketSavingFunction("update stockSection");
 			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
 			TRACE("updated stockSection\n");
 			gl_UpdateChinaMarketDB.release();
@@ -987,7 +987,7 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineExtendInfo.IsEOF()) {
 		setDayLineExtendInfo.Edit();
-		string s = setDayLineExtendInfo.m_Symbol.GetString();
+		string s = ToUTF8(setDayLineExtendInfo.m_Symbol);
 		setDayLineExtendInfo.m_Symbol = XferSinaToStandard(s).c_str();
 		setDayLineExtendInfo.Update();
 		setDayLineExtendInfo.MoveNext();
@@ -1032,7 +1032,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	}
 	const auto pDayLineData = dataChinaDayLine.GetContainer();
 
-	gl_systemMessage.PushInformationMessage(_T("开始生成今日周线"));
+	gl_systemMessage.PushInformationMessage("开始生成今日周线");
 
 	CreateStockCodeSet(setDayLineStockCode, dataChinaDayLine.GetContainer());
 
@@ -1057,13 +1057,13 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	// 清除之前的周线数据
 	DeleteWeekLine(lCurrentMonday);
 	// 存储周线数据值周线数据表
-	dataChinaWeekLine.SaveDB(_T(""));
+	dataChinaWeekLine.SaveDB("");
 	// 清除当前周的数据
 	DeleteCurrentWeekWeekLine();
 	// 存储当前周数据于当前周数据表
 	dataChinaWeekLine.SaveCurrentWeekLine();
 
-	gl_systemMessage.PushInformationMessage(_T("生成今日周线任务完成"));
+	gl_systemMessage.PushInformationMessage("生成今日周线任务完成");
 
 	return true;
 }
@@ -1092,11 +1092,11 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 
 		string sDate = fmt::format("[Date] = {:08Ld}", lCurrentMonday);
 		setWeekLineBasicInfo.m_strFilter = sDate.c_str();
-		setWeekLineBasicInfo.m_strSort = _T("[Symbol]");
+		setWeekLineBasicInfo.m_strSort = "[Symbol]";
 		setWeekLineBasicInfo.Open();
 
 		setWeekLineExtendInfo.m_strFilter = sDate.c_str();
-		setWeekLineExtendInfo.m_strSort = _T("[Symbol]");
+		setWeekLineExtendInfo.m_strSort = "[Symbol]";
 		setWeekLineExtendInfo.Open();
 
 		while (!setWeekLineBasicInfo.IsEOF()) {
@@ -1133,20 +1133,20 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
 	string sDate = fmt::format("{:08Ld}", lDate);
-	setDayLineBasicInfo.m_strSort = _T("[Symbol]");
-	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
+	setDayLineBasicInfo.m_strSort = "[Symbol]";
+	setDayLineBasicInfo.m_strFilter = "[Date] =";
 	setDayLineBasicInfo.m_strFilter += sDate.c_str();
 	setDayLineBasicInfo.Open();
 	if (setDayLineBasicInfo.IsEOF()) {
 		// 数据集为空，表明此日没有交易
 		setDayLineBasicInfo.Close();
 		string str = sDate;
-		str += _T("日数据集为空，无需处理周线数据");
+		str += "日数据集为空，无需处理周线数据";
 		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
 		return false;
 	}
-	setDayLineExtendInfo.m_strSort = _T("[Symbol]");
-	setDayLineExtendInfo.m_strFilter = _T("[Date] =");
+	setDayLineExtendInfo.m_strSort = "[Symbol]";
+	setDayLineExtendInfo.m_strFilter = "[Date] =";
 	setDayLineExtendInfo.m_strFilter += sDate.c_str();
 	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
@@ -1154,10 +1154,10 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 	while (!setDayLineBasicInfo.IsEOF()) {
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->LoadBasicData(&setDayLineBasicInfo);
-		while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) {
+		while (!setDayLineExtendInfo.IsEOF() && (setDayLineExtendInfo.m_Symbol.Compare(setDayLineBasicInfo.m_Symbol) < 0)) {
 			setDayLineExtendInfo.MoveNext();
 		}
-		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
+		if (!setDayLineExtendInfo.IsEOF() && (setDayLineExtendInfo.m_Symbol.Compare( setDayLineBasicInfo.m_Symbol) == 0)) {
 			pDayLine->LoadExtendData(&setDayLineExtendInfo);
 		}
 		dataChinaDayLine.Add(pDayLine);
@@ -1326,7 +1326,7 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 
 	_ltoa_s(lDate, buffer, 10);
 	const string strDate = buffer;
-	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
+	setDayLineBasicInfo.m_strFilter = "[Date] =";
 	setDayLineBasicInfo.m_strFilter += strDate.c_str();
 	setDayLineBasicInfo.Open();
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -1344,7 +1344,7 @@ void CChinaMarket::DeleteDayLineExtendInfo(long lDate) const {
 
 	_ltoa_s(lDate, buffer, 10);
 	const string strDate = buffer;
-	setDayLineExtendInfo.m_strFilter = _T("[Date] =");
+	setDayLineExtendInfo.m_strFilter = "[Date] =";
 	setDayLineExtendInfo.m_strFilter += strDate.c_str();
 	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
@@ -1383,12 +1383,12 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDate, long lCurrentTime) {
 void CChinaMarket::LoadTempRTData(long lTheDate) {
 	CSetDayLineTodaySaved setDayLineTemp;
 	// 读取今日生成的数据于DayLineToday表中。
-	setDayLineTemp.m_strSort = _T("[ID]");
+	setDayLineTemp.m_strSort = "[ID]";
 	setDayLineTemp.Open();
 	if (!setDayLineTemp.IsEOF()) {
 		while (!setDayLineTemp.IsEOF()) {
-			if (setDayLineTemp.m_Date == lTheDate && gl_dataContainerChinaStock.IsSymbol(setDayLineTemp.m_Symbol.GetString())) {// 如果是当天的行情，则载入，否则放弃
-				const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setDayLineTemp.m_Symbol.GetString());
+			if (setDayLineTemp.m_Date == lTheDate && gl_dataContainerChinaStock.IsSymbol(ToUTF8(setDayLineTemp.m_Symbol))) {// 如果是当天的行情，则载入，否则放弃
+				const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setDayLineTemp.m_Symbol));
 				ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
 				pStock->LoadTodaySavedInfo(&setDayLineTemp);
 			}
@@ -1407,8 +1407,8 @@ bool CChinaMarket::Load10DaysRSStrong1StockSet() {
 	m_v10RSStrong1Stock.clear();
 	setRSStrong1.Open();
 	while (!setRSStrong1.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(setRSStrong1.m_Symbol.GetString())) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setRSStrong1.m_Symbol.GetString());
+		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setRSStrong1.m_Symbol))) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setRSStrong1.m_Symbol));
 			m_v10RSStrong1Stock.push_back(pStock);
 		}
 		setRSStrong1.MoveNext();
@@ -1424,8 +1424,8 @@ bool CChinaMarket::Load10DaysRSStrong2StockSet() {
 	m_v10RSStrong2Stock.clear();
 	setRSStrong2.Open();
 	while (!setRSStrong2.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(setRSStrong2.m_Symbol.GetString())) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setRSStrong2.m_Symbol.GetString());
+		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setRSStrong2.m_Symbol))) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setRSStrong2.m_Symbol));
 			m_v10RSStrong2Stock.push_back(pStock);
 		}
 		setRSStrong2.MoveNext();
@@ -1449,10 +1449,10 @@ bool CChinaMarket::LoadCalculatingRSOption() {
 		m_aRSStrongOption.at(setRSOption.m_Index).m_lStrongDayLength[1] = setRSOption.m_StrongDayLengthSecond;
 		m_aRSStrongOption.at(setRSOption.m_Index).m_lStrongDayLength[2] = setRSOption.m_StrongDayLengthThird;
 		m_aRSStrongOption.at(setRSOption.m_Index).m_lStrongDayLength[3] = setRSOption.m_StrongDayLengthFourth;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[0] = atof(setRSOption.m_RSStrongFirst);
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[1] = atof(setRSOption.m_RSStrongSecond);
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[2] = atof(setRSOption.m_RSStrongThird);
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[3] = atof(setRSOption.m_RSStrongFourth);
+		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[0] = _tstof(setRSOption.m_RSStrongFirst);
+		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[1] = _tstof(setRSOption.m_RSStrongSecond);
+		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[2] = _tstof(setRSOption.m_RSStrongThird);
+		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[3] = _tstof(setRSOption.m_RSStrongFourth);
 		setRSOption.MoveNext();
 	}
 	setRSOption.Close();
@@ -1471,7 +1471,7 @@ void CChinaMarket::SaveCalculatingRSOption() const {
 	setRSOption.m_pDatabase->CommitTrans();
 	setRSOption.Close();
 
-	setRSOption.m_strFilter = _T("[ID] = 1");
+	setRSOption.m_strFilter = "[ID] = 1";
 	setRSOption.Open();
 	setRSOption.m_pDatabase->BeginTrans();
 	for (int i = 0; i < 10; i++) {
@@ -1507,8 +1507,8 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
 	setRSStrongStock.Open();
 	while (!setRSStrongStock.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(setRSStrongStock.m_Symbol.GetString())) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setRSStrongStock.m_Symbol.GetString());
+		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setRSStrongStock.m_Symbol))) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setRSStrongStock.m_Symbol));
 			m_avChosenStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock);
 			// 10日RS股票集起始位置为第10个。
 		}
@@ -1660,8 +1660,8 @@ void CChinaMarket::LoadChosenStockDB() {
 	// 装入股票代码数据库
 	while (!setChinaChosenStock.IsEOF()) {
 		CChinaStockPtr pStock = nullptr;
-		if (gl_dataContainerChinaStock.IsSymbol(setChinaChosenStock.m_Symbol.GetString())) {
-			pStock = gl_dataContainerChinaStock.GetStock(setChinaChosenStock.m_Symbol.GetString());
+		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setChinaChosenStock.m_Symbol))) {
+			pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setChinaChosenStock.m_Symbol));
 			if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 				m_avChosenStock.at(0).push_back(pStock);
 			}

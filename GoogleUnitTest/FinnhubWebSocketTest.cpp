@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubWebSocketTest, TestGetURL) {
-		EXPECT_EQ(m_finnhubWebSocket.GetURL(), _T("wss://ws.finnhub.io"));
+		EXPECT_EQ(m_finnhubWebSocket.GetURL(), "wss://ws.finnhub.io");
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestSetSubscriptionId) {
@@ -62,30 +62,30 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestCreateFinnhubWebSocketString) {
-		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("AAPL")), _T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
-		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("BINANCE:BTCUSDT")), _T("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"));
-		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("IC MARKETS:1")), _T("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"));
+		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString("AAPL"), "{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}");
+		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString("BINANCE:BTCUSDT"), "{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
+		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString("IC MARKETS:1"), "{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}");
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestAddSymbol) {
-		const vectorString vSymbol{ _T("a"), _T("b"), _T("c"), _T("d"), _T("e") };
+		const vectorString vSymbol{ "a", "b", "c", "d", "e" };
 
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 		m_finnhubWebSocket.AppendSymbol(vSymbol);
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 5);
-		EXPECT_TRUE(m_finnhubWebSocket.IsSymbol(_T("a")));
-		EXPECT_TRUE(m_finnhubWebSocket.IsSymbol(_T("c")));
-		EXPECT_TRUE(m_finnhubWebSocket.IsSymbol(_T("e")));
+		EXPECT_TRUE(m_finnhubWebSocket.IsSymbol("a"));
+		EXPECT_TRUE(m_finnhubWebSocket.IsSymbol("c"));
+		EXPECT_TRUE(m_finnhubWebSocket.IsSymbol("e"));
 
-		EXPECT_FALSE(m_finnhubWebSocket.AddSymbol(_T("a"))) << "a已在符号集中";
-		EXPECT_TRUE(m_finnhubWebSocket.AddSymbol(_T("f"))) << "f不在符号集中";
+		EXPECT_FALSE(m_finnhubWebSocket.AddSymbol("a")) << "a已在符号集中";
+		EXPECT_TRUE(m_finnhubWebSocket.AddSymbol("f")) << "f不在符号集中";
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 6);
 
-		EXPECT_FALSE(m_finnhubWebSocket.DeleteSymbol(_T("g"))) << "g不在符号集中";
-		EXPECT_TRUE(m_finnhubWebSocket.DeleteSymbol(_T("a"))) << "a在符号集中";
-		EXPECT_FALSE(m_finnhubWebSocket.IsSymbol(_T("a"))) << "a已被删除";
-		EXPECT_TRUE(m_finnhubWebSocket.DeleteSymbol(_T("c"))) << "c在符号集中";
-		EXPECT_FALSE(m_finnhubWebSocket.IsSymbol(_T("c"))) << "c已被删除";
+		EXPECT_FALSE(m_finnhubWebSocket.DeleteSymbol("g")) << "g不在符号集中";
+		EXPECT_TRUE(m_finnhubWebSocket.DeleteSymbol("a")) << "a在符号集中";
+		EXPECT_FALSE(m_finnhubWebSocket.IsSymbol("a")) << "a已被删除";
+		EXPECT_TRUE(m_finnhubWebSocket.DeleteSymbol("c")) << "c在符号集中";
+		EXPECT_FALSE(m_finnhubWebSocket.IsSymbol("c")) << "c已被删除";
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 4);
 
 		m_finnhubWebSocket.ClearSymbol();

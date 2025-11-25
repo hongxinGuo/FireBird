@@ -2,7 +2,7 @@
 #include"FinnhubStockBasicFinancial.h"
 
 CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
-	m_symbol = _T("");
+	m_symbol = "";
 	m_10DayAverageTradingVolume = 0.0;
 	m_52WeekHigh = 0.0;
 	m_52WeekHighDate = 19800101;
@@ -154,7 +154,7 @@ CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
 void CFinnhubStockBasicFinancial::LoadMetric(const CSetFinnhubStockBasicFinancialMetric& setMetric) {
 	ASSERT(setMetric.IsOpen());
 
-	m_symbol = setMetric.m_symbol;
+	m_symbol = ToUTF8(setMetric.m_symbol);
 
 	m_10DayAverageTradingVolume = setMetric.m_10DayAverageTradingVolume;
 	m_13WeekPriceReturnDaily = setMetric.m_13WeekPriceReturnDaily;
@@ -310,14 +310,14 @@ void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinanci
 	CItemOfBasicFinancialSeasonData data;
 
 	ASSERT(setBeSaved.IsOpen());
-	setQuarterly.m_strFilter = _T("[Symbol] = '");
+	setQuarterly.m_strFilter = "[Symbol] = '";
 	setQuarterly.m_strFilter += m_symbol.c_str();
-	setQuarterly.m_strFilter += _T("'");
+	setQuarterly.m_strFilter += "'";
 	setQuarterly.Open();
 	while (!setQuarterly.IsEOF()) {
-		data.m_symbol = setQuarterly.m_symbol;
+		data.m_symbol = ToUTF8(setQuarterly.m_symbol);
 		data.m_date = setQuarterly.m_date;
-		data.m_type = setQuarterly.m_type;
+		data.m_type = ToUTF8(setQuarterly.m_type);
 		data.m_value = setQuarterly.m_value;
 		vData.push_back(data);
 		setQuarterly.MoveNext();
@@ -333,14 +333,14 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 	CItemOfBasicFinancialSeasonData data;
 
 	ASSERT(setBeSaved.IsOpen());
-	setAnnual.m_strFilter = _T("[Symbol] = '");
+	setAnnual.m_strFilter = "[Symbol] = '";
 	setAnnual.m_strFilter += m_symbol.c_str();
-	setAnnual.m_strFilter += _T("'");
+	setAnnual.m_strFilter += "'";
 	setAnnual.Open();
 	while (!setAnnual.IsEOF()) {
-		data.m_symbol = setAnnual.m_symbol;
+		data.m_symbol = ToUTF8(setAnnual.m_symbol);
 		data.m_date = setAnnual.m_date;
-		data.m_type = setAnnual.m_type;
+		data.m_type = ToUTF8(setAnnual.m_type);
 		data.m_value = setAnnual.m_value;
 		vData.push_back(data);
 		setAnnual.MoveNext();
@@ -351,25 +351,25 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 }
 
 void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
-	SaveQuarterData(SetQuarterData, m_quarter.m_cashRatio, _T("cashRatio"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_currentRatio, _T("currentRatio"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_ebitPerShare, _T("ebitPerShare"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_eps, _T("eps"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_grossMargin, _T("grossMargin"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_netMargin, _T("netMargin"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_operatingMargin, _T("operatingMargin"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_pretaxMargin, _T("pretaxMargin"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_salesPerShare, _T("salesPerShare"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_sgaToSale, _T("sgaToSale"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_totalDebtToEquity, _T("totalDebtToEquity"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"), vDBData);
-	SaveQuarterData(SetQuarterData, m_quarter.m_totalRatio, _T("totalRatio"), vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_cashRatio, "cashRatio", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_currentRatio, "currentRatio", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_ebitPerShare, "ebitPerShare", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_eps, "eps", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_grossMargin, "grossMargin", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_longtermDebtTotalAsset, "longtermDebtTotalAsset", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_longtermDebtTotalCapital, "longtermDebtTotalCapital", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_longtermDebtTotalEquity, "longtermDebtTotalEquity", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_netDebtToTotalCapital, "netDebtToTotalCapital", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_netDebtToTotalEquity, "netDebtToTotalEquity", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_netMargin, "netMargin", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_operatingMargin, "operatingMargin", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_pretaxMargin, "pretaxMargin", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_salesPerShare, "salesPerShare", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_sgaToSale, "sgaToSale", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_totalDebtToEquity, "totalDebtToEquity", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_totalDebtToTotalAsset, "totalDebtToTotalAsset", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_totalDebtToTotalCapital, "totalDebtToTotalCapital", vDBData);
+	SaveQuarterData(SetQuarterData, m_quarter.m_totalRatio, "totalRatio", vDBData);
 }
 
 void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const string& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
@@ -391,25 +391,25 @@ void CFinnhubStockBasicFinancial::LoadQuarterData(CSetFinnhubStockBasicFinancial
 }
 
 void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
-	SaveAnnualData(setAnnualData, m_annual.m_cashRatio, _T("cashRatio"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_currentRatio, _T("currentRatio"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_ebitPerShare, _T("ebitPerShare"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_eps, _T("eps"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_grossMargin, _T("grossMargin"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_netMargin, _T("netMargin"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_operatingMargin, _T("operatingMargin"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_pretaxMargin, _T("pretaxMargin"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_salesPerShare, _T("salesPerShare"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_sgaToSale, _T("sgaToSale"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_totalDebtToEquity, _T("totalDebtToEquity"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"), vDBData);
-	SaveAnnualData(setAnnualData, m_annual.m_totalRatio, _T("totalRatio"), vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_cashRatio, "cashRatio", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_currentRatio, "currentRatio", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_ebitPerShare, "ebitPerShare", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_eps, "eps", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_grossMargin, "grossMargin", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_longtermDebtTotalAsset, "longtermDebtTotalAsset", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_longtermDebtTotalCapital, "longtermDebtTotalCapital", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_longtermDebtTotalEquity, "longtermDebtTotalEquity", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_netDebtToTotalCapital, "netDebtToTotalCapital", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_netDebtToTotalEquity, "netDebtToTotalEquity", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_netMargin, "netMargin", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_operatingMargin, "operatingMargin", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_pretaxMargin, "pretaxMargin", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_salesPerShare, "salesPerShare", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_sgaToSale, "sgaToSale", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_totalDebtToEquity, "totalDebtToEquity", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_totalDebtToTotalAsset, "totalDebtToTotalAsset", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_totalDebtToTotalCapital, "totalDebtToTotalCapital", vDBData);
+	SaveAnnualData(setAnnualData, m_annual.m_totalRatio, "totalRatio", vDBData);
 }
 
 void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const string& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {

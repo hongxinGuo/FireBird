@@ -37,14 +37,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestInitialize) {
 		EXPECT_EQ(companyInsiderTransaction.GetIndex(), 0);
-		EXPECT_EQ(companyInsiderTransaction.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol="));
+		EXPECT_EQ(companyInsiderTransaction.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
 	}
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage1) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderTransaction(true);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
 		companyInsiderTransaction.SetIndex(1);
-		EXPECT_EQ(companyInsiderTransaction.CreateMessage(), (companyInsiderTransaction.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + _T("&from=19800101"))) << "默认情况下日期为19800101";
+		EXPECT_EQ(companyInsiderTransaction.CreateMessage(), (companyInsiderTransaction.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&from=19800101")) << "默认情况下日期为19800101";
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderTransaction(true);
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetInsiderTransactionUpdateDate(20200101);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
 		companyInsiderTransaction.SetIndex(1);
-		EXPECT_TRUE(companyInsiderTransaction.CreateMessage() == companyInsiderTransaction.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + _T("&from=20200101"));
+		EXPECT_TRUE(companyInsiderTransaction.CreateMessage() == companyInsiderTransaction.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&from=20200101");
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderTransaction(true);
@@ -65,7 +65,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestUpdateSystemStatus) {
 		auto date = gl_pWorldMarket->GetMarketDate();
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
-		companyInsiderTransaction.SetIndex(gl_dataContainerFinnhubStock.GetOffset(_T("A")));
+		companyInsiderTransaction.SetIndex(gl_dataContainerFinnhubStock.GetOffset("A"));
 
 		auto pStock = gl_dataContainerFinnhubStock.GetItem(companyInsiderTransaction.GetIndex());
 		EXPECT_EQ(pStock->GetInsiderTransactionUpdateDate(), 19800101);
@@ -85,14 +85,11 @@ namespace FireBirdTest {
 	}
 
 	// 正确数据
-	Test_FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T(
-		                                      "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-03\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+	Test_FinnhubWebData finnhubWebData133(3, "AAPL",  "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-03\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}");
 	// 缺乏 data项
-	Test_FinnhubWebData finnhubWebData134(4, _T("AAPL"), _T(
-		                                      "{\"no data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+	Test_FinnhubWebData finnhubWebData134(4, "AAPL","{\"no data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}");
 	// 缺乏 Symbol项
-	Test_FinnhubWebData finnhubWebData135(5, _T("AAPL"), _T(
-		                                      "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"no symbol\" : \"RIG\"}"));
+	Test_FinnhubWebData finnhubWebData135(5, "AAPL", "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"no symbol\" : \"RIG\"}");
 
 	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -217,8 +214,8 @@ namespace FireBirdTest {
 			break;
 		case 3: // 正确
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_strPersonName, _T("Long Brady K")) << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_strSymbol, _T("RIG"));
+			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_strPersonName, "Long Brady K") << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_strSymbol, "RIG");
 			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lShare, 269036);
 			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lChange, -14236);
 			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lFilingDate, 20210303);

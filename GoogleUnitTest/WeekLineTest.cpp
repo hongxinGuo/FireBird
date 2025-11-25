@@ -50,16 +50,16 @@ namespace FireBirdTest {
 
 	TEST_F(CWeekLineTest, TestGetStockSymbol) {
 		CWeekLine dl;
-		EXPECT_EQ(dl.GetStockSymbol(), _T(""));
-		dl.SetStockSymbol(_T("600000.SS"));
-		EXPECT_EQ(dl.GetStockSymbol(), _T("600000.SS"));
+		EXPECT_EQ(dl.GetStockSymbol(), "");
+		dl.SetStockSymbol("600000.SS");
+		EXPECT_EQ(dl.GetStockSymbol(), "600000.SS");
 	}
 
 	TEST_F(CWeekLineTest, TestGetDisplaySymbol) {
 		CWeekLine dl;
-		EXPECT_EQ(dl.GetDisplaySymbol(), _T(""));
-		dl.SetDisplaySymbol(_T("浦东银行"));
-		EXPECT_EQ(dl.GetDisplaySymbol(), _T("浦东银行"));
+		EXPECT_EQ(dl.GetDisplaySymbol(), "");
+		dl.SetDisplaySymbol("浦东银行");
+		EXPECT_EQ(dl.GetDisplaySymbol(), "浦东银行");
 	}
 
 	TEST_F(CWeekLineTest, TestGetLastClose) {
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetLow(), 0);
 		dl.SetLow(22222);
 		EXPECT_EQ(dl.GetLow(), 22222);
-		dl.SetLow(_T("12345"));
+		dl.SetLow("12345");
 		EXPECT_EQ(dl.GetLow(), 12345);
 	}
 
@@ -98,7 +98,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetClose(), 0);
 		dl.SetClose(33333);
 		EXPECT_EQ(dl.GetClose(), 33333);
-		dl.SetClose(_T("12345"));
+		dl.SetClose("12345");
 		EXPECT_EQ(dl.GetClose(), 12345);
 	}
 
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(dl.GetUpDown(), 0);
 		dl.SetUpDown(10.020);
 		EXPECT_DOUBLE_EQ(dl.GetUpDown(), 10.020);
-		dl.SetUpDown(_T("12.345"));
+		dl.SetUpDown("12.345");
 		EXPECT_DOUBLE_EQ(dl.GetUpDown(), 12.345);
 	}
 
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 0);
 		dl.SetUpDownRate(40.40);
 		EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 40.40);
-		dl.SetUpDownRate(_T("12.345"));
+		dl.SetUpDownRate("12.345");
 		EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 12.345);
 	}
 
@@ -145,7 +145,7 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestGetTotalValue) {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetTotalValue(), 0);
-		string str = _T("3.13e+11");
+		string str = "3.13e+11";
 		dl.SetTotalValue(str.c_str());
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
@@ -153,7 +153,7 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestGetCurrentValue) {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
-		string str = _T("3.15e+11");
+		string str = "3.15e+11";
 		dl.SetCurrentValue(str.c_str());
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
@@ -570,8 +570,8 @@ namespace FireBirdTest {
 		CWeekLine id, id2;
 
 		id.SetDate(21100101);
-		id.SetStockSymbol(_T("600008.SS"));
-		id.SetDisplaySymbol(_T("首创股份"));
+		id.SetStockSymbol("600008.SS");
+		id.SetDisplaySymbol("首创股份");
 		id.SetLastClose(342345);
 		id.SetOpen(343435);
 		id.SetHigh(452543);
@@ -655,41 +655,41 @@ namespace FireBirdTest {
 		id.SetCanceledSellVolumeAbove200000(77);
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
+		setWeekLineBasicInfo.m_strFilter = "[ID] = 1";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		id.AppendBasicData(&setWeekLineBasicInfo);
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();
 
-		setWeekLineExtendInfo.m_strFilter = _T("[ID] = 1");
+		setWeekLineExtendInfo.m_strFilter = "[ID] = 1";
 		setWeekLineExtendInfo.Open();
 		setWeekLineExtendInfo.m_pDatabase->BeginTrans();
 		id.AppendExtendData(&setWeekLineExtendInfo);
 		setWeekLineExtendInfo.m_pDatabase->CommitTrans();
 		setWeekLineExtendInfo.Close();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100101");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100101";
 		setWeekLineBasicInfo.Open();
 		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetDate());
-		EXPECT_TRUE(setWeekLineBasicInfo.m_Symbol.Compare(id.GetStockSymbol().c_str()) == 0);
+		EXPECT_TRUE(id.GetStockSymbol().compare(ToUTF8(setWeekLineBasicInfo.m_Symbol)) == 0);
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * id.GetRatio(), id.GetHigh());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Low) * id.GetRatio(), id.GetLow());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Close) * id.GetRatio(), id.GetClose());
-		EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Volume), id.GetVolume());
-		EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Amount), id.GetAmount());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpAndDown), id.GetUpDown());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpDownRate), id.GetUpDownRate());
-		EXPECT_EQ(atoll(setWeekLineBasicInfo.m_TotalValue), id.GetTotalValue());
-		EXPECT_EQ(atoll(setWeekLineBasicInfo.m_CurrentValue), id.GetCurrentValue());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_ChangeHandRate), id.GetChangeHandRate());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RS), id.GetRS());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RSIndex), id.GetRSIndex());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RSBackup), id.GetRSBackup());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_High) * id.GetRatio(), id.GetHigh());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Low) * id.GetRatio(), id.GetLow());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Close) * id.GetRatio(), id.GetClose());
+		EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_Volume), id.GetVolume());
+		EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_Amount), id.GetAmount());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_UpAndDown), id.GetUpDown());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_UpDownRate), id.GetUpDownRate());
+		EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_TotalValue), id.GetTotalValue());
+		EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_CurrentValue), id.GetCurrentValue());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_ChangeHandRate), id.GetChangeHandRate());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_RS), id.GetRS());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_RSIndex), id.GetRSIndex());
+		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_RSBackup), id.GetRSBackup());
 		setWeekLineBasicInfo.Close();
 
 		EXPECT_EQ(id2.GetDate(), id.GetDate());
@@ -711,77 +711,77 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(id2.GetRSIndex(), id.GetRSIndex());
 		EXPECT_DOUBLE_EQ(id2.GetRSBackup(), id.GetRSBackup());
 
-		setWeekLineExtendInfo.m_strFilter = _T("[Date] = 21100101");
+		setWeekLineExtendInfo.m_strFilter = "[Date] = 21100101";
 		setWeekLineExtendInfo.Open();
 		id2.LoadExtendData(&setWeekLineExtendInfo);
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumber), id2.GetTransactionNumber());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow5000), id2.GetTransactionNumberBelow5000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow50000), id2.GetTransactionNumberBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow200000), id2.GetTransactionNumberBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberAbove200000), id2.GetTransactionNumberAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_TransactionNumber), id2.GetTransactionNumber());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_TransactionNumberBelow5000), id2.GetTransactionNumberBelow5000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_TransactionNumberBelow50000), id2.GetTransactionNumberBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_TransactionNumberBelow200000), id2.GetTransactionNumberBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_TransactionNumberAbove200000), id2.GetTransactionNumberAbove200000());
 
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolume), id2.GetCanceledBuyVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolume), id2.GetCanceledSellVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyVolume), id2.GetAttackBuyVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellVolume), id2.GetAttackSellVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_StrongBuyVolume), id2.GetStrongBuyVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_StrongSellVolume), id2.GetStrongSellVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_UnknownVolume), id2.GetUnknownVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolume), id2.GetOrdinaryBuyVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolume), id2.GetOrdinarySellVolume());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyBelow50000), id2.GetAttackBuyBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyBelow200000), id2.GetAttackBuyBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyAbove200000), id2.GetAttackBuyAbove200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellBelow50000), id2.GetAttackSellBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellBelow200000), id2.GetAttackSellBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellAbove200000), id2.GetAttackSellAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolume), id2.GetCanceledBuyVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolume), id2.GetCanceledSellVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackBuyVolume), id2.GetAttackBuyVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackSellVolume), id2.GetAttackSellVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_StrongBuyVolume), id2.GetStrongBuyVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_StrongSellVolume), id2.GetStrongSellVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_UnknownVolume), id2.GetUnknownVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolume), id2.GetOrdinaryBuyVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolume), id2.GetOrdinarySellVolume());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackBuyBelow50000), id2.GetAttackBuyBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackBuyBelow200000), id2.GetAttackBuyBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackBuyAbove200000), id2.GetAttackBuyAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackSellBelow50000), id2.GetAttackSellBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackSellBelow200000), id2.GetAttackSellBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_AttackSellAbove200000), id2.GetAttackSellAbove200000());
 
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow5000), id2.GetOrdinaryBuyVolumeBelow5000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow10000), id2.GetOrdinaryBuyVolumeBelow10000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow20000), id2.GetOrdinaryBuyVolumeBelow20000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow50000), id2.GetOrdinaryBuyVolumeBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow100000), id2.GetOrdinaryBuyVolumeBelow100000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow200000), id2.GetOrdinaryBuyVolumeBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeAbove200000), id2.GetOrdinaryBuyVolumeAbove200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow5000), id2.GetOrdinarySellVolumeBelow5000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow10000), id2.GetOrdinarySellVolumeBelow10000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow20000), id2.GetOrdinarySellVolumeBelow20000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow50000), id2.GetOrdinarySellVolumeBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow100000), id2.GetOrdinarySellVolumeBelow100000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow200000), id2.GetOrdinarySellVolumeBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeAbove200000), id2.GetOrdinarySellVolumeAbove200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow5000), id2.GetOrdinaryBuyNumberBelow5000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow10000), id2.GetOrdinaryBuyNumberBelow10000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow20000), id2.GetOrdinaryBuyNumberBelow20000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow50000), id2.GetOrdinaryBuyNumberBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow100000), id2.GetOrdinaryBuyNumberBelow100000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow200000), id2.GetOrdinaryBuyNumberBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberAbove200000), id2.GetOrdinaryBuyNumberAbove200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow5000), id2.GetOrdinarySellNumberBelow5000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow10000), id2.GetOrdinarySellNumberBelow10000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow20000), id2.GetOrdinarySellNumberBelow20000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow50000), id2.GetOrdinarySellNumberBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow100000), id2.GetOrdinarySellNumberBelow100000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow200000), id2.GetOrdinarySellNumberBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberAbove200000), id2.GetOrdinarySellNumberAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow5000), id2.GetOrdinaryBuyVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow10000), id2.GetOrdinaryBuyVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow20000), id2.GetOrdinaryBuyVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow50000), id2.GetOrdinaryBuyVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow100000), id2.GetOrdinaryBuyVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow200000), id2.GetOrdinaryBuyVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeAbove200000), id2.GetOrdinaryBuyVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow5000), id2.GetOrdinarySellVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow10000), id2.GetOrdinarySellVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow20000), id2.GetOrdinarySellVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow50000), id2.GetOrdinarySellVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow100000), id2.GetOrdinarySellVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow200000), id2.GetOrdinarySellVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellVolumeAbove200000), id2.GetOrdinarySellVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow5000), id2.GetOrdinaryBuyNumberBelow5000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow10000), id2.GetOrdinaryBuyNumberBelow10000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow20000), id2.GetOrdinaryBuyNumberBelow20000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow50000), id2.GetOrdinaryBuyNumberBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow100000), id2.GetOrdinaryBuyNumberBelow100000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow200000), id2.GetOrdinaryBuyNumberBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberAbove200000), id2.GetOrdinaryBuyNumberAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow5000), id2.GetOrdinarySellNumberBelow5000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow10000), id2.GetOrdinarySellNumberBelow10000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow20000), id2.GetOrdinarySellNumberBelow20000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow50000), id2.GetOrdinarySellNumberBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow100000), id2.GetOrdinarySellNumberBelow100000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow200000), id2.GetOrdinarySellNumberBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_OrdinarySellNumberAbove200000), id2.GetOrdinarySellNumberAbove200000());
 
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow5000), id2.GetCanceledBuyVolumeBelow5000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow10000), id2.GetCanceledBuyVolumeBelow10000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow20000), id2.GetCanceledBuyVolumeBelow20000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow50000), id2.GetCanceledBuyVolumeBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow100000), id2.GetCanceledBuyVolumeBelow100000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow200000), id2.GetCanceledBuyVolumeBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeAbove200000), id2.GetCanceledBuyVolumeAbove200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow5000), id2.GetCanceledSellVolumeBelow5000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow10000), id2.GetCanceledSellVolumeBelow10000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow20000), id2.GetCanceledSellVolumeBelow20000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow50000), id2.GetCanceledSellVolumeBelow50000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow100000), id2.GetCanceledSellVolumeBelow100000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow200000), id2.GetCanceledSellVolumeBelow200000());
-		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeAbove200000), id2.GetCanceledSellVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow5000), id2.GetCanceledBuyVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow10000), id2.GetCanceledBuyVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow20000), id2.GetCanceledBuyVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow50000), id2.GetCanceledBuyVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow100000), id2.GetCanceledBuyVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow200000), id2.GetCanceledBuyVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledBuyVolumeAbove200000), id2.GetCanceledBuyVolumeAbove200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow5000), id2.GetCanceledSellVolumeBelow5000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow10000), id2.GetCanceledSellVolumeBelow10000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow20000), id2.GetCanceledSellVolumeBelow20000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow50000), id2.GetCanceledSellVolumeBelow50000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow100000), id2.GetCanceledSellVolumeBelow100000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow200000), id2.GetCanceledSellVolumeBelow200000());
+		EXPECT_EQ(_tstoll(setWeekLineExtendInfo.m_CanceledSellVolumeAbove200000), id2.GetCanceledSellVolumeAbove200000());
 		setWeekLineExtendInfo.Close();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100101");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100101";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setWeekLineBasicInfo.IsEOF()) {
@@ -791,7 +791,7 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();
 
-		setWeekLineExtendInfo.m_strFilter = _T("[Date] = 21100101");
+		setWeekLineExtendInfo.m_strFilter = "[Date] = 21100101";
 		setWeekLineExtendInfo.Open();
 		setWeekLineExtendInfo.m_pDatabase->BeginTrans();
 		while (!setWeekLineExtendInfo.IsEOF()) {
@@ -807,8 +807,8 @@ namespace FireBirdTest {
 		CWeekLine id, idLoaded;
 
 		id.SetDate(21100901);
-		id.SetStockSymbol(_T("600008.SS"));
-		id.SetDisplaySymbol(_T("首创股份"));
+		id.SetStockSymbol("600008.SS");
+		id.SetDisplaySymbol("首创股份");
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -826,14 +826,14 @@ namespace FireBirdTest {
 		id.SetRSBackup(120.9);
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
+		setWeekLineBasicInfo.m_strFilter = "[ID] = 1";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		id.AppendBasicData(&setWeekLineBasicInfo);
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100901");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100901";
 		setWeekLineBasicInfo.Open();
 		idLoaded.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(idLoaded.GetDate(), id.GetDate());
@@ -856,7 +856,7 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(idLoaded.GetRSBackup(), id.GetRSBackup());
 		setWeekLineBasicInfo.Close();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100901");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100901";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setWeekLineBasicInfo.IsEOF()) {
@@ -871,8 +871,8 @@ namespace FireBirdTest {
 		CWeekLine id, id2;
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
 		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
-		id.SetStockSymbol(_T("600000.SS"));
-		id.SetDisplaySymbol(_T("浦发银行"));
+		id.SetStockSymbol("600000.SS");
+		id.SetDisplaySymbol("浦发银行");
 		id.SetLastClose(1010);
 		id.SetOpen(1100);
 		id.SetHigh(1200);
@@ -880,14 +880,14 @@ namespace FireBirdTest {
 		id.SetClose(1150);
 		id.SetVolume(100000);
 		id.SetAmount(100000000);
-		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
+		setWeekLineBasicInfo.m_strFilter = "[ID] = 1";
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.AddNew();
 		id.SaveBasicData(&setWeekLineBasicInfo);
 		setWeekLineBasicInfo.Update();
 		setWeekLineBasicInfo.Close();
 
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 19900101");
+		setWeekLineBasicInfo.m_strFilter = "[Date] = 19900101";
 		setWeekLineBasicInfo.Open();
 		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(id.GetDate(), id2.GetDate());
@@ -903,8 +903,8 @@ namespace FireBirdTest {
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetTime(100100100100);
 		pDayLine->SetDate(20200202);
-		pDayLine->SetStockSymbol(_T("600000.SS"));
-		pDayLine->SetDisplaySymbol(_T("浦发银行"));
+		pDayLine->SetStockSymbol("600000.SS");
+		pDayLine->SetDisplaySymbol("浦发银行");
 
 		pDayLine->SetOpen(1010);
 		pDayLine->SetClose(2020);
@@ -1063,8 +1063,8 @@ namespace FireBirdTest {
 		auto pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
 		pDayLine1->SetTime(100100100100);
 		pDayLine1->SetDate(20200727);
-		pDayLine1->SetStockSymbol(_T("60000.SS"));
-		pDayLine1->SetDisplaySymbol(_T("浦发银"));
+		pDayLine1->SetStockSymbol("60000.SS");
+		pDayLine1->SetDisplaySymbol("浦发银");
 
 		pDayLine1->SetOpen(1010);
 		pDayLine1->SetClose(2020);
@@ -1155,8 +1155,8 @@ namespace FireBirdTest {
 
 		pDayLine2->SetTime(10010010010); // 与第一个数据pDayLine1时间不同。
 		pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
-		pDayLine2->SetStockSymbol(_T("600000.SS")); // 与第一个数据pDayLine1不同。
-		pDayLine2->SetDisplaySymbol(_T("浦发银行")); // 与第一个数据pDayLine1不同。
+		pDayLine2->SetStockSymbol("600000.SS"); // 与第一个数据pDayLine1不同。
+		pDayLine2->SetDisplaySymbol("浦发银行"); // 与第一个数据pDayLine1不同。
 
 		pDayLine2->SetOpen(10100);
 		pDayLine2->SetClose(20200);

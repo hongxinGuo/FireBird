@@ -38,7 +38,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestInitialize) {
 		EXPECT_EQ(marketNews.GetIndex(), 0);
-		EXPECT_EQ(marketNews.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/definitions?"));
+		EXPECT_EQ(marketNews.GetInquiryFunction(), "https://api.tiingo.com/tiingo/fundamentals/definitions?");
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestCreatMessage) {
@@ -56,7 +56,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Fundamental definition updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Fundamental definition updated");
 
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}
@@ -68,21 +68,21 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Fundamental definition updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Fundamental definition updated");
 
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}
 
 	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition1(1, _T(""), _T("[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]"));
+	Test_TiingoWebData tiingoFundamentalDefinition1(1, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
 	// 第一个数据缺项
-	Test_TiingoWebData tiingoFundamentalDefinition2(2, _T(""), _T("[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]"));
+	Test_TiingoWebData tiingoFundamentalDefinition2(2, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
 	// 第二个数据缺项
-	Test_TiingoWebData tiingoFundamentalDefinition3(3, _T("aapl"), _T("[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]"));
+	Test_TiingoWebData tiingoFundamentalDefinition3(3, "aapl", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
 	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition4(4, _T(""), _T("[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]"));
+	Test_TiingoWebData tiingoFundamentalDefinition4(4, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
 	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition10(10, _T(""), _T("[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]"));
+	Test_TiingoWebData tiingoFundamentalDefinition10(10, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
 
 	class ParseTiingoFundamentalDefinitionTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -130,16 +130,16 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDataCode, _T("liabilitiesCurrent"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strName, _T("Current Liabilities"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDescription, _T("Debt or liabilities that are due within a year"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strStatementType, _T("balanceSheet"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strUnits, _T("$"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDataCode, _T("rps"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strName, _T("Revenue Per Share"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDescription, _T("Revenue per share"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strStatementType, _T("overview"));
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strUnits, _T("$"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDataCode, "liabilitiesCurrent");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strName, "Current Liabilities");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDescription, "Debt or liabilities that are due within a year");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strStatementType, "balanceSheet");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strUnits, "$");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDataCode, "rps");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strName, "Revenue Per Share");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDescription, "Revenue per share");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strStatementType, "overview");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strUnits, "$");
 			break;
 		default:
 			break;
@@ -199,7 +199,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "第一个数据是正确的";
 
 		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetItem(_T("A"));
+			pStock = gl_dataContainerFinnhubStock.GetItem("A");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
@@ -210,7 +210,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 
 		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetItem(_T("AA"));
+			pStock = gl_dataContainerFinnhubStock.GetItem("AA");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
@@ -218,16 +218,16 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock(_T("NEW SYMBOL")));
-			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
-			pStock = gl_dataContainerFinnhubStock.GetItem(_T("AA"));
-			EXPECT_STREQ(pStock->GetName(), _T("New Name")) << "更改为此新名字";
+			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock("NEW SYMBOL")));
+			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock("NEW SYMBOL"))) != nullptr);
+			pStock = gl_dataContainerFinnhubStock.GetItem("AA");
+			EXPECT_STREQ(pStock->GetName(), "New Name")) << "更改为此新名字";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
 		// 恢复原状
 			gl_dataContainerTiingoStock.Delete(pTiingoStock);
 			pStock->SetUpdateProfileDB(false);
-			pStock->SetName(_T("Alcoa Corp"));
+			pStock->SetName("Alcoa Corp");
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 			break;
 		default:

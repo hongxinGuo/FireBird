@@ -41,25 +41,25 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDailyMetaTest, TestInitialize) {
 		EXPECT_EQ(stockDailyMeta.GetIndex(), 0);
-		EXPECT_EQ(stockDailyMeta.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/daily/"));
+		EXPECT_EQ(stockDailyMeta.GetInquiryFunction(), "https://api.tiingo.com/tiingo/daily/");
 	}
 
 	TEST_F(CProductTiingoStockDailyMetaTest, TestCreatMessage) {
 		stockDailyMeta.SetMarket(gl_pWorldMarket);
 		stockDailyMeta.SetIndex(1); // stock code is AA
-		EXPECT_EQ(stockDailyMeta.CreateMessage(), _T("https://api.tiingo.com/tiingo/daily/AA?"));
+		EXPECT_EQ(stockDailyMeta.CreateMessage(), "https://api.tiingo.com/tiingo/daily/AA?");
 	}
 
 	// 正确的数据
-	Test_TiingoWebData tiingoStockDailyMeta1(1, _T(""), _T("{\"ticker\":\"AAPL\",\"name\":\"Apple Inc\",\"exchangeCode\":\"NASDAQ\",\"startDate\":\"1980-12-12\",\"endDate\":\"2019-01-25\",\"description\":\"Apple Inc.services, peripherals\"}"));
+	Test_TiingoWebData tiingoStockDailyMeta1(1, "", "{\"ticker\":\"AAPL\",\"name\":\"Apple Inc\",\"exchangeCode\":\"NASDAQ\",\"startDate\":\"1980-12-12\",\"endDate\":\"2019-01-25\",\"description\":\"Apple Inc.services, peripherals\"}");
 	// 日期皆为null
-	Test_TiingoWebData tiingoStockDailyMeta2(2, _T(""), _T("{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : null,\"endDate\" : null,\"description\" : \"Apple Inc. (Apple) designs, manufactures and markets mobile\"}"));
+	Test_TiingoWebData tiingoStockDailyMeta2(2, "", "{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : null,\"endDate\" : null,\"description\" : \"Apple Inc. (Apple) designs, manufactures and markets mobile\"}");
 	// 第二个数据缺项
-	Test_TiingoWebData tiingoStockDailyMeta3(3, _T(""), _T("{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : \"1980-12-12\",\"endDate\" : \"2019-01-25\",\"description\" : \"Apple Inc. (Apple) desi\"}"));
+	Test_TiingoWebData tiingoStockDailyMeta3(3, "", "{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : \"1980-12-12\",\"endDate\" : \"2019-01-25\",\"description\" : \"Apple Inc. (Apple) desi\"}");
 	// 正确的数据
-	Test_TiingoWebData tiingoStockDailyMeta4(4, _T(""), _T("{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : \"1980-12-12\",\"endDate\" : \"2019-01-25\",\"description\" : \"Apple Inc. (Apple) des\"}"));
+	Test_TiingoWebData tiingoStockDailyMeta4(4, "", "{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : \"1980-12-12\",\"endDate\" : \"2019-01-25\",\"description\" : \"Apple Inc. (Apple) des\"}");
 	// 正确的数据
-	Test_TiingoWebData tiingoStockDailyMeta10(10, _T(""), _T("{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : \"1980-12-12\",\"endDate\" : \"2019-01-25\",\"description\" : \"Apple Inc. (Apple) designs, manufactures\"}"));
+	Test_TiingoWebData tiingoStockDailyMeta10(10, "", "{\"ticker\": \"AAPL\",\"name\" : \"Apple Inc\",\"exchangeCode\" : \"NASDAQ\",\"startDate\" : \"1980-12-12\",\"endDate\" : \"2019-01-25\",\"description\" : \"Apple Inc. (Apple) designs, manufactures\"}");
 
 	class ParseTiingoStockDailyMetaTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -190,16 +190,16 @@ namespace FireBirdTest {
 		auto pDailyMeta = m_tiingoStockProduct.ParseTiingoStockDailyMeta(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_EQ(pDailyMeta->m_strCode, _T("AAPL"));
-			EXPECT_EQ(pDailyMeta->m_strName, _T("Apple Inc"));
-			EXPECT_EQ(pDailyMeta->m_strExchange, _T("NASDAQ"));
+			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");
+			EXPECT_EQ(pDailyMeta->m_strName, "Apple Inc");
+			EXPECT_EQ(pDailyMeta->m_strExchange, "NASDAQ");
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19801212);
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 20190125);
 			break;
 		case 2: // 日期皆为空null
-			EXPECT_EQ(pDailyMeta->m_strCode, _T("AAPL"));
-			EXPECT_EQ(pDailyMeta->m_strName, _T("Apple Inc"));
-			EXPECT_EQ(pDailyMeta->m_strExchange, _T("NASDAQ"));
+			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");
+			EXPECT_EQ(pDailyMeta->m_strName, "Apple Inc");
+			EXPECT_EQ(pDailyMeta->m_strExchange, "NASDAQ");
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19000101);
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 19000101);
 			break;
@@ -208,9 +208,9 @@ namespace FireBirdTest {
 		case 4:
 			break;
 		case 10:
-			EXPECT_EQ(pDailyMeta->m_strCode, _T("AAPL"));
-			EXPECT_EQ(pDailyMeta->m_strName, _T("Apple Inc"));
-			EXPECT_EQ(pDailyMeta->m_strExchange, _T("NASDAQ"));
+			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");
+			EXPECT_EQ(pDailyMeta->m_strName, "Apple Inc");
+			EXPECT_EQ(pDailyMeta->m_strExchange, "NASDAQ");
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19801212);
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 20190125);
 		// 恢复原状

@@ -40,7 +40,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyPeerTest, TestInitialize) {
 		EXPECT_EQ(companyPeer.GetIndex(), 0);
-		EXPECT_EQ(companyPeer.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/peers?symbol="));
+		EXPECT_EQ(companyPeer.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/peers?symbol=");
 	}
 
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
@@ -54,15 +54,15 @@ namespace FireBirdTest {
 	}
 
 	// 不足三个字符
-	Test_FinnhubWebData finnhubWebData102(3, _T("AAPL"), _T("{}"));
+	Test_FinnhubWebData finnhubWebData102(3, "AAPL", "{}");
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData103(4, _T("AAPL"), _T("\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+	Test_FinnhubWebData finnhubWebData103(4, "AAPL", "\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]");
 	// 格式不对
-	Test_FinnhubWebData finnhubWebData104(5, _T("AAPL"), _T("[\"AAPL,\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+	Test_FinnhubWebData finnhubWebData104(5, "AAPL", "[\"AAPL,\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]");
 	// 正确的数据,但超过200个字符
-	Test_FinnhubWebData finnhubWebData105(6, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]"));
+	Test_FinnhubWebData finnhubWebData105(6, "AAPL", "[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+	Test_FinnhubWebData finnhubWebData110(10, "AAPL", "[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]");
 
 	class ParseFinnhubStockPeerTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_jsonPeer.empty()) << "多余2000个字符时截断";
 			break;
 		case 10:
-			EXPECT_EQ(m_jsonPeer.dump(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_EQ(m_jsonPeer.dump(), "[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]");
 			break;
 		default:
 			break;
@@ -201,7 +201,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			s = pStock->GetPeer().dump();
-			EXPECT_EQ(s, _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_EQ(s, "[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]");
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";

@@ -34,21 +34,21 @@ namespace FireBirdTest {
 		EXPECT_EQ(companyNews.m_llDateTime, 0);
 		EXPECT_EQ(companyNews.m_iNewsID, 0);
 
-		EXPECT_EQ(companyNews.m_strCompanySymbol, _T(""));
-		EXPECT_EQ(companyNews.m_strCategory, _T(""));
-		EXPECT_EQ(companyNews.m_strRelatedSymbol, _T(""));
-		EXPECT_EQ(companyNews.m_strHeadLine, _T(""));
-		EXPECT_EQ(companyNews.m_strImage, _T(""));
-		EXPECT_EQ(companyNews.m_strSource, _T(""));
-		EXPECT_EQ(companyNews.m_strSummary, _T(""));
-		EXPECT_EQ(companyNews.m_strURL, _T(""));
+		EXPECT_EQ(companyNews.m_strCompanySymbol, "");
+		EXPECT_EQ(companyNews.m_strCategory, "");
+		EXPECT_EQ(companyNews.m_strRelatedSymbol, "");
+		EXPECT_EQ(companyNews.m_strHeadLine, "");
+		EXPECT_EQ(companyNews.m_strImage, "");
+		EXPECT_EQ(companyNews.m_strSource, "");
+		EXPECT_EQ(companyNews.m_strSummary, "");
+		EXPECT_EQ(companyNews.m_strURL, "");
 	}
 
 	TEST_F(CCompanyNewsTest, TestAppend) {
 		CSetCompanyNews setCompanyNews, setCompanyNews2;
 		CFinnhubCompanyNews companyNews;
 
-		companyNews.m_strCompanySymbol = _T("AA");
+		companyNews.m_strCompanySymbol = "AA";
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setCompanyNews.Open();
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 		setCompanyNews.m_pDatabase->CommitTrans();
 		setCompanyNews.Close();
 
-		setCompanyNews2.m_strFilter = _T("[Symbol] = 'AA'");
+		setCompanyNews2.m_strFilter = "[Symbol] = 'AA'";
 		setCompanyNews2.Open();
 		setCompanyNews2.m_pDatabase->BeginTrans();
 		while (!setCompanyNews2.IsEOF()) {
@@ -78,14 +78,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(companyNews.m_llDateTime, 10101010);
 		EXPECT_EQ(companyNews.m_iNewsID, 1);
 
-		EXPECT_EQ(companyNews.m_strCompanySymbol, _T("AAPL"));
-		EXPECT_EQ(companyNews.m_strCategory, _T("company news"));
-		EXPECT_EQ(companyNews.m_strRelatedSymbol, _T("AAPL"));
-		EXPECT_EQ(companyNews.m_strHeadLine, _T("Head line"));
-		EXPECT_EQ(companyNews.m_strImage, _T("abc"));
-		EXPECT_EQ(companyNews.m_strSource, _T("cde"));
-		EXPECT_EQ(companyNews.m_strSummary, _T("efg"));
-		EXPECT_EQ(companyNews.m_strURL, _T("https:://"));
+		EXPECT_EQ(companyNews.m_strCompanySymbol, "AAPL");
+		EXPECT_EQ(companyNews.m_strCategory, "company news");
+		EXPECT_EQ(companyNews.m_strRelatedSymbol, "AAPL");
+		EXPECT_EQ(companyNews.m_strHeadLine, "Head line");
+		EXPECT_EQ(companyNews.m_strImage, "abc");
+		EXPECT_EQ(companyNews.m_strSource, "cde");
+		EXPECT_EQ(companyNews.m_strSummary, "efg");
+		EXPECT_EQ(companyNews.m_strURL, "https:://");
 		setCompanyNews.Close();
 	}
 }

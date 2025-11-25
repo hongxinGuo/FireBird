@@ -11,8 +11,8 @@ CVirtualStock::CVirtualStock() {
 }
 
 void CVirtualStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate[_T("DayLineStartDate")] = 29900101;
-	m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
+	m_jsonUpdateDate["DayLineStartDate"] = 29900101;
+	m_jsonUpdateDate["DayLineEndDate"] = 19800101;
 }
 
 void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
@@ -23,21 +23,21 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 		try {
 			CreateJsonWithNlohmann(m_jsonUpdateDate, strUpdateDate);
 		} catch (json::exception&) {
-			CreateJsonWithNlohmann(m_jsonUpdateDate, _T("{}"));
+			CreateJsonWithNlohmann(m_jsonUpdateDate, "{}");
 			ResetAllUpdateDate();
 		}
 	}
 }
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
-	m_strDescription = setStockSymbol.m_Description;
+	m_strDescription = ToUTF8(setStockSymbol.m_Description);
 	CString str;
 	str = setStockSymbol.m_DisplaySymbol; //Note 需要如此初始化，不能将声明和赋值放在一起
-	m_strDisplaySymbol = str;
-	m_strExchangeCode = setStockSymbol.m_Exchange;
-	m_strSymbol = setStockSymbol.m_Symbol;
+	m_strDisplaySymbol = ToUTF8(str);
+	m_strExchangeCode = ToUTF8(setStockSymbol.m_Exchange);
+	m_strSymbol = ToUTF8(setStockSymbol.m_Symbol);
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
-	LoadUpdateDate(setStockSymbol.m_UpdateDate.GetString());
+	LoadUpdateDate(ToUTF8(setStockSymbol.m_UpdateDate));
 }
 
 void CVirtualStock::AppendSymbol(CVirtualSetStockSymbol& setStockSymbol) {
@@ -66,9 +66,9 @@ void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 long CVirtualStock::GetDayLineStartDate() {
 	long l;
 	try {
-		l = m_jsonUpdateDate[_T("DayLineStartDate")];
+		l = m_jsonUpdateDate["DayLineStartDate"];
 	} catch (json::exception&) {
-		m_jsonUpdateDate[_T("DayLineStartDate")] = 29900101;
+		m_jsonUpdateDate["DayLineStartDate"] = 29900101;
 		l = 29901010;
 	}
 	return l;
@@ -77,12 +77,12 @@ long CVirtualStock::GetDayLineStartDate() {
 long CVirtualStock::GetDayLineEndDate() {
 	long l;
 	try {
-		l = m_jsonUpdateDate[_T("DayLineEndDate")];
+		l = m_jsonUpdateDate["DayLineEndDate"];
 		if (l < 19800101) {
-			m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
+			m_jsonUpdateDate["DayLineEndDate"] = 19800101;
 		}
 	} catch (json::exception&) {
-		m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
+		m_jsonUpdateDate["DayLineEndDate"] = 19800101;
 		l = 19800101;
 	}
 

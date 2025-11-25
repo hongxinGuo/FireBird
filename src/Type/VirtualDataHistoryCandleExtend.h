@@ -24,7 +24,7 @@ public:
 		return false;
 	}
 	virtual bool LoadDB(const string&) {
-		TRACE(_T("调用了基类LoadDB\n"));
+		TRACE("调用了基类LoadDB\n");
 		return false;
 	}
 
@@ -38,7 +38,7 @@ public:
 	void UpdateData(CDayLinesPtr vTempDayLine);
 
 protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const string& strStockSymbol = _T("")) const;
+	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const string& strStockSymbol = "") const;
 
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer() noexcept { return &m_vHistoryData; }

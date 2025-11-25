@@ -10,13 +10,13 @@
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
-	return strcmp(typeid(*pStock).name(), _T("class CTiingoStock")) == 0;
+	return strcmp(typeid(*pStock).name(), "class CTiingoStock") == 0;
 }
 
 CTiingoStock::CTiingoStock() {
 	m_v52WeekHigh.clear();
 	m_v52WeekLow.clear();
-	SetExchangeCode(_T("US"));
+	SetExchangeCode("US");
 	CTiingoStock::ResetAllUpdateDate();
 }
 
@@ -33,23 +33,23 @@ void CTiingoStock::ResetAllUpdateDate() {
 }
 
 void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
-	m_strTiingoPermaTicker = setTiingoStock.m_TiingoPermaTicker;
-	m_strSymbol = setTiingoStock.m_Ticker;
-	m_strName = setTiingoStock.m_Name;
+	m_strTiingoPermaTicker = ToUTF8(setTiingoStock.m_TiingoPermaTicker);
+	m_strSymbol = ToUTF8(setTiingoStock.m_Ticker);
+	m_strName = ToUTF8(setTiingoStock.m_Name);
 	SetActive(setTiingoStock.m_IsActive);
 	m_fIsADR = setTiingoStock.m_IsADR;
 	m_iSicCode = setTiingoStock.m_SicCode;
-	m_strSicIndustry = setTiingoStock.m_SicIndustry;
-	m_strSicSector = setTiingoStock.m_SicSector;
-	m_strTiingoIndustry = setTiingoStock.m_TiingoIndustry;
-	m_strTiingoSector = setTiingoStock.m_TiingoSector;
-	m_strReportingCurrency = setTiingoStock.m_ReportingCurrency;
-	m_strLocation = setTiingoStock.m_Location;
-	m_strCompanyWebSite = setTiingoStock.m_CompanyWebSite;
-	m_strSECFilingWebSite = setTiingoStock.m_SECFilingWebSite;
+	m_strSicIndustry = ToUTF8(setTiingoStock.m_SicIndustry);
+	m_strSicSector = ToUTF8(setTiingoStock.m_SicSector);
+	m_strTiingoIndustry = ToUTF8(setTiingoStock.m_TiingoIndustry);
+	m_strTiingoSector = ToUTF8(setTiingoStock.m_TiingoSector);
+	m_strReportingCurrency = ToUTF8(setTiingoStock.m_ReportingCurrency);
+	m_strLocation = ToUTF8(setTiingoStock.m_Location);
+	m_strCompanyWebSite = ToUTF8(setTiingoStock.m_CompanyWebSite);
+	m_strSECFilingWebSite = ToUTF8(setTiingoStock.m_SECFilingWebSite);
 	m_lIPOStatus = setTiingoStock.m_IPOStatus;
 
-	LoadUpdateDate(setTiingoStock.m_UpdateDate.GetString());
+	LoadUpdateDate(ToUTF8(setTiingoStock.m_UpdateDate));
 }
 
 void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
@@ -66,9 +66,9 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 		|| (m_strSicSector.length() > 100)
 		|| (m_strTiingoIndustry.length() > 100)
 		|| (m_strTiingoSector.length() > 100)) {
-		string s = _T("Tiingo stock ");
+		string s = "Tiingo stock ";
 		s += m_strName;
-		s += _T(" 字符串太长");
+		s += " 字符串太长";
 		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strName = m_strName.substr(0, 200);
@@ -133,10 +133,10 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	const size_t lSize = m_pvFinancialState->size();
 	long lLastDate = 0;
 
-	setFinancialState.m_strFilter = _T("[Symbol] = '");
+	setFinancialState.m_strFilter = "[Symbol] = '";
 	setFinancialState.m_strFilter += m_strSymbol.c_str();
-	setFinancialState.m_strFilter += _T("'");
-	setFinancialState.m_strSort = _T("[yearQuarter]");
+	setFinancialState.m_strFilter += "'";
+	setFinancialState.m_strSort = "[yearQuarter]";
 	setFinancialState.Open();
 	setFinancialState.m_pDatabase->BeginTrans();
 
@@ -157,7 +157,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	setFinancialState.m_pDatabase->CommitTrans();
 	setFinancialState.Close();
 
-	setFinancialState.m_strFilter = _T("[ID] = 1");
+	setFinancialState.m_strFilter = "[ID] = 1";
 	setFinancialState.Open();
 	setFinancialState.m_pDatabase->BeginTrans();
 	if (lSizeOfOldDayLine > 0) {// 有旧数据
@@ -206,7 +206,7 @@ bool CTiingoStock::UpdateDayLineDB() {
 		UpdateDayLineStartEndDate();
 		SetUpdateProfileDB(true);
 		string str = GetSymbol();
-		str += _T("日线资料存储完成");
+		str += "日线资料存储完成";
 		gl_systemMessage.PushDayLineInfoMessage(str);
 		UnloadDayLine();
 		ASSERT(!IsUpdateDayLineDB());
@@ -221,7 +221,7 @@ void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine
 	setDayLine.m_Date = lTradeDay;
 	setDayLine.m_Symbol = m_strSymbol.c_str();
 	setDayLine.m_Exchange = m_strExchangeCode.c_str();
-	setDayLine.m_DisplaySymbol = _T("");
+	setDayLine.m_DisplaySymbol = "";
 	setDayLine.m_Open = ConvertValueToCString(m_lOpen, GetRatio());
 	setDayLine.m_High = ConvertValueToCString(m_lHigh, GetRatio());
 	setDayLine.m_Low = ConvertValueToCString(m_lLow, GetRatio());
@@ -398,9 +398,9 @@ void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
 long CTiingoStock::GetDayLineProcessDate() {
 	long l;
 	try {
-		l = m_jsonUpdateDate[_T("DayLineProcessDate")];
+		l = m_jsonUpdateDate["DayLineProcessDate"];
 	} catch (json::exception&) {
-		m_jsonUpdateDate[_T("DayLineProcessDate")] = 19800101;
+		m_jsonUpdateDate["DayLineProcessDate"] = 19800101;
 		l = 19800101;
 	}
 	return l;
@@ -447,10 +447,10 @@ void CTiingoStock::Update52WeekLowDB(CSetTiingoStock52WeekLow& set52WeekLow) con
 void CTiingoStock::Delete52WeekHighDB() const {
 	CSetTiingoStock52WeekHigh set52WeekHigh;
 
-	set52WeekHigh.m_strFilter = _T("[Symbol] ='");
+	set52WeekHigh.m_strFilter = "[Symbol] ='";
 	set52WeekHigh.m_strFilter += GetSymbol().c_str();
-	set52WeekHigh.m_strFilter += _T("'");
-	set52WeekHigh.m_strSort = _T("[Date]");
+	set52WeekHigh.m_strFilter += "'";
+	set52WeekHigh.m_strSort = "[Date]";
 	set52WeekHigh.Open();
 	set52WeekHigh.m_pDatabase->BeginTrans();
 	while (!set52WeekHigh.IsEOF()) {
@@ -464,10 +464,10 @@ void CTiingoStock::Delete52WeekHighDB() const {
 void CTiingoStock::Delete52WeekLowDB() const {
 	CSetTiingoStock52WeekLow set52WeekLow;
 
-	set52WeekLow.m_strFilter = _T("[Symbol] ='");
+	set52WeekLow.m_strFilter = "[Symbol] ='";
 	set52WeekLow.m_strFilter += GetSymbol().c_str();
-	set52WeekLow.m_strFilter += _T("'");
-	set52WeekLow.m_strSort = _T("[Date]");
+	set52WeekLow.m_strFilter += "'";
+	set52WeekLow.m_strSort = "[Date]";
 	set52WeekLow.Open();
 	set52WeekLow.m_pDatabase->BeginTrans();
 	while (!set52WeekLow.IsEOF()) {
@@ -494,10 +494,10 @@ void CTiingoStock::Load52WeekLow() {
 	if (m_v52WeekLow.size() > 0) return; // 如果已经装入了， 直接返回。
 
 	CSetTiingoStock52WeekLow setLow;
-	setLow.m_strFilter = _T("[Symbol] = '");
+	setLow.m_strFilter = "[Symbol] = '";
 	setLow.m_strFilter += GetSymbol().c_str();
-	setLow.m_strFilter += _T("'");
-	setLow.m_strSort = _T("[Date]");
+	setLow.m_strFilter += "'";
+	setLow.m_strSort = "[Date]";
 	setLow.Open();
 	setLow.m_pDatabase->BeginTrans();
 	while (!setLow.IsEOF()) {

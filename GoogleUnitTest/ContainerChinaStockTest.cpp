@@ -40,12 +40,12 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerChinaStockTest, TestGetUpDownRate) {
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("10.0"), _T("0.0009")), 0.0) << _T("LastClose小于0.001时返回0");
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("11.0"), _T("10.0")), 0.1);
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("10.5"), _T("10.0")), 0.05);
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("9.0"), _T("10.0")), -0.1);
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("11.11"), _T("10.0")), 0.0) << _T("大于0.11时返回0");
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("8.89"), _T("10.0")), 0.0) << _T("小于-0.11时返回0");
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("10.0", "0.0009"), 0.0) << "LastClose小于0.001时返回0";
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("11.0", "10.0"), 0.1);
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("10.5", "10.0"), 0.05);
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("9.0", "10.0"), -0.1);
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("11.11", "10.0"), 0.0) << "大于0.11时返回0";
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("8.89", "10.0"), 0.0) << "小于-0.11时返回0";
 	}
 
 	TEST_F(CContainerChinaStockTest, TestGetNeteaseRTDataInquiringIndex) {
@@ -83,12 +83,12 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerChinaStockTest, TestSortStock) {
 		const auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol(_T("0.A")); // 
+		pStock->SetSymbol("0.A"); // 
 		m_containerChinaStock.Add(pStock);
-		EXPECT_EQ(m_containerChinaStock.GetStock(m_containerChinaStock.Size() - 1)->GetSymbol(), _T("0.A"));
+		EXPECT_EQ(m_containerChinaStock.GetStock(m_containerChinaStock.Size() - 1)->GetSymbol(), "0.A");
 
 		m_containerChinaStock.Sort();
-		EXPECT_EQ(m_containerChinaStock.GetStock(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
+		EXPECT_EQ(m_containerChinaStock.GetStock(0)->GetSymbol(), "0.A") << "0.A位于第一位";
 
 		m_containerChinaStock.Delete(pStock);
 	}

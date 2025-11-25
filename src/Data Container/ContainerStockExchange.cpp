@@ -36,7 +36,7 @@ bool CContainerStockExchange::LoadDB() {
 
 	if (m_vStockExchange.empty()) {
 		CSetStockExchange setExchange;
-		setExchange.m_strSort = _T("[Code]");
+		setExchange.m_strSort = "[Code]";
 		setExchange.Open();
 		while (!setExchange.IsEOF()) {
 			pExchange = make_shared<CStockExchange>();

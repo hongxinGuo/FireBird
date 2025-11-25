@@ -40,19 +40,19 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestInitialize) {
-		EXPECT_EQ(NeteaseDayLineDataSource.GetInquiryFunction(), _T("http://quotes.money.163.com/service/chddata.html?code="));
-		EXPECT_EQ(NeteaseDayLineDataSource.GetInquirySuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
-		EXPECT_EQ(NeteaseDayLineDataSource.GetInquiryToken(), _T(""));
+		EXPECT_EQ(NeteaseDayLineDataSource.GetInquiryFunction(), "http://quotes.money.163.com/service/chddata.html?code=");
+		EXPECT_EQ(NeteaseDayLineDataSource.GetInquirySuffix(), "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+		EXPECT_EQ(NeteaseDayLineDataSource.GetInquiryToken(), "");
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestSetDownLoadingStockCode) {
-		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T(""));
-		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("1000001"));
-		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("1000001"));
-		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("0600001"));
-		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("0600001"));
-		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("2600001"));
-		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), "");
+		NeteaseDayLineDataSource.SetDownLoadingStockCode("1000001");
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), "1000001");
+		NeteaseDayLineDataSource.SetDownLoadingStockCode("0600001");
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), "0600001");
+		NeteaseDayLineDataSource.SetDownLoadingStockCode("2600001");
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), "2600001");
 	};
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage1) {
@@ -94,11 +94,11 @@ namespace FireBirdTest {
 
 		const auto pProduct = NeteaseDayLineDataSource.GetCurrentProduct();
 		EXPECT_TRUE(pProduct != nullptr);
-		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseDayLine"));
+		EXPECT_STREQ(typeid(*pProduct).name(), "class CProductNeteaseDayLine");
 
 		const string str = pProduct->GetInquiryFunction();
-		EXPECT_EQ(str.substr(0, 54), _T("http://quotes.money.163.com/service/chddata.html?code="));
-		EXPECT_EQ(str.substr(str.length() - 81, 81), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
+		EXPECT_EQ(str.substr(0, 54), "http://quotes.money.163.com/service/chddata.html?code=");
+		EXPECT_EQ(str.substr(str.length() - 81, 81), "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 		gl_pChinaMarket->SetSystemReady(false);
 		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() + 1, gl_dataContainerChinaStock.Size()) << "已经有一个无需更新日线了";
 

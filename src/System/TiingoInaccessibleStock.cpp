@@ -22,11 +22,11 @@ std::string Test_gl_sTiingoInaccessibleStock = R"(
 
 CTiingoInaccessibleStock::CTiingoInaccessibleStock() {
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("TiingoInaccessibleStock全局变量只允许存在一个实例\n"));
+		TRACE("TiingoInaccessibleStock全局变量只允许存在一个实例\n");
 		ASSERT(FALSE);
 	}
 
-	ASSERT(m_strFileName.compare(_T("TiingoInaccessibleStock.json")) == 0);
+	ASSERT(m_strFileName.compare("TiingoInaccessibleStock.json") == 0);
 	if (LoadDB()) {
 		Update();
 	}
@@ -39,10 +39,10 @@ CTiingoInaccessibleStock::~CTiingoInaccessibleStock() {
 }
 
 void CTiingoInaccessibleStock::UpdateDB() {
-	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("json");
-	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("bak");
+	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + "json";
+	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + "bak";
 
-	DeleteFile((gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str());
+	std::filesystem::remove(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew);
 	rename((gl_systemConfiguration.GetConfigurationFileDirectory() + strOld).c_str(), (gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str()); // 保存备份
 	UpdateJson();
 	SaveDB();
@@ -79,16 +79,16 @@ void CTiingoInaccessibleStock::Update() {
 		m_lUpdateDate = m_finnhubInaccessibleStock.at("UpdateDate");
 	} catch (json::exception&) {}
 	try {
-		for (size_t i = 0; i < m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).size(); i++) {
-			const auto size = m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).at(i).at(_T("Stock")).size();
+		for (size_t i = 0; i < m_finnhubInaccessibleStock.at("InaccessibleStock").size(); i++) {
+			const auto size = m_finnhubInaccessibleStock.at("InaccessibleStock").at(i).at("Stock").size();
 			if (size > 0) {
 				// 有stock数据的话才建立数据集
 				const auto pInaccessible = make_shared<CInaccessible>();
-				string s2 = m_finnhubInaccessibleStock[_T("InaccessibleStock")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
+				string s2 = m_finnhubInaccessibleStock["InaccessibleStock"].at(i).at("Function"); // 从json解析出的字符串格式为std::string
 				pInaccessible->SetFunctionString(s2);
 				pInaccessible->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString()));
 				for (size_t j = 0; j < size; j++) {
-					string s = m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).at(i).at(_T("Stock")).at(j);
+					string s = m_finnhubInaccessibleStock.at("InaccessibleStock").at(i).at("Stock").at(j);
 					pInaccessible->AddSymbol(s);
 				}
 				m_mapStock[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
@@ -108,10 +108,10 @@ void CTiingoInaccessibleStock::UpdateJson() {
 			auto jsonStock = json{ { "Function", val->GetFunctionString() } };
 			for (int i = 0; i < val->SymbolSize(); i++) {
 				auto s = val->GetSymbol(i);
-				jsonStock[_T("Stock")].push_back(s);
+				jsonStock["Stock"].push_back(s);
 			}
 
-			m_finnhubInaccessibleStock[_T("InaccessibleStock")].push_back(jsonStock);
+			m_finnhubInaccessibleStock["InaccessibleStock"].push_back(jsonStock);
 		}
 	}
 }

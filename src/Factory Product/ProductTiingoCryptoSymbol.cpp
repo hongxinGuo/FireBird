@@ -11,14 +11,14 @@
 #include "WorldMarket.h"
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/crypto?";
 	m_differ1 = 0;
 	m_differ2 = 0;
 	m_ratio = 3;
 }
 
 string CProductTiingoCryptoSymbol::CreateMessage() {
-	m_strInquiringSymbol = _T("All");
+	m_strInquiringSymbol = "All";
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
@@ -68,13 +68,13 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 		int iCount = 0;
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pTiingoCrypto = make_shared<CTiingoCrypto>();
-			s = jsonGetString(it, _T("ticker"));
+			s = jsonGetString(it, "ticker");
 			pTiingoCrypto->SetSymbol(s);
-			s = jsonGetString(it, _T("name"));
+			s = jsonGetString(it, "name");
 			if (!s.empty()) pTiingoCrypto->m_strName = s;
-			s = jsonGetString(it, _T("baseCurrency"));
+			s = jsonGetString(it, "baseCurrency");
 			if (!s.empty()) pTiingoCrypto->m_strBaseCurrency = s;
-			s = jsonGetString(it, _T("quoteCurrency"));
+			s = jsonGetString(it, "quoteCurrency");
 			pTiingoCrypto->m_strQuoteCurrency = s;
 
 			pTiingoCrypto->SetUpdateProfileDB(true); // 所有申请到的股票，皆当成新股票对待，需要存入数据库。
@@ -82,14 +82,14 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 			iCount++;
 		}
 	} catch (json::exception& e) {
-		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->GetSymbol(), e.what());
+		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage("Tiingo crypto symbol " + pTiingoCrypto->GetSymbol(), e.what());
 	}
 
 	return pvTiingoCrypto;
 }
 void CProductTiingoCryptoSymbol::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateCryptoSymbol(false);
 	gl_systemConfiguration.SetTiingoCryptoSymbolUpdateDate(gl_pWorldMarket->GetMarketDate());
-	gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol updated"));
+	gl_systemMessage.PushInformationMessage("Tiingo crypto symbol updated");
 }

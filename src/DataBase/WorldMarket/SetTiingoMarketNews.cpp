@@ -8,14 +8,14 @@ CSetTiingoMarketNews::CSetTiingoMarketNews(const CString& strSchema, const CStri
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_ids = 0;
-	m_tickers = _T("");
-	m_title = _T("");
-	m_tag = _T("");
-	m_source = _T("");
-	m_description = _T(" ");
-	m_url = _T("");
-	m_crawlDate = _T("19700101000000");
-	m_publishedDate = _T("19700101000000");
+	m_tickers = "";
+	m_title = "";
+	m_tag = "";
+	m_source = "";
+	m_description = " ";
+	m_url = "";
+	m_crawlDate = "19700101000000";
+	m_publishedDate = "19700101000000";
 
 	m_nFields = 10;
 }

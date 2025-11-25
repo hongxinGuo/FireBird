@@ -42,19 +42,19 @@ namespace FireBirdTest {
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200411); // 此日为星期六，新数据
-		pDayLine->SetStockSymbol(_T("OANDA:AUD_SGD"));
+		pDayLine->SetStockSymbol("OANDA:AUD_SGD");
 		pDayLine->SetClose(100);
 		pvDayLine->push_back(pDayLine);
 		m_dataForexDayLine.UpdateData(pvDayLine);
 
-		m_dataForexDayLine.SaveDB(_T("OANDA:AUD_SGD"));
+		m_dataForexDayLine.SaveDB("OANDA:AUD_SGD");
 
-		m_dataForexDayLine.LoadDB(_T("OANDA:AUD_SGD"));
+		m_dataForexDayLine.LoadDB("OANDA:AUD_SGD");
 		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), 20200411) << "新存储数据位于第六位";
 
 		// 恢复原状
 		CSetForexDayLine setForexDayLineBasic;
-		setForexDayLineBasic.m_strFilter = _T("[Date] = 20200411");
+		setForexDayLineBasic.m_strFilter = "[Date] = 20200411";
 		setForexDayLineBasic.Open();
 		setForexDayLineBasic.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setForexDayLineBasic.IsEOF()) << "新存储数据的日期";

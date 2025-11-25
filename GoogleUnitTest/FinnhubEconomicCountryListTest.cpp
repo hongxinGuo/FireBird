@@ -39,11 +39,11 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestInitialize) {
 		EXPECT_EQ(countryList.GetIndex(), 0);
-		EXPECT_EQ(countryList.GetInquiryFunction(), _T("https://finnhub.io/api/v1/country?"));
+		EXPECT_EQ(countryList.GetInquiryFunction(), "https://finnhub.io/api/v1/country?");
 	}
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestCreatMessage) {
-		EXPECT_EQ(countryList.CreateMessage(), _T("https://finnhub.io/api/v1/country?"));
+		EXPECT_EQ(countryList.CreateMessage(), "https://finnhub.io/api/v1/country?");
 	}
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestUpdateDataSourceStatus) {
@@ -53,25 +53,25 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCountryList());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic country List updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub economic country List updated");
 
 		gl_pFinnhubDataSource->SetUpdateCountryList(true);
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData92(2, _T(""), _T("{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData92(2, "", "{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
 	// 第一个数据缺乏CodeNo
-	Test_FinnhubWebData finnhubWebData93(3, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData93(3, "","[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
 	// 第二个数据缺乏Code2
-	Test_FinnhubWebData finnhubWebData94(4, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData94(4, "","[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
 	// 数据缺乏symbol
-	Test_FinnhubWebData finnhubWebData95(5, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData95(5, "","[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
 	// 空数据
-	Test_FinnhubWebData finnhubWebData96(6, _T(""), _T("{}"));
+	Test_FinnhubWebData finnhubWebData96(6, "", "{}");
 	// 无权访问数据
-	Test_FinnhubWebData finnhubWebData97(7, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
+	Test_FinnhubWebData finnhubWebData97(7, "", "{\"error\":\"You don't have access to this resource.\"}");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData100(10, "", "[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
 
 	class ParseFinnhubCountryListTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -115,13 +115,13 @@ namespace FireBirdTest {
 			break;
 		case 4: // 第二个数据缺Code2
 			EXPECT_EQ(m_pvCountry->size(), 1);
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, "NR");
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, "AUD");
 			break;
 		case 5: // 第二个数据缺CodeNo
 			EXPECT_EQ(m_pvCountry->size(), 1);
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, "NR");
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, "AUD");
 			break;
 		case 6: // 空数据
 			EXPECT_TRUE(m_pvCountry->empty());
@@ -133,12 +133,12 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvCountry->size(), 2);
-			EXPECT_EQ(m_pvCountry->at(1)->m_strCountry, _T("Zero")) << "以国家名称排序，位于第二个位置";
-			EXPECT_EQ(m_pvCountry->at(1)->m_strCode2, _T("NR"));
-			EXPECT_EQ(m_pvCountry->at(1)->m_strCurrencyCode, _T("AUD"));
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCountry, _T("Saint Martin (French part)")) << "以国家名称排序，位于第一个位置";
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, _T("MF"));
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("ANG"));
+			EXPECT_EQ(m_pvCountry->at(1)->m_strCountry, "Zero") << "以国家名称排序，位于第二个位置";
+			EXPECT_EQ(m_pvCountry->at(1)->m_strCode2, "NR");
+			EXPECT_EQ(m_pvCountry->at(1)->m_strCurrencyCode, "AUD");
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCountry, "Saint Martin (French part)") << "以国家名称排序，位于第一个位置";
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, "MF");
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, "ANG");
 			break;
 		default:
 			break;
@@ -160,8 +160,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			if (gl_dataContainerFinnhubCountry.IsCountry(_T("Zero"))) {
-				const auto pCountry = gl_dataContainerFinnhubCountry.GetCountry(_T("Zero"));
+			if (gl_dataContainerFinnhubCountry.IsCountry("Zero")) {
+				const auto pCountry = gl_dataContainerFinnhubCountry.GetCountry("Zero");
 				gl_dataContainerFinnhubCountry.Delete(pCountry);
 			}
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();

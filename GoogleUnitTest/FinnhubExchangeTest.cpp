@@ -31,14 +31,14 @@ namespace FireBirdTest {
 
 	TEST_F(CExchangeTest, TestInitialize) {
 		const CStockExchange Exchange;
-		EXPECT_EQ(Exchange.GetExchangeCode(), _T(" "));
-		EXPECT_EQ(Exchange.m_strName, _T(" "));
-		EXPECT_EQ(Exchange.m_strMic, _T(" "));
-		EXPECT_EQ(Exchange.m_strTimeZone, _T(" "));
-		EXPECT_EQ(Exchange.m_strHour, _T(" "));
-		EXPECT_EQ(Exchange.m_strCloseDate, _T(" "));
-		EXPECT_EQ(Exchange.m_strCountry, _T(""));
-		EXPECT_EQ(Exchange.m_strSource, _T(""));
+		EXPECT_EQ(Exchange.GetExchangeCode(), " ");
+		EXPECT_EQ(Exchange.m_strName, " ");
+		EXPECT_EQ(Exchange.m_strMic, " ");
+		EXPECT_EQ(Exchange.m_strTimeZone, " ");
+		EXPECT_EQ(Exchange.m_strHour, " ");
+		EXPECT_EQ(Exchange.m_strCloseDate, " ");
+		EXPECT_EQ(Exchange.m_strCountry, "");
+		EXPECT_EQ(Exchange.m_strSource, "");
 		EXPECT_TRUE(Exchange.m_fUpdateStockSymbol);
 		EXPECT_TRUE(Exchange.m_fUpdateMarketStatus);
 		EXPECT_TRUE(Exchange.m_fUpdateMarketHoliday);
@@ -72,14 +72,14 @@ namespace FireBirdTest {
 		CSetStockExchange setExchange, setExchange2;
 		CStockExchange Exchange, Exchange2;
 
-		Exchange.SetExchangeCode(_T("AA"));
-		Exchange.m_strName = _T("aaa");
-		Exchange.m_strMic = _T("abdc");
-		Exchange.m_strTimeZone = _T("Beijing");
-		Exchange.m_strHour = _T("10101010");
-		Exchange.m_strCloseDate = _T("20202020");
-		Exchange.m_strCountry = _T("dfe");
-		Exchange.m_strSource = _T("abc");
+		Exchange.SetExchangeCode("AA");
+		Exchange.m_strName = "aaa";
+		Exchange.m_strMic = "abdc";
+		Exchange.m_strTimeZone = "Beijing";
+		Exchange.m_strHour = "10101010";
+		Exchange.m_strCloseDate = "20202020";
+		Exchange.m_strCountry = "dfe";
+		Exchange.m_strSource = "abc";
 		Exchange.m_fUpdateStockSymbol = false;
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -89,19 +89,19 @@ namespace FireBirdTest {
 		setExchange.m_pDatabase->CommitTrans();
 		setExchange.Close();
 
-		setExchange2.m_strFilter = _T("[Code] = 'AA'");
+		setExchange2.m_strFilter = "[Code] = 'AA'";
 		setExchange2.Open();
 		setExchange2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setExchange2.IsEOF()) << "此时已经存入了AA";
 		Exchange2.Load(setExchange2);
-		EXPECT_EQ(Exchange.GetExchangeCode(), _T("AA"));
-		EXPECT_EQ(Exchange.m_strName, _T("aaa"));
-		EXPECT_EQ(Exchange.m_strMic, _T("abdc"));
-		EXPECT_EQ(Exchange.m_strTimeZone, _T("Beijing"));
-		EXPECT_EQ(Exchange.m_strHour, _T("10101010"));
-		EXPECT_EQ(Exchange.m_strCloseDate, _T("20202020"));
-		EXPECT_EQ(Exchange.m_strCountry, _T("dfe"));
-		EXPECT_EQ(Exchange.m_strSource, _T("abc"));
+		EXPECT_EQ(Exchange.GetExchangeCode(), "AA");
+		EXPECT_EQ(Exchange.m_strName, "aaa");
+		EXPECT_EQ(Exchange.m_strMic, "abdc");
+		EXPECT_EQ(Exchange.m_strTimeZone, "Beijing");
+		EXPECT_EQ(Exchange.m_strHour, "10101010");
+		EXPECT_EQ(Exchange.m_strCloseDate, "20202020");
+		EXPECT_EQ(Exchange.m_strCountry, "dfe");
+		EXPECT_EQ(Exchange.m_strSource, "abc");
 		EXPECT_FALSE(Exchange.m_fUpdateStockSymbol) << "这个参数不存入数据库";
 		setExchange2.Delete();
 		setExchange2.m_pDatabase->CommitTrans();

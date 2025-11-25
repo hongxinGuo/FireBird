@@ -17,7 +17,7 @@ std::string Test_gl_sFinnhubInaccessibleSymbol = R"(
 ]})";
 
 CInaccessible::CInaccessible() {
-	m_sFunction = _T("");
+	m_sFunction = "";
 	m_iFunction = 0;
 	m_vSymbol.clear();
 	m_setSymbol.clear();

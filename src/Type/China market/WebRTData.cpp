@@ -12,8 +12,8 @@
 void CWebRTData::Reset() {
 	m_lDataSource = INVALID_RT_WEB_DATA_;
 	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
-	m_strSymbol = _T("");
-	m_strStockName = _T("");
+	m_strSymbol = "";
+	m_strStockName = "";
 	m_lLastClose = 0;
 	m_lOpen = 0;
 	m_lHigh = 0;
@@ -257,13 +257,13 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	m_strSymbol.append(sv.data(), sv.size());
 	switch (lMarket) {
 	case 1: // 上海市场
-		m_strSymbol += _T(".SS");
+		m_strSymbol += ".SS";
 		break;
 	case 51: // 深圳市场
-		m_strSymbol += _T(".SZ");
+		m_strSymbol += ".SZ";
 		break;
 	default:
-		string s = _T("bad market: ");
+		string s = "bad market: ";
 		s.append(svData.data(), svData.length());
 		throw exception(s.c_str());
 	}
@@ -327,7 +327,7 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	string str(sv.data(), sv.size());
-	sscanf_s(str.c_str(), _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
+	sscanf_s(str.c_str(), "%f/%d/%I64d", &fTemp, &lTemp, &m_llAmount);
 	m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
 	// 成交手数
 	// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。

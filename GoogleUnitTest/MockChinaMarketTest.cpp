@@ -89,7 +89,7 @@ namespace FireBirdTest {
 				for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 					const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(i);
 					if (pStock->IsUpdateDayLineDB()) {
-						EXPECT_EQ(pStock->GetSymbol(), _T(""));
+						EXPECT_EQ(pStock->GetSymbol(), "");
 					}
 				}
 			}
@@ -215,7 +215,7 @@ namespace FireBirdTest {
 		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
 		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
 		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrongStockSet()) << _T("休息日不处理");
+		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrongStockSet()) << "休息日不处理";
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 }

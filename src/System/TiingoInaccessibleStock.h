@@ -52,7 +52,7 @@ public:
 	void SetUpdateDB(const bool fUpdate) noexcept { m_fUpdateDB = fUpdate; }
 
 protected:
-	string m_strFileName{ _T("TiingoInaccessibleStock.json") }; // 配置文件名称
+	string m_strFileName{ "TiingoInaccessibleStock.json" }; // 配置文件名称
 
 	long m_lUpdateDate{ 19800101 }; // 本文件更新日期
 	map<int, CInaccessibleStocksPtr> m_mapStock; //

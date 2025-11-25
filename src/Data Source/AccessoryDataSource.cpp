@@ -7,12 +7,12 @@
 
 CAccessoryDataSource::CAccessoryDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_strInquiryFunction = _T(""); // Accessory有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
-	//m_strHeaders = _T("User-Agent:PostmanRuntime/7.4.4.1\r\n");
+	m_strInquiryFunction = ""; // Accessory有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	//m_strHeaders = "User-Agent:PostmanRuntime/7.4.4.1\r\n");
 
-	m_strParam = _T("");
-	m_strSuffix = _T("");
-	m_strInquiryToken = _T("");
+	m_strParam = "";
+	m_strSuffix = "";
+	m_strInquiryToken = "";
 	m_lInquiringNumber = 1; // Accessory实时数据查询数量默认值
 
 	CAccessoryDataSource::ConfigureInternetOption();

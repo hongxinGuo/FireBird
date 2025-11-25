@@ -39,7 +39,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoMarketNewsTest, TestInitialize) {
 		EXPECT_EQ(marketNews.GetIndex(), 0);
-		EXPECT_EQ(marketNews.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/news?"));
+		EXPECT_EQ(marketNews.GetInquiryFunction(), "https://api.tiingo.com/tiingo/news?");
 	}
 
 	TEST_F(CProductTiingoMarketNewsTest, TestCreatMessage) {
@@ -90,15 +90,15 @@ namespace FireBirdTest {
 	}
 
 	// 正确的数据
-	Test_TiingoWebData tiingoMarketNews1(1, _T(""), _T("[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\",\"Markets\",\"Stock\",\"Technology\",\"Tiingo Top\",\"Trade\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]"));
+	Test_TiingoWebData tiingoMarketNews1(1, "", "[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\",\"Markets\",\"Stock\",\"Technology\",\"Tiingo Top\",\"Trade\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]");
 	// 第一个数据缺项
-	Test_TiingoWebData tiingoMarketNews2(2, _T(""), _T("[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]"));
+	Test_TiingoWebData tiingoMarketNews2(2, "", "[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]");
 	// 第二个数据缺项
-	Test_TiingoWebData tiingoMarketNews3(3, _T("aapl"), _T("[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]"));
+	Test_TiingoWebData tiingoMarketNews3(3, "aapl", "[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]");
 	// 正确的数据
-	Test_TiingoWebData tiingoMarketNews4(4, _T(""), _T("[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\",\"Markets\",\"Stock\",\"Technology\",\"Tiingo Top\",\"Trade\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]"));
+	Test_TiingoWebData tiingoMarketNews4(4, "", "[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\",\"Markets\",\"Stock\",\"Technology\",\"Tiingo Top\",\"Trade\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]");
 	// 正确的数据
-	Test_TiingoWebData tiingoMarketNews10(10, _T(""), _T("[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\",\"Markets\",\"Stock\",\"Technology\",\"Tiingo Top\",\"Trade\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]"));
+	Test_TiingoWebData tiingoMarketNews10(10, "", "[{\"source\":\"cnbc.com\",\"crawlDate\":\"2019-01-29T22:20:01.696871Z\",\"description\":\"Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late December.\",\"url\":\"https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html\",\"publishedDate\":\"2019-01-29T22:17:00Z\",\"tags\":[\"China\",\"Economic Measures\",\"Economics\",\"Markets\",\"Stock\",\"Technology\",\"Tiingo Top\",\"Trade\"],\"tickers\":[\"aapl\"],\"id\":15063835,\"title\":\"Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'\"}]");
 
 	class ParseTiingoMarketNewsTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -205,7 +205,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "第一个数据是正确的";
 
 		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetItem(_T("A"));
+			pStock = gl_dataContainerFinnhubStock.GetItem("A");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
@@ -216,7 +216,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 
 		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetItem(_T("AA"));
+			pStock = gl_dataContainerFinnhubStock.GetItem("AA");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
@@ -224,16 +224,16 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock(_T("NEW SYMBOL")));
-			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
-			pStock = gl_dataContainerFinnhubStock.GetItem(_T("AA"));
-			EXPECT_STREQ(pStock->GetName(), _T("New Name")) << "更改为此新名字";
+			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock("NEW SYMBOL")));
+			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock("NEW SYMBOL"))) != nullptr);
+			pStock = gl_dataContainerFinnhubStock.GetItem("AA");
+			EXPECT_STREQ(pStock->GetName(), "New Name")) << "更改为此新名字";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
 		// 恢复原状
 			gl_dataContainerTiingoStock.Delete(pTiingoStock);
 			pStock->SetUpdateProfileDB(false);
-			pStock->SetName(_T("Alcoa Corp"));
+			pStock->SetName("Alcoa Corp");
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 			break;
 		default:

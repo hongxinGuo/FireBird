@@ -8,8 +8,8 @@
 
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
-	m_strInquiryToken = _T("");
+	m_strInquiryFunction = "http://api.money.126.net/data/feed/";
+	m_strInquiryToken = "";
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 
 	CNeteaseRTDataSource::ConfigureInternetOption();
@@ -43,7 +43,7 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 void CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
-		const string strMessage = _T("http://api.money.126.net/data/feed/");
+		const string strMessage = "http://api.money.126.net/data/feed/";
 		const string strStocks = gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
 		const string strNeteaseStockCode = strStocks.substr(0, 7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
 		gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));

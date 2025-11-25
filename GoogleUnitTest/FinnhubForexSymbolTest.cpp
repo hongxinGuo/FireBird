@@ -36,10 +36,10 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestInitialize) {
 		CFinnhubForex FinnhubForexSymbol;
-		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), _T(""));
-		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), _T(""));
-		EXPECT_EQ(FinnhubForexSymbol.GetExchangeCode(), _T(""));
+		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), "");
+		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), "");
+		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), "");
+		EXPECT_EQ(FinnhubForexSymbol.GetExchangeCode(), "");
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);
@@ -57,22 +57,22 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexSymbolTest, TestGetDescription) {
 		CFinnhubForex symbol;
 
-		symbol.SetDescription(_T("abcdefg"));
-		EXPECT_EQ(symbol.GetDescription(), _T("abcdefg"));
+		symbol.SetDescription("abcdefg");
+		EXPECT_EQ(symbol.GetDescription(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDisplaySymbol) {
 		CFinnhubForex symbol;
 
-		symbol.SetDisplaySymbol(_T("abcdefg"));
-		EXPECT_EQ(symbol.GetDisplaySymbol(), _T("abcdefg"));
+		symbol.SetDisplaySymbol("abcdefg");
+		EXPECT_EQ(symbol.GetDisplaySymbol(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetSymbol) {
 		CFinnhubForex symbol;
 
-		symbol.SetSymbol(_T("abcdefg"));
-		EXPECT_EQ(symbol.GetSymbol(), _T("abcdefg"));
+		symbol.SetSymbol("abcdefg");
+		EXPECT_EQ(symbol.GetSymbol(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDayLineStartDate) {
@@ -169,31 +169,31 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString1) {
 		CFinnhubForex symbol;
 
-		symbol.SetSymbol(_T("ABCDE"));
+		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { // 
-			EXPECT_EQ(str, _T("ABCDE&resolution=D&from=315601200&to=123456789")) << "当前时间小于19800101，315601200就是美东标准时间的19800101";
+			EXPECT_EQ(str, "ABCDE&resolution=D&from=315601200&to=123456789") << "当前时间小于19800101，315601200就是美东标准时间的19800101";
 		}
 		else {
-			EXPECT_EQ(str, _T("ABCDE&resolution=D&from=315604800&to=123456789")) << "当前时间小于19800101，315601200就是美东标准时间的19800101";
+			EXPECT_EQ(str, "ABCDE&resolution=D&from=315604800&to=123456789") << "当前时间小于19800101，315601200就是美东标准时间的19800101";
 		}
 	}
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
 		CFinnhubForex symbol;
 
-		symbol.SetSymbol(_T("ABCDE"));
+		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
-		EXPECT_EQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
+		EXPECT_EQ(str, "ABCDE&resolution=D&from=1100000000&to=1131536000") << "365 * 24 * 3600 = 31536000";
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestAppendSymbol) {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2;
 		CFinnhubForex FinnhubForexSymbol, FinnhubForexSymbol2;
 
-		FinnhubForexSymbol.SetDescription(_T("abc"));
-		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
-		FinnhubForexSymbol.SetSymbol(_T("AAABC"));
-		FinnhubForexSymbol.SetExchangeCode(_T("US"));
+		FinnhubForexSymbol.SetDescription("abc");
+		FinnhubForexSymbol.SetDisplaySymbol("cba");
+		FinnhubForexSymbol.SetSymbol("AAABC");
+		FinnhubForexSymbol.SetExchangeCode("US");
 		FinnhubForexSymbol.SetDayLineStartDate(20000101);
 		FinnhubForexSymbol.SetDayLineEndDate(10000101);
 		FinnhubForexSymbol.SetIPOStatus(_STOCK_DELISTED_);
@@ -208,14 +208,14 @@ namespace FireBirdTest {
 		setFinnhubForexSymbol.m_pDatabase->CommitTrans();
 		setFinnhubForexSymbol.Close();
 
-		setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAABC'");
+		setFinnhubForexSymbol2.m_strFilter = "[Symbol] = 'AAABC'";
 		setFinnhubForexSymbol2.Open();
 		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "此时已经存入了AAABC";
 		FinnhubForexSymbol2.LoadSymbol(setFinnhubForexSymbol2);
-		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), _T("abc"));
-		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), _T("cba"));
-		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), _T("AAABC"));
-		EXPECT_EQ(FinnhubForexSymbol.GetExchangeCode(), _T("US"));
+		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), "abc");
+		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), "cba");
+		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), "AAABC");
+		EXPECT_EQ(FinnhubForexSymbol.GetExchangeCode(), "US");
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 20000101);
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 10000101);
 		EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), _STOCK_DELISTED_);
@@ -235,10 +235,10 @@ namespace FireBirdTest {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2, setFinnhubForexSymbol3;
 		CFinnhubForex FinnhubForexSymbol, FinnhubForexSymbol2;
 
-		FinnhubForexSymbol.SetDescription(_T("abc"));
-		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
-		FinnhubForexSymbol.SetSymbol(_T("AAABB"));
-		FinnhubForexSymbol.SetExchangeCode(_T("US"));
+		FinnhubForexSymbol.SetDescription("abc");
+		FinnhubForexSymbol.SetDisplaySymbol("cba");
+		FinnhubForexSymbol.SetSymbol("AAABB");
+		FinnhubForexSymbol.SetExchangeCode("US");
 		FinnhubForexSymbol.SetDayLineStartDate(20000101);
 		FinnhubForexSymbol.SetDayLineEndDate(10000101);
 		FinnhubForexSymbol.SetIPOStatus(_STOCK_DELISTED_);
@@ -254,10 +254,10 @@ namespace FireBirdTest {
 		setFinnhubForexSymbol.Close();
 
 		// 改成新值
-		FinnhubForexSymbol.SetDescription(_T("abc changed"));
-		FinnhubForexSymbol.SetDisplaySymbol(_T("changed"));
-		FinnhubForexSymbol.SetSymbol(_T("AAABB"));
-		FinnhubForexSymbol.SetExchangeCode(_T("US changed"));
+		FinnhubForexSymbol.SetDescription("abc changed");
+		FinnhubForexSymbol.SetDisplaySymbol("changed");
+		FinnhubForexSymbol.SetSymbol("AAABB");
+		FinnhubForexSymbol.SetExchangeCode("US changed");
 		FinnhubForexSymbol.SetDayLineStartDate(101);
 		FinnhubForexSymbol.SetDayLineEndDate(101);
 		FinnhubForexSymbol.SetIPOStatus(_STOCK_IPOED_);
@@ -265,21 +265,21 @@ namespace FireBirdTest {
 		FinnhubForexSymbol.SetUpdateDayLineDB(FALSE);
 		FinnhubForexSymbol.SetUpdateProfileDB(FALSE);
 
-		setFinnhubForexSymbol3.m_strFilter = _T("[Symbol] = 'AAABB'");
+		setFinnhubForexSymbol3.m_strFilter = "[Symbol] = 'AAABB'";
 		setFinnhubForexSymbol3.Open();
 		setFinnhubForexSymbol3.m_pDatabase->BeginTrans();
 		FinnhubForexSymbol.UpdateSymbol(setFinnhubForexSymbol3);
 		setFinnhubForexSymbol3.m_pDatabase->CommitTrans();
 		setFinnhubForexSymbol3.Close();
 
-		setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAABB'");
+		setFinnhubForexSymbol2.m_strFilter = "[Symbol] = 'AAABB'";
 		setFinnhubForexSymbol2.Open();
 		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "此时已经存入了AA";
 		FinnhubForexSymbol2.LoadSymbol(setFinnhubForexSymbol2);
-		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), _T("abc changed"));
-		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), _T("changed"));
-		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), _T("AAABB"));
-		EXPECT_EQ(FinnhubForexSymbol.GetExchangeCode(), _T("US changed"));
+		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), "abc changed");
+		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), "changed");
+		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), "AAABB");
+		EXPECT_EQ(FinnhubForexSymbol.GetExchangeCode(), "US changed");
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 101);
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 101);
 		EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), _STOCK_IPOED_);
@@ -303,17 +303,17 @@ namespace FireBirdTest {
 
 		pDayLine->SetDate(19800101);
 		pDayLine->SetClose(100);
-		pDayLine->SetStockSymbol(_T("OANDA:AUD_SGD"));
+		pDayLine->SetStockSymbol("OANDA:AUD_SGD");
 		pvDayLine->push_back(pDayLine);
-		FinnhubForexSymbol.SetSymbol(_T("OANDA:AUD_SGD"));
+		FinnhubForexSymbol.SetSymbol("OANDA:AUD_SGD");
 		FinnhubForexSymbol.UpdateDayLine(pvDayLine);
 
 		EXPECT_THAT(FinnhubForexSymbol.GetDayLineStartDate(), Eq(29900101));
 
 		FinnhubForexSymbol.UpdateDayLineDB();
 
-		setForexDayLine.m_strFilter = _T("[Symbol] = 'OANDA:AUD_SGD'");
-		setForexDayLine.m_strSort = _T("[Date]");
+		setForexDayLine.m_strFilter = "[Symbol] = 'OANDA:AUD_SGD'";
+		setForexDayLine.m_strSort = "[Date]";
 		setForexDayLine.Open();
 		EXPECT_EQ(setForexDayLine.m_Date, 19800101) << "刚存储的数据";
 		setForexDayLine.m_pDatabase->BeginTrans();

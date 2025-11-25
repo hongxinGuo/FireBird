@@ -13,7 +13,7 @@
 #include "WebData.h"
 
 CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoForexDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetStock(GetIndex());
 	string strParam;
@@ -113,8 +113,8 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 	if (!IsValidData(pWebData)) return pvDayLine;
 
 	try {
-		s = js.at(_T("detail")); // 是否有报错信息
-		string strMessage = _T("Tiingo stock dayLine ");
+		s = js.at("detail"); // 是否有报错信息
+		string strMessage = "Tiingo stock dayLine ";
 		strMessage += s;
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
@@ -124,24 +124,24 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pDayLine = make_shared<CDayLine>();
-			s = jsonGetString(it, _T("date"));
+			s = jsonGetString(it, "date");
 			pDayLine->SetDate(XferToYYYYMMDD(s));
-			double dTemp = jsonGetDouble(it, _T("close"));
+			double dTemp = jsonGetDouble(it, "close");
 			pDayLine->SetClose(dTemp * 1000);
-			dTemp = jsonGetDouble(it, _T("high"));
+			dTemp = jsonGetDouble(it, "high");
 			pDayLine->SetHigh(dTemp * 1000);
-			dTemp = jsonGetDouble(it, _T("low"));
+			dTemp = jsonGetDouble(it, "low");
 			pDayLine->SetLow(dTemp * 1000);
-			dTemp = jsonGetDouble(it, _T("open"));
+			dTemp = jsonGetDouble(it, "open");
 			pDayLine->SetOpen(dTemp * 1000);
-			long lTemp = jsonGetLong(it, _T("volume"));
+			long lTemp = jsonGetLong(it, "volume");
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
 	} catch (json::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
-		ReportJSonErrorToSystemMessage(_T("Tiingo Forex DayLine ") + str3, e.what());
+		ReportJSonErrorToSystemMessage("Tiingo Forex DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。

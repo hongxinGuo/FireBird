@@ -9,8 +9,8 @@
 CSetFinnhubStockBasicFinancialAnnual::CSetFinnhubStockBasicFinancialAnnual(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
-	m_symbol = _T("");
-	m_type = _T("");
+	m_symbol = "";
+	m_type = "";
 	m_date = 19800101;
 	m_value = 0;
 

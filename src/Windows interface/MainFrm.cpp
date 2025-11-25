@@ -232,9 +232,9 @@ CMainFrame::~CMainFrame() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 系统初始化开始
-	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
+	gl_systemMessage.PushInformationMessage("系统初始化中.....");
 	::SystemInitialization();
-	gl_systemMessage.PushInformationMessage(_T("重置系统"));
+	gl_systemMessage.PushInformationMessage("重置系统");
 
 	// 生成系统外观显示部件
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;
@@ -354,7 +354,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置500毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(1, 500, nullptr);
 	if (m_uIdTimer == 0) {
-		TRACE(_T("生成500ms时钟时失败\n"));
+		TRACE("生成500ms时钟时失败\n");
 	}
 
 	// 更新系统显示高度和宽度
@@ -529,7 +529,7 @@ void CMainFrame::UpdateStatus() {
 		SysCallSetPaneText(12, gl_systemMessage.GetChinaMarketSavingFunction());
 	}
 	else {
-		gl_systemMessage.SetChinaMarketSavingFunction(_T(""));
+		gl_systemMessage.SetChinaMarketSavingFunction("");
 		SysCallSetPaneText(12, "");
 	}
 
@@ -537,7 +537,7 @@ void CMainFrame::UpdateStatus() {
 		SysCallSetPaneText(13, gl_systemMessage.GetWorldMarketSavingFunction());
 	}
 	else {
-		gl_systemMessage.SetWorldMarketSavingFunction(_T(""));
+		gl_systemMessage.SetWorldMarketSavingFunction("");
 		SysCallSetPaneText(13, "");
 	}
 
@@ -676,7 +676,7 @@ void CMainFrame::ProcessChinaMarketStock() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		TRACE("China market Process today stock\n");
-		gl_systemMessage.SetChinaMarketSavingFunction(_T("Process today stock"));
+		gl_systemMessage.SetChinaMarketSavingFunction("Process today stock");
 		gl_pChinaMarket->ProcessTodayStock();
 		TRACE("China market Processed today stock\n");
 		gl_UpdateChinaMarketDB.release();
@@ -858,10 +858,10 @@ void CMainFrame::OnCalculate10dayRS1() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		TRACE("Calculate 10day RS1\n");
-		gl_systemMessage.SetChinaMarketSavingFunction(_T("Calculate 10day RS1"));
-		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
+		gl_systemMessage.SetChinaMarketSavingFunction("Calculate 10day RS1");
+		gl_systemMessage.PushInformationMessage("开始计算10日RS1\n");// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
-			gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
+			gl_systemMessage.PushInformationMessage("10日RS1计算完毕\n");
 			gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(gl_pChinaMarket->GetMarketDate());
 			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		}
@@ -875,10 +875,10 @@ void CMainFrame::OnCalculate10dayRS2() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		TRACE("calculate10dayRS2\n");
-		gl_systemMessage.SetChinaMarketSavingFunction(_T("Calculate 10day RS2"));
-		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
+		gl_systemMessage.SetChinaMarketSavingFunction("Calculate 10day RS2");
+		gl_systemMessage.PushInformationMessage("开始计算10日RS2\n");// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
-			gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
+			gl_systemMessage.PushInformationMessage("10日RS2计算完毕\n");
 			gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(gl_pChinaMarket->GetMarketDate());
 			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		}
@@ -966,7 +966,7 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 void BuildWeekLine(long lStartDate) {
 	gl_UpdateChinaMarketDB.acquire();
 	TRACE("build weekline\n");
-	gl_systemMessage.SetChinaMarketSavingFunction(_T("build weekline"));
+	gl_systemMessage.SetChinaMarketSavingFunction("build weekline");
 
 	const long lStartMonday = GetCurrentMonday(lStartDate);
 	const long year = lStartMonday / 10000;
@@ -1022,7 +1022,7 @@ void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		TRACE("build current weekline\n");
-		gl_systemMessage.SetChinaMarketSavingFunction(_T("build current weekline"));
+		gl_systemMessage.SetChinaMarketSavingFunction("build current weekline");
 		gl_pChinaMarket->BuildWeekLineOfCurrentWeek();
 		TRACE("build current weekline\n");
 		gl_UpdateChinaMarketDB.release();
@@ -1052,7 +1052,7 @@ void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		TRACE("build rebuild\n");
-		gl_systemMessage.SetChinaMarketSavingFunction(_T("build rebuild"));
+		gl_systemMessage.SetChinaMarketSavingFunction("build rebuild");
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();// 清除当前周周线表
 		gl_pChinaMarket->BuildCurrentWeekWeekLineTable();// 生成新的当前周周线
 		TRACE("build rebuild\n");
@@ -1072,7 +1072,7 @@ void CMainFrame::OnUpdateStockCode() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		TRACE("update stock code\n");
-		gl_systemMessage.SetChinaMarketSavingFunction(_T("update stock code"));
+		gl_systemMessage.SetChinaMarketSavingFunction("update stock code");
 		gl_dataContainerChinaStock.UpdateStockProfileDB();
 		TRACE("updated stock code\n");
 		gl_UpdateChinaMarketDB.release();
@@ -1095,7 +1095,7 @@ void CMainFrame::OnUpdateFinnhubStockDayLineStartEnd() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
 		TRACE("Finnhub stock dayline start end date\n");
-		gl_systemMessage.SetWorldMarketSavingFunction(_T("F stock dayline"));
+		gl_systemMessage.SetWorldMarketSavingFunction("F stock dayline");
 		gl_pWorldMarket->UpdateStockDayLineStartEndDate();
 		TRACE("Finnhub stock dayline start end date updated\n");
 		gl_UpdateWorldMarketDB.release();
@@ -1275,7 +1275,7 @@ void CMainFrame::OnCreateTiingoTradeDayDayline() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
 		TRACE("Tiingo create stock dayline\n");
-		gl_systemMessage.SetWorldMarketSavingFunction(_T("T create dayline"));
+		gl_systemMessage.SetWorldMarketSavingFunction("T create dayline");
 
 		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
 		TRACE("Tiingo create stock dayline ended\n");

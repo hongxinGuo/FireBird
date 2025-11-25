@@ -22,11 +22,11 @@ std::string Test_gl_sFinnhubInaccessibleExchange = R"(
 
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("FinnhubInaccessibleExchange全局变量只允许存在一个实例\n"));
+		TRACE("FinnhubInaccessibleExchange全局变量只允许存在一个实例\n");
 		ASSERT(FALSE);
 	}
 
-	ASSERT(m_strFileName.compare(_T("FinnhubInaccessibleExchange.json")) == 0);
+	ASSERT(m_strFileName.compare("FinnhubInaccessibleExchange.json") == 0);
 	if (LoadDB()) {
 		Update();
 	}
@@ -39,10 +39,10 @@ CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
 }
 
 void CFinnhubInaccessibleExchange::UpdateDB() {
-	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("json");
-	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("bak");
+	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + "json";
+	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + "bak";
 
-	DeleteFile((gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str());
+	std::filesystem::remove(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew);
 	rename((gl_systemConfiguration.GetConfigurationFileDirectory() + strOld).c_str(), (gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str()); // 保存备份
 	UpdateJson();
 	SaveDB();
@@ -79,16 +79,16 @@ void CFinnhubInaccessibleExchange::Update() {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
 	} catch (json::exception&) {}
 	try {
-		for (size_t i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
-			const auto size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
+		for (size_t i = 0; i < m_finnhubInaccessibleExchange.at("InaccessibleExchange").size(); i++) {
+			const auto size = m_finnhubInaccessibleExchange.at("InaccessibleExchange").at(i).at("Exchange").size();
 			if (size > 0) {
 				// 有exchange数据的话才建立数据集
 				const auto pInaccessible = make_shared<CInaccessible>();
-				string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
+				string s2 = m_finnhubInaccessibleExchange["InaccessibleExchange"].at(i).at("Function"); // 从json解析出的字符串格式为std::string
 				pInaccessible->SetFunctionString(s2);
 				pInaccessible->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString()));
 				for (size_t j = 0; j < size; j++) {
-					string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
+					string s = m_finnhubInaccessibleExchange.at("InaccessibleExchange").at(i).at("Exchange").at(j);
 					pInaccessible->AddSymbol(s);
 				}
 				m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
@@ -108,10 +108,10 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 			auto jsonExchange = json{ { "Function", val->GetFunctionString() } };
 			for (int i = 0; i < val->SymbolSize(); i++) {
 				auto s = val->GetSymbol(i);
-				jsonExchange[_T("Exchange")].push_back(s);
+				jsonExchange["Exchange"].push_back(s);
 			}
 
-			m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].push_back(jsonExchange);
+			m_finnhubInaccessibleExchange["InaccessibleExchange"].push_back(jsonExchange);
 		}
 	}
 }

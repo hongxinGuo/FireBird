@@ -8,95 +8,95 @@
 #include "WorldMarket.h"
 
 map<string, int> s_mapItem{
-	{ _T("accoci"), 1 },
-	{ _T("acctPay"), 2 },
-	{ _T("acctRec"), 3 },
-	{ _T("assetsCurrent"), 4 },
-	{ _T("assetsNonCurrent"), 5 },
-	{ _T("assetTurnover"), 6 },
-	{ _T("bookVal"), 7 },
-	{ _T("businessAcqDisposals"), 8 },
-	{ _T("bvps"), 9 },
-	{ _T("capex"), 10 },
-	{ _T("cashAndEq"), 11 },
-	{ _T("consolidatedIncome"), 12 },
-	{ _T("costRev"), 13 },
-	{ _T("currentRatio"), 14 },
-	{ _T("debt"), 15 },
-	{ _T("debtCurrent"), 16 },
-	{ _T("debtEquity"), 17 },
-	{ _T("debtNonCurrent"), 18 },
-	{ _T("deferredRev"), 19 },
-	{ _T("depamor"), 20 },
-	{ _T("deposits"), 21 },
-	{ _T("ebit"), 22 },
-	{ _T("ebitda"), 23 },
-	{ _T("ebt"), 24 },
-	{ _T("enterpriseVal"), 25 },
-	{ _T("eps"), 26 },
-	{ _T("epsDil"), 27 },
-	{ _T("epsQoQ"), 28 },
-	{ _T("equity"), 29 },
-	{ _T("freeCashFlow"), 30 },
-	{ _T("fxRate"), 31 },
-	{ _T("grossMargin"), 32 },
-	{ _T("grossProfit"), 33 },
-	{ _T("intangibles"), 34 },
-	{ _T("intexp"), 35 },
-	{ _T("inventory"), 36 },
-	{ _T("investments"), 37 },
-	{ _T("investmentsAcqDisposals"), 38 },
-	{ _T("investmentsCurrent"), 39 },
-	{ _T("investmentsNonCurrent"), 40 },
-	{ _T("issrepayDebt"), 41 },
-	{ _T("issrepayEquity"), 42 },
-	{ _T("liabilitiesCurrent"), 43 },
-	{ _T("liabilitiesNonCurrent"), 44 },
-	{ _T("longTermDebtEquity"), 45 },
-	{ _T("marketCap"), 46 },
-	{ _T("ncf"), 47 },
-	{ _T("ncff"), 48 },
-	{ _T("ncfi"), 49 },
-	{ _T("ncfo"), 50 },
-	{ _T("ncfx"), 51 },
-	{ _T("netinc"), 52 },
-	{ _T("netIncComStock"), 53 },
-	{ _T("netIncDiscOps"), 54 },
-	{ _T("netMargin"), 55 },
-	{ _T("nonControllingInterests"), 56 },
-	{ _T("opex"), 57 },
-	{ _T("opinc"), 58 },
-	{ _T("opMargin"), 59 },
-	{ _T("payDiv"), 60 },
-	{ _T("pbRatio"), 61 },
-	{ _T("peRatio"), 62 },
-	{ _T("piotroskiFScore"), 63 },
-	{ _T("ppeq"), 64 },
-	{ _T("prefDVDs"), 65 },
-	{ _T("profitMargin"), 66 },
-	{ _T("retainedEarnings"), 67 },
-	{ _T("revenue"), 68 },
-	{ _T("revenueQoQ"), 69 },
-	{ _T("rnd"), 70 },
-	{ _T("roa"), 71 },
-	{ _T("roe"), 72 },
-	{ _T("rps"), 73 },
-	{ _T("sbcomp"), 74 },
-	{ _T("sga"), 75 },
-	{ _T("shareFactor"), 76 },
-	{ _T("sharesBasic"), 77 },
-	{ _T("shareswa"), 78 },
-	{ _T("shareswaDil"), 79 },
-	{ _T("taxAssets"), 80 },
-	{ _T("taxExp"), 81 },
-	{ _T("taxLiabilities"), 82 },
-	{ _T("totalAssets"), 83 },
-	{ _T("totalLiabilities"), 84 },
-	{ _T("trailingPEG1Y"), 85 },
+	{ "accoci", 1 },
+	{ "acctPay", 2 },
+	{ "acctRec", 3 },
+	{ "assetsCurrent", 4 },
+	{ "assetsNonCurrent", 5 },
+	{ "assetTurnover", 6 },
+	{ "bookVal", 7 },
+	{ "businessAcqDisposals", 8 },
+	{ "bvps", 9 },
+	{ "capex", 10 },
+	{ "cashAndEq", 11 },
+	{ "consolidatedIncome", 12 },
+	{ "costRev", 13 },
+	{ "currentRatio", 14 },
+	{ "debt", 15 },
+	{ "debtCurrent", 16 },
+	{ "debtEquity", 17 },
+	{ "debtNonCurrent", 18 },
+	{ "deferredRev", 19 },
+	{ "depamor", 20 },
+	{ "deposits", 21 },
+	{ "ebit", 22 },
+	{ "ebitda", 23 },
+	{ "ebt", 24 },
+	{ "enterpriseVal", 25 },
+	{ "eps", 26 },
+	{ "epsDil", 27 },
+	{ "epsQoQ", 28 },
+	{ "equity", 29 },
+	{ "freeCashFlow", 30 },
+	{ "fxRate", 31 },
+	{ "grossMargin", 32 },
+	{ "grossProfit", 33 },
+	{ "intangibles", 34 },
+	{ "intexp", 35 },
+	{ "inventory", 36 },
+	{ "investments", 37 },
+	{ "investmentsAcqDisposals", 38 },
+	{ "investmentsCurrent", 39 },
+	{ "investmentsNonCurrent", 40 },
+	{ "issrepayDebt", 41 },
+	{ "issrepayEquity", 42 },
+	{ "liabilitiesCurrent", 43 },
+	{ "liabilitiesNonCurrent", 44 },
+	{ "longTermDebtEquity", 45 },
+	{ "marketCap", 46 },
+	{ "ncf", 47 },
+	{ "ncff", 48 },
+	{ "ncfi", 49 },
+	{ "ncfo", 50 },
+	{ "ncfx", 51 },
+	{ "netinc", 52 },
+	{ "netIncComStock", 53 },
+	{ "netIncDiscOps", 54 },
+	{ "netMargin", 55 },
+	{ "nonControllingInterests", 56 },
+	{ "opex", 57 },
+	{ "opinc", 58 },
+	{ "opMargin", 59 },
+	{ "payDiv", 60 },
+	{ "pbRatio", 61 },
+	{ "peRatio", 62 },
+	{ "piotroskiFScore", 63 },
+	{ "ppeq", 64 },
+	{ "prefDVDs", 65 },
+	{ "profitMargin", 66 },
+	{ "retainedEarnings", 67 },
+	{ "revenue", 68 },
+	{ "revenueQoQ", 69 },
+	{ "rnd", 70 },
+	{ "roa", 71 },
+	{ "roe", 72 },
+	{ "rps", 73 },
+	{ "sbcomp", 74 },
+	{ "sga", 75 },
+	{ "shareFactor", 76 },
+	{ "sharesBasic", 77 },
+	{ "shareswa", 78 },
+	{ "shareswaDil", 79 },
+	{ "taxAssets", 80 },
+	{ "taxExp", 81 },
+	{ "taxLiabilities", 82 },
+	{ "totalAssets", 83 },
+	{ "totalLiabilities", 84 },
+	{ "trailingPEG1Y", 85 },
 };
 
 CProductTiingoFinancialState::CProductTiingoFinancialState() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoFinancialState::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	string strParam = _T("/") + pStock->GetSymbol() + _T("/statements?startDate=");
+	string strParam = "/" + pStock->GetSymbol() + "/statements?startDate=";
 	m_strInquiringSymbol = pStock->GetSymbol();
 	string sDate = ConvertDateToTimeStamp(pStock->GetCompanyFinancialStatementUpdateDate());
 	m_strInquiry = m_strInquiryFunction + strParam + sDate;
@@ -163,7 +163,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
 	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	string symbol = pStock->GetSymbol();
-	string exchange = _T("US");
+	string exchange = "US";
 	string s1;
 
 	if (!IsValidData(pWebData)) return pvTiingoFinancialState;
@@ -180,17 +180,17 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			pFinancialStatePtr->m_symbol = symbol;
 			pFinancialStatePtr->m_exchange = exchange;
 			auto itemValue = item.value();
-			auto year2 = simdjsonGetInt64(itemValue, _T("year"));
-			auto quarter = simdjsonGetInt64(itemValue, _T("quarter"));
+			auto year2 = simdjsonGetInt64(itemValue, "year");
+			auto quarter = simdjsonGetInt64(itemValue, "quarter");
 			pFinancialStatePtr->m_yearQuarter = year2 * 100 + quarter;
-			auto date = simdjsonGetStringView(itemValue, _T("date"));
+			auto date = simdjsonGetStringView(itemValue, "date");
 			auto item2 = itemValue["statementData"];
 			try {
-				auto statesCashFlow = simdjsonGetArray(item2.value(), _T("cashFlow"));
+				auto statesCashFlow = simdjsonGetArray(item2.value(), "cashFlow");
 				for (auto item4 : statesCashFlow) {
-					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), "dataCode");
 					string s(name.data(), name.length());
-					auto value = item4[_T("value")];
+					auto value = item4["value"];
 					double value4;
 					if (value.is_integer()) {
 						value4 = simdjsonGetInt64(value.value());
@@ -206,11 +206,11 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			} catch (simdjson_error&) {
 			}
 			try {
-				auto incomeStatement = simdjsonGetArray(item2.value(), _T("incomeStatement"));
+				auto incomeStatement = simdjsonGetArray(item2.value(), "incomeStatement");
 				for (auto item4 : incomeStatement) {
-					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), "dataCode");
 					string s(name.data(), name.length());
-					auto value = item4[_T("value")];
+					auto value = item4["value"];
 					double value4;
 					if (value.is_integer()) {
 						value4 = simdjsonGetInt64(value.value());
@@ -226,11 +226,11 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			} catch (simdjson_error&) {
 			}
 			try {
-				auto balanceSheet = simdjsonGetArray(item2.value(), _T("balanceSheet"));
+				auto balanceSheet = simdjsonGetArray(item2.value(), "balanceSheet");
 				for (auto item4 : balanceSheet) {
-					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), "dataCode");
 					string s(name.data(), name.length());
-					auto value = item4[_T("value")];
+					auto value = item4["value"];
 					double value4;
 					if (value.is_integer()) {
 						value4 = simdjsonGetInt64(value.value());
@@ -246,11 +246,11 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			} catch (simdjson_error&) {
 			}
 			try {
-				auto overview = simdjsonGetArray(item2.value(), _T("overview"));
+				auto overview = simdjsonGetArray(item2.value(), "overview");
 				for (auto item4 : overview) {
-					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), "dataCode");
 					string s(name.data(), name.length());
-					auto value = item4[_T("value")];
+					auto value = item4["value"];
 					double value4;
 					if (value.is_integer()) {
 						value4 = simdjsonGetInt64(value.value());

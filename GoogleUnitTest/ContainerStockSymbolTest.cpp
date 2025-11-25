@@ -72,8 +72,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestUpdateStockSection2) {
-		const string strShanghaiStock = _T("600601.SS");
-		const string strShenzhenStock = _T("000001.SZ");
+		const string strShanghaiStock = "600601.SS";
+		const string strShenzhenStock = "000001.SZ";
 		constexpr long lIndex = 600;
 		constexpr long lIndex2 = 1000;
 
@@ -91,14 +91,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestIsStockSymbol) {
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("600000.SS")));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("900000.SS")));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("688000.SS")));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("000000.SZ")));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("002000.SZ")));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("001000.SZ")));
-		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol(_T("60000.SS")));
-		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol(_T("00000.SZ")));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("600000.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("900000.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("688000.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("000000.SZ"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("002000.SZ"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("001000.SZ"));
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("60000.SS"));
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("00000.SZ"));
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextIndex) {
@@ -117,12 +117,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestAdd) {
-		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol(_T("800800.SS"))) << "没有这个数据段的股票代码";
-		s_pDataStockSymbol->Add(_T("800800.SS"));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("800800.SS")));
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("800800.SS")) << "没有这个数据段的股票代码";
+		s_pDataStockSymbol->Add("800800.SS");
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("800800.SS"));
 
 		// ??????????
-		EXPECT_TRUE(s_pDataStockSymbol->Delete(_T("800800.SS")));
+		EXPECT_TRUE(s_pDataStockSymbol->Delete("800800.SS"));
 	}
 
 	TEST_F(CDataStockSymbolTest, TestUpdateStockSectionDB) {
@@ -139,39 +139,39 @@ namespace FireBirdTest {
 
 	TEST_F(CDataStockSymbolTest, TestGetNextStockInquiringMiddleStr) {
 		size_t i = 0;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i, _T(","), 2, XferStandardToSina), _T("sh000000,sh000001"));
+		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i,",", 2, XferStandardToSina), "sh000000,sh000001");
 		EXPECT_EQ(i, 2);
 
 		i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i, _T("."), 3, XferStandardToSina), _T("sh000002.sh000003.sh000004"));
+		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i, ".", 3, XferStandardToSina), "sh000002.sh000003.sh000004");
 		EXPECT_EQ(i, 5);
 
 		i = 5;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i, _T(","), 3, XferStandardToNetease), _T("0000005,0000006,0000007"));
+		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i,",", 3, XferStandardToNetease), "0000005,0000006,0000007");
 		EXPECT_EQ(i, 8);
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextSinaStockInquiringMiddleStr) {
 		long i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), _T("sh000000,sh000001")) << "起始位置为零";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), "sh000000,sh000001") << "起始位置为零";
 
 		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), _T("sh000002,sh000003,sh000004")) << "起始位置为2";;
+		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), "sh000002,sh000003,sh000004") << "起始位置为2";
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextTengxunStockInquiringMiddleStr) {
 		long i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), _T("sh000000,sh000001")) << "起始位置为零";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000000,sh000001") << "起始位置为零";
 
 		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), _T("sh000002,sh000003,sh000004")) << "起始位置为2";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000002,sh000003,sh000004") << "起始位置为2";
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextNeteaseStockInquiringMiddleStr) {
 		long i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), _T("0000000,0000001")) << "起始位置为零";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000000,0000001") << "起始位置为零";
 
 		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), _T("0000002,0000003,0000004")) << "起始位置为2";;
+		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000002,0000003,0000004") << "起始位置为2";;
 	}
 }

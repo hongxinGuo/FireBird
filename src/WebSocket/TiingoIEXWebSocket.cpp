@@ -22,19 +22,19 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason);
 		break;
 	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo IEX WebSocket Open"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo IEX WebSocket Open");
 		break;
 	case ix::WebSocketMessageType::Close:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo IEX WebSocket Close"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo IEX WebSocket Close");
 		break;
 	case ix::WebSocketMessageType::Fragment:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo IEX WebSocket Fragment"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo IEX WebSocket Fragment");
 		break;
 	case ix::WebSocketMessageType::Ping:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo IEX WebSocket Ping"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo IEX WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo IEX WebSocket Pong"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo IEX WebSocket Pong");
 		break;
 	default: // error
 		break;
@@ -43,7 +43,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 
 CTiingoIEXWebSocket::CTiingoIEXWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_url = _T("wss://api.tiingo.com/iex");
+	m_url = "wss://api.tiingo.com/iex";
 }
 
 /// <summary>
@@ -86,7 +86,7 @@ void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
 	json jsonMessage;
-	jsonMessage["eventName"] = _T("subscribe");
+	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 6; //Note threshold0-5需要IEX额外授权，使用6无需授权。
 	for (auto str : vSymbol) {
@@ -94,10 +94,10 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 		vSymbol2.push_back(str);
 	}
 	jsonMessage["eventData"]["tickers"] = vSymbol2;
-	jsonMessage["eventData"]["tickers"].emplace_back(_T("rig"));// tiingo使用的stock符号与finnhub不同
-	jsonMessage["eventData"]["tickers"].emplace_back(_T("eurusd"));// tiingo使用的stock符号与finnhub不同
-	jsonMessage["eventData"]["tickers"].emplace_back(_T("spy"));// tiingo使用的stock符号与finnhub不同
-	jsonMessage["eventData"]["tickers"].emplace_back(_T("nmm"));// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back("rig");// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back("eurusd");// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back("spy");// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back("nmm");// tiingo使用的stock符号与finnhub不同
 
 	return jsonMessage.dump();
 }
@@ -132,14 +132,14 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			string sType;
 			json js2, js3, js4;
 			json::iterator it;
-			sType = jsonGetString(js, _T("messageType"));
+			sType = jsonGetString(js, "messageType");
 			if (sType.empty()) return false;
 			switch (sType.at(0)) {
 			case 'A': // 交易数据 {"messageType":"A","service":"iex","data":["2019-01-30T13:33:45.383129126-05:00","vym",81.585]}
 				pIEXData = make_shared<CTiingoIEXSocket>();
-				sService = jsonGetString(js, _T("service"));
-				if (sService != _T("iex")) return false; // 此项必须为"iex"
-				js2 = jsonGetChild(js, _T("data"));
+				sService = jsonGetString(js, "service");
+				if (sService != "iex") return false; // 此项必须为"iex"
+				js2 = jsonGetChild(js, "data");
 				it = js2.begin();
 				pIEXData->m_sDateTime = jsonGetString(it);
 				ss.clear();
@@ -152,30 +152,30 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
-				js2 = jsonGetChild(js, _T("data"));
+				js2 = jsonGetChild(js, "data");
 				try { // {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
-					js3 = js2.at(_T("tickers"));
+					js3 = js2.at("tickers");
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (json::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;
 			case 'H': //Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				js3 = jsonGetChild(js, _T("response"));
-				m_iStatusCode = js3.at(_T("code"));
-				m_statusMessage = js3.at(_T("message"));
+				js3 = jsonGetChild(js, "response");
+				m_iStatusCode = js3.at("code");
+				m_statusMessage = js3.at("message");
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid"}}
-				js4 = jsonGetChild(js, _T("response"));
-				m_iStatusCode = js4.at(_T("code"));
-				m_statusMessage = js4.at(_T("message"));
+				js4 = jsonGetChild(js, "response");
+				m_iStatusCode = js4.at("code");
+				m_statusMessage = js4.at("message");
 				break;
 			default:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket type error"));
+				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo IEX WebSocket type error");
 				return false;
 			}
 		}
@@ -184,7 +184,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			return false;
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo IEX WebSocket "), e.what());
+		ReportJSonErrorToSystemMessage("Tiingo IEX WebSocket ", e.what());
 		return false;
 	}
 

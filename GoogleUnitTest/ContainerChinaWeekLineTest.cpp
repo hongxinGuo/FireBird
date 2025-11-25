@@ -36,12 +36,12 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData1) {
 		const auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->SetStockSymbol(_T("600000.SS"));
+		pWeekLine->SetStockSymbol("600000.SS");
 		pWeekLine->SetDate(20200101);
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
 		auto pWeekLine2 = make_shared<CWeekLine>();
-		pWeekLine2->SetStockSymbol(_T("600001.SS"));
+		pWeekLine2->SetStockSymbol("600001.SS");
 		pWeekLine2->SetDate(20200201);
 		pWeekLine2->SetHigh(11000);
 		pWeekLine2->SetLow(1200);
@@ -67,13 +67,13 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData2) {
 		const auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(_T("600000.SS"));
+		pDayLine->SetStockSymbol("600000.SS");
 		pDayLine->SetDate(20200101);
 		pDayLine->SetHigh(10000);
 		pDayLine->SetLow(100);
 		pDayLine->SetTransactionNumber(101);
 		const auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->SetStockSymbol(_T("600000.SS"));
+		pWeekLine->SetStockSymbol("600000.SS");
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
 		pWeekLine->SetTransactionNumber(1);
@@ -91,12 +91,12 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestStoreData1) {
 		const auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->SetStockSymbol(_T("600000.SS"));
+		pWeekLine->SetStockSymbol("600000.SS");
 		pWeekLine->SetDate(20200101);
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
 		auto pWeekLine2 = make_shared<CWeekLine>();
-		pWeekLine2->SetStockSymbol(_T("600001.SS"));
+		pWeekLine2->SetStockSymbol("600001.SS");
 		pWeekLine2->SetDate(20200201);
 		pWeekLine2->SetHigh(11000);
 		pWeekLine2->SetLow(1200);
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 		auto pWeekLine = make_shared<CWeekLine>();
 		CContainerChinaWeekLine dataChinaWeekLine, weekLineContainer2;
 
-		pWeekLine->SetStockSymbol(_T("600000.SS"));
+		pWeekLine->SetStockSymbol("600000.SS");
 		pWeekLine->SetDate(GetCurrentMonday(20200101)); // 此日期为星期三，20191230为星期一。
 		dataChinaWeekLine.Add(pWeekLine);
 
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 
 		weekLineContainer2.LoadCurrentWeekLine();
 		pWeekLine = static_pointer_cast<CWeekLine>(weekLineContainer2.GetData(0));
-		EXPECT_EQ(pWeekLine->GetStockSymbol(), _T("600000.SS"));
+		EXPECT_EQ(pWeekLine->GetStockSymbol(), "600000.SS");
 		EXPECT_EQ(pWeekLine->GetDate(), 20191230) << "20200101之前的星期一";
 
 		// 恢复原态
@@ -153,20 +153,20 @@ namespace FireBirdTest {
 
 		const CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetDate(19901224); // 测试数据库中000003.SZ最早的日期为19901231，故此数据位于最前面
-		pWeekLine->SetStockSymbol(_T("000003.SZ"));
+		pWeekLine->SetStockSymbol("000003.SZ");
 		pWeekLine->SetClose(100);
 		vWeekLine.push_back(pWeekLine);
 		dataChinaWeekLine.UpdateData(vWeekLine);
 
-		dataChinaWeekLine.SaveDB(_T("000003.SZ"));
+		dataChinaWeekLine.SaveDB("000003.SZ");
 
-		dataChinaWeekLine.LoadDB(_T("000003.SZ"));
+		dataChinaWeekLine.LoadDB("000003.SZ");
 		EXPECT_EQ(dataChinaWeekLine.GetData(0)->GetDate(), 19901224) << "新存储数据的日期";
 
 		// 恢复原状
 		CSetWeekLineBasicInfo setChinaStockWeekLineBasic;
-		setChinaStockWeekLineBasic.m_strFilter = _T("[Symbol] = '000003.SZ'");
-		setChinaStockWeekLineBasic.m_strSort = _T("[Date]");
+		setChinaStockWeekLineBasic.m_strFilter = "[Symbol] = '000003.SZ'";
+		setChinaStockWeekLineBasic.m_strSort = "[Date]";
 		setChinaStockWeekLineBasic.Open();
 		setChinaStockWeekLineBasic.m_pDatabase->BeginTrans();
 		EXPECT_EQ(setChinaStockWeekLineBasic.m_Date, 19901224) << "新存储数据的日期";

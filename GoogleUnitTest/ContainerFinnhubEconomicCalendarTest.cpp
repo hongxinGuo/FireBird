@@ -51,7 +51,7 @@ namespace FireBirdTest {
 	TEST_F(CContainerFinnhubEconomicCalendarTest, TestUpdate1) {
 		vector<CEconomicCalendarPtr> vEconomicCalendar;
 		const auto p1 = make_shared<CEconomicCalendar>();
-		p1->m_strCountry = _T("US");
+		p1->m_strCountry = "US";
 		const auto p2 = make_shared<CEconomicCalendar>();
 		vEconomicCalendar.push_back(p1);
 		vEconomicCalendar.push_back(p2);

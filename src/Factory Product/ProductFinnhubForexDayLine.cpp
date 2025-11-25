@@ -11,7 +11,7 @@
 #include "WebData.h"
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/candle?symbol=";
 }
 
 string CProductFinnhubForexDayLine::CreateMessage() {
@@ -23,7 +23,7 @@ string CProductFinnhubForexDayLine::CreateMessage() {
 }
 
 void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
@@ -60,24 +60,24 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pW
 	if (!IsValidData(pWebData)) return pvDayLine;
 
 	try {
-		auto s = jsonGetString(js, _T("s"));
-		if (s == _T("no_data")) {
+		auto s = jsonGetString(js, "s");
+		if (s == "no_data") {
 			// 没有日线数据，无需检查此股票的日线和实时数据
 			return pvDayLine;
 		}
-		if (s != _T("ok")) {
-			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
+		if (s != "ok") {
+			gl_systemMessage.PushErrorMessage("日线返回值不为ok");
 			return pvDayLine;
 		}
 	} catch (json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle没有s项"), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Forex Candle没有s项", e.what());
 		return pvDayLine;
 	}
 	try {
 		time_t tTemp;
 		long lTemp;
-		js2 = jsonGetChild(js, _T("t"));
+		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = jsonGetLongLong(it);
 			pDayLine = make_shared<CDayLine>();
@@ -87,42 +87,42 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pW
 			pvDayLine->push_back(pDayLine);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 't' "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Forex Candle missing 't' ", e.what());
 		return pvDayLine;
 	}
 	try {
 		int i;
 		INT64 llTemp;
 		double dTemp;
-		js2 = jsonGetChild(js, _T("c"));
+		js2 = jsonGetChild(js, "c");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
-		js2 = jsonGetChild(js, _T("h"));
+		js2 = jsonGetChild(js, "h");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
-		js2 = jsonGetChild(js, _T("l"));
+		js2 = jsonGetChild(js, "l");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
-		js2 = jsonGetChild(js, _T("o"));
+		js2 = jsonGetChild(js, "o");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
-		js2 = jsonGetChild(js, _T("v"));
+		js2 = jsonGetChild(js, "v");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			llTemp = jsonGetLongLong(it);
@@ -130,7 +130,7 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pW
 			pDayLine->SetVolume(llTemp);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 'v' "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Forex Candle missing 'v' ", e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);

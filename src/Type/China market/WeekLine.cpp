@@ -9,8 +9,8 @@ CWeekLine::CWeekLine() {
 bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend) {
 	if (m_lDate == 0) m_lDate = GetCurrentMonday(pHistoryCandleExtend->GetDate());
 	if (GetMarketTime() == 0) m_tpTime = pHistoryCandleExtend->GetMarketTimePoint();
-	if (m_strStockSymbol == _T("")) m_strStockSymbol = pHistoryCandleExtend->GetStockSymbol();
-	if (m_strDisplaySymbol == _T("")) m_strDisplaySymbol = pHistoryCandleExtend->GetDisplaySymbol();
+	if (m_strStockSymbol == "") m_strStockSymbol = pHistoryCandleExtend->GetStockSymbol();
+	if (m_strDisplaySymbol == "") m_strDisplaySymbol = pHistoryCandleExtend->GetDisplaySymbol();
 
 	if (m_lOpen == 0) m_lOpen = pHistoryCandleExtend->GetOpen();
 	if (m_lLastClose == 0) m_lLastClose = pHistoryCandleExtend->GetLastClose();

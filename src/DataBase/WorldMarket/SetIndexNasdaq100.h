@@ -9,7 +9,7 @@
 
 class CSetIndexNasdaq100 : public CVirtualRecordset {
 public:
-	explicit CSetIndexNasdaq100(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("index_nasdaq100"), CDatabase* pDatabase = nullptr);
+	explicit CSetIndexNasdaq100(const CString& strSchema = "WorldMarket", const CString& strTable = "index_nasdaq100", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -22,7 +22,7 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };
-	CString m_Symbol{ _T("") };
+	CString m_Symbol{ "" };
 	long m_ExpiredDate{ 20990101 };
 
 	// 重写

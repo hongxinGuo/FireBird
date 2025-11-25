@@ -5,7 +5,7 @@
 
 class CSetSICIndustry : public CVirtualRecordset {
 public:
-	CSetSICIndustry(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("sic_industry"), CDatabase* pDatabase = nullptr);
+	CSetSICIndustry(const CString& strSchema = "WorldMarket", const CString& strTable = "sic_industry", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -19,8 +19,8 @@ public:
 
 	long m_ID{ 0 };  // 索引用，自动生成。
 	long m_Code{ 0 };
-	CString m_Industry{ _T("") };
-	CString m_Sector{ _T("") };
+	CString m_Industry{ "" };
+	CString m_Sector{ "" };
 
 	// 重写
 	// 向导生成的虚函数重写

@@ -4,7 +4,7 @@
 
 CSetRSStrong2Stock::CSetRSStrong2Stock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_Symbol = _T("");
+	m_Symbol = "";
 	m_nFields = 1;
 }
 

@@ -21,18 +21,18 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };
-	CString m_Code{ _T("") };
-	CString m_Name{ _T("") };
-	CString m_Mic{ _T("") };
-	CString m_TimeZone{ _T("") };
-	CString m_PreMarket{ _T("") };
-	CString m_Hour{ _T("") };
-	CString m_PostMarket{ _T("") };
-	CString m_CloseDate{ _T("") };
-	CString m_Country{ _T("") };
-	CString m_CountryName{ _T("") };
-	CString m_Source{ _T("") };
-	CString m_MyUnknownColumn{ _T("") };
+	CString m_Code{ "" };
+	CString m_Name{ "" };
+	CString m_Mic{ "" };
+	CString m_TimeZone{ "" };
+	CString m_PreMarket{ "" };
+	CString m_Hour{ "" };
+	CString m_PostMarket{ "" };
+	CString m_CloseDate{ "" };
+	CString m_Country{ "" };
+	CString m_CountryName{ "" };
+	CString m_Source{ "" };
+	CString m_MyUnknownColumn{ "" };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

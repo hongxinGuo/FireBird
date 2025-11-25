@@ -684,7 +684,7 @@ namespace FireBirdTest {
 		}
 		id.SetCurrentGuadan(pCurrentRTData);
 		for (int i = 0; i < 180; i += 20) {
-			EXPECT_EQ(id.GetGuadan(10020 + i), 0) << _T("原有的挂单被清零了");
+			EXPECT_EQ(id.GetGuadan(10020 + i), 0) << "原有的挂单被清零了";
 		}
 		for (int i = 0; i < 5; i++) {
 			EXPECT_EQ(id.GetGuadan(10090 - i * 20), pCurrentRTData->GetVBuy(i));

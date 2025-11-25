@@ -45,9 +45,9 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestInitialize) {
-		EXPECT_EQ(TengxunRTDataSource.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
-		EXPECT_EQ(TengxunRTDataSource.GetInquiryToken(), _T(""));
-		EXPECT_EQ(TengxunRTDataSource.GetInquiringNumber(), 900) << _T("腾讯默认值");
+		EXPECT_EQ(TengxunRTDataSource.GetInquiryFunction(), "http://qt.gtimg.cn/q=");
+		EXPECT_EQ(TengxunRTDataSource.GetInquiryToken(), "");
+		EXPECT_EQ(TengxunRTDataSource.GetInquiringNumber(), 900) << "腾讯默认值";
 	}
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestGenerateInquiryMessage) {

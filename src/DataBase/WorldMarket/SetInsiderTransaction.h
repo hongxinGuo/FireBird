@@ -6,7 +6,7 @@
 
 class CSetInsiderTransaction : public CVirtualRecordset {
 public:
-	CSetInsiderTransaction(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_insider_transaction"), CDatabase* pDatabase = nullptr);
+	CSetInsiderTransaction(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_insider_transaction", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -19,13 +19,13 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };  // 索引用，自动生成。
-	CString m_Symbol{ _T("") };
-	CString m_PersonName{ _T("") };
-	CString m_Share{ _T("") };
-	CString m_Change{ _T("") };
+	CString m_Symbol{ "" };
+	CString m_PersonName{ "" };
+	CString m_Share{ "" };
+	CString m_Change{ "" };
 	long m_FilingDate{ 0 };
 	long m_TransactionDate{ 0 };
-	CString m_TransactionCode{ _T("") };
+	CString m_TransactionCode{ "" };
 	double m_TransactionPrice{ 0 };
 
 	// 重写

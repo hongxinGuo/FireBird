@@ -49,7 +49,7 @@ bool CContainerFinnhubCountry::LoadDB() {
 	CSetCountry setCountry;
 	CCountryPtr pCountry = nullptr;
 
-	setCountry.m_strSort = _T("[Country]");
+	setCountry.m_strSort = "[Country]";
 	setCountry.Open();
 	while (!setCountry.IsEOF()) {
 		pCountry = make_shared<CCountry>();

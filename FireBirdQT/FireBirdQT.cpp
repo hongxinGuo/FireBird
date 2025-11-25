@@ -20,7 +20,7 @@ void FireBirdQT::paintEvent(QPaintEvent* event) {
 	QPainter painter(this);
 
 	painter.drawPixmap(0, ui.mainToolBar->height() + ui.menuBar->height(), this->width(), this->height() - ui.menuBar->height() - ui.mainToolBar->height() - ui.statusBar->height(),
-	                   QPixmap(":/FireBirdQT/Res/Stone.jpg"));
+	                   QPixmap(":/FireBirdQT/Res/Stone.jpg");
 	event->accept();
 }
 */

@@ -10,7 +10,7 @@
 #include "WebData.h"
 
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile2?symbol=";
 }
 
 string CProductFinnhubCompanyProfileConcise::CreateMessage() {
@@ -22,7 +22,7 @@ string CProductFinnhubCompanyProfileConcise::CreateMessage() {
 }
 
 void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
@@ -61,30 +61,30 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 	if (IsNoRightToAccess()) return true;
 
 	try {
-		s = jsonGetString(js, _T("ticker"));
+		s = jsonGetString(js, "ticker");
 		if (!s.empty()) pStock->SetTicker(s);
-		s = jsonGetString(js, _T("country"));
+		s = jsonGetString(js, "country");
 		if (!s.empty()) pStock->SetCountry(s);
-		s = jsonGetString(js, _T("currency"));
+		s = jsonGetString(js, "currency");
 		if (!s.empty()) pStock->SetCurrency(s);
-		s = jsonGetString(js, _T("exchange"));
+		s = jsonGetString(js, "exchange");
 		//if (!s.empty()) pStock->SetExchangeCode(s); // 这里是交易所的全称，不使用此项数据。
-		s = jsonGetString(js, _T("name"));
+		s = jsonGetString(js, "name");
 		if (!s.empty()) pStock->SetName(s);
-		s = jsonGetString(js, _T("finnhubIndustry"));
+		s = jsonGetString(js, "finnhubIndustry");
 		if (!s.empty()) pStock->SetFinnhubIndustry(s);
-		s = jsonGetString(js, _T("logo"));
+		s = jsonGetString(js, "logo");
 		if (!s.empty()) pStock->SetLogo(s);
-		pStock->SetMarketCapitalization(jsonGetDouble(js, _T("marketCapitalization")));
-		s = jsonGetString(js, _T("phone"));
+		pStock->SetMarketCapitalization(jsonGetDouble(js, "marketCapitalization"));
+		s = jsonGetString(js, "phone");
 		if (!s.empty()) pStock->SetPhone(s);
-		pStock->SetShareOutstanding(jsonGetDouble(js, _T("shareOutstanding")));
-		s = jsonGetString(js, _T("weburl"));
+		pStock->SetShareOutstanding(jsonGetDouble(js, "shareOutstanding"));
+		s = jsonGetString(js, "weburl");
 		if (!s.empty()) pStock->SetWebURL(s);
-		s = jsonGetString(js, _T("ipo"));
+		s = jsonGetString(js, "ipo");
 		if (!s.empty()) pStock->SetIPODate(s);
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Stock Profile Concise ", e.what());
 		return false; // 出现错误则返回任务失败
 	}
 	return true;

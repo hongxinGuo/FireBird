@@ -55,8 +55,8 @@ namespace FireBirdTest {
 
 		ASSERT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "正常测试时不允许更改，需要更改时注释掉本行";
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		EXPECT_EQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("FireBird"));
-		EXPECT_EQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("firebird"));
+		EXPECT_EQ(gl_systemConfiguration.GetDatabaseAccountName(), "FireBird");
+		EXPECT_EQ(gl_systemConfiguration.GetDatabaseAccountPassword(), "firebird");
 		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
 
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 	void WorldMarketCheck() {
 		if (gl_pWorldMarket != nullptr) {
 			ASSERT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
-			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(_T("AAPL"));
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("AAPL");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			ASSERT_FALSE(pStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
@@ -146,14 +146,14 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847";
 
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(_T("A"))->IsUpdateDayLineDB());
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(_T("AAPL"))->IsUpdateDayLineDB());
+			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->IsUpdateDayLineDB());
+			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("AAPL")->IsUpdateDayLineDB());
 
 			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 7183) << "默认状态下数据库总数为7183";
 			//Note EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLineDB());
 
-			//EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(_T("A"))->IsUpdateInsiderTransaction());
+			//EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem("A"))->IsUpdateInsiderTransaction());
 
 			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			//		const auto p_stock = gl_dataContainerFinnhubStock.GetItem(l);

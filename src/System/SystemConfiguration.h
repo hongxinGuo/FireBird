@@ -320,7 +320,7 @@ public:
 protected:
 	static bool sm_bInitialized; // 使用静态变量来保证只生成唯一实列。
 	string m_strDirectory; // 配置文件目录
-	string m_strFileName{ _T("SystemConfiguration.json") }; // 配置文件名称
+	string m_strFileName{ "SystemConfiguration.json" }; // 配置文件名称
 
 	// 环境配置
 	int m_iDisplayPropertyPage{ 0 }; // application : 0, 
@@ -329,8 +329,8 @@ protected:
 	int m_iLogLevel{ SPDLOG_LEVEL_TRACE }; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off。默认记录等级为跟踪级（所有日志皆记录）
 	bool m_bDebugMode{ false }; // 系统是否是测试状态
 	bool m_bReloadSystem{ true }; // 系统是否允许周期性重启
-	string m_strDatabaseAccountName{ _T("FireBird") }; // 数据库账户名称
-	string m_strDatabaseAccountPassword{ _T("firebird") }; // 数据库账户密码
+	string m_strDatabaseAccountName{ "FireBird" }; // 数据库账户名称
+	string m_strDatabaseAccountPassword{ "firebird" }; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber{ 8 }; // 后台线程最大允许值
 
 	// 系统参数
@@ -340,18 +340,18 @@ protected:
 
 	// World Market
 	long m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
-	string m_strFinnhubToken{ _T("") }; // 令牌
-	string m_strQuandlToken{ _T("") }; // 令牌
+	string m_strFinnhubToken{ "" }; // 令牌
+	string m_strQuandlToken{ "" }; // 令牌
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
 	bool m_bQuandlAccountFeePaid{ true };
 	chrono::milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
 	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 400 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
 	chrono::milliseconds m_worldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
-	string m_strCurrentStock{ _T("") }; // 当前所选股票
+	string m_strCurrentStock{ "" }; // 当前所选股票
 
 	// Tiingo.com
 	bool m_bTiingoAccountFeePaid{ true };
-	string m_strTiingoToken{ _T("") };
+	string m_strTiingoToken{ "" };
 	long m_lTiingoFundamentalsMetaUpdateDate{ 19800101 };
 	long m_lTiingoCryptoSymbolUpdateDate{ 19800101 };
 	long m_lTiingoIEXTopOfBookUpdateDate{ 19800101 };
@@ -390,7 +390,7 @@ protected:
 	int m_iTiingoCompanyFinancialStateUpdateRate{ 30 }; // Tiingo公司金融数据更新
 
 	// 测试系统
-	string m_strBenchmarkTestFileDirectory{ _T("C:\\FireBird\\Test Data\\Benchmark\\") }; // 性能测试文件所在的目录
+	string m_strBenchmarkTestFileDirectory{ "C:\\FireBird\\Test Data\\Benchmark\\" }; // 性能测试文件所在的目录
 
 	bool m_fUpdateDB{ false };
 	bool m_fInitialized{ false };

@@ -15,7 +15,7 @@ void CContainerFinnhubEconomicCalendar::Reset() {
 bool CContainerFinnhubEconomicCalendar::LoadDB() {
 	CSetEconomicCalendar setEconomicCalendar;
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
-	string strSymbol = _T("");
+	string strSymbol = "";
 
 	setEconomicCalendar.Open();
 	while (!setEconomicCalendar.IsEOF()) {
@@ -50,7 +50,7 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 }
 
 bool CContainerFinnhubEconomicCalendar::Update(const vector<CEconomicCalendarPtr>& vEconomicCalendar) {
-	string strSymbol = _T("");
+	string strSymbol = "";
 
 	for (auto& pEconomicCalendar : vEconomicCalendar) {
 		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;

@@ -8,7 +8,7 @@
 #include "WebData.h"
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/symbol?exchange=";
 }
 
 string CProductFinnhubStockSymbol::CreateMessage() {
@@ -27,9 +27,9 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvStock->empty()) {
 		const auto pStock = pvStock->at(0);
 		if (IsBadStockSymbol(pStock->GetSymbol(), m_strInquiringExchange)) {
-			string s = _T("股票代码格式不符：");
+			string s = "股票代码格式不符：";
 			s += pStock->GetSymbol();
-			s += _T("  ");
+			s += "  ";
 			s += m_strInquiringExchange;
 			gl_systemMessage.PushErrorMessage(s);
 		}
@@ -44,7 +44,7 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 bool CProductFinnhubStockSymbol::IsBadStockSymbol(const string& strStockSymbol, const string& strExchangeCode) {
-	if (strExchangeCode.compare(_T("US")) == 0) return false; // 美国股票无需掭加交易所代码
+	if (strExchangeCode.compare("US") == 0) return false; // 美国股票无需掭加交易所代码
 	if (strStockSymbol.length() <= strExchangeCode.length()) return true; // 股票代码长度不大于交易所代码长度时，需要掭加。
 
 	const int iLength = strExchangeCode.length();
@@ -87,30 +87,30 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pStock = make_shared<CFinnhubStock>();
 			pStock->SetExchangeCode(m_strInquiringExchange); // 数据中没有交易所代码，在此处加上。
-			s = jsonGetString(it, _T("currency"));
+			s = jsonGetString(it, "currency");
 			if (!s.empty()) pStock->SetCurrency(s);
-			s = jsonGetString(it, _T("description"));
+			s = jsonGetString(it, "description");
 			if (!s.empty()) pStock->SetDescription(s);
-			s = jsonGetString(it, _T("displaySymbol"));
+			s = jsonGetString(it, "displaySymbol");
 			pStock->SetDisplaySymbol(s);
-			s = jsonGetString(it, _T("figi"));
+			s = jsonGetString(it, "figi");
 			if (!s.empty()) pStock->SetFigi(s);
-			s = jsonGetString(it, _T("isin"));
+			s = jsonGetString(it, "isin");
 			if (!s.empty()) pStock->SetIsin(s);
-			s = jsonGetString(it, _T("mic"));
+			s = jsonGetString(it, "mic");
 			if (!s.empty()) pStock->SetMic(s);
-			s = jsonGetString(it, _T("shareClassFIGI"));
+			s = jsonGetString(it, "shareClassFIGI");
 			if (!s.empty()) pStock->SetShareClassFIGI(s);
-			s = jsonGetString(it, _T("symbol"));
-			pStock->SetSymbol(s.c_str());
-			s = jsonGetString(it, _T("symbol2"));
+			s = jsonGetString(it, "symbol");
+			pStock->SetSymbol(s);
+			s = jsonGetString(it, "symbol2");
 			pStock->SetSymbol2(s);
-			s = jsonGetString(it, _T("type"));
+			s = jsonGetString(it, "type");
 			if (!s.empty()) pStock->SetType(s);
 			pvStock->push_back(pStock);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Stock Symbol ", e.what());
 		return pvStock;
 	}
 	return pvStock;

@@ -22,19 +22,19 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason);
 		break;
 	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Crypto WebSocket Open"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Crypto WebSocket Open");
 		break;
 	case ix::WebSocketMessageType::Close:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Crypto WebSocket Close"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Crypto WebSocket Close");
 		break;
 	case ix::WebSocketMessageType::Fragment:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Crypto WebSocket Fragment"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Crypto WebSocket Fragment");
 		break;
 	case ix::WebSocketMessageType::Ping:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Crypto WebSocket Ping"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Crypto WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Crypto WebSocket Pong"));
+		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Crypto WebSocket Pong");
 		break;
 	default: // error
 		break;
@@ -43,7 +43,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_url = _T("wss://api.tiingo.com/crypto");
+	m_url = "wss://api.tiingo.com/crypto";
 }
 
 /// <summary>
@@ -95,7 +95,7 @@ void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
 	json message;
-	message["eventName"] = _T("subscribe");
+	message["eventName"] = "subscribe";
 	message["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为2或者5
 	for (auto str : vSymbol) {
@@ -141,32 +141,32 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			string sString;
 			json js2, js3, js4;
 			json::iterator it;
-			sType = jsonGetString(js, _T("messageType"));
+			sType = jsonGetString(js, "messageType");
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
-				js2 = jsonGetChild(js, _T("data"));
+				js2 = jsonGetChild(js, "data");
 				try { //{"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
-					js3 = js2.at(_T("tickers"));
+					js3 = js2.at("tickers");
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) { // 是代码："data":{"tickers":["*","uso","msft","tnk"]
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				js3 = jsonGetChild(js, _T("response"));
-				m_iStatusCode = js3.at(_T("code"));
-				m_statusMessage = js3.at(_T("message"));
+				js3 = jsonGetChild(js, "response");
+				m_iStatusCode = js3.at("code");
+				m_statusMessage = js3.at("message");
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
-				sService = jsonGetString(js, _T("service"));
-				if (sService != _T("crypto_data")) return false; // 格式不符则退出
-				js2 = jsonGetChild(js, _T("data"));
+				sService = jsonGetString(js, "service");
+				if (sService != "crypto_data") return false; // 格式不符则退出
+				js2 = jsonGetChild(js, "data");
 				it = js2.begin();
 				sMessageType = jsonGetString(it); // ‘Q’或者‘T’
 				if (sMessageType.at(0) == 'T') {	//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
@@ -203,9 +203,9 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
-				js4 = jsonGetChild(js, _T("response"));
-				m_iStatusCode = js4.at(_T("code"));
-				m_statusMessage = js4.at(_T("message"));
+				js4 = jsonGetChild(js, "response");
+				m_iStatusCode = js4.at("code");
+				m_statusMessage = js4.at("message");
 				break;
 			default: // 错误
 				return false;
@@ -213,7 +213,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 		}
 		else { return false; }
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e.what());
+		ReportJSonErrorToSystemMessage("Tiingo Crypto WebSocket ", e.what());
 		return false;
 	}
 

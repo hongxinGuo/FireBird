@@ -109,9 +109,9 @@ protected:
 	// need to save
 	long m_lDate{ 0 }; // 类型(YYYYMMDD)
 	std::chrono::sys_seconds m_tpTime{ std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(0)) };
-	string m_strExchange{ _T("") };
-	string m_strStockSymbol{ _T("") };
-	string m_strDisplaySymbol{ _T("") };
+	string m_strExchange{ "" };
+	string m_strStockSymbol{ "" };
+	string m_strDisplaySymbol{ "" };
 
 	// 在不同的市场中，以下数据会放大若干倍（百倍、千倍、万倍等）。取决于价格使用几个小数点
 	long m_lLastClose{ 0 }; // 前收盘。

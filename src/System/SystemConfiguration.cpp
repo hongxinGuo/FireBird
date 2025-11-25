@@ -98,7 +98,7 @@ std::string gl_sSystemConfiguration = R"(
 CSystemConfiguration::CSystemConfiguration() {
 	ASSERT(!sm_bInitialized); // 只生成唯一实例
 	if (sm_bInitialized) {
-		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
+		TRACE("GlobeOption全局变量只允许存在一个实例\n");
 #ifdef _DEBUG
 		ASSERT(FALSE);
 #endif // _DEBUG
@@ -108,8 +108,8 @@ CSystemConfiguration::CSystemConfiguration() {
 	char buffer[200];
 	_getcwd(buffer, 200);
 	m_strDirectory = buffer;
-	m_strDirectory = m_strDirectory + _T("\\"); //
-	m_strFileName = _T("SystemConfiguration.json"); // json file name
+	m_strDirectory = m_strDirectory + "\\"; //
+	m_strFileName = "SystemConfiguration.json"; // json file name
 
 #ifdef DEBUG
 	m_bFastInquiringRTData = false; // 用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。默认为假
@@ -129,9 +129,9 @@ CSystemConfiguration::~CSystemConfiguration() {
 }
 
 void CSystemConfiguration::UpdateDB() {
-	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("json");
-	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("bak");
-	DeleteFile((GetConfigurationFileDirectory() + strNew).c_str());
+	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + "json";
+	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + "bak";
+	filesystem::remove(GetConfigurationFileDirectory() + strNew);
 	rename((GetConfigurationFileDirectory() + strOld).c_str(), (GetConfigurationFileDirectory() + strNew).c_str()); // 保存备份
 
 	SaveDB();
@@ -201,13 +201,13 @@ void CSystemConfiguration::Update(json& jsonData) {
 	// ChinaMarket
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-		if (sTemp == _T("sina")) {
+		if (sTemp == "sina") {
 			m_iChinaMarketRealtimeServer = 0;
 		}
-		else if (sTemp == _T("netease")) {
+		else if (sTemp == "netease") {
 			m_iChinaMarketRealtimeServer = 1;
 		}
-		else if (sTemp == _T("tengxun")) {
+		else if (sTemp == "tengxun") {
 			m_iChinaMarketRealtimeServer = 2;
 		}
 		else { // 非法服务器名称，使用默认sina服务器
@@ -219,10 +219,10 @@ void CSystemConfiguration::Update(json& jsonData) {
 	}
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-		if (sTemp == _T("netease")) {
+		if (sTemp == "netease") {
 			m_iChinaMarketDayLineServer = 0;
 		}
-		else if (sTemp == _T("tengxun")) {
+		else if (sTemp == "tengxun") {
 			m_iChinaMarketDayLineServer = 1;
 		}
 		else {// 非法服务器名称，使用默认sina服务器
@@ -276,7 +276,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 		sTemp = jsonData.at("ChinaMarket").at("CurrentStock"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		m_strCurrentStock = sTemp;
 	} catch (json::out_of_range&) {
-		m_strCurrentStock = _T("");
+		m_strCurrentStock = "";
 		m_fUpdateDB = true;
 	}
 
@@ -462,7 +462,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	switch (m_iDisplayPropertyPage) {
 	case 0:
 		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
-		jsonData["Environment"]["Display"]["PropertyPage"] = str;
+		jsonData["Environment"]["Display"]["PropertyPage"] = ToUTF8(str);
 		break;
 	case 1:
 		str.LoadString(nullptr, IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
@@ -474,7 +474,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
 		break;
 	}
-	jsonData["Environment"]["Display"]["PropertyPage"] = str;
+	jsonData["Environment"]["Display"]["PropertyPage"] = ToUTF8(str);
 
 	// system
 	jsonData["SystemConfiguration"]["LogLevel"] = m_iLogLevel;
@@ -487,27 +487,27 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	// China market
 	switch (m_iChinaMarketRealtimeServer) {
 	case 0:
-		jsonData["ChinaMarket"]["RealtimeServer"] = _T("sina");
+		jsonData["ChinaMarket"]["RealtimeServer"] = "sina";
 		break;
 	case 1:
-		jsonData["ChinaMarket"]["RealtimeServer"] = _T("netease");
+		jsonData["ChinaMarket"]["RealtimeServer"] = "netease";
 		break;
 	case 2:
-		jsonData["ChinaMarket"]["RealtimeServer"] = _T("tengxun");
+		jsonData["ChinaMarket"]["RealtimeServer"] = "tengxun";
 		break;
 	default:
-		jsonData["ChinaMarket"]["RealtimeServer"] = _T("sina");
+		jsonData["ChinaMarket"]["RealtimeServer"] = "sina";
 		break;
 	}
 	switch (m_iChinaMarketDayLineServer) {
 	case 0:
-		jsonData["ChinaMarket"]["DayLineServer"] = _T("netease");
+		jsonData["ChinaMarket"]["DayLineServer"] = "netease";
 		break;
 	case 1:
-		jsonData["ChinaMarket"]["DayLineServer"] = _T("tengxun");
+		jsonData["ChinaMarket"]["DayLineServer"] = "tengxun";
 		break;
 	default:
-		jsonData["ChinaMarket"]["DayLineServer"] = _T("netease");
+		jsonData["ChinaMarket"]["DayLineServer"] = "netease";
 		break;
 	}
 	jsonData["ChinaMarket"]["NumberOfRTDataSource"] = m_iNumberOfRTDataSource;

@@ -8,7 +8,7 @@
 
 class CSetEconomicCalendar : public CVirtualRecordset {
 public:
-	CSetEconomicCalendar(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_economic_calendar"), CDatabase* pDatabase = nullptr);
+	CSetEconomicCalendar(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_economic_calendar", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -21,14 +21,14 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };  // 索引用，自动生成。
-	CString m_Time{ _T("") };
-	CString m_Country{ _T("") };
-	CString m_Event{ _T("") };
-	CString m_Impact{ _T("") };
-	CString m_Actual{ _T("") };
-	CString m_Estimate{ _T("") };
-	CString m_Prev{ _T("") };
-	CString m_Unit{ _T("") };
+	CString m_Time{ "" };
+	CString m_Country{ "" };
+	CString m_Event{ "" };
+	CString m_Impact{ "" };
+	CString m_Actual{ "" };
+	CString m_Estimate{ "" };
+	CString m_Prev{ "" };
+	CString m_Unit{ "" };
 
 	// 重写
 	// 向导生成的虚函数重写

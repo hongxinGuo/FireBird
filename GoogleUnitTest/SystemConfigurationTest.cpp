@@ -29,7 +29,7 @@ namespace FireBirdTest {
 		string sTemp;
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/Environment/Display/PropertyPage"));
-		EXPECT_TRUE(sTemp== _T("System Status"));
+		EXPECT_TRUE(sTemp== "System Status");
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_INFO);
 		EXPECT_NE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_ERROR) << "预先设置的为info级";
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/UsingFastCPU")));
@@ -37,27 +37,27 @@ namespace FireBirdTest {
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/ReloadSystem")));
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountName"));
-		EXPECT_TRUE(sTemp == _T("FireBird"));
+		EXPECT_TRUE(sTemp == "FireBird");
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountPassword"));
-		EXPECT_TRUE(sTemp == _T("firebird"));
+		EXPECT_TRUE(sTemp == "firebird");
 
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/BackgroundThreadPermittedNumber")), 8);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/SavingThreadPermittedNumber")), 4);
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/RealtimeServer"));
-		EXPECT_TRUE(sTemp == _T("sina"));
+		EXPECT_TRUE(sTemp == "sina");
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 250);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/SinaRTDataInquiryPerTime")), 850);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/NeteaseRTDataInquiryPerTime")), 900);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/CurrentStock"));
-		EXPECT_TRUE(sTemp == _T("600026.SS"));
+		EXPECT_TRUE(sTemp == "600026.SS");
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
-		EXPECT_TRUE(sTemp == _T("bv985d748v6u0"));
+		EXPECT_TRUE(sTemp == "bv985d748v6u0");
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlToken"));
-		EXPECT_TRUE(sTemp == _T("aBMXMyo_N3pMb3ex"));
+		EXPECT_TRUE(sTemp == "aBMXMyo_N3pMb3ex");
 
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubAccountFeePaid")));
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlAccountFeePaid")));
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 
 		//Tiingo.com
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/Tiingo/Token"));
-		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2630d235316a4683156"));
+		EXPECT_TRUE(sTemp == "c897a00b7cfc2630d235316a4683156");
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/IEXTopOfBookUpdateDate")), 19990101);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/HourlyRequestLimit")), 500);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/DailyRequestLimit")), 20000);
@@ -89,14 +89,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")), 30);
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/TestConfiguration/BenchmarkTestFileDirectory"));
-		EXPECT_EQ(sTemp, _T("C:\\FireBird\\Test Data\\Benchmark\\"));
+		EXPECT_EQ(sTemp, "C:\\FireBird\\Test Data\\Benchmark\\");
 	}
 
 	TEST_F(CSystemConfigurationTest, TestInitialize) {
 		EXPECT_EQ(gl_systemConfiguration.GetDisplayPropertyPage(), 0);
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountName().compare( _T("FireBird")) ==0);
-		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountPassword().compare( _T("firebird")) == 0);
+		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountName().compare( "FireBird") ==0);
+		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountPassword().compare( "firebird") == 0);
 		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
 
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
@@ -112,7 +112,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count(), 500) << "默认每小时查询最大数量为20000";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime().count(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
-		EXPECT_TRUE(gl_systemConfiguration.GetTiingoToken().compare(_T("c897a00b7cfc2630d235316a4683156")) == 0);
+		EXPECT_TRUE(gl_systemConfiguration.GetTiingoToken().compare("c897a00b7cfc2630d235316a4683156") == 0);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoStockDayLineProcessedDate(), 19800101);
@@ -258,12 +258,12 @@ namespace FireBirdTest {
 		try {
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfiguration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocket预设为真";
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
-			EXPECT_TRUE(jsSystemConfiguration["ChinaMarket"]["CurrentStock"] == _T("600026.SS"));
+			EXPECT_TRUE(jsSystemConfiguration["ChinaMarket"]["CurrentStock"] == "600026.SS");
 
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")] == gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate());
 
 			const string sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
-			EXPECT_TRUE(sTemp==_T("sina"));
+			EXPECT_TRUE(sTemp=="sina");
 		} catch (json::type_error&) {
 			EXPECT_TRUE(FALSE);
 		}

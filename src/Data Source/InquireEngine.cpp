@@ -96,9 +96,9 @@ CWebDataPtr CInquireEngine::GetWebData() {
 // 调用函数需要处理exception。
 //
 void CInquireEngine::OpenFile() {
-	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(m_strInquiry.c_str(), 1,
+	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(reinterpret_cast<LPCTSTR>(m_strInquiry.c_str()), 1,
 	                                                      INTERNET_FLAG_TRANSFER_ASCII,
-	                                                      m_strHeaders.c_str(), m_strHeaders.length()));
+	                                                      reinterpret_cast<LPCTSTR>(m_strHeaders.c_str()), m_strHeaders.length()));
 }
 
 void CInquireEngine::GetFileHeaderInformation() {

@@ -4,25 +4,25 @@
 #include "EconomicCalendar.h"
 
 CEconomicCalendar::CEconomicCalendar() {
-	m_strCountry = _T(" ");
+	m_strCountry = " ";
 	m_iTime = 0;
-	m_strEvent = _T(" ");
-	m_strImpact = _T(" ");
+	m_strEvent = " ";
+	m_strImpact = " ";
 	m_dActual = 0.0;
 	m_dEstimate = 0.0;
 	m_dPrev = 0.0;
-	m_strUnit = _T(" ");
+	m_strUnit = " ";
 }
 
 void CEconomicCalendar::Load(const CSetEconomicCalendar& setEconomicCalendar) {
-	m_strTime = setEconomicCalendar.m_Time;
-	m_strCountry = setEconomicCalendar.m_Country;
-	m_strEvent = setEconomicCalendar.m_Event;
-	m_strImpact = setEconomicCalendar.m_Impact;
-	m_dActual = atof(setEconomicCalendar.m_Actual);
-	m_dEstimate = atof(setEconomicCalendar.m_Estimate);
-	m_dPrev = atof(setEconomicCalendar.m_Prev);
-	m_strUnit = setEconomicCalendar.m_Unit;
+	m_strTime = ToUTF8(setEconomicCalendar.m_Time);
+	m_strCountry = ToUTF8(setEconomicCalendar.m_Country);
+	m_strEvent = ToUTF8(setEconomicCalendar.m_Event);
+	m_strImpact = ToUTF8(setEconomicCalendar.m_Impact);
+	m_dActual = _tstof(setEconomicCalendar.m_Actual);
+	m_dEstimate = _tstof(setEconomicCalendar.m_Estimate);
+	m_dPrev = _tstof(setEconomicCalendar.m_Prev);
+	m_strUnit = ToUTF8(setEconomicCalendar.m_Unit);
 }
 
 void CEconomicCalendar::Append(CSetEconomicCalendar& setEconomicCalendar) const {

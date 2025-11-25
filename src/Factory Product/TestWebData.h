@@ -15,7 +15,7 @@ struct Test_FinnhubWebData {
 
 public:
 	long m_lIndex{ 0 };
-	string m_strSymbol{ _T("") };
+	string m_strSymbol{ "" };
 	CWebDataPtr m_pData{ nullptr };
 };
 
@@ -36,6 +36,6 @@ struct Test_TiingoWebData {
 
 public:
 	long m_lIndex{ 0 };
-	string m_strSymbol{ _T("") };
+	string m_strSymbol{ "" };
 	CWebDataPtr m_pData{ nullptr };
 };

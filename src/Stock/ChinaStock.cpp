@@ -33,7 +33,7 @@ bool IsShareA(const string& strStockCode) {
 
 bool IsChinaStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
-	return strcmp(typeid(*pStock).name(), _T("class CChinaStock")) == 0;
+	return strcmp(typeid(*pStock).name(), "class CChinaStock") == 0;
 }
 
 CChinaStock::CChinaStock() {
@@ -188,7 +188,7 @@ void CChinaStock::UpdateStatusByDownloadedDayLine() {
 
 void CChinaStock::ReportDayLineDownLoaded() {
 	//string strTemp = GetSymbol();
-	//strTemp += _T("日线下载完成.");
+	//strTemp += "日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
@@ -329,7 +329,7 @@ void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
 void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	SetActive(true);
 	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-	if (pRTData->GetStockName() != _T("")) SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	if (pRTData->GetStockName() != "") SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 	SetIPOStatus(_STOCK_IPOED_);
 }
 
@@ -368,73 +368,73 @@ void CChinaStock::AppendTodayExtendInfo(CSetChinaMarketDayLneExtendInfo* pSetDay
 //
 ////////////////////////////////////////////////////////////////////////////
 void CChinaStock::LoadTodaySavedInfo(const CSetDayLineTodaySaved* pSetDayLineTemp) {
-	m_lUnknownVolume = atoll(pSetDayLineTemp->m_UnknownVolume);
+	m_lUnknownVolume = _tstoll(pSetDayLineTemp->m_UnknownVolume);
 
-	m_lTransactionNumber = atol(pSetDayLineTemp->m_TransactionNumber);
-	m_lTransactionNumberBelow5000 = atol(pSetDayLineTemp->m_TransactionNumberBelow5000);
-	m_lTransactionNumberBelow50000 = atol(pSetDayLineTemp->m_TransactionNumberBelow50000);
-	m_lTransactionNumberBelow200000 = atol(pSetDayLineTemp->m_TransactionNumberBelow200000);
-	m_lTransactionNumberAbove200000 = atol(pSetDayLineTemp->m_TransactionNumberAbove200000);
-	m_lCanceledBuyVolume = atoll(pSetDayLineTemp->m_CanceledBuyVolume);
-	m_lCanceledSellVolume = atoll(pSetDayLineTemp->m_CanceledSellVolume);
-	m_lAttackBuyVolume = atoll(pSetDayLineTemp->m_AttackBuyVolume);
-	m_lAttackSellVolume = atoll(pSetDayLineTemp->m_AttackSellVolume);
-	m_lStrongBuyVolume = atoll(pSetDayLineTemp->m_StrongBuyVolume);
-	m_lStrongSellVolume = atoll(pSetDayLineTemp->m_StrongSellVolume);
-	m_lOrdinaryBuyVolume = atoll(pSetDayLineTemp->m_OrdinaryBuyVolume);
-	m_lOrdinarySellVolume = atoll(pSetDayLineTemp->m_OrdinarySellVolume);
-	m_lAttackBuyBelow50000 = atoll(pSetDayLineTemp->m_AttackBuyBelow50000);
-	m_lAttackBuyBelow200000 = atoll(pSetDayLineTemp->m_AttackBuyBelow200000);
-	m_lAttackBuyAbove200000 = atoll(pSetDayLineTemp->m_AttackBuyAbove200000);
-	m_lAttackSellBelow50000 = atoll(pSetDayLineTemp->m_AttackSellBelow50000);
-	m_lAttackSellBelow200000 = atoll(pSetDayLineTemp->m_AttackSellBelow200000);
-	m_lAttackSellAbove200000 = atoll(pSetDayLineTemp->m_AttackSellAbove200000);
-	m_llVolume = atoll(pSetDayLineTemp->m_Volume);
-	m_llLastSavedVolume = atoll(pSetDayLineTemp->m_Volume);
+	m_lTransactionNumber = _tstol(pSetDayLineTemp->m_TransactionNumber);
+	m_lTransactionNumberBelow5000 = _tstol(pSetDayLineTemp->m_TransactionNumberBelow5000);
+	m_lTransactionNumberBelow50000 = _tstol(pSetDayLineTemp->m_TransactionNumberBelow50000);
+	m_lTransactionNumberBelow200000 = _tstol(pSetDayLineTemp->m_TransactionNumberBelow200000);
+	m_lTransactionNumberAbove200000 = _tstol(pSetDayLineTemp->m_TransactionNumberAbove200000);
+	m_lCanceledBuyVolume = _tstoll(pSetDayLineTemp->m_CanceledBuyVolume);
+	m_lCanceledSellVolume = _tstoll(pSetDayLineTemp->m_CanceledSellVolume);
+	m_lAttackBuyVolume = _tstoll(pSetDayLineTemp->m_AttackBuyVolume);
+	m_lAttackSellVolume = _tstoll(pSetDayLineTemp->m_AttackSellVolume);
+	m_lStrongBuyVolume = _tstoll(pSetDayLineTemp->m_StrongBuyVolume);
+	m_lStrongSellVolume = _tstoll(pSetDayLineTemp->m_StrongSellVolume);
+	m_lOrdinaryBuyVolume = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolume);
+	m_lOrdinarySellVolume = _tstoll(pSetDayLineTemp->m_OrdinarySellVolume);
+	m_lAttackBuyBelow50000 = _tstoll(pSetDayLineTemp->m_AttackBuyBelow50000);
+	m_lAttackBuyBelow200000 = _tstoll(pSetDayLineTemp->m_AttackBuyBelow200000);
+	m_lAttackBuyAbove200000 = _tstoll(pSetDayLineTemp->m_AttackBuyAbove200000);
+	m_lAttackSellBelow50000 = _tstoll(pSetDayLineTemp->m_AttackSellBelow50000);
+	m_lAttackSellBelow200000 = _tstoll(pSetDayLineTemp->m_AttackSellBelow200000);
+	m_lAttackSellAbove200000 = _tstoll(pSetDayLineTemp->m_AttackSellAbove200000);
+	m_llVolume = _tstoll(pSetDayLineTemp->m_Volume);
+	m_llLastSavedVolume = _tstoll(pSetDayLineTemp->m_Volume);
 
-	m_lOrdinaryBuyVolumeBelow5000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow5000);
-	m_lOrdinaryBuyVolumeBelow10000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow10000);
-	m_lOrdinaryBuyVolumeBelow20000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow20000);
-	m_lOrdinaryBuyVolumeBelow50000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow50000);
-	m_lOrdinaryBuyVolumeBelow100000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow100000);
-	m_lOrdinaryBuyVolumeBelow200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow200000);
-	m_lOrdinaryBuyVolumeAbove200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeAbove200000);
-	m_lOrdinarySellVolumeBelow5000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow5000);
-	m_lOrdinarySellVolumeBelow10000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow10000);
-	m_lOrdinarySellVolumeBelow20000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow20000);
-	m_lOrdinarySellVolumeBelow50000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow50000);
-	m_lOrdinarySellVolumeBelow100000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow100000);
-	m_lOrdinarySellVolumeBelow200000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow200000);
-	m_lOrdinarySellVolumeAbove200000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeAbove200000);
-	m_lOrdinaryBuyNumberBelow5000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow5000);
-	m_lOrdinaryBuyNumberBelow10000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow10000);
-	m_lOrdinaryBuyNumberBelow20000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow20000);
-	m_lOrdinaryBuyNumberBelow50000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow50000);
-	m_lOrdinaryBuyNumberBelow100000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow100000);
-	m_lOrdinaryBuyNumberBelow200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow200000);
-	m_lOrdinaryBuyNumberAbove200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberAbove200000);
-	m_lOrdinarySellNumberBelow5000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow5000);
-	m_lOrdinarySellNumberBelow10000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow10000);
-	m_lOrdinarySellNumberBelow20000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow20000);
-	m_lOrdinarySellNumberBelow50000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow50000);
-	m_lOrdinarySellNumberBelow100000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow100000);
-	m_lOrdinarySellNumberBelow200000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow200000);
-	m_lOrdinarySellNumberAbove200000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberAbove200000);
+	m_lOrdinaryBuyVolumeBelow5000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow5000);
+	m_lOrdinaryBuyVolumeBelow10000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow10000);
+	m_lOrdinaryBuyVolumeBelow20000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow20000);
+	m_lOrdinaryBuyVolumeBelow50000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow50000);
+	m_lOrdinaryBuyVolumeBelow100000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow100000);
+	m_lOrdinaryBuyVolumeBelow200000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow200000);
+	m_lOrdinaryBuyVolumeAbove200000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyVolumeAbove200000);
+	m_lOrdinarySellVolumeBelow5000 = _tstoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow5000);
+	m_lOrdinarySellVolumeBelow10000 = _tstoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow10000);
+	m_lOrdinarySellVolumeBelow20000 = _tstoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow20000);
+	m_lOrdinarySellVolumeBelow50000 = _tstoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow50000);
+	m_lOrdinarySellVolumeBelow100000 = _tstoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow100000);
+	m_lOrdinarySellVolumeBelow200000 = _tstoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow200000);
+	m_lOrdinarySellVolumeAbove200000 = _tstoll(pSetDayLineTemp->m_OrdinarySellVolumeAbove200000);
+	m_lOrdinaryBuyNumberBelow5000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow5000);
+	m_lOrdinaryBuyNumberBelow10000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow10000);
+	m_lOrdinaryBuyNumberBelow20000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow20000);
+	m_lOrdinaryBuyNumberBelow50000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow50000);
+	m_lOrdinaryBuyNumberBelow100000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow100000);
+	m_lOrdinaryBuyNumberBelow200000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow200000);
+	m_lOrdinaryBuyNumberAbove200000 = _tstoll(pSetDayLineTemp->m_OrdinaryBuyNumberAbove200000);
+	m_lOrdinarySellNumberBelow5000 = _tstoll(pSetDayLineTemp->m_OrdinarySellNumberBelow5000);
+	m_lOrdinarySellNumberBelow10000 = _tstoll(pSetDayLineTemp->m_OrdinarySellNumberBelow10000);
+	m_lOrdinarySellNumberBelow20000 = _tstoll(pSetDayLineTemp->m_OrdinarySellNumberBelow20000);
+	m_lOrdinarySellNumberBelow50000 = _tstoll(pSetDayLineTemp->m_OrdinarySellNumberBelow50000);
+	m_lOrdinarySellNumberBelow100000 = _tstoll(pSetDayLineTemp->m_OrdinarySellNumberBelow100000);
+	m_lOrdinarySellNumberBelow200000 = _tstoll(pSetDayLineTemp->m_OrdinarySellNumberBelow200000);
+	m_lOrdinarySellNumberAbove200000 = _tstoll(pSetDayLineTemp->m_OrdinarySellNumberAbove200000);
 
-	m_lCanceledBuyVolumeBelow5000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow5000);
-	m_lCanceledBuyVolumeBelow10000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow10000);
-	m_lCanceledBuyVolumeBelow20000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow20000);
-	m_lCanceledBuyVolumeBelow50000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow50000);
-	m_lCanceledBuyVolumeBelow100000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow100000);
-	m_lCanceledBuyVolumeBelow200000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow200000);
-	m_lCanceledBuyVolumeAbove200000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeAbove200000);
-	m_lCanceledSellVolumeBelow5000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow5000);
-	m_lCanceledSellVolumeBelow10000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow10000);
-	m_lCanceledSellVolumeBelow20000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow20000);
-	m_lCanceledSellVolumeBelow50000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow50000);
-	m_lCanceledSellVolumeBelow100000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow100000);
-	m_lCanceledSellVolumeBelow200000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow200000);
-	m_lCanceledSellVolumeAbove200000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeAbove200000);
+	m_lCanceledBuyVolumeBelow5000 = _tstoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow5000);
+	m_lCanceledBuyVolumeBelow10000 = _tstoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow10000);
+	m_lCanceledBuyVolumeBelow20000 = _tstoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow20000);
+	m_lCanceledBuyVolumeBelow50000 = _tstoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow50000);
+	m_lCanceledBuyVolumeBelow100000 = _tstoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow100000);
+	m_lCanceledBuyVolumeBelow200000 = _tstoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow200000);
+	m_lCanceledBuyVolumeAbove200000 = _tstoll(pSetDayLineTemp->m_CanceledBuyVolumeAbove200000);
+	m_lCanceledSellVolumeBelow5000 = _tstoll(pSetDayLineTemp->m_CanceledSellVolumeBelow5000);
+	m_lCanceledSellVolumeBelow10000 = _tstoll(pSetDayLineTemp->m_CanceledSellVolumeBelow10000);
+	m_lCanceledSellVolumeBelow20000 = _tstoll(pSetDayLineTemp->m_CanceledSellVolumeBelow20000);
+	m_lCanceledSellVolumeBelow50000 = _tstoll(pSetDayLineTemp->m_CanceledSellVolumeBelow50000);
+	m_lCanceledSellVolumeBelow100000 = _tstoll(pSetDayLineTemp->m_CanceledSellVolumeBelow100000);
+	m_lCanceledSellVolumeBelow200000 = _tstoll(pSetDayLineTemp->m_CanceledSellVolumeBelow200000);
+	m_lCanceledSellVolumeAbove200000 = _tstoll(pSetDayLineTemp->m_CanceledSellVolumeAbove200000);
 }
 
 bool CChinaStock::Calculate10RSStrong2StockSet() {
@@ -1154,11 +1154,11 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 void CChinaStock::CheckNeedProcessRTData() {
 	SetNeedProcessRTData(true);
 	if (IsShanghaiExchange(GetSymbol())) {
-		if (GetSymbol().substr(0, 6) <= _T("000999")) {//沪市指数？
+		if (GetSymbol().substr(0, 6) <= "000999") {//沪市指数？
 			SetNeedProcessRTData(false);
 		}
 	}
-	else if ((GetSymbol().substr(0, 6) >= _T("399000"))) {// 深市指数
+	else if ((GetSymbol().substr(0, 6) >= "399000")) {// 深市指数
 		SetNeedProcessRTData(false);
 	}
 }
@@ -1227,7 +1227,7 @@ bool CChinaStock::IsTodayDataChanged() const {
 bool CChinaStock::IsVolumeConsistence() noexcept {
 	if ((m_lHighLimit > 0) && (m_lLowLimit > 0)) {
 		if ((m_lHighLimitFromTengxun != m_lHighLimit) || (m_lLowLimitFromTengxun != m_lLowLimit)) {
-			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().c_str(), m_lHighLimitFromTengxun, m_lHighLimit, m_lLowLimitFromTengxun, m_lLowLimit);
+			TRACE("%s涨跌停板价格不符：%d %d    %d  %d\n", GetSymbol().c_str(), m_lHighLimitFromTengxun, m_lHighLimit, m_lLowLimitFromTengxun, m_lLowLimit);
 		}
 		if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) {// 当涨跌停板打开时
 			m_lHighLimit = m_lLowLimit = 0; // 重置此两变量
@@ -1235,8 +1235,8 @@ bool CChinaStock::IsVolumeConsistence() noexcept {
 	}
 	if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetTimeZone()), GetSymbol().c_str(), GetVolume());
-		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
+		TRACE("%14Id %s股数%d\n", ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetTimeZone()), GetSymbol().c_str(), GetVolume());
+		TRACE("%d %d %d %d %d %d %d\n", GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
 		      GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;
 	}

@@ -22,7 +22,7 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };
-	CString m_Symbol{ _T("") };
+	CString m_Symbol{ "" };
 
 	// 重写
 	// 向导生成的虚函数重写

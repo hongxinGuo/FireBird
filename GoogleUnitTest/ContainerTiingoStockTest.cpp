@@ -46,17 +46,17 @@ namespace FireBirdTest {
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
-		pTiingoStock->SetCompanyWebSite(_T(""));
-		pTiingoStock->SetLocation(_T(""));
-		pTiingoStock->SetName(_T("")); //
-		pTiingoStock->SetReportingCurrency(_T(""));
-		pTiingoStock->SetSECFilingWebSite(_T(""));
-		pTiingoStock->SetSicIndustry(_T(""));
-		pTiingoStock->SetSicSector(_T("Test")); // 用于删除
-		pTiingoStock->SetSymbol(_T("A")); // 已存在代码
-		pTiingoStock->SetTiingoIndustry(_T(""));
-		pTiingoStock->SetTiingoPermaTicker(_T(""));
-		pTiingoStock->SetTiingoSector(_T(""));
+		pTiingoStock->SetCompanyWebSite("");
+		pTiingoStock->SetLocation("");
+		pTiingoStock->SetName(""); //
+		pTiingoStock->SetReportingCurrency("");
+		pTiingoStock->SetSECFilingWebSite("");
+		pTiingoStock->SetSicIndustry("");
+		pTiingoStock->SetSicSector("Test"); // 用于删除
+		pTiingoStock->SetSymbol("A"); // 已存在代码
+		pTiingoStock->SetTiingoIndustry("");
+		pTiingoStock->SetTiingoPermaTicker("");
+		pTiingoStock->SetTiingoSector("");
 		pTiingoStock->SetUpdateProfileDB(true);
 		gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock);
 
@@ -65,17 +65,17 @@ namespace FireBirdTest {
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
-		pTiingoStock->SetCompanyWebSite(_T("www.abc.com"));
-		pTiingoStock->SetLocation(_T("Irvine CA USA"));
-		pTiingoStock->SetName(_T("ABCDE")); // 新代码
-		pTiingoStock->SetReportingCurrency(_T("US Dollar"));
-		pTiingoStock->SetSECFilingWebSite(_T("abc"));
-		pTiingoStock->SetSicIndustry(_T("Computer Science"));
-		pTiingoStock->SetSicSector(_T("Test"));
-		pTiingoStock->SetSymbol(_T("ABCDEF")); // 新代码
-		pTiingoStock->SetTiingoIndustry(_T("Computer"));
-		pTiingoStock->SetTiingoPermaTicker(_T("abcdefg"));
-		pTiingoStock->SetTiingoSector(_T("gfedcba"));
+		pTiingoStock->SetCompanyWebSite("www.abc.com");
+		pTiingoStock->SetLocation("Irvine CA USA");
+		pTiingoStock->SetName("ABCDE"); // 新代码
+		pTiingoStock->SetReportingCurrency("US Dollar");
+		pTiingoStock->SetSECFilingWebSite("abc");
+		pTiingoStock->SetSicIndustry("Computer Science");
+		pTiingoStock->SetSicSector("Test");
+		pTiingoStock->SetSymbol("ABCDEF"); // 新代码
+		pTiingoStock->SetTiingoIndustry("Computer");
+		pTiingoStock->SetTiingoPermaTicker("abcdefg");
+		pTiingoStock->SetTiingoSector("gfedcba");
 		pTiingoStock->SetUpdateProfileDB(true);
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 
@@ -84,15 +84,15 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.UpdateDB(); // 更新代码集
 
 		// 恢复原状
-		setTiingoStock.m_strFilter = _T("[SICSector] = 'Test'");
-		setTiingoStock.m_strSort = _T("[Ticker]");
+		setTiingoStock.m_strFilter = "[SICSector] = 'Test'";
+		setTiingoStock.m_strSort = "[Ticker]";
 		setTiingoStock.Open();
 		EXPECT_FALSE(setTiingoStock.IsEOF()) << "存入了两股票代码";
 		setTiingoStock.m_pDatabase->BeginTrans();
 		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "已存在代码";
 		EXPECT_EQ(setTiingoStock.m_SicCode, 1002);
 		setTiingoStock.Edit();
-		setTiingoStock.m_SicSector = _T("");
+		setTiingoStock.m_SicSector = "";
 		setTiingoStock.m_SicCode = 0;
 		setTiingoStock.Update();
 		setTiingoStock.MoveNext();

@@ -39,14 +39,14 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestInitialize) {
 		EXPECT_EQ(IEXTopOfBook.GetIndex(), 0);
-		EXPECT_EQ(IEXTopOfBook.GetInquiringSymbol(), _T(""));
-		EXPECT_EQ(IEXTopOfBook.GetInquiryFunction(), _T("https://api.tiingo.com/iex?"));
+		EXPECT_EQ(IEXTopOfBook.GetInquiringSymbol(), "");
+		EXPECT_EQ(IEXTopOfBook.GetInquiryFunction(), "https://api.tiingo.com/iex?");
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestCreatMessage) {
 		EXPECT_EQ(IEXTopOfBook.CreateMessage(), IEXTopOfBook.GetInquiryFunction());
-		EXPECT_EQ(IEXTopOfBook.CreateMessage(), _T("https://api.tiingo.com/iex?"));
-		EXPECT_EQ(IEXTopOfBook.GetInquiringSymbol(), _T("All")) << "此时已被CreateMessage赋值";
+		EXPECT_EQ(IEXTopOfBook.CreateMessage(), "https://api.tiingo.com/iex?");
+		EXPECT_EQ(IEXTopOfBook.GetInquiringSymbol(), "All") << "此时已被CreateMessage赋值";
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestUpdateDataSourceStatus1) {
@@ -57,22 +57,22 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo IEX top of book Updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Tiingo IEX top of book Updated");
 
 		// 恢复原状
 		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false);
 	}
 
 	// 正确的数据
-	Test_TiingoWebData tiingoIEXTopOfBook1(1, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.6213, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-03-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
+	Test_TiingoWebData tiingoIEXTopOfBook1(1, "", "[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.6213, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-03-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]");
 	// 第一个数据缺项
-	Test_TiingoWebData tiingoIEXTopOfBook2(2,_T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
+	Test_TiingoWebData tiingoIEXTopOfBook2(2,"", "[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]");
 	// 第二个数据缺项
-	Test_TiingoWebData tiingoIEXTopOfBook3(3, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
+	Test_TiingoWebData tiingoIEXTopOfBook3(3, "", "[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]");
 	// 正确的数据
-	Test_TiingoWebData tiingoIEXTopOfBook4(4, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
+	Test_TiingoWebData tiingoIEXTopOfBook4(4, "", "[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]");
 	// 正确的数据 DOW30
-	Test_TiingoWebData tiingoIEXTopOfBook10(10, _T(""), _T("[{\"ticker\":\"IBM\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"MSFT\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
+	Test_TiingoWebData tiingoIEXTopOfBook10(10, "", "[{\"ticker\":\"IBM\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"MSFT\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]");
 
 	class ParseTiingoIEXTopOfBookTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -108,8 +108,8 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
-			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_strTicker, "000001");
+			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_strTicker, "000002");
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_timeStamp.time_since_epoch().count(), 1727726400);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420000);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11621300);
@@ -143,8 +143,8 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
-			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
-			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
+			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker, "000001");
+			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker, "000002");
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llTimestamp, 1727726400);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420000);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11620000);

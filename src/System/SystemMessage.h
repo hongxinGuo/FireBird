@@ -200,11 +200,11 @@ protected:
 	string m_sCurrentTiingoWebSocketForex;
 	string m_sCurrentTiingoWebSocketCrypto;
 
-	string m_sCurrentFinnhubFunction{ _T("") }; // 当前任务和处理的证券名称
-	string m_sCurrentTiingoFunction{ _T("") }; // 当前任务和处理的证券名称
+	string m_sCurrentFinnhubFunction{ "" }; // 当前任务和处理的证券名称
+	string m_sCurrentTiingoFunction{ "" }; // 当前任务和处理的证券名称
 
-	string m_sChinaMarketSavingFunction{ _T("") };
-	string m_sWorldMarketSavingFunction{ _T("") };
+	string m_sChinaMarketSavingFunction{ "" };
+	string m_sWorldMarketSavingFunction{ "" };
 
 	atomic_long m_lScheduleTaskTime{ 0 };
 	atomic_long m_lScheduleTaskTimePerSecond{ 0 };

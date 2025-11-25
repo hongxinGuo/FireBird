@@ -4,13 +4,13 @@
 #include"InsiderTransaction.h"
 
 CInsiderTransaction::CInsiderTransaction() {
-	m_strSymbol = _T(" ");
-	m_strPersonName = _T(" ");
+	m_strSymbol = " ";
+	m_strPersonName = " ";
 	m_lShare = 0;
 	m_lChange = 0;
 	m_lFilingDate = 19800101;
 	m_lTransactionDate = 19800101;
-	m_strTransactionCode = _T(" ");
+	m_strTransactionCode = " ";
 	m_dTransactionPrice = 0.0;
 }
 
@@ -38,12 +38,12 @@ void CInsiderTransaction::Save(CSetInsiderTransaction& setInsiderTransaction) co
 }
 
 void CInsiderTransaction::Load(const CSetInsiderTransaction& setInsiderTransaction) {
-	m_strSymbol = setInsiderTransaction.m_Symbol;
-	m_strPersonName = setInsiderTransaction.m_PersonName;
-	m_lShare = atoll(setInsiderTransaction.m_Share);
-	m_lChange = atoll(setInsiderTransaction.m_Change);
+	m_strSymbol = ToUTF8(setInsiderTransaction.m_Symbol);
+	m_strPersonName = ToUTF8(setInsiderTransaction.m_PersonName);
+	m_lShare = _tstoll(setInsiderTransaction.m_Share);
+	m_lChange = _tstoll(setInsiderTransaction.m_Change);
 	m_lFilingDate = setInsiderTransaction.m_FilingDate;
 	m_lTransactionDate = setInsiderTransaction.m_TransactionDate;
-	m_strTransactionCode = setInsiderTransaction.m_TransactionCode;
+	m_strTransactionCode = ToUTF8(setInsiderTransaction.m_TransactionCode);
 	m_dTransactionPrice = setInsiderTransaction.m_TransactionPrice;
 }

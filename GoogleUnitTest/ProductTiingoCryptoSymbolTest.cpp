@@ -40,7 +40,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoCryptoTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), 0);
-		EXPECT_EQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
+		EXPECT_EQ(stockSymbol.GetInquiryFunction(), "https://api.tiingo.com/tiingo/crypto?");
 	}
 
 	TEST_F(CProductTiingoCryptoTest, TestCreatMessage) {
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 		stockSymbol.UpdateSystemStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo crypto symbol updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Tiingo crypto symbol updated");
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate(), gl_pWorldMarket->GetMarketDate());
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 
@@ -64,11 +64,11 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对，缺乏'{'
-	Test_TiingoWebData tiingoWebData11(11, _T(""), _T("[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
+	Test_TiingoWebData tiingoWebData11(11, "", "[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]");
 	// 第一个数据缺项
-	Test_TiingoWebData tiingoWebData12(12, _T(""), _T("[{\"Missing\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
+	Test_TiingoWebData tiingoWebData12(12, "", "[{\"Missing\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]");
 	// 正确的数据
-	Test_TiingoWebData tiingoWebData20(20, _T(""), _T("[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
+	Test_TiingoWebData tiingoWebData20(20, "", "[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]");
 
 	class ParseTiingoCryptoTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -109,11 +109,11 @@ namespace FireBirdTest {
 			break;
 		case 20:
 			EXPECT_EQ(m_pvCrypto->size(), 1);
-			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== _T("cure"));
-			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== _T("New Symbol"));
-			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName == _T("CureCoin(CURE/BTC)"));
-			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== _T("")) << "此项已废弃。为了兼容才没有删除";
-			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency==_T("btc"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== "cure");
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== "New Symbol");
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName == "CureCoin(CURE/BTC)");
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== "") << "此项已废弃。为了兼容才没有删除";
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency=="btc");
 			break;
 		default:
 			break;
@@ -159,11 +159,11 @@ namespace FireBirdTest {
 			break;
 		case 20:
 			EXPECT_EQ(m_pvCrypto->size(), 1);
-			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== _T("cure"));
-			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== _T("New Symbol"));
-			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName== _T("CureCoin(CURE/BTC)"));
-			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== _T("")) << "此项已废弃。为了兼容才没有删除";
-			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency== _T("btc"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== "cure");
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== "New Symbol");
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName== "CureCoin(CURE/BTC)");
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== "") << "此项已废弃。为了兼容才没有删除";
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency== "btc");
 			break;
 		default:
 			break;
@@ -211,9 +211,9 @@ namespace FireBirdTest {
 			break;
 		case 20:
 			EXPECT_EQ(gl_dataContainerTiingoCryptoSymbol.Size(), l + 1);
-			EXPECT_TRUE(gl_dataContainerTiingoCryptoSymbol.IsSymbol(_T("New Symbol")));
+			EXPECT_TRUE(gl_dataContainerTiingoCryptoSymbol.IsSymbol("New Symbol"));
 
-			pCrypto = gl_dataContainerTiingoCryptoSymbol.GetCrypto(_T("New Symbol"));
+			pCrypto = gl_dataContainerTiingoCryptoSymbol.GetCrypto("New Symbol");
 			gl_dataContainerTiingoCryptoSymbol.Delete(pCrypto);
 			break;
 		default:

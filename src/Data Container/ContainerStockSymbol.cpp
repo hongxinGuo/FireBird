@@ -16,20 +16,20 @@ void CContainerStockSymbol::Reset() {
 	m_mapStockSymbol.clear();
 	m_vCurrentSectionStockCode.resize(0);
 	// 预设股票代码集如下
-	m_vCurrentSectionStockCode.push_back(_T("000000.SS")); // 上海指数
-	m_vCurrentSectionStockCode.push_back(_T("600000.SS")); // 上海主板
-	m_vCurrentSectionStockCode.push_back(_T("601000.SS")); // 上海主板
-	m_vCurrentSectionStockCode.push_back(_T("603000.SS")); // 上海三板
-	m_vCurrentSectionStockCode.push_back(_T("688000.SS")); // 上海科创板
-	m_vCurrentSectionStockCode.push_back(_T("900000.SS")); // 上海B股
-	m_vCurrentSectionStockCode.push_back(_T("000000.SZ")); // 深圳主板
-	m_vCurrentSectionStockCode.push_back(_T("001000.SZ")); // 深圳主板
-	m_vCurrentSectionStockCode.push_back(_T("002000.SZ")); // 深圳中小板
-	m_vCurrentSectionStockCode.push_back(_T("003000.SZ")); // 深圳中小板
-	m_vCurrentSectionStockCode.push_back(_T("004000.SZ")); // 深圳中小板
-	m_vCurrentSectionStockCode.push_back(_T("200000.SZ")); // 深圳B股
-	m_vCurrentSectionStockCode.push_back(_T("300000.SZ")); // 深圳创业板
-	m_vCurrentSectionStockCode.push_back(_T("399000.SZ")); // 深圳指数
+	m_vCurrentSectionStockCode.push_back("000000.SS"); // 上海指数
+	m_vCurrentSectionStockCode.push_back("600000.SS"); // 上海主板
+	m_vCurrentSectionStockCode.push_back("601000.SS"); // 上海主板
+	m_vCurrentSectionStockCode.push_back("603000.SS"); // 上海三板
+	m_vCurrentSectionStockCode.push_back("688000.SS"); // 上海科创板
+	m_vCurrentSectionStockCode.push_back("900000.SS"); // 上海B股
+	m_vCurrentSectionStockCode.push_back("000000.SZ"); // 深圳主板
+	m_vCurrentSectionStockCode.push_back("001000.SZ"); // 深圳主板
+	m_vCurrentSectionStockCode.push_back("002000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.push_back("003000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.push_back("004000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.push_back("200000.SZ"); // 深圳B股
+	m_vCurrentSectionStockCode.push_back("300000.SZ"); // 深圳创业板
+	m_vCurrentSectionStockCode.push_back("399000.SZ"); // 深圳指数
 	// 从股票代码集数据库中读入其他股票集
 
 	//重置StockSection
@@ -85,7 +85,7 @@ void CContainerStockSymbol::LoadStockSectionDB() const {
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(setStockSection.m_Comment.GetString());
+			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(ToUTF8(setStockSection.m_Comment));
 		}
 		setStockSection.MoveNext();
 	}
@@ -95,7 +95,7 @@ void CContainerStockSymbol::LoadStockSectionDB() const {
 void CContainerStockSymbol::UpdateStockSectionDB() {
 	CSetStockSection setStockSection;
 
-	setStockSection.m_strSort = _T("[ID]");
+	setStockSection.m_strSort = "[ID]";
 	setStockSection.Open();
 	setStockSection.m_pDatabase->BeginTrans();
 	if (setStockSection.IsEOF()) {// 空表

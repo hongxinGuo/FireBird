@@ -73,7 +73,7 @@ bool CContainerFinnhubStock::LoadDB() {
 	CFinnhubStockPtr pFinnhubStock = nullptr;
 	long lMaxSymbolLength = 0;
 
-	setFinnhubStock.m_strSort = _T("[Symbol]");
+	setFinnhubStock.m_strSort = "[Symbol]";
 	setFinnhubStock.Open();
 	setFinnhubStock.m_pDatabase->BeginTrans();
 	while (!setFinnhubStock.IsEOF()) {
@@ -116,13 +116,13 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 		for (const auto& pStock : m_vStock) {
 			if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
-		setFinnhubStock.m_strSort = _T("[Symbol]");
+		setFinnhubStock.m_strSort = "[Symbol]";
 		setFinnhubStock.Open();
 		int iCurrentUpdated = 0;
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
 			if (setFinnhubStock.IsEOF()) break;
-			const CFinnhubStockPtr pStock = GetItem(setFinnhubStock.m_Symbol.GetString());
+			const CFinnhubStockPtr pStock = GetItem(ToUTF8(setFinnhubStock.m_Symbol));
 			ASSERT(pStock != nullptr);
 			if (pStock->IsUpdateProfileDB()) {
 				iCurrentUpdated++;
@@ -162,7 +162,7 @@ bool CContainerFinnhubStock::UpdateBasicFinancialDB() {
 	vector<CFinnhubStockPtr> vStock{};
 
 	if (s_fInProcess) {
-		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
+		gl_systemMessage.PushErrorMessage("UpdateBasicFinancialDB任务用时超过五分钟");
 		return false;
 	}
 	s_fInProcess = true;
@@ -221,14 +221,14 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 	const auto iBasicFinancialNeedUpdate = vStock.size();
 	size_t iCurrentUpdated = 0;
 
-	setBasicFinancialMetric.m_strSort = _T("[Symbol]");
+	setBasicFinancialMetric.m_strSort = "[Symbol]";
 	setBasicFinancialMetric.Open();
 	setBasicFinancialMetric.m_pDatabase->BeginTrans();
 	//更新原有的基本财务信息
 	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		if (setBasicFinancialMetric.IsEOF()) break;
-		if (IsSymbol(setBasicFinancialMetric.m_symbol.GetString())) {
-			CFinnhubStockPtr pStockNeedUpdate = GetItem(setBasicFinancialMetric.m_symbol.GetString());
+		if (IsSymbol(ToUTF8(setBasicFinancialMetric.m_symbol))) {
+			CFinnhubStockPtr pStockNeedUpdate = GetItem(ToUTF8(setBasicFinancialMetric.m_symbol));
 			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 				iCurrentUpdated++;
 				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
@@ -285,8 +285,8 @@ bool CContainerFinnhubStock::ValidateStockSymbol(const CFinnhubStockPtr& pStock)
 	const string strSymbol = pStock->GetSymbol();
 	const string strExchangeCode = pStock->GetExchangeCode();
 
-	if (strExchangeCode.compare(_T("US")) == 0) return true;
-	const int pos = strSymbol.find(_T(".") + strExchangeCode);
+	if (strExchangeCode.compare("US") == 0) return true;
+	const int pos = strSymbol.find("." + strExchangeCode);
 	if ((pos + 1) < (strSymbol.length() - strExchangeCode.length())) {
 		return false;
 	}

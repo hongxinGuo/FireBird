@@ -45,7 +45,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 		setDefinition.Open();
 		setDefinition.m_pDatabase->BeginTrans();
 		while (!setDefinition.IsEOF()) {
-			mapDefinition[setDefinition.m_dataCode.GetString()] = mapDefinition.size();
+			mapDefinition[ToUTF8(setDefinition.m_dataCode)] = mapDefinition.size();
 			setDefinition.MoveNext();
 		}
 		setDefinition.m_pDatabase->CommitTrans();
@@ -80,7 +80,7 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	setTiingoFundamentalDefinition.Open();
 	setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
 	while (!setTiingoFundamentalDefinition.IsEOF()) {
-		if (!HaveDefinition(setTiingoFundamentalDefinition.m_dataCode.GetString())) {
+		if (!HaveDefinition(ToUTF8(setTiingoFundamentalDefinition.m_dataCode))) {
 			const auto pTiingoFundamentalDefinition = make_shared<CTiingoFundamentalDefinition>();
 			pTiingoFundamentalDefinition->Load(setTiingoFundamentalDefinition);
 			Add(pTiingoFundamentalDefinition);

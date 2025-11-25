@@ -131,7 +131,7 @@ public:
 	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }
 
 protected:
-	string m_strMarketId{ _T("Warning: CVirtualMarket Called.") }; // 该市场标识字符串,即交易所的代码。中国为SS,美国为US....
+	string m_strMarketId{ "Warning: CVirtualMarket Called." }; // 该市场标识字符串,即交易所的代码。中国为SS,美国为US....
 	CStockExchangePtr m_exchange{ nullptr };
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
 	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
@@ -155,7 +155,7 @@ protected:
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 	// 系统时间区
-	string m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	string m_strLocalMarketTimeZone{ "" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
 	chrono::sys_info m_marketSystemInformation{}; // 时区偏移等皆由此推出。
 	chrono::seconds m_TimeZoneOffset{ 0 };

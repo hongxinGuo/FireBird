@@ -9,16 +9,16 @@
 CSetCompanyNews::CSetCompanyNews(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
-	m_CompanySymbol = _T("");
-	m_Category = _T("");
-	m_DateTime = _T("");
-	m_HeadLine = _T("");
+	m_CompanySymbol = "";
+	m_Category = "";
+	m_DateTime = "";
+	m_HeadLine = "";
 	m_NewsID = 0;
-	m_Image = _T("");
-	m_RelatedSymbol = _T("");
-	m_Source = _T("");
-	m_Summary = _T("");
-	m_URL = _T("");
+	m_Image = "";
+	m_RelatedSymbol = "";
+	m_Source = "";
+	m_Summary = "";
+	m_URL = "";
 	m_nFields = 11;
 }
 

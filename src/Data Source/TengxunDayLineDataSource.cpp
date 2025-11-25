@@ -20,8 +20,8 @@
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
-	m_strSuffix = _T(",2000,,");
+	m_strInquiryFunction = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=";
+	m_strSuffix = ",2000,,";
 	m_iMaxNormalInquireTime = 500;
 
 	CTengxunDayLineDataSource::ConfigureInternetOption();
@@ -87,7 +87,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 		}
 		else {
 			SetUpdateDayLine(false);
-			const string str = _T("中国市场股票日线历史数据更新完毕");
+			const string str = "中国市场股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -122,7 +122,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		else {
 			sEndDate = ConvertDateToTimeStamp((year + 6) * 10000 + 1231); // 第七年的最后一天
 		}
-		const string strTotalMessage = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=") + strStockCode + _T(",day,") + sStartDate.c_str() + _T(",") + sEndDate.c_str() + m_strSuffix;
+		const string strTotalMessage = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=" + strStockCode + ",day," + sStartDate.c_str() + "," + sEndDate.c_str() + m_strSuffix;
 		product = make_shared<CProductTengxunDayLine>();
 		product->SetMarket(gl_pChinaMarket);
 		product->SetIndex(lStockIndex);

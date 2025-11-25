@@ -3,33 +3,33 @@
 
 #pragma once
 
-class CChildFrame : public CMDIChildWndEx
-{
-  DECLARE_DYNCREATE(CChildFrame)
-public:
-  CChildFrame();
+class CChildFrame : public CMDIChildWndEx {
+	DECLARE_DYNCREATE(CChildFrame)
 
-  // 特性
+public:
+	CChildFrame() {}
+	~CChildFrame() override = default;
+
+	// 特性
 protected:
-  CSplitterWndEx m_wndSplitter;
-public:
+	CSplitterWndEx m_wndSplitter;
 
-  // 操作
 public:
-
-  // 重写
-  virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
-  // 实现
+	// 操作
 public:
-  virtual ~CChildFrame();
+	// 重写
+	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+
+	// 实现
+public:
 #ifdef _DEBUG
-  virtual void AssertValid() const;
-  virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
-  // 生成的消息映射函数
+	// 生成的消息映射函数
 protected:
-  DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
+
 public:
 };

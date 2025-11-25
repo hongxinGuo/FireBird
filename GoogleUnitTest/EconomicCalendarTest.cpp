@@ -31,10 +31,10 @@ namespace FireBirdTest {
 
 	TEST_F(CEconomicCalendarTest, TestInitialize) {
 		const CEconomicCalendar EconomicCalendar;
-		EXPECT_EQ(EconomicCalendar.m_strCountry, _T(" "));
-		EXPECT_EQ(EconomicCalendar.m_strEvent, _T(" "));
-		EXPECT_EQ(EconomicCalendar.m_strImpact, _T(" "));
-		EXPECT_EQ(EconomicCalendar.m_strUnit, _T(" "));
+		EXPECT_EQ(EconomicCalendar.m_strCountry, " ");
+		EXPECT_EQ(EconomicCalendar.m_strEvent, " ");
+		EXPECT_EQ(EconomicCalendar.m_strImpact, " ");
+		EXPECT_EQ(EconomicCalendar.m_strUnit, " ");
 		EXPECT_DOUBLE_EQ(EconomicCalendar.m_dActual, 0.0);
 		EXPECT_DOUBLE_EQ(EconomicCalendar.m_dEstimate, 0.0);
 		EXPECT_DOUBLE_EQ(EconomicCalendar.m_dPrev, 0.0);
@@ -44,11 +44,11 @@ namespace FireBirdTest {
 		CSetEconomicCalendar setEconomicCalendar, setEconomicCalendar2;
 		CEconomicCalendar EconomicCalendar, EconomicCalendar2;
 
-		EconomicCalendar.m_strEvent = _T("Abcdefghighlmnop");
-		EconomicCalendar.m_strCountry = _T("US");
-		EconomicCalendar.m_strImpact = _T("High");
-		EconomicCalendar.m_strTime = _T("20202020");
-		EconomicCalendar.m_strUnit = _T("Doller");
+		EconomicCalendar.m_strEvent = "Abcdefghighlmnop";
+		EconomicCalendar.m_strCountry = "US";
+		EconomicCalendar.m_strImpact = "High";
+		EconomicCalendar.m_strTime = "20202020";
+		EconomicCalendar.m_strUnit = "Doller";
 		EconomicCalendar.m_dActual = 1.2;
 		EconomicCalendar.m_dEstimate = 1.1;
 		EconomicCalendar.m_dPrev = 1.0;
@@ -60,15 +60,15 @@ namespace FireBirdTest {
 		setEconomicCalendar.m_pDatabase->CommitTrans();
 		setEconomicCalendar.Close();
 
-		setEconomicCalendar2.m_strFilter = _T("[Event] = 'Abcdefghighlmnop'");
+		setEconomicCalendar2.m_strFilter = "[Event] = 'Abcdefghighlmnop'";
 		setEconomicCalendar2.Open();
 		EXPECT_TRUE(!setEconomicCalendar2.IsEOF()) << "此时已经存入了Abcdefghighlmnop";
 		EconomicCalendar2.Load(setEconomicCalendar2);
-		EXPECT_EQ(EconomicCalendar2.m_strCountry, _T("US"));
-		EXPECT_EQ(EconomicCalendar2.m_strEvent, _T("Abcdefghighlmnop"));
-		EXPECT_EQ(EconomicCalendar2.m_strImpact, _T("High"));
-		EXPECT_EQ(EconomicCalendar2.m_strTime, _T("20202020"));
-		EXPECT_EQ(EconomicCalendar2.m_strUnit, _T("Doller"));
+		EXPECT_EQ(EconomicCalendar2.m_strCountry, "US");
+		EXPECT_EQ(EconomicCalendar2.m_strEvent, "Abcdefghighlmnop");
+		EXPECT_EQ(EconomicCalendar2.m_strImpact, "High");
+		EXPECT_EQ(EconomicCalendar2.m_strTime, "20202020");
+		EXPECT_EQ(EconomicCalendar2.m_strUnit, "Doller");
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dActual, 1.2);
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dEstimate, 1.1);
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dPrev, 1.0);

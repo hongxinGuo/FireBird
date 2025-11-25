@@ -210,12 +210,12 @@ protected:
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };
 
 	InternetOption m_internetOption;
-	string m_strInquiry{ _T("") }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
-	string m_strInquiryFunction{ _T("") }; // 查询字符串功能部分
-	string m_strParam{ _T("") }; // 查询字符串的参数
-	string m_strSuffix{ _T("") }; // 查询字符串的后缀部分
-	string m_strInquiryToken{ _T("") }; // 查询字符串令牌
-	string m_strHeaders{ _T("") }; // OpenURL时的headers字符串值， 默认为_T("")
+	string m_strInquiry{ "" }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
+	string m_strInquiryFunction{ "" }; // 查询字符串功能部分
+	string m_strParam{ "" }; // 查询字符串的参数
+	string m_strSuffix{ "" }; // 查询字符串的后缀部分
+	string m_strInquiryToken{ "" }; // 查询字符串令牌
+	string m_strHeaders{ "" }; // OpenURL时的headers字符串值， 默认为""
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
 	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）

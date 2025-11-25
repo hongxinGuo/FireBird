@@ -32,11 +32,11 @@ namespace FireBirdTest {
 	TEST_F(CTiingoCryptoSymbolTest, TestInitialize) {
 		const CTiingoCrypto tiingo;
 
-		EXPECT_EQ(tiingo.m_strBaseCurrency, _T(""));
-		EXPECT_EQ(tiingo.GetSymbol(), _T(""));
-		EXPECT_EQ(tiingo.GetDescription(), _T(""));
-		EXPECT_EQ(tiingo.m_strQuoteCurrency, _T(""));
-		EXPECT_EQ(tiingo.m_strName, _T(""));
+		EXPECT_EQ(tiingo.m_strBaseCurrency, "");
+		EXPECT_EQ(tiingo.GetSymbol(), "");
+		EXPECT_EQ(tiingo.GetDescription(), "");
+		EXPECT_EQ(tiingo.m_strQuoteCurrency, "");
+		EXPECT_EQ(tiingo.m_strName, "");
 
 		EXPECT_EQ(tiingo.GetRatio(), 3);
 	}
@@ -45,17 +45,17 @@ namespace FireBirdTest {
 		CTiingoCrypto stock, stock2;
 		CSetTiingoCrypto setTiingoCrypto;
 
-		stock.m_strBaseCurrency = _T("USD");
-		stock.SetDescription(_T("abcdefg"));
-		stock.m_strName = _T("NewName");
-		stock.m_strQuoteCurrency = _T("USD2");
-		stock.SetSymbol(_T("ABC"));
+		stock.m_strBaseCurrency = "USD";
+		stock.SetDescription("abcdefg");
+		stock.m_strName = "NewName";
+		stock.m_strQuoteCurrency = "USD2";
+		stock.SetSymbol("ABC");
 
 		setTiingoCrypto.Open();
 		stock.Append(setTiingoCrypto);
 		setTiingoCrypto.Close();
 
-		setTiingoCrypto.m_strFilter = _T("[Ticker] = 'ABC'");
+		setTiingoCrypto.m_strFilter = "[Ticker] = 'ABC'";
 		setTiingoCrypto.Open();
 		stock2.Load(setTiingoCrypto);
 		setTiingoCrypto.Delete();

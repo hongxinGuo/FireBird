@@ -5,6 +5,6 @@
 
 class CSetChinaStockSymbol : public CVirtualSetStockSymbol {
 public:
-	CSetChinaStockSymbol(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("stockcode"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetStockSymbol(strSchema, strTable, pDatabase) { }
+	CSetChinaStockSymbol(const CString& strSchema = "ChinaMarket", const CString& strTable = "stockcode", CDatabase* pDatabase = nullptr)
+		: CVirtualSetStockSymbol(strSchema, strTable, pDatabase) {}
 };

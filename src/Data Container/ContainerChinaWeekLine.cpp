@@ -30,7 +30,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 
 	ASSERT(!m_vHistoryData.empty());
 
-	setCurrentWeekLineInfo.m_strFilter = _T("[ID] = 1");
+	setCurrentWeekLineInfo.m_strFilter = "[ID] = 1";
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
@@ -46,19 +46,19 @@ bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 	ASSERT(!m_fBasicDataLoaded);
 
 	// 装入WeekLine数据
-	setWeekLineBasicInfo.m_strFilter = _T("[Symbol] = '");
+	setWeekLineBasicInfo.m_strFilter = "[Symbol] = '";
 	setWeekLineBasicInfo.m_strFilter += strStockCode.c_str();
-	setWeekLineBasicInfo.m_strFilter += _T("'");
-	setWeekLineBasicInfo.m_strSort = _T("[Date]");
+	setWeekLineBasicInfo.m_strFilter += "'";
+	setWeekLineBasicInfo.m_strSort = "[Date]";
 	setWeekLineBasicInfo.Open();
 	LoadBasicDB(&setWeekLineBasicInfo);
 	setWeekLineBasicInfo.Close();
 
 	// 装入WeekLineInfo数据
-	setWeekLineExtendInfo.m_strFilter = _T("[Symbol] = '");
+	setWeekLineExtendInfo.m_strFilter = "[Symbol] = '";
 	setWeekLineExtendInfo.m_strFilter += strStockCode.c_str();
-	setWeekLineExtendInfo.m_strFilter += _T("'");
-	setWeekLineExtendInfo.m_strSort = _T("[Date]");
+	setWeekLineExtendInfo.m_strFilter += "'";
+	setWeekLineExtendInfo.m_strSort = "[Date]";
 	setWeekLineExtendInfo.Open();
 	LoadExtendDB(&setWeekLineExtendInfo);
 	setWeekLineExtendInfo.Close();

@@ -50,7 +50,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CInquireEngineTest, TestCreateWebData) {
-		engine.TESTSetBuffer(_T("{ \"data\": 2}"));
+		engine.TESTSetBuffer("{ \"data\": 2}");
 		const time_t tUTCTime = GetUTCTime();
 		TestSetUTCTime(10);
 

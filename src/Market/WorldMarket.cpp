@@ -49,10 +49,10 @@ CWorldMarket::CWorldMarket() {
 		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
 	}
 
-	m_strMarketId = _T("US");
+	m_strMarketId = "US";
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
 	ASSERT(m_exchange != nullptr);
-	m_strLocalMarketTimeZone = _T("America/New_York");
+	m_strLocalMarketTimeZone = "America/New_York";
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
 
 	// 无需（也无法）每日更新的变量放在这里
@@ -148,7 +148,7 @@ void CWorldMarket::ResetMarket() {
 		pDataSource->Reset();
 	}
 
-	string s = _T("重置World Market于美东标准时间：") + GetStringOfMarketTime();
+	string s = "重置World Market于美东标准时间：" + GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(s);
 
 	m_fResettingMarket = false;
@@ -306,7 +306,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) { // 更新tiingo stock profile与finnhub更新stock profile互斥
 		gl_runtime.background_executor()->post([this] {
 			TRACE("Finnhub update profile\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F profile"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F profile");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			this->UpdateTiingoIndustry();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -325,7 +325,7 @@ bool CWorldMarket::TaskUpdateSicIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
 		gl_runtime.background_executor()->post([this] {
 			TRACE("Sic Industry\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Sic Industry"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Sic Industry");
 			this->UpdateSicIndustry();
 			TRACE("Sic Industry updated\n");
 		});
@@ -338,7 +338,7 @@ bool CWorldMarket::TaskUpdateNaicsIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
 		gl_runtime.background_executor()->post([this] {
 			TRACE("NaicsIndustry\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Naics Industry"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Naics Industry");
 			this->UpdateNaicsIndustry();
 		});
 		return true;
@@ -398,7 +398,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
 						gl_UpdateWorldMarketDB.acquire();
-						gl_systemMessage.SetWorldMarketSavingFunction(_T("F forex dayline"));
+						gl_systemMessage.SetWorldMarketSavingFunction("F forex dayline");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
 							pSymbol->UpdateDayLineDB();
@@ -406,7 +406,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 							pSymbol->SetUpdateProfileDB(true);
 							pSymbol->UnloadDayLine();
 							string str = pSymbol->GetSymbol();
-							str += _T("日线资料存储完成");
+							str += "日线资料存储完成";
 							gl_systemMessage.PushDayLineInfoMessage(str);
 						}
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -423,7 +423,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 			else { // 此种情况为有股票代码，但此代码尚未上市
 				pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 				string str1 = pSymbol->GetSymbol();
-				str1 += _T(" 为未上市股票代码");
+				str1 += " 为未上市股票代码";
 				gl_systemMessage.PushDayLineInfoMessage(str1);
 			}
 		}
@@ -455,7 +455,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
 						gl_UpdateWorldMarketDB.acquire();
-						gl_systemMessage.SetWorldMarketSavingFunction(_T("F crypto dayLine"));
+						gl_systemMessage.SetWorldMarketSavingFunction("F crypto dayLine");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
 							pSymbol->UpdateDayLineDB();
@@ -463,7 +463,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 							pSymbol->SetUpdateProfileDB(true);
 							pSymbol->UnloadDayLine();
 							string str2 = pSymbol->GetSymbol();
-							str2 += _T("日线资料存储完成");
+							str2 += "日线资料存储完成";
 							gl_systemMessage.PushDayLineInfoMessage(str2);
 						}
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -485,7 +485,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 				else {// 此种情况为有股票代码，但此代码尚未上市
 					pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 					string str1 = pSymbol->GetSymbol();
-					str1 += _T(" 为未上市股票代码");
+					str1 += " 为未上市股票代码";
 					gl_systemMessage.PushDayLineInfoMessage(str1);
 				}
 			}
@@ -509,7 +509,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 			gl_runtime.thread_executor()->post([] {
 				gl_UpdateWorldMarketDB.acquire();
 				TRACE("process IEX data\n");
-				gl_systemMessage.SetWorldMarketSavingFunction(_T("T process IEX"));
+				gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
 				gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
 				TRACE("process IEX data ended\n");
 				gl_UpdateWorldMarketDB.release();
@@ -614,7 +614,7 @@ void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime) {
 		this->LoadNasdaq100StocksDayLine().get();
 		this->CalculateNasdaq100StocksMA(200);
 		this->calculateNasdaq100MA200UpDownRate();
-		gl_systemMessage.PushInformationMessage(_T("Nasdaq 100 200MA upDown rate calculated"));
+		gl_systemMessage.PushInformationMessage("Nasdaq 100 200MA upDown rate calculated");
 	});
 }
 
@@ -624,7 +624,7 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 
 	setIndexNasdaq100.Open();
 	while (!setIndexNasdaq100.IsEOF()) {
-		string sSymbol = setIndexNasdaq100.m_Symbol.GetString();
+		string sSymbol = ToUTF8(setIndexNasdaq100.m_Symbol);
 		if (gl_dataContainerTiingoStock.IsSymbol(sSymbol)) {
 			// 只计算代码集中的股票。目前GOOG代码不存在，只有GOOGL.
 			auto pStock = gl_dataContainerTiingoStock.GetStock(sSymbol);
@@ -715,7 +715,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() const {
 	CSetIndexNasdaq100MA200UpDownRate setIndex;
 	lCurrentDate = 0;
 
-	setIndex.m_strSort = _T("[Date]");
+	setIndex.m_strSort = "[Date]";
 	setIndex.Open();
 	setIndex.m_pDatabase->BeginTrans();
 	if (!setIndex.IsEOF()) {
@@ -754,7 +754,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubCountry.GetLastTotalCountry() < gl_dataContainerFinnhubCountry.GetTotalCountry()) { // 国家名称
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Country\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Country"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Country");
 			gl_dataContainerFinnhubCountry.UpdateDB();
 			TRACE("finnhub Country updated\n");
 		});
@@ -762,7 +762,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubForexExchange.IsNeedUpdate()) { // ForexExchange
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Forex Exchange\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Forex Exchange"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Forex Exchange");
 			gl_dataContainerFinnhubForexExchange.UpdateDB();
 			TRACE("finnhub Forex Exchange updated\n");
 		});
@@ -770,7 +770,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataFinnhubForexSymbol.IsUpdateProfileDB()) { // Forex symbol
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Forex Symbol\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Forex Symbol"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Forex Symbol");
 			gl_dataFinnhubForexSymbol.UpdateDB();
 			TRACE("finnhub Forex Symbol updated\n");
 		});
@@ -778,7 +778,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate()) { // Crypto Exchange
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Crypto Exchange\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Crypto Exchange"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Crypto Exchange");
 			gl_dataContainerFinnhubCryptoExchange.UpdateDB();
 			TRACE("finnhub Crypto Exchange updated\n");
 		});
@@ -786,7 +786,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataFinnhubCryptoSymbol.IsUpdateProfileDB()) { // crypto symbol
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Crypto Symbol\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Crypto symbol"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Crypto symbol");
 			gl_dataFinnhubCryptoSymbol.UpdateDB();
 			TRACE("finnhub Crypto Symbol updated\n");
 		});
@@ -794,7 +794,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB()) { // Insider Transaction
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Insider Transaction\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Insider Transaction"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Insider Transaction");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_pWorldMarket->UpdateInsiderTransactionDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -808,7 +808,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB()) { // Insider Sentiment
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Insider Sentiment\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Insider Sentiment"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Insider Sentiment");
 			gl_pWorldMarket->UpdateInsiderSentimentDB();
 			TRACE("finnhub Insider Sentiment updated\n");
 		});
@@ -817,7 +817,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("finnhub Stock DayLine\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Stock dayLine"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Stock dayLine");
 			gl_pWorldMarket->UpdateFinnhubStockDayLineDB();
 			TRACE("finnhub Stock DayLine updated\n");
 			gl_UpdateWorldMarketDB.release();
@@ -826,7 +826,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubEconomicCalendar.IsUpdateDB()) { // Economic Calendar
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Economic calendar\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Economic calendar"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Economic calendar");
 			gl_dataContainerFinnhubEconomicCalendar.UpdateDB();
 			TRACE("finnhub Economic calendar updated\n");
 		});
@@ -834,7 +834,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB()) { // Company News
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub News\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F News"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F News");
 			gl_pWorldMarket->UpdateCompanyNewsDB();
 			TRACE("finnhub News updated\n");
 		});
@@ -842,7 +842,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) { // Basic financial
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Basic financial\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Basic financial"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F Basic financial");
 			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB(); // 此任务很费时，原因待查。目前先不使用此隔绝区
 			TRACE("finnhub Basic financial updated\n");
 		});
@@ -850,7 +850,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubStock.IsUpdateEPSSurpriseDB()) { // stock EPS surprise
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub EPS surprise\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F EPS surprise"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F EPS surprise");
 			gl_pWorldMarket->UpdateEPSSurpriseDB();
 			TRACE("finnhub EPS surprise updated\n");
 		});
@@ -858,7 +858,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubStock.IsUpdateSECFilingsDB()) { // stock EPS surprise
 		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub SEC Filings\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("F SEC filings"));
+			gl_systemMessage.SetWorldMarketSavingFunction("F SEC filings");
 			gl_pWorldMarket->UpdateSECFilingsDB();
 			TRACE("finnhub SEC Filings updated\n");
 		});
@@ -871,7 +871,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			s_bUpdatingTiingoStockProfile = true;
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("Tiingo stock profile\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("T profile"));
+			gl_systemMessage.SetWorldMarketSavingFunction("T profile");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_dataContainerTiingoStock.UpdateDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -889,7 +889,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("Tiingo crypto symbol\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("T crypto symbol"));
+			gl_systemMessage.SetWorldMarketSavingFunction("T crypto symbol");
 			gl_dataContainerTiingoCryptoSymbol.UpdateDB();
 			gl_UpdateWorldMarketDB.release();
 		});
@@ -898,7 +898,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerTiingoFundamentalDefinition.IsUpdateDB()) { // Tiingo crypto symbol
 		gl_runtime.background_executor()->post([] {
 			TRACE("Tiingo Definition\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("T definition"));
+			gl_systemMessage.SetWorldMarketSavingFunction("T definition");
 			gl_dataContainerTiingoFundamentalDefinition.UpdateDB();
 		});
 	}
@@ -908,7 +908,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		gl_runtime.background_executor()->post([] {
 			s_updatingTiingoFinancialState = true;
 			TRACE("Tiingo Financial State\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("T financial state"));
+			gl_systemMessage.SetWorldMarketSavingFunction("T financial state");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_dataContainerTiingoStock.UpdateFinancialStateDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -927,7 +927,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			s_updatingTiingoStockDayLine = true;
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("Update Tiingo stock DayLine\n");
-			gl_systemMessage.SetWorldMarketSavingFunction(_T("T stock dayline"));
+			gl_systemMessage.SetWorldMarketSavingFunction("T stock dayline");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_pWorldMarket->TaskUpdateTiingoStockDayLineDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -950,7 +950,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_runtime.background_executor()->post([] {
 				gl_UpdateWorldMarketDB.acquire();
 				TRACE("Finnhub profile\n");
-				gl_systemMessage.SetWorldMarketSavingFunction(_T("F stock profile"));
+				gl_systemMessage.SetWorldMarketSavingFunction("F stock profile");
 				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				gl_dataContainerFinnhubStock.UpdateProfileDB();
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -993,19 +993,19 @@ bool CWorldMarket::UpdateToken() {
 		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken());
 	}
 	else {
-		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
+		gl_systemMessage.PushInformationMessage("Finnhub Token Needed");
 	}
 	if (gl_systemConfiguration.GetTiingoToken().length() > 5) {
 		gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken());
 	}
 	else {
-		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
+		gl_systemMessage.PushInformationMessage("Tiingo Token Needed");
 	}
 	if (gl_systemConfiguration.GetQuandlToken().length() > 5) {
 		gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken());
 	}
 	else {
-		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
+		gl_systemMessage.PushInformationMessage("Quandl Token Needed");
 	}
 
 	return true;
@@ -1084,13 +1084,13 @@ void CWorldMarket::RebuildStockDayLineDB() {
 
 void CWorldMarket::UpdateStockDayLineStartEndDate() {
 	try {
-		const string strFilterPrefix = _T("[Symbol] = '");
+		const string strFilterPrefix = "[Symbol] = '";
 		CSetFinnhubStockDayLine setFinnhubStockDayLine;
 
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
-			setFinnhubStockDayLine.m_strFilter = (strFilterPrefix + pStock->GetSymbol() + _T("'")).c_str();
-			setFinnhubStockDayLine.m_strSort = _T("[Date]");
+			setFinnhubStockDayLine.m_strFilter = (strFilterPrefix + pStock->GetSymbol() + "'").c_str();
+			setFinnhubStockDayLine.m_strSort = "[Date]";
 			setFinnhubStockDayLine.Open();
 			if (!setFinnhubStockDayLine.IsEOF()) {
 				if (setFinnhubStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
@@ -1160,7 +1160,7 @@ void CWorldMarket::ProcessFinnhubWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pFinnhubWebSocket->PopData();
-		string strMessage = _T("Finnhub: ");
+		string strMessage = "Finnhub: ");
 		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -1175,7 +1175,7 @@ void CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoIEXWebSocket->PopData();
-		string strMessage = _T("Tiingo IEX: ");
+		string strMessage = "Tiingo IEX: ");
 		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -1190,7 +1190,7 @@ void CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoCryptoWebSocket->PopData();
-		string strMessage = _T("Tiingo Crypto: ");
+		string strMessage = "Tiingo Crypto: ");
 		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -1204,7 +1204,7 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoForexWebSocket->PopData();
-		string strMessage = _T("Tiingo Forex: ");
+		string strMessage = "Tiingo Forex: ");
 		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -1318,9 +1318,9 @@ void CWorldMarket::DeleteTiingoDelistedStock() {
 
 void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 	CSetTiingoStockDayLine setDayLine;
-	setDayLine.m_strFilter = _T("[Symbol] = '");
+	setDayLine.m_strFilter = "[Symbol] = '";
 	setDayLine.m_strFilter += pStock->GetSymbol().c_str();
-	setDayLine.m_strFilter += _T("'");
+	setDayLine.m_strFilter += "'";
 
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
@@ -1334,9 +1334,9 @@ void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 
 void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {
 	CSetTiingoCompanyFinancialState setDayLine;
-	setDayLine.m_strFilter = _T("[Symbol] = '");
+	setDayLine.m_strFilter = "[Symbol] = '";
 	setDayLine.m_strFilter += pStock->GetSymbol().c_str();
-	setDayLine.m_strFilter += _T("'");
+	setDayLine.m_strFilter += "'";
 
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();

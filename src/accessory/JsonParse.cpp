@@ -197,7 +197,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 	const string_view sv = pWebDataReceived->GetStringView(0, 21);
 
-	if (sv.compare(_T("v_pv_none_match=\"1\";\n")) == 0) {
+	if (sv.compare("v_pv_none_match=\"1\";\n") == 0) {
 		ASSERT(pWebDataReceived->GetBufferLength() == 21);
 		return true;
 	}
@@ -236,7 +236,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
 				}
 			} catch (exception& e) {
-				ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
+				ReportErrorToSystemMessage("ParseSinaData异常 ", e);
 			}
 			return true;
 		});
@@ -327,7 +327,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 			ondemand::value item = (*it).value();
 			sv = simdjsonGetStringView(item);
 			string str1(sv.data(), sv.length()); // 这里需要转换一下，直接使用string_view会导致内存溢出
-			sscanf_s(str1.data(), _T("%4d-%02d-%02d"), &year, &month, &day);
+			sscanf_s(str1.data(), "%4d-%02d-%02d", &year, &month, &day);
 			pDayLine->SetDate(year * 10000 + month * 100 + day);
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
@@ -444,9 +444,9 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		strSymbol4 = XferNeteaseToStandard(symbolName);
 		pWebRTData->SetSymbol(strSymbol4);
 		const string sName = jsonGetString(js, "name");
-		pWebRTData->SetStockName(XferToCString(sName).GetString()); // 将utf-8字符集转换为多字节字符集
-		string strTime = jsonGetString(js, _T("time"));
-		string strSymbol2 = jsonGetString(js, _T("code"));
+		pWebRTData->SetStockName(ToUTF8(XferToCString(sName))); // 将utf-8字符集转换为多字节字符集
+		string strTime = jsonGetString(js, "time");
+		string strSymbol2 = jsonGetString(js, "code");
 		std::stringstream ss(strTime);
 		chrono::sys_seconds tpTime;
 		chrono::from_stream(ss, "%Y/%m/%d %T", tpTime);
@@ -456,40 +456,40 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 	} catch (json::exception& e) {// 结构不完整
 		// do nothing
 		string strError2 = strSymbol4;
-		strError2 += _T(" ");
+		strError2 += " ";
 		strError2 += e.what();
 		gl_systemMessage.PushErrorMessage(strError2);
 	}
 	try {
-		pWebRTData->SetVolume(jsonGetLongLong(js, _T("volume")));
-		pWebRTData->SetAmount(jsonGetDouble(js, _T("turnover")));
-		pWebRTData->SetHigh(static_cast<long>(jsonGetDouble(js, _T("high")) * 1000));
-		pWebRTData->SetLow(static_cast<long>(jsonGetDouble(js, _T("low")) * 1000));
-		pWebRTData->SetNew(static_cast<long>(jsonGetDouble(js, _T("price")) * 1000));
-		pWebRTData->SetLastClose(static_cast<long>(jsonGetDouble(js, _T("yestclose")) * 1000));
-		pWebRTData->SetOpen(static_cast<long>(jsonGetDouble(js, _T("open")) * 1000));
+		pWebRTData->SetVolume(jsonGetLongLong(js, "volume"));
+		pWebRTData->SetAmount(jsonGetDouble(js, "turnover"));
+		pWebRTData->SetHigh(static_cast<long>(jsonGetDouble(js, "high") * 1000));
+		pWebRTData->SetLow(static_cast<long>(jsonGetDouble(js, "low") * 1000));
+		pWebRTData->SetNew(static_cast<long>(jsonGetDouble(js, "price") * 1000));
+		pWebRTData->SetLastClose(static_cast<long>(jsonGetDouble(js, "yestclose") * 1000));
+		pWebRTData->SetOpen(static_cast<long>(jsonGetDouble(js, "open") * 1000));
 
-		pWebRTData->SetVBuy(0, jsonGetLong(js, _T("bidvol1")));
-		pWebRTData->SetVBuy(1, jsonGetLong(js, _T("bidvol2")));
-		pWebRTData->SetVBuy(2, jsonGetLong(js, _T("bidvol3")));
-		pWebRTData->SetVBuy(3, jsonGetLong(js, _T("bidvol4")));
-		pWebRTData->SetVBuy(4, jsonGetLong(js, _T("bidvol5")));
-		pWebRTData->SetVSell(0, jsonGetLong(js, _T("askvol1")));
-		pWebRTData->SetVSell(1, jsonGetLong(js, _T("askvol2")));
-		pWebRTData->SetVSell(2, jsonGetLong(js, _T("askvol3")));
-		pWebRTData->SetVSell(3, jsonGetLong(js, _T("askvol4")));
-		pWebRTData->SetVSell(4, jsonGetLong(js, _T("askvol5")));
+		pWebRTData->SetVBuy(0, jsonGetLong(js, "bidvol1"));
+		pWebRTData->SetVBuy(1, jsonGetLong(js, "bidvol2"));
+		pWebRTData->SetVBuy(2, jsonGetLong(js, "bidvol3"));
+		pWebRTData->SetVBuy(3, jsonGetLong(js, "bidvol4"));
+		pWebRTData->SetVBuy(4, jsonGetLong(js, "bidvol5"));
+		pWebRTData->SetVSell(0, jsonGetLong(js, "askvol1"));
+		pWebRTData->SetVSell(1, jsonGetLong(js, "askvol2"));
+		pWebRTData->SetVSell(2, jsonGetLong(js, "askvol3"));
+		pWebRTData->SetVSell(3, jsonGetLong(js, "askvol4"));
+		pWebRTData->SetVSell(4, jsonGetLong(js, "askvol5"));
 
-		pWebRTData->SetPSell(0, static_cast<long>(jsonGetDouble(js, _T("ask1")) * 1000));
-		pWebRTData->SetPSell(1, static_cast<long>(jsonGetDouble(js, _T("ask2")) * 1000));
-		pWebRTData->SetPSell(2, static_cast<long>(jsonGetDouble(js, _T("ask3")) * 1000));
-		pWebRTData->SetPSell(3, static_cast<long>(jsonGetDouble(js, _T("ask4")) * 1000));
-		pWebRTData->SetPSell(4, static_cast<long>(jsonGetDouble(js, _T("ask5")) * 1000));
-		pWebRTData->SetPBuy(0, static_cast<long>(jsonGetDouble(js, _T("bid1")) * 1000));
-		pWebRTData->SetPBuy(1, static_cast<long>(jsonGetDouble(js, _T("bid2")) * 1000));
-		pWebRTData->SetPBuy(2, static_cast<long>(jsonGetDouble(js, _T("bid3")) * 1000));
-		pWebRTData->SetPBuy(3, static_cast<long>(jsonGetDouble(js, _T("bid4")) * 1000));
-		pWebRTData->SetPBuy(4, static_cast<long>(jsonGetDouble(js, _T("bid5")) * 1000));
+		pWebRTData->SetPSell(0, static_cast<long>(jsonGetDouble(js, "ask1") * 1000));
+		pWebRTData->SetPSell(1, static_cast<long>(jsonGetDouble(js, "ask2") * 1000));
+		pWebRTData->SetPSell(2, static_cast<long>(jsonGetDouble(js, "ask3") * 1000));
+		pWebRTData->SetPSell(3, static_cast<long>(jsonGetDouble(js, "ask4") * 1000));
+		pWebRTData->SetPSell(4, static_cast<long>(jsonGetDouble(js, "ask5") * 1000));
+		pWebRTData->SetPBuy(0, static_cast<long>(jsonGetDouble(js, "bid1") * 1000));
+		pWebRTData->SetPBuy(1, static_cast<long>(jsonGetDouble(js, "bid2") * 1000));
+		pWebRTData->SetPBuy(2, static_cast<long>(jsonGetDouble(js, "bid3") * 1000));
+		pWebRTData->SetPBuy(3, static_cast<long>(jsonGetDouble(js, "bid4") * 1000));
+		pWebRTData->SetPBuy(4, static_cast<long>(jsonGetDouble(js, "bid5") * 1000));
 
 		pWebRTData->CheckNeteaseRTDataActive();
 	} catch (json::exception&) {// 非活跃股票（已下市等）
@@ -549,46 +549,46 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
 			//auto key = item_key.key();
 			ondemand::object item = item_key.value();
-			string strSymbol4 = XferNeteaseToStandard(simdjsonGetStringView(item, _T("code")));
+			string strSymbol4 = XferNeteaseToStandard(simdjsonGetStringView(item, "code"));
 			pWebRTData->SetSymbol(strSymbol4);
-			pWebRTData->SetVSell(0, simdjsonGetInt64(item, _T("askvol1")));
-			pWebRTData->SetVSell(2, simdjsonGetInt64(item, _T("askvol3")));
-			pWebRTData->SetVSell(1, simdjsonGetInt64(item, _T("askvol2")));
-			pWebRTData->SetVSell(4, simdjsonGetInt64(item, _T("askvol5")));
-			pWebRTData->SetVSell(3, simdjsonGetInt64(item, _T("askvol4")));
-			pWebRTData->SetNew(StrToDecimal(simdjsonGetRawJsonToken(item, _T("price")), 3));
-			pWebRTData->SetOpen(StrToDecimal(simdjsonGetRawJsonToken(item, _T("open")), 3));
-			pWebRTData->SetPBuy(4, StrToDecimal(simdjsonGetRawJsonToken(item, _T("bid5")), 3));
-			pWebRTData->SetPBuy(3, StrToDecimal(simdjsonGetRawJsonToken(item, _T("bid4")), 3));
-			pWebRTData->SetPBuy(2, StrToDecimal(simdjsonGetRawJsonToken(item, _T("bid3")), 3));
-			pWebRTData->SetPBuy(1, StrToDecimal(simdjsonGetRawJsonToken(item, _T("bid2")), 3));
-			pWebRTData->SetPBuy(0, StrToDecimal(simdjsonGetRawJsonToken(item, _T("bid1")), 3));
-			pWebRTData->SetHigh(StrToDecimal(simdjsonGetRawJsonToken(item, _T("high")), 3));
-			pWebRTData->SetLow(StrToDecimal(simdjsonGetRawJsonToken(item, _T("low")), 3));
-			pWebRTData->SetVBuy(2, simdjsonGetInt64(item, _T("bidvol3")));
-			pWebRTData->SetVBuy(0, simdjsonGetInt64(item, _T("bidvol1")));
-			pWebRTData->SetVBuy(1, simdjsonGetInt64(item, _T("bidvol2")));
-			pWebRTData->SetVBuy(4, simdjsonGetInt64(item, _T("bidvol5")));
-			pWebRTData->SetVBuy(3, simdjsonGetInt64(item, _T("bidvol4")));
-			pWebRTData->SetVolume(simdjsonGetInt64(item, _T("volume")));
-			pWebRTData->SetPSell(4, StrToDecimal(simdjsonGetRawJsonToken(item, _T("ask5")), 3));
-			pWebRTData->SetPSell(3, StrToDecimal(simdjsonGetRawJsonToken(item, _T("ask4")), 3));
-			pWebRTData->SetPSell(0, StrToDecimal(simdjsonGetRawJsonToken(item, _T("ask1")), 3));
+			pWebRTData->SetVSell(0, simdjsonGetInt64(item, "askvol1"));
+			pWebRTData->SetVSell(2, simdjsonGetInt64(item, "askvol3"));
+			pWebRTData->SetVSell(1, simdjsonGetInt64(item, "askvol2"));
+			pWebRTData->SetVSell(4, simdjsonGetInt64(item, "askvol5"));
+			pWebRTData->SetVSell(3, simdjsonGetInt64(item, "askvol4"));
+			pWebRTData->SetNew(StrToDecimal(simdjsonGetRawJsonToken(item, "price"), 3));
+			pWebRTData->SetOpen(StrToDecimal(simdjsonGetRawJsonToken(item, "open"), 3));
+			pWebRTData->SetPBuy(4, StrToDecimal(simdjsonGetRawJsonToken(item, "bid5"), 3));
+			pWebRTData->SetPBuy(3, StrToDecimal(simdjsonGetRawJsonToken(item, "bid4"), 3));
+			pWebRTData->SetPBuy(2, StrToDecimal(simdjsonGetRawJsonToken(item, "bid3"), 3));
+			pWebRTData->SetPBuy(1, StrToDecimal(simdjsonGetRawJsonToken(item, "bid2"), 3));
+			pWebRTData->SetPBuy(0, StrToDecimal(simdjsonGetRawJsonToken(item, "bid1"), 3));
+			pWebRTData->SetHigh(StrToDecimal(simdjsonGetRawJsonToken(item, "high"), 3));
+			pWebRTData->SetLow(StrToDecimal(simdjsonGetRawJsonToken(item, "low"), 3));
+			pWebRTData->SetVBuy(2, simdjsonGetInt64(item, "bidvol3"));
+			pWebRTData->SetVBuy(0, simdjsonGetInt64(item, "bidvol1"));
+			pWebRTData->SetVBuy(1, simdjsonGetInt64(item, "bidvol2"));
+			pWebRTData->SetVBuy(4, simdjsonGetInt64(item, "bidvol5"));
+			pWebRTData->SetVBuy(3, simdjsonGetInt64(item, "bidvol4"));
+			pWebRTData->SetVolume(simdjsonGetInt64(item, "volume"));
+			pWebRTData->SetPSell(4, StrToDecimal(simdjsonGetRawJsonToken(item, "ask5"), 3));
+			pWebRTData->SetPSell(3, StrToDecimal(simdjsonGetRawJsonToken(item, "ask4"), 3));
+			pWebRTData->SetPSell(0, StrToDecimal(simdjsonGetRawJsonToken(item, "ask1"), 3));
 
 			string_view sNameView = simdjsonGetStringView(item, "name");
 			string sName(sNameView);
-			pWebRTData->SetStockName(XferToCString(sName).GetString()); // 将utf-8字符集转换为多字节字符集
-			pWebRTData->SetPSell(2, StrToDecimal(simdjsonGetRawJsonToken(item, _T("ask3")), 3));
-			pWebRTData->SetPSell(1, StrToDecimal(simdjsonGetRawJsonToken(item, _T("ask2")), 3));
-			strTime = simdjsonGetStringView(item, _T("time"));
+			pWebRTData->SetStockName(ToUTF8(XferToCString(sName))); // 将utf-8字符集转换为多字节字符集
+			pWebRTData->SetPSell(2, StrToDecimal(simdjsonGetRawJsonToken(item, "ask3"), 3));
+			pWebRTData->SetPSell(1, StrToDecimal(simdjsonGetRawJsonToken(item, "ask2"), 3));
+			strTime = simdjsonGetStringView(item, "time");
 			ss.clear();
 			ss.str(strTime);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%Y/%m/d %T", tpTime);
 			tpTime -= timeZoneOffset;
 			pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
-			pWebRTData->SetLastClose(StrToDecimal(simdjsonGetRawJsonToken(item, _T("yestclose")), 3));
-			pWebRTData->SetAmount(StrToDecimal(simdjsonGetRawJsonToken(item, _T("turnover")), 0));
+			pWebRTData->SetLastClose(StrToDecimal(simdjsonGetRawJsonToken(item, "yestclose"), 3));
+			pWebRTData->SetAmount(StrToDecimal(simdjsonGetRawJsonToken(item, "turnover"), 0));
 
 			pWebRTData->CheckNeteaseRTDataActive();
 			pvWebRTData->push_back(pWebRTData);

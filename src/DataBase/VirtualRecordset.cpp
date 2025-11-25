@@ -13,11 +13,11 @@ CVirtualRecordset::~CVirtualRecordset() {
 
 CString CVirtualRecordset::GetSchemaConnect() const {
 	if (gl_systemConfiguration.IsWorkingMode()) { // 工作时使用系统配置文件中的用户名和密码
-		return _T("DSN=") + m_Schema + _T(";UID=") + gl_systemConfiguration.GetDatabaseAccountName().c_str() + _T(";PASSWORD=") +
-		gl_systemConfiguration.GetDatabaseAccountPassword().c_str() + _T(";charset=utf8mb4"); // 运行时的DSN使用原schema名称
+		return "DSN=" + m_Schema + ";UID=" + gl_systemConfiguration.GetDatabaseAccountName().c_str() + ";PASSWORD=" +
+		gl_systemConfiguration.GetDatabaseAccountPassword().c_str() + ";charset=utf8mb4"; // 运行时的DSN使用原schema名称
 	}
 	// 测试时使用固定的用户名Test和密码test。
-	return _T("DSN=") + m_Schema + _T("Test;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作时DSN名称后要加上后缀Test
+	return "DSN=" + m_Schema + "Test;UID=Test;PASSWORD=test;charset=utf8mb4"; // Test操作时DSN名称后要加上后缀Test
 }
 
 CString CVirtualRecordset::GetDefaultConnect() {
@@ -27,5 +27,5 @@ CString CVirtualRecordset::GetDefaultConnect() {
 
 CString CVirtualRecordset::GetDefaultSQL() {
 	ASSERT(m_Table.GetLength() > 0);
-	return _T("[") + m_Table + _T("]"); // SQL的制式为: [表名称]
+	return "[" + m_Table + "]"; // SQL的制式为: [表名称]
 }

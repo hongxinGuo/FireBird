@@ -11,11 +11,11 @@
 #include "WebData.h"
 
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/definitions?");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/definitions?";
 }
 
 string CProductTiingoFundamentalDefinition::CreateMessage() {
-	m_strInquiringSymbol = _T("All");
+	m_strInquiringSymbol = "All";
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
@@ -71,29 +71,29 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 		for (auto item : doc) {
 			auto itemValue = item.value();
 			pFundamentalDefinition = make_shared<CTiingoFundamentalDefinition>();
-			s1 = simdjsonGetStringView(itemValue, _T("dataCode"));
+			s1 = simdjsonGetStringView(itemValue, "dataCode");
 			pFundamentalDefinition->m_strDataCode = s1;;
-			s1 = simdjsonGetStringView(itemValue, _T("name"));
+			s1 = simdjsonGetStringView(itemValue, "name");
 			pFundamentalDefinition->m_strName = s1;
-			s1 = simdjsonGetStringView(itemValue, _T("description"));
+			s1 = simdjsonGetStringView(itemValue, "description");
 			pFundamentalDefinition->m_strDescription = s1;;
-			s1 = simdjsonGetStringView(itemValue, _T("statementType"));
+			s1 = simdjsonGetStringView(itemValue, "statementType");
 			pFundamentalDefinition->m_strStatementType = s1;
-			s1 = simdjsonGetStringView(itemValue, _T("units"));
+			s1 = simdjsonGetStringView(itemValue, "units");
 			pFundamentalDefinition->m_strUnits = s1;;
 
 			pvFundamentalDefinition->push_back(pFundamentalDefinition);
 			iCount++;
 		}
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo fundamental definitions "), error.what());
+		ReportJSonErrorToSystemMessage("Tiingo fundamental definitions ", error.what());
 	}
 
 	return pvFundamentalDefinition;
 }
 
 void CProductTiingoFundamentalDefinition::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateFundamentalDefinition(false);
-	gl_systemMessage.PushInformationMessage(_T("Fundamental definition updated"));
+	gl_systemMessage.PushInformationMessage("Fundamental definition updated");
 }

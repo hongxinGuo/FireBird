@@ -31,8 +31,8 @@ namespace FireBirdTest {
 
 	TEST_F(CInsiderTransactionTest, TestInitialize) {
 		const CInsiderTransaction insiderTransaction;
-		EXPECT_EQ(insiderTransaction.m_strSymbol, _T(" "));
-		EXPECT_EQ(insiderTransaction.m_strPersonName, _T(" "));
+		EXPECT_EQ(insiderTransaction.m_strSymbol, " ");
+		EXPECT_EQ(insiderTransaction.m_strPersonName, " ");
 		EXPECT_EQ(insiderTransaction.m_lShare, 0);
 		EXPECT_EQ(insiderTransaction.m_lChange, 0);
 		EXPECT_EQ(insiderTransaction.m_lFilingDate, 19800101);
@@ -44,7 +44,7 @@ namespace FireBirdTest {
 		CSetInsiderTransaction setInsiderTransaction, setInsiderTransaction2;
 		CInsiderTransaction insiderTransaction, insiderTransaction2;
 
-		insiderTransaction.m_strSymbol = _T("AA.US");
+		insiderTransaction.m_strSymbol = "AA.US";
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setInsiderTransaction.Open();
@@ -53,13 +53,13 @@ namespace FireBirdTest {
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
 
-		insiderTransaction2.m_strSymbol = _T("AA.US2");
-		setInsiderTransaction.m_strFilter = _T("[Symbol] = 'AA.US'");
+		insiderTransaction2.m_strSymbol = "AA.US2";
+		setInsiderTransaction.m_strFilter = "[Symbol] = 'AA.US'";
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		insiderTransaction.Load(setInsiderTransaction); // 装入第一个Insider Transaction信息：AA.US
-		EXPECT_EQ(insiderTransaction.m_strSymbol, _T("AA.US"));
-		EXPECT_EQ(insiderTransaction.m_strPersonName, _T(" "));
+		EXPECT_EQ(insiderTransaction.m_strSymbol, "AA.US");
+		EXPECT_EQ(insiderTransaction.m_strPersonName, " ");
 		EXPECT_EQ(insiderTransaction.m_lShare, 0);
 		EXPECT_EQ(insiderTransaction.m_lChange, 0);
 		EXPECT_EQ(insiderTransaction.m_lFilingDate, 19800101);
@@ -71,7 +71,7 @@ namespace FireBirdTest {
 		setInsiderTransaction.Close();
 
 		// 恢复原状
-		setInsiderTransaction2.m_strFilter = _T("[Symbol] = 'AA.US2'");
+		setInsiderTransaction2.m_strFilter = "[Symbol] = 'AA.US2'";
 		setInsiderTransaction2.Open();
 		setInsiderTransaction2.m_pDatabase->BeginTrans();
 		while (!setInsiderTransaction2.IsEOF()) {
@@ -89,8 +89,8 @@ namespace FireBirdTest {
 
 		setInsiderTransaction.Open();
 		insiderTransaction.Load(setInsiderTransaction); // 装入第一个内部交易信息：A, a b c, ...
-		EXPECT_EQ(insiderTransaction.m_strSymbol, _T("A"));
-		EXPECT_EQ(insiderTransaction.m_strPersonName, _T("a b c"));
+		EXPECT_EQ(insiderTransaction.m_strSymbol, "A");
+		EXPECT_EQ(insiderTransaction.m_strPersonName, "a b c");
 		EXPECT_EQ(insiderTransaction.m_lShare, 0);
 		EXPECT_EQ(insiderTransaction.m_lChange, 0);
 		EXPECT_EQ(insiderTransaction.m_lFilingDate, 19800101);

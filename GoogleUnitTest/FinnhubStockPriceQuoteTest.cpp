@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestInitialize) {
 		EXPECT_EQ(stockPriceQuote.GetIndex(), 0);
-		EXPECT_EQ(stockPriceQuote.GetInquiryFunction(), _T("https://finnhub.io/api/v1/quote?symbol="));
+		EXPECT_EQ(stockPriceQuote.GetInquiryFunction(), "https://finnhub.io/api/v1/quote?symbol=");
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
@@ -51,21 +51,21 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData53(3, _T("AAPL"), _T("\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData53(3, "AAPL", "\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}");
 	// 缺c
-	Test_FinnhubWebData finnhubWebData54(4, _T("AAPL"), _T("{\"a\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData54(4, "AAPL", "{\"a\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}");
 	// 缺h
-	Test_FinnhubWebData finnhubWebData55(5, _T("AAPL"), _T("{\"c\":121.03,\"a\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData55(5, "AAPL", "{\"c\":121.03,\"a\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}");
 	// 缺l
-	Test_FinnhubWebData finnhubWebData56(6, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"a\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData56(6, "AAPL", "{\"c\":121.03,\"h\":121.17,\"a\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}");
 	// 缺o
-	Test_FinnhubWebData finnhubWebData57(7, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"a\":120.4,\"pc\":121.96,\"t\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData57(7, "AAPL", "{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"a\":120.4,\"pc\":121.96,\"t\":1615507200}");
 	// 缺pc
-	Test_FinnhubWebData finnhubWebData58(8, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"a\":121.96,\"t\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData58(8, "AAPL", "{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"a\":121.96,\"t\":1615507200}");
 	// 缺乏t
-	Test_FinnhubWebData finnhubWebData59(9, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"a\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData59(9, "AAPL", "{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"a\":1615507200}");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData60(10, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
+	Test_FinnhubWebData finnhubWebData60(10, "AAPL", "{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}");
 
 	class ProcessFinnhubStockQuoteTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

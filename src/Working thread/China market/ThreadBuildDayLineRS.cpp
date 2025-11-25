@@ -24,7 +24,7 @@ UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingD
 	CTime ctCurrent(year, month, day, 12, 0, 0);
 	const CTimeSpan oneDay(1, 0, 0, 0);
 
-	gl_systemMessage.PushInformationMessage(_T("开始计算股票相对强度"));
+	gl_systemMessage.PushInformationMessage("开始计算股票相对强度");
 	vector<result<void>> vResults;
 
 	auto start = chrono::time_point_cast<chrono::seconds>(chrono::steady_clock::now());
@@ -67,7 +67,7 @@ UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingD
 	}
 	else {
 		gl_systemConfiguration.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。
-		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
+		gl_systemMessage.PushInformationMessage("中止了重新计算日线相对强度的过程");
 	}
 	pMarket->SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
 

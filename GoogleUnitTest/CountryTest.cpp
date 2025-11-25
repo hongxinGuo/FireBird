@@ -31,19 +31,19 @@ namespace FireBirdTest {
 
 	TEST_F(CCountryTest, TestInitialize) {
 		const CCountry country;
-		EXPECT_EQ(country.m_strCode2.compare(_T(" ")), 0);
-		EXPECT_EQ(country.m_strCode3.compare(_T(" ")), 0);
-		EXPECT_EQ(country.m_strCodeNo.compare(_T(" ")), 0);
-		EXPECT_EQ(country.m_strCountry.compare(_T(" ")), 0);
-		EXPECT_EQ(country.m_strCurrency.compare(_T(" ")), 0);
-		EXPECT_EQ(country.m_strCurrencyCode.compare(_T(" ")), 0);
+		EXPECT_EQ(country.m_strCode2.compare(" "), 0);
+		EXPECT_EQ(country.m_strCode3.compare(" "), 0);
+		EXPECT_EQ(country.m_strCodeNo.compare(" "), 0);
+		EXPECT_EQ(country.m_strCountry.compare(" "), 0);
+		EXPECT_EQ(country.m_strCurrency.compare(" "), 0);
+		EXPECT_EQ(country.m_strCurrencyCode.compare(" "), 0);
 	}
 
 	TEST_F(CCountryTest, TestAppend) {
 		CSetCountry setCountry, setCountry2;
 		CCountry country;
 
-		country.m_strCode2 = _T("AA");
+		country.m_strCode2 = "AA";
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setCountry.Open();
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		setCountry.m_pDatabase->CommitTrans();
 		setCountry.Close();
 
-		setCountry2.m_strFilter = _T("[Code2] = 'AA'");
+		setCountry2.m_strFilter = "[Code2] = 'AA'";
 		setCountry2.Open();
 		setCountry2.m_pDatabase->BeginTrans();
 		while (!setCountry2.IsEOF()) {
@@ -70,12 +70,12 @@ namespace FireBirdTest {
 
 		setCountry.Open();
 		country.Load(setCountry); // 装入第一个国家的信息：AL, ALB, 8, Albania, Lek, All
-		EXPECT_EQ(country.m_strCode2.compare(_T("AL")), 0);
-		EXPECT_EQ(country.m_strCode3.compare(_T("ALB")), 0);
-		EXPECT_EQ(country.m_strCodeNo.compare(_T("8")), 0);
-		EXPECT_EQ(country.m_strCountry.compare(_T("Albania")), 0);
-		EXPECT_EQ(country.m_strCurrency.compare(_T("Lek")), 0);
-		EXPECT_EQ(country.m_strCurrencyCode.compare(_T("ALL")), 0);
+		EXPECT_EQ(country.m_strCode2.compare("AL"), 0);
+		EXPECT_EQ(country.m_strCode3.compare("ALB"), 0);
+		EXPECT_EQ(country.m_strCodeNo.compare("8"), 0);
+		EXPECT_EQ(country.m_strCountry.compare("Albania"), 0);
+		EXPECT_EQ(country.m_strCurrency.compare("Lek"), 0);
+		EXPECT_EQ(country.m_strCurrencyCode.compare("ALL"), 0);
 		setCountry.Close();
 	}
 }

@@ -21,12 +21,12 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };
-	CString m_Description{ _T("") };
-	CString m_Exchange{ _T("") };
-	CString m_Symbol{ _T("") };
-	CStringW m_DisplaySymbol{ _T("") }; // 当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
+	CString m_Description{ "" };
+	CString m_Exchange{ "" };
+	CString m_Symbol{ "" };
+	CStringW m_DisplaySymbol{ "" }; // 当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
 	long m_IPOStatus{ _STOCK_NOT_CHECKED_ };
-	CString m_UpdateDate{ _T("") };
+	CString m_UpdateDate{ "" };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

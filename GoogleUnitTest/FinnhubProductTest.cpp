@@ -40,7 +40,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string str = _T("{\"no error\":\"You don't have access to this resource.\"}");
+		const string str = "{\"no error\":\"You don't have access to this resource.\"}";
 		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 		finnhubProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string str = _T("{\"error\":\"You don't have access to this resource.\"}");
+		const string str = "{\"error\":\"You don't have access to this resource.\"}";
 		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 
@@ -62,35 +62,35 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubProductTest, TestAddInaccessibleExchange) {
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
-		finnhubProduct.SetInquiringExchange(_T("AA")); // 新的交易所代码
+		finnhubProduct.SetInquiringExchange("AA"); // 新的交易所代码
 
 		finnhubProduct.AddInaccessibleSymbol();
 
 		CInaccessibleExchangesPtr pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
-		EXPECT_TRUE(pExchange->HaveSymbol(_T("AA")));
+		EXPECT_TRUE(pExchange->HaveSymbol("AA"));
 		EXPECT_EQ(pExchange->SymbolSize(), 1) << "增加了一个交易所";
 
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
-		finnhubProduct.SetInquiringExchange(_T("AB")); // 新的交易所代码
+		finnhubProduct.SetInquiringExchange("AB"); // 新的交易所代码
 
 		finnhubProduct.AddInaccessibleSymbol();
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
-		EXPECT_TRUE(pExchange->HaveSymbol(_T("AB")));
+		EXPECT_TRUE(pExchange->HaveSymbol("AB"));
 		EXPECT_EQ(pExchange->SymbolSize(), 2) << "增加第二个交易所";
 
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
-		finnhubProduct.SetInquiringExchange(_T("AB")); // 已存在于数据集中的交易所代码
+		finnhubProduct.SetInquiringExchange("AB"); // 已存在于数据集中的交易所代码
 
 		finnhubProduct.AddInaccessibleSymbol();
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
-		EXPECT_TRUE(pExchange->HaveSymbol(_T("AB")));
+		EXPECT_TRUE(pExchange->HaveSymbol("AB"));
 		EXPECT_EQ(pExchange->SymbolSize(), 2) << "AB交易所已存在于数据集中，故而没有增加";
 
 		// 恢复原状
-		pExchange->DeleteSymbol(_T("AA"));
-		pExchange->DeleteSymbol(_T("AB"));
+		pExchange->DeleteSymbol("AA");
+		pExchange->DeleteSymbol("AB");
 
 		gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 	}

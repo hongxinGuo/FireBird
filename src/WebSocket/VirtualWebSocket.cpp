@@ -8,7 +8,7 @@
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;
 	m_HeartbeatTime = 0;
-	m_url = _T("");
+	m_url = "";
 	m_vSymbol.resize(0);
 	m_mapSymbol.clear();
 

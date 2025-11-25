@@ -9,7 +9,7 @@
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;
-	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
+	m_strInquiryFunction = "http://qt.gtimg.cn/q=";
 }
 
 string CProductTengxunRT::CreateMessage() {

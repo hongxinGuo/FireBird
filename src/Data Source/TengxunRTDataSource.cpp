@@ -7,8 +7,8 @@
 #include "WebData.h"
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
-	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
-	m_strInquiryToken = _T("");
+	m_strInquiryFunction = "http://qt.gtimg.cn/q=";
+	m_strInquiryToken = "";
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 
 	CTengxunRTDataSource::ConfigureInternetOption();
@@ -63,7 +63,7 @@ void CTengxunRTDataSource::ConfigureInternetOption() {
 bool CTengxunRTDataSource::IsInvalidTengxunRTData(const CWebData& WebDataReceived) {
 	const string_view sv = WebDataReceived.GetStringView(0, 21);
 
-	if (sv.compare(_T("v_pv_none_match=\"1\";\n")) == 0) {
+	if (sv.compare("v_pv_none_match=\"1\";\n") == 0) {
 		ASSERT(WebDataReceived.GetBufferLength() == 21);
 		return true;
 	}

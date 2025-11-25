@@ -3,10 +3,10 @@
 #include"NaicsIndustry.h"
 
 CNaicsIndustry::CNaicsIndustry() {
-	m_strNaics = _T(" ");
-	m_strNationalIndustry = _T(" ");
-	m_strSector = _T(" ");
-	m_strSubSector = _T(" ");
+	m_strNaics = " ";
+	m_strNationalIndustry = " ";
+	m_strSector = " ";
+	m_strSubSector = " ";
 
 	m_fUpdated = false;
 }
@@ -21,8 +21,8 @@ void CNaicsIndustry::Append(CSetNaicsIndustry& setNaicsIndustry) const {
 }
 
 void CNaicsIndustry::Load(const CSetNaicsIndustry& setNaicsIndustry) {
-	m_strNaics = setNaicsIndustry.m_Naics;
-	m_strNationalIndustry = setNaicsIndustry.m_NationalIndustry;
-	m_strSector = setNaicsIndustry.m_Sector;
-	m_strSubSector = setNaicsIndustry.m_SubSector;
+	m_strNaics = ToUTF8(setNaicsIndustry.m_Naics);
+	m_strNationalIndustry = ToUTF8(setNaicsIndustry.m_NationalIndustry);
+	m_strSector = ToUTF8(setNaicsIndustry.m_Sector);
+	m_strSubSector = ToUTF8(setNaicsIndustry.m_SubSector);
 }

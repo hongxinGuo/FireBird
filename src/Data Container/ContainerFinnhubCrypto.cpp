@@ -25,16 +25,16 @@ bool CContainerFinnhubCrypto::LoadDB() {
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	CFinnhubCryptoPtr pSymbol = nullptr;
 
-	setCryptoSymbol.m_strSort = _T("[Symbol]");
+	setCryptoSymbol.m_strSort = "[Symbol]";
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(setCryptoSymbol.m_Symbol.GetString())) {
+		if (!IsSymbol(ToUTF8(setCryptoSymbol.m_Symbol))) {
 			pSymbol = make_shared<CFinnhubCrypto>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
 			if (m_mapSymbol.contains(pSymbol->GetSymbol())) {
-				string s = _T("Finnhub Crypto发现重复代码：");
+				string s = "Finnhub Crypto发现重复代码：";
 				s += pSymbol->GetSymbol();
 				gl_systemMessage.PushErrorMessage(s);
 			}
@@ -80,8 +80,8 @@ bool CContainerFinnhubCrypto::UpdateDB() {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		while (!setCryptoSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol.GetString())) {
-				pSymbol = GetItem(setCryptoSymbol.m_Symbol.GetString());
+			if (m_mapSymbol.contains(ToUTF8(setCryptoSymbol.m_Symbol))) {
+				pSymbol = GetItem(ToUTF8(setCryptoSymbol.m_Symbol));
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setCryptoSymbol);
 					pSymbol->SetUpdateProfileDB(false);

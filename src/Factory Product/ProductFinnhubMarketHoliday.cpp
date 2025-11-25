@@ -10,7 +10,7 @@
 #include "WorldMarket.h"
 
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-holiday?exchange=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-holiday?exchange=";
 }
 
 string CProductFinnhubMarketHoliday::CreateMessage() {
@@ -61,26 +61,26 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	if (!pWebData->CreateJson(js)) return pvHoliday;
 	if (!IsValidData(pWebData)) return pvHoliday;
 
-	s = jsonGetString(js, _T("exchange"));
+	s = jsonGetString(js, "exchange");
 	if (!s.empty()) sExchange = s;
-	s = jsonGetString(js, _T("timezone"));
+	s = jsonGetString(js, "timezone");
 	if (!s.empty()) sTimeZone = s;
-	auto js1 = jsonGetChild(js, _T("data"));
+	auto js1 = jsonGetChild(js, "data");
 	try {
 		for (auto it = js1.begin(); it != js1.end(); ++it) {
 			pHoliday = make_shared<CMarketHoliday>();
-			s = jsonGetString(it, _T("eventName"));
+			s = jsonGetString(it, "eventName");
 			if (!s.empty()) pHoliday->m_strEventName = s;
-			s = jsonGetString(it, _T("atDate"));
+			s = jsonGetString(it, "atDate");
 			pHoliday->m_lDate = XferToYYYYMMDD(s);
-			s = jsonGetString(it, _T("tradingHour"));
+			s = jsonGetString(it, "tradingHour");
 			pHoliday->m_strTradingHour = s;
 			pHoliday->m_strExchange = sExchange;
 			pHoliday->m_strTimeZone = sTimeZone;
 			pvHoliday->push_back(pHoliday);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub market holiday "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub market holiday ", e.what());
 		return pvHoliday;
 	}
 	return pvHoliday;

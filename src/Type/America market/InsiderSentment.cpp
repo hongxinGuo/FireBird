@@ -3,7 +3,7 @@
 #include"InsiderSentiment.h"
 
 CInsiderSentiment::CInsiderSentiment() {
-	m_strSymbol = _T(" ");
+	m_strSymbol = " ";
 	m_lDate = 19800101;
 	m_lChange = 0;
 	m_mspr = 0.0;
@@ -29,7 +29,7 @@ void CInsiderSentiment::Save(CSetInsiderSentiment& setInsiderSentiment) const {
 }
 
 void CInsiderSentiment::Load(const CSetInsiderSentiment& setInsiderSentiment) {
-	m_strSymbol = setInsiderSentiment.m_Symbol;
+	m_strSymbol = ToUTF8(setInsiderSentiment.m_Symbol);
 	m_lDate = setInsiderSentiment.m_Date;
 	m_lChange = setInsiderSentiment.m_Change;
 	m_mspr = setInsiderSentiment.m_mspr;

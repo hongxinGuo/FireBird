@@ -6,7 +6,7 @@
 
 class CSetEPSSurprise : public CVirtualRecordset {
 public:
-	CSetEPSSurprise(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_estimates_eps_surprise"), CDatabase* pDatabase = nullptr);
+	CSetEPSSurprise(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_stock_estimates_eps_surprise", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -19,7 +19,7 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };  // 索引用，自动生成。
-	CString m_Symbol{ _T("") };
+	CString m_Symbol{ "" };
 	long m_Date{ 0 };
 	double m_Actual{ 0 };
 	double m_Estimate{ 0 };

@@ -122,13 +122,13 @@ void WatchdogQT::Update() const {
 	string sTotal;
 	for (auto s1 : m_listOutput) {
 		sTotal += s1;
-		sTotal += _T("\n");
+		sTotal += "\n";
 	}
 	ui.textBrowser->setText(sTotal.c_str());
 }
 
 bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
-	const HANDLE hMutex = CreateMutex(nullptr, false, strProgramToken.c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	const HANDLE hMutex = CreateMutex(nullptr, false, reinterpret_cast<LPCWSTR>(strProgramToken.c_str())); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	bool bAlreadyRunning = false;
 	if (hMutex) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {

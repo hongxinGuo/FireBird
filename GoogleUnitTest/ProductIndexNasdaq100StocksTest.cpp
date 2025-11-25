@@ -39,7 +39,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductIndexNasdaq100StocksTest, TestInitialize) {
 		EXPECT_EQ(nasdaq100Stocks.GetIndex(), 0);
-		EXPECT_EQ(nasdaq100Stocks.GetInquiryFunction(), _T("https://www.slickcharts.com/nasdaq100"));
+		EXPECT_EQ(nasdaq100Stocks.GetInquiryFunction(), "https://www.slickcharts.com/nasdaq100");
 	}
 
 	TEST_F(CProductIndexNasdaq100StocksTest, TestCreatMessage) {
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks());
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Nasdaq 100 stock list updated"));
+		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Nasdaq 100 stock list updated");
 
 		// »Ö¸´Ô­×´
 		gl_pAccessoryDataSource->SetUpdateIndexNasdaq100Stocks(true);

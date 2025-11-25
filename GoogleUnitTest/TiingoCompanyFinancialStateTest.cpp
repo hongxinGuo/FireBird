@@ -32,8 +32,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoCompanyFinancialStateTest, TestInicialize) {
-		EXPECT_EQ(financialState.m_symbol, _T(""));
-		EXPECT_EQ(financialState.m_exchange, _T(""));
+		EXPECT_EQ(financialState.m_symbol, "");
+		EXPECT_EQ(financialState.m_exchange, "");
 		EXPECT_DOUBLE_EQ(financialState.m_yearQuarter, 0);
 		EXPECT_DOUBLE_EQ(financialState.m_accoci, 0);
 		EXPECT_DOUBLE_EQ(financialState.m_acctPay, 0);
@@ -126,8 +126,8 @@ namespace FireBirdTest {
 		CSetTiingoCompanyFinancialState setNaicsIndustry, setNaicsIndustry2;
 		CTiingoCompanyFinancialState financialStateToBeSaved;
 
-		financialStateToBeSaved.m_symbol = _T("AAAAA");
-		financialStateToBeSaved.m_exchange = _T("US");
+		financialStateToBeSaved.m_symbol = "AAAAA";
+		financialStateToBeSaved.m_exchange = "US";
 		financialStateToBeSaved.m_yearQuarter = 202401;
 		financialStateToBeSaved.m_accoci = 1;
 		financialStateToBeSaved.m_acctPay = 2;
@@ -222,7 +222,7 @@ namespace FireBirdTest {
 		setNaicsIndustry.m_pDatabase->CommitTrans();
 		setNaicsIndustry.Close();
 
-		setNaicsIndustry2.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setNaicsIndustry2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setNaicsIndustry2.Open();
 		setNaicsIndustry2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "此时已经存入了AAAAA";
@@ -231,8 +231,8 @@ namespace FireBirdTest {
 		setNaicsIndustry2.m_pDatabase->CommitTrans();
 		setNaicsIndustry2.Close();
 
-		EXPECT_EQ(financialState.m_symbol, _T("AAAAA"));
-		EXPECT_EQ(financialState.m_exchange, _T("US"));
+		EXPECT_EQ(financialState.m_symbol, "AAAAA");
+		EXPECT_EQ(financialState.m_exchange, "US");
 		EXPECT_DOUBLE_EQ(financialState.m_yearQuarter, 202401);
 		EXPECT_DOUBLE_EQ(financialState.m_accoci, 1);
 		EXPECT_DOUBLE_EQ(financialState.m_acctPay, 2);

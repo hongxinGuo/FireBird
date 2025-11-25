@@ -38,7 +38,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestInitialize) {
 		EXPECT_EQ(companySymbolProduct.GetIndex(), 0);
-		EXPECT_EQ(companySymbolProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/symbol?exchange="));
+		EXPECT_EQ(companySymbolProduct.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/symbol?exchange=");
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
@@ -48,21 +48,21 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {
-		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg"), _T("US")));
-		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg.L"), _T("US")));
-		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abc"), _T("LLLL")));
-		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg.L"), _T("L")));
-		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg.ABC"), _T("L")));
-		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg"), _T("L")));
-		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg."), _T("L")));
+		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol("abcdefg", "US"));
+		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol("abcdefg.L", "US"));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol("abc", "LLLL"));
+		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol("abcdefg.L", "L"));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol("abcdefg.ABC", "L"));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol("abcdefg", "L"));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol("abcdefg.", "L"));
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData22(2, _T("AAPL"), _T("[\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"CERC\",\"figi\":\"BBG001QHW0Y8\",\"isin\":null,\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"CERC\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"ATGVF\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"ATGVF\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]"));
+	Test_FinnhubWebData finnhubWebData22(2, "AAPL", "[\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"CERC\",\"figi\":\"BBG001QHW0Y8\",\"isin\":null,\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"CERC\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"ATGVF\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"ATGVF\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]");
 	// 数据缺乏currency项
-	Test_FinnhubWebData finnhubWebData23(3, _T("AAPL"), _T("[{\"cuency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"CERC\",\"figi\":\"BBG001QHW0Y8\",\"isin\":null,\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"CERC\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"ATGVF\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"ATGVF\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]"));
+	Test_FinnhubWebData finnhubWebData23(3, "AAPL", "[{\"cuency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"CERC\",\"figi\":\"BBG001QHW0Y8\",\"isin\":null,\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"CERC\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"ATGVF\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"ATGVF\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData30(10, _T("AAPL"), _T("[{\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"A\",\"figi\":\"BBG001QHW0Y8\",\"isin\":\"not null\",\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"A\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"AA\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"New Symbol\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]"));
+	Test_FinnhubWebData finnhubWebData30(10, "AAPL", "[{\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"A\",\"figi\":\"BBG001QHW0Y8\",\"isin\":\"not null\",\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"A\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"AA\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"New Symbol\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]");
 
 	class ParseFinnhubStockSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -73,10 +73,10 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
-			m_pStock->SetCurrency(_T(""));
+			m_pStock->SetCurrency("");
 			m_pWebData = pData->m_pData;
 			m_finnhubStockSymbolProduct.__Test_checkAccessRight(m_pWebData);
-			m_finnhubStockSymbolProduct.SetInquiringExchange(_T("US"));
+			m_finnhubStockSymbolProduct.SetInquiringExchange("US");
 
 			m_pvStock = nullptr;
 		}
@@ -118,11 +118,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->size(), 0);
 			break;
 		case 10:
-			EXPECT_EQ(m_pvStock->at(0)->GetSymbol(), _T("A"));
-			EXPECT_EQ(m_pvStock->at(0)->GetIsin(), _T("not null")) << "此时内容不为空，需要双引号";
-			EXPECT_EQ(m_pvStock->at(1)->GetSymbol(), _T("New Symbol"));
-			EXPECT_EQ(m_pvStock->at(1)->GetIsin(), _T(" ")) << "当内容为空（null）时，使用默认值“ ”";
-			EXPECT_EQ(m_pvStock->at(0)->GetExchangeCode(), _T("US"));
+			EXPECT_EQ(m_pvStock->at(0)->GetSymbol(), "A");
+			EXPECT_EQ(m_pvStock->at(0)->GetIsin(), "not null") << "此时内容不为空，需要双引号";
+			EXPECT_EQ(m_pvStock->at(1)->GetSymbol(), "New Symbol");
+			EXPECT_EQ(m_pvStock->at(1)->GetIsin(), " ") << "当内容为空（null）时，使用默认值“ ”";
+			EXPECT_EQ(m_pvStock->at(0)->GetExchangeCode(), "US");
 			EXPECT_EQ(m_pvStock->size(), 2);
 			break;
 		default:
@@ -175,9 +175,9 @@ namespace FireBirdTest {
 		case 3: // 缺乏currency项
 			break;
 		case 10:
-			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(_T("New Symbol"))) << "新增加的代码";
-			pStock = gl_dataContainerFinnhubStock.GetItem(_T("New Symbol"));
-			EXPECT_EQ(pStock->GetExchangeCode(), _T("AD")) << "测试数据库的第一个交易所";
+			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("New Symbol")) << "新增加的代码";
+			pStock = gl_dataContainerFinnhubStock.GetItem("New Symbol");
+			EXPECT_EQ(pStock->GetExchangeCode(), "AD") << "测试数据库的第一个交易所";
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 
 		// 恢复原状

@@ -36,8 +36,8 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 
 	setForexExchange.Open();
 	while (!setForexExchange.IsEOF()) {
-		m_vForexExchange.push_back(setForexExchange.m_Code.GetString());
-		m_mapForexExchange[setForexExchange.m_Code.GetString()] = i++;
+		m_vForexExchange.push_back(ToUTF8(setForexExchange.m_Code));
+		m_mapForexExchange[ToUTF8(setForexExchange.m_Code)] = i++;
 		setForexExchange.MoveNext();
 	}
 	setForexExchange.Close();

@@ -16,9 +16,9 @@ class CTiingoCryptoSocket {
 public:
 	CTiingoCryptoSocket() {
 		m_chMessageType = ' ';
-		m_sDateTime = _T("");
-		m_sSymbol = _T("");
-		m_strExchange = _T("");
+		m_sDateTime = "";
+		m_sSymbol = "";
+		m_strExchange = "";
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = m_dLastPrice = m_dLastSize = 0;
 	}
 

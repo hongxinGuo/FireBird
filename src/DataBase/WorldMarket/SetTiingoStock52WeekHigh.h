@@ -5,7 +5,7 @@
 
 class CSetTiingoStock52WeekHigh : public CVirtualRecordset {
 public:
-	CSetTiingoStock52WeekHigh(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_stock_52week_high"), CDatabase* pDatabase = nullptr);
+	CSetTiingoStock52WeekHigh(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_52week_high", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -18,8 +18,8 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };  // 索引用，自动生成。
-	CString m_Symbol{ _T("") };
-	CString m_Exchange{ _T("") };
+	CString m_Symbol{ "" };
+	CString m_Exchange{ "" };
 	long m_Date{ 0 };
 
 	// 重写

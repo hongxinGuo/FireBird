@@ -30,9 +30,9 @@ void CreateSimdjsonEmptyArray();
 [[nodiscard]] bool simdjsonGetBool(ondemand::document& document, const string_view& key, bool defaultValue = false);
 [[nodiscard]] bool simdjsonGetBool(ondemand::value& value);
 
-[[nodiscard]] string_view simdjsonGetStringView(ondemand::value& value, const string_view& key, string_view defaultValue = _T(""));
-[[nodiscard]] string_view simdjsonGetStringView(ondemand::object& object, const string_view& key, string_view defaultValue = _T(""));
-[[nodiscard]] string_view simdjsonGetStringView(ondemand::document& document, const string_view& key, string_view defaultValue = _T(""));
+[[nodiscard]] string_view simdjsonGetStringView(ondemand::value& value, const string_view& key, string_view defaultValue = "");
+[[nodiscard]] string_view simdjsonGetStringView(ondemand::object& object, const string_view& key, string_view defaultValue = "");
+[[nodiscard]] string_view simdjsonGetStringView(ondemand::document& document, const string_view& key, string_view defaultValue = "");
 [[nodiscard]] string_view simdjsonGetStringView(ondemand::value& value);
 
 [[nodiscard]] ondemand::array simdjsonGetArray(ondemand::value& value, const string_view& key, const ondemand::array& defaultValue = gl_simdjsonEmptyArray);

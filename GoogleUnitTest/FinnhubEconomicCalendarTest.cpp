@@ -39,7 +39,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestInitialize) {
 		EXPECT_EQ(economicCalendar.GetIndex(), 0);
-		EXPECT_TRUE(economicCalendar.GetInquiryFunction()== _T("https://finnhub.io/api/v1/calendar/economic?"));
+		EXPECT_TRUE(economicCalendar.GetInquiryFunction()== "https://finnhub.io/api/v1/calendar/economic?");
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestCreatMessage) {
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic calendar updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub economic calendar updated");
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "有权处理时不更改";
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 220);
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic calendar updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub economic calendar updated");
 		EXPECT_FALSE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "无权处理时更改为免费账户";
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
@@ -102,15 +102,15 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData112(2, _T(""), _T("\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+	Test_FinnhubWebData finnhubWebData112(2, "", "\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
 	// 缺乏economicCalendar
-	Test_FinnhubWebData finnhubWebData113(3, _T(""), _T("{\"Missing\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+	Test_FinnhubWebData finnhubWebData113(3, "", "{\"Missing\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
 	// 第一个数据缺乏actual
-	Test_FinnhubWebData finnhubWebData114(4, _T(""), _T("{\"economicCalendar\":[{\"Missing\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+	Test_FinnhubWebData finnhubWebData114(4, "", "{\"economicCalendar\":[{\"Missing\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
 	// 第二个数据缺乏actual
-	Test_FinnhubWebData finnhubWebData115(5, _T(""), _T("{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"Missing\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+	Test_FinnhubWebData finnhubWebData115(5, "", "{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"Missing\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData120(10, _T(""), _T("{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+	Test_FinnhubWebData finnhubWebData120(10, "", "{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
 
 	class ParseFinnhubEconomicCalendarTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -164,19 +164,19 @@ namespace FireBirdTest {
 		case 5: // 第二个数据缺actual
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 1) << "第一个数据是正确的";
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, "%");
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, "%");
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(1)->m_dActual, -0.2);
-			EXPECT_EQ(m_pvEconomicCalendar->at(1)->m_strUnit, _T("%"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(1)->m_strUnit, "%");
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dEstimate, 0.6);
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dPrev, 1);
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strCountry, _T("CN"));
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strEvent, _T("CPI MM"));
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strTime, _T("2021-03-10 01:30:00"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strCountry, "CN");
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strEvent, "CPI MM");
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strTime, "2021-03-10 01:30:00");
 			break;
 		default:
 			break;

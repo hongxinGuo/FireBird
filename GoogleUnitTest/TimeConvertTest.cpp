@@ -151,7 +151,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestGetCurrentMonday) {
-		EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << _T("20200720为星期一");
+		EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << "20200720为星期一";
 		EXPECT_EQ(20200720, GetCurrentMonday(20200721));
 		EXPECT_EQ(20200720, GetCurrentMonday(20200722));
 		EXPECT_EQ(20200720, GetCurrentMonday(20200723));

@@ -17,8 +17,8 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg);
 class CTiingoIEXSocket final {
 public:
 	CTiingoIEXSocket() {
-		m_sDateTime = _T("");
-		m_sSymbol = _T("");
+		m_sDateTime = "";
+		m_sSymbol = "";
 		m_iNanoseconds = 0;
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = m_dLastPrice = m_dLastSize = 0;
 		m_iAfterHour = m_iHalted = m_iISO = m_iOddlot = m_iNMSRule611 = 0;

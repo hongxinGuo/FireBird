@@ -10,7 +10,7 @@
 #include "WebData.h"
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/quote?symbol=";
 }
 
 string CProductFinnhubStockPriceQuote::CreateMessage() {
@@ -44,21 +44,21 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& p
 	if (!IsValidData(pWebData)) return false;
 
 	try {
-		double dTemp = jsonGetDouble(js, _T("c"));
+		double dTemp = jsonGetDouble(js, "c");
 		pStock->SetNew(dTemp * 1000);
-		dTemp = jsonGetDouble(js, _T("h"));
+		dTemp = jsonGetDouble(js, "h");
 		pStock->SetHigh(dTemp * 1000);
-		dTemp = jsonGetDouble(js, _T("l"));
+		dTemp = jsonGetDouble(js, "l");
 		pStock->SetLow(dTemp * 1000);
-		dTemp = jsonGetDouble(js, _T("o"));
+		dTemp = jsonGetDouble(js, "o");
 		pStock->SetOpen(dTemp * 1000);
-		dTemp = jsonGetDouble(js, _T("pc"));
+		dTemp = jsonGetDouble(js, "pc");
 		pStock->SetLastClose(dTemp * 1000);
-		const auto tt = jsonGetLongLong(js,_T("t"));
+		const auto tt = jsonGetLongLong(js,"t");
 		pStock->SetTransactionTime(tt);
 	} catch (json::exception& e) {
 		// 数据格式不对，跳过。
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Stock Quote ", e.what());
 		return false;
 	}
 	return true;

@@ -42,20 +42,20 @@ namespace FireBirdTest {
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20220101); // 测试库中的数据最新日期为20210330，此日期位于其后
-		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);
 		vDayLine->push_back(pDayLine);
 		m_dataFinnhubStockDayLine.UpdateData(vDayLine);
 
-		m_dataFinnhubStockDayLine.SaveDB(_T("A"));
+		m_dataFinnhubStockDayLine.SaveDB("A");
 
-		m_dataFinnhubStockDayLine.LoadDB(_T("A"));
+		m_dataFinnhubStockDayLine.LoadDB("A");
 		EXPECT_EQ(m_dataFinnhubStockDayLine.GetData(m_dataFinnhubStockDayLine.Size() - 1)->GetDate(),
 		          20220101) << "新存储数据位于最后";
 
 		// 恢复原状
 		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;
-		setFinnhubStockDayLineBasic.m_strFilter = _T("[Date] = 20220101");
+		setFinnhubStockDayLineBasic.m_strFilter = "[Date] = 20220101";
 		setFinnhubStockDayLineBasic.Open();
 		setFinnhubStockDayLineBasic.m_pDatabase->BeginTrans();
 		EXPECT_FALSE(setFinnhubStockDayLineBasic.IsEOF()) << "新存储数据的日期";

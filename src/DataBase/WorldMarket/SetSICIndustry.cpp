@@ -12,8 +12,8 @@ CSetSICIndustry::CSetSICIndustry(const CString& strSchema, const CString& strTab
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Code = 0;
-	m_Industry = _T("");
-	m_Sector = _T("");
+	m_Industry = "";
+	m_Sector = "";
 	m_nFields = 4;
 }
 

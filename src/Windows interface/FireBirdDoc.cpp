@@ -107,7 +107,7 @@ void CFireBirdDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {
   // 修改此代码以绘制文档数据
   dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
 
-  CString strText = _T("TODO: implement thumbnail drawing here");
+  CString strText = "TODO: implement thumbnail drawing here");
   LOGFONT lf;
 
   CFont* pDefaultGUIFont = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
@@ -128,7 +128,7 @@ void CFireBirdDoc::InitializeSearchContent() {
   // 从文档数据设置搜索内容。
   // 内容部分应由“;”分隔
 
-  // 例如:     strSearchContent = _T("point;rectangle;circle;ole object;")；
+  // 例如:     strSearchContent = "point;rectangle;circle;ole object;")；
   SetSearchContent(strSearchContent);
 }
 

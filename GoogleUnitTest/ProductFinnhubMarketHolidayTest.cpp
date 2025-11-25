@@ -38,7 +38,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestInitialize) {
 		EXPECT_EQ(MarketHolidayProduct.GetIndex(), 0);
-		EXPECT_EQ(MarketHolidayProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/market-holiday?exchange="));
+		EXPECT_EQ(MarketHolidayProduct.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/market-holiday?exchange=");
 	}
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestCreatMessage) {
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	}
 
 	// 正确的数据
-	Test_FinnhubWebData finnhubMarketHolidayWebData22(2, _T("AAPL"), _T("{\"data\": [{\"eventName\": \"Christmas\",\"atDate\": \"2023-12-25\",\"tradingHour\" : \"\"},{\"eventName\": \"Independence Day\",\"atDate\": \"2023-07-04\",\"tradingHour\" : \"09:30-13:00\"}],\"exchange\": \"US\",\"timezone\": \"America/New_York\"}"));
+	Test_FinnhubWebData finnhubMarketHolidayWebData22(2, "AAPL", "{\"data\": [{\"eventName\": \"Christmas\",\"atDate\": \"2023-12-25\",\"tradingHour\" : \"\"},{\"eventName\": \"Independence Day\",\"atDate\": \"2023-07-04\",\"tradingHour\" : \"09:30-13:00\"}],\"exchange\": \"US\",\"timezone\": \"America/New_York\"}");
 
 	class ParseFinnhubMarketHolidayTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -92,10 +92,10 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确的数据
 			EXPECT_EQ(m_pvMarketHoliday->size(), 2);
-			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strExchange, _T("US"));
-			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strEventName, _T("Christmas"));
-			EXPECT_EQ(m_pvMarketHoliday->at(1)->m_strExchange, _T("US"));
-			EXPECT_EQ(m_pvMarketHoliday->at(1)->m_strEventName, _T("Independence Day"));
+			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strExchange, "US");
+			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strEventName, "Christmas");
+			EXPECT_EQ(m_pvMarketHoliday->at(1)->m_strExchange, "US");
+			EXPECT_EQ(m_pvMarketHoliday->at(1)->m_strEventName, "Independence Day");
 			break;
 		default:
 			break;

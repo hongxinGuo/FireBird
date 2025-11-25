@@ -5,11 +5,11 @@
 class CMarketHoliday final {
 public:
 	CMarketHoliday() {
-		m_strExchange = _T("");
-		m_strEventName = _T("");
+		m_strExchange = "";
+		m_strEventName = "";
 		m_lDate = 0;
-		m_strTradingHour = _T("");
-		m_strTimeZone = _T("");
+		m_strTradingHour = "";
+		m_strTimeZone = "";
 	}
 	~CMarketHoliday() = default;
 

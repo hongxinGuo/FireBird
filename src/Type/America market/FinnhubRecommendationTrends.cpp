@@ -2,7 +2,7 @@
 #include"FinnhubRecommendationTrends.h"
 
 CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
-	m_strSymbol = _T("");
+	m_strSymbol = "";
 	m_lPeriod = 19700101; // ∏Ò Ω£∫2020-03-01
 	m_lStrongBuy = 0;
 	m_lBuy = 0;
@@ -24,7 +24,7 @@ void CFinnhubRecommendationTrends::Append(CSetFinnhubRecommendationTrends& setFi
 }
 
 void CFinnhubRecommendationTrends::Load(const CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends) {
-	m_strSymbol = setFinnhubRecommendationTrends.m_Symbol;
+	m_strSymbol = ToUTF8(setFinnhubRecommendationTrends.m_Symbol);
 	m_lPeriod = setFinnhubRecommendationTrends.m_Period;
 	m_lStrongBuy = setFinnhubRecommendationTrends.m_StrongBuy;
 	m_lBuy = setFinnhubRecommendationTrends.m_Buy;

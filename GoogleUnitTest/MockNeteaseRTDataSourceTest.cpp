@@ -37,9 +37,9 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInitialize) {
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryFunction(), _T("http://api.money.126.net/data/feed/"));
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryToken(), _T(""));
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << _T("DEBUG模式下网易默认值");
+		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryFunction(), "http://api.money.126.net/data/feed/");
+		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryToken(), "");
+		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << "DEBUG模式下网易默认值";
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
@@ -76,16 +76,16 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(m_pMockNeteaseRTDataSource->InquiryQueueSize(), 1);
 		const auto pProduct = m_pMockNeteaseRTDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseRT"));
+		EXPECT_STREQ(typeid(*pProduct).name(), "class CProductNeteaseRT");
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestPrepareNextInquiringStr) {
 		gl_pChinaMarket->SetSystemReady(true);
 		const auto p = make_shared<CProductNeteaseRT>();
-		p->SetInquiryFunction(_T("http://api.money.126.net/data/feed/"));
+		p->SetInquiryFunction("http://api.money.126.net/data/feed/");
 		m_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
 		m_pMockNeteaseRTDataSource->CreateCurrentInquireString();
 		const string str = m_pMockNeteaseRTDataSource->GetInquiringString();
-		EXPECT_EQ(str.substr(0,35), _T("http://api.money.126.net/data/feed/"));
+		EXPECT_EQ(str.substr(0,35), "http://api.money.126.net/data/feed/");
 	}
 }

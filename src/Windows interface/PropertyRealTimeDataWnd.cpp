@@ -86,7 +86,7 @@ void CPropertyRealtimeWnd::InitPropList() {
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	m_pChinaMarketStock = new CMFCPropertyGridProperty(_T(""));
+	m_pChinaMarketStock = new CMFCPropertyGridProperty("");
 
 	m_pPropNew = new CMFCPropertyGridProperty(_T("Current Price:"), _T("0.00"));
 	m_pPropNew->Enable(FALSE);
@@ -158,36 +158,36 @@ void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (pStock != nullptr) {
 		string symbol = pStock->GetSymbol();
-		m_pChinaMarketStock->SetName(symbol.c_str());
+		m_pChinaMarketStock->SetName(reinterpret_cast<LPCTSTR>(symbol.c_str()));
 		if (pStock->GetVolume() > 0) {
 			string s = fmt::format("{:Ld}", pStock->GetNew());
-			m_pPropNew->SetValue(s.c_str());
+			m_pPropNew->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 			INT64 volume = pStock->GetVolume();
 			s = fmt::format("{:Ld}", volume);
-			m_pPropVolume->SetValue(s.c_str());
+			m_pPropVolume->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 			s = fmt::format("0.{:02Ld}", pStock->GetOrdinaryBuyVolume() * 100 / volume);
-			m_pPropStockOrdinaryBuy->SetValue(s.c_str());
+			m_pPropStockOrdinaryBuy->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 			s = fmt::format("0.{:02Ld}", pStock->GetOrdinarySellVolume() * 100 / volume);
-			m_pPropStockOrdinarySell->SetValue(s.c_str());
+			m_pPropStockOrdinarySell->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 
 			s = fmt::format("0.{:02Ld}", pStock->GetAttackBuyVolume() * 100 / volume);
-			m_pPropStockAttackBuy->SetValue(s.c_str());
+			m_pPropStockAttackBuy->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 			s = fmt::format("0.{:02Ld}", pStock->GetAttackSellVolume() * 100 / volume);
-			m_pPropStockAttackSell->SetValue(s.c_str());
+			m_pPropStockAttackSell->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 
 			s = fmt::format("0.{:02Ld}", pStock->GetStrongBuyVolume() * 100 / volume);
-			m_pPropStockStrongBuy->SetValue(s.c_str());
+			m_pPropStockStrongBuy->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 			s = fmt::format("0.{:02Ld}", pStock->GetStrongSellVolume() * 100 / volume);
-			m_pPropStockStrongSell->SetValue(s.c_str());
+			m_pPropStockStrongSell->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 
 			s = fmt::format("0.{:02Ld}", pStock->GetCanceledBuyVolume() * 100 / volume);
-			m_pPropStockCancelBuy->SetValue(s.c_str());
+			m_pPropStockCancelBuy->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 			s = fmt::format("0.{:02Ld}", pStock->GetCanceledSellVolume() * 100 / volume);
-			m_pPropStockCancelSell->SetValue(s.c_str());
+			m_pPropStockCancelSell->SetValue(reinterpret_cast<LPCTSTR>(s.c_str()));
 		}
 	}
 	else {
-		m_pChinaMarketStock->SetName(_T(""));
+		m_pChinaMarketStock->SetName(reinterpret_cast<LPCTSTR>(""));
 	}
 
 	CDockablePane::OnTimer(nIDEvent);

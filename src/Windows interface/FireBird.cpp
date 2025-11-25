@@ -16,8 +16,12 @@
 #include "ScheduleTask.h"
 #include "SystemPublicDeclaration.h"
 
-#ifndef _MBCS
-#error _T("本系统使用多字节字符集")
+#ifdef _MBCS
+#error "本系统使用UNI_CODE字符集"
+#endif
+
+#ifndef _UNICODE
+#error "本系统使用UNI_CODE字符集"
 #endif
 
 // CFireBirdApp
@@ -56,7 +60,7 @@ CFireBirdApp::CFireBirdApp() {
 CFireBirdApp theApp;
 
 bool IsFireBirdAlreadyRunning(const string& sProgramToken) {
-	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, sProgramToken.c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例。在MainFrame的析构函数中关闭。
+	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, reinterpret_cast<LPCWSTR>(sProgramToken.c_str())); // 采用创建系统命名互斥对象的方式来实现只运行单一实例。在MainFrame的析构函数中关闭。
 	bool bAlreadyRunning = false;
 	if (gl_hFireBirdMutex != nullptr) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
@@ -72,8 +76,8 @@ BOOL CFireBirdApp::InitInstance() {
 
 	if (IsFireBirdAlreadyRunning(sFireBirdApp)) {
 		MessageBox(nullptr,
-		           "Only one instance can run!",
-		           "FireBird Warning:",
+		           reinterpret_cast<LPCWSTR>("Only one instance can run!"),
+		           reinterpret_cast<LPCWSTR>("FireBird Warning:"),
 		           MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}

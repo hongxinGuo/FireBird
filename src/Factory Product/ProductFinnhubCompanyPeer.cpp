@@ -8,7 +8,7 @@
 #include "WebData.h"
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/peers?symbol=";
 }
 
 string CProductFinnhubCompanyPeer::CreateMessage() {
@@ -20,7 +20,7 @@ string CProductFinnhubCompanyPeer::CreateMessage() {
 }
 
 void CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const json jsonPeer = ParseFinnhubStockPeer(pWebData);

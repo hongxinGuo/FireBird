@@ -40,7 +40,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestInitialize) {
 		EXPECT_EQ(companyBasicFinancial.GetIndex(), 0);
-		EXPECT_EQ(companyBasicFinancial.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
+		EXPECT_EQ(companyBasicFinancial.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/metric?symbol=");
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		pStock->SetUpdateBasicFinancial(true);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(1);
-		EXPECT_EQ(companyBasicFinancial.CreateMessage(), (companyBasicFinancial.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + _T("&metric=all")));
+		EXPECT_EQ(companyBasicFinancial.CreateMessage(), (companyBasicFinancial.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&metric=all"));
 		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateBasicFinancial(true);
@@ -76,8 +76,8 @@ namespace FireBirdTest {
 		pStock->SetUpdateProfileDB(false);
 	}
 
-	Test_FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
-	                                       _T("{\
+	Test_FinnhubWebData finnhubWebData1002(2, "AAPL",
+	                                       "{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -272,11 +272,11 @@ namespace FireBirdTest {
 		},\
 		\"metricType\":\"all\",\
 		\"symbol\":\"AAPL\"\
-}"));
+}");
 
 	// BVDRF是美股ADR，其本土代码为MBWS.PA
-	Test_FinnhubWebData finnhubWebData1003(3, _T("BVDRF"),
-	                                       _T("{\
+	Test_FinnhubWebData finnhubWebData1003(3, "BVDRF",
+	                                       "{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -471,16 +471,16 @@ namespace FireBirdTest {
 		},\
 		\"metricType\":\"perShare\",\
 		\"symbol\":\"MBWS.PA\"\
-}"));
+}");
 
 	// 有些股票只有部分数据
-	Test_FinnhubWebData finnhubWebData1004(4, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"marketCapitalization\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1004(4, "AAPL", "{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"marketCapitalization\",\"series\":{},\"symbol\":\"OTSCS\"}");
 	// Metric out of range
-	Test_FinnhubWebData finnhubWebData1005(5, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"out of range\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1005(5, "AAPL", "{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"out of range\",\"series\":{},\"symbol\":\"OTSCS\"}");
 	// 有些股票只有部分数据， 测试metric
-	Test_FinnhubWebData finnhubWebData1006(6, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"metric\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1006(6, "AAPL", "{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"metric\",\"series\":{},\"symbol\":\"OTSCS\"}");
 	// 有些股票只有部分数据, 测试eps
-	Test_FinnhubWebData finnhubWebData1007(7, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"eps\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1007(7, "AAPL", "{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"eps\",\"series\":{},\"symbol\":\"OTSCS\"}");
 
 	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -537,7 +537,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确
 			EXPECT_FALSE(pBasicFinancial == nullptr);
-			EXPECT_EQ(pBasicFinancial->m_symbol, _T("AAPL"));
+			EXPECT_EQ(pBasicFinancial->m_symbol, "AAPL");
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_currentEV_freeCashFlowAnnual, 1.2);
@@ -550,13 +550,13 @@ namespace FireBirdTest {
 			break;
 		case 3: //
 			EXPECT_FALSE(pBasicFinancial == nullptr);
-			EXPECT_EQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
+			EXPECT_EQ(pBasicFinancial->m_symbol, "MBWS.PA") << "BVDRF的本土代码名称为MBWS.PA";
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4:
 			EXPECT_FALSE(pBasicFinancial == nullptr);
-			EXPECT_EQ(pBasicFinancial->m_symbol, _T("OTSCS"));
+			EXPECT_EQ(pBasicFinancial->m_symbol, "OTSCS");
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekHigh, 1.18);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekLow, 1.0);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.0) << "没有此项数据，故而其值为初始值";

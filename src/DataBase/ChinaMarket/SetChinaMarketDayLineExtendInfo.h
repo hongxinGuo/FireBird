@@ -4,6 +4,6 @@
 
 class CSetChinaMarketDayLneExtendInfo : public CVirtualSetHistoryCandleExtend {
 public:
-	CSetChinaMarketDayLneExtendInfo(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("daylineinfo"), CDatabase* pDatabase = nullptr)
+	CSetChinaMarketDayLneExtendInfo(const CString& strSchema = "ChinaMarket", const CString& strTable = "daylineinfo", CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandleExtend(strSchema, strTable, pDatabase) {}
 };

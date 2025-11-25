@@ -108,8 +108,14 @@ namespace FireBirdTest {
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 			pStock = gl_dataContainerChinaStock.GetStock(i);
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			if (IsShanghaiExchange(pStock->GetSymbol())) { if ((pStock->GetSymbol().substr(0, 6) >= _T("000000")) && (pStock->GetSymbol().substr(0, 6) <= _T("000999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); } }
-			else if ((pStock->GetSymbol().substr(0, 6) >= _T("399000")) && (pStock->GetSymbol().substr(0, 6) <= _T("399999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); }
+			if (IsShanghaiExchange(pStock->GetSymbol())) {
+				if ((pStock->GetSymbol().substr(0, 6) >= "000000") && (pStock->GetSymbol().substr(0, 6) <= "000999")) {
+					EXPECT_FALSE(pStock->IsNeedProcessRTData());
+				}
+			}
+			else if ((pStock->GetSymbol().substr(0, 6) >= "399000") && (pStock->GetSymbol().substr(0, 6) <= "399999")) {
+				EXPECT_FALSE(pStock->IsNeedProcessRTData());
+			}
 			else { EXPECT_TRUE(pStock->IsNeedProcessRTData()); }
 		}
 		EXPECT_FALSE(gl_pChinaMarket->IsSelectedStockLoaded());
@@ -121,8 +127,8 @@ namespace FireBirdTest {
 		EXPECT_GT(gl_dataContainerChinaStock.Size(), 0); // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
 		pStock = gl_dataContainerChinaStock.GetStock(0);
-		EXPECT_EQ(pStock->GetSymbol(), _T("000001.SS"));
-		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(_T("000001.SS")), 0);
+		EXPECT_EQ(pStock->GetSymbol(), "000001.SS");
+		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset("000001.SS"), 0);
 
 		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
@@ -788,7 +794,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
-		EXPECT_TRUE(pStock->IsUpdateDayLine()) << _T("测试时使用testStock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
+		EXPECT_TRUE(pStock->IsUpdateDayLine()) << "测试时使用testStock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线";
 
 		pStock->SetUpdateDayLine(false);
 		pStock = gl_dataContainerChinaStock.GetStock(1);
@@ -800,11 +806,11 @@ namespace FireBirdTest {
 		const long lDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		string str = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
-		EXPECT_EQ(str, _T("1000001"));
+		EXPECT_EQ(str, "1000001");
 		pStock = gl_dataContainerChinaStock.GetStock(1);
 		EXPECT_FALSE(pStock->IsUpdateDayLine());
 		str = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
-		EXPECT_EQ(str, _T("1000002"));
+		EXPECT_EQ(str, "1000002");
 
 		gl_dataContainerChinaStock.GetStock(2)->SetDayLineEndDate(lDate); // 恢复原状。
 	}
@@ -848,18 +854,18 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestIsStock) {
 		EXPECT_GT(gl_dataContainerChinaStock.Size(), 1);
-		EXPECT_TRUE(gl_dataContainerChinaStock.IsSymbol(_T("600000.SS")));
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(_T("60000.SS")));
+		EXPECT_TRUE(gl_dataContainerChinaStock.IsSymbol("600000.SS"));
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol("60000.SS"));
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockName) {
 		//not implemented. 由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
-		// EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("600000.SS")), _T("浦发银行"));
-		EXPECT_EQ(gl_dataContainerChinaStock.GetStockName(_T("60000.SS")), _T("")); // 没找到时返回空字符串
+		// EXPECT_STREQ(gl_pChinaMarket->GetStockName("600000.SS"), "浦发银行");
+		EXPECT_EQ(gl_dataContainerChinaStock.GetStockName("60000.SS"), ""); // 没找到时返回空字符串
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockCode) {
-		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock(_T("600001.SS")) == nullptr);
+		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock("600001.SS") == nullptr);
 
 		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock(0) == nullptr);
 		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock(gl_dataContainerChinaStock.Size() - 1) == nullptr);
@@ -947,9 +953,9 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestProcessDayLine) {
 		const CDayLineWebDataPtr pData = make_shared<CDayLineWebData>();
-		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600666.SS"));
+		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600666.SS");
 
-		pData->SetStockCode(_T("600666.SS"));
+		pData->SetStockCode("600666.SS");
 		gl_qDayLine.enqueue(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->ProcessDayLine());
@@ -1153,10 +1159,10 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestLoadStockCodeDB) {
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
 		EXPECT_THAT(pStock->IsIPOed(), IsTrue());
-		EXPECT_EQ(pStock->GetSymbol(), _T("000001.SS"));
+		EXPECT_EQ(pStock->GetSymbol(), "000001.SS");
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19901220);
 		EXPECT_FALSE(pStock->IsActive()) << "装载股票代码时永远设置为假";
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600002.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600002.SS");
 		EXPECT_TRUE(pStock->IsDelisted());
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19980409);
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20060406);
@@ -1200,8 +1206,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockPtr) {
-		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600000.SS"));
-		EXPECT_EQ(pStock->GetSymbol(), _T("600000.SS"));
+		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600000.SS");
+		EXPECT_EQ(pStock->GetSymbol(), "600000.SS");
 	}
 
 	TEST_F(CChinaMarketTest, TestClearDayLineNeedUpdaeStatus) {
@@ -1373,7 +1379,7 @@ namespace FireBirdTest {
 		gl_pCurrentStock = gl_dataContainerChinaStock.GetStock(1); // 选取A股指数
 		gl_pChinaMarket->ChangeToPrevStock();
 		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock), gl_dataContainerChinaStock.Size() - 1) << _T("上证指数前的为空，然后就转到最后面的中证煤炭了");
+		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock), gl_dataContainerChinaStock.Size() - 1) << "上证指数前的为空，然后就转到最后面的中证煤炭了";
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 
 		//恢复原状
@@ -1520,7 +1526,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), 20100101);
 		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20100202);
-		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << _T("永远是当前日期\n");
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << "永远是当前日期\n";
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19980101);
 		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19980202);
@@ -1551,12 +1557,12 @@ namespace FireBirdTest {
 		CSetChinaMarketDayLneBasicInfo setDayLine, setDayLine2;
 		const auto pDayLine = make_shared<CDayLine>();
 
-		pDayLine->SetStockSymbol(_T("600000.SS"));
+		pDayLine->SetStockSymbol("600000.SS");
 		pDayLine->SetDate(19900101);
 
 		_ltoa_s(19900101, buffer, 10);
 		const string strDate = buffer;
-		setDayLine.m_strFilter = _T("[Date] =");
+		setDayLine.m_strFilter = "[Date] =";
 		setDayLine.m_strFilter += strDate.c_str();
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
@@ -1564,7 +1570,7 @@ namespace FireBirdTest {
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();
 
-		setDayLine.m_strFilter = _T("[Date] =");
+		setDayLine.m_strFilter = "[Date] =";
 		setDayLine.m_strFilter += strDate.c_str();
 		setDayLine.Open();
 		EXPECT_FALSE(setDayLine.IsEOF());
@@ -1572,7 +1578,7 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->DeleteDayLineBasicInfo(19900101);
 
-		setDayLine2.m_strFilter = _T("[Date] =");
+		setDayLine2.m_strFilter = "[Date] =";
 		setDayLine2.m_strFilter += strDate.c_str();
 		setDayLine2.Open();
 		EXPECT_TRUE(setDayLine2.IsEOF());
@@ -1585,22 +1591,22 @@ namespace FireBirdTest {
 		CSetChinaMarketDayLneExtendInfo setDayLine, setDayLine2;
 		const auto pDayLine = make_shared<CDayLine>();
 
-		pDayLine->SetStockSymbol(_T("600000.SS"));
+		pDayLine->SetStockSymbol("600000.SS");
 		pDayLine->SetDate(19900101);
 
 		_ltoa_s(19900101, buffer, 10);
 		const string strDate = buffer;
-		setDayLine.m_strFilter = _T("[ID] = 1");
+		setDayLine.m_strFilter = "[ID] = 1";
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
 		setDayLine.AddNew();
-		setDayLine.m_Symbol = _T("600000.SS");
+		setDayLine.m_Symbol = "600000.SS";
 		setDayLine.m_Date = 19900101;
 		setDayLine.Update();
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();
 
-		setDayLine.m_strFilter = _T("[Date] =");
+		setDayLine.m_strFilter = "[Date] =";
 		setDayLine.m_strFilter += strDate.c_str();
 		setDayLine.Open();
 		EXPECT_FALSE(setDayLine.IsEOF());
@@ -1608,7 +1614,7 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->DeleteDayLineExtendInfo(19900101);
 
-		setDayLine2.m_strFilter = _T("[Date] =");
+		setDayLine2.m_strFilter = "[Date] =";
 		setDayLine2.m_strFilter += strDate.c_str();
 		setDayLine2.Open();
 		EXPECT_TRUE(setDayLine2.IsEOF());
@@ -1619,16 +1625,16 @@ namespace FireBirdTest {
 		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
 		const auto pWeekLine = make_shared<CWeekLine>();
 
-		pWeekLine->SetStockSymbol(_T("600000.SS"));
+		pWeekLine->SetStockSymbol("600000.SS");
 		pWeekLine->SetDate(GetCurrentMonday(20200101));
-		setCurrentWeekLine.m_strFilter = _T("[ID] = 1");
+		setCurrentWeekLine.m_strFilter = "[ID] = 1";
 		setCurrentWeekLine.Open();
 		setCurrentWeekLine.m_pDatabase->BeginTrans();
 		pWeekLine->Append(&setCurrentWeekLine);
 		setCurrentWeekLine.m_pDatabase->CommitTrans();
 		setCurrentWeekLine.Close();
 
-		setCurrentWeekLine.m_strFilter = _T("");
+		setCurrentWeekLine.m_strFilter = "";
 		setCurrentWeekLine.Open();
 		EXPECT_FALSE(setCurrentWeekLine.IsEOF());
 		setCurrentWeekLine.Close();
@@ -1650,12 +1656,12 @@ namespace FireBirdTest {
 		CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 		long i = 0;
 
-		setDayLineBasicInfo.m_strSort = _T("[Symbol]");
+		setDayLineBasicInfo.m_strSort = "[Symbol]";
 		setDayLineBasicInfo.m_strFilter = fmt::format("[Date] ={:08Ld}", lDate).c_str();
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
 			const CDayLinePtr pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));
-			EXPECT_TRUE(setDayLineBasicInfo.m_Symbol.Compare(pDayLine->GetStockSymbol().c_str()) == 0);
+			EXPECT_TRUE(pDayLine->GetStockSymbol().compare(ToUTF8(setDayLineBasicInfo.m_Symbol)) == 0);
 			setDayLineBasicInfo.MoveNext();
 		}
 		EXPECT_EQ(i, dataChinaDayLine.Size());
@@ -1665,19 +1671,19 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
 		vector<CVirtualHistoryCandleExtendPtr> vData;
 		auto pData = make_shared<CVirtualHistoryCandleExtend>();
-		pData->SetStockSymbol(_T("600000.SS"));
+		pData->SetStockSymbol("600000.SS");
 		vData.resize(2);
 		vData[0] = pData;
 		pData = make_shared<CVirtualHistoryCandleExtend>();
-		pData->SetStockSymbol(_T("600004.SS"));
+		pData->SetStockSymbol("600004.SS");
 		vData[1] = pData;
 
 		set<string> setStockCode;
 		gl_pChinaMarket->CreateStockCodeSet(setStockCode, &vData);
 
-		EXPECT_TRUE(setStockCode.contains(_T("600000.SS")));
-		EXPECT_TRUE(setStockCode.contains(_T("600004.SS")));
-		EXPECT_FALSE(setStockCode.contains(_T("600001.SS")));
+		EXPECT_TRUE(setStockCode.contains("600000.SS"));
+		EXPECT_TRUE(setStockCode.contains("600004.SS"));
+		EXPECT_FALSE(setStockCode.contains("600001.SS"));
 	}
 
 	TEST_F(CChinaMarketTest, TestUpdateStockProfileDB) {
@@ -1685,13 +1691,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试代码库中的股票代码总数为5040";
 
 		auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol(_T("SS.SS.SS"));
+		pStock->SetSymbol("SS.SS.SS");
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(pStock->GetSymbol())); // 确保是一个新股票代码
 		gl_dataContainerChinaStock.Add(pStock);
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
-		pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetIPOStatus(_STOCK_DELISTED_);
@@ -1699,7 +1705,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.UpdateStockProfileDB();
 
 		CSetChinaStockSymbol setChinaStock;
-		setChinaStock.m_strFilter = _T("[Symbol] = '000001.SS'");
+		setChinaStock.m_strFilter = "[Symbol] = '000001.SS'";
 		setChinaStock.Open();
 		EXPECT_EQ(setChinaStock.m_IPOStatus, _STOCK_DELISTED_);
 		setChinaStock.m_pDatabase->BeginTrans();
@@ -1710,7 +1716,7 @@ namespace FireBirdTest {
 		setChinaStock.Close();
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
 
-		setChinaStock.m_strFilter = _T("[Symbol] = 'SS.SS.SS'");
+		setChinaStock.m_strFilter = "[Symbol] = 'SS.SS.SS'";
 		setChinaStock.Open();
 		EXPECT_FALSE(setChinaStock.IsEOF());
 		setChinaStock.m_pDatabase->BeginTrans();
@@ -1722,9 +1728,9 @@ namespace FireBirdTest {
 		setChinaStock.Close();
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 		pStock->SetIPOStatus(_STOCK_IPOED_); // 恢复原状
-		pStock = gl_dataContainerChinaStock.GetStock(_T("SS.SS.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("SS.SS.SS");
 		EXPECT_TRUE(pStock != nullptr);
 		gl_dataContainerChinaStock.Delete(pStock); // 恢复原状
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试代码库中的股票代码总数为5040";
@@ -1745,7 +1751,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.Add(pStock);
 
 		pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol(_T("SS.SS.SS"));
+		pStock->SetSymbol("SS.SS.SS");
 		const auto lTotal = gl_dataContainerChinaStock.Size();
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(pStock->GetSymbol()));
 		gl_dataContainerChinaStock.Add(pStock);
@@ -1759,7 +1765,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.Delete(pStock);
 
 		pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol(_T("SS.SS.SS"));
+		pStock->SetSymbol("SS.SS.SS");
 		gl_dataContainerChinaStock.Delete(pStock);
 
 		gl_dataContainerChinaStock.Add(pStock);
@@ -1795,7 +1801,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pStock->IsDayLineDBUpdated());
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("中国市场日线历史数据更新完毕"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "中国市场日线历史数据更新完毕");
 
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 			const auto china_stock_ptr = gl_dataContainerChinaStock.GetStock(i);
@@ -1804,44 +1810,44 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestAppendChosenStock) {
-		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600601.SS"));
+		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600601.SS");
 		pStock->SetChosen(true);
 		gl_pChinaMarket->AddChosenStock(pStock);
-		pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SZ"));
+		pStock = gl_dataContainerChinaStock.GetStock("000001.SZ");
 		pStock->SetChosen(true);
 		gl_pChinaMarket->AddChosenStock(pStock);
 
 		gl_pChinaMarket->AppendChosenStockDB();
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600601.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600601.SS");
 		gl_pChinaMarket->DeleteChosenStock(pStock);
-		pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SZ"));
+		pStock = gl_dataContainerChinaStock.GetStock("000001.SZ");
 		gl_pChinaMarket->DeleteChosenStock(pStock);
-		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock(_T("600601.SS"))->IsChosen());
-		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock(_T("000001.SZ"))->IsChosen());
+		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock("600601.SS")->IsChosen());
+		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock("000001.SZ")->IsChosen());
 
 		gl_pChinaMarket->LoadChosenStockDB();
-		EXPECT_TRUE(gl_dataContainerChinaStock.GetStock(_T("600601.SS"))->IsChosen());
-		EXPECT_TRUE(gl_dataContainerChinaStock.GetStock(_T("000001.SZ"))->IsChosen());
+		EXPECT_TRUE(gl_dataContainerChinaStock.GetStock("600601.SS")->IsChosen());
+		EXPECT_TRUE(gl_dataContainerChinaStock.GetStock("000001.SZ")->IsChosen());
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600601.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600601.SS");
 		gl_pChinaMarket->DeleteChosenStock(pStock);
-		pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SZ"));
+		pStock = gl_dataContainerChinaStock.GetStock("000001.SZ");
 		gl_pChinaMarket->DeleteChosenStock(pStock);
 
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600000.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600000.SS");
 		pStock->SetChosen(true);
 		gl_pChinaMarket->AddChosenStock(pStock);
-		pStock = gl_dataContainerChinaStock.GetStock(_T("000002.SZ"));
+		pStock = gl_dataContainerChinaStock.GetStock("000002.SZ");
 		pStock->SetChosen(true);
 		gl_pChinaMarket->AddChosenStock(pStock);
 
 		gl_pChinaMarket->UpdateChosenStockDB();
 
 		// 恢复原状
-		pStock = gl_dataContainerChinaStock.GetStock(_T("600000.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock("600000.SS");
 		gl_pChinaMarket->DeleteChosenStock(pStock);
-		pStock = gl_dataContainerChinaStock.GetStock(_T("000002.SZ"));
+		pStock = gl_dataContainerChinaStock.GetStock("000002.SZ");
 		gl_pChinaMarket->DeleteChosenStock(pStock);
 
 		CSetChinaChosenStock setChinaChosenStock;
@@ -1875,7 +1881,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadTempRTData) {
-		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SZ"));
+		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("000001.SZ");
 		pStock->SetUnknownVolume(0);
 		pStock->SetTransactionNumber(0);
 

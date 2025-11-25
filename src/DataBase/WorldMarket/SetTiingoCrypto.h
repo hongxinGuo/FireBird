@@ -5,7 +5,7 @@
 
 class CSetTiingoCrypto : public CVirtualRecordset {
 public:
-	CSetTiingoCrypto(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_crypto_symbol"), CDatabase* pDatabase = nullptr);
+	CSetTiingoCrypto(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_crypto_symbol", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -18,12 +18,12 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };
-	CString m_Ticker{ _T("") };
-	CString m_Name{ _T("") };
-	CString m_BaseCurrency{ _T("") };
-	CString m_QuoteCurrency{ _T("") };
-	CString m_Description{ _T("") };
-	CString m_UpdateDate{ _T("") };
+	CString m_Ticker{ "" };
+	CString m_Name{ "" };
+	CString m_BaseCurrency{ "" };
+	CString m_QuoteCurrency{ "" };
+	CString m_Description{ "" };
+	CString m_UpdateDate{ "" };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

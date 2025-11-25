@@ -40,12 +40,12 @@ void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 void CContainerTiingoStock::UpdateDB() {
 	if (IsUpdateProfileDB()) {
 		CSetTiingoStock setFinnhubStock;
-		setFinnhubStock.m_strSort = _T("[Ticker]");
+		setFinnhubStock.m_strSort = "[Ticker]";
 		setFinnhubStock.Open();
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		while (!setFinnhubStock.IsEOF()) {	//更新原有的代码集状态
-			if (IsSymbol(setFinnhubStock.m_Ticker.GetString())) {
-				const CTiingoStockPtr pStock = GetStock(setFinnhubStock.m_Ticker.GetString());
+			if (IsSymbol(ToUTF8(setFinnhubStock.m_Ticker))) {
+				const CTiingoStockPtr pStock = GetStock(ToUTF8(setFinnhubStock.m_Ticker));
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					pStock->Update(setFinnhubStock);
@@ -74,11 +74,11 @@ void CContainerTiingoStock::UpdateDB() {
 bool CContainerTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
 
-	setTiingoStock.m_strSort = _T("[Ticker]");
+	setTiingoStock.m_strSort = "[Ticker]";
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
 	while (!setTiingoStock.IsEOF()) {
-		if (!IsSymbol(setTiingoStock.m_Ticker.GetString())) {
+		if (!IsSymbol(ToUTF8(setTiingoStock.m_Ticker))) {
 			const auto pTiingoStock = make_shared<CTiingoStock>();
 			pTiingoStock->Load(setTiingoStock);
 			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
@@ -118,7 +118,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 
 	DeleteDayLine(lDate);
 
-	setDayLine.m_strFilter = _T("[ID] = 1"); // 这里必须设定一个限定项，否则当数据表很大时，打开时间会非常长
+	setDayLine.m_strFilter = "[ID] = 1"; // 这里必须设定一个限定项，否则当数据表很大时，打开时间会非常长
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
 	for (size_t i = 0; i < lSize; i++) {
@@ -143,17 +143,17 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
 	while (!setDayLine.IsEOF()) {
-		if (IsSymbol(setDayLine.m_Symbol.GetString())) {
-			auto pStock = GetStock(setDayLine.m_Symbol.GetString());
+		if (IsSymbol(ToUTF8(setDayLine.m_Symbol))) {
+			auto pStock = GetStock(ToUTF8(setDayLine.m_Symbol));
 			pStock->SetTransactionTime(ttTradeDay);
-			pStock->SetHigh(atof(setDayLine.m_High) * pStock->GetRatio());
-			pStock->SetLow(atof(setDayLine.m_Low) * pStock->GetRatio());
-			pStock->SetOpen(atof(setDayLine.m_Open) * pStock->GetRatio());
-			pStock->SetNew(atof(setDayLine.m_Close) * pStock->GetRatio());
-			pStock->SetLastClose(atof(setDayLine.m_LastClose) * pStock->GetRatio());
-			pStock->SetVolume(atof(setDayLine.m_Volume));
-			pStock->SetDividend(atof(setDayLine.m_dividend));
-			pStock->SetSplitFactor(atof(setDayLine.m_splitFactor));
+			pStock->SetHigh(_tcstod(setDayLine.m_High, nullptr) * pStock->GetRatio());
+			pStock->SetLow(_tstof(setDayLine.m_Low) * pStock->GetRatio());
+			pStock->SetOpen(_tstof(setDayLine.m_Open) * pStock->GetRatio());
+			pStock->SetNew(_tstof(setDayLine.m_Close) * pStock->GetRatio());
+			pStock->SetLastClose(_tstof(setDayLine.m_LastClose) * pStock->GetRatio());
+			pStock->SetVolume(_tstof(setDayLine.m_Volume));
+			pStock->SetDividend(_tstof(setDayLine.m_dividend));
+			pStock->SetSplitFactor(_tstof(setDayLine.m_splitFactor));
 		}
 		setDayLine.MoveNext();
 	}
@@ -200,7 +200,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 	auto lSize = Size();
 
 	CSetTiingoStock52WeekHigh set52WeekHigh;
-	set52WeekHigh.m_strFilter = _T("[ID] = 1");
+	set52WeekHigh.m_strFilter = "[ID] = 1";
 	set52WeekHigh.Open();
 	set52WeekHigh.m_pDatabase->BeginTrans();
 
@@ -215,7 +215,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 	set52WeekHigh.Close();
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("tiingo 52 week high calculated"));
+	gl_systemMessage.PushInnerSystemInformationMessage("tiingo 52 week high calculated");
 }
 
 void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
@@ -224,7 +224,7 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 	auto lSize = Size();
 
 	CSetTiingoStock52WeekLow set52WeekLow;
-	set52WeekLow.m_strFilter = _T("[ID] = 1");
+	set52WeekLow.m_strFilter = "[ID] = 1";
 	set52WeekLow.Open();
 	set52WeekLow.m_pDatabase->BeginTrans();
 
@@ -240,14 +240,14 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 	set52WeekLow.Close();
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("tiingo 52 week low calculated"));
+	gl_systemMessage.PushInnerSystemInformationMessage("tiingo 52 week low calculated");
 }
 
 void CContainerTiingoStock::TaskCalculate() {
 	gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
 	auto lSize = Size();
 	CSetTiingoStockCurrentTrace setCurrentTrace;
-	setCurrentTrace.m_strFilter = _T("[ID] = 1");
+	setCurrentTrace.m_strFilter = "[ID] = 1";
 	setCurrentTrace.Open();
 	setCurrentTrace.m_pDatabase->BeginTrans();
 	for (size_t index = 0; index < lSize; index++) {
@@ -312,7 +312,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 	setCurrentTrace1.Close();
 
 	CSetTiingoStockCurrentTrace setCurrentTrace;
-	setCurrentTrace.m_strFilter = _T("[ID] = 1");
+	setCurrentTrace.m_strFilter = "[ID] = 1";
 	setCurrentTrace.Open();
 	setCurrentTrace.m_pDatabase->BeginTrans();
 	for (auto index = 0; index < vPos.size(); index++) {
@@ -342,21 +342,21 @@ void CContainerTiingoStock::TaskFixDayLine() {
 		auto ratio = pStock->GetRatio();
 
 		// 装入DayLine数据
-		setDayLineBasic.m_strFilter = _T("[Symbol] = '");
+		setDayLineBasic.m_strFilter = "[Symbol] = '";
 		setDayLineBasic.m_strFilter += pStock->GetSymbol().c_str();
-		setDayLineBasic.m_strFilter += _T("'");
-		setDayLineBasic.m_strSort = _T("[Date]");
+		setDayLineBasic.m_strFilter += "'";
+		setDayLineBasic.m_strSort = "[Date]";
 		setDayLineBasic.Open();
 		setDayLineBasic.m_pDatabase->BeginTrans();
 		while (!setDayLineBasic.IsEOF()) {
-			long currentLastClose = atof(setDayLineBasic.m_LastClose) * ratio;
+			long currentLastClose = _tstof(setDayLineBasic.m_LastClose) * ratio;
 			// 如果本交易日的上一个交易日收盘价为零的话，使用上一个交易日的收盘价修复之。
 			if (currentLastClose == 0) {
 				setDayLineBasic.Edit();
 				setDayLineBasic.m_LastClose = ConvertValueToCString(lLastClose, ratio);
 				setDayLineBasic.Update();
 			}
-			lLastClose = atof(setDayLineBasic.m_Close) * ratio;
+			lLastClose = _tstof(setDayLineBasic.m_Close) * ratio;
 			setDayLineBasic.MoveNext();
 		}
 		setDayLineBasic.m_pDatabase->CommitTrans();
@@ -406,7 +406,7 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::TaskProcessDayLine() {
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
+	gl_systemMessage.PushInnerSystemInformationMessage("开始处理Tiingo日线数据");
 	auto lSize = Size();
 	vector<result<void>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
@@ -447,5 +447,5 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 		gl_dataContainerTiingoStock.TaskCalculate();
 	});
 	result5.get();
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo日线数据处理完毕"));
+	gl_systemMessage.PushInnerSystemInformationMessage("Tiingo日线数据处理完毕");
 }

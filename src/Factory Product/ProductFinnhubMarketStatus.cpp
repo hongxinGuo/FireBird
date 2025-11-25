@@ -10,7 +10,7 @@
 #include "WebData.h"
 
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-status?exchange=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-status?exchange=";
 }
 
 string CProductFinnhubMarketStatus::CreateMessage() {
@@ -56,20 +56,20 @@ CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const C
 	try {
 		string s;
 		pMarketStatus = make_shared<CMarketStatus>();
-		s = jsonGetString(js, _T("exchange"));
+		s = jsonGetString(js, "exchange");
 		if (!s.empty()) pMarketStatus->m_strExchange = s;
-		s = jsonGetString(js, _T("holiday"));
+		s = jsonGetString(js, "holiday");
 		if (!s.empty()) pMarketStatus->m_strHoliday = s;
-		pMarketStatus->m_bOpen = js.at(_T("isOpen"));
-		s = jsonGetString(js, _T("session"));
+		pMarketStatus->m_bOpen = js.at("isOpen");
+		s = jsonGetString(js, "session");
 		if (!s.empty()) pMarketStatus->m_strSession = s;
-		s = jsonGetString(js, _T("timezone"));
+		s = jsonGetString(js, "timezone");
 		if (!s.empty()) pMarketStatus->m_strTimeZone = s;
-		pMarketStatus->m_tt = jsonGetLongLong(js, _T("t"));
+		pMarketStatus->m_tt = jsonGetLongLong(js, "t");
 
 		pvMarketStatus->push_back(pMarketStatus);
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Market Status "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Market Status ", e.what());
 		return pvMarketStatus;
 	}
 	return pvMarketStatus;

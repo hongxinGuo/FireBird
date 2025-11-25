@@ -8,22 +8,22 @@
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
-	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http状态码：403
-	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
-	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
-	{ _T("Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__ }, // http状态码：429
-	{ _T("API limit reached.please try again later.Remaining limit:0"), ERROR_TIINGO_REACH_MAX_API_LIMIT__ }, // http状态码：200
-	{ _T("Not found."), ERROR_TIINGO_NOT_FOUND__ },
-	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
+	{ "You do not have permission to access the News API", ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http状态码：403
+	{ "Error: resampleFreq must be in 'Min' or 'Hour' only", ERROR_TIINGO_FREQUENCY__ },
+	{ "You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
+	{ "Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__ }, // http状态码：429
+	{ "API limit reached.please try again later.Remaining limit:0", ERROR_TIINGO_REACH_MAX_API_LIMIT__ }, // http状态码：200
+	{ "Not found.", ERROR_TIINGO_NOT_FOUND__ },
+	{ "", ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
 };
 
 CTiingoDataSource::CTiingoDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
-	m_strParam = _T("");
-	m_strSuffix = _T("");
-	m_strSuffix = _T("&token=");
-	m_strInquiryToken = _T("");
+	m_strInquiryFunction = ""; // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	m_strParam = "";
+	m_strSuffix = "";
+	m_strSuffix = "&token=";
+	m_strInquiryToken = "";
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 
 	CTiingoDataSource::ConfigureInternetOption();
@@ -68,8 +68,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) return m_eErrorMessageData; // 付费账户直接返回
 		if (pWebData->GetBufferLength() == 137) { // 此项为非json格式数据
 			strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
-			if (strView.compare(_T("You have run over your 500 symbol look up for this month. Please upgrade at")) == 0) { 	// 达到代码限制
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol reach 500"));
+			if (strView.compare("You have run over your 500 symbol look up for this month. Please upgrade at") == 0) { 	// 达到代码限制
+				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo symbol reach 500");
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
 				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__;
@@ -79,8 +79,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	case 400: // bad request
 		if (pWebData->GetBufferLength() == 62) {
 			strView = pWebData->GetStringView(0, 62);
-			if (strView.compare(_T("[\"Error: Endpoint only available for US and US - listed Stocks\"]")) == 0) { 	// 非美国股票不提供此项数据
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Error: Endpoint only available for US and US - listed Stocks\"]"));
+			if (strView.compare("[\"Error: Endpoint only available for US and US - listed Stocks\"]") == 0) { 	// 非美国股票不提供此项数据
+				gl_systemMessage.PushInnerSystemInformationMessage("Error: Endpoint only available for US and US - listed Stocks\"]");
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
 				return ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__;
@@ -90,8 +90,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	case 403:
 		if (pWebData->GetBufferLength() == 34) {
 			strView = pWebData->GetStringView(0, 34);
-			if (strView.compare(_T("{\"detail\":\"Please supply a token\"}")) == 0) { 	// 需要令牌
-				gl_systemMessage.PushErrorMessage(_T("Tiingo missing API key"));
+			if (strView.compare("{\"detail\":\"Please supply a token\"}") == 0) { 	// 需要令牌
+				gl_systemMessage.PushErrorMessage("Tiingo missing API key");
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
@@ -100,8 +100,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		}
 		if (pWebData->GetBufferLength() == 62) {
 			strView = pWebData->GetStringView(0, 62);
-			if (strView.compare(_T("{\"detail\":\"You do not have permission to access the News API\"}")) == 0) { 	// 非美国股票不提供此项数据
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo free account no right to access News API"));
+			if (strView.compare("{\"detail\":\"You do not have permission to access the News API\"}") == 0) { 	// 非美国股票不提供此项数据
+				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo free account no right to access News API");
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
@@ -110,8 +110,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		}
 		if (pWebData->GetBufferLength() == 216) {
 			strView = pWebData->GetStringView(0, 216);
-			if (strView.compare(_T("{\"detail\":\"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.\"}")) == 0) { 	// 非美国股票不提供此项数据
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Add-on permission needed"));
+			if (strView.compare("{\"detail\":\"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.\"}") == 0) { 	// 非美国股票不提供此项数据
+				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo Add-on permission needed");
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				gl_systemConfiguration.SetTiingoAccountAddOnPaid(false);
 				s2 = strView;
@@ -123,32 +123,32 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
 		strView = pWebData->GetStringView(0, l); //
 		s2 = strView;
-		str = _T("Warning: Tiingo no handled ");
+		str = "Warning: Tiingo no handled ";
 		str += s2;
-		str += _T("  ") + m_pCurrentProduct->GetInquiry();
+		str += "  " + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
 		return ERROR_TIINGO_NOT_HANDLED__;
 	case 404:
 		if (pWebData->GetBufferLength() == 23) {
 			strView = pWebData->GetStringView(0, 23); // 
-			if (strView.compare(_T("{\"detail\":\"Not found.\"}")) == 0) { 	//
-				str = _T("Warning: Tiingo symbol not exist: ");
+			if (strView.compare("{\"detail\":\"Not found.\"}") == 0) { 	//
+				str = "Warning: Tiingo symbol not exist: ";
 				str += m_pCurrentProduct->GetInquiry();
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 				gl_errorLogger->warn("{}", str);
 				return ERROR_TIINGO_NOT_FOUND__;
 			}
 		}
-		str = _T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange();
+		str = "No right to access: " + m_pCurrentProduct->GetInquiry() + ",  Exchange = " + m_pCurrentProduct->GetInquiringExchange();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
 		return ERROR_TIINGO_NO_RIGHT_TO_ACCESS__; // 目前日线数据无申请权利时返回错误代码404。
 	case 429:
 		if (pWebData->GetBufferLength() == 152) {
 			strView = pWebData->GetStringView(0, 152); // 
-			if (strView.compare(_T("{\"detail\":\"Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.\"}")) == 0) { 	//
-				str = _T("Warning: Tiingo run over your monthly bandwidth");
+			if (strView.compare("{\"detail\":\"Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.\"}") == 0) { 	//
+				str = "Warning: Tiingo run over your monthly bandwidth";
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 				gl_errorLogger->warn("{}", str);
 				m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__);
@@ -162,9 +162,9 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
 		strView = pWebData->GetStringView(0, l); //
 		s2 = strView;
-		str = _T("Warning: Tiingo no handled ");
+		str = "Warning: Tiingo no handled ";
 		str += s2;
-		str += _T("  ") + m_pCurrentProduct->GetInquiry();
+		str += "  " + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
 		return ERROR_TIINGO_NOT_HANDLED__;
@@ -180,7 +180,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		string_view sView;
 		size_t iStringViewLength;
 		long long statusCode;
-		string error = js.at(_T("detail"));
+		string error = js.at("detail");
 		int i;
 		try {
 			m_eErrorMessageData = mapTiingoErrorMap.at(error);
@@ -193,20 +193,20 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			if (m_pCurrentProduct->CheckInaccessible()) {
 				// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
-				string s = _T("No right to access: ");
+				string s = "No right to access: ";
 				s += m_pCurrentProduct->GetInquiry();
-				s += _T(",  Exchange = ");
+				s += ",  Exchange = ";
 				s += m_pCurrentProduct->GetInquiringExchange();
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			break;
 		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
-			gl_systemMessage.PushErrorMessage(_T("Tiingo missing API key"));
+			gl_systemMessage.PushErrorMessage("Tiingo missing API key");
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			break;
 		case ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__: // 用尽了每月数据使用量 HTTP status code: 429
 			ASSERT(m_dwHTTPStatusCode == 429);
-			gl_systemMessage.PushErrorMessage(_T("Tiingo run over monthly bandwidth allocation"));
+			gl_systemMessage.PushErrorMessage("Tiingo run over monthly bandwidth allocation");
 			m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__);
 			break;
 		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
@@ -217,7 +217,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			break;
 		case ERROR_TIINGO_NOT_FOUND__:
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol not exist"));
+			gl_systemMessage.PushInnerSystemInformationMessage("Tiingo symbol not exist");
 			break;
 		case ERROR_TIINGO_NOT_HANDLED__: // error not handled
 			if (pWebData->GetBufferLength() > 50) iStringViewLength = 50;
@@ -258,7 +258,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFinancialState()) return true;
 
 	ASSERT(!IsInquiring());
-	gl_systemMessage.SetCurrentTiingoFunction(_T("idling"));
+	gl_systemMessage.SetCurrentTiingoFunction("idling");
 	return false;
 }
 
@@ -271,7 +271,7 @@ bool CTiingoDataSource::GenerateMarketNews() {
 		MARKET_NEWS_,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Market news")); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("Market news"); }
 	);
 }
 
@@ -284,7 +284,7 @@ bool CTiingoDataSource::GenerateFundamentalDefinition() {
 		TIINGO_FUNDAMENTAL_DEFINITION_,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Fundamental Definition")); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("Fundamental Definition"); }
 	);
 }
 
@@ -294,13 +294,13 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 	if (IsUpdateStockSymbol()) {
 		if (gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() >= gl_pWorldMarket->GetMarketDate()) { // 已经更新过当日股票代码？
 			SetUpdateStockSymbol(false);
-			gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol needn't update"));
+			gl_systemMessage.PushInformationMessage("Tiingo stock symbol needn't update"));
 			return false; // 
 		}
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
-		gl_systemMessage.SetCurrentTiingoFunction(_T("Stock symbol"));
+		gl_systemMessage.SetCurrentTiingoFunction("Stock symbol"));
 		return true;
 	}
 	return false;
@@ -321,7 +321,7 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 		reportMsg1,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Fundamental Definition")); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("Fundamental Definition"); }
 
 	);
 }
@@ -332,13 +332,13 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 	if (IsUpdateCryptoSymbol()) {
 		if (gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate() >= gl_pWorldMarket->GetMarketDate()) { // 已经更新过当日crypto代码？
 			SetUpdateCryptoSymbol(false);
-			gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol needn't update"));
+			gl_systemMessage.PushInformationMessage("Tiingo crypto symbol needn't update"));
 			return false; // 
 		}
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
-		gl_systemMessage.SetCurrentTiingoFunction(_T("Crypto symbol"));
+		gl_systemMessage.SetCurrentTiingoFunction("Crypto symbol"));
 		return true;
 	}
 	return false;
@@ -359,7 +359,7 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 		reportMsg1,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Crypto symbol")); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("Crypto symbol"); }
 
 	);
 }
@@ -374,7 +374,7 @@ bool CTiingoDataSource::GenerateIEXTopOfBook() {
 		TIINGO_IEX_TOP_OF_BOOK_,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book")); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("IEX top of book"); }
 	);
 }
 
@@ -407,13 +407,13 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
-			string s = _T("daily meta: ");
+			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
 			SetInquiring(true);
 		}
 		else {
-			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+			gl_systemMessage.SetCurrentTiingoFunction("");
 			SetUpdateStockDailyMeta(false);
 			const string str = "Tiingo stock daily meta updated";
 			gl_systemMessage.PushInformationMessage(str);
@@ -447,13 +447,13 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
-			string s = _T("daily meta: ");
+			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
 			SetInquiring(true);
 		}
 		else {
-			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+			gl_systemMessage.SetCurrentTiingoFunction("");
 			SetUpdateStockDailyMeta(false);
 			const string str = "Tiingo stock daily meta updated";
 			gl_systemMessage.PushInformationMessage(str);
@@ -483,13 +483,13 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
-			string s = _T("daily meta: ");
+			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
 			SetInquiring(true);
 		}
 		else {
-			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+			gl_systemMessage.SetCurrentTiingoFunction("");
 			SetUpdateStockDailyMeta(false);
 			const string str = "Tiingo stock daily meta updated";
 			gl_systemMessage.PushInformationMessage(str);
@@ -537,12 +537,12 @@ bool CTiingoDataSource::GenerateDayLine() {
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
 			SetInquiring(true);
-			string s = _T("Day line: ");
+			string s = "Day line: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
 		}
 		else {
-			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+			gl_systemMessage.SetCurrentTiingoFunction("");
 			SetUpdateDayLine(false);
 			string str = fmt::format("{:Ld} Tiingo stock dayLine Updated", gl_pWorldMarket->GetTiingoStockDayLineUpdated());
 			gl_systemMessage.PushInformationMessage(str);
@@ -580,13 +580,13 @@ bool CTiingoDataSource::GenerateFinancialState() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
-			string s = _T("Financial statement: ");
+			string s = "Financial statement: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
 			SetInquiring(true);
 		}
 		else {
-			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+			gl_systemMessage.SetCurrentTiingoFunction("");
 			SetUpdateFinancialState(false);
 			const string str = "Tiingo financial statements Updated";
 			gl_systemMessage.PushInformationMessage(str);

@@ -10,7 +10,7 @@
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;
-	m_strInquiryFunction = _T("https://hq.sinajs.cn/list=");
+	m_strInquiryFunction = "https://hq.sinajs.cn/list=";
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

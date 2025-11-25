@@ -51,9 +51,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0);
 
 		auto pTiingoCrypto = make_shared<CTiingoCrypto>();
-		pTiingoCrypto->SetSymbol(_T("SS.SS"));
+		pTiingoCrypto->SetSymbol("SS.SS");
 		auto pTiingoCrypto2 = make_shared<CTiingoCrypto>();
-		pTiingoCrypto2->SetSymbol(_T("SS.SS.SS"));
+		pTiingoCrypto2->SetSymbol("SS.SS.SS");
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1);
 
@@ -70,16 +70,16 @@ namespace FireBirdTest {
 
 		m_dataTiingoCryptoSymbol.LoadDB();
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1278) << "默认状态下装载1278个Crypto代码";
-		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(_T("DKAETH")));
-		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(_T("KSMUST")));
-		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol(_T("500008.SS")));
-		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetCrypto(_T("DKAETH"));
-		EXPECT_EQ(pTiingoCrypto->GetSymbol(), _T("DKAETH"));
+		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("DKAETH"));
+		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("KSMUST"));
+		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol("500008.SS"));
+		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetCrypto("DKAETH");
+		EXPECT_EQ(pTiingoCrypto->GetSymbol(), "DKAETH");
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto));
 
 		// 测试UpdateDB
 		pTiingoCrypto = make_shared<CTiingoCrypto>();
-		pTiingoCrypto->SetSymbol(_T("AA.BB")); // 新代码
+		pTiingoCrypto->SetSymbol("AA.BB"); // 新代码
 		pTiingoCrypto->SetUpdateProfileDB(true);
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1279);
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		CSetTiingoCrypto setCryptoSymbol;
-		setCryptoSymbol.m_strFilter = _T("[Ticker] = 'AA.BB'");
+		setCryptoSymbol.m_strFilter = "[Ticker] = 'AA.BB'";
 		setCryptoSymbol.Open();
 		EXPECT_FALSE(setCryptoSymbol.IsEOF());
 		setCryptoSymbol.m_pDatabase->BeginTrans();

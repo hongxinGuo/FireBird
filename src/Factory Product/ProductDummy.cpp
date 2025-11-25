@@ -3,9 +3,9 @@
 #include "ProductDummy.h"
 
 CProductDummy::CProductDummy() {
-	m_strInquiryFunction = _T("");
+	m_strInquiryFunction = "";
 }
 
 string CProductDummy::CreateMessage() {
-	return _T("");
+	return "";
 }

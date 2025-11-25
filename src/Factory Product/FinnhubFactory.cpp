@@ -155,7 +155,7 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMark
 	default:
 		p = make_shared<CProductDummy>();
 		TRACE("未处理指令%d\n", iInquireType);
-		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
+		gl_systemMessage.PushErrorMessage("Finnhub product未实现");
 		break;
 	}
 	p->SetMarket(pMarket);

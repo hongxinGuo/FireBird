@@ -25,7 +25,7 @@
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
 // 使用下面的数据，nlohmann json的release版本用时大致为250微秒；PTree用时大致为330微秒。
-std::string sData101 = _T("{\
+std::string sData101 = "{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -220,7 +220,7 @@ std::string sData101 = _T("{\
 		},\
 		\"metricType\":\"all\",\
 		\"symbol\":\"AAPL\"\
-}");
+}";
 
 static void ParseUsingSimdjson(benchmark::State& state) {
 	const padded_string my_data(sData101);
@@ -237,25 +237,25 @@ public:
 	void SetUp(const benchmark::State& state) override {
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 
-		string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
+		string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "StockSymbol.json";
 		const string sFileName = strFileName;
 		LoadFromFile(strFileName, sUSExchangeStockCode);
 		auto bError2 = USExchangedStockCode.load(sFileName);
 
-		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
+		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "NeteaseRTData.json";
 		LoadFromFile(strFileName, sNeteaseRTData);
 		sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
 
-		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunDayLine.json");
+		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "TengxunDayLine.json";
 		LoadFromFile(strFileName, sTengxunDayLine);
 
 		sNeteaseRTDataForPTree = sNeteaseRTData;
 		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 
-		sFinnhubStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
+		sFinnhubStockUpdateParameter = "{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}";
 
-		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("tiingo_fundamentals.json");
+		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "tiingo_fundamentals.json";
 		LoadFromFile(strFileName, sTiingoSymbol);
 		pWebData = make_shared<CWebData>();
 		pWebData->Test_SetBuffer_(sTiingoSymbol);
@@ -320,7 +320,7 @@ BENCHMARK_F(CJsonParse, StrToDecimal2_3)(benchmark::State& state) {
 }
 
 BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) {
-	const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
+	const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "StockSymbol.json";
 	const auto j = padded_string::load(strFileName);
 	ondemand::parser parser;
 	for (auto _ : state) {
@@ -329,7 +329,7 @@ BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) 
 }
 
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingSimdjson)(benchmark::State& state) {
-	const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
+	const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "NeteaseRTData.json";
 	const auto j = padded_string::load(strFileName);
 	ondemand::parser parser;
 	for (auto _ : state) {
@@ -347,7 +347,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson)(benchmark::State& state
 BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& state) {
 	const string_view svData = sTengxunDayLine;
 	for (auto _ : state) {
-		auto vData = ParseTengxunDayLine(svData, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
+		auto vData = ParseTengxunDayLine(svData, "sh000001"); // 默认测试文件中的股票代码为sh000001.
 	}
 }
 
@@ -361,7 +361,7 @@ BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& 
 class CWithNlohmannJson : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
-		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
+		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "NeteaseRTData.json";
 		LoadFromFile(strFileName, s);
 		sv = s;
 		sv = sv.substr(21, sv.length() - 21 - 2);
@@ -396,7 +396,7 @@ class CSinaRTData : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
-		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("SinaRTData.dat");
+		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "SinaRTData.dat";
 		LoadFromFile(strFileName, s);
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = s.length();
@@ -445,7 +445,7 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool6)(benchmark::State& stat
 class CTengxunRTData : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
-		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunRTData.dat");
+		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "TengxunRTData.dat";
 		LoadFromFile(strFileName, s);
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = s.length();

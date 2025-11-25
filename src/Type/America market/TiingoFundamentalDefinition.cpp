@@ -7,19 +7,19 @@ CTiingoFundamentalDefinition::CTiingoFundamentalDefinition() {
 }
 
 void CTiingoFundamentalDefinition::Reset() {
-	m_strDataCode = _T("");
-	m_strName = _T("");
-	m_strDescription = _T("");
-	m_strStatementType = _T("");
-	m_strUnits = _T("");
+	m_strDataCode = "";
+	m_strName = "";
+	m_strDescription = "";
+	m_strStatementType = "";
+	m_strUnits = "";
 }
 
 void CTiingoFundamentalDefinition::Load(const CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition) {
-	m_strDataCode = setTiingoFundamentalDefinition.m_dataCode;
-	m_strName = setTiingoFundamentalDefinition.m_name;
-	m_strDescription = setTiingoFundamentalDefinition.m_description;
-	m_strStatementType = setTiingoFundamentalDefinition.m_statementType;
-	m_strUnits = setTiingoFundamentalDefinition.m_units;
+	m_strDataCode = ToUTF8(setTiingoFundamentalDefinition.m_dataCode);
+	m_strName = ToUTF8(setTiingoFundamentalDefinition.m_name);
+	m_strDescription = ToUTF8(setTiingoFundamentalDefinition.m_description);
+	m_strStatementType = ToUTF8(setTiingoFundamentalDefinition.m_statementType);
+	m_strUnits = ToUTF8(setTiingoFundamentalDefinition.m_units);
 }
 
 void CTiingoFundamentalDefinition::Append(CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition) {
@@ -34,9 +34,9 @@ void CTiingoFundamentalDefinition::Save(CSetTiingoFundamentalDefinition& setTiin
 		|| (m_strName.length() > 100)
 		|| (m_strStatementType.length() > 45)
 		|| (m_strUnits.length() > 45)) {
-		string s = _T("Tiingo fundamental definitions ");
+		string s = "Tiingo fundamental definitions ";
 		s += m_strDataCode;
-		s += _T(" ×Ö·û´®Ì«³¤");
+		s += " ×Ö·û´®Ì«³¤";
 		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strDataCode = m_strDataCode.substr(0, 44);

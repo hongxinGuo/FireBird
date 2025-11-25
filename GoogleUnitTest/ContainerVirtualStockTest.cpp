@@ -62,9 +62,9 @@ namespace FireBirdTest {
 	TEST_F(CContainerVirtualStockTest, TestGetSymbols) {
 		const vectorString vString = m_containerVirtualStock.GetSymbols();
 
-		EXPECT_EQ(vString.at(0), _T("000001.SS"));
-		EXPECT_EQ(vString.at(1), _T("000001.SZ"));
-		EXPECT_EQ(vString.at(2), _T("000002.SS"));
+		EXPECT_EQ(vString.at(0), "000001.SS");
+		EXPECT_EQ(vString.at(1), "000001.SZ");
+		EXPECT_EQ(vString.at(2), "000002.SS");
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet1) {
@@ -161,13 +161,13 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerVirtualStockTest, TestSort) {
 		const auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol(_T("0.A")); // 
+		pStock->SetSymbol("0.A"); // 
 		m_containerVirtualStock.Add(pStock);
-		EXPECT_EQ(m_containerVirtualStock.Get(m_containerVirtualStock.Size() - 1)->GetSymbol(), _T("0.A"));
+		EXPECT_EQ(m_containerVirtualStock.Get(m_containerVirtualStock.Size() - 1)->GetSymbol(), "0.A");
 		EXPECT_EQ(m_containerVirtualStock.Size(), 101);
 
 		m_containerVirtualStock.Sort();
-		EXPECT_EQ(m_containerVirtualStock.Get(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
+		EXPECT_EQ(m_containerVirtualStock.Get(0)->GetSymbol(), "0.A") << "0.A位于第一位";
 
 		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100);

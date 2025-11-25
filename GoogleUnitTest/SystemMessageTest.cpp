@@ -113,34 +113,34 @@ namespace FireBirdTest {
 		const size_t l = gl_systemMessage.InformationSize();
 		CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), l + 1); // 系统报警队列
-		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("错误：系统不允许生成多个CSystemMessage实例"));
+		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "错误：系统不允许生成多个CSystemMessage实例");
 	}
 
 	TEST_F(SystemMessageTest, TestGetInformationDequeSize) {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
-		gl_systemMessage.PushInformationMessage(_T("TEST"));
+		gl_systemMessage.PushInformationMessage("TEST");
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 		const string str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
-		EXPECT_EQ(str, _T("TEST"));
+		EXPECT_EQ(str, "TEST");
 	}
 
 	TEST_F(SystemMessageTest, TestGetDayLineInfoDequeSize) {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-		gl_systemMessage.PushDayLineInfoMessage(_T("TEST"));
+		gl_systemMessage.PushDayLineInfoMessage("TEST");
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		const string str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-		EXPECT_EQ(str, _T("TEST"));
+		EXPECT_EQ(str, "TEST");
 	}
 
 	TEST_F(SystemMessageTest, TestGetWebSocketInfoDequeSize) {
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
-		gl_systemMessage.PushWebSocketInfoMessage(_T("TEST"));
+		gl_systemMessage.PushWebSocketInfoMessage("TEST");
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 1);
 		const string str = gl_systemMessage.PopWebSocketInfoMessage();
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
-		EXPECT_EQ(str, _T("TEST"));
+		EXPECT_EQ(str, "TEST");
 	}
 
 	TEST_F(SystemMessageTest, TestGetProcessedFinnhubWebSocket) {
@@ -172,33 +172,33 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(SystemMessageTest, TestGetStockCodeForInquiringSinaRTData) {
-		gl_systemMessage.SetStockCodeForInquiringRTData(_T("601919.SS"));
-		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringRTData(), _T("601919.SS"));
+		gl_systemMessage.SetStockCodeForInquiringRTData("601919.SS");
+		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringRTData(), "601919.SS");
 	}
 
 	TEST_F(SystemMessageTest, TestGetStockCodeForInquiryDayLine) {
-		gl_systemMessage.SetStockCodeForInquiryDayLine(_T("600000.SS"));
-		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiryDayLine(), _T("600000.SS"));
+		gl_systemMessage.SetStockCodeForInquiryDayLine("600000.SS");
+		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiryDayLine(), "600000.SS");
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentFinnhubWebSocketStake) {
-		gl_systemMessage.SetCurrentFinnhubWebSocketStake(_T("600000.SS"));
-		EXPECT_EQ(gl_systemMessage.GetCurrentFinnhubWebSocketStake(), _T("600000.SS"));
+		gl_systemMessage.SetCurrentFinnhubWebSocketStake("600000.SS");
+		EXPECT_EQ(gl_systemMessage.GetCurrentFinnhubWebSocketStake(), "600000.SS");
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketIEX) {
-		gl_systemMessage.SetCurrentTiingoWebSocketIEX(_T("600000.SS"));
-		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketIEX(), _T("600000.SS"));
+		gl_systemMessage.SetCurrentTiingoWebSocketIEX("600000.SS");
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketIEX(), "600000.SS");
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketForex) {
-		gl_systemMessage.SetCurrentTiingoWebSocketForex(_T("600000.SS"));
-		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketForex(), _T("600000.SS"));
+		gl_systemMessage.SetCurrentTiingoWebSocketForex("600000.SS");
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketForex(), "600000.SS");
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketCrypto) {
-		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(_T("600000.SS"));
-		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketCrypto(), _T("600000.SS"));
+		gl_systemMessage.SetCurrentTiingoWebSocketCrypto("600000.SS");
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketCrypto(), "600000.SS");
 	}
 
 	TEST_F(SystemMessageTest, TestIncreaseScheduleTaskTime) {

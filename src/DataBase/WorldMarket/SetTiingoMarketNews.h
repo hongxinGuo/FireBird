@@ -5,7 +5,7 @@
 
 class CSetTiingoMarketNews : public CVirtualRecordset {
 public:
-	CSetTiingoMarketNews(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_market_news"), CDatabase* pDatabase = nullptr);
+	CSetTiingoMarketNews(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_market_news", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -19,14 +19,14 @@ public:
 
 	long m_ID{ 0 };
 	long m_ids{ 0 };
-	CString m_tickers{ _T("") };
-	CString m_title{ _T("") };
-	CString m_tag{ _T("") };
-	CString m_source{ _T("") };
-	CString m_description{ _T("") };
-	CString m_url{ _T("") };
-	CString m_crawlDate{ _T("") };
-	CString m_publishedDate{ _T("") };
+	CString m_tickers{ "" };
+	CString m_title{ "" };
+	CString m_tag{ "" };
+	CString m_source{ "" };
+	CString m_description{ "" };
+	CString m_url{ "" };
+	CString m_crawlDate{ "" };
+	CString m_publishedDate{ "" };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

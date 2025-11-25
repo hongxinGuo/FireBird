@@ -18,7 +18,7 @@
 #include "SetSECFilings.h"
 
 CFinnhubStock::CFinnhubStock() {
-	SetExchangeCode(_T("US"));
+	SetExchangeCode("US");
 	CFinnhubStock::ResetAllUpdateDate();
 }
 
@@ -47,45 +47,45 @@ void CFinnhubStock::ResetAllUpdateDate() {
 }
 
 void CFinnhubStock::Load(const CSetFinnhubStock& setFinnhubStock) {
-	m_strSymbol = setFinnhubStock.m_Symbol;
-	m_strExchangeCode = setFinnhubStock.m_ExchangeCode;
-	m_strDescription = setFinnhubStock.m_Description;
-	m_strDisplaySymbol = setFinnhubStock.m_DisplaySymbol;
-	m_strType = setFinnhubStock.m_Type;
-	m_strMic = setFinnhubStock.m_Mic;
-	m_strFigi = setFinnhubStock.m_Figi;
-	m_strCurrency = setFinnhubStock.m_Currency;
-	m_strAddress = setFinnhubStock.m_Address;
-	m_strCity = setFinnhubStock.m_City;
-	m_strCountry = setFinnhubStock.m_Country;
-	m_strCusip = setFinnhubStock.m_Cusip;
-	m_strSedol = setFinnhubStock.m_Sedol;
+	m_strSymbol = ToUTF8(setFinnhubStock.m_Symbol);
+	m_strExchangeCode = ToUTF8(setFinnhubStock.m_ExchangeCode);
+	m_strDescription = ToUTF8(setFinnhubStock.m_Description);
+	m_strDisplaySymbol = ToUTF8(setFinnhubStock.m_DisplaySymbol);
+	m_strType = ToUTF8(setFinnhubStock.m_Type);
+	m_strMic = ToUTF8(setFinnhubStock.m_Mic);
+	m_strFigi = ToUTF8(setFinnhubStock.m_Figi);
+	m_strCurrency = ToUTF8(setFinnhubStock.m_Currency);
+	m_strAddress = ToUTF8(setFinnhubStock.m_Address);
+	m_strCity = ToUTF8(setFinnhubStock.m_City);
+	m_strCountry = ToUTF8(setFinnhubStock.m_Country);
+	m_strCusip = ToUTF8(setFinnhubStock.m_Cusip);
+	m_strSedol = ToUTF8(setFinnhubStock.m_Sedol);
 	m_lEmployeeTotal = setFinnhubStock.m_EmployeeTotal;
-	m_strGgroup = setFinnhubStock.m_Ggroup;
-	m_strGind = setFinnhubStock.m_Gind;
-	m_strGsector = setFinnhubStock.m_Gsector;
-	m_strGsubind = setFinnhubStock.m_Gsubind;
-	m_strIPODate = setFinnhubStock.m_IPODate;
-	m_strIsin = setFinnhubStock.m_Isin;
-	m_dMarketCapitalization = atof(setFinnhubStock.m_MarketCapitalization);
-	m_strNaics = setFinnhubStock.m_Naics;
-	m_strNaicsNationalIndustry = setFinnhubStock.m_NaicsNationalIndustry;
-	m_strNaicsSector = setFinnhubStock.m_NaicsSector;
-	m_strNaicsSubsector = setFinnhubStock.m_NaicsSubsector;
-	m_strName = setFinnhubStock.m_Name;
-	m_strPhone = setFinnhubStock.m_Phone;
-	m_dShareOutstanding = atof(setFinnhubStock.m_ShareOutstanding);
-	m_strState = setFinnhubStock.m_State;
-	m_strTicker = setFinnhubStock.m_Ticker;
-	m_strWebURL = setFinnhubStock.m_WebURL;
-	m_strLogo = setFinnhubStock.m_Logo;
-	m_strFinnhubIndustry = setFinnhubStock.m_FinnhubIndustry;
+	m_strGgroup = ToUTF8(setFinnhubStock.m_Ggroup);
+	m_strGind = ToUTF8(setFinnhubStock.m_Gind);
+	m_strGsector = ToUTF8(setFinnhubStock.m_Gsector);
+	m_strGsubind = ToUTF8(setFinnhubStock.m_Gsubind);
+	m_strIPODate = ToUTF8(setFinnhubStock.m_IPODate);
+	m_strIsin = ToUTF8(setFinnhubStock.m_Isin);
+	m_dMarketCapitalization = _tstof(setFinnhubStock.m_MarketCapitalization);
+	m_strNaics = ToUTF8(setFinnhubStock.m_Naics);
+	m_strNaicsNationalIndustry = ToUTF8(setFinnhubStock.m_NaicsNationalIndustry);
+	m_strNaicsSector = ToUTF8(setFinnhubStock.m_NaicsSector);
+	m_strNaicsSubsector = ToUTF8(setFinnhubStock.m_NaicsSubsector);
+	m_strName = ToUTF8(setFinnhubStock.m_Name);
+	m_strPhone = ToUTF8(setFinnhubStock.m_Phone);
+	m_dShareOutstanding = _tstof(setFinnhubStock.m_ShareOutstanding);
+	m_strState = ToUTF8(setFinnhubStock.m_State);
+	m_strTicker = ToUTF8(setFinnhubStock.m_Ticker);
+	m_strWebURL = ToUTF8(setFinnhubStock.m_WebURL);
+	m_strLogo = ToUTF8(setFinnhubStock.m_Logo);
+	m_strFinnhubIndustry = ToUTF8(setFinnhubStock.m_FinnhubIndustry);
 	if (setFinnhubStock.m_Peer.GetLength() > 2) {
-		CreateJsonWithNlohmann(m_jsonPeer, setFinnhubStock.m_Peer.GetString());
+		CreateJsonWithNlohmann(m_jsonPeer, ToUTF8(setFinnhubStock.m_Peer));
 	}
 	m_lIPOStatus = setFinnhubStock.m_IPOStatus;
 
-	LoadUpdateDate(setFinnhubStock.m_UpdateDate.GetString());
+	LoadUpdateDate(ToUTF8(setFinnhubStock.m_UpdateDate));
 }
 
 void CFinnhubStock::CheckUpdateStatus(long lTodayDate) {
@@ -259,10 +259,10 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 
 		ASSERT(!m_vInsiderTransaction.empty());
 
-		setInsiderTransaction.m_strFilter = _T("[Symbol] = '");
+		setInsiderTransaction.m_strFilter = "[Symbol] = '";
 		setInsiderTransaction.m_strFilter += m_strSymbol.c_str();
-		setInsiderTransaction.m_strFilter += _T("'");
-		setInsiderTransaction.m_strSort = _T("[TransactionDate]");
+		setInsiderTransaction.m_strFilter += "'";
+		setInsiderTransaction.m_strSort = "[TransactionDate]";
 
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
@@ -309,10 +309,10 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 
 		ASSERT(!m_vInsiderSentiment.empty());
 
-		setInsiderSentiment.m_strFilter = _T("[Symbol] = '");
+		setInsiderSentiment.m_strFilter = "[Symbol] = '";
 		setInsiderSentiment.m_strFilter += m_strSymbol.c_str();
-		setInsiderSentiment.m_strFilter += _T("'");
-		setInsiderSentiment.m_strSort = _T("[Date]");
+		setInsiderSentiment.m_strFilter += "'";
+		setInsiderSentiment.m_strSort = "[Date]";
 
 		setInsiderSentiment.Open();
 		while (!setInsiderSentiment.IsEOF()) {
@@ -357,18 +357,18 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 		CCompanyNewsPtr pCompanyNews;
 		CSetCompanyNews setCompanyNews;
 		long lCurrentPos = 0;
-		setCompanyNews.m_strFilter = _T("[Symbol] = '");
+		setCompanyNews.m_strFilter = "[Symbol] = '";
 		setCompanyNews.m_strFilter += m_strSymbol.c_str();
-		setCompanyNews.m_strFilter += _T("'");
-		setCompanyNews.m_strSort = _T("[DateTime]");
+		setCompanyNews.m_strFilter += "'";
+		setCompanyNews.m_strSort = "[DateTime]";
 
 		setCompanyNews.Open();
 		setCompanyNews.m_pDatabase->BeginTrans();
 		while (!setCompanyNews.IsEOF()) {
 			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
-			while ((atoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
+			while ((_tstoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
 			if (setCompanyNews.IsEOF()) break;
-			if ((atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) {	// 没有这个时间点的新闻？
+			if ((_tstoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) {	// 没有这个时间点的新闻？
 				pCompanyNews->Append(setCompanyNews);
 			}
 			if (++lCurrentPos == lSize) break;
@@ -391,7 +391,7 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > lLastEPSSurpriseUpdateDate) { SetUpdateProfileDB(true); }
 	else return false; // 没有新数据则返回
 
-	setEPSSurprise.m_strFilter = _T("[ID] = 1");
+	setEPSSurprise.m_strFilter = "[ID] = 1";
 	setEPSSurprise.Open();
 	setEPSSurprise.m_pDatabase->BeginTrans();
 	for (const auto& pEPSSurprise : m_vEPSSurprise) {
@@ -418,18 +418,18 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		CSECFilingPtr pSECFilings;
 		CSetSECFilings setSECFilings;
 		long lCurrentPos = 0;
-		setSECFilings.m_strFilter = _T("[Symbol] = '");
+		setSECFilings.m_strFilter = "[Symbol] = '";
 		setSECFilings.m_strFilter += m_strSymbol.c_str();
-		setSECFilings.m_strFilter += _T("'");
-		setSECFilings.m_strSort = _T("[accessNumber]");
+		setSECFilings.m_strFilter += "'";
+		setSECFilings.m_strSort = "[accessNumber]";
 
 		setSECFilings.Open();
 		setSECFilings.m_pDatabase->BeginTrans();
 		while (!setSECFilings.IsEOF()) {
 			pSECFilings = m_pvSECFilings->at(lCurrentPos);
-			while (!setSECFilings.IsEOF() && setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber.c_str()) < 0) setSECFilings.MoveNext();
+			while (!setSECFilings.IsEOF() && pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) >= 0) setSECFilings.MoveNext();
 			if (setSECFilings.IsEOF()) break;
-			if (setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber.c_str()) > 0) {	// 没有这个AccessNumber的SEC Filings？
+			if (pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) <= 0) {	// 没有这个AccessNumber的SEC Filings？
 				pSECFilings->Append(setSECFilings);
 			}
 			if (++lCurrentPos == lSize) break;
@@ -453,7 +453,7 @@ bool CFinnhubStock::UpdateDayLineDB() {
 				UpdateDayLineStartEndDate();
 				SetUpdateProfileDB(true);
 				string str = GetSymbol();
-				str += _T("日线资料存储完成");
+				str += "日线资料存储完成";
 				gl_systemMessage.PushDayLineInfoMessage(str);
 				//TRACE("更新%s日线数据\n", GetSymbol().GetBuffer());
 				UnloadDayLine();
@@ -468,7 +468,7 @@ bool CFinnhubStock::UpdateDayLineDB() {
 void CFinnhubStock::AppendBasicFinancialAnnual() const {
 	try {
 		CSetFinnhubStockBasicFinancialAnnual setAnnual;
-		setAnnual.m_strFilter = _T("[ID] = 1");
+		setAnnual.m_strFilter = "[ID] = 1";
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		m_pBasicFinancial->AppendAnnualData(setAnnual);
@@ -483,7 +483,7 @@ void CFinnhubStock::AppendBasicFinancialQuarter() const {
 	try {
 		CSetFinnhubStockBasicFinancialQuarter setQuarter;
 
-		setQuarter.m_strFilter = _T("[ID] = 1");
+		setQuarter.m_strFilter = "[ID] = 1";
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		m_pBasicFinancial->AppendQuarterData(setQuarter);
@@ -644,7 +644,7 @@ bool CFinnhubStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 
 long CFinnhubStock::GetProfileUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyProfileConcise");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsCompanyProfileConcise");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -657,7 +657,7 @@ void CFinnhubStock::SetProfileUpdateDate(const long lProfileUpdateDate) noexcept
 
 long CFinnhubStock::GetCompanyNewsUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyNews");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsCompanyNews");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -670,7 +670,7 @@ void CFinnhubStock::SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) 
 
 long CFinnhubStock::GetBasicFinancialUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsBasicFinancials");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsBasicFinancials");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -683,7 +683,7 @@ void CFinnhubStock::SetBasicFinancialUpdateDate(const long lBasicFinancialUpdate
 
 long CFinnhubStock::GetLastRTDataUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockPriceQuote");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockPriceQuote");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -696,7 +696,7 @@ void CFinnhubStock::SetLastRTDataUpdateDate(const long lDate) noexcept {
 
 long CFinnhubStock::GetPeerUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsPeer");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsPeer");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -709,7 +709,7 @@ void CFinnhubStock::SetPeerUpdateDate(const long lDate) noexcept {
 
 long CFinnhubStock::GetInsiderTransactionUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderTransaction");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsInsiderTransaction");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -722,7 +722,7 @@ void CFinnhubStock::SetInsiderTransactionUpdateDate(const long lDate) noexcept {
 
 long CFinnhubStock::GetInsiderSentimentUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderSentiment");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsInsiderSentiment");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -735,7 +735,7 @@ void CFinnhubStock::SetInsiderSentimentUpdateDate(const long lDate) noexcept {
 
 long CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockEstimatesEPSSurprise");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockEstimatesEPSSurprise");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -748,7 +748,7 @@ void CFinnhubStock::SetLastEPSSurpriseUpdateDate(const long lDate) noexcept {
 
 long CFinnhubStock::GetSECFilingsUpdateDate() {
 	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsSECFilings");
+		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsSECFilings");
 		return lDate;
 	} catch (json::exception&) {
 		return 19800101;
@@ -787,6 +787,6 @@ string CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTi
 }
 
 bool CFinnhubStock::IsUSMarket() const {
-	if (m_strExchangeCode.compare(_T("US")) == 0) return true;
+	if (m_strExchangeCode.compare("US") == 0) return true;
 	return false;
 }

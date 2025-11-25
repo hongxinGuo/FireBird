@@ -17,13 +17,13 @@
 #include "WebData.h"
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/calendar/economic?");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/calendar/economic?";
 }
 
 string CProductFinnhubEconomicCalendar::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
-	ASSERT(m_strInquiringExchange.compare(_T("ALL")) == 0);
-	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
+	ASSERT(m_strInquiringExchange.compare("ALL") == 0);
+	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strInquiry;
 }
 
@@ -47,34 +47,34 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 	if (!IsValidData(pWebData)) return pvEconomicCalendar;
 
 	try {
-		json js2 = jsonGetChild(js, _T("economicCalendar"));
+		json js2 = jsonGetChild(js, "economicCalendar");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
-			s = jsonGetString(it, _T("country"));
+			s = jsonGetString(it, "country");
 			if (!s.empty()) pEconomicCalendar->m_strCountry = s;
-			s = jsonGetString(it,_T("event"));
+			s = jsonGetString(it,"event");
 			pEconomicCalendar->m_strEvent = s;
-			s = jsonGetString(it,_T("impact"));
+			s = jsonGetString(it,"impact");
 			pEconomicCalendar->m_strImpact = s;
-			pEconomicCalendar->m_dEstimate = jsonGetDouble(it, _T("estimate"));
-			pEconomicCalendar->m_dActual = jsonGetDouble(it, _T("actual"));
-			pEconomicCalendar->m_dPrev = jsonGetDouble(it, _T("prev"));
-			s = jsonGetString(it,_T("time"));
+			pEconomicCalendar->m_dEstimate = jsonGetDouble(it, "estimate");
+			pEconomicCalendar->m_dActual = jsonGetDouble(it, "actual");
+			pEconomicCalendar->m_dPrev = jsonGetDouble(it, "prev");
+			s = jsonGetString(it,"time");
 			pEconomicCalendar->m_strTime = s;
-			s = jsonGetString(it,_T("unit"));
+			s = jsonGetString(it,"unit");
 			pEconomicCalendar->m_strUnit = s;
 			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Economic Calendar ", e.what());
 	}
 	return pvEconomicCalendar;
 }
 void CProductFinnhubEconomicCalendar::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CFinnhubDataSource") == 0);
 
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateEconomicCalendar(false);
-	gl_systemMessage.PushInformationMessage(_T("Finnhub economic calendar updated"));
+	gl_systemMessage.PushInformationMessage("Finnhub economic calendar updated");
 	if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
 		gl_systemMessage.PushInnerSystemInformationMessage("free finnhub account");

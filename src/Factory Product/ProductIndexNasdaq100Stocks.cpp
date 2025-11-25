@@ -9,7 +9,7 @@
 #include"WebData.h"
 
 CProductIndexNasdaq100Stocks::CProductIndexNasdaq100Stocks() {
-	m_strInquiryFunction = _T("https://www.slickcharts.com/nasdaq100");
+	m_strInquiryFunction = "https://www.slickcharts.com/nasdaq100";
 }
 
 string CProductIndexNasdaq100Stocks::CreateMessage() {
@@ -81,10 +81,10 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 
 	string_view svData = pWebData->GetStringView();
 	string s(svData);
-	size_t positionStart = svData.find(_T("<script> window.__sc_init_state__ = ")); // 有效数据前面的字符串
+	size_t positionStart = svData.find("<script> window.__sc_init_state__ = "); // 有效数据前面的字符串
 	positionStart += 36; // 跨过此字符串
 	string_view svData2 = svData.substr(positionStart);
-	size_t positionEnd = svData2.find(_T("; </script>")); // 有效数据后的字符串
+	size_t positionEnd = svData2.find("; </script>"); // 有效数据后的字符串
 	string_view sv = svData2.substr(0, positionEnd);
 
 	ondemand::parser parser;
@@ -95,16 +95,16 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 
 	for (auto item : item2) {
 		auto itemValue = item.value();
-		auto svSymbol = simdjsonGetStringView(itemValue, _T("symbol"));
-		string s(svSymbol.data(), svSymbol.length());
-		vSymbol.push_back(s);
+		auto svSymbol = simdjsonGetStringView(itemValue, "symbol");
+		string s2(svSymbol.data(), svSymbol.length());
+		vSymbol.push_back(s2);
 	}
 
 	return vSymbol;
 }
 
 void CProductIndexNasdaq100Stocks::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CAccessoryDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CAccessoryDataSource") == 0);
 	dynamic_pointer_cast<CAccessoryDataSource>(pDataSource)->SetUpdateIndexNasdaq100Stocks(false);
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("Nasdaq 100 stock list updated"));
+	gl_systemMessage.PushInnerSystemInformationMessage("Nasdaq 100 stock list updated");
 }

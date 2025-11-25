@@ -9,8 +9,8 @@
 
 CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_strInquiryFunction = _T("http://quotes.money.163.com/service/chddata.html?code=");
-	m_strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+	m_strInquiryFunction = "http://quotes.money.163.com/service/chddata.html?code=";
+	m_strSuffix = "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP";
 
 	CNeteaseDayLineDataSource::ConfigureInternetOption();
 
@@ -43,15 +43,15 @@ bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 
 void CNeteaseDayLineDataSource::CreateProduct() {
 	// 准备网易日线数据申请格式
-	const string strMessage = _T("http://quotes.money.163.com/service/chddata.html?code=");;
-	const string strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+	const string strMessage = "http://quotes.money.163.com/service/chddata.html?code=";;
+	const string strSuffix = "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP";
 	string strParam = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
 	if (strParam.length() > 0) {
 		char buffer2[200];
 		const string strStockCode = XferNeteaseToStandard(strParam);
 		SetDownLoadingStockCode(strStockCode);
 		gl_systemMessage.SetStockCodeForInquiryDayLine(strStockCode);
-		strParam += _T("");
+		strParam += "";
 		string s = fmt::format("&start=19900101&end={:8Ld}", gl_pChinaMarket->GetMarketDate());
 		strParam += s;
 		m_strParam = strParam;

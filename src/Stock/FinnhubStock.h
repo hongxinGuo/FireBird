@@ -221,40 +221,40 @@ public:
 
 protected:
 	// Finnhub symbol信息
-	string m_strType{ _T(" ") };
-	string m_strSymbol2{ _T(" ") }; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
-	string m_strMic{ _T(" ") };
-	string m_strFigi{ _T(" ") }; // FIGI identifier
-	string m_strShareClassFIGI{ _T(" ") }; // Global Share Class FIGI
-	string m_strCurrency{ _T(" ") };
+	string m_strType{ " " };
+	string m_strSymbol2{ " " }; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
+	string m_strMic{ " " };
+	string m_strFigi{ " " }; // FIGI identifier
+	string m_strShareClassFIGI{ " " }; // Global Share Class FIGI
+	string m_strCurrency{ " " };
 
 	// Finnhub profile信息
-	string m_strAddress{ _T(" ") };
-	string m_strCity{ _T(" ") };
-	string m_strCountry{ _T(" ") };
-	string m_strCusip{ _T(" ") };
-	string m_strSedol{ _T(" ") };
+	string m_strAddress{ " " };
+	string m_strCity{ " " };
+	string m_strCountry{ " " };
+	string m_strCusip{ " " };
+	string m_strSedol{ " " };
 	long m_lEmployeeTotal{ 0 };
-	//string m_strListedExchange{ _T("US") }; // 使用virtualStock中的ExchangeCode
-	string m_strGgroup{ _T(" ") };
-	string m_strGind{ _T(" ") };
-	string m_strGsector{ _T(" ") };
-	string m_strGsubind{ _T(" ") };
-	string m_strIPODate{ _T(" ") };
-	string m_strIsin{ _T(" ") };
+	//string m_strListedExchange{ "US") }; // 使用virtualStock中的ExchangeCode
+	string m_strGgroup{ " " };
+	string m_strGind{ " " };
+	string m_strGsector{ " " };
+	string m_strGsubind{ " " };
+	string m_strIPODate{ " " };
+	string m_strIsin{ " " };
 	double m_dMarketCapitalization{ 0 };
-	string m_strNaics{ _T(" ") };
-	string m_strNaicsNationalIndustry{ _T(" ") };
-	string m_strNaicsSector{ _T(" ") };
-	string m_strNaicsSubsector{ _T(" ") };
-	string m_strName{ _T(" ") };
-	string m_strPhone{ _T(" ") };
+	string m_strNaics{ " " };
+	string m_strNaicsNationalIndustry{ " " };
+	string m_strNaicsSector{ " " };
+	string m_strNaicsSubsector{ " " };
+	string m_strName{ " " };
+	string m_strPhone{ " " };
 	double m_dShareOutstanding{ 0 };
-	string m_strState{ _T(" ") };
-	string m_strTicker{ _T(" ") };
-	string m_strWebURL{ _T(" ") };
-	string m_strLogo{ _T(" ") };
-	string m_strFinnhubIndustry{ _T(" ") };
+	string m_strState{ " " };
+	string m_strTicker{ " " };
+	string m_strWebURL{ " " };
+	string m_strLogo{ " " };
+	string m_strFinnhubIndustry{ " " };
 	json m_jsonPeer{ json({}) }; // 读取到的Peer数据为json制式
 
 	// 系统生成信息

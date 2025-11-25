@@ -26,17 +26,17 @@ namespace FireBirdTest {
 	};
 
 	// 正常实时数据，但时间比较旧（一样）
-	TengxunRTData rtData2(2, _T("000001.SZ"), TENGXUN_RT_WEB_DATA_, true, -10);
+	TengxunRTData rtData2(2, "000001.SZ", TENGXUN_RT_WEB_DATA_, true, -10);
 	// 正常数据，更新的时间
-	TengxunRTData rtData3(3, _T("600601.SS"), TENGXUN_RT_WEB_DATA_, true, 0);
+	TengxunRTData rtData3(3, "600601.SS", TENGXUN_RT_WEB_DATA_, true, 0);
 	// 非活跃股票，更新的时间
-	TengxunRTData rtData4(4, _T("600000.SS"), TENGXUN_RT_WEB_DATA_, true, 0);
+	TengxunRTData rtData4(4, "600000.SS", TENGXUN_RT_WEB_DATA_, true, 0);
 	// 在本测试集的开始，故意设置sh600008的状态为非活跃
-	TengxunRTData rtData5(5, _T("600008.SS"), TENGXUN_RT_WEB_DATA_, true, -5);
+	TengxunRTData rtData5(5, "600008.SS", TENGXUN_RT_WEB_DATA_, true, -5);
 	// 新股票代码
-	TengxunRTData rtData6(6, _T("000000.SN"), TENGXUN_RT_WEB_DATA_, true, 0);
-	//TengxunRTData rtData7(7, _T("140000"),TENGXUN_RT_WEB_DATA_, true, 10101010);
-	//TengxunRTData rtData8(8, _T("1400000"),TENGXUN_RT_WEB_DATA_, true, 10101010);
+	TengxunRTData rtData6(6, "000000.SN", TENGXUN_RT_WEB_DATA_, true, 0);
+	//TengxunRTData rtData7(7, "140000",TENGXUN_RT_WEB_DATA_, true, 10101010);
+	//TengxunRTData rtData8(8, "1400000",TENGXUN_RT_WEB_DATA_, true, 10101010);
 
 	static time_t s_tCurrentMarketTime;
 
@@ -45,14 +45,14 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
+			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
 			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
 			s_tCurrentMarketTime = GetUTCTime();
 		}
 
 		static void TearDownTestSuite() {
-			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
+			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 			pStock->SetActive(true);
 
 			SCOPED_TRACE("");

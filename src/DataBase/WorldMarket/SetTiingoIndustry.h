@@ -5,7 +5,7 @@
 
 class CSetTiingoIndustry : public CVirtualRecordset {
 public:
-	CSetTiingoIndustry(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_industry"), CDatabase* pDatabase = nullptr);
+	CSetTiingoIndustry(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_industry", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -18,8 +18,8 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };  // 索引用，自动生成。
-	CString m_Industry{ _T("") };
-	CString m_Sector{ _T("") };
+	CString m_Industry{ "" };
+	CString m_Sector{ "" };
 
 	// 重写
 	// 向导生成的虚函数重写

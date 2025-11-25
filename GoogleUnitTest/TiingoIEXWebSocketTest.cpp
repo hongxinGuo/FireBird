@@ -35,7 +35,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoIEXWebSocketTest, TestGetURL) {
-		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetURL(), _T("wss://api.tiingo.com/iex"));
+		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetURL(), "wss://api.tiingo.com/iex");
 	}
 
 	TEST_F(CTiingoIEXWebSocketTest, TestSetSubscriptionId) {
@@ -49,25 +49,25 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoIEXWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
-		vSymbol.push_back(_T("A"));
-		vSymbol.push_back(_T("AA"));
-		vSymbol.push_back(_T("AAL"));
-		vSymbol.push_back(_T("AAPL"));
+		vSymbol.push_back("A");
+		vSymbol.push_back("AA");
+		vSymbol.push_back("AAL");
+		vSymbol.push_back("AAPL");
 		string str = gl_pTiingoIEXWebSocket->CreateMessage(vSymbol);
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(str);
 		} catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
-		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
+		EXPECT_TRUE(jsonMessage["eventName"] == "subscribe");
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 6);
-		EXPECT_EQ(jsonMessage["authorization"], _T("c897a00b7cfc2630d235316a4683156"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(0), _T("a"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(1), _T("aa"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(2), _T("aal"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(3), _T("aapl"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(4), _T("rig"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(5), _T("eurusd"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(6), _T("spy"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(7), _T("nmm"));
+		EXPECT_EQ(jsonMessage["authorization"], "c897a00b7cfc2630d235316a4683156");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(0), "a");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(1), "aa");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(2), "aal");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(3), "aapl");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(4), "rig");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(5), "eurusd");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(6), "spy");
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(7), "nmm");
 	}
 }

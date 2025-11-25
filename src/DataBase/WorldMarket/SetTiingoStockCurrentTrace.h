@@ -5,7 +5,7 @@
 
 class CSetTiingoStockCurrentTrace : public CVirtualRecordset {
 public:
-	CSetTiingoStockCurrentTrace(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_stock_current_trace"), CDatabase* pDatabase = nullptr);
+	CSetTiingoStockCurrentTrace(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_current_trace", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -19,7 +19,7 @@ public:
 
 	long m_ID{ 0 };
 	long m_Date{ 19800101 };
-	CString m_Symbol{ _T("") }; // Tiingo永久代码标识
+	CString m_Symbol{ "" }; // Tiingo永久代码标识
 	long m_SICCode{ 0 };
 
 public:

@@ -32,8 +32,8 @@ namespace FireBirdTest {
 	TEST_F(CSICIndustryTest, TestInitialize) {
 		const CSICIndustry SICIndustry;
 		EXPECT_EQ(SICIndustry.m_lCode, 0);
-		EXPECT_EQ(SICIndustry.m_strIndustry, _T(" "));
-		EXPECT_EQ(SICIndustry.m_strSector, _T(" "));
+		EXPECT_EQ(SICIndustry.m_strIndustry, " ");
+		EXPECT_EQ(SICIndustry.m_strSector, " ");
 		EXPECT_FALSE(SICIndustry.m_fUpdated);
 	}
 
@@ -50,8 +50,8 @@ namespace FireBirdTest {
 		CSICIndustry SICIndustry, SICIndustry2;
 
 		SICIndustry.m_lCode = 1234;
-		SICIndustry.m_strIndustry = _T("aaa");
-		SICIndustry.m_strSector = _T("abdc");
+		SICIndustry.m_strIndustry = "aaa";
+		SICIndustry.m_strSector = "abdc";
 		SICIndustry.m_fUpdated = true;
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -61,14 +61,14 @@ namespace FireBirdTest {
 		setSICIndustry.m_pDatabase->CommitTrans();
 		setSICIndustry.Close();
 
-		setSICIndustry2.m_strFilter = _T("[Code] = 1234");
+		setSICIndustry2.m_strFilter = "[Code] = 1234";
 		setSICIndustry2.Open();
 		setSICIndustry2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setSICIndustry2.IsEOF()) << "此时已经存入了AA";
 		SICIndustry2.Load(setSICIndustry2);
 		EXPECT_EQ(SICIndustry.m_lCode, 1234);
-		EXPECT_EQ(SICIndustry.m_strIndustry, _T("aaa"));
-		EXPECT_EQ(SICIndustry.m_strSector, _T("abdc"));
+		EXPECT_EQ(SICIndustry.m_strIndustry, "aaa");
+		EXPECT_EQ(SICIndustry.m_strSector, "abdc");
 		EXPECT_TRUE(SICIndustry.m_fUpdated);
 		setSICIndustry2.Delete();
 		setSICIndustry2.m_pDatabase->CommitTrans();

@@ -34,12 +34,12 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductDummyTest, TestInitialize) {
-		EXPECT_STREQ(typeid(dummy).name(), _T("class CProductDummy"));
-		EXPECT_EQ(dummy.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(typeid(dummy).name(), "class CProductDummy");
+		EXPECT_EQ(dummy.GetInquiryFunction(), "");
 		EXPECT_EQ(dummy.GetIndex(), 0);
 	}
 
 	TEST_F(CProductDummyTest, TestCreateMessage) {
-		EXPECT_EQ(dummy.CreateMessage(), _T(""));
+		EXPECT_EQ(dummy.CreateMessage(), "");
 	}
 }

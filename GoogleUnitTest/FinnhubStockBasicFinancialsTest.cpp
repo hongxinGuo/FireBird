@@ -31,28 +31,28 @@ namespace FireBirdTest {
 		CFinnhubStockBasicFinancial finnhubStockBasicFinancial;
 		vector<CItemOfBasicFinancialSeasonData> vDBData;
 		CItemOfBasicFinancialSeasonData data;
-		data.m_symbol = _T("AAPL");
-		data.m_type = _T("currentRatio");
+		data.m_symbol = "AAPL";
+		data.m_type = "currentRatio";
 		data.m_date = 20190101;
 		data.m_value = 1.0;
 		vDBData.push_back(data);
-		data.m_symbol = _T("AAPL");
-		data.m_type = _T("currentRatio");
+		data.m_symbol = "AAPL";
+		data.m_type = "currentRatio";
 		data.m_date = 20200101;
 		data.m_value = 2.0;
 		vDBData.push_back(data);
-		data.m_symbol = _T("AAPL");
-		data.m_type = _T("currentRatio");
+		data.m_symbol = "AAPL";
+		data.m_type = "currentRatio";
 		data.m_date = 20210101;
 		data.m_value = 3.0;
 		vDBData.push_back(data);
 
 		CValueOfPeriod valueData{20190101, 1.0};
-		EXPECT_FALSE(finnhubStockBasicFinancial.IsNewData(_T("currentRatio"), valueData, vDBData)) << "数据已存在于数据库中";
-		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
+		EXPECT_FALSE(finnhubStockBasicFinancial.IsNewData("currentRatio", valueData, vDBData)) << "数据已存在于数据库中";
+		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData("cashRatio", valueData, vDBData));
 		valueData.m_period = 20220101;
-		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("currentRatio"), valueData, vDBData));
-		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
+		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData("currentRatio", valueData, vDBData));
+		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData("cashRatio", valueData, vDBData));
 	}
 
 	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveQuarterData) {
@@ -61,16 +61,16 @@ namespace FireBirdTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("300020.SZ");
+		instance.m_symbol = "300020.SZ";
 		instance.m_quarter.m_cashRatio.push_back({20210930, 1.0}); // 数据库中已有
 		instance.m_quarter.m_cashRatio.push_back({20211231, 2.0}); // 数据库中已有
 		instance.m_quarter.m_cashRatio.push_back({20220331, 3.0}); // 这个是新数据
 
-		setQuarter.m_strFilter = _T("[Symbol] = '300020.SZ'");
+		setQuarter.m_strFilter = "[Symbol] = '300020.SZ'";
 		setQuarter.Open();
 		while (!setQuarter.IsEOF()) {
-			dbData.m_symbol = setQuarter.m_symbol;
-			dbData.m_type = setQuarter.m_type;
+			dbData.m_symbol = ToUTF8(setQuarter.m_symbol);
+			dbData.m_type = ToUTF8(setQuarter.m_type);
 			dbData.m_date = setQuarter.m_date;
 			dbData.m_value = setQuarter.m_value;
 			seasonDBData.push_back(dbData);
@@ -78,16 +78,16 @@ namespace FireBirdTest {
 		}
 		setQuarter.Close();
 
-		setQuarter.m_strFilter = _T("[Symbol] = '300020.SZ'");
+		setQuarter.m_strFilter = "[Symbol] = '300020.SZ'";
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
-		instance.SaveQuarterData(setQuarter, instance.m_quarter.m_cashRatio, _T("cashRatio"), seasonDBData);
+		instance.SaveQuarterData(setQuarter, instance.m_quarter.m_cashRatio, "cashRatio", seasonDBData);
 		setQuarter.m_pDatabase->CommitTrans();
 		setQuarter.Close();
 
 		// 检查数据库中的数据，并恢复原状
-		setQuarter.m_strFilter = _T("[Symbol] = '300020.SZ' AND [Type] = 'cashRatio'");
-		setQuarter.m_strSort = _T("[Date] ASC");
+		setQuarter.m_strFilter = "[Symbol] = '300020.SZ' AND [Type] = 'cashRatio'";
+		setQuarter.m_strSort = "[Date] ASC";
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		setQuarter.MoveLast();
@@ -110,16 +110,16 @@ namespace FireBirdTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("300020.SZ");
+		instance.m_symbol = "300020.SZ";
 		instance.m_annual.m_cashRatio.push_back({20191231, 1.0}); // 数据库中已有
 		instance.m_annual.m_cashRatio.push_back({20201231, 2.0}); // 数据库中已有
 		instance.m_annual.m_cashRatio.push_back({20211231, 3.0}); // 这个是新数据
 
-		setAnnual.m_strFilter = _T("[Symbol] = '300020.SZ'");
+		setAnnual.m_strFilter = "[Symbol] = '300020.SZ'";
 		setAnnual.Open();
 		while (!setAnnual.IsEOF()) {
-			dbData.m_symbol = setAnnual.m_symbol;
-			dbData.m_type = setAnnual.m_type;
+			dbData.m_symbol = ToUTF8(setAnnual.m_symbol);
+			dbData.m_type = ToUTF8(setAnnual.m_type);
 			dbData.m_date = setAnnual.m_date;
 			dbData.m_value = setAnnual.m_value;
 			seasonDBData.push_back(dbData);
@@ -127,16 +127,16 @@ namespace FireBirdTest {
 		}
 		setAnnual.Close();
 
-		setAnnual.m_strFilter = _T("[Symbol] = '300020.SZ'");
+		setAnnual.m_strFilter = "[Symbol] = '300020.SZ'";
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
-		instance.SaveAnnualData(setAnnual, instance.m_annual.m_cashRatio, _T("cashRatio"), seasonDBData);
+		instance.SaveAnnualData(setAnnual, instance.m_annual.m_cashRatio, "cashRatio", seasonDBData);
 		setAnnual.m_pDatabase->CommitTrans();
 		setAnnual.Close();
 
 		// 检查数据库中的数据，并恢复原状
-		setAnnual.m_strFilter = _T("[Symbol] = '300020.SZ' AND [Type] = 'cashRatio'");
-		setAnnual.m_strSort = _T("[Date] ASC");
+		setAnnual.m_strFilter = "[Symbol] = '300020.SZ' AND [Type] = 'cashRatio'";
+		setAnnual.m_strSort = "[Date] ASC";
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		setAnnual.MoveLast();
@@ -159,7 +159,7 @@ namespace FireBirdTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("200054.SZ");
+		instance.m_symbol = "200054.SZ";
 		instance.m_annual.m_cashRatio.push_back({19800101, 1.0});
 		instance.m_annual.m_currentRatio.push_back({19800101, 2.0});
 		instance.m_annual.m_ebitPerShare.push_back({19800101, 3.0});
@@ -180,11 +180,11 @@ namespace FireBirdTest {
 		instance.m_annual.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
 		instance.m_annual.m_totalRatio.push_back({19800101, 19.0});
 
-		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.m_strFilter = "[Symbol] = '200054.SZ'";
 		setAnnual.Open();
 		while (!setAnnual.IsEOF()) {
-			dbData.m_symbol = setAnnual.m_symbol;
-			dbData.m_type = setAnnual.m_type;
+			dbData.m_symbol = ToUTF8(setAnnual.m_symbol);
+			dbData.m_type = ToUTF8(setAnnual.m_type);
 			dbData.m_date = setAnnual.m_date;
 			dbData.m_value = setAnnual.m_value;
 			seasonDBData.push_back(dbData);
@@ -192,7 +192,7 @@ namespace FireBirdTest {
 		}
 		setAnnual.Close();
 
-		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.m_strFilter = "[Symbol] = '200054.SZ'";
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		instance.SaveAllAnnualData(setAnnual, seasonDBData);
@@ -200,7 +200,7 @@ namespace FireBirdTest {
 		setAnnual.Close();
 
 		int i = 0;
-		setAnnual.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = '200054.SZ'");
+		setAnnual.m_strFilter = "[Date] = 19800101 AND [Symbol] = '200054.SZ'";
 		setAnnual.Open();
 		while (!setAnnual.IsEOF()) {
 			i = setAnnual.m_value;
@@ -272,7 +272,7 @@ namespace FireBirdTest {
 		setAnnual.Close();
 
 		// 恢复原状
-		setAnnual.m_strFilter = _T("[Date] = 19800101");
+		setAnnual.m_strFilter = "[Date] = 19800101";
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		while (!setAnnual.IsEOF()) {
@@ -289,7 +289,7 @@ namespace FireBirdTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("200054.SZ");
+		instance.m_symbol = "200054.SZ";
 		instance.m_quarter.m_cashRatio.push_back({19800101, 1.0});
 		instance.m_quarter.m_currentRatio.push_back({19800101, 2.0});
 		instance.m_quarter.m_ebitPerShare.push_back({19800101, 3.0});
@@ -310,11 +310,11 @@ namespace FireBirdTest {
 		instance.m_quarter.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
 		instance.m_quarter.m_totalRatio.push_back({19800101, 19.0});
 
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.m_strFilter = "[Symbol] = '200054.SZ'";
 		setQuarter.Open();
 		while (!setQuarter.IsEOF()) {
-			dbData.m_symbol = setQuarter.m_symbol;
-			dbData.m_type = setQuarter.m_type;
+			dbData.m_symbol = ToUTF8(setQuarter.m_symbol);
+			dbData.m_type = ToUTF8(setQuarter.m_type);
 			dbData.m_date = setQuarter.m_date;
 			dbData.m_value = setQuarter.m_value;
 			seasonDBData.push_back(dbData);
@@ -322,7 +322,7 @@ namespace FireBirdTest {
 		}
 		setQuarter.Close();
 
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.m_strFilter = "[Symbol] = '200054.SZ'";
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		instance.SaveAllQuarterData(setQuarter, seasonDBData);
@@ -330,7 +330,7 @@ namespace FireBirdTest {
 		setQuarter.Close();
 
 		int i = 0;
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ' AND [Date] = 19800101");
+		setQuarter.m_strFilter = "[Symbol] = '200054.SZ' AND [Date] = 19800101";
 		setQuarter.Open();
 		while (!setQuarter.IsEOF()) {
 			i = setQuarter.m_value;
@@ -401,7 +401,7 @@ namespace FireBirdTest {
 		setQuarter.Close();
 
 		// 恢复原状
-		setQuarter.m_strFilter = _T("[Date] = 19800101");
+		setQuarter.m_strFilter = "[Date] = 19800101";
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		while (!setQuarter.IsEOF()) {
@@ -418,7 +418,7 @@ namespace FireBirdTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("200054.SZ");
+		instance.m_symbol = "200054.SZ";
 		instance.m_quarter.m_cashRatio.push_back({19800101, 1.0});
 		instance.m_quarter.m_currentRatio.push_back({19800101, 2.0});
 		instance.m_quarter.m_ebitPerShare.push_back({19800101, 3.0});
@@ -439,7 +439,7 @@ namespace FireBirdTest {
 		instance.m_quarter.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
 		instance.m_quarter.m_totalRatio.push_back({19800101, 19.0});
 
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.m_strFilter = "[Symbol] = '200054.SZ'";
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		instance.AppendQuarterData(setQuarter);
@@ -447,7 +447,7 @@ namespace FireBirdTest {
 		setQuarter.Close();
 
 		int i = 0;
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ' AND [Date] = 19800101");
+		setQuarter.m_strFilter = "[Symbol] = '200054.SZ' AND [Date] = 19800101";
 		setQuarter.Open();
 		while (!setQuarter.IsEOF()) {
 			i = setQuarter.m_value;
@@ -537,7 +537,7 @@ namespace FireBirdTest {
 		setQuarter.Close();
 
 		// 恢复原状
-		setQuarter.m_strFilter = _T("[Date] = 19800101");
+		setQuarter.m_strFilter = "[Date] = 19800101";
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		while (!setQuarter.IsEOF()) {
@@ -554,7 +554,7 @@ namespace FireBirdTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("200054.SZ");
+		instance.m_symbol = "200054.SZ";
 		instance.m_annual.m_cashRatio.push_back({19800101, 1.0});
 		instance.m_annual.m_currentRatio.push_back({19800101, 2.0});
 		instance.m_annual.m_ebitPerShare.push_back({19800101, 3.0});
@@ -575,7 +575,7 @@ namespace FireBirdTest {
 		instance.m_annual.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
 		instance.m_annual.m_totalRatio.push_back({19800101, 19.0});
 
-		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.m_strFilter = "[Symbol] = '200054.SZ'";
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		instance.AppendAnnualData(setAnnual);
@@ -583,7 +583,7 @@ namespace FireBirdTest {
 		setAnnual.Close();
 
 		int i = 0;
-		setAnnual.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = '200054.SZ'");
+		setAnnual.m_strFilter = "[Date] = 19800101 AND [Symbol] = '200054.SZ'";
 		setAnnual.Open();
 		while (!setAnnual.IsEOF()) {
 			i = setAnnual.m_value;
@@ -673,7 +673,7 @@ namespace FireBirdTest {
 		setAnnual.Close();
 
 		// 恢复原状
-		setAnnual.m_strFilter = _T("[Date] = 19800101");
+		setAnnual.m_strFilter = "[Date] = 19800101";
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		while (!setAnnual.IsEOF()) {
@@ -688,7 +688,7 @@ namespace FireBirdTest {
 		CFinnhubStockBasicFinancial instance, instanceLoaded;
 		CSetFinnhubStockBasicFinancialMetric setMetric, setMetricLoad, setMetric2;
 
-		instance.m_symbol = _T("NEW_CODE");
+		instance.m_symbol = "NEW_CODE";
 
 		instance.m_10DayAverageTradingVolume = 1;
 		instance.m_13WeekPriceReturnDaily = 2;
@@ -843,7 +843,7 @@ namespace FireBirdTest {
 		setMetric.m_pDatabase->CommitTrans();
 		setMetric.Close();
 
-		setMetricLoad.m_strFilter = _T("[Symbol] = 'NEW_CODE'");
+		setMetricLoad.m_strFilter = "[Symbol] = 'NEW_CODE'";
 		setMetricLoad.Open();
 		instanceLoaded.LoadMetric(setMetricLoad);
 		setMetricLoad.Close();
@@ -996,7 +996,7 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(instance.m_yearToDatePriceReturnDaily, instanceLoaded.m_yearToDatePriceReturnDaily);
 
 		// restore default
-		setMetric2.m_strFilter = _T("[Symbol] = 'NEW_CODE'");
+		setMetric2.m_strFilter = "[Symbol] = 'NEW_CODE'";
 		setMetric2.Open();
 		setMetric2.m_pDatabase->BeginTrans();
 		while (!setMetric2.IsEOF()) {

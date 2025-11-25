@@ -120,28 +120,28 @@ void CVirtualHistoryCandleBasic::LoadBasicData(const CVirtualSetHistoryCandleBas
 	auto ratio = GetRatio();
 
 	m_lDate = pVirtualSetHistoryCandleBasic->m_Date;
-	m_strExchange = pVirtualSetHistoryCandleBasic->m_Exchange;
-	m_strStockSymbol = pVirtualSetHistoryCandleBasic->m_Symbol;
+	m_strExchange = ToUTF8(pVirtualSetHistoryCandleBasic->m_Exchange);
+	m_strStockSymbol = ToUTF8(pVirtualSetHistoryCandleBasic->m_Symbol);
 	CString str;
 	str = pVirtualSetHistoryCandleBasic->m_DisplaySymbol;
-	m_strDisplaySymbol = str.GetString();
-	m_lLastClose = atof(pVirtualSetHistoryCandleBasic->m_LastClose) * ratio;
-	m_lOpen = atof(pVirtualSetHistoryCandleBasic->m_Open) * ratio;
-	m_lHigh = atof(pVirtualSetHistoryCandleBasic->m_High) * ratio;
-	m_lLow = atof(pVirtualSetHistoryCandleBasic->m_Low) * ratio;
-	m_lClose = atof(pVirtualSetHistoryCandleBasic->m_Close) * ratio;
-	m_dSplitFactor = atof(pVirtualSetHistoryCandleBasic->m_splitFactor);
-	m_dDividend = atof(pVirtualSetHistoryCandleBasic->m_dividend);
-	m_dUpDown = atof(pVirtualSetHistoryCandleBasic->m_UpAndDown);
-	m_llVolume = atoll(pVirtualSetHistoryCandleBasic->m_Volume);
-	m_llAmount = atoll(pVirtualSetHistoryCandleBasic->m_Amount);
-	m_dUpDownRate = atof(pVirtualSetHistoryCandleBasic->m_UpDownRate);
-	m_dChangeHandRate = atof(pVirtualSetHistoryCandleBasic->m_ChangeHandRate);
-	m_llTotalValue = atoll(pVirtualSetHistoryCandleBasic->m_TotalValue);
-	m_llCurrentValue = atoll(pVirtualSetHistoryCandleBasic->m_CurrentValue);
-	m_dRS = atof(pVirtualSetHistoryCandleBasic->m_RS);
-	m_dRSIndex = atof(pVirtualSetHistoryCandleBasic->m_RSIndex);
-	m_dRSBackup = atof(pVirtualSetHistoryCandleBasic->m_RSBackup);
+	m_strDisplaySymbol = ToUTF8(str);
+	m_lLastClose = _tstof(pVirtualSetHistoryCandleBasic->m_LastClose) * ratio;
+	m_lOpen = _tstof(pVirtualSetHistoryCandleBasic->m_Open) * ratio;
+	m_lHigh = _tstof(pVirtualSetHistoryCandleBasic->m_High) * ratio;
+	m_lLow = _tstof(pVirtualSetHistoryCandleBasic->m_Low) * ratio;
+	m_lClose = _tstof(pVirtualSetHistoryCandleBasic->m_Close) * ratio;
+	m_dSplitFactor = _tstof(pVirtualSetHistoryCandleBasic->m_splitFactor);
+	m_dDividend = _tstof(pVirtualSetHistoryCandleBasic->m_dividend);
+	m_dUpDown = _tstof(pVirtualSetHistoryCandleBasic->m_UpAndDown);
+	m_llVolume = _tstoll(pVirtualSetHistoryCandleBasic->m_Volume);
+	m_llAmount = _tstoll(pVirtualSetHistoryCandleBasic->m_Amount);
+	m_dUpDownRate = _tstof(pVirtualSetHistoryCandleBasic->m_UpDownRate);
+	m_dChangeHandRate = _tstof(pVirtualSetHistoryCandleBasic->m_ChangeHandRate);
+	m_llTotalValue = _tstoll(pVirtualSetHistoryCandleBasic->m_TotalValue);
+	m_llCurrentValue = _tstoll(pVirtualSetHistoryCandleBasic->m_CurrentValue);
+	m_dRS = _tstof(pVirtualSetHistoryCandleBasic->m_RS);
+	m_dRSIndex = _tstof(pVirtualSetHistoryCandleBasic->m_RSIndex);
+	m_dRSBackup = _tstof(pVirtualSetHistoryCandleBasic->m_RSBackup);
 
 	CalculateRSLogarithm1(m_dRS);
 }

@@ -3,7 +3,7 @@
 
 class CSetTiingoStockNewSymbol : public CVirtualRecordset {
 public:
-	CSetTiingoStockNewSymbol(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_stock_new_symbol"), CDatabase* pDatabase = nullptr);
+	CSetTiingoStockNewSymbol(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_new_symbol", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -16,7 +16,7 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };
-	CString m_symbol{ _T("") };
+	CString m_symbol{ "" };
 	long m_date{ 0 };
 
 public:

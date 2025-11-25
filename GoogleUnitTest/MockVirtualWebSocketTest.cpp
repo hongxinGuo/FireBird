@@ -27,8 +27,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			gl_pMockVirtualWebSocket = make_shared<CMockVirtualWebSocket>();
 
-			vSymbol.push_back(_T("A"));
-			vSymbol.push_back(_T("AAPL"));
+			vSymbol.push_back("A");
+			vSymbol.push_back("AAPL");
 		}
 
 		void TearDown() override {
@@ -64,7 +64,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage3) {
-		exception e(_T("Test Message"));
+		exception e("Test Message");
 
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(1)
 		.WillOnce(Throw(e));
@@ -72,11 +72,11 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Test Message"));
+		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Test Message");
 	}
 
 	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage5) {
-		exception e(_T("Test Message"));
+		exception e("Test Message");
 
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(1)
 		.WillOnce(Return(ix::ReadyState::Open)); // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Test Message"));
+		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Test Message");
 	}
 
 	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage6) {

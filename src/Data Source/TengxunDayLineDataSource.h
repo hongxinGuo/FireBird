@@ -27,11 +27,11 @@ public:
 
 	void SetDownLoadingStockCode(const string& strStockCode);
 	string GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
-	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
+	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = ""; }
 
 protected:
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
-	string m_strDownLoadingStockCode{ _T("") };
+	string m_strDownLoadingStockCode{ "" };
 };
 
 using CTengxunDayLineDataSourcePtr = shared_ptr<CTengxunDayLineDataSource>;

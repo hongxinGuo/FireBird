@@ -9,10 +9,10 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			vSymbols.push_back(_T("US"));
-			vSymbols.push_back(_T("SS"));
-			vSymbols.push_back(_T("SZ"));
-			inaccessible.Assign(_T("COMPANY_NEWS"), 1, vSymbols);
+			vSymbols.push_back("US");
+			vSymbols.push_back("SS");
+			vSymbols.push_back("SZ");
+			inaccessible.Assign("COMPANY_NEWS", 1, vSymbols);
 		}
 
 		void TearDown() override {
@@ -28,37 +28,37 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CInaccessibleTest, TestAssign) {
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("US"))) << "默认包括US";
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SZ"))) << "默认包括US";
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SS"))) << "默认包括US";
-		EXPECT_FALSE(inaccessible.HaveSymbol(_T("FA"))) << "默认不包括FA";
-		const vector<string> v{ _T("US2"), _T("SZ2"), _T("SS2") };
-		inaccessible.Assign(_T("Another"), 2, v);
+		EXPECT_TRUE(inaccessible.HaveSymbol("US")) << "默认包括US";
+		EXPECT_TRUE(inaccessible.HaveSymbol("SZ")) << "默认包括US";
+		EXPECT_TRUE(inaccessible.HaveSymbol("SS")) << "默认包括US";
+		EXPECT_FALSE(inaccessible.HaveSymbol("FA")) << "默认不包括FA";
+		const vector<string> v{ "US2", "SZ2", "SS2" };
+		inaccessible.Assign("Another", 2, v);
 
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("US2")));
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SZ2")));
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SS2")));
-		EXPECT_FALSE(inaccessible.HaveSymbol(_T("US")));
-		EXPECT_FALSE(inaccessible.HaveSymbol(_T("SZ")));
-		EXPECT_FALSE(inaccessible.HaveSymbol(_T("SS")));
+		EXPECT_TRUE(inaccessible.HaveSymbol("US2"));
+		EXPECT_TRUE(inaccessible.HaveSymbol("SZ2"));
+		EXPECT_TRUE(inaccessible.HaveSymbol("SS2"));
+		EXPECT_FALSE(inaccessible.HaveSymbol("US"));
+		EXPECT_FALSE(inaccessible.HaveSymbol("SZ"));
+		EXPECT_FALSE(inaccessible.HaveSymbol("SS"));
 	}
 
 	TEST_F(CInaccessibleTest, TestAddSymbol) {
-		EXPECT_FALSE(inaccessible.HaveSymbol(_T("FA"))) << "默认不包括FA";
-		inaccessible.AddSymbol(_T("FA"));
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("FA"))) << "添加后就包括FA了";
+		EXPECT_FALSE(inaccessible.HaveSymbol("FA")) << "默认不包括FA";
+		inaccessible.AddSymbol("FA");
+		EXPECT_TRUE(inaccessible.HaveSymbol("FA")) << "添加后就包括FA了";
 	}
 
 	TEST_F(CInaccessibleTest, TestDeleteSymbol) {
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("US"))) << "默认包括US";
-		inaccessible.DeleteSymbol(_T("US"));
-		EXPECT_FALSE(inaccessible.HaveSymbol(_T("US"))) << "删除后就不包括US了";
+		EXPECT_TRUE(inaccessible.HaveSymbol("US")) << "默认包括US";
+		inaccessible.DeleteSymbol("US");
+		EXPECT_FALSE(inaccessible.HaveSymbol("US")) << "删除后就不包括US了";
 	}
 
 	TEST_F(CInaccessibleTest, TestHaveSymbol) {
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("US"))) << "默认包括US";
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SZ"))) << "默认包括US";
-		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SS"))) << "默认包括US";
-		EXPECT_FALSE(inaccessible.HaveSymbol(_T("FA"))) << "默认不包括FA";
+		EXPECT_TRUE(inaccessible.HaveSymbol("US")) << "默认包括US";
+		EXPECT_TRUE(inaccessible.HaveSymbol("SZ")) << "默认包括US";
+		EXPECT_TRUE(inaccessible.HaveSymbol("SS")) << "默认包括US";
+		EXPECT_FALSE(inaccessible.HaveSymbol("FA")) << "默认不包括FA";
 	}
 }

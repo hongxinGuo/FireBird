@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestInitialize) {
 		EXPECT_EQ(cryptoSymbolProduct.GetIndex(), 0);
-		EXPECT_EQ(cryptoSymbolProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/symbol?exchange="));
+		EXPECT_EQ(cryptoSymbolProduct.GetInquiryFunction(), "https://finnhub.io/api/v1/crypto/symbol?exchange=");
 	}
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestCreatMessage) {
@@ -51,15 +51,15 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData212(2, _T(""), _T("[\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData212(2, "", "[\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 数据缺乏description
-	Test_FinnhubWebData finnhubWebData213(3, _T(""), _T("[{\"a\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData213(3, "", "[{\"a\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 数据缺乏displaySymbol
-	Test_FinnhubWebData finnhubWebData214(4, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"a\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData214(4, "", "[{\"description\":\"Oanda Singapore 30\",\"a\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 数据缺乏symbol
-	Test_FinnhubWebData finnhubWebData215(5, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"a\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData215(5, "", "[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"a\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData220(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"New Symbol\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData220(10, "", "[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"New Symbol\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 
 	class ParseFinnhubCryptoSymbolTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -114,8 +114,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
 		case 10:
-			EXPECT_EQ(m_pvCryptoSymbol->at(0)->GetSymbol(), _T("New Symbol"));
-			EXPECT_EQ(m_pvCryptoSymbol->at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
+			EXPECT_EQ(m_pvCryptoSymbol->at(0)->GetSymbol(), "New Symbol");
+			EXPECT_EQ(m_pvCryptoSymbol->at(1)->GetSymbol(), "OANDA:DE10YB_EUR");
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 2);
 			break;
 		default:
@@ -171,9 +171,9 @@ namespace FireBirdTest {
 		case 5: // 缺乏字符串
 			break;
 		case 10:
-			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("New Symbol")));
-			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(_T("New Symbol"));
-			EXPECT_EQ(pCrypto->GetDescription(), _T("Oanda Singapore 30"));
+			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol("New Symbol"));
+			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem("New Symbol");
+			EXPECT_EQ(pCrypto->GetDescription(), "Oanda Singapore 30");
 
 		// 恢复原状
 			gl_dataFinnhubCryptoSymbol.Delete(pCrypto);

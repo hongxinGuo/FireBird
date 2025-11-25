@@ -12,14 +12,14 @@
 #include "WebData.h"
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-sentiment?symbol=";
 }
 
 string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
 	const string sCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
-	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + sCurrentDate;
+	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
 	return m_strInquiry;
@@ -76,10 +76,10 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	if (!IsValidData(pWebData)) return pvInsiderSentiment;
 
 	try {
-		pt1 = jsonGetChild(js, _T("data"));
-		stockSymbol = jsonGetString(js, _T("symbol"));
+		pt1 = jsonGetChild(js, "data");
+		stockSymbol = jsonGetString(js, "symbol");
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiryFunction(), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Stock Insider Sentiment " + GetInquiryFunction(), e.what());
 		return pvInsiderSentiment;
 	}
 
@@ -87,19 +87,19 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 		for (auto it = pt1.begin(); it != pt1.end(); ++it) {
 			pInsiderSentiment = make_shared<CInsiderSentiment>();
 			pInsiderSentiment->m_strSymbol = stockSymbol;
-			s = jsonGetString(it, _T("symbol"));
+			s = jsonGetString(it, "symbol");
 			if (!s.empty()) pInsiderSentiment->m_strSymbol = s;
-			const long year = jsonGetLong(it,_T("year"));
-			const long month = jsonGetLong(it,_T("month"));
+			const long year = jsonGetLong(it, "year");
+			const long month = jsonGetLong(it, "month");
 			pInsiderSentiment->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, 1); // 日期要有效，故而使用每月的第一天
-			pInsiderSentiment->m_lChange = jsonGetLong(it,_T("change"));
-			pInsiderSentiment->m_mspr = jsonGetDouble(it, _T("mspr"));
+			pInsiderSentiment->m_lChange = jsonGetLong(it, "change");
+			pInsiderSentiment->m_mspr = jsonGetDouble(it, "mspr");
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
 	} catch (json::exception& e) {
-		string str = _T("Finnhub Stock ");
+		string str = "Finnhub Stock ";
 		str += pInsiderSentiment->m_strSymbol;
-		str += _T(" Insider Sentiment ");
+		str += " Insider Sentiment ";
 		ReportJSonErrorToSystemMessage(str, e.what());
 		return pvInsiderSentiment;
 	}

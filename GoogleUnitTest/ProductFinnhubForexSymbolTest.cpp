@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestInitialize) {
 		EXPECT_EQ(productForexSymbol.GetIndex(), 0);
-		EXPECT_EQ(productForexSymbol.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
+		EXPECT_EQ(productForexSymbol.GetInquiryFunction(), "https://finnhub.io/api/v1/forex/symbol?exchange=");
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
@@ -51,15 +51,15 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData82(2, _T(""), _T("[\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData82(2, "", "[\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 数据缺乏description
-	Test_FinnhubWebData finnhubWebData83(3, _T(""), _T("[{\"a\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData83(3, "", "[{\"a\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 数据缺乏displaySymbol
-	Test_FinnhubWebData finnhubWebData84(4, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"a\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData84(4, "", "[{\"description\":\"Oanda Singapore 30\",\"a\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 数据缺乏symbol
-	Test_FinnhubWebData finnhubWebData85(5, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"a\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData85(5, "", "[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"a\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData90(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"New Symbol\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	Test_FinnhubWebData finnhubWebData90(10, "", "[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"New Symbol\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]");
 
 	class ParseFinnhubForexSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -114,8 +114,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
 		case 10:
-			EXPECT_EQ(m_pvForexSymbol->at(0)->GetSymbol(), _T("New Symbol"));
-			EXPECT_EQ(m_pvForexSymbol->at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
+			EXPECT_EQ(m_pvForexSymbol->at(0)->GetSymbol(), "New Symbol");
+			EXPECT_EQ(m_pvForexSymbol->at(1)->GetSymbol(), "OANDA:DE10YB_EUR");
 			EXPECT_EQ(m_pvForexSymbol->size(), 2);
 			break;
 		default:
@@ -171,9 +171,9 @@ namespace FireBirdTest {
 		case 5: // 缺乏字符串
 			break;
 		case 10:
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("New Symbol"))) << "新添加的Forex代码";
-			pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(_T("New Symbol"));
-			EXPECT_EQ(pForexSymbol->GetExchangeCode(), _T("oanda")) << "Index为零时的交易所";
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol("New Symbol")) << "新添加的Forex代码";
+			pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("New Symbol");
+			EXPECT_EQ(pForexSymbol->GetExchangeCode(), "oanda") << "Index为零时的交易所";
 
 		// 恢复原状
 			gl_dataFinnhubForexSymbol.Delete(pForexSymbol);

@@ -16,9 +16,9 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
 class CTiingoForexSocket {
 public:
 	CTiingoForexSocket() {
-		m_sDateTime = _T("");
+		m_sDateTime = "";
 		m_chMessageType = 'Q';
-		m_sSymbol = _T("");
+		m_sSymbol = "";
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = 0;
 	}
 

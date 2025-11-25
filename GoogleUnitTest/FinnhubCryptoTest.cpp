@@ -36,10 +36,10 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestInitialize) {
 		CFinnhubCrypto FinnhubCryptoSymbol;
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), _T(""));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), _T(""));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), _T(""));
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), "");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);
@@ -57,22 +57,22 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDescription) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetDescription(_T("abcdefg"));
-		EXPECT_EQ(symbol.GetDescription(), _T("abcdefg"));
+		symbol.SetDescription("abcdefg");
+		EXPECT_EQ(symbol.GetDescription(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDisplaySymbol) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetDisplaySymbol(_T("abcdefg"));
-		EXPECT_EQ(symbol.GetDisplaySymbol(), _T("abcdefg"));
+		symbol.SetDisplaySymbol("abcdefg");
+		EXPECT_EQ(symbol.GetDisplaySymbol(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetSymbol) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetSymbol(_T("abcdefg"));
-		EXPECT_EQ(symbol.GetSymbol(), _T("abcdefg"));
+		symbol.SetSymbol("abcdefg");
+		EXPECT_EQ(symbol.GetSymbol(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineStartDate) {
@@ -169,27 +169,27 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString1) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetSymbol(_T("ABCDE"));
+		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(123456789);
-		EXPECT_EQ(str, _T("ABCDE&resolution=D&from=91920789&to=123456789")) << "91920789比123456789早一年（365天）";
+		EXPECT_EQ(str, "ABCDE&resolution=D&from=91920789&to=123456789") << "91920789比123456789早一年（365天）";
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString2) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetSymbol(_T("ABCDE"));
+		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
-		EXPECT_EQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
+		EXPECT_EQ(str, "ABCDE&resolution=D&from=1100000000&to=1131536000") << "365 * 24 * 3600 = 31536000";
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestAppend) {
 		CSetFinnhubCryptoSymbol setFinnhubCryptoSymbol, setFinnhubCryptoSymbol2;
 		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 
-		FinnhubCryptoSymbol.SetDescription(_T("abc"));
-		FinnhubCryptoSymbol.SetDisplaySymbol(_T("cba"));
-		FinnhubCryptoSymbol.SetSymbol(_T("AAAAA"));
-		FinnhubCryptoSymbol.SetExchangeCode(_T("US"));
+		FinnhubCryptoSymbol.SetDescription("abc");
+		FinnhubCryptoSymbol.SetDisplaySymbol("cba");
+		FinnhubCryptoSymbol.SetSymbol("AAAAA");
+		FinnhubCryptoSymbol.SetExchangeCode("US");
 		FinnhubCryptoSymbol.SetDayLineStartDate(20000101);
 		FinnhubCryptoSymbol.SetDayLineEndDate(10000101);
 		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_DELISTED_);
@@ -204,14 +204,14 @@ namespace FireBirdTest {
 		setFinnhubCryptoSymbol.m_pDatabase->CommitTrans();
 		setFinnhubCryptoSymbol.Close();
 
-		setFinnhubCryptoSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setFinnhubCryptoSymbol2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setFinnhubCryptoSymbol2.Open();
 		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "此时已经存入了AA";
 		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), _T("abc"));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T("cba"));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), _T("AAAAA"));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), _T("US"));
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "abc");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "cba");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "AAAAA");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), "US");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 20000101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 10000101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_DELISTED_);
@@ -231,10 +231,10 @@ namespace FireBirdTest {
 		CSetFinnhubCryptoSymbol setFinnhubCryptoSymbol, setFinnhubCryptoSymbol2, setFinnhubCryptoSymbol3;
 		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 
-		FinnhubCryptoSymbol.SetDescription(_T("abc"));
-		FinnhubCryptoSymbol.SetDisplaySymbol(_T("cba"));
-		FinnhubCryptoSymbol.SetSymbol(_T("AAAAA"));
-		FinnhubCryptoSymbol.SetExchangeCode(_T("US"));
+		FinnhubCryptoSymbol.SetDescription("abc");
+		FinnhubCryptoSymbol.SetDisplaySymbol("cba");
+		FinnhubCryptoSymbol.SetSymbol("AAAAA");
+		FinnhubCryptoSymbol.SetExchangeCode("US");
 		FinnhubCryptoSymbol.SetDayLineStartDate(20000101);
 		FinnhubCryptoSymbol.SetDayLineEndDate(10000101);
 		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_DELISTED_);
@@ -250,10 +250,10 @@ namespace FireBirdTest {
 		setFinnhubCryptoSymbol.Close();
 
 		// 改成新值
-		FinnhubCryptoSymbol.SetDescription(_T("abc changed"));
-		FinnhubCryptoSymbol.SetDisplaySymbol(_T("changed"));
-		FinnhubCryptoSymbol.SetSymbol(_T("AAAAA"));
-		FinnhubCryptoSymbol.SetExchangeCode(_T("US changed"));
+		FinnhubCryptoSymbol.SetDescription("abc changed");
+		FinnhubCryptoSymbol.SetDisplaySymbol("changed");
+		FinnhubCryptoSymbol.SetSymbol("AAAAA");
+		FinnhubCryptoSymbol.SetExchangeCode("US changed");
 		FinnhubCryptoSymbol.SetDayLineStartDate(101);
 		FinnhubCryptoSymbol.SetDayLineEndDate(101);
 		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_IPOED_);
@@ -261,21 +261,21 @@ namespace FireBirdTest {
 		FinnhubCryptoSymbol.SetUpdateDayLineDB(FALSE);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(FALSE);
 
-		setFinnhubCryptoSymbol3.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setFinnhubCryptoSymbol3.m_strFilter = "[Symbol] = 'AAAAA'";
 		setFinnhubCryptoSymbol3.Open();
 		setFinnhubCryptoSymbol3.m_pDatabase->BeginTrans();
 		FinnhubCryptoSymbol.UpdateSymbol(setFinnhubCryptoSymbol3);
 		setFinnhubCryptoSymbol3.m_pDatabase->CommitTrans();
 		setFinnhubCryptoSymbol3.Close();
 
-		setFinnhubCryptoSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setFinnhubCryptoSymbol2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setFinnhubCryptoSymbol2.Open();
 		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "此时已经存入了AA";
 		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), _T("abc changed"));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T("changed"));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), _T("AAAAA"));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), _T("US changed"));
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "abc changed");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "changed");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "AAAAA");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), "US changed");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_IPOED_);
@@ -299,15 +299,15 @@ namespace FireBirdTest {
 
 		pDayLine->SetDate(19800101);
 		pDayLine->SetClose(100);
-		pDayLine->SetStockSymbol(_T("NewSymbol"));
+		pDayLine->SetStockSymbol("NewSymbol");
 		pvDayLine->push_back(pDayLine);
-		FinnhubCryptoSymbol.SetSymbol(_T("NewSymbol")); // 新代码
+		FinnhubCryptoSymbol.SetSymbol("NewSymbol"); // 新代码
 		FinnhubCryptoSymbol.UpdateDayLine(pvDayLine);
 
 		FinnhubCryptoSymbol.UpdateDayLineDB();
 
-		setCryptoDayLine.m_strFilter = _T("[Symbol] = 'NewSymbol'");
-		setCryptoDayLine.m_strSort = _T("[Date]");
+		setCryptoDayLine.m_strFilter = "[Symbol] = 'NewSymbol'";
+		setCryptoDayLine.m_strSort = "[Date]";
 		setCryptoDayLine.Open();
 		EXPECT_EQ(setCryptoDayLine.m_Date, 19800101) << "这个是新存储的数据";
 		setCryptoDayLine.m_pDatabase->BeginTrans();

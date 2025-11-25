@@ -8,7 +8,7 @@
 #include "WebData.h"
 
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/symbol?exchange=";
 }
 
 string CProductFinnhubCryptoSymbol::CreateMessage() {
@@ -55,16 +55,16 @@ CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const C
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pSymbol = make_shared<CFinnhubCrypto>();
-			s = jsonGetString(it, _T("description"));
+			s = jsonGetString(it, "description");
 			if (!s.empty()) pSymbol->SetDescription(s);
-			s = jsonGetString(it,_T("displaySymbol"));
+			s = jsonGetString(it,"displaySymbol");
 			pSymbol->SetDisplaySymbol(s);
-			s = jsonGetString(it,_T("symbol"));
+			s = jsonGetString(it,"symbol");
 			pSymbol->SetSymbol(s);
 			pvCryptoSymbol->push_back(pSymbol);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Symbol "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Crypto Symbol ", e.what());
 	}
 	return pvCryptoSymbol;
 }

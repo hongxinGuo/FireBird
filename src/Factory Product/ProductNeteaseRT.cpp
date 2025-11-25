@@ -7,7 +7,7 @@
 
 CProductNeteaseRT::CProductNeteaseRT() {
 	m_lCurrentStockPosition = 0;
-	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
+	m_strInquiryFunction = "http://api.money.126.net/data/feed/";
 }
 
 string CProductNeteaseRT::CreateMessage() {

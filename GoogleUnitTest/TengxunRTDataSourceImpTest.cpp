@@ -39,9 +39,9 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTengxunRTDataSourceTest, TestInitialize2) {
-		EXPECT_EQ(tengxunRTDataSource.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
-		EXPECT_EQ(tengxunRTDataSource.GetInquiryToken(), _T(""));
-		EXPECT_EQ(tengxunRTDataSource.GetInquiringNumber(), 900) << _T("腾讯默认值");
+		EXPECT_EQ(tengxunRTDataSource.GetInquiryFunction(), "http://qt.gtimg.cn/q=");
+		EXPECT_EQ(tengxunRTDataSource.GetInquiryToken(), "");
+		EXPECT_EQ(tengxunRTDataSource.GetInquiringNumber(), 900) << "腾讯默认值";
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestGenerateInquiryMessage1) {
@@ -62,13 +62,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(tengxunRTDataSource.InquiryQueueSize(), 1);
 		tengxunRTDataSource.GetCurrentProduct();
 		const auto pProduct = tengxunRTDataSource.GetCurrentInquiry();
-		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));
+		EXPECT_STREQ(typeid(*pProduct).name(), "class CProductTengxunRT");
 		EXPECT_FALSE(tengxunRTDataSource.HaveInquiry());
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {
 		const CWebDataPtr pWebDataReceived = make_shared<CWebData>();
-		string str = _T("v_pv_none_match=\"1\";\n");
+		string str = "v_pv_none_match=\"1\";\n";
 		pWebDataReceived->Resize(str.length());
 		pWebDataReceived->SetData(str.c_str(), str.length());
 		pWebDataReceived->ResetCurrentPos();
@@ -76,7 +76,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(tengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
 		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
 
-		str = _T("v_pv_none_mtch=\"1\";\n");
+		str = "v_pv_none_mtch=\"1\";\n";
 		pWebDataReceived->Resize(str.length());
 		pWebDataReceived->SetData(str.c_str(), str.length());
 		pWebDataReceived->ResetCurrentPos();

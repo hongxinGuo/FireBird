@@ -49,16 +49,16 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetStockCode) {
 		CVirtualHistoryCandleExtend dl;
-		EXPECT_EQ(dl.GetStockSymbol(), _T(""));
-		dl.SetStockSymbol(_T("600000.SS"));
-		EXPECT_EQ(dl.GetStockSymbol(), _T("600000.SS"));
+		EXPECT_EQ(dl.GetStockSymbol(), "");
+		dl.SetStockSymbol("600000.SS");
+		EXPECT_EQ(dl.GetStockSymbol(), "600000.SS");
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetDisplaySymbol) {
 		CVirtualHistoryCandleExtend dl;
-		EXPECT_EQ(dl.GetDisplaySymbol(), _T(""));
-		dl.SetDisplaySymbol(_T("浦东银行"));
-		EXPECT_EQ(dl.GetDisplaySymbol(), _T("浦东银行"));
+		EXPECT_EQ(dl.GetDisplaySymbol(), "");
+		dl.SetDisplaySymbol("浦东银行");
+		EXPECT_EQ(dl.GetDisplaySymbol(), "浦东银行");
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetLastClose) {
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetLow(), 0);
 		dl.SetLow(22222);
 		EXPECT_EQ(dl.GetLow(), 22222);
-		dl.SetLow(_T("12345"));
+		dl.SetLow("12345");
 		EXPECT_EQ(dl.GetLow(), 12345);
 	}
 
@@ -97,7 +97,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetClose(), 0);
 		dl.SetClose(33333);
 		EXPECT_EQ(dl.GetClose(), 33333);
-		dl.SetClose(_T("12345"));
+		dl.SetClose("12345");
 		EXPECT_EQ(dl.GetClose(), 12345);
 	}
 
@@ -106,7 +106,7 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(dl.GetUpDown(), 0);
 		dl.SetUpDown(10.020);
 		EXPECT_DOUBLE_EQ(dl.GetUpDown(), 10.020);
-		dl.SetUpDown(_T("12.345"));
+		dl.SetUpDown("12.345");
 		EXPECT_DOUBLE_EQ(dl.GetUpDown(), 12.345);
 	}
 
@@ -115,7 +115,7 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 0);
 		dl.SetUpDownRate(40.40);
 		EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 40.40);
-		dl.SetUpDownRate(_T("12.345"));
+		dl.SetUpDownRate("12.345");
 		EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 12.345);
 	}
 
@@ -144,7 +144,7 @@ namespace FireBirdTest {
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetTotalValue) {
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_EQ(dl.GetTotalValue(), 0);
-		string str = _T("3.13e+11");
+		string str = "3.13e+11";
 		dl.SetTotalValue(str.c_str());
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
@@ -152,7 +152,7 @@ namespace FireBirdTest {
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetCurrentValue) {
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
-		string str = _T("3.15e+11");
+		string str = "3.15e+11";
 		dl.SetCurrentValue(str.c_str());
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}

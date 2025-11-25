@@ -30,7 +30,7 @@ namespace FireBirdTest {
 			ondemand::document doc = parser.iterate(s_simdjson1).value();
 			int i = 1;
 			// 测试 doc
-			EXPECT_EQ(simdjsonGetInt64(doc, _T("integer1")), 1);
+			EXPECT_EQ(simdjsonGetInt64(doc, "integer1"), 1);
 			EXPECT_DOUBLE_EQ(simdjsonGetDouble(doc, "double1"), 2.0);
 			EXPECT_FALSE(simdjsonGetBool(doc, "doing"));
 			string s(simdjsonGetStringView(doc, "string1"));
@@ -43,7 +43,7 @@ namespace FireBirdTest {
 				EXPECT_EQ(item, i++) << "array1的数据为：1， 2， 3";
 			}
 			EXPECT_EQ(i, 4);
-			EXPECT_EQ(simdjsonGetInt64(doc, _T("integer2")), 0);
+			EXPECT_EQ(simdjsonGetInt64(doc, "integer2"), 0);
 			EXPECT_DOUBLE_EQ(simdjsonGetDouble(doc, "double2"), 0.0);
 			EXPECT_FALSE(simdjsonGetBool(doc, "doing2"));
 			string s2(simdjsonGetStringView(doc, "string2"));
@@ -62,14 +62,14 @@ namespace FireBirdTest {
 			vector<bool> ab;
 			ondemand::array arrayInteger, arrayInteger2;
 			i = 0;
-			ondemand::array DataArray3 = simdjsonGetArray(doc, _T("DataArray3"));
+			ondemand::array DataArray3 = simdjsonGetArray(doc, "DataArray3");
 			for (auto value : DataArray3) {
 				auto valueValue = value.value();
-				ai.push_back(simdjsonGetInt64(valueValue, _T("integer")));
-				ad.push_back(simdjsonGetDouble(valueValue, _T("double")));
-				string s3(simdjsonGetStringView(valueValue, _T("string")));
+				ai.push_back(simdjsonGetInt64(valueValue, "integer"));
+				ad.push_back(simdjsonGetDouble(valueValue, "double"));
+				string s3(simdjsonGetStringView(valueValue, "string"));
 				as.push_back(s3);
-				string_view s4 = simdjsonGetRawJsonToken(valueValue, _T("string"));
+				string_view s4 = simdjsonGetRawJsonToken(valueValue, "string");
 				s3 = s4;
 				ar.push_back(s3);
 				EXPECT_THROW(s4 = simdjsonGetRawJsonToken(valueValue, "no key"), simdjson_error);
@@ -91,20 +91,20 @@ namespace FireBirdTest {
 			EXPECT_EQ(ai.at(1), 0);
 			EXPECT_DOUBLE_EQ(ad.at(0), 2.0);
 			EXPECT_DOUBLE_EQ(ad.at(1), 0.0);
-			EXPECT_EQ(as.at(0), _T("string1"));
-			EXPECT_EQ(as.at(1), _T(""));
-			EXPECT_EQ(ar.at(0), _T("\"string1\""));
-			EXPECT_EQ(ar.at(1), _T("null"));
+			EXPECT_EQ(as.at(0), "string1");
+			EXPECT_EQ(as.at(1), "");
+			EXPECT_EQ(ar.at(0), "\"string1\"");
+			EXPECT_EQ(ar.at(1), "null");
 			EXPECT_TRUE(ab.at(0));
 			EXPECT_FALSE(ab.at(1));
 			i = 0;
-			DataArray3 = simdjsonGetArray(doc, _T("DataArray3"));
+			DataArray3 = simdjsonGetArray(doc, "DataArray3");
 			for (auto value : DataArray3) {
 				auto valueValue = value.value();
 				ondemand::object object = value.get_object();
-				ai.push_back(simdjsonGetInt64(object, _T("integer")));
-				ad.push_back(simdjsonGetDouble(object, _T("double")));
-				string s3(simdjsonGetStringView(object, _T("string")));
+				ai.push_back(simdjsonGetInt64(object, "integer"));
+				ad.push_back(simdjsonGetDouble(object, "double"));
+				string s3(simdjsonGetStringView(object, "string"));
 				as.push_back(s3);
 				ab.push_back(simdjsonGetBool(object, "bool"));
 				switch (i++) {
@@ -122,10 +122,10 @@ namespace FireBirdTest {
 			}
 			EXPECT_EQ(ai.at(2), 1) << "ai已存入了两个数据";
 			EXPECT_DOUBLE_EQ(ad.at(2), 2.0);
-			EXPECT_EQ(as.at(2), _T("string1")) << "as已存入了两个数据";
+			EXPECT_EQ(as.at(2), "string1") << "as已存入了两个数据";
 			EXPECT_EQ(ai.at(3), 0);
 			EXPECT_DOUBLE_EQ(ad.at(3), 0.0);
-			EXPECT_EQ(as.at(3), _T(""));
+			EXPECT_EQ(as.at(3), "");
 			// DataArray4
 			vector<int> viArray4;
 			ondemand::array array4, array5;
@@ -353,11 +353,11 @@ namespace FireBirdTest {
 		string m_sData;
 	};
 
-	jsonTestData jsonTestData1(1, _T("{\"double\" : 0.1,\"double1\" : null, \"double2\" : \"not number\", \"double4\" : 123}"));
-	jsonTestData jsonTestData2(2, _T("{\"integer\" : 1,\"integer1\" : null, \"integer2\" : \"not number\", \"integer4\" : 123}"));
-	jsonTestData jsonTestData3(3, _T("{\"bool\" : true,\"bool1\" : null, \"bool2\" : \"not boolean\", \"bool4\" : 123}"));
-	jsonTestData jsonTestData4(4, _T("{\"string\" : \"abc\",\"string1\" : null, \"string2\" : 123, \"string4\" : 123}"));
-	jsonTestData jsonTestData5(5, _T("{\"array\" : [a,b,c],\"array1\" : null, \"array2\" : \"not array\", \"array4\" : [a, b, c]}"));
+	jsonTestData jsonTestData1(1, "{\"double\" : 0.1,\"double1\" : null, \"double2\" : \"not number\", \"double4\" : 123}");
+	jsonTestData jsonTestData2(2, "{\"integer\" : 1,\"integer1\" : null, \"integer2\" : \"not number\", \"integer4\" : 123}");
+	jsonTestData jsonTestData3(3, "{\"bool\" : true,\"bool1\" : null, \"bool2\" : \"not boolean\", \"bool4\" : 123}");
+	jsonTestData jsonTestData4(4, "{\"string\" : \"abc\",\"string1\" : null, \"string2\" : 123, \"string4\" : 123}");
+	jsonTestData jsonTestData5(5, "{\"array\" : [a,b,c],\"array1\" : null, \"array2\" : \"not array\", \"array4\" : [a, b, c]}");
 
 	class simdjsonGetValueTest : public TestWithParam<jsonTestData*> {
 	protected:

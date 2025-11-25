@@ -46,13 +46,13 @@ long CContainerChinaStock::LoadStockProfileDB() {
 	char buffer[30]{ 0, 0, 0 };
 	long lDayLineNeedCheck = 0;
 
-	setChinaStockSymbol.m_strSort = _T("[Symbol]");
+	setChinaStockSymbol.m_strSort = "[Symbol]";
 	setChinaStockSymbol.Open();
 	setChinaStockSymbol.m_pDatabase->BeginTrans();
 	// 装入股票代码数据库
 	while (!setChinaStockSymbol.IsEOF()) {
 		const auto pStock = make_shared<CChinaStock>();
-		if (!IsSymbol(setChinaStockSymbol.m_Symbol.GetString())) {
+		if (!IsSymbol(ToUTF8(setChinaStockSymbol.m_Symbol))) {
 			pStock->LoadStockCodeDB(setChinaStockSymbol);
 			pStock->CheckNeedProcessRTData();
 			pStock->CheckIPOStatus();
@@ -66,10 +66,10 @@ long CContainerChinaStock::LoadStockProfileDB() {
 	}
 	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
-		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
+		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
 		_itoa_s(lDayLineNeedCheck, buffer, 10);
 		string str = buffer;
-		str += _T("个股票需要检查日线数据");
+		str += "个股票需要检查日线数据";
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	setChinaStockSymbol.m_pDatabase->CommitTrans();
@@ -89,13 +89,13 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			for (const auto& pStock2 : m_vStock) {
 				if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
 			}
-			setChinaStockSymbol.m_strSort = _T("[Symbol]");
+			setChinaStockSymbol.m_strSort = "[Symbol]";
 			setChinaStockSymbol.Open();
 			setChinaStockSymbol.m_pDatabase->BeginTrans();
 			while (iCount < iStockCodeNeedUpdate) {	//更新原有的代码集状态
 				if (setChinaStockSymbol.IsEOF()) break;
-				if (IsSymbol(setChinaStockSymbol.m_Symbol.GetString())) {
-					const CChinaStockPtr pStock = GetStock(setChinaStockSymbol.m_Symbol.GetString());
+				if (IsSymbol(ToUTF8(setChinaStockSymbol.m_Symbol))) {
+					const CChinaStockPtr pStock = GetStock(ToUTF8(setChinaStockSymbol.m_Symbol));
 					if (pStock->IsUpdateProfileDB()) {
 						pStock->SetUpdateProfileDB(false);
 						//ASSERT(!pStock3->IsTodayNewStock());
@@ -177,7 +177,7 @@ INT64 CContainerChinaStock::GetTotalAttackSellAmount() {
 string CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	bool fFoundStock = false;
 	string strTemp;
-	string strReturn = _T("");
+	string strReturn = "";
 	size_t lIndex = 0;
 
 	while (!fFoundStock && (lIndex < Size())) {
@@ -196,7 +196,7 @@ string CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 
 	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
 		TRACE("未找到需更新日线历史数据的股票\n");
-		return _T("");
+		return "";
 	}
 
 	// 找到了需申请日线历史数据的股票
@@ -221,7 +221,7 @@ string CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 string CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	string strTemp;
-	string strReturn = _T("");
+	string strReturn = "";
 	size_t lIndex = 0;
 
 	while (lIndex < Size()) {
@@ -237,7 +237,7 @@ string CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 
 	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
 		TRACE("未找到需更新日线历史数据的股票\n");
-		return _T("");
+		return "";
 	}
 
 	// 找到了需申请日线历史数据的股票
@@ -273,8 +273,8 @@ string CContainerChinaStock::GetStockName(const string& strStockCode) {
 	try {
 		return GetStock(m_mapSymbol.at(strStockCode))->GetDisplaySymbol();
 	} catch (exception& e) {
-		ReportErrorToSystemMessage(_T("GetStockName ") + strStockCode + _T(" "), e);
-		return _T("");
+		ReportErrorToSystemMessage("GetStockName " + strStockCode + " ", e);
+		return "";
 	}
 }
 
@@ -325,14 +325,14 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 			if (pStock->GetDayLineSize() > 0) {
 				if (pStock->HaveNewDayLineData()) {
 					gl_UpdateChinaMarketDB.acquire();
-					gl_systemMessage.SetChinaMarketSavingFunction(_T("update dayline"));
+					gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
 					gl_runtime.thread_executor()->post([pStock] {
 						if (!gl_systemConfiguration.IsExitingSystem()) {
 							const bool fDataSaved = pStock->SaveDayLineBasicInfo();
 							pStock->UpdateDayLineStartEndDate();
 							if (fDataSaved) {
 								string str = pStock->GetSymbol();
-								str += _T("日线资料存储完成");
+								str += "日线资料存储完成";
 								gl_systemMessage.PushDayLineInfoMessage(str);
 							}
 							pStock->UnloadDayLine();// 为防止出现同步问题，卸载日线历史数据的任务也由本线程执行。
@@ -347,7 +347,7 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 				// 此种情况为有股票代码，但此代码尚未上市
 				pStock->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 				string str1 = pStock->GetSymbol();
-				str1 += _T(" 为未上市股票代码");
+				str1 += " 为未上市股票代码";
 				gl_systemMessage.PushDayLineInfoMessage(str1);
 			}
 		}
@@ -360,13 +360,13 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 }
 
 bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
-	gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
+	gl_systemMessage.PushInformationMessage("重新生成周线历史数据");
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		gl_runtime.thread_executor()->post([pStock, lStartDate] {
 			gl_UpdateChinaMarketDB.acquire();
 			TRACE("rebuild week line\n");
-			gl_systemMessage.SetChinaMarketSavingFunction(_T("rebuild week line"));
+			gl_systemMessage.SetChinaMarketSavingFunction("rebuild week line");
 
 			if (!gl_systemConfiguration.IsExitingSystem()) {
 				pStock->BuildWeekLine(lStartDate);
@@ -376,7 +376,7 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 		});
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(100); }
-	gl_systemMessage.PushInformationMessage(_T("周线历史数据生成完毕"));
+	gl_systemMessage.PushInformationMessage("周线历史数据生成完毕");
 
 	return true;
 }
@@ -499,14 +499,14 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
-	string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + _T("的实时数据");
+	string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的实时数据";
 	gl_systemMessage.PushInformationMessage(s);
 
 	DeleteDayLineBasicInfo(lCurrentTradeDay);
 	DeleteDayLineExtendInfo(lCurrentTradeDay);
 
 	// 存储当前交易日的数据
-	setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
+	setDayLineBasicInfo.m_strFilter = "[ID] = 1";
 	setDayLineBasicInfo.Open();
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -524,7 +524,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	setDayLineBasicInfo.Close();
 
 	// 存储今日生成的数据于DayLineExtendInfo表中。
-	setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
+	setDayLineExtendInfo.m_strFilter = "[ID] = 1";
 	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -537,7 +537,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	setDayLineExtendInfo.m_pDatabase->CommitTrans();
 	setDayLineExtendInfo.Close();
 
-	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + _T("的日线数据已生成");
+	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的日线数据已生成";
 	gl_systemMessage.PushInformationMessage(s);
 
 	s = fmt::format("今日处理了{:d}个股票", iCount);
@@ -578,7 +578,7 @@ void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 //
 // 将当日处理好的数据储存于数据库中，以备万一系统崩溃时重新装入。
 //
-// 使用ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"))，保证能够快速删除任意大小的记录集。
+// 使用ExecuteSQL("TRUNCATE `chinamarket`.`today`;"))，保证能够快速删除任意大小的记录集。
 //
 //////////////////////////////////////////////////////////////////////////////////
 void CContainerChinaStock::UpdateTempRTDB() {
@@ -586,7 +586,7 @@ void CContainerChinaStock::UpdateTempRTDB() {
 
 	DeleteTempRTData();
 
-	setDayLineTemp.m_strFilter = _T("[ID] = 1");
+	setDayLineTemp.m_strFilter = "[ID] = 1";
 	setDayLineTemp.Open();
 	setDayLineTemp.m_pDatabase->BeginTrans();
 
@@ -628,7 +628,7 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	double dShenzhenIndexUpDownRate = 0;
 	double dRSIndex;
 
-	setDayLineBasicInfo.m_strSort = _T("[UpDownRate]");
+	setDayLineBasicInfo.m_strSort = "[UpDownRate]";
 	setDayLineBasicInfo.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
 	setDayLineBasicInfo.Open();
 	if (setDayLineBasicInfo.IsEOF()) {
@@ -639,14 +639,14 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	int iStockNumber = 0;
 	while (!setDayLineBasicInfo.IsEOF()) {
-		if (strcmp(setDayLineBasicInfo.m_Symbol, _T("sh000001")) == 0) {	// 上海综指
-			dShanghaiIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close.GetString(), setDayLineBasicInfo.m_LastClose.GetString());
+		if (setDayLineBasicInfo.m_Symbol.Compare(_T("sh000001")) == 0) {	// 上海综指
+			dShanghaiIndexUpDownRate = GetUpDownRate(ToUTF8(setDayLineBasicInfo.m_Close), ToUTF8(setDayLineBasicInfo.m_LastClose));
 		}
-		else if (strcmp(setDayLineBasicInfo.m_Symbol, _T("sz399001")) == 0) {	// 深圳成指
-			dShenzhenIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close.GetString(), setDayLineBasicInfo.m_LastClose.GetString());
+		else if (setDayLineBasicInfo.m_Symbol.Compare(_T("sz399001")) == 0) {	// 深圳成指
+			dShenzhenIndexUpDownRate = GetUpDownRate(ToUTF8(setDayLineBasicInfo.m_Close), ToUTF8(setDayLineBasicInfo.m_LastClose));
 		}
-		if (IsShareA(setDayLineBasicInfo.m_Symbol.GetString())) {
-			const auto lIndex = m_mapSymbol.at(setDayLineBasicInfo.m_Symbol.GetString());
+		if (IsShareA(ToUTF8(setDayLineBasicInfo.m_Symbol))) {
+			const auto lIndex = m_mapSymbol.at(ToUTF8(setDayLineBasicInfo.m_Symbol));
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
 			iTotalAShare++;
@@ -664,10 +664,10 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 			setDayLineBasicInfo.MoveNext();
 		}
 		setDayLineBasicInfo.Edit();
-		const double dLastClose = atof(setDayLineBasicInfo.m_LastClose);
-		const double dLow = atof(setDayLineBasicInfo.m_Low);
-		const double dHigh = atof(setDayLineBasicInfo.m_High);
-		const double dClose = atof(setDayLineBasicInfo.m_Close);
+		const double dLastClose = _ttof(setDayLineBasicInfo.m_LastClose);
+		const double dLow = _ttof(setDayLineBasicInfo.m_Low);
+		const double dHigh = _ttof(setDayLineBasicInfo.m_High);
+		const double dClose = _ttof(setDayLineBasicInfo.m_Close);
 		// 计算指数相对强度
 		if (dLastClose < 0.001) {	// 新股上市等，昨日收盘价格为零
 			dRSIndex = 50;
@@ -733,7 +733,7 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
-	setWeekLineBasicInfo.m_strSort = _T("[UpDownRate]");
+	setWeekLineBasicInfo.m_strSort = "[UpDownRate]";
 	setWeekLineBasicInfo.m_strFilter = fmt::format("[Date] = {:08Ld}", lDate).c_str();
 	setWeekLineBasicInfo.Open();
 	if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
@@ -743,14 +743,14 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 	int iStockNumber = 0;
 	while (!setWeekLineBasicInfo.IsEOF()) {
-		if (strcmp(setWeekLineBasicInfo.m_Symbol, _T("sh000001")) == 0) {	// 上海综指
-			dShanghaiIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close.GetString(), setWeekLineBasicInfo.m_LastClose.GetString());
+		if (setWeekLineBasicInfo.m_Symbol.Compare(_T("sh000001")) == 0) {	// 上海综指
+			dShanghaiIndexUpDownRate = GetUpDownRate(ToUTF8(setWeekLineBasicInfo.m_Close), ToUTF8(setWeekLineBasicInfo.m_LastClose));
 		}
-		else if (strcmp(setWeekLineBasicInfo.m_Symbol, _T("sz399001")) == 0) {	// 深圳成指
-			dShenzhenIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close.GetString(), setWeekLineBasicInfo.m_LastClose.GetString());
+		else if (setWeekLineBasicInfo.m_Symbol.Compare(_T("sz399001")) == 0) {	// 深圳成指
+			dShenzhenIndexUpDownRate = GetUpDownRate(ToUTF8(setWeekLineBasicInfo.m_Close), ToUTF8(setWeekLineBasicInfo.m_LastClose));
 		}
-		if (IsShareA(setWeekLineBasicInfo.m_Symbol.GetString())) {
-			const auto lIndex = m_mapSymbol.at(setWeekLineBasicInfo.m_Symbol.GetString());
+		if (IsShareA(ToUTF8(setWeekLineBasicInfo.m_Symbol))) {
+			const auto lIndex = m_mapSymbol.at(ToUTF8(setWeekLineBasicInfo.m_Symbol));
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
 			iTotalAShare++;
@@ -768,8 +768,8 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 			setWeekLineBasicInfo.MoveNext();
 		}
 		setWeekLineBasicInfo.Edit();
-		const double dLastClose = atof(setWeekLineBasicInfo.m_LastClose);
-		const double dClose = atof(setWeekLineBasicInfo.m_Close);
+		const double dLastClose = _tstof(setWeekLineBasicInfo.m_LastClose);
+		const double dClose = _tstof(setWeekLineBasicInfo.m_Close);
 		// 计算指数相对强度
 		if (dLastClose < 0.001) {	// 新股上市等，昨日收盘价格为零
 			dRSIndex = 50;

@@ -5,7 +5,7 @@
 
 CProductNeteaseDayLine::CProductNeteaseDayLine() {
 	m_lCurrentStockPosition = 0;
-	m_strInquiryFunction = _T("http://quotes.money.163.com/service/chddata.html?code=");
+	m_strInquiryFunction = "http://quotes.money.163.com/service/chddata.html?code=";
 }
 
 string CProductNeteaseDayLine::CreateMessage() {

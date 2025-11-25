@@ -23,10 +23,10 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	CSetTiingoStockDayLine setDayLineBasic;
 
 	// 装入DayLine数据
-	setDayLineBasic.m_strFilter = _T("[Symbol] = '");
+	setDayLineBasic.m_strFilter = "[Symbol] = '";
 	setDayLineBasic.m_strFilter += strStockSymbol.c_str();
-	setDayLineBasic.m_strFilter += _T("'");
-	setDayLineBasic.m_strSort = _T("[Date]");
+	setDayLineBasic.m_strFilter += "'";
+	setDayLineBasic.m_strSort = "[Date]";
 	setDayLineBasic.Open();
 	LoadBasicDB(&setDayLineBasic);
 	setDayLineBasic.Close();
@@ -54,10 +54,10 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 
 	const size_t lSize = Size();
 	long lLastDate = 0;
-	pSetTiingoStockDayLine->m_strFilter = _T("[Symbol] = '");
+	pSetTiingoStockDayLine->m_strFilter = "[Symbol] = '";
 	pSetTiingoStockDayLine->m_strFilter += strStockSymbol.c_str();
-	pSetTiingoStockDayLine->m_strFilter += _T("'");
-	pSetTiingoStockDayLine->m_strSort = _T("[Date]");
+	pSetTiingoStockDayLine->m_strFilter += "'";
+	pSetTiingoStockDayLine->m_strSort = "[Date]";
 
 	pSetTiingoStockDayLine->Open();
 	pSetTiingoStockDayLine->m_pDatabase->BeginTrans();
@@ -116,10 +116,10 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 
 	const size_t lSize = Size();
 	if (strStockSymbol.length() > 0) {
-		pSetTiingoStockDayLine->m_strFilter = _T("[Symbol] = '");
+		pSetTiingoStockDayLine->m_strFilter = "[Symbol] = '";
 		pSetTiingoStockDayLine->m_strFilter += strStockSymbol.c_str();
-		pSetTiingoStockDayLine->m_strFilter += _T("'");
-		pSetTiingoStockDayLine->m_strSort = _T("[Date]");
+		pSetTiingoStockDayLine->m_strFilter += "'";
+		pSetTiingoStockDayLine->m_strSort = "[Date]";
 
 		pSetTiingoStockDayLine->Open();
 		long lLastDate = 0;
@@ -141,7 +141,7 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 		pSetTiingoStockDayLine->m_pDatabase->CommitTrans();
 		pSetTiingoStockDayLine->Close();
 	}
-	pSetTiingoStockDayLine->m_strFilter = _T("[ID] = 1");
+	pSetTiingoStockDayLine->m_strFilter = "[ID] = 1";
 	pSetTiingoStockDayLine->Open();
 	pSetTiingoStockDayLine->m_pDatabase->BeginTrans();
 	if (lSizeOfOldDayLine > 0) {// 有旧数据

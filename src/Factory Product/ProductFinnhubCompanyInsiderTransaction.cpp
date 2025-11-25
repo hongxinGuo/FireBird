@@ -12,7 +12,7 @@
 #include "WebData.h"
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-transactions?symbol=";
 }
 
 string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
@@ -24,7 +24,7 @@ string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 }
 
 void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const CInsiderTransactionsPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
@@ -80,10 +80,10 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	if (!IsValidData(pWebData)) return pvInsiderTransaction;
 
 	try {
-		pt1 = jsonGetChild(js, _T("data"));
-		stockSymbol = jsonGetString(js, _T("symbol"));
+		pt1 = jsonGetChild(js, "data");
+		stockSymbol = jsonGetString(js, "symbol");
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiryFunction(), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Stock Insider Transaction " + GetInquiryFunction(), e.what());
 		return pvInsiderTransaction;
 	}
 
@@ -92,23 +92,23 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 		for (auto it = pt1.begin(); it != pt1.end(); ++it) {
 			pInsiderTransaction = make_shared<CInsiderTransaction>();
 			pInsiderTransaction->m_strSymbol = stockSymbol;
-			s = jsonGetString(it, _T("name"));
+			s = jsonGetString(it, "name");
 			if (!s.empty()) pInsiderTransaction->m_strPersonName = s;
-			pInsiderTransaction->m_lShare = jsonGetLongLong(it, _T("share"));
-			pInsiderTransaction->m_lChange = jsonGetLongLong(it, _T("change"));
-			s = jsonGetString(it, _T("filingDate"));
+			pInsiderTransaction->m_lShare = jsonGetLongLong(it, "share");
+			pInsiderTransaction->m_lChange = jsonGetLongLong(it, "change");
+			s = jsonGetString(it, "filingDate");
 			pInsiderTransaction->m_lFilingDate = XferToYYYYMMDD(s);
-			s = jsonGetString(it, _T("transactionDate"));
+			s = jsonGetString(it, "transactionDate");
 			pInsiderTransaction->m_lTransactionDate = XferToYYYYMMDD(s);
-			s = jsonGetString(it, _T("transactionCode"));
+			s = jsonGetString(it, "transactionCode");
 			pInsiderTransaction->m_strTransactionCode = s;
-			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, _T("transactionPrice"));
+			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, "transactionPrice");
 			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
 	} catch (json::exception& e) {
-		string str = _T("Finnhub Stock ");
+		string str = "Finnhub Stock ";
 		str += pInsiderTransaction->m_strSymbol;
-		str += _T(" Insider Transaction ");
+		str += " Insider Transaction ";
 		ReportJSonErrorToSystemMessage(str, e.what());
 		std::ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),
 		                  [](const CInsiderTransactionPtr& p1, const CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });

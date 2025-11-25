@@ -6,7 +6,7 @@
 
 class CSetFinnhubStockBasicFinancialQuarter : public CVirtualRecordset {
 public:
-	CSetFinnhubStockBasicFinancialQuarter(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_basic_financials_quarterly"), CDatabase* pDatabase = nullptr);
+	CSetFinnhubStockBasicFinancialQuarter(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_stock_basic_financials_quarterly", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -19,8 +19,8 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };  // 索引用，自动生成。
-	CString m_symbol{ _T("") };
-	CString m_type{ _T("") };
+	CString m_symbol{ "" };
+	CString m_type{ "" };
 	int m_date{ 0 };
 	double m_value{ 0 };
 

@@ -39,10 +39,10 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CVirtualDataSourceTest, TestInitialize) {
-		EXPECT_EQ(dataSource.GetHeaders(), _T(""));
-		EXPECT_EQ(dataSource.GetInquiringString(), _T(""));
-		EXPECT_EQ(dataSource.GetInquiryFunction(), _T(""));
-		EXPECT_EQ(dataSource.GetInquiryToken(), _T(""));
+		EXPECT_EQ(dataSource.GetHeaders(), "");
+		EXPECT_EQ(dataSource.GetInquiringString(), "");
+		EXPECT_EQ(dataSource.GetInquiryFunction(), "");
+		EXPECT_EQ(dataSource.GetInquiryToken(), "");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestInquire) {
@@ -94,48 +94,48 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualDataSourceTest, TestCreateInquiryMessageFromCurrentProduct) {
 		const auto pProduct = std::make_shared<CProductNeteaseRT>();
-		pProduct->SetInquiryFunction(_T("TestGetInquiry")); // 这个product不生成自己的Inquiry，直接赋值而已。
+		pProduct->SetInquiryFunction("TestGetInquiry"); // 这个product不生成自己的Inquiry，直接赋值而已。
 		dataSource.StoreInquiry(pProduct);
 		dataSource.GetCurrentProduct();
 
 		dataSource.CreateCurrentInquireString();
-		EXPECT_EQ(dataSource.GetInquiringString(), _T("TestGetInquiry"));
+		EXPECT_EQ(dataSource.GetInquiringString(), "TestGetInquiry");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetHeaders) {
-		EXPECT_EQ(dataSource.GetHeaders(), _T(""));
-		dataSource.SetHeaders(_T("abcdefg"));
-		EXPECT_EQ(dataSource.GetHeaders(), _T("abcdefg"));
+		EXPECT_EQ(dataSource.GetHeaders(), "");
+		dataSource.SetHeaders("abcdefg");
+		EXPECT_EQ(dataSource.GetHeaders(), "abcdefg");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringPrefix) {
-		dataSource.SetInquiryFunction(_T("abcdefghigh"));
-		EXPECT_EQ(dataSource.GetInquiryFunction(), _T("abcdefghigh"));
-		dataSource.SetInquiryFunction(_T(""));
+		dataSource.SetInquiryFunction("abcdefghigh");
+		EXPECT_EQ(dataSource.GetInquiryFunction(), "abcdefghigh");
+		dataSource.SetInquiryFunction("");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringSuffix) {
-		dataSource.SetInquiryToken(_T("cdefghigh"));
-		EXPECT_EQ(dataSource.GetInquiryToken(), _T("cdefghigh"));
-		dataSource.SetInquiryToken(_T(""));
+		dataSource.SetInquiryToken("cdefghigh");
+		EXPECT_EQ(dataSource.GetInquiryToken(), "cdefghigh");
+		dataSource.SetInquiryToken("");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestCreateTotalInquiringString) {
-		dataSource.SetInquirySuffix(_T("abcdef"));
+		dataSource.SetInquirySuffix("abcdef");
 		dataSource.CreateTotalInquiringString();
-		EXPECT_EQ(dataSource.GetInquiringString(), _T("abcdef"));
+		EXPECT_EQ(dataSource.GetInquiringString(), "abcdef");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
-		EXPECT_EQ(dataSource.GetInquiringString(), _T(""));
-		dataSource.SetInquiringString(_T("abcdefg"));
-		EXPECT_EQ(dataSource.GetInquiringString(), _T("abcdefg"));
-		dataSource.AppendInquiringString(_T("hijk"));
-		EXPECT_EQ(dataSource.GetInquiringString(), _T("abcdefghijk"));
+		EXPECT_EQ(dataSource.GetInquiringString(), "");
+		dataSource.SetInquiringString("abcdefg");
+		EXPECT_EQ(dataSource.GetInquiringString(), "abcdefg");
+		dataSource.AppendInquiringString("hijk");
+		EXPECT_EQ(dataSource.GetInquiringString(), "abcdefghijk");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringNumber) {
-		EXPECT_EQ(dataSource.GetInquiringNumber(), 500) << _T("默认值为500");
+		EXPECT_EQ(dataSource.GetInquiringNumber(), 500) << "默认值为500";
 		dataSource.SetInquiringNumber(800);
 		EXPECT_EQ(dataSource.GetInquiringNumber(), 800);
 	}

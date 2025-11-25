@@ -15,11 +15,11 @@
 #include "WorldMarket.h"
 
 CProductTiingoStockProfile::CProductTiingoStockProfile() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
+	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/meta?";
 }
 
 string CProductTiingoStockProfile::CreateMessage() {
-	m_strInquiringSymbol = _T("All");
+	m_strInquiringSymbol = "All";
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
@@ -102,8 +102,8 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
-	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
-	string strNULL = _T("");
+	string strNotAvailable{ "Field not available for free/evaluation" }; // Tiingo免费账户有多项内容空缺，会返回此信息。
+	string strNULL = "";
 	CTiingoStockPtr pStock = nullptr;
 	string s1;
 
@@ -120,21 +120,21 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 		for (auto item : doc) {
 			auto itemValue = item.value();
 			pStock = make_shared<CTiingoStock>();
-			s1 = simdjsonGetStringView(itemValue, _T("permaTicker"));
+			s1 = simdjsonGetStringView(itemValue, "permaTicker");
 			pStock->SetTiingoPermaTicker(s1);;
-			s1 = simdjsonGetStringView(itemValue, _T("ticker"));
+			s1 = simdjsonGetStringView(itemValue, "ticker");
 			std::ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->SetSymbol(s1);
-			s1 = simdjsonGetStringView(itemValue, _T("name"));
+			s1 = simdjsonGetStringView(itemValue, "name");
 			pStock->SetName(s1);;
 			pStock->SetActive(simdjsonGetBool(itemValue, "isActive"));
-			pStock->SetIsADR(simdjsonGetBool(itemValue, _T("isADR")));
-			s1 = simdjsonGetStringView(itemValue, _T("industry"));
+			pStock->SetIsADR(simdjsonGetBool(itemValue, "isADR"));
+			s1 = simdjsonGetStringView(itemValue, "industry");
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->SetTiingoIndustry(s1);;
 			}
 			else pStock->SetTiingoIndustry(strNULL);
-			s1 = simdjsonGetStringView(itemValue, _T("sector"));
+			s1 = simdjsonGetStringView(itemValue, "sector");
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->SetTiingoSector(s1);;
 			}
@@ -148,41 +148,41 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 				string sTemp2(sv);
 				pStock->SetSicCode(atoi(sTemp2.c_str()));
 			}
-			s1 = simdjsonGetStringView(itemValue, _T("sicIndustry"));
+			s1 = simdjsonGetStringView(itemValue, "sicIndustry");
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->SetSicIndustry(s1);;
 			}
 			else pStock->SetSicIndustry(strNULL);
-			s1 = simdjsonGetStringView(itemValue, _T("sicSector"));
+			s1 = simdjsonGetStringView(itemValue, "sicSector");
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->SetSicSector(s1);;
 			}
 			else pStock->SetSicSector(strNULL);
-			s1 = simdjsonGetStringView(itemValue, _T("reportingCurrency"));
+			s1 = simdjsonGetStringView(itemValue, "reportingCurrency");
 			if (s1.compare(strNotAvailable) != 0) { // 此项应该永远存在
 				pStock->SetReportingCurrency(s1);;
 			}
 			else pStock->SetReportingCurrency(strNULL);
-			s1 = simdjsonGetStringView(itemValue, _T("location"));
+			s1 = simdjsonGetStringView(itemValue, "location");
 			if (s1 != strNotAvailable) {
 				pStock->SetLocation(s1);
 			}
 			else pStock->SetLocation(strNULL);
-			s1 = simdjsonGetStringView(itemValue, _T("companyWebsite"));
+			s1 = simdjsonGetStringView(itemValue, "companyWebsite");
 			if (s1 != strNotAvailable) {
 				pStock->SetCompanyWebSite(s1);
 			}
 			else pStock->SetCompanyWebSite(strNULL);
-			s1 = simdjsonGetStringView(itemValue, _T("secFilingWebsite"));
+			s1 = simdjsonGetStringView(itemValue, "secFilingWebsite");
 			if (s1 != strNotAvailable) {
 				pStock->SetSECFilingWebSite(s1);
 			}
 			else pStock->SetSECFilingWebSite(strNULL);
-			s1 = simdjsonGetStringView(itemValue, _T("statementLastUpdated"));
+			s1 = simdjsonGetStringView(itemValue, "statementLastUpdated");
 			pStock->SetStatementLastUpdatedDate(XferToYYYYMMDD(s1));
-			s1 = simdjsonGetStringView(itemValue, _T("dailyLastUpdated"));
+			s1 = simdjsonGetStringView(itemValue, "dailyLastUpdated");
 			pStock->SetDailyUpdateDate(XferToYYYYMMDD(s1));
-			s1 = simdjsonGetStringView(itemValue, _T("dataProviderPermaTicker"));
+			s1 = simdjsonGetStringView(itemValue, "dataProviderPermaTicker");
 			if (s1 != strNotAvailable) {
 				pStock->SetDataProviderPermaTicker(s1);
 			}
@@ -193,16 +193,16 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			iCount++;
 		}
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), error.what());
+		ReportJSonErrorToSystemMessage("Tiingo Stock Symbol ", error.what());
 	}
 	return pvTiingoStock;
 }
 
 void CProductTiingoStockProfile::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateStockSymbol(false);
 	gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(gl_pWorldMarket->GetMarketDate());
-	gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol updated"));
+	gl_systemMessage.PushInformationMessage("Tiingo stock symbol updated");
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

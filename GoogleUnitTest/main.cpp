@@ -53,12 +53,12 @@
 
 using namespace testing;
 
-#ifndef _MBCS
-#error _T("本系统使用多字节字符集")
+#ifdef _MBCS
+#error "本系统使用UNICODE字符集")
 #endif
 
 #ifndef __GOOGLEMOCK__
-#error _T("本系统必须使用GOOGLE MOCK")
+#error "本系统必须使用GOOGLE MOCK")
 #endif
 
 // 目前使用.runsettings文件来排除外部代码，不再使用ExcludeSourceFromCodeCoverage的模式。且ExcludeSourceFromCodeCoverage模式目前在C20标准下无法编译。
@@ -94,9 +94,9 @@ namespace FireBirdTest {
 			// 程序就会生成一个新文件，导致下面的断言失败。目前先屏蔽掉这个断言
 			//ASSERT_TRUE(gl_systemConfiguration.IsNeedUpdate()) << gl_systemConfiguration.GetConfigurationFileDirectoryAndName();
 			//gl_systemConfiguration.NeedUpdate(false);
-			gl_systemConfiguration.SetConfigurationFileDirectory(_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
-			gl_systemConfiguration.SetDefaultFileName(_T("systemConfigurationTest.json"));
-			ASSERT_EQ(gl_systemConfiguration.GetConfigurationFileDirectoryAndName(), _T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json"));
+			gl_systemConfiguration.SetConfigurationFileDirectory("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\");
+			gl_systemConfiguration.SetDefaultFileName("systemConfigurationTest.json");
+			ASSERT_EQ(gl_systemConfiguration.GetConfigurationFileDirectoryAndName(), "C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json");
 			ASSERT_TRUE(gl_systemConfiguration.LoadDB()) << "使用GoogleUnitTest目录中的配置文件";
 			gl_finnhubInaccessibleExchange.LoadDB(); // 重新加载，使用测试目录中的json文件
 			gl_finnhubInaccessibleExchange.Update();
@@ -149,7 +149,7 @@ namespace FireBirdTest {
 
 			EXPECT_FALSE(gl_pWorldMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			gl_pWorldMarket->SetSystemReady(true);// 测试系统默认为准备好了
-			const auto pStock1 = gl_dataContainerFinnhubStock.GetItem(_T("AAPL"));
+			const auto pStock1 = gl_dataContainerFinnhubStock.GetItem("AAPL");
 			pStock1->SetUpdateCompanyProfile(true);
 
 			// 清空预装入的finnhubInaccessibleExchange
@@ -215,11 +215,11 @@ namespace FireBirdTest {
 using namespace FireBirdTest;
 
 // 空数据
-Test_FinnhubWebData finnhubWebData0(0, _T("AAPL"), _T("{}"));
+Test_FinnhubWebData finnhubWebData0(0, "AAPL", "{}");
 // 无权访问数据
-Test_FinnhubWebData finnhubWebData1(1, _T("AAPL"), _T("{\"error\":\"You don't have access to this resource.\"}"));
+Test_FinnhubWebData finnhubWebData1(1, "AAPL", "{\"error\":\"You don't have access to this resource.\"}");
 // 空数据
-Test_FinnhubWebData finnhubWebData2(2, _T("AAPL"), _T("[]"));
+Test_FinnhubWebData finnhubWebData2(2, "AAPL", "[]");
 
 int main(int argc, char* argv[]) {
 	InitGoogleTest(&argc, argv);

@@ -5,7 +5,7 @@
 
 class CSetTiingoFundamentalDefinition : public CVirtualRecordset {
 public:
-	CSetTiingoFundamentalDefinition(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_fundamental_definitions"), CDatabase* pDatabase = nullptr);
+	CSetTiingoFundamentalDefinition(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_fundamental_definitions", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -18,11 +18,11 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID{ 0 };
-	CString m_dataCode{ _T("") };
-	CString m_name{ _T("") };
-	CString m_description{ _T("") };
-	CString m_statementType{ _T("") };
-	CString m_units{ _T("") };
+	CString m_dataCode{ "" };
+	CString m_name{ "" };
+	CString m_description{ "" };
+	CString m_statementType{ "" };
+	CString m_units{ "" };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

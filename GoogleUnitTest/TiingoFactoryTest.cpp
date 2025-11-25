@@ -39,8 +39,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoFactoryTest, TestCreateProduct) {
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockProfile"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_)).name(), _T("class CProductTiingoCryptoSymbol"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_)).name(), _T("class CProductTiingoStockDayLine"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), "class CProductTiingoStockProfile");
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_)).name(), "class CProductTiingoCryptoSymbol");
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_)).name(), "class CProductTiingoStockDayLine");
 	}
 }

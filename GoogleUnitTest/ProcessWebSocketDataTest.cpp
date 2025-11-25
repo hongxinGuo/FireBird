@@ -28,15 +28,15 @@ namespace FireBirdTest {
 		string m_strError;
 	};
 
-	const string s(_T("abcdefg")); // 此字符串用于初始化const pointer m_Msg中的const string，故而在测试期间需要一直保持存续状态。
+	const string s("abcdefg"); // 此字符串用于初始化const pointer m_Msg中的const string，故而在测试期间需要一直保持存续状态。
 
-	WebSocketMessageData finnhubWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), _T("abcdefg"), _T(""));
-	WebSocketMessageData finnhubWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), _T("abcdefg"), _T(""));
-	WebSocketMessageData finnhubWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), _T("abcdefg"), _T(""));
-	WebSocketMessageData finnhubWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), _T("abcdefg"), _T(""));
-	WebSocketMessageData finnhubWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), _T("abcdefg"), _T("Error"));
-	WebSocketMessageData finnhubWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), _T("abcdefg"), _T(""));
-	WebSocketMessageData finnhubWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), _T("abcdefg"), _T(""));
+	WebSocketMessageData finnhubWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
+	WebSocketMessageData finnhubWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
+	WebSocketMessageData finnhubWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+	WebSocketMessageData finnhubWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+	WebSocketMessageData finnhubWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+	WebSocketMessageData finnhubWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
+	WebSocketMessageData finnhubWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 
 	class ProcessFinnhubWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
@@ -76,35 +76,35 @@ namespace FireBirdTest {
 		case ix::WebSocketMessageType::Message:
 			EXPECT_THAT(gl_pFinnhubWebSocket->DataSize(), 1) << "成功接收了一个数据";
 			pString = gl_pFinnhubWebSocket->PopData();
-			EXPECT_EQ(*pString, _T("abcdefg"));
+			EXPECT_EQ(*pString, "abcdefg");
 			break;
 		case ix::WebSocketMessageType::Open:
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Open"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Finnhub WebSocket Open");
 			break;
 		case ix::WebSocketMessageType::Close:
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Close: "));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Finnhub WebSocket Close: ");
 			break;
 		case ix::WebSocketMessageType::Error:
 			EXPECT_TRUE(gl_pFinnhubWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("Finnhub WebSocket Error: Error"));
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Finnhub WebSocket Error: Error");
 
 		// 恢复原状
 			gl_pFinnhubWebSocket->SetError(false);
 			break;
 		case ix::WebSocketMessageType::Ping:
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Ping"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Finnhub WebSocket Ping");
 			break;
 		case ix::WebSocketMessageType::Pong:
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Pong"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Finnhub WebSocket Pong");
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Fragment"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Finnhub WebSocket Fragment");
 			break;
 		default:
 			EXPECT_THAT(gl_pFinnhubWebSocket->DataSize(), 0);
@@ -113,13 +113,13 @@ namespace FireBirdTest {
 		}
 	}
 
-	WebSocketMessageData tiingoIEXWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoIEXWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoIEXWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoIEXWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoIEXWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), _T("abcdefg"), _T("Error"));
-	WebSocketMessageData tiingoIEXWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoIEXWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), _T("abcdefg"), _T(""));
+	WebSocketMessageData tiingoIEXWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+	WebSocketMessageData tiingoIEXWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 
 	class ProcessTiingoIEXWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
@@ -160,22 +160,22 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
 			EXPECT_THAT(gl_pTiingoIEXWebSocket->DataSize(), 1) << "成功接收了一个数据";
 			pString = gl_pTiingoIEXWebSocket->PopData();
-			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
+			EXPECT_STREQ(pString->c_str(), "abcdefg");
 			break;
 		case ix::WebSocketMessageType::Open:
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket Open"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo IEX WebSocket Open");
 			break;
 		case ix::WebSocketMessageType::Close:
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket Close"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo IEX WebSocket Close");
 			break;
 		case ix::WebSocketMessageType::Error:
 			EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("Error"));
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Error");
 
 		// 恢复原状
 			gl_pTiingoIEXWebSocket->SetError(false);
@@ -183,17 +183,17 @@ namespace FireBirdTest {
 		case ix::WebSocketMessageType::Ping:
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket Ping"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo IEX WebSocket Ping");
 			break;
 		case ix::WebSocketMessageType::Pong:
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket Pong"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo IEX WebSocket Pong");
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket Fragment"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo IEX WebSocket Fragment");
 			break;
 		default:
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
@@ -203,13 +203,13 @@ namespace FireBirdTest {
 		}
 	}
 
-	WebSocketMessageData tiingoCryptoWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoCryptoWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoCryptoWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoCryptoWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoCryptoWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), _T("abcdefg"), _T("Error"));
-	WebSocketMessageData tiingoCryptoWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoCryptoWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), _T("abcdefg"), _T(""));
+	WebSocketMessageData tiingoCryptoWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
+	WebSocketMessageData tiingoCryptoWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
+	WebSocketMessageData tiingoCryptoWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+	WebSocketMessageData tiingoCryptoWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+	WebSocketMessageData tiingoCryptoWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+	WebSocketMessageData tiingoCryptoWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
+	WebSocketMessageData tiingoCryptoWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 
 	class ProcessTiingoCryptoWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
@@ -251,22 +251,22 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
 			EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 1) << "成功接收了一个数据";
 			pString = gl_pTiingoCryptoWebSocket->PopData();
-			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
+			EXPECT_STREQ(pString->c_str(), "abcdefg");
 			break;
 		case ix::WebSocketMessageType::Open:
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket Open"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Crypto WebSocket Open");
 			break;
 		case ix::WebSocketMessageType::Close:
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket Close"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Crypto WebSocket Close");
 			break;
 		case ix::WebSocketMessageType::Error:
 			EXPECT_TRUE(gl_pTiingoCryptoWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("Error"));
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Error");
 
 		// 恢复原状
 			gl_pTiingoCryptoWebSocket->SetError(false);
@@ -274,17 +274,17 @@ namespace FireBirdTest {
 		case ix::WebSocketMessageType::Ping:
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket Ping"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Crypto WebSocket Ping");
 			break;
 		case ix::WebSocketMessageType::Pong:
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket Pong"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Crypto WebSocket Pong");
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket Fragment"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Crypto WebSocket Fragment");
 			break;
 		default:
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
@@ -294,13 +294,13 @@ namespace FireBirdTest {
 		}
 	}
 
-	WebSocketMessageData tiingoForexWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoForexWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoForexWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoForexWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoForexWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), _T("abcdefg"), _T("Error"));
-	WebSocketMessageData tiingoForexWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), _T("abcdefg"), _T(""));
-	WebSocketMessageData tiingoForexWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), _T("abcdefg"), _T(""));
+	WebSocketMessageData tiingoForexWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
+	WebSocketMessageData tiingoForexWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
+	WebSocketMessageData tiingoForexWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+	WebSocketMessageData tiingoForexWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+	WebSocketMessageData tiingoForexWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+	WebSocketMessageData tiingoForexWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
+	WebSocketMessageData tiingoForexWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 
 	class ProcessTiingoForexWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
@@ -342,22 +342,22 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
 			EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 1) << "成功接收了一个数据";
 			pString = gl_pTiingoForexWebSocket->PopData();
-			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
+			EXPECT_STREQ(pString->c_str(), "abcdefg");
 			break;
 		case ix::WebSocketMessageType::Open:
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket Open"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Forex WebSocket Open");
 			break;
 		case ix::WebSocketMessageType::Close:
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket Close"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Forex WebSocket Close");
 			break;
 		case ix::WebSocketMessageType::Error:
 			EXPECT_TRUE(gl_pTiingoForexWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("Error"));
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Error");
 
 		// 恢复原状
 			gl_pTiingoForexWebSocket->SetError(false);
@@ -365,17 +365,17 @@ namespace FireBirdTest {
 		case ix::WebSocketMessageType::Ping:
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket Ping"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Forex WebSocket Ping");
 			break;
 		case ix::WebSocketMessageType::Pong:
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket Pong"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Forex WebSocket Pong");
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket Fragment"));
+			EXPECT_EQ(gl_systemMessage.PopWebSocketInfoMessage(), "Tiingo Forex WebSocket Fragment");
 			break;
 		default:
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());

@@ -11,7 +11,7 @@
 #include "WebData.h"
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/company-news?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/company-news?symbol=";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,10 +26,10 @@ string CProductFinnhubCompanyNews::CreateMessage() {
 	long limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
 	long limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();
 	string sTemp = ConvertDateToTimeStamp(limitTime2);
-	strMessage += _T("&from=");
+	strMessage += "&from=";
 	strMessage += sTemp;
 	sTemp = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
-	strMessage += _T("&to=");
+	strMessage += "&to=";
 	strMessage += sTemp;
 
 	m_strInquiry = strMessage;
@@ -81,28 +81,28 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
-			s = jsonGetString(it, _T("category"));
+			s = jsonGetString(it, "category");
 			if (!s.empty()) pCompanyNews->m_strCategory = s;
-			const auto dateTime = jsonGetLongLong(it, _T("datetime"));
+			const auto dateTime = jsonGetLongLong(it, "datetime");
 			pCompanyNews->m_llDateTime = ConvertToDateTime(dateTime, 0);
-			s = jsonGetString(it, _T("headline"));
+			s = jsonGetString(it, "headline");
 			if (!s.empty()) pCompanyNews->m_strHeadLine = s;
-			pCompanyNews->m_iNewsID = jsonGetInt(it,_T("id"));
-			s = jsonGetString(it,_T("image"));
+			pCompanyNews->m_iNewsID = jsonGetInt(it, "id");
+			s = jsonGetString(it, "image");
 			if (!s.empty()) pCompanyNews->m_strImage = s;
 			//if (s.size() > 0) pCompanyNews->m_strImage = s;
-			s = jsonGetString(it,_T("related"));
+			s = jsonGetString(it, "related");
 			if (!s.empty()) pCompanyNews->m_strRelatedSymbol = s;
-			s = jsonGetString(it,_T("source"));
+			s = jsonGetString(it, "source");
 			if (!s.empty()) pCompanyNews->m_strSource = s;
-			s = jsonGetString(it,_T("summary"));
+			s = jsonGetString(it, "summary");
 			if (!s.empty()) pCompanyNews->m_strSummary = s;
-			s = jsonGetString(it,_T("url"));
+			s = jsonGetString(it, "url");
 			if (!s.empty()) pCompanyNews->m_strURL = s;
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock News "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Stock News ", e.what());
 		return pvFinnhubCompanyNews; // 没有公司简介
 	}
 	return pvFinnhubCompanyNews;

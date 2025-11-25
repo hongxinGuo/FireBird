@@ -38,7 +38,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubMarketStatusProductTest, TestInitialize) {
 		EXPECT_EQ(MarketStatusProduct.GetIndex(), 0);
-		EXPECT_EQ(MarketStatusProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/market-status?exchange="));
+		EXPECT_EQ(MarketStatusProduct.GetInquiryFunction(), "https://finnhub.io/api/v1/stock/market-status?exchange=");
 	}
 
 	TEST_F(CFinnhubMarketStatusProductTest, TestCreatMessage) {
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	}
 
 	// 正确的数据
-	Test_FinnhubWebData finnhubMarketStatusWebData22(2, _T("AAPL"), _T("{\"exchange\": \"US\",\"holiday\": null,\"isOpen\" : false,\"session\" : \"pre-market\",\"timezone\" : \"America/New York\",\"t\" : 1697018041}"));
+	Test_FinnhubWebData finnhubMarketStatusWebData22(2, "AAPL", "{\"exchange\": \"US\",\"holiday\": null,\"isOpen\" : false,\"session\" : \"pre-market\",\"timezone\" : \"America/New York\",\"t\" : 1697018041}");
 
 	class ParseFinnhubMarketStatusTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -92,8 +92,8 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确的数据
 			EXPECT_EQ(m_pvMarketStatus->size(), 1);
-			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strExchange, _T("US"));
-			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strHoliday, _T(""));
+			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strExchange, "US");
+			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strHoliday, "");
 			break;
 		default:
 			break;

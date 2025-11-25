@@ -245,34 +245,34 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System Status"));
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty("System Status");
 	string s;
 	switch (gl_systemConfiguration.GetLogLevel()) {
 	case SPDLOG_LEVEL_TRACE:
-		s = _T("Trace");
+		s = "Trace";
 		break;
 	case SPDLOG_LEVEL_DEBUG:
-		s = _T("Debug");
+		s = "Debug";
 		break;
 	case SPDLOG_LEVEL_INFO:
-		s = _T("Info");
+		s = "Info";
 		break;
 	case SPDLOG_LEVEL_WARN:
-		s = _T("Warn");
+		s = "Warn";
 		break;
 	case SPDLOG_LEVEL_ERROR:
-		s = _T("Error");
+		s = "Error";
 		break;
 	case SPDLOG_LEVEL_CRITICAL:
-		s = _T("Critical");
+		s = "Critical";
 		break;
 	case SPDLOG_LEVEL_OFF:
-		s = _T("Off");
+		s = "Off";
 		break;
 	default:
-		s = _T("Info");
+		s = "Info";
 	}
-	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Log level"), s.c_str(), _T("One of: Trace, Debug, Info, Warn, Error, Critical, or Off"), SYSTEM_LOG_LEVEL_);
+	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Log level"), static_cast<_variant_t>(s.c_str()), _T("One of: Trace, Debug, Info, Warn, Error, Critical, or Off"), SYSTEM_LOG_LEVEL_);
 	pProp->AddOption(_T("Trace"));
 	pProp->AddOption(_T("Debug"));
 	pProp->AddOption(_T("Info"));
@@ -284,12 +284,12 @@ void CPropertiesWnd::InitPropList() {
 	pGroup1->AddSubItem(pProp);
 
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Reload System"), static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), SYSTEM_RELOAD_SYSTEM_));
+	pGroup1->AddSubItem(new CMFCPropertyGridProperty("Reload System", static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), SYSTEM_RELOAD_SYSTEM_));
 
-	m_pPropRealTimeDataReceived = new CMFCPropertyGridProperty(_T("RealTime Data Total:"), _T(""));
+	m_pPropRealTimeDataReceived = new CMFCPropertyGridProperty("RealTime Data Total:", reinterpret_cast<DWORD_PTR>(""));
 	m_pPropRealTimeDataReceived->Enable(false);
 	pGroup1->AddSubItem(m_pPropRealTimeDataReceived);
-	m_pPropChinaMarketRealTimeDataNumber = new CMFCPropertyGridProperty(_T("RealTime Data Received:"), _T(""));
+	m_pPropChinaMarketRealTimeDataNumber = new CMFCPropertyGridProperty(_T("RealTime Data Received:"), DWORD_PTR(""));
 	m_pPropChinaMarketRealTimeDataNumber->Enable(false);
 	pGroup1->AddSubItem(m_pPropChinaMarketRealTimeDataNumber);
 	m_pPropCurrentWorkingThread = new CMFCPropertyGridProperty(_T("working thread:"), _T(""));
@@ -319,7 +319,7 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.AddProperty(pGroup3);
 
 	// tiingo group
-	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("Tiingo.com"));
+	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty("Tiingo.com");
 	pGroup4->AddSubItem(new CMFCPropertyGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pTiingoDataSource->IsEnable()), _T("Enable"), TIINGO_DATA_SOURCE_ENABLE_));
 	m_pPropTiingoCurrentFunction = new CMFCPropertyGridProperty(_T("Inquiring:"), _T(""));
 	m_pPropTiingoCurrentFunction->Enable(FALSE);
@@ -327,7 +327,7 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.AddProperty(pGroup4);
 
 	// web socket group
-	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty(_T("Web Socket"));
+	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty("Web Socket");
 	m_pPropFinnhubWebSocket = new CMFCPropertyGridProperty(_T("Finnhub"), _T("Closed"));
 	m_pPropFinnhubWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropFinnhubWebSocket);
@@ -337,7 +337,7 @@ void CPropertiesWnd::InitPropList() {
 	m_pPropTiingoForexWebSocket = new CMFCPropertyGridProperty(_T("TiingoForex"), _T("Closed"));
 	m_pPropTiingoForexWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoForexWebSocket);
-	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("TiingoCrypto"), _T("Closed"));
+	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("TiingoCrypto", _T("Closed")));
 	m_pPropTiingoCryptoWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoCryptoWebSocket);
 
@@ -377,100 +377,100 @@ void CPropertiesWnd::SetPropListFont() {
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	string s = fmt::format("{:d}", gl_pChinaMarket->GetRTDataCounter());
-	m_pPropRealTimeDataReceived->SetValue(s.c_str());
+	m_pPropRealTimeDataReceived->SetValue(static_cast<_variant_t>(s.c_str()));
 	int rmData = gl_qChinaMarketRTData.size_approx();
 	s = fmt::format("{:d}", rmData);
-	m_pPropChinaMarketRealTimeDataNumber->SetValue(s.c_str());
+	m_pPropChinaMarketRealTimeDataNumber->SetValue(static_cast<_variant_t>(s.c_str()));
 
 	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
-	m_pPropCurrentWorkingThread->SetValue(s.c_str()); // 后台工作线程数
+	m_pPropCurrentWorkingThread->SetValue(static_cast<_variant_t>(s.c_str())); // 后台工作线程数
 
 	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetColor(RGB(192, 0, 0));
 	else m_pPropChinaMarketWebStatus->SetColor(RGB(0, 192, 0));
 
 	if (gl_pChinaMarket->IsWebBusy()) {
-		m_pPropWorldMarketWebStatus->SetValue(_T("Disabled"));
+		m_pPropWorldMarketWebStatus->SetValue(static_cast<_variant_t>("Disabled"));
 	}
 	else {
 		if (gl_pFinnhubDataSource->IsWebError()) {
 			string s3 = fmt::format("running (EC:{:5Ld})", gl_pFinnhubDataSource->GetWebErrorCode());
-			m_pPropWorldMarketWebStatus->SetValue(s3.c_str());
+			m_pPropWorldMarketWebStatus->SetValue(static_cast<_variant_t>(s3.c_str()));
 		}
 		else {
-			m_pPropWorldMarketWebStatus->SetValue(_T("running"));
+			m_pPropWorldMarketWebStatus->SetValue(static_cast<_variant_t>("running"));
 		}
 	}
 
 	string strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
-	m_pPropFinnhubCurrentFunction->SetValue(strMessage.c_str());
+	m_pPropFinnhubCurrentFunction->SetValue(static_cast<_variant_t>(strMessage.c_str()));
 
 	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
-	m_pPropTiingoCurrentFunction->SetValue(strMessage.c_str());
+	m_pPropTiingoCurrentFunction->SetValue(static_cast<_variant_t>(strMessage.c_str()));
 
-	string str = _T("");
+	string str = "";
 	switch (gl_pFinnhubWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
-		str = _T("Closed");
+		str = "Closed";
 		break;
 	case ix::ReadyState::Closing:
-		str = _T("Closing");
+		str = "Closing";
 		break;
 	case ix::ReadyState::Connecting:
-		str = _T("Connecting");
+		str = "Connecting";
 		break;
 	case ix::ReadyState::Open:
-		str = _T("Open");
+		str = "Open";
 		break;
 	}
-	m_pPropFinnhubWebSocket->SetValue(str.c_str());
+	m_pPropFinnhubWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
 
 	switch (gl_pTiingoIEXWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
-		str = _T("Closed");
+		str = "Closed";
 		break;
 	case ix::ReadyState::Closing:
-		str = _T("Closing");
+		str = "Closing";
 		break;
 	case ix::ReadyState::Connecting:
-		str = _T("Connecting");
+		str = "Connecting";
 		break;
 	case ix::ReadyState::Open:
-		str = _T("Open");
+		str = "Open";
 		break;
 	}
-	m_pPropTiingoIEXWebSocket->SetValue(str.c_str());
+	m_pPropTiingoIEXWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
 
 	switch (gl_pTiingoForexWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
-		str = _T("Closed");
+		str = "Closed";
 		break;
 	case ix::ReadyState::Closing:
-		str = _T("Closing");
+		str = "Closing";
 		break;
 	case ix::ReadyState::Connecting:
-		str = _T("Connecting");
+		str = "Connecting";
 		break;
 	case ix::ReadyState::Open:
-		str = _T("Open");
+		str = "Open";
 		break;
 	}
-	m_pPropTiingoForexWebSocket->SetValue(str.c_str());
+	m_pPropTiingoForexWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
 
 	switch (gl_pTiingoCryptoWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
-		str = _T("Closed");
+		str = "Closed";
 		break;
 	case ix::ReadyState::Closing:
-		str = _T("Closing");
+		str = "Closing";
 		break;
 	case ix::ReadyState::Connecting:
-		str = _T("Connecting");
+		str = "Connecting";
 		break;
 	case ix::ReadyState::Open:
-		str = _T("Open");
+		str = "Open";
 		break;
 	}
-	m_pPropTiingoCryptoWebSocket->SetValue(str.c_str());
+	m_pPropTiingoCryptoWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
 
 	CDockablePane::OnTimer(nIDEvent);
 }

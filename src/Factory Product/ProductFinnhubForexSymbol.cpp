@@ -8,7 +8,7 @@
 #include "WebData.h"
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/symbol?exchange=";
 }
 
 string CProductFinnhubForexSymbol::CreateMessage() {
@@ -41,16 +41,16 @@ CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebD
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pSymbol = make_shared<CFinnhubForex>();
-			s = jsonGetString(it, _T("description"));
+			s = jsonGetString(it, "description");
 			if (!s.empty()) pSymbol->SetDescription(s);
-			s = jsonGetString(it,_T("displaySymbol"));
+			s = jsonGetString(it,"displaySymbol");
 			pSymbol->SetDisplaySymbol(s);
-			s = jsonGetString(it,_T("symbol"));
+			s = jsonGetString(it,"symbol");
 			pSymbol->SetSymbol(s);
 			pvForexSymbol->push_back(pSymbol);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Forex Symbol ", e.what());
 	}
 
 	return pvForexSymbol;

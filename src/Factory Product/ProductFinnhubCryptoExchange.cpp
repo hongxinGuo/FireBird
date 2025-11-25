@@ -9,12 +9,12 @@
 #include "WebData.h"
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/exchange?";
 }
 
 string CProductFinnhubCryptoExchange::CreateMessage() {
-	ASSERT(m_strInquiringExchange.compare(_T("ALL")) == 0);
-	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
+	ASSERT(m_strInquiringExchange.compare("ALL") == 0);
+	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
@@ -48,14 +48,14 @@ shared_ptr<vector<string>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExch
 			pvExchange->push_back(s);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Crypto Exchange ", e.what());
 		return pvExchange;
 	}
 	return pvExchange;
 }
 
 void CProductFinnhubCryptoExchange::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CFinnhubDataSource") == 0);
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateCryptoExchange(false);
-	gl_systemMessage.PushInformationMessage(_T("Finnhub crypto exchange updated"));
+	gl_systemMessage.PushInformationMessage("Finnhub crypto exchange updated");
 }

@@ -46,9 +46,9 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockQuandlDataSourceTest, TestInitialize) {
-		EXPECT_EQ(QuandlDataSource.GetInquiryFunction(), _T(""));
-		EXPECT_EQ(QuandlDataSource.GetInquirySuffix(), _T("&api_key="));
-		EXPECT_EQ(QuandlDataSource.GetInquiryToken(), _T("")) << "默认令牌在系统配置文件中，此处初始化时为空";
+		EXPECT_EQ(QuandlDataSource.GetInquiryFunction(), "");
+		EXPECT_EQ(QuandlDataSource.GetInquirySuffix(), "&api_key=");
+		EXPECT_EQ(QuandlDataSource.GetInquiryToken(), "") << "默认令牌在系统配置文件中，此处初始化时为空";
 	}
 
 	TEST_F(CMockQuandlDataSourceTest, TestGenerateInquiryMessage1) {

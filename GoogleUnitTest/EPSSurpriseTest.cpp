@@ -31,7 +31,7 @@ namespace FireBirdTest {
 
 	TEST_F(CEPSSurpriseTest, TestInitialize) {
 		const CEPSSurprise EPSSurprise;
-		EXPECT_EQ(EPSSurprise.m_strSymbol, _T(" "));
+		EXPECT_EQ(EPSSurprise.m_strSymbol, " ");
 		EXPECT_EQ(EPSSurprise.m_lDate, 0);
 		EXPECT_DOUBLE_EQ(EPSSurprise.m_dActual, 0.0);
 		EXPECT_DOUBLE_EQ(EPSSurprise.m_dEstimate, 0.0);
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 		CSetEPSSurprise setEPSSurprise, setEPSSurprise2;
 		CEPSSurprise EPSSurprise, EPSSurprise2;
 
-		EPSSurprise.m_strSymbol = _T("AAAAA");
+		EPSSurprise.m_strSymbol = "AAAAA";
 		EPSSurprise.m_dActual = 1.2;
 		EPSSurprise.m_dEstimate = 1.0;
 		EPSSurprise.m_lDate = 20202020;
@@ -53,12 +53,12 @@ namespace FireBirdTest {
 		setEPSSurprise.m_pDatabase->CommitTrans();
 		setEPSSurprise.Close();
 
-		setEPSSurprise2.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setEPSSurprise2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setEPSSurprise2.Open();
 		EXPECT_TRUE(!setEPSSurprise2.IsEOF()) << "此时已经存入了ABCDEF";
 		EXPECT_DOUBLE_EQ(setEPSSurprise2.m_Actual, 1.2);
 		EPSSurprise2.Load(setEPSSurprise2);
-		EXPECT_EQ(EPSSurprise2.m_strSymbol, _T("AAAAA"));
+		EXPECT_EQ(EPSSurprise2.m_strSymbol, "AAAAA");
 		EXPECT_DOUBLE_EQ(EPSSurprise2.m_dActual, 1.2);
 		EXPECT_DOUBLE_EQ(EPSSurprise2.m_dEstimate, 1.0);
 		EXPECT_EQ(EPSSurprise2.m_lDate, 20202020);

@@ -105,9 +105,9 @@ public:
 	}
 
 	long GetDayLineStartDate();
-	void SetDayLineStartDate(const long lDate) noexcept { m_jsonUpdateDate[_T("DayLineStartDate")] = lDate; }
+	void SetDayLineStartDate(const long lDate) noexcept { m_jsonUpdateDate["DayLineStartDate"] = lDate; }
 	long GetDayLineEndDate();
-	void SetDayLineEndDate(const long lDate) noexcept { m_jsonUpdateDate[_T("DayLineEndDate")] = lDate; }
+	void SetDayLineEndDate(const long lDate) noexcept { m_jsonUpdateDate["DayLineEndDate"] = lDate; }
 
 	long GetIPOStatus() const noexcept { return m_lIPOStatus; }
 	void SetIPOStatus(const long lValue) noexcept { m_lIPOStatus = lValue; }
@@ -202,10 +202,10 @@ public:
 	}
 
 protected:
-	string m_strDescription{ _T("") }; // 该证券的描述
-	string m_strExchangeCode{ _T("") }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
-	string m_strSymbol{ _T("") }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
-	string m_strDisplaySymbol{ _T("") };
+	string m_strDescription{ "" }; // 该证券的描述
+	string m_strExchangeCode{ "" }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
+	string m_strSymbol{ "" }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
+	string m_strDisplaySymbol{ "" };
 
 	json m_jsonUpdateDate{ json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 

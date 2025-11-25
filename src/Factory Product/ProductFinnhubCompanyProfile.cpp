@@ -10,7 +10,7 @@
 #include "WebData.h"
 
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile?symbol=");
+	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile?symbol=";
 }
 
 string CProductFinnhubCompanyProfile::CreateMessage() {
@@ -76,65 +76,65 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 	}
 	try {
 		double d = 0.0;
-		s = jsonGetString(js, _T("address"));
+		s = jsonGetString(js, "address");
 		pStock->SetAddress(s);
-		s = jsonGetString(js, _T("city"));
+		s = jsonGetString(js, "city");
 		pStock->SetCity(s);
-		s = jsonGetString(js, _T("country"));
+		s = jsonGetString(js, "country");
 		if (!s.empty()) pStock->SetCountry(s);
-		s = jsonGetString(js, _T("currency"));
+		s = jsonGetString(js, "currency");
 		if (!s.empty()) pStock->SetCurrency(s);
-		s = jsonGetString(js, _T("cusip"));
+		s = jsonGetString(js, "cusip");
 		if (!s.empty()) pStock->SetCusip(s);
-		s = jsonGetString(js, _T("sedol"));
+		s = jsonGetString(js, "sedol");
 		if (!s.empty()) pStock->SetSedol(s);
-		s = jsonGetString(js, _T("description"));
+		s = jsonGetString(js, "description");
 		if (!s.empty()) pStock->SetDescription(s);
-		s = jsonGetString(js, _T("exchange"));
+		s = jsonGetString(js, "exchange");
 		//if (!s.empty()) pStock->SetExchangeCode(s.c_str()); // 不使用此项数据
-		s = jsonGetString(js, _T("ggroup"));
+		s = jsonGetString(js, "ggroup");
 		if (!s.empty()) pStock->SetGgroup(s);
-		s = jsonGetString(js, _T("gind"));
+		s = jsonGetString(js, "gind");
 		if (!s.empty()) pStock->SetGind(s);
-		s = jsonGetString(js, _T("gsector"));
+		s = jsonGetString(js, "gsector");
 		if (!s.empty()) pStock->SetGsector(s);
-		s = jsonGetString(js, _T("gsubind"));
+		s = jsonGetString(js, "gsubind");
 		if (!s.empty()) pStock->SetGsubind(s);
-		s = jsonGetString(js, _T("ipo"));
+		s = jsonGetString(js, "ipo");
 		if (!s.empty()) pStock->SetIPODate(s);
-		s = jsonGetString(js, _T("isin"));
+		s = jsonGetString(js, "isin");
 		if (!s.empty()) pStock->SetIsin(s);
-		d = jsonGetDouble(js, _T("marketCapitalization"));
+		d = jsonGetDouble(js, "marketCapitalization");
 		pStock->SetMarketCapitalization(d);
 
-		s = jsonGetString(js, _T("naics"));
+		s = jsonGetString(js, "naics");
 		if (!s.empty()) pStock->SetNaics(s);
-		s = jsonGetString(js, _T("naicsNationalIndustry"));
+		s = jsonGetString(js, "naicsNationalIndustry");
 		if (!s.empty()) pStock->SetNaicsNationalIndustry(s);
-		s = jsonGetString(js, _T("naicsSector"));
+		s = jsonGetString(js, "naicsSector");
 		if (!s.empty()) pStock->SetNaicsSector(s);
-		s = jsonGetString(js, _T("naicsSubsector"));
+		s = jsonGetString(js, "naicsSubsector");
 		if (!s.empty()) pStock->SetNaicsSubsector(s);
-		s = jsonGetString(js, _T("name"));
+		s = jsonGetString(js, "name");
 		if (!s.empty()) pStock->SetName(s);
-		s = jsonGetString(js, _T("phone"));
+		s = jsonGetString(js, "phone");
 		if (!s.empty()) pStock->SetPhone(s);
 
-		d = jsonGetDouble(js, _T("shareOutstanding"));
+		d = jsonGetDouble(js, "shareOutstanding");
 		pStock->SetShareOutstanding(d);
-		s = jsonGetString(js, _T("state"));
+		s = jsonGetString(js, "state");
 		if (!s.empty()) pStock->SetState(s);
-		s = jsonGetString(js, _T("ticker"));
+		s = jsonGetString(js, "ticker");
 		if (!s.empty()) pStock->SetTicker(s);
-		s = jsonGetString(js, _T("weburl"));
+		s = jsonGetString(js, "weburl");
 		if (!s.empty()) pStock->SetWebURL(s);
 
-		s = jsonGetString(js, _T("logo"));
+		s = jsonGetString(js, "logo");
 		if (!s.empty()) pStock->SetLogo(s);
-		s = jsonGetString(js, _T("finnhubIndustry"));
+		s = jsonGetString(js, "finnhubIndustry");
 		if (!s.empty()) pStock->SetFinnhubIndustry(s);
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile "), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub Stock Profile ", e.what());
 		return false; // 没有公司简介
 	}
 	return true;

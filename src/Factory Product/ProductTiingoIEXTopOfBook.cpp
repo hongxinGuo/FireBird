@@ -19,11 +19,11 @@
 #include "WorldMarket.h"
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/iex?");
+	m_strInquiryFunction = "https://api.tiingo.com/iex?";
 }
 
 string CProductTiingoIEXTopOfBook::CreateMessage() {
-	m_strInquiringSymbol = _T("All");
+	m_strInquiringSymbol = "All";
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
@@ -118,42 +118,42 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			auto itemValue = item.value();
 			pIEXLastTopOFBook = nullptr;
 			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
-			s1 = simdjsonGetStringView(itemValue, _T("ticker"));
+			s1 = simdjsonGetStringView(itemValue, "ticker");
 			pIEXLastTopOFBook->m_strTicker = s1;
-			s1 = simdjsonGetStringView(itemValue, _T("timestamp"));
+			s1 = simdjsonGetStringView(itemValue, "timestamp");
 			ss.clear();
 			ss.str(s1);
-			chrono::from_stream(ss, _T("%FT%T%Ez"), pIEXLastTopOFBook->m_timeStamp);
-			s1 = simdjsonGetStringView(itemValue, _T("lastSaleTimestamp"));
+			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_timeStamp);
+			s1 = simdjsonGetStringView(itemValue, "lastSaleTimestamp");
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_lastSale);
-			s1 = simdjsonGetStringView(itemValue, _T("quoteTimestamp"));
+			s1 = simdjsonGetStringView(itemValue, "quoteTimestamp");
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_quote);
 
-			pIEXLastTopOFBook->m_lHigh = simdjsonGetDouble(itemValue, _T("high")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lLow = simdjsonGetDouble(itemValue, _T("low")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lLastClose = simdjsonGetDouble(itemValue, _T("prevClose")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lOpen = simdjsonGetDouble(itemValue, _T("open")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lNew = simdjsonGetDouble(itemValue, _T("last")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_llVolume = simdjsonGetInt64(itemValue, _T("volume"));
+			pIEXLastTopOFBook->m_lHigh = simdjsonGetDouble(itemValue, "high") * stock.GetRatio();
+			pIEXLastTopOFBook->m_lLow = simdjsonGetDouble(itemValue, "low") * stock.GetRatio();
+			pIEXLastTopOFBook->m_lLastClose = simdjsonGetDouble(itemValue, "prevClose") * stock.GetRatio();
+			pIEXLastTopOFBook->m_lOpen = simdjsonGetDouble(itemValue, "open") * stock.GetRatio();
+			pIEXLastTopOFBook->m_lNew = simdjsonGetDouble(itemValue, "last") * stock.GetRatio();
+			pIEXLastTopOFBook->m_llVolume = simdjsonGetInt64(itemValue, "volume");
 
 			pvTiingoIEXLastTopOFBook->push_back(pIEXLastTopOFBook);
 			iCount++;
 		}
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo market news "), error.what());
+		ReportJSonErrorToSystemMessage("Tiingo market news ", error.what());
 	}
 
 	return pvTiingoIEXLastTopOFBook;
 }
 
 void CProductTiingoIEXTopOfBook::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
+	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateIEXTopOfBook(false);
-	gl_systemMessage.PushInformationMessage(_T("Tiingo IEX top of book Updated"));
+	gl_systemMessage.PushInformationMessage("Tiingo IEX top of book Updated");
 	if (gl_pWorldMarket->IsMarketClosed()) { // 已闭市？
 		dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetEndMarketIEXTopOfBookUpdate(true); // 本交易日数据是完整的。
 	}

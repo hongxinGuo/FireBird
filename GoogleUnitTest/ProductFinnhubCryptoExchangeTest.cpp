@@ -41,11 +41,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestInitialize) {
 		EXPECT_EQ(cryptoExchange.GetIndex(), 0);
-		EXPECT_EQ(cryptoExchange.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_EQ(cryptoExchange.GetInquiryFunction(), "https://finnhub.io/api/v1/crypto/exchange?");
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestCreatMessage) {
-		EXPECT_EQ(cryptoExchange.CreateMessage(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_EQ(cryptoExchange.CreateMessage(), "https://finnhub.io/api/v1/crypto/exchange?");
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {
@@ -59,17 +59,17 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub crypto exchange updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub crypto exchange updated");
 
 		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData202(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData202(2, "", "\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]");
 	// 格式不对
-	Test_FinnhubWebData finnhubWebData203(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData203(3, "", "[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData210(10, _T(""), _T("[\"new exchange\",\"FXPIG\",\"KRAKEN\",\"ZB\",\"HITBTC\",\"GEMINI\",\"COINBASE\",\"BITTREX\",\"HUOBI\"]"));
+	Test_FinnhubWebData finnhubWebData210(10, "", "[\"new exchange\",\"FXPIG\",\"KRAKEN\",\"ZB\",\"HITBTC\",\"GEMINI\",\"COINBASE\",\"BITTREX\",\"HUOBI\"]");
 
 	class ParseFinnhubCryptoExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -116,8 +116,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 10:
-			EXPECT_EQ(m_pvExchange->at(0), _T("new exchange"));
-			EXPECT_EQ(m_pvExchange->at(1), _T("FXPIG"));
+			EXPECT_EQ(m_pvExchange->at(0), "new exchange");
+			EXPECT_EQ(m_pvExchange->at(1), "FXPIG");
 			EXPECT_EQ(m_pvExchange->size(), 9);
 			break;
 		default:
@@ -175,7 +175,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 16) << "加入了new exchange这个新的交易所";
-			EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.Delete(_T("new exchange"))); // 清除new exchange这个新加入的
+			EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.Delete("new exchange")); // 清除new exchange这个新加入的
 			break;
 		default:
 			break;
