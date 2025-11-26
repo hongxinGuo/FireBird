@@ -1,4 +1,4 @@
-﻿// CSetFinnhubStock.cpp : CSetFinnhubStock 类的实现
+// CSetFinnhubStock.cpp : CSetFinnhubStock 类的实现
 
 #include"pch.h"
 

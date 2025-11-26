@@ -1,4 +1,4 @@
-﻿// VirtualSetHistoryCandleExtend.cpp : CVirtualSetHistoryCandleExtend 类的实现
+// VirtualSetHistoryCandleExtend.cpp : CVirtualSetHistoryCandleExtend 类的实现
 
 #include"pch.h"
 

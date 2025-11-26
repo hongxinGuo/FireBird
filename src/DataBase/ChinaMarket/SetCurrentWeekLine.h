@@ -1,4 +1,4 @@
-﻿// SetCurrentWeekLine.h : CSetCurrentWeekLine 的声明
+// SetCurrentWeekLine.h : CSetCurrentWeekLine 的声明
 
 #pragma once
 

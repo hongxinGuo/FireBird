@@ -1,4 +1,4 @@
-﻿// VirtualRecordset.h : CVirtualRecordset 的声明
+// VirtualRecordset.h : CVirtualRecordset 的声明
 //
 // 本系统使用的所有数据库类的默认基类，必须使用此基类。使用预置的schema和table,自动连接默认数据库。
 //

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "VirtualContainer.h"
 #include"VirtualStock.h"

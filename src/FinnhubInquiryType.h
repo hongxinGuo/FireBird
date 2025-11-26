@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 // Finnhub申请类别和代码，免费账户无法申请Premium类的信息
 enum {

@@ -1,4 +1,4 @@
-﻿// CSetInsiderTransaction.cpp : CSetInsiderTransaction 类的实现
+// CSetInsiderTransaction.cpp : CSetInsiderTransaction 类的实现
 
 #include"pch.h"
 

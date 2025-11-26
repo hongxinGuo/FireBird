@@ -1,4 +1,4 @@
-﻿// CSetTiingoStock52WeekLow.h : CSetTiingoStock52WeekLow 的声明
+// CSetTiingoStock52WeekLow.h : CSetTiingoStock52WeekLow 的声明
 #pragma once
 
 #include"VirtualRecordset.h"

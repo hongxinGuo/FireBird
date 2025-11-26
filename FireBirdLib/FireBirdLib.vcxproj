@@ -549,7 +549,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;_LIB;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -586,7 +586,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;NDEBUG;_LIB;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>

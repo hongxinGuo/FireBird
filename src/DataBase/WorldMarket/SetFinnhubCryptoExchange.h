@@ -1,4 +1,4 @@
-﻿// SetCryptoExchange.h : CSetFinnhubCryptoExchange 的声明
+// SetCryptoExchange.h : CSetFinnhubCryptoExchange 的声明
 
 #pragma once
 #include"afxdb.h"

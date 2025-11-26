@@ -1,4 +1,4 @@
-﻿// SetFinnhubStockBasicFinancialQuarter.h : CSetCountry 的声明
+// SetFinnhubStockBasicFinancialQuarter.h : CSetCountry 的声明
 
 #pragma once
 

@@ -1,4 +1,4 @@
-﻿// CSetStockExchange.h : CSetStockExchange 的声明
+// CSetStockExchange.h : CSetStockExchange 的声明
 
 #pragma once
 

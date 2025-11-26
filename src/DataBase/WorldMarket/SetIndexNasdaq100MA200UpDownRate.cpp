@@ -1,4 +1,4 @@
-﻿// CSetIndexNasdaq100.h : CSetIndexNasdaq100 类的实现
+// CSetIndexNasdaq100.h : CSetIndexNasdaq100 类的实现
 
 #include"pch.h"
 

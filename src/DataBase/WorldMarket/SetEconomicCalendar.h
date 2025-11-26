@@ -1,4 +1,4 @@
-﻿// CSetEconomicCalendar.h : CSetEconomicCalendar 的声明
+// CSetEconomicCalendar.h : CSetEconomicCalendar 的声明
 
 #pragma once
 

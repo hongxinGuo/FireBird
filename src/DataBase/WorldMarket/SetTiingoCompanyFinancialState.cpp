@@ -1,4 +1,4 @@
-﻿// CSetTiingoCompanyFinancialState.cpp : CSetTiingoCompanyFinancialState 类的实现
+// CSetTiingoCompanyFinancialState.cpp : CSetTiingoCompanyFinancialState 类的实现
 
 #include"pch.h"
 

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"WebRTData.h"
 #include"PriorityQueueWebRTData.h"

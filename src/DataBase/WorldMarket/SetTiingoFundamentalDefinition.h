@@ -1,4 +1,4 @@
-﻿// CSetTiingoFundamentalDefinition.h : CSetTiingoFundamentalDefinition 的声明
+// CSetTiingoFundamentalDefinition.h : CSetTiingoFundamentalDefinition 的声明
 
 #pragma once
 #include"VirtualRecordset.h"

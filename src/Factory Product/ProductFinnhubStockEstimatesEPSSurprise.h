@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"ProductFinnhub.h"
 #include"EPSSurprise.h"

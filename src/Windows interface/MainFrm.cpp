@@ -1,4 +1,4 @@
-﻿// MainFrm.cpp: CMainFrame 类的实现
+// MainFrm.cpp: CMainFrame 类的实现
 #include"pch.h"
 
 #include"SystemPublicDeclaration.h"

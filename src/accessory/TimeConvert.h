@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
 time_t ConvertBufferToTime(const string& strFormat, const char* BufferMarketTime, time_t tTimeZoneOffset); // 默认采用东八区标准时间

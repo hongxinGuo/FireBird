@@ -1,4 +1,4 @@
-﻿// CSetForexDayLine.h : CSetForexDayLine 的声明
+// CSetForexDayLine.h : CSetForexDayLine 的声明
 
 #pragma once
 

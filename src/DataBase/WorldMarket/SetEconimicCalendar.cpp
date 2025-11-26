@@ -1,4 +1,4 @@
-﻿// CSetEconomicCalendar.cpp : CSetEconomicCalendar 类的实现
+// CSetEconomicCalendar.cpp : CSetEconomicCalendar 类的实现
 
 // CSetFinnhubStockDayLine 实现
 

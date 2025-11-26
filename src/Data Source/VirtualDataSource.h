@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "InternetOption.h"
 #include"VirtualWebProduct.h"

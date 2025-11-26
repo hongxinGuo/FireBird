@@ -1,4 +1,4 @@
-﻿// ChildFrm.cpp: CChildFrame 类的实现
+// ChildFrm.cpp: CChildFrame 类的实现
 //
 
 #include"pch.h"

@@ -1,4 +1,4 @@
-﻿// CVirtualSetExchange.cpp : CVirtualSetExchange 类的实现
+// CVirtualSetExchange.cpp : CVirtualSetExchange 类的实现
 
 #include"pch.h"
 

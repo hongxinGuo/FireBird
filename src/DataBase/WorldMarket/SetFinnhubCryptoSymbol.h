@@ -1,4 +1,4 @@
-﻿// SetFinnhubCryptoSymbol.h : CSetFinnhubCryptoSymbol 的声明
+// SetFinnhubCryptoSymbol.h : CSetFinnhubCryptoSymbol 的声明
 
 #pragma once
 #include"VirtualSetStockSymbol.h"

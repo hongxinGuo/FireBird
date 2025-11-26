@@ -1,4 +1,4 @@
-﻿// SetWorldChosenCrypto.h : CSetWorldChosenCrypto 的声明
+// SetWorldChosenCrypto.h : CSetWorldChosenCrypto 的声明
 #pragma once
 
 #include"VirtualSetChosenStake.h"

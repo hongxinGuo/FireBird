@@ -1,4 +1,4 @@
-﻿// CSetSICIndustry.cpp : CSetSICIndustry 类的实现
+// CSetSICIndustry.cpp : CSetSICIndustry 类的实现
 
 // CSetSICIndustry 实现
 

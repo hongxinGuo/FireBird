@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 //
 //
 // 由于需要预先设定全局初始化变量，故而不使用系统提供的main()函数，而是自己定义。
@@ -221,7 +221,26 @@ Test_FinnhubWebData finnhubWebData1(1, "AAPL", "{\"error\":\"You don't have acce
 // 空数据
 Test_FinnhubWebData finnhubWebData2(2, "AAPL", "[]");
 
+#ifdef _DEBUG
+#pragma comment(lib, "googletest/d/gtest.lib")
+#pragma comment(lib, "googletest/d/gtest_main.lib")
+#pragma comment(lib, "googletest/d/gmock.lib")
+#pragma comment(lib, "googletest/d/gmock_main.lib")
+#else
+#pragma comment(lib, "googletest/r/gtest.lib")
+#pragma comment(lib, "googletest/r/gtest_main.lib")
+#pragma comment(lib, "googletest/r/gmock.lib")
+#pragma comment(lib, "googletest/r/gmock_main.lib")
+#endif
+
+void setupLocale() {
+	std::locale(LC_ALL("C.UTF-8"));
+	std::locale::global(std::locale("C.UTF-8"));
+	std::cout.imbue(std::locale());
+	std::cerr.imbue(std::locale());
+}
 int main(int argc, char** argv) {
+	setupLocale();
 	InitGoogleTest(&argc, argv);
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);

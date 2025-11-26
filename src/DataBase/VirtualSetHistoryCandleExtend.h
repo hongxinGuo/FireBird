@@ -1,4 +1,4 @@
-﻿// VirtualSetHistoryCandleExtend.h : CVirtualSetHistoryCandleExtend 的声明
+// VirtualSetHistoryCandleExtend.h : CVirtualSetHistoryCandleExtend 的声明
 //
 // 所有的历史数据扩展数据库，皆准备使用此类为基类，以简化存储过程。
 //

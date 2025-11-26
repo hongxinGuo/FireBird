@@ -1,4 +1,4 @@
-﻿// FireBird.h: FireBird 应用程序的主头文件
+// FireBird.h: FireBird 应用程序的主头文件
 //
 #pragma once
 

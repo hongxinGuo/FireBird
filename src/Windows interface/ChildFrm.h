@@ -1,4 +1,4 @@
-﻿// ChildFrm.h: CChildFrame 类的接口
+// ChildFrm.h: CChildFrame 类的接口
 //
 
 #pragma once

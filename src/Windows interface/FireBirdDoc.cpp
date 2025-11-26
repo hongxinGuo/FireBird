@@ -1,4 +1,4 @@
-﻿// FireBirdDoc.cpp: CFireBirdDoc 类的实现
+// FireBirdDoc.cpp: CFireBirdDoc 类的实现
 //
 
 #include"pch.h"

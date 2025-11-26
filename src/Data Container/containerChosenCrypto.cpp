@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 
 #include"SetWorldChosenCrypto.h"
 #include "containerChosenCrypto.h"

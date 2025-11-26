@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 long long StrToDecimal(const string_view& svData, int power);
 long long StrToDecimal2(const string_view& svData, int power);

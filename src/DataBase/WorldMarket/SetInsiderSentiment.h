@@ -1,4 +1,4 @@
-﻿// CSetInsiderSentiment.h : CSetInsiderSentiment 的声明
+// CSetInsiderSentiment.h : CSetInsiderSentiment 的声明
 
 #pragma once
 

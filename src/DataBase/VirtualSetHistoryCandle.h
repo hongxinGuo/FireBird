@@ -1,4 +1,4 @@
-﻿// VirtualSetHistoryCandle.h : CVirtualSetHistoryCandle 的声明
+// VirtualSetHistoryCandle.h : CVirtualSetHistoryCandle 的声明
 //
 // 所有的完整历史数据库，皆准备使用此类为基类，以简化存储过程。
 // 目前CurrentWeekLine和today临时数据表使用此数据集。

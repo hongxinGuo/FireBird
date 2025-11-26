@@ -1,4 +1,4 @@
-﻿// CSetTiingoCompanyFinancialState.h : CSetTiingoCompanyFinancialState 的声明
+// CSetTiingoCompanyFinancialState.h : CSetTiingoCompanyFinancialState 的声明
 
 #pragma once
 #include"VirtualRecordset.h"

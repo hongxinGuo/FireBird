@@ -1,4 +1,4 @@
-﻿// CSetCountry.h : CSetCountry 的声明
+// CSetCountry.h : CSetCountry 的声明
 
 #pragma once
 

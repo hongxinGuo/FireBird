@@ -1,4 +1,4 @@
-﻿// VirtualSetChosenStake.h : VirtualSetChosenStake 类的实现
+// VirtualSetChosenStake.h : VirtualSetChosenStake 类的实现
 
 #include"pch.h"
 

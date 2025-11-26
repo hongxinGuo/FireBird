@@ -1,4 +1,4 @@
-﻿#include"pch.h"
+#include"pch.h"
 #include"FinnhubStockBasicFinancial.h"
 
 CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {

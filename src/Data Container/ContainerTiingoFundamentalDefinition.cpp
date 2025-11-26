@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "InfoReport.h"

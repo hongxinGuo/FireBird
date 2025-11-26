@@ -1,4 +1,4 @@
-﻿// SetChinaStockSymbol.h : CSetChinaStockSymbol 的声明
+// SetChinaStockSymbol.h : CSetChinaStockSymbol 的声明
 
 #pragma once
 #include"VirtualSetStockSymbol.h"

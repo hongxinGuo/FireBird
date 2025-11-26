@@ -1,4 +1,4 @@
-﻿// VirtualSetHistoryCandleBasic.h : CVirtualSetHistoryCandleBasic 的声明
+// VirtualSetHistoryCandleBasic.h : CVirtualSetHistoryCandleBasic 的声明
 //
 // 所有的历史数据库的基本数据表，皆准备使用此类为基类，以简化存储过程。
 //

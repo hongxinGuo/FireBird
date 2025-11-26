@@ -1,4 +1,4 @@
-﻿// CSetDayLineTodaySaved.h : CSetDayLineTodaySaved 的声明
+// CSetDayLineTodaySaved.h : CSetDayLineTodaySaved 的声明
 
 #pragma once
 

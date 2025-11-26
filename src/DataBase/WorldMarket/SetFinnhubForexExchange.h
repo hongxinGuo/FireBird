@@ -1,4 +1,4 @@
-﻿// SetForexExchange.h : CSetFinnhubForexExchange 的声明
+// SetForexExchange.h : CSetFinnhubForexExchange 的声明
 
 #pragma once
 #include"afxdb.h"

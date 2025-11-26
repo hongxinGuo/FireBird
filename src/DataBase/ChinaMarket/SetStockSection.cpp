@@ -1,4 +1,4 @@
-﻿// SetSymbol.h : CSetStockSection 类的实现
+// SetSymbol.h : CSetStockSection 类的实现
 #include"pch.h"
 
 #include "SetStockSection.h"

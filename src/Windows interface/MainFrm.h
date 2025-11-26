@@ -1,4 +1,4 @@
-﻿// MainFrm.h: CMainFrame 类的接口
+// MainFrm.h: CMainFrame 类的接口
 //
 #pragma once
 

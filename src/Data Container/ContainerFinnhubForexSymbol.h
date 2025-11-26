@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"ContainerVirtualStock.h"
 #include "FinnhubForex.h"

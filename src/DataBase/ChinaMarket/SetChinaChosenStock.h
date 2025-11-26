@@ -1,4 +1,4 @@
-﻿// SetChinaChosenStock.h : CSetChinaChosenStock 的声明
+// SetChinaChosenStock.h : CSetChinaChosenStock 的声明
 
 #pragma once
 #include"VirtualSetChosenStake.h"

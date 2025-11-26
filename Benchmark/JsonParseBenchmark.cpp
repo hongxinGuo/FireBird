@@ -1,4 +1,4 @@
-﻿//
+//
 // FireBird中比较费时的函数是各个数据的解析工作。
 // 目前最繁重的解析工作，是US market的美国市场股票代码，其大小为5MB，使用nlohmann json解析时，release模式用时131毫秒；使用boost PTree
 // 解析时，release模式用时320毫秒；

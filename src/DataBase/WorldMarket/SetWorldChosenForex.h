@@ -1,4 +1,4 @@
-﻿// CSetWorldChosenForex.h : CSetChinaChosenForex 的声明
+// CSetWorldChosenForex.h : CSetChinaChosenForex 的声明
 #pragma once
 #include"VirtualSetChosenStake.h"
 

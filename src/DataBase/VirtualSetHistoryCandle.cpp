@@ -1,4 +1,4 @@
-﻿// VirtualSetHistoryCandle.cpp : CVirtualSetHistoryCandle 类的实现
+// VirtualSetHistoryCandle.cpp : CVirtualSetHistoryCandle 类的实现
 
 // CVirtualSetHistoryCandle 实现
 

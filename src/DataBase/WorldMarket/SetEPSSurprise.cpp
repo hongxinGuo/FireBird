@@ -1,4 +1,4 @@
-﻿// CSetEPSSurprise.cpp : CSetEPSSurprise 类的实现
+// CSetEPSSurprise.cpp : CSetEPSSurprise 类的实现
 
 // CSetFinnhubStockDayLine 实现
 

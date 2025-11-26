@@ -1,4 +1,4 @@
-﻿// SetFinnhubForexSymbol.h : CSetFinnhubForexSymbol 的声明
+// SetFinnhubForexSymbol.h : CSetFinnhubForexSymbol 的声明
 
 #pragma once
 #include"VirtualSetStockSymbol.h"

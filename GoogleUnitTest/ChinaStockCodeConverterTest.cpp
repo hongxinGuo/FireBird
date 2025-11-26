@@ -1,4 +1,4 @@
-﻿#include"pch.h"
+#include"pch.h"
 
 #include"WorldMarket.h"
 
@@ -21,7 +21,7 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(StockCodeConverterTest, TestIsShanghaiExchange) {
+	TEST_F(StockCodeConverterTest, _T(TestIsShanghaiExchange)) {
 		EXPECT_TRUE(IsShanghaiExchange("SS"));
 		EXPECT_TRUE(IsShanghaiExchange("600001.SS"));
 		EXPECT_TRUE(IsShanghaiExchange("000001.SS"));

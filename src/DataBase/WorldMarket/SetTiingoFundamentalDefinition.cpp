@@ -1,4 +1,4 @@
-﻿// CSetWorldFundamentalDefinition.cpp : CSetWorldFundamentalDefinition 类的实现
+// CSetWorldFundamentalDefinition.cpp : CSetWorldFundamentalDefinition 类的实现
 
 #include"pch.h"
 

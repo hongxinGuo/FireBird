@@ -1,4 +1,4 @@
-﻿// CSetTiingoIndustry.h : CSetTiingoIndustry 的声明
+// CSetTiingoIndustry.h : CSetTiingoIndustry 的声明
 #pragma once
 
 #include"VirtualRecordset.h"

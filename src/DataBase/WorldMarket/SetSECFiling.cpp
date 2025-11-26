@@ -1,4 +1,4 @@
-﻿// CSetSECFilings.cpp : CSetSECFilings 类的实现
+// CSetSECFilings.cpp : CSetSECFilings 类的实现
 
 // 代码生成在 2019年6月2日, 5:10
 

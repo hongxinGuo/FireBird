@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "MarketTaskQueue.h"
 
 enum NET_ERROR {

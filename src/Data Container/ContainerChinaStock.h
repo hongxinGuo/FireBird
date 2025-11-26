@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"RSReference.h"
 #include"ChinaStock.h"

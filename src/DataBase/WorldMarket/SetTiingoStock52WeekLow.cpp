@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "SetTiingoStock52WeekLow.h"
 
 CSetTiingoStock52WeekLow::CSetTiingoStock52WeekLow(const CString& strSchema, const CString& strTable, CDatabase* pDatabase)

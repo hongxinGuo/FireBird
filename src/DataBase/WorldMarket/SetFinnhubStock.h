@@ -1,4 +1,4 @@
-﻿// SetFinnhubStock.h : CSetFinnhubStock 的声明
+// SetFinnhubStock.h : CSetFinnhubStock 的声明
 
 #pragma once
 #include"VirtualRecordset.h"

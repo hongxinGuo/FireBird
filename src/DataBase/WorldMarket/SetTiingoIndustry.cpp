@@ -1,4 +1,4 @@
-﻿// CSetTiingoIndustry.cpp : CSetTiingoIndustry 类的实现
+// CSetTiingoIndustry.cpp : CSetTiingoIndustry 类的实现
 
 #include"pch.h"
 

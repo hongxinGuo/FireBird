@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include"VirtualRecordset.h"
 
 class CSetTiingoStockDelistedSymbol : public CVirtualRecordset {

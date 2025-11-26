@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"ProductTiingo.h"
 #include"TiingoFundamentalDefinition.h"

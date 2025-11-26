@@ -1,4 +1,4 @@
-﻿// CSetEPSSurprise.h : CSetEPSSurprise 的声明
+// CSetEPSSurprise.h : CSetEPSSurprise 的声明
 
 #pragma once
 

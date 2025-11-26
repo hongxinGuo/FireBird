@@ -1,4 +1,4 @@
-﻿// VirtualSetExchange.h : CVirtualSetExchange 的声明
+// VirtualSetExchange.h : CVirtualSetExchange 的声明
 //
 // 存储交易所数据的默认制式
 //

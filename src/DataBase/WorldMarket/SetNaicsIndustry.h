@@ -1,4 +1,4 @@
-﻿// CSetNaicsIndustry.h : CSetNaicsIndustry 的声明
+// CSetNaicsIndustry.h : CSetNaicsIndustry 的声明
 
 #pragma once
 

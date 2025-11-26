@@ -1,4 +1,4 @@
-﻿// CSetInsiderTransaction.h : CSetInsiderTransaction 的声明
+// CSetInsiderTransaction.h : CSetInsiderTransaction 的声明
 
 #pragma once
 

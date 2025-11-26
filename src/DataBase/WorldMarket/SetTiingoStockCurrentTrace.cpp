@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "SetTiingoStockCurrentTrace.h"
 
 CSetTiingoStockCurrentTrace::CSetTiingoStockCurrentTrace(const CString& strSchema, const CString& strTable, CDatabase* pDatabase)

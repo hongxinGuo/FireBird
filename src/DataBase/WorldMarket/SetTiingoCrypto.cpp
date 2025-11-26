@@ -1,4 +1,4 @@
-﻿// CSetTiingoCrypto.cpp : CSetTiingoCrypto 类的实现
+// CSetTiingoCrypto.cpp : CSetTiingoCrypto 类的实现
 
 #include"pch.h"
 

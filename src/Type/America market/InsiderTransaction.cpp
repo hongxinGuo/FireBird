@@ -1,4 +1,4 @@
-﻿#include"pch.h"
+#include"pch.h"
 
 #include"ConvertToString.h"
 #include"InsiderTransaction.h"

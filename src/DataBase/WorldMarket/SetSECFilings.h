@@ -1,4 +1,4 @@
-﻿// CSetSECFilings.h : CSetSECFilings 的声明
+// CSetSECFilings.h : CSetSECFilings 的声明
 
 #pragma once
 

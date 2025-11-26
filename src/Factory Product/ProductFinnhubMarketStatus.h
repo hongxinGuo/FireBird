@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "MarketStatus.h"
 #include"ProductFinnhub.h"

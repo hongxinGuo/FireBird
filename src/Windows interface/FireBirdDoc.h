@@ -1,4 +1,4 @@
-﻿// FireBirdDoc.h: CFireBirdDoc 类的接口
+// FireBirdDoc.h: CFireBirdDoc 类的接口
 //
 
 #pragma once

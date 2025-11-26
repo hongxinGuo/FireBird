@@ -1,4 +1,4 @@
-﻿// CSetNaicsIndustry.cpp : CSetNaicsIndustry 类的实现
+// CSetNaicsIndustry.cpp : CSetNaicsIndustry 类的实现
 
 // CSetFinnhubStockDayLine 实现
 

@@ -1,4 +1,4 @@
-﻿// FireBirdView.cpp: CFireBirdView 类的实现
+// FireBirdView.cpp: CFireBirdView 类的实现
 //
 
 #include"pch.h"

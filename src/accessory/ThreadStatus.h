@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 class CThreadStatus final {
 	//各线程状态

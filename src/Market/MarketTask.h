@@ -1,4 +1,4 @@
-﻿// 市场的各任务
+// 市场的各任务
 #pragma once
 
 #include <concurrencpp/timers/timer.h>

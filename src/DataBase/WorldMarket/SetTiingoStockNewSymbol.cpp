@@ -1,4 +1,4 @@
-﻿// CSetTiingoStockNewSymbol.cpp : CSetTiingoStockNewSymbol 类的实现
+// CSetTiingoStockNewSymbol.cpp : CSetTiingoStockNewSymbol 类的实现
 
 #include"pch.h"
 

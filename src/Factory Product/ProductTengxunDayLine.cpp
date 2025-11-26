@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 
 #include "ProductTengxunDayLine.h"
 #include"ChinaMarket.h"

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "SetTiingoStockDayLine.h"
 #include "TiingoDayLine.h"

@@ -1,4 +1,4 @@
-﻿// CSetSICIndustry.h : CSetSICIndustry 的声明
+// CSetSICIndustry.h : CSetSICIndustry 的声明
 #pragma once
 
 #include"VirtualRecordset.h"

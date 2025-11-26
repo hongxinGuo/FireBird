@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 extern ondemand::array gl_simdjsonEmptyArray;
 

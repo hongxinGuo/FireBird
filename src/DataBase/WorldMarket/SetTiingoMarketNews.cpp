@@ -1,4 +1,4 @@
-﻿// CSetWorldMarketNews.cpp : CSetWorldMarketNews 类的实现
+// CSetWorldMarketNews.cpp : CSetWorldMarketNews 类的实现
 
 #include"pch.h"
 

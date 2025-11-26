@@ -1,4 +1,4 @@
-﻿// CSetCryptoDayLine.h : CSetCryptoDayLine 的声明
+// CSetCryptoDayLine.h : CSetCryptoDayLine 的声明
 
 #pragma once
 

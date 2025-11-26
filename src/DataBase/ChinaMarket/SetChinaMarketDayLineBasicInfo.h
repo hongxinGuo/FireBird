@@ -1,4 +1,4 @@
-﻿// CSetChinaMarketDayLneBasicInfo.h : CSetChinaMarketDayLneBasicInfo 的声明
+// CSetChinaMarketDayLneBasicInfo.h : CSetChinaMarketDayLneBasicInfo 的声明
 
 #pragma once
 
