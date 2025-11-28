@@ -102,5 +102,5 @@ void CSetTiingoCompanyFinancialState::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("taxLiabilities"), m_taxLiabilities);
 	RFX_Text(pFX, _T("totalAssets"), m_totalAssets);
 	RFX_Text(pFX, _T("totalLiabilities"), m_totalLiabilities);
-	RFX_Text(pFX, _T("ptrailingPEG1Y"), m_trailingPEG1Y);
+	RFX_Text(pFX, _T("trailingPEG1Y"), m_trailingPEG1Y);
 }

@@ -360,7 +360,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setInsiderTransaction.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setInsiderTransaction.GetDefaultSQL(), _T("[finnhub_insider_Transaction]"));
+		EXPECT_STREQ(setInsiderTransaction.GetDefaultSQL(), _T("[finnhub_insider_transaction]"));
 	}
 
 	TEST_F(SetInitializeTest, TestInsiderSentimentInitialize) {
@@ -444,7 +444,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setTiingoStockCurrentTrace.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setTiingoStockCurrentTrace.GetDefaultSQL(), _T("[tiingo_stock_current_Trace]"));
+		EXPECT_STREQ(setTiingoStockCurrentTrace.GetDefaultSQL(), _T("[tiingo_stock_current_trace]"));
 	}
 
 	TEST_F(SetInitializeTest, TestTiingoFinancialStateInitialize) {

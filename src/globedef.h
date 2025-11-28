@@ -22,7 +22,10 @@ using std::binary_semaphore;
 #define __MAX_BACKGROUND_WORKING_THREAD__ 32
 
 inline std::string ToUTF8(const CString& str) { return std::string(CT2CA(str, CP_UTF8)); }
-
+inline std::string WtoUTF8(const CStringW& str) {
+	USES_CONVERSION;
+	return W2A(str);
+}
 extern HANDLE gl_hFireBirdMutex;
 
 extern std::counting_semaphore<__MAX_BACKGROUND_WORKING_THREAD__> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量

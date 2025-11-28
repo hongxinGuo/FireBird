@@ -57,6 +57,10 @@ using namespace testing;
 #error "本系统使用UNICODE字符集")
 #endif
 
+#ifndef _UNICODE
+#error "本系统使用UNICODE字符集")
+#endif
+
 #ifndef __GOOGLEMOCK__
 #error "本系统必须使用GOOGLE MOCK")
 #endif
@@ -221,27 +225,29 @@ Test_FinnhubWebData finnhubWebData1(1, "AAPL", "{\"error\":\"You don't have acce
 // 空数据
 Test_FinnhubWebData finnhubWebData2(2, "AAPL", "[]");
 
-#ifdef _DEBUG
-#pragma comment(lib, "googletest/d/gtest.lib")
-#pragma comment(lib, "googletest/d/gtest_main.lib")
-#pragma comment(lib, "googletest/d/gmock.lib")
-#pragma comment(lib, "googletest/d/gmock_main.lib")
-#else
-#pragma comment(lib, "googletest/r/gtest.lib")
-#pragma comment(lib, "googletest/r/gtest_main.lib")
-#pragma comment(lib, "googletest/r/gmock.lib")
-#pragma comment(lib, "googletest/r/gmock_main.lib")
-#endif
-
 void setupLocale() {
 	std::locale(LC_ALL("C.UTF-8"));
 	std::locale::global(std::locale("C.UTF-8"));
 	std::cout.imbue(std::locale());
 	std::cerr.imbue(std::locale());
 }
-int main(int argc, char** argv) {
-	setupLocale();
-	InitGoogleTest(&argc, argv);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// UNICODE时，使用wWinMain作为入口函数。
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+#include"windows.h"
+#include"shellapi.h"
+
+int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd) {
+	int argc = 0;
+	wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+	if (argv == nullptr) {
+		return -1;
+	}
+	::InitGoogleTest(&argc, argv);
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 

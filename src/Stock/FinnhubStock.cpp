@@ -427,9 +427,11 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		setSECFilings.m_pDatabase->BeginTrans();
 		while (!setSECFilings.IsEOF()) {
 			pSECFilings = m_pvSECFilings->at(lCurrentPos);
-			while (!setSECFilings.IsEOF() && pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) >= 0) setSECFilings.MoveNext();
+			while (!setSECFilings.IsEOF() && pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) > 0) {
+				setSECFilings.MoveNext();
+			}
 			if (setSECFilings.IsEOF()) break;
-			if (pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) <= 0) {	// 没有这个AccessNumber的SEC Filings？
+			if (pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) < 0) {	// 没有这个AccessNumber的SEC Filings？
 				pSECFilings->Append(setSECFilings);
 			}
 			if (++lCurrentPos == lSize) break;

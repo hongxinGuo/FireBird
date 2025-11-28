@@ -123,7 +123,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoCompanyFinancialStateTest, TestAppend) {
-		CSetTiingoCompanyFinancialState setNaicsIndustry, setNaicsIndustry2;
+		CSetTiingoCompanyFinancialState setTiingoCompanyFinancialState, setTiingoFinancialStateNew;
 		CTiingoCompanyFinancialState financialStateToBeSaved;
 
 		financialStateToBeSaved.m_symbol = "AAAAA";
@@ -216,20 +216,20 @@ namespace FireBirdTest {
 		financialStateToBeSaved.m_trailingPEG1Y = 84;
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setNaicsIndustry.Open();
-		setNaicsIndustry.m_pDatabase->BeginTrans();
-		financialStateToBeSaved.Append(setNaicsIndustry);
-		setNaicsIndustry.m_pDatabase->CommitTrans();
-		setNaicsIndustry.Close();
+		setTiingoCompanyFinancialState.Open();
+		setTiingoCompanyFinancialState.m_pDatabase->BeginTrans();
+		financialStateToBeSaved.Append(setTiingoCompanyFinancialState);
+		setTiingoCompanyFinancialState.m_pDatabase->CommitTrans();
+		setTiingoCompanyFinancialState.Close();
 
-		setNaicsIndustry2.m_strFilter = "[Symbol] = 'AAAAA'";
-		setNaicsIndustry2.Open();
-		setNaicsIndustry2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "此时已经存入了AAAAA";
-		financialState.Load(setNaicsIndustry2);
-		setNaicsIndustry2.Delete();
-		setNaicsIndustry2.m_pDatabase->CommitTrans();
-		setNaicsIndustry2.Close();
+		setTiingoFinancialStateNew.m_strFilter = "[Symbol] = 'AAAAA'";
+		setTiingoFinancialStateNew.Open();
+		setTiingoFinancialStateNew.m_pDatabase->BeginTrans();
+		EXPECT_TRUE(!setTiingoFinancialStateNew.IsEOF()) << "此时已经存入了AAAAA";
+		financialState.Load(setTiingoFinancialStateNew);
+		setTiingoFinancialStateNew.Delete();
+		setTiingoFinancialStateNew.m_pDatabase->CommitTrans();
+		setTiingoFinancialStateNew.Close();
 
 		EXPECT_EQ(financialState.m_symbol, "AAAAA");
 		EXPECT_EQ(financialState.m_exchange, "US");

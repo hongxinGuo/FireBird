@@ -1,4 +1,5 @@
 #include"pch.h"
+#include<atlconv.h>
 
 #include "VirtualStock.h"
 
@@ -30,10 +31,9 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 }
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
+	USES_CONVERSION;
 	m_strDescription = ToUTF8(setStockSymbol.m_Description);
-	CString str;
-	str = setStockSymbol.m_DisplaySymbol; //Note 需要如此初始化，不能将声明和赋值放在一起
-	m_strDisplaySymbol = ToUTF8(str);
+	m_strDisplaySymbol = WtoUTF8(setStockSymbol.m_DisplaySymbol); //Note 从CStringW转成string需要宏WtoA支持
 	m_strExchangeCode = ToUTF8(setStockSymbol.m_Exchange);
 	m_strSymbol = ToUTF8(setStockSymbol.m_Symbol);
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
@@ -54,7 +54,7 @@ void CVirtualStock::UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 
 void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_Description = m_strDescription.c_str();
-	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.c_str();
+	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.c_str(); // Note 从string转成CStringW无需注明
 	setStockSymbol.m_Exchange = m_strExchangeCode.c_str();
 	setStockSymbol.m_Symbol = m_strSymbol.c_str();
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;
