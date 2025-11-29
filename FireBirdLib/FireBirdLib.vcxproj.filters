@@ -909,6 +909,9 @@
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\utf8_fmt.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">

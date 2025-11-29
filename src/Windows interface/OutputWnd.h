@@ -13,6 +13,7 @@ public:
 	void SetCurAtLastLine();
 
 	int GetLineNumber() const noexcept { return m_iLineNumber; }
+	int AppendString(const string& str) { return AddString(CA2W(str.c_str(), CP_UTF8)); } // UNICODE下需要转换，utf-8 --> utf-16. 
 
 public:
 	~COutputList() override;

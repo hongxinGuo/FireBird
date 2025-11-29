@@ -54,15 +54,19 @@
 using namespace testing;
 
 #ifdef _MBCS
-#error "本系统使用UNICODE字符集")
+#error "本系统使用UNICODE字符集"
 #endif
 
 #ifndef _UNICODE
-#error "本系统使用UNICODE字符集")
+#error "本系统使用UNICODE字符集"
 #endif
 
 #ifndef __GOOGLEMOCK__
-#error "本系统必须使用GOOGLE MOCK")
+#error "本系统必须使用GOOGLE MOCK"
+#endif
+
+#ifndef FMT_UNICODE
+#error "fmt 使用unicode"
 #endif
 
 // 目前使用.runsettings文件来排除外部代码，不再使用ExcludeSourceFromCodeCoverage的模式。且ExcludeSourceFromCodeCoverage模式目前在C20标准下无法编译。

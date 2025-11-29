@@ -488,8 +488,8 @@ void CMainFrame::UpdateStatus() {
 
 	//更新状态条
 	if (IsCurrentEditStockChanged()) {
-		s = m_aStockCodeTemp;
-		SysCallSetPaneText(1, s);
+		CStringW strW = m_aStockCodeTemp;
+		SysCallSetPaneText(1, strW);
 		SetCurrentEditStockChanged(false);
 	}
 	// 显示股票代码和名称
@@ -611,8 +611,8 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoCryptoWebSocket() > 0) {
-		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
-		SysCallSetInnerSystemPaneText(15, FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket()));
+		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto().c_str());
+		SysCallSetInnerSystemPaneText(15, FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket()).c_str());
 	}
 
 	SysCallSetInnerSystemPaneText(16, FormatToMK(gl_TiingoTotalData));

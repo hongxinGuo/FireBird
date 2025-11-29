@@ -235,6 +235,7 @@
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h" />
+    <ClInclude Include="..\src\utf8_fmt.h" />
     <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h" />
@@ -563,7 +564,7 @@
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TranslateIncludes>false</TranslateIncludes>
       <EnableModules>false</EnableModules>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -596,7 +597,7 @@
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <EnableModules>false</EnableModules>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>

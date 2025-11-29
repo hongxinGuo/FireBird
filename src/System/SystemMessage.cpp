@@ -274,8 +274,7 @@ void CSystemDeque::Display(COutputList* pOutputList, const string& strTime) {
 }
 
 void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, const string& str) {
-	auto wstr = CA2W(str.c_str(), CP_UTF8);
-	pOutputList->AddString(wstr);
+	pOutputList->AppendString(str);
 }
 
 void CSystemDeque::PushMessage(const string& str) {

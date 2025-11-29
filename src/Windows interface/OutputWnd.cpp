@@ -211,7 +211,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	int i = 0;
 	for (const auto& pTask : validChinaTasks) {
 		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
-		m_wndChinaMarketTaskQueue.AddString(reinterpret_cast<LPCTSTR>(s.c_str()));
+		m_wndChinaMarketTaskQueue.AppendString(s);
 		if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
 	}
 
@@ -220,7 +220,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	i = 0;
 	for (const auto& pTask : validWorldTasks) {
 		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
-		m_wndWorldMarketTaskQueue.AddString(reinterpret_cast<LPCTSTR>(s.c_str()));
+		m_wndWorldMarketTaskQueue.AppendString(s);
 		if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;
 	}
 

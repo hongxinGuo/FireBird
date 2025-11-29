@@ -36,6 +36,10 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
+#ifndef FMT_UNICODE
+#error "fmt 使用unicode"
+#endif
+
 HANDLE gl_hFireBirdMutex{ nullptr };
 
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
