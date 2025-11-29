@@ -22,7 +22,7 @@ std::string Test_gl_sFinnhubInaccessibleExchange = R"(
 
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("FinnhubInaccessibleExchange全局变量只允许存在一个实例\n");
+		TRACE(_T("FinnhubInaccessibleExchange全局变量只允许存在一个实例\n"));
 		ASSERT(FALSE);
 	}
 

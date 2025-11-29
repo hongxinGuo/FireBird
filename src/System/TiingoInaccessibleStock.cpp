@@ -22,7 +22,7 @@ std::string Test_gl_sTiingoInaccessibleStock = R"(
 
 CTiingoInaccessibleStock::CTiingoInaccessibleStock() {
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("TiingoInaccessibleStock全局变量只允许存在一个实例\n");
+		TRACE(_T("TiingoInaccessibleStock全局变量只允许存在一个实例\n"));
 		ASSERT(FALSE);
 	}
 

@@ -84,7 +84,7 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		gl_pTiingoDataSource->Enable(pVar->boolVal);
 		break;
 	default:
-		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
+		TRACE(_T("未处理PropertyGridCtrl例外\n")); // 未处理例外
 	//ASSERT(0);
 		break;
 	}

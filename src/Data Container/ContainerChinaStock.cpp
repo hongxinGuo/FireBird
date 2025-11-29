@@ -195,7 +195,7 @@ string CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	}
 
 	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
-		TRACE("未找到需更新日线历史数据的股票\n");
+		TRACE(_T("未找到需更新日线历史数据的股票\n"));
 		return "";
 	}
 
@@ -236,7 +236,7 @@ string CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	}
 
 	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
-		TRACE("未找到需更新日线历史数据的股票\n");
+		TRACE(_T("未找到需更新日线历史数据的股票\n"));
 		return "";
 	}
 

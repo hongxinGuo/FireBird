@@ -49,13 +49,13 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pCrypto->UpdateDayLine(*pvDayLine);
 		pCrypto->SetUpdateDayLineDB(true);
 		pCrypto->SetUpdateProfileDB(true);
-		//TRACE("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().GetBuffer());
+		//TRACE(_T("处理Tiingo %s日线数据\n"), pCrypto->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
 		pCrypto->SetUpdateDayLineDB(false);
 		pCrypto->SetUpdateProfileDB(false);
-		//TRACE("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().GetBuffer());
+		//TRACE(_T("处理Tiingo %s日线数据\n"), pCrypto->GetSymbol().GetBuffer());
 	}
 	*/
 }

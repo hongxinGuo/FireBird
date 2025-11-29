@@ -182,7 +182,7 @@ CMainFrame::~CMainFrame() {
 	//if (m_hPropertiesBarIcon != nullptr) ::CloseHandle(m_hPropertiesBarIcon);
 
 	if (!gl_systemConfiguration.IsWorkingMode())
-		TRACE("使用了Test驱动\n");
+		TRACE(_T("使用了Test驱动\n"));
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
@@ -354,7 +354,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置500毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(1, 500, nullptr);
 	if (m_uIdTimer == 0) {
-		TRACE("生成500ms时钟时失败\n");
+		TRACE(_T("生成500ms时钟时失败\n"));
 	}
 
 	// 更新系统显示高度和宽度
@@ -644,7 +644,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 
-		TRACE("应用户申请，准备退出程序\n");
+		TRACE(_T("应用户申请，准备退出程序\n"));
 		for (auto& timer : gl_aTimer) {// 退出所有的计时器，关闭所有的工作线程。
 			timer.cancel();
 		}

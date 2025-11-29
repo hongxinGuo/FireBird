@@ -55,13 +55,13 @@ void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pForex->UpdateDayLine(*pvDayLine);
 		pForex->SetUpdateDayLineDB(true);
 		pForex->SetUpdateProfileDB(true);
-		//TRACE("处理Tiingo %s日线数据\n", pForex->GetSymbol().GetBuffer());
+		//TRACE(_T("处理Tiingo %s日线数据\n"), pForex->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
 		pForex->SetUpdateDayLineDB(false);
 		pForex->SetUpdateProfileDB(false);
-		//TRACE("处理Tiingo %s日线数据\n", pForex->GetSymbol().GetBuffer());
+		//TRACE(_T("处理Tiingo %s日线数据\n"), pForex->GetSymbol().GetBuffer());
 	}
 	*/
 }

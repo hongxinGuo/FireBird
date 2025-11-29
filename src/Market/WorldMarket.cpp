@@ -46,7 +46,7 @@ void ProcessWebSocketDataGeneric(TWebSocket pWebSocket, const std::string& prefi
 CWorldMarket::CWorldMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
+		TRACE(_T("CWorldMarket市场变量只允许存在一个实例\n"));
 	}
 
 	m_strMarketId = "US";

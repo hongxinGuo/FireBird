@@ -41,7 +41,7 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	long lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
 	time_t ttNewestTradeDay = gl_pWorldMarket->TransferToUTCTime(lNewestTradeDay, 0); //使用当日数据
 	if (pvTiingoIEXTopOFBook->empty()) return;
-	TRACE("Tiingo IEX TopOfBook number: %d\n", pvTiingoIEXTopOFBook->size());
+	TRACE(_T("Tiingo IEX TopOfBook number: %d\n"), pvTiingoIEXTopOFBook->size());
 	for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 		if (pIEXTopOFBook->m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
 		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码

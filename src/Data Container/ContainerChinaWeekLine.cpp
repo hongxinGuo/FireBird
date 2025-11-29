@@ -36,7 +36,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 	for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 	setCurrentWeekLineInfo.Close();
-	TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
+	TRACE(_T("存储了%d个当前周周线数据\n"), m_vHistoryData.size());
 }
 
 bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {

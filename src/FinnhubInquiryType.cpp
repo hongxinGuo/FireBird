@@ -5,7 +5,7 @@
 CFinnhubInquiryType::CFinnhubInquiryType() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("XferFinnhubInquiryType全局变量只允许存在一个实例\n");
+		TRACE(_T("XferFinnhubInquiryType全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG
 		ASSERT(FALSE);
 #endif // _DEBUG

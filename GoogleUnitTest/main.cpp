@@ -225,13 +225,6 @@ Test_FinnhubWebData finnhubWebData1(1, "AAPL", "{\"error\":\"You don't have acce
 // 空数据
 Test_FinnhubWebData finnhubWebData2(2, "AAPL", "[]");
 
-void setupLocale() {
-	std::locale(LC_ALL("C.UTF-8"));
-	std::locale::global(std::locale("C.UTF-8"));
-	std::cout.imbue(std::locale());
-	std::cerr.imbue(std::locale());
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // UNICODE时，使用wWinMain作为入口函数。

@@ -30,7 +30,7 @@
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("ChinaMarket市场变量只允许存在一个实例\n");
+		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
 	}
 	m_strMarketId = "SS";
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
@@ -485,7 +485,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const string& str) con
 	string strStockCode = XferNeteaseToStandard(strNetease);
 	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
 		string strReport = "网易日线查询股票代码错误：";
-		TRACE("网易日线查询股票代码错误：%s\n", strStockCode.c_str());
+		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.c_str());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
 		return false;
@@ -1157,7 +1157,7 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 		while (!setDayLineExtendInfo.IsEOF() && (setDayLineExtendInfo.m_Symbol.Compare(setDayLineBasicInfo.m_Symbol) < 0)) {
 			setDayLineExtendInfo.MoveNext();
 		}
-		if (!setDayLineExtendInfo.IsEOF() && (setDayLineExtendInfo.m_Symbol.Compare( setDayLineBasicInfo.m_Symbol) == 0)) {
+		if (!setDayLineExtendInfo.IsEOF() && (setDayLineExtendInfo.m_Symbol.Compare(setDayLineBasicInfo.m_Symbol) == 0)) {
 			pDayLine->LoadExtendData(&setDayLineExtendInfo);
 		}
 		dataChinaDayLine.Add(pDayLine);

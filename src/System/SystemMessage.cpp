@@ -297,7 +297,7 @@ size_t CSystemDeque::Size() const {
 CSystemMessage::CSystemMessage() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siCounter = 0; siCounter++ > 0) {
-		TRACE("系统消息只允许一个实例\n");
+		TRACE(_T("系统消息只允许一个实例\n"));
 		gl_systemMessage.PushErrorMessage("错误：系统不允许生成多个CSystemMessage实例");
 	}
 

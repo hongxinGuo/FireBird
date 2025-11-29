@@ -98,7 +98,7 @@ std::string gl_sSystemConfiguration = R"(
 CSystemConfiguration::CSystemConfiguration() {
 	ASSERT(!sm_bInitialized); // 只生成唯一实例
 	if (sm_bInitialized) {
-		TRACE("GlobeOption全局变量只允许存在一个实例\n");
+		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG
 		ASSERT(FALSE);
 #endif // _DEBUG

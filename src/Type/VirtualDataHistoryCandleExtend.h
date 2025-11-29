@@ -24,7 +24,7 @@ public:
 		return false;
 	}
 	virtual bool LoadDB(const string&) {
-		TRACE("调用了基类LoadDB\n");
+		TRACE(_T("调用了基类LoadDB\n"));
 		return false;
 	}
 
