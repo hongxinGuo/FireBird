@@ -72,6 +72,11 @@ void CreateMarket() {
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
 void AssignDataSourceAndWebInquiryToMarket() {
 	ASSERT(gl_pChinaMarket != nullptr);
 	ASSERT(gl_pWorldMarket != nullptr);
@@ -211,7 +216,7 @@ void TaskSchedulePer100ms() {
 		WCHAR buffer[1000];
 		string str = "ScheduleMarketTask unhandled CException founded : ";
 		e->GetErrorMessage(buffer, 1);
-		str +=ToUTF8( buffer);
+		str += ToUTF8(buffer);
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。

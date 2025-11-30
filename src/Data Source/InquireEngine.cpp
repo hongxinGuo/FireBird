@@ -95,15 +95,22 @@ CWebDataPtr CInquireEngine::GetWebData() {
 // 其他的数据尚未需要提供头部验证数据。
 // 调用函数需要处理exception。
 //
+// Note: 网络申请不接受utf-8字符集，只接受GBK或者utf-16，需要转换。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInquireEngine::OpenFile() {
-	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(reinterpret_cast<LPCTSTR>(m_strInquiry.c_str()), 1,
+	wstring wstr = std::wstring(CA2W(m_strHeaders.c_str()));
+	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(CA2W(m_strInquiry.c_str()), 1,
 	                                                      INTERNET_FLAG_TRANSFER_ASCII,
-	                                                      reinterpret_cast<LPCTSTR>(m_strHeaders.c_str()), m_strHeaders.length()));
+	                                                      wstr.c_str(), wstr.length()));
 }
 
 void CInquireEngine::GetFileHeaderInformation() {
 	ASSERT(m_pFile != nullptr);
 	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
+	CString strContentType;
+	if (m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, strContentType)) {
+	}
 	QueryDataLength();
 }
 
@@ -116,10 +123,9 @@ void CInquireEngine::DeleteWebFile() {
 }
 
 void CInquireEngine::QueryDataLength() {
-	char buffer[50]{};
-	DWORD dwLength = 50;
-	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, buffer, &dwLength);
-	m_lContentLength = atol(buffer);
+	CString strLength;
+	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, strLength);
+	m_lContentLength = _wtol(strLength);
 	ASSERT(m_lContentLength >= 0);
 }
 

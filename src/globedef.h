@@ -26,6 +26,8 @@ inline std::string WtoUTF8(const CStringW& str) {
 	USES_CONVERSION;
 	return W2A(str);
 }
+inline std::string WtoUTF8(const wstring& str) { return std::string(CW2A(str.c_str(), CP_UTF8)); }
+
 extern HANDLE gl_hFireBirdMutex;
 
 extern std::counting_semaphore<__MAX_BACKGROUND_WORKING_THREAD__> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量

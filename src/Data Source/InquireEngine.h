@@ -36,8 +36,8 @@ public:
 	void SetByteRead(long number) { m_lByteRead = number; } // 仅用于测试中
 
 	// 各状态
-	void SetInquiryString(const string& strInquiry) { m_strInquiry = strInquiry; }
-	void SetInquiryHeader(const string& strHeader) { m_strHeaders = strHeader; }
+	//void SetInquiryString(const string& strInquiry) { m_strInquiry = strInquiry; }
+	//void SetInquiryHeader(const string& strHeader) { m_strHeaders = strHeader; }
 
 	bool IsWebError() const noexcept { return m_dwErrorCode != 0; }
 	DWORD GetErrorCode() const noexcept { return m_dwErrorCode; }
@@ -58,7 +58,7 @@ public:
 protected:
 	shared_ptr<CInternetSession> m_pSession{ nullptr }; // 初始化时必须生成指针。
 	CHttpFile* m_pFile{ nullptr }; // 网络文件指针
-	DWORD m_dwHTTPStatusCode{ 0 }; //网络状态码。无错误时小于200.
+	DWORD m_dwHTTPStatusCode{ 0 }; //网络状态码。无错误时小于等于200.
 	DWORD m_dwErrorCode{ 0 }; // 网络错误码。无错误时为零。
 
 	string m_sBuffer{}; // 接收到数据的缓冲区
