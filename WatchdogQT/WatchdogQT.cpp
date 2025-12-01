@@ -1,4 +1,4 @@
-﻿#include "WatchdogQT.h"
+#include "WatchdogQT.h"
 
 #include"../src/SystemPublicDeclaration.h"
 
@@ -111,7 +111,7 @@ void WatchdogQT::BuildUI() {
 	ui.statusBar->addPermanentWidget(labTime);
 }
 
-void WatchdogQT::Update() const {
+void WatchdogQT::Update() {
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
 	tm tmLocal;
 	const auto time = gl_tpNow.time_since_epoch().count();
@@ -119,12 +119,10 @@ void WatchdogQT::Update() const {
 	string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	labTime->setText(s.c_str());
 
-	string sTotal;
 	for (auto s1 : m_listOutput) {
-		sTotal += s1;
-		sTotal += "\n";
+		ui.textBrowser->append(s1.c_str());
 	}
-	ui.textBrowser->setText(sTotal.c_str());
+	while (!m_listOutput.empty()) m_listOutput.pop_front();
 }
 
 bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
@@ -147,11 +145,28 @@ void WatchdogQT::UpdatePer10Second() {
 			tm tmLocal;
 			const auto time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
-			const string s = fmt::format("启动FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-			if (m_listOutput.size() > 100) m_listOutput.pop_front();
+			string s = fmt::format("启动FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
-			ASSERT(iReturnCode > 31);
+			if (iReturnCode <= 31) { // error
+				switch (iReturnCode) {
+				case 0:
+					s = "Error: out of resource";
+					break;
+				case ERROR_BAD_FORMAT:
+					s = "Error: Invalid EXE file name";
+					break;
+				case ERROR_FILE_NOT_FOUND:
+					s = "Error: EXE file not found";
+					break;
+				case ERROR_PATH_NOT_FOUND:
+					s = "Error: EXE file Path error";
+					break;
+				default:
+					break;
+				}
+				m_listOutput.push_back(s);
+			}
 		}
 		s_Counter = 0;
 	}
@@ -160,7 +175,7 @@ void WatchdogQT::UpdatePer10Second() {
 void WatchdogQT::onActionAboutTriggered() {
 	QString text = tr("FireBird Watchdog\n"
 		"Version 0.01\n"
-		"2023 Copyright FireBird Inc.\n"
+		"2023-2025 Copyright FireBird Inc.\n"
 		"All right reserved\n\n");
 
 	QMessageBox::about(this, tr("Watchdog"), text);

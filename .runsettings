@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- File name extension must be .runsettings -->
 <RunSettings>
+	<GoogleTestAdapterSettings>
+		<DebugMode>true</DebugMode>
+		<ParseSymbolInformation>true</ParseSymbolInformation>
+	</GoogleTestAdapterSettings>
 	<RunConfiguration>
 		<!-- don't use QtTest -->
 		<TestCaseFilter>TestCategory!=QtTest</TestCaseFilter>
-    <TestCaseFilter>TestCategory=GoogleTest</TestCaseFilter>
 		<TargetPlatform>x64</TargetPlatform>
 		<!-- timeout 120 seconds -->
 		<TestSessionTimeout>1200000</TestSessionTimeout>

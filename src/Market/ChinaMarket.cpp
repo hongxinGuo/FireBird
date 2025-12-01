@@ -911,9 +911,16 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 系统检查。如果发现有不满意的地方则重新启动系统。
+// 目前如果发现新浪实时数据接收时间超过300毫秒则重启系统。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskCheckSystem(long lCurrentTime) {
-	if ((gl_systemConfiguration.IsUsingSinaRTServer() && gl_pSinaRTDataSource->GetCurrentInquiryTime() > 200)
-		|| (gl_systemConfiguration.IsUsingTengxunRTServer() && gl_pTengxunRTDataSource->GetCurrentInquiryTime() > 200)) { // 如果接受网络数据时间超过300毫秒
+	if ((gl_systemConfiguration.IsUsingSinaRTServer() && gl_pSinaRTDataSource->GetCurrentInquiryTime() > 300)
+		|| (gl_systemConfiguration.IsUsingTengxunRTServer() && gl_pTengxunRTDataSource->GetCurrentInquiryTime() > 300)) { // 如果接受网络数据时间超过300毫秒
 		AddTask(RELOAD_SYSTEM__, GetNextTime(lCurrentTime, 0, 0, 10)); // 十秒后重启系统
 	}
 	return true;

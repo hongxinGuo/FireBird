@@ -283,61 +283,59 @@ void CPropertiesWnd::InitPropList() {
 	pProp->AllowEdit(FALSE);
 	pGroup1->AddSubItem(pProp);
 
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty("Reload System", static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), SYSTEM_RELOAD_SYSTEM_));
+	pGroup1->AddSubItem(new CGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
+	pGroup1->AddSubItem(new CGridProperty("Reload System", static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), SYSTEM_RELOAD_SYSTEM_));
 
-	m_pPropRealTimeDataReceived = new CMFCPropertyGridProperty("RealTime Data Total:", _T(""));
+	m_pPropRealTimeDataReceived = new CGridProperty("RealTime Data Total:", _T(""));
 	m_pPropRealTimeDataReceived->Enable(false);
 	pGroup1->AddSubItem(m_pPropRealTimeDataReceived);
-	m_pPropChinaMarketRealTimeDataNumber = new CMFCPropertyGridProperty(_T("RealTime Data Received:"), _T(""));
+	m_pPropChinaMarketRealTimeDataNumber = new CGridProperty(_T("RealTime Data Received:"), _T(""));
 	m_pPropChinaMarketRealTimeDataNumber->Enable(false);
 	pGroup1->AddSubItem(m_pPropChinaMarketRealTimeDataNumber);
-	m_pPropCurrentWorkingThread = new CMFCPropertyGridProperty(_T("working thread:"), _T(""));
+	m_pPropCurrentWorkingThread = new CGridProperty(_T("working thread:"), _T(""));
 	m_pPropCurrentWorkingThread->Enable(false);
 	pGroup1->AddSubItem(m_pPropCurrentWorkingThread);
 	m_wndPropList.AddProperty(pGroup1);
 
-	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
+	CMFCPropertyGridProperty* pGroup2 = new CGridProperty(_T("China market"));
 
-	m_pPropChinaMarketWebStatus = new CMFCPropertyGridColorProperty(_T("Web Status"), RGB(0, 192, 0), nullptr);
-	m_pPropChinaMarketWebStatus->SetColumnsNumber(1);
-	m_pPropChinaMarketWebStatus->EnableAutomaticButton(_T("Default"), ::GetSysColor(COLOR_3DFACE), false);
+	m_pPropChinaMarketWebStatus = new CGridProperty(_T("Status:"), _T(""));
 	m_pPropChinaMarketWebStatus->Enable(false);
 	pGroup2->AddSubItem(m_pPropChinaMarketWebStatus);
 
 	m_wndPropList.AddProperty(pGroup2);
 
 	// finnhub group
-	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("finnhub.io"));
-	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pFinnhubDataSource->IsEnable()), _T("Enable"), FINNHUB_DATA_SOURCE_ENABLE_));
-	m_pPropWorldMarketWebStatus = new CMFCPropertyGridProperty(_T("Web Status"), _T("running"));
+	CMFCPropertyGridProperty* pGroup3 = new CGridProperty(_T("finnhub.io"));
+	pGroup3->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pFinnhubDataSource->IsEnable()), _T("Enable"), FINNHUB_DATA_SOURCE_ENABLE_));
+	m_pPropWorldMarketWebStatus = new CGridProperty(_T("Web Status"), _T("running"));
 	m_pPropWorldMarketWebStatus->Enable(FALSE);
 	pGroup3->AddSubItem(m_pPropWorldMarketWebStatus);
-	m_pPropFinnhubCurrentFunction = new CMFCPropertyGridProperty(_T("Inquiring:"), _T(""));
+	m_pPropFinnhubCurrentFunction = new CGridProperty(_T("Inquiring:"), _T(""));
 	m_pPropFinnhubCurrentFunction->Enable(FALSE);
 	pGroup3->AddSubItem(m_pPropFinnhubCurrentFunction);
 	m_wndPropList.AddProperty(pGroup3);
 
 	// tiingo group
-	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty("Tiingo.com");
-	pGroup4->AddSubItem(new CMFCPropertyGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pTiingoDataSource->IsEnable()), _T("Enable"), TIINGO_DATA_SOURCE_ENABLE_));
-	m_pPropTiingoCurrentFunction = new CMFCPropertyGridProperty(_T("Inquiring:"), _T(""));
+	CMFCPropertyGridProperty* pGroup4 = new CGridProperty("Tiingo.com");
+	pGroup4->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pTiingoDataSource->IsEnable()), _T("Enable"), TIINGO_DATA_SOURCE_ENABLE_));
+	m_pPropTiingoCurrentFunction = new CGridProperty(_T("Inquiring:"), _T(""));
 	m_pPropTiingoCurrentFunction->Enable(FALSE);
 	pGroup4->AddSubItem(m_pPropTiingoCurrentFunction);
 	m_wndPropList.AddProperty(pGroup4);
 
 	// web socket group
-	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty("Web Socket");
-	m_pPropFinnhubWebSocket = new CMFCPropertyGridProperty(_T("Finnhub"), _T("Closed"));
+	CMFCPropertyGridProperty* pGroup5 = new CGridProperty("Web Socket");
+	m_pPropFinnhubWebSocket = new CGridProperty(_T("Finnhub"), _T("Closed"));
 	m_pPropFinnhubWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropFinnhubWebSocket);
-	m_pPropTiingoIEXWebSocket = new CMFCPropertyGridProperty(_T("TiingoIEX"), _T("Closed"));
+	m_pPropTiingoIEXWebSocket = new CGridProperty(_T("TiingoIEX"), _T("Closed"));
 	m_pPropTiingoIEXWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoIEXWebSocket);
-	m_pPropTiingoForexWebSocket = new CMFCPropertyGridProperty(_T("TiingoForex"), _T("Closed"));
+	m_pPropTiingoForexWebSocket = new CGridProperty(_T("TiingoForex"), _T("Closed"));
 	m_pPropTiingoForexWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoForexWebSocket);
-	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("TiingoCrypto"), _T("Closed"));
+	m_pPropTiingoCryptoWebSocket = new CGridProperty(_T("TiingoCrypto"), _T("Closed"));
 	m_pPropTiingoCryptoWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoCryptoWebSocket);
 
@@ -377,35 +375,36 @@ void CPropertiesWnd::SetPropListFont() {
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	string s = fmt::format("{:d}", gl_pChinaMarket->GetRTDataCounter());
-	m_pPropRealTimeDataReceived->SetValue(static_cast<_variant_t>(CA2W(s.c_str())));
+	m_pPropRealTimeDataReceived->SetValue(s);
 	int rmData = gl_qChinaMarketRTData.size_approx();
 	s = fmt::format("{:d}", rmData);
-	m_pPropChinaMarketRealTimeDataNumber->SetValue(static_cast<_variant_t>(CA2W(s.c_str())));
+	m_pPropChinaMarketRealTimeDataNumber->SetValue(s);
 
 	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
-	m_pPropCurrentWorkingThread->SetValue(static_cast<_variant_t>(CA2W(s.c_str()))); // 后台工作线程数
+	m_pPropCurrentWorkingThread->SetValue(s); // 后台工作线程数
 
-	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetColor(RGB(192, 0, 0));
-	else m_pPropChinaMarketWebStatus->SetColor(RGB(0, 192, 0));
+	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetValue("Busy");
+	else m_pPropChinaMarketWebStatus->SetValue("good");
 
 	if (gl_pChinaMarket->IsWebBusy()) {
-		m_pPropWorldMarketWebStatus->SetValue(static_cast<_variant_t>("Disabled"));
+		m_pPropWorldMarketWebStatus->SetValue("Disabled");
 	}
 	else {
 		if (gl_pFinnhubDataSource->IsWebError()) {
-			string s3 = fmt::format("running (EC:{:5Ld})", gl_pFinnhubDataSource->GetWebErrorCode());
-			m_pPropWorldMarketWebStatus->SetValue(static_cast<_variant_t>(CA2W(s3.c_str())));
+			string s3 = fmt::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pFinnhubDataSource->GetHTTPStatusCode(), gl_pFinnhubDataSource->GetWebErrorCode());
+			m_pPropWorldMarketWebStatus->SetValue(s3);
 		}
 		else {
-			m_pPropWorldMarketWebStatus->SetValue(static_cast<_variant_t>("running"));
+			string s4 = fmt::format("HTTP:{:3Ld}", gl_pFinnhubDataSource->GetHTTPStatusCode());
+			m_pPropWorldMarketWebStatus->SetValue(s4);
 		}
 	}
 
 	string strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
-	m_pPropFinnhubCurrentFunction->SetValue(static_cast<_variant_t>(CA2W(strMessage.c_str())));
+	m_pPropFinnhubCurrentFunction->SetValue(strMessage);
 
 	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
-	m_pPropTiingoCurrentFunction->SetValue(static_cast<_variant_t>(CA2W(strMessage.c_str())));
+	m_pPropTiingoCurrentFunction->SetValue(strMessage);
 
 	string str = "";
 	switch (gl_pFinnhubWebSocket->GetState()) {
@@ -422,7 +421,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = "Open";
 		break;
 	}
-	m_pPropFinnhubWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
+	m_pPropFinnhubWebSocket->SetValue(str);
 
 	switch (gl_pTiingoIEXWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
@@ -438,7 +437,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = "Open";
 		break;
 	}
-	m_pPropTiingoIEXWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
+	m_pPropTiingoIEXWebSocket->SetValue(str);
 
 	switch (gl_pTiingoForexWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
@@ -454,7 +453,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = "Open";
 		break;
 	}
-	m_pPropTiingoForexWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
+	m_pPropTiingoForexWebSocket->SetValue(str);
 
 	switch (gl_pTiingoCryptoWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
@@ -470,7 +469,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = "Open";
 		break;
 	}
-	m_pPropTiingoCryptoWebSocket->SetValue(static_cast<_variant_t>(str.c_str()));
+	m_pPropTiingoCryptoWebSocket->SetValue(str);
 
 	CDockablePane::OnTimer(nIDEvent);
 }

@@ -1,0 +1,4 @@
+[2025-12-01 20:38:45.065] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-12-01 20:39:00.885] [watchdog_daily_logger] [info] WatchdogQT App exit
+[2025-12-01 20:48:28.817] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-12-01 20:48:49.631] [watchdog_daily_logger] [info] WatchdogQT App exit

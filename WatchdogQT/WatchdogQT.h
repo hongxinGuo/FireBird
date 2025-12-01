@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QMessageBox>
 #include <QtWidgets/QMainWindow>
@@ -33,7 +33,7 @@ private:
 	void BuildUI();
 
 private slots:
-	void Update() const;
+	void Update();
 	void UpdatePer10Second();
 	void onActionAboutTriggered();
 

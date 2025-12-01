@@ -9,6 +9,19 @@ enum configuration_option {
 	TIINGO_DATA_SOURCE_ENABLE_
 };
 
+class CGridProperty : public CMFCPropertyGridProperty {
+public:
+	CGridProperty(const CString& strGroupName, DWORD_PTR dwData = 0, BOOL bIsValueList = FALSE) : CMFCPropertyGridProperty(strGroupName, dwData, bIsValueList) {}
+	CGridProperty(const CString& strName, const COleVariant& varValue, LPCTSTR lpszDescr = nullptr, DWORD_PTR dwData = 0,
+	              LPCTSTR lpszEditMask = nullptr, LPCTSTR lpszEditTemplate = nullptr, LPCTSTR lpszValidChars = nullptr) :
+		CMFCPropertyGridProperty(strName, varValue, lpszDescr, dwData, lpszEditMask, lpszEditTemplate, lpszValidChars) {}
+
+	~CGridProperty() override = default;
+
+public:
+	void SetValue(const string& strValue) { CMFCPropertyGridProperty::SetValue(static_cast<_variant_t>(CA2W(strValue.c_str()))); }
+};
+
 class CPropertiesToolBar : public CMFCToolBar {
 public:
 	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler); }
@@ -74,29 +87,29 @@ protected:
 	CFireBirdPropertyGridCtrl m_wndPropList;
 
 	// system status group
-	CMFCPropertyGridProperty* m_pPropRealTimeDataReceived{ nullptr };
-	CMFCPropertyGridProperty* m_pPropChinaMarketRealTimeDataNumber{ nullptr };
-	CMFCPropertyGridProperty* m_pPropCurrentWorkingThread{ nullptr };
+	CGridProperty* m_pPropRealTimeDataReceived{ nullptr };
+	CGridProperty* m_pPropChinaMarketRealTimeDataNumber{ nullptr };
+	CGridProperty* m_pPropCurrentWorkingThread{ nullptr };
 
-	CMFCPropertyGridProperty* m_pPropSystemOption{ nullptr };
+	CGridProperty* m_pPropSystemOption{ nullptr };
 
 	// china market
-	CMFCPropertyGridColorProperty* m_pPropChinaMarketWebStatus{ nullptr };
+	CGridProperty* m_pPropChinaMarketWebStatus{ nullptr };
 
 	// world market
-	CMFCPropertyGridProperty* m_pPropWorldMarketWebStatus{ nullptr };
+	CGridProperty* m_pPropWorldMarketWebStatus{ nullptr };
 
 	// finnhub.io
-	CMFCPropertyGridProperty* m_pPropFinnhubCurrentFunction{ nullptr };
+	CGridProperty* m_pPropFinnhubCurrentFunction{ nullptr };
 
 	// Tiingo.com
-	CMFCPropertyGridProperty* m_pPropTiingoCurrentFunction{ nullptr };
+	CGridProperty* m_pPropTiingoCurrentFunction{ nullptr };
 
 	// web socket group
-	CMFCPropertyGridProperty* m_pPropFinnhubWebSocket{ nullptr };
-	CMFCPropertyGridProperty* m_pPropTiingoIEXWebSocket{ nullptr };
-	CMFCPropertyGridProperty* m_pPropTiingoForexWebSocket{ nullptr };
-	CMFCPropertyGridProperty* m_pPropTiingoCryptoWebSocket{ nullptr };
+	CGridProperty* m_pPropFinnhubWebSocket{ nullptr };
+	CGridProperty* m_pPropTiingoIEXWebSocket{ nullptr };
+	CGridProperty* m_pPropTiingoForexWebSocket{ nullptr };
+	CGridProperty* m_pPropTiingoCryptoWebSocket{ nullptr };
 
 	// chinaMarket realtime group
 
