@@ -30,6 +30,7 @@ bool CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 	setDayLineBasic.Close();
 
 	m_fDataLoaded = true;
+	int aasdfd = 0;
 
 	return true;
 }

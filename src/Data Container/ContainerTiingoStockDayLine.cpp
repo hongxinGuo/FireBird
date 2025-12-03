@@ -97,7 +97,7 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 		}
 	}
 	else {// 没有旧数据
-		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+		for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
 			pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 		}
@@ -115,7 +115,7 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 	ASSERT(Size() > 0);
 
 	const size_t lSize = Size();
-	if (strStockSymbol.length() > 0) {
+	if (!strStockSymbol.empty()) {
 		pSetTiingoStockDayLine->m_strFilter = "[Symbol] = '";
 		pSetTiingoStockDayLine->m_strFilter += strStockSymbol.c_str();
 		pSetTiingoStockDayLine->m_strFilter += "'";
@@ -202,19 +202,4 @@ void CContainerTiingoStockDayLine::UpdateData(CTiingoCandleLinesPtr pvTempDayLin
 		}
 	}
 	m_fDataLoaded = true;
-}
-
-void CContainerTiingoStockDayLine::CalculateMA(int length) const {
-	if (m_vHistoryData.size() < length) return;
-
-	long long lSumMA = 0;
-	for (int i = 0; i < length - 1; i++) {
-		lSumMA += m_vHistoryData.at(i)->GetClose();
-	}
-	for (int i = length - 1; i < m_vHistoryData.size(); i++) {
-		lSumMA += m_vHistoryData.at(i)->GetClose();
-		const long lMA = lSumMA / length;
-		m_vHistoryData.at(i)->SetAverage(length, lMA);
-		lSumMA -= m_vHistoryData.at(i - (length - 1))->GetClose();
-	}
 }

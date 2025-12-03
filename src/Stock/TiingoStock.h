@@ -235,9 +235,9 @@ protected:
 
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
 
-	CContainerTiingoStockDayLine m_dataDayLine;
-	CContainerTiingoStockWeekLine m_dataWeekLine;
-	CContainerTiingoStockMonthLine m_dataMonthLine;
+	CContainerTiingoStockDayLine m_dataDayLine; // 日线数据容器
+	CContainerTiingoStockWeekLine m_dataWeekLine; // 周线数据容器 
+	CContainerTiingoStockMonthLine m_dataMonthLine; // 月线数据容器
 
 	// 无需存储数据区
 	bool m_fUpdateStockDailyMeta{ true };

@@ -23,7 +23,7 @@ bool CVirtualHistoryCandleBasic::IsActive() const {
 	return false;
 }
 
-void CVirtualHistoryCandleBasic::SetAverage(int length, long lValue) noexcept {
+void CVirtualHistoryCandleBasic::SetAverage(size_t length, long lValue) noexcept {
 	switch (length) {
 	case 5:
 		m_l5Average = lValue;
@@ -77,6 +77,8 @@ long CVirtualHistoryCandleBasic::GetAverage(const int length) const noexcept {
 		return m_lAverage;
 	}
 }
+
+
 
 void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());

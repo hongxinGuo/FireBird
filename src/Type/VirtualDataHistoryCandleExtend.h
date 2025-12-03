@@ -17,6 +17,7 @@ public:
 	CVirtualDataHistoryCandleExtend();
 	virtual ~CVirtualDataHistoryCandleExtend() = default;
 	void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
+	void CalculateMA(size_t length) const;
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
 	virtual bool SaveDB(const string&) {

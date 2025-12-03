@@ -103,7 +103,7 @@ public:
 	void Set120RS(const double dValue) noexcept { m_d120RS = dValue; }
 	double Get120RS() const noexcept { return m_d120RS; }
 
-	void SetAverage(int length, long lValue) noexcept;
+	void SetAverage(size_t length, long lValue) noexcept;
 	long GetAverage(const int length) const noexcept;
 
 protected:
@@ -159,3 +159,4 @@ protected:
 };
 
 using CVirtualHistoryCandleBasicPtr = shared_ptr<CVirtualHistoryCandleBasic>;
+using CVirtualHistoryCandleBasicsPtr = shared_ptr<vector<CVirtualHistoryCandleBasicPtr>>;

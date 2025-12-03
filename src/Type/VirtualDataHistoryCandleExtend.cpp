@@ -222,6 +222,22 @@ void CVirtualDataHistoryCandleExtend::Reset() {
 	m_fBasicDataLoaded = false;
 }
 
+void CVirtualDataHistoryCandleExtend::CalculateMA(size_t length) const {
+	if (m_vHistoryData.size() < length) return;
+
+	long lSumMA = 0;
+	for (int i = 0; i < length - 1; i++) {
+		lSumMA += m_vHistoryData.at(i)->GetClose();
+	}
+	for (size_t i = length - 1; i < m_vHistoryData.size(); i++) {
+		lSumMA += m_vHistoryData.at(i)->GetClose();
+		const long lMA = lSumMA / length;
+		m_vHistoryData.at(i)->SetAverage(length, lMA);
+		lSumMA -= m_vHistoryData.at(i - (length - 1))->GetClose();
+	}
+}
+
+
 bool CVirtualDataHistoryCandleExtend::CalculateRS0() {
 	CalculateRS1(3);
 	CalculateRS1(5);

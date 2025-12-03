@@ -32,7 +32,6 @@ public:
 	}
 
 	// 特有函数
-	void CalculateMA(int length) const;
 };
 
 using CContainerTiingoStockDayLinePtr = shared_ptr<CContainerTiingoStockDayLine>;
