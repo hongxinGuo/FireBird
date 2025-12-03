@@ -110,8 +110,8 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
-	auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
+CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
+	auto pvDayLine = make_shared<vector<CTiingoCandleLinePtr>>();
 	string s;
 	json js;
 
@@ -130,14 +130,14 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			CTiingoStock stock;
-			auto pDayLine = make_shared<CTiingoDayLine>();
+			auto pDayLine = make_shared<CTiingoCandleLine>();
 			//pDayLine->SetExchange("US"); // 所有的Tiingo证券皆为美国市场。
 			s = jsonGetString(it, "date");
 			long lTemp = XferToYYYYMMDD(s);
 			pDayLine->SetDate(lTemp);
-			double dTemp = jsonGetDouble(it,"close");
+			double dTemp = jsonGetDouble(it, "close");
 			pDayLine->SetClose(dTemp * stock.GetRatio());
-			dTemp = jsonGetDouble(it,"high");
+			dTemp = jsonGetDouble(it, "high");
 			pDayLine->SetHigh(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, "low");
 			pDayLine->SetLow(dTemp * stock.GetRatio());
@@ -157,7 +157,7 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 		ReportJSonErrorToSystemMessage("Tiingo Stock DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
-	std::ranges::sort(*pvDayLine, [](const CTiingoDayLinePtr& pData1, const CTiingoDayLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); }); // 以日期早晚顺序排列。
+	std::ranges::sort(*pvDayLine, [](const CTiingoCandleLinePtr& pData1, const CTiingoCandleLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); }); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

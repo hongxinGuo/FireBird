@@ -1200,6 +1200,36 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 	return true;
 }
 
+bool CChinaStock::CreateMonthLine() {
+	/*
+	ASSERT(m_dataDayLine.IsDataLoaded());
+	size_t index = 0;
+	CTiingoCandleLinePtr pMonthLine = nullptr;
+	size_t monthLineSize = m_dataMonthLine.Size();
+	while (index < dayLineSize) {
+		auto pDayLine = m_dataMonthLine.GetData(index++);
+		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
+		pMonthLine = make_shared<CTiingoCandleLine>();
+		pMonthLine->SetDate(pDayLine->GetDate());
+		pMonthLine->SetOpen(pDayLine->GetOpen());
+		pMonthLine->SetLow(pDayLine->GetLow());
+		do {
+			if (pDayLine->GetHigh() > pMonthLine->GetHigh()) pMonthLine->SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < pMonthLine->GetLow()) pMonthLine->SetLow(pDayLine->GetLow());
+			pMonthLine->SetVolume(pMonthLine->GetVolume() + pDayLine->GetVolume());
+			pMonthLine->SetAmount(pMonthLine->GetAmount() + pDayLine->GetAmount());
+			pMonthLine->SetClose(pDayLine->GetClose());
+			if (index < monthLineSize) pDayLine = m_dataDayLine.GetData(index);
+			else break;
+			if (pDayLine->GetDate() < lCurrentEndDate) index++;
+			else break;
+		} while (true);
+
+		if (pMonthLine->GetClose() > 0) m_dataMonthLine.Add(pMonthLine); // 有数据才存储
+		*/
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // 判断股票数据是否有效。采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据

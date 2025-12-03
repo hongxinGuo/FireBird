@@ -4,7 +4,7 @@
 
 class CWeekLine final : public CVirtualHistoryCandleExtend {
 public:
-	CWeekLine();
+	CWeekLine() = default;
 
 	bool UpdateWeekLine(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend);
 };

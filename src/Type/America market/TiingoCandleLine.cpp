@@ -1,13 +1,13 @@
 #include "pch.h"
 
-#include "TiingoDayLine.h"
+#include "TiingoCandleLine.h"
 #include"TiingoStock.h"
 
 static CTiingoStock s_stock; // 用于获得各价格的放大比率。
 
-CTiingoDayLine::CTiingoDayLine() {
+CTiingoCandleLine::CTiingoCandleLine() {
 }
 
-int CTiingoDayLine::GetRatio() const {
+int CTiingoCandleLine::GetRatio() const {
 	return s_stock.GetRatio();
 }

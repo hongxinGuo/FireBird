@@ -4,14 +4,14 @@
 
 #include "VirtualDataHistoryCandleExtend.h"
 
-class CContainerTiingoStockWeekLine : public CVirtualDataHistoryCandleExtend {
+class CContainerTiingoStockMonthLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CContainerTiingoStockWeekLine();
-	CContainerTiingoStockWeekLine(const CContainerTiingoStockWeekLine& other) = delete;
-	CContainerTiingoStockWeekLine(CContainerTiingoStockWeekLine&& other) noexcept = delete;
-	CContainerTiingoStockWeekLine& operator=(const CContainerTiingoStockWeekLine& other) = delete;
-	CContainerTiingoStockWeekLine& operator=(CContainerTiingoStockWeekLine&& other) noexcept = delete;
-	~CContainerTiingoStockWeekLine() override = default;
+	CContainerTiingoStockMonthLine();
+	CContainerTiingoStockMonthLine(const CContainerTiingoStockMonthLine& other) = delete;
+	CContainerTiingoStockMonthLine(CContainerTiingoStockMonthLine&& other) noexcept = delete;
+	CContainerTiingoStockMonthLine& operator=(const CContainerTiingoStockMonthLine& other) = delete;
+	CContainerTiingoStockMonthLine& operator=(CContainerTiingoStockMonthLine&& other) noexcept = delete;
+	~CContainerTiingoStockMonthLine() override = default;
 
 	void UpdateData(CTiingoCandleLinesPtr pvTempDayLine);
 

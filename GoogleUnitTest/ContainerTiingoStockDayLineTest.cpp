@@ -40,19 +40,19 @@ namespace FireBirdTest {
 
 	TEST_F(CDataTiingoStockDayLineTest, TestSaveDB) {
 		vector<CDayLinePtr> vDayLine;
-		CTiingoDayLinesPtr dayLinesPtr = make_shared<vector<CTiingoDayLinePtr>>();
+		CTiingoCandleLinesPtr dayLinesPtr = make_shared<vector<CTiingoCandleLinePtr>>();
 
-		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
+		CTiingoCandleLinePtr pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetDate(20241103); // 测试库中没有，插入
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);
 		dayLinesPtr->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetDate(20241107); // 测试库中有
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);
 		dayLinesPtr->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetDate(20241111); // 测试库中的数据最新日期为20241108，此日期位于其后
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);

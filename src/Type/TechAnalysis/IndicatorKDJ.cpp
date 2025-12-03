@@ -17,20 +17,20 @@ void CIndicatorKDJ::Calculate() {
 	ASSERT(m_pvCandle != nullptr);
 
 	m_vKDJ.resize(m_pvCandle->Size());
-	for (size_t i = 0; i < m_Period; i++) {
+	for (int i = 0; i < m_Period; i++) {
 		m_vKDJ[i].m_RSV = 50;
 		m_vKDJ[i].m_K = 50;
 		m_vKDJ[i].m_D = 50;
 		m_vKDJ[i].m_J = 50;
 	}
-	for (size_t index = m_Period - 1; index < m_pvCandle->Size(); index++) {
+	for (int index = m_Period - 1; index < m_pvCandle->Size(); index++) {
 		auto data = m_pvCandle->GetData(index);
 		long lHigh = 0;
 		long lLow = data->GetLow();
 		for (size_t i = index - m_Period + 1; i <= index; i++) {
 			auto data2 = m_pvCandle->GetData(i);
-			if (lHigh < data2->GetHigh()) lHigh = data2->GetHigh();
-			if (lLow > data2->GetLow()) lLow = data2->GetLow();
+			lHigh = max(lHigh, data2->GetHigh());
+			lLow = min(lLow, data2->GetLow());
 		}
 		m_vKDJ[index].m_RSV = (static_cast<double>(data->GetClose() - lLow)) * 100 / (lHigh - lLow);
 		m_vKDJ[index].m_K = (m_vKDJ[index - 1].m_K * 2 + m_vKDJ[index].m_RSV) / 3;

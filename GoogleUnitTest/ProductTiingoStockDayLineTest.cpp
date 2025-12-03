@@ -1,4 +1,4 @@
-﻿#include"pch.h"
+#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
@@ -140,8 +140,8 @@ namespace FireBirdTest {
 		                         &tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
-		CTiingoDayLinesPtr pvDayLine;
-		CTiingoDayLinePtr pDayLine;
+		CTiingoCandleLinesPtr pvDayLine;
+		CTiingoCandleLinePtr pDayLine;
 
 		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
 		switch (m_lIndex) {

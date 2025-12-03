@@ -120,7 +120,6 @@ long GetNextMonth(long lDate) noexcept {
 	unsigned int month = lDate / 100 - year * 100;
 	chrono::year y{ year };
 	chrono::month m{ month };
-	chrono::month m1{ 1 };
 	auto ymd = year_month_day{ y, m, day(1) } + months(1);
 
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + 01;

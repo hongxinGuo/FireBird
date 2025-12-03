@@ -24,6 +24,7 @@
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h" />
@@ -213,13 +214,12 @@
     <ClInclude Include="..\src\Type\America market\MarketStatus.h" />
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
     <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
-    <ClInclude Include="..\src\Type\America market\TiingoDayLine.h" />
+    <ClInclude Include="..\src\Type\America market\TiingoCandleLine.h" />
     <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
     <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.h" />
-    <ClInclude Include="..\src\Type\America market\TiingoWeekLine.h" />
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
     <ClInclude Include="..\src\Type\China market\Guadan.h" />
     <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
@@ -235,7 +235,6 @@
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h" />
-    <ClInclude Include="..\src\utf8_fmt.h" />
     <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h" />
@@ -262,6 +261,7 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoNewSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockMonthLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockWeekLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaDayLine.cpp" />
@@ -447,12 +447,11 @@
     <ClCompile Include="..\src\Type\America market\InsiderTransaction.cpp" />
     <ClCompile Include="..\src\Type\America market\NaicesIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
-    <ClCompile Include="..\src\Type\America market\TiingoDayLine.cpp" />
+    <ClCompile Include="..\src\Type\America market\TiingoCandleLine.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />
-    <ClCompile Include="..\src\Type\America market\TiingoWeekLine.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLine.cpp" />
     <ClCompile Include="..\src\Type\China market\Guadan.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp" />
@@ -482,6 +481,9 @@
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\Stock\.editorconfig" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

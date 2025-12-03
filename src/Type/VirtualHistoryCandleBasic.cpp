@@ -3,9 +3,6 @@
 #include"ConvertToString.h"
 #include"VirtualHistoryCandleBasic.h"
 
-CVirtualHistoryCandleBasic::CVirtualHistoryCandleBasic() {
-}
-
 void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {
 	const double dLog50 = log10(50.0);
 	const double dLog100 = log10(100.0);
@@ -26,7 +23,7 @@ bool CVirtualHistoryCandleBasic::IsActive() const {
 	return false;
 }
 
-void CVirtualHistoryCandleBasic::SetAverage(const int length, const long lValue) noexcept {
+void CVirtualHistoryCandleBasic::SetAverage(int length, long lValue) noexcept {
 	switch (length) {
 	case 5:
 		m_l5Average = lValue;

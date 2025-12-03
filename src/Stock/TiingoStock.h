@@ -2,6 +2,8 @@
 
 #include "ContainerTiingoStockDayLine.h"
 #include "ContainerTiingoStockWeekLine.h"
+#include "ContainerTiingoStockMonthLine.h"
+
 #include"SetTiingoStock.h"
 #include "SetTiingoStock52WeekHigh.h"
 #include "SetTiingoStock52WeekLow.h"
@@ -10,6 +12,7 @@
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
 #include "TiingoStockDailyMeta.h"
+//#include "America market/ContainerTiingoStockMonthLine.h"
 
 class CTiingoStock;
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;
@@ -108,10 +111,12 @@ public:
 	void SetDayLineLoaded(bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
 	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
+	bool IsMonthLineLoaded() const noexcept override { return m_dataMonthLine.IsDataLoaded(); }
+	void SetMonthLineLoaded(bool fFlag) noexcept override { m_dataMonthLine.SetDataLoaded(fFlag); }
 
 	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
-	void UpdateDayLine(const CTiingoDayLinesPtr& vTempDayLine);
+	void UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine);
 	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
 	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库
@@ -122,8 +127,8 @@ public:
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	bool HaveDayLine(const long lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
-	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
-	CTiingoDayLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
+	CTiingoCandleLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
+	CTiingoCandleLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
 
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
@@ -136,11 +141,11 @@ public:
 		CreateWeekLine();
 		return true;
 	}
-	/*
+
 	bool LoadMonthLineDB() override {
 		CreateMonthLine();
 		return true;
-	}*/
+	}
 
 	void CreateWeekLine();
 	void CreateMonthLine();
@@ -232,6 +237,7 @@ protected:
 
 	CContainerTiingoStockDayLine m_dataDayLine;
 	CContainerTiingoStockWeekLine m_dataWeekLine;
+	CContainerTiingoStockMonthLine m_dataMonthLine;
 
 	// 无需存储数据区
 	bool m_fUpdateStockDailyMeta{ true };

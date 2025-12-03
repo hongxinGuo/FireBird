@@ -840,7 +840,7 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoDayLine.h">
+    <ClInclude Include="..\src\Type\America market\TiingoCandleLine.h">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.h">
@@ -900,17 +900,14 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoWeekLine.h">
-      <Filter>头文件\Type\America market\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\utf8_fmt.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1475,7 +1472,7 @@
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp">
       <Filter>源文件\Type\America market\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoDayLine.cpp">
+    <ClCompile Include="..\src\Type\America market\TiingoCandleLine.cpp">
       <Filter>源文件\Type\America market\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp">
@@ -1499,14 +1496,17 @@
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp">
       <Filter>源文件\Type\America market\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoWeekLine.cpp">
-      <Filter>源文件\Type\America market\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockMonthLine.cpp">
+      <Filter>源文件\Data container\Tiingo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\Stock\.editorconfig" />
   </ItemGroup>
 </Project>

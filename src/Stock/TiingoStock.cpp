@@ -116,9 +116,9 @@ void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
 	m_llVolume = pIEXTopOfBook->m_llVolume;
 }
 
-void CTiingoStock::UpdateDayLine(const CTiingoDayLinesPtr& vTempDayLine) {
+void CTiingoStock::UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine) {
 	m_dataDayLine.Unload();
-	for (auto p : *vTempDayLine) {
+	for (const auto& p : *vTempDayLine) {
 		m_dataDayLine.Add(p);
 	}
 	m_dataDayLine.SetDataLoaded(true);
@@ -162,7 +162,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	setFinancialState.m_pDatabase->BeginTrans();
 	if (lSizeOfOldDayLine > 0) {// 有旧数据
 		long lCurrentPos = 0;
-		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+		for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pTiingoFinancialState = m_pvFinancialState->at(i);
 			if (pTiingoFinancialState->m_yearQuarter < vOldFinancialState.at(0)->m_yearQuarter) {	// 有更早的新数据？
 				pTiingoFinancialState->Append(setFinancialState);
@@ -181,7 +181,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 		}
 	}
 	else {// 没有旧数据
-		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+		for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pTiingoFinancialState = m_pvFinancialState->at(i);
 			pTiingoFinancialState->Append(setFinancialState);
 		}
@@ -293,13 +293,12 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 void CTiingoStock::CreateWeekLine() {
 	ASSERT(m_dataDayLine.IsDataLoaded());
 	size_t index = 0;
-	CTiingoWeekLinePtr pWeekLine = nullptr;
+	CTiingoCandleLinePtr pWeekLine = nullptr;
 	size_t dayLineSize = m_dataDayLine.Size();
-	TRACE("all week line %d\n", m_dataWeekLine.Size());
 	while (index < dayLineSize) {
 		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
-		pWeekLine = make_shared<CTiingoWeekLine>();
+		pWeekLine = make_shared<CTiingoCandleLine>();
 		pWeekLine->SetDate(pDayLine->GetDate());
 		pWeekLine->SetOpen(pDayLine->GetOpen());
 		pWeekLine->SetLow(pDayLine->GetLow());
@@ -321,6 +320,36 @@ void CTiingoStock::CreateWeekLine() {
 	m_dataWeekLine.SetDataLoaded(true);
 }
 
+void CTiingoStock::CreateMonthLine() {
+	ASSERT(m_dataDayLine.IsDataLoaded());
+	size_t index = 0;
+	CTiingoCandleLinePtr pMonthLine = nullptr;
+	size_t dayLineSize = m_dataDayLine.Size();
+	while (index < dayLineSize) {
+		auto pDayLine = m_dataDayLine.GetData(index++);
+		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
+		pMonthLine = make_shared<CTiingoCandleLine>();
+		pMonthLine->SetDate(pDayLine->GetDate());
+		pMonthLine->SetOpen(pDayLine->GetOpen());
+		pMonthLine->SetLow(pDayLine->GetLow());
+		do {
+			if (pDayLine->GetHigh() > pMonthLine->GetHigh()) pMonthLine->SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < pMonthLine->GetLow()) pMonthLine->SetLow(pDayLine->GetLow());
+			pMonthLine->SetVolume(pMonthLine->GetVolume() + pDayLine->GetVolume());
+			pMonthLine->SetAmount(pMonthLine->GetAmount() + pDayLine->GetAmount());
+			pMonthLine->SetClose(pDayLine->GetClose());
+			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
+			else break;
+			if (pDayLine->GetDate() < lCurrentEndDate) index++;
+			else break;
+		} while (true);
+
+		if (pMonthLine->GetClose() > 0) m_dataMonthLine.Add(pMonthLine); // 有数据才存储
+	}
+
+	m_dataMonthLine.SetDataLoaded(true);
+}
+
 /*
 void CTiingoStock::CreateMonthLine() {
 	ASSERT(m_dataDayLine.IsDataLoaded());
@@ -331,7 +360,7 @@ void CTiingoStock::CreateMonthLine() {
 	while (index < dayLineSize) {
 		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
-		pWeekLine = make_shared<CTiingoWeekLine>();
+		pWeekLine = make_shared<CTiingoCandleLine>();
 		pWeekLine->SetDate(pDayLine->GetDate());
 		pWeekLine->SetOpen(pDayLine->GetOpen());
 		pWeekLine->SetLow(pDayLine->GetLow());
@@ -508,7 +537,7 @@ void CTiingoStock::Load52WeekLow() {
 	setLow.Close();
 }
 
-constexpr double __SMALL_DOUBLE_ = 0.000005;
+constexpr double SMALL_DOUBLE_ = 0.000005;
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理日线
@@ -607,7 +636,7 @@ int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
 	ASSERT(index >= 250);
 	bool fIsNewLow = true;
 	bool fIsNewHigh = true;
-	double belowClose = dClose + __SMALL_DOUBLE_; // 增加一点以利于判断相同的数值。
+	double belowClose = dClose + SMALL_DOUBLE_; // 增加一点以利于判断相同的数值。
 	for (size_t i = index - 250; i < index; i++) {
 		if (m_vClose[i] < belowClose) {
 			fIsNewLow = false;
@@ -615,7 +644,7 @@ int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
 		}
 	}
 	if (fIsNewLow) return -1; // 52周新低价
-	double aboveClose = dClose - __SMALL_DOUBLE_;// 减少一点以利于判断相同的数值。
+	double aboveClose = dClose - SMALL_DOUBLE_;// 减少一点以利于判断相同的数值。
 	for (size_t i = index - 250; i < index; i++) {
 		if (m_vClose[i] > aboveClose) {
 			fIsNewHigh = false;
@@ -641,7 +670,7 @@ void CTiingoStock::FindAll52WeekLow(size_t beginPos, size_t endPos) {
 	while (currentPos < endPos) {
 		if (fFound) {
 			bool fCurrentFound = false;
-			double belowCurrent52WeekLow = dCurrent52WeekLowValue - __SMALL_DOUBLE_;
+			double belowCurrent52WeekLow = dCurrent52WeekLowValue - SMALL_DOUBLE_;
 			for (auto index = currentBeginPos; index <= current52WeekLowPos; index++) {
 				if (currentPos == endPos) {
 					fCurrentFound = false;
@@ -676,13 +705,13 @@ size_t CTiingoStock::FindCurrent52WeekLow(size_t beginPos, size_t endPos, double
 	ASSERT(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
-	double belowCurrentValue = value - __SMALL_DOUBLE_;
+	double belowCurrentValue = value - SMALL_DOUBLE_;
 
 	for (auto index = beginPos; index < endPos; index++) {
 		if (m_vClose[index] < belowCurrentValue) {
 			pos = index;
 			value = m_vClose[index];
-			belowCurrentValue = value - __SMALL_DOUBLE_;
+			belowCurrentValue = value - SMALL_DOUBLE_;
 		}
 	}
 	return pos;
@@ -697,7 +726,7 @@ void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
 
 	while (currentBeginPos < endPos - 1) {
 		if (fFound) { // 有最高价
-			auto aboveCurrent52WeekHigh = dCurrent52WeekHighValue + __SMALL_DOUBLE_;
+			auto aboveCurrent52WeekHigh = dCurrent52WeekHighValue + SMALL_DOUBLE_;
 			bool fCurrentFound = false;
 			for (auto index = currentBeginPos; index <= current52WeekHighPos; index++) { // 查询到最新的新低价
 				if (currentEndPos == endPos) {
@@ -744,13 +773,13 @@ size_t CTiingoStock::FindCurrent52WeekHigh(size_t beginPos, size_t endPos, doubl
 	ASSERT(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
-	auto aboveCurrentValue = value + __SMALL_DOUBLE_;
+	auto aboveCurrentValue = value + SMALL_DOUBLE_;
 
 	for (auto index = beginPos; index < endPos; index++) {
 		if (m_vClose[index] > aboveCurrentValue) {
 			pos = index;
 			value = m_vClose[index];
-			aboveCurrentValue = value + __SMALL_DOUBLE_;
+			aboveCurrentValue = value + SMALL_DOUBLE_;
 		}
 	}
 	return pos;
@@ -760,7 +789,7 @@ double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) const 
 	double dRatio = 1;
 	for (auto index = beginPos; index < endPos; index++) {
 		auto splitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
-		if (splitFactor > __SMALL_DOUBLE_) {
+		if (splitFactor > SMALL_DOUBLE_) {
 			dRatio *= splitFactor;
 		}
 	}
@@ -773,11 +802,11 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 		for (auto index = dayLineSize - 1; index > calculatePos; index--) { // 向前复权（保持目前的股价不变）
 			m_vClose[index] *= dCurrentSplitFactor; // 使用除法向前复权。要先计算，然后才算splitFactor
 			auto currentSplitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
-			if (currentSplitFactor < 1 + __SMALL_DOUBLE_ && currentSplitFactor > 1 - __SMALL_DOUBLE_) {
+			if (currentSplitFactor < 1 + SMALL_DOUBLE_ && currentSplitFactor > 1 - SMALL_DOUBLE_) {
 				// do nothing
 			}
 			else {
-				if (currentSplitFactor > __SMALL_DOUBLE_) {
+				if (currentSplitFactor > SMALL_DOUBLE_) {
 					dCurrentSplitFactor /= currentSplitFactor;
 				}
 			}
@@ -786,7 +815,7 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 	else { // 总体是扩股的。
 		for (auto index = calculatePos; index < dayLineSize; index++) { // 向后复权（目前的股价会变大）
 			auto currentSplitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
-			if ((currentSplitFactor < 1 + __SMALL_DOUBLE_) && currentSplitFactor > 1 - __SMALL_DOUBLE_) {
+			if ((currentSplitFactor < 1 + SMALL_DOUBLE_) && currentSplitFactor > 1 - SMALL_DOUBLE_) {
 				// do nothing
 			}
 			else {

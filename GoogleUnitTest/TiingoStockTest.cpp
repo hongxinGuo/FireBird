@@ -303,25 +303,25 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateDayLineStartEndDate) {
-		auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
+		auto pvDayLine = make_shared<vector<CTiingoCandleLinePtr>>();
 		CSetTiingoStockDayLine setDayLine;
 
-		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
+		CTiingoCandleLinePtr pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210102); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);
@@ -486,25 +486,25 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {
-		auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
+		auto pvDayLine = make_shared<vector<CTiingoCandleLinePtr>>();
 		CSetTiingoStockDayLine setDayLine;
 
-		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
+		CTiingoCandleLinePtr pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(19800101); // 这个日期早于数据库中的最早日期，需要添加进数据库
 		pDayLine->SetClose(115);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个日期为新日期，需要添加进数据库
 		pDayLine->SetClose(12340);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20241111); // 这个日期为新日期，需要添加进数据库
 		pDayLine->SetClose(135);
@@ -572,28 +572,28 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestHaveNewDayLineData) {
-		auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
+		auto pvDayLine = make_shared<vector<CTiingoCandleLinePtr>>();
 		//CSetTiingoStockDayLine setDayLine;
 
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 		EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";
 
-		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
+		CTiingoCandleLinePtr pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210102); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
 		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
+		pDayLine = make_shared<CTiingoCandleLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);

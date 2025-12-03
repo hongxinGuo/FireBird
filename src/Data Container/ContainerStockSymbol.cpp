@@ -16,20 +16,20 @@ void CContainerStockSymbol::Reset() {
 	m_mapStockSymbol.clear();
 	m_vCurrentSectionStockCode.resize(0);
 	// 预设股票代码集如下
-	m_vCurrentSectionStockCode.push_back("000000.SS"); // 上海指数
-	m_vCurrentSectionStockCode.push_back("600000.SS"); // 上海主板
-	m_vCurrentSectionStockCode.push_back("601000.SS"); // 上海主板
-	m_vCurrentSectionStockCode.push_back("603000.SS"); // 上海三板
-	m_vCurrentSectionStockCode.push_back("688000.SS"); // 上海科创板
-	m_vCurrentSectionStockCode.push_back("900000.SS"); // 上海B股
-	m_vCurrentSectionStockCode.push_back("000000.SZ"); // 深圳主板
-	m_vCurrentSectionStockCode.push_back("001000.SZ"); // 深圳主板
-	m_vCurrentSectionStockCode.push_back("002000.SZ"); // 深圳中小板
-	m_vCurrentSectionStockCode.push_back("003000.SZ"); // 深圳中小板
-	m_vCurrentSectionStockCode.push_back("004000.SZ"); // 深圳中小板
-	m_vCurrentSectionStockCode.push_back("200000.SZ"); // 深圳B股
-	m_vCurrentSectionStockCode.push_back("300000.SZ"); // 深圳创业板
-	m_vCurrentSectionStockCode.push_back("399000.SZ"); // 深圳指数
+	m_vCurrentSectionStockCode.emplace_back("000000.SS"); // 上海指数
+	m_vCurrentSectionStockCode.emplace_back("600000.SS"); // 上海主板
+	m_vCurrentSectionStockCode.emplace_back("601000.SS"); // 上海主板
+	m_vCurrentSectionStockCode.emplace_back("603000.SS"); // 上海三板
+	m_vCurrentSectionStockCode.emplace_back("688000.SS"); // 上海科创板
+	m_vCurrentSectionStockCode.emplace_back("900000.SS"); // 上海B股
+	m_vCurrentSectionStockCode.emplace_back("000000.SZ"); // 深圳主板
+	m_vCurrentSectionStockCode.emplace_back("001000.SZ"); // 深圳主板
+	m_vCurrentSectionStockCode.emplace_back("002000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.emplace_back("003000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.emplace_back("004000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.emplace_back("200000.SZ"); // 深圳B股
+	m_vCurrentSectionStockCode.emplace_back("300000.SZ"); // 深圳创业板
+	m_vCurrentSectionStockCode.emplace_back("399000.SZ"); // 深圳指数
 	// 从股票代码集数据库中读入其他股票集
 
 	//重置StockSection
@@ -42,8 +42,8 @@ void CContainerStockSymbol::Reset() {
 		else pStockSection->SetMarket(_SHENZHEN_MARKET_);
 		m_vStockSection.at(i) = pStockSection;
 	}
-	for (int i = 0; i < m_vStockSection.size(); i++) {
-		m_vStockSection.at(i)->SetBuildStockPtr(false);
+	for (const auto& pStockSection : m_vStockSection) {
+		pStockSection->SetBuildStockPtr(false);
 	}
 	m_fUpdateStockSection = false;
 

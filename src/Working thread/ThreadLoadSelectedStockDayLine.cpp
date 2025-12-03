@@ -26,6 +26,7 @@ UINT TaskLoadSelectedStockHistoryData() {
 			gl_runtime.thread_executor()->post([pStock] {
 				pStock->LoadDayLineDB();
 				pStock->LoadWeekLineDB(); // 生成weekLine
+				pStock->LoadMonthLineDB(); // 生成MonthLine
 			});
 		}
 	}

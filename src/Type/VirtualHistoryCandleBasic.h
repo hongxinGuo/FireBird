@@ -13,8 +13,8 @@
 
 class CVirtualHistoryCandleBasic {
 public:
-	CVirtualHistoryCandleBasic();
-	virtual ~CVirtualHistoryCandleBasic() = default;;
+	CVirtualHistoryCandleBasic() = default;
+	virtual ~CVirtualHistoryCandleBasic() = default;
 
 	void SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const; // 存储基本数据
 	void AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const;
@@ -56,37 +56,38 @@ public:
 	long GetHigh() const noexcept { return m_lHigh; }
 	void SetHigh(const long lValue) noexcept { m_lHigh = lValue; }
 	long GetLow() const noexcept { return m_lLow; }
-	void SetLow(const char* buffer) noexcept { m_lLow = static_cast<long>(atof(buffer)); }
+	void SetLow(const string& str) noexcept { m_lLow = static_cast<long>(strtod(str.c_str(), nullptr)); }
 	void SetLow(const long lValue) noexcept { m_lLow = lValue; }
 	long GetClose() const noexcept { return m_lClose; }
-	void SetClose(const char* buffer) noexcept { m_lClose = static_cast<long>(atof(buffer)); }
+	void SetClose(const string& str) noexcept { m_lClose = static_cast<long>(strtod(str.c_str(), nullptr)); }
 	void SetClose(const long lValue) noexcept { m_lClose = lValue; }
 	double GetDividend() const noexcept { return m_dDividend; }
-	void SetDividend(const char* buffer) noexcept { m_dDividend = atof(buffer); }
+	void SetDividend(const string& str) noexcept { m_dDividend = strtod(str.c_str(), nullptr); }
 	void SetDividend(const double dValue) noexcept { m_dDividend = dValue; }
 	double GetUpDown() const noexcept { return m_dUpDown; }
-	void SetUpDown(const char* buffer) noexcept { m_dUpDown = atof(buffer); }
+	void SetUpDown(const string& str) noexcept { m_dUpDown = strtod(str.c_str(), nullptr); }
 	void SetUpDown(const double dValue) noexcept { m_dUpDown = dValue; }
 	double GetSplitFactor() const noexcept { return m_dSplitFactor; }
-	void SetSplitFactor(const char* buffer) noexcept { m_dSplitFactor = atof(buffer); }
+	void SetSplitFactor(const string& str) noexcept { m_dSplitFactor = strtod(str.c_str(), nullptr); }
+
 	void SetSplitFactor(const double dValue) noexcept { m_dSplitFactor = dValue; }
 	double GetUpDownRate() const noexcept { return m_dUpDownRate; }
-	void SetUpDownRate(const char* buffer) noexcept { m_dUpDownRate = atof(buffer); }
+	void SetUpDownRate(const string& str) noexcept { m_dUpDownRate = strtod(str.c_str(), nullptr); }
 	void SetUpDownRate(const double dValue) noexcept { m_dUpDownRate = dValue; }
 	double GetChangeHandRate() const noexcept { return m_dChangeHandRate; }
-	void SetChangeHandRate(const char* buffer) noexcept { m_dChangeHandRate = atof(buffer); }
+	void SetChangeHandRate(const string& str) noexcept { m_dChangeHandRate = strtod(str.c_str(), nullptr); }
 	void SetChangeHandRate(const double dValue) noexcept { m_dChangeHandRate = dValue; }
 	INT64 GetVolume() const noexcept { return m_llVolume; }
-	void SetVolume(const char* buffer) noexcept { m_llVolume = static_cast<INT64>(atof(buffer)); }
+	void SetVolume(const string& str) noexcept { m_llVolume = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
 	void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
 	INT64 GetAmount() const noexcept { return m_llAmount; }
-	void SetAmount(const char* buffer) noexcept { m_llAmount = static_cast<INT64>(atof(buffer)); }
+	void SetAmount(const string& str) noexcept { m_llAmount = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
 	void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
 	INT64 GetTotalValue() const noexcept { return m_llTotalValue; }
-	void SetTotalValue(const char* buffer) noexcept { m_llTotalValue = static_cast<INT64>(atof(buffer)); }
+	void SetTotalValue(const string& str) noexcept { m_llTotalValue = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
 	void SetTotalValue(const INT64 llValue) noexcept { m_llTotalValue = llValue; }
 	INT64 GetCurrentValue() const noexcept { return m_llCurrentValue; }
-	void SetCurrentValue(const char* buffer) noexcept { m_llCurrentValue = static_cast<INT64>(atof(buffer)); }
+	void SetCurrentValue(const string& str) noexcept { m_llCurrentValue = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
 	void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
 
 	void Set3RS(const double dValue) noexcept { m_d3RS = dValue; }
@@ -102,16 +103,16 @@ public:
 	void Set120RS(const double dValue) noexcept { m_d120RS = dValue; }
 	double Get120RS() const noexcept { return m_d120RS; }
 
-	void SetAverage(const int length, const long lValue) noexcept;
+	void SetAverage(int length, long lValue) noexcept;
 	long GetAverage(const int length) const noexcept;
 
 protected:
 	// need to save
 	long m_lDate{ 0 }; // 类型(YYYYMMDD)
 	std::chrono::sys_seconds m_tpTime{ std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(0)) };
-	string m_strExchange{ "" };
-	string m_strStockSymbol{ "" };
-	string m_strDisplaySymbol{ "" };
+	string m_strExchange{};
+	string m_strStockSymbol{};
+	string m_strDisplaySymbol{};
 
 	// 在不同的市场中，以下数据会放大若干倍（百倍、千倍、万倍等）。取决于价格使用几个小数点
 	long m_lLastClose{ 0 }; // 前收盘。
@@ -146,15 +147,15 @@ protected:
 	double m_d120RS{ 0 };
 
 	// 各类平均线
-	long m_lAverage;
-	long m_l5Average;
-	long m_l10Average;
-	long m_l20Average;
-	long m_l30Average;
-	long m_l60Average;
-	long m_l120Average;
-	long m_l200Average;
-	long m_l240Average;
+	long m_lAverage{ 0 };
+	long m_l5Average{ 0 };
+	long m_l10Average{ 0 };
+	long m_l20Average{ 0 };
+	long m_l30Average{ 0 };
+	long m_l60Average{ 0 };
+	long m_l120Average{ 0 };
+	long m_l200Average{ 0 };
+	long m_l240Average{ 0 };
 };
 
 using CVirtualHistoryCandleBasicPtr = shared_ptr<CVirtualHistoryCandleBasic>;

@@ -48,8 +48,8 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) {
-	vector<CTiingoDayLinePtr> vOldHistoryCandle;
-	CTiingoDayLinePtr pHistoryCandle = nullptr;
+	vector<CTiingoCandleLinePtr> vOldHistoryCandle;
+	CTiingoCandleLinePtr pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
 
 	const size_t lSize = Size();
@@ -64,7 +64,7 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	while (!pSetTiingoStockDayLine->IsEOF()) {
 		if (pSetTiingoStockDayLine->m_Date > lLastDate) {
 			lLastDate = pSetTiingoStockDayLine->m_Date;
-			pHistoryCandle = make_shared<CTiingoDayLine>();
+			pHistoryCandle = make_shared<CTiingoCandleLine>();
 			pHistoryCandle->LoadBasicData(pSetTiingoStockDayLine);
 
 			vOldHistoryCandle.push_back(pHistoryCandle);
@@ -107,10 +107,10 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 }
 
 bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const {
-	CTiingoDayLinePtr pHistoryCandle = nullptr;
+	CTiingoCandleLinePtr pHistoryCandle = nullptr;
 	bool fNeedUpdate = false;
 	long lSizeOfOldDayLine = 0;
-	vector<CTiingoDayLinePtr> vOldHistoryCandle;
+	vector<CTiingoCandleLinePtr> vOldHistoryCandle;
 
 	ASSERT(Size() > 0);
 
@@ -127,7 +127,7 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 		while (!pSetTiingoStockDayLine->IsEOF()) {
 			if (pSetTiingoStockDayLine->m_Date > lLastDate) {
 				lLastDate = pSetTiingoStockDayLine->m_Date;
-				pHistoryCandle = make_shared<CTiingoDayLine>();
+				pHistoryCandle = make_shared<CTiingoCandleLine>();
 				pHistoryCandle->LoadBasicData(pSetTiingoStockDayLine);
 
 				vOldHistoryCandle.push_back(pHistoryCandle);
@@ -184,7 +184,7 @@ bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHisto
 	Unload(); // 卸载之前的日线
 	// 装入DayLine数据
 	while (!pSetHistoryCandleBasic->IsEOF()) {
-		auto pHistoryCandle = make_shared<CTiingoDayLine>();
+		auto pHistoryCandle = make_shared<CTiingoCandleLine>();
 		pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
 		Add(pHistoryCandle);
 		pSetHistoryCandleBasic->MoveNext();
@@ -192,7 +192,7 @@ bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHisto
 	return true;
 }
 
-void CContainerTiingoStockDayLine::UpdateData(CTiingoDayLinesPtr pvTempDayLine) {
+void CContainerTiingoStockDayLine::UpdateData(CTiingoCandleLinesPtr pvTempDayLine) {
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
 	for (const auto& pDayLine : *pvTempDayLine) {

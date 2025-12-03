@@ -19,7 +19,7 @@ class CVirtualHistoryCandleExtend : public CVirtualHistoryCandleBasic {
 public:
 	CVirtualHistoryCandleExtend();
 	~CVirtualHistoryCandleExtend() override = default;
-	int GetRatio() const override { return 1000; };
+	int GetRatio() const override { return 1000; }
 
 	bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const; // 存储扩展数据
 	bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SetTiingoStockDayLine.h"
-#include "TiingoDayLine.h"
+#include "TiingoCandleLine.h"
 
 #include "VirtualDataHistoryCandleExtend.h"
 
@@ -21,12 +21,12 @@ public:
 	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
 	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandleBasic);
 
-	void UpdateData(CTiingoDayLinesPtr pvTempDayLine);
+	void UpdateData(CTiingoCandleLinesPtr pvTempDayLine);
 
-	CTiingoDayLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoDayLine>(CVirtualDataHistoryCandleExtend::GetData(lIndex)); }
-	CTiingoDayLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoDayLine>(CVirtualDataHistoryCandleExtend::GetDayLine(lDate)); }
+	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetData(lIndex)); }
+	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetDayLine(lDate)); }
 
-	bool Add(const CTiingoDayLinePtr& pData) {
+	bool Add(const CTiingoCandleLinePtr& pData) {
 		m_vHistoryData.push_back(pData);
 		return true;
 	}

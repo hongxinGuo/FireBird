@@ -284,10 +284,13 @@ public:
 	//周线历史数据存取
 	bool LoadWeekLineDB() override { return m_dataWeekLine.LoadDB(GetSymbol()); }
 	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
-
 	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* pSetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(pSetWeekLineBasicInfo); }
-
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
+
+	// 月线历史数据存取
+	bool LoadMonthLineDB() override { return CreateMonthLine(); }
+
+	bool CreateMonthLine();
 
 	// 挂单情况
 	double GetCurrentGuadanTransactionPrice() const noexcept { return m_dCurrentGuadanTransactionPrice; }
@@ -555,6 +558,8 @@ protected:
 	CContainerChinaDayLine m_dataDayLine;
 	// 周线容器
 	CContainerChinaWeekLine m_dataWeekLine;
+	// 月线容器
+	//ContainerChinaStockMonthLine m_dataMonthLine;
 
 	bool m_fDayLineDBUpdated{ false }; // 日线历史数据库更新标识
 };

@@ -103,6 +103,10 @@ public:
 		ASSERT(0);
 		return false;
 	}
+	virtual bool LoadMonthLineDB() {
+		ASSERT(0);
+		return false;
+	}
 
 	long GetDayLineStartDate();
 	void SetDayLineStartDate(const long lDate) noexcept { m_jsonUpdateDate["DayLineStartDate"] = lDate; }
@@ -141,6 +145,11 @@ public:
 		return false;
 	}
 	virtual void SetWeekLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
+	virtual bool IsMonthLineLoaded() const noexcept {
+		ASSERT(0);
+		return false;
+	}
+	virtual void SetMonthLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
 
 	void SetSelected(bool flag) noexcept { m_bSelected = flag; }
 	bool IsSelected() const noexcept { return m_bSelected; }
