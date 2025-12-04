@@ -72,7 +72,7 @@ extern map<long, string> gl_mapNetError;
 
 class COutputList;
 
-#include"concurrentqueue/concurrentqueue.h"
+#include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
 
 using std::atomic_long;

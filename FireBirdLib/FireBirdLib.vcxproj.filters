@@ -909,6 +909,12 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockMonthLine.h">
+      <Filter>头文件\Data container\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\China market\MonthLine.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">

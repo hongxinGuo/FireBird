@@ -23,6 +23,7 @@
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockMonthLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
     <ClInclude Include="..\src\Type\China market\Guadan.h" />
     <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
+    <ClInclude Include="..\src\Type\China market\MonthLine.h" />
     <ClInclude Include="..\src\Type\China market\OneDeal.h" />
     <ClInclude Include="..\src\Type\China market\StockSection.h" />
     <ClInclude Include="..\src\Type\China market\WebData.h" />

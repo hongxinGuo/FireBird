@@ -132,6 +132,7 @@ public:
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
 	CVirtualDataHistoryCandleExtend* WeekLine() noexcept final { return &m_dataWeekLine; }
+	CVirtualDataHistoryCandleExtend* MonthLine() noexcept final { return &m_dataMonthLine; }
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }

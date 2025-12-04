@@ -5,6 +5,7 @@
 
 #include "ChinaStock.h"
 #include"ChinaMarket.h"
+#include"MonthLine.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1201,15 +1202,14 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 }
 
 bool CChinaStock::CreateMonthLine() {
-	/*
 	ASSERT(m_dataDayLine.IsDataLoaded());
 	size_t index = 0;
-	CTiingoCandleLinePtr pMonthLine = nullptr;
-	size_t monthLineSize = m_dataMonthLine.Size();
-	while (index < dayLineSize) {
-		auto pDayLine = m_dataMonthLine.GetData(index++);
+	CMonthLinePtr pMonthLine = nullptr;
+	size_t monthLineSize = m_dataDayLine.Size();
+	while (index < monthLineSize) {
+		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
-		pMonthLine = make_shared<CTiingoCandleLine>();
+		pMonthLine = make_shared<CMonthLine>();
 		pMonthLine->SetDate(pDayLine->GetDate());
 		pMonthLine->SetOpen(pDayLine->GetOpen());
 		pMonthLine->SetLow(pDayLine->GetLow());
@@ -1226,8 +1226,10 @@ bool CChinaStock::CreateMonthLine() {
 		} while (true);
 
 		if (pMonthLine->GetClose() > 0) m_dataMonthLine.Add(pMonthLine); // 有数据才存储
-		*/
-	return false;
+	}
+
+	m_dataMonthLine.SetDataLoaded(true);
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

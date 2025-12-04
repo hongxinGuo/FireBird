@@ -17,7 +17,7 @@ BEGIN_MESSAGE_MAP(CFireBirdDoc, CDocument)
 END_MESSAGE_MAP()
 
 // CFireBirdDoc 构造/析构
-CFireBirdDoc::CFireBirdDoc() {}
+CFireBirdDoc::CFireBirdDoc() = default;
 
 void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	m_pCurrentStock = pStock;
@@ -34,6 +34,8 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 			m_dayLineKDJ.Calculate();
 			m_weekLineKDJ.SetCandle(pStock->WeekLine());
 			m_weekLineKDJ.Calculate();
+			m_monthLineKDJ.SetCandle(pStock->MonthLine());
+			m_monthLineKDJ.Calculate();
 			m_bDataReady = true;
 		});
 	}

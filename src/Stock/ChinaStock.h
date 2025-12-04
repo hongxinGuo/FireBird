@@ -28,10 +28,11 @@ enum {
 #include"OneDeal.h"
 
 #include"DayLine.h"
-#include"ContainerChinaWeekLine.h"
 #include"ContainerChinaDayLine.h"
+#include"ContainerChinaWeekLine.h"
+#include"ContainerChinaStockMonthLine.h"
 
-#include"concurrentqueue/concurrentqueue.h"
+#include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
 
 class CChinaStock;
@@ -383,6 +384,7 @@ public:
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
 	CVirtualDataHistoryCandleExtend* WeekLine() noexcept final { return &m_dataWeekLine; }
+	CVirtualDataHistoryCandleExtend* MonthLine() noexcept final { return &m_dataMonthLine; }
 
 	// 周线相关函数
 	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }
@@ -559,7 +561,7 @@ protected:
 	// 周线容器
 	CContainerChinaWeekLine m_dataWeekLine;
 	// 月线容器
-	//ContainerChinaStockMonthLine m_dataMonthLine;
+	CContainerChinaStockMonthLine m_dataMonthLine;
 
 	bool m_fDayLineDBUpdated{ false }; // 日线历史数据库更新标识
 };

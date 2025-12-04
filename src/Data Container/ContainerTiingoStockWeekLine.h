@@ -6,7 +6,7 @@
 
 class CContainerTiingoStockWeekLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CContainerTiingoStockWeekLine();
+	CContainerTiingoStockWeekLine() = default;
 	CContainerTiingoStockWeekLine(const CContainerTiingoStockWeekLine& other) = delete;
 	CContainerTiingoStockWeekLine(CContainerTiingoStockWeekLine&& other) noexcept = delete;
 	CContainerTiingoStockWeekLine& operator=(const CContainerTiingoStockWeekLine& other) = delete;

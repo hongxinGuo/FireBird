@@ -4,7 +4,7 @@
 
 #include"InternetOption.h"
 
-#include"concurrentqueue/concurrentqueue.h"
+#include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
 
 constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
@@ -15,8 +15,7 @@ class CInquireEngine {
 public:
 	CInquireEngine();
 	CInquireEngine(const InternetOption& internetOption, const string& strInquire, const string& strHeaders);
-	virtual ~CInquireEngine() {
-	}
+	virtual ~CInquireEngine() = default;
 
 	void ConfigureSession(const InternetOption& option) const;
 	CWebDataPtr GetWebData(); // 实际读取处理函数

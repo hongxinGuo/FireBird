@@ -2,9 +2,6 @@
 
 #include "ContainerTiingoStockWeekLine.h"
 
-CContainerTiingoStockWeekLine::CContainerTiingoStockWeekLine() {
-}
-
 void CContainerTiingoStockWeekLine::UpdateData(CTiingoCandleLinesPtr pvTempWeekLine) {
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
