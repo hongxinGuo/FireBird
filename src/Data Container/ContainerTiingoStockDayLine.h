@@ -7,7 +7,7 @@
 
 class CContainerTiingoStockDayLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CContainerTiingoStockDayLine();
+	CContainerTiingoStockDayLine() = default;
 	CContainerTiingoStockDayLine(const CContainerTiingoStockDayLine& other) = delete;
 	CContainerTiingoStockDayLine(CContainerTiingoStockDayLine&& other) noexcept = delete;
 	CContainerTiingoStockDayLine& operator=(const CContainerTiingoStockDayLine& other) = delete;
@@ -17,11 +17,11 @@ public:
 	bool SaveDB(const string& strStockSymbol) override;
 	bool LoadDB(const string& strStockSymbol) override;
 
-	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
+	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
 	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
 	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandleBasic);
 
-	void UpdateData(CTiingoCandleLinesPtr pvTempDayLine);
+	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 
 	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetData(lIndex)); }
 	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetDayLine(lDate)); }

@@ -104,7 +104,7 @@ public:
 	double Get120RS() const noexcept { return m_d120RS; }
 
 	void SetAverage(size_t length, long lValue) noexcept;
-	long GetAverage(const int length) const noexcept;
+	long GetAverage(int length) const noexcept;
 
 protected:
 	// need to save

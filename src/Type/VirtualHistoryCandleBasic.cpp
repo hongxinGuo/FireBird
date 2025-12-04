@@ -55,7 +55,7 @@ void CVirtualHistoryCandleBasic::SetAverage(size_t length, long lValue) noexcept
 	}
 }
 
-long CVirtualHistoryCandleBasic::GetAverage(const int length) const noexcept {
+long CVirtualHistoryCandleBasic::GetAverage(int length) const noexcept {
 	switch (length) {
 	case 5:
 		return m_l5Average;
@@ -77,8 +77,6 @@ long CVirtualHistoryCandleBasic::GetAverage(const int length) const noexcept {
 		return m_lAverage;
 	}
 }
-
-
 
 void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
@@ -121,9 +119,7 @@ void CVirtualHistoryCandleBasic::LoadBasicData(const CVirtualSetHistoryCandleBas
 	m_lDate = pVirtualSetHistoryCandleBasic->m_Date;
 	m_strExchange = ToUTF8(pVirtualSetHistoryCandleBasic->m_Exchange);
 	m_strStockSymbol = ToUTF8(pVirtualSetHistoryCandleBasic->m_Symbol);
-	CString str;
-	str = pVirtualSetHistoryCandleBasic->m_DisplaySymbol;
-	m_strDisplaySymbol = ToUTF8(str);
+	m_strDisplaySymbol = ToUTF8(pVirtualSetHistoryCandleBasic->m_DisplaySymbol);
 	m_lLastClose = _tstof(pVirtualSetHistoryCandleBasic->m_LastClose) * ratio;
 	m_lOpen = _tstof(pVirtualSetHistoryCandleBasic->m_Open) * ratio;
 	m_lHigh = _tstof(pVirtualSetHistoryCandleBasic->m_High) * ratio;

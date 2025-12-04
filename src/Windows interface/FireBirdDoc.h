@@ -30,6 +30,7 @@ public:
 
 	std::pair<long, long> GetDayLineHighLow(int iCandleNumber) const;
 	std::pair<long, long> GetWeekLineHighLow(int iCandleNumber) const;
+	std::pair<long, long> GetMonthLineHighLow(int iCandleNumber) const;
 
 	void ShowDayLine(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
 		m_pCurrentStock->DayLine()->ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
@@ -75,6 +76,10 @@ public:
 	}
 	void ShowWeekLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
 		m_weekLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+
+	void ShowMonthLine(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
+		m_pCurrentStock->MonthLine()->ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
 	void ShowMonthLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -160,6 +165,12 @@ public:
 		m_weekLineKDJ.ToShow(pDC, rectDraw, iStepWidth);
 	}
 
+	void ShowMonthLineKDJ(CDC* pDC, CRect rectDraw, int iStepWidth) {
+		m_monthLineKDJ.ToShow(pDC, rectDraw, iStepWidth);
+	}
+
+
+
 	// 重写
 public:
 	BOOL OnNewDocument() override;
@@ -202,6 +213,7 @@ protected:
 
 	CIndicatorKDJ m_dayLineKDJ;
 	CIndicatorKDJ m_weekLineKDJ;
+	CIndicatorKDJ m_monthLineKDJ;
 
 	// 生成的消息映射函数
 protected:

@@ -6,6 +6,8 @@
 enum {
 	_SHOW_DAY_LINE_DATA_ = 1,
 	_SHOW_WEEK_LINE_DATA_ = 3,
+	_SHOW_MONTH_LINE_DATA_ = 4,
+
 };
 
 class CFireBirdView : public CView {
@@ -87,6 +89,8 @@ protected:
 	long m_lDayLineLow{ 0 };
 	long m_lWeekLineHigh{ 0 };
 	long m_lWeekLineLow{ 0 };
+	long m_lMonthLineHigh{ 0 };
+	long m_lMonthLineLow{ 0 };
 
 	UINT m_uIdTimer;
 	int m_iCurrentShowType; // 当前显示状态（日线、周线或实时。。。）
@@ -149,6 +153,8 @@ public:
 	afx_msg void OnShowWeekLine();
 	afx_msg void OnUpdateShowWeekLine(CCmdUI* pCmdUI);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnShowMonthLine();
+	afx_msg void OnUpdateShowMonthLine(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

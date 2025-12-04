@@ -113,10 +113,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnCreateTiingoTradeDayDayline)
 	ON_UPDATE_COMMAND_UI(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnUpdateCreateTiingoTradeDayDayline)
 	ON_COMMAND(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnProcessTiingoDayline)
-	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayline)
+	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayLine)
 	ON_COMMAND(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnCalculateNewLowFiveTimes)
 	ON_COMMAND(ID_INQUIRE_IEX_TOP_OF_BOOK, &CMainFrame::OnInquireIexTopOfBook)
-	ON_COMMAND(ID_TIINGO_FIX_DAYLINE, &CMainFrame::OnTiingoFixDayline)
+	ON_COMMAND(ID_TIINGO_FIX_DAYLINE, &CMainFrame::OnTiingoFixDayLine)
 	ON_COMMAND(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnCalculateNasdaq100200maUpdownRate)
 	ON_UPDATE_COMMAND_UI(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate)
 END_MESSAGE_MAP()
@@ -1298,7 +1298,7 @@ void CMainFrame::OnProcessTiingoDayline() {
 	});
 }
 
-void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateProcessTiingoDayLine(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(true); // 随时可以执行
 }
 
@@ -1312,7 +1312,7 @@ void CMainFrame::OnInquireIexTopOfBook() {
 	gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
 }
 
-void CMainFrame::OnTiingoFixDayline() {
+void CMainFrame::OnTiingoFixDayLine() {
 	// TODO: Add your command handler code here
 	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskFixDayLine();

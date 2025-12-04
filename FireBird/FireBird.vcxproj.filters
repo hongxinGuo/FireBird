@@ -96,6 +96,9 @@
     <ClInclude Include="..\src\SystemPublicDeclaration.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Windows interface\GridProperty.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Windows interface\FireBird.cpp">

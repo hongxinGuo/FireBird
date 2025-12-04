@@ -94,6 +94,7 @@ public:
 	void LoadHistoryCandleDB() {
 		LoadDayLineDB();
 		LoadWeekLineDB();
+		LoadMonthLineDB();
 	}
 	virtual bool LoadDayLineDB() {
 		ASSERT(0);

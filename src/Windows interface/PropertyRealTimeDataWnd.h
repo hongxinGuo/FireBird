@@ -1,5 +1,7 @@
 #pragma once
 
+#include"GridProperty.h"
+
 class CPropertyRealtimeWnd : public CDockablePane {
 	// Construction
 public:
@@ -18,24 +20,25 @@ protected:
 	CMFCPropertyGridCtrl m_wndPropList;
 
 	// chinaMarket realtime group
-	CMFCPropertyGridProperty* m_pChinaMarketStock{ nullptr };
-	CMFCPropertyGridProperty* m_pPropNew{ nullptr };
-	CMFCPropertyGridProperty* m_pPropVolume{ nullptr };
+	CGridProperty* m_pPropertyStock{ nullptr };
+	CGridProperty* m_pPropNew{ nullptr };
+	CGridProperty* m_pPropVolume{ nullptr };
 
-	CMFCPropertyGridProperty* m_pPropStockOrdinaryBuy{ nullptr };
-	CMFCPropertyGridProperty* m_pPropStockAttackBuy{ nullptr };
-	CMFCPropertyGridProperty* m_pPropStockStrongBuy{ nullptr };
-	CMFCPropertyGridProperty* m_pPropStockCancelBuy{ nullptr };
-	CMFCPropertyGridProperty* m_pPropStockOrdinarySell{ nullptr };
-	CMFCPropertyGridProperty* m_pPropStockAttackSell{ nullptr };
-	CMFCPropertyGridProperty* m_pPropStockStrongSell{ nullptr };
-	CMFCPropertyGridProperty* m_pPropStockCancelSell{ nullptr };
+	CGridProperty* m_pPropStockOrdinaryBuy{ nullptr };
+	CGridProperty* m_pPropStockAttackBuy{ nullptr };
+	CGridProperty* m_pPropStockStrongBuy{ nullptr };
+	CGridProperty* m_pPropStockCancelBuy{ nullptr };
+	CGridProperty* m_pPropStockOrdinarySell{ nullptr };
+	CGridProperty* m_pPropStockAttackSell{ nullptr };
+	CGridProperty* m_pPropStockStrongSell{ nullptr };
+	CGridProperty* m_pPropStockCancelSell{ nullptr };
 
 	UINT m_uIdTimer;
 
 	// Implementation
 public:
 	~CPropertyRealtimeWnd() override;
+
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

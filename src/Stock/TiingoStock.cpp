@@ -10,7 +10,7 @@
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
-	return strcmp(typeid(*pStock).name(), "class CTiingoStock") == 0;
+	return typeid(*pStock) == typeid(CTiingoStock);
 }
 
 CTiingoStock::CTiingoStock() {
@@ -324,8 +324,8 @@ void CTiingoStock::CreateMonthLine() {
 	ASSERT(m_dataDayLine.IsDataLoaded());
 	size_t index = 0;
 	CTiingoCandleLinePtr pMonthLine = nullptr;
-	size_t dayLineSize = m_dataDayLine.Size();
-	while (index < dayLineSize) {
+	size_t monthLineSize = m_dataDayLine.Size();
+	while (index < monthLineSize) {
 		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
 		pMonthLine = make_shared<CTiingoCandleLine>();
@@ -338,7 +338,7 @@ void CTiingoStock::CreateMonthLine() {
 			pMonthLine->SetVolume(pMonthLine->GetVolume() + pDayLine->GetVolume());
 			pMonthLine->SetAmount(pMonthLine->GetAmount() + pDayLine->GetAmount());
 			pMonthLine->SetClose(pDayLine->GetClose());
-			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
+			if (index < monthLineSize) pDayLine = m_dataDayLine.GetData(index);
 			else break;
 			if (pDayLine->GetDate() < lCurrentEndDate) index++;
 			else break;
@@ -349,39 +349,6 @@ void CTiingoStock::CreateMonthLine() {
 
 	m_dataMonthLine.SetDataLoaded(true);
 }
-
-/*
-void CTiingoStock::CreateMonthLine() {
-	ASSERT(m_dataDayLine.IsDataLoaded());
-	size_t index = 0;
-	CTiingoMonthLinePtr pWeekLine = nullptr;
-	size_t dayLineSize = m_dataDayLine.Size();
-	TRACE("all week line %d\n", m_dataMonthLine.Size());
-	while (index < dayLineSize) {
-		auto pDayLine = m_dataDayLine.GetData(index++);
-		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
-		pWeekLine = make_shared<CTiingoCandleLine>();
-		pWeekLine->SetDate(pDayLine->GetDate());
-		pWeekLine->SetOpen(pDayLine->GetOpen());
-		pWeekLine->SetLow(pDayLine->GetLow());
-		do {
-			if (pDayLine->GetHigh() > pWeekLine->GetHigh()) pWeekLine->SetHigh(pDayLine->GetHigh());
-			if (pDayLine->GetLow() < pWeekLine->GetLow()) pWeekLine->SetLow(pDayLine->GetLow());
-			pWeekLine->SetVolume(pWeekLine->GetVolume() + pDayLine->GetVolume());
-			pWeekLine->SetAmount(pWeekLine->GetAmount() + pDayLine->GetAmount());
-			pWeekLine->SetClose(pDayLine->GetClose());
-			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
-			else break;
-			if (pDayLine->GetDate() < lCurrentEndDate) index++;
-			else break;
-		} while (true);
-
-		if (pWeekLine->GetClose() > 0) m_dataWeekLine.Add(pWeekLine); // 有数据才存储
-	}
-
-	m_dataWeekLine.SetDataLoaded(true);
-}
-*/
 
 bool CTiingoStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;

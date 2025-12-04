@@ -29,6 +29,7 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 			}
 			CalculateDayLineMovingAverage(pStock);
 			CalculateWeekLineMovingAverage(pStock);
+			CalculateMonthLineMovingAverage(pStock);
 			m_dayLineKDJ.SetCandle(pStock->DayLine());
 			m_dayLineKDJ.Calculate();
 			m_weekLineKDJ.SetCandle(pStock->WeekLine());
@@ -40,7 +41,7 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 void CFireBirdDoc::CalculateDayLineMovingAverage(const CVirtualStockPtr& pStock) {
 	auto pvDayLine = pStock->DayLine();
 
-	ASSERT(m_pCurrentStock->GetSymbol().compare(pStock->GetSymbol()) == 0);
+	ASSERT(m_pCurrentStock->GetSymbol() == pStock->GetSymbol());
 	m_dayLine5MovingAverage.Calculate(pvDayLine);
 	m_dayLine10MovingAverage.Calculate(pvDayLine);
 	m_dayLine30MovingAverage.Calculate(pvDayLine);
@@ -53,7 +54,7 @@ void CFireBirdDoc::CalculateDayLineMovingAverage(const CVirtualStockPtr& pStock)
 void CFireBirdDoc::CalculateWeekLineMovingAverage(const CVirtualStockPtr& pStock) {
 	auto pvWeekLine = pStock->WeekLine();
 
-	ASSERT(m_pCurrentStock->GetSymbol().compare(pStock->GetSymbol()) == 0);
+	ASSERT(m_pCurrentStock->GetSymbol() == pStock->GetSymbol());
 	m_weekLine5MovingAverage.Calculate(pvWeekLine);
 	m_weekLine10MovingAverage.Calculate(pvWeekLine);
 	m_weekLine30MovingAverage.Calculate(pvWeekLine);
@@ -66,22 +67,31 @@ void CFireBirdDoc::CalculateWeekLineMovingAverage(const CVirtualStockPtr& pStock
 void CFireBirdDoc::CalculateMonthLineMovingAverage(const CVirtualStockPtr& pStock) {
 	auto pvMonthLine = pStock->MonthLine();
 
+	ASSERT(m_pCurrentStock->GetSymbol() == pStock->GetSymbol());
 	m_monthLine5MovingAverage.Calculate(pvMonthLine);
 	m_monthLine10MovingAverage.Calculate(pvMonthLine);
 	m_monthLine30MovingAverage.Calculate(pvMonthLine);
 	m_monthLine50MovingAverage.Calculate(pvMonthLine);
 	m_monthLine120MovingAverage.Calculate(pvMonthLine);
 	m_monthLine250MovingAverage.Calculate(pvMonthLine);
+	ASSERT(m_monthLine50MovingAverage.Size() == pvMonthLine->Size() - 50);
 }
 
 std::pair<long, long> CFireBirdDoc::GetDayLineHighLow(int iCandleNumber) const {
 	auto pairHighLow = m_pCurrentStock->DayLine()->GetHighLow(iCandleNumber);
 	return pairHighLow;
 }
+
 std::pair<long, long> CFireBirdDoc::GetWeekLineHighLow(int iCandleNumber) const {
 	auto pairHighLow = m_pCurrentStock->WeekLine()->GetHighLow(iCandleNumber);
 	return pairHighLow;
 }
+
+std::pair<long, long> CFireBirdDoc::GetMonthLineHighLow(int iCandleNumber) const {
+	auto pairHighLow = m_pCurrentStock->MonthLine()->GetHighLow(iCandleNumber);
+	return pairHighLow;
+}
+
 
 BOOL CFireBirdDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument()) return FALSE;

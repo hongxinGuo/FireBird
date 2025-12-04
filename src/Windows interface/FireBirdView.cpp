@@ -104,6 +104,8 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_COMMAND(ID_SHOW_WEEKLINE, &CFireBirdView::OnShowWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CFireBirdView::OnUpdateShowWeekLine)
 	ON_WM_SETFOCUS()
+	ON_COMMAND(ID_SHOW_MONTH_LINE, &CFireBirdView::OnShowMonthLine)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_MONTH_LINE, &CFireBirdView::OnUpdateShowMonthLine)
 END_MESSAGE_MAP()
 
 // CFireBirdView 构造/析构
@@ -193,6 +195,17 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		GetDocument()->ShowWeekLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		GetDocument()->ShowWeekLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
+	case _SHOW_MONTH_LINE_DATA_:
+		pairHighLow = GetDocument()->GetMonthLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
+		m_lMonthLineHigh = pairHighLow.first;
+		m_lMonthLineLow = pairHighLow.second;
+		GetDocument()->ShowMonthLine(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
+		GetDocument()->ShowMonthLine5MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
+		GetDocument()->ShowMonthLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
+		GetDocument()->ShowMonthLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
+		GetDocument()->ShowMonthLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
+		GetDocument()->ShowMonthLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
 	default:
 		break;
 	}
@@ -265,6 +278,8 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 		break;
 	case _SHOW_WEEK_LINE_DATA_:
 		break; // 周线不显示相对强度
+	case _SHOW_MONTH_LINE_DATA_:
+		break; // 月线不显示相对强度
 	default:
 		break;
 	}
@@ -321,6 +336,7 @@ void CFireBirdView::Show(CDC* pdc) {
 	switch (m_iCurrentShowType) {
 	case _SHOW_DAY_LINE_DATA_: // show day line(or week line) stock data
 	case _SHOW_WEEK_LINE_DATA_:
+	case _SHOW_MONTH_LINE_DATA_:
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		ShowStockHistoryDataLine(&m_MemoryDC);
@@ -580,4 +596,13 @@ void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
 	gl_pCurrentStock = GetDocument()->GetCurrentStock(); // 设置当前被选中的股票
 
 	CView::OnSetFocus(pOldWnd);
+}
+
+void CFireBirdView::OnShowMonthLine() {
+	m_iCurrentShowType = _SHOW_MONTH_LINE_DATA_;
+}
+
+void CFireBirdView::OnUpdateShowMonthLine(CCmdUI* pCmdUI) {
+	if (m_iCurrentShowType == _SHOW_MONTH_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
