@@ -4,6 +4,7 @@
 class CSetRSStrong2Stock : public CVirtualRecordset {
 public:
 	CSetRSStrong2Stock(const CString& strSchema = "ChinaMarket", const CString& strTable = "10rs2above55", CDatabase* pDatabase = nullptr);
+	~CSetRSStrong2Stock() override = default;
 
 	// 字段/参数数据
 

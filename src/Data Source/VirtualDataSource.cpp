@@ -37,7 +37,9 @@ void CVirtualDataSource::Run(long lMarketTime) {
 	if (!IsInquiring()) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] { //Note 此处必须使用thread_executor
 				p->GenerateInquiryMessage(lMarketTime);
-				if (p->IsInquiring()) {
+				ASSERT(!p->IsInquiring());
+				if (p->HaveInquiry()) {
+					p->SetInquiring(true);
 					p->InquireData();
 				}
 			});

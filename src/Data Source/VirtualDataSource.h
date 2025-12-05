@@ -47,7 +47,6 @@ public:
 		ASSERT(!IsInquiring());
 		if (isUpdateNeeded()) {
 			StoreInquiry(createProduct(inquireType));
-			SetInquiring(true);
 			reportMsg();
 			return true;
 		}
@@ -65,7 +64,6 @@ public:
 				return false;
 			}
 			StoreInquiry(createProduct(inquireType));
-			SetInquiring(true);
 			reportMsg();
 			return true;
 		}
@@ -102,7 +100,6 @@ public:
 				auto product = createProduct(inquireType);
 				setIndex(product, pos);
 				StoreInquiry(product);
-				SetInquiring(true);
 				setMessage(container.GetItem(pos));
 				haveInquiry = true;
 			}
@@ -145,7 +142,7 @@ public:
 
 	size_t InquiryQueueSize() const noexcept { return m_qProduct.size(); }
 	void DiscardCurrentInquiry() { m_qProduct.pop(); }
-	void DiscardAllInquiry() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
+	void DiscardAllInquiry() { while (!m_qProduct.empty()) m_qProduct.pop(); }
 	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
 	CVirtualProductWebDataPtr PeekFrontProduct() { return m_qProduct.front(); }
 	CVirtualProductWebDataPtr GetCurrentProduct() {
@@ -210,11 +207,11 @@ protected:
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };
 
 	InternetOption m_internetOption;
-	string m_strInquiry{ "" }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
-	string m_strInquiryFunction{ "" }; // 查询字符串功能部分
-	string m_strParam{ "" }; // 查询字符串的参数
-	string m_strSuffix{ "" }; // 查询字符串的后缀部分
-	string m_strInquiryToken{ "" }; // 查询字符串令牌
+	string m_strInquiry{}; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
+	string m_strInquiryFunction{}; // 查询字符串功能部分
+	string m_strParam{}; // 查询字符串的参数
+	string m_strSuffix{}; // 查询字符串的后缀部分
+	string m_strInquiryToken{}; // 查询字符串令牌
 	string m_strHeaders{ "" }; // OpenURL时的headers字符串值， 默认为""
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500

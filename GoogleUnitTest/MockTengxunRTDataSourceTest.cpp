@@ -71,7 +71,6 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
 
-		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
 
 		// 恢复原状

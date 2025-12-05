@@ -362,6 +362,9 @@ protected:
 	long long m_llTiingoBandWidth{ 5368709120 };
 	long long m_llTiingoBandWidthLeft{ 5368709120 };
 
+	// AlphaVantage.co
+	string m_strAlphaVantageToken{ "RPKDBN0TEW83ML5A" }; // 0可能是O
+
 	// WebSocket
 	bool m_bUsingFinnhubWebSocket{ true };
 	bool m_bUsingTiingoIEXWebSocket{ true };

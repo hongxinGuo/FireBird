@@ -9,6 +9,7 @@
 class CVirtualSetExchange : public CVirtualRecordset {
 public:
 	CVirtualSetExchange(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr);
+	~CVirtualSetExchange() override = default;
 
 	// 字段/参数数据
 

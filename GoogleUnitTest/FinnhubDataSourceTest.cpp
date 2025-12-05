@@ -48,7 +48,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData1) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("{\"error\":\"You don't have access to this resource.\"}");
+		pwd->Test_SetBuffer_(R"({"error":"You don't have access to this resource."})");
 
 		EXPECT_EQ(ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData2) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("{\"error\":\"Please use an API key.\"}");
+		pwd->Test_SetBuffer_(R"({"error":"Please use an API key."})");
 
 		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
 		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "finnhub missing API key");
@@ -65,7 +65,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData3) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("{\"error\":\"Not Handled\"}");
+		pwd->Test_SetBuffer_(R"({"error":"Not Handled"})");
 
 		EXPECT_EQ(ERROR_FINNHUB_NOT_HANDLED__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
@@ -75,7 +75,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData4) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("{\"no error\":\"Please use an API key.\"}");
+		pwd->Test_SetBuffer_(R"({"no error":"Please use an API key."})");
 		EXPECT_EQ(m_FinnhubDataSource.GetHTTPStatusCode(), 0);
 
 		EXPECT_EQ(ERROR_NO_ERROR__, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "非错误信息，正常返回";
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData5) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("{\"error\":\"Please use an API key.\"}");
+		pwd->Test_SetBuffer_(R"({"error":"Please use an API key."})");
 		m_FinnhubDataSource.SetHTTPStatusCode(200);
 
 		EXPECT_EQ(ERROR_NO_ERROR__, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，无视错误代码，正常返回";
@@ -94,7 +94,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData6) {
 		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("{\"no error\":\"Please use an API key.\"}");
+		pwd->Test_SetBuffer_(R"({"no error":"Please use an API key."})");
 		m_FinnhubDataSource.SetHTTPStatusCode(200);
 
 		EXPECT_EQ(ERROR_NO_ERROR__, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，正常返回";
@@ -281,7 +281,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCountryList());
 		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 1);
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubEconomicCountryList");
@@ -305,7 +305,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateMarketStatus(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateMarketStatus());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubMarketStatus");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
@@ -350,7 +350,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateMarketHoliday(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateMarketHoliday());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubMarketHoliday");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
@@ -395,7 +395,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateSymbol(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCompanySymbol());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubStockSymbol");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
@@ -439,7 +439,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateStockProfile(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCompanyProfileConcise());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCompanyProfileConcise");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -486,7 +486,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateCompanyNews(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCompanyNews());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCompanyNews");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -534,7 +534,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateInsiderSentiment(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateInsiderSentiment());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCompanyInsiderSentiment");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -582,7 +582,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateStockBasicFinancial(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCompanyBasicFinancial());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCompanyBasicFinancial");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -630,7 +630,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateStockDayLine(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateStockDayLine());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubStockDayLine");
 		EXPECT_EQ(p->GetIndex(), 3001) << "第一个待查询股票位置";
@@ -666,7 +666,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateStockDayLine(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateRTQuote());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubStockPriceQuote");
 	}
@@ -689,7 +689,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdatePeer(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GeneratePeer());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCompanyPeer");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -737,7 +737,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateInsiderTransaction(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateInsiderTransaction());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCompanyInsiderTransaction");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票为中国股票";
@@ -747,7 +747,7 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateInsiderTransaction());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCompanyInsiderTransaction");
 		EXPECT_EQ(p->GetIndex(), 2500) << "第二次待查询股票为美国股票，位于2500";
@@ -773,7 +773,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateEconomicCalendar(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateEconomicCalendar());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubEconomicCalendar");
 
@@ -795,7 +795,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateEPSSurprise(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateEPSSurprise());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubStockEstimatesEPSSurprise");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -833,7 +833,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateSECFilings(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateSECFilings());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubSECFilings");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -864,7 +864,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateForexExchange(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateForexExchange());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubForexExchange");
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateForexExchange()) << "此标识需要等处理完数据后方设置";
@@ -881,7 +881,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < lTotal - 1; i++) {
 			m_FinnhubDataSource.SetInquiring(false);
 			EXPECT_TRUE(m_FinnhubDataSource.GenerateForexSymbol());
-			EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+			EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 			p = m_FinnhubDataSource.GetCurrentProduct();
 			EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubForexSymbol");
 			EXPECT_EQ(p->GetIndex(), i);
@@ -890,7 +890,7 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateForexSymbol());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubForexSymbol");
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
@@ -915,7 +915,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateForexDayLine(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateForexDayLine());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubForexDayLine");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
@@ -954,7 +954,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateCryptoExchange(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCryptoExchange());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCryptoExchange");
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
@@ -972,7 +972,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < lTotal - 1; i++) {
 			m_FinnhubDataSource.SetInquiring(false);
 			EXPECT_TRUE(m_FinnhubDataSource.GenerateCryptoSymbol());
-			EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+			EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 			p = m_FinnhubDataSource.GetCurrentProduct();
 			EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCryptoSymbol");
 			EXPECT_EQ(p->GetIndex(), i);
@@ -981,7 +981,7 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCryptoSymbol());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCryptoSymbol");
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
@@ -1006,7 +1006,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetUpdateCryptoDayLine(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCryptoDayLine());
-		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubCryptoDayLine");
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";

@@ -22,6 +22,7 @@ using std::binary_semaphore;
 #define __MAX_BACKGROUND_WORKING_THREAD__ 32
 
 inline std::string ToUTF8(const CString& str) { return std::string(CT2CA(str, CP_UTF8)); }
+inline std::wstring ToUTF16(const string& str) { return std::wstring(CA2W(str.c_str())); }
 inline std::string WtoUTF8(const CStringW& str) {
 	USES_CONVERSION;
 	return W2A(str);

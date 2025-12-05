@@ -51,7 +51,6 @@ void CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 		product->SetMarket(gl_pChinaMarket);
 		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
-		SetInquiring(true);
 	}
 }
 

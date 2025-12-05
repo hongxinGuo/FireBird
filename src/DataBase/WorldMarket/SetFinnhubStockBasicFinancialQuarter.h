@@ -7,6 +7,7 @@
 class CSetFinnhubStockBasicFinancialQuarter : public CVirtualRecordset {
 public:
 	CSetFinnhubStockBasicFinancialQuarter(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_stock_basic_financials_quarterly", CDatabase* pDatabase = nullptr);
+	~CSetFinnhubStockBasicFinancialQuarter() override = default;
 
 	// 字段/参数数据
 

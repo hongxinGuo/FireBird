@@ -7,6 +7,7 @@
 class CSetSECFilings : public CVirtualRecordset {
 public:
 	explicit CSetSECFilings(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_stock_sec_filings", CDatabase* pDatabase = nullptr);
+	~CSetSECFilings() override = default;
 
 	long m_ID{ 0 };
 	CString m_Symbol{ "" };

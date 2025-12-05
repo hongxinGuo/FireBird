@@ -6,6 +6,7 @@
 class CSetTiingoIndustry : public CVirtualRecordset {
 public:
 	CSetTiingoIndustry(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_industry", CDatabase* pDatabase = nullptr);
+	~CSetTiingoIndustry() override = default;
 
 	// 字段/参数数据
 

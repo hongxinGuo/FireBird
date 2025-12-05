@@ -449,7 +449,6 @@ bool CFinnhubDataSource::GenerateRTQuote() {
 	const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_);
 	product->SetIndex(s_lCurrentRTDataQuotePos);
 	StoreInquiry(product);
-	SetInquiring(true);
 	s_lCurrentRTDataQuotePos++;
 	if (s_lCurrentRTDataQuotePos == gl_dataContainerFinnhubStock.Size()) s_lCurrentRTDataQuotePos = 0;
 	string str = "stock RT: ";
@@ -565,7 +564,6 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, FOREX_SYMBOLS_);
 		product->SetIndex(s_lCurrentForexExchangePos);
 		StoreInquiry(product);
-		SetInquiring(true);
 		string str = "forex symbol: ";
 		str += gl_dataContainerFinnhubForexExchange.GetItem(s_lCurrentForexExchangePos);
 		gl_systemMessage.SetCurrentFinnhubFunction(str);
@@ -615,7 +613,6 @@ bool CFinnhubDataSource::GenerateCryptoSymbol() {
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		product->SetIndex(s_lCurrentCryptoExchangePos);
 		StoreInquiry(product);
-		SetInquiring(true);
 		string str = "crypto symbol: ";
 		str += gl_dataContainerFinnhubCryptoExchange.GetItem(s_lCurrentCryptoExchangePos);
 		gl_systemMessage.SetCurrentFinnhubFunction(str);

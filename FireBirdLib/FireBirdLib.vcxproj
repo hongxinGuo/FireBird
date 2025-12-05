@@ -244,12 +244,7 @@
     <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-    </ClCompile>
+    <ClCompile Include="..\Lib\simdjson\simdjson.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />

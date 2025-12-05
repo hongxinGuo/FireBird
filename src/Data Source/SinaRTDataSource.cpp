@@ -45,7 +45,6 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		const auto product = make_shared<CProductSinaRT>();
 		product->SetMarket(gl_pChinaMarket);
 		StoreInquiry(product);
-		SetInquiring(true);
 		return true;
 	}
 	return false;

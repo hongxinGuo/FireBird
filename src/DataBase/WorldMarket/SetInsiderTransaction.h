@@ -7,6 +7,7 @@
 class CSetInsiderTransaction : public CVirtualRecordset {
 public:
 	CSetInsiderTransaction(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_insider_transaction", CDatabase* pDatabase = nullptr);
+	~CSetInsiderTransaction() override = default;
 
 	// 字段/参数数据
 

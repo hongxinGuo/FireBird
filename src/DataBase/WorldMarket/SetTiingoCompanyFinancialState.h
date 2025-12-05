@@ -6,6 +6,7 @@
 class CSetTiingoCompanyFinancialState : public CVirtualRecordset {
 public:
 	CSetTiingoCompanyFinancialState(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_company_financial_state", CDatabase* pDatabase = nullptr);
+	~CSetTiingoCompanyFinancialState() override = default;
 
 	// 字段/参数数据
 

@@ -7,6 +7,7 @@
 class CSetCountry : public CVirtualRecordset {
 public:
 	explicit CSetCountry(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_country_list", CDatabase* pDatabase = nullptr);
+	~CSetCountry() override = default;
 
 	long m_ID{ 0 };
 	CString m_Code2{ "" };

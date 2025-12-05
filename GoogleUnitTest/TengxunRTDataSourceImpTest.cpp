@@ -57,7 +57,6 @@ namespace FireBirdTest {
 
 		tengxunRTDataSource.GenerateInquiryMessage(0);
 
-		EXPECT_TRUE(tengxunRTDataSource.IsInquiring());
 		EXPECT_TRUE(tengxunRTDataSource.HaveInquiry());
 		EXPECT_EQ(tengxunRTDataSource.InquiryQueueSize(), 1);
 		tengxunRTDataSource.GetCurrentProduct();

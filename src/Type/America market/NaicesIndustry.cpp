@@ -11,6 +11,7 @@ CNaicsIndustry::CNaicsIndustry() {
 	m_fUpdated = false;
 }
 
+///////////////////////
 void CNaicsIndustry::Append(CSetNaicsIndustry& setNaicsIndustry) const {
 	setNaicsIndustry.AddNew();
 	setNaicsIndustry.m_Naics = m_strNaics.c_str();

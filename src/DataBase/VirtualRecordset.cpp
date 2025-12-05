@@ -8,9 +8,6 @@
 
 #include "VirtualRecordset.h"
 
-CVirtualRecordset::~CVirtualRecordset() {
-}
-
 CString CVirtualRecordset::GetSchemaConnect() const {
 	if (gl_systemConfiguration.IsWorkingMode()) { // 工作时使用系统配置文件中的用户名和密码
 		return "DSN=" + m_Schema + ";UID=" + gl_systemConfiguration.GetDatabaseAccountName().c_str() + ";PASSWORD=" +

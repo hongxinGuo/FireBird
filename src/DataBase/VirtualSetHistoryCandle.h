@@ -12,6 +12,7 @@ class CVirtualSetHistoryCandle : public CVirtualRecordset {
 public:
 	CVirtualSetHistoryCandle(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr);
 	~CVirtualSetHistoryCandle() override = default;
+
 	// 字段/参数数据
 
 	// 以下字符串类型(如果存在)反映数据库字段(ANSI 数据类型的 CStringA 和 Unicode

@@ -4,6 +4,7 @@
 class CSetRSOption : public CVirtualRecordset {
 public:
 	CSetRSOption(const CString& strSchema = "ChinaMarket", const CString& strTable = "option_calculatingrs", CDatabase* pDatabase = nullptr);
+	~CSetRSOption() override = default;
 
 	long m_ID{ 0 };
 	long m_Index{ 0 };

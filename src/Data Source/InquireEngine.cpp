@@ -13,11 +13,11 @@
 
 #include "InfoReport.h"
 
-CInquireEngine::CInquireEngine(): m_dataBuffer{} {
+CInquireEngine::CInquireEngine() : m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 }
 
-CInquireEngine::CInquireEngine(const InternetOption& option, const string& strInquire, const string& strHeaders): m_dataBuffer{} {
+CInquireEngine::CInquireEngine(const InternetOption& option, const string& strInquire, const string& strHeaders) : m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
@@ -99,8 +99,8 @@ CWebDataPtr CInquireEngine::GetWebData() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInquireEngine::OpenFile() {
-	wstring wstr = std::wstring(CA2W(m_strHeaders.c_str()));
-	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(CA2W(m_strInquiry.c_str()), 1,
+	const wstring wstr = ToUTF16(m_strHeaders);
+	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(ToUTF16(m_strInquiry).c_str(), 1,
 	                                                      INTERNET_FLAG_TRANSFER_ASCII,
 	                                                      wstr.c_str(), wstr.length()));
 }

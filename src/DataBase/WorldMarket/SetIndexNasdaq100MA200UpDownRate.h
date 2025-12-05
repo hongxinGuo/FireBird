@@ -10,6 +10,7 @@
 class CSetIndexNasdaq100MA200UpDownRate : public CVirtualRecordset {
 public:
 	explicit CSetIndexNasdaq100MA200UpDownRate(const CString& strSchema = "WorldMarket", const CString& strTable = "index_nasdaq100_200ma_updown_rate", CDatabase* pDatabase = nullptr);
+	~CSetIndexNasdaq100MA200UpDownRate() override = default;
 
 	// 字段/参数数据
 

@@ -6,7 +6,7 @@
 class CSetSICIndustry : public CVirtualRecordset {
 public:
 	CSetSICIndustry(const CString& strSchema = "WorldMarket", const CString& strTable = "sic_industry", CDatabase* pDatabase = nullptr);
-
+	~CSetSICIndustry() override = default;
 	// 字段/参数数据
 
 	// 以下字符串类型(如果存在)反映数据库字段(ANSI 数据类型的 CStringA 和 Unicode

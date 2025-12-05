@@ -10,6 +10,7 @@
 class CSetIndexNasdaq100 : public CVirtualRecordset {
 public:
 	explicit CSetIndexNasdaq100(const CString& strSchema = "WorldMarket", const CString& strTable = "index_nasdaq100", CDatabase* pDatabase = nullptr);
+	~CSetIndexNasdaq100() override = default;
 
 	// 字段/参数数据
 

@@ -36,7 +36,6 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 			product->SetMarket(gl_pChinaMarket);
 			ASSERT(!HaveInquiry());
 			StoreInquiry(product);
-			SetInquiring(true);
 			return true;
 		}
 	}

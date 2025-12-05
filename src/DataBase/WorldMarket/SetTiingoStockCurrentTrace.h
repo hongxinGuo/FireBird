@@ -6,7 +6,7 @@
 class CSetTiingoStockCurrentTrace : public CVirtualRecordset {
 public:
 	CSetTiingoStockCurrentTrace(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_current_trace", CDatabase* pDatabase = nullptr);
-
+	~CSetTiingoStockCurrentTrace() override = default;
 	// 字段/参数数据
 
 	// 以下字符串类型(如果存在)反映数据库字段(ANSI 数据类型的 CStringA 和 Unicode

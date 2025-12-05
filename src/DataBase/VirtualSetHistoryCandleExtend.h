@@ -11,6 +11,7 @@
 class CVirtualSetHistoryCandleExtend : public CVirtualRecordset {
 public:
 	CVirtualSetHistoryCandleExtend(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr);
+	~CVirtualSetHistoryCandleExtend() override = default;
 
 	// 字段/参数数据
 

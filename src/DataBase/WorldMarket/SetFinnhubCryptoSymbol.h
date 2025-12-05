@@ -7,4 +7,5 @@ class CSetFinnhubCryptoSymbol : public CVirtualSetStockSymbol {
 public:
 	CSetFinnhubCryptoSymbol(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_crypto_symbol", CDatabase* pDatabase = nullptr)
 		: CVirtualSetStockSymbol(strSchema, strTable, pDatabase) {}
+	~CSetFinnhubCryptoSymbol() override = default;
 };

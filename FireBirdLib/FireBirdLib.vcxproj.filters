@@ -1307,9 +1307,6 @@
     <ClCompile Include="..\src\Type\SECFiling.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
-    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
@@ -1510,6 +1507,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockMonthLine.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

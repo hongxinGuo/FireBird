@@ -4,6 +4,7 @@
 class CSetTiingoStockDelistedSymbol : public CVirtualRecordset {
 public:
 	CSetTiingoStockDelistedSymbol(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_delisted_symbol", CDatabase* pDatabase = nullptr);
+	~CSetTiingoStockDelistedSymbol() override = default;
 
 	// 字段/参数数据
 

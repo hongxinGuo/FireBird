@@ -6,7 +6,7 @@
 class CSetTiingoFundamentalDefinition : public CVirtualRecordset {
 public:
 	CSetTiingoFundamentalDefinition(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_fundamental_definitions", CDatabase* pDatabase = nullptr);
-
+	~CSetTiingoFundamentalDefinition() override {}
 	// 字段/参数数据
 
 	// 以下字符串类型(如果存在)反映数据库字段(ANSI 数据类型的 CStringA 和 Unicode

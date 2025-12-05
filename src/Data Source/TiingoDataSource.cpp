@@ -410,7 +410,6 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
-			SetInquiring(true);
 		}
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction("");
@@ -450,7 +449,6 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
-			SetInquiring(true);
 		}
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction("");
@@ -486,7 +484,6 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
-			SetInquiring(true);
 		}
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction("");
@@ -536,7 +533,6 @@ bool CTiingoDataSource::GenerateDayLine() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
-			SetInquiring(true);
 			string s = "Day line: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
@@ -583,7 +579,6 @@ bool CTiingoDataSource::GenerateFinancialState() {
 			string s = "Financial statement: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
-			SetInquiring(true);
 		}
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction("");

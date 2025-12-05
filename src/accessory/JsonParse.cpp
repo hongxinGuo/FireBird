@@ -84,8 +84,7 @@ long long StrToDecimal2(const std::string_view& svData, int power) {
 		return std::stoll(result);
 	} catch (std::out_of_range) {
 		return 0;
-	}
-	catch (std::invalid_argument) {
+	} catch (std::invalid_argument) {
 		return 0;
 	}
 }
@@ -184,7 +183,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	while (!pWebData->IsLastDataParagraph()) {
 		pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 	}
-	if (pvStringView->size() < 1) return;
+	if (pvStringView->empty()) return;
 	auto result = ParseSinaRTDataUsingCoroutine(pvStringView);
 	result.get(); // 堵塞在这里
 }
@@ -197,7 +196,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 	const string_view sv = pWebDataReceived->GetStringView(0, 21);
 
-	if (sv.compare("v_pv_none_match=\"1\";\n") == 0) {
+	if (sv == "v_pv_none_match=\"1\";\n") {
 		ASSERT(pWebDataReceived->GetBufferLength() == 21);
 		return true;
 	}
@@ -254,7 +253,7 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	while (!pWebData->IsLastDataParagraph()) {
 		pvStringView->emplace_back(pWebData->GetCurrentTengxunData());
 	}
-	if (pvStringView->size() < 1) return;
+	if (pvStringView->empty()) return;
 	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
 	result.get(); // 等待线程执行完后方继续。
 }

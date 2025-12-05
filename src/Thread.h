@@ -19,7 +19,8 @@
 using namespace concurrencpp;
 
 extern concurrencpp::runtime gl_runtime;
-extern concurrencpp::runtime gl_backgroundRuntime;
+extern concurrencpp::thread_pool_executor gl_webInquiryExecutor; // 网络申请线程池工作线程运行调度器
+
 extern int gl_concurrency_level; // 并行计算允许最大数量
 
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。

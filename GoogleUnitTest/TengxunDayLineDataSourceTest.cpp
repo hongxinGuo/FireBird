@@ -87,7 +87,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << GetUTCTime();
 		EXPECT_GT(TengxunDayLineDataSource.InquiryQueueSize(), 0);
-		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare( "000001.SS") == 0);
 		TengxunDayLineDataSource.SetInquiring(false);
@@ -95,7 +94,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		EXPECT_TRUE(TengxunDayLineDataSource.Inquire());
-		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare( "000006.SS") == 0);
 		TengxunDayLineDataSource.SetInquiring(false);

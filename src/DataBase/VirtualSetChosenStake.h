@@ -10,6 +10,7 @@
 class CVirtualSetChosenStake : public CVirtualRecordset {
 public:
 	CVirtualSetChosenStake(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr);
+	~CVirtualSetChosenStake() override = default;
 
 	// 字段/参数数据
 

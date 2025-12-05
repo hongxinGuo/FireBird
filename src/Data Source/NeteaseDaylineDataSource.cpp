@@ -60,7 +60,6 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 		product->SetMarket(gl_pChinaMarket);
 		product->SetInquiryFunction(strMessage + strParam + strSuffix);
 		StoreInquiry(product);
-		SetInquiring(true);
 	}
 }
 
