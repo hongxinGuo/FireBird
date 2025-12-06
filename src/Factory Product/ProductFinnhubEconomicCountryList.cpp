@@ -42,15 +42,15 @@ CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const 
 			pCountry = make_shared<CCountry>();
 			s = jsonGetString(it, "code2");
 			if (!s.empty()) pCountry->m_strCode2 = s;
-			s = jsonGetString(it,"code3");
+			s = jsonGetString(it, "code3");
 			pCountry->m_strCode3 = s;
-			s = jsonGetString(it,"codeNo");
+			s = jsonGetString(it, "codeNo");
 			pCountry->m_strCodeNo = s;
-			s = jsonGetString(it,"country");
+			s = jsonGetString(it, "country");
 			pCountry->m_strCountry = s;
-			s = jsonGetString(it,"currency");
+			s = jsonGetString(it, "currency");
 			pCountry->m_strCurrency = s;
-			s = jsonGetString(it,"currencyCode");
+			s = jsonGetString(it, "currencyCode");
 			pCountry->m_strCurrencyCode = s;
 			pvCountry->push_back(pCountry);
 		}
@@ -63,8 +63,7 @@ CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const 
 	return pvCountry;
 }
 
-void CProductFinnhubEconomicCountryList::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), "class CFinnhubDataSource") == 0);
-	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateCountryList(false);
+void CProductFinnhubEconomicCountryList::UpdateSystemStatus() {
+	gl_pFinnhubDataSource->SetUpdateCountryList(false);
 	gl_systemMessage.PushInformationMessage("Finnhub economic country List updated");
 }

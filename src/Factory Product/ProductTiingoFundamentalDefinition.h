@@ -12,7 +12,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoFundamentalDefinitionsPtr ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData);
 
-	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus() override;
 };
 
 using CProductTiingoFundamentalDefinitionPtr = shared_ptr<CProductTiingoFundamentalDefinition>;

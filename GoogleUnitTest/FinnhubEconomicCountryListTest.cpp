@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubEconomicCountryListTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
 
-		countryList.UpdateSystemStatus(gl_pFinnhubDataSource);
+		countryList.UpdateSystemStatus();
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCountryList());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCountryList.__Test_checkAccessRight(m_pWebData);
+			m_finnhubEconomicCountryList._Test_checkAccessRight(m_pWebData);
 
 			m_pvCountry = nullptr;
 		}
@@ -153,7 +153,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCountryList.__Test_checkAccessRight(m_pWebData);
+			m_finnhubEconomicCountryList._Test_checkAccessRight(m_pWebData);
 
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket);
 		}

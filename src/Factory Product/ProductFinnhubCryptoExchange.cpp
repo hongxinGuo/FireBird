@@ -54,8 +54,7 @@ shared_ptr<vector<string>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExch
 	return pvExchange;
 }
 
-void CProductFinnhubCryptoExchange::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), "class CFinnhubDataSource") == 0);
-	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateCryptoExchange(false);
+void CProductFinnhubCryptoExchange::UpdateSystemStatus() {
+	gl_pFinnhubDataSource->SetUpdateCryptoExchange(false);
 	gl_systemMessage.PushInformationMessage("Finnhub crypto exchange updated");
 }

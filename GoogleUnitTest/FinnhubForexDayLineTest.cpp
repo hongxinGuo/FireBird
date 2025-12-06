@@ -89,7 +89,7 @@ namespace FireBirdTest {
 			m_pvDayLine = nullptr;
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
-			m_finnhubForexDayLine.__Test_checkAccessRight(m_pWebData);
+			m_finnhubForexDayLine._Test_checkAccessRight(m_pWebData);
 		}
 
 		void TearDown() override {
@@ -170,7 +170,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol )) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
-			m_finnhubForexDayLine.__Test_checkAccessRight(m_pWebData);
+			m_finnhubForexDayLine._Test_checkAccessRight(m_pWebData);
 
 			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubForexDayLine.SetIndex(0);

@@ -75,7 +75,7 @@ namespace FireBirdTest {
 			m_pStock->SetProfileUpdateDate(19700101);
 			m_pStock->SetCity("");
 			m_pWebData = pData->m_pData;
-			m_finnhubCompanyProfile.__Test_checkAccessRight(m_pWebData);
+			m_finnhubCompanyProfile._Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCompanyProfile.SetMarket(gl_pWorldMarket);
 			m_finnhubCompanyProfile.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));

@@ -5,32 +5,32 @@
 #include "WorldMarket.h"
 
 enum enum_ErrorMessageData {
-	ERROR_NO_ERROR__ = 0,
+	ERROR_NO_ERROR_ = 0,
 	// finnhub
-	ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__,
-	ERROR_FINNHUB_MISSING_API_KEY__,
-	ERROR_FINNHUB_REACH_MAX_API_LIMIT__,
-	ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__,
-	ERROR_FINNHUB_NOT_HANDLED__,
+	ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_,
+	ERROR_FINNHUB_MISSING_API_KEY_,
+	ERROR_FINNHUB_REACH_MAX_API_LIMIT_,
+	ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH_,
+	ERROR_FINNHUB_NOT_HANDLED_,
 
 	// tiingo
-	ERROR_TIINGO_NO_RIGHT_TO_ACCESS__,
-	ERROR_TIINGO_MISSING_API_KEY__,
-	ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__,
-	ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__,
-	ERROR_TIINGO_FREQUENCY__,
-	ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__,
-	ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__,
-	ERROR_TIINGO_REACH_MAX_API_LIMIT__,
-	ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__,
-	ERROR_TIINGO_NOT_FOUND__,
-	ERROR_TIINGO_NOT_HANDLED__,
+	ERROR_TIINGO_NO_RIGHT_TO_ACCESS_,
+	ERROR_TIINGO_MISSING_API_KEY_,
+	ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH_,
+	ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_,
+	ERROR_TIINGO_FREQUENCY_,
+	ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_,
+	ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_,
+	ERROR_TIINGO_REACH_MAX_API_LIMIT_,
+	ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK_,
+	ERROR_TIINGO_NOT_FOUND_,
+	ERROR_TIINGO_NOT_HANDLED_,
 
 	// sina
-	ERROR_SINA_HEADER_NEEDED__, // 
+	ERROR_SINA_HEADER_NEEDED_, // 
 };
 
-class CVirtualDataSource : public std::enable_shared_from_this<CVirtualDataSource> {
+class CVirtualDataSource {
 	friend CVirtualWebProduct;
 
 public:
@@ -112,15 +112,13 @@ public:
 		return haveInquiry;
 	}
 
-	std::shared_ptr<CVirtualDataSource> GetShared() { return shared_from_this(); }
-
 	virtual bool Reset() { return true; }
 
 	void Run(long lMarketTime);
 	void InquireData();
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
-	virtual enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr&) { return ERROR_NO_ERROR__; } // 此WebData内容为错误信息？
+	virtual enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr&) { return ERROR_NO_ERROR_; } // 此WebData内容为错误信息？
 
 	void SetDefaultSessionOption();
 
@@ -204,7 +202,7 @@ protected:
 
 	atomic_int64_t m_dwHTTPStatusCode{ 0 }; // 网络状态码
 	atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码
-	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };
+	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR_ };
 
 	InternetOption m_internetOption;
 	string m_strInquiry{}; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
@@ -212,7 +210,7 @@ protected:
 	string m_strParam{}; // 查询字符串的参数
 	string m_strSuffix{}; // 查询字符串的后缀部分
 	string m_strInquiryToken{}; // 查询字符串令牌
-	string m_strHeaders{ "" }; // OpenURL时的headers字符串值， 默认为""
+	string m_strHeaders{}; // OpenURL时的headers字符串值， 默认为""
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
 	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）

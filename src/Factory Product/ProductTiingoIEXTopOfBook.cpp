@@ -150,11 +150,10 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 	return pvTiingoIEXLastTopOFBook;
 }
 
-void CProductTiingoIEXTopOfBook::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
-	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateIEXTopOfBook(false);
+void CProductTiingoIEXTopOfBook::UpdateSystemStatus() {
+	gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false);
 	gl_systemMessage.PushInformationMessage("Tiingo IEX top of book Updated");
 	if (gl_pWorldMarket->IsMarketClosed()) { // 已闭市？
-		dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetEndMarketIEXTopOfBookUpdate(true); // 本交易日数据是完整的。
+		gl_pTiingoDataSource->SetEndMarketIEXTopOfBookUpdate(true); // 本交易日数据是完整的。
 	}
 }

@@ -8,13 +8,13 @@
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
-	{ "You do not have permission to access the News API", ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http状态码：403
-	{ "Error: resampleFreq must be in 'Min' or 'Hour' only", ERROR_TIINGO_FREQUENCY__ },
-	{ "You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
-	{ "Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__ }, // http状态码：429
-	{ "API limit reached.please try again later.Remaining limit:0", ERROR_TIINGO_REACH_MAX_API_LIMIT__ }, // http状态码：200
-	{ "Not found.", ERROR_TIINGO_NOT_FOUND__ },
-	{ "", ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
+	{ "You do not have permission to access the News API", ERROR_TIINGO_NO_RIGHT_TO_ACCESS_ }, // http状态码：403
+	{ "Error: resampleFreq must be in 'Min' or 'Hour' only", ERROR_TIINGO_FREQUENCY_ },
+	{ "You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_ }, // http状态码：200
+	{ "Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_ }, // http状态码：429
+	{ "API limit reached.please try again later.Remaining limit:0", ERROR_TIINGO_REACH_MAX_API_LIMIT_ }, // http状态码：200
+	{ "Not found.", ERROR_TIINGO_NOT_FOUND_ },
+	{ "", ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH_ }
 };
 
 CTiingoDataSource::CTiingoDataSource() {
@@ -61,7 +61,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	string_view strView;
 	long l;
 
-	m_eErrorMessageData = ERROR_NO_ERROR__;
+	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误
 	switch (m_dwHTTPStatusCode) {
 	case 200:
@@ -72,7 +72,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo symbol reach 500");
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__;
+				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_;
 			}
 		}
 		break;
@@ -83,7 +83,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				gl_systemMessage.PushInnerSystemInformationMessage("Error: Endpoint only available for US and US - listed Stocks\"]");
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__;
+				return ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK_;
 			}
 		}
 		break;
@@ -95,7 +95,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_MISSING_API_KEY__;
+				return ERROR_TIINGO_MISSING_API_KEY_;
 			}
 		}
 		if (pWebData->GetBufferLength() == 62) {
@@ -105,7 +105,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_NO_RIGHT_TO_ACCESS__;
+				return ERROR_TIINGO_NO_RIGHT_TO_ACCESS_;
 			}
 		}
 		if (pWebData->GetBufferLength() == 216) {
@@ -116,7 +116,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				gl_systemConfiguration.SetTiingoAccountAddOnPaid(false);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__;
+				return ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_;
 			}
 		}
 
@@ -128,7 +128,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		str += "  " + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
-		return ERROR_TIINGO_NOT_HANDLED__;
+		return ERROR_TIINGO_NOT_HANDLED_;
 	case 404:
 		if (pWebData->GetBufferLength() == 23) {
 			strView = pWebData->GetStringView(0, 23); // 
@@ -137,13 +137,13 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				str += m_pCurrentProduct->GetInquiry();
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 				gl_errorLogger->warn("{}", str);
-				return ERROR_TIINGO_NOT_FOUND__;
+				return ERROR_TIINGO_NOT_FOUND_;
 			}
 		}
 		str = "No right to access: " + m_pCurrentProduct->GetInquiry() + ",  Exchange = " + m_pCurrentProduct->GetInquiringExchange();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
-		return ERROR_TIINGO_NO_RIGHT_TO_ACCESS__; // 目前日线数据无申请权利时返回错误代码404。
+		return ERROR_TIINGO_NO_RIGHT_TO_ACCESS_; // 目前日线数据无申请权利时返回错误代码404。
 	case 429:
 		if (pWebData->GetBufferLength() == 152) {
 			strView = pWebData->GetStringView(0, 152); // 
@@ -151,8 +151,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				str = "Warning: Tiingo run over your monthly bandwidth";
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 				gl_errorLogger->warn("{}", str);
-				m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__);
-				return ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__;
+				m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_);
+				return ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_;
 			}
 		}
 		break;
@@ -167,12 +167,12 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		str += "  " + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
-		return ERROR_TIINGO_NOT_HANDLED__;
+		return ERROR_TIINGO_NOT_HANDLED_;
 	}
 
 	json js;
 	if (!pWebData->CreateJson(js)) { // 非json制式，不应该出现。
-		m_eErrorMessageData = ERROR_NO_ERROR__;
+		m_eErrorMessageData = ERROR_NO_ERROR_;
 		return m_eErrorMessageData; // 暂时返回正确
 	}
 
@@ -185,11 +185,11 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		try {
 			m_eErrorMessageData = mapTiingoErrorMap.at(error);
 		} catch (exception&) {
-			m_eErrorMessageData = ERROR_TIINGO_NOT_HANDLED__;
+			m_eErrorMessageData = ERROR_TIINGO_NOT_HANDLED_;
 		}
 
 		switch (m_eErrorMessageData) {
-		case ERROR_TIINGO_NO_RIGHT_TO_ACCESS__:// 无权申请
+		case ERROR_TIINGO_NO_RIGHT_TO_ACCESS_:// 无权申请
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			if (m_pCurrentProduct->CheckInaccessible()) {
 				// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
@@ -200,26 +200,26 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			break;
-		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
+		case ERROR_TIINGO_MISSING_API_KEY_: // 缺少API key
 			gl_systemMessage.PushErrorMessage("Tiingo missing API key");
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			break;
-		case ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__: // 用尽了每月数据使用量 HTTP status code: 429
+		case ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_: // 用尽了每月数据使用量 HTTP status code: 429
 			ASSERT(m_dwHTTPStatusCode == 429);
 			gl_systemMessage.PushErrorMessage("Tiingo run over monthly bandwidth allocation");
-			m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__);
+			m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_);
 			break;
-		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
+		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH_:// 申请频率超高
 			// 降低查询频率200ms。
 			// todo 这里最好只向系统报告频率超出，由系统决定如何修正。
 			i = gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count();
 			gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(i + 200);
 			break;
-		case ERROR_TIINGO_NOT_FOUND__:
+		case ERROR_TIINGO_NOT_FOUND_:
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			gl_systemMessage.PushInnerSystemInformationMessage("Tiingo symbol not exist");
 			break;
-		case ERROR_TIINGO_NOT_HANDLED__: // error not handled
+		case ERROR_TIINGO_NOT_HANDLED_: // error not handled
 			if (pWebData->GetBufferLength() > 50) iStringViewLength = 50;
 			else iStringViewLength = pWebData->GetBufferLength();
 			sView = pWebData->GetStringView(0, iStringViewLength);
@@ -233,7 +233,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			break;
 		}
 	} catch (json::exception&) { // no error. do nothing
-		m_eErrorMessageData = ERROR_NO_ERROR__;
+		m_eErrorMessageData = ERROR_NO_ERROR_;
 	}
 	return m_eErrorMessageData;
 }

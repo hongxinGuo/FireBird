@@ -40,7 +40,7 @@ void CProductFinnhub::AddInaccessibleSymbol() {
 // 目前仅用于测试中。准备删除
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductFinnhub::__Test_checkAccessRight(CWebDataPtr pWebData) {
+bool CProductFinnhub::_Test_checkAccessRight(CWebDataPtr pWebData) {
 	const string s(pWebData->GetStringView());
 	if (s == "{\"error\":\"You don't have access to this resource.\"}") {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;

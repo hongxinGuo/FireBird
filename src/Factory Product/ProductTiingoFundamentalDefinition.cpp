@@ -92,8 +92,7 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 	return pvFundamentalDefinition;
 }
 
-void CProductTiingoFundamentalDefinition::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
-	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateFundamentalDefinition(false);
+void CProductTiingoFundamentalDefinition::UpdateSystemStatus() {
+	gl_pTiingoDataSource->SetUpdateFundamentalDefinition(false);
 	gl_systemMessage.PushInformationMessage("Fundamental definition updated");
 }

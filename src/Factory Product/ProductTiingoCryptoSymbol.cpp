@@ -87,9 +87,8 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 
 	return pvTiingoCrypto;
 }
-void CProductTiingoCryptoSymbol::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), "class CTiingoDataSource") == 0);
-	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateCryptoSymbol(false);
+void CProductTiingoCryptoSymbol::UpdateSystemStatus() {
+	gl_pTiingoDataSource->SetUpdateCryptoSymbol(false);
 	gl_systemConfiguration.SetTiingoCryptoSymbolUpdateDate(gl_pWorldMarket->GetMarketDate());
 	gl_systemMessage.PushInformationMessage("Tiingo crypto symbol updated");
 }

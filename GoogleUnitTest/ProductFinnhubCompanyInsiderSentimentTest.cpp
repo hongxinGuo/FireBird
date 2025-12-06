@@ -77,7 +77,7 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateInsiderSentimentDB(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderSentiment.__Test_checkAccessRight(m_pWebData);
+			m_finnhubCompanyInsiderSentiment._Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
@@ -111,37 +111,37 @@ namespace FireBirdTest {
 		case 0: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		case 3:
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			break;
 		case 4:
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		case 5: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		default:
@@ -160,7 +160,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderSentiment.__Test_checkAccessRight(m_pWebData);
+			m_finnhubCompanyInsiderSentiment._Test_checkAccessRight(m_pWebData);
 
 			m_pvInsiderSentiment = nullptr;
 			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
@@ -196,32 +196,32 @@ namespace FireBirdTest {
 		case 0: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB()) << "有效数据，需要更新";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		case 3: // 缺乏data项
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		case 4: // 缺乏Symbol
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		case 5: //空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		default:
 			break;
@@ -238,7 +238,7 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderSentiment.__Test_checkAccessRight(m_pWebData);
+			m_finnhubCompanyInsiderSentiment._Test_checkAccessRight(m_pWebData);
 
 			m_pvInsiderSentiment = nullptr;
 			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);

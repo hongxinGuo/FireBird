@@ -12,7 +12,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoCompanyDividendsPtr ParseTiingoCompanyDividendSymbol(const CWebDataPtr& pWebData);
 
-	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus() override;
 };
 
 using CTiingoCompanyDividendSymbolPtr = shared_ptr<CProductTiingoCompanyDividendSymbol>;

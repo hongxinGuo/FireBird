@@ -12,7 +12,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CVectorTiingoMarketNewsPtr ParseTiingoMarketNews(const CWebDataPtr& pWebData);
 
-	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus() override;
 };
 
 using CProductTiingoMarketNewsPtr = shared_ptr<CProductTiingoMarketNews>;

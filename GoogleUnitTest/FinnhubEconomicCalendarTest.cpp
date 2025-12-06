@@ -57,7 +57,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()); // 默认为付费账户
 		EXPECT_FALSE(economicCalendar.IsNoRightToAccess());
 
-		economicCalendar.UpdateSystemStatus(gl_pFinnhubDataSource);
+		economicCalendar.UpdateSystemStatus();
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(economicCalendar.IsNoRightToAccess());
 		economicCalendar.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 
-		economicCalendar.UpdateSystemStatus(gl_pFinnhubDataSource);
+		economicCalendar.UpdateSystemStatus();
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCalendar.__Test_checkAccessRight(m_pWebData);
+			m_finnhubEconomicCalendar._Test_checkAccessRight(m_pWebData);
 
 			m_pvEconomicCalendar = nullptr;
 		}
@@ -191,7 +191,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCalendar.__Test_checkAccessRight(m_pWebData);
+			m_finnhubEconomicCalendar._Test_checkAccessRight(m_pWebData);
 
 			m_finnhubEconomicCalendar.SetMarket(gl_pWorldMarket);
 			m_finnhubEconomicCalendar.SetIndex(0);

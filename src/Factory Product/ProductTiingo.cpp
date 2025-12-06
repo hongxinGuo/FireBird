@@ -36,7 +36,7 @@ void CProductTiingo::AddInaccessibleSymbol() {
 	}
 }
 
-bool CProductTiingo::__Test_checkAccessRight(CWebDataPtr pWebData) {
+bool CProductTiingo::_Test_checkAccessRight(CWebDataPtr pWebData) {
 	if (gl_pTiingoDataSource->GetWebErrorCode() == 404) { // 404 error
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;

@@ -53,7 +53,7 @@ void CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 	}
 }
 
-void CProductFinnhubCompanyBasicFinancial::UpdateSystemStatus(CVirtualDataSourcePtr) {
+void CProductFinnhubCompanyBasicFinancial::UpdateSystemStatus() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	pStock->SetBasicFinancialUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateBasicFinancial(false);

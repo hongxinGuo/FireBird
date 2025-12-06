@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		auto pProduct = make_shared<CProductDummy>();
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_NO_ERROR__);
+		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_NO_ERROR_);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData2) {
@@ -90,7 +90,7 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__);
+		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NO_RIGHT_TO_ACCESS_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_MISSING_API_KEY__);
+		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_MISSING_API_KEY_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Tiingo missing API key");
@@ -122,7 +122,7 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__);
+		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_FALSE(gl_systemConfiguration.IsTiingoAccountAddOnPaid());
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NOT_HANDLED__);
+		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NOT_HANDLED_);
 		//EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 

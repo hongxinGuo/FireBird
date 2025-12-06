@@ -34,7 +34,7 @@ void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 	}
 }
 
-void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus(CVirtualDataSourcePtr) {
+void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateInsiderSentiment(false);

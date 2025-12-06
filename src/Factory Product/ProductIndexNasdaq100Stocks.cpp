@@ -103,8 +103,7 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 	return vSymbol;
 }
 
-void CProductIndexNasdaq100Stocks::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), "class CAccessoryDataSource") == 0);
-	dynamic_pointer_cast<CAccessoryDataSource>(pDataSource)->SetUpdateIndexNasdaq100Stocks(false);
+void CProductIndexNasdaq100Stocks::UpdateSystemStatus() {
+	gl_pAccessoryDataSource->SetUpdateIndexNasdaq100Stocks(false);
 	gl_systemMessage.PushInnerSystemInformationMessage("Nasdaq 100 stock list updated");
 }

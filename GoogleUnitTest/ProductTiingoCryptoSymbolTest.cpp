@@ -50,7 +50,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoCryptoTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate(), 19800101);
-		stockSymbol.UpdateSystemStatus(gl_pTiingoDataSource);
+		stockSymbol.UpdateSystemStatus();
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Tiingo crypto symbol updated");

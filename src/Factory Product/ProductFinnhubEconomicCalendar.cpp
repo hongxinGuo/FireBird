@@ -52,16 +52,16 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
 			s = jsonGetString(it, "country");
 			if (!s.empty()) pEconomicCalendar->m_strCountry = s;
-			s = jsonGetString(it,"event");
+			s = jsonGetString(it, "event");
 			pEconomicCalendar->m_strEvent = s;
-			s = jsonGetString(it,"impact");
+			s = jsonGetString(it, "impact");
 			pEconomicCalendar->m_strImpact = s;
 			pEconomicCalendar->m_dEstimate = jsonGetDouble(it, "estimate");
 			pEconomicCalendar->m_dActual = jsonGetDouble(it, "actual");
 			pEconomicCalendar->m_dPrev = jsonGetDouble(it, "prev");
-			s = jsonGetString(it,"time");
+			s = jsonGetString(it, "time");
 			pEconomicCalendar->m_strTime = s;
-			s = jsonGetString(it,"unit");
+			s = jsonGetString(it, "unit");
 			pEconomicCalendar->m_strUnit = s;
 			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
@@ -70,10 +70,8 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 	}
 	return pvEconomicCalendar;
 }
-void CProductFinnhubEconomicCalendar::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), "class CFinnhubDataSource") == 0);
-
-	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateEconomicCalendar(false);
+void CProductFinnhubEconomicCalendar::UpdateSystemStatus() {
+	gl_pFinnhubDataSource->SetUpdateEconomicCalendar(false);
 	gl_systemMessage.PushInformationMessage("Finnhub economic calendar updated");
 	if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();

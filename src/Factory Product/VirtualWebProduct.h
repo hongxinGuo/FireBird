@@ -30,7 +30,7 @@ public:
 		ParseAndStoreWebData(pvWebData->at(0)); // 默认只有一个数据，
 	}
 	virtual void AddInaccessibleSymbol() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
-	virtual void UpdateSystemStatus(CVirtualDataSourcePtr) {} // default do nothing
+	virtual void UpdateSystemStatus() {} // default do nothing
 
 	bool CheckInaccessible();
 	bool IsVoidJson(const CWebDataPtr& pWebData);
@@ -60,7 +60,7 @@ public:
 	int GetInquireType() const noexcept { return m_iInquireType; }
 
 	// 测试用
-	virtual bool __Test_checkAccessRight(CWebDataPtr) { return true; }  // todo 不再使用，准备删除之
+	virtual bool _Test_checkAccessRight(CWebDataPtr) { return true; }  // todo 不再使用，准备删除之
 
 protected:
 	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用weak_ptr智能指针以防止内存泄露。

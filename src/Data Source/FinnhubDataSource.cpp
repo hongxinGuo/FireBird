@@ -24,10 +24,10 @@ static auto s_isAccessible = [](int inquireType, const std::string& exchangeCode
 static auto s_setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 
 map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
-	{ "You don't have access to this resource.", ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__ },
-	{ "Please use an API key.", ERROR_FINNHUB_MISSING_API_KEY__ },
-	{ "API limit reached. Please try again later. Remaining Limit: 0", ERROR_FINNHUB_REACH_MAX_API_LIMIT__ }, // http状态码：200
-	{ "", ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__ }
+	{ "You don't have access to this resource.", ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_ },
+	{ "Please use an API key.", ERROR_FINNHUB_MISSING_API_KEY_ },
+	{ "API limit reached. Please try again later. Remaining Limit: 0", ERROR_FINNHUB_REACH_MAX_API_LIMIT_ }, // http状态码：200
+	{ "", ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH_ }
 };
 
 CFinnhubDataSource::CFinnhubDataSource() {
@@ -92,7 +92,7 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
 
-	m_eErrorMessageData = ERROR_NO_ERROR__;
+	m_eErrorMessageData = ERROR_NO_ERROR_;
 	if (m_dwHTTPStatusCode == 200) return m_eErrorMessageData; // OK? return no error
 
 	json js;
@@ -104,10 +104,10 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 		try {
 			m_eErrorMessageData = mapFinnhubErrorMap.at(error);
 		} catch (exception&) {
-			m_eErrorMessageData = ERROR_FINNHUB_NOT_HANDLED__;
+			m_eErrorMessageData = ERROR_FINNHUB_NOT_HANDLED_;
 		}
 		switch (m_eErrorMessageData) {
-		case ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__:// 无权申请
+		case ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_:// 无权申请
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			if (m_pCurrentProduct->CheckInaccessible()) {
 				// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
@@ -118,17 +118,17 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			break;
-		case ERROR_FINNHUB_MISSING_API_KEY__: // 缺少API key
+		case ERROR_FINNHUB_MISSING_API_KEY_: // 缺少API key
 			gl_systemMessage.PushErrorMessage("finnhub missing API key");
 			break;
-		case ERROR_FINNHUB_REACH_MAX_API_LIMIT__: // 
-		case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
+		case ERROR_FINNHUB_REACH_MAX_API_LIMIT_: // 
+		case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH_:// 申请频率超高
 			// 降低查询频率200ms。
 			// todo 这里最好只向系统报告频率超出，由系统决定如何修正。
 			i = gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count();
 			gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(i + 200);
 			break;
-		case ERROR_FINNHUB_NOT_HANDLED__: // error not handled
+		case ERROR_FINNHUB_NOT_HANDLED_: // error not handled
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省分支不应该出现
@@ -136,7 +136,7 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 			break;
 		}
 	} catch (json::exception&) { // no error. do nothing
-		m_eErrorMessageData = ERROR_NO_ERROR__;
+		m_eErrorMessageData = ERROR_NO_ERROR_;
 	}
 	return m_eErrorMessageData;
 }
@@ -607,7 +607,7 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 }*/
 
 bool CFinnhubDataSource::GenerateCryptoSymbol() {
-	static size_t s_lCurrentCryptoExchangePos = 0
+	static size_t s_lCurrentCryptoExchangePos = 0;
 	ASSERT(!IsInquiring());
 	if (IsUpdateCryptoSymbol()) {
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);

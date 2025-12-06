@@ -46,7 +46,7 @@ namespace FireBirdTest {
 		finnhubProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_TRUE(finnhubProduct.__Test_checkAccessRight(pWebData)) << "有权读取";
+		EXPECT_TRUE(finnhubProduct._Test_checkAccessRight(pWebData)) << "有权读取";
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 	}
 
@@ -56,7 +56,7 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_FALSE(finnhubProduct.__Test_checkAccessRight(pWebData)) << "无权读取";
+		EXPECT_FALSE(finnhubProduct._Test_checkAccessRight(pWebData)) << "无权读取";
 		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess()) << "重置此状态";
 	}
 

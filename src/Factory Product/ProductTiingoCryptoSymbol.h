@@ -12,7 +12,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoCryptosPtr ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData);
 
-	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus() override;
 
 	// 测试用
 	long long m_differ1, m_differ2;

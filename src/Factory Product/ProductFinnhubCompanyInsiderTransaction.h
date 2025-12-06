@@ -10,7 +10,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	void UpdateSystemStatus(CVirtualDataSourcePtr) override;
+	void UpdateSystemStatus() override;
 	CInsiderTransactionsPtr ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData);
 };
 

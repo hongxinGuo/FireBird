@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
 		SinaDataSource.SetHTTPStatusCode(200);
 
-		EXPECT_EQ(ERROR_NO_ERROR__, SinaDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，无视错误代码，正常返回";
+		EXPECT_EQ(ERROR_NO_ERROR_, SinaDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，无视错误代码，正常返回";
 
 		// 恢复原状
 		SinaDataSource.SetHTTPStatusCode(0);
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 		pwd->Test_SetBuffer_("Forbidden");
 		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
 
-		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED__, SinaDataSource.IsAErrorMessageData(pwd));
+		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED_, SinaDataSource.IsAErrorMessageData(pwd));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 
 		// 恢复原状

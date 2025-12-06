@@ -11,7 +11,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<string>> ParseFinnhubForexExchange(const CWebDataPtr& pWebData);
 
-	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus() override;
 };
 
 using CFinnhubForexExchangePtr = shared_ptr<CProductFinnhubForexExchange>;
