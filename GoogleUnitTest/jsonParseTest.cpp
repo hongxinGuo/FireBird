@@ -62,17 +62,17 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann1) {
 		json js;
-		string s{ "{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}" };
+		string s{ R"({"eventName":"subscribe","authorization":"abcdefg"})" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s));
 		const string sSubscribe = js.at(("eventName"));
 		EXPECT_EQ(sSubscribe, "subscribe");
-		s = "{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}"; // abcdefg之前缺少字符':'
+		s = R"({"eventName":"subscribe","authorization""abcdefg"})"; // abcdefg之前缺少字符':'
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s));
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann2) {
 		json js;
-		const string s{ "NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo" };
+		const string s{ R"(NoUse{"eventName":"subscribe","authorization":"abcdefg"}NoUseToo)" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		const string sSubscribe = js.at(("eventName"));
 		EXPECT_EQ(sSubscribe, "subscribe");
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann3) {
 		json js;
-		const string s{ "NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo" };
+		const string s{ R"(NoUse{"eventName":"subscribe","authorization":"abcdefg"}NoUseToo)" };
 
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s, 0, 0)); // 排除前面的NoUse和后面的NoUseToo
 
@@ -89,18 +89,18 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann4) {
 		json js;
-		string s = "{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}";
+		string s = R"({"eventName":"subscribe","authorization":"abcdefg"})";
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s));
 		const string sSubscribe = js.at("eventName");
 		EXPECT_EQ(sSubscribe, "subscribe");
-		s = "{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}"; // abcdefg之前缺少字符':'
+		s = R"({"eventName":"subscribe","authorization""abcdefg"})"; // abcdefg之前缺少字符':'
 
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s));
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann5) {
 		json js;
-		string s = "NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo";
+		string s = R"(NoUse{"eventName":"subscribe","authorization":"abcdefg"}NoUseToo)";
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		const string sSubscribe = js.at(("eventName"));
 		EXPECT_EQ(sSubscribe, "subscribe");
@@ -108,7 +108,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann6) {
 		json js;
-		string s = "NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo";
+		string s = R"(NoUse{"eventName":"subscribe","authorization":"abcdefg"}NoUseToo)";
 
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s, 0, 0)); // 排除前面的NoUse和后面的NoUseToo
 
@@ -117,7 +117,9 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData1) {
 		// 正确的两个数据
-		const string strData = "v_sh600000=\"1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\nv_sh600001=\"1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\n";
+		const string strData = R"(v_sh600000="1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
+v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
+)";
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
@@ -132,7 +134,8 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData2) {
 		// 无效数据
-		const string strData = "v_pv_none_match=\"1\";\n";
+		const string strData = R"(v_pv_none_match="1";
+)";
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
@@ -147,7 +150,9 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData3) {
 		// 第一个数据不正确
-		const string strData = "v_sh600000=\"1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\nv_sh600001=\"1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\n";
+		const string strData = R"(v_sh600000="1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
+v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
+)";
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
@@ -164,7 +169,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData4) {
 		// 第二个数据不正确
-		const string strData = "v_sh600000=\"1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\nv_sh600001=\"1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\n";
+		const string strData = R"(v_sh600000="1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";)";
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
@@ -178,7 +183,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonParseTest, TestParseTengxunDayLine) {
-		const string sTengxunDayLine = "{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-19\",\"2.550\",\"2.600\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-20\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}";
+		const string sTengxunDayLine = R"({"code":0,"msg":"","data":{"sh600601":{"day":[["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],"qt":{},"mx_price":{"mx":[],"price":[]},"prec":"2.560","version":"16"}}})";
 		string_view svData = sTengxunDayLine;
 		const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, "sh600601");
 
@@ -203,7 +208,8 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestIsTengxunRTDataInvalid) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_("v_pv_none_match=\"1\";\n");
+		pWebData->Test_SetBuffer_(R"(v_pv_none_match="1";
+)");
 
 		EXPECT_TRUE(IsTengxunRTDataInvalid(pWebData));
 

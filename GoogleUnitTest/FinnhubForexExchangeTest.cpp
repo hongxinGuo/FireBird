@@ -63,15 +63,15 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData72(2, "", "\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]");
+	Test_FinnhubWebData finnhubWebData72(2, "", R"("oanda","fxcm","forex.com","pepperstone","fxpro","icmtrader","ic markets","fxpig"])");
 	// 格式不对
-	Test_FinnhubWebData finnhubWebData73(3, "", "[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]");
+	Test_FinnhubWebData finnhubWebData73(3, "", R"(["oanda",fxcm,"forex.com","pepperstone","fxpro","icmtrader","ic markets","fxpig"])");
 	// 空数据
-	Test_FinnhubWebData finnhubWebData74(4, "", "{}");
+	Test_FinnhubWebData finnhubWebData74(4, "", R"({})");
 	// 无权访问数据
-	Test_FinnhubWebData finnhubWebData75(5, "", "{\"error\":\"You don't have access to this resource.\"}");
+	Test_FinnhubWebData finnhubWebData75(5, "", R"({"error":"You don't have access to this resource."})");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData80(10, "", "[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]");
+	Test_FinnhubWebData finnhubWebData80(10, "", R"(["new exchange","fxcm","forex.com","pepperstone","fxpro","icmtrader","ic markets","fxpig"])");
 
 	class ParseFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

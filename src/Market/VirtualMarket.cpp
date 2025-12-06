@@ -64,7 +64,11 @@ void CVirtualMarket::ScheduleTask() {
 
 void CVirtualMarket::RunDataSource(long lMarketTime) const {
 	for (const auto& pDataSource : m_vDataSource) {
-		if (pDataSource->IsEnable()) pDataSource->Run(lMarketTime);
+		if (pDataSource->IsEnable()) {
+			if (!pDataSource->IsInquiring()) {
+				pDataSource->Run(lMarketTime);
+			}
+		}
 	}
 }
 
@@ -137,7 +141,7 @@ vector<CMarketTaskPtr> CVirtualMarket::DiscardOutDatedTask(long m_lCurrentMarket
 		}
 	}
 	m_lLastQueueLength = validTasks.size();
-	for (const auto pTaskRemained : validTasks) {
+	for (const auto& pTaskRemained : validTasks) {
 		m_qMarketDisplayTask.enqueue(pTaskRemained);
 	}
 

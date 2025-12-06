@@ -172,7 +172,7 @@ CMainFrame::CMainFrame() {
 	}
 
 	// 默认下后台工作线程数为32，使用系统配置降低至实际数量。
-	for (int i = 0; i < __MAX_BACKGROUND_WORKING_THREAD__ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
+	for (int i = 0; i < MAX_BACKGROUND_WORKING_THREAD_ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
 		gl_BackgroundWorkingThread.acquire();
 	}
 }
@@ -186,7 +186,7 @@ CMainFrame::~CMainFrame() {
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
-	for (int i = 0; i < __MAX_BACKGROUND_WORKING_THREAD__ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
+	for (int i = 0; i < MAX_BACKGROUND_WORKING_THREAD_ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
 		gl_BackgroundWorkingThread.release();
 	}
 

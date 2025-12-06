@@ -1,4 +1,4 @@
-﻿#include"pch.h"
+#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"FinnhubStock.h"
@@ -74,15 +74,15 @@ namespace FireBirdTest {
 	}
 
 	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition1(1, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
+	Test_TiingoWebData tiingoFundamentalDefinition1(1, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
 	// 第一个数据缺项
-	Test_TiingoWebData tiingoFundamentalDefinition2(2, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
+	Test_TiingoWebData tiingoFundamentalDefinition2(2, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
 	// 第二个数据缺项
-	Test_TiingoWebData tiingoFundamentalDefinition3(3, "aapl", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
+	Test_TiingoWebData tiingoFundamentalDefinition3(3, "aapl", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
 	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition4(4, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
+	Test_TiingoWebData tiingoFundamentalDefinition4(4, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
 	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition10(10, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
+	Test_TiingoWebData tiingoFundamentalDefinition10(10, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
 
 	class ParseTiingoFundamentalDefinitionTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:

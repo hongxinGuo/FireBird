@@ -53,11 +53,11 @@ namespace FireBirdTest {
 	}
 
 	// 不足三个字符
-	Test_FinnhubWebData SECFilings102(3, "AAPL", "{}");
+	Test_FinnhubWebData SECFilings102(3, "AAPL", R"({})");
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData SECFilings103(4, "AAPL", "{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]");
+	Test_FinnhubWebData SECFilings103(4, "AAPL", R"({"accessNumber":"0000320193-24-000056","symbol":"AAPL","cik":"320193","form":"4","filedDate":"2024-04-15 00:00:00","acceptedDate":"2024-04-15 18:31:11","reportUrl":"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml","filingUrl":"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html"}])");
 	// 正确的数据
-	Test_FinnhubWebData SECFilings110(10, "AAPL", "[{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]");
+	Test_FinnhubWebData SECFilings110(10, "AAPL", R"([{"accessNumber":"0000320193-24-000056","symbol":"AAPL","cik":"320193","form":"4","filedDate":"2024-04-15 00:00:00","acceptedDate":"2024-04-15 18:31:11","reportUrl":"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml","filingUrl":"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html"}])");
 
 	class ParseFinnhubSECFilingsTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

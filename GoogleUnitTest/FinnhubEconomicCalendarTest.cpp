@@ -102,15 +102,15 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData112(2, "", "\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
+	Test_FinnhubWebData finnhubWebData112(2, "", R"("economicCalendar":[{"actual":0.6,"country":"CN","estimate":0.6,"event":"CPI MM","impact":"medium","prev":1,"time":"2021-03-10 01:30:00","unit":"%"},{"actual":-0.2,"country":"CN","estimate":-0.4,"event":"CPI YY","impact":"medium","prev":-0.3,"time":"2021-03-10 01:30:00","unit":"%"}]})");
 	// 缺乏economicCalendar
-	Test_FinnhubWebData finnhubWebData113(3, "", "{\"Missing\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
+	Test_FinnhubWebData finnhubWebData113(3, "", R"({"Missing":[{"actual":0.6,"country":"CN","estimate":0.6,"event":"CPI MM","impact":"medium","prev":1,"time":"2021-03-10 01:30:00","unit":"%"},{"actual":-0.2,"country":"CN","estimate":-0.4,"event":"CPI YY","impact":"medium","prev":-0.3,"time":"2021-03-10 01:30:00","unit":"%"}]})");
 	// 第一个数据缺乏actual
-	Test_FinnhubWebData finnhubWebData114(4, "", "{\"economicCalendar\":[{\"Missing\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
+	Test_FinnhubWebData finnhubWebData114(4, "", R"({"economicCalendar":[{"Missing":0.6,"country":"CN","estimate":0.6,"event":"CPI MM","impact":"medium","prev":1,"time":"2021-03-10 01:30:00","unit":"%"},{"actual":-0.2,"country":"CN","estimate":-0.4,"event":"CPI YY","impact":"medium","prev":-0.3,"time":"2021-03-10 01:30:00","unit":"%"}]})");
 	// 第二个数据缺乏actual
-	Test_FinnhubWebData finnhubWebData115(5, "", "{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"Missing\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
+	Test_FinnhubWebData finnhubWebData115(5, "", R"({"economicCalendar":[{"actual":0.6,"country":"CN","estimate":0.6,"event":"CPI MM","impact":"medium","prev":1,"time":"2021-03-10 01:30:00","unit":"%"},{"Missing":-0.2,"country":"CN","estimate":-0.4,"event":"CPI YY","impact":"medium","prev":-0.3,"time":"2021-03-10 01:30:00","unit":"%"}]})");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData120(10, "", "{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}");
+	Test_FinnhubWebData finnhubWebData120(10, "", R"({"economicCalendar":[{"actual":0.6,"country":"CN","estimate":0.6,"event":"CPI MM","impact":"medium","prev":1,"time":"2021-03-10 01:30:00","unit":"%"},{"actual":-0.2,"country":"CN","estimate":-0.4,"event":"CPI YY","impact":"medium","prev":-0.3,"time":"2021-03-10 01:30:00","unit":"%"}]})");
 
 	class ParseFinnhubEconomicCalendarTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

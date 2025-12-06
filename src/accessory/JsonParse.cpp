@@ -149,7 +149,7 @@ void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWh
 //////////////////////////////////////////////////////////////////////////////////////////////////
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStringView) {
 	vector<result<bool>> results;
-	const auto DataSize = pvStringView->size();
+	long DataSize = pvStringView->size();
 	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
 	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
 	//for (int i = 0; i < gl_concurrency_level; i++) {
@@ -443,7 +443,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		strSymbol4 = XferNeteaseToStandard(symbolName);
 		pWebRTData->SetSymbol(strSymbol4);
 		const string sName = jsonGetString(js, "name");
-		pWebRTData->SetStockName(ToUTF8(XferToCString(sName))); // 将utf-8字符集转换为多字节字符集
+		pWebRTData->SetStockName(sName);
 		string strTime = jsonGetString(js, "time");
 		string strSymbol2 = jsonGetString(js, "code");
 		std::stringstream ss(strTime);
@@ -576,7 +576,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 
 			string_view sNameView = simdjsonGetStringView(item, "name");
 			string sName(sNameView);
-			pWebRTData->SetStockName(ToUTF8(XferToCString(sName))); // 将utf-8字符集转换为多字节字符集
+			pWebRTData->SetStockName(sName);
 			pWebRTData->SetPSell(2, StrToDecimal(simdjsonGetRawJsonToken(item, "ask3"), 3));
 			pWebRTData->SetPSell(1, StrToDecimal(simdjsonGetRawJsonToken(item, "ask2"), 3));
 			strTime = simdjsonGetStringView(item, "time");

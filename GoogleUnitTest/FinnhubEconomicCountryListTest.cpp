@@ -59,19 +59,19 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData92(2, "", "{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
+	Test_FinnhubWebData finnhubWebData92(2, "", R"delimiter({"code2":"NR","code3":"NRU","codeNo":"520","country":"New Country1","currency":"Australian Dollars","currencyCode":"AUD"}, {"code2":"MF","code3":"MAF","codeNo":"663","country":"Saint Martin (French part)","currency":"Netherlands Antillean guilder","currencyCode":"ANG"}])delimiter");
 	// 第一个数据缺乏CodeNo
-	Test_FinnhubWebData finnhubWebData93(3, "","[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
+	Test_FinnhubWebData finnhubWebData93(3, "", R"delimiter([{"code2":"NR","code3":"NRU","Missing":"520","country":"New Country","currency":"Australian Dollars","currencyCode":"AUD"}, {"code2":"MF","code3":"MAF","codeNo":"663","country":"Saint Martin (French part)","currency":"Netherlands Antillean guilder","currencyCode":"ANG"}])delimiter");
 	// 第二个数据缺乏Code2
-	Test_FinnhubWebData finnhubWebData94(4, "","[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
+	Test_FinnhubWebData finnhubWebData94(4, "", R"delimiter([{"code2":"NR","code3":"NRU","codeNo":"520","country":"Zero","currency":"Australian Dollars","currencyCode":"AUD"}, {"Missing":"MF","code3":"MAF","codeNo":"663","country":"Saint Martin (French part)","currency":"Netherlands Antillean guilder","currencyCode":"ANG"}])delimiter");
 	// 数据缺乏symbol
-	Test_FinnhubWebData finnhubWebData95(5, "","[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
+	Test_FinnhubWebData finnhubWebData95(5, "", R"delimiter([{"code2":"NR","code3":"NRU","codeNo":"520","country":"Zero","currency":"Australian Dollars","currencyCode":"AUD"}, {"code2":"MF","code3":"MAF","Missing":"663","country":"Saint Martin (French part)","currency":"Netherlands Antillean guilder","currencyCode":"ANG"}])delimiter");
 	// 空数据
-	Test_FinnhubWebData finnhubWebData96(6, "", "{}");
+	Test_FinnhubWebData finnhubWebData96(6, "", R"({})");
 	// 无权访问数据
-	Test_FinnhubWebData finnhubWebData97(7, "", "{\"error\":\"You don't have access to this resource.\"}");
+	Test_FinnhubWebData finnhubWebData97(7, "", R"({"error":"You don't have access to this resource."})");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData100(10, "", "[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]");
+	Test_FinnhubWebData finnhubWebData100(10, "", R"delimiter([{"code2":"NR","code3":"NRU","codeNo":"520","country":"Zero","currency":"Australian Dollars","currencyCode":"AUD"}, {"code2":"MF","code3":"MAF","codeNo":"663","country":"Saint Martin (French part)","currency":"Netherlands Antillean guilder","currencyCode":"ANG"}])delimiter");
 
 	class ParseFinnhubCountryListTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

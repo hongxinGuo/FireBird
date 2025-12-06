@@ -475,11 +475,6 @@
     <ClCompile Include="..\src\Working thread\ThreadLoadSelectedStockDayLine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
-      <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\src\Stock\.editorconfig" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

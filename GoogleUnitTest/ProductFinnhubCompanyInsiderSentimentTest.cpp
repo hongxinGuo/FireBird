@@ -56,13 +56,13 @@ namespace FireBirdTest {
 	}
 
 	// 正确数据
-	Test_FinnhubWebData finnhubWebData142(2, "AAPL", "{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
+	Test_FinnhubWebData finnhubWebData142(2, "AAPL", R"({"data":[{"symbol":"TSLA","year":2022,"month":3,"change":5540,"mspr":12.209097},{"symbol":"TSLA","year":2021,"month":1,"change":-1250,"mspr":-5.6179776}], "symbol":"TSLA"})");
 	// 缺乏 data项
-	Test_FinnhubWebData finnhubWebData143(3, "AAPL", "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
+	Test_FinnhubWebData finnhubWebData143(3, "AAPL", R"({"no data":[{"symbol":"TSLA","year":2021,"month":3,"change":5540,"mspr":12.209097},{"symbol":"TSLA","year":2022,"month":1,"change":-1250,"mspr":-5.6179776}], "symbol":"TSLA"})");
 	// 缺乏 Symbol项
-	Test_FinnhubWebData finnhubWebData144(4, "AAPL", "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
+	Test_FinnhubWebData finnhubWebData144(4, "AAPL", R"({"data":[{"no symbol":"TSLA","year":2021,"month":3,"change":5540,"mspr":12.209097},{"symbol":"TSLA","year":2022,"month":1,"change":-1250,"mspr":-5.6179776}], "symbol":"TSLA"})");
 	// 空数据
-	Test_FinnhubWebData finnhubWebData145(5, "AAPL", "{\"data\":[], \"symbol\":\"QNICF\"}");
+	Test_FinnhubWebData finnhubWebData145(5, "AAPL", R"({"data":[], "symbol":"QNICF"})");
 
 	class ProcessFinnhubInsiderSentimentTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	}
 
 	// 正确的数据
-	Test_FinnhubWebData finnhubMarketHolidayWebData22(2, "AAPL", "{\"data\": [{\"eventName\": \"Christmas\",\"atDate\": \"2023-12-25\",\"tradingHour\" : \"\"},{\"eventName\": \"Independence Day\",\"atDate\": \"2023-07-04\",\"tradingHour\" : \"09:30-13:00\"}],\"exchange\": \"US\",\"timezone\": \"America/New_York\"}");
+	Test_FinnhubWebData finnhubMarketHolidayWebData22(2, "AAPL", R"({"data": [{"eventName": "Christmas","atDate": "2023-12-25","tradingHour" : ""},{"eventName": "Independence Day","atDate": "2023-07-04","tradingHour" : "09:30-13:00"}],"exchange": "US","timezone": "America/New_York"})");
 
 	class ParseFinnhubMarketHolidayTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

@@ -1,4 +1,4 @@
-﻿#include"pch.h"
+#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -64,11 +64,11 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对，缺乏'{'
-	Test_TiingoWebData tiingoWebData11(11, "", "[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]");
+	Test_TiingoWebData tiingoWebData11(11, "", R"delimiter(["ticker":"curebtc","baseCurrency":"cure","name":"CureCoin(CURE/BTC)","quoteCurrency":"btc"}])delimiter");
 	// 第一个数据缺项
-	Test_TiingoWebData tiingoWebData12(12, "", "[{\"Missing\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]");
+	Test_TiingoWebData tiingoWebData12(12, "", R"delimiter([{"Missing":"curebtc","baseCurrency":"cure","name":"CureCoin(CURE/BTC)","quoteCurrency":"btc"}])delimiter");
 	// 正确的数据
-	Test_TiingoWebData tiingoWebData20(20, "", "[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]");
+	Test_TiingoWebData tiingoWebData20(20, "", R"delimiter([{"ticker":"New Symbol","baseCurrency":"cure","name":"CureCoin(CURE/BTC)","quoteCurrency":"btc"}])delimiter");
 
 	class ParseTiingoCryptoTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:

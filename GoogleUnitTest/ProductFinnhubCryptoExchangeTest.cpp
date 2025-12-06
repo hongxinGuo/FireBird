@@ -65,11 +65,11 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData202(2, "", "\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]");
+	Test_FinnhubWebData finnhubWebData202(2, "", R"("oanda","fxcm","forex.com","pepperstone","fxpro","icmtrader","ic markets","octafx","fxpig"])");
 	// 格式不对
-	Test_FinnhubWebData finnhubWebData203(3, "", "[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]");
+	Test_FinnhubWebData finnhubWebData203(3, "", R"(["oanda",fxcm,"forex.com","pepperstone","fxpro","icmtrader","ic markets","octafx","fxpig"])");
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData210(10, "", "[\"new exchange\",\"FXPIG\",\"KRAKEN\",\"ZB\",\"HITBTC\",\"GEMINI\",\"COINBASE\",\"BITTREX\",\"HUOBI\"]");
+	Test_FinnhubWebData finnhubWebData210(10, "", R"(["new exchange","FXPIG","KRAKEN","ZB","HITBTC","GEMINI","COINBASE","BITTREX","HUOBI"])");
 
 	class ParseFinnhubCryptoExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
