@@ -71,7 +71,7 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_finnhubStockEstimatesEPSSurprise._Test_checkAccessRight(m_pWebData);
+			m_finnhubStockEstimatesEPSSurprise.Test_checkAccessRight_(m_pWebData);
 
 			m_pvEPSSurprise = nullptr;
 		}
@@ -152,7 +152,7 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_finnhubStockEstimatesEPSSurprise._Test_checkAccessRight(m_pWebData);
+			m_finnhubStockEstimatesEPSSurprise.Test_checkAccessRight_(m_pWebData);
 
 			m_finnhubStockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket);
 			m_finnhubStockEstimatesEPSSurprise.SetIndex(0);

@@ -50,14 +50,12 @@ void CVirtualDataSource::Run(long lMarketTime) {
 // 需要多个申请的数据源有：腾讯日线数据。
 //
 //Note 只能使用thread_pool_executor或者background_executor，不能使用thread_executor。
-// Note 20250227, 现在似乎可以使用thread_executor了，原因不明。
+//Note 20250227, 现在似乎可以使用thread_executor了，原因不明。
 //
+//Note MFC的ASSERT()、TRACE()等函数不是线程安全的，在多线程环境下不能使用这些函数。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::InquireData() {
-	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
-	ASSERT(IsInquiring());
-
 	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 
 	vector<result<CWebDataPtr>> vResults;
@@ -90,8 +88,6 @@ void CVirtualDataSource::InquireData() {
 	}
 	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());
-	ASSERT(!HaveInquiry()); // 没有现存的申请
-	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 

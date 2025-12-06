@@ -75,7 +75,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCurrency("");
 			m_pWebData = pData->m_pData;
-			m_finnhubStockSymbolProduct._Test_checkAccessRight(m_pWebData);
+			m_finnhubStockSymbolProduct.Test_checkAccessRight_(m_pWebData);
 			m_finnhubStockSymbolProduct.SetInquiringExchange("US");
 
 			m_pvStock = nullptr;
@@ -138,7 +138,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubStockSymbolProduct._Test_checkAccessRight(m_pWebData);
+			m_finnhubStockSymbolProduct.Test_checkAccessRight_(m_pWebData);
 
 			m_finnhubStockSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
