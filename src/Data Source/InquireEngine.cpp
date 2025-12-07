@@ -99,10 +99,10 @@ CWebDataPtr CInquireEngine::GetWebData() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInquireEngine::OpenFile() {
-	const wstring wstr = ToUTF16(m_strHeaders);
+	const wstring str = ToUTF16(m_strHeaders);
 	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(ToUTF16(m_strInquiry).c_str(), 1,
 	                                                      INTERNET_FLAG_TRANSFER_ASCII,
-	                                                      wstr.c_str(), wstr.length()));
+	                                                      str.c_str(), str.length()));
 }
 
 void CInquireEngine::GetFileHeaderInformation() {

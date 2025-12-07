@@ -6,6 +6,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
+#include"spdlog_assert.h"
+
 #include "VirtualDataSource.h"
 #include "InquireEngine.h"
 
@@ -33,7 +35,7 @@ CVirtualDataSource::CVirtualDataSource() {
 ///
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(long lMarketTime) {
-	ASSERT(!IsInquiring());
+	SPDLOG_ASSERT(!IsInquiring());
 	gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
 			GenerateInquiryMessage(lMarketTime);
 			if (HaveInquiry()) {
@@ -52,10 +54,12 @@ void CVirtualDataSource::Run(long lMarketTime) {
 //Note 只能使用thread_pool_executor或者background_executor，不能使用thread_executor。
 //Note 20250227, 现在似乎可以使用thread_executor了，原因不明。
 //
-//Note MFC的ASSERT()、TRACE()等函数不是线程安全的，在多线程环境下不能使用这些函数。
+//Note MFC的ASSERT()、TRACE等函数不是线程安全的，在多线程环境下不能使用这些函数。使用自制的spdlog断言。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::InquireData() {
+	SPDLOG_ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
+	SPDLOG_ASSERT(IsInquiring());
 	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 
 	vector<result<CWebDataPtr>> vResults;
@@ -84,10 +88,12 @@ void CVirtualDataSource::InquireData() {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 		m_pCurrentProduct->CalculateTotalDataLength(pvWebData);
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
-		m_pCurrentProduct->UpdateSystemStatus(); // 这里传递的是实际DataSource的智能指针
+		m_pCurrentProduct->UpdateSystemStatus();
 	}
 	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());
+	SPDLOG_ASSERT(!HaveInquiry());
+	SPDLOG_ASSERT(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 

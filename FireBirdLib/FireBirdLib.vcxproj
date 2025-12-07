@@ -20,6 +20,7 @@
     <ClInclude Include="..\src\accessory\RSReference.h" />
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h" />
+    <ClInclude Include="..\src\accessory\spdlog_assert.h" />
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
@@ -194,7 +195,7 @@
     <ClInclude Include="..\src\SystempublicDeclaration.h" />
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\src\System\Inaccessible.h" />
-    <ClInclude Include="..\src\System\ScheduleTask.h" />
+    <ClInclude Include="..\src\System\Initialization.h" />
     <ClInclude Include="..\src\System\SystemConfiguration.h" />
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h" />
     <ClInclude Include="..\src\System\SystemData.h" />
@@ -429,7 +430,7 @@
     <ClCompile Include="..\src\Stock\FinnhubStock.cpp" />
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp" />
     <ClCompile Include="..\src\System\Inaccessilbe.cpp" />
-    <ClCompile Include="..\src\System\ScheduleTask.cpp" />
+    <ClCompile Include="..\src\System\Initialization.cpp" />
     <ClCompile Include="..\src\System\SystemConfiguration.cpp" />
     <ClCompile Include="..\src\System\SystemMessage.cpp" />
     <ClCompile Include="..\src\System\TiingoInaccessibleStock.cpp" />
@@ -476,6 +477,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\Stock\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
+      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

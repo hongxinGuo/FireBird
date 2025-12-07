@@ -57,9 +57,15 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>^std::.*</Function>
 								<Function>^ATL::.*</Function>
 								<Function>^moodycamel::.*</Function>
-								<Function>^nlohmann::.*</Function>
+                                <Function>^nlohmann::.*</Function>
+                                <Function>^ixwebsocket::.*</Function>
 								<Function>^gsl::.*</Function>
 								<Function>^concurrencpp::.*</Function>
+                                <Function>^concurrentqueue::.*</Function>
+                                <Function>^openssl::.*</Function>
+                                <Function>^spdlog::.*</Function>
+                                <Function>^fmt::.*</Function>
+                                <Function>^mbedtls::.*</Function>
 								<Function>^FireBirdTest::.*</Function>
 								<Function>.*::__GetTestMethodInfo.*</Function>
 								<Function>^Microsoft::VisualStudio::CppCodeCoverageFramework::.*</Function>

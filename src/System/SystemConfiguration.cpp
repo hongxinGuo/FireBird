@@ -9,6 +9,7 @@
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
+#include <algorithm>
 #include <fstream>
 
 #include "resource.h"
@@ -193,7 +194,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 	}
 	try {
 		m_iBackgroundThreadPermittedNumber = jsonData.at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
-		if (m_iBackgroundThreadPermittedNumber > 16) m_iBackgroundThreadPermittedNumber = 16;
+		m_iBackgroundThreadPermittedNumber = min(m_iBackgroundThreadPermittedNumber, 16);
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}

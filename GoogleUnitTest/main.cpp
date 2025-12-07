@@ -44,7 +44,7 @@
 
 #include"simdjsonGetValue.h"
 
-#include"ScheduleTask.h"
+#include"Initialization.h"
 #include"FinnhubInaccessibleExchange.h"
 #include"ThreadStatus.h"
 #include "TiingoDataSource.h"
@@ -102,9 +102,9 @@ namespace FireBirdTest {
 			// 程序就会生成一个新文件，导致下面的断言失败。目前先屏蔽掉这个断言
 			//ASSERT_TRUE(gl_systemConfiguration.IsNeedUpdate()) << gl_systemConfiguration.GetConfigurationFileDirectoryAndName();
 			//gl_systemConfiguration.NeedUpdate(false);
-			gl_systemConfiguration.SetConfigurationFileDirectory("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\");
+			gl_systemConfiguration.SetConfigurationFileDirectory(R"(C:\Users\hxguo\source\repos\FireBird\GoogleUnitTest\)");
 			gl_systemConfiguration.SetDefaultFileName("systemConfigurationTest.json");
-			ASSERT_EQ(gl_systemConfiguration.GetConfigurationFileDirectoryAndName(), "C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json");
+			ASSERT_EQ(gl_systemConfiguration.GetConfigurationFileDirectoryAndName(), R"(C:\Users\hxguo\source\repos\FireBird\GoogleUnitTest\systemConfigurationTest.json)");
 			ASSERT_TRUE(gl_systemConfiguration.LoadDB()) << "使用GoogleUnitTest目录中的配置文件";
 			gl_finnhubInaccessibleExchange.LoadDB(); // 重新加载，使用测试目录中的json文件
 			gl_finnhubInaccessibleExchange.Update();
@@ -244,14 +244,13 @@ int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	if (argv == nullptr) {
 		return -1;
 	}
+	GTEST_FLAG_SET(death_test_style, "fast");
 	::InitGoogleTest(&argc, argv);
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 
 	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 预设为是实际系统。
 	gl_systemConfiguration.SetWorkingMode(false); // 实际系统，测试状态为假。
-
-	GTEST_FLAG_SET(death_test_style, "fast");
 
 	return RUN_ALL_TESTS();
 }

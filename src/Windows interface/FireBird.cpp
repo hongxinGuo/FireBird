@@ -13,7 +13,7 @@
 
 #include <spdlog/spdlog.h>
 
-#include "ScheduleTask.h"
+#include "Initialization.h"
 #include "SystemPublicDeclaration.h"
 
 #ifdef _MBCS
