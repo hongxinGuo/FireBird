@@ -24,6 +24,10 @@
 #error "本系统使用UNI_CODE字符集"
 #endif
 
+#ifndef FMT_UNICODE
+#error "fmt 使用unicode"
+#endif
+
 // CFireBirdApp
 
 BEGIN_MESSAGE_MAP(CFireBirdApp, CWinAppEx)

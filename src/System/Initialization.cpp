@@ -73,28 +73,28 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
 
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0:	// 使用新浪实时数据服务器
+	case 0:	//使用新浪实时数据服务器
 		gl_systemConfiguration.UsingSinaRealtimeServer();
 		break;
-	case 1: // 使用网易实时服务器
+	case 1: //使用网易实时服务器 
 		gl_systemConfiguration.UsingNeteaseRealtimeServer();
 		break;
-	case 2: // 使用腾讯实时数据服务器
+	case 2: //使用腾讯实时数据服务器
 		gl_systemConfiguration.UsingTengxunRealtimeServer();
 		break;
-	default: // 例外情况时默认使用新浪实时数据服务器
+	default: //例外情况时默认使用新浪实时数据服务器
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(0); // 改正无效的标志
 		gl_systemConfiguration.UsingSinaRealtimeServer();
 		break;
 	}
 
 	if (gl_systemConfiguration.GetChinaMarketDayLineServer() == 0) {
-		// 使用网易日线数据服务器
+		//使用网易日线数据服务器
 		gl_pNeteaseDayLineDataSource->Enable(true);
 		gl_pTengxunDayLineDataSource->Enable(false);
 	}
 	else {
-		// 使用腾讯日线数据服务器
+		//使用腾讯日线数据服务器
 		gl_pNeteaseDayLineDataSource->Enable(false);
 		gl_pTengxunDayLineDataSource->Enable(true);
 	}
@@ -118,7 +118,7 @@ void ResetMarkets() {
 
 void CreateMarketContainer() {
 	ASSERT(gl_pChinaMarket != nullptr);
-	ASSERT(gl_pWorldMarket = nullptr);
+	ASSERT(gl_pWorldMarket != nullptr);
 	gl_vMarket.push_back(gl_pWorldMarket); // 美国股票市场
 	gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
 }

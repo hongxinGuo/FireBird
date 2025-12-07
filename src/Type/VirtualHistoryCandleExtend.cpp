@@ -262,9 +262,7 @@ bool CVirtualHistoryCandleExtend::Load(const CVirtualSetHistoryCandle* pSet) {
 	m_lDate = pSet->m_Date;
 	m_strExchange = ToUTF8(pSet->m_Exchange);
 	m_strStockSymbol = ToUTF8(pSet->m_Symbol);
-	CString str;
-	str = pSet->m_DisplaySymbol;
-	m_strDisplaySymbol = ToUTF8(str);
+	m_strDisplaySymbol = WtoUTF8(pSet->m_DisplaySymbol); // displaySymbol的制式为CStringW
 	std::string sTemp = ToUTF8(pSet->m_Symbol);
 	m_lLastClose = _tstof(pSet->m_LastClose) * GetRatio();
 	m_lOpen = _tstof(pSet->m_Open) * GetRatio();

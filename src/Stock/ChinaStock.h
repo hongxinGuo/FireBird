@@ -390,7 +390,8 @@ public:
 	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }
 	CWeekLinePtr GetWeekLine(const long lIndex) const { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
 	void UnloadWeekLine() noexcept { m_dataWeekLine.Unload(); }
-	bool CalculatingWeekLine(long lStartDate);
+	bool CreateWeekLine(long lStartDate);
+	bool CreateWeekLine2(long lStartDate);
 	bool StoreWeekLine(const CWeekLinePtr& pWeekLine) { return m_dataWeekLine.Add(pWeekLine); }
 	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(const bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }

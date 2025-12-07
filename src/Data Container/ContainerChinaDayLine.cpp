@@ -72,20 +72,20 @@ bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) cons
 CWeekLinePtr CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) const {
 	ASSERT(Size() > 0);
 	ASSERT(lCurrentDayLinePos < Size());
-
+	auto data = GetData(lCurrentDayLinePos);
 	const long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetDate());
 	const long lNewestDay = GetData(Size() - 1)->GetDate();
 	auto pWeekLine = make_shared<CWeekLine>();
 	if (lNextMonday < lNewestDay) {
 		// 中间数据
 		while (GetData(lCurrentDayLinePos)->GetDate() < lNextMonday) {
-			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
+			pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
 		}
 	}
 	else {
 		// 最后一组数据
 		while (lCurrentDayLinePos <= (Size() - 1)) {
-			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
+			pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
 		}
 	}
 

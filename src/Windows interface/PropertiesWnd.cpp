@@ -85,7 +85,7 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		break;
 	default:
 		TRACE(_T("未处理PropertyGridCtrl例外\n")); // 未处理例外
-	//ASSERT(0);
+		//ASSERT(0);
 		break;
 	}
 	CMFCPropertyGridCtrl::OnPropertyChanged(pProp);
@@ -383,8 +383,12 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	m_pPropCurrentWorkingThread->SetValue(s); // 后台工作线程数
 
+	/*
 	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetValue("Busy");
 	else m_pPropChinaMarketWebStatus->SetValue("good");
+	*/
+	if (gl_ThreadStatus.IsSavingChinaMarketThreadRunning()) m_pPropChinaMarketWebStatus->SetValue("Thread running");
+	else m_pPropChinaMarketWebStatus->SetValue("idle");
 
 	if (gl_pChinaMarket->IsWebBusy()) {
 		m_pPropWorldMarketWebStatus->SetValue("Disabled");

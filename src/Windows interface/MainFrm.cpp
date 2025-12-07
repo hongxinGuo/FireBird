@@ -495,7 +495,8 @@ void CMainFrame::UpdateStatus() {
 	// 显示股票代码和名称
 	if (gl_pCurrentStock != nullptr) {
 		SysCallSetPaneText(2, gl_pCurrentStock->GetSymbol());
-		SysCallSetPaneText(3, gl_pCurrentStock->GetDisplaySymbol());
+		auto s = gl_pCurrentStock->GetDisplaySymbol();
+		SysCallSetPaneText(3, s);
 	}
 
 	// 显示当前选择的股票

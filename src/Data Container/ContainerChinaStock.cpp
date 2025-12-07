@@ -324,9 +324,9 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 			pStock->SetUpdateDayLineDB(false);
 			if (pStock->GetDayLineSize() > 0) {
 				if (pStock->HaveNewDayLineData()) {
-					gl_UpdateChinaMarketDB.acquire();
 					gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
 					gl_runtime.thread_executor()->post([pStock] {
+						gl_UpdateChinaMarketDB.acquire();
 						if (!gl_systemConfiguration.IsExitingSystem()) {
 							const bool fDataSaved = pStock->SaveDayLineBasicInfo();
 							pStock->UpdateDayLineStartEndDate();
@@ -363,17 +363,15 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 	gl_systemMessage.PushInformationMessage("重新生成周线历史数据");
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		gl_runtime.thread_executor()->post([pStock, lStartDate] {
-			gl_UpdateChinaMarketDB.acquire();
-			TRACE("rebuild week line\n");
-			gl_systemMessage.SetChinaMarketSavingFunction("rebuild week line");
+		//gl_BackgroundWorkingThread.acquire();
+		//gl_runtime.thread_executor()->post([pStock, lStartDate] {
+		gl_systemMessage.SetChinaMarketSavingFunction("rebuild week line");
 
-			if (!gl_systemConfiguration.IsExitingSystem()) {
-				pStock->BuildWeekLine(lStartDate);
-			}
-			TRACE("rebuild week line\n");
-			gl_UpdateChinaMarketDB.release();
-		});
+		if (!gl_systemConfiguration.IsExitingSystem()) {
+			pStock->BuildWeekLine(lStartDate);
+		}
+		//gl_BackgroundWorkingThread.release();
+		//});
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(100); }
 	gl_systemMessage.PushInformationMessage("周线历史数据生成完毕");

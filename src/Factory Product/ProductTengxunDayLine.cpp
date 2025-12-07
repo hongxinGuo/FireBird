@@ -42,8 +42,10 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 	ASSERT(pvWebData->size() <= m_iInquiryNumber);
 
 	vector<CDayLinePtr> vDayLine;
-	for (auto pWebData : *pvWebData) { // 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
+	string strStockSymbol;
+	for (const auto& pWebData : *pvWebData) { // 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
 		const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
+		strStockSymbol = pDayLineWebData->GetStockCode();
 		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
 			if (GetMarket()->IsWorkingDay(pData->GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
 				vDayLine.push_back(pData);
@@ -51,7 +53,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 		}
 	}
 	const CDayLineWebDataPtr p = make_shared<CDayLineWebData>();
-	p->SetStockCode(pvWebData->at(0)->GetStockCode());
+	p->SetStockCode(strStockSymbol);
 	p->ClearDayLine();
 	CheckAndPrepareDayLine(vDayLine);
 	for (const auto& pData : vDayLine) {

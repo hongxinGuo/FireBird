@@ -330,7 +330,7 @@ void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
 void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	SetActive(true);
 	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-	if (pRTData->GetStockName() != "") SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	if (!pRTData->GetStockName().empty()) SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 	SetIPOStatus(_STOCK_IPOED_);
 }
 
@@ -1191,7 +1191,9 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 	if (!IsDayLineLoaded()) { LoadDayLineDB(); }
 	if (GetDayLineSize() <= 0) return true;
 
-	if (CalculatingWeekLine(lStartDate)) { SaveWeekLine(); }
+	if (CreateWeekLine(lStartDate)) {
+		SaveWeekLine();
+	}
 
 	if (!IsSelected()) {
 		UnloadDayLine();
@@ -1275,7 +1277,7 @@ bool CChinaStock::IsVolumeConsistence() noexcept {
 	return true;
 }
 
-bool CChinaStock::CalculatingWeekLine(long lStartDate) {
+bool CChinaStock::CreateWeekLine2(long lStartDate) {
 	ASSERT(IsDayLineLoaded());
 	ASSERT(m_dataDayLine.Size() > 0);
 	long i = 0;
@@ -1294,4 +1296,35 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 		return true;
 	}
 	return false;
+}
+
+bool CChinaStock::CreateWeekLine(long lStartDate) {
+	ASSERT(m_dataDayLine.IsDataLoaded());
+	size_t index = 0;
+	CTiingoCandleLinePtr pWeekLine = nullptr;
+	size_t dayLineSize = m_dataDayLine.Size();
+	while (index < dayLineSize) {
+		auto pDayLine = m_dataDayLine.GetData(index++);
+		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
+		pWeekLine = make_shared<CTiingoCandleLine>();
+		pWeekLine->SetDate(pDayLine->GetDate());
+		pWeekLine->SetOpen(pDayLine->GetOpen());
+		pWeekLine->SetLow(pDayLine->GetLow());
+		do {
+			if (pDayLine->GetHigh() > pWeekLine->GetHigh()) pWeekLine->SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < pWeekLine->GetLow()) pWeekLine->SetLow(pDayLine->GetLow());
+			pWeekLine->SetVolume(pWeekLine->GetVolume() + pDayLine->GetVolume());
+			pWeekLine->SetAmount(pWeekLine->GetAmount() + pDayLine->GetAmount());
+			pWeekLine->SetClose(pDayLine->GetClose());
+			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
+			else break;
+			if (pDayLine->GetDate() < lCurrentEndDate) index++;
+			else break;
+		} while (true);
+
+		if (pWeekLine->GetClose() > 0) m_dataWeekLine.Add(pWeekLine); // 有数据才存储
+	}
+
+	m_dataWeekLine.SetDataLoaded(true);
+	return true;
 }

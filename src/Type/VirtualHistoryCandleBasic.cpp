@@ -119,7 +119,7 @@ void CVirtualHistoryCandleBasic::LoadBasicData(const CVirtualSetHistoryCandleBas
 	m_lDate = pVirtualSetHistoryCandleBasic->m_Date;
 	m_strExchange = ToUTF8(pVirtualSetHistoryCandleBasic->m_Exchange);
 	m_strStockSymbol = ToUTF8(pVirtualSetHistoryCandleBasic->m_Symbol);
-	m_strDisplaySymbol = ToUTF8(pVirtualSetHistoryCandleBasic->m_DisplaySymbol);
+	m_strDisplaySymbol = WtoUTF8(pVirtualSetHistoryCandleBasic->m_DisplaySymbol); // displaySymbol的制式为CStringW
 	m_lLastClose = _tstof(pVirtualSetHistoryCandleBasic->m_LastClose) * ratio;
 	m_lOpen = _tstof(pVirtualSetHistoryCandleBasic->m_Open) * ratio;
 	m_lHigh = _tstof(pVirtualSetHistoryCandleBasic->m_High) * ratio;

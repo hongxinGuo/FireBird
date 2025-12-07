@@ -50,12 +50,12 @@ namespace FireBirdTest {
 	TEST_F(CProductTengxunDayLineTest, TestParseAndStoreWebData) {
 		auto pData = make_shared<CWebData>();
 		shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
-		const string strTengxunDayLine = "{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-19\",\"2.550\",\"2.600\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-20\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}";
+		const string strTengxunDayLine = R"({"code":0,"msg":"","data":{"sh600601":{"day":[["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],"qt":{},"mx_price":{"mx":[],"price":[]},"prec":"2.560","version":"16"}}})";
 		pData->Test_SetBuffer_(strTengxunDayLine);
 		pData->SetStockCode("600601.SS");
 		pvWebData->push_back(pData);
 		auto pData2 = make_shared<CWebData>();
-		const string strTengxunDayLine2 = "{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-23\",\"2.550\",\"2.650\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-24\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}";
+		const string strTengxunDayLine2 = R"({"code":0,"msg":"","data":{"sh600601":{"day":[["2023-01-23","2.550","2.650","2.610","2.550","86162.000"],["2023-01-24","2.600","2.620","2.620","2.590","100735.000"]],"qt":{},"mx_price":{"mx":[],"price":[]},"prec":"2.560","version":"16"}}})";
 		pData2->Test_SetBuffer_(strTengxunDayLine2);
 		pData2->SetStockCode("600601.SS");
 		pvWebData->push_back(pData2);

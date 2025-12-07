@@ -179,10 +179,6 @@ protected:
 	// 信息输出队列群
 	CSystemDeque m_SystemInformation;
 	CSystemDeque m_DayLineInformation;
-	CSystemDeque m_Transaction;
-	CSystemDeque m_CancelSell;
-	CSystemDeque m_CancelBuy;
-	CSystemDeque m_Trace2;
 	CSystemDeque m_WebSocketInfo;
 	CSystemDeque m_InnerSystemInformation;
 	CSystemDeque m_ErrorMessage;
