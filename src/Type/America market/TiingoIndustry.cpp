@@ -2,6 +2,8 @@
 
 #include"TiingoIndustry.h"
 
+#include "CharSetTransfer.h"
+
 CTiingoIndustry::CTiingoIndustry() {
 	m_strIndustry = " ";
 	m_strSector = " ";
@@ -17,6 +19,6 @@ void CTiingoIndustry::Append(CSetTiingoIndustry& setTiingoIndustry) const {
 }
 
 void CTiingoIndustry::Load(const CSetTiingoIndustry& setTiingoIndustry) {
-	m_strIndustry = ToUTF8(setTiingoIndustry.m_Industry);
-	m_strSector = ToUTF8(setTiingoIndustry.m_Sector);
+	m_strIndustry = T2Utf8(setTiingoIndustry.m_Industry);
+	m_strSector = T2Utf8(setTiingoIndustry.m_Sector);
 }

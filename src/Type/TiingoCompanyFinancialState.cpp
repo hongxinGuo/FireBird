@@ -2,6 +2,7 @@
 
 #include"TiingoCompanyFinancialState.h"
 
+#include "CharSetTransfer.h"
 #include "ConvertToString.h"
 
 CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
@@ -96,8 +97,8 @@ CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
 }
 
 void CTiingoCompanyFinancialState::Load(const CSetTiingoCompanyFinancialState& setTiingoFinancialState) {
-	m_symbol = ToUTF8(setTiingoFinancialState.m_symbol);
-	m_exchange = ToUTF8(setTiingoFinancialState.m_exchange);
+	m_symbol = T2Utf8(setTiingoFinancialState.m_symbol);
+	m_exchange = T2Utf8(setTiingoFinancialState.m_exchange);
 	m_yearQuarter = setTiingoFinancialState.m_yearQuarter;
 	m_accoci = _tstof(setTiingoFinancialState.m_accoci);
 	m_acctPay = _tstof(setTiingoFinancialState.m_acctPay);

@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "CharSetTransfer.h"
 #include"TimeConvert.h"
 
 #include"ChinaMarket.h"
@@ -673,7 +674,7 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.Open();
 		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetDate());
-		EXPECT_TRUE(id.GetStockSymbol().compare(ToUTF8(setWeekLineBasicInfo.m_Symbol)) == 0);
+		EXPECT_TRUE(id.GetStockSymbol().compare(T2Utf8(setWeekLineBasicInfo.m_Symbol)) == 0);
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());

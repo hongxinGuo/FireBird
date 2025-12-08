@@ -155,7 +155,7 @@ void CPropertyRealtimeWnd::SetPropListFont() {
 
 void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (gl_pCurrentStock != nullptr) {
-		m_pPropertyStock->SetName(ToUTF16(gl_pCurrentStock->GetSymbol()).c_str());
+		m_pPropertyStock->SetName(Utf8ToWstring(gl_pCurrentStock->GetSymbol()).c_str());
 		if (IsChinaStock(gl_pCurrentStock)) {
 			CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
 			if (pStock->GetVolume() > 0) {

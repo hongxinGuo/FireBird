@@ -1,6 +1,8 @@
 #include"pch.h"
 #include"FinnhubStockBasicFinancial.h"
 
+#include "CharSetTransfer.h"
+
 CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
 	m_symbol = "";
 	m_10DayAverageTradingVolume = 0.0;
@@ -154,7 +156,7 @@ CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
 void CFinnhubStockBasicFinancial::LoadMetric(const CSetFinnhubStockBasicFinancialMetric& setMetric) {
 	ASSERT(setMetric.IsOpen());
 
-	m_symbol = ToUTF8(setMetric.m_symbol);
+	m_symbol = T2Utf8(setMetric.m_symbol);
 
 	m_10DayAverageTradingVolume = setMetric.m_10DayAverageTradingVolume;
 	m_13WeekPriceReturnDaily = setMetric.m_13WeekPriceReturnDaily;
@@ -315,9 +317,9 @@ void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinanci
 	setQuarterly.m_strFilter += "'";
 	setQuarterly.Open();
 	while (!setQuarterly.IsEOF()) {
-		data.m_symbol = ToUTF8(setQuarterly.m_symbol);
+		data.m_symbol = T2Utf8(setQuarterly.m_symbol);
 		data.m_date = setQuarterly.m_date;
-		data.m_type = ToUTF8(setQuarterly.m_type);
+		data.m_type = T2Utf8(setQuarterly.m_type);
 		data.m_value = setQuarterly.m_value;
 		vData.push_back(data);
 		setQuarterly.MoveNext();
@@ -338,9 +340,9 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 	setAnnual.m_strFilter += "'";
 	setAnnual.Open();
 	while (!setAnnual.IsEOF()) {
-		data.m_symbol = ToUTF8(setAnnual.m_symbol);
+		data.m_symbol = T2Utf8(setAnnual.m_symbol);
 		data.m_date = setAnnual.m_date;
-		data.m_type = ToUTF8(setAnnual.m_type);
+		data.m_type = T2Utf8(setAnnual.m_type);
 		data.m_value = setAnnual.m_value;
 		vData.push_back(data);
 		setAnnual.MoveNext();

@@ -2,6 +2,8 @@
 
 #include"SetWorldChosenCrypto.h"
 #include "containerChosenCrypto.h"
+
+#include "CharSetTransfer.h"
 #include"FinnhubCrypto.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
@@ -21,9 +23,9 @@ bool CContainerChosenCrypto::LoadDB() {
 	setWorldChosenCrypto.Open();
 	setWorldChosenCrypto.m_pDatabase->BeginTrans();
 	while (!setWorldChosenCrypto.IsEOF()) {
-		if (gl_dataFinnhubCryptoSymbol.IsSymbol(ToUTF8(setWorldChosenCrypto.m_Symbol))) {
-			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(ToUTF8(setWorldChosenCrypto.m_Symbol));
-			m_mapSymbol[ToUTF8(setWorldChosenCrypto.m_Symbol)] = m_mapSymbol.size();
+		if (gl_dataFinnhubCryptoSymbol.IsSymbol(T2Utf8(setWorldChosenCrypto.m_Symbol))) {
+			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(T2Utf8(setWorldChosenCrypto.m_Symbol));
+			m_mapSymbol[T2Utf8(setWorldChosenCrypto.m_Symbol)] = m_mapSymbol.size();
 			m_vStock.push_back(pCrypto);
 		}
 		else {

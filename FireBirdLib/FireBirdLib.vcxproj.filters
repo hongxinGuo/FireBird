@@ -918,6 +918,9 @@
     <ClInclude Include="..\src\System\Initialization.h">
       <Filter>源文件\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\accessory\CharSetTransfer.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">

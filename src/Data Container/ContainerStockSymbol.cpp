@@ -3,6 +3,7 @@
 #include"ChinaStockCodeConverter.h"
 #include "ContainerStockSymbol.h"
 
+#include "CharSetTransfer.h"
 #include"SetStockSection.h"
 
 CContainerStockSymbol::CContainerStockSymbol() {
@@ -85,7 +86,7 @@ void CContainerStockSymbol::LoadStockSectionDB() const {
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(ToUTF8(setStockSection.m_Comment));
+			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(T2Utf8(setStockSection.m_Comment));
 		}
 		setStockSection.MoveNext();
 	}

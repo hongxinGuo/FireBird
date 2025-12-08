@@ -3,6 +3,8 @@
 #include"ConvertToString.h"
 #include "EconomicCalendar.h"
 
+#include "CharSetTransfer.h"
+
 CEconomicCalendar::CEconomicCalendar() {
 	m_strCountry = " ";
 	m_iTime = 0;
@@ -15,14 +17,14 @@ CEconomicCalendar::CEconomicCalendar() {
 }
 
 void CEconomicCalendar::Load(const CSetEconomicCalendar& setEconomicCalendar) {
-	m_strTime = ToUTF8(setEconomicCalendar.m_Time);
-	m_strCountry = ToUTF8(setEconomicCalendar.m_Country);
-	m_strEvent = ToUTF8(setEconomicCalendar.m_Event);
-	m_strImpact = ToUTF8(setEconomicCalendar.m_Impact);
+	m_strTime = T2Utf8(setEconomicCalendar.m_Time);
+	m_strCountry = T2Utf8(setEconomicCalendar.m_Country);
+	m_strEvent = T2Utf8(setEconomicCalendar.m_Event);
+	m_strImpact = T2Utf8(setEconomicCalendar.m_Impact);
 	m_dActual = _tstof(setEconomicCalendar.m_Actual);
 	m_dEstimate = _tstof(setEconomicCalendar.m_Estimate);
 	m_dPrev = _tstof(setEconomicCalendar.m_Prev);
-	m_strUnit = ToUTF8(setEconomicCalendar.m_Unit);
+	m_strUnit = T2Utf8(setEconomicCalendar.m_Unit);
 }
 
 void CEconomicCalendar::Append(CSetEconomicCalendar& setEconomicCalendar) const {

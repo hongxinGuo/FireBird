@@ -5,6 +5,8 @@
 
 #include "ContainerChosenStock.h"
 
+#include "CharSetTransfer.h"
+
 CContainerChosenStock::CContainerChosenStock() {
 	CContainerChosenStock::Reset();
 }
@@ -23,9 +25,9 @@ bool CContainerChosenStock::LoadDB() {
 	setWorldChosenStock.Open();
 	setWorldChosenStock.m_pDatabase->BeginTrans();
 	while (!setWorldChosenStock.IsEOF()) {
-		if (gl_dataContainerFinnhubStock.IsSymbol(ToUTF8(setWorldChosenStock.m_Symbol))) {
-			pStock = gl_dataContainerFinnhubStock.GetItem(ToUTF8(setWorldChosenStock.m_Symbol));
-			m_mapSymbol[ToUTF8(setWorldChosenStock.m_Symbol)] = m_mapSymbol.size();
+		if (gl_dataContainerFinnhubStock.IsSymbol(T2Utf8(setWorldChosenStock.m_Symbol))) {
+			pStock = gl_dataContainerFinnhubStock.GetItem(T2Utf8(setWorldChosenStock.m_Symbol));
+			m_mapSymbol[T2Utf8(setWorldChosenStock.m_Symbol)] = m_mapSymbol.size();
 			m_vStock.push_back(pStock);
 		}
 		else {

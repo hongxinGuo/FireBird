@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "CharSetTransfer.h"
 #include"containerFinnhubForexSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 #include"FinnhubForex.h"
@@ -28,7 +29,7 @@ bool CContainerFinnhubForexSymbol::LoadDB() {
 	setForexSymbol.Open();
 	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {
-		if (!IsSymbol(ToUTF8(setForexSymbol.m_Symbol))) {
+		if (!IsSymbol(T2Utf8(setForexSymbol.m_Symbol))) {
 			const auto pSymbol = make_shared<CFinnhubForex>();
 			pSymbol->LoadSymbol(setForexSymbol);
 			pSymbol->SetCheckingDayLineStatus();
@@ -74,8 +75,8 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 		setForexSymbol.Open();
 		setForexSymbol.m_pDatabase->BeginTrans();
 		while (!setForexSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(ToUTF8(setForexSymbol.m_Symbol))) {
-				pSymbol = GetItem(ToUTF8(setForexSymbol.m_Symbol));
+			if (m_mapSymbol.contains(T2Utf8(setForexSymbol.m_Symbol))) {
+				pSymbol = GetItem(T2Utf8(setForexSymbol.m_Symbol));
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setForexSymbol);
 					pSymbol->SetUpdateProfileDB(false);

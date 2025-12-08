@@ -2,6 +2,7 @@
 
 #include "InfoReport.h"
 
+#include "CharSetTransfer.h"
 #include "SystempublicDeclaration.h"
 
 void ReportErrorToSystemMessage(const string& strPrefix, const exception& e) {
@@ -24,15 +25,15 @@ void ReportInformationAndDeleteException(CException* e) {
 	if (e == nullptr) return;
 	WCHAR buffer[200];
 	e->GetErrorMessage(buffer, 200);
-	string s1 = ToUTF8(buffer) ;
-gl_systemMessage.PushInnerSystemInformationMessage(s1);
+	string s1 = T2Utf8(buffer);
+	gl_systemMessage.PushInnerSystemInformationMessage(s1);
 	delete e;
 }
 
 void ReportInformation(CException& e) {
 	WCHAR buffer[200];
 	e.GetErrorMessage(buffer, 200);
-	const string str =ToUTF8( buffer);
+	const string str = T2Utf8(buffer);
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 }
 

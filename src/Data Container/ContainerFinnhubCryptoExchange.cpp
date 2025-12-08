@@ -2,6 +2,7 @@
 
 #include "ContainerFinnhubCryptoExchange.h"
 
+#include "CharSetTransfer.h"
 #include"SetFinnhubCryptoExchange.h"
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
@@ -35,8 +36,8 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 
 	setCryptoExchange.Open();
 	while (!setCryptoExchange.IsEOF()) {
-		m_vCryptoExchange.push_back(ToUTF8(setCryptoExchange.m_Code));
-		m_mapCryptoExchange[ToUTF8(setCryptoExchange.m_Code)] = i++;
+		m_vCryptoExchange.push_back(T2Utf8(setCryptoExchange.m_Code));
+		m_mapCryptoExchange[T2Utf8(setCryptoExchange.m_Code)] = i++;
 		setCryptoExchange.MoveNext();
 	}
 	setCryptoExchange.Close();

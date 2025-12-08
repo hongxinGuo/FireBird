@@ -10,6 +10,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
+#include "CharSetTransfer.h"
 #include "InfoReport.h"
 #include"SetChinaMarketDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
@@ -485,7 +486,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const string& str) con
 	string strStockCode = XferNeteaseToStandard(strNetease);
 	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
 		string strReport = "网易日线查询股票代码错误：";
-		TRACE(_T("网易日线查询股票代码错误：%s\n"), ToUTF16(strStockCode).c_str());
+		TRACE(_T("网易日线查询股票代码错误：%s\n"), Utf8ToWstring(strStockCode).c_str());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
 		return false;
@@ -994,7 +995,7 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineExtendInfo.IsEOF()) {
 		setDayLineExtendInfo.Edit();
-		string s = ToUTF8(setDayLineExtendInfo.m_Symbol);
+		string s = T2Utf8(setDayLineExtendInfo.m_Symbol);
 		setDayLineExtendInfo.m_Symbol = XferSinaToStandard(s).c_str();
 		setDayLineExtendInfo.Update();
 		setDayLineExtendInfo.MoveNext();
@@ -1394,8 +1395,8 @@ void CChinaMarket::LoadTempRTData(long lTheDate) {
 	setDayLineTemp.Open();
 	if (!setDayLineTemp.IsEOF()) {
 		while (!setDayLineTemp.IsEOF()) {
-			if (setDayLineTemp.m_Date == lTheDate && gl_dataContainerChinaStock.IsSymbol(ToUTF8(setDayLineTemp.m_Symbol))) {// 如果是当天的行情，则载入，否则放弃
-				const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setDayLineTemp.m_Symbol));
+			if (setDayLineTemp.m_Date == lTheDate && gl_dataContainerChinaStock.IsSymbol(T2Utf8(setDayLineTemp.m_Symbol))) {// 如果是当天的行情，则载入，否则放弃
+				const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setDayLineTemp.m_Symbol));
 				ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
 				pStock->LoadTodaySavedInfo(&setDayLineTemp);
 			}
@@ -1414,8 +1415,8 @@ bool CChinaMarket::Load10DaysRSStrong1StockSet() {
 	m_v10RSStrong1Stock.clear();
 	setRSStrong1.Open();
 	while (!setRSStrong1.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setRSStrong1.m_Symbol))) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setRSStrong1.m_Symbol));
+		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setRSStrong1.m_Symbol))) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setRSStrong1.m_Symbol));
 			m_v10RSStrong1Stock.push_back(pStock);
 		}
 		setRSStrong1.MoveNext();
@@ -1431,8 +1432,8 @@ bool CChinaMarket::Load10DaysRSStrong2StockSet() {
 	m_v10RSStrong2Stock.clear();
 	setRSStrong2.Open();
 	while (!setRSStrong2.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setRSStrong2.m_Symbol))) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setRSStrong2.m_Symbol));
+		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setRSStrong2.m_Symbol))) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setRSStrong2.m_Symbol));
 			m_v10RSStrong2Stock.push_back(pStock);
 		}
 		setRSStrong2.MoveNext();
@@ -1514,8 +1515,8 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
 	setRSStrongStock.Open();
 	while (!setRSStrongStock.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setRSStrongStock.m_Symbol))) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setRSStrongStock.m_Symbol));
+		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setRSStrongStock.m_Symbol))) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setRSStrongStock.m_Symbol));
 			m_avChosenStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock);
 			// 10日RS股票集起始位置为第10个。
 		}
@@ -1667,8 +1668,8 @@ void CChinaMarket::LoadChosenStockDB() {
 	// 装入股票代码数据库
 	while (!setChinaChosenStock.IsEOF()) {
 		CChinaStockPtr pStock = nullptr;
-		if (gl_dataContainerChinaStock.IsSymbol(ToUTF8(setChinaChosenStock.m_Symbol))) {
-			pStock = gl_dataContainerChinaStock.GetStock(ToUTF8(setChinaChosenStock.m_Symbol));
+		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setChinaChosenStock.m_Symbol))) {
+			pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setChinaChosenStock.m_Symbol));
 			if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 				m_avChosenStock.at(0).push_back(pStock);
 			}

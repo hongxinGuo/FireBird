@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "CharSetTransfer.h"
 #include"InsiderSentiment.h"
 
 CInsiderSentiment::CInsiderSentiment() {
@@ -29,7 +30,7 @@ void CInsiderSentiment::Save(CSetInsiderSentiment& setInsiderSentiment) const {
 }
 
 void CInsiderSentiment::Load(const CSetInsiderSentiment& setInsiderSentiment) {
-	m_strSymbol = ToUTF8(setInsiderSentiment.m_Symbol);
+	m_strSymbol = T2Utf8(setInsiderSentiment.m_Symbol);
 	m_lDate = setInsiderSentiment.m_Date;
 	m_lChange = setInsiderSentiment.m_Change;
 	m_mspr = setInsiderSentiment.m_mspr;

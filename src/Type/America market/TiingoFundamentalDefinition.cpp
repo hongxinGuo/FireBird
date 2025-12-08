@@ -2,6 +2,8 @@
 
 #include"TiingoFundamentalDefinition.h"
 
+#include "CharSetTransfer.h"
+
 CTiingoFundamentalDefinition::CTiingoFundamentalDefinition() {
 	Reset();
 }
@@ -15,11 +17,11 @@ void CTiingoFundamentalDefinition::Reset() {
 }
 
 void CTiingoFundamentalDefinition::Load(const CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition) {
-	m_strDataCode = ToUTF8(setTiingoFundamentalDefinition.m_dataCode);
-	m_strName = ToUTF8(setTiingoFundamentalDefinition.m_name);
-	m_strDescription = ToUTF8(setTiingoFundamentalDefinition.m_description);
-	m_strStatementType = ToUTF8(setTiingoFundamentalDefinition.m_statementType);
-	m_strUnits = ToUTF8(setTiingoFundamentalDefinition.m_units);
+	m_strDataCode = T2Utf8(setTiingoFundamentalDefinition.m_dataCode);
+	m_strName = T2Utf8(setTiingoFundamentalDefinition.m_name);
+	m_strDescription = T2Utf8(setTiingoFundamentalDefinition.m_description);
+	m_strStatementType = T2Utf8(setTiingoFundamentalDefinition.m_statementType);
+	m_strUnits = T2Utf8(setTiingoFundamentalDefinition.m_units);
 }
 
 void CTiingoFundamentalDefinition::Append(CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition) {

@@ -2,6 +2,7 @@
 
 #include"TiingoStock.h"
 
+#include "CharSetTransfer.h"
 #include "ConvertToString.h"
 
 #include "TiingoStockDailyMeta.h"
@@ -33,23 +34,23 @@ void CTiingoStock::ResetAllUpdateDate() {
 }
 
 void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
-	m_strTiingoPermaTicker = ToUTF8(setTiingoStock.m_TiingoPermaTicker);
-	m_strSymbol = ToUTF8(setTiingoStock.m_Ticker);
-	m_strName = ToUTF8(setTiingoStock.m_Name);
+	m_strTiingoPermaTicker = T2Utf8(setTiingoStock.m_TiingoPermaTicker);
+	m_strSymbol = T2Utf8(setTiingoStock.m_Ticker);
+	m_strName = T2Utf8(setTiingoStock.m_Name);
 	SetActive(setTiingoStock.m_IsActive);
 	m_fIsADR = setTiingoStock.m_IsADR;
 	m_iSicCode = setTiingoStock.m_SicCode;
-	m_strSicIndustry = ToUTF8(setTiingoStock.m_SicIndustry);
-	m_strSicSector = ToUTF8(setTiingoStock.m_SicSector);
-	m_strTiingoIndustry = ToUTF8(setTiingoStock.m_TiingoIndustry);
-	m_strTiingoSector = ToUTF8(setTiingoStock.m_TiingoSector);
-	m_strReportingCurrency = ToUTF8(setTiingoStock.m_ReportingCurrency);
-	m_strLocation = ToUTF8(setTiingoStock.m_Location);
-	m_strCompanyWebSite = ToUTF8(setTiingoStock.m_CompanyWebSite);
-	m_strSECFilingWebSite = ToUTF8(setTiingoStock.m_SECFilingWebSite);
+	m_strSicIndustry = T2Utf8(setTiingoStock.m_SicIndustry);
+	m_strSicSector = T2Utf8(setTiingoStock.m_SicSector);
+	m_strTiingoIndustry = T2Utf8(setTiingoStock.m_TiingoIndustry);
+	m_strTiingoSector = T2Utf8(setTiingoStock.m_TiingoSector);
+	m_strReportingCurrency = T2Utf8(setTiingoStock.m_ReportingCurrency);
+	m_strLocation = T2Utf8(setTiingoStock.m_Location);
+	m_strCompanyWebSite = T2Utf8(setTiingoStock.m_CompanyWebSite);
+	m_strSECFilingWebSite = T2Utf8(setTiingoStock.m_SECFilingWebSite);
 	m_lIPOStatus = setTiingoStock.m_IPOStatus;
 
-	LoadUpdateDate(ToUTF8(setTiingoStock.m_UpdateDate));
+	LoadUpdateDate(T2Utf8(setTiingoStock.m_UpdateDate));
 }
 
 void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
@@ -221,7 +222,6 @@ void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine
 	setDayLine.m_Date = lTradeDay;
 	setDayLine.m_Symbol = m_strSymbol.c_str();
 	setDayLine.m_Exchange = m_strExchangeCode.c_str();
-	setDayLine.m_DisplaySymbol = "";
 	setDayLine.m_Open = ConvertValueToCString(m_lOpen, GetRatio());
 	setDayLine.m_High = ConvertValueToCString(m_lHigh, GetRatio());
 	setDayLine.m_Low = ConvertValueToCString(m_lLow, GetRatio());

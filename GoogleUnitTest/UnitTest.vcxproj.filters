@@ -657,6 +657,9 @@
     <ClCompile Include="ProductIndexNasdaq100StocksTest.cpp">
       <Filter>Test源文件\Factory Product\Accessory</Filter>
     </ClCompile>
+    <ClCompile Include="CharSetTransferTest.cpp">
+      <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneralCheck.h">

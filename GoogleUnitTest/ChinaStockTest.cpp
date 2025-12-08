@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "CharSetTransfer.h"
 #include"GeneralCheck.h"
 #include"TimeConvert.h"
 
@@ -1112,7 +1113,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
 		EXPECT_EQ(stock.GetSymbol(), "000001.SS") << "第一个股票";
-		CreateJsonWithNlohmann(jsonUpdateDate, ToUTF8(setChinaStockSymbol.m_UpdateDate));
+		CreateJsonWithNlohmann(jsonUpdateDate, T2Utf8(setChinaStockSymbol.m_UpdateDate));
 
 		EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
 		EXPECT_EQ(stock.GetDayLineEndDate(), jsonUpdateDate["DayLineEndDate"]);
@@ -1134,7 +1135,7 @@ namespace FireBirdTest {
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_EQ(stock.GetSymbol(), "000003.SZ");
 		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
-		CreateJsonWithNlohmann(jsonUpdateDate, ToUTF8(setChinaStockSymbol.m_UpdateDate));
+		CreateJsonWithNlohmann(jsonUpdateDate, T2Utf8(setChinaStockSymbol.m_UpdateDate));
 
 		//todo EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
 		//todo EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
@@ -1355,7 +1356,7 @@ namespace FireBirdTest {
 		setDayLineTemp.m_strFilter = "[Date] = 20191101";
 		setDayLineTemp.Open();
 		EXPECT_EQ(setDayLineTemp.m_Date, 20191101);
-		EXPECT_TRUE(pStock->GetSymbol().compare(ToUTF8(setDayLineTemp.m_Symbol)) == 0);
+		EXPECT_TRUE(pStock->GetSymbol().compare(T2Utf8(setDayLineTemp.m_Symbol)) == 0);
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_LastClose), static_cast<double>(pStock->GetLastClose()) / pStock->GetRatio());
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_Open), static_cast<double>(pStock->GetOpen()) / pStock->GetRatio());
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineTemp.m_High), static_cast<double>(pStock->GetHigh()) / pStock->GetRatio());
@@ -1981,7 +1982,7 @@ namespace FireBirdTest {
 			dayLine.LoadBasicData(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i + 1);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetDate());
-			EXPECT_TRUE(pid->GetStockSymbol().compare(ToUTF8(setDayLineBasicInfo.m_Symbol)) == 0);
+			EXPECT_TRUE(pid->GetStockSymbol().compare(T2Utf8(setDayLineBasicInfo.m_Symbol)) == 0);
 			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
 			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
 			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
@@ -2461,7 +2462,7 @@ namespace FireBirdTest {
 			stock.LoadBasicData(&setWeekLineBasicInfo);
 			pid = pStock->GetWeekLine(i);
 			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetDate());
-			EXPECT_TRUE(pid->GetStockSymbol().compare(ToUTF8( setWeekLineBasicInfo.m_Symbol)) == 0);
+			EXPECT_TRUE(pid->GetStockSymbol().compare(T2Utf8( setWeekLineBasicInfo.m_Symbol)) == 0);
 			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
 			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
 			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());

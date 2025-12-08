@@ -3,6 +3,8 @@
 #include"ConvertToString.h"
 #include"InsiderTransaction.h"
 
+#include "CharSetTransfer.h"
+
 CInsiderTransaction::CInsiderTransaction() {
 	m_strSymbol = " ";
 	m_strPersonName = " ";
@@ -38,12 +40,12 @@ void CInsiderTransaction::Save(CSetInsiderTransaction& setInsiderTransaction) co
 }
 
 void CInsiderTransaction::Load(const CSetInsiderTransaction& setInsiderTransaction) {
-	m_strSymbol = ToUTF8(setInsiderTransaction.m_Symbol);
-	m_strPersonName = ToUTF8(setInsiderTransaction.m_PersonName);
+	m_strSymbol = T2Utf8(setInsiderTransaction.m_Symbol);
+	m_strPersonName = T2Utf8(setInsiderTransaction.m_PersonName);
 	m_lShare = _tstoll(setInsiderTransaction.m_Share);
 	m_lChange = _tstoll(setInsiderTransaction.m_Change);
 	m_lFilingDate = setInsiderTransaction.m_FilingDate;
 	m_lTransactionDate = setInsiderTransaction.m_TransactionDate;
-	m_strTransactionCode = ToUTF8(setInsiderTransaction.m_TransactionCode);
+	m_strTransactionCode = T2Utf8(setInsiderTransaction.m_TransactionCode);
 	m_dTransactionPrice = setInsiderTransaction.m_TransactionPrice;
 }

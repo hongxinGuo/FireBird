@@ -3,6 +3,7 @@
 
 #include "VirtualStock.h"
 
+#include "CharSetTransfer.h"
 #include "jsonParse.h"
 
 CVirtualStockPtr gl_pCurrentStock{ nullptr };
@@ -32,12 +33,12 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	USES_CONVERSION;
-	m_strDescription = ToUTF8(setStockSymbol.m_Description);
-	m_strDisplaySymbol = WtoUTF8(setStockSymbol.m_DisplaySymbol); //Note 从CStringW转成string需要宏WtoA支持
-	m_strExchangeCode = ToUTF8(setStockSymbol.m_Exchange);
-	m_strSymbol = ToUTF8(setStockSymbol.m_Symbol);
+	m_strDescription = T2Utf8(setStockSymbol.m_Description);
+	m_strDisplaySymbol = T2Utf8(setStockSymbol.m_DisplaySymbol);
+	m_strExchangeCode = T2Utf8(setStockSymbol.m_Exchange);
+	m_strSymbol = T2Utf8(setStockSymbol.m_Symbol);
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
-	LoadUpdateDate(ToUTF8(setStockSymbol.m_UpdateDate));
+	LoadUpdateDate(T2Utf8(setStockSymbol.m_UpdateDate));
 }
 
 void CVirtualStock::AppendSymbol(CVirtualSetStockSymbol& setStockSymbol) {
@@ -54,7 +55,7 @@ void CVirtualStock::UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 
 void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_Description = m_strDescription.c_str();
-	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.c_str(); // Note 从string转成CStringW无需注明
+	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.c_str();
 	setStockSymbol.m_Exchange = m_strExchangeCode.c_str();
 	setStockSymbol.m_Symbol = m_strSymbol.c_str();
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;
@@ -91,7 +92,7 @@ long CVirtualStock::GetDayLineEndDate() {
 
 bool CVirtualStock::IsSameStock(const CVirtualStockPtr& pStock) const {
 	if (pStock == nullptr) return false;
-	if (m_strSymbol.compare(pStock->GetSymbol()) == 0) {
+	if (m_strSymbol == pStock->GetSymbol()) {
 		return true;
 	}
 	return false;

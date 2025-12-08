@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ContainerTiingoCryptoSymbol.h"
 
+#include "CharSetTransfer.h"
 #include "InfoReport.h"
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
@@ -25,7 +26,7 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(ToUTF8(setCryptoSymbol.m_Ticker))) {
+		if (!IsSymbol(T2Utf8(setCryptoSymbol.m_Ticker))) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
 			pSymbol->Load(setCryptoSymbol);
 			Add(pSymbol);
@@ -49,8 +50,8 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			setWorldCrypto.Open();
 			setWorldCrypto.m_pDatabase->BeginTrans();
 			while (!setWorldCrypto.IsEOF()) {	//更新原有的代码集状态
-				if (IsSymbol(ToUTF8(setWorldCrypto.m_Ticker))) {
-					const CTiingoCryptoPtr pCrypto = GetCrypto(ToUTF8(setWorldCrypto.m_Ticker));
+				if (IsSymbol(T2Utf8(setWorldCrypto.m_Ticker))) {
+					const CTiingoCryptoPtr pCrypto = GetCrypto(T2Utf8(setWorldCrypto.m_Ticker));
 					ASSERT(pCrypto != nullptr);
 					if (pCrypto->IsUpdateProfileDB()) {
 						pCrypto->Update(setWorldCrypto);

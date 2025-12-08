@@ -2,6 +2,8 @@
 
 #include"EPSSurprise.h"
 
+#include "CharSetTransfer.h"
+
 CEPSSurprise::CEPSSurprise() {
 	m_strSymbol = " ";
 	m_lDate = 0;
@@ -19,7 +21,7 @@ void CEPSSurprise::Append(CSetEPSSurprise& setEPSSurprise) const {
 }
 
 void CEPSSurprise::Load(const CSetEPSSurprise& setEPSSurprise) {
-	m_strSymbol = ToUTF8(setEPSSurprise.m_Symbol);
+	m_strSymbol = T2Utf8(setEPSSurprise.m_Symbol);
 	m_lDate = setEPSSurprise.m_Date;
 	m_dActual = setEPSSurprise.m_Actual;
 	m_dEstimate = setEPSSurprise.m_Estimate;

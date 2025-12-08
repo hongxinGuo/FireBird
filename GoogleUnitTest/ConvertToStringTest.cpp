@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "CharSetTransfer.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
@@ -56,7 +57,7 @@ namespace FireBirdTest {
 		                         , &Data5));
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
-		const string str = ToUTF8(ConvertValueToCString(dValue, lDividend));
+		const string str = T2Utf8(ConvertValueToCString(dValue, lDividend));
 		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
@@ -118,7 +119,7 @@ namespace FireBirdTest {
 		                         &Data12, &Data13, &Data14, &Data15));
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
-		const string str = ToUTF8(ConvertValueToCString(lValue, lDividend));
+		const string str = T2Utf8(ConvertValueToCString(lValue, lDividend));
 		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
@@ -180,7 +181,7 @@ namespace FireBirdTest {
 		                         &Data22, &Data23, &Data24, &Data25));
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
-		const string str = ToUTF8(ConvertValueToCString(iValue, lDividend));
+		const string str = T2Utf8(ConvertValueToCString(iValue, lDividend));
 		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
@@ -242,7 +243,7 @@ namespace FireBirdTest {
 		                         &Data42, &Data43, &Data44, &Data45));
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
-		const string str = ToUTF8(ConvertValueToCString(iValue, lDividend));
+		const string str = T2Utf8(ConvertValueToCString(iValue, lDividend));
 		EXPECT_EQ(str, CValueOfPeriod);
 	}
 

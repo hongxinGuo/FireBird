@@ -25,7 +25,7 @@ public:
 	CString m_Description{ "" };
 	CString m_Exchange{ "" };
 	CString m_Symbol{ "" };
-	CStringW m_DisplaySymbol{ "" }; // 当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
+	CString m_DisplaySymbol{ "" }; // 当用于中国股票时，存储的股票中文名称。
 	long m_IPOStatus{ _STOCK_NOT_CHECKED_ };
 	CString m_UpdateDate{ "" };
 

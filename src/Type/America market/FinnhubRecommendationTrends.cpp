@@ -1,6 +1,8 @@
 #include"pch.h"
 #include"FinnhubRecommendationTrends.h"
 
+#include "CharSetTransfer.h"
+
 CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
 	m_strSymbol = "";
 	m_lPeriod = 19700101; // 格式：2020-03-01
@@ -24,7 +26,7 @@ void CFinnhubRecommendationTrends::Append(CSetFinnhubRecommendationTrends& setFi
 }
 
 void CFinnhubRecommendationTrends::Load(const CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends) {
-	m_strSymbol = ToUTF8(setFinnhubRecommendationTrends.m_Symbol);
+	m_strSymbol = T2Utf8(setFinnhubRecommendationTrends.m_Symbol);
 	m_lPeriod = setFinnhubRecommendationTrends.m_Period;
 	m_lStrongBuy = setFinnhubRecommendationTrends.m_StrongBuy;
 	m_lBuy = setFinnhubRecommendationTrends.m_Buy;

@@ -6,6 +6,7 @@
 #include"jsonParse.h"
 #include"WebRTData.h"
 
+#include "CharSetTransfer.h"
 #include "ChinaMarket.h"
 #include "TimeConvert.h"
 
@@ -82,7 +83,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 // 31："15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //
-// 
+// Note: 新浪实时数据的字符集为GBK18030，需要转换为UTF-8。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWebRTData::ParseSinaData(const string_view& svData) {
@@ -98,7 +99,8 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	lCurrentPos += 10; // 跨过字符串： sh601006="
 	// 读入证券名称
 	auto sv = GetNextField(svData, lCurrentPos, ',');
-	m_strStockName.assign(sv.data(), sv.length());
+	string s(sv.data(), sv.length());
+	m_strStockName = Gbk2Utf8(s); //Note 新浪实时数据的字符集为GBK18030，需要转换为UTF-8。
 	// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 	sv = GetNextField(svData, lCurrentPos, ',');
 	m_lOpen = StrToDecimal(sv, 3);

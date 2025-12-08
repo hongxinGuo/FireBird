@@ -3,6 +3,8 @@
 #include"ConvertToString.h"
 #include"VirtualHistoryCandleBasic.h"
 
+#include "CharSetTransfer.h"
+
 void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {
 	const double dLog50 = log10(50.0);
 	const double dLog100 = log10(100.0);
@@ -85,7 +87,6 @@ void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pV
 	pVirtualSetHistoryCandleBasic->m_Date = GetDate();
 	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange().c_str();
 	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol().c_str();
-	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol().c_str();
 	pVirtualSetHistoryCandleBasic->m_LastClose = ConvertValueToCString(GetLastClose(), ratio);
 	pVirtualSetHistoryCandleBasic->m_High = ConvertValueToCString(GetHigh(), ratio);
 	pVirtualSetHistoryCandleBasic->m_Low = ConvertValueToCString(GetLow(), ratio);
@@ -117,9 +118,8 @@ void CVirtualHistoryCandleBasic::LoadBasicData(const CVirtualSetHistoryCandleBas
 	auto ratio = GetRatio();
 
 	m_lDate = pVirtualSetHistoryCandleBasic->m_Date;
-	m_strExchange = ToUTF8(pVirtualSetHistoryCandleBasic->m_Exchange);
-	m_strStockSymbol = ToUTF8(pVirtualSetHistoryCandleBasic->m_Symbol);
-	m_strDisplaySymbol = WtoUTF8(pVirtualSetHistoryCandleBasic->m_DisplaySymbol); // displaySymbol的制式为CStringW
+	m_strExchange = T2Utf8(pVirtualSetHistoryCandleBasic->m_Exchange);
+	m_strStockSymbol = T2Utf8(pVirtualSetHistoryCandleBasic->m_Symbol);
 	m_lLastClose = _tstof(pVirtualSetHistoryCandleBasic->m_LastClose) * ratio;
 	m_lOpen = _tstof(pVirtualSetHistoryCandleBasic->m_Open) * ratio;
 	m_lHigh = _tstof(pVirtualSetHistoryCandleBasic->m_High) * ratio;

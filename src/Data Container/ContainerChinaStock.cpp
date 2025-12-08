@@ -9,6 +9,7 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 
+#include "CharSetTransfer.h"
 #include"RSReference.h"
 #include"Thread.h"
 
@@ -52,7 +53,7 @@ long CContainerChinaStock::LoadStockProfileDB() {
 	// 装入股票代码数据库
 	while (!setChinaStockSymbol.IsEOF()) {
 		const auto pStock = make_shared<CChinaStock>();
-		if (!IsSymbol(ToUTF8(setChinaStockSymbol.m_Symbol))) {
+		if (!IsSymbol(T2Utf8(setChinaStockSymbol.m_Symbol))) {
 			pStock->LoadStockCodeDB(setChinaStockSymbol);
 			pStock->CheckNeedProcessRTData();
 			pStock->CheckIPOStatus();
@@ -94,8 +95,8 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			setChinaStockSymbol.m_pDatabase->BeginTrans();
 			while (iCount < iStockCodeNeedUpdate) {	//更新原有的代码集状态
 				if (setChinaStockSymbol.IsEOF()) break;
-				if (IsSymbol(ToUTF8(setChinaStockSymbol.m_Symbol))) {
-					const CChinaStockPtr pStock = GetStock(ToUTF8(setChinaStockSymbol.m_Symbol));
+				if (IsSymbol(T2Utf8(setChinaStockSymbol.m_Symbol))) {
+					const CChinaStockPtr pStock = GetStock(T2Utf8(setChinaStockSymbol.m_Symbol));
 					if (pStock->IsUpdateProfileDB()) {
 						pStock->SetUpdateProfileDB(false);
 						//ASSERT(!pStock3->IsTodayNewStock());
@@ -638,13 +639,13 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	int iStockNumber = 0;
 	while (!setDayLineBasicInfo.IsEOF()) {
 		if (setDayLineBasicInfo.m_Symbol.Compare(_T("sh000001")) == 0) {	// 上海综指
-			dShanghaiIndexUpDownRate = GetUpDownRate(ToUTF8(setDayLineBasicInfo.m_Close), ToUTF8(setDayLineBasicInfo.m_LastClose));
+			dShanghaiIndexUpDownRate = GetUpDownRate(T2Utf8(setDayLineBasicInfo.m_Close), T2Utf8(setDayLineBasicInfo.m_LastClose));
 		}
 		else if (setDayLineBasicInfo.m_Symbol.Compare(_T("sz399001")) == 0) {	// 深圳成指
-			dShenzhenIndexUpDownRate = GetUpDownRate(ToUTF8(setDayLineBasicInfo.m_Close), ToUTF8(setDayLineBasicInfo.m_LastClose));
+			dShenzhenIndexUpDownRate = GetUpDownRate(T2Utf8(setDayLineBasicInfo.m_Close), T2Utf8(setDayLineBasicInfo.m_LastClose));
 		}
-		if (IsShareA(ToUTF8(setDayLineBasicInfo.m_Symbol))) {
-			const auto lIndex = m_mapSymbol.at(ToUTF8(setDayLineBasicInfo.m_Symbol));
+		if (IsShareA(T2Utf8(setDayLineBasicInfo.m_Symbol))) {
+			const auto lIndex = m_mapSymbol.at(T2Utf8(setDayLineBasicInfo.m_Symbol));
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
 			iTotalAShare++;
@@ -742,13 +743,13 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	int iStockNumber = 0;
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		if (setWeekLineBasicInfo.m_Symbol.Compare(_T("sh000001")) == 0) {	// 上海综指
-			dShanghaiIndexUpDownRate = GetUpDownRate(ToUTF8(setWeekLineBasicInfo.m_Close), ToUTF8(setWeekLineBasicInfo.m_LastClose));
+			dShanghaiIndexUpDownRate = GetUpDownRate(T2Utf8(setWeekLineBasicInfo.m_Close), T2Utf8(setWeekLineBasicInfo.m_LastClose));
 		}
 		else if (setWeekLineBasicInfo.m_Symbol.Compare(_T("sz399001")) == 0) {	// 深圳成指
-			dShenzhenIndexUpDownRate = GetUpDownRate(ToUTF8(setWeekLineBasicInfo.m_Close), ToUTF8(setWeekLineBasicInfo.m_LastClose));
+			dShenzhenIndexUpDownRate = GetUpDownRate(T2Utf8(setWeekLineBasicInfo.m_Close), T2Utf8(setWeekLineBasicInfo.m_LastClose));
 		}
-		if (IsShareA(ToUTF8(setWeekLineBasicInfo.m_Symbol))) {
-			const auto lIndex = m_mapSymbol.at(ToUTF8(setWeekLineBasicInfo.m_Symbol));
+		if (IsShareA(T2Utf8(setWeekLineBasicInfo.m_Symbol))) {
+			const auto lIndex = m_mapSymbol.at(T2Utf8(setWeekLineBasicInfo.m_Symbol));
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
 			iTotalAShare++;

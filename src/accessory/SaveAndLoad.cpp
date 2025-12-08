@@ -2,9 +2,11 @@
 
 #include "SaveAndLoad.h"
 
+#include "CharSetTransfer.h"
+
 void SaveToFile(const string& strFileName, string s) {
 	CFile f;
-	if (f.Open(ToUTF16(strFileName).c_str(), CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
+	if (f.Open(Utf8ToWstring(strFileName).c_str(), CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
 		f.Write(s.data(), s.length());
 		f.Close();
 	}
@@ -13,7 +15,7 @@ void SaveToFile(const string& strFileName, string s) {
 bool LoadFromFile(const string& strFileName, string& s) {
 	char buffer[1025]{};
 	int iRead;
-	CFile f(ToUTF16(strFileName).c_str(), CFile::modeRead | CFile::typeBinary);
+	CFile f(Utf8ToWstring(strFileName).c_str(), CFile::modeRead | CFile::typeBinary);
 	int i = 0;
 	do {
 		iRead = f.Read(buffer, 1024);

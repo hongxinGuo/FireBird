@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "CharSetTransfer.h"
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
@@ -551,7 +552,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.Open();
 		id2.LoadBasicData(&setDayLineBasicInfo);
 		EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetDate());
-		EXPECT_TRUE(id.GetStockSymbol().compare(ToUTF8(setDayLineBasicInfo.m_Symbol)) == 0);
+		EXPECT_TRUE(id.GetStockSymbol().compare(T2Utf8(setDayLineBasicInfo.m_Symbol)) == 0);
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());

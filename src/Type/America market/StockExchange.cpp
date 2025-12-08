@@ -2,6 +2,8 @@
 
 #include"StockExchange.h"
 
+#include "CharSetTransfer.h"
+
 CStockExchange::CStockExchange() {
 	m_strCode = " ";
 	m_strName = " ";
@@ -39,18 +41,18 @@ void CStockExchange::Append(CSetStockExchange& setExchange) const {
 }
 
 void CStockExchange::Load(const CSetStockExchange& setExchange) {
-	m_strCode = ToUTF8(setExchange.m_Code);
-	m_strName = ToUTF8(setExchange.m_Name);
-	m_strMic = ToUTF8(setExchange.m_Mic);
-	m_strTimeZone = ToUTF8(setExchange.m_TimeZone);
-	m_strPreMarket = ToUTF8(setExchange.m_PreMarket);
-	m_strHour = ToUTF8(setExchange.m_Hour);
-	m_strPostMarket = ToUTF8(setExchange.m_PostMarket);
-	m_strCloseDate = ToUTF8(setExchange.m_CloseDate);
-	m_strCountry = ToUTF8(setExchange.m_Country);
-	m_strCountryName = ToUTF8(setExchange.m_CountryName);
-	m_strSource = ToUTF8(setExchange.m_Source);
-	m_strMyUnknownColumn = ToUTF8(setExchange.m_MyUnknownColumn);
+	m_strCode = T2Utf8(setExchange.m_Code);
+	m_strName = T2Utf8(setExchange.m_Name);
+	m_strMic = T2Utf8(setExchange.m_Mic);
+	m_strTimeZone = T2Utf8(setExchange.m_TimeZone);
+	m_strPreMarket = T2Utf8(setExchange.m_PreMarket);
+	m_strHour = T2Utf8(setExchange.m_Hour);
+	m_strPostMarket = T2Utf8(setExchange.m_PostMarket);
+	m_strCloseDate = T2Utf8(setExchange.m_CloseDate);
+	m_strCountry = T2Utf8(setExchange.m_Country);
+	m_strCountryName = T2Utf8(setExchange.m_CountryName);
+	m_strSource = T2Utf8(setExchange.m_Source);
+	m_strMyUnknownColumn = T2Utf8(setExchange.m_MyUnknownColumn);
 
 	int openHour, openMinute, endHour, endMinute;
 	sscanf_s(m_strHour.c_str(), "%2d:%2d-%2d:%2d", &openHour, &openMinute, &endHour, &endMinute);

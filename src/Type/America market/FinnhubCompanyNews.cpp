@@ -2,6 +2,8 @@
 
 #include"FinnhubCompanyNews.h"
 
+#include "CharSetTransfer.h"
+
 CFinnhubCompanyNews::CFinnhubCompanyNews() {
 	m_llDateTime = 0;
 	m_iNewsID = 0;
@@ -41,14 +43,14 @@ void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) const {
 }
 
 void CFinnhubCompanyNews::Load(const CSetCompanyNews& setCompanyNews) {
-	m_strCompanySymbol = ToUTF8(setCompanyNews.m_CompanySymbol);
-	m_strCategory = ToUTF8(setCompanyNews.m_Category);
+	m_strCompanySymbol = T2Utf8(setCompanyNews.m_CompanySymbol);
+	m_strCategory = T2Utf8(setCompanyNews.m_Category);
 	m_llDateTime = _tstoll(setCompanyNews.m_DateTime);
-	m_strHeadLine = ToUTF8(setCompanyNews.m_HeadLine);
+	m_strHeadLine = T2Utf8(setCompanyNews.m_HeadLine);
 	m_iNewsID = setCompanyNews.m_NewsID;
-	m_strImage = ToUTF8(setCompanyNews.m_Image);
-	m_strRelatedSymbol = ToUTF8(setCompanyNews.m_RelatedSymbol);
-	m_strSource = ToUTF8(setCompanyNews.m_Source);
-	m_strSummary = ToUTF8(setCompanyNews.m_Summary);
-	m_strURL = ToUTF8(setCompanyNews.m_URL);
+	m_strImage = T2Utf8(setCompanyNews.m_Image);
+	m_strRelatedSymbol = T2Utf8(setCompanyNews.m_RelatedSymbol);
+	m_strSource = T2Utf8(setCompanyNews.m_Source);
+	m_strSummary = T2Utf8(setCompanyNews.m_Summary);
+	m_strURL = T2Utf8(setCompanyNews.m_URL);
 }

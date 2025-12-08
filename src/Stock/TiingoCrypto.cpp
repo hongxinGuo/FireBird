@@ -2,17 +2,19 @@
 
 #include"TiingoCrypto.h"
 
+#include "CharSetTransfer.h"
+
 CTiingoCrypto::CTiingoCrypto() {
 }
 
 void CTiingoCrypto::Load(const CSetTiingoCrypto& setTiingoCrypto) {
-	m_strSymbol = ToUTF8(setTiingoCrypto.m_Ticker);
-	m_strName = ToUTF8(setTiingoCrypto.m_Name);
-	m_strDescription = ToUTF8(setTiingoCrypto.m_Description);
-	m_strBaseCurrency = ToUTF8(setTiingoCrypto.m_BaseCurrency);
-	m_strQuoteCurrency = ToUTF8(setTiingoCrypto.m_QuoteCurrency);
+	m_strSymbol = T2Utf8(setTiingoCrypto.m_Ticker);
+	m_strName = T2Utf8(setTiingoCrypto.m_Name);
+	m_strDescription = T2Utf8(setTiingoCrypto.m_Description);
+	m_strBaseCurrency = T2Utf8(setTiingoCrypto.m_BaseCurrency);
+	m_strQuoteCurrency = T2Utf8(setTiingoCrypto.m_QuoteCurrency);
 
-	LoadUpdateDate(ToUTF8(setTiingoCrypto.m_UpdateDate));
+	LoadUpdateDate(T2Utf8(setTiingoCrypto.m_UpdateDate));
 }
 
 void CTiingoCrypto::Append(CSetTiingoCrypto& setTiingoCrypto) {

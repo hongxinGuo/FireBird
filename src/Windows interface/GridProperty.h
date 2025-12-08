@@ -1,6 +1,7 @@
 #pragma once
 
 #include <afxpropertygridctrl.h>
+#include "CharSetTransfer.h"
 
 class CGridProperty : public CMFCPropertyGridProperty {
 public:
@@ -13,5 +14,5 @@ public:
 	~CGridProperty() override = default;
 
 public:
-	void SetValue(const string& strValue) { CMFCPropertyGridProperty::SetValue(ToUTF16(strValue).c_str()); }
+	void SetValue(const string& strValue) { CMFCPropertyGridProperty::SetValue(Utf8ToWstring(strValue).c_str()); }
 };

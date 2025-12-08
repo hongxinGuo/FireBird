@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <fstream>
 
+#include "CharSetTransfer.h"
 #include "resource.h"
 #include "TengxunRTDataSource.h"
 
@@ -463,7 +464,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	switch (m_iDisplayPropertyPage) {
 	case 0:
 		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
-		jsonData["Environment"]["Display"]["PropertyPage"] = ToUTF8(str);
+		jsonData["Environment"]["Display"]["PropertyPage"] = T2Utf8(str);
 		break;
 	case 1:
 		str.LoadString(nullptr, IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
@@ -475,7 +476,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
 		break;
 	}
-	jsonData["Environment"]["Display"]["PropertyPage"] = ToUTF8(str);
+	jsonData["Environment"]["Display"]["PropertyPage"] = T2Utf8(str);
 
 	// system
 	jsonData["SystemConfiguration"]["LogLevel"] = m_iLogLevel;

@@ -21,14 +21,6 @@ using std::binary_semaphore;
 #include "spdlog/sinks/daily_file_sink.h"
 #define MAX_BACKGROUND_WORKING_THREAD_ 32
 
-inline std::string ToUTF8(const CString& str) { return std::string(CT2CA(str, CP_UTF8)); }
-inline std::string WtoUTF8(const CStringW& str) {
-	USES_CONVERSION;
-	return W2A(str);
-}
-inline std::string WtoUTF8(const wstring& str) { return std::string(CW2A(str.c_str(), CP_UTF8)); }
-inline std::wstring ToUTF16(const string& str) { return std::wstring(CA2W(str.c_str(), CP_UTF8)); }
-
 extern HANDLE gl_hFireBirdMutex;
 
 extern std::counting_semaphore<MAX_BACKGROUND_WORKING_THREAD_> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量

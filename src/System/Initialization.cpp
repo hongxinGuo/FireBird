@@ -20,6 +20,8 @@
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
+
+#include "CharSetTransfer.h"
 using namespace spdlog;
 
 #include "AccessoryDataSource.h"
@@ -272,7 +274,7 @@ void TaskSchedulePer100ms() {
 		WCHAR buffer[1000];
 		string str = "ScheduleMarketTask unhandled CException founded : ";
 		e->GetErrorMessage(buffer, 1);
-		str += ToUTF8(buffer);
+		str += T2Utf8(buffer);
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
@@ -307,7 +309,7 @@ void TaskSchedulePerSecond() {
 		WCHAR buffer[1000];
 		string str = "TaskSchedulePerSecond unhandled CException founded : ";
 		e->GetErrorMessage(buffer, 1);
-		str += ToUTF8(buffer);
+		str += T2Utf8(buffer);
 		gl_systemMessage.PushErrorMessage(str);
 		gl_errorLogger->error("{}", str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。

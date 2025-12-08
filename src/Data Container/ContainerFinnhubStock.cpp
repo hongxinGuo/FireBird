@@ -12,6 +12,8 @@
 
 #include "ContainerFinnhubStock.h"
 
+#include "CharSetTransfer.h"
+
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();
 }
@@ -122,7 +124,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
 			if (setFinnhubStock.IsEOF()) break;
-			const CFinnhubStockPtr pStock = GetItem(ToUTF8(setFinnhubStock.m_Symbol));
+			const CFinnhubStockPtr pStock = GetItem(T2Utf8(setFinnhubStock.m_Symbol));
 			ASSERT(pStock != nullptr);
 			if (pStock->IsUpdateProfileDB()) {
 				iCurrentUpdated++;
@@ -227,8 +229,8 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 	//更新原有的基本财务信息
 	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		if (setBasicFinancialMetric.IsEOF()) break;
-		if (IsSymbol(ToUTF8(setBasicFinancialMetric.m_symbol))) {
-			CFinnhubStockPtr pStockNeedUpdate = GetItem(ToUTF8(setBasicFinancialMetric.m_symbol));
+		if (IsSymbol(T2Utf8(setBasicFinancialMetric.m_symbol))) {
+			CFinnhubStockPtr pStockNeedUpdate = GetItem(T2Utf8(setBasicFinancialMetric.m_symbol));
 			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 				iCurrentUpdated++;
 				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);

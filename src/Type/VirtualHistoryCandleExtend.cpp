@@ -3,6 +3,8 @@
 #include"ConvertToString.h"
 #include"VirtualHistoryCandleExtend.h"
 
+#include "CharSetTransfer.h"
+
 CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() {
 }
 
@@ -163,7 +165,6 @@ bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) const {
 	pSet->m_Date = GetDate();
 	pSet->m_Exchange = GetExchange().c_str();
 	pSet->m_Symbol = GetStockSymbol().c_str();
-	pSet->m_DisplaySymbol = GetDisplaySymbol().c_str();
 	pSet->m_LastClose = ConvertValueToCString(GetLastClose(), GetRatio());
 	pSet->m_High = ConvertValueToCString(GetHigh(), GetRatio());
 	pSet->m_Low = ConvertValueToCString(GetLow(), GetRatio());
@@ -260,10 +261,8 @@ bool CVirtualHistoryCandleExtend::Append(CVirtualSetHistoryCandle* pSet) const {
 bool CVirtualHistoryCandleExtend::Load(const CVirtualSetHistoryCandle* pSet) {
 	ASSERT(pSet->IsOpen());
 	m_lDate = pSet->m_Date;
-	m_strExchange = ToUTF8(pSet->m_Exchange);
-	m_strStockSymbol = ToUTF8(pSet->m_Symbol);
-	m_strDisplaySymbol = WtoUTF8(pSet->m_DisplaySymbol); // displaySymbol的制式为CStringW
-	std::string sTemp = ToUTF8(pSet->m_Symbol);
+	m_strExchange = T2Utf8(pSet->m_Exchange);
+	m_strStockSymbol = T2Utf8(pSet->m_Symbol);
 	m_lLastClose = _tstof(pSet->m_LastClose) * GetRatio();
 	m_lOpen = _tstof(pSet->m_Open) * GetRatio();
 	m_lHigh = _tstof(pSet->m_High) * GetRatio();

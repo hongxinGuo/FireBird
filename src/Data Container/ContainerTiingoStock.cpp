@@ -2,6 +2,7 @@
 
 #include "ContainerTiingoStock.h"
 
+#include "CharSetTransfer.h"
 #include "ConvertToString.h"
 #include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
@@ -44,8 +45,8 @@ void CContainerTiingoStock::UpdateDB() {
 		setFinnhubStock.Open();
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		while (!setFinnhubStock.IsEOF()) {	//更新原有的代码集状态
-			if (IsSymbol(ToUTF8(setFinnhubStock.m_Ticker))) {
-				const CTiingoStockPtr pStock = GetStock(ToUTF8(setFinnhubStock.m_Ticker));
+			if (IsSymbol(T2Utf8(setFinnhubStock.m_Ticker))) {
+				const CTiingoStockPtr pStock = GetStock(T2Utf8(setFinnhubStock.m_Ticker));
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					pStock->Update(setFinnhubStock);
@@ -78,7 +79,7 @@ bool CContainerTiingoStock::LoadDB() {
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
 	while (!setTiingoStock.IsEOF()) {
-		if (!IsSymbol(ToUTF8(setTiingoStock.m_Ticker))) {
+		if (!IsSymbol(T2Utf8(setTiingoStock.m_Ticker))) {
 			const auto pTiingoStock = make_shared<CTiingoStock>();
 			pTiingoStock->Load(setTiingoStock);
 			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
@@ -143,8 +144,8 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
 	while (!setDayLine.IsEOF()) {
-		if (IsSymbol(ToUTF8(setDayLine.m_Symbol))) {
-			auto pStock = GetStock(ToUTF8(setDayLine.m_Symbol));
+		if (IsSymbol(T2Utf8(setDayLine.m_Symbol))) {
+			auto pStock = GetStock(T2Utf8(setDayLine.m_Symbol));
 			pStock->SetTransactionTime(ttTradeDay);
 			pStock->SetHigh(_tcstod(setDayLine.m_High, nullptr) * pStock->GetRatio());
 			pStock->SetLow(_tstof(setDayLine.m_Low) * pStock->GetRatio());

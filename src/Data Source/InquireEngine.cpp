@@ -8,6 +8,7 @@
 
 #include "InquireEngine.h"
 
+#include "CharSetTransfer.h"
 #include"Thread.h"
 #include"WebData.h"
 
@@ -99,8 +100,8 @@ CWebDataPtr CInquireEngine::GetWebData() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInquireEngine::OpenFile() {
-	const wstring str = ToUTF16(m_strHeaders);
-	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(ToUTF16(m_strInquiry).c_str(), 1,
+	const wstring str = Utf8ToWstring(m_strHeaders);
+	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(Utf8ToWstring(m_strInquiry).c_str(), 1,
 	                                                      INTERNET_FLAG_TRANSFER_ASCII,
 	                                                      str.c_str(), str.length()));
 }

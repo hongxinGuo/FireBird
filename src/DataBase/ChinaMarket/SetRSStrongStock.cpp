@@ -2,6 +2,8 @@
 
 #include "SetRSStrongStock.h"
 
+#include "CharSetTransfer.h"
+
 CSetRSStrongStock::CSetRSStrongStock(long lIndex, const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
@@ -12,7 +14,7 @@ CSetRSStrongStock::CSetRSStrongStock(long lIndex, const CString& strSchema, cons
 
 CString CSetRSStrongStock::GetDefaultSQL() {
 	string s = "[";
-	s += ToUTF8(m_Table);
+	s += T2Utf8(m_Table);
 
 	ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
 	s += fmt::format("{:Ld}]", m_lIndex);

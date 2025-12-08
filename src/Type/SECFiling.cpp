@@ -1,6 +1,8 @@
 #include"pch.h"
 #include"SECFiling.h"
 
+#include "CharSetTransfer.h"
+
 CSECFiling::CSECFiling() {
 	m_strSymbol = " ";
 	m_strAccessNumber = " ";
@@ -26,12 +28,12 @@ void CSECFiling::Append(CSetSECFilings& setSECFiling) const {
 }
 
 void CSECFiling::Load(const CSetSECFilings& setSECFiling) {
-	m_strSymbol = ToUTF8(setSECFiling.m_Symbol);
-	m_strAccessNumber = ToUTF8(setSECFiling.m_AccessNumber);
+	m_strSymbol = T2Utf8(setSECFiling.m_Symbol);
+	m_strAccessNumber = T2Utf8(setSECFiling.m_AccessNumber);
 	m_iCIK = setSECFiling.m_CIK;
 	m_iFiledDate = setSECFiling.m_FiledDate;
 	m_iAcceptedDate = setSECFiling.m_AcceptedDate;
-	m_strFilingURL = ToUTF8(setSECFiling.m_FilingURL);
-	m_strReportURL = ToUTF8(setSECFiling.m_ReportURL);
-	m_strForm = ToUTF8(setSECFiling.m_Form);
+	m_strFilingURL = T2Utf8(setSECFiling.m_FilingURL);
+	m_strReportURL = T2Utf8(setSECFiling.m_ReportURL);
+	m_strForm = T2Utf8(setSECFiling.m_Form);
 }

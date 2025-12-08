@@ -496,7 +496,8 @@ void CMainFrame::UpdateStatus() {
 	if (gl_pCurrentStock != nullptr) {
 		SysCallSetPaneText(2, gl_pCurrentStock->GetSymbol());
 		auto s = gl_pCurrentStock->GetDisplaySymbol();
-		SysCallSetPaneText(3, s);
+		auto s2 = Gbk2Utf8(s); //Note 转换为UTF8编码。 否则状态栏显示乱码。utf-8的中文字符串为乱码，但实际上是正确的。
+		SysCallSetPaneText(3, s2);
 	}
 
 	// 显示当前选择的股票

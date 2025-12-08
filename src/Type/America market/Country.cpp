@@ -1,6 +1,8 @@
 #include"pch.h"
 #include"Country.h"
 
+#include "CharSetTransfer.h"
+
 CCountry::CCountry() {
 	m_strCode2 = " ";
 	m_strCode3 = " ";
@@ -22,10 +24,10 @@ void CCountry::Append(CSetCountry& setCountry) const {
 }
 
 void CCountry::Load(const CSetCountry& setCountry) {
-	m_strCode2 = ToUTF8(setCountry.m_Code2);
-	m_strCode3 = ToUTF8(setCountry.m_Code3);
-	m_strCodeNo = ToUTF8(setCountry.m_CodeNo);
-	m_strCountry = ToUTF8(setCountry.m_Country);
-	m_strCurrency = ToUTF8(setCountry.m_Currency);
-	m_strCurrencyCode = ToUTF8(setCountry.m_CurrencyCode);
+	m_strCode2 = T2Utf8(setCountry.m_Code2);
+	m_strCode3 = T2Utf8(setCountry.m_Code3);
+	m_strCodeNo = T2Utf8(setCountry.m_CodeNo);
+	m_strCountry = T2Utf8(setCountry.m_Country);
+	m_strCurrency = T2Utf8(setCountry.m_Currency);
+	m_strCurrencyCode = T2Utf8(setCountry.m_CurrencyCode);
 }

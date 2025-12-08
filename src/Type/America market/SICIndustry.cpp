@@ -2,6 +2,8 @@
 
 #include"SICIndustry.h"
 
+#include "CharSetTransfer.h"
+
 CSICIndustry::CSICIndustry() {
 	m_lCode = 0;
 	m_strIndustry = " ";
@@ -20,6 +22,6 @@ void CSICIndustry::Append(CSetSICIndustry& setSICIndustry) const {
 
 void CSICIndustry::Load(const CSetSICIndustry& setSICIndustry) {
 	m_lCode = setSICIndustry.m_Code;
-	m_strIndustry = ToUTF8(setSICIndustry.m_Industry);
-	m_strSector = ToUTF8(setSICIndustry.m_Sector);
+	m_strIndustry = T2Utf8(setSICIndustry.m_Industry);
+	m_strSector = T2Utf8(setSICIndustry.m_Sector);
 }

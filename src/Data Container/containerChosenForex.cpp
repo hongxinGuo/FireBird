@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "CharSetTransfer.h"
 #include"FinnhubForex.h"
 #include"SetWorldChosenForex.h"
 #include "ContainerChosenForex.h"
@@ -21,9 +22,9 @@ bool CContainerChosenForex::LoadDB() {
 	setWorldChosenForex.Open();
 	setWorldChosenForex.m_pDatabase->BeginTrans();
 	while (!setWorldChosenForex.IsEOF()) {
-		if (gl_dataFinnhubForexSymbol.IsSymbol(ToUTF8(setWorldChosenForex.m_Symbol))) {
-			pForex = gl_dataFinnhubForexSymbol.GetItem(ToUTF8(setWorldChosenForex.m_Symbol));
-			m_mapSymbol[ToUTF8(setWorldChosenForex.m_Symbol)] = m_mapSymbol.size();
+		if (gl_dataFinnhubForexSymbol.IsSymbol(T2Utf8(setWorldChosenForex.m_Symbol))) {
+			pForex = gl_dataFinnhubForexSymbol.GetItem(T2Utf8(setWorldChosenForex.m_Symbol));
+			m_mapSymbol[T2Utf8(setWorldChosenForex.m_Symbol)] = m_mapSymbol.size();
 			m_vStock.push_back(pForex);
 		}
 		else {

@@ -7,6 +7,8 @@
 #include"EPSSurprise.h"
 
 #include "FinnhubStock.h"
+
+#include "CharSetTransfer.h"
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"
@@ -47,45 +49,45 @@ void CFinnhubStock::ResetAllUpdateDate() {
 }
 
 void CFinnhubStock::Load(const CSetFinnhubStock& setFinnhubStock) {
-	m_strSymbol = ToUTF8(setFinnhubStock.m_Symbol);
-	m_strExchangeCode = ToUTF8(setFinnhubStock.m_ExchangeCode);
-	m_strDescription = ToUTF8(setFinnhubStock.m_Description);
-	m_strDisplaySymbol = ToUTF8(setFinnhubStock.m_DisplaySymbol);
-	m_strType = ToUTF8(setFinnhubStock.m_Type);
-	m_strMic = ToUTF8(setFinnhubStock.m_Mic);
-	m_strFigi = ToUTF8(setFinnhubStock.m_Figi);
-	m_strCurrency = ToUTF8(setFinnhubStock.m_Currency);
-	m_strAddress = ToUTF8(setFinnhubStock.m_Address);
-	m_strCity = ToUTF8(setFinnhubStock.m_City);
-	m_strCountry = ToUTF8(setFinnhubStock.m_Country);
-	m_strCusip = ToUTF8(setFinnhubStock.m_Cusip);
-	m_strSedol = ToUTF8(setFinnhubStock.m_Sedol);
+	m_strSymbol = T2Utf8(setFinnhubStock.m_Symbol);
+	m_strExchangeCode = T2Utf8(setFinnhubStock.m_ExchangeCode);
+	m_strDescription = T2Utf8(setFinnhubStock.m_Description);
+	m_strDisplaySymbol = T2Utf8(setFinnhubStock.m_DisplaySymbol);
+	m_strType = T2Utf8(setFinnhubStock.m_Type);
+	m_strMic = T2Utf8(setFinnhubStock.m_Mic);
+	m_strFigi = T2Utf8(setFinnhubStock.m_Figi);
+	m_strCurrency = T2Utf8(setFinnhubStock.m_Currency);
+	m_strAddress = T2Utf8(setFinnhubStock.m_Address);
+	m_strCity = T2Utf8(setFinnhubStock.m_City);
+	m_strCountry = T2Utf8(setFinnhubStock.m_Country);
+	m_strCusip = T2Utf8(setFinnhubStock.m_Cusip);
+	m_strSedol = T2Utf8(setFinnhubStock.m_Sedol);
 	m_lEmployeeTotal = setFinnhubStock.m_EmployeeTotal;
-	m_strGgroup = ToUTF8(setFinnhubStock.m_Ggroup);
-	m_strGind = ToUTF8(setFinnhubStock.m_Gind);
-	m_strGsector = ToUTF8(setFinnhubStock.m_Gsector);
-	m_strGsubind = ToUTF8(setFinnhubStock.m_Gsubind);
-	m_strIPODate = ToUTF8(setFinnhubStock.m_IPODate);
-	m_strIsin = ToUTF8(setFinnhubStock.m_Isin);
+	m_strGgroup = T2Utf8(setFinnhubStock.m_Ggroup);
+	m_strGind = T2Utf8(setFinnhubStock.m_Gind);
+	m_strGsector = T2Utf8(setFinnhubStock.m_Gsector);
+	m_strGsubind = T2Utf8(setFinnhubStock.m_Gsubind);
+	m_strIPODate = T2Utf8(setFinnhubStock.m_IPODate);
+	m_strIsin = T2Utf8(setFinnhubStock.m_Isin);
 	m_dMarketCapitalization = _tstof(setFinnhubStock.m_MarketCapitalization);
-	m_strNaics = ToUTF8(setFinnhubStock.m_Naics);
-	m_strNaicsNationalIndustry = ToUTF8(setFinnhubStock.m_NaicsNationalIndustry);
-	m_strNaicsSector = ToUTF8(setFinnhubStock.m_NaicsSector);
-	m_strNaicsSubsector = ToUTF8(setFinnhubStock.m_NaicsSubsector);
-	m_strName = ToUTF8(setFinnhubStock.m_Name);
-	m_strPhone = ToUTF8(setFinnhubStock.m_Phone);
+	m_strNaics = T2Utf8(setFinnhubStock.m_Naics);
+	m_strNaicsNationalIndustry = T2Utf8(setFinnhubStock.m_NaicsNationalIndustry);
+	m_strNaicsSector = T2Utf8(setFinnhubStock.m_NaicsSector);
+	m_strNaicsSubsector = T2Utf8(setFinnhubStock.m_NaicsSubsector);
+	m_strName = T2Utf8(setFinnhubStock.m_Name);
+	m_strPhone = T2Utf8(setFinnhubStock.m_Phone);
 	m_dShareOutstanding = _tstof(setFinnhubStock.m_ShareOutstanding);
-	m_strState = ToUTF8(setFinnhubStock.m_State);
-	m_strTicker = ToUTF8(setFinnhubStock.m_Ticker);
-	m_strWebURL = ToUTF8(setFinnhubStock.m_WebURL);
-	m_strLogo = ToUTF8(setFinnhubStock.m_Logo);
-	m_strFinnhubIndustry = ToUTF8(setFinnhubStock.m_FinnhubIndustry);
+	m_strState = T2Utf8(setFinnhubStock.m_State);
+	m_strTicker = T2Utf8(setFinnhubStock.m_Ticker);
+	m_strWebURL = T2Utf8(setFinnhubStock.m_WebURL);
+	m_strLogo = T2Utf8(setFinnhubStock.m_Logo);
+	m_strFinnhubIndustry = T2Utf8(setFinnhubStock.m_FinnhubIndustry);
 	if (setFinnhubStock.m_Peer.GetLength() > 2) {
-		CreateJsonWithNlohmann(m_jsonPeer, ToUTF8(setFinnhubStock.m_Peer));
+		CreateJsonWithNlohmann(m_jsonPeer, T2Utf8(setFinnhubStock.m_Peer));
 	}
 	m_lIPOStatus = setFinnhubStock.m_IPOStatus;
 
-	LoadUpdateDate(ToUTF8(setFinnhubStock.m_UpdateDate));
+	LoadUpdateDate(T2Utf8(setFinnhubStock.m_UpdateDate));
 }
 
 void CFinnhubStock::CheckUpdateStatus(long lTodayDate) {
@@ -427,11 +429,11 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		setSECFilings.m_pDatabase->BeginTrans();
 		while (!setSECFilings.IsEOF()) {
 			pSECFilings = m_pvSECFilings->at(lCurrentPos);
-			while (!setSECFilings.IsEOF() && pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) > 0) {
+			while (!setSECFilings.IsEOF() && pSECFilings->m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) > 0) {
 				setSECFilings.MoveNext();
 			}
 			if (setSECFilings.IsEOF()) break;
-			if (pSECFilings->m_strAccessNumber.compare(ToUTF8(setSECFilings.m_AccessNumber)) < 0) {	// 没有这个AccessNumber的SEC Filings？
+			if (pSECFilings->m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) < 0) {	// 没有这个AccessNumber的SEC Filings？
 				pSECFilings->Append(setSECFilings);
 			}
 			if (++lCurrentPos == lSize) break;

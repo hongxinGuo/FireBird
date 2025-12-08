@@ -2,6 +2,7 @@
 
 #include "ContainerFinnhubForexExchange.h"
 
+#include "CharSetTransfer.h"
 #include "InfoReport.h"
 #include"SetFinnhubForexExchange.h"
 
@@ -36,8 +37,8 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 
 	setForexExchange.Open();
 	while (!setForexExchange.IsEOF()) {
-		m_vForexExchange.push_back(ToUTF8(setForexExchange.m_Code));
-		m_mapForexExchange[ToUTF8(setForexExchange.m_Code)] = i++;
+		m_vForexExchange.push_back(T2Utf8(setForexExchange.m_Code));
+		m_mapForexExchange[T2Utf8(setForexExchange.m_Code)] = i++;
 		setForexExchange.MoveNext();
 	}
 	setForexExchange.Close();

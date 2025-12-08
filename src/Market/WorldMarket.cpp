@@ -5,6 +5,7 @@
 #include "WorldMarket.h"
 
 #include "AccessoryDataSource.h"
+#include "CharSetTransfer.h"
 #include"thread.h"
 
 #include"FinnhubInaccessibleExchange.h"
@@ -624,7 +625,7 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 
 	setIndexNasdaq100.Open();
 	while (!setIndexNasdaq100.IsEOF()) {
-		string sSymbol = ToUTF8(setIndexNasdaq100.m_Symbol);
+		string sSymbol = T2Utf8(setIndexNasdaq100.m_Symbol);
 		if (gl_dataContainerTiingoStock.IsSymbol(sSymbol)) {
 			// 只计算代码集中的股票。目前GOOG代码不存在，只有GOOGL.
 			auto pStock = gl_dataContainerTiingoStock.GetStock(sSymbol);
