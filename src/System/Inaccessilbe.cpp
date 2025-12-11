@@ -54,7 +54,7 @@ bool CInaccessible::DeleteSymbol(const string& sSymbolName) {
 	if (m_setSymbol.contains(sSymbolName)) { // 集合中存在此元素？
 		m_setSymbol.erase(sSymbolName);
 		for (int position = 0; position < m_vSymbol.size(); position++) {
-			if (m_vSymbol.at(position).compare(sSymbolName) == 0) {
+			if (m_vSymbol.at(position) == sSymbolName) {
 				m_vSymbol.erase(m_vSymbol.begin() + position);
 				break;
 			}

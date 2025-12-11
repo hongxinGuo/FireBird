@@ -47,4 +47,4 @@ extern int64_t gl_ChinaMarketTotalData;
 
 extern vector<string> gl_vNasdaq100Stocks;
 
-#define _TRACE_SCHEDULE_TASK___ // 跟踪任务调度
+#define TRACE_SCHEDULE_TASK_ // 跟踪任务调度

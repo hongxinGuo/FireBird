@@ -7,7 +7,6 @@ bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandleExtendPtr& pHistoryCan
 	if (m_lDate == 0) m_lDate = GetCurrentMonday(pHistoryCandleExtend->GetDate());
 	if (GetMarketTime() == 0) m_tpTime = pHistoryCandleExtend->GetMarketTimePoint();
 	if (m_strStockSymbol.empty()) m_strStockSymbol = pHistoryCandleExtend->GetStockSymbol();
-	if (m_strDisplaySymbol.empty()) m_strDisplaySymbol = pHistoryCandleExtend->GetDisplaySymbol();
 
 	if (m_lOpen == 0) m_lOpen = pHistoryCandleExtend->GetOpen();
 	if (m_lLastClose == 0) m_lLastClose = pHistoryCandleExtend->GetLastClose();

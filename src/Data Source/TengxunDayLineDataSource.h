@@ -31,7 +31,7 @@ public:
 
 protected:
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
-	string m_strDownLoadingStockCode{ "" };
+	string m_strDownLoadingStockCode{};
 };
 
 using CTengxunDayLineDataSourcePtr = shared_ptr<CTengxunDayLineDataSource>;

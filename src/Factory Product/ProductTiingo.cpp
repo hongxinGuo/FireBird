@@ -8,7 +8,7 @@
 #include "WebData.h"
 
 void CProductTiingo::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
-	for (auto pWebData : *pvWebData) {
+	for (const auto& pWebData : *pvWebData) {
 		if (pWebData != nullptr) {
 			gl_TiingoTotalData += pWebData->GetBufferLength();
 		}

@@ -33,10 +33,7 @@ public:
 	string GetExchangeCode() const noexcept { return m_strExchangeCode; }
 	void SetExchangeCode(const string& strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
 	string GetSymbol() const noexcept { return m_strSymbol; }
-	void SetSymbol(const string& str) noexcept {
-		m_strSymbol = str;
-		const string s = m_strSymbol.substr(0, 6);
-	}
+	void SetSymbol(const string& str) noexcept { m_strSymbol = str; }
 	string GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }
 	void SetDisplaySymbol(const string& str) noexcept { m_strDisplaySymbol = str; }
 

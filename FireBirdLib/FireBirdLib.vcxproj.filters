@@ -594,12 +594,6 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
@@ -920,6 +914,12 @@
     </ClInclude>
     <ClInclude Include="..\src\accessory\CharSetTransfer.h">
       <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

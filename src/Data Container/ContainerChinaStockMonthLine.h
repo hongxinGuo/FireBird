@@ -13,7 +13,7 @@ public:
 	CContainerChinaStockMonthLine& operator=(CContainerChinaStockMonthLine&& other) noexcept = delete;
 
 	CMonthLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CMonthLine>(CVirtualDataHistoryCandleExtend::GetData(lIndex)); }
-	CMonthLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CMonthLine>(CVirtualDataHistoryCandleExtend::GetDayLine(lDate)); }
+	CMonthLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CMonthLine>(CVirtualDataHistoryCandleExtend::GetCandle(lDate)); }
 
 	bool Add(const CMonthLinePtr& pData) {
 		m_vHistoryData.push_back(pData);

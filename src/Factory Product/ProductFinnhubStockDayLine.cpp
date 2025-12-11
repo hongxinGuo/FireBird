@@ -34,7 +34,6 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
-		pDayLine->SetDisplaySymbol(pStock->GetTicker());
 		const auto lTemp = GetMarket()->ConvertToDate(pDayLine->GetMarketTime());
 		pDayLine->SetDate(lTemp);
 		if ((lastClose != 0) && (pDayLine->GetLastClose() == 0)) pDayLine->SetLastClose(lastClose);

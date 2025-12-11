@@ -6,7 +6,7 @@ using namespace simdjson;
 
 using namespace testing;
 
-auto s_simdjson1 = R"({
+static auto s_simdjson1 = R"({
 	"integer1": 1,
 	"double1" : 2.0,
 	"doing" : false,
@@ -184,7 +184,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	auto s_simdjson2 = R"({ 
+	static auto s_simdjson2 = R"({ 
 		"item1" : { "a" : 1, "b" : 2.0, "c" : "string1", "d" : true, "e" : [ 1, 2, 3]},
 		"item2" : { "a" : 2, "b" : 4.0, "c" : "string2", "d" : false, "e" : [ 4, 5, 6]},
 		"item3" : { "a" : null, "b" : null, "c" : null, "d" : null, "e" : null} 
@@ -298,7 +298,7 @@ namespace FireBirdTest {
 				auto itemValue = item.value();
 				switch (i++) {
 				case 0:
-					EXPECT_THROW(int int1 = simdjsonGetInt64(itemValue), simdjson_error);
+					EXPECT_THROW(auto int1 = simdjsonGetInt64(itemValue), simdjson_error);
 					break;
 				case 1:
 					EXPECT_THROW(double e = simdjsonGetDouble(itemValue), simdjson_error);
@@ -317,7 +317,7 @@ namespace FireBirdTest {
 					break;
 				}
 			}
-			int i2;
+			INT64 i2;
 			double d4;
 			ondemand::object object1 = doc["DataArray2"].get_object();
 			EXPECT_THROW(i2 = simdjsonGetInt64(object1, "No integer"), simdjson_error);
@@ -353,11 +353,11 @@ namespace FireBirdTest {
 		string m_sData;
 	};
 
-	jsonTestData jsonTestData1(1, "{\"double\" : 0.1,\"double1\" : null, \"double2\" : \"not number\", \"double4\" : 123}");
-	jsonTestData jsonTestData2(2, "{\"integer\" : 1,\"integer1\" : null, \"integer2\" : \"not number\", \"integer4\" : 123}");
-	jsonTestData jsonTestData3(3, "{\"bool\" : true,\"bool1\" : null, \"bool2\" : \"not boolean\", \"bool4\" : 123}");
-	jsonTestData jsonTestData4(4, "{\"string\" : \"abc\",\"string1\" : null, \"string2\" : 123, \"string4\" : 123}");
-	jsonTestData jsonTestData5(5, "{\"array\" : [a,b,c],\"array1\" : null, \"array2\" : \"not array\", \"array4\" : [a, b, c]}");
+	jsonTestData jsonTestData1(1, R"({"double" : 0.1,"double1" : null, "double2" : "not number", "double4" : 123})");
+	jsonTestData jsonTestData2(2, R"({"integer" : 1,"integer1" : null, "integer2" : "not number", "integer4" : 123})");
+	jsonTestData jsonTestData3(3, R"({"bool" : true,"bool1" : null, "bool2" : "not boolean", "bool4" : 123})");
+	jsonTestData jsonTestData4(4, R"({"string" : "abc","string1" : null, "string2" : 123, "string4" : 123})");
+	jsonTestData jsonTestData5(5, R"({"array" : [a,b,c],"array1" : null, "array2" : "not array", "array4" : [a, b, c]})");
 
 	class simdjsonGetValueTest : public TestWithParam<jsonTestData*> {
 	protected:

@@ -19,7 +19,6 @@
 #include"simdjsonGetValue.h"
 //using namespace simdjson;
 
-#include"ConvertToString.h"
 #include"SystemMessage.h"
 
 #include"JsonGetValue.h"
@@ -82,6 +81,37 @@ long long StrToDecimal2(const std::string_view& svData, int power) {
 			result.append(power - fraction.size(), '0');
 		}
 		return std::stoll(result);
+	} catch (std::out_of_range) {
+		return 0;
+	} catch (std::invalid_argument) {
+		return 0;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将输入的字符串转变成放大了10^power倍的长整型。要确保精确地转换，不使用浮点数过渡。
+// 这是coPilot提供的范本，执行时间要慢20%，但更清晰。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+long Str2Long(const std::string_view& svData, int power) {
+	std::string buffer;
+	buffer.reserve(svData.size() + power + 2);
+
+	try {
+		auto iPointPosition = svData.find('.');
+		if (iPointPosition == std::string_view::npos) {
+			buffer.append(svData);
+			buffer.append(power, '0');
+			return std::stoll(buffer);
+		}
+		buffer.append(svData.substr(0, iPointPosition));
+		auto fraction = svData.substr(iPointPosition + 1);
+		if (fraction.size() > power) fraction = fraction.substr(0, power);
+		buffer.append(fraction);
+		buffer.append(power > fraction.size() ? power - fraction.size() : 0, '0');
+		return std::stol(buffer);
 	} catch (std::out_of_range) {
 		return 0;
 	} catch (std::invalid_argument) {
@@ -218,7 +248,7 @@ bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
 	bool succeed = true;
 	vector<concurrencpp::result<bool>> results;
-	const auto DataSize = pvStringView->size();
+	const long DataSize = pvStringView->size();
 	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
 	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
 	//for (int i = 0; i < gl_concurrency_level; i++) {
@@ -335,18 +365,18 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 			pDayLine->SetDate(year * 10000 + month * 100 + day);
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			pDayLine->SetOpen(StrToDecimal(sv, 3));
+			pDayLine->SetOpen(Str2Long(sv, 3));
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			const long lClose = StrToDecimal(sv, 3);
+			const long lClose = Str2Long(sv, 3);
 			pDayLine->SetClose(lClose);
 			lLastClose = lClose;
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			pDayLine->SetHigh(StrToDecimal(sv, 3));
+			pDayLine->SetHigh(Str2Long(sv, 3));
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			pDayLine->SetLow(StrToDecimal(sv, 3));
+			pDayLine->SetLow(Str2Long(sv, 3));
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
 			pDayLine->SetVolume(atof(sv.data()) * 100);
@@ -382,14 +412,12 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const string strSymbol = pWebData->GetStockCode();
 	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
-	const string strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol)->GetDisplaySymbol();
 	const string_view svData = pWebData->GetStringView();
 
 	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));
 	std::ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); });
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetStockSymbol(strSymbol);
-		pDayLine->SetDisplaySymbol(strDisplaySymbol);
 		pDayLineData->AppendDayLine(pDayLine);
 	}
 	pDayLineData->SetStockCode(strSymbol);
@@ -561,30 +589,30 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->SetVSell(1, simdjsonGetInt64(item, "askvol2"));
 			pWebRTData->SetVSell(4, simdjsonGetInt64(item, "askvol5"));
 			pWebRTData->SetVSell(3, simdjsonGetInt64(item, "askvol4"));
-			pWebRTData->SetNew(StrToDecimal(simdjsonGetRawJsonToken(item, "price"), 3));
-			pWebRTData->SetOpen(StrToDecimal(simdjsonGetRawJsonToken(item, "open"), 3));
-			pWebRTData->SetPBuy(4, StrToDecimal(simdjsonGetRawJsonToken(item, "bid5"), 3));
-			pWebRTData->SetPBuy(3, StrToDecimal(simdjsonGetRawJsonToken(item, "bid4"), 3));
-			pWebRTData->SetPBuy(2, StrToDecimal(simdjsonGetRawJsonToken(item, "bid3"), 3));
-			pWebRTData->SetPBuy(1, StrToDecimal(simdjsonGetRawJsonToken(item, "bid2"), 3));
-			pWebRTData->SetPBuy(0, StrToDecimal(simdjsonGetRawJsonToken(item, "bid1"), 3));
-			pWebRTData->SetHigh(StrToDecimal(simdjsonGetRawJsonToken(item, "high"), 3));
-			pWebRTData->SetLow(StrToDecimal(simdjsonGetRawJsonToken(item, "low"), 3));
+			pWebRTData->SetNew(Str2Long(simdjsonGetRawJsonToken(item, "price"), 3));
+			pWebRTData->SetOpen(Str2Long(simdjsonGetRawJsonToken(item, "open"), 3));
+			pWebRTData->SetPBuy(4, Str2Long(simdjsonGetRawJsonToken(item, "bid5"), 3));
+			pWebRTData->SetPBuy(3, Str2Long(simdjsonGetRawJsonToken(item, "bid4"), 3));
+			pWebRTData->SetPBuy(2, Str2Long(simdjsonGetRawJsonToken(item, "bid3"), 3));
+			pWebRTData->SetPBuy(1, Str2Long(simdjsonGetRawJsonToken(item, "bid2"), 3));
+			pWebRTData->SetPBuy(0, Str2Long(simdjsonGetRawJsonToken(item, "bid1"), 3));
+			pWebRTData->SetHigh(Str2Long(simdjsonGetRawJsonToken(item, "high"), 3));
+			pWebRTData->SetLow(Str2Long(simdjsonGetRawJsonToken(item, "low"), 3));
 			pWebRTData->SetVBuy(2, simdjsonGetInt64(item, "bidvol3"));
 			pWebRTData->SetVBuy(0, simdjsonGetInt64(item, "bidvol1"));
 			pWebRTData->SetVBuy(1, simdjsonGetInt64(item, "bidvol2"));
 			pWebRTData->SetVBuy(4, simdjsonGetInt64(item, "bidvol5"));
 			pWebRTData->SetVBuy(3, simdjsonGetInt64(item, "bidvol4"));
 			pWebRTData->SetVolume(simdjsonGetInt64(item, "volume"));
-			pWebRTData->SetPSell(4, StrToDecimal(simdjsonGetRawJsonToken(item, "ask5"), 3));
-			pWebRTData->SetPSell(3, StrToDecimal(simdjsonGetRawJsonToken(item, "ask4"), 3));
-			pWebRTData->SetPSell(0, StrToDecimal(simdjsonGetRawJsonToken(item, "ask1"), 3));
+			pWebRTData->SetPSell(4, Str2Long(simdjsonGetRawJsonToken(item, "ask5"), 3));
+			pWebRTData->SetPSell(3, Str2Long(simdjsonGetRawJsonToken(item, "ask4"), 3));
+			pWebRTData->SetPSell(0, Str2Long(simdjsonGetRawJsonToken(item, "ask1"), 3));
 
 			string_view sNameView = simdjsonGetStringView(item, "name");
 			string sName(sNameView);
 			pWebRTData->SetStockName(sName);
-			pWebRTData->SetPSell(2, StrToDecimal(simdjsonGetRawJsonToken(item, "ask3"), 3));
-			pWebRTData->SetPSell(1, StrToDecimal(simdjsonGetRawJsonToken(item, "ask2"), 3));
+			pWebRTData->SetPSell(2, Str2Long(simdjsonGetRawJsonToken(item, "ask3"), 3));
+			pWebRTData->SetPSell(1, Str2Long(simdjsonGetRawJsonToken(item, "ask2"), 3));
 			strTime = simdjsonGetStringView(item, "time");
 			ss.clear();
 			ss.str(strTime);
@@ -592,7 +620,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			chrono::from_stream(ss, "%Y/%m/d %T", tpTime);
 			tpTime -= timeZoneOffset;
 			pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
-			pWebRTData->SetLastClose(StrToDecimal(simdjsonGetRawJsonToken(item, "yestclose"), 3));
+			pWebRTData->SetLastClose(Str2Long(simdjsonGetRawJsonToken(item, "yestclose"), 3));
 			pWebRTData->SetAmount(StrToDecimal(simdjsonGetRawJsonToken(item, "turnover"), 0));
 
 			pWebRTData->CheckNeteaseRTDataActive();

@@ -381,7 +381,7 @@ bool CTiingoDataSource::GenerateIEXTopOfBook() {
 bool CTiingoDataSource::GenerateStockDailyMeta() {
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
-	constexpr int iInquireType = TIINGO_STOCK_DAILY_META__;
+	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
 	ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
@@ -424,7 +424,7 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
-	constexpr int iInquireType = TIINGO_STOCK_DAILY_META__;
+	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
 	ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
@@ -463,7 +463,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
-	constexpr int iInquireType = TIINGO_STOCK_DAILY_META__;
+	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
 	ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {

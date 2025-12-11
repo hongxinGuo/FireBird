@@ -10,6 +10,8 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
+#include <algorithm>
+
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
 #include"SetChinaMarketDayLineExtendInfo.h"
@@ -61,12 +63,12 @@ CChinaMarket::CChinaMarket() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
 	if (gl_pCurrentStock == nullptr) {
-		if (gl_systemConfiguration.GetCurrentStock().length() > 0) {
+		if (!gl_systemConfiguration.GetCurrentStock().empty()) {
 			gl_systemConfiguration.SetCurrentStock("");
 			gl_systemConfiguration.SetUpdateDB(true);
 		}
 	}
-	else if (gl_pCurrentStock->GetSymbol().compare(gl_systemConfiguration.GetCurrentStock()) != 0) {
+	else if (gl_pCurrentStock->GetSymbol() != gl_systemConfiguration.GetCurrentStock()) {
 		gl_systemConfiguration.SetCurrentStock(gl_pCurrentStock->GetSymbol());
 		gl_systemConfiguration.SetUpdateDB(true);
 	}
@@ -89,7 +91,7 @@ void CChinaMarket::ResetMarket() {
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
 
-	if (gl_systemConfiguration.GetCurrentStock() != "") {
+	if (!gl_systemConfiguration.GetCurrentStock().empty()) {
 		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__);
 	}
 
@@ -166,7 +168,7 @@ bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
 bool CChinaMarket::IsOrdinaryTradeTime(long lTime) {
 	if (!IsWorkingDay()) return false;
 	if (lTime < 93000) return false;
-	if ((lTime > 113000) && (lTime < 130000)) return false;
+	if (lTime > 113000 && lTime < 130000) return false;
 	if (lTime > 150000) return false;
 	return true;
 }
@@ -174,7 +176,7 @@ bool CChinaMarket::IsOrdinaryTradeTime(long lTime) {
 bool CChinaMarket::IsWorkingTime(long lTime) {
 	if (!IsWorkingDay()) return false;
 	if (lTime < 91200) return false;
-	if ((lTime > 114500) && (lTime < 124500)) return false;
+	if (lTime > 114500 && lTime < 124500) return false;
 	if (lTime > 150630) return false;
 	return true;
 }
@@ -411,7 +413,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 	tmMarketTime.tm_sec = 0;
 	const time_t tUTC2 = TransferToUTCTime(&tmMarketTime);
 	long lIndex = (tUTC - tUTC2) / 60;
-	if (lIndex < 0) lIndex = 0;
+	lIndex = std::max<long>(lIndex, 0);
 	if ((lIndex >= 120) && (lIndex < 209)) lIndex = 119;
 	if (lIndex >= 210) lIndex -= 90;
 	if (lIndex >= 240) lIndex = 239;
@@ -513,7 +515,7 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 }
 
 void CChinaMarket::TaskSetCurrentStock() {
-	if (gl_systemConfiguration.GetCurrentStock() != "") { // 当前有选择股票
+	if (!gl_systemConfiguration.GetCurrentStock().empty()) { // 当前有选择股票
 		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock())) {
 			auto pStock = gl_dataContainerChinaStock.GetStock(gl_systemConfiguration.GetCurrentStock());
 			pStock->SetSelected(true);
@@ -933,10 +935,10 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
-			TRACE("chinamarket update stock profile\n");
+			TRACE("china market update stock profile\n");
 			gl_systemMessage.SetChinaMarketSavingFunction("update stock profile");
 			gl_dataContainerChinaStock.UpdateStockProfileDB();
-			TRACE("chinamarket updated stock profile\n");
+			TRACE("china market updated stock profile\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
@@ -1329,7 +1331,7 @@ void CChinaMarket::DeleteDayLine(long lDate) const {
 }
 
 void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
-	char buffer[20]{ 0x000 };
+	char buffer[20]{};
 	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 
 	_ltoa_s(lDate, buffer, 10);
@@ -1347,7 +1349,7 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 }
 
 void CChinaMarket::DeleteDayLineExtendInfo(long lDate) const {
-	char buffer[20]{ 0x000 };
+	char buffer[20]{};
 	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
 	_ltoa_s(lDate, buffer, 10);

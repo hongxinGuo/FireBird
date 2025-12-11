@@ -111,7 +111,7 @@ END_MESSAGE_MAP()
 // CFireBirdView 构造/析构
 
 CFireBirdView::CFireBirdView() {
-	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_; // 显示日线数据
+	m_iCurrentShowType = SHOW_DAY_LINE_DATA_; // 显示日线数据
 	m_lCurrentPos = 0;
 	m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
 	int iHeight = 100;
@@ -172,7 +172,7 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 	CPen penYellow(PS_SOLID, 1, crYellow);
 	std::pair<long, long> pairHighLow;
 	switch (m_iCurrentShowType) {
-	case _SHOW_DAY_LINE_DATA_:
+	case SHOW_DAY_LINE_DATA_:
 		pairHighLow = GetDocument()->GetDayLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
 		m_lDayLineHigh = pairHighLow.first;
 		m_lDayLineLow = pairHighLow.second;
@@ -184,7 +184,7 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 
 		GetDocument()->ShowDayLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
-	case _SHOW_WEEK_LINE_DATA_:
+	case SHOW_WEEK_LINE_DATA_:
 		pairHighLow = GetDocument()->GetWeekLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
 		m_lWeekLineHigh = pairHighLow.first;
 		m_lWeekLineLow = pairHighLow.second;
@@ -195,7 +195,7 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		GetDocument()->ShowWeekLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		GetDocument()->ShowWeekLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
-	case _SHOW_MONTH_LINE_DATA_:
+	case SHOW_MONTH_LINE_DATA_:
 		pairHighLow = GetDocument()->GetMonthLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
 		m_lMonthLineHigh = pairHighLow.first;
 		m_lMonthLineLow = pairHighLow.second;
@@ -222,14 +222,14 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	auto pCurrentStock = gl_pCurrentStock;
 
 	if (pCurrentStock == nullptr) return;
-	CPen* ppen = pDC->SelectObject(&penRed1);
+	CPen* pPen = pDC->SelectObject(&penRed1);
 	SysCallMoveTo(pDC, m_rectClient.right, m_rectClient.bottom * 3 / 4);
 	SysCallLineTo(pDC, 0, m_rectClient.bottom * 3 / 4);
 
 	//当前被操作的历史数据容器
 	//CVirtualDataHistoryCandleExtend* pHistoryData;
 	switch (m_iCurrentShowType) {
-	case _SHOW_DAY_LINE_DATA_:
+	case SHOW_DAY_LINE_DATA_:
 		if (IsChinaStock(GetCurrentStock())) {
 			// 画相对强度
 			if (m_fShowRS) {
@@ -276,9 +276,9 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 			}
 		}
 		break;
-	case _SHOW_WEEK_LINE_DATA_:
+	case SHOW_WEEK_LINE_DATA_:
 		break; // 周线不显示相对强度
-	case _SHOW_MONTH_LINE_DATA_:
+	case SHOW_MONTH_LINE_DATA_:
 		break; // 月线不显示相对强度
 	default:
 		break;
@@ -287,7 +287,7 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	////////////////////////////////////////////////////////////////画日线蜡烛线
 	ShowHistoryData(pDC, m_rectCandle);
 
-	pDC->SelectObject(ppen);
+	pDC->SelectObject(pPen);
 }
 
 BOOL CFireBirdView::PreCreateWindow(CREATESTRUCT& cs) {
@@ -334,9 +334,9 @@ void CFireBirdView::Show(CDC* pdc) {
 	ASSERT(pStock != nullptr);
 	ASSERT(GetDocument()->IsDataReady());
 	switch (m_iCurrentShowType) {
-	case _SHOW_DAY_LINE_DATA_: // show day line(or week line) stock data
-	case _SHOW_WEEK_LINE_DATA_:
-	case _SHOW_MONTH_LINE_DATA_:
+	case SHOW_DAY_LINE_DATA_: // show day line(or week line) stock data
+	case SHOW_WEEK_LINE_DATA_:
+	case SHOW_MONTH_LINE_DATA_:
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		ShowStockHistoryDataLine(&m_MemoryDC);
@@ -574,20 +574,20 @@ void CFireBirdView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 }
 
 void CFireBirdView::OnShowDayLine() {
-	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_;
+	m_iCurrentShowType = SHOW_DAY_LINE_DATA_;
 }
 
 void CFireBirdView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
-	if (m_iCurrentShowType == _SHOW_DAY_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
+	if (m_iCurrentShowType == SHOW_DAY_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CFireBirdView::OnShowWeekLine() {
-	m_iCurrentShowType = _SHOW_WEEK_LINE_DATA_;
+	m_iCurrentShowType = SHOW_WEEK_LINE_DATA_;
 }
 
 void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
-	if (m_iCurrentShowType == _SHOW_WEEK_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
+	if (m_iCurrentShowType == SHOW_WEEK_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
@@ -599,10 +599,10 @@ void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
 }
 
 void CFireBirdView::OnShowMonthLine() {
-	m_iCurrentShowType = _SHOW_MONTH_LINE_DATA_;
+	m_iCurrentShowType = SHOW_MONTH_LINE_DATA_;
 }
 
 void CFireBirdView::OnUpdateShowMonthLine(CCmdUI* pCmdUI) {
-	if (m_iCurrentShowType == _SHOW_MONTH_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
+	if (m_iCurrentShowType == SHOW_MONTH_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }

@@ -57,7 +57,6 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pDayLine2 : *pvDayLine) {
 			pDayLine2->SetExchange(pTiingoStock->GetExchangeCode());
 			pDayLine2->SetStockSymbol(pTiingoStock->GetSymbol());
-			pDayLine2->SetDisplaySymbol(pTiingoStock->GetDisplaySymbol());
 			if (lastClose != 0 && pDayLine2->GetLastClose() == 0) pDayLine2->SetLastClose(lastClose);
 			lastClose = pDayLine2->GetClose();
 		}

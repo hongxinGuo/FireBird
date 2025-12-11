@@ -6,7 +6,7 @@
 #include "WebData.h"
 
 void CProductFinnhub::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
-	for (auto pWebData : *pvWebData) {
+	for (const auto& pWebData : *pvWebData) {
 		if (pWebData != nullptr) {
 			gl_FinnhubTotalData += pWebData->GetBufferLength();
 		}
@@ -42,7 +42,7 @@ void CProductFinnhub::AddInaccessibleSymbol() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CProductFinnhub::Test_checkAccessRight_(CWebDataPtr pWebData) {
 	const string s(pWebData->GetStringView());
-	if (s == "{\"error\":\"You don't have access to this resource.\"}") {
+	if (s == R"({"error":"You don't have access to this resource."})") {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}

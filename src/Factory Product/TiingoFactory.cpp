@@ -4,7 +4,6 @@
 
 #include "TiingoFactory.h"
 
-//#include"ProductTiingoStockProfile.h"
 #include"ProductTiingoStockProfile.h"
 #include"ProductTiingoStockDayLine.h"
 
@@ -16,7 +15,6 @@
 #include "ProductTiingoIEXTopOFBook.h"
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
-#include "TiingoIEXTopOFBook.h"
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
@@ -77,7 +75,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 	case TIINGO_FUNDAMENTAL_DEFINITION_:
 		p = make_shared<CProductTiingoFundamentalDefinition>();
 		break;
-	case TIINGO_STOCK_DAILY_META__:
+	case TIINGO_STOCK_DAILY_META_:
 		p = make_shared<CProductTiingoStockDailyMeta>();
 		break;
 	case TIINGO_FINANCIAL_STATEMENT_:

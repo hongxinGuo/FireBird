@@ -121,7 +121,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		else {
 			sEndDate = ConvertDateToTimeStamp((year + 6) * 10000 + 1231); // 第七年的最后一天
 		}
-		const string strTotalMessage = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=" + strStockCode + ",day," + sStartDate.c_str() + "," + sEndDate.c_str() + m_strSuffix;
+		const string strTotalMessage = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=" + strStockCode + ",day," + sStartDate + "," + sEndDate + m_strSuffix;
 		product = make_shared<CProductTengxunDayLine>();
 		product->SetMarket(gl_pChinaMarket);
 		product->SetIndex(lStockIndex);

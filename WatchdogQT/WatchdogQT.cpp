@@ -17,7 +17,7 @@ using namespace std;
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 
-void InitializeLogSystem() {
+static void InitializeLogSystem() {
 	// Create a daily logger - a new file is created every day at 2:30 am
 	gl_dailyLogger = spdlog::daily_logger_mt("watchdog_daily_logger", "logs/WatchdogDaily.txt", 2, 30);
 
@@ -70,28 +70,29 @@ WatchdogQT::~WatchdogQT() {
 bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr* result) {
 	tm tmLocal;
 	long long time;
-	string s;
 
 	if (eventType == "windows_generic_MSG") {
+		string s;
+		errno_t error;
 		const MSG* msg = static_cast<MSG*>(message);
 		switch (msg->message) {
 		case WM_FIREBIRD_RUNNING:
 			time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
+			error = localtime_s(&tmLocal, &time);
 			s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
 		case WM_FIREBIRD_EXIT:
 			time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
+			error = localtime_s(&tmLocal, &time);
 			s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
 		case WM_FIREBIRD_SCHEDULING_EXIT:
 			time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
+			error = localtime_s(&tmLocal, &time);
 			s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告定时调度关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
@@ -115,17 +116,17 @@ void WatchdogQT::Update() {
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
 	tm tmLocal;
 	const auto time = gl_tpNow.time_since_epoch().count();
-	localtime_s(&tmLocal, &time);
+	auto error = localtime_s(&tmLocal, &time);
 	string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	labTime->setText(s.c_str());
 
-	for (auto s1 : m_listOutput) {
+	for (const auto& s1 : m_listOutput) {
 		ui.textBrowser->append(s1.c_str());
 	}
 	while (!m_listOutput.empty()) m_listOutput.pop_front();
 }
 
-bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
+static bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
 	const HANDLE hMutex = CreateMutex(nullptr, false, reinterpret_cast<LPCWSTR>(strProgramToken.c_str())); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	bool bAlreadyRunning = false;
 	if (hMutex) {
@@ -144,7 +145,7 @@ void WatchdogQT::UpdatePer10Second() {
 			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
 			tm tmLocal;
 			const auto time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
+			errno_t error = localtime_s(&tmLocal, &time);
 			string s = fmt::format("启动FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);

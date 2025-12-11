@@ -113,7 +113,6 @@ namespace FireBirdTest {
 		case 1:
 			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			EXPECT_EQ(m_DayLinePtr->GetStockSymbol(), "600000.SS");
-			EXPECT_EQ(m_DayLinePtr->GetDisplaySymbol(), "浦发银行");
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
 			EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
@@ -141,7 +140,6 @@ namespace FireBirdTest {
 			break;
 		case 9:
 			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			EXPECT_EQ(m_DayLinePtr->GetDisplaySymbol(), "价值7030");
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
 			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);

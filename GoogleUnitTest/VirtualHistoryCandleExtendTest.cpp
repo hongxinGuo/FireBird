@@ -54,13 +54,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetStockSymbol(), "600000.SS");
 	}
 
-	TEST_F(CVirtualHistoryCandleExtendTest, TestGetDisplaySymbol) {
-		CVirtualHistoryCandleExtend dl;
-		EXPECT_EQ(dl.GetDisplaySymbol(), "");
-		dl.SetDisplaySymbol("浦东银行");
-		EXPECT_EQ(dl.GetDisplaySymbol(), "浦东银行");
-	}
-
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetLastClose) {
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_EQ(dl.GetLastClose(), 0);

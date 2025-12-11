@@ -52,13 +52,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetStockSymbol(), "600000.SS");
 	}
 
-	TEST_F(CStockDayLineTest, TestGetDisplaySymbol) {
-		CDayLine dl;
-		EXPECT_EQ(dl.GetDisplaySymbol(), "");
-		dl.SetDisplaySymbol("浦东银行");
-		EXPECT_EQ(dl.GetDisplaySymbol(), "浦东银行");
-	}
-
 	TEST_F(CStockDayLineTest, TestGetLastClose) {
 		CDayLine dl;
 		EXPECT_EQ(dl.GetLastClose(), 0);
@@ -141,7 +134,7 @@ namespace FireBirdTest {
 		CDayLine dl;
 		EXPECT_EQ(dl.GetTotalValue(), 0);
 		string str = "3.13e+11";
-		dl.SetTotalValue(str.c_str());
+		dl.SetTotalValue(str);
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
 
@@ -149,7 +142,7 @@ namespace FireBirdTest {
 		CDayLine dl;
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
 		string str = "3.15e+11";
-		dl.SetCurrentValue(str.c_str());
+		dl.SetCurrentValue(str);
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 
@@ -523,7 +516,6 @@ namespace FireBirdTest {
 
 		id.SetDate(21100201);
 		id.SetStockSymbol("600008.SS");
-		id.SetDisplaySymbol("首创股份");
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -552,8 +544,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.Open();
 		id2.LoadBasicData(&setDayLineBasicInfo);
 		EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetDate());
-		EXPECT_TRUE(id.GetStockSymbol().compare(T2Utf8(setDayLineBasicInfo.m_Symbol)) == 0);
-		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
+		EXPECT_TRUE(id.GetStockSymbol() == T2Utf8(setDayLineBasicInfo.m_Symbol));
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_High) * id.GetRatio(), id.GetHigh());
@@ -573,7 +564,6 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(id2.GetDate(), id.GetDate());
 		EXPECT_EQ(id2.GetStockSymbol(), id.GetStockSymbol());
-		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(id2.GetOpen(), id.GetOpen());
 		EXPECT_DOUBLE_EQ(id2.GetHigh(), id.GetHigh());
@@ -607,7 +597,6 @@ namespace FireBirdTest {
 
 		id.SetDate(21101001);
 		id.SetStockSymbol("600008.SS");
-		id.SetDisplaySymbol("首创股份");
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -637,7 +626,6 @@ namespace FireBirdTest {
 		idLoaded.LoadBasicData(&setDayLineBasicInfo);
 		EXPECT_EQ(idLoaded.GetDate(), id.GetDate());
 		EXPECT_EQ(idLoaded.GetStockSymbol(), id.GetStockSymbol());
-		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
 		EXPECT_EQ(idLoaded.GetOpen(), id.GetOpen());
 		EXPECT_EQ(idLoaded.GetHigh(), id.GetHigh());
@@ -678,7 +666,6 @@ namespace FireBirdTest {
 		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol("600000.SS");
-		id.SetDisplaySymbol("浦发银行");
 		id.SetLastClose(1010);
 		id.SetOpen(1100);
 		id.SetHigh(1200);

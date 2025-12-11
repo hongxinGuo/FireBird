@@ -331,7 +331,7 @@ public:
 	bool AnalysisGuadan(const CWebRTDataPtr& pCurrentRTData, INT64 lCurrentTransactionPrice);
 	void SelectGuadanThatNeedToCalculate(const CWebRTDataPtr& pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) const;
 	void SetCurrentGuadan(const CWebRTDataPtr& pCurrentRTData);
-	void CheckGuadan(CWebRTDataPtr pCurrentRTData, const array<bool, 10>& fNeedCheck);
+	void CheckGuadan(const CWebRTDataPtr& pCurrentRTData, const array<bool, 10>& fNeedCheck);
 	void CheckSellGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume);
 	void CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i);

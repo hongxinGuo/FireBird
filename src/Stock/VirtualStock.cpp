@@ -55,7 +55,7 @@ void CVirtualStock::UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 
 void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_Description = m_strDescription.c_str();
-	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.c_str();
+	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.substr(0, 18).c_str(); //只用前19个字符
 	setStockSymbol.m_Exchange = m_strExchangeCode.c_str();
 	setStockSymbol.m_Symbol = m_strSymbol.c_str();
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;

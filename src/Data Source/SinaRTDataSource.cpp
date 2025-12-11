@@ -87,7 +87,7 @@ enum_ErrorMessageData CSinaRTDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		ASSERT(0);
 		break;
 	}
-	return m_eErrorMessageData;;
+	return m_eErrorMessageData;
 }
 
 /// <summary>

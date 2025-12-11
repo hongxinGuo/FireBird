@@ -9,7 +9,6 @@
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
-#include <algorithm>
 #include <fstream>
 
 #include "CharSetTransfer.h"

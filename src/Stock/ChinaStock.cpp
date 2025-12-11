@@ -215,7 +215,6 @@ void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPt
 	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(GetTransactionTime()));
 	pBeUpdated->SetExchange(m_strExchangeCode);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
-	pBeUpdated->SetDisplaySymbol(m_strDisplaySymbol);
 	pBeUpdated->SetLastClose(m_lLastClose);
 	pBeUpdated->SetOpen(m_lOpen);
 	pBeUpdated->SetHigh(m_lHigh);
@@ -651,9 +650,9 @@ bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 void CChinaStock::ProcessRTData() {
-	const INT64 lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
+	const auto lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
 	// 以下为计算挂单变化、股票活跃度、大单买卖情况
-	for (INT64 i = 0; i < lTotalNumber; i++) {
+	for (auto i = 0; i < lTotalNumber; i++) {
 		const CWebRTDataPtr pRTData = PopRTData(); // 采用同步机制获取数据
 		if (pRTData->IsActive()) {// 数据有效
 			UpdateRTData(pRTData); // 更新股票现时状态。
@@ -1083,7 +1082,7 @@ void CChinaStock::SetCurrentGuadan(const CWebRTDataPtr& pCurrentRTData) {
 	}
 }
 
-void CChinaStock::CheckGuadan(CWebRTDataPtr pCurrentRTData, const array<bool, 10>& fNeedCheck) {
+void CChinaStock::CheckGuadan(const CWebRTDataPtr& pCurrentRTData, const array<bool, 10>& fNeedCheck) {
 	for (int i = 0; i < 5; i++) {
 		CheckSellGuadan(fNeedCheck, i);
 		CheckBuyGuadan(fNeedCheck, i);

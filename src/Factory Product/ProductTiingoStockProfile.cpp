@@ -103,7 +103,7 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ "Field not available for free/evaluation" }; // Tiingo免费账户有多项内容空缺，会返回此信息。
-	string strNULL = "";
+	string strNULL;
 	CTiingoStockPtr pStock = nullptr;
 	string s1;
 
@@ -130,12 +130,12 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			pStock->SetActive(simdjsonGetBool(itemValue, "isActive"));
 			pStock->SetIsADR(simdjsonGetBool(itemValue, "isADR"));
 			s1 = simdjsonGetStringView(itemValue, "industry");
-			if (s1.compare(strNotAvailable) != 0) {
+			if (s1 != strNotAvailable) {
 				pStock->SetTiingoIndustry(s1);;
 			}
 			else pStock->SetTiingoIndustry(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "sector");
-			if (s1.compare(strNotAvailable) != 0) {
+			if (s1 != strNotAvailable) {
 				pStock->SetTiingoSector(s1);;
 			}
 			else pStock->SetTiingoSector(strNULL);
@@ -149,17 +149,17 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 				pStock->SetSicCode(atoi(sTemp2.c_str()));
 			}
 			s1 = simdjsonGetStringView(itemValue, "sicIndustry");
-			if (s1.compare(strNotAvailable) != 0) {
+			if (s1 != strNotAvailable) {
 				pStock->SetSicIndustry(s1);;
 			}
 			else pStock->SetSicIndustry(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "sicSector");
-			if (s1.compare(strNotAvailable) != 0) {
+			if (s1 != strNotAvailable) {
 				pStock->SetSicSector(s1);;
 			}
 			else pStock->SetSicSector(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "reportingCurrency");
-			if (s1.compare(strNotAvailable) != 0) { // 此项应该永远存在
+			if (s1 != strNotAvailable) { // 此项应该永远存在
 				pStock->SetReportingCurrency(s1);;
 			}
 			else pStock->SetReportingCurrency(strNULL);
@@ -217,7 +217,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 	for (size_t l = 1; l < pvTiingoStock->size(); l++) {
 		CTiingoStockPtr pStockNext = pvTiingoStock->at(l);
 		auto s = pStockFirst->GetSymbol();
-		if (s.compare(pStockNext->GetSymbol()) != 0) { // 代码不同
+		if (s != pStockNext->GetSymbol()) { // 代码不同
 			pvNewTiingoStock->push_back(pStockFirst);
 			pStockFirst = pStockNext;
 		}

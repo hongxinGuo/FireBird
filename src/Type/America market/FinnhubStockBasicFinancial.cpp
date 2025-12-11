@@ -434,7 +434,7 @@ void CFinnhubStockBasicFinancial::LoadAnnualData(CSetFinnhubStockBasicFinancialA
 
 bool CFinnhubStockBasicFinancial::IsNewData(const string& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	for (int i = 0; i < vDBData.size(); i++) {
-		if ((vDBData.at(i).m_type.compare(type) == 0) && (vDBData.at(i).m_date == vData.m_period)) {
+		if (vDBData.at(i).m_type == type && vDBData.at(i).m_date == vData.m_period) {
 			return false;
 		}
 	}

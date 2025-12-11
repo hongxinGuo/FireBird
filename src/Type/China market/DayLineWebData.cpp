@@ -96,22 +96,22 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 		// 股票名称
 		sv = GetNextField(svData, lCurrentPos, ',');
 		const string str(sv.data(), sv.length());
-		pDayLine->SetDisplaySymbol(str);
+		//pDayLine->SetDisplaySymbol(str);
 		// 收盘价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pDayLine->SetClose(StrToDecimal(sv, 3));
+		pDayLine->SetClose(Str2Long(sv, 3));
 		// 最高价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pDayLine->SetHigh(StrToDecimal(sv, 3));
+		pDayLine->SetHigh(Str2Long(sv, 3));
 		// 最低价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pDayLine->SetLow(StrToDecimal(sv, 3));
+		pDayLine->SetLow(Str2Long(sv, 3));
 		// 开盘价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pDayLine->SetOpen(StrToDecimal(sv, 3));
+		pDayLine->SetOpen(Str2Long(sv, 3));
 		// 前收盘价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pDayLine->SetLastClose(StrToDecimal(sv, 3));
+		pDayLine->SetLastClose(Str2Long(sv, 3));
 		// 涨跌值
 		sv = GetNextField(svData, lCurrentPos, ',');
 		if (pDayLine->GetOpen() == 0) {

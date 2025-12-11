@@ -41,7 +41,7 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
 		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
 		auto str = pStock->GetSymbol();
-		if (str.compare(pStock2->GetSymbol()) == 0) {
+		if (str == pStock2->GetSymbol()) {
 			pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
 			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
 		}

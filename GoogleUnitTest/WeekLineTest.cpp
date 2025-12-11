@@ -55,14 +55,6 @@ namespace FireBirdTest {
 		dl.SetStockSymbol("600000.SS");
 		EXPECT_EQ(dl.GetStockSymbol(), "600000.SS");
 	}
-
-	TEST_F(CWeekLineTest, TestGetDisplaySymbol) {
-		CWeekLine dl;
-		EXPECT_EQ(dl.GetDisplaySymbol(), "");
-		dl.SetDisplaySymbol("浦东银行");
-		EXPECT_EQ(dl.GetDisplaySymbol(), "浦东银行");
-	}
-
 	TEST_F(CWeekLineTest, TestGetLastClose) {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetLastClose(), 0);
@@ -572,7 +564,6 @@ namespace FireBirdTest {
 
 		id.SetDate(21100101);
 		id.SetStockSymbol("600008.SS");
-		id.SetDisplaySymbol("首创股份");
 		id.SetLastClose(342345);
 		id.SetOpen(343435);
 		id.SetHigh(452543);
@@ -675,7 +666,6 @@ namespace FireBirdTest {
 		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetDate());
 		EXPECT_TRUE(id.GetStockSymbol().compare(T2Utf8(setWeekLineBasicInfo.m_Symbol)) == 0);
-		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_High) * id.GetRatio(), id.GetHigh());
@@ -695,7 +685,6 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(id2.GetDate(), id.GetDate());
 		EXPECT_TRUE(id2.GetStockSymbol().compare(id.GetStockSymbol()) == 0);
-		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(id2.GetOpen(), id.GetOpen());
 		EXPECT_DOUBLE_EQ(id2.GetHigh(), id.GetHigh());
@@ -809,7 +798,6 @@ namespace FireBirdTest {
 
 		id.SetDate(21100901);
 		id.SetStockSymbol("600008.SS");
-		id.SetDisplaySymbol("首创股份");
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -839,7 +827,6 @@ namespace FireBirdTest {
 		idLoaded.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(idLoaded.GetDate(), id.GetDate());
 		EXPECT_TRUE(idLoaded.GetStockSymbol().compare(id.GetStockSymbol()) == 0);
-		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
 		EXPECT_EQ(idLoaded.GetOpen(), id.GetOpen());
 		EXPECT_EQ(idLoaded.GetHigh(), id.GetHigh());
@@ -873,7 +860,6 @@ namespace FireBirdTest {
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
 		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol("600000.SS");
-		id.SetDisplaySymbol("浦发银行");
 		id.SetLastClose(1010);
 		id.SetOpen(1100);
 		id.SetHigh(1200);
@@ -905,7 +891,6 @@ namespace FireBirdTest {
 		pDayLine->SetTime(100100100100);
 		pDayLine->SetDate(20200202);
 		pDayLine->SetStockSymbol("600000.SS");
-		pDayLine->SetDisplaySymbol("浦发银行");
 
 		pDayLine->SetOpen(1010);
 		pDayLine->SetClose(2020);
@@ -991,7 +976,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(weekLine.GetDate(), GetCurrentMonday(pDayLine->GetDate())) << "周线日期总是当周的星期一";
 		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine->GetMarketTime());
 		EXPECT_TRUE(weekLine.GetStockSymbol().compare(pDayLine->GetStockSymbol()) == 0);
-		EXPECT_TRUE(weekLine.GetDisplaySymbol() == pDayLine->GetDisplaySymbol());
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine->GetOpen());
 		EXPECT_EQ(weekLine.GetClose(), pDayLine->GetClose());
@@ -1065,7 +1049,6 @@ namespace FireBirdTest {
 		pDayLine1->SetTime(100100100100);
 		pDayLine1->SetDate(20200727);
 		pDayLine1->SetStockSymbol("60000.SS");
-		pDayLine1->SetDisplaySymbol("浦发银");
 
 		pDayLine1->SetOpen(1010);
 		pDayLine1->SetClose(2020);
@@ -1157,7 +1140,6 @@ namespace FireBirdTest {
 		pDayLine2->SetTime(10010010010); // 与第一个数据pDayLine1时间不同。
 		pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
 		pDayLine2->SetStockSymbol("600000.SS"); // 与第一个数据pDayLine1不同。
-		pDayLine2->SetDisplaySymbol("浦发银行"); // 与第一个数据pDayLine1不同。
 
 		pDayLine2->SetOpen(10100);
 		pDayLine2->SetClose(20200);
@@ -1254,9 +1236,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine1->GetMarketTime()) << "使用第一个数据的时间";
 		EXPECT_NE(weekLine.GetMarketTime(), pDayLine2->GetMarketTime()) << "使用第一个数据的时间";
 		EXPECT_TRUE(weekLine.GetStockSymbol().compare(pDayLine1->GetStockSymbol()) == 0) << "股票代码不为空时，不更改";
-		EXPECT_TRUE(weekLine.GetDisplaySymbol().compare(pDayLine1->GetDisplaySymbol()) == 0) << "股票名称不为空时，不更改";
 		EXPECT_FALSE(weekLine.GetStockSymbol().compare(pDayLine2->GetStockSymbol()) == 0) << "股票代码不为空时，不更改";
-		EXPECT_FALSE(weekLine.GetDisplaySymbol() == pDayLine2->GetDisplaySymbol()) << "股票名称不为空时，不更改";
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());
 		EXPECT_NE(weekLine.GetOpen(), pDayLine2->GetOpen());

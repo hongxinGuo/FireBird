@@ -155,7 +155,7 @@ protected:
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 	// 系统时间区
-	string m_strLocalMarketTimeZone{ "" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	string m_strLocalMarketTimeZone{}; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
 	chrono::sys_info m_marketSystemInformation{}; // 时区偏移等皆由此推出。
 	chrono::seconds m_TimeZoneOffset{ 0 };

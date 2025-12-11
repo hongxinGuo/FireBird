@@ -30,7 +30,7 @@
 #include "TimeConvert.h"
 
 template <typename TWebSocket>
-void ProcessWebSocketDataGeneric(TWebSocket pWebSocket, const std::string& prefix, std::function<void(size_t)> setProcessedFunc) {
+void ProcessWebSocketDataGeneric(const TWebSocket& pWebSocket, const std::string& prefix, const std::function<void(size_t)>& setProcessedFunc) {
 	const auto total = pWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
@@ -212,7 +212,7 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 				gl_pTiingoDataSource->SetUpdateDayLine(true);
 			}
 			break;
-		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__: // Note 20点后执行，刚闭市时数据可能不全。
+		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__:
 			ASSERT(!gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 免费账户需要处理当日数据（付费账户下载所有股票的日线）
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
 			break;
@@ -361,7 +361,7 @@ void CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 	CTiingoStockPtr pTiingoStock = nullptr;
 	const size_t symbolSize = gl_dataContainerTiingoStock.Size();
 
-	for (int i = 0; i < symbolSize; i++) {
+	for (size_t i = 0; i < symbolSize; i++) {
 		if (gl_systemConfiguration.IsExitingSystem()) break;// 如果程序正在退出，则停止存储。
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
@@ -391,7 +391,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 	const size_t symbolSize = gl_dataFinnhubForexSymbol.Size();
 
 	//TRACE("Finnhub forex dayLine\n");
-	for (int i = 0; i < symbolSize; i++) {
+	for (size_t i = 0; i < symbolSize; i++) {
 		pSymbol = gl_dataFinnhubForexSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
 			pSymbol->SetUpdateDayLineDB(false);// Only call once
@@ -399,7 +399,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
 						gl_UpdateWorldMarketDB.acquire();
-						gl_systemMessage.SetWorldMarketSavingFunction("F forex dayline");
+						gl_systemMessage.SetWorldMarketSavingFunction("F forex dayLine");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
 							pSymbol->UpdateDayLineDB();
@@ -448,7 +448,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
 
 	//TRACE("Finnhub Crypto dayLine\n");
-	for (int i = 0; i < symbolSize; ++i) {
+	for (size_t i = 0; i < symbolSize; ++i) {
 		pSymbol = gl_dataFinnhubCryptoSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
 			pSymbol->SetUpdateDayLineDB(false);
@@ -577,7 +577,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	const size_t stockSize = gl_dataContainerFinnhubStock.Size();
 
 	CFinnhubStockPtr pStock = nullptr;
-	for (long l = 0; l < stockSize; ++l) {
+	for (size_t l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateEPSSurpriseDB()) {
 			pStock->SetUpdateEPSSurpriseDB(false);
@@ -593,7 +593,7 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	const size_t stockSize = gl_dataContainerFinnhubStock.Size();
 
 	CFinnhubStockPtr pStock = nullptr;
-	for (long l = 0; l < stockSize; ++l) {
+	for (size_t l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateSECFilingsDB()) {
 			pStock->SetUpdateSECFilingsDB(false);
@@ -665,7 +665,7 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 	co_return succeed;
 }
 
-void CWorldMarket::CalculateNasdaq100StocksMA(const int length) const {
+void CWorldMarket::CalculateNasdaq100StocksMA(int length) const {
 	for (auto& pStock : m_vNasdaq100TiingoStock) {
 		if (pStock->IsDayLineLoaded()) {
 			pStock->CalculateDayLineMA(length);
@@ -1013,7 +1013,7 @@ bool CWorldMarket::UpdateToken() {
 }
 
 bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
-	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+	for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 		pStock->UpdateDayLineDB();
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
@@ -1022,7 +1022,7 @@ bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
 }
 
 bool CWorldMarket::UpdateCompanyNewsDB() {
-	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
+	for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 		const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateCompanyNewsDB()) {
 			pStock->SetUpdateCompanyNewsDB(false);
@@ -1035,7 +1035,7 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 }
 
 bool CWorldMarket::UpdateInsiderSentimentDB() {
-	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+	for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 		if (pStock->IsUpdateInsiderSentimentDB()) {
 			pStock->SetUpdateInsiderSentimentDB(false);
@@ -1088,7 +1088,7 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 		const string strFilterPrefix = "[Symbol] = '";
 		CSetFinnhubStockDayLine setFinnhubStockDayLine;
 
-		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
+		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			setFinnhubStockDayLine.m_strFilter = (strFilterPrefix + pStock->GetSymbol() + "'").c_str();
 			setFinnhubStockDayLine.m_strSort = "[Date]";
@@ -1118,17 +1118,17 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbols() {
 	vectorString vSymbol;
 
 	vectorString vSymbolTemp = gl_dataContainerChosenFinnhubStock.GetSymbols();
-	for (auto symbol : vSymbolTemp) {
+	for (const auto& symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}
 
 	vSymbolTemp = gl_dataContainerChosenWorldForex.GetSymbols();
-	for (auto symbol : vSymbolTemp) {
+	for (const auto& symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}
 
 	vSymbolTemp = gl_dataContainerChosenWorldCrypto.GetSymbols();
-	for (auto symbol : vSymbolTemp) {
+	for (const auto& symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}
 

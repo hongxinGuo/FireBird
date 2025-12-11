@@ -109,10 +109,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunRealtimeDataServer)
 	ON_COMMAND(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateTiingoFundamentalDefinition)
 	ON_UPDATE_COMMAND_UI(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition)
-	ON_COMMAND(ID_RESET_TIINGO_DAYLINE_DATE, &CMainFrame::OnResetTiingoDaylineDate)
-	ON_COMMAND(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnCreateTiingoTradeDayDayline)
-	ON_UPDATE_COMMAND_UI(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnUpdateCreateTiingoTradeDayDayline)
-	ON_COMMAND(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnProcessTiingoDayline)
+	ON_COMMAND(ID_RESET_TIINGO_DAYLINE_DATE, &CMainFrame::OnResetTiingoDayLineDate)
+	ON_COMMAND(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnCreateTiingoTradeDayDayLine)
+	ON_UPDATE_COMMAND_UI(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnUpdateCreateTiingoTradeDayDayLine)
+	ON_COMMAND(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnProcessTiingoDayLine)
 	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayLine)
 	ON_COMMAND(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnCalculateNewLowFiveTimes)
 	ON_COMMAND(ID_INQUIRE_IEX_TOP_OF_BOOK, &CMainFrame::OnInquireIexTopOfBook)
@@ -371,7 +371,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	                                                           IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
 	                                                           GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
-	HICON hPropertiesBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	HICON hPropertiesBarIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
 	m_wndPropertyRealTime.SetIcon(hPropertiesBarIcon, FALSE);
 }
@@ -429,7 +429,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 	const LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
 	if (lres == 0) { return 0; }
 
-	const auto pUserToolbar = (CMFCToolBar*)lres;
+	const auto pUserToolbar = reinterpret_cast<CMFCToolBar*>(lres);
 	ASSERT_VALID(pUserToolbar);
 
 	CString strCustomize;
@@ -613,8 +613,8 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoCryptoWebSocket() > 0) {
-		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto().c_str());
-		SysCallSetInnerSystemPaneText(15, FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket()).c_str());
+		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
+		SysCallSetInnerSystemPaneText(15, FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket()));
 	}
 
 	SysCallSetInnerSystemPaneText(16, FormatToMK(gl_TiingoTotalData));
@@ -722,7 +722,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 }
 
 void CMainFrame::CreateDocumentViewIfNeeded() {
-	auto pDoc = static_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
+	auto pDoc = dynamic_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
 	if (pDoc == nullptr) {
 		CreateNewView();
 	}
@@ -733,7 +733,7 @@ void CMainFrame::CreateNewView() {
 }
 
 void CMainFrame::SetCurrentDocumentStock(const CVirtualStockPtr& pStock) {
-	auto pDoc = static_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
+	auto pDoc = dynamic_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
 	ASSERT(pDoc != nullptr);
 	pDoc->SetCurrentStock(pStock);
 }
@@ -967,8 +967,8 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void BuildWeekLine(long lStartDate) {
 	gl_UpdateChinaMarketDB.acquire();
-	TRACE("build weekline\n");
-	gl_systemMessage.SetChinaMarketSavingFunction("build weekline");
+	TRACE("build weekLine\n");
+	gl_systemMessage.SetChinaMarketSavingFunction("build weekLine");
 
 	const long lStartMonday = GetCurrentMonday(lStartDate);
 	const long year = lStartMonday / 10000;
@@ -996,7 +996,7 @@ void BuildWeekLine(long lStartDate) {
 	gl_pChinaMarket->DeleteCurrentWeekWeekLine();
 	// 生成新的当前周周线
 	gl_pChinaMarket->BuildCurrentWeekWeekLineTable();
-	TRACE("build weekline\n");
+	TRACE("build weekLine\n");
 
 	gl_UpdateChinaMarketDB.release();
 }
@@ -1023,10 +1023,10 @@ void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
-		TRACE("build current weekline\n");
-		gl_systemMessage.SetChinaMarketSavingFunction("build current weekline");
+		TRACE("build current weekLine\n");
+		gl_systemMessage.SetChinaMarketSavingFunction("build current weekLine");
 		gl_pChinaMarket->BuildWeekLineOfCurrentWeek();
-		TRACE("build current weekline\n");
+		TRACE("build current weekLine finished\n");
 		gl_UpdateChinaMarketDB.release();
 	});
 }
@@ -1096,10 +1096,10 @@ void CMainFrame::OnRebuildDayLine() {
 void CMainFrame::OnUpdateFinnhubStockDayLineStartEnd() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
-		TRACE("Finnhub stock dayline start end date\n");
-		gl_systemMessage.SetWorldMarketSavingFunction("F stock dayline");
+		TRACE("Finnhub stock dayLine start end date\n");
+		gl_systemMessage.SetWorldMarketSavingFunction("F stock dayLine");
 		gl_pWorldMarket->UpdateStockDayLineStartEndDate();
-		TRACE("Finnhub stock dayline start end date updated\n");
+		TRACE("Finnhub stock dayLine start end date updated\n");
 		gl_UpdateWorldMarketDB.release();
 	});
 }
@@ -1269,23 +1269,23 @@ void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnResetTiingoDaylineDate() {
+void CMainFrame::OnResetTiingoDayLineDate() {
 	gl_dataContainerTiingoStock.ResetDayLineStartEndDate();
 }
 
-void CMainFrame::OnCreateTiingoTradeDayDayline() {
+void CMainFrame::OnCreateTiingoTradeDayDayLine() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
-		TRACE("Tiingo create stock dayline\n");
-		gl_systemMessage.SetWorldMarketSavingFunction("T create dayline");
+		TRACE("Tiingo create stock dayLine\n");
+		gl_systemMessage.SetWorldMarketSavingFunction("T create dayLine");
 
 		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-		TRACE("Tiingo create stock dayline ended\n");
+		TRACE("Tiingo create stock dayLine ended\n");
 		gl_UpdateWorldMarketDB.release();
 	});
 }
 
-void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateCreateTiingoTradeDayDayLine(CCmdUI* pCmdUI) {
 	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
 		pCmdUI->Enable(false);
 	}
@@ -1294,7 +1294,7 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnProcessTiingoDayline() {
+void CMainFrame::OnProcessTiingoDayLine() {
 	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskProcessDayLine();
 	});

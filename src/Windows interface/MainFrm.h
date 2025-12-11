@@ -54,7 +54,7 @@ public:
 
 	// 重写
 	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
-	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr) override;
+	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL) override;
 
 protected:
 	UINT m_uIdTimer{ 0 };
@@ -146,10 +146,10 @@ public:
 	afx_msg void OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateTiingoFundamentalDefinition();
 	afx_msg void OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI);
-	afx_msg void OnResetTiingoDaylineDate();
-	afx_msg void OnCreateTiingoTradeDayDayline();
-	afx_msg void OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI);
-	afx_msg void OnProcessTiingoDayline();
+	afx_msg void OnResetTiingoDayLineDate();
+	afx_msg void OnCreateTiingoTradeDayDayLine();
+	afx_msg void OnUpdateCreateTiingoTradeDayDayLine(CCmdUI* pCmdUI);
+	afx_msg void OnProcessTiingoDayLine();
 	afx_msg void OnUpdateProcessTiingoDayLine(CCmdUI* pCmdUI);
 	afx_msg void OnCalculateNewLowFiveTimes();
 	afx_msg void OnInquireIexTopOfBook();

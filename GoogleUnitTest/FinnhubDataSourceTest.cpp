@@ -6,6 +6,7 @@
 
 #include"MockFinnhubDataSource.h"
 #include "ProductFinnhubCompanyProfileConcise.h"
+#include "ProductFinnhubEconomicCountryList.h"
 #include "WebData.h"
 
 using namespace testing;
@@ -285,6 +286,7 @@ namespace FireBirdTest {
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), "class CProductFinnhubEconomicCountryList");
+		EXPECT_EQ(typeid(*p), typeid(CProductFinnhubEconomicCountryList));
 		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 0);
 	}
 
@@ -293,7 +295,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = nullptr;
 
 		EXPECT_EQ(gl_dataContainerStockExchange.Size(), 81);
-		for (int i = 0; i < gl_dataContainerStockExchange.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerStockExchange.Size(); i++) {
 			pExchange = gl_dataContainerStockExchange.GetItem(i);
 			pExchange->m_fUpdateMarketStatus = false;
 		}
@@ -338,7 +340,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = nullptr;
 
 		EXPECT_EQ(gl_dataContainerStockExchange.Size(), 81);
-		for (int i = 0; i < gl_dataContainerStockExchange.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerStockExchange.Size(); i++) {
 			pExchange = gl_dataContainerStockExchange.GetItem(i);
 			pExchange->m_fUpdateMarketHoliday = false;
 		}
@@ -383,7 +385,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = nullptr;
 
 		EXPECT_EQ(gl_dataContainerStockExchange.Size(), 81);
-		for (int i = 0; i < gl_dataContainerStockExchange.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerStockExchange.Size(); i++) {
 			pExchange = gl_dataContainerStockExchange.GetItem(i);
 			pExchange->m_fUpdateStockSymbol = false;
 		}
@@ -427,7 +429,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateCompanyProfile(false);
 		}
@@ -462,7 +464,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub company profile basic updated");
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateCompanyProfile(true);
 		}
@@ -474,7 +476,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateCompanyNews(false);
 		}
@@ -510,7 +512,7 @@ namespace FireBirdTest {
 		string str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(str, "Finnhub company news updated");
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateCompanyNews(true);
 		}
@@ -522,7 +524,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateInsiderSentiment(false);
 		}
@@ -558,7 +560,7 @@ namespace FireBirdTest {
 		string str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(str, "Finnhub Insider Sentiment updated");
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateInsiderSentiment(true);
 		}
@@ -570,7 +572,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateBasicFinancial(false);
 		}
@@ -605,7 +607,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub basic financial updated");
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateBasicFinancial(true);
 		}
@@ -618,7 +620,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockDayLine());
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateDayLine(false);
 		}
@@ -653,7 +655,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub dayline updated");
 
 		// 恢复原状
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateDayLine(true);
 		}
@@ -677,7 +679,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdatePeer());
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdatePeer(false);
 		}
@@ -725,7 +727,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "股票待查询";
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateInsiderTransaction(false);
 		}
@@ -783,7 +785,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryEPSSurprise) {
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateEPSSurprise(false);
 		}
@@ -821,7 +823,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestInquirySECFilings) {
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateSECFilings(false);
 		}
@@ -878,7 +880,7 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateForexSymbol(true);
 		const size_t lTotal = gl_dataContainerFinnhubForexExchange.Size();
-		for (int i = 0; i < lTotal - 1; i++) {
+		for (size_t i = 0; i < lTotal - 1; i++) {
 			m_FinnhubDataSource.SetInquiring(false);
 			EXPECT_TRUE(m_FinnhubDataSource.GenerateForexSymbol());
 			EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
@@ -903,7 +905,7 @@ namespace FireBirdTest {
 		CForexSymbolPtr pStock;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
+		for (size_t i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubForexSymbol.GetItem(i);
 			pStock->SetUpdateDayLine(false);
 		}
@@ -938,7 +940,7 @@ namespace FireBirdTest {
 		string str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(str, "Finnhub Forex DayLine Updated");
 
-		for (int i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
+		for (size_t i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubForexSymbol.GetItem(i);
 			pStock->SetUpdateDayLine(true);
 		}
@@ -969,7 +971,7 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateCryptoSymbol(true);
 		const size_t lTotal = gl_dataContainerFinnhubCryptoExchange.Size();
-		for (int i = 0; i < lTotal - 1; i++) {
+		for (size_t i = 0; i < lTotal - 1; i++) {
 			m_FinnhubDataSource.SetInquiring(false);
 			EXPECT_TRUE(m_FinnhubDataSource.GenerateCryptoSymbol());
 			EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
@@ -994,7 +996,7 @@ namespace FireBirdTest {
 		CFinnhubCryptoPtr pStock;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
+		for (size_t i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubCryptoSymbol.GetItem(i);
 			pStock->SetUpdateDayLine(false);
 		}
@@ -1028,7 +1030,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub Crypto DayLine Updated");
 
-		for (int i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
+		for (size_t i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubCryptoSymbol.GetItem(i);
 			pStock->SetUpdateDayLine(true);
 		}

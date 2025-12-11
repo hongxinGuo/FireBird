@@ -4,10 +4,9 @@
 #include"FireBirdDoc.h"
 
 enum {
-	_SHOW_DAY_LINE_DATA_ = 1,
-	_SHOW_WEEK_LINE_DATA_ = 3,
-	_SHOW_MONTH_LINE_DATA_ = 4,
-
+	SHOW_DAY_LINE_DATA_ = 1,
+	SHOW_WEEK_LINE_DATA_ = 3,
+	SHOW_MONTH_LINE_DATA_ = 4,
 };
 
 class CFireBirdView : public CView {
@@ -22,7 +21,7 @@ public:
 	CFireBirdDoc* GetDocument() const;
 	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
 
-	void ShowHistoryData(CDC* pDC, CRect rectClient);
+	void ShowHistoryData(CDC* pDC, CRect rectDrawClient);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
 	bool IsShowRS() const noexcept { return m_fShowRS; }
@@ -50,9 +49,9 @@ public:
 
 	//系统包裹函数
 public:
-	virtual CSize SysCallGetTextExtent(CDC* pDC, CString str) { return (pDC->GetTextExtent(str)); }
-	virtual BOOL SysCallTextOut(CDC* pDC, int x, int y, CString str) { return (pDC->TextOut(x, y, str)); }
-	virtual CPen* SysCallSelectObject(CDC* pDC, CPen* ppen) { return (pDC->SelectObject(ppen)); }
+	virtual CSize SysCallGetTextExtent(CDC* pDC, const string& str) { return (pDC->GetTextExtent(str.c_str())); }
+	virtual BOOL SysCallTextOut(CDC* pDC, int x, int y, const string& str) { return (pDC->TextOut(x, y, str.c_str())); }
+	virtual CPen* SysCallSelectObject(CDC* pDC, CPen* pPen) { return (pDC->SelectObject(pPen)); }
 	virtual CPoint SysCallMoveTo(CDC* pDC, int x, int y) { return (pDC->MoveTo(x, y)); }
 	virtual CPoint SysCallMoveTo(CDC* pDC, CPoint pt) { return (pDC->MoveTo(pt)); }
 	virtual BOOL SysCallLineTo(CDC* pDC, int x, int y) { return (pDC->LineTo(x, y)); }

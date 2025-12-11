@@ -24,7 +24,7 @@ vector<CMarketTaskPtr> CMarketTaskQueue::GetTasks() {
 		m_vMarketTask.pop();
 	}
 	ASSERT(m_vMarketTask.empty());
-	for (auto pTask : vTask) {
+	for (const auto& pTask : vTask) {
 		m_vMarketTask.push(pTask);
 	}
 

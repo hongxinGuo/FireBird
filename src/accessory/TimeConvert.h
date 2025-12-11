@@ -10,7 +10,7 @@ INT64 ConvertToDateTime(time_t tUTC, time_t tTimeZone) noexcept; // 将时间转
 INT64 ConvertToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDDHHMMSS)形式
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
 inline long XferYearMonthDayToYYYYMMDD(long lYear, long lMonth, long lDay) { return lYear * 10000 + lMonth * 100 + lDay; } //todo 换掉这两个
-inline INT64 XferYearMonthDayToYYYYMMDDHHMMSS(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond) { return ((INT64)lYear) * 10000000000 + (INT64)lMonth * 100000000 + (INT64)lDay * 1000000 + lHour * 10000 + lMinute * 100 + lSecond; }
+inline INT64 XferYearMonthDayToYYYYMMDDHHMMSS(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond) { return static_cast<INT64>(lYear) * 10000000000 + static_cast<INT64>(lMonth) * 100000000 + static_cast<INT64>(lDay) * 1000000 + lHour * 10000 + lMinute * 100 + lSecond; }
 inline long XferToYYYYMMDD(const chrono::year_month_day& ymd) { return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day()); }
 long XferToYYYYMMDD(const string& sDate);
 long TimeSpawn(long lLatelyDate, long lEarlyDate);

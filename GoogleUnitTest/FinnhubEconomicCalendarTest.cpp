@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestProcessWebData) {
-		// todo 由MockWorldMarketTest负责测试
+		// 由MockWorldMarketTest负责测试
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestUpdateDataSourceStatus1) {

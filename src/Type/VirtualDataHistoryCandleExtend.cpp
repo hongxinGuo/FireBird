@@ -204,7 +204,7 @@ bool CVirtualDataHistoryCandleExtend::HaveDayLine(long lDate) {
 	return true;
 }
 
-CVirtualHistoryCandleExtendPtr CVirtualDataHistoryCandleExtend::GetDayLine(long lDate) {
+CVirtualHistoryCandleExtendPtr CVirtualDataHistoryCandleExtend::GetCandle(long lDate) {
 	auto it = std::ranges::find_if(m_vHistoryData.begin(), m_vHistoryData.end(),
 	                               [lDate](const CVirtualHistoryCandleExtendPtr& p) { return (p->GetDate() == lDate); });
 	if (it != m_vHistoryData.end()) {
@@ -236,7 +236,6 @@ void CVirtualDataHistoryCandleExtend::CalculateMA(size_t length) const {
 		lSumMA -= m_vHistoryData.at(i - (length - 1))->GetClose();
 	}
 }
-
 
 bool CVirtualDataHistoryCandleExtend::CalculateRS0() {
 	CalculateRS1(3);

@@ -1634,7 +1634,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pDayLine->GetDate(), ConvertToDate(pStock->GetTransactionTime(), 0));
 		EXPECT_EQ(pDayLine->GetExchange(), pStock->GetExchangeCode());
 		EXPECT_EQ(pDayLine->GetStockSymbol(), pStock->GetSymbol());
-		EXPECT_EQ(pDayLine->GetDisplaySymbol(), pStock->GetDisplaySymbol());
 		EXPECT_EQ(pDayLine->GetLastClose(), pStock->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pStock->GetOpen());
 		EXPECT_EQ(pDayLine->GetHigh(), pStock->GetHigh());
@@ -1726,7 +1725,6 @@ namespace FireBirdTest {
 		pid = make_shared<CDayLine>();
 		pid->SetDate(21900101);
 		pid->SetStockSymbol("600011.SS");
-		pid->SetDisplaySymbol("首创股份");
 		pid->SetLastClose(335345);
 		pid->SetOpen(1000000);
 		pid->SetHigh(434543);
@@ -1953,7 +1951,6 @@ namespace FireBirdTest {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21111201);
 			pid->SetStockSymbol("600016.SS");
-			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2030,7 +2027,6 @@ namespace FireBirdTest {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21121201);
 			pid->SetStockSymbol("600010.SS");
-			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(100000 + i);
 			pid->SetHigh(45234543);
@@ -2096,7 +2092,6 @@ namespace FireBirdTest {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000 + 2);
 			pid->SetStockSymbol("600004.SS");
-			pid->SetDisplaySymbol("白云机场");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2134,7 +2129,6 @@ namespace FireBirdTest {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000);
 			pid->SetStockSymbol("600008.SS");
-			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2172,7 +2166,6 @@ namespace FireBirdTest {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000);
 			pid->SetStockSymbol("600008.SS");
-			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2435,7 +2428,6 @@ namespace FireBirdTest {
 			pid = make_shared<CWeekLine>();
 			pid->SetDate(21100501);
 			pid->SetStockSymbol("600016.SS");
-			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2503,7 +2495,6 @@ namespace FireBirdTest {
 			pid = make_shared<CWeekLine>();
 			pid->SetDate(21101201);
 			pid->SetStockSymbol("600010.SS");
-			pid->SetDisplaySymbol("首创股份");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
