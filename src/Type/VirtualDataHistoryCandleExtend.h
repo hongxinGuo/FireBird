@@ -36,7 +36,7 @@ public:
 
 	void UpdateData(const vector<CVirtualHistoryCandleExtendPtr>& vTempData);
 	void UpdateData(const vector<CDayLinePtr>& vTempData);
-	void UpdateData(CDayLinesPtr vTempDayLine);
+	void UpdateData(const CDayLinesPtr& vTempDayLine);
 
 protected:
 	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const string& strStockSymbol = "") const;

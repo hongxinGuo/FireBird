@@ -2,7 +2,7 @@
 #include "ProductTiingoForexDayLine.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 
 #include"FinnhubStock.h"
 #include"WorldMarket.h"

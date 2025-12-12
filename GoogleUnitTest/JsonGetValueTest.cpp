@@ -3,7 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 
 namespace FireBirdTest {
 	class jsonGetValueTest : public ::testing::Test {

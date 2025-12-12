@@ -21,7 +21,7 @@
 
 #include"SystemMessage.h"
 
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
 #include "ChinaMarket.h"
 
@@ -182,7 +182,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 	long DataSize = pvStringView->size();
 	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
 	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
-	//for (int i = 0; i < gl_concurrency_level; i++) {
+	//for (long i = 0; i < gl_concurrency_level; i++) {
 	for (auto i : std::views::iota(0, gl_concurrency_level)) {
 		auto chunk_begin = i * chunk_size;
 		auto chunk_end = chunk_begin + chunk_size;
@@ -251,7 +251,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 	const long DataSize = pvStringView->size();
 	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
 	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
-	//for (int i = 0; i < gl_concurrency_level; i++) {
+	//for (long i = 0; i < gl_concurrency_level; i++) {
 	for (auto i : std::views::iota(0, gl_concurrency_level)) {
 		auto chunk_begin = i * chunk_size;
 		auto chunk_end = chunk_begin + chunk_size;

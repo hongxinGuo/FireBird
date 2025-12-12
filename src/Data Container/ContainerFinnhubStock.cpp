@@ -245,7 +245,7 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 	// 添加新的基本财务数据
 	if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		ASSERT(setBasicFinancialMetric.IsEOF());
-		for (int i = 0; i < iBasicFinancialNeedUpdate; i++) {
+		for (size_t i = 0; i < iBasicFinancialNeedUpdate; i++) {
 			const auto& pStockNeedAppend = vStock.at(i);
 			if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
 				iCurrentUpdated++;

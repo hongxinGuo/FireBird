@@ -32,9 +32,8 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 }
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
-	USES_CONVERSION;
 	m_strDescription = T2Utf8(setStockSymbol.m_Description);
-	m_strDisplaySymbol = T2Utf8(setStockSymbol.m_DisplaySymbol);
+	m_strDisplaySymbol = W2Utf8(setStockSymbol.m_DisplaySymbol);
 	m_strExchangeCode = T2Utf8(setStockSymbol.m_Exchange);
 	m_strSymbol = T2Utf8(setStockSymbol.m_Symbol);
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
@@ -55,7 +54,8 @@ void CVirtualStock::UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 
 void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_Description = m_strDescription.c_str();
-	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.substr(0, 18).c_str(); //只用前19个字符
+	wstring s = Utf8ToWstring(m_strDisplaySymbol);
+	setStockSymbol.m_DisplaySymbol = Utf8ToWstring(m_strDisplaySymbol).c_str(); //只用前19个字符
 	setStockSymbol.m_Exchange = m_strExchangeCode.c_str();
 	setStockSymbol.m_Symbol = m_strSymbol.c_str();
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;

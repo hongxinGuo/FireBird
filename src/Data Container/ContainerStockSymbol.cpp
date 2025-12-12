@@ -62,7 +62,7 @@ void CContainerStockSymbol::Reset() {
 bool CContainerStockSymbol::CreateTotalStockContainer() {
 	CChinaStockPtr pStock = nullptr;
 
-	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
+	for (size_t i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
 		CreateStockSection(m_vCurrentSectionStockCode.at(i));
 	}
 	return true;

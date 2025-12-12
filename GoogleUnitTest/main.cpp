@@ -123,13 +123,13 @@ namespace FireBirdTest {
 			//EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
 			EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateProfileDB());
-			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
+			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
 				pStock->SetUpdateDayLine(true);
 				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
-					if (pStock->GetDayLineEndDate() == 20210430) {
+					if (pStock->GetDayLineEndDate() == 20251212) {
 						EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
 						pStock->SetUpdateProfileDB(false);
 					}
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 			}
 			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB());
 
-			for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+			for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 				auto pStock = gl_dataContainerTiingoStock.GetStock(i);
 				pStock->SetUpdateProfileDB(false);
 				pStock->SetUpdateDayLineDB(false);
@@ -178,7 +178,7 @@ namespace FireBirdTest {
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
-			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
+			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
 				EXPECT_TRUE(pStock->IsUpdateDayLine()) << pStock->GetSymbol();
 			}
@@ -189,7 +189,7 @@ namespace FireBirdTest {
 				delete CMFCVisualManager::GetInstance(); // 在生成gl_pMockMainFrame时，会生成一个视觉管理器。故而在此删除之。
 			}
 
-			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
+			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
 				pStock->SetUpdateProfileDB(false);	// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。

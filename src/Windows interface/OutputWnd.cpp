@@ -235,7 +235,7 @@ COutputList::COutputList() {
 }
 
 void COutputList::TruncateList(long lNumberOfTruncation) {
-	for (int i = 0; i < lNumberOfTruncation; i++) {
+	for (long i = 0; i < lNumberOfTruncation; i++) {
 		DeleteString(0);
 	}
 }

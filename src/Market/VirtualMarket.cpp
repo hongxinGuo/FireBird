@@ -47,14 +47,14 @@ void CVirtualMarket::ScheduleTask() {
 
 	auto immediateTaskSize = m_marketImmediateTask.Size();
 	vector<int> vTaskType;
-	for (int i = 0; i < immediateTaskSize; i++) {
+	for (size_t i = 0; i < immediateTaskSize; i++) {
 		auto pTask = m_marketImmediateTask.GetTask();
 		vTaskType.push_back(ProcessCurrentImmediateTask(lCurrentMarketTime));// 执行所有即时任务
 	}
 	ASSERT(vTaskType.size() == immediateTaskSize);
 #ifdef _TRACE_SCHEDULE_TASK___
 	if (immediateTaskSize > 0) {
-		for (int i = 0; i < immediateTaskSize; i++) {
+		for (size_t i = 0; i < immediateTaskSize; i++) {
 			gl_traceLogger->trace("{}", gl_mapMarketMapIndex.at(vTaskType.at(i)));
 		}
 		gl_traceLogger->trace("{}ms", (end - start).count());

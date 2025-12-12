@@ -231,7 +231,7 @@
     <ClInclude Include="..\src\accessory\InfoReport.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\JsonGetValue.h">
+    <ClInclude Include="..\src\accessory\nlohmannJsonGetValue.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\src\accessory\JsonParse.h">
@@ -932,7 +932,7 @@
     <ClCompile Include="..\src\accessory\InfoReport.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\accessory\JsonGetValue.cpp">
+    <ClCompile Include="..\src\accessory\nlohmannJsonGetValue.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\JsonParse.cpp">
@@ -1517,8 +1517,5 @@
     <ClCompile Include="..\src\System\Initialization.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\src\Stock\.editorconfig" />
   </ItemGroup>
 </Project>

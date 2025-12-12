@@ -106,7 +106,7 @@ void CTiingoInaccessibleStock::UpdateJson() {
 		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集
 			auto jsonStock = json{ { "Function", val->GetFunctionString() } };
-			for (int i = 0; i < val->SymbolSize(); i++) {
+			for (size_t i = 0; i < val->SymbolSize(); i++) {
 				auto s = val->GetSymbol(i);
 				jsonStock["Stock"].push_back(s);
 			}

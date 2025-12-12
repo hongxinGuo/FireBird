@@ -335,7 +335,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::TaskFixDayLine() {
-	for (int i = 0; i < m_vStock.size(); i++) {
+	for (size_t i = 0; i < m_vStock.size(); i++) {
 		auto pStock = GetStock(i);
 
 		CSetTiingoStockDayLine setDayLineBasic;
@@ -439,7 +439,7 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	result2.get();
 	result3.get();
 
-	for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+	for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(i);
 		pStock->SetUpdate52WeekHighLowDB(false);
 	}

@@ -9,7 +9,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubEconomicCalendar.h"
 

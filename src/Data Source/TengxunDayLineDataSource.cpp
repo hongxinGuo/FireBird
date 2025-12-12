@@ -15,6 +15,7 @@
 #include"ProductTengxunDayLine.h"
 
 #include"ChinaMarket.h"
+#include "spdlog_assert.h"
 #include "TimeConvert.h"
 #include "WebData.h"
 
@@ -55,13 +56,13 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 }
 
 bool CTengxunDayLineDataSource::Inquire() {
+	SPDLOG_ASSERT(!HaveInquiry());
 	const auto lStockSetSize = gl_dataContainerChinaStock.Size();
 
-	if (!IsInquiring() && IsUpdateDayLine()) {
-		ASSERT(!HaveInquiry());
+	if (IsUpdateDayLine()) {
 		CChinaStockPtr pStock;
 		bool fFound = false;
-		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
+		for (size_t lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			pStock = gl_dataContainerChinaStock.GetStock(lCurrentUpdateDayLinePos);
 			if (!pStock->IsUpdateDayLine()) { // 需要更新？
 				continue;
@@ -74,6 +75,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 			break;
 		}
 		if (fFound) {
+			SetInquiring(true);
 			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
 			ASSERT(!vProduct.empty());
 			for (auto& product : vProduct) {
@@ -104,7 +106,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	//long lStartDate = 20100101; // 强迫生成多次申请（测试用）
 	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
-	const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
+	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;
 	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
 	vector<CVirtualWebProductPtr> vProduct;
 	long l = 0;
@@ -130,7 +132,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		l += 7;
 		lStartDate = (year + 7) * 10000 + 101;
 		iCounter++;
-	} while (l < yearDiffer);
+	} while (l <= yearDiffer);
 
 	if (iCounter > 0) {
 		for (auto& p : vProduct) {

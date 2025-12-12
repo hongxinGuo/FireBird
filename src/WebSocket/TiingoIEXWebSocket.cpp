@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 
 #include "TiingoIEXWebSocket.h"
 
@@ -119,13 +119,12 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
-	string strSymbol;
 	CTiingoIEXSocketPtr pIEXData = nullptr;
-	chrono::time_point<chrono::system_clock, chrono::nanoseconds> tpTime;
 	chrono::minutes Minutes;
 	string sString;
 	try {
 		if (json js; CreateJsonWithNlohmann(js, *pData)) {
+			chrono::time_point<chrono::system_clock, chrono::nanoseconds> tpTime;
 			stringstream ss;
 			string sMessageType;
 			string sService;
@@ -153,7 +152,9 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				break;
 			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(js, "data");
-				try { // {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
+				try {
+					string strSymbol;
+					// {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 					js3 = js2.at("tickers");
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
 						strSymbol = jsonGetString(it2);

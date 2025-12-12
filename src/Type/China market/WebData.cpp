@@ -11,8 +11,7 @@ CWebData::CWebData() {
 	m_strErrorMessage = "";
 }
 
-CWebData::~CWebData() {
-}
+CWebData::~CWebData() = default;
 
 bool CWebData::GetData(char* buffer, size_t lDataLength) const {
 	if (lDataLength + m_lCurrentPos > m_sDataBuffer.size()) return false;
@@ -90,7 +89,7 @@ bool CWebData::CreateJson(json& js, long lBeginPos, long lEndPos) const {
 
 void CWebData::Test_SetBuffer_(const string& strBuffer) {
 	m_sDataBuffer.resize(strBuffer.length());
-	for (long i = 0; i < m_sDataBuffer.size(); i++) {
+	for (size_t i = 0; i < m_sDataBuffer.size(); i++) {
 		m_sDataBuffer.at(i) = strBuffer[i];
 	}
 	m_svDataBuffer = string_view(m_sDataBuffer);

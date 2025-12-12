@@ -267,7 +267,7 @@ void CSystemMessage::SetCurrentTiingoFunction(const string& str) {
 void CSystemDeque::Display(COutputList* pOutputList, const string& strTime) {
 	size_t lTotal = Size();
 	if (lTotal > pOutputList->GetLineNumber()) lTotal = pOutputList->GetLineNumber();
-	for (int i = 0; i < lTotal; i++) {
+	for (size_t i = 0; i < lTotal; i++) {
 		string str2 = strTime + ": " + PopMessage();
 		SysCallOutputListAddString(pOutputList, str2);
 	}

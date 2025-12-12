@@ -1507,7 +1507,9 @@ void CChinaMarket::SaveCalculatingRSOption() const {
 }
 
 bool CChinaMarket::Load10DaysRSStrongStockDB() {
-	for (int i = 0; i < 10; i++) { LoadOne10DaysRSStrongStockDB(i); }
+	for (int i = 0; i < 10; i++) {
+		LoadOne10DaysRSStrongStockDB(i);
+	}
 	return true;
 }
 

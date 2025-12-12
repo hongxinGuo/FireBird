@@ -53,7 +53,7 @@ public:
 	void MonitorWebSocket(const vectorString& vSymbol);
 
 	static string CreateMessage(const vectorString& vSymbol);
-	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
+	bool ParseTiingoForexWebSocketData(const shared_ptr<string>& pData);
 };
 
 using CTiingoForexWebSocketPtr = shared_ptr<CTiingoForexWebSocket>;

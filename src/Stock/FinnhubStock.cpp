@@ -278,7 +278,7 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 			setInsiderTransaction.MoveNext();
 		}
 
-		for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
+		for (size_t i = 0; i < m_vInsiderTransaction.size(); i++) {
 			pInsiderTransaction = m_vInsiderTransaction.at(i);
 			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) {
 				pInsiderTransaction->Append(setInsiderTransaction); // 较新的数据直接存储之
@@ -329,7 +329,7 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 			m_lInsiderSentimentStartDate = min(vInsiderSentiment.at(0)->m_lDate, m_lInsiderSentimentStartDate);
 		}
 		setInsiderSentiment.m_pDatabase->BeginTrans();
-		for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
+		for (size_t i = 0; i < m_vInsiderSentiment.size(); i++) {
 			pInsiderSentiment = m_vInsiderSentiment.at(i);
 			if (std::ranges::find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
 			                         [pInsiderSentiment](const CInsiderSentimentPtr& p) {

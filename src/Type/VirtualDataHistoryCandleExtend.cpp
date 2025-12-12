@@ -58,7 +58,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 		if (lSizeOfOldDayLine > 0) {// 有旧数据
 			long lCurrentPos = 0;
-			for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+			for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 				pHistoryCandle = GetData(i);
 				if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0)->GetDate()) {	// 有更早的新数据？
 					pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
@@ -79,7 +79,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 			}
 		}
 		else {// 没有旧数据
-			for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+			for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 				pHistoryCandle = GetData(i);
 				pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 			}
@@ -175,7 +175,7 @@ void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTem
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataHistoryCandleExtend::UpdateData(CDayLinesPtr vTempDayLine) {
+void CVirtualDataHistoryCandleExtend::UpdateData(const CDayLinesPtr& vTempDayLine) {
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
 	for (const auto& pDayLine : *vTempDayLine) {
@@ -226,7 +226,7 @@ void CVirtualDataHistoryCandleExtend::CalculateMA(size_t length) const {
 	if (m_vHistoryData.size() < length) return;
 
 	long lSumMA = 0;
-	for (int i = 0; i < length - 1; i++) {
+	for (size_t i = 0; i < length - 1; i++) {
 		lSumMA += m_vHistoryData.at(i)->GetClose();
 	}
 	for (size_t i = length - 1; i < m_vHistoryData.size(); i++) {
@@ -363,39 +363,57 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSIndex1(INT64 lNumber) {
 }
 
 void CVirtualDataHistoryCandleExtend::GetRS1(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->GetRSIndex(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->GetRSIndex();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRSIndex1(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->GetRSIndex(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->GetRSIndex();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRSLogarithm1(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->GetRSLogarithm(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->GetRSLogarithm();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRS3(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get3RS(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->Get3RS();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRS5(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get5RS(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->Get5RS();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRS10(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get10RS(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->Get10RS();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRS30(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get30RS(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->Get30RS();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRS60(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get60RS(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->Get60RS();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::GetRS120(vector<double>& vRS) const {
-	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get120RS(); }
+	for (size_t i = 0; i < m_vHistoryData.size(); i++) {
+		vRS[i] = m_vHistoryData.at(i)->Get120RS();
+	}
 }
 
 void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {

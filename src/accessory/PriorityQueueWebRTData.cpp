@@ -9,7 +9,7 @@ CPriorityQueueWebRTData::~CPriorityQueueWebRTData() {}
 void CPriorityQueueWebRTData::Reset() {
 	m_MutexAccessData.lock();
 	const size_t lTotal = m_priorityQueueWebRTData.size();
-	for (int i = 0; i < lTotal; i++) {
+	for (size_t i = 0; i < lTotal; i++) {
 		// 清空队列
 		m_priorityQueueWebRTData.pop();
 	}

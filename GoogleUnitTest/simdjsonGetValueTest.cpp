@@ -168,7 +168,7 @@ namespace FireBirdTest {
 					break;
 				case 9:
 					s5 = simdjsonGetStringView(itemValue);
-					EXPECT_EQ(s5, "");
+					EXPECT_EQ(s5, " ");
 					break;
 				case 10:
 					array5 = simdjsonGetArray(itemValue);

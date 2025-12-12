@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubCryptoExchange.h"
 
@@ -21,7 +21,7 @@ string CProductFinnhubCryptoExchange::CreateMessage() {
 
 void CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
-	for (int i = 0; i < pvCryptoExchange->size(); i++) {
+	for (size_t i = 0; i < pvCryptoExchange->size(); i++) {
 		if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(pvCryptoExchange->at(i))) {
 			gl_dataContainerFinnhubCryptoExchange.Add(pvCryptoExchange->at(i));
 		}

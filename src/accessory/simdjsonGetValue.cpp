@@ -12,7 +12,7 @@
 #include "simdjsonGetValue.h"
 
 ondemand::array gl_simdjsonEmptyArray;
-static string s_s{ "" }; // 需要静态数据，保证离开函数后数据仍然有效
+static string s_s{ " " }; // 需要静态数据，保证离开函数后数据仍然有效
 
 void CreateSimdjsonEmptyArray() {
 	static ondemand::parser s_parserEmptyArray;

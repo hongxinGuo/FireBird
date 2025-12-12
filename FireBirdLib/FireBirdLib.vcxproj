@@ -15,7 +15,7 @@
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\src\accessory\ConvertToString.h" />
     <ClInclude Include="..\src\accessory\InfoReport.h" />
-    <ClInclude Include="..\src\accessory\JsonGetValue.h" />
+    <ClInclude Include="..\src\accessory\nlohmannJsonGetValue.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\src\accessory\RSReference.h" />
@@ -250,7 +250,7 @@
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
-    <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
+    <ClCompile Include="..\src\accessory\nlohmannJsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\JsonParse.cpp" />
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
@@ -475,9 +475,6 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />
     <ClCompile Include="..\src\Working thread\ThreadLoadSelectedStockDayLine.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\src\Stock\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">

@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 
 #include "TiingoForexWebSocket.h"
 
@@ -121,9 +121,8 @@ string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 // {"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]}
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pData) {
+bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<string>& pData) {
 	string sSymbol;
-	string strSymbol;
 
 	string sTickers;
 	CTiingoForexSocketPtr pForexData = nullptr;
@@ -146,7 +145,9 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			switch (chType) {
 			case 'I': // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(js, "data");
-				try { // {"data":{"tickers": ["*", "uso", "msft", "tnk"] , "thresholdLevel" : "0"}, "messageType" : "I", "response" : {"code":200, "message" : "Success"}}
+				try {
+					string strSymbol;
+					// {"data":{"tickers": ["*", "uso", "msft", "tnk"] , "thresholdLevel" : "0"}, "messageType" : "I", "response" : {"code":200, "message" : "Success"}}
 					js3 = js2.at("tickers");
 					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
 						strSymbol = jsonGetString(it3);

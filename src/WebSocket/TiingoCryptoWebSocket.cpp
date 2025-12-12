@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
+#include"nlohmannJsonGetValue.h"
 
 #include "TiingoCryptoWebSocket.h"
 
