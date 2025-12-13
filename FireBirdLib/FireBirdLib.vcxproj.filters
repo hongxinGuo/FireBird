@@ -912,14 +912,14 @@
     <ClInclude Include="..\src\System\Initialization.h">
       <Filter>源文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\CharSetTransfer.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h">
       <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CharSetTransfer.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

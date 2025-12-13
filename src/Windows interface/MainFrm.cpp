@@ -942,6 +942,7 @@ void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
+	SysCallCmdUIEnable(pCmdUI, false); // 网易不再提供实时数据服务
 	if (gl_systemConfiguration.IsUsingNeteaseRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1233,6 +1234,7 @@ void CMainFrame::OnUsingNeteaseDayLineDataServer() {
 }
 
 void CMainFrame::OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI) {
+	SysCallCmdUIEnable(pCmdUI, false); // 网易不再提供日线服务
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}

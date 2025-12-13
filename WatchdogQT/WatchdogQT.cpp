@@ -12,7 +12,7 @@
 #include <spdlog/sinks/daily_file_sink.h>
 using namespace std;
 
-#include"../src/accessory/CharSetTransfer.h"
+#include"../src/CharSetTransfer.h"
 
 //#include"resource.h"
 

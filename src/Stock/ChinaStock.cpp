@@ -344,6 +344,7 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 		}
 		if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) {
 			SetDayLineEndDate(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate());
+			auto day = GetDayLineEndDate();
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}

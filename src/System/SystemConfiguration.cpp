@@ -206,7 +206,8 @@ void CSystemConfiguration::Update(json& jsonData) {
 			m_iChinaMarketRealtimeServer = 0;
 		}
 		else if (sTemp == "netease") {
-			m_iChinaMarketRealtimeServer = 1;
+			m_iChinaMarketRealtimeServer = 0; //Note 网易实时数据服务器目前不可用，使用新浪服务器代替
+			m_fUpdateDB = true;
 		}
 		else if (sTemp == "tengxun") {
 			m_iChinaMarketRealtimeServer = 2;
@@ -221,7 +222,8 @@ void CSystemConfiguration::Update(json& jsonData) {
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		if (sTemp == "netease") {
-			m_iChinaMarketDayLineServer = 0;
+			m_iChinaMarketDayLineServer = 1; // Note 网易日线数据服务器目前不可用，使用腾讯服务器代替
+			m_fUpdateDB = true;
 		}
 		else if (sTemp == "tengxun") {
 			m_iChinaMarketDayLineServer = 1;

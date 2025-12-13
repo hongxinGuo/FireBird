@@ -1,11 +1,14 @@
-﻿# FireBird
+# FireBird
 
 ### 当前状态
-发行Version0.31版本。
+发行Version0.32版本。
+
+Version0.32: 源文件和目标系统都使用unicode编码，以utf-8为主，数据库存储时使用utf-16以便于观看。
+						 vcpkg管理concurrencpp、concurrentqueue、、openssl、spdlog、zlib、nlohmann-json。
 
 Version0.31: 修改数据库结构，添加Tiingo数据支持。vcpkg只管理zlib、nlohmann-json和ms-gsl。
 
-Version0.30：修改各Exchange的数据结构。添加simdjson支持。使用vcpkg管理第三方库（concurrentqueue、concurrencpp、openssl、zlib、nlohmann-json、ms-gsl).
+Version0.30：修改各Exchange的数据结构。添加simdjson支持。使用vcpkg管理第三方库（concurrentqueue、concurrencpp、、openssl、zlib、nlohmann-json、ms-gsl).
 
 Version0.29:新增一独立程序WatchDog，用于监测主程序FireBird是否在执行。如果主程序意外中止的话，自动重新启动。
 

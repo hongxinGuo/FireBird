@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\CharSetTransfer.h" />
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\src\accessory\ConvertToString.h" />
     <ClInclude Include="..\src\accessory\InfoReport.h" />
@@ -24,6 +23,7 @@
     <ClInclude Include="..\src\accessory\spdlog_assert.h" />
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
+    <ClInclude Include="..\src\CharSetTransfer.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaStockMonthLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
