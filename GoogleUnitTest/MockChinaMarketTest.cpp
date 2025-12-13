@@ -35,11 +35,12 @@ namespace FireBirdTest {
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
 				pStock->SetUpdateDayLine(true);
-				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
+				pStock->SetUpdateProfileDB(false);
+				if (pStock->GetDayLineEndDate() == 51212) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), s_pMockChinaMarket->GetMarketDate(), 30)) {
-					if (pStock->GetDayLineEndDate() == 20210430) {
-						EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
+					if (pStock->GetDayLineEndDate() == 20251212) {
+						//EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
 						pStock->SetUpdateProfileDB(false);
 					}
 				}

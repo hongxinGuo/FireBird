@@ -12,6 +12,8 @@
 #include <spdlog/sinks/daily_file_sink.h>
 using namespace std;
 
+#include"../src/accessory/CharSetTransfer.h"
+
 //#include"resource.h"
 
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
@@ -127,7 +129,7 @@ void WatchdogQT::Update() {
 }
 
 static bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
-	const HANDLE hMutex = CreateMutex(nullptr, false, reinterpret_cast<LPCWSTR>(strProgramToken.c_str())); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	const HANDLE hMutex = CreateMutex(nullptr, false, Utf8ToWstring(strProgramToken).c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	bool bAlreadyRunning = false;
 	if (hMutex) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {

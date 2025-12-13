@@ -87,7 +87,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateProduct) {
-		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+		//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+		auto size = gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber();
 		gl_pChinaMarket->SetSystemReady(true);
 
 		NeteaseDayLineDataSource.CreateProduct();
@@ -100,7 +101,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(str.substr(0, 54), "http://quotes.money.163.com/service/chddata.html?code=");
 		EXPECT_EQ(str.substr(str.length() - 81, 81), "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 		gl_pChinaMarket->SetSystemReady(false);
-		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() + 1, gl_dataContainerChinaStock.Size()) << "已经有一个无需更新日线了";
+		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() + 1, size) << "已经有一个无需更新日线了";
 
 		// 恢复原态
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {

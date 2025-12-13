@@ -56,10 +56,9 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 }
 
 bool CTengxunDayLineDataSource::Inquire() {
-	SPDLOG_ASSERT(!HaveInquiry());
 	const auto lStockSetSize = gl_dataContainerChinaStock.Size();
 
-	if (IsUpdateDayLine()) {
+	if (!IsInquiring() && IsUpdateDayLine()) {
 		CChinaStockPtr pStock;
 		bool fFound = false;
 		for (size_t lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
@@ -75,9 +74,8 @@ bool CTengxunDayLineDataSource::Inquire() {
 			break;
 		}
 		if (fFound) {
-			SetInquiring(true);
 			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
-			ASSERT(!vProduct.empty());
+			SPDLOG_ASSERT(!vProduct.empty());
 			for (auto& product : vProduct) {
 				StoreInquiry(product);
 			}

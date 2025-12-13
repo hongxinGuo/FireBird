@@ -53,13 +53,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestSetDownLoadingStockCode) {
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare("") ==0);
+		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().empty());
 		TengxunDayLineDataSource.SetDownLoadingStockCode("000001.SS");
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare( "000001.SS") == 0);
+		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000001.SS");
 		TengxunDayLineDataSource.SetDownLoadingStockCode("0600001");
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare( "0600001") == 0);
+		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "0600001");
 		TengxunDayLineDataSource.SetDownLoadingStockCode("2600001");
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare( "2600001") == 0);
+		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "2600001");
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine1) {
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << GetUTCTime();
 		EXPECT_GT(TengxunDayLineDataSource.InquiryQueueSize(), 0);
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare( "000001.SS") == 0);
+		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000001.SS");
 		TengxunDayLineDataSource.SetInquiring(false);
 		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());

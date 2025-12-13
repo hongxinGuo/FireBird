@@ -64,7 +64,7 @@ CFireBirdApp::CFireBirdApp() {
 CFireBirdApp theApp;
 
 bool IsFireBirdAlreadyRunning(const string& sProgramToken) {
-	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, reinterpret_cast<LPCWSTR>(sProgramToken.c_str())); // 采用创建系统命名互斥对象的方式来实现只运行单一实例。在MainFrame的析构函数中关闭。
+	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, Utf8ToWstring(sProgramToken).c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例。在MainFrame的析构函数中关闭。
 	bool bAlreadyRunning = false;
 	if (gl_hFireBirdMutex != nullptr) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
