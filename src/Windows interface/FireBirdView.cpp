@@ -106,6 +106,7 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_WM_SETFOCUS()
 	ON_COMMAND(ID_SHOW_MONTH_LINE, &CFireBirdView::OnShowMonthLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_MONTH_LINE, &CFireBirdView::OnUpdateShowMonthLine)
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 // CFireBirdView 构造/析构
@@ -176,7 +177,7 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		pairHighLow = GetDocument()->GetDayLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
 		m_lDayLineHigh = pairHighLow.first;
 		m_lDayLineLow = pairHighLow.second;
-		GetDocument()->ShowDayLine(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
+		GetDocument()->ShowDayLine(pDC, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 		GetDocument()->ShowDayLine5MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 		GetDocument()->ShowDayLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 		GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
@@ -188,7 +189,7 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		pairHighLow = GetDocument()->GetWeekLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
 		m_lWeekLineHigh = pairHighLow.first;
 		m_lWeekLineLow = pairHighLow.second;
-		GetDocument()->ShowWeekLine(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
+		GetDocument()->ShowWeekLine(pDC, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		GetDocument()->ShowWeekLine5MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		GetDocument()->ShowWeekLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		GetDocument()->ShowWeekLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
@@ -199,7 +200,7 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		pairHighLow = GetDocument()->GetMonthLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
 		m_lMonthLineHigh = pairHighLow.first;
 		m_lMonthLineLow = pairHighLow.second;
-		GetDocument()->ShowMonthLine(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
+		GetDocument()->ShowMonthLine(pDC, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		GetDocument()->ShowMonthLine5MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		GetDocument()->ShowMonthLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		GetDocument()->ShowMonthLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
@@ -605,4 +606,21 @@ void CFireBirdView::OnShowMonthLine() {
 void CFireBirdView::OnUpdateShowMonthLine(CCmdUI* pCmdUI) {
 	if (m_iCurrentShowType == SHOW_MONTH_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
+	// TODO: Add your message handler code here and/or call default
+
+	if (zDelta < 0) { // 向下滚动，缩小K线图
+		if (m_iCandleWidth > 3) {
+			m_iCandleWidth -= 1;
+		}
+	}
+	else { // 向上滚动，放大K线图
+		if (m_iCandleWidth < 40) {
+			m_iCandleWidth += 1;
+		}
+	}
+
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }

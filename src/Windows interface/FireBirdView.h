@@ -154,6 +154,7 @@ public:
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnShowMonthLine();
 	afx_msg void OnUpdateShowMonthLine(CCmdUI* pCmdUI);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

@@ -32,8 +32,8 @@ public:
 	std::pair<long, long> GetWeekLineHighLow(int iCandleNumber) const;
 	std::pair<long, long> GetMonthLineHighLow(int iCandleNumber) const;
 
-	void ShowDayLine(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
-		m_pCurrentStock->DayLine()->ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	void ShowDayLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
+		m_pCurrentStock->DayLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 
 	void ShowDayLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -55,8 +55,8 @@ public:
 		m_dayLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
-	void ShowWeekLine(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
-		m_pCurrentStock->WeekLine()->ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	void ShowWeekLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
+		m_pCurrentStock->WeekLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 
 	void ShowWeekLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -78,8 +78,8 @@ public:
 		m_weekLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
-	void ShowMonthLine(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
-		m_pCurrentStock->MonthLine()->ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	void ShowMonthLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
+		m_pCurrentStock->MonthLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 
 	void ShowMonthLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -169,15 +169,13 @@ public:
 		m_monthLineKDJ.ToShow(pDC, rectDraw, iStepWidth);
 	}
 
-
-
 	// 重写
 public:
 	BOOL OnNewDocument() override;
 	void Serialize(CArchive& ar) override;
 #ifdef SHARED_HANDayLineERS
-  virtual void InitializeSearchContent();
-  virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
+	virtual void InitializeSearchContent();
+	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
 #endif // SHARED_HANDayLineERS
 
 	// 实现
@@ -220,7 +218,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 #ifdef SHARED_HANDayLineERS
-  // 用于为搜索处理程序设置搜索内容的 Helper 函数
-  void SetSearchContent(const CString& value);
+	// 用于为搜索处理程序设置搜索内容的 Helper 函数
+	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDayLineERS
 };

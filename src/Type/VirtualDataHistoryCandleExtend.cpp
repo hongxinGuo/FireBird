@@ -416,22 +416,56 @@ void CVirtualDataHistoryCandleExtend::GetRS120(vector<double>& vRS) const {
 	}
 }
 
-void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+	LOGBRUSH logBrushWhite, logBrushRed;
+	logBrushWhite.lbStyle = BS_SOLID;
+	logBrushWhite.lbColor = RGB(255, 255, 255);
+	//logBrushWhite.lbHatch = 0;
+	logBrushRed.lbStyle = BS_SOLID;
+	logBrushRed.lbColor = RGB(255, 0, 0);
+	logBrushRed.lbHatch = 0;
+	constexpr COLORREF crWhite(RGB(255, 255, 255)), crRed(RGB(255, 0, 0));
+	CPen penWhite1(PS_SOLID, 1, crWhite), penWhiteN(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_FLAT, iStepWidth, &logBrushWhite), penRed1(PS_SOLID, 1, crRed);
+	CPen penRedN(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_FLAT, iStepWidth, &logBrushRed);
+
 	auto it = m_vHistoryData.end();
 	--it;
 	size_t i = 0;
-	auto pOldPen = pDC->SelectObject(&pNewPen);
+	auto pOldPen = pDC->SelectObject(&penWhite1);
 	for (; it != m_vHistoryData.begin(); --it) {
 		const long x = rectClient.right - 2 - i * iStepWidth;
-		int y = (1 - static_cast<double>((*it)->GetHigh() - lLow) / (lHigh - lLow)) * rectClient.Height();
-		pDC->MoveTo(x, y);
-		if ((*it)->GetHigh() == (*it)->GetLow()) {
-			y = y - 1;
+		int y1 = (1 - static_cast<double>((*it)->GetClose() - lLow) / (lHigh - lLow)) * rectClient.Height();
+		int yHigh = (1 - static_cast<double>((*it)->GetHigh() - lLow) / (lHigh - lLow)) * rectClient.Height();
+		int yLow = (1 - static_cast<double>((*it)->GetLow() - lLow) / (lHigh - lLow)) * rectClient.Height();
+		int y2 = (1 - static_cast<double>((*it)->GetOpen() - lLow) / (lHigh - lLow)) * rectClient.Height();
+		int y3 = (1 - static_cast<double>((*it)->GetClose() - lLow) / (lHigh - lLow)) * rectClient.Height();
+		pDC->MoveTo(x, yHigh);
+
+		if ((*it)->GetClose() == (*it)->GetOpen()) {
+			pDC->SelectObject(penRed1);
+			pDC->LineTo(x, y3);
+			pDC->SelectObject(penRedN);
+			pDC->LineTo(x, y3 + 1);
+			pDC->SelectObject(penRed1);
+			pDC->LineTo(x, yLow);
+		}
+		else if ((*it)->GetClose() > (*it)->GetOpen()) {
+			pDC->SelectObject(penRed1);
+			pDC->LineTo(x, y3);
+			pDC->SelectObject(penRedN);
+			pDC->LineTo(x, y2);
+			pDC->SelectObject(penRed1);
+			pDC->LineTo(x, yLow);
 		}
 		else {
-			y = (1 - static_cast<double>((*it)->GetLow() - lLow) / (lHigh - lLow)) * rectClient.Height();
+			pDC->SelectObject(penWhite1);
+			pDC->LineTo(x, y2);
+			pDC->SelectObject(penWhiteN);
+			pDC->LineTo(x, y3);
+			pDC->SelectObject(penWhite1);
+			pDC->LineTo(x, yLow);
 		}
-		pDC->LineTo(x, y);
+
 		i++;
 		if (i >= m_vHistoryData.size()) break;
 		if (rectClient.right <= iStepWidth * i) break; // 画到窗口左边框为止

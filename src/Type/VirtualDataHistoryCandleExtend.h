@@ -88,7 +88,7 @@ public:
 
 	// 显示此容器
 	std::pair<long, long> GetHighLow(int iCandleNumber);
-	void ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow);
+	void ToShow(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow);
 
 	void ShowRS3(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
 	void ShowRS5(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
