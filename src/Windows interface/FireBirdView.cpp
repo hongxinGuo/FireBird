@@ -22,7 +22,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void ShowRealtimeVolume(CDC* pDC, const vector<INT64>& vVolume, const vector<INT64>& vData, int iRightPos, CRect rectClient, bool fUpsideDown) {
+void ShowRealtimeVolume(CDC* pDC, const vector<LONG>& vVolume, const vector<LONG>& vData, int iRightPos, CRect rectClient, bool fUpsideDown) {
 	ASSERT(vData.size() == 240);
 
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
@@ -36,7 +36,7 @@ void ShowRealtimeVolume(CDC* pDC, const vector<INT64>& vVolume, const vector<INT
 	else { // buy volume
 		pDC->SelectObject(&penRed1);
 	}
-	INT64 height;
+	LONG height;
 	if (vVolume.at(0) > 0) {
 		height = vData.at(0) * rectClient.Height() / vVolume.at(0);
 		if (fUpsideDown) {
@@ -107,6 +107,12 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_COMMAND(ID_SHOW_MONTH_LINE, &CFireBirdView::OnShowMonthLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_MONTH_LINE, &CFireBirdView::OnUpdateShowMonthLine)
 	ON_WM_MOUSEWHEEL()
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
+	ON_COMMAND(ID_SHOW_INDACATOR_RS, &CFireBirdView::OnShowIndicatorRs)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_INDACATOR_RS, &CFireBirdView::OnUpdateShowIndicatorRs)
+	ON_COMMAND(ID_SHOW_INDICATOR_KDJ, &CFireBirdView::OnShowIndicatorKdj)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_KDJ, &CFireBirdView::OnUpdateShowIndicatorKdj)
 END_MESSAGE_MAP()
 
 // CFireBirdView 构造/析构
@@ -166,11 +172,15 @@ CFireBirdView::CFireBirdView() {
 	m_fCreateMemoryDC = false;
 }
 
-void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
+void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
 	                   crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
 	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
 	CPen penYellow(PS_SOLID, 1, crYellow);
+	CPen penWhiteDash(PS_DOT, 1, crWhite);
+
+	//Show8020Line(pDC, m_rectIndicator);
+
 	std::pair<long, long> pairHighLow;
 	switch (m_iCurrentShowType) {
 	case SHOW_DAY_LINE_DATA_:
@@ -183,7 +193,6 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 		GetDocument()->ShowDayLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 
-		GetDocument()->ShowDayLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
 	case SHOW_WEEK_LINE_DATA_:
 		pairHighLow = GetDocument()->GetWeekLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
@@ -194,7 +203,6 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		GetDocument()->ShowWeekLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		GetDocument()->ShowWeekLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		GetDocument()->ShowWeekLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
-		GetDocument()->ShowWeekLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
 	case SHOW_MONTH_LINE_DATA_:
 		pairHighLow = GetDocument()->GetMonthLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
@@ -205,14 +213,69 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 		GetDocument()->ShowMonthLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		GetDocument()->ShowMonthLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		GetDocument()->ShowMonthLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
-		GetDocument()->ShowMonthLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	default:
+		break;
+	}
+
+	// 显示鼠标位置的价格线
+	if (m_rectCandle.PtInRect(m_ptMouse)) {
+		double value = 0;
+		switch (m_iCurrentShowType) {
+		case SHOW_DAY_LINE_DATA_:
+			value = static_cast<double>(m_rectCandle.Height() - (m_ptMouse.y - m_rectCandle.top)) * (m_lDayLineHigh - m_lDayLineLow) / m_rectCandle.Height() + m_lDayLineLow;
+			break;
+		case SHOW_WEEK_LINE_DATA_:
+			value = static_cast<double>(m_rectCandle.Height() - (m_ptMouse.y - m_rectCandle.top)) * (m_lWeekLineHigh - m_lWeekLineLow) / m_rectCandle.Height() + m_lWeekLineLow;
+			break;
+		case SHOW_MONTH_LINE_DATA_:
+			value = static_cast<double>(m_rectCandle.Height() - (m_ptMouse.y - m_rectCandle.top)) * (m_lMonthLineHigh - m_lMonthLineLow) / m_rectCandle.Height() + m_lMonthLineLow;
+			break;
+		default:
+			ASSERT(0);
+			break;
+		}
+		value /= GetDocument()->GetCurrentStock()->GetRatio();
+		string strValue = fmt::format("{:.2f}", value);
+		CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
+
+		pDC->MoveTo(0, m_ptMouse.y);
+		auto oldTextColor = pDC->SetTextColor(RGB(255, 255, 255));
+		wstring wstr = Utf8ToWstring(strValue); //Note: Windows GDI TextOutW 使用宽字符
+		pDC->TextOutW(0, m_ptMouse.y, wstr.c_str(), static_cast<int>(wstr.size()));
+		pDC->SetTextColor(oldTextColor);
+		pDC->LineTo(m_rectCandle.right, m_ptMouse.y);
+
+		// 当鼠标左键按下时，显示鼠标位置的时间线
+		if (m_bMouseLButtonUp) {
+			pDC->MoveTo(m_ptLButtonUp.x, 0);
+			pDC->LineTo(m_ptLButtonUp.x, m_rectClient.bottom);
+		}
+
+		pDC->SelectObject(pOldPen);
+	}
+}
+
+void CFireBirdView::ShowIndicator(CDC* pDC, CRect rectDrawArea) {
+	switch (m_iShowIndicator) {
+	case SHOW_INDICATOR_RS_:
+		ShowIndicatorRS(pDC, rectDrawArea);
+		break;
+	case SHOW_INDICATOR_KDJ_:
+		ShowIndicatorKDJ(pDC, rectDrawArea);
+		break;
+	case SHOW_INDICATOR_MACD_:
+		break;
+	case SHOW_INDICATOR_BOLL_:
 		break;
 	default:
 		break;
 	}
 }
 
-void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
+void CFireBirdView::ShowIndicatorRS(CDC* pDC, CRect rectDrawArea) {
+	if (GetDocument()->GetCurrentStock() == nullptr) return;
+
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
 	constexpr COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
 	CPen penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penWhite3(PS_SOLID, 3, crWhite);
@@ -220,15 +283,11 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	CPen penGreen1(PS_SOLID, 1, crGreen), penGreen2(PS_SOLID, 2, crGreen), penGreen3(PS_SOLID, 3, crGreen);
 	CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
 	CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
-	auto pCurrentStock = gl_pCurrentStock;
 
-	if (pCurrentStock == nullptr) return;
 	CPen* pPen = pDC->SelectObject(&penRed1);
-	SysCallMoveTo(pDC, m_rectClient.right, m_rectClient.bottom * 3 / 4);
-	SysCallLineTo(pDC, 0, m_rectClient.bottom * 3 / 4);
+	SysCallMoveTo(pDC, rectDrawArea.right, rectDrawArea.bottom - rectDrawArea.Height() / 2);
+	SysCallLineTo(pDC, 0, rectDrawArea.bottom - rectDrawArea.Height() / 2);
 
-	//当前被操作的历史数据容器
-	//CVirtualDataHistoryCandleExtend* pHistoryData;
 	switch (m_iCurrentShowType) {
 	case SHOW_DAY_LINE_DATA_:
 		if (IsChinaStock(GetCurrentStock())) {
@@ -237,13 +296,13 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 				pDC->SelectObject(&penWhite1);
 				switch (m_iShowRSOption) {
 				case 0: // 显示相对指数的强度
-					GetCurrentStock()->ShowDayLineRSIndex(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					GetCurrentStock()->ShowDayLineRSIndex(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 1);
 					break;
 				case 1:
-					GetCurrentStock()->ShowDayLineRS1(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					GetCurrentStock()->ShowDayLineRS1(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 1);
 					break;
 				case 2:
-					GetCurrentStock()->ShowDayLineRSLogarithm(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					GetCurrentStock()->ShowDayLineRSLogarithm(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 1);
 					break;
 				default:
 					// 错误
@@ -253,27 +312,27 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 
 			// 画相对强度3日均线
 			if (m_fShow3DaysRS) {
-				GetCurrentStock()->ShowDayLineRS3(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 1.5);
+				GetCurrentStock()->ShowDayLineRS3(pDC, &penYellow1, m_rectIndicator, m_iCandleWidth, 1.5);
 			}
 			// 画相对强度5日均线
 			if (m_fShow5DaysRS) {
-				GetCurrentStock()->ShowDayLineRS5(pDC, &penGreen1, m_rectRS, m_iCandleWidth, 1.5);
+				GetCurrentStock()->ShowDayLineRS5(pDC, &penGreen1, m_rectIndicator, m_iCandleWidth, 1.5);
 			}
 			// 画相对强度10日均线
 			if (m_fShow10DaysRS) {
-				GetCurrentStock()->ShowDayLineRS10(pDC, &penRed1, m_rectRS, m_iCandleWidth, 3);
+				GetCurrentStock()->ShowDayLineRS10(pDC, &penRed1, m_rectIndicator, m_iCandleWidth, 3);
 			}
 			// 画相对强度30日均线
 			if (m_fShow30DaysRS) {
-				GetCurrentStock()->ShowDayLineRS30(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 3);
+				GetCurrentStock()->ShowDayLineRS30(pDC, &penYellow1, m_rectIndicator, m_iCandleWidth, 3);
 			}
 			// 画相对强度60日均线
 			if (m_fShow60DaysRS) {
-				GetCurrentStock()->ShowDayLineRS60(pDC, &penBlue1, m_rectRS, m_iCandleWidth, 6);
+				GetCurrentStock()->ShowDayLineRS60(pDC, &penBlue1, m_rectIndicator, m_iCandleWidth, 6);
 			}
 			// 画相对强度120日均线
 			if (m_fShow120DaysRS) {
-				GetCurrentStock()->ShowDayLineRS120(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 6);
+				GetCurrentStock()->ShowDayLineRS120(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 6);
 			}
 		}
 		break;
@@ -284,11 +343,45 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	default:
 		break;
 	}
+}
 
-	////////////////////////////////////////////////////////////////画日线蜡烛线
-	ShowHistoryData(pDC, m_rectCandle);
+void CFireBirdView::ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea) {
+	if (GetDocument()->GetCurrentStock() == nullptr) return;
 
-	pDC->SelectObject(pPen);
+	Show8020Line(pDC, rectDrawArea);
+	switch (m_iCurrentShowType) {
+	case SHOW_DAY_LINE_DATA_:
+		GetDocument()->ShowDayLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	case SHOW_WEEK_LINE_DATA_:
+		GetDocument()->ShowWeekLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	case SHOW_MONTH_LINE_DATA_:
+		GetDocument()->ShowMonthLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	default:
+		break;
+	}
+}
+
+void CFireBirdView::Show8020Line(CDC* pDC, CRect rectDrawArea) {
+	constexpr COLORREF crWhite(RGB(255, 255, 255));
+	CPen penWhiteDash(PS_DOT, 1, crWhite);
+	CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
+	int y20 = rectDrawArea.top + rectDrawArea.Height() * 8 / 10;
+	int y80 = rectDrawArea.top + rectDrawArea.Height() * 2 / 10;
+	pDC->MoveTo(rectDrawArea.left, y20);
+	pDC->LineTo(rectDrawArea.right, y20);
+	pDC->MoveTo(rectDrawArea.left, y80);
+	pDC->LineTo(rectDrawArea.right, y80);
+	pDC->SelectObject(pOldPen);
+}
+
+void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
+	if (GetDocument()->GetCurrentStock() == nullptr) return;
+
+	ShowCandleData(pDC, m_rectCandle);
+	ShowIndicator(pDC, m_rectIndicator);
 }
 
 BOOL CFireBirdView::PreCreateWindow(CREATESTRUCT& cs) {
@@ -304,9 +397,9 @@ void CFireBirdView::OnDraw(CDC* pDC) {
 	ASSERT_VALID(pDoc);
 	if (!pDoc) return;
 
-	//pDC = GetDC();
+	pDC = GetDC();
 	Show(pDC);
-	//ReleaseDC(pDC);
+	ReleaseDC(pDC);
 }
 
 void CFireBirdView::Show(CDC* pdc) {
@@ -390,9 +483,7 @@ CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 // CFireBirdView 消息处理程序
 void CFireBirdView::OnTimer(UINT_PTR nIDEvent) {
 	CDC* pdc = GetDC();
-
 	Show(pdc);
-
 	ReleaseDC(pdc);
 
 	CView::OnTimer(nIDEvent);
@@ -407,11 +498,6 @@ int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	m_rectCandle.top = m_rectClient.top;
 	m_rectCandle.right = m_rectClient.right;
 	m_rectCandle.bottom = m_rectClient.bottom / 2;
-
-	m_rectRS.left = m_rectClient.left;
-	m_rectRS.top = m_rectClient.bottom / 2 + 1;
-	m_rectRS.right = m_rectClient.right;
-	m_rectRS.bottom = m_rectClient.bottom * 3 / 4;
 
 	m_rectIndicator.left = m_rectClient.left;
 	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
@@ -436,11 +522,6 @@ void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
 	m_rectCandle.top = m_rectClient.top;
 	m_rectCandle.right = m_rectClient.right;
 	m_rectCandle.bottom = m_rectClient.bottom / 2;
-
-	m_rectRS.left = m_rectClient.left;
-	m_rectRS.top = m_rectClient.bottom / 2 + 1;
-	m_rectRS.right = m_rectClient.right;
-	m_rectRS.bottom = m_rectClient.bottom * 3 / 4;
 
 	m_rectIndicator.left = m_rectClient.left;
 	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
@@ -593,7 +674,6 @@ void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
-	// TODO: Add your message handler code here
 	gl_pCurrentStock = GetDocument()->GetCurrentStock(); // 设置当前被选中的股票
 
 	CView::OnSetFocus(pOldWnd);
@@ -609,8 +689,6 @@ void CFireBirdView::OnUpdateShowMonthLine(CCmdUI* pCmdUI) {
 }
 
 BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
-	// TODO: Add your message handler code here and/or call default
-
 	if (zDelta < 0) { // 向下滚动，缩小K线图
 		if (m_iCandleWidth > 3) {
 			m_iCandleWidth -= 1;
@@ -621,6 +699,49 @@ BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
 			m_iCandleWidth += 1;
 		}
 	}
+	//Invalidate();
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
+	m_bMouseLButtonUp = false;
+	m_ptMouse = point;
+
+	if (m_rectCandle.PtInRect(m_ptMouse)) {
+		CRect rectInvalidate{ 0, m_ptMouse.y, m_rectClient.right, m_ptMouse.y + 1 };
+		InvalidateRect(rectInvalidate);
+	}
+	CView::OnMouseMove(nFlags, point);
+}
+
+void CFireBirdView::OnLButtonUp(UINT nFlags, CPoint point) {
+	m_bMouseLButtonUp = true;
+	m_ptLButtonUp = point;
+
+	CView::OnLButtonUp(nFlags, point);
+}
+
+void CFireBirdView::OnShowIndicatorRs() {
+	m_iShowIndicator = SHOW_INDICATOR_RS_;
+}
+
+void CFireBirdView::OnUpdateShowIndicatorRs(CCmdUI* pCmdUI) {
+	auto pStock = GetDocument()->GetCurrentStock();
+
+	if (pStock == nullptr) SysCallCmdUIEnable(pCmdUI, false);
+	else if (!IsChinaStock(pStock)) SysCallCmdUIEnable(pCmdUI, false);
+	else SysCallCmdUIEnable(pCmdUI, true);
+
+	if (m_iShowIndicator == SHOW_INDICATOR_RS_) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowIndicatorKdj() {
+	m_iShowIndicator = SHOW_INDICATOR_KDJ_;
+}
+
+void CFireBirdView::OnUpdateShowIndicatorKdj(CCmdUI* pCmdUI) {
+	if (m_iShowIndicator == SHOW_INDICATOR_KDJ_) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
 }

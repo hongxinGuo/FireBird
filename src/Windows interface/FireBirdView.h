@@ -9,6 +9,15 @@ enum {
 	SHOW_MONTH_LINE_DATA_ = 4,
 };
 
+enum Indicators {
+	SHOW_INDICATOR_NONE_ = 0,
+	SHOW_INDICATOR_KDJ_,
+	SHOW_INDICATOR_MACD_,
+	SHOW_INDICATOR_RSI_,
+	SHOW_INDICATOR_BOLL_,
+	SHOW_INDICATOR_RS_,
+};
+
 class CFireBirdView : public CView {
 protected: // 使用protected关键字，以保证仅从序列化创建
 	DECLARE_DYNCREATE(CFireBirdView)
@@ -21,7 +30,11 @@ public:
 	CFireBirdDoc* GetDocument() const;
 	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
 
-	void ShowHistoryData(CDC* pDC, CRect rectDrawClient);
+	void ShowCandleData(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicator(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicatorRS(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
+	void Show8020Line(CDC* pDC, CRect rectDrawArea);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
 	bool IsShowRS() const noexcept { return m_fShowRS; }
@@ -81,8 +94,12 @@ protected:
 
 	CRect m_rectClient;
 	CRect m_rectCandle;
-	CRect m_rectRS; // 用于显示相对强度的区域，只用于中国市场的股票
 	CRect m_rectIndicator;
+	CPoint m_ptMouse;
+	CPoint m_ptLButtonUp;
+	bool m_bMouseLButtonUp{ false };
+
+	int m_iShowIndicator{ SHOW_INDICATOR_KDJ_ }; // 显示的技术指标
 
 	long m_lDayLineHigh{ 0 };
 	long m_lDayLineLow{ 0 };
@@ -115,8 +132,6 @@ protected:
 	bool m_fShow120DaysRS;
 	int m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
 	vector<double> m_vRSShow;
-
-	CVirtualStockPtr m_pCurrentStock{ nullptr }; // 当前显示的股票
 
 	// 生成的消息映射函数
 protected:
@@ -155,6 +170,12 @@ public:
 	afx_msg void OnShowMonthLine();
 	afx_msg void OnUpdateShowMonthLine(CCmdUI* pCmdUI);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnShowIndicatorRs();
+	afx_msg void OnUpdateShowIndicatorRs(CCmdUI* pCmdUI);
+	afx_msg void OnShowIndicatorKdj();
+	afx_msg void OnUpdateShowIndicatorKdj(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

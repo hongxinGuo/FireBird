@@ -32,7 +32,8 @@ void CIndicatorKDJ::Calculate() {
 			lHigh = max(lHigh, data2->GetHigh());
 			lLow = min(lLow, data2->GetLow());
 		}
-		m_vKDJ[index].m_RSV = (static_cast<double>(data->GetClose() - lLow)) * 100 / (lHigh - lLow);
+		if (lHigh == 0 || lHigh == lLow) m_vKDJ[index].m_RSV = 50.0;
+		else m_vKDJ[index].m_RSV = (static_cast<double>(data->GetClose() - lLow)) * 100 / (lHigh - lLow);
 		m_vKDJ[index].m_K = (m_vKDJ[index - 1].m_K * 2 + m_vKDJ[index].m_RSV) / 3;
 		m_vKDJ[index].m_D = (m_vKDJ[index - 1].m_D * 2 + m_vKDJ[index].m_K) / 3;
 		m_vKDJ[index].m_J = m_vKDJ[index].m_K * 3 - m_vKDJ[index].m_D * 2;
@@ -45,13 +46,15 @@ void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	CPen penPurple(PS_SOLID, 1, crPurple), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
 	CPen penYellow(PS_SOLID, 1, crYellow);
 
-	auto pOLdPen = pDC->SelectObject(&penRed1);
-	int iLine20 = rectDrawArea.bottom - rectDrawArea.Height() / 5;
-	pDC->MoveTo(rectDrawArea.right - 1, iLine20); // 画20%线
-	pDC->LineTo(rectDrawArea.left, iLine20);
-	int iLine80 = rectDrawArea.bottom - rectDrawArea.Height() * 40 / 5;
-	pDC->MoveTo(rectDrawArea.right - 1, iLine80); // 画20%线
-	pDC->LineTo(rectDrawArea.left, iLine80);
+	CPen penWhiteDash(PS_DOT, 1, crWhite);
+	CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
+	int y20 = rectDrawArea.top + rectDrawArea.Height() * 8 / 10;
+	int y80 = rectDrawArea.top + rectDrawArea.Height() * 2 / 10;
+	pDC->MoveTo(rectDrawArea.left, y20);
+	pDC->LineTo(rectDrawArea.right, y20);
+	pDC->MoveTo(rectDrawArea.left, y80);
+	pDC->LineTo(rectDrawArea.right, y80);
+	//pDC->SelectObject(pOldPen);
 
 	pDC->SelectObject(&penYellow);
 	auto it = m_vKDJ.end();
@@ -92,5 +95,5 @@ void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 		if (rectDrawArea.right <= iStepWidth * i) break; // 画到窗口左边框为止
 	}
 
-	pDC->SelectObject(pOLdPen);
+	pDC->SelectObject(pOldPen);
 }

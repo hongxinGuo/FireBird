@@ -78,7 +78,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 		TengxunDayLineDataSource.SetInquiring(false);
 		TengxunDayLineDataSource.SetUpdateDayLine(true);
-		for (long l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
+		for (size_t l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
 			gl_dataContainerChinaStock.GetStock(l)->SetUpdateDayLine(false);
 		}
 		gl_dataContainerChinaStock.GetStock(0)->SetUpdateDayLine(true);
@@ -95,7 +95,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(TengxunDayLineDataSource.Inquire());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode().compare( "000006.SS") == 0);
+		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000006.SS");
 		TengxunDayLineDataSource.SetInquiring(false);
 		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
@@ -106,7 +106,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		// 恢复原状
-		for (long l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
+		for (size_t l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
 			gl_dataContainerChinaStock.GetStock(l)->SetUpdateDayLine(true);
 		}
 	}
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
 		EXPECT_EQ(vProduct.size(), 1) << "日期间隔小于八年，只有一个申请";
-		const auto pProduct = vProduct.at(0);
+		const auto& pProduct = vProduct.at(0);
 		EXPECT_STREQ(typeid(*pProduct).name(), "class CProductTengxunDayLine");
 		EXPECT_EQ(pProduct->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
 		EXPECT_EQ(pProduct->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2019-12-31,2023-02-01,2000,,") << "起始日期为日线结束日期的前一天";
@@ -139,8 +139,8 @@ namespace FireBirdTest {
 		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
 		EXPECT_EQ(vProduct.size(), 2) << "日期间隔大于八年小于十六年，有两个申请";
-		const auto pProduct1 = vProduct.at(0);
-		const auto pProduct2 = vProduct.at(1);
+		const auto& pProduct1 = vProduct.at(0);
+		const auto& pProduct2 = vProduct.at(1);
 		EXPECT_STREQ(typeid(*pProduct1).name(), "class CProductTengxunDayLine");
 		EXPECT_EQ(pProduct1->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
 		EXPECT_EQ(pProduct1->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2009-12-31,2015-12-31,2000,,") << "起始日期为日线结束日期的前一天";
@@ -164,10 +164,10 @@ namespace FireBirdTest {
 		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
 		EXPECT_EQ(vProduct.size(), 4) << "日期间隔大于十六年，有四个申请";
-		const auto pProduct1 = vProduct.at(0);
-		const auto pProduct2 = vProduct.at(1);
-		const auto pProduct3 = vProduct.at(2);
-		const auto pProduct4 = vProduct.at(3);
+		const auto& pProduct1 = vProduct.at(0);
+		const auto& pProduct2 = vProduct.at(1);
+		const auto& pProduct3 = vProduct.at(2);
+		const auto& pProduct4 = vProduct.at(3);
 		EXPECT_STREQ(typeid(*pProduct1).name(), "class CProductTengxunDayLine");
 		EXPECT_EQ(pProduct1->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 4);
