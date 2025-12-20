@@ -20,6 +20,8 @@ public:
 public:
 	bool IsDataReady() const noexcept { return m_bDataReady; }
 	void SetDataReady(bool bFlag) noexcept { m_bDataReady = bFlag; }
+	bool IsRefreshView() const noexcept { return m_bRefreshView; }
+	void SetRefreshView(bool bFlag) noexcept { m_bRefreshView = bFlag; }
 
 	CVirtualStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
 	void SetCurrentStock(const CVirtualStockPtr& pStock);
@@ -31,6 +33,10 @@ public:
 	std::pair<long, long> GetDayLineHighLow(int iCandleNumber) const;
 	std::pair<long, long> GetWeekLineHighLow(int iCandleNumber) const;
 	std::pair<long, long> GetMonthLineHighLow(int iCandleNumber) const;
+
+	long GetDayLineDate(size_t countDownIndex) const;
+	long GetWeekLineDate(size_t countDownIndex);
+	long GetMonthLineDate(size_t countDownIndex);
 
 	void ShowDayLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
 		m_pCurrentStock->DayLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
@@ -183,6 +189,7 @@ public:
 
 protected:
 	atomic_bool m_bDataReady{ false }; // 各种指标最好使用工作线程来异步计算，计算完成时设置此标识为真；当重新设置股票时设置此标识为假。
+	bool m_bRefreshView{ false }; // 是否需要刷新数据
 	CVirtualStockPtr m_pCurrentStock{ nullptr }; // 当前股票
 
 	//日线移动平均线

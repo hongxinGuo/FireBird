@@ -31,6 +31,7 @@ public:
 	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
 
 	void ShowCandleData(CDC* pDC, CRect rectDrawArea);
+	void ShowCross(CDC* pDC, CPoint ptCurrent);
 	void ShowIndicator(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorRS(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
@@ -92,12 +93,14 @@ protected:
 	CDC m_MemoryDC;
 	CBitmap m_Bitmap;
 
-	CRect m_rectClient;
+	CRect m_rectClient; // 客户区大小
+	CRect m_rectInformation; // 显示股票信息的区域，文字宽度
 	CRect m_rectCandle;
 	CRect m_rectIndicator;
 	CPoint m_ptMouse;
-	CPoint m_ptLButtonUp;
-	bool m_bMouseLButtonUp{ false };
+	CPoint m_ptMouseOld{ -1, -1 };// 记录上一次鼠标位置
+	bool m_bNeedErase{ false };
+	bool m_bDrawAll{ false };
 
 	int m_iShowIndicator{ SHOW_INDICATOR_KDJ_ }; // 显示的技术指标
 
@@ -136,7 +139,6 @@ protected:
 	// 生成的消息映射函数
 protected:
 	afx_msg void OnFilePrintPreview();
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 
@@ -171,7 +173,6 @@ public:
 	afx_msg void OnUpdateShowMonthLine(CCmdUI* pCmdUI);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnShowIndicatorRs();
 	afx_msg void OnUpdateShowIndicatorRs(CCmdUI* pCmdUI);
 	afx_msg void OnShowIndicatorKdj();

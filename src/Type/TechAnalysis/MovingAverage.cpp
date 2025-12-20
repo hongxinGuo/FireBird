@@ -39,13 +39,13 @@ void CMovingAverage::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStep
 	--it;
 	int i = 0;
 	long x = rectClient.right;
-	long y = (1 - static_cast<double>(*it - lLow) / (lHigh - lLow)) * rectClient.Height();
+	long y = rectClient.top + (1 - static_cast<double>(*it - lLow) / (lHigh - lLow)) * rectClient.Height();
 	pDC->MoveTo(x, y);
 	--it;
 	for (; it != m_vMovingAverage.begin(); --it) {
 		x = rectClient.right - i * iStepWidth;
 		auto value = *it;
-		y = (1 - static_cast<double>(value - lLow) / (lHigh - lLow)) * rectClient.Height();
+		y = rectClient.top + (1 - static_cast<double>(value - lLow) / (lHigh - lLow)) * rectClient.Height();
 		pDC->LineTo(x, y);
 		i++;
 		if (i >= Size()) break;

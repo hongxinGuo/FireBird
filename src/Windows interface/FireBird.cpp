@@ -80,8 +80,8 @@ BOOL CFireBirdApp::InitInstance() {
 
 	if (IsFireBirdAlreadyRunning(sFireBirdApp)) {
 		MessageBox(nullptr,
-		           reinterpret_cast<LPCWSTR>("Only one instance can run!"),
-		           reinterpret_cast<LPCWSTR>("FireBird Warning:"),
+		           _T("Only one instance can run!"),
+		           _T("FireBird Warning:"),
 		           MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}

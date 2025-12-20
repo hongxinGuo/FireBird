@@ -1,5 +1,5 @@
 #include"pch.h"
-/* auto-generated on 2025-12-12 17:50:52 -0500. version 4.2.3 Do not edit! */
+/* auto-generated on 2025-12-17 20:32:36 -0500. version 4.2.4 Do not edit! */
 /* including simdjson.cpp:  */
 /* begin file simdjson.cpp */
 #define SIMDJSON_SRC_SIMDJSON_CPP

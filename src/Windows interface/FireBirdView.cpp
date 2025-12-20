@@ -75,7 +75,7 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CFireBirdView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
-	ON_WM_RBUTTONUP()
+	//	ON_WM_RBUTTONUP()
 	ON_WM_TIMER()
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -179,8 +179,6 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 	CPen penYellow(PS_SOLID, 1, crYellow);
 	CPen penWhiteDash(PS_DOT, 1, crWhite);
 
-	//Show8020Line(pDC, m_rectIndicator);
-
 	std::pair<long, long> pairHighLow;
 	switch (m_iCurrentShowType) {
 	case SHOW_DAY_LINE_DATA_:
@@ -220,40 +218,55 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 
 	// 显示鼠标位置的价格线
 	if (m_rectCandle.PtInRect(m_ptMouse)) {
-		double value = 0;
-		switch (m_iCurrentShowType) {
-		case SHOW_DAY_LINE_DATA_:
-			value = static_cast<double>(m_rectCandle.Height() - (m_ptMouse.y - m_rectCandle.top)) * (m_lDayLineHigh - m_lDayLineLow) / m_rectCandle.Height() + m_lDayLineLow;
-			break;
-		case SHOW_WEEK_LINE_DATA_:
-			value = static_cast<double>(m_rectCandle.Height() - (m_ptMouse.y - m_rectCandle.top)) * (m_lWeekLineHigh - m_lWeekLineLow) / m_rectCandle.Height() + m_lWeekLineLow;
-			break;
-		case SHOW_MONTH_LINE_DATA_:
-			value = static_cast<double>(m_rectCandle.Height() - (m_ptMouse.y - m_rectCandle.top)) * (m_lMonthLineHigh - m_lMonthLineLow) / m_rectCandle.Height() + m_lMonthLineLow;
-			break;
-		default:
-			ASSERT(0);
-			break;
-		}
-		value /= GetDocument()->GetCurrentStock()->GetRatio();
-		string strValue = fmt::format("{:.2f}", value);
-		CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
-
-		pDC->MoveTo(0, m_ptMouse.y);
-		auto oldTextColor = pDC->SetTextColor(RGB(255, 255, 255));
-		wstring wstr = Utf8ToWstring(strValue); //Note: Windows GDI TextOutW 使用宽字符
-		pDC->TextOutW(0, m_ptMouse.y, wstr.c_str(), static_cast<int>(wstr.size()));
-		pDC->SetTextColor(oldTextColor);
-		pDC->LineTo(m_rectCandle.right, m_ptMouse.y);
-
-		// 当鼠标左键按下时，显示鼠标位置的时间线
-		if (m_bMouseLButtonUp) {
-			pDC->MoveTo(m_ptLButtonUp.x, 0);
-			pDC->LineTo(m_ptLButtonUp.x, m_rectClient.bottom);
-		}
-
-		pDC->SelectObject(pOldPen);
+		ShowCross(pDC, m_ptMouse);
 	}
+}
+
+void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
+	constexpr COLORREF crWhite(RGB(255, 255, 255));
+	CPen penWhiteDash(PS_SOLID, 1, crWhite);
+
+	// 显示鼠标位置的价格线
+	double value = 0;
+	long date = 19700101;
+	switch (m_iCurrentShowType) {
+	case SHOW_DAY_LINE_DATA_:
+		value = static_cast<double>(m_rectCandle.Height() - (ptCurrent.y - m_rectCandle.top)) * (m_lDayLineHigh - m_lDayLineLow) / m_rectCandle.Height() + m_lDayLineLow;
+		date = GetDocument()->GetDayLineDate((m_rectCandle.Width() + m_iCandleWidth - (ptCurrent.x - m_rectCandle.left)) / m_iCandleWidth);
+		break;
+	case SHOW_WEEK_LINE_DATA_:
+		value = static_cast<double>(m_rectCandle.Height() - (ptCurrent.y - m_rectCandle.top)) * (m_lWeekLineHigh - m_lWeekLineLow) / m_rectCandle.Height() + m_lWeekLineLow;
+		date = GetDocument()->GetWeekLineDate((m_rectCandle.Width() + m_iCandleWidth - (ptCurrent.x - m_rectCandle.left)) / m_iCandleWidth);
+		break;
+	case SHOW_MONTH_LINE_DATA_:
+		value = static_cast<double>(m_rectCandle.Height() - (ptCurrent.y - m_rectCandle.top)) * (m_lMonthLineHigh - m_lMonthLineLow) / m_rectCandle.Height() + m_lMonthLineLow;
+		date = GetDocument()->GetMonthLineDate((m_rectCandle.Width() + m_iCandleWidth - (ptCurrent.x - m_rectCandle.left)) / m_iCandleWidth);
+		break;
+	default:
+		ASSERT(0);
+		break;
+	}
+	auto strDate = fmt::format("{}-{:02}-{:02},        ", date / 10000, (date % 10000) / 100, date % 100);
+	value /= GetDocument()->GetCurrentStock()->GetRatio();
+	string strValue = fmt::format("{:.2f}", value);
+	CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
+	auto oldTextColor = pDC->SetTextColor(RGB(255, 255, 255));
+	pDC->SetBkColor(RGB(0, 0, 0));
+	wstring wstr = Utf8ToWstring(strDate) + Utf8ToWstring(strValue); //Note: Windows GDI TextOutW 使用宽字符
+	pDC->TextOutW(0, 0, wstr.c_str(), static_cast<int>(wstr.size()));
+	pDC->SetTextColor(oldTextColor);
+
+	// 显示十字
+	auto iPrevMode = pDC->SetROP2(R2_NOT);
+	pDC->SelectObject(&penWhiteDash);
+	pDC->MoveTo(0, ptCurrent.y);
+	pDC->LineTo(m_rectCandle.right, ptCurrent.y);
+
+	pDC->MoveTo(ptCurrent.x, 0);
+	pDC->LineTo(ptCurrent.x, m_rectClient.bottom);
+	pDC->SetROP2(iPrevMode);
+
+	pDC->SelectObject(pOldPen);
 }
 
 void CFireBirdView::ShowIndicator(CDC* pDC, CRect rectDrawArea) {
@@ -460,10 +473,10 @@ void CFireBirdView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
 void CFireBirdView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
 }
 
-void CFireBirdView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
+//void CFireBirdView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
+//	ClientToScreen(&point);
+//	OnContextMenu(this, point);
+//}
 
 void CFireBirdView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
 #ifndef SHARED_HANDayLineERS
@@ -482,9 +495,22 @@ CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 
 // CFireBirdView 消息处理程序
 void CFireBirdView::OnTimer(UINT_PTR nIDEvent) {
-	CDC* pdc = GetDC();
-	Show(pdc);
-	ReleaseDC(pdc);
+	bool bDrawAll = false;
+	if (GetDocument()->IsRefreshView() && GetDocument()->IsDataReady()) {
+		GetDocument()->SetRefreshView(false);
+		bDrawAll = true;
+	}
+
+	if (m_bDrawAll) {
+		m_bDrawAll = false;
+		bDrawAll = true;
+	}
+
+	if (bDrawAll) {
+		CDC* pDC = GetDC();
+		Show(pDC);
+		ReleaseDC(pDC);
+	}
 
 	CView::OnTimer(nIDEvent);
 }
@@ -494,17 +520,22 @@ int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	GetClientRect(&m_rectClient);
 
+	m_rectInformation.left = m_rectClient.left;
+	m_rectInformation.top = m_rectClient.top;
+	m_rectInformation.right = m_rectClient.right;
+	m_rectInformation.bottom = 20;
+
 	m_rectCandle.left = m_rectClient.left;
-	m_rectCandle.top = m_rectClient.top;
+	m_rectCandle.top = 21;
 	m_rectCandle.right = m_rectClient.right;
-	m_rectCandle.bottom = m_rectClient.bottom / 2;
+	m_rectCandle.bottom = m_rectClient.bottom * 3 / 4 - 50;
 
 	m_rectIndicator.left = m_rectClient.left;
 	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
 	m_rectIndicator.right = m_rectClient.right;
 	m_rectIndicator.bottom = m_rectClient.bottom;
 
-	m_uIdTimer = SetTimer(3, 500, nullptr); // 500毫秒每次调度，用于显示实时股票数据。
+	m_uIdTimer = SetTimer(3, 200, nullptr); // 200毫秒每次调度，用于显示实时股票数据。
 	if (m_uIdTimer == 0) {
 		string str;
 	}
@@ -518,10 +549,15 @@ void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
 	m_rectClient.right = cx;
 	m_rectClient.bottom = cy;
 
+	m_rectInformation.left = m_rectClient.left;
+	m_rectInformation.top = m_rectClient.top;
+	m_rectInformation.right = m_rectClient.right;
+	m_rectInformation.bottom = 20;
+
 	m_rectCandle.left = m_rectClient.left;
-	m_rectCandle.top = m_rectClient.top;
+	m_rectCandle.top = 21;
 	m_rectCandle.right = m_rectClient.right;
-	m_rectCandle.bottom = m_rectClient.bottom / 2;
+	m_rectCandle.bottom = m_rectClient.bottom * 3 / 4 - 50;
 
 	m_rectIndicator.left = m_rectClient.left;
 	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
@@ -656,6 +692,7 @@ void CFireBirdView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 }
 
 void CFireBirdView::OnShowDayLine() {
+	if (m_iCurrentShowType != SHOW_DAY_LINE_DATA_) m_bDrawAll = true;
 	m_iCurrentShowType = SHOW_DAY_LINE_DATA_;
 }
 
@@ -665,6 +702,7 @@ void CFireBirdView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
 }
 
 void CFireBirdView::OnShowWeekLine() {
+	if (m_iCurrentShowType != SHOW_WEEK_LINE_DATA_) m_bDrawAll = true;
 	m_iCurrentShowType = SHOW_WEEK_LINE_DATA_;
 }
 
@@ -680,6 +718,7 @@ void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
 }
 
 void CFireBirdView::OnShowMonthLine() {
+	if (m_iCurrentShowType != SHOW_MONTH_LINE_DATA_) m_bDrawAll = true;
 	m_iCurrentShowType = SHOW_MONTH_LINE_DATA_;
 }
 
@@ -692,34 +731,46 @@ BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
 	if (zDelta < 0) { // 向下滚动，缩小K线图
 		if (m_iCandleWidth > 3) {
 			m_iCandleWidth -= 1;
+			m_bDrawAll = true;
 		}
 	}
 	else { // 向上滚动，放大K线图
 		if (m_iCandleWidth < 40) {
 			m_iCandleWidth += 1;
+			m_bDrawAll = true;
 		}
 	}
-	//Invalidate();
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
 void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
-	m_bMouseLButtonUp = false;
 	m_ptMouse = point;
+	if (GetDocument()->GetCurrentStock() != nullptr) {
+		CDC* pDC = GetDC();
+		// 擦除旧的十字线
+		if (m_bNeedErase) {
+			ShowCross(pDC, m_ptMouseOld);
+			m_bNeedErase = false;
 
-	if (m_rectCandle.PtInRect(m_ptMouse)) {
-		CRect rectInvalidate{ 0, m_ptMouse.y, m_rectClient.right, m_ptMouse.y + 1 };
-		InvalidateRect(rectInvalidate);
+			TRACE(_T("擦除 %d %d\n"), m_ptMouseOld.x, m_ptMouseOld.y);
+		}
+		// 画新的十字线
+		if (m_rectCandle.PtInRect(point)) {
+			ASSERT(!m_bNeedErase);
+			ShowCross(pDC, point);
+			m_bNeedErase = true;
+			TRACE(_T("添加 %d %d\n"), point.x, point.y);
+			m_ptMouseOld = point;
+		}
+		else {
+			m_ptMouseOld.x = -1;
+			m_ptMouseOld.y = -1;
+		}
+		ReleaseDC(pDC);
 	}
+
 	CView::OnMouseMove(nFlags, point);
-}
-
-void CFireBirdView::OnLButtonUp(UINT nFlags, CPoint point) {
-	m_bMouseLButtonUp = true;
-	m_ptLButtonUp = point;
-
-	CView::OnLButtonUp(nFlags, point);
 }
 
 void CFireBirdView::OnShowIndicatorRs() {

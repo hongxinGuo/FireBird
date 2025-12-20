@@ -859,7 +859,6 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 void CMainFrame::OnCalculate10dayRS1() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
-		TRACE("Calculate 10day RS1\n");
 		gl_systemMessage.SetChinaMarketSavingFunction("Calculate 10day RS1");
 		gl_systemMessage.PushInformationMessage("开始计算10日RS1\n");// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
@@ -867,7 +866,6 @@ void CMainFrame::OnCalculate10dayRS1() {
 			gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(gl_pChinaMarket->GetMarketDate());
 			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		}
-		TRACE("Calculated 10day RS1\n");
 		gl_UpdateChinaMarketDB.release();
 	});
 	gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
@@ -876,7 +874,6 @@ void CMainFrame::OnCalculate10dayRS1() {
 void CMainFrame::OnCalculate10dayRS2() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
-		TRACE("calculate10dayRS2\n");
 		gl_systemMessage.SetChinaMarketSavingFunction("Calculate 10day RS2");
 		gl_systemMessage.PushInformationMessage("开始计算10日RS2\n");// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
@@ -884,7 +881,6 @@ void CMainFrame::OnCalculate10dayRS2() {
 			gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(gl_pChinaMarket->GetMarketDate());
 			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		}
-		TRACE("calculated 10dayRS2\n");
 		gl_UpdateChinaMarketDB.release();
 	});
 	gl_pChinaMarket->SetChosen10RSStrong2StockSet(true);
@@ -1024,10 +1020,8 @@ void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
-		TRACE("build current weekLine\n");
 		gl_systemMessage.SetChinaMarketSavingFunction("build current weekLine");
 		gl_pChinaMarket->BuildWeekLineOfCurrentWeek();
-		TRACE("build current weekLine finished\n");
 		gl_UpdateChinaMarketDB.release();
 	});
 }
@@ -1074,10 +1068,8 @@ void CMainFrame::OnUpdateStockSection() {
 void CMainFrame::OnUpdateStockCode() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
-		TRACE("update stock code\n");
 		gl_systemMessage.SetChinaMarketSavingFunction("update stock code");
 		gl_dataContainerChinaStock.UpdateStockProfileDB();
-		TRACE("updated stock code\n");
 		gl_UpdateChinaMarketDB.release();
 	});
 }
@@ -1097,10 +1089,8 @@ void CMainFrame::OnRebuildDayLine() {
 void CMainFrame::OnUpdateFinnhubStockDayLineStartEnd() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
-		TRACE("Finnhub stock dayLine start end date\n");
 		gl_systemMessage.SetWorldMarketSavingFunction("F stock dayLine");
 		gl_pWorldMarket->UpdateStockDayLineStartEndDate();
-		TRACE("Finnhub stock dayLine start end date updated\n");
 		gl_UpdateWorldMarketDB.release();
 	});
 }
@@ -1278,11 +1268,9 @@ void CMainFrame::OnResetTiingoDayLineDate() {
 void CMainFrame::OnCreateTiingoTradeDayDayLine() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
-		TRACE("Tiingo create stock dayLine\n");
 		gl_systemMessage.SetWorldMarketSavingFunction("T create dayLine");
 
 		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-		TRACE("Tiingo create stock dayLine ended\n");
 		gl_UpdateWorldMarketDB.release();
 	});
 }
@@ -1317,14 +1305,12 @@ void CMainFrame::OnInquireIexTopOfBook() {
 }
 
 void CMainFrame::OnTiingoFixDayLine() {
-	// TODO: Add your command handler code here
 	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskFixDayLine();
 	});
 }
 
 void CMainFrame::OnCalculateNasdaq100200maUpdownRate() {
-	// TODO: Add your command handler code here
 	gl_pWorldMarket->TaskCalculateNasdaq100MA200UpDownRate(gl_pWorldMarket->GetMarketTime());
 }
 
