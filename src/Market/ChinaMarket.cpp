@@ -435,7 +435,8 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	const string strSymbol = pRTData->GetSymbol();
 	if (IsCheckingActiveStock()) {
-		if (!gl_dataContainerChinaStock.IsSymbol(strSymbol) && pRTData->IsActive()) {
+		if (!gl_dataContainerChinaStock.IsSymbol(strSymbol) && pRTData->HaveName()) {
+			//Note： 有股票代码和名称，则该股票已经上市了，现状（退市等）不明。
 			ASSERT(strSymbol.length() == 9);
 			CreateStock(strSymbol, pRTData->GetStockName(), true);
 		}

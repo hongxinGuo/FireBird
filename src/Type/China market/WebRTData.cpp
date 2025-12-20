@@ -91,7 +91,8 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	size_t lCurrentPos = 11; // 跨过字符串："var hq_str_"
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
 	m_strSymbol = XferSinaToStandard(svStockSymbol);
-	if (svData.length() == 23) { // 空数据: var hq_str_sh688801="";,包括最后的';'分号
+	if (svData.length() == 23) { // 空数据: var hq_str_sh688801="";,包括最后的';'
+		m_fHaveName = false;
 		m_fActive = false;
 		SetDataSource(SINA_RT_WEB_DATA_);
 		return;
@@ -101,6 +102,7 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	auto sv = GetNextField(svData, lCurrentPos, ',');
 	string s(sv.data(), sv.length());
 	m_strStockName = Gbk2Utf8(s); //Note 新浪实时数据的字符集为GBK18030，需要转换为UTF-8。
+	m_fHaveName = true;
 	// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 	sv = GetNextField(svData, lCurrentPos, ',');
 	m_lOpen = Str2Long(sv, 3);

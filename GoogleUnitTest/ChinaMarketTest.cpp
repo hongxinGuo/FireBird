@@ -868,6 +868,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockCode) {
+		EXPECT_TRUE(gl_dataContainerChinaStock.IsSymbol("600001.SS"));
 		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock("600001.SS") == nullptr);
 
 		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock(0) == nullptr);

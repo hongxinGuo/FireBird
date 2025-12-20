@@ -204,6 +204,8 @@ public:
 
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
+	bool HaveName() const noexcept { return m_fHaveName; }
+	void SetHaveName(const bool fFlag) noexcept { m_fHaveName = fFlag; }
 	bool CheckNeteaseRTDataActive();
 	bool CheckSinaRTDataActive();
 	bool CheckTengxunRTDataActive();
@@ -239,4 +241,5 @@ protected:
 
 	// 非存储数据
 	bool m_fActive; // 本股票是否存在有效实时数据
+	bool m_fHaveName{ false }; // 已经获得股票名称。当没有名称时，该股票并未上市。
 };
