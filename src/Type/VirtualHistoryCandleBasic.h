@@ -19,8 +19,9 @@ public:
 	void SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const; // 存储基本数据
 	void AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const;
 	void LoadBasicData(const CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic);
-
 	virtual int GetRatio() const = 0;
+
+	void AdjustByFactor(double dFactor); // 按照复权因子调整数据
 
 	void CalculateRSLogarithm1(double dRS);
 

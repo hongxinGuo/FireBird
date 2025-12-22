@@ -25,16 +25,19 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
+			marketDate = gl_pChinaMarket->GetMarketDate();
 		}
 
 		void TearDown() override {
 			// clearUp
 			EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 			SCOPED_TRACE("");
+			gl_pChinaMarket->TEST_SetFormattedMarketDate(marketDate);
 			GeneralCheck();
 		}
 
 	protected:
+		long marketDate{ 0 };
 		CTengxunDayLineDataSource TengxunDayLineDataSource;
 	};
 
@@ -134,21 +137,21 @@ namespace FireBirdTest {
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20230201);
 		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 		const long lEndDate = pStock->GetDayLineEndDate();
-		pStock->SetDayLineEndDate(20100101); // 日期间隔大于八年小于十六年
+		pStock->SetDayLineEndDate(20110101); // 日期间隔大于七年小于十四年
 
 		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
-		EXPECT_EQ(vProduct.size(), 2) << "日期间隔大于八年小于十六年，有两个申请";
+		EXPECT_EQ(vProduct.size(), 2) << "日期间隔大于七年小于十四年，有两个申请";
 		const auto& pProduct1 = vProduct.at(0);
 		const auto& pProduct2 = vProduct.at(1);
 		EXPECT_STREQ(typeid(*pProduct1).name(), "class CProductTengxunDayLine");
 		EXPECT_EQ(pProduct1->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
-		EXPECT_EQ(pProduct1->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2009-12-31,2015-12-31,2000,,") << "起始日期为日线结束日期的前一天";
+		EXPECT_EQ(pProduct1->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2010-12-31,2016-12-31,2000,,") << "起始日期为日线结束日期的前一天";
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 2);
 
 		EXPECT_STREQ(typeid(*pProduct2).name(), "class CProductTengxunDayLine");
 		EXPECT_EQ(pProduct2->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
-		EXPECT_EQ(pProduct2->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2016-01-01,2023-02-01,2000,,");
+		EXPECT_EQ(pProduct2->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2017-01-01,2023-02-01,2000,,");
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 2);
 
 		// 恢复原状

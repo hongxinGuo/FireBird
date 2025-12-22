@@ -254,8 +254,7 @@ namespace FireBirdTest {
 	};
 
 	// 无错误数据。只有交易日期没有交易时间，使用默认闭市时间（15:00:00).
-	SinaRTData2 Data1(
-		0, R"(var hq_str_sh600000="浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,,00,";)");
+	SinaRTData2 Data1(0, R"(var hq_str_sh600000="浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,,00,";)");
 	// 所有的价格皆为0,交易时间为12:00:00
 	SinaRTData2 Data2(1, R"(var hq_str_sz002385="平安银行,0,0,0,0,0,0,0,21606007,248901949.000,19900,0,54700,0,561500,0,105600,0,172400,0,259981,0,206108,0,325641,0,215109,0,262900,0,2019-07-16,12:00:00,00,";)");
 	// 所有的数量皆为零
@@ -422,6 +421,7 @@ namespace FireBirdTest {
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_TRUE(m_RTData.HaveName());
 			EXPECT_EQ(m_RTData.GetSymbol(), "600000.SS");
 			EXPECT_EQ(m_RTData.GetStockName(), "浦发银行");
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -458,6 +458,7 @@ namespace FireBirdTest {
 			break;
 		case 1: // 所有价格皆为零
 			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_TRUE(m_RTData.HaveName());
 			EXPECT_EQ(m_RTData.GetSymbol(), "002385.SZ");
 			EXPECT_EQ(m_RTData.GetStockName(), "平安银行");
 			EXPECT_EQ(m_RTData.GetOpen(), 0);
@@ -493,6 +494,7 @@ namespace FireBirdTest {
 			break;
 		case 2:
 			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_TRUE(m_RTData.HaveName());
 			EXPECT_EQ(m_RTData.GetSymbol(), "600000.SS");
 			EXPECT_EQ(m_RTData.GetStockName(), "浦发银行");
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -710,6 +712,7 @@ namespace FireBirdTest {
 			break;
 		case 13: // 有错误
 			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_TRUE(m_RTData.HaveName());
 			EXPECT_EQ(m_RTData.GetSymbol(), "600000.SS");
 			EXPECT_EQ(m_RTData.GetStockName(), "浦发银行");
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -1080,6 +1083,7 @@ namespace FireBirdTest {
 			break;
 		case 29: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_TRUE(m_RTData.HaveName());
 			EXPECT_EQ(m_RTData.GetSymbol(), "600000.SS");
 			EXPECT_EQ(m_RTData.GetStockName(), "浦发银行");
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -1111,6 +1115,7 @@ namespace FireBirdTest {
 			break;
 		case 30: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_TRUE(m_RTData.HaveName());
 			EXPECT_EQ(m_RTData.GetSymbol(), "600000.SS");
 			EXPECT_EQ(m_RTData.GetStockName(), "浦发银行");
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -1143,7 +1148,8 @@ namespace FireBirdTest {
 			break;
 		case 31: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_TRUE(m_RTData.GetSymbol().compare( "600000.SS") == 0);
+			EXPECT_TRUE(m_RTData.HaveName());
+			EXPECT_TRUE(m_RTData.GetSymbol() == "600000.SS");
 			EXPECT_TRUE(m_RTData.GetStockName() == "浦发银行");
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
@@ -1176,12 +1182,14 @@ namespace FireBirdTest {
 			break;
 		case 32: // 没有实时数据
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_TRUE(m_RTData.GetSymbol().compare( "000001.SZ") == 0);
+			EXPECT_FALSE(m_RTData.HaveName());
+			EXPECT_TRUE(m_RTData.GetSymbol() == "000001.SZ");
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		case 40: // 没有实时数据的两段数据
-			EXPECT_TRUE(m_RTData.GetSymbol().compare( "000001.SZ") == 0);
+			EXPECT_TRUE(m_RTData.GetSymbol() == "000001.SZ");
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			EXPECT_FALSE(m_RTData.HaveName()); // 没有股票名称
 			break;
 		default:
 			break;

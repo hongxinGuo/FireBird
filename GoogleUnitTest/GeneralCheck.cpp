@@ -108,15 +108,17 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 
 			//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库装载的股票数";
+			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库装载的股票数";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 			EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 
-			EXPECT_EQ(gl_dataContainerChinaStock.GetStock(0)->GetDayLineEndDate(), 20251212) << "第一个股票（上海指数）的结束日期为20251212";
-			EXPECT_TRUE(gl_dataContainerChinaStock.GetStock(0)->IsIPOed()) << "第一个股票（上海指数）为IPOed（255）";
-			const auto pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
+			auto pStock = gl_dataContainerChinaStock.GetStock(0);
+			auto date = pStock->GetDayLineEndDate();
+			EXPECT_EQ(pStock->GetDayLineEndDate(), 20250101) << "第一个股票（上海指数）的结束日期为20251219";
+			EXPECT_TRUE(pStock->IsIPOed()) << "第一个股票（上海指数）为IPOed（255）";
+			pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 			ASSERT_TRUE(pStock->IsIPOed());
 
 			EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 0);

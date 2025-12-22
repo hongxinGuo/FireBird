@@ -347,6 +347,7 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 			else {
 				// 此种情况为有股票代码，但此代码尚未上市
 				pStock->SetIPOStatus(_STOCK_NOT_YET_LIST_);
+				pStock->SetUpdateProfileDB(true);
 				string str1 = pStock->GetSymbol();
 				str1 += " 为未上市股票代码";
 				gl_systemMessage.PushDayLineInfoMessage(str1);

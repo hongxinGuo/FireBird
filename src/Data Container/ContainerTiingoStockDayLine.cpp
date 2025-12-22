@@ -28,7 +28,6 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	LoadBasicDB(&setDayLineBasic);
 	setDayLineBasic.Close();
 
-	m_fDataLoaded = true;
 	return true;
 }
 
@@ -186,6 +185,8 @@ bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHisto
 		Add(pHistoryCandle);
 		pSetHistoryCandleBasic->MoveNext();
 	}
+	m_fDataLoaded = true;
+	SpiltAdjust();
 	return true;
 }
 
@@ -199,4 +200,52 @@ void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTem
 		}
 	}
 	m_fDataLoaded = true;
+}
+
+struct CSplitFactor {
+	long date;
+	double factor;
+};
+
+void CContainerTiingoStockDayLine::SpiltAdjust() {
+	ASSERT(IsDataLoaded());
+	// 按拆分因子调整日线数据
+	vector<shared_ptr<CSplitFactor>> vpSplitFactor;
+	double dTotalFactor = 1.0;
+	for (long i = m_vHistoryData.size() - 1; i >= 0; i--) {
+		auto data = m_vHistoryData.at(i);
+		if (data->GetSplitFactor() != 1.0) {
+			dTotalFactor *= data->GetSplitFactor();
+			auto p = make_shared<CSplitFactor>();
+			p->date = data->GetDate();
+			p->factor = dTotalFactor;
+			vpSplitFactor.push_back(p);
+		}
+	}
+	if (vpSplitFactor.empty()) return; // 没有拆分因子，直接返回
+
+	// 从后向前调整日线数据
+	long j = 0;
+	long PrevDate = 0;
+	int i = m_vHistoryData.size() - 1;
+	double PrevFactor = 1.0;
+	double factor = 1.0;
+	auto& data = m_vHistoryData.at(i);
+	do {
+		auto date = vpSplitFactor.at(j)->date;
+		PrevFactor = factor;
+		factor = vpSplitFactor.at(j)->factor;
+		if (j < vpSplitFactor.size() - 1) PrevDate = vpSplitFactor.at(j + 1)->date;
+		else PrevDate = 0;
+
+		while (data->GetDate() > date) data = m_vHistoryData.at(i--);
+		if (data->GetDate() == date) {
+			data->SetLastClose(data->GetLastClose() * PrevFactor / factor);
+		}
+		while (data->GetDate() > PrevDate && i > 0) {
+			data = m_vHistoryData.at(--i);
+			data->AdjustByFactor(factor);
+		}
+		j++;
+	} while (i > 0);
 }

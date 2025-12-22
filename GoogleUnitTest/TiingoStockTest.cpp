@@ -559,8 +559,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(pvDayLine->GetData(11056)->GetDate(), pvWeekLine->GetData(2290)->GetDate()) << "周一的日期";
 		EXPECT_EQ(pvDayLine->GetData(11060)->GetClose(), pvWeekLine->GetData(2290)->GetClose()) << "最后的收盘价相等";
 		EXPECT_EQ(pvDayLine->GetData(11056)->GetOpen(), pvWeekLine->GetData(2290)->GetOpen()) << "周一的开盘价相等";
-		EXPECT_EQ(228660000, pvWeekLine->GetData(2290)->GetHigh()) << "最高价";
-		EXPECT_EQ(219710000, pvWeekLine->GetData(2290)->GetLow()) << "最低价";
+		EXPECT_EQ(227875000, pvWeekLine->GetData(2290)->GetHigh()) << "最高价";
+		EXPECT_EQ(128348, pvWeekLine->GetData(2290)->GetLow()) << "复权调整后的最低价";
 		volume = 0;
 		amount = 0;
 		for (int i = 0; i < 5; i++) {

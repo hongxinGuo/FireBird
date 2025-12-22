@@ -42,7 +42,7 @@ namespace FireBirdTest {
 			}
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
-			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
+			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库中的股票代码总数为5701";
 		}
 
 		static void TearDownTestSuite() {
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 			}
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
-			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
+			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库中的股票代码总数为5701";
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 			gl_dataContainerChinaStock.SetTengxunRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetSystemReady(true); // 测试市场时，默认系统已经准备好
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
-			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
+			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库中的股票代码总数为5701";
 		}
 
 		void TearDown() override {
@@ -92,7 +92,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 
-			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
+			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库中的股票代码总数为5701";
 
 			gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 
@@ -126,7 +126,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.GetTotalAttackSellAmount(), 0);
 		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 		EXPECT_GT(gl_dataContainerChinaStock.Size(), 0); // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库中的股票代码总数为5701";
 		pStock = gl_dataContainerChinaStock.GetStock(0);
 		EXPECT_EQ(pStock->GetSymbol(), "000001.SS");
 		//CString s = "上证指数";
@@ -1164,11 +1164,11 @@ namespace FireBirdTest {
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
 		EXPECT_THAT(pStock->IsIPOed(), IsTrue());
 		EXPECT_EQ(pStock->GetSymbol(), "000001.SS");
-		EXPECT_EQ(pStock->GetDayLineStartDate(), 19901220);
+		EXPECT_EQ(pStock->GetDayLineStartDate(), 19901219);
 		EXPECT_FALSE(pStock->IsActive()) << "装载股票代码时永远设置为假";
 		pStock = gl_dataContainerChinaStock.GetStock("600002.SS");
 		EXPECT_TRUE(pStock->IsDelisted());
-		EXPECT_EQ(pStock->GetDayLineStartDate(), 19980409);
+		EXPECT_EQ(pStock->GetDayLineStartDate(), 19980408);
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20060406);
 		EXPECT_FALSE(pStock->IsActive());
 	}
@@ -1692,7 +1692,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestUpdateStockProfileDB) {
 		ASSERT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试代码库中的股票代码总数为5040";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试代码库中的股票代码总数为5701";
 
 		auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol("SS.SS.SS");
@@ -1700,7 +1700,7 @@ namespace FireBirdTest {
 		pStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(pStock->GetSymbol())); // 确保是一个新股票代码
 		gl_dataContainerChinaStock.Add(pStock);
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701";
 		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
 		pStock->SetUpdateProfileDB(true);
@@ -1718,7 +1718,7 @@ namespace FireBirdTest {
 		setChinaStock.Update();
 		setChinaStock.m_pDatabase->CommitTrans();
 		setChinaStock.Close();
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701";
 
 		setChinaStock.m_strFilter = "[Symbol] = 'SS.SS.SS'";
 		setChinaStock.Open();
@@ -1730,14 +1730,14 @@ namespace FireBirdTest {
 		}
 		setChinaStock.m_pDatabase->CommitTrans();
 		setChinaStock.Close();
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701";
 
 		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 		pStock->SetIPOStatus(_STOCK_IPOED_); // 恢复原状
 		pStock = gl_dataContainerChinaStock.GetStock("SS.SS.SS");
 		EXPECT_TRUE(pStock != nullptr);
 		gl_dataContainerChinaStock.Delete(pStock); // 恢复原状
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试代码库中的股票代码总数为5040";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试代码库中的股票代码总数为5701";
 
 		EXPECT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "此测试结束时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 

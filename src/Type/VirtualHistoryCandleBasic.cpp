@@ -5,6 +5,13 @@
 
 #include "CharSetTransfer.h"
 
+void CVirtualHistoryCandleBasic::AdjustByFactor(double dFactor) {
+	m_lLastClose /= dFactor;
+	m_lOpen /= dFactor;
+	m_lHigh /= dFactor;
+	m_lLow /= dFactor;
+	m_lClose /= dFactor;
+}
 void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {
 	const double dLog50 = log10(50.0);
 	const double dLog100 = log10(100.0);

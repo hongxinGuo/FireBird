@@ -101,7 +101,7 @@ namespace FireBirdTest {
 				if (pStock->IsUpdateDayLineDB()) pStock->SetUpdateDayLineDB(false);
 				pStock = nullptr;
 			}
-			EXPECT_THAT(gl_dataContainerChinaStock.Size(), Eq(5040));
+			EXPECT_THAT(gl_dataContainerChinaStock.Size(), Eq(5701));
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -1112,7 +1112,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
-		EXPECT_EQ(stock.GetSymbol(), "000001.SS") << "第一个股票";
+		EXPECT_EQ(stock.GetSymbol(), "000001.SS") << _T("第一个股票");
 		CreateJsonWithNlohmann(jsonUpdateDate, T2Utf8(setChinaStockSymbol.m_UpdateDate));
 
 		EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);

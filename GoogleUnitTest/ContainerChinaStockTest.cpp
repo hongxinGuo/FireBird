@@ -116,7 +116,7 @@ namespace FireBirdTest {
 			vEndDate[i] = m_containerChinaStock.GetStock(i)->GetDayLineEndDate();
 		}
 		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
-		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 20251212);
+		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 20250101);
 		m_containerChinaStock.GetStock(1)->SetDayLineEndDate(20200101);
 		m_containerChinaStock.ClearDayLineNeedUpdateStatus();
 

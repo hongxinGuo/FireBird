@@ -30,22 +30,29 @@ namespace FireBirdTest {
 			s_pMockChinaMarket = make_shared<CMockChinaMarket>();
 			s_pMockChinaMarket->ResetMarket();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
+
 			EXPECT_LE(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
+				if (pStock->GetDayLineEndDate() > 20251101) {
+					pStock->SetDayLineEndDate(20250101);//todo 测试用，避免日线结束日期过晚,过一段时间后删除此行
+					pStock->SetUpdateProfileDB(true);
+				}
 				pStock->SetUpdateDayLine(true);
-				pStock->SetUpdateProfileDB(false);
-				if (pStock->GetDayLineEndDate() == 51212) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
+				if (pStock->GetDayLineEndDate() == 20250101) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
-				if (IsEarlyThen(pStock->GetDayLineEndDate(), s_pMockChinaMarket->GetMarketDate(), 30)) {
-					if (pStock->GetDayLineEndDate() == 20251212) {
-						//EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
+				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
+					if (pStock->GetDayLineEndDate() == 20250101) {
+						EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
 						pStock->SetUpdateProfileDB(false);
 					}
 				}
+				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
 			}
+			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+
 			while (!s_pMockChinaMarket->IsMarketTaskEmpty()) s_pMockChinaMarket->DiscardCurrentMarketTask();
 
 			EXPECT_TRUE(s_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
