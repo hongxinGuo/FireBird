@@ -10,34 +10,8 @@
 #include "ChinaMarket.h"
 #include "TimeConvert.h"
 
-void CWebRTData::Reset() {
-	m_lDataSource = INVALID_RT_WEB_DATA_;
-	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
-	m_strSymbol = "";
-	m_strStockName = "";
-	m_lLastClose = 0;
-	m_lOpen = 0;
-	m_lHigh = 0;
-	m_lLow = 0;
-	m_lNew = 0;
-	m_llVolume = 0;
-	m_llAmount = 0;
-	m_llCurrentValue = m_llTotalValue = 0;
-	m_lBuy = 0;
-	m_lSell = 0;
-	m_lHighLimitFromTengxun = 0;
-	m_lLowLimitFromTengxun = 0;
-	for (int i = 0; i < 5; i++) {
-		m_lPBuy.at(i) = 0;
-		m_lVBuy.at(i) = 0;
-		m_lPSell.at(i) = 0;
-		m_lVSell.at(i) = 0;
-	}
-	m_fActive = false;
-}
-
 CWebRTData::CWebRTData() {
-	Reset();
+	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
 }
 
 bool CWebRTData::CheckSinaRTDataActive() {
@@ -92,7 +66,6 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
 	m_strSymbol = XferSinaToStandard(svStockSymbol);
 	if (svData.length() == 23) { // 空数据: var hq_str_sh688801="";,包括最后的';'
-		m_fHaveName = false;
 		m_fActive = false;
 		SetDataSource(SINA_RT_WEB_DATA_);
 		return;
@@ -102,7 +75,6 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	auto sv = GetNextField(svData, lCurrentPos, ',');
 	string s(sv.data(), sv.length());
 	m_strStockName = Gbk2Utf8(s); //Note 新浪实时数据的字符集为GBK18030，需要转换为UTF-8。
-	m_fHaveName = true;
 	// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 	sv = GetNextField(svData, lCurrentPos, ',');
 	m_lOpen = Str2Long(sv, 3);

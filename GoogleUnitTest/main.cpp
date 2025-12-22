@@ -228,11 +228,11 @@ namespace FireBirdTest {
 using namespace FireBirdTest;
 
 // 空数据
-Test_FinnhubWebData finnhubWebData0(0, "AAPL", "{}");
+Test_FinnhubWebData finnhubWebData0(0, "AAPL", R"({})");
 // 无权访问数据
-Test_FinnhubWebData finnhubWebData1(1, "AAPL", "{\"error\":\"You don't have access to this resource.\"}");
+Test_FinnhubWebData finnhubWebData1(1, "AAPL", R"({"error":"You don't have access to this resource."})");
 // 空数据
-Test_FinnhubWebData finnhubWebData2(2, "AAPL", "[]");
+Test_FinnhubWebData finnhubWebData2(2, "AAPL", R"([])");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -249,6 +249,7 @@ int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	if (argv == nullptr) {
 		return -1;
 	}
+
 	GTEST_FLAG_SET(death_test_style, "fast");
 	::InitGoogleTest(&argc, argv);
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.

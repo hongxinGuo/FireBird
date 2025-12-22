@@ -729,7 +729,7 @@ void CFireBirdView::OnUpdateShowMonthLine(CCmdUI* pCmdUI) {
 
 BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
 	if (zDelta < 0) { // 向下滚动，缩小K线图
-		if (m_iCandleWidth > 3) {
+		if (m_iCandleWidth > 1) {
 			m_iCandleWidth -= 1;
 			m_bDrawAll = true;
 		}
@@ -752,15 +752,12 @@ void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
 		if (m_bNeedErase) {
 			ShowCross(pDC, m_ptMouseOld);
 			m_bNeedErase = false;
-
-			TRACE(_T("擦除 %d %d\n"), m_ptMouseOld.x, m_ptMouseOld.y);
 		}
 		// 画新的十字线
 		if (m_rectCandle.PtInRect(point)) {
 			ASSERT(!m_bNeedErase);
 			ShowCross(pDC, point);
 			m_bNeedErase = true;
-			TRACE(_T("添加 %d %d\n"), point.x, point.y);
 			m_ptMouseOld = point;
 		}
 		else {

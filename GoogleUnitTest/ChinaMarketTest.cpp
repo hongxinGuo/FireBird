@@ -1718,7 +1718,7 @@ namespace FireBirdTest {
 		setChinaStock.Update();
 		setChinaStock.m_pDatabase->CommitTrans();
 		setChinaStock.Close();
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701,增加了一个";
 
 		setChinaStock.m_strFilter = "[Symbol] = 'SS.SS.SS'";
 		setChinaStock.Open();
@@ -1730,7 +1730,7 @@ namespace FireBirdTest {
 		}
 		setChinaStock.m_pDatabase->CommitTrans();
 		setChinaStock.Close();
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701，增加了一个";
 
 		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 		pStock->SetIPOStatus(_STOCK_IPOED_); // 恢复原状

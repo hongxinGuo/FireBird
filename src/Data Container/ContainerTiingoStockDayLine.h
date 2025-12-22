@@ -22,7 +22,7 @@ public:
 	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandleBasic);
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
-	void SpiltAdjust();
+	void SplitAdjust();
 
 	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetData(lIndex)); }
 	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetCandle(lDate)); }

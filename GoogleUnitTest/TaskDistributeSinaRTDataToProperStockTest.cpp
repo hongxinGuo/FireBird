@@ -76,8 +76,7 @@ namespace FireBirdTest {
 			pRTData->SetDataSource(pData->m_iSourceType);
 			pRTData->SetSymbol(pData->m_strSymbol);
 			if (!gl_dataContainerChinaStock.IsSymbol(pData->m_strSymbol)) { // 新股票代码
-				pRTData->SetHaveName(true); // 需要设置此标识，以保证能够创建新股票
-				pRTData->SetStockName("abcde");
+				pRTData->SetStockName("abcde");// 需要设置股票名称，以保证能够创建新股票
 			}
 			pRTData->SetActive(pData->m_fActive);
 			pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);

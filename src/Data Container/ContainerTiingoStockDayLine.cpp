@@ -186,7 +186,7 @@ bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHisto
 		pSetHistoryCandleBasic->MoveNext();
 	}
 	m_fDataLoaded = true;
-	SpiltAdjust();
+	SplitAdjust();
 	return true;
 }
 
@@ -207,7 +207,7 @@ struct CSplitFactor {
 	double factor;
 };
 
-void CContainerTiingoStockDayLine::SpiltAdjust() {
+void CContainerTiingoStockDayLine::SplitAdjust() {
 	ASSERT(IsDataLoaded());
 	// 按拆分因子调整日线数据
 	vector<shared_ptr<CSplitFactor>> vpSplitFactor;
@@ -242,8 +242,8 @@ void CContainerTiingoStockDayLine::SpiltAdjust() {
 		if (data->GetDate() == date) {
 			data->SetLastClose(data->GetLastClose() * PrevFactor / factor);
 		}
-		while (data->GetDate() > PrevDate && i > 0) {
-			data = m_vHistoryData.at(--i);
+		while (data->GetDate() > PrevDate && i >= 0) {
+			data = m_vHistoryData.at(i--);
 			data->AdjustByFactor(factor);
 		}
 		j++;

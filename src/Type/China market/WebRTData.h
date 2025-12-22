@@ -204,8 +204,7 @@ public:
 
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
-	bool HaveName() const noexcept { return m_fHaveName; }
-	void SetHaveName(const bool fFlag) noexcept { m_fHaveName = fFlag; }
+	bool HaveName() const noexcept { return !m_strStockName.empty(); }// 已经获得股票名称。当没有名称时，该股票并未上市。
 	bool CheckNeteaseRTDataActive();
 	bool CheckSinaRTDataActive();
 	bool CheckTengxunRTDataActive();
@@ -216,30 +215,29 @@ public:
 public:
 
 protected:
-	long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
+	long m_lDataSource{ INVALID_RT_WEB_DATA_ }; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
 	// Serialized data
 	std::chrono::sys_seconds m_tpTime; // 交易发生时的system_clock时间
-	string m_strSymbol; // 证券代码, 600001.SS，002389.SZ，
-	string m_strStockName; // 证券名称
-	long m_lOpen; // 今日开盘。单位：0.001元
-	long m_lLastClose; // 昨日收盘。单位：0.001元
-	long m_lNew; // 今日最新。单位：0.001元
-	long m_lHigh; // 今日最高。单位：0.001元
-	long m_lLow; // 今日最低。单位：0.001元
-	long m_lBuy; // 竞买价。单位：0.001元
-	long m_lSell; // 竞卖价。单位：0.001元
-	long m_lHighLimitFromTengxun; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lLowLimitFromTengxun; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
-	INT64 m_llVolume; // 总成交量。单位：股
-	INT64 m_llAmount; // 总成交金额。单位：元
-	INT64 m_llTotalValue; // 总市值。单位：万元
-	INT64 m_llCurrentValue; // 流通市值。单位：万元
-	array<long, 5> m_lPBuy; // 买盘价1--5。单位：0.001元
-	array<long, 5> m_lVBuy; // 买盘量1--5。单位：股
-	array<long, 5> m_lPSell; // 卖盘价1--5。单位：0.001元
-	array<long, 5> m_lVSell; // 卖盘量1--5。单位: 股
+	string m_strSymbol{}; // 证券代码, 600001.SS，002389.SZ，
+	string m_strStockName{}; // 证券名称
+	long m_lOpen{ 0 }; // 今日开盘。单位：0.001元
+	long m_lLastClose{ 0 }; // 昨日收盘。单位：0.001元
+	long m_lNew{ 0 }; // 今日最新。单位：0.001元
+	long m_lHigh{ 0 }; // 今日最高。单位：0.001元
+	long m_lLow{ 0 }; // 今日最低。单位：0.001元
+	long m_lBuy{ 0 }; // 竞买价。单位：0.001元
+	long m_lSell{ 0 }; // 竞卖价。单位：0.001元
+	long m_lHighLimitFromTengxun{ 0 }; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lLowLimitFromTengxun{ 0 }; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+	INT64 m_llVolume{ 0 }; // 总成交量。单位：股
+	INT64 m_llAmount{ 0 }; // 总成交金额。单位：元
+	INT64 m_llTotalValue{ 0 }; // 总市值。单位：万元
+	INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
+	array<long, 5> m_lPBuy{ 0, 0, 0, 0, 0 }; // 买盘价1--5。单位：0.001元
+	array<long, 5> m_lVBuy{ 0, 0, 0, 0, 0 }; // 买盘量1--5。单位：股
+	array<long, 5> m_lPSell{ 0, 0, 0, 0, 0 }; // 卖盘价1--5。单位：0.001元
+	array<long, 5> m_lVSell{ 0, 0, 0, 0, 0 }; // 卖盘量1--5。单位: 股
 
 	// 非存储数据
-	bool m_fActive; // 本股票是否存在有效实时数据
-	bool m_fHaveName{ false }; // 已经获得股票名称。当没有名称时，该股票并未上市。
+	bool m_fActive{ false }; // 本股票是否存在有效实时数据
 };
