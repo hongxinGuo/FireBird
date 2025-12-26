@@ -40,20 +40,20 @@ void ReportInformation(CException& e) {
 int ReportRunningToWatchdog() {
 	HWND hWnd = ::FindWindow(nullptr, Utf8ToWstring(sWatchDogApp).c_str());
 	if (hWnd == nullptr) return 1; // Watchdog监控程序不在运行，直接返回
-	::SendMessage(hWnd, WM_FIREBIRD_RUNNING, NULL, NULL); // tell watchdog that I am running now.
+	::SendMessage(hWnd, WM_FIREBIRD_RUNNING_, NULL, NULL); // tell watchdog that I am running now.
 	return 0;
 }
 
 int ReportExitToWatchdog() {
 	HWND hWnd = ::FindWindow(nullptr, Utf8ToWstring(sWatchDogApp).c_str());
 	if (hWnd == nullptr) return 1; // Watchdog监控程序不在运行， 直接返回
-	::SendMessage(hWnd, WM_FIREBIRD_EXIT, NULL, NULL); // Tell watchdog that I am exit now.
+	::SendMessage(hWnd, WM_FIREBIRD_EXIT_, NULL, NULL); // Tell watchdog that I am exit now.
 	return 0;
 }
 
 int ReportSchedulingExitToWatchdog() {
 	HWND hWnd = ::FindWindow(nullptr, Utf8ToWstring(sWatchDogApp).c_str());
 	if (hWnd == nullptr) return 1; // Watchdog监控程序不在运行， 直接返回
-	::SendMessage(hWnd, WM_FIREBIRD_SCHEDULING_EXIT, NULL, NULL); // Tell watchdog that I am exit now.
+	::SendMessage(hWnd, WM_FIREBIRD_SCHEDULING_EXIT_, NULL, NULL); // Tell watchdog that I am exit now.
 	return 0;
 }

@@ -48,6 +48,8 @@ public:
 	bool TaskUpdateTiingoIndustry();
 	bool TaskUpdateSicIndustry();
 	bool TaskUpdateNaicsIndustry();
+	bool TaskRebuildTiingoStockSplitDB();
+	bool TaskRebuildTiingoIndustryRS();
 
 	void TaskUpdateTiingoStockDayLineDB();
 
@@ -86,6 +88,11 @@ public:
 	void RebuildEPSSurprise();
 	void RebuildPeer();
 	void RebuildBasicFinancial();
+	void RebuildTiingoStockSplitDB();
+
+	void RebuildIndustryRS();
+	void BuildIndustry();
+	void CalculateIndustry();
 
 	vectorString GetFinnhubWebSocketSymbols();
 
@@ -138,6 +145,7 @@ protected:
 
 protected:
 	vector<CTiingoStockPtr> m_vNasdaq100TiingoStock;
+	array<vector<CTiingoStockPtr>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

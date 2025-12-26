@@ -45,6 +45,7 @@ void CTiingoCrypto::Save(CSetTiingoCrypto& setTiingoCrypto) {
 	setTiingoCrypto.m_Description = m_strDescription.c_str();
 	setTiingoCrypto.m_BaseCurrency = m_strBaseCurrency.c_str();
 	setTiingoCrypto.m_QuoteCurrency = m_strQuoteCurrency.c_str();
+	UpdateJsonUpdateDate();
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setTiingoCrypto.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);

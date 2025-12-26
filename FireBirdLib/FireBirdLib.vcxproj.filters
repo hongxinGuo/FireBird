@@ -921,6 +921,9 @@
     <ClInclude Include="..\src\CharSetTransfer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\StockSplit.h">
+      <Filter>头文件\Type</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">

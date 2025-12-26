@@ -194,7 +194,7 @@ bool CFinnhubStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDat
 	return m_fUpdateDayLine;
 }
 
-void CFinnhubStock::Save(CSetFinnhubStock& setFinnhubStock) const {
+void CFinnhubStock::Save(CSetFinnhubStock& setFinnhubStock) {
 	// 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
 	setFinnhubStock.m_Symbol = m_strSymbol.substr(0, 20).c_str();
 	setFinnhubStock.m_ExchangeCode = m_strExchangeCode.substr(0, 3).c_str();
@@ -234,19 +234,20 @@ void CFinnhubStock::Save(CSetFinnhubStock& setFinnhubStock) const {
 	ASSERT(sPeer.size() < 2000);
 	setFinnhubStock.m_Peer = sPeer.c_str();
 
+	UpdateJsonUpdateDate();
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setFinnhubStock.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);
 	setFinnhubStock.m_IPOStatus = m_lIPOStatus;
 }
 
-void CFinnhubStock::Update(CSetFinnhubStock& setFinnhubStock) const {
+void CFinnhubStock::Update(CSetFinnhubStock& setFinnhubStock) {
 	setFinnhubStock.Edit();
 	Save(setFinnhubStock);
 	setFinnhubStock.Update();
 }
 
-void CFinnhubStock::Append(CSetFinnhubStock& setFinnhubStock) const {
+void CFinnhubStock::Append(CSetFinnhubStock& setFinnhubStock) {
 	setFinnhubStock.AddNew();
 	Save(setFinnhubStock);
 	setFinnhubStock.Update();

@@ -38,9 +38,7 @@ using namespace moodycamel;
 class CChinaStock;
 using CChinaStockPtr = shared_ptr<CChinaStock>;
 
-using std::map;
 #include <queue>
-using std::queue;
 
 bool IsShareA(const string& strStockCode);
 bool IsChinaStock(const CVirtualStockPtr& pStock);

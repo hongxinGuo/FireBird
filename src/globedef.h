@@ -21,6 +21,8 @@ using std::binary_semaphore;
 #include "spdlog/sinks/daily_file_sink.h"
 #define MAX_BACKGROUND_WORKING_THREAD_ 32
 
+constexpr double EPSILON = 1e-8;
+
 extern HANDLE gl_hFireBirdMutex;
 
 extern std::counting_semaphore<MAX_BACKGROUND_WORKING_THREAD_> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量

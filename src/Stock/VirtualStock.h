@@ -2,6 +2,7 @@
 
 #include "VirtualDataHistoryCandleExtend.h"
 #include"VirtualSetStockSymbol.h"
+#include "StockSplit.h"
 
 using std::shared_ptr;
 using std::atomic_bool;
@@ -22,6 +23,8 @@ public:
 	virtual void ResetAllUpdateDate();
 	virtual int GetRatio() const = 0;
 
+	virtual void UpdateJsonUpdateDate();
+	virtual void UpdateAllUpdateDate();
 	void LoadUpdateDate(const string& strUpdateDate);
 	virtual void LoadSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void AppendSymbol(CVirtualSetStockSymbol& setStockSymbol);
@@ -106,10 +109,17 @@ public:
 		return false;
 	}
 
-	long GetDayLineStartDate();
-	void SetDayLineStartDate(const long lDate) noexcept { m_jsonUpdateDate["DayLineStartDate"] = lDate; }
-	long GetDayLineEndDate();
-	void SetDayLineEndDate(const long lDate) noexcept { m_jsonUpdateDate["DayLineEndDate"] = lDate; }
+	long GetDayLineStartDate() const noexcept { return m_lDayLineStartDate; }
+	void SetDayLineStartDate(const long lDate) noexcept { m_lDayLineStartDate = lDate; }
+	long GetDayLineEndDate() const noexcept { return m_lDayLineEndDate; }
+	void SetDayLineEndDate(const long lDate) noexcept { m_lDayLineEndDate = lDate; }
+
+	size_t GetStockSplitCount() const noexcept { return m_vStockSplit.size(); }
+	CStockSplitPtr GetStockSplit(size_t index) const noexcept { return m_vStockSplit.at(index); }
+	void AddStockSplit(const CStockSplitPtr& pStockSplit) noexcept; // 按日期顺序添加拆股信息
+	void ClearStockSplit() noexcept { m_vStockSplit.clear(); }
+
+	virtual void RebuildStockSplitDB() {} // 重建拆股数据库
 
 	long GetIPOStatus() const noexcept { return m_lIPOStatus; }
 	void SetIPOStatus(const long lValue) noexcept { m_lIPOStatus = lValue; }
@@ -215,6 +225,9 @@ protected:
 	string m_strDisplaySymbol{ "" };
 
 	json m_jsonUpdateDate{ json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
+	long m_lDayLineStartDate{ 29900101 }; // 日线历史数据的起始日期。格式：YYYYMMDD
+	long m_lDayLineEndDate{ 19800101 }; // 日线历史数据的结束日期。格式：YYYYMMDD
+	vector<CStockSplitPtr> m_vStockSplit;
 
 	// 实时数据区
 	std::chrono::sys_seconds m_tpTime{};// 实时数据交易时间

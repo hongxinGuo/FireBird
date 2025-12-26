@@ -169,6 +169,8 @@
 #define ID_SHOW_INDACATOR_RS            32948
 #define ID_BUTTON32949                  32949
 #define ID_BUTTON32951                  32951
+#define ID_32952                        32952
+#define ID_TIINGO_REBUILD_STOCK_SPLIT   32953
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -212,7 +214,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32952
+#define _APS_NEXT_COMMAND_VALUE         32954
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

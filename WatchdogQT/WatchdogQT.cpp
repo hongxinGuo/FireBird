@@ -78,29 +78,31 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 		errno_t error;
 		const MSG* msg = static_cast<MSG*>(message);
 		switch (msg->message) {
-		case WM_FIREBIRD_RUNNING:
+		case WM_FIREBIRD_RUNNING_:
 			time = gl_tpNow.time_since_epoch().count();
 			error = localtime_s(&tmLocal, &time);
 			s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
-		case WM_FIREBIRD_EXIT:
+		case WM_FIREBIRD_EXIT_:
 			time = gl_tpNow.time_since_epoch().count();
 			error = localtime_s(&tmLocal, &time);
 			s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
-		case WM_FIREBIRD_SCHEDULING_EXIT:
+		case WM_FIREBIRD_SCHEDULING_EXIT_:
 			time = gl_tpNow.time_since_epoch().count();
 			error = localtime_s(&tmLocal, &time);
 			s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告定时调度关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
+		case WM_FIREBIRD_NOTHING_:
+			break;
 		default:
-			;
+			break;
 		}
 	}
 	return QMainWindow::nativeEvent(eventType, message, result);

@@ -342,6 +342,22 @@ bool CWorldMarket::TaskUpdateNaicsIndustry() {
 	return false;
 }
 
+bool CWorldMarket::TaskRebuildTiingoStockSplitDB() {
+	gl_runtime.background_executor()->post([this] {
+		gl_systemMessage.SetWorldMarketSavingFunction("T Rebuild Stock Split DB");
+		this->RebuildTiingoStockSplitDB();
+	});
+	return true;
+}
+
+bool CWorldMarket::TaskRebuildTiingoIndustryRS() {
+	gl_runtime.background_executor()->post([this] {
+		gl_systemMessage.SetWorldMarketSavingFunction("T Rebuild Industry RS");
+		this->RebuildIndustryRS();
+	});
+	return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 //	将Tiingo日线数据存入数据库．
@@ -1037,6 +1053,39 @@ void CWorldMarket::RebuildPeer() {
 void CWorldMarket::RebuildBasicFinancial() {
 	gl_dataContainerFinnhubStock.ResetBasicFinancial();
 	gl_pFinnhubDataSource->SetUpdateStockBasicFinancial(true);
+}
+
+void CWorldMarket::RebuildTiingoStockSplitDB() {
+	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
+		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
+		gl_BackgroundWorkingThread.acquire();
+		gl_runtime.background_executor()->post([pStock] {
+			pStock->RebuildStockSplitDB();
+			pStock->SetUpdateProfileDB(true);
+			gl_BackgroundWorkingThread.release();
+		});
+	}
+}
+
+void CWorldMarket::RebuildIndustryRS() {
+	BuildIndustry();
+	CalculateIndustry();
+}
+
+void CWorldMarket::BuildIndustry() {
+	for (size_t index = 0; index < 1000; index++) {
+		m_aTiingoIndustryCode[index].clear();
+	}
+	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
+		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
+		auto sicCode = pStock->GetSicCode() / 10;
+		if (sicCode != 0) {
+			m_aTiingoIndustryCode[sicCode].push_back(pStock);
+		}
+	}
+}
+
+void CWorldMarket::CalculateIndustry() {
 }
 
 void CWorldMarket::RebuildStockDayLineDB() {

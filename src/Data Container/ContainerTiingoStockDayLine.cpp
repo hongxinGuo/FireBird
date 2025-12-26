@@ -186,6 +186,7 @@ bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHisto
 		pSetHistoryCandleBasic->MoveNext();
 	}
 	m_fDataLoaded = true;
+
 	SplitAdjust();
 	return true;
 }
@@ -214,7 +215,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	double dTotalFactor = 1.0;
 	for (long i = m_vHistoryData.size() - 1; i >= 0; i--) {
 		auto data = m_vHistoryData.at(i);
-		if (data->GetSplitFactor() != 1.0) {
+		if (std::abs(data->GetSplitFactor() - 1.0) > EPSILON) {
 			dTotalFactor *= data->GetSplitFactor();
 			auto p = make_shared<CSplitFactor>();
 			p->date = data->GetDate();
@@ -226,26 +227,26 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 
 	// 从后向前调整日线数据
 	long j = 0;
-	long PrevDate = 0;
+	long prevDate;
 	int i = m_vHistoryData.size() - 1;
-	double PrevFactor = 1.0;
 	double factor = 1.0;
-	auto& data = m_vHistoryData.at(i);
+	auto data = m_vHistoryData.at(i);
 	do {
 		auto date = vpSplitFactor.at(j)->date;
-		PrevFactor = factor;
+		const double prevFactor = factor;
 		factor = vpSplitFactor.at(j)->factor;
-		if (j < vpSplitFactor.size() - 1) PrevDate = vpSplitFactor.at(j + 1)->date;
-		else PrevDate = 0;
+		if (j < vpSplitFactor.size() - 1) prevDate = vpSplitFactor.at(j + 1)->date;
+		else prevDate = 0;
 
 		while (data->GetDate() > date) data = m_vHistoryData.at(i--);
 		if (data->GetDate() == date) {
-			data->SetLastClose(data->GetLastClose() * PrevFactor / factor);
+			data->SetLastClose(data->GetLastClose() * prevFactor / factor);
 		}
-		while (data->GetDate() > PrevDate && i >= 0) {
+		while (data->GetDate() > prevDate && i >= 0) {
 			data = m_vHistoryData.at(i--);
 			data->AdjustByFactor(factor);
 		}
 		j++;
 	} while (i > 0);
+	ASSERT(j == vpSplitFactor.size());
 }

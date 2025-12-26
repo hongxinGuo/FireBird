@@ -36,9 +36,9 @@ public:
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
-	void Save(CSetFinnhubStock& setFinnhubStock) const;
-	void Update(CSetFinnhubStock& setFinnhubStock) const;
-	void Append(CSetFinnhubStock& setFinnhubStock) const;
+	void Save(CSetFinnhubStock& setFinnhubStock);
+	void Update(CSetFinnhubStock& setFinnhubStock);
+	void Append(CSetFinnhubStock& setFinnhubStock);
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();

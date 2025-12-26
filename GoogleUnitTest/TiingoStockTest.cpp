@@ -364,6 +364,35 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
+	TEST_F(CTiingoStockTest, TestGetSetStockSplit) {
+		EXPECT_EQ(stock.GetStockSplitCount(), 0);
+		auto p = make_shared<CStockSplit>();
+		p->SetDate(20200101);
+		p->SetRatio(2.0);
+		stock.AddStockSplit(p);
+		EXPECT_EQ(stock.GetStockSplitCount(), 1);
+		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), 20200101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 2.0);
+		p = make_shared<CStockSplit>();
+		p->SetDate(20210101);
+		p->SetRatio(3.0);
+		stock.AddStockSplit(p);
+		EXPECT_EQ(stock.GetStockSplitCount(), 2);
+		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), 20210101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 3.0);
+		p = make_shared<CStockSplit>();
+		p->SetDate(20190101);
+		p->SetRatio(1.5);
+		stock.AddStockSplit(p);
+		EXPECT_EQ(stock.GetStockSplitCount(), 3);
+		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), 20190101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 1.5);
+		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), 20200101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 2.0);
+		EXPECT_EQ(stock.GetStockSplit(2)->GetDate(), 20210101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2)->GetRatio(), 3.0);
+	}
+
 	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {
 		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "初始时容器为空";
 
@@ -449,6 +478,20 @@ namespace FireBirdTest {
 		stock.Add52WeekLow(20240101);
 		stock.Add52WeekHigh(20000101);
 		stock.Add52WeekHigh(20040101);
+		stock.SetDayLineStartDate(20200101);
+		stock.SetDayLineEndDate(20240102);
+		auto p = make_shared<CStockSplit>();
+		p->SetDate(20200101);
+		p->SetRatio(2.0);
+		stock.AddStockSplit(p);
+		p = make_shared<CStockSplit>();
+		p->SetDate(20210101);
+		p->SetRatio(3.0);
+		stock.AddStockSplit(p);
+		p = make_shared<CStockSplit>();
+		p->SetDate(20190101);
+		p->SetRatio(1.5);
+		stock.AddStockSplit(p);
 
 		setTiingoStock.Open();
 		setTiingoStock.m_pDatabase->BeginTrans();
@@ -460,7 +503,7 @@ namespace FireBirdTest {
 		setTiingoStock.Open();
 		setTiingoStock.m_pDatabase->BeginTrans();
 		stock2.Load(setTiingoStock);
-		setTiingoStock.Delete();
+		setTiingoStock.Delete(); // 删掉新增的代码
 		setTiingoStock.m_pDatabase->CommitTrans(); // 必须使用CommitTrans()来真正删除数据库中的数据。
 		setTiingoStock.Close();
 
@@ -483,6 +526,13 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.Have52WeekLowDate(20240101));
 		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
 		EXPECT_TRUE(stock.Have52WeekHighDate(20040101));
+		EXPECT_EQ(stock.GetDayLineStartDate(), stock2.GetDayLineStartDate());
+		EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());
+		EXPECT_EQ(stock.GetStockSplitCount(), stock2.GetStockSplitCount());
+		for (size_t i = 0; i < stock.GetStockSplitCount(); i++) {
+			EXPECT_EQ(stock.GetStockSplit(i)->GetDate(), stock2.GetStockSplit(i)->GetDate());
+			EXPECT_DOUBLE_EQ(stock.GetStockSplit(i)->GetRatio(), stock2.GetStockSplit(i)->GetRatio());
+		}
 	}
 
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {
@@ -699,10 +749,10 @@ namespace FireBirdTest {
 		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
 		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 
-		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
+		for (size_t i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
 		}
-		for (int i = 0; i < pStock3->m_v52WeekHigh.size(); i++) {
+		for (size_t i = 0; i < pStock3->m_v52WeekHigh.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
 		}
 		/*
@@ -736,10 +786,10 @@ namespace FireBirdTest {
 		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
 		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 
-		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
+		for (size_t i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
 		}
-		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
+		for (size_t i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
 		}
 		/*
@@ -753,5 +803,26 @@ namespace FireBirdTest {
 		string str = pStock2->GetSymbol();
 
 		//
+	}
+
+	TEST_F(CTiingoStockTest, TestRebuildStockSplitDB) {
+		stock.ClearStockSplit();
+		EXPECT_EQ(stock.GetStockSplitCount(), 0);
+
+		stock.SetSymbol("AAPL");
+
+		stock.RebuildStockSplitDB();
+
+		EXPECT_EQ(stock.GetStockSplitCount(), 5);
+		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), 19870616);
+		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), 20000621);
+		EXPECT_EQ(stock.GetStockSplit(2)->GetDate(), 20050228);
+		EXPECT_EQ(stock.GetStockSplit(3)->GetDate(), 20140609);
+		EXPECT_EQ(stock.GetStockSplit(4)->GetDate(), 20200831);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2)->GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(3)->GetRatio(), 7.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(4)->GetRatio(), 4.0);
 	}
 }

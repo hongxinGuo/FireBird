@@ -89,6 +89,7 @@ public:
 
 	void ResetAllUpdateDate() override;
 	int GetRatio() const override { return 1000000; }; // 
+	void UpdateAllUpdateDate() override;
 
 	void Load(const CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
@@ -151,6 +152,8 @@ public:
 	void CreateMonthLine();
 
 	void CalculateDayLineMA(const int length) const { m_dataDayLine.CalculateMA(length); }
+
+	void RebuildStockSplitDB() override;
 
 	bool HaveNewDayLineData();
 	void CheckUpdateStatus(long lTodayDate);

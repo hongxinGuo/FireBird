@@ -5,6 +5,7 @@
 
 #include "CharSetTransfer.h"
 #include "jsonParse.h"
+#include "nlohmannJsonGetValue.h"
 
 CVirtualStockPtr gl_pCurrentStock{ nullptr };
 
@@ -13,21 +14,46 @@ CVirtualStock::CVirtualStock() {
 }
 
 void CVirtualStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate["DayLineStartDate"] = 29900101;
-	m_jsonUpdateDate["DayLineEndDate"] = 19800101;
+	m_lDayLineStartDate = 29900101;
+	m_lDayLineEndDate = 19800101;
+	m_vStockSplit.clear();
+	UpdateJsonUpdateDate();
+}
+
+void CVirtualStock::UpdateJsonUpdateDate() {
+	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate;
+	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate;
+	json jsStockSplit = json::array();
+	for (const auto& pStockSplit : m_vStockSplit) {
+		json js;
+		js["date"] = pStockSplit->GetDate();
+		js["ratio"] = pStockSplit->GetRatio();
+		jsStockSplit.push_back(js);
+	}
+	m_jsonUpdateDate["StockSplit"] = jsStockSplit;
+}
+
+void CVirtualStock::UpdateAllUpdateDate() {
+	m_lDayLineStartDate = m_jsonUpdateDate["DayLineStartDate"];
+	m_lDayLineEndDate = m_jsonUpdateDate["DayLineEndDate"];
+
+	m_vStockSplit.clear();
+	auto js = m_jsonUpdateDate["StockSplit"];
+	for (auto it = js.begin(); it != js.end(); ++it) {
+		CStockSplitPtr pStockSplit = std::make_shared<CStockSplit>();
+		pStockSplit->SetDate(jsonGetLong(it, "date"));
+		pStockSplit->SetRatio(jsonGetDouble(it, "ratio"));
+		m_vStockSplit.push_back(pStockSplit);
+	}
 }
 
 void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
-	if (strUpdateDate.length() < 10) {
+	try {
+		CreateJsonWithNlohmann(m_jsonUpdateDate, strUpdateDate);
+		UpdateAllUpdateDate();
+	} catch (json::exception&) {
+		CreateJsonWithNlohmann(m_jsonUpdateDate, "{}");
 		ResetAllUpdateDate();
-	}
-	else {
-		try {
-			CreateJsonWithNlohmann(m_jsonUpdateDate, strUpdateDate);
-		} catch (json::exception&) {
-			CreateJsonWithNlohmann(m_jsonUpdateDate, "{}");
-			ResetAllUpdateDate();
-		}
 	}
 }
 
@@ -59,35 +85,18 @@ void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_Exchange = m_strExchangeCode.c_str();
 	setStockSymbol.m_Symbol = m_strSymbol.c_str();
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;
+	UpdateJsonUpdateDate();
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setStockSymbol.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);
 }
 
-long CVirtualStock::GetDayLineStartDate() {
-	long l;
-	try {
-		l = m_jsonUpdateDate["DayLineStartDate"];
-	} catch (json::exception&) {
-		m_jsonUpdateDate["DayLineStartDate"] = 29900101;
-		l = 29901010;
-	}
-	return l;
-}
-
-long CVirtualStock::GetDayLineEndDate() {
-	long l;
-	try {
-		l = m_jsonUpdateDate["DayLineEndDate"];
-		if (l < 19800101) {
-			m_jsonUpdateDate["DayLineEndDate"] = 19800101;
-		}
-	} catch (json::exception&) {
-		m_jsonUpdateDate["DayLineEndDate"] = 19800101;
-		l = 19800101;
-	}
-
-	return l;
+void CVirtualStock::AddStockSplit(const CStockSplitPtr& pStockSplit) noexcept {
+	m_vStockSplit.push_back(pStockSplit);
+	//按日期顺序添加拆股信息
+	ranges::sort(m_vStockSplit, [](const CStockSplitPtr& a, const CStockSplitPtr& b) {
+		return a->GetDate() < b->GetDate();
+	});
 }
 
 bool CVirtualStock::IsSameStock(const CVirtualStockPtr& pStock) const {

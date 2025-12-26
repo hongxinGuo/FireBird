@@ -6,9 +6,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#define WM_FIREBIRD_RUNNING            WM_APP + 100
-#define WM_FIREBIRD_EXIT               WM_FIREBIRD_RUNNING + 1
-#define WM_FIREBIRD_SCHEDULING_EXIT    WM_FIREBIRD_EXIT + 1
+#define WM_FIREBIRD_RUNNING_            WM_APP + 1
+#define WM_FIREBIRD_SCHEDULING_EXIT_    WM_APP + 2
+#define WM_FIREBIRD_EXIT_               WM_APP + 10
+#define WM_FIREBIRD_NOTHING_            WM_APP + 4
 
 #include<string>
 

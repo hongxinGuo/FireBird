@@ -434,18 +434,6 @@ bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos
 	return true;
 }
 
-/*
-bool CreateJsonWithNlohmann(json& js, string& str, const long lBeginPos, const long lEndPos) {
-	try {
-		js = json::parse(str.begin() + lBeginPos, str.end() - lEndPos);
-	} catch (json::parse_error&) {
-		js.clear();
-		return false;
-	}
-	return true;
-}
-*/
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
