@@ -127,7 +127,7 @@ public:
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	bool HaveDayLine(const long lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
-	CTiingoCandleLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
+	CTiingoCandleLinePtr GetDayLine(const size_t lIndex) const { return m_dataDayLine.GetData(lIndex); }
 	CTiingoCandleLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
 
 	// 当前被处理历史数据容器

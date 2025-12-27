@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include "SystemMessage.h"
+
+#include <algorithm>
 #include"OutputWnd.h"
 
 map<long, string> gl_mapHTTPStatusCode{
@@ -145,18 +147,18 @@ map<long, string> gl_mapNetError{
 	{ ERROR_HTTP_REDIRECT_FAILED, "The redirection failed because either the scheme changed(for example, HTTP to FTP) or all attempts made to redirect	failed(default is five attempts)." },
 };
 
-binary_semaphore s_RTDataStockCode{ 1 };
-binary_semaphore s_DayLineDataStockCode{ 1 };
-binary_semaphore s_CurrentFinnhubWebSocketStake{ 1 };
-binary_semaphore s_CurrentTiingoWebSocketIEX{ 1 };
-binary_semaphore s_CurrentTiingoWebSocketCrypto{ 1 };
-binary_semaphore s_CurrentTiingoWebSocketForex{ 1 };
-binary_semaphore s_sReadCurrentFinnhubFunction{ 1 };
-binary_semaphore s_sReadCurrentTiingoFunction{ 1 };
+static binary_semaphore s_RTDataStockCode{ 1 };
+static binary_semaphore s_DayLineDataStockCode{ 1 };
+static binary_semaphore s_CurrentFinnhubWebSocketStake{ 1 };
+static binary_semaphore s_CurrentTiingoWebSocketIEX{ 1 };
+static binary_semaphore s_CurrentTiingoWebSocketCrypto{ 1 };
+static binary_semaphore s_CurrentTiingoWebSocketForex{ 1 };
+static binary_semaphore s_sReadCurrentFinnhubFunction{ 1 };
+static binary_semaphore s_sReadCurrentTiingoFunction{ 1 };
 
-CSystemDeque::CSystemDeque() {}
+CSystemDeque::CSystemDeque() = default;
 
-CSystemDeque::~CSystemDeque() {}
+CSystemDeque::~CSystemDeque() = default;
 
 CSystemMessage::~CSystemMessage() = default;
 
@@ -266,7 +268,7 @@ void CSystemMessage::SetCurrentTiingoFunction(const string& str) {
 
 void CSystemDeque::Display(COutputList* pOutputList, const string& strTime) {
 	size_t lTotal = Size();
-	if (lTotal > pOutputList->GetLineNumber()) lTotal = pOutputList->GetLineNumber();
+	lTotal = std::min<size_t>(lTotal, pOutputList->GetLineNumber());
 	for (size_t i = 0; i < lTotal; i++) {
 		string str2 = strTime + ": " + PopMessage();
 		SysCallOutputListAddString(pOutputList, str2);

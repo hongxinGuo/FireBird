@@ -92,7 +92,8 @@ public:
 
 	void RebuildIndustryRS();
 	void BuildIndustry();
-	void CalculateIndustry();
+	void CalculateIndustryTotalValue();
+	void CalculateStockTotalValue(const vector<CTiingoStockPtr>& vStocks);
 
 	vectorString GetFinnhubWebSocketSymbols();
 

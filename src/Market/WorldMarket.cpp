@@ -1069,7 +1069,7 @@ void CWorldMarket::RebuildTiingoStockSplitDB() {
 
 void CWorldMarket::RebuildIndustryRS() {
 	BuildIndustry();
-	CalculateIndustry();
+	CalculateIndustryTotalValue();
 }
 
 void CWorldMarket::BuildIndustry() {
@@ -1085,7 +1085,72 @@ void CWorldMarket::BuildIndustry() {
 	}
 }
 
-void CWorldMarket::CalculateIndustry() {
+void CWorldMarket::CalculateIndustryTotalValue() {
+	for (const auto& vStocks : m_aTiingoIndustryCode) {
+		CalculateStockTotalValue(vStocks);
+	}
+}
+
+struct dayLineValue {
+	long lDate;
+	double dTotalValue;
+};
+
+using dayLineValuePtr = std::shared_ptr<dayLineValue>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 计算某一行业的每日总市值。
+///
+///todo: 目前仅支持SIC行业分类。
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void CWorldMarket::CalculateStockTotalValue(const vector<CTiingoStockPtr>& vStocks) {
+	vector<dayLineValuePtr> vDayLineValue;
+
+	for (const auto& pStock : vStocks) {
+		if (!pStock->IsDayLineLoaded()) pStock->LoadDayLineDB();
+	}
+	size_t totalDayLineSize = 0;
+	for (const auto& pStock : vStocks) {
+		totalDayLineSize += pStock->GetDayLineSize();
+	}
+	vDayLineValue.resize(totalDayLineSize + 128);
+	for (const auto& pStock : vStocks) {
+		CFinnhubStockPtr pFinnhubStock = gl_dataContainerFinnhubStock.GetItem(pStock->GetSymbol());
+		if (pFinnhubStock != nullptr) { // 如果没有对应的Finnhub股票资料，则无法计算总市值
+			const double shareOutstanding = pFinnhubStock->GetShareOutstanding() * 1000000;
+			for (size_t index = 0; index < pStock->GetDayLineSize(); index++) {
+				auto dayLine = pStock->GetDayLine(index);
+				dayLineValuePtr pValue = make_shared<dayLineValue>();
+				pValue->lDate = dayLine->GetDate();
+				pValue->dTotalValue = dayLine->GetClose() * shareOutstanding / dayLine->GetRatio();
+				vDayLineValue.push_back(pValue);
+			}
+		}
+		else {
+			string str = "无法计算 ";
+			str += pStock->GetSymbol();
+			str += " 的行业总市值，因找不到对应的Finnhub股数";
+			gl_systemMessage.PushErrorMessage(str);
+		}
+	}
+	ranges::sort(vDayLineValue, [](const dayLineValuePtr& p1, const dayLineValuePtr& p2) { return p1->lDate < p2->lDate; });
+
+	vector<dayLineValuePtr> vResultValue;
+	size_t index = 0;
+	while (index < vDayLineValue.size()) {
+		auto pValue2 = make_shared<dayLineValue>();
+		double value = 0.0;
+		const auto pValue = vDayLineValue[index];
+		auto date = pValue->lDate;
+		pValue2->lDate = pValue->lDate;
+		do {
+			value += pValue->dTotalValue;
+			index++;
+		} while (index < vDayLineValue.size() - 1 && vDayLineValue[index + 1]->lDate == date);
+		pValue2->dTotalValue = value;
+	}
 }
 
 void CWorldMarket::RebuildStockDayLineDB() {

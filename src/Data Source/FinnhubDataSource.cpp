@@ -298,12 +298,11 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateStockProfile(flag); };
 	const std::string finishedMsg = "Finnhub company profile basic updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		COMPANY_PROFILE_CONCISE_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -324,12 +323,11 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateCompanyNews(flag); };
 	const std::string finishedMsg = "Finnhub company news updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		COMPANY_NEWS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -350,12 +348,11 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateStockBasicFinancial(flag); };
 	const std::string finishedMsg = "Finnhub basic financial updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		BASIC_FINANCIALS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -376,12 +373,11 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateStockDayLine(flag); };
 	const std::string finishedMsg = "Finnhub dayline updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		STOCK_PRICE_CANDLES_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -402,12 +398,11 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateInsiderTransaction(flag); };
 	const std::string finishedMsg = "Finnhub Insider Transaction updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		INSIDER_TRANSACTION_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -428,12 +423,11 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateInsiderSentiment(flag); };
 	const std::string finishedMsg = "Finnhub Insider Sentiment updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		INSIDER_SENTIMENT_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -469,12 +463,11 @@ bool CFinnhubDataSource::GeneratePeer() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdatePeer(flag); };
 	const std::string finishedMsg = "Finnhub Peer Updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		PEERS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -506,12 +499,11 @@ bool CFinnhubDataSource::GenerateEPSSurprise() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateEPSSurprise(flag); };
 	const std::string finishedMsg = "Finnhub EPS Surprise Updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		STOCK_ESTIMATES_EPS_SURPRISE_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
@@ -532,12 +524,11 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateSECFilings(flag); };
 	const std::string finishedMsg = "Finnhub SEC Filings Updated";
 
-	return GenerateInquiryIterateWithAccessCheck(
+	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerFinnhubStock,
 		SEC_FILINGS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
-		s_isAccessible,
 		createProduct,
 		s_setIndex,
 		setMessage,
