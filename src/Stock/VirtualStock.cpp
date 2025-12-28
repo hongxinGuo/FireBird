@@ -21,6 +21,7 @@ void CVirtualStock::ResetAllUpdateDate() {
 }
 
 void CVirtualStock::UpdateJsonUpdateDate() {
+	m_jsonUpdateDate["ShareOutstanding"] = m_dShareCount;
 	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate;
 	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate;
 	json jsStockSplit = json::array();
@@ -34,6 +35,7 @@ void CVirtualStock::UpdateJsonUpdateDate() {
 }
 
 void CVirtualStock::UpdateAllUpdateDate() {
+	m_dShareCount = m_jsonUpdateDate.value("ShareOutstanding", 0.0);
 	m_lDayLineStartDate = m_jsonUpdateDate["DayLineStartDate"];
 	m_lDayLineEndDate = m_jsonUpdateDate["DayLineEndDate"];
 

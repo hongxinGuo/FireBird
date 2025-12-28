@@ -72,6 +72,7 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry("");
+			m_pStock->SetShareOutstanding(0);
 			m_pWebData = pData->m_pData;
 			m_FinnhubCompanyProfileConcise.Test_checkAccessRight_(m_pWebData);
 
@@ -101,6 +102,9 @@ namespace FireBirdTest {
 		                         &finnhubWebData1, &finnhubWebData12,&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
 
 	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
+		CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_pStock->GetSymbol());
+		pTiingoStock->SetShareCount(0);
+		pTiingoStock->SetUpdateProfileDB(false);
 		m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
@@ -108,18 +112,24 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareCount(), 0);
+			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_TRUE(m_pStock->GetExchangeCode()== "US") << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareCount(), 0);
+			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
 			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(m_pStock->GetExchangeCode()== "US") << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareCount(), 0) << "股本数据更新为Finnhub的数据";
+			EXPECT_FALSE(pTiingoStock->IsUpdateProfileDB());
 			break;
 		case 3: // 缺乏address项
 			EXPECT_TRUE(m_pStock->GetExchangeCode()== "US") << "交易所代码不使用读取的数据";
@@ -127,12 +137,16 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareCount(), 0) << "股本数据更新为Finnhub的数据";
+			EXPECT_FALSE(pTiingoStock->IsUpdateProfileDB());
 			break;
 		case 4: // 空数据
 			EXPECT_TRUE(m_pStock->GetExchangeCode()== "US") << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareCount(), 0) << "股本数据更新为Finnhub的数据";
+			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_TRUE(m_pStock->GetExchangeCode()== "US") << "交易所代码不使用读取的数据";
@@ -141,9 +155,12 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareCount(), 16788.096) << "股本数据更新为Finnhub的数据";
+			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
 			break;
 		default:
 			break;
 		}
+		pTiingoStock->SetUpdateProfileDB(false);
 	}
 }

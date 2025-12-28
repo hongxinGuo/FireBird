@@ -113,6 +113,9 @@ public:
 	void SetDayLineStartDate(const long lDate) noexcept { m_lDayLineStartDate = lDate; }
 	long GetDayLineEndDate() const noexcept { return m_lDayLineEndDate; }
 	void SetDayLineEndDate(const long lDate) noexcept { m_lDayLineEndDate = lDate; }
+	// Getter and Setter for m_dShareOutstanding
+	double GetShareCount() const { return m_dShareCount; }
+	void SetShareCount(double val) { m_dShareCount = val; }
 
 	size_t GetStockSplitCount() const noexcept { return m_vStockSplit.size(); }
 	CStockSplitPtr GetStockSplit(size_t index) const noexcept { return m_vStockSplit.at(index); }
@@ -228,6 +231,7 @@ protected:
 	long m_lDayLineStartDate{ 29900101 }; // 日线历史数据的起始日期。格式：YYYYMMDD
 	long m_lDayLineEndDate{ 19800101 }; // 日线历史数据的结束日期。格式：YYYYMMDD
 	vector<CStockSplitPtr> m_vStockSplit;
+	double m_dShareCount{ 0.0 }; // 股本数量, 单位：百万股。从Finnhub获取。
 
 	// 实时数据区
 	std::chrono::sys_seconds m_tpTime{};// 实时数据交易时间
