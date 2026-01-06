@@ -11,7 +11,6 @@ enum configuration_option {
 	TIINGO_DATA_SOURCE_ENABLE_
 };
 
-
 class CPropertiesToolBar : public CMFCToolBar {
 public:
 	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler); }
@@ -85,6 +84,7 @@ protected:
 
 	// china market
 	CGridProperty* m_pPropChinaMarketWebStatus{ nullptr };
+	CGridProperty* m_pPropChinaMarketThreadStatus{ nullptr };
 
 	// world market
 	CGridProperty* m_pPropWorldMarketWebStatus{ nullptr };

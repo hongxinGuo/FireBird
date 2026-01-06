@@ -61,9 +61,12 @@ public:
 	bool TaskProcessTodayStock(long lCurrentTime);
 
 	void ProcessTodayStock();
-	bool IsTaskOfSavingDayLineDBFinished();
+	bool IsSavingDayLineDBTaskFinished();
 	bool CheckFastReceivingData(long lCurrentTime);
 	static bool IsWebBusy();
+	long long GetHTTPStatus();
+	bool IsWebError();
+	long long GetWebErrorCode();
 	bool CheckMarketOpen(long lCurrentTime);
 
 	bool TaskUpdateStockProfileDB(long lCurrentTime);
@@ -141,7 +144,7 @@ public:
 	bool Load10DaysRSStrongStockDB();
 	bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
-	virtual bool BuildWeekLineOfCurrentWeek();
+	virtual bool BuildCurrentWeekLine();
 	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandleExtendPtr>* pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(); // 使用周线表构建当前周周线表
 

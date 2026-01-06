@@ -156,4 +156,5 @@ public:
 	afx_msg void OnTiingoFixDayLine();
 	afx_msg void OnCalculateNasdaq100200maUpdownRate();
 	afx_msg void OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI);
+	afx_msg void OnTiingoRebuildStockSplit();
 };

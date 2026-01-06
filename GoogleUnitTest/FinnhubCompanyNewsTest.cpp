@@ -70,17 +70,19 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
 	}
 
-	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebDataCompanyNews2(2, "AAPL", R"({"category":"company news","datetime":1569550360,"headline":"More","id":25286,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"}])");
+	namespace {
+		// 格式不对(缺开始的‘[’），无法顺利Parser
+		Test_FinnhubWebData finnhubWebDataCompanyNews2(2, "AAPL", R"({"category":"company news","datetime":1569550360,"headline":"More","id":25286,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"}])");
 
-	// 数据缺乏category项
-	Test_FinnhubWebData finnhubWebDataCompanyNews3(3, "AAPL", R"([{"missing":"company news","datetime":1569550360,"headline":"More","id":25286,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"}])");
-	// 空数据
-	Test_FinnhubWebData finnhubWebDataCompanyNews4(4, "AAPL", "{}");
-	// 无权利访问
-	Test_FinnhubWebData finnhubWebDataCompanyNews5(5, "AAPL", R"({"error":"You don't have access to this resource."})");
-	// 正确的数据
-	Test_FinnhubWebData finnhubWebDataCompanyNews10(10, "AAPL", R"([{"category":"company news","datetime":1,"headline":"More","id":25286,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"},{"category":"company news","datetime":1569550361,"headline":"More2","id":25287,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI2","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"}])");
+		// 数据缺乏category项
+		Test_FinnhubWebData finnhubWebDataCompanyNews3(3, "AAPL", R"([{"missing":"company news","datetime":1569550360,"headline":"More","id":25286,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"}])");
+		// 空数据
+		Test_FinnhubWebData finnhubWebDataCompanyNews4(4, "AAPL", "{}");
+		// 无权利访问
+		Test_FinnhubWebData finnhubWebDataCompanyNews5(5, "AAPL", R"({"error":"You don't have access to this resource."})");
+		// 正确的数据
+		Test_FinnhubWebData finnhubWebDataCompanyNews10(10, "AAPL", R"([{"category":"company news","datetime":1,"headline":"More","id":25286,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"},{"category":"company news","datetime":1569550361,"headline":"More2","id":25287,"image":"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg","related":"AAPL","source":"The Economic Times India","summary":"NEW DELHI2","url":"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms"}])");
+	}
 
 	class ProcessFinnhubStockCompanyNewsTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

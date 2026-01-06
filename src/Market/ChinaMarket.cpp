@@ -812,7 +812,7 @@ void CChinaMarket::ProcessTodayStock() {
 		// 计算本日日线相对强度
 		gl_dataContainerChinaStock.BuildDayLineRS(lDate);
 		// 生成周线数据
-		BuildWeekLineOfCurrentWeek();
+		BuildCurrentWeekLine();
 		gl_dataContainerChinaStock.BuildWeekLineRS(GetCurrentMonday(lDate));
 		gl_dataContainerChinaStock.UpdateStockProfileDB();
 		if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
@@ -824,7 +824,7 @@ void CChinaMarket::ProcessTodayStock() {
 	gl_systemMessage.PushInformationMessage(s);
 }
 
-bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
+bool CChinaMarket::IsSavingDayLineDBTaskFinished() {
 	static atomic_bool s_bTaskOfSavingDayLineFinished = false;
 	if (s_bTaskOfSavingDayLineFinished) {
 		if ((!gl_dataContainerChinaStock.IsUpdateDayLineDB()) && (!gl_dataContainerChinaStock.IsUpdateDayLine()) && (!IsDayLineNeedProcess())) {
@@ -885,6 +885,63 @@ bool CChinaMarket::IsWebBusy() {
 	}
 	s_bWebBusy = bWebBusy;
 	return bWebBusy;
+}
+
+long long CChinaMarket::GetHTTPStatus() {
+	long long httpStatus = 200;
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case 0: // 新浪实时数据
+		httpStatus = gl_pSinaRTDataSource->GetHTTPStatusCode();
+		break;
+	case 1: // 更新网易实时数据读取时间
+		httpStatus = gl_pNeteaseRTDataSource->GetHTTPStatusCode();
+		break;
+	case 2: // 更新腾讯实时数据读取时间
+		httpStatus = gl_pTengxunRTDataSource->GetHTTPStatusCode();
+		break;
+	default: // error
+		ASSERT(0);
+		break;
+	}
+	return httpStatus;
+}
+
+bool CChinaMarket::IsWebError() {
+	bool webError = false;
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case 0: // 新浪实时数据
+		webError = gl_pSinaRTDataSource->IsWebError();
+		break;
+	case 1: // 更新网易实时数据读取时间
+		webError = gl_pNeteaseRTDataSource->IsWebError();
+		break;
+	case 2: // 更新腾讯实时数据读取时间
+		webError = gl_pTengxunRTDataSource->IsWebError();
+		break;
+	default: // error
+		ASSERT(0);
+		break;
+	}
+	return webError;
+}
+
+long long CChinaMarket::GetWebErrorCode() {
+	long long errorCode = 0;
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case 0: // 新浪实时数据
+		errorCode = gl_pSinaRTDataSource->GetWebErrorCode();
+		break;
+	case 1: // 更新网易实时数据读取时间
+		errorCode = gl_pNeteaseRTDataSource->GetWebErrorCode();
+		break;
+	case 2: // 更新腾讯实时数据读取时间
+		errorCode = gl_pTengxunRTDataSource->GetWebErrorCode();
+		break;
+	default: // error
+		ASSERT(0);
+		break;
+	}
+	return errorCode;
 }
 
 bool CChinaMarket::CheckMarketOpen(long lCurrentTime) {
@@ -1009,7 +1066,7 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 		}
 	});
 
-	if (!IsTaskOfSavingDayLineDBFinished()) {// 当尚未更新完日线历史数据时
+	if (!IsSavingDayLineDBTaskFinished()) {// 当尚未更新完日线历史数据时
 		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(lCurrentTime, 0, 0, 10));
 	}
 }
@@ -1019,7 +1076,7 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 // 使用当前日期的日线数据生成本周的周线数据。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
+bool CChinaMarket::BuildCurrentWeekLine() {
 	CContainerChinaDayLine dataChinaDayLine;
 	CContainerChinaWeekLine dataChinaWeekLine;
 	set<string> setDayLineStockCode;

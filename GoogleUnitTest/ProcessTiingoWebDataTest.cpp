@@ -40,27 +40,28 @@ namespace FireBirdTest {
 		string m_pData;
 	};
 
-	TiingoWebSocketData tiingoForexData1(1, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"eurnok\",\"2019-07-05T15:49:15.157000+00:00\",5000000.0,9.6764,9.678135,5000000.0,9.67987]}");
-	TiingoWebSocketData tiingoForexData2(2, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	TiingoWebSocketData tiingoForexData4(4, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	TiingoWebSocketData tiingoForexData5(5, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// data名称错为'dta'
-	TiingoWebSocketData tiingoForexData6(6, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"dta\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// data首项必须为‘fx'
-	TiingoWebSocketData tiingoForexData7(7, "", "{\"messageType\":\"A\",\"service\":\"ifx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// messageType错误
-	TiingoWebSocketData tiingoForexData8(8, "", "{\"messageType\":\"B\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// json格式错误
-	TiingoWebSocketData tiingoForexData9(9, "", "\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// heart beat
-	TiingoWebSocketData tiingoForexData10(
-		10, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
-	// authentication
-	TiingoWebSocketData tiingoForexData11(11, "", "{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}");
-	// subscribe
-	TiingoWebSocketData tiingoForexData12(12, "", "{\"data\":{\"tickers\":[\"*\",\"FXCM:EUR/USD\",\"IC MARKETS:2\",\"OANDA:USD_JPY\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
-	// error message
-	TiingoWebSocketData tiingoForexData13(13, "", "{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}");
+	namespace {
+		TiingoWebSocketData tiingoForexData1(1, "", R"({"messageType":"A","service":"fx","data":["Q","eurnok","2019-07-05T15:49:15.157000+00:00",5000000.0,9.6764,9.678135,5000000.0,9.67987]})");
+		TiingoWebSocketData tiingoForexData2(2, "", R"({"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]})");
+		TiingoWebSocketData tiingoForexData4(4, "", R"({"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]})");
+		TiingoWebSocketData tiingoForexData5(5, "", R"({"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]})");
+		// data名称错为'dta'
+		TiingoWebSocketData tiingoForexData6(6, "", R"({"messageType":"A","service":"fx","dta":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]})");
+		// data首项必须为‘fx'
+		TiingoWebSocketData tiingoForexData7(7, "", R"({"messageType":"A","service":"ifx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]})");
+		// messageType错误
+		TiingoWebSocketData tiingoForexData8(8, "", R"({"messageType":"B","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]})");
+		// json格式错误
+		TiingoWebSocketData tiingoForexData9(9, "", R"("messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]})");
+		// heart beat
+		TiingoWebSocketData tiingoForexData10(10, "", R"({"messageType":"H","response":{"code":200,"message":"HeartBeat"}})");
+		// authentication
+		TiingoWebSocketData tiingoForexData11(11, "", R"({"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}})");
+		// subscribe
+		TiingoWebSocketData tiingoForexData12(12, "", R"({"data":{"tickers":["*","FXCM:EUR/USD","IC MARKETS:2","OANDA:USD_JPY"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}})");
+		// error message
+		TiingoWebSocketData tiingoForexData13(13, "", R"({"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid"}})");
+	}
 
 	class ProcessOneTiingoForexWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
@@ -152,25 +153,26 @@ namespace FireBirdTest {
 		}
 	}
 
-	TiingoWebSocketData tiingoCryptoData1(1, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
-	TiingoWebSocketData tiingoCryptoData2(2, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"T\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}");
-	// heart beat
-	TiingoWebSocketData tiingoCryptoData3(
-		3, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
-	// authentication
-	TiingoWebSocketData tiingoCryptoData4(4, "", "{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}");
-	// messageType必须为'A' 'H' 或者'I'
-	TiingoWebSocketData tiingoCryptoData5(5, "", "{\"messageType\":\"B\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
-	// data错为'dta'
-	TiingoWebSocketData tiingoCryptoData6(6, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"dta\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
-	// data第一项必须为'Q'或者'T'
-	TiingoWebSocketData tiingoCryptoData7(7, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"A\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}");
-	// json格式错误
-	TiingoWebSocketData tiingoCryptoData9(9, "", "\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
-	// subscribe
-	TiingoWebSocketData tiingoCryptoData10(10, "", "{\"data\":{\"tickers\":[\"*\",\"BINANCE:IDEXBUSD\",\"BITTREX:USDT-ADA\",\"HITBTC:XRPEOS\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
-	// error message
-	TiingoWebSocketData tiingoCryptoData11(11, "", "{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}");
+	namespace {
+		TiingoWebSocketData tiingoCryptoData1(1, "", R"({"messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]})");
+		TiingoWebSocketData tiingoCryptoData2(2, "", R"({"messageType":"A","service":"crypto_data","data":["T","evxbtc","2019-01-30T18:03:40.056000+00:00","binance",405.0,9.631e-05]})");
+		// heart beat
+		TiingoWebSocketData tiingoCryptoData3(3, "", R"({"messageType":"H","response":{"code":200,"message":"HeartBeat"}})");
+		// authentication
+		TiingoWebSocketData tiingoCryptoData4(4, "", R"({"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}})");
+		// messageType必须为'A' 'H' 或者'I'
+		TiingoWebSocketData tiingoCryptoData5(5, "", R"({"messageType":"B","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]})");
+		// data错为'dta'
+		TiingoWebSocketData tiingoCryptoData6(6, "", R"({"messageType":"A","service":"crypto_data","dta":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]})");
+		// data第一项必须为'Q'或者'T'
+		TiingoWebSocketData tiingoCryptoData7(7, "", R"({"messageType":"A","service":"crypto_data","data":["A","evxbtc","2019-01-30T18:03:40.056000+00:00","binance",405.0,9.631e-05]})");
+		// json格式错误
+		TiingoWebSocketData tiingoCryptoData9(9, "", R"("messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]})");
+		// subscribe
+		TiingoWebSocketData tiingoCryptoData10(10, "", R"({"data":{"tickers":["*","BINANCE:IDEXBUSD","BITTREX:USDT-ADA","HITBTC:XRPEOS"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}})");
+		// error message
+		TiingoWebSocketData tiingoCryptoData11(11, "", R"({"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid"}})");
+	}
 
 	class ProcessOneTiingoCryptoWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
@@ -276,7 +278,7 @@ namespace FireBirdTest {
 
 	// 正确数据
 	TiingoWebSocketData tiingoIEXData1(1, "", "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",\"vym\",85.025]}");
-	TiingoWebSocketData tiingoIEXData2(2, "","{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.594808294-05:00\",\"wes\",50.123]}");
+	TiingoWebSocketData tiingoIEXData2(2, "", "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.594808294-05:00\",\"wes\",50.123]}");
 	// authentication
 	TiingoWebSocketData tiingoIEXData3(3, "", "{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
 	// Heart beat
@@ -288,9 +290,9 @@ namespace FireBirdTest {
 	// service错为servi
 	TiingoWebSocketData tiingoIEXData8(8, "", "{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}");
 	// json格式错误
-	TiingoWebSocketData tiingoIEXData9(9, "","\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",81.58]}");
+	TiingoWebSocketData tiingoIEXData9(9, "", "\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",81.58]}");
 	// subscribe
-	TiingoWebSocketData tiingoIEXData10(10, "","{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
+	TiingoWebSocketData tiingoIEXData10(10, "", "{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
 	// error message
 	TiingoWebSocketData tiingoIEXData11(11, "", "{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}");
 

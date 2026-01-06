@@ -3,6 +3,7 @@
 #include "AccessoryDataSource.h"
 
 #include "FinnhubInquiryType.h"
+#include "spdlog_assert.h"
 #include "WorldMarket.h"
 
 CAccessoryDataSource::CAccessoryDataSource() {
@@ -30,16 +31,16 @@ bool CAccessoryDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 	m_PrevInquireTimePoint = llTickCount;
 
-	ASSERT(!IsInquiring());
+	SPDLOG_ASSERT(!IsInquiring());
 
 	if (GenerateIndexNasdaq100Stocks()) return true;
 
-	ASSERT(!IsInquiring());
+	SPDLOG_ASSERT(!IsInquiring());
 	return false;
 }
 
 bool CAccessoryDataSource::GenerateIndexNasdaq100Stocks() {
-	ASSERT(!IsInquiring());
+	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateIndexNasdaq100Stocks()) {
 		const CVirtualProductWebDataPtr p = m_AccessoryFactory.CreateProduct(gl_pWorldMarket, ACCESSORY_INDEX_NASDAQ100_STOCKS);
 		StoreInquiry(p);

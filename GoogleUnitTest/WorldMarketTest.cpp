@@ -138,7 +138,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateProfileDB(false);
 		}
@@ -407,10 +407,9 @@ namespace FireBirdTest {
 			gl_dataContainerFinnhubStock.UpdateProfileDB();
 		} catch (std::exception& e) {
 			EXPECT_TRUE(false) << e.what();
-		}
-		catch (CException&) {
-		}
-		catch (...) {
+		} catch (CException& e) {
+			EXPECT_TRUE(false);
+		} catch (...) {
 			EXPECT_TRUE(false) << "未知exception";
 			ASSERT_FALSE(true);
 		}
@@ -457,7 +456,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateDayLineDB(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateFinnhubStockDayLineDB());
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(i)->IsUpdateDayLineDB()) << "此标识被重置";
 		}
 	}
@@ -848,7 +847,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {
 		CFinnhubStockPtr pStock;
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetLastEPSSurpriseUpdateDate(20200101);
 			pStock->m_fUpdateEPSSurprise = false;
@@ -857,7 +856,7 @@ namespace FireBirdTest {
 
 		gl_pWorldMarket->RebuildEPSSurprise();
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
 			EXPECT_TRUE(pStock->m_fUpdateEPSSurprise);
@@ -867,7 +866,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildPeer) {
 		CFinnhubStockPtr pStock;
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetPeerUpdateDate(20200101);
 			pStock->SetUpdatePeer(false);
@@ -877,7 +876,7 @@ namespace FireBirdTest {
 
 		gl_pWorldMarket->RebuildPeer();
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), 19800101);
 			EXPECT_TRUE(pStock->IsUpdatePeer());
@@ -885,7 +884,7 @@ namespace FireBirdTest {
 		}
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdatePeer());
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdatePeer(true);
 			pStock->SetUpdateProfileDB(false);
@@ -894,7 +893,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildStockDayLine) {
 		CFinnhubStockPtr pStock;
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetIPOStatus(_STOCK_IPOED_);
 			pStock->SetDayLineStartDate(20200101);
@@ -906,7 +905,7 @@ namespace FireBirdTest {
 
 		gl_pWorldMarket->RebuildStockDayLineDB();
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			EXPECT_EQ(pStock->GetDayLineStartDate(), 29900101);
 			EXPECT_EQ(pStock->GetDayLineEndDate(), 19800101);
@@ -915,7 +914,7 @@ namespace FireBirdTest {
 		}
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockProfile());
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock->SetUpdateProfileDB(false);
 		}

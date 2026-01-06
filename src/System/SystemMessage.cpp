@@ -147,14 +147,16 @@ map<long, string> gl_mapNetError{
 	{ ERROR_HTTP_REDIRECT_FAILED, "The redirection failed because either the scheme changed(for example, HTTP to FTP) or all attempts made to redirect	failed(default is five attempts)." },
 };
 
-static binary_semaphore s_RTDataStockCode{ 1 };
-static binary_semaphore s_DayLineDataStockCode{ 1 };
-static binary_semaphore s_CurrentFinnhubWebSocketStake{ 1 };
-static binary_semaphore s_CurrentTiingoWebSocketIEX{ 1 };
-static binary_semaphore s_CurrentTiingoWebSocketCrypto{ 1 };
-static binary_semaphore s_CurrentTiingoWebSocketForex{ 1 };
-static binary_semaphore s_sReadCurrentFinnhubFunction{ 1 };
-static binary_semaphore s_sReadCurrentTiingoFunction{ 1 };
+namespace {
+	binary_semaphore s_RTDataStockCode{ 1 };
+	binary_semaphore s_DayLineDataStockCode{ 1 };
+	binary_semaphore s_CurrentFinnhubWebSocketStake{ 1 };
+	binary_semaphore s_CurrentTiingoWebSocketIEX{ 1 };
+	binary_semaphore s_CurrentTiingoWebSocketCrypto{ 1 };
+	binary_semaphore s_CurrentTiingoWebSocketForex{ 1 };
+	binary_semaphore s_sReadCurrentFinnhubFunction{ 1 };
+	binary_semaphore s_sReadCurrentTiingoFunction{ 1 };
+}
 
 CSystemDeque::CSystemDeque() = default;
 
@@ -284,11 +286,9 @@ void CSystemDeque::PushMessage(const string& str) {
 }
 
 string CSystemDeque::PopMessage() {
-	string str;
-	if (m_queueMessage.try_dequeue(str)) {
-		return str;
-	}
-	else return "";
+	string str = "";
+	m_queueMessage.try_dequeue(str);
+	return str;
 }
 
 size_t CSystemDeque::Size() const {

@@ -332,7 +332,9 @@ long GetPrevTime(long lTime, long hh, long mm, long ss) {
 	return hEnd * 10000 + mEnd * 100 + sEnd;
 }
 
-void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) { gmtime_s(tm_, tUTC); }
+void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) {
+	gmtime_s(tm_, tUTC);
+}
 
 void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	time_t tMarket;

@@ -5,8 +5,6 @@
 #include"AccessoryDataSource.h"
 #include"ProductIndexNasdaq100Stocks.h"
 
-#include"WebData.h"
-
 using namespace testing;
 
 namespace FireBirdTest {

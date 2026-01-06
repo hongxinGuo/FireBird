@@ -13,6 +13,7 @@
 #include"WebData.h"
 
 #include "InfoReport.h"
+#include "spdlog_assert.h"
 
 CInquireEngine::CInquireEngine() : m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
@@ -20,6 +21,7 @@ CInquireEngine::CInquireEngine() : m_dataBuffer{} {
 
 CInquireEngine::CInquireEngine(const InternetOption& option, const string& strInquire, const string& strHeaders) : m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
+	//m_pSession = make_shared<CInternetSession>(); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, option.option_data_receive_timeout);
@@ -36,7 +38,7 @@ CInquireEngine::CInquireEngine(const InternetOption& option, const string& strIn
 }
 
 void CInquireEngine::ConfigureSession(const InternetOption& option) const {
-	ASSERT(m_pSession != nullptr);
+	SPDLOG_ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, option.option_data_receive_timeout);
@@ -101,13 +103,13 @@ CWebDataPtr CInquireEngine::GetWebData() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInquireEngine::OpenFile() {
 	const wstring str = Utf8ToWstring(m_strHeaders);
-	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(Utf8ToWstring(m_strInquiry).c_str(), 1,
-	                                                      INTERNET_FLAG_TRANSFER_ASCII,
-	                                                      str.c_str(), str.length()));
+	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(Utf8ToWstring(m_strInquiry).c_str(), 1,
+	                                                       INTERNET_FLAG_TRANSFER_ASCII,
+	                                                       str.c_str(), str.length()));
 }
 
 void CInquireEngine::GetFileHeaderInformation() {
-	ASSERT(m_pFile != nullptr);
+	SPDLOG_ASSERT(m_pFile != nullptr);
 	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
 	CString strContentType;
 	if (m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, strContentType)) {
@@ -127,7 +129,7 @@ void CInquireEngine::QueryDataLength() {
 	CString strLength;
 	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, strLength);
 	m_lContentLength = _wtol(strLength);
-	ASSERT(m_lContentLength >= 0);
+	SPDLOG_ASSERT(m_lContentLength >= 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +147,7 @@ UINT CInquireEngine::ReadWebFileOneTime() {
 // release编译模式下，使用memcpy函数完成，耗时120纳秒。
 //
 void CInquireEngine::XferReadingToBuffer(UINT uByteRead) {
-	ASSERT(m_sBuffer.size() > m_lByteRead + uByteRead);
+	SPDLOG_ASSERT(m_sBuffer.size() > m_lByteRead + uByteRead);
 	memcpy(m_sBuffer.data() + m_lByteRead, m_dataBuffer, uByteRead);
 }
 
@@ -176,7 +178,7 @@ void CInquireEngine::VerifyDataLength() const {
 }
 
 void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
+	SPDLOG_ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
 	m_sBuffer.resize(m_lByteRead); //Note 设置缓冲区大小为实际数据量，抛弃掉最后的字符0x000. 切记
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 	pWebData->m_svDataBuffer = string_view(pWebData->m_sDataBuffer); //Note 同时创建string_view

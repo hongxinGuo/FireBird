@@ -15,16 +15,18 @@ namespace FireBirdTest {
 		string m_strData;
 	};
 
-	CheckNeteaseDayLineInquiryStrData Data1(1, "0600000");
-	CheckNeteaseDayLineInquiryStrData Data2(2, "1000001");
-	// 无效上海股票代码
-	CheckNeteaseDayLineInquiryStrData Data3(3, "0700000");
-	CheckNeteaseDayLineInquiryStrData Data4(4, "0400000");
-	CheckNeteaseDayLineInquiryStrData Data5(5, "0400000");
-	// 无效深圳股票代码
-	CheckNeteaseDayLineInquiryStrData Data6(6, "1400000");
-	CheckNeteaseDayLineInquiryStrData Data7(7, "1400000");
-	CheckNeteaseDayLineInquiryStrData Data8(8, "1400000");
+	namespace {
+		CheckNeteaseDayLineInquiryStrData Data1(1, "0600000");
+		CheckNeteaseDayLineInquiryStrData Data2(2, "1000001");
+		// 无效上海股票代码
+		CheckNeteaseDayLineInquiryStrData Data3(3, "0700000");
+		CheckNeteaseDayLineInquiryStrData Data4(4, "0400000");
+		CheckNeteaseDayLineInquiryStrData Data5(5, "0400000");
+		// 无效深圳股票代码
+		CheckNeteaseDayLineInquiryStrData Data6(6, "1400000");
+		CheckNeteaseDayLineInquiryStrData Data7(7, "1400000");
+		CheckNeteaseDayLineInquiryStrData Data8(8, "1400000");
+	}
 
 	class CheckNeteaseDayLineInquiryStrTest : public::testing::TestWithParam<CheckNeteaseDayLineInquiryStrData*> {
 	protected:

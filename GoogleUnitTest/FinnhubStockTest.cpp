@@ -1506,6 +1506,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCompanyNewsUpdated) {
+		stock.SetShareOutstanding(1);
+		stock.SetMarketCapitalization(2);
 		stock.SetCompanyNewsUpdateDate(20220101);
 		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220102));
 		stock.SetUpdateCompanyNews(true);
@@ -1514,5 +1516,18 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220108)) << "每周检查一次公司新闻";
 		stock.SetUpdateCompanyNews(true);
 		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220110));
+	}
+
+	TEST_F(CFinnhubStockTest, TestCheckCompanyNewsUpdated2) {
+		stock.SetShareOutstanding(0);
+		stock.SetMarketCapitalization(0);
+		stock.SetCompanyNewsUpdateDate(20220101);
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220102));
+		stock.SetUpdateCompanyNews(true);
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220131)) << "只有六天";
+		stock.SetUpdateCompanyNews(true);
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220201)) << "未上市或退市股票每月检查一次公司新闻";
+		stock.SetUpdateCompanyNews(true);
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220202));
 	}
 }

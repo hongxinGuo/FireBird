@@ -40,26 +40,22 @@ namespace FireBirdTest {
 		string m_pData;
 	};
 
-	// 正确数据
-	FinnhubWebSocketData finnhubWebSocketData141(
-		1, "{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"A\",\"t\":1628238530220,\"v\":1}],\"type\":\"trade\"}");
-	// 正确的ping数据格式
-	FinnhubWebSocketData finnhubWebSocketData142(2, "{\"type\":\"ping\"}");
-	// json格式错误，缺少开始的{， 返回错误
-	FinnhubWebSocketData finnhubWebSocketData143(
-		3, "\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\",\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1},\"type\":\"trade\"}");
-	// type只能是"trade","ping"或者"error"
-	FinnhubWebSocketData finnhubWebSocketData144(
-		4, "{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"message\"}");
-	// 正确的error数据格式
-	FinnhubWebSocketData finnhubWebSocketData145(
-		5, "{\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}");
-	// 正确数据,但condition项为空
-	FinnhubWebSocketData finnhubWebSocketData146(
-		6, "{\"data\":[{\"c\":[],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"A\",\"t\":1628238530220,\"v\":1}],\"type\":\"trade\"}");
-	// "dta"非法数据
-	FinnhubWebSocketData finnhubWebSocketData149(
-		9, "{\"dta\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}");
+	namespace {
+		// 正确数据
+		FinnhubWebSocketData finnhubWebSocketData141(1, R"({"data":[{"c":["1","24","12"],"p":146.76,"s":"AAPL","t":1628238530221,"v":43},{"c":["1","24","12"],"p":146.75,"s":"A","t":1628238530220,"v":1}],"type":"trade"})");
+		// 正确的ping数据格式
+		FinnhubWebSocketData finnhubWebSocketData142(2, R"({"type":"ping"})");
+		// json格式错误，缺少开始的{， 返回错误
+		FinnhubWebSocketData finnhubWebSocketData143(3, R"("data":[{"c":["1","24","12"],"p":146.76,"s":"AAPL","t":1628238530221,"v":43},{"c":["1","24","12","p":146.75,"s":"AAPL","t":1628238530221,"v":1},"type":"trade"})");
+		// type只能是"trade","ping"或者"error"
+		FinnhubWebSocketData finnhubWebSocketData144(4, R"({"data":[{"c":["1","24","12"],"p":146.76,"s":"AAPL","t":1628238530221,"v":43},{"c":["1","24","12"],"p":146.75,"s":"AAPL","t":1628238530221,"v":1}],"type":"message"})");
+		// 正确的error数据格式
+		FinnhubWebSocketData finnhubWebSocketData145(5, R"({"msg":"Subscribing to too many symbols","type":"error"})");
+		// 正确数据,但condition项为空
+		FinnhubWebSocketData finnhubWebSocketData146(6, R"({"data":[{"c":[],"p":146.76,"s":"AAPL","t":1628238530221,"v":43},{"c":["1","24","12"],"p":146.75,"s":"A","t":1628238530220,"v":1}],"type":"trade"})");
+		// "dta"非法数据
+		FinnhubWebSocketData finnhubWebSocketData149(9, R"({"dta":[{"c":["1","24","12"],"p":146.76,"s":"AAPL","t":1628238530221,"v":43},{"c":["1","24","12"],"p":146.75,"s":"AAPL","t":1628238530221,"v":1}],"type":"trade"})");
+	}
 
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*> {
 	protected:
@@ -74,7 +70,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			// clearUp
+			// clearUp 
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -99,13 +95,13 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == "AAPL");
-		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
+			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.76);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 43);
 			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530221);
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == "A");
-		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
+			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.75);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 1);
 			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530220);
@@ -135,14 +131,14 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == "AAPL");
-		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
+			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.76);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 43);
 			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530221);
 			EXPECT_EQ(pFinnhubWebSocket->m_vCode.size(), 0) << "c项为null";
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == "A");
-		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
+			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, ""); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.75);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 1);
 			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530220);

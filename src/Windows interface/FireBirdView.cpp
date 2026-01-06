@@ -251,7 +251,7 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
 	CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
 	auto oldTextColor = pDC->SetTextColor(RGB(255, 255, 255));
 	pDC->SetBkColor(RGB(0, 0, 0));
-	wstring wstr = Utf8ToWstring(strDate) + Utf8ToWstring(strValue); //Note: Windows GDI TextOutW 使用宽字符
+	wstring wstr = Utf8ToWstring(strDate + strValue); //Note: Windows GDI TextOutW 使用宽字符
 	pDC->TextOutW(0, 0, wstr.c_str(), static_cast<int>(wstr.size()));
 	pDC->SetTextColor(oldTextColor);
 
@@ -748,8 +748,7 @@ void CFireBirdView::OnShowIndicatorRs() {
 void CFireBirdView::OnUpdateShowIndicatorRs(CCmdUI* pCmdUI) {
 	auto pStock = GetDocument()->GetCurrentStock();
 
-	if (pStock == nullptr) SysCallCmdUIEnable(pCmdUI, false);
-	else if (!IsChinaStock(pStock)) SysCallCmdUIEnable(pCmdUI, false);
+	if (pStock == nullptr || !IsChinaStock(pStock)) SysCallCmdUIEnable(pCmdUI, false);
 	else SysCallCmdUIEnable(pCmdUI, true);
 
 	if (m_iShowIndicator == SHOW_INDICATOR_RS_) SysCallCmdUISetCheck(pCmdUI, 1);

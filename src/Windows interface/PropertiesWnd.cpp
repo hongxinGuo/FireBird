@@ -299,9 +299,12 @@ void CPropertiesWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup2 = new CGridProperty(_T("China market"));
 
-	m_pPropChinaMarketWebStatus = new CGridProperty(_T("Status:"), _T(""));
+	m_pPropChinaMarketWebStatus = new CGridProperty(_T("Web status:"), _T(""));
 	m_pPropChinaMarketWebStatus->Enable(false);
 	pGroup2->AddSubItem(m_pPropChinaMarketWebStatus);
+	m_pPropChinaMarketThreadStatus = new CGridProperty(_T("Thread status:"), _T(""));
+	m_pPropChinaMarketThreadStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropChinaMarketThreadStatus);
 
 	m_wndPropList.AddProperty(pGroup2);
 
@@ -383,12 +386,17 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	m_pPropCurrentWorkingThread->SetValue(s); // 后台工作线程数
 
-	/*
-	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetValue("Busy");
-	else m_pPropChinaMarketWebStatus->SetValue("good");
-	*/
-	if (gl_ThreadStatus.IsSavingChinaMarketThreadRunning()) m_pPropChinaMarketWebStatus->SetValue("Thread running");
-	else m_pPropChinaMarketWebStatus->SetValue("idle");
+	// china market web status
+	if (gl_pChinaMarket->IsWebError()) {
+		s = fmt::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetHTTPStatus(), gl_pChinaMarket->GetWebErrorCode());
+	}
+	else {
+		s = fmt::format("HTTP: {:d}", gl_pChinaMarket->GetHTTPStatus());
+	}
+	m_pPropChinaMarketWebStatus->SetValue(s);
+	// china market thread status
+	if (gl_ThreadStatus.IsSavingChinaMarketThreadRunning()) m_pPropChinaMarketThreadStatus->SetValue("Thread running");
+	else m_pPropChinaMarketThreadStatus->SetValue("idle");
 
 	if (gl_pChinaMarket->IsWebBusy()) {
 		m_pPropWorldMarketWebStatus->SetValue("Disabled");

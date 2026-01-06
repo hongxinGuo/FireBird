@@ -12,6 +12,9 @@
 #include"SetChinaChosenStock.h"
 
 #include"GeneralCheck.h"
+#include "NeteaseRTDataSource.h"
+#include "SinaRTDataSource.h"
+#include "TengxunRTDataSource.h"
 
 using namespace testing;
 
@@ -1782,26 +1785,26 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateDayLineDB());
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 
-		EXPECT_FALSE(gl_pChinaMarket->IsTaskOfSavingDayLineDBFinished()) << "IsSaveDayLine为假";
+		EXPECT_FALSE(gl_pChinaMarket->IsSavingDayLineDBTaskFinished()) << "IsSaveDayLine为假";
 
 		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
 		pStock->SetUpdateDayLineDB(true);
 		pStock->SetDayLineDBUpdated(true);
-		EXPECT_FALSE(gl_pChinaMarket->IsTaskOfSavingDayLineDBFinished()) << "IsUpdateDayLine等皆为真";
+		EXPECT_FALSE(gl_pChinaMarket->IsSavingDayLineDBTaskFinished()) << "IsUpdateDayLine等皆为真";
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 
-		EXPECT_FALSE(gl_pChinaMarket->IsTaskOfSavingDayLineDBFinished()) << "IsUpdateDayLine和IsUpdateDayLineDB为真";
+		EXPECT_FALSE(gl_pChinaMarket->IsSavingDayLineDBTaskFinished()) << "IsUpdateDayLine和IsUpdateDayLineDB为真";
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 
 		pStock->SetUpdateDayLineDB(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsTaskOfSavingDayLineDBFinished()) << "IsUpdateDayLine为真";
+		EXPECT_FALSE(gl_pChinaMarket->IsSavingDayLineDBTaskFinished()) << "IsUpdateDayLine为真";
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 
 		for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 			const auto china_stock_ptr = gl_dataContainerChinaStock.GetStock(i);
 			china_stock_ptr->SetUpdateDayLine(false);
 		}
-		EXPECT_TRUE(gl_pChinaMarket->IsTaskOfSavingDayLineDBFinished()) << "条件满足了";
+		EXPECT_TRUE(gl_pChinaMarket->IsSavingDayLineDBTaskFinished()) << "条件满足了";
 		EXPECT_FALSE(pStock->IsDayLineDBUpdated());
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
@@ -1921,5 +1924,42 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsCalculatingWeekLineRS());
 		gl_pChinaMarket->SetCalculatingWeekLineRS(false);
 		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingWeekLineRS());
+	}
+
+	// Tests for CChinaMarket routing of web/data-source status APIs.
+	// Append to the end of the existing GoogleUnitTest\ChinaMarketTest.cpp file.
+
+	TEST_F(CChinaMarketTest, TestGetHTTPStatus_IsWebError_GetWebErrorCode_Routing) {
+		// Save and restore current server selection
+		const int oldServer = gl_systemConfiguration.GetChinaMarketRealtimeServer();
+
+		// Validate routing for each configured realtime server
+		for (int serverIndex = 0; serverIndex <= 2; ++serverIndex) {
+			gl_systemConfiguration.SetChinaMarketRealtimeServer(serverIndex);
+
+			switch (serverIndex) {
+			case 0: // Sina
+				EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pSinaRTDataSource->GetHTTPStatusCode());
+				EXPECT_EQ(gl_pChinaMarket->IsWebError(), gl_pSinaRTDataSource->IsWebError());
+				EXPECT_EQ(gl_pChinaMarket->GetWebErrorCode(), gl_pSinaRTDataSource->GetWebErrorCode());
+				break;
+			case 1: // Netease
+				EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pNeteaseRTDataSource->GetHTTPStatusCode());
+				EXPECT_EQ(gl_pChinaMarket->IsWebError(), gl_pNeteaseRTDataSource->IsWebError());
+				EXPECT_EQ(gl_pChinaMarket->GetWebErrorCode(), gl_pNeteaseRTDataSource->GetWebErrorCode());
+				break;
+			case 2: // Tengxun
+				EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pTengxunRTDataSource->GetHTTPStatusCode());
+				EXPECT_EQ(gl_pChinaMarket->IsWebError(), gl_pTengxunRTDataSource->IsWebError());
+				EXPECT_EQ(gl_pChinaMarket->GetWebErrorCode(), gl_pTengxunRTDataSource->GetWebErrorCode());
+				break;
+			default:
+				FAIL() << "Unexpected server index in test loop";
+				break;
+			}
+		}
+
+		// Restore original server selection
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(oldServer);
 	}
 }

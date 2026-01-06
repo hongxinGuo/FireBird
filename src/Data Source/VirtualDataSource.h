@@ -2,6 +2,7 @@
 
 #include "InternetOption.h"
 #include"VirtualWebProduct.h"
+#include "spdlog_assert.h"
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR_ = 0,
@@ -43,7 +44,7 @@ public:
 
 	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiry(int inquireType, UpdateCheck&& isUpdateNeeded, ProductFactory&& createProduct, ReportMsg&& reportMsg) {
-		ASSERT(!IsInquiring());
+		SPDLOG_ASSERT(!IsInquiring());
 		if (isUpdateNeeded()) {
 			StoreInquiry(createProduct(inquireType));
 			reportMsg();
@@ -55,7 +56,7 @@ public:
 	template <typename UpdateCheck, typename ValidDate, typename SetUpdated, typename ReportMsg1, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiryWithCheck(int inquireType, ValidDate validDate, SetUpdated setUpdated, ReportMsg1 reportMsg1,
 	                                    UpdateCheck&& isUpdateNeeded, ProductFactory&& createProduct, ReportMsg&& reportMsg) {
-		ASSERT(!IsInquiring());
+		SPDLOG_ASSERT(!IsInquiring());
 		if (isUpdateNeeded()) {
 			if (!validDate()) {
 				setUpdated();
@@ -250,7 +251,7 @@ protected:
 	string m_strParam{}; // 查询字符串的参数
 	string m_strSuffix{}; // 查询字符串的后缀部分
 	string m_strInquiryToken{}; // 查询字符串令牌
-	string m_strHeaders{}; // OpenURL时的headers字符串值， 默认为""
+	string m_strHeaders{}; // OpenURL时的headers字符串值
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
 	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）

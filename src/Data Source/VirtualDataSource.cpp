@@ -106,7 +106,7 @@ void CVirtualDataSource::SetDefaultSessionOption() {
 }
 
 void CVirtualDataSource::CreateCurrentInquireString() {
-	ASSERT(m_pCurrentProduct != nullptr);
+	SPDLOG_ASSERT(m_pCurrentProduct != nullptr);
 	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
 	CreateTotalInquiringString();
 }

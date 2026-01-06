@@ -117,11 +117,20 @@ void CFinnhubStock::CheckProfileUpdateStatus(long lTodayDate) {
 ///
 bool CFinnhubStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 	ASSERT(m_fUpdateCompanyNews);
-	if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
-		// 每星期更新一次公司新闻
-		m_fUpdateCompanyNews = false;
+	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
+		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
+			// 每星期更新一次公司新闻
+			m_fUpdateCompanyNews = false;
+		}
+		else m_fUpdateCompanyNews = true;
 	}
-	else m_fUpdateCompanyNews = true;
+	else {
+		// 未上市股票或无市值股票，每月更新一次公司新闻
+		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 30)) {
+			m_fUpdateCompanyNews = false;
+		}
+		else m_fUpdateCompanyNews = true;
+	}
 
 	return m_fUpdateCompanyNews;
 }
@@ -132,11 +141,22 @@ bool CFinnhubStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
 bool CFinnhubStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
-		// 系统每季更新一次数据，故查询两次即可。
-		m_fUpdateBasicFinancial = true;
+	ASSERT(m_fUpdateBasicFinancial);
+	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
+		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
+			// 系统每季更新一次数据，故查询两次即可。
+			m_fUpdateBasicFinancial = true;
+		}
+		else { m_fUpdateBasicFinancial = false; }
 	}
-	else { m_fUpdateBasicFinancial = false; }
+	else {
+		// 未上市股票或无市值股票，每半年更新一次数据，故查询四次即可。
+		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate() * 2)) {
+			m_fUpdateBasicFinancial = true;
+		}
+		else { m_fUpdateBasicFinancial = false; }
+	}
+
 	return m_fUpdateBasicFinancial;
 }
 

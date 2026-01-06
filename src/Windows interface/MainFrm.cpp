@@ -119,6 +119,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_TIINGO_FIX_DAYLINE, &CMainFrame::OnTiingoFixDayLine)
 	ON_COMMAND(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnCalculateNasdaq100200maUpdownRate)
 	ON_UPDATE_COMMAND_UI(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate)
+	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CMainFrame::OnTiingoRebuildStockSplit)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1021,7 +1022,7 @@ void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.SetChinaMarketSavingFunction("build current weekLine");
-		gl_pChinaMarket->BuildWeekLineOfCurrentWeek();
+		gl_pChinaMarket->BuildCurrentWeekLine();
 		gl_UpdateChinaMarketDB.release();
 	});
 }
@@ -1316,4 +1317,8 @@ void CMainFrame::OnCalculateNasdaq100200maUpdownRate() {
 
 void CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
+}
+
+void CMainFrame::OnTiingoRebuildStockSplit() {
+	gl_pWorldMarket->RebuildTiingoStockSplitDB();
 }

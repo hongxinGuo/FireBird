@@ -12,12 +12,12 @@ void ReportErrorToSystemMessage(const string& strPrefix, const exception& e) {
 }
 
 void ReportWebError(const DWORD dwErrorNo, const string& strInputMessage) {
-	string s = fmt::format("Net Error # {:Ld} message: {}", dwErrorNo, strInputMessage);
+	string s = std::format("Net Error # {:Ld} message: {}", dwErrorNo, strInputMessage);
 	gl_systemMessage.PushErrorMessage(s);
 }
 
 void ReportWebError(const DWORD dwErrorNo, const long long llTime, const string& strInputMessage) {
-	string s = fmt::format("Net Error # {:Ld} 用时：{:Ld}毫秒 message: {}", dwErrorNo, llTime, strInputMessage);
+	string s = std::format("Net Error # {:Ld} time：{:Ld}ms message: {}", dwErrorNo, llTime, strInputMessage);
 	gl_systemMessage.PushErrorMessage(s);
 }
 

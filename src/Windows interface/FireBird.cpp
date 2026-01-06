@@ -15,6 +15,7 @@
 
 #include "Initialization.h"
 #include "SystemPublicDeclaration.h"
+#include "WorldMarket.h"
 
 #ifdef _MBCS
 #error "本系统使用UNI_CODE字符集"
@@ -192,6 +193,9 @@ protected:
 	// 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+
+public:
+	//	afx_msg void OnTiingoRebuildStockSplit();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX) {
@@ -202,6 +206,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	//	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CAboutDlg::OnTiingoRebuildStockSplit)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
