@@ -299,7 +299,6 @@ void COutputList::OnViewOutput() {
 void COutputList::OnSize(UINT nType, int cx, int cy) {
 	CListBox::OnSize(nType, cx, cy);
 
-	// TODO: Add your message handler code here
 	const int h = GetItemHeight(0);
 	m_iLineNumber = cy / h;
 }

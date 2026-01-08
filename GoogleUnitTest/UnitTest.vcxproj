@@ -240,7 +240,6 @@
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="ThreadBuildDayLineRSOfDayTest.cpp" />
-    <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />

@@ -26,9 +26,10 @@ CTiingoInaccessibleStock::CTiingoInaccessibleStock() {
 		ASSERT(FALSE);
 	}
 
-	ASSERT(m_strFileName.compare("TiingoInaccessibleStock.json") == 0);
+	ASSERT(m_strFileName == "TiingoInaccessibleStock.json");
 	if (LoadDB()) {
 		Update();
+		m_finnhubInaccessibleStock.clear();
 	}
 }
 
@@ -69,7 +70,7 @@ bool CTiingoInaccessibleStock::LoadDB(const string& strFileDirectory) {
 }
 
 void CTiingoInaccessibleStock::SaveDB() const {
-	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName.c_str(), ios::out);
+	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName, ios::out);
 	f << m_finnhubInaccessibleStock;
 	f.close();
 }
@@ -106,7 +107,7 @@ void CTiingoInaccessibleStock::UpdateJson() {
 		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集
 			auto jsonStock = json{ { "Function", val->GetFunctionString() } };
-			for (size_t i = 0; i < val->SymbolSize(); i++) {
+			for (size_t i = 0; i < val->Size(); i++) {
 				auto s = val->GetSymbol(i);
 				jsonStock["Stock"].push_back(s);
 			}
@@ -119,7 +120,7 @@ void CTiingoInaccessibleStock::UpdateJson() {
 void CTiingoInaccessibleStock::DeleteStock(int iInquireType, const string& strStock) {
 	if (HaveStock(iInquireType, strStock)) {
 		const CInaccessibleStocksPtr pStock = GetStock(iInquireType);
-		pStock->DeleteSymbol(strStock.c_str());
+		pStock->DeleteSymbol(strStock);
 	}
 }
 

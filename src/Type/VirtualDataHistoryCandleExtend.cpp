@@ -429,11 +429,12 @@ void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CRect rectClient, int iSt
 	CPen penRedN(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_FLAT, iStepWidth, &logBrushRed);
 
 	auto it = m_vHistoryData.end();
+	long offset = iStepWidth / 2;
 	--it;
 	size_t i = 0;
 	auto pOldPen = pDC->SelectObject(&penWhite1);
 	for (; it != m_vHistoryData.begin(); --it) {
-		const long x = rectClient.right - 2 - i * iStepWidth;
+		const long x = rectClient.right - offset - i * iStepWidth;
 		int y1 = rectClient.top + (1 - static_cast<double>((*it)->GetClose() - lLow) / (lHigh - lLow)) * rectClient.Height();
 		int yHigh = rectClient.top + (1 - static_cast<double>((*it)->GetHigh() - lLow) / (lHigh - lLow)) * rectClient.Height();
 		int yLow = rectClient.top + (1 - static_cast<double>((*it)->GetLow() - lLow) / (lHigh - lLow)) * rectClient.Height();

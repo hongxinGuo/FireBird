@@ -30,6 +30,16 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	if (LoadDB()) {
 		Update();
 	}
+	m_finnhubInaccessibleExchange.clear();
+
+	// 每月第一天删除对US交易所的禁止访问
+	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
+	tm tmLocal;
+	const auto time = gl_tpNow.time_since_epoch().count();
+	auto error = localtime_s(&tmLocal, &time);
+	if (tmLocal.tm_mday == 1) {
+		DeleteAllUSExchange();
+	}
 }
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
@@ -92,7 +102,6 @@ void CFinnhubInaccessibleExchange::Update() {
 					pInaccessible->AddSymbol(s);
 				}
 				m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
-				//gl_finnhubInaccessibleExchange.m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
 			}
 		}
 	} catch (json::exception&) {}
@@ -106,13 +115,34 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集
 			auto jsonExchange = json{ { "Function", val->GetFunctionString() } };
-			for (size_t i = 0; i < val->SymbolSize(); i++) {
+			jsonExchange["Exchange"] = json::array();
+			for (size_t i = 0; i < val->Size(); i++) {
 				auto s = val->GetSymbol(i);
 				jsonExchange["Exchange"].push_back(s);
 			}
 
 			m_finnhubInaccessibleExchange["InaccessibleExchange"].push_back(jsonExchange);
 		}
+	}
+}
+void CFinnhubInaccessibleExchange::Clear() {
+	for (const auto& val : m_mapExchange | views::values) {
+		val->Clear();
+	}
+}
+
+void CFinnhubInaccessibleExchange::DeleteAllUSExchange() {
+	for (const auto& val : m_mapExchange | views::values) {
+		if (val->HaveSymbol("US")) {
+			val->DeleteSymbol("US");
+		}
+	}
+}
+
+void CFinnhubInaccessibleExchange::AddExchange(int iInquireType, const string& strExchange) {
+	if (!HaveExchange(iInquireType, strExchange)) {
+		const CInaccessibleExchangesPtr pExchange = GetExchange(iInquireType);
+		pExchange->AddSymbol(strExchange);
 	}
 }
 

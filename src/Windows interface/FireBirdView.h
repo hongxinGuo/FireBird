@@ -43,7 +43,7 @@ public:
 	bool IsShow10Days() const noexcept { return m_fShow10Days; }
 	bool IsShow30Days() const noexcept { return m_fShow30Days; }
 	bool IsShow60Days() const noexcept { return m_fShow60Days; }
-	bool IsShow120Days() const noexcept { return m_fShow120Days; }
+	bool IsShow120Days() const noexcept { return m_fShow250Days; }
 	bool IsShowRSInLogarithm() const noexcept { return (m_iShowRSOption == 2); }
 	bool IsShowRSInLinear() const noexcept { return (m_iShowRSOption == 1); }
 	bool IsShowRSInIndex() const noexcept { return (m_iShowRSOption == 0); }
@@ -130,7 +130,7 @@ protected:
 	bool m_fShow10Days;
 	bool m_fShow30Days;
 	bool m_fShow60Days;
-	bool m_fShow120Days;
+	bool m_fShow250Days;
 	int m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
 	vector<double> m_vRSShow;
 
@@ -149,9 +149,9 @@ public:
 	afx_msg void OnShowRs10();
 	afx_msg void OnShowRs30();
 	afx_msg void OnShowRs60();
-	afx_msg void OnShowRs120();
+	afx_msg void OnShowRs250();
 	afx_msg void OnUpdateShowRs10(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateShowRs120(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateShowRs250(CCmdUI* pCmdUI);
 	//	afx_msg void OnUpdateShowRs3(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateShowRs30(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateShowRs5(CCmdUI* pCmdUI);

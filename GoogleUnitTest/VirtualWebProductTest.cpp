@@ -45,6 +45,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			gl_finnhubInaccessibleExchange.Clear();
 			gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 
 			SCOPED_TRACE("");
@@ -130,7 +131,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{\"error1\":\"You don't have access to this resourc.\"}";
+		const string strData = R"({"error1":"You don't have access to this resource."})";
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.Test_checkAccessRight_(pWebData);
 
@@ -139,7 +140,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible3) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{\"error\":\"You don't have access to this resource.\"}";
+		const string strData = R"({"error":"You don't have access to this resource."})";
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange("US");
 		finnhubWebProduct.Test_checkAccessRight_(pWebData);
@@ -152,7 +153,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, "SZ")) << "未加入SZ交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{\"error\":\"You don't have access to this resource.\"}";
+		const string strData = R"({"error":"You don't have access to this resource."})";
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange("SZ");
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
@@ -170,7 +171,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, "US")) << "未加入US交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{\"error\":\"You don't have access to this resource.\"}";
+		const string strData = R"({"error":"You don't have access to this resource."})";
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange("AD");
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
@@ -180,14 +181,14 @@ namespace FireBirdTest {
 
 		finnhubWebProduct.SetInquiringExchange("US");
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 100; i++) {
 			finnhubWebProduct.Test_checkAccessRight_(pWebData);
 
 			finnhubWebProduct.CheckInaccessible();
 		}
 		finnhubWebProduct.Test_checkAccessRight_(pWebData);
 
-		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "连续10次后，将US交易所列入禁入名单";
+		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "连续100次后，将US交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
 		EXPECT_TRUE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, "US")) << "已加入US交易所";
 

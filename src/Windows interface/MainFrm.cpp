@@ -331,7 +331,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	// 启用菜单个性化(最近使用的命令)
-	// TODO: 定义您自己的基本命令，确保每个下拉菜单至少有一个基本命令。
 	CList<UINT, UINT> lstBasicCommands;
 
 	lstBasicCommands.AddTail(ID_FILE_NEW);

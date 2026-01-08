@@ -131,6 +131,7 @@ namespace FireBirdTest {
 	}
 
 	void WorldMarketCheck() {
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsUpdateDB());
 		if (gl_pWorldMarket != nullptr) {
 			ASSERT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
 			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("AAPL");

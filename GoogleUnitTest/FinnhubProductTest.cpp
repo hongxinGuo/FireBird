@@ -68,7 +68,7 @@ namespace FireBirdTest {
 
 		CInaccessibleExchangesPtr pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol("AA"));
-		EXPECT_EQ(pExchange->SymbolSize(), 1) << "增加了一个交易所";
+		EXPECT_EQ(pExchange->Size(), 1) << "增加了一个交易所";
 
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange("AB"); // 新的交易所代码
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol("AB"));
-		EXPECT_EQ(pExchange->SymbolSize(), 2) << "增加第二个交易所";
+		EXPECT_EQ(pExchange->Size(), 2) << "增加第二个交易所";
 
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange("AB"); // 已存在于数据集中的交易所代码
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol("AB"));
-		EXPECT_EQ(pExchange->SymbolSize(), 2) << "AB交易所已存在于数据集中，故而没有增加";
+		EXPECT_EQ(pExchange->Size(), 2) << "AB交易所已存在于数据集中，故而没有增加";
 
 		// 恢复原状
 		pExchange->DeleteSymbol("AA");

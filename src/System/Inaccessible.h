@@ -16,14 +16,15 @@ public:
 	string GetFunctionString() noexcept { return m_sFunction; }
 	void SetFunctionString(const string& sFunction) noexcept { m_sFunction = sFunction; }
 
-	bool AddSymbol(const string& sSymbol);
-	bool DeleteSymbol(const string& sSymbol);
+	void AddSymbol(const string& sSymbol);
+	void DeleteSymbol(const string& sSymbol);
+	void Clear();
 
 	bool HaveSymbol(const string& sSymbol) const;
-	bool HaveSymbol() const;
+	bool HaveSymbol() const { return !m_vSymbol.empty(); };
 
-	size_t SymbolSize() const noexcept { return m_vSymbol.size(); }
-	string GetSymbol(const int iIndex) { return m_vSymbol.at(iIndex); }
+	size_t Size() const noexcept { return m_vSymbol.size(); }
+	string GetSymbol(const size_t iIndex) { return m_vSymbol.at(iIndex); }
 
 public:
 

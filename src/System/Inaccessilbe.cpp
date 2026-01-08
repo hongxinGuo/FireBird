@@ -2,19 +2,21 @@
 
 #include "Inaccessible.h"
 
-std::string Test_gl_sFinnhubInaccessibleSymbol = R"(
-{ "UpdateDate" : 20221205,
- "InaccessibleSymbol" :
-[
-{
-	"Function" : "StockFundamentalsCompanyProfileConcise",
-	"Symbol" : ["SS", "SZ"]
-},
-{
-	"Function" : "StockFundamentalsBasicFinancials",
-	"Symbol" : ["SS", "SZ"]
+namespace {
+	std::string Test_gl_sFinnhubInaccessibleSymbol = R"(
+		{ "UpdateDate" : 20221205,
+		 "InaccessibleSymbol" :
+		[
+		{
+			"Function" : "StockFundamentalsCompanyProfileConcise",
+			"Symbol" : ["SS", "SZ"]
+		},
+		{
+			"Function" : "StockFundamentalsBasicFinancials",
+			"Symbol" : ["SS", "SZ"]
+		}
+	]})";
 }
-]})";
 
 CInaccessible::CInaccessible() {
 	m_sFunction = "";
@@ -44,31 +46,26 @@ bool CInaccessible::Assign(const string& sFunction, const int iFunction, const v
 	return true;
 }
 
-bool CInaccessible::AddSymbol(const string& sSymbolName) {
+void CInaccessible::AddSymbol(const string& sSymbolName) {
 	m_vSymbol.push_back(sSymbolName);
 	m_setSymbol.insert(sSymbolName);
-	return true;
 }
 
-bool CInaccessible::DeleteSymbol(const string& sSymbolName) {
+void CInaccessible::DeleteSymbol(const string& sSymbolName) {
 	if (m_setSymbol.contains(sSymbolName)) { // 集合中存在此元素？
 		m_setSymbol.erase(sSymbolName);
-		for (int position = 0; position < m_vSymbol.size(); position++) {
-			if (m_vSymbol.at(position) == sSymbolName) {
-				m_vSymbol.erase(m_vSymbol.begin() + position);
-				break;
-			}
+		auto it = ranges::find(m_vSymbol, sSymbolName);
+		if (it != m_vSymbol.end()) {
+			m_vSymbol.erase(it);
 		}
 	}
-	return true;
+}
+void CInaccessible::Clear() {
+	m_vSymbol.clear();
+	m_setSymbol.clear();
 }
 
 bool CInaccessible::HaveSymbol(const string& sSymbol) const {
 	if (m_setSymbol.contains(sSymbol)) return true;
 	return false;
-}
-
-bool CInaccessible::HaveSymbol() const {
-	if (m_vSymbol.empty()) return false;
-	return true;
 }

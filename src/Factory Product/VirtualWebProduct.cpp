@@ -30,7 +30,7 @@ bool CVirtualWebProduct::CheckInaccessible() {
 		return false;
 	}
 	if (IsUSMarket()) {
-		if (s_iCounter++ < 10) { // 当美国市场连续出现10次无权访问数据时，则不再查询
+		if (s_iCounter++ < 100) { // 当美国市场连续出现100次无权访问数据时，则不再查询
 			return false;
 		}
 	}

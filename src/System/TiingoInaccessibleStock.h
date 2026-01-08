@@ -31,8 +31,9 @@ public:
 	void UpdateJson();
 
 	void Clear() noexcept {
-		m_mapStock.clear();
-		m_finnhubInaccessibleStock.clear();
+		for (auto val : m_mapStock | views::values) {
+			val->Clear();
+		}
 	}
 
 	void SetDefaultFileName(const string& fileName) noexcept { m_strFileName = fileName; }

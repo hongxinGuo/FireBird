@@ -35,15 +35,16 @@ void CMovingAverage::Calculate(const CVirtualDataHistoryCandleExtend* pData) {
 void CMovingAverage::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
 	if (m_vMovingAverage.size() < 3) return;
 	auto pOldPen = pDC->SelectObject(pNewPen);
+	long offset = iStepWidth / 2;
 	auto it = m_vMovingAverage.end();
 	--it;
 	int i = 0;
-	long x = rectClient.right;
+	long x = rectClient.right - offset;
 	long y = rectClient.top + (1 - static_cast<double>(*it - lLow) / (lHigh - lLow)) * rectClient.Height();
 	pDC->MoveTo(x, y);
 	--it;
 	for (; it != m_vMovingAverage.begin(); --it) {
-		x = rectClient.right - i * iStepWidth;
+		x = rectClient.right - offset - i * iStepWidth;
 		auto value = *it;
 		y = rectClient.top + (1 - static_cast<double>(value - lLow) / (lHigh - lLow)) * rectClient.Height();
 		pDC->LineTo(x, y);

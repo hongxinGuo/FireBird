@@ -32,13 +32,12 @@ public:
 	void Update();
 	void UpdateJson();
 
-	void Clear() noexcept {
-		m_mapExchange.clear();
-		m_finnhubInaccessibleExchange.clear();
-	}
+	void Clear();
 
-	void SetDefaultFileName(const string& fileName) noexcept { m_strFileName = fileName; }
-	string GetDefaultFileName() { return m_strFileName; }
+	void DeleteAllUSExchange();
+
+	void SetFileName(const string& fileName) noexcept { m_strFileName = fileName; }
+	string GetFileName() { return m_strFileName; }
 
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
@@ -46,6 +45,7 @@ public:
 	static int GetFinnhubInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessibleExchangesPtr GetExchange(int iInquireType) { return m_mapExchange.at(iInquireType); }
 	void SetExchange(const int iInquireType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquireType] = pExchange; }
+	void AddExchange(int iInquireType, const string& strExchange);
 	void DeleteExchange(int iInquireType, const string& strExchange);
 	bool HaveExchange(int iInquireType, const string& strExchangeCode) const;
 	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }

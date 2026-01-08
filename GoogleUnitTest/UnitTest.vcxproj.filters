@@ -333,9 +333,6 @@
     <ClCompile Include="ThreadCalculateRSTest.cpp">
       <Filter>Test源文件\Working thread\China market</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp">
-      <Filter>Test源文件\Working thread\China market</Filter>
-    </ClCompile>
     <ClCompile Include="CompanyNewsTest.cpp">
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
