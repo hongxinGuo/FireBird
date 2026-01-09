@@ -67,9 +67,9 @@ void CSinaRTDataSource::CreateCurrentInquireString() {
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-enum_ErrorMessageData CSinaRTDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
+void CSinaRTDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	m_eErrorMessageData = ERROR_NO_ERROR_;
-	if (m_dwHTTPStatusCode == 200) return m_eErrorMessageData; // OK? return no error
+	if (m_dwHTTPStatusCode == 200) return; // OK? return no error
 
 	if (pWebData->GetBufferLength() == 9) { // 是字符串"Forbidden"？
 		const string_view s = pWebData->GetStringView(0, 9);
@@ -87,7 +87,6 @@ enum_ErrorMessageData CSinaRTDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		ASSERT(0);
 		break;
 	}
-	return m_eErrorMessageData;
 }
 
 /// <summary>

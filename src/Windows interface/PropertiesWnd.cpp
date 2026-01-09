@@ -311,9 +311,9 @@ void CPropertiesWnd::InitPropList() {
 	// finnhub group
 	CMFCPropertyGridProperty* pGroup3 = new CGridProperty(_T("finnhub.io"));
 	pGroup3->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pFinnhubDataSource->IsEnable()), _T("Enable"), FINNHUB_DATA_SOURCE_ENABLE_));
-	m_pPropWorldMarketWebStatus = new CGridProperty(_T("Web Status"), _T("running"));
-	m_pPropWorldMarketWebStatus->Enable(FALSE);
-	pGroup3->AddSubItem(m_pPropWorldMarketWebStatus);
+	m_pPropFinnhubDataSourceWebStatus = new CGridProperty(_T("Web Status"), _T("running"));
+	m_pPropFinnhubDataSourceWebStatus->Enable(FALSE);
+	pGroup3->AddSubItem(m_pPropFinnhubDataSourceWebStatus);
 	m_pPropFinnhubCurrentFunction = new CGridProperty(_T("Inquiring:"), _T(""));
 	m_pPropFinnhubCurrentFunction->Enable(FALSE);
 	pGroup3->AddSubItem(m_pPropFinnhubCurrentFunction);
@@ -322,6 +322,9 @@ void CPropertiesWnd::InitPropList() {
 	// tiingo group
 	CMFCPropertyGridProperty* pGroup4 = new CGridProperty("Tiingo.com");
 	pGroup4->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pTiingoDataSource->IsEnable()), _T("Enable"), TIINGO_DATA_SOURCE_ENABLE_));
+	m_pPropTiingoDataSourceWebStatus = new CGridProperty(_T("Web Status"), _T("running"));
+	m_pPropTiingoDataSourceWebStatus->Enable(FALSE);
+	pGroup4->AddSubItem(m_pPropTiingoDataSourceWebStatus);
 	m_pPropTiingoCurrentFunction = new CGridProperty(_T("Inquiring:"), _T(""));
 	m_pPropTiingoCurrentFunction->Enable(FALSE);
 	pGroup4->AddSubItem(m_pPropTiingoCurrentFunction);
@@ -398,27 +401,35 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (gl_ThreadStatus.IsSavingChinaMarketThreadRunning()) m_pPropChinaMarketThreadStatus->SetValue("Thread running");
 	else m_pPropChinaMarketThreadStatus->SetValue("idle");
 
-	if (gl_pChinaMarket->IsWebBusy()) {
-		m_pPropWorldMarketWebStatus->SetValue("Disabled");
+	// finnhub web status
+	if (gl_pFinnhubDataSource->IsWebError()) {
+		string s3 = fmt::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pFinnhubDataSource->GetHTTPStatusCode(), gl_pFinnhubDataSource->GetWebErrorCode());
+		m_pPropFinnhubDataSourceWebStatus->SetValue(s3);
 	}
 	else {
-		if (gl_pFinnhubDataSource->IsWebError()) {
-			string s3 = fmt::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pFinnhubDataSource->GetHTTPStatusCode(), gl_pFinnhubDataSource->GetWebErrorCode());
-			m_pPropWorldMarketWebStatus->SetValue(s3);
-		}
-		else {
-			string s4 = fmt::format("HTTP:{:3Ld}", gl_pFinnhubDataSource->GetHTTPStatusCode());
-			m_pPropWorldMarketWebStatus->SetValue(s4);
-		}
+		string s4 = fmt::format("HTTP:{:3Ld}", gl_pFinnhubDataSource->GetHTTPStatusCode());
+		m_pPropFinnhubDataSourceWebStatus->SetValue(s4);
 	}
 
+	// finnhub current function
 	string strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
 	m_pPropFinnhubCurrentFunction->SetValue(strMessage);
 
+	// tiingo web status
+	if (gl_pTiingoDataSource->IsWebError()) {
+		string s5 = fmt::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pTiingoDataSource->GetHTTPStatusCode(), gl_pTiingoDataSource->GetWebErrorCode());
+		m_pPropTiingoDataSourceWebStatus->SetValue(s5);
+	}
+	else {
+		string s6 = fmt::format("HTTP:{:3Ld}", gl_pTiingoDataSource->GetHTTPStatusCode());
+		m_pPropTiingoDataSourceWebStatus->SetValue(s6);
+	}
+
+	// tiingo current function
 	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
 	m_pPropTiingoCurrentFunction->SetValue(strMessage);
 
-	string str = "";
+	string str;
 	switch (gl_pFinnhubWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
 		str = "Closed";

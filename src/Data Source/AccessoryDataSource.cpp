@@ -42,7 +42,7 @@ bool CAccessoryDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 bool CAccessoryDataSource::GenerateIndexNasdaq100Stocks() {
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateIndexNasdaq100Stocks()) {
-		const CVirtualProductWebDataPtr p = m_AccessoryFactory.CreateProduct(gl_pWorldMarket, ACCESSORY_INDEX_NASDAQ100_STOCKS);
+		const CVirtualProductWebDataPtr p = m_AccessoryFactory.CreateProduct(gl_pWorldMarket, ACCESSORY_INDEX_NASDAQ100_STOCKS_);
 		StoreInquiry(p);
 		return true;
 	}

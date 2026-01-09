@@ -55,7 +55,7 @@ void CTiingoDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
+void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
 
 	string s2;
@@ -67,14 +67,15 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	// 第一次switch处理非json数据格式的错误
 	switch (m_dwHTTPStatusCode) {
 	case 200:
-		if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) return m_eErrorMessageData; // 付费账户直接返回
+		if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) return; // 付费账户直接返回
 		if (pWebData->GetBufferLength() == 137) { // 此项为非json格式数据
 			strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
 			if (strView == "You have run over your 500 symbol look up for this month. Please upgrade at") { 	// 达到代码限制
 				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo symbol reach 500");
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_;
+				m_eErrorMessageData = ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_;
+				return;
 			}
 		}
 		break;
@@ -85,7 +86,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				gl_systemMessage.PushInnerSystemInformationMessage("Error: Endpoint only available for US and US - listed Stocks");
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK_;
+				m_eErrorMessageData = ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK_;
+				return;
 			}
 		}
 		break;
@@ -97,7 +99,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_MISSING_API_KEY_;
+				m_eErrorMessageData = ERROR_TIINGO_MISSING_API_KEY_;
+				return;
 			}
 		}
 		if (pWebData->GetBufferLength() == 62) {
@@ -107,7 +110,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_NO_RIGHT_TO_ACCESS_;
+				m_eErrorMessageData = ERROR_TIINGO_NO_RIGHT_TO_ACCESS_;
+				return;
 			}
 		}
 		if (pWebData->GetBufferLength() == 216) {
@@ -118,7 +122,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				gl_systemConfiguration.SetTiingoAccountAddOnPaid(false);
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
-				return ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_;
+				m_eErrorMessageData = ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_;
+				return;
 			}
 		}
 
@@ -130,7 +135,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		str += "  " + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
-		return ERROR_TIINGO_NOT_HANDLED_;
+		m_eErrorMessageData = ERROR_TIINGO_NOT_HANDLED_;
+		return;
 	case 404:
 		if (pWebData->GetBufferLength() == 23) {
 			strView = pWebData->GetStringView(0, 23); // 
@@ -139,13 +145,15 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				str += m_pCurrentProduct->GetInquiry();
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 				gl_errorLogger->warn("{}", str);
-				return ERROR_TIINGO_NOT_FOUND_;
+				m_eErrorMessageData = ERROR_TIINGO_NOT_FOUND_;
+				return;
 			}
 		}
 		str = "No right to access: " + m_pCurrentProduct->GetInquiry() + "Error message: " + pWebData->GetDataBuffer().substr(0, 50);
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
-		return ERROR_TIINGO_NO_RIGHT_TO_ACCESS_; // 目前日线数据无申请权利时返回错误代码404。
+		m_eErrorMessageData = ERROR_TIINGO_NO_RIGHT_TO_ACCESS_; // 目前日线数据无申请权利时返回错误代码404。
+		return;
 	case 429:
 		if (pWebData->GetBufferLength() == 152) {
 			strView = pWebData->GetStringView(0, 152); // 
@@ -154,7 +162,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 				gl_errorLogger->warn("{}", str);
 				m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_);
-				return ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_;
+				m_eErrorMessageData = ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_;
+				return;
 			}
 		}
 		break;
@@ -169,13 +178,14 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		str += "  " + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_errorLogger->warn("{}", str);
-		return ERROR_TIINGO_NOT_HANDLED_;
+		m_eErrorMessageData = ERROR_TIINGO_NOT_HANDLED_;
+		return;
 	}
 
 	json js;
 	if (!pWebData->CreateJson(js)) { // 非json制式，不应该出现。
 		m_eErrorMessageData = ERROR_NO_ERROR_;
-		return m_eErrorMessageData; // 暂时返回正确
+		return; // 暂时返回正确
 	}
 
 	try {
@@ -247,7 +257,6 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	} catch (json::exception&) { // no error. do nothing
 		m_eErrorMessageData = ERROR_NO_ERROR_;
 	}
-	return m_eErrorMessageData;
 }
 
 bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {

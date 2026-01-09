@@ -79,7 +79,8 @@ namespace FireBirdTest {
 		auto pProduct = make_shared<CProductDummy>();
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_NO_ERROR_);
+		m_pTiingoDataSource->CheckWebData(pWebData);
+		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_NO_ERROR_);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData2) {
@@ -90,7 +91,8 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NO_RIGHT_TO_ACCESS_);
+		m_pTiingoDataSource->CheckWebData(pWebData);
+		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_NO_RIGHT_TO_ACCESS_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 
@@ -105,7 +107,8 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_MISSING_API_KEY_);
+		m_pTiingoDataSource->CheckWebData(pWebData);
+		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_MISSING_API_KEY_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Tiingo missing API key");
@@ -122,7 +125,8 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_);
+		m_pTiingoDataSource->CheckWebData(pWebData);
+		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_FALSE(gl_systemConfiguration.IsTiingoAccountAddOnPaid());
@@ -140,7 +144,8 @@ namespace FireBirdTest {
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NOT_HANDLED_);
+		m_pTiingoDataSource->CheckWebData(pWebData);
+		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_NOT_HANDLED_);
 		//EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 

@@ -17,7 +17,7 @@ public:
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
 	void ConfigureInternetOption() override;
-	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
+	void CheckWebData(const CWebDataPtr& pWebData) override;
 
 	// 可供申请的项目，目前共21项。
 	virtual bool GenerateCountryList();

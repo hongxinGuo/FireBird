@@ -51,7 +51,8 @@ namespace FireBirdTest {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_(R"({"error":"You don't have access to this resource."})");
 
-		EXPECT_EQ(ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_, m_FinnhubDataSource.IsAErrorMessageData(pwd));
+		m_FinnhubDataSource.CheckWebData(pwd);
+		EXPECT_EQ(ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_, m_FinnhubDataSource.GetErrorMessage());
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_TRUE(pProduct->IsNoRightToAccess());
 	}
@@ -60,7 +61,8 @@ namespace FireBirdTest {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_(R"({"error":"Please use an API key."})");
 
-		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY_, m_FinnhubDataSource.IsAErrorMessageData(pwd));
+		m_FinnhubDataSource.CheckWebData(pwd);
+		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY_, m_FinnhubDataSource.GetErrorMessage());
 		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "finnhub missing API key");
 	}
 
@@ -68,7 +70,8 @@ namespace FireBirdTest {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_(R"({"error":"Not Handled"})");
 
-		EXPECT_EQ(ERROR_FINNHUB_NOT_HANDLED_, m_FinnhubDataSource.IsAErrorMessageData(pwd));
+		m_FinnhubDataSource.CheckWebData(pwd);
+		EXPECT_EQ(ERROR_FINNHUB_NOT_HANDLED_, m_FinnhubDataSource.GetErrorMessage());
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "error not processed:Not Handled");
 		// 恢复原状
@@ -79,7 +82,8 @@ namespace FireBirdTest {
 		pwd->Test_SetBuffer_(R"({"no error":"Please use an API key."})");
 		EXPECT_EQ(m_FinnhubDataSource.GetHTTPStatusCode(), 0);
 
-		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "非错误信息，正常返回";
+		m_FinnhubDataSource.CheckWebData(pwd);
+		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.GetErrorMessage()) << "非错误信息，正常返回";
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData5) {
@@ -87,7 +91,8 @@ namespace FireBirdTest {
 		pwd->Test_SetBuffer_(R"({"error":"Please use an API key."})");
 		m_FinnhubDataSource.SetHTTPStatusCode(200);
 
-		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，无视错误代码，正常返回";
+		m_FinnhubDataSource.CheckWebData(pwd);
+		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.GetErrorMessage()) << "HTTPStatusCode == 200，无视错误代码，正常返回";
 
 		// 恢复原状
 		m_FinnhubDataSource.SetHTTPStatusCode(0);
@@ -98,7 +103,8 @@ namespace FireBirdTest {
 		pwd->Test_SetBuffer_(R"({"no error":"Please use an API key."})");
 		m_FinnhubDataSource.SetHTTPStatusCode(200);
 
-		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，正常返回";
+		m_FinnhubDataSource.CheckWebData(pwd);
+		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.GetErrorMessage()) << "HTTPStatusCode == 200，正常返回";
 
 		// 恢复原状
 		m_FinnhubDataSource.SetHTTPStatusCode(0);

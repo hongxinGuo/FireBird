@@ -87,12 +87,13 @@ protected:
 	CGridProperty* m_pPropChinaMarketThreadStatus{ nullptr };
 
 	// world market
-	CGridProperty* m_pPropWorldMarketWebStatus{ nullptr };
+	CGridProperty* m_pPropFinnhubDataSourceWebStatus{ nullptr };
 
 	// finnhub.io
 	CGridProperty* m_pPropFinnhubCurrentFunction{ nullptr };
 
 	// Tiingo.com
+	CGridProperty* m_pPropTiingoDataSourceWebStatus{ nullptr };
 	CGridProperty* m_pPropTiingoCurrentFunction{ nullptr };
 
 	// web socket group

@@ -16,7 +16,7 @@ public:
 	bool Reset() override;
 
 	void ConfigureInternetOption() override; // 配置internet参数。
-	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
+	void CheckWebData(const CWebDataPtr& pWebData) override;
 
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 

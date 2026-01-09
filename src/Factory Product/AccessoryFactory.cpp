@@ -11,7 +11,7 @@ CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMa
 	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iInquireType) {
-	case ACCESSORY_INDEX_NASDAQ100_STOCKS:
+	case ACCESSORY_INDEX_NASDAQ100_STOCKS_:
 		p = make_shared<CProductIndexNasdaq100Stocks>();
 		break;
 	default:

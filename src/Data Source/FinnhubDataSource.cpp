@@ -90,11 +90,11 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
+void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
-	if (m_dwHTTPStatusCode == 200) return m_eErrorMessageData; // OK? return no error
+	if (m_dwHTTPStatusCode == 200) return; // OK? return no error
 
 	json js;
 	pWebData->CreateJson(js);
@@ -139,7 +139,6 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 	} catch (json::exception&) { // no error. do nothing
 		m_eErrorMessageData = ERROR_NO_ERROR_;
 	}
-	return m_eErrorMessageData;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
