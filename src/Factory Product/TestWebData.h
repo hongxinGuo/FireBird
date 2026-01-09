@@ -19,9 +19,12 @@ public:
 	CWebDataPtr m_pData{ nullptr };
 };
 
-extern Test_FinnhubWebData finnhubWebData0;
-extern Test_FinnhubWebData finnhubWebData1;
-extern Test_FinnhubWebData finnhubWebData2;
+// 空数据
+inline Test_FinnhubWebData finnhubWebData0(0, "AAPL", R"({})");
+// 无权访问数据
+inline Test_FinnhubWebData finnhubWebData1(1, "AAPL", R"({"error":"You don't have access to this resource."})");
+// 空数据
+inline Test_FinnhubWebData finnhubWebData2(2, "AAPL", R"([])");
 
 // 此结构只用于测试中
 struct Test_TiingoWebData {

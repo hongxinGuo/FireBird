@@ -228,11 +228,11 @@ namespace FireBirdTest {
 using namespace FireBirdTest;
 
 // 空数据
-Test_FinnhubWebData finnhubWebData0(0, "AAPL", R"({})");
+//Test_FinnhubWebData finnhubWebData0(0, "AAPL", R"({})");
 // 无权访问数据
-Test_FinnhubWebData finnhubWebData1(1, "AAPL", R"({"error":"You don't have access to this resource."})");
+//Test_FinnhubWebData finnhubWebData1(1, "AAPL", R"({"error":"You don't have access to this resource."})");
 // 空数据
-Test_FinnhubWebData finnhubWebData2(2, "AAPL", R"([])");
+//Test_FinnhubWebData finnhubWebData2(2, "AAPL", R"([])");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //

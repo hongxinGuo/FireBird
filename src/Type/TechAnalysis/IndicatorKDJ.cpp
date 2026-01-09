@@ -23,7 +23,7 @@ void CIndicatorKDJ::Calculate() {
 		m_vKDJ[i].m_D = 50;
 		m_vKDJ[i].m_J = 50;
 	}
-	for (int index = m_Period - 1; index < m_pvCandle->Size(); index++) {
+	for (size_t index = m_Period - 1; index < m_pvCandle->Size(); index++) {
 		auto data = m_pvCandle->GetData(index);
 		long lHigh = 0;
 		long lLow = data->GetLow();
@@ -56,15 +56,17 @@ void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	pDC->LineTo(rectDrawArea.right, y80);
 	//pDC->SelectObject(pOldPen);
 
+	long offset = iStepWidth / 2;
+
 	pDC->SelectObject(&penYellow);
 	auto it = m_vKDJ.end();
 	int i = 1;
 	--it;
-	int y = rectDrawArea.bottom - (it--)->m_K * rectDrawArea.Height() / 100;
-	pDC->MoveTo(rectDrawArea.right - 1, y);
+	long y = rectDrawArea.bottom - (it--)->m_K * rectDrawArea.Height() / 100;
+	pDC->MoveTo(rectDrawArea.right - offset, y);
 	for (; it != m_vKDJ.begin(); --it, i++) {
 		y = rectDrawArea.bottom - it->m_K * rectDrawArea.Height() / 100;
-		pDC->LineTo(rectDrawArea.right - 1 - iStepWidth * i, y);
+		pDC->LineTo(rectDrawArea.right - offset - iStepWidth * i, y);
 		if (i >= m_vKDJ.size()) break;
 		if (rectDrawArea.right <= iStepWidth * i) break; // 画到窗口左边框为止
 	}
@@ -74,10 +76,10 @@ void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	i = 1;
 	--it;
 	y = rectDrawArea.bottom - (it--)->m_D * rectDrawArea.Height() / 100;
-	pDC->MoveTo(rectDrawArea.right - 1, y);
+	pDC->MoveTo(rectDrawArea.right - offset, y);
 	for (; it != m_vKDJ.begin(); --it, i++) {
 		y = rectDrawArea.bottom - it->m_D * rectDrawArea.Height() / 100;
-		pDC->LineTo(rectDrawArea.right - 1 - iStepWidth * i, y);
+		pDC->LineTo(rectDrawArea.right - offset - iStepWidth * i, y);
 		if (i >= m_vKDJ.size()) break;
 		if (rectDrawArea.right <= iStepWidth * i) break; // 画到窗口左边框为止
 	}
@@ -87,10 +89,10 @@ void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	i = 1;
 	--it;
 	y = rectDrawArea.bottom - (it--)->m_J * rectDrawArea.Height() / 100;
-	pDC->MoveTo(rectDrawArea.right - 1, y);
+	pDC->MoveTo(rectDrawArea.right - offset, y);
 	for (; it != m_vKDJ.begin(); --it, i++) {
 		y = rectDrawArea.bottom - it->m_J * rectDrawArea.Height() / 100;
-		pDC->LineTo(rectDrawArea.right - 1 - iStepWidth * i, y);
+		pDC->LineTo(rectDrawArea.right - offset - iStepWidth * i, y);
 		if (i >= m_vKDJ.size()) break;
 		if (rectDrawArea.right <= iStepWidth * i) break; // 画到窗口左边框为止
 	}

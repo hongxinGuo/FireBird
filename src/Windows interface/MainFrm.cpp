@@ -779,28 +779,24 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	SysCallOnChar(nChar, nRepCnt, nFlags);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// todo: 此函数处理用户按键抬起事件，需要考虑不同的市场
+///
+///
+////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	CChinaStockPtr pStock;
 
 	if (gl_pCurrentStock != nullptr) {
 		switch (nChar) {
-		case 118: // F7，选择前一个股票集
-			gl_pChinaMarket->ChangeToPrevStockSet();
-			gl_pChinaMarket->SetCurrentSelectedPosition(0);
-			gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
-			break;
-		case 119: // F8， 选择后一个股票集
-			gl_pChinaMarket->ChangeToNextStockSet();
-			gl_pChinaMarket->SetCurrentSelectedPosition(0);
-			gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
-			break;
 		case 33: // PAGE UP
 			// last stock
-			gl_pChinaMarket->ChangeToPrevStock();
+			//gl_pChinaMarket->ChangeToPrevStock();
 			break;
 		case 34: // PAGE DOWN
 			// next stock
-			gl_pChinaMarket->ChangeToNextStock();
+			//gl_pChinaMarket->ChangeToNextStock();
 			break;
 		case 45: // Ins, 加入自选股票
 			//gl_pCurrentStock->SetChosen(true);
@@ -819,7 +815,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			break;
 		}
 	}
-	gl_pChinaMarket->AddImmediateTask(CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__); // 立即更新自选股数据库
+	//gl_pChinaMarket->AddImmediateTask(CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__); // 立即更新自选股数据库
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 

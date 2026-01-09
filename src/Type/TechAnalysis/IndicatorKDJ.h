@@ -10,8 +10,12 @@ public:
 
 class CIndicatorKDJ {
 public:
-	CIndicatorKDJ() {}
+	CIndicatorKDJ() = default;
 	CIndicatorKDJ(int period) { m_Period = period; }
+	CIndicatorKDJ(const CIndicatorKDJ&) = delete;
+	CIndicatorKDJ& operator=(const CIndicatorKDJ&) = delete;
+	CIndicatorKDJ(CIndicatorKDJ&&) noexcept = delete;
+	CIndicatorKDJ& operator=(CIndicatorKDJ&&) noexcept = delete;
 	~CIndicatorKDJ() = default;
 
 	void SetCandle(CVirtualDataHistoryCandleExtend* pCandle) { m_pvCandle = pCandle; }

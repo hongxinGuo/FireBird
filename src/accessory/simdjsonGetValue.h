@@ -1,17 +1,6 @@
 #pragma once
 
-extern ondemand::array gl_simdjsonEmptyArray;
-
-template <typename T, typename Getter>
-T jsonGetHelper(Getter getter, ondemand::value& value, const string_view& key, const T& defaultValue) {
-	auto valueInner = value[key].value();
-	try {
-		return getter(valueInner);
-	} catch ([[maybe_unused]] simdjson_error& error) {
-		if (valueInner.is_null()) return defaultValue;
-		throw simdjson_error(error);
-	}
-}
+inline ondemand::array gl_simdjsonEmptyArray;
 
 void CreateSimdjsonEmptyArray();
 

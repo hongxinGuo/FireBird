@@ -4,6 +4,10 @@
 class CMovingAverage {
 public:
 	CMovingAverage(int period) { m_period = period; }
+	CMovingAverage(const CMovingAverage&) = delete;
+	CMovingAverage& operator=(const CMovingAverage&) = delete;
+	CMovingAverage(CMovingAverage&&) noexcept = delete;
+	CMovingAverage& operator=(CMovingAverage&&) noexcept = delete;
 	~CMovingAverage() = default;
 
 	void SetPeriod(int period) noexcept { m_period = period; }

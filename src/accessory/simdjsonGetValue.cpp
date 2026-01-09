@@ -11,9 +11,6 @@
 #include "pch.h"
 #include "simdjsonGetValue.h"
 
-ondemand::array gl_simdjsonEmptyArray;
-static string s_s{ " " }; // 需要静态数据，保证离开函数后数据仍然有效
-
 void CreateSimdjsonEmptyArray() {
 	static ondemand::parser s_parserEmptyArray;
 	static auto s_jsonEmptyArray = "[]"_padded; // The _padded suffix creates a simdjson::padded_string instance
@@ -21,24 +18,28 @@ void CreateSimdjsonEmptyArray() {
 	gl_simdjsonEmptyArray = s_docEmptyArray.get_array().value();
 }
 
-template <typename T, typename Value, typename Getter>
-T simdjsonGetHelper(Getter getter, Value& value, const T& defaultValue) {
-	try {
-		return getter(value);
-	} catch ([[maybe_unused]] simdjson_error& error) {
-		if (value.is_null()) return defaultValue;
-		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
-	}
-}
+namespace {
+	string s_s{ " " }; // 需要静态数据，保证离开函数后数据仍然有效
 
-template <typename T, typename Container, typename Getter>
-T simdjsonGetHelper(Getter getter, Container& value, const string_view& key, const T& defaultValue) {
-	ondemand::value valueInner = value[key].value();
-	try {
-		return getter(valueInner);
-	} catch ([[maybe_unused]] simdjson_error& error) {
-		if (valueInner.is_null()) return defaultValue;
-		throw;
+	template <typename T, typename Value, typename Getter>
+	T simdjsonGetHelper(Getter getter, Value& value, const T& defaultValue) {
+		try {
+			return getter(value);
+		} catch ([[maybe_unused]] simdjson_error& error) {
+			if (value.is_null()) return defaultValue;
+			throw simdjson_error(error); // 其他错误继续抛出simdjson_error
+		}
+	}
+
+	template <typename T, typename Container, typename Getter>
+	T simdjsonGetHelper(Getter getter, Container& value, const string_view& key, const T& defaultValue) {
+		ondemand::value valueInner = value[key].value();
+		try {
+			return getter(valueInner);
+		} catch ([[maybe_unused]] simdjson_error& error) {
+			if (valueInner.is_null()) return defaultValue;
+			throw;
+		}
 	}
 }
 

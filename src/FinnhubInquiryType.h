@@ -135,6 +135,10 @@ enum {
 class CFinnhubInquiryType {
 public:
 	CFinnhubInquiryType();
+	CFinnhubInquiryType const& operator=(CFinnhubInquiryType const&) = delete;
+	CFinnhubInquiryType(CFinnhubInquiryType const&) = delete;
+	CFinnhubInquiryType(CFinnhubInquiryType&&) noexcept = delete;
+	CFinnhubInquiryType& operator=(CFinnhubInquiryType&&) noexcept = delete;
 	~CFinnhubInquiryType() = default;
 
 	string GetInquiryString(int lInquiryType);
