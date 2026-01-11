@@ -25,12 +25,17 @@ using CVirtualWebSocketPtr = shared_ptr<CVirtualWebSocket>;
 class CVirtualWebSocket : public std::enable_shared_from_this<CVirtualWebSocket> {
 public:
 	CVirtualWebSocket();
+	// disable copy and move
+	CVirtualWebSocket(const CVirtualWebSocket&) = delete;
+	CVirtualWebSocket& operator=(const CVirtualWebSocket&) = delete;
+	CVirtualWebSocket(const CVirtualWebSocket&&) noexcept = delete;
+	CVirtualWebSocket& operator=(const CVirtualWebSocket&&) noexcept = delete;
 	virtual ~CVirtualWebSocket();
 
 	std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
 	void Reset();
 
-	virtual void TaskConnectAndSendMessage(vectorString vSymbol);
+	virtual void TaskConnectAndSendMessage(const vectorString& vSymbol);
 	virtual void TaskDisconnect();
 	bool ConnectAndSendMessage(const vectorString& vSymbol);
 	void Disconnect();

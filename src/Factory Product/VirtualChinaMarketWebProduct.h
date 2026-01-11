@@ -9,6 +9,11 @@
 class CVirtualChinaMarketWebProduct : public CVirtualWebProduct {
 public:
 	CVirtualChinaMarketWebProduct() = default;
+	// 不能赋值。
+	CVirtualChinaMarketWebProduct(const CVirtualChinaMarketWebProduct&) = delete;
+	CVirtualChinaMarketWebProduct& operator=(const CVirtualChinaMarketWebProduct&) = delete;
+	CVirtualChinaMarketWebProduct(const CVirtualChinaMarketWebProduct&&) noexcept = delete;
+	CVirtualChinaMarketWebProduct& operator=(const CVirtualChinaMarketWebProduct&&) noexcept = delete;
 	~CVirtualChinaMarketWebProduct() override = default;
 
 	void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) final;

@@ -5,6 +5,11 @@
 class CProductSinaRT final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductSinaRT();
+	// 不允许复制和赋值。
+	CProductSinaRT(const CProductSinaRT&) = delete;
+	CProductSinaRT& operator=(const CProductSinaRT&) = delete;
+	CProductSinaRT(const CProductSinaRT&&) noexcept = delete;
+	CProductSinaRT& operator=(const CProductSinaRT&&) noexcept = delete;
 	~CProductSinaRT() override = default;
 
 	string CreateMessage() override;

@@ -12,7 +12,11 @@
 class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductTengxunDayLine();
-
+	// 不允许复制和赋值。
+	CProductTengxunDayLine(const CProductTengxunDayLine&) = delete;
+	CProductTengxunDayLine& operator=(const CProductTengxunDayLine&) = delete;
+	CProductTengxunDayLine(const CProductTengxunDayLine&&) noexcept = delete;
+	CProductTengxunDayLine& operator=(const CProductTengxunDayLine&&) noexcept = delete;
 	~CProductTengxunDayLine() override = default;
 
 	string CreateMessage() override;

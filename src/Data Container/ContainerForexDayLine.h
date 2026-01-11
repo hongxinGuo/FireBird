@@ -4,7 +4,7 @@
 
 class CContainerForexDayLine final : public CVirtualDataHistoryCandleExtend {
 public:
-	CContainerForexDayLine();
+	CContainerForexDayLine() = default;
 	CContainerForexDayLine(const CContainerForexDayLine& other) = delete;
 	CContainerForexDayLine(CContainerForexDayLine&& other) noexcept = delete;
 	CContainerForexDayLine& operator=(const CContainerForexDayLine& other) = delete;

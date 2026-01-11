@@ -298,7 +298,6 @@ void CFireBirdView::ShowIndicatorRS(CDC* pDC, CRect rectDrawArea) {
 	CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
 	CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
 
-	CPen* pPen = pDC->SelectObject(&penRed1);
 	SysCallMoveTo(pDC, rectDrawArea.right, rectDrawArea.bottom - rectDrawArea.Height() / 2);
 	SysCallLineTo(pDC, 0, rectDrawArea.bottom - rectDrawArea.Height() / 2);
 

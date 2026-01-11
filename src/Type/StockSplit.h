@@ -1,7 +1,5 @@
 #pragma once
 
-#include <chrono>
-
 class CStockSplit {
 public:
 	CStockSplit() = default;

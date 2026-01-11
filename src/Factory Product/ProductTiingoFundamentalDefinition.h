@@ -6,6 +6,11 @@
 class CProductTiingoFundamentalDefinition final : public CProductTiingo {
 public:
 	CProductTiingoFundamentalDefinition();
+	// 不允许赋值。
+	CProductTiingoFundamentalDefinition(const CProductTiingoFundamentalDefinition&) = delete;
+	CProductTiingoFundamentalDefinition& operator=(const CProductTiingoFundamentalDefinition&) = delete;
+	CProductTiingoFundamentalDefinition(const CProductTiingoFundamentalDefinition&&) noexcept = delete;
+	CProductTiingoFundamentalDefinition& operator=(const CProductTiingoFundamentalDefinition&&) noexcept = delete;
 	~CProductTiingoFundamentalDefinition() override = default;
 
 	string CreateMessage() override;

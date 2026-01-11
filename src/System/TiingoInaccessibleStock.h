@@ -31,7 +31,7 @@ public:
 	void UpdateJson();
 
 	void Clear() noexcept {
-		for (auto val : m_mapStock | views::values) {
+		for (const auto& val : m_mapStock | views::values) {
 			val->Clear();
 		}
 	}

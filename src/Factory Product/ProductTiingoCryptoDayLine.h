@@ -6,6 +6,11 @@
 class CProductTiingoCryptoDayLine final : public CProductTiingo {
 public:
 	CProductTiingoCryptoDayLine();
+	// 不允许赋值。
+	CProductTiingoCryptoDayLine(const CProductTiingoCryptoDayLine&) = delete;
+	CProductTiingoCryptoDayLine& operator=(const CProductTiingoCryptoDayLine&) = delete;
+	CProductTiingoCryptoDayLine(const CProductTiingoCryptoDayLine&&) noexcept = delete;
+	CProductTiingoCryptoDayLine& operator=(const CProductTiingoCryptoDayLine&&) noexcept = delete;
 	~CProductTiingoCryptoDayLine() override = default;
 
 	string CreateMessage() override;

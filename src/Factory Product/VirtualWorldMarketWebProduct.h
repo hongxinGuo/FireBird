@@ -10,6 +10,11 @@
 class CVirtualWorldMarketWebProduct : public CVirtualWebProduct {
 public:
 	CVirtualWorldMarketWebProduct() = default;
+	// 不允许赋值。
+	CVirtualWorldMarketWebProduct(const CVirtualWorldMarketWebProduct&) = delete;
+	CVirtualWorldMarketWebProduct& operator=(const CVirtualWorldMarketWebProduct&) = delete;
+	CVirtualWorldMarketWebProduct(const CVirtualWorldMarketWebProduct&&) noexcept = delete;
+	CVirtualWorldMarketWebProduct& operator=(const CVirtualWorldMarketWebProduct&&) noexcept = delete;
 	~CVirtualWorldMarketWebProduct() override = default;
 
 	[[nodiscard]] CWorldMarketPtr GetMarket() const noexcept;

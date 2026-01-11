@@ -23,7 +23,7 @@ void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
 }
 
-void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
+void CVirtualWebSocket::TaskConnectAndSendMessage(const vectorString& vSymbol) {
 	if (IsConnecting()) { // 如果正在连接，则不再生成第二个连接
 		TRACE(_T("WebSocket正在连接中，不再生成第二个连接\n"));
 		gl_dailyWebSocketLogger->info("{} WebSocket正在连接中，不再生成第二个连接", m_url);

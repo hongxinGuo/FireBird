@@ -21,7 +21,7 @@ CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 }
 
 string CProductTiingoStockDailyMeta::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	m_strInquiringSymbol = pStock->GetSymbol();

@@ -11,7 +11,7 @@ public:
 	CContainerFinnhubStock& operator=(const CContainerFinnhubStock&) = delete;
 	CContainerFinnhubStock(const CContainerFinnhubStock&&) noexcept = delete;
 	CContainerFinnhubStock& operator=(const CContainerFinnhubStock&&) noexcept = delete;
-	~CContainerFinnhubStock() override;
+	~CContainerFinnhubStock() override = default ;
 	void Reset() override;
 
 	CFinnhubStockPtr GetItem(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubStock>(Get(lIndex)); }

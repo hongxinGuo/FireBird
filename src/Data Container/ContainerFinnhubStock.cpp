@@ -12,17 +12,12 @@
 
 #include "ContainerFinnhubStock.h"
 
+#include <algorithm>
+
 #include "CharSetTransfer.h"
 
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();
-}
-
-CContainerFinnhubStock::~CContainerFinnhubStock() {
-	//for (const auto& pStock : m_vStock) {
-	//pStock->SetUpdateProfileDB(true);
-	//}
-	//UpdateProfileDB();
 }
 
 void CContainerFinnhubStock::Reset() {
@@ -84,9 +79,7 @@ bool CContainerFinnhubStock::LoadDB() {
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pFinnhubStock);
-			if (pFinnhubStock->GetSymbol().length() > lMaxSymbolLength) {
-				lMaxSymbolLength = pFinnhubStock->GetSymbol().length();
-			}
+			lMaxSymbolLength = std::max<std::basic_string<char>::size_type>(pFinnhubStock->GetSymbol().length(), lMaxSymbolLength);
 		}
 		else {
 			setFinnhubStock.Delete(); // 删除此重复代码
@@ -269,7 +262,7 @@ void CContainerFinnhubStock::ClearUpdateBasicFinancialFlag(const vector<CFinnhub
 }
 
 void CContainerFinnhubStock::UpdateInsiderTransactionDB() {
-	for (long i = 0; i < m_vStock.size(); i++) {
+	for (size_t i = 0; i < m_vStock.size(); i++) {
 		const CFinnhubStockPtr pStock = GetItem(i);
 		if (pStock->IsUpdateInsiderTransactionDB()) {
 			pStock->SetUpdateInsiderTransactionDB(false);
@@ -287,8 +280,8 @@ bool CContainerFinnhubStock::ValidateStockSymbol(const CFinnhubStockPtr& pStock)
 	const string strSymbol = pStock->GetSymbol();
 	const string strExchangeCode = pStock->GetExchangeCode();
 
-	if (strExchangeCode.compare("US") == 0) return true;
-	const int pos = strSymbol.find("." + strExchangeCode);
+	if (strExchangeCode == "US") return true;
+	const auto pos = strSymbol.find("." + strExchangeCode);
 	if ((pos + 1) < (strSymbol.length() - strExchangeCode.length())) {
 		return false;
 	}

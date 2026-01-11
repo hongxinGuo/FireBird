@@ -18,7 +18,7 @@ using CInaccessibleExchangesPtr = shared_ptr<CInaccessible>;
 class CFinnhubInaccessibleExchange {
 public:
 	CFinnhubInaccessibleExchange();
-	// 只能有一个实例,不允许赋值、拷贝
+	// 不允许赋值、拷贝
 	CFinnhubInaccessibleExchange(const CFinnhubInaccessibleExchange&) = delete;
 	CFinnhubInaccessibleExchange& operator=(const CFinnhubInaccessibleExchange&) = delete;
 	CFinnhubInaccessibleExchange(const CFinnhubInaccessibleExchange&&) noexcept = delete;

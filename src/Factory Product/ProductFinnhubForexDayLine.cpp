@@ -23,7 +23,7 @@ string CProductFinnhubForexDayLine::CreateMessage() {
 }
 
 void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);

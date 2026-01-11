@@ -10,7 +10,7 @@ namespace testing {
 		MOCK_METHOD(void, Send, (const vectorString& vSymbol), (override));
 		MOCK_METHOD(void, StartWebSocket, (), (override));
 		MOCK_METHOD(void, StopWebSocket, (), (override));
-		MOCK_METHOD(void, TaskConnectAndSendMessage, (vectorString vSymbol), (override));
+		MOCK_METHOD(void, TaskConnectAndSendMessage, (const vectorString& vSymbol), (override));
 		MOCK_METHOD(void, TaskDisconnect, (), (override));
 	};
 

@@ -24,7 +24,7 @@ CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoForexDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetStock(GetIndex());
 	string strParam;

@@ -22,7 +22,7 @@ string CProductFinnhubSECFilings::CreateMessage() {
 }
 
 void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	auto pvSECFilings = ParseFinnhubStockSECFilings(pWebData);

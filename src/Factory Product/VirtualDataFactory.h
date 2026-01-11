@@ -9,7 +9,11 @@
 class CVirtualDataFactory {
 public:
 	CVirtualDataFactory() = default;
-
+	// 不允许赋值。
+	CVirtualDataFactory(const CVirtualDataFactory&) = delete;
+	CVirtualDataFactory& operator=(const CVirtualDataFactory&) = delete;
+	CVirtualDataFactory(const CVirtualDataFactory&&) noexcept = delete;
+	CVirtualDataFactory& operator=(const CVirtualDataFactory&&) noexcept = delete;
 	virtual ~CVirtualDataFactory() = default;
 
 	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) = 0;

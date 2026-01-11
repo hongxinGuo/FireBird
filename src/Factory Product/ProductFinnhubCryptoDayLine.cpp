@@ -23,7 +23,7 @@ string CProductFinnhubCryptoDayLine::CreateMessage() {
 }
 
 void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 
 	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex);
 	const auto pvDayLine = ParseFinnhubCryptoCandle(pWebData);

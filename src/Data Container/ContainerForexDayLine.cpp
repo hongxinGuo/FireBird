@@ -4,8 +4,6 @@
 #include "InfoReport.h"
 #include"SetForexDayLine.h"
 
-CContainerForexDayLine::CContainerForexDayLine() {}
-
 bool CContainerForexDayLine::SaveDB(const string& strCryptoSymbol) {
 	try {
 		CSetForexDayLine setForexDayLineBasic;
@@ -30,7 +28,6 @@ bool CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 	setDayLineBasic.Close();
 
 	m_fDataLoaded = true;
-	int aasdfd = 0;
 
 	return true;
 }

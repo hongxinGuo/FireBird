@@ -5,6 +5,11 @@
 class CProductTiingo : public CVirtualWorldMarketWebProduct {
 public:
 	CProductTiingo() = default;
+	// 不允许赋值。
+	CProductTiingo(const CProductTiingo&) = delete;
+	CProductTiingo& operator=(const CProductTiingo&) = delete;
+	CProductTiingo(const CProductTiingo&&) noexcept = delete;
+	CProductTiingo& operator=(const CProductTiingo&&) noexcept = delete;
 	~CProductTiingo() override = default;
 
 	void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) final;

@@ -34,7 +34,7 @@ bool IsShareA(const string& strStockCode) {
 
 bool IsChinaStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
-	return strcmp(typeid(*pStock).name(), "class CChinaStock") == 0;
+	return typeid(*pStock) == typeid(CChinaStock);
 }
 
 CChinaStock::CChinaStock() {

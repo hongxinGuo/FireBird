@@ -6,6 +6,11 @@
 class CProductTiingoCryptoSymbol final : public CProductTiingo {
 public:
 	CProductTiingoCryptoSymbol();
+	// 不允许赋值。
+	CProductTiingoCryptoSymbol(const CProductTiingoCryptoSymbol&) = delete;
+	CProductTiingoCryptoSymbol& operator=(const CProductTiingoCryptoSymbol&) = delete;
+	CProductTiingoCryptoSymbol(const CProductTiingoCryptoSymbol&&) noexcept = delete;
+	CProductTiingoCryptoSymbol& operator=(const CProductTiingoCryptoSymbol&&) noexcept = delete;
 	~CProductTiingoCryptoSymbol() override = default;
 
 	string CreateMessage() override;

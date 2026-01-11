@@ -33,7 +33,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoStockDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ASSERT(pStock->IsActive()); // 活跃股票
@@ -47,7 +47,7 @@ string CProductTiingoStockDayLine::CreateMessage() {
 }
 
 void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 

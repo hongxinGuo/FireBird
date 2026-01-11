@@ -5,6 +5,11 @@
 class CProductTengxunRT final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductTengxunRT();
+	// 不允许赋值。
+	CProductTengxunRT(const CProductTengxunRT&) = delete;
+	CProductTengxunRT& operator=(const CProductTengxunRT&) = delete;
+	CProductTengxunRT(const CProductTengxunRT&&) noexcept = delete;
+	CProductTengxunRT& operator=(const CProductTengxunRT&&) noexcept = delete;
 	~CProductTengxunRT() override = default;
 
 	string CreateMessage() override;

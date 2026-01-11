@@ -6,6 +6,11 @@
 class CProductTiingoStockProfile final : public CProductTiingo {
 public:
 	CProductTiingoStockProfile();
+	// 不允许赋值
+	CProductTiingoStockProfile(const CProductTiingoStockProfile&) = delete;
+	CProductTiingoStockProfile& operator=(const CProductTiingoStockProfile&) = delete;
+	CProductTiingoStockProfile(const CProductTiingoStockProfile&&) noexcept = delete;
+	CProductTiingoStockProfile& operator=(const CProductTiingoStockProfile&&) noexcept = delete;
 	~CProductTiingoStockProfile() override = default;
 
 	string CreateMessage() override;

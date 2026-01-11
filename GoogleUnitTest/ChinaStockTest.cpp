@@ -30,9 +30,18 @@ namespace FireBirdTest {
 	TEST_F(AccessoryTest, TestIsChinaStock) {
 		CChinaStockPtr pChinaStock = make_shared<CChinaStock>();
 		CVirtualStockPtr pStock;
+		CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+		CFinnhubStockPtr pFinnhubStock = make_shared<CFinnhubStock>();
 		EXPECT_TRUE(IsChinaStock(pChinaStock));
 		EXPECT_FALSE(IsChinaStock(pStock));
 		EXPECT_FALSE(IsChinaStock(nullptr));
+		EXPECT_FALSE(IsChinaStock(pTiingoStock));
+		EXPECT_FALSE(IsChinaStock(pFinnhubStock));
+
+		pStock = pChinaStock;
+		EXPECT_TRUE(IsChinaStock(pStock));
+		pStock = pTiingoStock;
+		EXPECT_FALSE(IsChinaStock(pStock));
 	}
 
 	TEST_F(AccessoryTest, TestIsAStock2) {

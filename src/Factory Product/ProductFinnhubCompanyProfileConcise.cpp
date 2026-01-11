@@ -22,7 +22,8 @@ string CProductFinnhubCompanyProfileConcise::CreateMessage() {
 }
 
 void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), "class CWorldMarket") == 0);
+	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
+
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);

@@ -6,6 +6,11 @@
 class CProductTiingoForexDayLine final : public CProductTiingo {
 public:
 	CProductTiingoForexDayLine();
+	// 不允许赋值。
+	CProductTiingoForexDayLine(const CProductTiingoForexDayLine&) = delete;
+	CProductTiingoForexDayLine& operator=(const CProductTiingoForexDayLine&) = delete;
+	CProductTiingoForexDayLine(const CProductTiingoForexDayLine&&) noexcept = delete;
+	CProductTiingoForexDayLine& operator=(const CProductTiingoForexDayLine&&) noexcept = delete;
 	~CProductTiingoForexDayLine() override = default;
 
 	string CreateMessage() override;
