@@ -41,7 +41,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestCreatMessage) {
-		stockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket);
 		stockEstimatesEPSSurprise.SetIndex(1);
 		EXPECT_TRUE(stockEstimatesEPSSurprise.CreateMessage() == stockEstimatesEPSSurprise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
 	}
@@ -154,7 +153,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubStockEstimatesEPSSurprise.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubStockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket);
 			m_finnhubStockEstimatesEPSSurprise.SetIndex(0);
 		}
 

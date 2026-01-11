@@ -22,14 +22,12 @@ string CProductFinnhubSECFilings::CreateMessage() {
 }
 
 void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	auto pvSECFilings = ParseFinnhubStockSECFilings(pWebData);
 	auto size = pvSECFilings->size();
 	pStock->SetSECFilings(pvSECFilings);
 	pStock->SetUpdateSECFilings(false);
-	pStock->SetSECFilingsUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetSECFilingsUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateProfileDB(true);
 	if (size > 0) {
 		pStock->SetUpdateSECFilingsDB(true);

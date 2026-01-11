@@ -24,15 +24,14 @@ CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoForexDayLine::CreateMessage() {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetStock(GetIndex());
 	string strParam;
 	if (pStock->GetDayLineStartDate() > 20180101) {
-		strParam = pStock->GetTiingoDayLineInquiryParam(19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
+		strParam = pStock->GetTiingoDayLineInquiryParam(19800101, gl_pWorldMarket->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
 	}
 	else {
-		strParam = pStock->GetTiingoDayLineInquiryParam(pStock->GetDayLineEndDate(), GetMarket()->GetMarketDate());
+		strParam = pStock->GetTiingoDayLineInquiryParam(pStock->GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate());
 	}
 	pStock->SetUpdateDayLine(false);
 	m_strInquiry = m_strInquiryFunction + strParam;

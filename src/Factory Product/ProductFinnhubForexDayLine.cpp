@@ -23,8 +23,6 @@ string CProductFinnhubForexDayLine::CreateMessage() {
 }
 
 void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
 	pForexSymbol->SetUpdateDayLine(false);
@@ -32,7 +30,7 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
-			const long lTemp = GetMarket()->ConvertToDate(pDayLine->GetMarketTime());
+			const long lTemp = gl_pWorldMarket->ConvertToDate(pDayLine->GetMarketTime());
 			pDayLine->SetDate(lTemp);
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);

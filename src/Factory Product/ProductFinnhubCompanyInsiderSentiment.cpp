@@ -18,7 +18,7 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
-	const string sCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
+	const string sCurrentDate = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
@@ -36,7 +36,7 @@ void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 
 void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
-	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetInsiderSentimentUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateInsiderSentiment(false);
 	pStock->SetUpdateProfileDB(true);
 }

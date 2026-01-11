@@ -29,7 +29,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			pProduct = make_shared<CProductFinnhubCompanyProfileConcise>();
-			pProduct->SetReceivedDataStatus(GOOD_DATA__);
+			pProduct->SetReceivedDataStatus(GOOD_DATA_);
 			pProduct->SetInquiringExchange("US"); // 交易所为US,防止添加禁用交易所。
 			m_FinnhubDataSource.SetCurrentInquiry(pProduct);
 		}

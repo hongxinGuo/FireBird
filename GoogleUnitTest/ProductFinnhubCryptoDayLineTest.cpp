@@ -42,7 +42,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestCreatMessage) {
-		cryptoDayLine.SetMarket(gl_pWorldMarket);
 		cryptoDayLine.SetIndex(1);
 		EXPECT_EQ(cryptoDayLine.CreateMessage(),
 		          (cryptoDayLine.GetInquiryFunction() + gl_dataFinnhubCryptoSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())));
@@ -169,7 +168,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubCryptoDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubCryptoDayLine.SetIndex(0);
 		}
 

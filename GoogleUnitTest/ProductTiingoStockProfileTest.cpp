@@ -189,7 +189,6 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 
-			m_tiingoStockProduct.SetMarket(gl_pWorldMarket);
 			m_tiingoStockProduct.SetIndex(0);
 			gl_pTiingoDataSource->SetUpdateStockSymbol(true);
 		}

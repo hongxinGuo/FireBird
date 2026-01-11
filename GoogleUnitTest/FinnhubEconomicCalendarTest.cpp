@@ -43,7 +43,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestCreatMessage) {
-		economicCalendar.SetMarket(gl_pWorldMarket);
 		economicCalendar.SetIndex(1);
 		EXPECT_TRUE(economicCalendar.CreateMessage()== economicCalendar.GetInquiryFunction());
 	}
@@ -195,7 +194,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubEconomicCalendar.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubEconomicCalendar.SetMarket(gl_pWorldMarket);
 			m_finnhubEconomicCalendar.SetIndex(0);
 		}
 

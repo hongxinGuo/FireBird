@@ -138,7 +138,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubForexExchange.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubForexExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";
 		}

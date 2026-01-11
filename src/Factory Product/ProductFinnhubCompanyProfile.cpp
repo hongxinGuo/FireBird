@@ -26,7 +26,7 @@ void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfile(pWebData, pStock);
 	if (fSucceed || pWebData->IsVoidJson() || IsNoRightToAccess()) {
-		pStock->SetProfileUpdateDate(GetMarket()->GetMarketDate());
+		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 	}
 }

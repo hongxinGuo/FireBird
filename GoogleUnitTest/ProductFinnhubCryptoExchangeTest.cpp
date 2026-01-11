@@ -135,7 +135,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoExchange.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
 		}

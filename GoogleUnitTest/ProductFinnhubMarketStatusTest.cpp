@@ -42,7 +42,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubMarketStatusProductTest, TestCreatMessage) {
-		MarketStatusProduct.SetMarket(gl_pWorldMarket);
 		MarketStatusProduct.SetIndex(1);
 		EXPECT_EQ(MarketStatusProduct.CreateMessage(), (MarketStatusProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
@@ -110,7 +109,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubMarketStatusProduct.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubMarketStatusProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubMarketStatusProduct.SetIndex(0); // 第一个交易所（AS)
 		}
 

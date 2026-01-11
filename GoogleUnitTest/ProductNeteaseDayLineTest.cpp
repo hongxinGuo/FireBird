@@ -25,7 +25,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			neteaseDayLine.SetMarket(gl_pChinaMarket);
 		}
 
 		void TearDown() override {

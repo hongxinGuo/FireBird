@@ -33,13 +33,11 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoStockDayLine::CreateMessage() {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ASSERT(pStock->IsActive()); // 活跃股票
 	long lStartDate = 19800101;
 	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
-	string strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
+	string strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, gl_pWorldMarket->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -47,8 +45,6 @@ string CProductTiingoStockDayLine::CreateMessage() {
 }
 
 void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 
 	auto pvDayLine = ParseTiingoStockDayLine(pWebData);

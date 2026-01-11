@@ -42,7 +42,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
-		companySymbolProduct.SetMarket(gl_pWorldMarket);
 		companySymbolProduct.SetIndex(1);
 		EXPECT_EQ(companySymbolProduct.CreateMessage(), (companySymbolProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
@@ -140,7 +139,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubStockSymbolProduct.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubStockSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
 			m_finnhubStockSymbolProduct.SetInquiringExchange(gl_dataContainerStockExchange.GetItemExchangeCode(0));
 		}

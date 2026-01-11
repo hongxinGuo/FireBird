@@ -48,7 +48,6 @@ void CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 		const string strNeteaseStockCode = strStocks.substr(0, 7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
 		gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
 		const auto product = make_shared<CProductNeteaseRT>();
-		product->SetMarket(gl_pChinaMarket);
 		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
 	}

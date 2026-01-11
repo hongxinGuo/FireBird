@@ -26,7 +26,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			sinaRT.SetMarket(gl_pChinaMarket);
 		}
 
 		void TearDown() override {

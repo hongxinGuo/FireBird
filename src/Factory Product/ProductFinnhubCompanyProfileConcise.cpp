@@ -22,8 +22,6 @@ string CProductFinnhubCompanyProfileConcise::CreateMessage() {
 }
 
 void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
@@ -36,7 +34,7 @@ void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 		}
 	}
 	if (fSucceed || pWebData->IsVoidJson() || IsNoRightToAccess()) {
-		pStock->SetProfileUpdateDate(GetMarket()->GetMarketDate());
+		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 	}
 }

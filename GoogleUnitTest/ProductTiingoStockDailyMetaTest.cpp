@@ -45,7 +45,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoStockDailyMetaTest, TestCreatMessage) {
-		stockDailyMeta.SetMarket(gl_pWorldMarket);
 		stockDailyMeta.SetIndex(1); // stock code is AA
 		EXPECT_EQ(stockDailyMeta.CreateMessage(), "https://api.tiingo.com/tiingo/daily/AA?");
 	}

@@ -46,7 +46,6 @@ namespace FireBirdTest {
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(1);
 		pStock->SetUpdateBasicFinancial(true);
-		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(1);
 		EXPECT_EQ(companyBasicFinancial.CreateMessage(), (companyBasicFinancial.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&metric=all"));
 		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
@@ -56,7 +55,6 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestUpdateSystemStatus) {
 		auto date = gl_pWorldMarket->GetMarketDate();
-		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(0);
 
 		auto pStock = gl_dataContainerFinnhubStock.GetItem(companyBasicFinancial.GetIndex());
@@ -497,7 +495,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyBasicFinancial.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
@@ -589,7 +586,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyBasicFinancial.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}

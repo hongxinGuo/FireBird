@@ -41,7 +41,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestCreatMessage) {
-		cryptoSymbolProduct.SetMarket(gl_pWorldMarket);
 		cryptoSymbolProduct.SetIndex(1);
 		EXPECT_EQ(cryptoSymbolProduct.CreateMessage(), (cryptoSymbolProduct.GetInquiryFunction() + gl_dataContainerFinnhubCryptoExchange.GetItem(1)));
 	}
@@ -133,7 +132,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoSymbolProduct.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubCryptoSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubCryptoSymbolProduct.SetIndex(0);
 		}
 

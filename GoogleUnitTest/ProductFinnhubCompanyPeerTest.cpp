@@ -45,7 +45,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
-		companyPeer.SetMarket(gl_pWorldMarket);
 		companyPeer.SetIndex(1);
 		EXPECT_EQ(companyPeer.CreateMessage(), (companyPeer.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
@@ -137,7 +136,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyPeer.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubCompanyPeer.SetMarket(gl_pWorldMarket);
 			m_finnhubCompanyPeer.SetIndex(0); // 第一个股票
 		}
 
@@ -169,31 +167,31 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
-			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetPeerUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
-			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetPeerUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 3: // 不足三个字符
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
-			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetPeerUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 4: // 格式不对
 			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
-			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetPeerUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 5: // 第二个数据缺Code2
 			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
-			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetPeerUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 6: // 正确的数据，但超过200个字符
 			EXPECT_FALSE(pStock->GetPeer().empty()) << "多余2000个字符时截断";
@@ -201,10 +199,10 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			s = pStock->GetPeer().dump();
-			EXPECT_EQ(s, "[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]");
+			EXPECT_EQ(s, R"(["AAPL","DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR"])");
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
-			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetPeerUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		default:
 			break;

@@ -6,10 +6,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"ClassDeclaration.h"
-
 enum {
-	GOOD_DATA__ = 1,
+	GOOD_DATA_ = 1,
 	VOID_DATA_,
 	NO_ACCESS_RIGHT_,
 };
@@ -18,7 +16,7 @@ enum {
 
 class CVirtualWebProduct {
 public:
-	CVirtualWebProduct() {} // default do nothing
+	CVirtualWebProduct() = default; // default do nothing
 	// 不允许赋值。
 	CVirtualWebProduct(const CVirtualWebProduct&) = delete;
 	CVirtualWebProduct& operator=(const CVirtualWebProduct&) = delete;
@@ -52,8 +50,6 @@ public:
 	auto GetIndex() const noexcept { return m_lIndex; }
 	void SetIndex(const size_t lIndex) noexcept { m_lIndex = lIndex; }
 
-	void SetMarket(const CVirtualMarketPtr& pMarket) noexcept { m_pMarket = pMarket; }
-
 	void SetInquiringExchange(const string& exchange) noexcept { m_strInquiringExchange = exchange; }
 	string GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
 	bool IsUSMarket() const; // 如果是美国市场
@@ -68,14 +64,13 @@ public:
 	virtual bool Test_checkAccessRight_(CWebDataPtr) { return true; }  // todo 不再使用，准备删除之
 
 protected:
-	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用weak_ptr智能指针以防止内存泄露。
 	string m_strInquiryFunction{};
 	string m_strInquiry{};
 	string m_strInquiringExchange{ "ALL" }; // 默认是申请所有的交易所数据。
 	string m_strInquiringSymbol{}; // 目前查询的证券名称
 	size_t m_lIndex{ 0 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界
 	int m_iInquireType{ -1 }; // product索引，Finnhub申请的索引，如SYMBOL_LOOKUP_等。 预先设置为越界
-	int m_iReceivedDataStatus{ GOOD_DATA__ }; // 1:有效数据；2:void data(只有{}或[]两个数据); 3:没有权利申请
+	int m_iReceivedDataStatus{ GOOD_DATA_ }; // 1:有效数据；2:void data(只有{}或[]两个数据); 3:没有权利申请
 };
 
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;

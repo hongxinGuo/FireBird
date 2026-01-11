@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(R"({"detail":"You do not have permission to access the News API"})"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // error
 		auto pProduct = make_shared<CProductDummy>();
-		pProduct->SetReceivedDataStatus(GOOD_DATA__);
+		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
 		m_pTiingoDataSource->CheckWebData(pWebData);
@@ -104,7 +104,7 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(R"({"detail":"Please supply a token"})"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 403 forbidden
 		auto pProduct = make_shared<CProductDummy>();
-		pProduct->SetReceivedDataStatus(GOOD_DATA__);
+		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
 		m_pTiingoDataSource->CheckWebData(pWebData);
@@ -122,7 +122,7 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(R"({"detail":"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."})"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
 		auto pProduct = make_shared<CProductDummy>();
-		pProduct->SetReceivedDataStatus(GOOD_DATA__);
+		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
 		m_pTiingoDataSource->CheckWebData(pWebData);
@@ -141,7 +141,7 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(R"({"detail":"Not handled"})"); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
 		auto pProduct = make_shared<CProductDummy>();
-		pProduct->SetReceivedDataStatus(GOOD_DATA__);
+		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
 		m_pTiingoDataSource->CheckWebData(pWebData);

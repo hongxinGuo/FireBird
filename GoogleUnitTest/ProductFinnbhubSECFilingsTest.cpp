@@ -44,7 +44,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubSECFilingsTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateSECFilings(true);
-		companySECFilings.SetMarket(gl_pWorldMarket);
 		companySECFilings.SetIndex(1);
 		EXPECT_EQ(companySECFilings.CreateMessage(), (companySECFilings.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateSECFilings()) << "接收到的数据处理后方设置此标识";
@@ -131,7 +130,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubSECFilings.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubSECFilings.SetMarket(gl_pWorldMarket);
 			m_finnhubSECFilings.SetIndex(0); // 第一个股票
 			gl_dataContainerFinnhubStock.GetItem(0)->SetSECFilingsUpdateDate(19800101);
 			gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateSECFilings(true);
@@ -164,32 +162,32 @@ namespace FireBirdTest {
 		case 0: // 空数据
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 2: // 空数据
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 3: // 不足三个字符
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 4: // 格式不对
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 10:
 			EXPECT_FALSE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		default:
 			break;

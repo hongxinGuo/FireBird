@@ -42,7 +42,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateDayLine(true);
-		stockDayLine.SetMarket(gl_pWorldMarket);
 		stockDayLine.SetIndex(1);
 		EXPECT_TRUE(stockDayLine.CreateMessage() ==
 			stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
@@ -86,7 +85,6 @@ namespace FireBirdTest {
 			m_finnhubStockDayLine.Test_checkAccessRight_(m_pWebData);
 
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
-			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
 

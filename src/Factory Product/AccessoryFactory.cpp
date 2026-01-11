@@ -20,7 +20,6 @@ CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMa
 		gl_systemMessage.PushErrorMessage("Accessory product未实现");
 		break;
 	}
-	p->SetMarket(pMarket);
 	p->SetInquireType(iInquireType);
 
 	return p;

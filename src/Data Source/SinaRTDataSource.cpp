@@ -43,7 +43,6 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	// 后申请网络数据
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductSinaRT>();
-		product->SetMarket(gl_pChinaMarket);
 		StoreInquiry(product);
 		return true;
 	}

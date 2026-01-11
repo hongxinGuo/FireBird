@@ -46,6 +46,6 @@ bool CProductFinnhub::Test_checkAccessRight_(CWebDataPtr pWebData) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}
-	if (IsNoRightToAccess()) m_iReceivedDataStatus = GOOD_DATA__;
+	if (IsNoRightToAccess()) m_iReceivedDataStatus = GOOD_DATA_;
 	return true;
 }

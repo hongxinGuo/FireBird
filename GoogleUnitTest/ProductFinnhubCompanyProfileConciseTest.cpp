@@ -45,7 +45,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
-		companyProfileConcise.SetMarket(gl_pWorldMarket);
 		companyProfileConcise.SetIndex(1);
 		EXPECT_EQ(companyProfileConcise.CreateMessage(), (companyProfileConcise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
@@ -76,7 +75,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_FinnhubCompanyProfileConcise.Test_checkAccessRight_(m_pWebData);
 
-			m_FinnhubCompanyProfileConcise.SetMarket(gl_pWorldMarket);
 			m_FinnhubCompanyProfileConcise.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
 

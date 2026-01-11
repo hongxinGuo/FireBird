@@ -50,7 +50,7 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
 		pStock->SetUpdateCompanyNewsDB(true);
 	}
-	pStock->SetCompanyNewsUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetCompanyNewsUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateCompanyNews(false);
 	pStock->SetUpdateProfileDB(true);
 }

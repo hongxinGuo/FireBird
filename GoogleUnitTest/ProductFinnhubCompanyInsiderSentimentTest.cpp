@@ -46,7 +46,6 @@ namespace FireBirdTest {
 		string sCurrentDate = fmt::format("{:4Ld}-{:02Ld}-{:02Ld}", lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderSentiment(true);
-		companyInsiderSentiment.SetMarket(gl_pWorldMarket);
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_EQ(companyInsiderSentiment.CreateMessage(),
 		          (companyInsiderSentiment.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate));
@@ -79,7 +78,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
@@ -163,7 +161,6 @@ namespace FireBirdTest {
 			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_pWebData);
 
 			m_pvInsiderSentiment = nullptr;
-			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
@@ -241,7 +238,6 @@ namespace FireBirdTest {
 			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_pWebData);
 
 			m_pvInsiderSentiment = nullptr;
-			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}

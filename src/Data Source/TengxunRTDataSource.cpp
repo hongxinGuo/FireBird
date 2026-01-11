@@ -33,7 +33,6 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		}
 		if (!IsInquiring()) {
 			const auto product = make_shared<CProductTengxunRT>();
-			product->SetMarket(gl_pChinaMarket);
 			ASSERT(!HaveInquiry());
 			StoreInquiry(product);
 			return true;

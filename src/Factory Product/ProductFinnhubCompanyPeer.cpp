@@ -20,12 +20,10 @@ string CProductFinnhubCompanyPeer::CreateMessage() {
 }
 
 void CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const nlohmannJson jsonPeer = ParseFinnhubStockPeer(pWebData);
 	pStock->SetPeer(jsonPeer);
-	pStock->SetPeerUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetPeerUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdatePeer(false);
 	pStock->SetUpdateProfileDB(true);
 }

@@ -123,7 +123,6 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		}
 		const string strTotalMessage = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=" + strStockCode + ",day," + sStartDate + "," + sEndDate + m_strSuffix;
 		product = make_shared<CProductTengxunDayLine>();
-		product->SetMarket(gl_pChinaMarket);
 		product->SetIndex(lStockIndex);
 		product->SetInquiryFunction(strTotalMessage);
 		vProduct.push_back(product);

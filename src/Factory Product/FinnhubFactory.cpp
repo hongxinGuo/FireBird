@@ -158,7 +158,6 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMark
 		gl_systemMessage.PushErrorMessage("Finnhub product未实现");
 		break;
 	}
-	p->SetMarket(pMarket);
 	p->SetInquireType(iInquireType);
 
 	return p;

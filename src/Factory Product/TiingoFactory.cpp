@@ -93,7 +93,6 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 		p = make_shared<CProductDummy>();
 		gl_systemMessage.PushErrorMessage("Tiingo product未实现");
 	}
-	p->SetMarket(pMarket);
 	p->SetInquireType(iInquireType);
 
 	return p;

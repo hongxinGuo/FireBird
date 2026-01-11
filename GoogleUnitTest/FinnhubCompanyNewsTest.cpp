@@ -48,7 +48,6 @@ namespace FireBirdTest {
 		int year = 0, month = 0, day = 0;
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
-		companyNews.SetMarket(gl_pWorldMarket);
 		companyNews.SetIndex(1);
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(1);
 		string strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
@@ -97,7 +96,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_FinnhubCompanyNews.Test_checkAccessRight_(m_pWebData);
 
-			m_FinnhubCompanyNews.SetMarket(gl_pWorldMarket);
 			m_FinnhubCompanyNews.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
 

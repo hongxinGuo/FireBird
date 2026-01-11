@@ -21,8 +21,6 @@ CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 }
 
 string CProductTiingoStockDailyMeta::CreateMessage() {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	m_strInquiringSymbol = pStock->GetSymbol();
 

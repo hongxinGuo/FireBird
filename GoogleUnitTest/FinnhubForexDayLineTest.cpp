@@ -43,7 +43,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexDayLineTest, TestCreatMessage) {
 		gl_dataFinnhubForexSymbol.GetItem(1)->SetUpdateDayLine(true);
-		forexDayLine.SetMarket(gl_pWorldMarket);
 		forexDayLine.SetIndex(1);
 		EXPECT_TRUE(forexDayLine.CreateMessage() ==
 			forexDayLine.GetInquiryFunction() + gl_dataFinnhubForexSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
@@ -172,7 +171,6 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubForexDayLine.Test_checkAccessRight_(m_pWebData);
 
-			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubForexDayLine.SetIndex(0);
 		}
 

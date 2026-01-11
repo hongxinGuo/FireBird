@@ -156,8 +156,6 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_finnhubEconomicCountryList.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket);
 		}
 
 		void TearDown() override {

@@ -21,7 +21,7 @@ CProductSinaRT::CProductSinaRT() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 string CProductSinaRT::CreateMessage() {
-	string strStocks = GetMarket()->GetSinaStockInquiringStr(gl_pSinaRTDataSource->GetInquiringNumber(), GetMarket()->IsCheckingActiveStock());
+	string strStocks = gl_pChinaMarket->GetSinaStockInquiringStr(gl_pSinaRTDataSource->GetInquiringNumber(), gl_pChinaMarket->IsCheckingActiveStock());
 	const string_view strSinaStockCode = string_view(strStocks.data(), 8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
 	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
 	return m_strInquiryFunction + strStocks;
@@ -35,6 +35,6 @@ string CProductSinaRT::CreateMessage() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (pWebData->GetBufferLength() == 0) return;
-	GetMarket()->IncreaseRTDataCounter();
+	gl_pChinaMarket->IncreaseRTDataCounter();
 	ParseSinaRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 }

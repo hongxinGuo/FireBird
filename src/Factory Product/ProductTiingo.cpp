@@ -41,6 +41,6 @@ bool CProductTiingo::Test_checkAccessRight_(CWebDataPtr pWebData) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}
-	if (m_iReceivedDataStatus == NO_ACCESS_RIGHT_) m_iReceivedDataStatus = GOOD_DATA__;
+	if (m_iReceivedDataStatus == NO_ACCESS_RIGHT_) m_iReceivedDataStatus = GOOD_DATA_;
 	return true;
 }

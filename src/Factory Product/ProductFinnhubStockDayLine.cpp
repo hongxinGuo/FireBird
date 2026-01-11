@@ -25,8 +25,6 @@ string CProductFinnhubStockDayLine::CreateMessage() {
 }
 
 void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
 	pStock->SetUpdateDayLine(false);
@@ -34,7 +32,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
-		const auto lTemp = GetMarket()->ConvertToDate(pDayLine->GetMarketTime());
+		const auto lTemp = gl_pWorldMarket->ConvertToDate(pDayLine->GetMarketTime());
 		pDayLine->SetDate(lTemp);
 		if ((lastClose != 0) && (pDayLine->GetLastClose() == 0)) pDayLine->SetLastClose(lastClose);
 		lastClose = pDayLine->GetClose();
@@ -46,7 +44,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateProfileDB(true);
 			const auto lSize = pStock->GetDayLineSize() - 1;
 			const auto pDayLine = pStock->GetDayLine(lSize);
-			if (!IsEarlyThen(pDayLine->GetDate(), GetMarket()->GetMarketDate(), 100)) {
+			if (!IsEarlyThen(pDayLine->GetDate(), gl_pWorldMarket->GetMarketDate(), 100)) {
 				pStock->SetIPOStatus(_STOCK_IPOED_);
 			}
 			return;

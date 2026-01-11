@@ -178,8 +178,6 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-
-			m_tiingoCryptoSymbolProduct.SetMarket(gl_pWorldMarket);
 		}
 
 		void TearDown() override {

@@ -46,7 +46,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 		const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
 		strStockSymbol = pDayLineWebData->GetStockCode();
 		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
-			if (GetMarket()->IsWorkingDay(pData->GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
+			if (gl_pChinaMarket->IsWorkingDay(pData->GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
 				vDayLine.push_back(pData);
 			}
 		}

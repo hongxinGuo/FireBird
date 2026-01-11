@@ -24,11 +24,9 @@ string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 }
 
 void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(typeid(*GetMarket()) == typeid(CWorldMarket));
-
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const CInsiderTransactionsPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
-	pStock->SetInsiderTransactionUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateInsiderTransaction(false);
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderTransaction->empty()) {
@@ -39,7 +37,7 @@ void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 
 void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
-	pStock->SetInsiderTransactionUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateInsiderTransaction(false);
 	pStock->SetUpdateProfileDB(true);
 }
