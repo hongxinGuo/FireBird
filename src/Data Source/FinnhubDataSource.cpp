@@ -96,7 +96,7 @@ void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	if (m_dwHTTPStatusCode == 200) return; // OK? return no error
 
-	json js;
+	nlohmannJson js;
 	pWebData->CreateJson(js);
 
 	try {
@@ -136,7 +136,7 @@ void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			ASSERT(false);
 			break;
 		}
-	} catch (json::exception&) { // no error. do nothing
+	} catch (nlohmannJson::exception&) { // no error. do nothing
 		m_eErrorMessageData = ERROR_NO_ERROR_;
 	}
 }

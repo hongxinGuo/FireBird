@@ -9,7 +9,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	json ParseFinnhubStockPeer(const CWebDataPtr& pWebData);
+	nlohmannJson ParseFinnhubStockPeer(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubCompanyPeerPtr = shared_ptr<CProductFinnhubCompanyPeer>;

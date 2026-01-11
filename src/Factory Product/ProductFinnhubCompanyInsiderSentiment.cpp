@@ -65,12 +65,12 @@ void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
 //
 CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData) {
 	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
-	json pt1;
+	nlohmannJson pt1;
 	string sError;
 	string s;
 	string stockSymbol;
 	CInsiderSentimentPtr pInsiderSentiment = nullptr;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvInsiderSentiment;
 	if (!IsValidData(pWebData)) return pvInsiderSentiment;
@@ -78,7 +78,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	try {
 		pt1 = jsonGetChild(js, "data");
 		stockSymbol = jsonGetString(js, "symbol");
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Stock Insider Sentiment " + GetInquiryFunction(), e.what());
 		return pvInsiderSentiment;
 	}
@@ -96,7 +96,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 			pInsiderSentiment->m_mspr = jsonGetDouble(it, "mspr");
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		string str = "Finnhub Stock ";
 		str += pInsiderSentiment->m_strSymbol;
 		str += " Insider Sentiment ";

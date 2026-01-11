@@ -56,10 +56,10 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
-	json js2;
+	nlohmannJson js2;
 	CDayLinePtr pDayLine = nullptr;
 	string sError;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
@@ -74,7 +74,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			gl_systemMessage.PushErrorMessage("日线返回值不为ok");
 			return pvDayLine;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage("Finnhub Stock Candle missing 's' " + GetInquiryFunction(), e.what());
 		return pvDayLine;
@@ -89,7 +89,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			pDayLine->SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Stock Candle missing 't' " + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
@@ -132,7 +132,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	} catch (json::exception& e) { ReportJSonErrorToSystemMessage("Finnhub Stock Candle Error#3 " + GetInquiryFunction(), e.what()); }
+	} catch (nlohmannJson::exception& e) { ReportJSonErrorToSystemMessage("Finnhub Stock Candle Error#3 " + GetInquiryFunction(), e.what()); }
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;

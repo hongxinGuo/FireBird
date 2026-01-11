@@ -476,15 +476,11 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		UpdateInnerSystemStatus();
 	}
 
-	//ReportExitToWatchdog();
-
 	SysCallOnTimer(nIDEvent);
 }
 
 void CMainFrame::UpdateStatus() {
 	ASSERT(!IsMarketResetting());
-
-	string s;
 
 	//更新状态条
 	if (IsCurrentEditStockChanged()) {
@@ -501,7 +497,7 @@ void CMainFrame::UpdateStatus() {
 	}
 
 	// 显示当前选择的股票
-	s = fmt::format("{:Ld}", gl_pChinaMarket->GetCurrentSelectedStockSet());
+	string s = fmt::format("{:Ld}", gl_pChinaMarket->GetCurrentSelectedStockSet());
 	SysCallSetPaneText(4, s);
 
 	// 显示当前选择的位置

@@ -83,7 +83,7 @@ string_view CWebData::GetCurrentTengxunData() {
 	return svCurrentTotal.substr(lStart, lEnd - lStart + 1);
 }
 
-bool CWebData::CreateJson(json& js, long lBeginPos, long lEndPos) const {
+bool CWebData::CreateJson(nlohmannJson& js, long lBeginPos, long lEndPos) const {
 	return ::CreateJsonWithNlohmann(js, m_sDataBuffer, lBeginPos, lEndPos);
 }
 

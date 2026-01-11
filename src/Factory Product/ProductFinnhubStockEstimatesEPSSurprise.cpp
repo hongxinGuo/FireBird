@@ -41,7 +41,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 	CEPSSurprisePtr pEPSSurprise = nullptr;
 	long year = 0, month = 0, day = 0;
 	string sError;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvEPSSurprise;
 	if (!IsValidData(pWebData)) return pvEPSSurprise;
@@ -51,13 +51,13 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 			pEPSSurprise = make_shared<CEPSSurprise>();
 			s = jsonGetString(it, "symbol");
 			pEPSSurprise->m_strSymbol = s;
-			s = jsonGetString(it,"period");
+			s = jsonGetString(it, "period");
 			pEPSSurprise->m_lDate = XferToYYYYMMDD(s);
 			pEPSSurprise->m_dEstimate = jsonGetDouble(it, "estimate");
 			pEPSSurprise->m_dActual = jsonGetDouble(it, "actual");
 			pvEPSSurprise->push_back(pEPSSurprise);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub EPS Surprise ", e.what());
 		return pvEPSSurprise;
 	}

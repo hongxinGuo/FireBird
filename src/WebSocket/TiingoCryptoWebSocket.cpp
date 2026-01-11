@@ -94,7 +94,7 @@ void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///////////////////////////////////////////////////////////////////////
 string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
-	json message;
+	nlohmannJson message;
 	message["eventName"] = "subscribe";
 	message["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为2或者5
@@ -127,7 +127,7 @@ string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 // <returns></returns>
 bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 	try {
-		if (json js; CreateJsonWithNlohmann(js, *pData)) {
+		if (nlohmannJson js; CreateJsonWithNlohmann(js, *pData)) {
 			CTiingoCryptoSocketPtr pCryptoData;
 			string sService;
 			string sMessageType;
@@ -137,8 +137,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
 			chrono::minutes Minutes;
 			string sString;
-			json js2, js3, js4;
-			json::iterator it;
+			nlohmannJson js2, js3, js4;
+			nlohmannJson::iterator it;
 			sType = jsonGetString(js, "messageType");
 			chType = sType.at(0);
 			switch (chType) {
@@ -152,7 +152,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
-				} catch (json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+				} catch (nlohmannJson::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
@@ -212,7 +212,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			}
 		}
 		else { return false; }
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Tiingo Crypto WebSocket ", e.what());
 		return false;
 	}

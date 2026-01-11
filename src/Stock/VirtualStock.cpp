@@ -24,9 +24,9 @@ void CVirtualStock::UpdateJsonUpdateDate() {
 	m_jsonUpdateDate["ShareOutstanding"] = m_dShareCount;
 	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate;
 	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate;
-	json jsStockSplit = json::array();
+	nlohmannJson jsStockSplit = nlohmannJson::array();
 	for (const auto& pStockSplit : m_vStockSplit) {
-		json js;
+		nlohmannJson js;
 		js["date"] = pStockSplit->GetDate();
 		js["ratio"] = pStockSplit->GetRatio();
 		jsStockSplit.push_back(js);
@@ -53,7 +53,7 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 	try {
 		CreateJsonWithNlohmann(m_jsonUpdateDate, strUpdateDate);
 		UpdateAllUpdateDate();
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		CreateJsonWithNlohmann(m_jsonUpdateDate, "{}");
 		ResetAllUpdateDate();
 	}

@@ -15,8 +15,8 @@ public:
 	void UpdateSystemStatus() override;
 
 	CFinnhubStockBasicFinancialPtr ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData);
-	void GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);
-	void Parse(json* pjs, vector<CValueOfPeriod>& vecData);
+	void GetSeasonData(nlohmannJson* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);
+	void Parse(nlohmannJson* pjs, vector<CValueOfPeriod>& vecData);
 };
 
 using CProductFinnhubCompanyBasicFinancialPtr = shared_ptr<CProductFinnhubCompanyBasicFinancial>;

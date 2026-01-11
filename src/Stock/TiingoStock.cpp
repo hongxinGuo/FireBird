@@ -33,10 +33,6 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetUpdateStockDailyMetaDate(19800101);
 }
 
-void CTiingoStock::UpdateAllUpdateDate() {
-	CVirtualStock::UpdateAllUpdateDate();
-}
-
 void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
 	m_strTiingoPermaTicker = T2Utf8(setTiingoStock.m_TiingoPermaTicker);
 	m_strSymbol = T2Utf8(setTiingoStock.m_Ticker);
@@ -424,7 +420,7 @@ long CTiingoStock::GetDayLineProcessDate() {
 	long l;
 	try {
 		l = m_jsonUpdateDate["DayLineProcessDate"];
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		m_jsonUpdateDate["DayLineProcessDate"] = 19800101;
 		l = 19800101;
 	}

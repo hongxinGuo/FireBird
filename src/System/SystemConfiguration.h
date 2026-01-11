@@ -29,8 +29,8 @@ public:
 	void UpdateDB();
 	bool LoadDB();
 	void SaveDB();
-	void Update(json& jsonData);
-	void UpdateJsonData(json& jsonData);
+	void Update(nlohmannJson& jsonData);
+	void UpdateJsonData(nlohmannJson& jsonData);
 
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();

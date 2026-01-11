@@ -33,7 +33,7 @@ CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebD
 	CForexSymbolPtr pSymbol = nullptr;
 	string s;
 	string sError;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvForexSymbol;
 	if (!IsValidData(pWebData)) return pvForexSymbol;
@@ -43,13 +43,13 @@ CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebD
 			pSymbol = make_shared<CFinnhubForex>();
 			s = jsonGetString(it, "description");
 			if (!s.empty()) pSymbol->SetDescription(s);
-			s = jsonGetString(it,"displaySymbol");
+			s = jsonGetString(it, "displaySymbol");
 			pSymbol->SetDisplaySymbol(s);
-			s = jsonGetString(it,"symbol");
+			s = jsonGetString(it, "symbol");
 			pSymbol->SetSymbol(s);
 			pvForexSymbol->push_back(pSymbol);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Forex Symbol ", e.what());
 	}
 

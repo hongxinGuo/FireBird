@@ -182,7 +182,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 		return;
 	}
 
-	json js;
+	nlohmannJson js;
 	if (!pWebData->CreateJson(js)) { // 非json制式，不应该出现。
 		m_eErrorMessageData = ERROR_NO_ERROR_;
 		return; // 暂时返回正确
@@ -254,7 +254,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			ASSERT(false);
 			break;
 		}
-	} catch (json::exception&) { // no error. do nothing
+	} catch (nlohmannJson::exception&) { // no error. do nothing
 		m_eErrorMessageData = ERROR_NO_ERROR_;
 	}
 }

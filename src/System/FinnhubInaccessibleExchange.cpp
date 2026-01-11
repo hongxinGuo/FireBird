@@ -87,7 +87,7 @@ void CFinnhubInaccessibleExchange::SaveDB() const {
 void CFinnhubInaccessibleExchange::Update() {
 	try {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
-	} catch (json::exception&) {}
+	} catch (nlohmannJson::exception&) {}
 	try {
 		for (size_t i = 0; i < m_finnhubInaccessibleExchange.at("InaccessibleExchange").size(); i++) {
 			const auto size = m_finnhubInaccessibleExchange.at("InaccessibleExchange").at(i).at("Exchange").size();
@@ -104,7 +104,7 @@ void CFinnhubInaccessibleExchange::Update() {
 				m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
 			}
 		}
-	} catch (json::exception&) {}
+	} catch (nlohmannJson::exception&) {}
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson() {
@@ -114,8 +114,8 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 	for (const auto& val : m_mapExchange | std::views::values) {
 		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集
-			auto jsonExchange = json{ { "Function", val->GetFunctionString() } };
-			jsonExchange["Exchange"] = json::array();
+			auto jsonExchange = nlohmannJson{ { "Function", val->GetFunctionString() } };
+			jsonExchange["Exchange"] = nlohmannJson::array();
 			for (size_t i = 0; i < val->Size(); i++) {
 				auto s = val->GetSymbol(i);
 				jsonExchange["Exchange"].push_back(s);

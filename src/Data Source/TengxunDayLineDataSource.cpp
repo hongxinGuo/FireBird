@@ -159,7 +159,7 @@ void CTengxunDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CTengxunDayLineDataSource::UpdateStatus(CWebDataPtr pData) {
+void CTengxunDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

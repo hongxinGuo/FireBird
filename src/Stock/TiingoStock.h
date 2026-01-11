@@ -89,7 +89,6 @@ public:
 
 	void ResetAllUpdateDate() override;
 	int GetRatio() const override { return 1000000; }; // 
-	void UpdateAllUpdateDate() override;
 
 	void Load(const CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);

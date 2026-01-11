@@ -21,10 +21,10 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(jsonGetValueTest, jsonGetChild1) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"({"child":[{"period":"2021-03-31", "v" : -2.7551}, { "period":"2020-12-31","v" : -0.5305 }]})" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
-		json js = jsonGetChild(pjs.get(), "child");
+		nlohmannJson js = jsonGetChild(pjs.get(), "child");
 		EXPECT_TRUE(js.is_structured());
 		auto it = js.begin();
 		string s2 = it->at("period");
@@ -40,11 +40,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, jsonGetChild2) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"({"child":[{"period":"2021-03-31", "v" : -2.7551}, { "period":"2020-12-31","v" : -0.5305 }]})" };
 		const string str = "child";
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
-		json js = jsonGetChild(pjs.get(), str.c_str());
+		nlohmannJson js = jsonGetChild(pjs.get(), str.c_str());
 		EXPECT_TRUE(js.is_structured());
 		auto it = js.begin();
 		string s2 = it->at("period");
@@ -60,7 +60,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetString) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"({"period":"2021-03-31", "v" : -2.7551})" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		string str = jsonGetString(pjs.get(), "period");
@@ -76,7 +76,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"({"period":"2021-03-31", "v" : -2.7551})" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		double d1 = jsonGetDouble(pjs.get(), "period");
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetInt) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"({"period":"2021-03-31", "v" : -2.7551})" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		int d1 = jsonGetInt(pjs.get(), "period");
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLong) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"({"period":"2021-03-31", "v" : -2.7551})" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		long d1 = jsonGetLong(pjs.get(), "period");
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"({"period":"2021-03-31", "v" : -2.7551})" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		long long d1 = jsonGetLongLong(pjs.get(), "period");
@@ -139,7 +139,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetString2) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([{"period":"2021-03-31", "v" : -2.7551},{"period":"2021-04-31", "v" : -3.7551}])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -151,7 +151,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble2) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([{"period":"2021-03-31", "v" : -2.7551},{"period":"2021-04-31", "v" : -3.7551}])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -163,7 +163,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetInt2) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([{"period":"2021-03-31", "v" : -2.7551},{"period":"2021-04-31", "v" : -3.7551}])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -175,7 +175,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLong2) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([{"period":"2021-03-31", "v" : -2.7551},{"period":"2021-04-31", "v" : -3.7551}])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -187,7 +187,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong2) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([{"period":"2021-03-31", "v" : -2.7551},{"period":"2021-04-31", "v" : -3.7551}])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -199,7 +199,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetString3) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"(["2021-03-31", 2021])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -211,7 +211,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetInt3) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([1, "2"])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -223,7 +223,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLong3) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([1, "2"])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -235,7 +235,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong3) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([1, "2"])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
@@ -247,7 +247,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble3) {
-		const auto pjs = make_shared<json>();
+		const auto pjs = make_shared<nlohmannJson>();
 		const string s{ R"([1.1, "2.1", null])" };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();

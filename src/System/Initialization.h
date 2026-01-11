@@ -2,8 +2,8 @@
 
 void SystemInitialization();
 
-void InitializeLogSystem();
 void InitializeMarkets();
+void InitializeLogSystem();
 
 void ResetMarkets();
 void AssignDataSourceAndWebInquiryToMarket();

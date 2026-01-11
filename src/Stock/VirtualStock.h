@@ -227,7 +227,7 @@ protected:
 	string m_strSymbol{ "" }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
 	string m_strDisplaySymbol{ "" };
 
-	json m_jsonUpdateDate{ json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
+	nlohmannJson m_jsonUpdateDate{ nlohmannJson({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 	long m_lDayLineStartDate{ 29900101 }; // 日线历史数据的起始日期。格式：YYYYMMDD
 	long m_lDayLineEndDate{ 19800101 }; // 日线历史数据的结束日期。格式：YYYYMMDD
 	vector<CStockSplitPtr> m_vStockSplit;
@@ -253,7 +253,7 @@ protected:
 	long m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
-	bool m_bSelected{ false };
+	bool m_bSelected{ false }; // 在股票列表中被选中
 
 	atomic_bool m_fUpdateDayLine{ true }; // 日线需要更新。默认为真
 

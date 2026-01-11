@@ -134,7 +134,7 @@ string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char de
 	return string_view(sv.data(), lEnd);
 }
 
-void ReportJsonError(const json::parse_error& e, const std::string& s) {
+void ReportJsonError(const nlohmannJson::parse_error& e, const std::string& s) {
 	char buffer[180]{};
 	int i;
 	for (i = 0; i < 180; i++) {
@@ -383,7 +383,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return pvDayLine;
 	}
 	return pvDayLine;
@@ -424,10 +424,10 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	return pDayLineData;
 }
 
-bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos, const long lEndPos) {
+bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string& s, const long lBeginPos, const long lEndPos) {
 	try {
-		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
-	} catch (json::parse_error&) {
+		js = nlohmannJson::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+	} catch (nlohmannJson::parse_error&) {
 		js.clear();
 		return false;
 	}
@@ -456,9 +456,9 @@ bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos
 // Note 网易不再提供数据服务
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData) {
+void ParseOneNeteaseRTData(const nlohmannJson::iterator& it, const CWebRTDataPtr& pWebRTData) {
 	string strSymbol4;
-	json js = it.value();
+	nlohmannJson js = it.value();
 	const string symbolName = it.key();
 
 	try {
@@ -474,7 +474,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		tpTime -= gl_pChinaMarket->GetTimeZoneOffset();
 		pWebRTData->SetTimePoint(tpTime);
 		pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
-	} catch (json::exception& e) {// 结构不完整
+	} catch (nlohmannJson::exception& e) {// 结构不完整
 		// do nothing
 		string strError2 = strSymbol4;
 		strError2 += " ";
@@ -513,7 +513,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetPBuy(4, static_cast<long>(jsonGetDouble(js, "bid5") * 1000));
 
 		pWebRTData->CheckNeteaseRTDataActive();
-	} catch (json::exception&) {// 非活跃股票（已下市等）
+	} catch (nlohmannJson::exception&) {// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 	}
 }
@@ -521,7 +521,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 //
 // Note 网易不再提供数据服务
 
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(nlohmannJson* pjs) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	for (auto it = pjs->begin(); it != pjs->end(); ++it) {

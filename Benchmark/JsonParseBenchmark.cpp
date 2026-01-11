@@ -22,10 +22,11 @@
 
 #include "Thread.h"
 
-// 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
-// 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
-// 使用下面的数据，nlohmann json的release版本用时大致为250微秒；PTree用时大致为330微秒。
-std::string sData101 = "{\
+namespace {
+	// 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
+	// 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
+	// 使用下面的数据，nlohmann json的release版本用时大致为250微秒；PTree用时大致为330微秒。
+	std::string sData101 = "{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -222,11 +223,12 @@ std::string sData101 = "{\
 		\"symbol\":\"AAPL\"\
 }";
 
-static void ParseUsingSimdjson(benchmark::State& state) {
-	const padded_string my_data(sData101);
-	ondemand::parser parser;
-	for (auto _ : state) {
-		parser.iterate(my_data);
+	void ParseUsingSimdjson(benchmark::State& state) {
+		const padded_string my_data(sData101);
+		ondemand::parser parser;
+		for (auto _ : state) {
+			parser.iterate(my_data);
+		}
 	}
 }
 
@@ -253,7 +255,7 @@ public:
 		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 
-		sFinnhubStockUpdateParameter = "{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}";
+		sFinnhubStockUpdateParameter = R"({"Finnhub":{"StockFundamentalsCompanyProfileConcise":20230110,"StockFundamentalsCompanyNews":20230205,"StockFundamentalsBasicFinancials":20230112,"StockPriceQuote":19800104,"StockFundamentalsPeer":20230115,"StockFundamentalsInsiderTransaction":20230116,"StockFundamentalsInsiderSentiment":20230117,"StockEstimatesEPSSurprise":19800108},"Tiingo":{"StockFundamentalsCompanyProfile":20221222,"StockPriceCandles":20230210}})";
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "tiingo_fundamentals.json";
 		LoadFromFile(strFileName, sTiingoSymbol);
@@ -366,8 +368,8 @@ public:
 		sv = s;
 		sv = sv.substr(21, sv.length() - 21 - 2);
 		try {
-			js = json::parse(s.begin() + 21, s.end() - 2);
-		} catch (json::parse_error&) {
+			js = nlohmannJson::parse(s.begin() + 21, s.end() - 2);
+		} catch (nlohmannJson::parse_error&) {
 			fDone = false;
 		}
 		pWebData = make_shared<CWebData>();
@@ -380,7 +382,7 @@ public:
 	CWebDataPtr pWebData;
 	string s;
 	string_view sv;
-	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
+	nlohmannJson js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
 	vector<CWebRTDataPtr> vWebRTDataReceived;
 	bool fDone;
 };
@@ -399,7 +401,7 @@ public:
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "SinaRTData.dat";
 		LoadFromFile(strFileName, s);
 		pWebData = make_shared<CWebData>();
-		const long lStringLength = s.length();
+		const size_t lStringLength = s.length();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->Resize(lStringLength);
 		pWebData->SetData(s.c_str(), lStringLength);
@@ -448,7 +450,7 @@ public:
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "TengxunRTData.dat";
 		LoadFromFile(strFileName, s);
 		pWebData = make_shared<CWebData>();
-		const long lStringLength = s.length();
+		const size_t lStringLength = s.length();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->Resize(lStringLength);
 		pWebData->SetData(s.c_str(), lStringLength);

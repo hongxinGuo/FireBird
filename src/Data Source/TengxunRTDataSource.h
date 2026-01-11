@@ -5,6 +5,10 @@
 class CTengxunRTDataSource : public CVirtualDataSource {
 public:
 	CTengxunRTDataSource();
+	CTengxunRTDataSource(const CTengxunRTDataSource&) = delete;
+	CTengxunRTDataSource& operator=(const CTengxunRTDataSource&) = delete;
+	CTengxunRTDataSource(const CTengxunRTDataSource&&) noexcept = delete;
+	CTengxunRTDataSource& operator=(const CTengxunRTDataSource&&) noexcept = delete;
 	~CTengxunRTDataSource() override = default;
 
 	bool Reset() override;

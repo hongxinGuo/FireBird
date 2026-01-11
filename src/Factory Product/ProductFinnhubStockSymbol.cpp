@@ -78,7 +78,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 	auto pvStock = make_shared<vector<CFinnhubStockPtr>>();
 	CFinnhubStockPtr pStock = nullptr;
 	string s, sError;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvStock;
 	if (!IsValidData(pWebData)) return pvStock;
@@ -109,7 +109,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 			if (!s.empty()) pStock->SetType(s);
 			pvStock->push_back(pStock);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Stock Symbol ", e.what());
 		return pvStock;
 	}

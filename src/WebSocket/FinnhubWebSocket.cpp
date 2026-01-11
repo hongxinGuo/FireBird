@@ -109,7 +109,7 @@ void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
 /// 如{"type":"subscribe","symbol":"MSFT"}, {"type":"subscribe","symbol":"BINANCE:LTCBTC"}, {"type":"subscribe","symbol":"OANDA:AUD_SGD"}
 /// </summary>
 string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
-	json symbol;
+	nlohmannJson symbol;
 	symbol["type"] = "subscribe";
 	symbol["symbol"] = sSymbol;
 	return symbol.dump();
@@ -135,12 +135,12 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	string code;
 
 	try {
-		if (json pt; CreateJsonWithNlohmann(pt, *pData)) {
+		if (nlohmannJson pt; CreateJsonWithNlohmann(pt, *pData)) {
 			string sType;
 			sType = jsonGetString(&pt, "type");
 			if (sType == "trade") { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
-				json js2;
-				json pt3;
+				nlohmannJson js2;
+				nlohmannJson pt3;
 				// 交易数据
 				js2 = jsonGetChild(&pt, "data");
 				for (auto it = js2.begin(); it != js2.end(); ++it) {
@@ -179,7 +179,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			gl_systemMessage.PushInnerSystemInformationMessage("Finnhub Web Socket json error");
 			return false;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Process One Finnhub WebSocketData ", e.what());
 		return false;
 	}

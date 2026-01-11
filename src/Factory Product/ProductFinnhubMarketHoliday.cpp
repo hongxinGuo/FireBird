@@ -56,7 +56,7 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	CMarketHolidayPtr pHoliday = nullptr;
 	string s, sError;
 	string sExchange, sTimeZone;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvHoliday;
 	if (!IsValidData(pWebData)) return pvHoliday;
@@ -79,7 +79,7 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 			pHoliday->m_strTimeZone = sTimeZone;
 			pvHoliday->push_back(pHoliday);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub market holiday ", e.what());
 		return pvHoliday;
 	}

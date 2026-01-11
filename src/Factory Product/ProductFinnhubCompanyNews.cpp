@@ -72,7 +72,7 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///		}
 CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
 	string s;
-	json js;
+	nlohmannJson js;
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
 	if (!pWebData->CreateJson(js)) return pvFinnhubCompanyNews;
@@ -101,7 +101,7 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 			if (!s.empty()) pCompanyNews->m_strURL = s;
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Stock News ", e.what());
 		return pvFinnhubCompanyNews; // 没有公司简介
 	}

@@ -35,7 +35,7 @@ class CVirtualDataSource {
 
 public:
 	CVirtualDataSource();
-	// 只能有一个实例,不允许赋值。
+	// 不允许赋值。
 	CVirtualDataSource(const CVirtualDataSource&) = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&) = delete;
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
@@ -43,7 +43,7 @@ public:
 	virtual ~CVirtualDataSource() = default;
 
 	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
-	bool GenerateSimpleInquiry(int inquireType, UpdateCheck&& isUpdateNeeded, ProductFactory&& createProduct, ReportMsg&& reportMsg) {
+	bool GenerateSimpleInquiry(int inquireType, UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
 		SPDLOG_ASSERT(!IsInquiring());
 		if (isUpdateNeeded()) {
 			StoreInquiry(createProduct(inquireType));
@@ -55,7 +55,7 @@ public:
 
 	template <typename UpdateCheck, typename ValidDate, typename SetUpdated, typename ReportMsg1, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiryWithCheck(int inquireType, ValidDate validDate, SetUpdated setUpdated, ReportMsg1 reportMsg1,
-	                                    UpdateCheck&& isUpdateNeeded, ProductFactory&& createProduct, ReportMsg&& reportMsg) {
+	                                    UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
 		SPDLOG_ASSERT(!IsInquiring());
 		if (isUpdateNeeded()) {
 			if (!validDate()) {
@@ -166,7 +166,7 @@ public:
 	virtual void ConfigureInternetOption() {
 		ASSERT(false); // 调用了基类函数ConfigureInternetOption
 	} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-	virtual void UpdateStatus(CWebDataPtr) {} //成功接收后更新系统状态。
+	virtual void UpdateStatus(const CWebDataPtr&) {} //成功接收后更新系统状态。
 
 	void CreateTotalInquiringString();
 	string GetInquiringString() const noexcept { return m_strInquiry; }

@@ -37,7 +37,7 @@ shared_ptr<vector<string>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExch
 	string s;
 	string sError;
 	auto pvExchange = make_shared<vector<string>>();
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvExchange;
 	if (!IsValidData(pWebData)) return pvExchange;
@@ -47,7 +47,7 @@ shared_ptr<vector<string>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExch
 			s = jsonGetString(it);
 			pvExchange->push_back(s);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Crypto Exchange ", e.what());
 		return pvExchange;
 	}

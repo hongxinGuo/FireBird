@@ -62,7 +62,7 @@ protected:
 	bool m_fInitialized{ false };
 	bool m_fUpdateDB{ false };
 
-	json m_finnhubInaccessibleExchange;
+	nlohmannJson m_finnhubInaccessibleExchange;
 };
 
 using CFinnhubInaccessibleExchangePtr = shared_ptr<CFinnhubInaccessibleExchange>;

@@ -70,11 +70,11 @@ void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus() {
 //
 CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData) {
 	auto pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
-	json pt1;
+	nlohmannJson pt1;
 	string sError;
 	string stockSymbol;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvInsiderTransaction;
 	if (!IsValidData(pWebData)) return pvInsiderTransaction;
@@ -82,7 +82,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	try {
 		pt1 = jsonGetChild(js, "data");
 		stockSymbol = jsonGetString(js, "symbol");
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Stock Insider Transaction " + GetInquiryFunction(), e.what());
 		return pvInsiderTransaction;
 	}
@@ -105,7 +105,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, "transactionPrice");
 			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		string str = "Finnhub Stock ";
 		str += pInsiderTransaction->m_strSymbol;
 		str += " Insider Transaction ";

@@ -33,7 +33,7 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchan
 	string s;
 	string str = "";
 	string sError;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvExchange;
 	if (!IsValidData(pWebData)) return pvExchange;
@@ -44,7 +44,7 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchan
 			str = s;
 			pvExchange->push_back(str);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Forex Exchange ", e.what());
 	}
 	return pvExchange;

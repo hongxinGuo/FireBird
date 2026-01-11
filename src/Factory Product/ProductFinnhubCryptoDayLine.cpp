@@ -54,10 +54,10 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	auto pvDayLineReturn = make_shared<vector<CDayLinePtr>>();
-	json js2;
+	nlohmannJson js2;
 	CDayLinePtr pDayLine = nullptr;
 	string sError;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
@@ -73,7 +73,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 			gl_systemMessage.PushErrorMessage("日线返回值不为ok");
 			return pvDayLine;
 		}
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle missing 's': ", pWebData->GetDataBuffer());
 		return pvDayLine;
@@ -87,7 +87,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 			pDayLine->SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle missing 't' ", e.what());
 		return pvDayLine;
 	}
@@ -130,7 +130,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle ", e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}

@@ -24,7 +24,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
-		json jsFinnhubInaccessibleExchange = json::parse(Test_gl_sFinnhubInaccessibleExchange);
+		nlohmannJson jsFinnhubInaccessibleExchange = nlohmannJson::parse(Test_gl_sFinnhubInaccessibleExchange);
 		CInaccessible exchange;
 		const string s2 = jsFinnhubInaccessibleExchange["InaccessibleExchange"][0]["Function"];
 		exchange.SetFunctionString(s2);

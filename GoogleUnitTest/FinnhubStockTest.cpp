@@ -544,9 +544,9 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestGetPeer) {
 		EXPECT_TRUE(stock.GetPeer().empty());
-		const json jSon = json::parse("[\"abcdef\",\"000001.SS\"]");
+		const nlohmannJson jSon = nlohmannJson::parse("[\"abcdef\",\"000001.SS\"]");
 		stock.SetPeer(jSon);
-		const json jSon2 = stock.GetPeer();
+		const nlohmannJson jSon2 = stock.GetPeer();
 		const string s1 = jSon2.dump();
 		EXPECT_EQ(s1, "[\"abcdef\",\"000001.SS\"]");
 	}

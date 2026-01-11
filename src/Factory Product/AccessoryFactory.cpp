@@ -17,7 +17,7 @@ CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMa
 	default:
 		p = make_shared<CProductDummy>();
 		TRACE(_T("未处理指令%d\n"), iInquireType);
-		gl_systemMessage.PushErrorMessage("Finnhub product未实现");
+		gl_systemMessage.PushErrorMessage("Accessory product未实现");
 		break;
 	}
 	p->SetMarket(pMarket);

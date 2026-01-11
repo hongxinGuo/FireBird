@@ -12,6 +12,10 @@ class CInquireEngine {
 public:
 	CInquireEngine();
 	CInquireEngine(const InternetOption& internetOption, const string& strInquire, const string& strHeaders);
+	CInquireEngine(const CInquireEngine&) = delete;
+	CInquireEngine& operator=(const CInquireEngine&) = delete;
+	CInquireEngine(const CInquireEngine&&) noexcept = delete;
+	CInquireEngine& operator=(const CInquireEngine&&) noexcept = delete;
 	virtual ~CInquireEngine() = default;
 
 	void ConfigureSession(const InternetOption& option) const;

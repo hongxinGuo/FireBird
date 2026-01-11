@@ -1102,7 +1102,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
-		json jsonUpdateDate;
+		nlohmannJson jsonUpdateDate;
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsNotChecked());
@@ -1123,7 +1123,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestLoadStockCodeDB3) {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
-		json jsonUpdateDate;
+		nlohmannJson jsonUpdateDate;
 
 		gl_pChinaMarket->CalculateTime();
 		stock.SetDayLineEndDate(GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));

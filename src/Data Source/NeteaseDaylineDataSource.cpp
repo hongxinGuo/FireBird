@@ -81,7 +81,7 @@ void CNeteaseDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CNeteaseDayLineDataSource::UpdateStatus(CWebDataPtr pData) {
+void CNeteaseDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

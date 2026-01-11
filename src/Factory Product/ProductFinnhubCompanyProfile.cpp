@@ -67,7 +67,7 @@ void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 /// <returns></returns>
 bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CFinnhubStockPtr pStock) const {
 	string s;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return false;
 	if (pWebData->IsVoidJson()) return true; // 无数据
@@ -133,7 +133,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 		if (!s.empty()) pStock->SetLogo(s);
 		s = jsonGetString(js, "finnhubIndustry");
 		if (!s.empty()) pStock->SetFinnhubIndustry(s);
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Stock Profile ", e.what());
 		return false; // 没有公司简介
 	}

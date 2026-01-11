@@ -48,7 +48,7 @@ CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const C
 	auto pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
 	CMarketStatusPtr pMarketStatus = nullptr;
 	string sError;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvMarketStatus;
 	if (!IsValidData(pWebData)) return pvMarketStatus;
@@ -68,7 +68,7 @@ CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const C
 		pMarketStatus->m_tt = jsonGetLongLong(js, "t");
 
 		pvMarketStatus->push_back(pMarketStatus);
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Market Status ", e.what());
 		return pvMarketStatus;
 	}

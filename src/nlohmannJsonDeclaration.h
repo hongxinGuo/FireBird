@@ -8,6 +8,6 @@
 using std::shared_ptr;
 
 #include"nlohmann/json_fwd.hpp"
-using json = nlohmann::ordered_json;
+using nlohmannJson = nlohmann::ordered_json;
 
-using jsonPtr = shared_ptr<json>;
+using nlohmannJsonPtr = shared_ptr<nlohmannJson>;

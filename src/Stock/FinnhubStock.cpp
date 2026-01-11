@@ -36,8 +36,8 @@ CFinnhubStock::~CFinnhubStock() = default;
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CFinnhubStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate["DayLineStartDate"] = 29900101;
-	m_jsonUpdateDate["DayLineEndDate"] = 19800101;
+	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate = 29900101;
+	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = 19800101;
@@ -670,7 +670,7 @@ long CFinnhubStock::GetProfileUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsCompanyProfileConcise");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -683,7 +683,7 @@ long CFinnhubStock::GetCompanyNewsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsCompanyNews");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -696,7 +696,7 @@ long CFinnhubStock::GetBasicFinancialUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsBasicFinancials");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -709,7 +709,7 @@ long CFinnhubStock::GetLastRTDataUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockPriceQuote");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -722,7 +722,7 @@ long CFinnhubStock::GetPeerUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsPeer");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -735,7 +735,7 @@ long CFinnhubStock::GetInsiderTransactionUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsInsiderTransaction");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -748,7 +748,7 @@ long CFinnhubStock::GetInsiderSentimentUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsInsiderSentiment");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -761,7 +761,7 @@ long CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockEstimatesEPSSurprise");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }
@@ -774,7 +774,7 @@ long CFinnhubStock::GetSECFilingsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsSECFilings");
 		return lDate;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		return 19800101;
 	}
 }

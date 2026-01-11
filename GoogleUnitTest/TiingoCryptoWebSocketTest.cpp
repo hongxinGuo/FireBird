@@ -45,10 +45,10 @@ namespace FireBirdTest {
 		vSymbol.push_back("AAL");
 		vSymbol.push_back("AAPL");
 		string strSymbol = gl_pTiingoCryptoWebSocket->CreateMessage(vSymbol);
-		json jsonMessage;
+		nlohmannJson jsonMessage;
 		try {
-			jsonMessage = json::parse(strSymbol);
-		} catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
+			jsonMessage = nlohmannJson::parse(strSymbol);
+		} catch (nlohmannJson::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == "subscribe");
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 2);
 		EXPECT_EQ(jsonMessage["authorization"], "c897a00b7cfc2630d235316a4683156");

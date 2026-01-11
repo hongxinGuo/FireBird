@@ -38,7 +38,7 @@ void CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 }
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock) {
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return false;
 	if (!IsValidData(pWebData)) return false;
@@ -54,9 +54,9 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& p
 		pStock->SetOpen(dTemp * 1000);
 		dTemp = jsonGetDouble(js, "pc");
 		pStock->SetLastClose(dTemp * 1000);
-		const auto tt = jsonGetLongLong(js,"t");
+		const auto tt = jsonGetLongLong(js, "t");
 		pStock->SetTransactionTime(tt);
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		// 数据格式不对，跳过。
 		ReportJSonErrorToSystemMessage("Finnhub Stock Quote ", e.what());
 		return false;

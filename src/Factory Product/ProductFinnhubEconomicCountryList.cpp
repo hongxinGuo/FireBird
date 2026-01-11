@@ -31,7 +31,7 @@ void CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
 	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvCountry;
 	if (!IsValidData(pWebData)) return pvCountry;
@@ -54,7 +54,7 @@ CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const 
 			pCountry->m_strCurrencyCode = s;
 			pvCountry->push_back(pCountry);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Country List ", e.what());
 		return pvCountry;
 	}

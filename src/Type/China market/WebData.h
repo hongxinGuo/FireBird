@@ -62,7 +62,7 @@ public:
 	string_view GetCurrentTengxunData();
 
 	// 使用Nlohmann json将数据转换为json格式。
-	bool CreateJson(json& js, long lBeginPos = 0, long lEndPos = 0) const;
+	bool CreateJson(nlohmannJson& js, long lBeginPos = 0, long lEndPos = 0) const;
 
 	// 测试用函数
 	void Test_SetBuffer_(const string& strBuffer);

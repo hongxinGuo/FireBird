@@ -10,7 +10,13 @@
 class CTiingoCrypto : public CVirtualStock {
 public:
 	CTiingoCrypto();
+	// 不允许赋值。
+	CTiingoCrypto(const CTiingoCrypto&) = delete;
+	CTiingoCrypto& operator=(const CTiingoCrypto&) = delete;
+	CTiingoCrypto(const CTiingoCrypto&&) noexcept = delete;
+	CTiingoCrypto& operator=(const CTiingoCrypto&&) noexcept = delete;
 	~CTiingoCrypto() override = default;
+
 	int GetRatio() const override { return 3; };
 
 	void Load(const CSetTiingoCrypto& setTiingoCrypto);

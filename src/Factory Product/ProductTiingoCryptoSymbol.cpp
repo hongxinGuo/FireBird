@@ -59,7 +59,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoPtr>>();
 	string s;
 	CTiingoCryptoPtr pTiingoCrypto = nullptr;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvTiingoCrypto;
 	if (!IsValidData(pWebData)) return pvTiingoCrypto;
@@ -81,7 +81,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 			pvTiingoCrypto->push_back(pTiingoCrypto);
 			iCount++;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage("Tiingo crypto symbol " + pTiingoCrypto->GetSymbol(), e.what());
 	}
 

@@ -85,7 +85,7 @@ void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///////////////////////////////////////////////////////////////////////
 string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
-	json jsonMessage;
+	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 6; //Note threshold0-5需要IEX额外授权，使用6无需授权。
@@ -123,14 +123,14 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	chrono::minutes Minutes;
 	string sString;
 	try {
-		if (json js; CreateJsonWithNlohmann(js, *pData)) {
+		if (nlohmannJson js; CreateJsonWithNlohmann(js, *pData)) {
 			chrono::time_point<chrono::system_clock, chrono::nanoseconds> tpTime;
 			stringstream ss;
 			string sMessageType;
 			string sService;
 			string sType;
-			json js2, js3, js4;
-			json::iterator it;
+			nlohmannJson js2, js3, js4;
+			nlohmannJson::iterator it;
 			sType = jsonGetString(js, "messageType");
 			if (sType.empty()) return false;
 			switch (sType.at(0)) {
@@ -160,7 +160,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
-				} catch (json::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
+				} catch (nlohmannJson::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
@@ -184,7 +184,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			// ERROR
 			return false;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Tiingo IEX WebSocket ", e.what());
 		return false;
 	}

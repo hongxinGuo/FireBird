@@ -41,13 +41,13 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	string s;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvEconomicCalendar;
 	if (!IsValidData(pWebData)) return pvEconomicCalendar;
 
 	try {
-		json js2 = jsonGetChild(js, "economicCalendar");
+		nlohmannJson js2 = jsonGetChild(js, "economicCalendar");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
 			s = jsonGetString(it, "country");
@@ -65,7 +65,7 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 			pEconomicCalendar->m_strUnit = s;
 			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Economic Calendar ", e.what());
 	}
 	return pvEconomicCalendar;

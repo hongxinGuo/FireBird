@@ -112,7 +112,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CTiingoCandleLinePtr>>();
 	string s;
-	json js;
+	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
@@ -123,7 +123,7 @@ CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const 
 		strMessage += s;
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
-	} catch (json::exception&) {
+	} catch (nlohmannJson::exception&) {
 		// 正确， do nothing，继续执行
 	}
 	try {
@@ -150,7 +150,7 @@ CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const 
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
 		ReportJSonErrorToSystemMessage("Tiingo Stock DayLine " + str3, e.what());

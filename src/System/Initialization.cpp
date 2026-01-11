@@ -26,6 +26,72 @@ using namespace spdlog;
 
 #include "AccessoryDataSource.h"
 
+namespace {
+	void CreateMarketContainer() {
+		ASSERT(gl_pChinaMarket != nullptr);
+		ASSERT(gl_pWorldMarket != nullptr);
+		gl_vMarket.push_back(gl_pWorldMarket); // 美国股票市场
+		gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
+	}
+
+	void CreateDataSource() {
+		// 此五个要在gl_pChinaMarket前生成
+		ASSERT(gl_pChinaMarket == nullptr);
+		gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
+		gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
+		gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
+		gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
+		gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
+
+		// 此四个要在gl_pWorldMarket前生成
+		ASSERT(gl_pWorldMarket == nullptr);
+		gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
+		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
+		gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
+		gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
+	}
+
+	void CreateWebSocket() {
+		// WebSocket要在gl_pWorldMarket之前生成
+		ASSERT(gl_pWorldMarket == nullptr);
+		gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
+		gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
+		gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
+		gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
+	}
+
+	void CreateMarket() {
+		// 市场要在数据源和WebSocket之后生成
+		ASSERT(gl_pFinnhubDataSource != nullptr);
+		ASSERT(gl_pTiingoDataSource != nullptr);
+		ASSERT(gl_pAccessoryDataSource != nullptr);
+		ASSERT(gl_pQuandlDataSource != nullptr);
+
+		ASSERT(gl_pSinaRTDataSource != nullptr);
+		ASSERT(gl_pTengxunRTDataSource != nullptr);
+		ASSERT(gl_pNeteaseRTDataSource != nullptr);
+		ASSERT(gl_pNeteaseDayLineDataSource != nullptr);
+		ASSERT(gl_pTengxunDayLineDataSource != nullptr);
+
+		ASSERT(gl_pFinnhubWebSocket != nullptr);
+		ASSERT(gl_pTiingoIEXWebSocket != nullptr);
+		ASSERT(gl_pTiingoCryptoWebSocket != nullptr);
+		ASSERT(gl_pTiingoForexWebSocket != nullptr);
+
+		ASSERT(gl_pChinaMarket == nullptr);
+		ASSERT(gl_pWorldMarket == nullptr);
+		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
+		if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
+	}
+}
+
+void InitializeMarkets() {
+	CreateWebSocket();
+	CreateDataSource();
+	CreateMarket();
+	CreateMarketContainer();	//生成市场容器
+}
+
 void SystemInitialization() {
 	// 系统初始化开始
 	CreateSimdjsonEmptyArray();
@@ -118,70 +184,6 @@ void ResetMarkets() {
 	}
 }
 
-void CreateMarketContainer() {
-	ASSERT(gl_pChinaMarket != nullptr);
-	ASSERT(gl_pWorldMarket != nullptr);
-	gl_vMarket.push_back(gl_pWorldMarket); // 美国股票市场
-	gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
-}
-
-void CreateDataSource() {
-	// 此五个要在gl_pChinaMarket前生成
-	ASSERT(gl_pChinaMarket == nullptr);
-	gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
-	gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
-	gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
-	gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
-	gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
-
-	// 此四个要在gl_pWorldMarket前生成
-	ASSERT(gl_pWorldMarket == nullptr);
-	gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
-	gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
-	gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
-	gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
-}
-
-void CreateWebSocket() {
-	// WebSocket要在gl_pWorldMarket之前生成
-	ASSERT(gl_pWorldMarket == nullptr);
-	gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
-	gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
-	gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
-	gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
-}
-
-void CreateMarket() {
-	// 市场要在数据源和WebSocket之后生成
-	ASSERT(gl_pFinnhubDataSource != nullptr);
-	ASSERT(gl_pTiingoDataSource != nullptr);
-	ASSERT(gl_pAccessoryDataSource != nullptr);
-	ASSERT(gl_pQuandlDataSource != nullptr);
-
-	ASSERT(gl_pSinaRTDataSource != nullptr);
-	ASSERT(gl_pTengxunRTDataSource != nullptr);
-	ASSERT(gl_pNeteaseRTDataSource != nullptr);
-	ASSERT(gl_pNeteaseDayLineDataSource != nullptr);
-	ASSERT(gl_pTengxunDayLineDataSource != nullptr);
-
-	ASSERT(gl_pFinnhubWebSocket != nullptr);
-	ASSERT(gl_pTiingoIEXWebSocket != nullptr);
-	ASSERT(gl_pTiingoCryptoWebSocket != nullptr);
-	ASSERT(gl_pTiingoForexWebSocket != nullptr);
-
-	ASSERT(gl_pChinaMarket == nullptr);
-	ASSERT(gl_pWorldMarket == nullptr);
-	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
-	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
-}
-
-void InitializeMarkets() {
-	CreateWebSocket();
-	CreateDataSource();
-	CreateMarket();
-	CreateMarketContainer();	//生成市场容器
-}
-
 void InitializeLogSystem() {
 	// gl_errorLogger要作为默认日志生成，以便spdlog::error()等函数可以直接使用。
 	gl_errorLogger = spdlog::basic_logger_mt("basic_warn_logger", "logs/error.txt");
@@ -222,10 +224,8 @@ void TaskCheckWorldMarketReady() {
 }
 
 bool IsMarketResetting() {
-	for (const auto& pMarket : gl_vMarket) {
-		if (pMarket->IsResetting()) return true;
-	}
-	return false;
+	return ranges::any_of(std::as_const(gl_vMarket),
+	                      [](const auto& pMarket) { return pMarket->IsResetting(); });
 }
 
 void ScheduleMarketTask() {

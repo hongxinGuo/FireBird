@@ -176,8 +176,8 @@ public:
 	void SetLogo(const string& strLogo) { m_strLogo = strLogo; }
 	string GetFinnhubIndustry() const { return m_strFinnhubIndustry; }
 	void SetFinnhubIndustry(const string& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
-	json GetPeer() { return m_jsonPeer; }
-	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer; }
+	nlohmannJson GetPeer() { return m_jsonPeer; }
+	void SetPeer(const nlohmannJson& jsonPeer) { m_jsonPeer = jsonPeer; }
 	void SetSECFilings(const CSECFilingsPtr& pv) noexcept { m_pvSECFilings = pv; }
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
@@ -255,7 +255,7 @@ protected:
 	string m_strWebURL{ " " };
 	string m_strLogo{ " " };
 	string m_strFinnhubIndustry{ " " };
-	json m_jsonPeer{ json({}) }; // 读取到的Peer数据为json制式
+	nlohmannJson m_jsonPeer{ nlohmannJson({}) }; // 读取到的Peer数据为json制式
 
 	// 系统生成信息
 	CContainerFinnhubStockDayLine m_dataDayLine;

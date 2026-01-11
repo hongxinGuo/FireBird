@@ -94,7 +94,7 @@ void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///////////////////////////////////////////////////////////////////////
 string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
-	json jsonMessage;
+	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7：A top - of - book update that is due to a change in either the bid / ask price or size.
@@ -128,7 +128,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
-		if (json js; CreateJsonWithNlohmann(js, *pData)) {
+		if (nlohmannJson js; CreateJsonWithNlohmann(js, *pData)) {
 			string sDatetime;
 			string sMessageType;
 			char chType;
@@ -138,8 +138,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
 			chrono::minutes Minutes;
 			string sString;
-			json::iterator it;
-			json js2, js3, js4;
+			nlohmannJson::iterator it;
+			nlohmannJson js2, js3, js4;
 			sType = jsonGetString(js, "messageType");
 			chType = sType.at(0);
 			switch (chType) {
@@ -153,7 +153,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 						strSymbol = jsonGetString(it3);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
-				} catch (json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
+				} catch (nlohmannJson::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
@@ -200,7 +200,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 			// ERROR
 			return false;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Tiingo Forex WebSocket ", e.what());
 		return false;
 	}

@@ -49,15 +49,15 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoIEXWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
-		vSymbol.push_back("A");
-		vSymbol.push_back("AA");
-		vSymbol.push_back("AAL");
-		vSymbol.push_back("AAPL");
+		vSymbol.emplace_back("A");
+		vSymbol.emplace_back("AA");
+		vSymbol.emplace_back("AAL");
+		vSymbol.emplace_back("AAPL");
 		string str = gl_pTiingoIEXWebSocket->CreateMessage(vSymbol);
-		json jsonMessage;
+		nlohmannJson jsonMessage;
 		try {
-			jsonMessage = json::parse(str);
-		} catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
+			jsonMessage = nlohmannJson::parse(str);
+		} catch (nlohmannJson::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == "subscribe");
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 6);
 		EXPECT_EQ(jsonMessage["authorization"], "c897a00b7cfc2630d235316a4683156");
