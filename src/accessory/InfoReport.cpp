@@ -55,5 +55,6 @@ int ReportSchedulingExitToWatchdog() {
 	HWND hWnd = ::FindWindow(nullptr, Utf8ToWstring(sWatchDogApp).c_str());
 	if (hWnd == nullptr) return 1; // Watchdog监控程序不在运行， 直接返回
 	::SendMessage(hWnd, WM_FIREBIRD_SCHEDULING_EXIT_, NULL, NULL); // Tell watchdog that I am exit now.
+	::SendMessage(hWnd, WM_FIREBIRD_SCHEDULING_EXIT2_, NULL, NULL); // Tell watchdog that I am exit now.
 	return 0;
 }

@@ -13,7 +13,7 @@ bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
 		m_iReceivedDataStatus = VOID_DATA_;
 		return true;
 	}
-	else return false;
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

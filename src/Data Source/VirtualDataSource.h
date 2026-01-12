@@ -242,8 +242,8 @@ protected:
 	queue<CVirtualProductWebDataPtr> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct{ nullptr };
 
-	atomic_int64_t m_dwHTTPStatusCode{ 0 }; // 网络状态码
-	atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码
+	atomic_int64_t m_dwHTTPStatusCode{ 200 }; // 网络状态码， 默认为200，表示正常。
+	atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码，默认为0，无错误。
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR_ };
 
 	InternetOption m_internetOption;

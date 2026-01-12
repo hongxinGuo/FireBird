@@ -8,8 +8,8 @@
 
 #define WM_FIREBIRD_RUNNING_            WM_APP + 1
 #define WM_FIREBIRD_SCHEDULING_EXIT_    WM_APP + 2
+#define WM_FIREBIRD_SCHEDULING_EXIT2_    WM_APP + 3
 #define WM_FIREBIRD_EXIT_               WM_APP + 10
-#define WM_FIREBIRD_NOTHING_            WM_APP + 4
 
 #include<string>
 

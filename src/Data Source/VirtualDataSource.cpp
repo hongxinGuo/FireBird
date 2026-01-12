@@ -69,8 +69,10 @@ void CVirtualDataSource::InquireData() {
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
 			auto pWebData = pEngine->GetWebData();
-			SetWebErrorCode(pEngine->GetErrorCode());
-			SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
+			if (pEngine->IsWebError()) {
+				SetWebErrorCode(pEngine->GetErrorCode());
+				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
+			}
 			if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
 			return pWebData;
 		});
@@ -84,7 +86,7 @@ void CVirtualDataSource::InquireData() {
 			pvWebData->push_back(p);
 		}
 	}
-	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty() && !IsWebError()) {
+	if (!pvWebData->empty() && !IsWebError() && !gl_systemConfiguration.IsExitingSystem()) {
 		CheckWebData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 		m_pCurrentProduct->CalculateTotalDataLength(pvWebData);
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);

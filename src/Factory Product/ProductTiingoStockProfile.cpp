@@ -103,13 +103,12 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ "Field not available for free/evaluation" }; // Tiingo免费账户有多项内容空缺，会返回此信息。
-	string strNULL;
 	CTiingoStockPtr pStock = nullptr;
-	string s1;
 
 	if (!IsValidData(pWebData)) return pvTiingoStock;
 
 	try {
+		string s1;
 		string_view sv;
 		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
@@ -118,25 +117,27 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 
 		int iCount = 0;
 		for (auto item : doc) {
+			string strNULL;
+			char* stopString;
 			auto itemValue = item.value();
 			pStock = make_shared<CTiingoStock>();
 			s1 = simdjsonGetStringView(itemValue, "permaTicker");
-			pStock->SetTiingoPermaTicker(s1);;
+			pStock->SetTiingoPermaTicker(s1);
 			s1 = simdjsonGetStringView(itemValue, "ticker");
 			std::ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->SetSymbol(s1);
 			s1 = simdjsonGetStringView(itemValue, "name");
-			pStock->SetName(s1);;
+			pStock->SetName(s1);
 			pStock->SetActive(simdjsonGetBool(itemValue, "isActive"));
 			pStock->SetIsADR(simdjsonGetBool(itemValue, "isADR"));
 			s1 = simdjsonGetStringView(itemValue, "industry");
 			if (s1 != strNotAvailable) {
-				pStock->SetTiingoIndustry(s1);;
+				pStock->SetTiingoIndustry(s1);
 			}
 			else pStock->SetTiingoIndustry(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "sector");
 			if (s1 != strNotAvailable) {
-				pStock->SetTiingoSector(s1);;
+				pStock->SetTiingoSector(s1);
 			}
 			else pStock->SetTiingoSector(strNULL);
 
@@ -146,21 +147,21 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			}
 			else {
 				string sTemp2(sv);
-				pStock->SetSicCode(atoi(sTemp2.c_str()));
+				pStock->SetSicCode(strtol(sTemp2.c_str(), &stopString, 10));
 			}
 			s1 = simdjsonGetStringView(itemValue, "sicIndustry");
 			if (s1 != strNotAvailable) {
-				pStock->SetSicIndustry(s1);;
+				pStock->SetSicIndustry(s1);
 			}
 			else pStock->SetSicIndustry(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "sicSector");
 			if (s1 != strNotAvailable) {
-				pStock->SetSicSector(s1);;
+				pStock->SetSicSector(s1);
 			}
 			else pStock->SetSicSector(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "reportingCurrency");
 			if (s1 != strNotAvailable) { // 此项应该永远存在
-				pStock->SetReportingCurrency(s1);;
+				pStock->SetReportingCurrency(s1);
 			}
 			else pStock->SetReportingCurrency(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "location");

@@ -638,11 +638,9 @@ void CMainFrame::SetCurrentStock(const CVirtualStockPtr& pStock) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
-		ReportExitToWatchdog();
-
-		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
-
 		TRACE(_T("应用户申请，准备退出程序\n"));
+		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
+		ReportExitToWatchdog();
 		for (auto& timer : gl_aTimer) {// 退出所有的计时器，关闭所有的工作线程。
 			timer.cancel();
 		}

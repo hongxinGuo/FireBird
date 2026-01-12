@@ -9,8 +9,9 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
-	CMockSinaRTDataSourcePtr m_pMockSinaRTDataSource; // 新浪实时数据采集
+namespace FireBirdTest { namespace {
+		CMockSinaRTDataSourcePtr m_pMockSinaRTDataSource; // 新浪实时数据采集
+	}
 
 	class CMockSinaRTDataSourceTest : public Test {
 	protected:
@@ -30,6 +31,8 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			m_pMockSinaRTDataSource = make_shared<CMockSinaRTDataSource>();
+			m_pMockSinaRTDataSource->SetHTTPStatusCode(0);
+			SinaDataSource.SetHTTPStatusCode(0); // 处于故障状态
 		}
 
 		void TearDown() override {
@@ -76,7 +79,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetSystemReady(true);
 	}
 
-	TEST_F(CMockSinaRTDataSourceTest, TestIsAErrorMessageData1) {
+	TEST_F(CMockSinaRTDataSourceTest, TestCheckWebData1) {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_("Forbidden");
 		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
@@ -89,7 +92,7 @@ namespace FireBirdTest {
 		SinaDataSource.SetHTTPStatusCode(0);
 	}
 
-	TEST_F(CMockSinaRTDataSourceTest, TestIsAErrorMessageData2) {
+	TEST_F(CMockSinaRTDataSourceTest, TestCheckWebData2) {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_("Forbidden");
 		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);

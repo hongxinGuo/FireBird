@@ -26,6 +26,28 @@ static char THIS_FILE[] = __FILE__;
 // Configuration实时改变处理函数
 //
 ////////////////////////////////////////////////////////////////////////////////////
+namespace {
+	enum TraceLevel {
+		TRACE_LEVEL_INDEX_ = 0,
+		DEBUG_LEVEL_INDEX_,
+		INFO_LEVEL_INDEX_,
+		WARN_LEVEL_INDEX_,
+		ERROR_LEVEL_INDEX_,
+		CRITICAL_LEVEL_INDEX_,
+		OFF_LEVEL_INDEX_
+	};
+
+	map<CString, TraceLevel> mapTraceLevel{
+		{ "Trace", TRACE_LEVEL_INDEX_ },
+		{ "Debug", DEBUG_LEVEL_INDEX_ },
+		{ "Info", INFO_LEVEL_INDEX_ },
+		{ "Warn", WARN_LEVEL_INDEX_ },
+		{ "Error", ERROR_LEVEL_INDEX_ },
+		{ "Critical", CRITICAL_LEVEL_INDEX_ },
+		{ "Off", OFF_LEVEL_INDEX_ }
+	};
+}
+
 void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pProp) const {
 	COleVariant value;
 	LPVARIANT pVar;
@@ -38,30 +60,32 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		ASSERT(pVar->vt == VT_BSTR);
 		wStr = pVar->bstrVal;
 		str = wStr;
-		switch (str.GetAt(0)) {
-		case 'T': // trace
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_TRACE);
-			break;
-		case 'D': // debug
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_DEBUG);
-			break;
-		case 'I': // info
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
-			break;
-		case 'W': // warn
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_WARN);
-			break;
-		case 'E': // error
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_ERROR);
-			break;
-		case 'C': // critical
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_CRITICAL);
-			break;
-		case 'O': // OFF
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_OFF);
-			break;
-		default:
-			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
+		if (mapTraceLevel.contains(str)) {
+			switch (mapTraceLevel.at(str)) {
+			case TRACE_LEVEL_INDEX_: // trace
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_TRACE);
+				break;
+			case DEBUG_LEVEL_INDEX_: // debug
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_DEBUG);
+				break;
+			case INFO_LEVEL_INDEX_: // info
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
+				break;
+			case WARN_LEVEL_INDEX_: // warn
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_WARN);
+				break;
+			case ERROR_LEVEL_INDEX_: // error
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_ERROR);
+				break;
+			case CRITICAL_LEVEL_INDEX_: // critical
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_CRITICAL);
+				break;
+			case OFF_LEVEL_INDEX_: // OFF
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_OFF);
+				break;
+			default:
+				gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
+			}
 		}
 		gl_systemConfiguration.SetUpdateDB(true);
 		break;
