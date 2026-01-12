@@ -10,7 +10,10 @@ public:
 	              LPCTSTR lpszEditMask = nullptr, LPCTSTR lpszEditTemplate = nullptr, LPCTSTR lpszValidChars = nullptr) :
 		CMFCPropertyGridProperty(strName, varValue, lpszDescr, dwData, lpszEditMask, lpszEditTemplate, lpszValidChars) {
 	}
-
+	CGridProperty(const CGridProperty&) = delete;
+	CGridProperty& operator=(const CGridProperty&) = delete;
+	CGridProperty(const CGridProperty&&) noexcept = delete;
+	CGridProperty& operator=(const CGridProperty&&) noexcept = delete;
 	~CGridProperty() override = default;
 
 public:

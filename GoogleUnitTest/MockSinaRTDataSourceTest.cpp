@@ -31,8 +31,6 @@ namespace FireBirdTest { namespace {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			m_pMockSinaRTDataSource = make_shared<CMockSinaRTDataSource>();
-			m_pMockSinaRTDataSource->SetHTTPStatusCode(0);
-			SinaDataSource.SetHTTPStatusCode(0); // 处于故障状态
 		}
 
 		void TearDown() override {
@@ -82,20 +80,18 @@ namespace FireBirdTest { namespace {
 	TEST_F(CMockSinaRTDataSourceTest, TestCheckWebData1) {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_("Forbidden");
-		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
-		SinaDataSource.SetHTTPStatusCode(200);
 
 		SinaDataSource.CheckWebData(pwd);
-		EXPECT_EQ(ERROR_NO_ERROR_, SinaDataSource.GetErrorMessage()) << "HTTPStatusCode == 200，无视错误代码，正常返回";
+		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED_, SinaDataSource.GetErrorMessage());
 
 		// 恢复原状
-		SinaDataSource.SetHTTPStatusCode(0);
+		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestCheckWebData2) {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_("Forbidden");
-		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
+		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 200);
 
 		SinaDataSource.CheckWebData(pwd);
 		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED_, SinaDataSource.GetErrorMessage());

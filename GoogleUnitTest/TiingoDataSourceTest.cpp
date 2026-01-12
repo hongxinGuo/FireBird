@@ -80,7 +80,6 @@ namespace FireBirdTest {
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData1) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		pWebData->Test_SetBuffer_("abcde"); // 无关紧要
-		m_pTiingoDataSource->SetHTTPStatusCode(200); // 正常
 		auto pProduct = make_shared<CProductDummy>();
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 

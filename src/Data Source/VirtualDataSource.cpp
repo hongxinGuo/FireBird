@@ -69,10 +69,8 @@ void CVirtualDataSource::InquireData() {
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
 			auto pWebData = pEngine->GetWebData();
-			if (pEngine->IsWebError()) {
-				SetWebErrorCode(pEngine->GetErrorCode());
-				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
-			}
+			SetWebErrorCode(pEngine->GetErrorCode());
+			SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
 			if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
 			return pWebData;
 		});

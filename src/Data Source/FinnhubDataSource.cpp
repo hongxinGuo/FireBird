@@ -92,52 +92,67 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 
 void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
+	string s2;
+	string str;
+	string_view strView;
+	long l;
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
-	if (m_dwHTTPStatusCode == 200) return; // OK? return no error
-
 	nlohmannJson js;
 	pWebData->CreateJson(js);
 
-	try {
-		string error = js.at("error");
-		int i;
+	switch (m_dwHTTPStatusCode) {
+	case 200: // 正常返回，但可能包含error信息
 		try {
-			m_eErrorMessageData = mapFinnhubErrorMap.at(error);
-		} catch (exception&) {
-			m_eErrorMessageData = ERROR_FINNHUB_NOT_HANDLED_;
-		}
-		switch (m_eErrorMessageData) {
-		case ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_:// 无权申请
-			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
-			if (m_pCurrentProduct->CheckInaccessible()) {
-				// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
-				string s = "No right to access: ";
-				s += m_pCurrentProduct->GetInquiry();
-				s += ",  Exchange = ";
-				s += m_pCurrentProduct->GetInquiringExchange();
-				gl_systemMessage.PushInnerSystemInformationMessage(s);
+			string error = js.at("error");
+			int i;
+			try {
+				m_eErrorMessageData = mapFinnhubErrorMap.at(error);
+			} catch (exception&) {
+				m_eErrorMessageData = ERROR_FINNHUB_NOT_HANDLED_;
 			}
-			break;
-		case ERROR_FINNHUB_MISSING_API_KEY_: // 缺少API key
-			gl_systemMessage.PushErrorMessage("finnhub missing API key");
-			break;
-		case ERROR_FINNHUB_REACH_MAX_API_LIMIT_: // 
-		case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH_:// 申请频率超高
-			// 降低查询频率200ms。
-			// todo 这里最好只向系统报告频率超出，由系统决定如何修正。
-			i = gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count();
-			gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(i + 200);
-			break;
-		case ERROR_FINNHUB_NOT_HANDLED_: // error not handled
-			ReportErrorNotHandled(error);
-			break;
-		default: // 缺省分支不应该出现
-			ASSERT(false);
-			break;
+			switch (m_eErrorMessageData) {
+			case ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_:// 无权申请
+				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+				if (m_pCurrentProduct->CheckInaccessible()) {
+					// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
+					string s = "No right to access: ";
+					s += m_pCurrentProduct->GetInquiry();
+					s += ",  Exchange = ";
+					s += m_pCurrentProduct->GetInquiringExchange();
+					gl_systemMessage.PushInnerSystemInformationMessage(s);
+				}
+				break;
+			case ERROR_FINNHUB_MISSING_API_KEY_: // 缺少API key
+				gl_systemMessage.PushErrorMessage("finnhub missing API key");
+				break;
+			case ERROR_FINNHUB_REACH_MAX_API_LIMIT_: // 
+			case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH_:// 申请频率超高
+				// 降低查询频率200ms。
+				// todo 这里最好只向系统报告频率超出，由系统决定如何修正。
+				i = gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count();
+				gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(i + 200);
+				break;
+			case ERROR_FINNHUB_NOT_HANDLED_: // error not handled
+				ReportErrorNotHandled(error);
+				break;
+			default: // 缺省分支不应该出现
+				ASSERT(false);
+				break;
+			}
+		} catch (nlohmannJson::exception&) { // no error. do nothing
+			m_eErrorMessageData = ERROR_NO_ERROR_;
 		}
-	} catch (nlohmannJson::exception&) { // no error. do nothing
-		m_eErrorMessageData = ERROR_NO_ERROR_;
+		break;
+	default:
+		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
+		strView = pWebData->GetStringView(0, l); //
+		s2 = strView;
+		str = std::format("Warning: Finnhub no handled {}   {}", s2, m_pCurrentProduct->GetInquiry());
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_errorLogger->warn("{}", str);
+		m_eErrorMessageData = ERROR_FINNHUB_NOT_HANDLED_;
+		break;
 	}
 }
 

@@ -51,7 +51,6 @@ namespace FireBirdTest {
 			pProduct->SetReceivedDataStatus(GOOD_DATA_);
 			pProduct->SetInquiringExchange("US"); // 交易所为US,防止添加禁用交易所。
 			m_FinnhubDataSource.SetCurrentInquiry(pProduct);
-			m_FinnhubDataSource.SetHTTPStatusCode(0); // 处于故障状态
 		}
 
 		void TearDown() override {
@@ -100,22 +99,10 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubDataSourceTest, TestCheckWebData4) {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_(R"({"no error":"Please use an API key."})");
-		EXPECT_EQ(m_FinnhubDataSource.GetHTTPStatusCode(), 0);
+		EXPECT_EQ(m_FinnhubDataSource.GetHTTPStatusCode(), 200);
 
 		m_FinnhubDataSource.CheckWebData(pwd);
 		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.GetErrorMessage()) << "非错误信息，正常返回";
-	}
-
-	TEST_F(CFinnhubDataSourceTest, TestCheckWebData5) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(R"({"error":"Please use an API key."})");
-		m_FinnhubDataSource.SetHTTPStatusCode(200);
-
-		m_FinnhubDataSource.CheckWebData(pwd);
-		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.GetErrorMessage()) << "HTTPStatusCode == 200，无视错误代码，正常返回";
-
-		// 恢复原状
-		m_FinnhubDataSource.SetHTTPStatusCode(0);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestCheckWebData6) {

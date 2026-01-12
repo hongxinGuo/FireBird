@@ -171,6 +171,10 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
+
+		// 重置系统准备状态
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskAccessoryPerMinuteTask) {
