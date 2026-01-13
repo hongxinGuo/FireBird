@@ -18,7 +18,6 @@ using std::binary_semaphore;
 
 #include"ClassDeclaration.h"
 
-#include "spdlog/sinks/daily_file_sink.h"
 #define MAX_BACKGROUND_WORKING_THREAD_ 32
 
 constexpr double EPSILON = 1e-8;

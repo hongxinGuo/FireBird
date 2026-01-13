@@ -20,9 +20,9 @@
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
+using namespace spdlog;
 
 #include "CharSetTransfer.h"
-using namespace spdlog;
 
 #include "AccessoryDataSource.h"
 
@@ -141,17 +141,17 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
 
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0:	//使用新浪实时数据服务器
+	case SinaRealTime_:	//使用新浪实时数据服务器
 		gl_systemConfiguration.UsingSinaRealtimeServer();
 		break;
-	case 1: //使用网易实时服务器 
+	case NeteaseRealTime_: //使用网易实时服务器 
 		gl_systemConfiguration.UsingNeteaseRealtimeServer();
 		break;
-	case 2: //使用腾讯实时数据服务器
+	case TengxunRealTime_: //使用腾讯实时数据服务器
 		gl_systemConfiguration.UsingTengxunRealtimeServer();
 		break;
 	default: //例外情况时默认使用新浪实时数据服务器
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(0); // 改正无效的标志
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_); // 改正无效的标志
 		gl_systemConfiguration.UsingSinaRealtimeServer();
 		break;
 	}

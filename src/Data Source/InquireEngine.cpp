@@ -102,17 +102,18 @@ CWebDataPtr CInquireEngine::GetWebData() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInquireEngine::OpenFile() {
-	const wstring str = Utf8ToWstring(m_strHeaders);
+	const wstring wstr = Utf8ToWstring(m_strHeaders);
 	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(Utf8ToWstring(m_strInquiry).c_str(), 1,
 	                                                       INTERNET_FLAG_TRANSFER_ASCII,
-	                                                       str.c_str(), str.length()));
+	                                                       wstr.c_str(), wstr.length()));
 }
 
 void CInquireEngine::GetFileHeaderInformation() {
 	SPDLOG_ASSERT(m_pFile != nullptr);
-	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
+	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode); // 获取HTTP状态码
 	CString strContentType;
-	if (m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, strContentType)) {
+	if (m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, strContentType)) { // 获取内容类型
+		m_strContentType = W2Utf8(strContentType);
 	}
 	QueryDataLength();
 }

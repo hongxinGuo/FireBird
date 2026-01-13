@@ -9,6 +9,7 @@
 #include"spdlog_assert.h"
 
 #include "VirtualDataSource.h"
+#include"VirtualWebProduct.h"
 #include "InquireEngine.h"
 
 #include"Thread.h"

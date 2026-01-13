@@ -10,15 +10,23 @@
 #include"stdafx.h"
 using namespace std;
 
-//#define UNICODE_LITERALS_FOR_TEST_NAMES
+#define UNICODE_LITERALS_FOR_TEST_NAMES
 #include"gtest/gtest.h"
 #include"gmock/gmock.h"
 using namespace testing;
 
-// fmt库默认使用unicode字符,本系统默认使用多字节字符。关闭fmt默认项
+// fmt库
 #define FMT_HEADER_ONLY
 #define FMT_UNICODE 1
 
+// 使用spdlog作为日志库
+#include <spdlog/common.h>
+#include "spdlog/sinks/daily_file_sink.h"
+
+// nlohmann json库
+#include"nlohmann/json.hpp"
+
+// simdjson库
 #include"simdjson.h"
 using namespace simdjson;
 

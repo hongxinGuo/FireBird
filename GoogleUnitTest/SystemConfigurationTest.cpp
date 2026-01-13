@@ -99,8 +99,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountPassword() == "firebird");
 		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
 
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 1) << "默认使用腾讯日线数据服务器";
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), SinaRealTime_) << "默认使用新浪实时数据服务器";
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), TengxunDayLine_) << "默认使用腾讯日线数据服务器";
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime().count(), 200) << "默认查询时间为200毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
 		EXPECT_EQ(gl_systemConfiguration.GetNumberOfRTDataSource(), 4) << "测试文件中的数值";
@@ -135,20 +135,20 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CSystemConfigurationTest, TestIsUsingSinaRTServer) {
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_);
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(2);
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(TengxunRealTime_);
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunRTServer());
 
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestUsingSinaRealtimeServer) {
@@ -202,14 +202,14 @@ namespace FireBirdTest {
 	TEST_F(CSystemConfigurationTest, TestUsingNeteaseDayLineServer) {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
 
-		gl_systemConfiguration.SetChinaMarketDayLineServer(0);
+		gl_systemConfiguration.SetChinaMarketDayLineServer(NeteaseDayLine_);
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
-		gl_systemConfiguration.SetChinaMarketDayLineServer(1);
+		gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
 
-		gl_systemConfiguration.SetChinaMarketDayLineServer(1);
+		gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountType) {

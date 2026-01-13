@@ -12,6 +12,10 @@ class CMainFrame : public CMDIFrameWndEx {
 
 public:
 	CMainFrame();
+	CMainFrame(const CMainFrame&) = delete;
+	CMainFrame& operator=(const CMainFrame&) = delete;
+	CMainFrame(CMainFrame&&) noexcept = delete;
+	CMainFrame& operator=(CMainFrame&&) noexcept = delete;
 	~CMainFrame() override;
 
 	// 特性

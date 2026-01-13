@@ -3,6 +3,7 @@
 #include"WorldMarket.h"
 
 #include"MockQuandlDataSource.h"
+#include"VirtualWebProduct.h"
 
 #include"GeneralCheck.h"
 

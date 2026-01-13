@@ -11,10 +11,15 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <spdlog/common.h>
-
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
-#include"nlohmann/json.hpp"
+
+enum EChinaMarketDataSourceServer : int {
+	SinaRealTime_ = 0,
+	NeteaseRealTime_ = 1,
+	TengxunRealTime_ = 2,
+	NeteaseDayLine_ = 3,
+	TengxunDayLine_ = 4
+};
 
 class CSystemConfiguration final {
 public:
@@ -61,18 +66,18 @@ public:
 	[[nodiscard]] int GetBackgroundThreadPermittedNumber() const noexcept { return m_iBackgroundThreadPermittedNumber; }
 
 	// 全局参数
-	[[nodiscard]] int GetChinaMarketRealtimeServer() const noexcept { return m_iChinaMarketRealtimeServer; }
+	[[nodiscard]] EChinaMarketDataSourceServer GetChinaMarketRealtimeServer() const noexcept { return m_iChinaMarketRealtimeServer; }
 	void UsingSinaRealtimeServer();
 	void UsingNeteaseRealtimeServer();
 	void UsingTengxunRealtimeServer();
 
-	void SetChinaMarketRealtimeServer(const int iChinaMarketRealtimeServer) noexcept {
+	void SetChinaMarketRealtimeServer(const EChinaMarketDataSourceServer iChinaMarketRealtimeServer) noexcept {
 		m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer;
 		m_fUpdateDB = true;
 	}
 	[[nodiscard]] int GetChinaMarketDayLineServer() const noexcept { return m_iChinaMarketDayLineServer; }
 
-	void SetChinaMarketDayLineServer(const int iChinaMarketDayLineServer) noexcept {
+	void SetChinaMarketDayLineServer(const EChinaMarketDataSourceServer iChinaMarketDayLineServer) noexcept {
 		m_iChinaMarketDayLineServer = iChinaMarketDayLineServer;
 		m_fUpdateDB = true;
 	}
@@ -102,12 +107,12 @@ public:
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] int GetRTServer() const { return m_iChinaMarketRealtimeServer; }
-	[[nodiscard]] bool IsUsingSinaRTServer() const noexcept { return m_iChinaMarketRealtimeServer == 0; }
-	[[nodiscard]] bool IsUsingNeteaseRTServer() const noexcept { return m_iChinaMarketRealtimeServer == 1; }
-	[[nodiscard]] bool IsUsingTengxunRTServer() const noexcept { return m_iChinaMarketRealtimeServer == 2; }
-	[[nodiscard]] bool IsUsingNeteaseDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == 0; }
-	[[nodiscard]] bool IsUsingTengxunDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == 1; }
+	[[nodiscard]] EChinaMarketDataSourceServer GetRTServer() const { return m_iChinaMarketRealtimeServer; }
+	[[nodiscard]] bool IsUsingSinaRTServer() const noexcept { return m_iChinaMarketRealtimeServer == SinaRealTime_; }
+	[[nodiscard]] bool IsUsingNeteaseRTServer() const noexcept { return m_iChinaMarketRealtimeServer == NeteaseRealTime_; }
+	[[nodiscard]] bool IsUsingTengxunRTServer() const noexcept { return m_iChinaMarketRealtimeServer == TengxunRealTime_; }
+	[[nodiscard]] bool IsUsingNeteaseDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == NeteaseDayLine_; }
+	[[nodiscard]] bool IsUsingTengxunDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == TengxunDayLine_; }
 
 	void SetCurrentStock(const string& stock) noexcept { m_strCurrentStock = stock; }
 	string GetCurrentStock() const noexcept { return m_strCurrentStock; }
@@ -334,8 +339,8 @@ protected:
 	int m_iBackgroundThreadPermittedNumber{ 8 }; // 后台线程最大允许值
 
 	// 系统参数
-	int m_iChinaMarketRealtimeServer{ 0 }; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
-	int m_iChinaMarketDayLineServer{ 0 }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
+	EChinaMarketDataSourceServer m_iChinaMarketRealtimeServer{ SinaRealTime_ }; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
+	EChinaMarketDataSourceServer m_iChinaMarketDayLineServer{ NeteaseDayLine_ }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
 	chrono::milliseconds m_chinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market

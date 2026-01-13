@@ -122,47 +122,49 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CMainFrame::OnTiingoRebuildStockSplit)
 END_MESSAGE_MAP()
 
-static UINT indicators[] =
-{
-	ID_SEPARATOR, // 状态行指示器
-	ID_CURRENT_INPUT,
-	ID_CURRENT_SELECT_STOCK,
-	ID_CURRENT_SELECT_STOCKNAME,
-	ID_CURRENT_SELECT_STOCK_SET,
-	ID_CURRENT_SELECT_POSITION,
-	ID_CURRENT_RTDATA_READING_STOCK,
-	ID_CURRENT_ACTIVE_STOCK,
-	ID_CURRENT_DAYLINE_READING_STOCK,
-	ID_CURRENT_FUNCTION,
-	ID_CURRENT_TIINGO_FUNCTION,
-	ID_CURRENT_RTDATA_SIZE,
-	ID_CURRENT_RUNNING_THREAD,
-	ID_CURRENT_RUNNING_BACKGROUND_THREAD,
-	ID_CURRENT_TIME,
-};
+namespace {
+	 UINT indicators[] =
+	{
+		ID_SEPARATOR, // 状态行指示器
+		ID_CURRENT_INPUT,
+		ID_CURRENT_SELECT_STOCK,
+		ID_CURRENT_SELECT_STOCKNAME,
+		ID_CURRENT_SELECT_STOCK_SET,
+		ID_CURRENT_SELECT_POSITION,
+		ID_CURRENT_RTDATA_READING_STOCK,
+		ID_CURRENT_ACTIVE_STOCK,
+		ID_CURRENT_DAYLINE_READING_STOCK,
+		ID_CURRENT_FUNCTION,
+		ID_CURRENT_TIINGO_FUNCTION,
+		ID_CURRENT_RTDATA_SIZE,
+		ID_CURRENT_RUNNING_THREAD,
+		ID_CURRENT_RUNNING_BACKGROUND_THREAD,
+		ID_CURRENT_TIME,
+	};
 
-static UINT innerSystemIndicators[] =
-{
-	ID_SEPARATOR, // 状态行指示器
-	ID_SHOW_SINA_RT,
-	ID_SHOW_NETEASE_DAYLINE,
-	ID_SHOW_NETEASE_RT,
-	ID_SHOW_TENGXUN_RT,
-	ID_SHOW_FINNHUB_WEB,
-	ID_SHOW_TIINGO_WEB,
-	ID_SHOW_QUANDL_WEB,
-	ID_CURRENT_FINNHUB_STAKE,
-	ID_SHOW_FINNHUB_WEBSOCKET_DATASIZE,
-	ID_CURRENT_TIINGO_IEX,
-	ID_SHOW_TIINGO_IEX_WEBSOCKET_DATASIZE,
-	ID_CURRENT_TIINGO_FOREX,
-	ID_SHOW_TIINGO_CRYPTO_WEBSOCKET_DATASIZE,
-	ID_CURRENT_TIINGO_CRYPTO,
-	ID_SHOW_TIINGO_FOREX_WEBSOCKET_DATASIZE,
-	ID_SHOW_TIINGO_TOTAL_DATASIZE,
-	ID_SHOW_FINNHUB_TOTAL_DATASIZE,
-	ID_SHOW_CHINA_MARKET_TOTAL_DATASIZE,
-};
+	 UINT innerSystemIndicators[] =
+	{
+		ID_SEPARATOR, // 状态行指示器
+		ID_SHOW_SINA_RT,
+		ID_SHOW_NETEASE_DAYLINE,
+		ID_SHOW_NETEASE_RT,
+		ID_SHOW_TENGXUN_RT,
+		ID_SHOW_FINNHUB_WEB,
+		ID_SHOW_TIINGO_WEB,
+		ID_SHOW_QUANDL_WEB,
+		ID_CURRENT_FINNHUB_STAKE,
+		ID_SHOW_FINNHUB_WEBSOCKET_DATASIZE,
+		ID_CURRENT_TIINGO_IEX,
+		ID_SHOW_TIINGO_IEX_WEBSOCKET_DATASIZE,
+		ID_CURRENT_TIINGO_FOREX,
+		ID_SHOW_TIINGO_CRYPTO_WEBSOCKET_DATASIZE,
+		ID_CURRENT_TIINGO_CRYPTO,
+		ID_SHOW_TIINGO_FOREX_WEBSOCKET_DATASIZE,
+		ID_SHOW_TIINGO_TOTAL_DATASIZE,
+		ID_SHOW_FINNHUB_TOTAL_DATASIZE,
+		ID_SHOW_CHINA_MARKET_TOTAL_DATASIZE,
+	};
+}
 
 // CMainFrame 构造/析构
 
@@ -907,7 +909,7 @@ void CMainFrame::OnStopUpdateDayLine() {
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
-	gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+	gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_);
 	gl_systemConfiguration.UsingSinaRealtimeServer();
 	gl_SystemData.ClearChinaMarketRTDataQueue();
 }
@@ -922,7 +924,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
-	gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
+	gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
 	gl_systemConfiguration.UsingNeteaseRealtimeServer();
 	gl_SystemData.ClearChinaMarketRTDataQueue();
 }
@@ -938,7 +940,7 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUsingTengxunRealtimeDataServer() {
-	gl_systemConfiguration.SetChinaMarketRealtimeServer(2);
+	gl_systemConfiguration.SetChinaMarketRealtimeServer(TengxunRealTime_);
 	gl_systemConfiguration.UsingTengxunRealtimeServer();
 	gl_SystemData.ClearChinaMarketRTDataQueue();
 }
@@ -1208,7 +1210,7 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy) {
 }
 
 void CMainFrame::OnUsingNeteaseDayLineDataServer() {
-	gl_systemConfiguration.SetChinaMarketDayLineServer(0);
+	gl_systemConfiguration.SetChinaMarketDayLineServer(NeteaseDayLine_);
 	gl_pTengxunDayLineDataSource->Enable(true);
 	gl_pNeteaseDayLineDataSource->Enable(false);
 }
@@ -1224,7 +1226,7 @@ void CMainFrame::OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUsingTengxunDayLineDataServer() {
-	gl_systemConfiguration.SetChinaMarketDayLineServer(1);
+	gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
 	gl_pTengxunDayLineDataSource->Enable(false);
 	gl_pNeteaseDayLineDataSource->Enable(true);
 }

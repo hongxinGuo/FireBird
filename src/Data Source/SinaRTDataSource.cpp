@@ -69,26 +69,20 @@ void CSinaRTDataSource::CreateCurrentInquireString() {
 void CSinaRTDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 
-	switch (m_dwHTTPStatusCode) {
-	case 200:
-		if (pWebData->GetBufferLength() == 9) { // 是字符串"Forbidden"？
-			const string_view s = pWebData->GetStringView(0, 9);
-			if (s == "Forbidden") {
-				m_eErrorMessageData = ERROR_SINA_HEADER_NEEDED_;
-			}
+	if (pWebData->GetBufferLength() == 9) { // 是字符串"Forbidden"？
+		const string_view s = pWebData->GetStringView(0, 9);
+		if (s == "Forbidden") {
+			m_eErrorMessageData = ERROR_SINA_HEADER_NEEDED_;
 		}
-		switch (m_eErrorMessageData) {
-		case ERROR_SINA_HEADER_NEEDED_:
-			ReportErrorNotHandled("inquiry headed needed");
-			break;
-		case ERROR_NO_ERROR_:
-			break;
-		default:
-			ASSERT(0);
-			break;
-		}
+	}
+	switch (m_eErrorMessageData) {
+	case ERROR_SINA_HEADER_NEEDED_:
+		ReportErrorNotHandled("inquiry headed needed");
+		break;
+	case ERROR_NO_ERROR_:
 		break;
 	default:
+		ASSERT(0);
 		break;
 	}
 }

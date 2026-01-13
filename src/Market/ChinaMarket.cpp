@@ -465,6 +465,37 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	return true;
 }
 
+bool CChinaMarket::IsRealTimeDataSourceEnable() noexcept {
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case SinaRealTime_:
+		return gl_pSinaRTDataSource->IsEnable();
+	case NeteaseRealTime_:
+		return gl_pNeteaseRTDataSource->IsEnable();
+	case TengxunRealTime_:
+		return gl_pTengxunRTDataSource->IsEnable();
+	default:
+		ASSERT(0);
+		return true;
+	}
+}
+
+void CChinaMarket::EnableRealTimeDataSource(bool fEnable) noexcept {
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case SinaRealTime_:
+		gl_pSinaRTDataSource->Enable(fEnable);
+		break;
+	case NeteaseRealTime_:
+		gl_pNeteaseRTDataSource->Enable(fEnable);
+		break;
+	case TengxunRealTime_:
+		gl_pTengxunRTDataSource->Enable(fEnable);
+		break;
+	default:
+		ASSERT(0);
+		break;
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 生成每次查询新浪实时股票数据的字符串

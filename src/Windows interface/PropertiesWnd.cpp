@@ -7,6 +7,7 @@
 #include "FinnhubDataSource.h"
 #include "MainFrm.h"
 #include "FireBird.h"
+#include "SinaRTDataSource.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
@@ -98,6 +99,10 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
 		gl_systemConfiguration.SetUpdateDB(true);
+		break;
+	case CHINA_MARKET_REALTIME_DATA_SOURCE_ENABLE_:
+		ASSERT(pVar->vt == VT_BOOL);
+		gl_pChinaMarket->EnableRealTimeDataSource(pVar->boolVal);
 		break;
 	case FINNHUB_DATA_SOURCE_ENABLE_:
 		ASSERT(pVar->vt == VT_BOOL);
@@ -322,7 +327,7 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.AddProperty(pGroup1);
 
 	CMFCPropertyGridProperty* pGroup2 = new CGridProperty(_T("China market"));
-
+	pGroup2->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pChinaMarket->IsRealTimeDataSourceEnable()), _T("Enable"), CHINA_MARKET_REALTIME_DATA_SOURCE_ENABLE_));
 	m_pPropChinaMarketWebStatus = new CGridProperty(_T("Web status:"), _T(""));
 	m_pPropChinaMarketWebStatus->Enable(false);
 	pGroup2->AddSubItem(m_pPropChinaMarketWebStatus);

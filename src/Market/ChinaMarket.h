@@ -187,6 +187,8 @@ public:
 	}
 
 	// 状态反馈
+	bool IsRealTimeDataSourceEnable() noexcept;
+	void EnableRealTimeDataSource(bool fEnable) noexcept;
 	bool IsUsingSinaRTDataReceiver() const noexcept { return m_fUsingSinaRTDataReceiver; }
 	bool IsUsingNeteaseRTDataReceiver() const noexcept { return m_fUsingNeteaseRTDataReceiver; }
 	void SetUsingNeteaseRTDataReceiver(const bool fFlag) noexcept { m_fUsingNeteaseRTDataReceiver = fFlag; }

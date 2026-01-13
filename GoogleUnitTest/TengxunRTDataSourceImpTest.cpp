@@ -2,6 +2,7 @@
 
 #include"GeneralCheck.h"
 
+#include"VirtualWebProduct.h"
 #include"tengxunRTDataSource.h"
 #include"ChinaMarket.h"
 

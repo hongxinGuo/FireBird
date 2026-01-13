@@ -2,6 +2,7 @@
 
 #include"GeneralCheck.h"
 
+#include"VirtualWebProduct.h"
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 

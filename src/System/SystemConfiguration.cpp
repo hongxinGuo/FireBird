@@ -203,17 +203,17 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		if (sTemp == "sina") {
-			m_iChinaMarketRealtimeServer = 0;
+			m_iChinaMarketRealtimeServer = SinaRealTime_;
 		}
 		else if (sTemp == "netease") {
-			m_iChinaMarketRealtimeServer = 0; //Note 网易实时数据服务器目前不可用，使用新浪服务器代替
+			m_iChinaMarketRealtimeServer = SinaRealTime_; //Note 网易实时数据服务器目前不可用，使用新浪服务器代替
 			m_fUpdateDB = true;
 		}
 		else if (sTemp == "tengxun") {
-			m_iChinaMarketRealtimeServer = 2;
+			m_iChinaMarketRealtimeServer = TengxunRealTime_;
 		}
 		else { // 非法服务器名称，使用默认sina服务器
-			m_iChinaMarketRealtimeServer = 0;
+			m_iChinaMarketRealtimeServer = TengxunRealTime_;
 			m_fUpdateDB = true;
 		}
 	} catch (nlohmannJson::out_of_range&) {
@@ -222,14 +222,14 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		if (sTemp == "netease") {
-			m_iChinaMarketDayLineServer = 1; //Note 网易日线数据服务器目前不可用，使用腾讯服务器代替
+			m_iChinaMarketDayLineServer = TengxunDayLine_; //Note 网易日线数据服务器目前不可用，使用腾讯服务器代替
 			m_fUpdateDB = true;
 		}
 		else if (sTemp == "tengxun") {
-			m_iChinaMarketDayLineServer = 1;
+			m_iChinaMarketDayLineServer = TengxunDayLine_;
 		}
-		else {// 非法服务器名称，使用默认sina服务器
-			m_iChinaMarketDayLineServer = 0;
+		else {// 非法服务器名称，使用默认Tengxun服务器
+			m_iChinaMarketDayLineServer = TengxunDayLine_;
 			m_fUpdateDB = true;
 		}
 	} catch (nlohmannJson::out_of_range&) {
@@ -503,14 +503,14 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 		break;
 	}
 	switch (m_iChinaMarketDayLineServer) {
-	case 0:
+	case NeteaseDayLine_:
 		jsonData["ChinaMarket"]["DayLineServer"] = "netease";
 		break;
-	case 1:
+	case TengxunDayLine_:
 		jsonData["ChinaMarket"]["DayLineServer"] = "tengxun";
 		break;
 	default:
-		jsonData["ChinaMarket"]["DayLineServer"] = "netease";
+		jsonData["ChinaMarket"]["DayLineServer"] = "tengxun";
 		break;
 	}
 	jsonData["ChinaMarket"]["NumberOfRTDataSource"] = m_iNumberOfRTDataSource;

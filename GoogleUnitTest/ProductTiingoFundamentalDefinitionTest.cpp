@@ -33,16 +33,16 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CProductTiingoFundamentalDefinition marketNews;
+		CProductTiingoFundamentalDefinition marketFundamentalDefinition;
 	};
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestInitialize) {
-		EXPECT_EQ(marketNews.GetIndex(), 0);
-		EXPECT_EQ(marketNews.GetInquiryFunction(), "https://api.tiingo.com/tiingo/fundamentals/definitions?");
+		EXPECT_EQ(marketFundamentalDefinition.GetIndex(), 0);
+		EXPECT_EQ(marketFundamentalDefinition.GetInquiryFunction(), "https://api.tiingo.com/tiingo/fundamentals/definitions?");
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestCreatMessage) {
-		EXPECT_EQ(marketNews.CreateMessage(), marketNews.GetInquiryFunction());
+		EXPECT_EQ(marketFundamentalDefinition.CreateMessage(), marketFundamentalDefinition.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestProcessWebData) {
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestUpdateDataSourceStatus1) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 
-		marketNews.UpdateSystemStatus();
+		marketFundamentalDefinition.UpdateSystemStatus();
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
@@ -64,7 +64,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestUpdateDataSourceStatus2) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 
-		marketNews.UpdateSystemStatus();
+		marketFundamentalDefinition.UpdateSystemStatus();
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
@@ -73,16 +73,18 @@ namespace FireBirdTest {
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}
 
-	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition1(1, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
-	// 第一个数据缺项
-	Test_TiingoWebData tiingoFundamentalDefinition2(2, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
-	// 第二个数据缺项
-	Test_TiingoWebData tiingoFundamentalDefinition3(3, "aapl", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
-	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition4(4, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
-	// 正确的数据
-	Test_TiingoWebData tiingoFundamentalDefinition10(10, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
+	namespace {
+		// 正确的数据
+		Test_TiingoWebData tiingoFundamentalDefinition1(1, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
+		// 第一个数据缺项
+		Test_TiingoWebData tiingoFundamentalDefinition2(2, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
+		// 第二个数据缺项
+		Test_TiingoWebData tiingoFundamentalDefinition3(3, "aapl", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
+		// 正确的数据
+		Test_TiingoWebData tiingoFundamentalDefinition4(4, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
+		// 正确的数据
+		Test_TiingoWebData tiingoFundamentalDefinition10(10, "", R"([{"dataCode":"liabilitiesCurrent","name":"Current Liabilities","description":"Debt or liabilities that are due within a year","statementType":"balanceSheet","units":"$"},{"dataCode":"rps","name":"Revenue Per Share","description":"Revenue per share","statementType":"overview","units":"$"}])");
+	}
 
 	class ParseTiingoFundamentalDefinitionTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -144,6 +146,15 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
+	}
+
+	TEST_F(CProductTiingoFundamentalDefinitionTest, ParseAndStoreWebData_AddsDefinitions) {
+		// Use the already-declared valid test web data: tiingoFundamentalDefinition10
+		marketFundamentalDefinition.ParseAndStoreWebData(tiingoFundamentalDefinition10.m_pData);
+
+		// The two definitions from the JSON should be added to the global container
+		EXPECT_TRUE(gl_dataContainerTiingoFundamentalDefinition.HaveDefinition("liabilitiesCurrent"));
+		EXPECT_TRUE(gl_dataContainerTiingoFundamentalDefinition.HaveDefinition("rps"));
 	}
 	/*
 	class ProcessTiingoFundamentalDefinitionTest : public TestWithParam<Test_TiingoWebData*> {

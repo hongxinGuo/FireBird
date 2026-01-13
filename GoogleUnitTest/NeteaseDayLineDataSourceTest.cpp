@@ -2,8 +2,8 @@
 
 #include"GeneralCheck.h"
 
+#include"VirtualWebProduct.h"
 #include"NeteaseDayLineDataSource.h"
-//#include"WorldMarket.h"
 #include"ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "SinaRTDataSource.h"

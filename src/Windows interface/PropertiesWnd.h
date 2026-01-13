@@ -7,6 +7,7 @@ enum configuration_option {
 	SYSTEM_FAST_CPU,
 	SYSTEM_DEBUG_MODE_,
 	SYSTEM_RELOAD_SYSTEM_,
+	CHINA_MARKET_REALTIME_DATA_SOURCE_ENABLE_,
 	FINNHUB_DATA_SOURCE_ENABLE_,
 	TIINGO_DATA_SOURCE_ENABLE_
 };
@@ -23,10 +24,12 @@ class CFireBirdPropertyGridCtrl : public CMFCPropertyGridCtrl {
 
 class CFireBirdComboBox : public CComboBox {
 public:
-	CFireBirdComboBox() {
-	}
-	~CFireBirdComboBox() override {
-	}
+	CFireBirdComboBox() = default;
+	CFireBirdComboBox(const CFireBirdComboBox&) = delete;
+	CFireBirdComboBox& operator=(const CFireBirdComboBox&) = delete;
+	CFireBirdComboBox(const CFireBirdComboBox&&) = delete;
+	CFireBirdComboBox& operator=(const CFireBirdComboBox&&) = delete;
+	~CFireBirdComboBox() override = default;
 
 	afx_msg void OnCbnSelChange();
 	DECLARE_MESSAGE_MAP()
@@ -36,6 +39,12 @@ class CPropertiesWnd : public CDockablePane {
 	// Construction
 public:
 	CPropertiesWnd() noexcept;
+	CPropertiesWnd(const CPropertiesWnd&) = delete;
+	CPropertiesWnd& operator=(const CPropertiesWnd&) = delete;
+	CPropertiesWnd(const CPropertiesWnd&&) = delete;
+	CPropertiesWnd& operator=(const CPropertiesWnd&&) = delete;
+	~CPropertiesWnd() override;
+
 	void AdjustLayout() override;
 
 	// Attributes
@@ -46,10 +55,6 @@ public:
 	}
 
 	UINT m_uIdTimer{ 0 };
-
-	// Implementation
-public:
-	~CPropertiesWnd() override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
+#include"VirtualWebProduct.h"
 
 class CTengxunDayLineDataSource : public CVirtualDataSource {
 public:

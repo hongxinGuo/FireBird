@@ -58,6 +58,7 @@ public:
 protected:
 	shared_ptr<CInternetSession> m_pSession{ nullptr }; // 初始化时必须生成指针。
 	CHttpFile* m_pFile{ nullptr }; // 网络文件指针
+	string m_strContentType{};
 	DWORD m_dwHTTPStatusCode{ 0 }; //网络状态码。无错误时小于等于200.
 	DWORD m_dwErrorCode{ 0 }; // 网络错误码。无错误时为零。
 

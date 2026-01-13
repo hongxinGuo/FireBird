@@ -2,6 +2,7 @@
 
 #include"FinnhubInquiryType.h"
 #include "TiingoDataSource.h"
+#include"VirtualWebProduct.h"
 
 #include "spdlog_assert.h"
 #include "TiingoInaccessibleStock.h"
