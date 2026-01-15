@@ -4,8 +4,6 @@
 #include "InfoReport.h"
 #include"SetCryptoDayLine.h"
 
-CContainerCryptoDayLine::CContainerCryptoDayLine() {}
-
 bool CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 	try {
 		CSetCryptoDayLine setCryptoDayLineBasic;

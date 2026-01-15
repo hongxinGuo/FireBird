@@ -47,7 +47,7 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 }
 
-CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pWebData) {
+CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	nlohmannJson js2;
 	CDayLinePtr pDayLine = nullptr;

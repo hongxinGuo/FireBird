@@ -1,12 +1,16 @@
 #pragma once
 
 #include"WebRTData.h"
-#include"PriorityQueueWebRTData.h"
 
 class CPriorityQueueWebRTData final {
 public:
-	CPriorityQueueWebRTData();
-	~CPriorityQueueWebRTData();
+	CPriorityQueueWebRTData() = default;
+	CPriorityQueueWebRTData(const CPriorityQueueWebRTData&) = delete;
+	CPriorityQueueWebRTData& operator=(const CPriorityQueueWebRTData&) = delete;
+	CPriorityQueueWebRTData(const CPriorityQueueWebRTData&&) noexcept = delete;
+	CPriorityQueueWebRTData& operator=(const CPriorityQueueWebRTData&&) noexcept = delete;
+	~CPriorityQueueWebRTData() = default;
+
 	void Reset();
 
 	// 通用接口函数

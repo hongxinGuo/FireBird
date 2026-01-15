@@ -2,10 +2,6 @@
 
 #include"PriorityQueueWebRTData.h"
 
-CPriorityQueueWebRTData::CPriorityQueueWebRTData() {}
-
-CPriorityQueueWebRTData::~CPriorityQueueWebRTData() {}
-
 void CPriorityQueueWebRTData::Reset() {
 	m_MutexAccessData.lock();
 	const size_t lTotal = m_priorityQueueWebRTData.size();

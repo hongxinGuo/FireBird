@@ -103,10 +103,10 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData) {
 	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
 	CTiingoIEXTopOfBookPtr pIEXLastTopOFBook = nullptr;
-	string s1;
 	if (!IsValidData(pWebData)) return pvTiingoIEXLastTopOFBook;
 
 	try {
+		string s1;
 		stringstream ss;
 		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;

@@ -44,13 +44,13 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 bool CProductFinnhubStockSymbol::IsBadStockSymbol(const string& strStockSymbol, const string& strExchangeCode) {
-	if (strExchangeCode.compare("US") == 0) return false; // 美国股票无需掭加交易所代码
+	if (strExchangeCode == "US") return false; // 美国股票无需掭加交易所代码
 	if (strStockSymbol.length() <= strExchangeCode.length()) return true; // 股票代码长度不大于交易所代码长度时，需要掭加。
 
-	const int iLength = strExchangeCode.length();
-	const int iSymbolLength = strStockSymbol.length();
+	const auto iLength = strExchangeCode.length();
+	const auto iSymbolLength = strStockSymbol.length();
 	const string strRight = strStockSymbol.substr(strStockSymbol.length() - iLength, iLength);
-	if ((strRight.compare(strExchangeCode) == 0) && (strStockSymbol.at(iSymbolLength - iLength - 1) == '.')) {
+	if ((strRight == strExchangeCode) && (strStockSymbol.at(iSymbolLength - iLength - 1) == '.')) {
 		return false;
 	}
 	return true;
@@ -77,13 +77,14 @@ bool CProductFinnhubStockSymbol::IsBadStockSymbol(const string& strStockSymbol, 
 CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvStock = make_shared<vector<CFinnhubStockPtr>>();
 	CFinnhubStockPtr pStock = nullptr;
-	string s, sError;
+	string sError;
 	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvStock;
 	if (!IsValidData(pWebData)) return pvStock;
 
 	try {
+		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pStock = make_shared<CFinnhubStock>();
 			pStock->SetExchangeCode(m_strInquiringExchange); // 数据中没有交易所代码，在此处加上。

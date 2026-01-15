@@ -59,7 +59,6 @@ void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 /// <param name="pStock"></param>
 /// <returns></returns>
 bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock) const {
-	string s;
 	string sError;
 	nlohmannJson js;
 
@@ -68,7 +67,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 	if (IsNoRightToAccess()) return true;
 
 	try {
-		s = jsonGetString(js, "ticker");
+		string s = jsonGetString(js, "ticker");
 		if (!s.empty()) pStock->SetTicker(s);
 		s = jsonGetString(js, "country");
 		if (!s.empty()) pStock->SetCountry(s);

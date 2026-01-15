@@ -36,7 +36,7 @@ bool CContainerVirtualStock::IsUpdateDayLine() noexcept {
 
 size_t CContainerVirtualStock::GetDayLineNeedUpdateNumber() const {
 	size_t size = 0;
-	for (auto pSymbol : m_vStock) {
+	for (const auto& pSymbol : m_vStock) {
 		if (pSymbol->IsUpdateDayLine()) size++;
 	}
 	return size;

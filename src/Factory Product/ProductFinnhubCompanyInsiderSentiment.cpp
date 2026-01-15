@@ -67,7 +67,6 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
 	nlohmannJson pt1;
 	string sError;
-	string s;
 	string stockSymbol;
 	CInsiderSentimentPtr pInsiderSentiment = nullptr;
 	nlohmannJson js;
@@ -84,6 +83,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	}
 
 	try {
+		string s;
 		for (auto it = pt1.begin(); it != pt1.end(); ++it) {
 			pInsiderSentiment = make_shared<CInsiderSentiment>();
 			pInsiderSentiment->m_strSymbol = stockSymbol;

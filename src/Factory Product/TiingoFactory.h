@@ -4,7 +4,7 @@
 
 class CTiingoFactory final : public CVirtualDataFactory {
 public:
-	CTiingoFactory() {}
+	CTiingoFactory() = default;
 	CTiingoFactory(const CTiingoFactory&) = delete;
 	CTiingoFactory& operator=(const CTiingoFactory&) = delete;
 	CTiingoFactory(const CTiingoFactory&&) noexcept = delete;

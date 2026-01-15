@@ -66,7 +66,6 @@ void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///  }
 /// <returns></returns>
 bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CFinnhubStockPtr pStock) const {
-	string s;
 	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return false;
@@ -75,6 +74,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 		return true;
 	}
 	try {
+		string s;
 		double d = 0.0;
 		s = jsonGetString(js, "address");
 		pStock->SetAddress(s);

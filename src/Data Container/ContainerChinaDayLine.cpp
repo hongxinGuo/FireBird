@@ -2,15 +2,11 @@
 
 #include"TimeConvert.h"
 
-#include"DayLine.h"
 #include "ContainerChinaDayLine.h"
 #include"SetChinaMarketDayLineBasicInfo.h"
 #include"SetChinaMarketDayLineExtendInfo.h"
 
 #include "InfoReport.h"
-
-CContainerChinaDayLine::CContainerChinaDayLine() {
-}
 
 bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	try {

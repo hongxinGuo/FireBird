@@ -21,7 +21,7 @@ void CContainerStockExchange::Reset() {
 CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymbol) const {
 	if (m_mapStockExchange.contains(strExchangeSymbol)) {
 		for (auto pExchange : m_vStockExchange) {
-			if (strExchangeSymbol.compare(pExchange->GetExchangeCode()) == 0) {
+			if (strExchangeSymbol == pExchange->GetExchangeCode()) {
 				return pExchange;
 			}
 		}

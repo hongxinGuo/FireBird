@@ -54,9 +54,8 @@ CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const C
 	if (!IsValidData(pWebData)) return pvMarketStatus;
 
 	try {
-		string s;
 		pMarketStatus = make_shared<CMarketStatus>();
-		s = jsonGetString(js, "exchange");
+		string s = jsonGetString(js, "exchange");
 		if (!s.empty()) pMarketStatus->m_strExchange = s;
 		s = jsonGetString(js, "holiday");
 		if (!s.empty()) pMarketStatus->m_strHoliday = s;

@@ -71,7 +71,6 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///"url" : "https://finnhub.io/api/news?id=a0fe8819916603e447eb52cad56f2cc3bb148097c65e81bf335d39961f67b502"
 ///		}
 CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
-	string s;
 	nlohmannJson js;
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
@@ -79,6 +78,7 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 	if (!IsValidData(pWebData)) return pvFinnhubCompanyNews;
 
 	try {
+		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
 			s = jsonGetString(it, "category");

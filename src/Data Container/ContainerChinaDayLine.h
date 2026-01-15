@@ -5,7 +5,7 @@
 
 class CContainerChinaDayLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CContainerChinaDayLine();
+	CContainerChinaDayLine() = default;
 	CContainerChinaDayLine(const CContainerChinaDayLine& other) = delete;
 	CContainerChinaDayLine(CContainerChinaDayLine&& other) noexcept = delete;
 	CContainerChinaDayLine& operator=(const CContainerChinaDayLine& other) = delete;

@@ -11,7 +11,9 @@
 #include "TimeConvert.h"
 #include "WebData.h"
 
-std::set<string> s_setMetricType;// 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
+namespace {
+	std::set<string> s_setMetricType;// 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
+}
 
 CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	s_setMetricType.clear();
@@ -241,7 +243,6 @@ void CProductFinnhubCompanyBasicFinancial::UpdateSystemStatus() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData) {
-	string s;
 	nlohmannJson ptMetric, ptSeries, ptAnnual, ptQuarterly;
 	vector<CValueOfPeriod> vData;
 	CFinnhubStockBasicFinancialPtr pBasicFinancial = nullptr;
@@ -257,6 +258,7 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	try {
+		string s;
 		s = js.at("symbol");
 		pBasicFinancial->m_symbol = s;
 
@@ -873,10 +875,10 @@ void CProductFinnhubCompanyBasicFinancial::GetSeasonData(nlohmannJson* pjs, vect
 void CProductFinnhubCompanyBasicFinancial::Parse(nlohmannJson* pjs, vector<CValueOfPeriod>& vecData) {
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
-			CValueOfPeriod sv{ 0, 0 };
 			string sDate;
 			sDate = jsonGetString(it, "period");
 			if (!sDate.empty()) {
+				CValueOfPeriod sv{ 0, 0 };
 				sv.m_period = XferToYYYYMMDD(sDate);
 				sv.m_value = jsonGetDouble(it, "v");
 				vecData.push_back(sv);

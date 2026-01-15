@@ -24,7 +24,7 @@ public:
 	CVirtualWebProduct& operator=(const CVirtualWebProduct&&) noexcept = delete;
 	virtual ~CVirtualWebProduct() = default;
 
-	virtual string CreateMessage() { return ""; };
+	virtual string CreateMessage() { return ""; }
 	virtual void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>>) {}
 
 	virtual void ParseAndStoreWebData(CWebDataPtr) {} // default do nothing

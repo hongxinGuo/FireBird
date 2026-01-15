@@ -67,6 +67,7 @@ bool CContainerStockSymbol::CreateTotalStockContainer() {
 	}
 	return true;
 }
+
 string CContainerStockSymbol::GetItemSymbol(size_t lIndex) {
 	return m_vStockSymbol.at(lIndex);
 }

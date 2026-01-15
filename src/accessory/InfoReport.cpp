@@ -52,7 +52,6 @@ int ReportExitToWatchdog() {
 }
 
 int ReportSchedulingExitToWatchdog() {
-	gl_systemMessage.PushInnerSystemInformationMessage("ReLoad System"); //todo : 测试用，正式版本可去掉
 	HWND hWnd = ::FindWindow(nullptr, Utf8ToWstring(sWatchDogApp).c_str());
 	if (hWnd == nullptr) return 1; // Watchdog监控程序不在运行， 直接返回
 	::SendMessage(hWnd, WM_FIREBIRD_SCHEDULING_EXIT_, NULL, NULL); // Tell watchdog that I am exit now.

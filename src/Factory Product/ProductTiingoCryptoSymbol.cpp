@@ -57,7 +57,6 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoPtr>>();
-	string s;
 	CTiingoCryptoPtr pTiingoCrypto = nullptr;
 	nlohmannJson js;
 
@@ -68,7 +67,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 		int iCount = 0;
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pTiingoCrypto = make_shared<CTiingoCrypto>();
-			s = jsonGetString(it, "ticker");
+			string s = jsonGetString(it, "ticker");
 			pTiingoCrypto->SetSymbol(s);
 			s = jsonGetString(it, "name");
 			if (!s.empty()) pTiingoCrypto->m_strName = s;

@@ -4,7 +4,7 @@
 
 class CFinnhubFactory final : public CVirtualDataFactory {
 public:
-	CFinnhubFactory() {}
+	CFinnhubFactory() = default;
 
 	~CFinnhubFactory() override = default;
 

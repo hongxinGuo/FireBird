@@ -13,7 +13,7 @@ CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 }
 
 string CProductFinnhubForexExchange::CreateMessage() {
-	ASSERT(m_strInquiringExchange.compare("ALL") == 0);
+	ASSERT(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
@@ -21,17 +21,15 @@ string CProductFinnhubForexExchange::CreateMessage() {
 
 void CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
-	for (size_t i = 0; i < pvForexExchange->size(); i++) {
-		if (!gl_dataContainerFinnhubForexExchange.IsExchange(pvForexExchange->at(i))) {
-			gl_dataContainerFinnhubForexExchange.Add(pvForexExchange->at(i));
+	for (const auto& str : *pvForexExchange) {
+		if (!gl_dataContainerFinnhubForexExchange.IsExchange(str)) {
+			gl_dataContainerFinnhubForexExchange.Add(str);
 		}
 	}
 }
 
 shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(const CWebDataPtr& pWebData) {
 	auto pvExchange = make_shared<vector<string>>();
-	string s;
-	string str = "";
 	string sError;
 	nlohmannJson js;
 
@@ -40,8 +38,8 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchan
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			s = jsonGetString(it);
-			str = s;
+			string s = jsonGetString(it);
+			string str = s;
 			pvExchange->push_back(str);
 		}
 	} catch (nlohmannJson::exception& e) {

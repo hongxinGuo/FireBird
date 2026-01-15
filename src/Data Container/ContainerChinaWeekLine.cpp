@@ -8,9 +8,6 @@
 
 #include "InfoReport.h"
 
-CContainerChinaWeekLine::CContainerChinaWeekLine() {
-}
-
 bool CContainerChinaWeekLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetWeekLineBasicInfo setWeekLineBasic;
@@ -108,7 +105,7 @@ void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLi
 void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend) const {
 	for (const auto& pData : m_vHistoryData) {
 		auto str = pData->GetStockSymbol();
-		if (str.compare(pHistoryCandleExtend->GetStockSymbol()) == 0) {
+		if (str == pHistoryCandleExtend->GetStockSymbol()) {
 			//
 			static_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pHistoryCandleExtend);
 			break;

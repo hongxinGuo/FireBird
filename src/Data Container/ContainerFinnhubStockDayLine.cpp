@@ -5,8 +5,6 @@
 #include "InfoReport.h"
 #include"SetFinnhubStockDayLine.h"
 
-CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {}
-
 bool CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;

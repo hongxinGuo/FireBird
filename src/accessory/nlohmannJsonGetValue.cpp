@@ -2,105 +2,107 @@
 
 #include "nlohmannJsonGetValue.h"
 
-template <typename T>
-T jsonGetValue(const nlohmannJson& js, const char* szKey, T defaultValue) {
-	//if (!js.contains(szKey)) return defaultValue;
-	const auto& val = js.at(szKey);
-	if constexpr (std::is_same_v<T, double>) {
-		return val.is_number() ? static_cast<double>(val) : defaultValue;
-		//return val.is_number() ? static_cast<double>(val) : defaultValue;
+namespace {
+	template <typename T>
+	T jsonGetValue(const nlohmannJson& js, const char* szKey, T defaultValue) {
+		//if (!js.contains(szKey)) return defaultValue;
+		const auto& val = js.at(szKey);
+		if constexpr (std::is_same_v<T, double>) {
+			return val.is_number() ? static_cast<double>(val) : defaultValue;
+			//return val.is_number() ? static_cast<double>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, int>) {
+			return val.is_number() ? static_cast<int>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long>) {
+			return val.is_number() ? static_cast<long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long long>) {
+			return val.is_number() ? static_cast<long long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, std::string>) {
+			return val.is_string() ? val.get<std::string>() : defaultValue;
+		}
+		return defaultValue;
 	}
-	else if constexpr (std::is_same_v<T, int>) {
-		return val.is_number() ? static_cast<int>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long>) {
-		return val.is_number() ? static_cast<long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long long>) {
-		return val.is_number() ? static_cast<long long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, std::string>) {
-		return val.is_string() ? val.get<std::string>() : defaultValue;
-	}
-	return defaultValue;
-}
 
-template <typename T>
-T jsonGetValue(const nlohmannJson* pjs, const char* szKey, T defaultValue) {
-	//if (!pjs->contains(szKey)) return defaultValue;
-	const auto& val = pjs->at(szKey);
-	if constexpr (std::is_same_v<T, double>) {
-		return val.is_number() ? static_cast<double>(val) : defaultValue;
+	template <typename T>
+	T jsonGetValue(const nlohmannJson* pjs, const char* szKey, T defaultValue) {
+		//if (!pjs->contains(szKey)) return defaultValue;
+		const auto& val = pjs->at(szKey);
+		if constexpr (std::is_same_v<T, double>) {
+			return val.is_number() ? static_cast<double>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, int>) {
+			return val.is_number() ? static_cast<int>(val) : defaultValue;
+			//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long>) {
+			return val.is_number() ? static_cast<long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long long>) {
+			return val.is_number() ? static_cast<long long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, std::string>) {
+			return val.is_string() ? val.get<std::string>() : defaultValue;
+		}
+		return defaultValue;
 	}
-	else if constexpr (std::is_same_v<T, int>) {
-		return val.is_number() ? static_cast<int>(val) : defaultValue;
-		//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long>) {
-		return val.is_number() ? static_cast<long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long long>) {
-		return val.is_number() ? static_cast<long long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, std::string>) {
-		return val.is_string() ? val.get<std::string>() : defaultValue;
-	}
-	return defaultValue;
-}
 
-template <typename T>
-T jsonGetValue(const nlohmannJson::iterator& it, const char* szKey, T defaultValue) {
-	//if (!it->contains(szKey)) return defaultValue;
-	const auto& val = it->at(szKey);
-	if constexpr (std::is_same_v<T, double>) {
-		return val.is_number() ? static_cast<double>(val) : defaultValue;
+	template <typename T>
+	T jsonGetValue(const nlohmannJson::iterator& it, const char* szKey, T defaultValue) {
+		//if (!it->contains(szKey)) return defaultValue;
+		const auto& val = it->at(szKey);
+		if constexpr (std::is_same_v<T, double>) {
+			return val.is_number() ? static_cast<double>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, int>) {
+			return val.is_number() ? static_cast<int>(val) : defaultValue;
+			//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long>) {
+			return val.is_number() ? static_cast<long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long long>) {
+			return val.is_number() ? static_cast<long long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, std::string>) {
+			return val.is_string() ? val.get<std::string>() : defaultValue;
+		}
+		return defaultValue;
 	}
-	else if constexpr (std::is_same_v<T, int>) {
-		return val.is_number() ? static_cast<int>(val) : defaultValue;
-		//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long>) {
-		return val.is_number() ? static_cast<long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long long>) {
-		return val.is_number() ? static_cast<long long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, std::string>) {
-		return val.is_string() ? val.get<std::string>() : defaultValue;
-	}
-	return defaultValue;
-}
 
-template <typename T>
-T jsonGetValue(const nlohmannJson::iterator& it, T defaultValue) {
-	//if (!it->contains(szKey)) return defaultValue;
-	const auto& val = *it;
-	if constexpr (std::is_same_v<T, double>) {
-		return val.is_number() ? static_cast<double>(val) : defaultValue;
+	template <typename T>
+	T jsonGetValue(const nlohmannJson::iterator& it, T defaultValue) {
+		//if (!it->contains(szKey)) return defaultValue;
+		const auto& val = *it;
+		if constexpr (std::is_same_v<T, double>) {
+			return val.is_number() ? static_cast<double>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, int>) {
+			return val.is_number() ? static_cast<int>(val) : defaultValue;
+			//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long>) {
+			return val.is_number() ? static_cast<long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, long long>) {
+			return val.is_number() ? static_cast<long long>(val) : defaultValue;
+			//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+		}
+		else if constexpr (std::is_same_v<T, std::string>) {
+			return val.is_string() ? val.get<std::string>() : defaultValue;
+		}
+		return defaultValue;
 	}
-	else if constexpr (std::is_same_v<T, int>) {
-		return val.is_number() ? static_cast<int>(val) : defaultValue;
-		//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long>) {
-		return val.is_number() ? static_cast<long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, long long>) {
-		return val.is_number() ? static_cast<long long>(val) : defaultValue;
-		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
-	}
-	else if constexpr (std::is_same_v<T, std::string>) {
-		return val.is_string() ? val.get<std::string>() : defaultValue;
-	}
-	return defaultValue;
 }
 
 nlohmannJson jsonGetChild(nlohmannJson* pjs, const char* szKey) {

@@ -9,16 +9,18 @@
 #include "WebData.h"
 #include"WorldMarket.h"
 
-map<string, enum_ErrorMessageData> mapTiingoErrorMap{
-	{ "You do not have permission to access the News API", ERROR_TIINGO_NO_RIGHT_TO_ACCESS_ }, // http状态码：403
-	{ "Error: resampleFreq must be in 'Min' or 'Hour' only", ERROR_TIINGO_FREQUENCY_ },
-	{ "You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_ }, // http状态码：200
-	{ "Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_ }, // http状态码：429
-	{ "API limit reached.please try again later.Remaining limit:0", ERROR_TIINGO_REACH_MAX_API_LIMIT_ }, // http状态码：200
-	{ "Not found.", ERROR_TIINGO_NOT_FOUND_ },
-	{ "Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.", ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_ },
-	{ "", ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH_ }
-};
+namespace {
+	map<string, enum_ErrorMessageData> mapTiingoErrorMap{
+		{ "You do not have permission to access the News API", ERROR_TIINGO_NO_RIGHT_TO_ACCESS_ }, // http状态码：403
+		{ "Error: resampleFreq must be in 'Min' or 'Hour' only", ERROR_TIINGO_FREQUENCY_ },
+		{ "You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_ }, // http状态码：200
+		{ "Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_ }, // http状态码：429
+		{ "API limit reached.please try again later.Remaining limit:0", ERROR_TIINGO_REACH_MAX_API_LIMIT_ }, // http状态码：200
+		{ "Not found.", ERROR_TIINGO_NOT_FOUND_ },
+		{ "Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.", ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_ },
+		{ "", ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH_ }
+	};
+}
 
 CTiingoDataSource::CTiingoDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

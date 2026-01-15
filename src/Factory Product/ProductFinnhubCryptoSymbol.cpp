@@ -45,7 +45,6 @@ void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const CWebDataPtr& pWebData) {
 	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoPtr>>();
-	string s;
 	string sError;
 	nlohmannJson js;
 
@@ -55,7 +54,7 @@ CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const C
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pSymbol = make_shared<CFinnhubCrypto>();
-			s = jsonGetString(it, "description");
+			string s = jsonGetString(it, "description");
 			if (!s.empty()) pSymbol->SetDescription(s);
 			s = jsonGetString(it, "displaySymbol");
 			pSymbol->SetDisplaySymbol(s);

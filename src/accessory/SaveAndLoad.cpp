@@ -4,7 +4,7 @@
 
 #include "CharSetTransfer.h"
 
-void SaveToFile(const string& strFileName, string s) {
+void SaveToFile(const string& strFileName, const string& s) {
 	CFile f;
 	if (f.Open(Utf8ToWstring(strFileName).c_str(), CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
 		f.Write(s.data(), s.length());

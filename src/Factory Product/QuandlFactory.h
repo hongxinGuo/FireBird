@@ -4,7 +4,7 @@
 
 class CQuandlFactory final : public CVirtualDataFactory {
 public:
-	CQuandlFactory() {}
+	CQuandlFactory() = default;
 
 	~CQuandlFactory() override = default;
 

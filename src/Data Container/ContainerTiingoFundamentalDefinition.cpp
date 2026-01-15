@@ -56,8 +56,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 		setTiingoFundamentalDefinition.Open();
 		setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
 		try {
-			for (long l = 0; l < m_vTiingoFundamentalDefinition.size(); l++) {
-				const CTiingoFundamentalDefinitionPtr pTiingoFundamentalDefinition = m_vTiingoFundamentalDefinition.at(l);
+			for (const auto& pTiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
 				ASSERT(pTiingoFundamentalDefinition != nullptr);
 				if (!mapDefinition.contains(pTiingoFundamentalDefinition->m_strDataCode)) { // 只添加新增的项目。
 					pTiingoFundamentalDefinition->Append(setTiingoFundamentalDefinition);

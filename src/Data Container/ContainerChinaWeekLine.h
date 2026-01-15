@@ -5,14 +5,14 @@
 
 class CContainerChinaWeekLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CContainerChinaWeekLine();
-	~CContainerChinaWeekLine() override = default;
-
-	bool LoadDB(const string& strStockSymbol) final;
+	CContainerChinaWeekLine() = default;
 	CContainerChinaWeekLine(const CContainerChinaWeekLine& other) = delete;
 	CContainerChinaWeekLine(CContainerChinaWeekLine&& other) noexcept = delete;
 	CContainerChinaWeekLine& operator=(const CContainerChinaWeekLine& other) = delete;
 	CContainerChinaWeekLine& operator=(CContainerChinaWeekLine&& other) noexcept = delete;
+	~CContainerChinaWeekLine() override = default;
+
+	bool LoadDB(const string& strStockSymbol) final;
 	bool SaveDB(const string& strStockSymbol) final;
 
 	void SaveCurrentWeekLine() const;

@@ -9,7 +9,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CDayLinesPtr ParseFinnhubForexCandle(CWebDataPtr pWebData);
+	CDayLinesPtr ParseFinnhubForexCandle(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubForexDayLinePtr = shared_ptr<CProductFinnhubForexDayLine>;

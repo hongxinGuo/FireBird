@@ -4,7 +4,7 @@
 
 class CAccessoryFactory final : public CVirtualDataFactory {
 public:
-	CAccessoryFactory() {}
+	CAccessoryFactory() = default;
 	CAccessoryFactory(const CAccessoryFactory&) = delete;
 	CAccessoryFactory& operator=(const CAccessoryFactory&) = delete;
 	CAccessoryFactory(const CAccessoryFactory&&) noexcept = delete;

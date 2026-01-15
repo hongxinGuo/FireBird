@@ -66,8 +66,8 @@ void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLinePtr>& vDayLin
 		std::ranges::sort(vDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetDate() < p2->GetDate(); });
 
 		for (size_t i = 0; i < vDayLine.size() - 1; i++) {
-			const auto p1 = vDayLine.at(i);
-			const auto p2 = vDayLine.at(i + 1);
+			const auto& p1 = vDayLine.at(i);
+			const auto& p2 = vDayLine.at(i + 1);
 			ASSERT(p1->GetDate() < p2->GetDate()); // 没有重复数据
 			p2->SetLastClose(p1->GetClose());
 		}

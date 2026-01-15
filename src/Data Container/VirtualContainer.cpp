@@ -19,7 +19,7 @@ size_t CVirtualContainer::GetNextIndex(size_t lIndex) {
 
 string CVirtualContainer::GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber, string (*StockCodeTransfer)(const string& str)) {
 	if (IsEmpty()) return StockCodeTransfer("600000.SH"); // 当没有证券可查询时，返回一个有效字符串
-	string strReturn = "";
+	string strReturn;
 	size_t iCount = 0;
 	while ((iStockIndex < Size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
 		strReturn += StockCodeTransfer(GetItemSymbol(iStockIndex));

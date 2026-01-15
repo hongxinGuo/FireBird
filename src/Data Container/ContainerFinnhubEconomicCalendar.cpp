@@ -15,13 +15,12 @@ void CContainerFinnhubEconomicCalendar::Reset() {
 bool CContainerFinnhubEconomicCalendar::LoadDB() {
 	CSetEconomicCalendar setEconomicCalendar;
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
-	string strSymbol = "";
 
 	setEconomicCalendar.Open();
 	while (!setEconomicCalendar.IsEOF()) {
 		pEconomicCalendar = make_shared<CEconomicCalendar>();
 		pEconomicCalendar->Load(setEconomicCalendar);
-		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+		string strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
 		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
 		m_vEconomicCalendar.push_back(pEconomicCalendar);
 		setEconomicCalendar.MoveNext();
@@ -50,10 +49,8 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 }
 
 bool CContainerFinnhubEconomicCalendar::Update(const vector<CEconomicCalendarPtr>& vEconomicCalendar) {
-	string strSymbol = "";
-
 	for (auto& pEconomicCalendar : vEconomicCalendar) {
-		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+		string strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
 		if (!m_mapEconomicCalendar.contains(strSymbol)) {	// 新事件？
 			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
 			m_vEconomicCalendar.push_back(pEconomicCalendar);

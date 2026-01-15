@@ -7,6 +7,11 @@ using std::dynamic_pointer_cast;
 class CProductFinnhub : public CVirtualWorldMarketWebProduct {
 public:
 	CProductFinnhub() = default;
+	// 不允许赋值。
+	CProductFinnhub(const CProductFinnhub&) = delete;
+	CProductFinnhub& operator=(const CProductFinnhub&) = delete;
+	CProductFinnhub(const CProductFinnhub&&) noexcept = delete;
+	CProductFinnhub& operator=(const CProductFinnhub&&) noexcept = delete;
 	~CProductFinnhub() override = default;
 
 	void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) final;

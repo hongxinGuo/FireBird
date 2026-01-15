@@ -31,7 +31,6 @@ void CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebDataPtr& pWebData) {
 	auto pvForexSymbol = make_shared<vector<CForexSymbolPtr>>();
 	CForexSymbolPtr pSymbol = nullptr;
-	string s;
 	string sError;
 	nlohmannJson js;
 
@@ -41,7 +40,7 @@ CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebD
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pSymbol = make_shared<CFinnhubForex>();
-			s = jsonGetString(it, "description");
+			string s = jsonGetString(it, "description");
 			if (!s.empty()) pSymbol->SetDescription(s);
 			s = jsonGetString(it, "displaySymbol");
 			pSymbol->SetDisplaySymbol(s);

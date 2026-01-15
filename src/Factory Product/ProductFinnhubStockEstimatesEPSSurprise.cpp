@@ -37,9 +37,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 
 CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
 	auto pvEPSSurprise = make_shared<vector<CEPSSurprisePtr>>();
-	string s;
 	CEPSSurprisePtr pEPSSurprise = nullptr;
-	long year = 0, month = 0, day = 0;
 	string sError;
 	nlohmannJson js;
 
@@ -49,7 +47,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pEPSSurprise = make_shared<CEPSSurprise>();
-			s = jsonGetString(it, "symbol");
+			string s = jsonGetString(it, "symbol");
 			pEPSSurprise->m_strSymbol = s;
 			s = jsonGetString(it, "period");
 			pEPSSurprise->m_lDate = XferToYYYYMMDD(s);

@@ -4,7 +4,7 @@
 
 class CContainerFinnhubStockDayLine final : public CVirtualDataHistoryCandleExtend {
 public:
-	CContainerFinnhubStockDayLine();
+	CContainerFinnhubStockDayLine() = default;
 	CContainerFinnhubStockDayLine(const CContainerFinnhubStockDayLine& other) = delete;
 	CContainerFinnhubStockDayLine(CContainerFinnhubStockDayLine&& other) noexcept = delete;
 	CContainerFinnhubStockDayLine& operator=(const CContainerFinnhubStockDayLine& other) = delete;

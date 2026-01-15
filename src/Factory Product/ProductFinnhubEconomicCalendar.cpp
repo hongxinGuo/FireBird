@@ -22,14 +22,14 @@ CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 
 string CProductFinnhubEconomicCalendar::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
-	ASSERT(m_strInquiringExchange.compare("ALL") == 0);
+	ASSERT(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strInquiry;
 }
 
 void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
-	if (pvEconomicCalendar->size() == 0) {
+	if (pvEconomicCalendar->empty()) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 	}
 	else {
@@ -40,7 +40,6 @@ void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData)
 CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {
 	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
-	string s;
 	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvEconomicCalendar;
@@ -50,7 +49,7 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 		nlohmannJson js2 = jsonGetChild(js, "economicCalendar");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
-			s = jsonGetString(it, "country");
+			string s = jsonGetString(it, "country");
 			if (!s.empty()) pEconomicCalendar->m_strCountry = s;
 			s = jsonGetString(it, "event");
 			pEconomicCalendar->m_strEvent = s;

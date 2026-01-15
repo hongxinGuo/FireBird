@@ -178,7 +178,7 @@ INT64 CContainerChinaStock::GetTotalAttackSellAmount() {
 string CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	bool fFoundStock = false;
 	string strTemp;
-	string strReturn = "";
+	string strReturn;
 	size_t lIndex = 0;
 
 	while (!fFoundStock && (lIndex < Size())) {
@@ -222,7 +222,7 @@ string CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 string CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	string strTemp;
-	string strReturn = "";
+	string strReturn;
 	size_t lIndex = 0;
 
 	while (lIndex < Size()) {

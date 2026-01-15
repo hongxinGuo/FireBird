@@ -5,10 +5,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
+#include <Windows.h>
 
-#define WM_FIREBIRD_RUNNING_            WM_APP + 1
-#define WM_FIREBIRD_SCHEDULING_EXIT_    WM_APP + 2
-#define WM_FIREBIRD_EXIT_               WM_APP + 10
+#define WM_FIREBIRD_RUNNING_            WM_APP + 0x301
+#define WM_FIREBIRD_SCHEDULING_EXIT_    WM_APP + 0x302
+#define WM_FIREBIRD_EXIT_               WM_APP + 0x303
 
 #include<string>
 
