@@ -8,9 +8,11 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
+namespace {
 	CMockContainerChinaStockPtr s_pMockContainerChinaStock;
+}
 
+namespace FireBirdTest {
 	class CMockContainerChinaStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数

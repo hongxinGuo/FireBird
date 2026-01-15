@@ -42,10 +42,10 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoForexWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
-		vSymbol.push_back("A");
-		vSymbol.push_back("AA");
-		vSymbol.push_back("AAL");
-		vSymbol.push_back("AAPL");
+		vSymbol.emplace_back("A");
+		vSymbol.emplace_back("AA");
+		vSymbol.emplace_back("AAL");
+		vSymbol.emplace_back("AAPL");
 		string sSymbol = gl_pTiingoForexWebSocket->CreateMessage(vSymbol);
 		nlohmannJson jsonMessage;
 		try {

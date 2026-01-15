@@ -49,16 +49,18 @@ namespace FireBirdTest {
 		// 由MockWorldMarketTest负责测试
 	}
 
-	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData82(2, "", R"(["description":"Oanda Singapore 30","displaySymbol":"SG30/SGD","symbol":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
-	// 数据缺乏description
-	Test_FinnhubWebData finnhubWebData83(3, "", R"([{"a":"Oanda Singapore 30","displaySymbol":"SG30/SGD","symbol":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
-	// 数据缺乏displaySymbol
-	Test_FinnhubWebData finnhubWebData84(4, "", R"([{"description":"Oanda Singapore 30","a":"SG30/SGD","symbol":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
-	// 数据缺乏symbol
-	Test_FinnhubWebData finnhubWebData85(5, "", R"([{"description":"Oanda Singapore 30","displaySymbol":"SG30/SGD","a":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
-	// 正确的数据
-	Test_FinnhubWebData finnhubWebData90(10, "", R"([{"description":"Oanda Singapore 30","displaySymbol":"SG30/SGD","symbol":"New Symbol"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
+	namespace {
+		// 格式不对(缺开始的‘[’），无法顺利Parser
+		Test_FinnhubWebData finnhubWebData82(2, "", R"(["description":"Oanda Singapore 30","displaySymbol":"SG30/SGD","symbol":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
+		// 数据缺乏description
+		Test_FinnhubWebData finnhubWebData83(3, "", R"([{"a":"Oanda Singapore 30","displaySymbol":"SG30/SGD","symbol":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
+		// 数据缺乏displaySymbol
+		Test_FinnhubWebData finnhubWebData84(4, "", R"([{"description":"Oanda Singapore 30","a":"SG30/SGD","symbol":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
+		// 数据缺乏symbol
+		Test_FinnhubWebData finnhubWebData85(5, "", R"([{"description":"Oanda Singapore 30","displaySymbol":"SG30/SGD","a":"OANDA:SG30_SGD"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
+		// 正确的数据
+		Test_FinnhubWebData finnhubWebData90(10, "", R"([{"description":"Oanda Singapore 30","displaySymbol":"SG30/SGD","symbol":"New Symbol"},{"description":"Oanda Bund","displaySymbol":"DE10YB/EUR","symbol":"OANDA:DE10YB_EUR"}])");
+	}
 
 	class ParseFinnhubForexSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

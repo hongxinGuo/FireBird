@@ -7,9 +7,11 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
-	static CContainerStockSymbolPtr s_pDataStockSymbol = nullptr;
+namespace {
+	CContainerStockSymbolPtr s_pDataStockSymbol = nullptr;
+}
 
+namespace FireBirdTest {
 	class CDataStockSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
@@ -172,6 +174,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000000,0000001") << "起始位置为零";
 
 		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000002,0000003,0000004") << "起始位置为2";;
+		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000002,0000003,0000004") << "起始位置为2";
 	}
 }

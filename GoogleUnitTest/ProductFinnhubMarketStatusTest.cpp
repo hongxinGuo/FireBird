@@ -46,8 +46,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(MarketStatusProduct.CreateMessage(), (MarketStatusProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
 
-	// 正确的数据
-	Test_FinnhubWebData finnhubMarketStatusWebData22(2, "AAPL", R"({"exchange": "US","holiday": null,"isOpen" : false,"session" : "pre-market","timezone" : "America/New York","t" : 1697018041})");
+	namespace {
+		// 正确的数据
+		Test_FinnhubWebData finnhubMarketStatusWebData22(2, "AAPL", R"({"exchange": "US","holiday": null,"isOpen" : false,"session" : "pre-market","timezone" : "America/New York","t" : 1697018041})");
+	}
 
 	class ParseFinnhubMarketStatusTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

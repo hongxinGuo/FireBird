@@ -49,16 +49,18 @@ namespace FireBirdTest {
 		// 由MockWorldMarketTest负责测试
 	}
 
-	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData122(2, "AAPL", R"({"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
-	// 第一个数据缺乏actual
-	Test_FinnhubWebData finnhubWebData123(3, "AAPL", R"([{"Missing":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
-	// 第二个数据缺乏actual
-	Test_FinnhubWebData finnhubWebData124(4, "AAPL", R"([{"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"Missing":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
-	// 第三个数据缺乏actual
-	Test_FinnhubWebData finnhubWebData125(5, "AAPL", R"([{"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"Missing":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
-	// 正确的数据
-	Test_FinnhubWebData finnhubWebData130(10, "AAPL", R"([{"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
+	namespace {
+		// 格式不对(缺开始的‘[’），无法顺利Parser
+		Test_FinnhubWebData finnhubWebData122(2, "AAPL", R"({"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
+		// 第一个数据缺乏actual
+		Test_FinnhubWebData finnhubWebData123(3, "AAPL", R"([{"Missing":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
+		// 第二个数据缺乏actual
+		Test_FinnhubWebData finnhubWebData124(4, "AAPL", R"([{"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"Missing":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
+		// 第三个数据缺乏actual
+		Test_FinnhubWebData finnhubWebData125(5, "AAPL", R"([{"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"Missing":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
+		// 正确的数据
+		Test_FinnhubWebData finnhubWebData130(10, "AAPL", R"([{"actual":1.68,"estimate":1.555857,"period":"2020-12-31","symbol":"AAPL"},{"actual":0.73,"estimate":0.7142244,"period":"2020-09-30","symbol":"AAPL"},{"actual":0.645,"estimate":0.5211078,"period":"2020-06-30","symbol":"AAPL"},{"actual":0.6375,"estimate":0.5765856,"period":"2020-03-31","symbol":"AAPL"}])");
+	}
 
 	class ParseFinnhubEPSSurpriseTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

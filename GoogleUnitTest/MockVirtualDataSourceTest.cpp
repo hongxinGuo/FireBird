@@ -9,20 +9,22 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
-	static CMockVirtualDataSourcePtr m_pVirtualDataSource; // 为了方便查找出错位置,将mock变量声明为全局的。
-	static CVirtualProductWebDataPtr m_pProduct;
+namespace {
+	CMockVirtualDataSourcePtr s_pVirtualDataSource; // 为了方便查找出错位置,将mock变量声明为全局的。
+	CVirtualProductWebDataPtr s_pProduct;
+}
 
+namespace FireBirdTest {
 	class CMockVirtualDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			m_pVirtualDataSource = nullptr;
+			s_pVirtualDataSource = nullptr;
 		}
 
 		static void TearDownTestSuite() {
-			m_pVirtualDataSource = nullptr;
+			s_pVirtualDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -31,16 +33,16 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			m_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
-			m_pProduct = make_shared<CProductDummy>();
-			m_pVirtualDataSource->SetCurrentInquiry(m_pProduct);
+			s_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
+			s_pProduct = make_shared<CProductDummy>();
+			s_pVirtualDataSource->SetCurrentInquiry(s_pProduct);
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			m_pVirtualDataSource->SetInquiringString("");
-			m_pVirtualDataSource = nullptr;
+			s_pVirtualDataSource->SetInquiringString("");
+			s_pVirtualDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

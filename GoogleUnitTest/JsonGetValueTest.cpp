@@ -31,7 +31,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(s2, "2021-03-31");
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 
-		js = jsonGetChild(*pjs.get(), "child");
+		js = jsonGetChild(*pjs, "child");
 		EXPECT_TRUE(js.is_structured());
 		it = js.begin();
 		s2 = it->at("period");
@@ -51,7 +51,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(s2, "2021-03-31");
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 
-		js = jsonGetChild(*pjs.get(), str.c_str());
+		js = jsonGetChild(*pjs, str.c_str());
 		EXPECT_TRUE(js.is_structured());
 		it = js.begin();
 		s2 = it->at("period");
@@ -69,9 +69,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(str2, "") << "v为浮点数，返回默认值";
 
 		str = str2 = "-1";
-		str = jsonGetString(*pjs.get(), "period");
+		str = jsonGetString(*pjs, "period");
 		EXPECT_EQ(str, "2021-03-31");
-		str2 = jsonGetString(*pjs.get(), "v");
+		str2 = jsonGetString(*pjs, "v");
 		EXPECT_EQ(str2, "") << "v为浮点数，返回默认值";
 	}
 
@@ -84,9 +84,9 @@ namespace FireBirdTest {
 		double d2 = jsonGetDouble(pjs.get(), "v");
 		EXPECT_DOUBLE_EQ(d2, -2.7551);
 
-		d1 = jsonGetDouble(*pjs.get(), "period");
+		d1 = jsonGetDouble(*pjs, "period");
 		EXPECT_DOUBLE_EQ(d1, 0.0) << "period为字符串，返回默认值";
-		d2 = jsonGetDouble(*pjs.get(), "v");
+		d2 = jsonGetDouble(*pjs, "v");
 		EXPECT_DOUBLE_EQ(d2, -2.7551);
 	}
 
@@ -100,9 +100,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 
 		d1 = d2 = -1;
-		d1 = jsonGetInt(*pjs.get(), "period");
+		d1 = jsonGetInt(*pjs, "period");
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
-		d2 = jsonGetInt(*pjs.get(), "v");
+		d2 = jsonGetInt(*pjs, "v");
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 	}
 
@@ -116,9 +116,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 
 		d1 = d2 = -1;
-		d1 = jsonGetLong(*pjs.get(), "period");
+		d1 = jsonGetLong(*pjs, "period");
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
-		d2 = jsonGetLong(*pjs.get(), "v");
+		d2 = jsonGetLong(*pjs, "v");
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 	}
 
@@ -132,9 +132,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 
 		d1 = d2 = -1;
-		d1 = jsonGetLongLong(*pjs.get(), "period");
+		d1 = jsonGetLongLong(*pjs, "period");
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
-		d2 = jsonGetLongLong(*pjs.get(), "v");
+		d2 = jsonGetLongLong(*pjs, "v");
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 	}
 

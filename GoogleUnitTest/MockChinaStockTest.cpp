@@ -2,7 +2,7 @@
 
 #include"Thread.h"
 
-#include"ChinaStock.h"
+//#include"ChinaStock.h"
 #include"ChinaMarket.h"
 
 #include"MockChinaStock.h"

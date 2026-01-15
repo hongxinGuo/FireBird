@@ -6,9 +6,11 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
+namespace {
 	CMockDataChinaDayLinePtr s_pMockDayLine;
+}
 
+namespace FireBirdTest {
 	class CMockDataChinaDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数

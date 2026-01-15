@@ -69,7 +69,7 @@ public:
 	void TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
 	concurrencpp::result<bool> LoadNasdaq100StocksDayLine();
 	void CalculateNasdaq100StocksMA(int length) const;
-	void calculateNasdaq100MA200UpDownRate() const;
+	void calculateNasdaq100MA200UpDownRate();
 	// 各种状态
 
 	static bool UpdateToken();
@@ -146,6 +146,7 @@ protected:
 
 protected:
 	vector<CTiingoStockPtr> m_vNasdaq100TiingoStock;
+
 	array<vector<CTiingoStockPtr>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
 };
 

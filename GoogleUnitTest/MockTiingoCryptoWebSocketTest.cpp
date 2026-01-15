@@ -24,8 +24,8 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			vSymbol.push_back("a");
-			vSymbol.push_back("b");
+			vSymbol.emplace_back("a");
+			vSymbol.emplace_back("b");
 		}
 
 		void TearDown() override {

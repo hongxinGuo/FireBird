@@ -115,7 +115,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 
 			auto pStock = gl_dataContainerChinaStock.GetStock(0);
-			auto date = pStock->GetDayLineEndDate();
+			pStock->GetDayLineEndDate();
 			EXPECT_EQ(pStock->GetDayLineEndDate(), 20250101) << "第一个股票（上海指数）的结束日期为20251219";
 			EXPECT_TRUE(pStock->IsIPOed()) << "第一个股票（上海指数）为IPOed（255）";
 			pStock = gl_dataContainerChinaStock.GetStock("000001.SS");

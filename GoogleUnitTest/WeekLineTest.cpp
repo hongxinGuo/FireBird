@@ -139,7 +139,7 @@ namespace FireBirdTest {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetTotalValue(), 0);
 		string str = "3.13e+11";
-		dl.SetTotalValue(str.c_str());
+		dl.SetTotalValue(str);
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
 
@@ -147,7 +147,7 @@ namespace FireBirdTest {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
 		string str = "3.15e+11";
-		dl.SetCurrentValue(str.c_str());
+		dl.SetCurrentValue(str);
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 
@@ -665,7 +665,7 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.Open();
 		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetDate());
-		EXPECT_TRUE(id.GetStockSymbol().compare(T2Utf8(setWeekLineBasicInfo.m_Symbol)) == 0);
+		EXPECT_TRUE(id.GetStockSymbol() == T2Utf8(setWeekLineBasicInfo.m_Symbol));
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());
 		EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_High) * id.GetRatio(), id.GetHigh());
@@ -684,7 +684,7 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.Close();
 
 		EXPECT_EQ(id2.GetDate(), id.GetDate());
-		EXPECT_TRUE(id2.GetStockSymbol().compare(id.GetStockSymbol()) == 0);
+		EXPECT_TRUE(id2.GetStockSymbol() == id.GetStockSymbol());
 		EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
 		EXPECT_DOUBLE_EQ(id2.GetOpen(), id.GetOpen());
 		EXPECT_DOUBLE_EQ(id2.GetHigh(), id.GetHigh());
@@ -826,7 +826,7 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.Open();
 		idLoaded.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(idLoaded.GetDate(), id.GetDate());
-		EXPECT_TRUE(idLoaded.GetStockSymbol().compare(id.GetStockSymbol()) == 0);
+		EXPECT_TRUE(idLoaded.GetStockSymbol() == id.GetStockSymbol());
 		EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
 		EXPECT_EQ(idLoaded.GetOpen(), id.GetOpen());
 		EXPECT_EQ(idLoaded.GetHigh(), id.GetHigh());
@@ -878,7 +878,7 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.Open();
 		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(id.GetDate(), id2.GetDate());
-		EXPECT_TRUE(id.GetStockSymbol().compare(id2.GetStockSymbol()) == 0);
+		EXPECT_TRUE(id.GetStockSymbol() == id2.GetStockSymbol());
 		EXPECT_EQ(id.GetOpen(), id2.GetOpen());
 
 		setWeekLineBasicInfo.Delete();
@@ -975,7 +975,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(weekLine.GetDate(), GetCurrentMonday(pDayLine->GetDate())) << "周线日期总是当周的星期一";
 		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine->GetMarketTime());
-		EXPECT_TRUE(weekLine.GetStockSymbol().compare(pDayLine->GetStockSymbol()) == 0);
+		EXPECT_TRUE(weekLine.GetStockSymbol() == pDayLine->GetStockSymbol());
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine->GetOpen());
 		EXPECT_EQ(weekLine.GetClose(), pDayLine->GetClose());
@@ -1235,8 +1235,8 @@ namespace FireBirdTest {
 		EXPECT_NE(weekLine.GetDate(), pDayLine2->GetDate()) << "使用第一个数据的日期";
 		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine1->GetMarketTime()) << "使用第一个数据的时间";
 		EXPECT_NE(weekLine.GetMarketTime(), pDayLine2->GetMarketTime()) << "使用第一个数据的时间";
-		EXPECT_TRUE(weekLine.GetStockSymbol().compare(pDayLine1->GetStockSymbol()) == 0) << "股票代码不为空时，不更改";
-		EXPECT_FALSE(weekLine.GetStockSymbol().compare(pDayLine2->GetStockSymbol()) == 0) << "股票代码不为空时，不更改";
+		EXPECT_TRUE(weekLine.GetStockSymbol() == pDayLine1->GetStockSymbol()) << "股票代码不为空时，不更改";
+		EXPECT_FALSE(weekLine.GetStockSymbol() == pDayLine2->GetStockSymbol()) << "股票代码不为空时，不更改";
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());
 		EXPECT_NE(weekLine.GetOpen(), pDayLine2->GetOpen());

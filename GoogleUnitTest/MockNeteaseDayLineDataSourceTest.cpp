@@ -7,9 +7,11 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
-	CMockNeteaseDayLineDataSourcePtr gl_pMockNeteaseDayLineDataSource;
+namespace {
+	CMockNeteaseDayLineDataSourcePtr s_pMockNeteaseDayLineDataSource;
+}
 
+namespace FireBirdTest {
 	class CMockNeteaseDayLineDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
@@ -28,7 +30,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-			gl_pMockNeteaseDayLineDataSource = make_shared<CMockNeteaseDayLineDataSource>();
+			s_pMockNeteaseDayLineDataSource = make_shared<CMockNeteaseDayLineDataSource>();
 			gl_pChinaMarket->CalculateTime();
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 		}
@@ -42,7 +44,7 @@ namespace FireBirdTest {
 				gl_dataContainerChinaStock.GetStock(i)->SetUpdateDayLine(true);
 			}
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			gl_pMockNeteaseDayLineDataSource = nullptr;
+			s_pMockNeteaseDayLineDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

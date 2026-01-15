@@ -52,14 +52,16 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
 	}
 
-	// 格式不对(缺开始的‘{’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData12(2, "AAPL", R"("country":"US","currency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://finnhub.io/api/logo?symbol=AAPL","marketCapitalization":2014236,"name":"Apple Inc","phone":"14089961010.0","shareOutstanding":16788.096,"ticker":"AAPL","weburl":"https://www.apple.com/"})");
-	// 数据缺乏country项
-	Test_FinnhubWebData finnhubWebData13(3, "AAPL", R"({"counry":"US","currency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://finnhub.io/api/logo?symbol=AAPL","marketCapitalization":2014236,"name":"Apple Inc","phone":"14089961010.0","shareOutstanding":16788.096,"ticker":"AAPL","weburl":"https://www.apple.com/"})");
-	// 空数据
-	Test_FinnhubWebData finnhubWebData14(4, "AAPL", "{}");
-	// 正确的数据
-	Test_FinnhubWebData finnhubWebData20(10, "AAPL", R"({"country":"US","currency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://finnhub.io/api/logo?symbol=AAPL","marketCapitalization":2014236,"name":"Apple Inc","phone":"14089961010.0","shareOutstanding":16788.096,"ticker":"AAPL","weburl":"https://www.apple.com/"})");
+	namespace {
+		// 格式不对(缺开始的‘{’），无法顺利Parser
+		Test_FinnhubWebData finnhubWebData12(2, "AAPL", R"("country":"US","currency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://finnhub.io/api/logo?symbol=AAPL","marketCapitalization":2014236,"name":"Apple Inc","phone":"14089961010.0","shareOutstanding":16788.096,"ticker":"AAPL","weburl":"https://www.apple.com/"})");
+		// 数据缺乏country项
+		Test_FinnhubWebData finnhubWebData13(3, "AAPL", R"({"counry":"US","currency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://finnhub.io/api/logo?symbol=AAPL","marketCapitalization":2014236,"name":"Apple Inc","phone":"14089961010.0","shareOutstanding":16788.096,"ticker":"AAPL","weburl":"https://www.apple.com/"})");
+		// 空数据
+		Test_FinnhubWebData finnhubWebData14(4, "AAPL", "{}");
+		// 正确的数据
+		Test_FinnhubWebData finnhubWebData20(10, "AAPL", R"({"country":"US","currency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://finnhub.io/api/logo?symbol=AAPL","marketCapitalization":2014236,"name":"Apple Inc","phone":"14089961010.0","shareOutstanding":16788.096,"ticker":"AAPL","weburl":"https://www.apple.com/"})");
+	}
 
 	class ProcessFinnhubStockProfileConciseTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

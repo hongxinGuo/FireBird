@@ -138,9 +138,6 @@ protected:
 protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	DECLARE_MESSAGE_MAP()
-
-public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -175,6 +172,8 @@ public:
 	afx_msg void OnUpdateShowIndicatorRs(CCmdUI* pCmdUI);
 	afx_msg void OnShowIndicatorKdj();
 	afx_msg void OnUpdateShowIndicatorKdj(CCmdUI* pCmdUI);
+
+	DECLARE_MESSAGE_MAP()
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

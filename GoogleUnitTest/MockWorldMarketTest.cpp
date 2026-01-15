@@ -13,13 +13,14 @@
 
 #include"FinnhubDataSource.h"
 #include "SinaRTDataSource.h"
-//#include "TiingoDataSource.h"
 
 using namespace testing;
 
-namespace FireBirdTest {
+namespace {
 	CMockWorldMarketPtr s_pMockWorldMarket;
+}
 
+namespace FireBirdTest {
 	class CMockWorldMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {

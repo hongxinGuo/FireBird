@@ -74,8 +74,9 @@ namespace FireBirdTest {
 		pStock->SetUpdateProfileDB(false);
 	}
 
-	Test_FinnhubWebData finnhubWebData1002(2, "AAPL",
-	                                       R"({
+	namespace {
+		Test_FinnhubWebData finnhubWebData1002(2, "AAPL",
+		                                       R"({
 		"metric": { 
 			"10DayAverageTradingVolume": 0.43212,
 			"13WeekPriceReturnDaily" : 56.53409,
@@ -272,9 +273,9 @@ namespace FireBirdTest {
 		"symbol":"AAPL"
 })");
 
-	// BVDRF是美股ADR，其本土代码为MBWS.PA
-	Test_FinnhubWebData finnhubWebData1003(3, "BVDRF",
-	                                       R"({
+		// BVDRF是美股ADR，其本土代码为MBWS.PA
+		Test_FinnhubWebData finnhubWebData1003(3, "BVDRF",
+		                                       R"({
 		"metric": { 
 			"10DayAverageTradingVolume": 0.43212,
 			"13WeekPriceReturnDaily" : 56.53409,
@@ -471,14 +472,15 @@ namespace FireBirdTest {
 		"symbol":"MBWS.PA"
 })");
 
-	// 有些股票只有部分数据
-	Test_FinnhubWebData finnhubWebData1004(4, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"marketCapitalization","series":{},"symbol":"OTSCS"})");
-	// Metric out of range
-	Test_FinnhubWebData finnhubWebData1005(5, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"out of range","series":{},"symbol":"OTSCS"})");
-	// 有些股票只有部分数据， 测试metric
-	Test_FinnhubWebData finnhubWebData1006(6, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"metric","series":{},"symbol":"OTSCS"})");
-	// 有些股票只有部分数据, 测试eps
-	Test_FinnhubWebData finnhubWebData1007(7, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"eps","series":{},"symbol":"OTSCS"})");
+		// 有些股票只有部分数据
+		Test_FinnhubWebData finnhubWebData1004(4, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"marketCapitalization","series":{},"symbol":"OTSCS"})");
+		// Metric out of range
+		Test_FinnhubWebData finnhubWebData1005(5, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"out of range","series":{},"symbol":"OTSCS"})");
+		// 有些股票只有部分数据， 测试metric
+		Test_FinnhubWebData finnhubWebData1006(6, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"metric","series":{},"symbol":"OTSCS"})");
+		// 有些股票只有部分数据, 测试eps
+		Test_FinnhubWebData finnhubWebData1007(7, "AAPL", R"({"metric":{"52WeekHigh":1.18,"52WeekLow":1},"metricType":"eps","series":{},"symbol":"OTSCS"})");
+	}
 
 	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

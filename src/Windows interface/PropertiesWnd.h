@@ -31,6 +31,7 @@ public:
 	CFireBirdComboBox& operator=(const CFireBirdComboBox&&) = delete;
 	~CFireBirdComboBox() override = default;
 
+protected:
 	afx_msg void OnCbnSelChange();
 	DECLARE_MESSAGE_MAP()
 };
@@ -69,6 +70,7 @@ protected:
 	afx_msg void OnUpdateProperties2(CCmdUI* pCmdUI);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+
 	DECLARE_MESSAGE_MAP()
 
 	void InitPropList();

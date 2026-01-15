@@ -138,7 +138,7 @@ namespace FireBirdTest {
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_EQ(dl.GetTotalValue(), 0);
 		string str = "3.13e+11";
-		dl.SetTotalValue(str.c_str());
+		dl.SetTotalValue(str);
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
 
@@ -146,7 +146,7 @@ namespace FireBirdTest {
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
 		string str = "3.15e+11";
-		dl.SetCurrentValue(str.c_str());
+		dl.SetCurrentValue(str);
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 

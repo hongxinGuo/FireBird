@@ -8,9 +8,11 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
+namespace {
 	CMockChinaMarketPtr s_pMarket;
+}
 
+namespace FireBirdTest {
 	class CThreadBuildDayLineRSOfDateTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {

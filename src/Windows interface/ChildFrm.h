@@ -7,7 +7,7 @@ class CChildFrame : public CMDIChildWndEx {
 	DECLARE_DYNCREATE(CChildFrame)
 
 public:
-	CChildFrame() {}
+	CChildFrame() = default;
 	~CChildFrame() override = default;
 
 	// 特性

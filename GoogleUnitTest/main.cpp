@@ -35,7 +35,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include <spdlog/sinks/basic_file_sink.h>
+//#include <spdlog/sinks/basic_file_sink.h>
 
 #include"GeneralCheck.h"
 
@@ -49,7 +49,7 @@
 #include"ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include"TimeConvert.h"
-#include"TestWebData.h"
+//#include"TestWebData.h"
 
 using namespace testing;
 

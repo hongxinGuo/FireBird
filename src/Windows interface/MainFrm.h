@@ -81,16 +81,15 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	// 生成的消息映射函数
+
+protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
-	DECLARE_MESSAGE_MAP()
-
-public:
-	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnProcessTodayStock();
 	afx_msg void OnUpdateProcessTodayStock(CCmdUI* pCmdUI);
@@ -161,4 +160,6 @@ public:
 	afx_msg void OnCalculateNasdaq100200maUpdownRate();
 	afx_msg void OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI);
 	afx_msg void OnTiingoRebuildStockSplit();
+
+	DECLARE_MESSAGE_MAP()
 };

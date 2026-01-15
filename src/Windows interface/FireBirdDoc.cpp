@@ -20,8 +20,7 @@ END_MESSAGE_MAP()
 CFireBirdDoc::CFireBirdDoc() = default;
 
 void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
-	if (m_pCurrentStock == nullptr) m_bRefreshView = true;
-	else if (!m_pCurrentStock->IsSameStock(pStock)) m_bRefreshView = true;
+	if (m_pCurrentStock == nullptr || !m_pCurrentStock->IsSameStock(pStock)) m_bRefreshView = true;
 
 	m_pCurrentStock = pStock;
 	if (pStock != nullptr) {

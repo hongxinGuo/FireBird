@@ -1360,7 +1360,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock2) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10、11、12股票集中有股票
+		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10、11、12 股票集中有股票
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentSelectedStock() != nullptr);
 		gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
 
@@ -1396,7 +1396,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock2) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10、11、12股票集中有股票
+		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10、11、12 股票集中有股票
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentSelectedStock() != nullptr);
 		gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
 

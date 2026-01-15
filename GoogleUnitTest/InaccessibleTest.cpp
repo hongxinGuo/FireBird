@@ -9,9 +9,9 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			vSymbols.push_back("US");
-			vSymbols.push_back("SS");
-			vSymbols.push_back("SZ");
+			vSymbols.emplace_back("US");
+			vSymbols.emplace_back("SS");
+			vSymbols.emplace_back("SZ");
 			inaccessible.Assign("COMPANY_NEWS", 1, vSymbols);
 		}
 

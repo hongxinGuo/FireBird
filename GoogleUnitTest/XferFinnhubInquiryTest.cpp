@@ -85,111 +85,111 @@ namespace FireBirdTest {
 
 	TEST_F(CXferFinnhubInquiryTest, TestGetFinnhubInquiryString2) {
 		// Web Socket
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(WEBSOCKET_TRADES_).compare("WebSocketTrades") == 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(WEBSOCKET_NEWS_).compare("WebSocketNews")== 0); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(WEBSOCKET_TRADES_) == "WebSocketTrades");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(WEBSOCKET_NEWS_)== "WebSocketNews"); // Premium
 
 		// Stock Fundamentals
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SYMBOL_LOOKUP_).compare("StockFundamentalsSymbolLookup")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_SYMBOLS_).compare("StockFundamentalsSymbols")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MARKET_STATUS_).compare("StockFundamentalsMarketStatus")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MARKET_HOLIDAY_).compare("StockFundamentalsMarketHoliday")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_PROFILE_).compare("StockFundamentalsCompanyProfile")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_PROFILE_CONCISE_).compare("StockFundamentalsCompanyProfileConcise")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_EXECUTIVE_).compare("StockFundamentalsCompanyExecutive")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MARKET_NEWS_).compare("StockFundamentalsMarketNews")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_NEWS_).compare("StockFundamentalsCompanyNews")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(PRESS_RELEASE_).compare("StockFundamentalsPressRelease")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(NEWS_SENTIMENT_).compare("StockFundamentalsNewsSentiment")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(PEERS_).compare("StockFundamentalsPeer")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(BASIC_FINANCIALS_).compare("StockFundamentalsBasicFinancials")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(OWNERSHIP_).compare("StockFundamentalsOwnership")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FUND_OWNERSHIP_).compare("StockFundamentalsFundOwnership")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(INSIDER_TRANSACTION_).compare("StockFundamentalsInsiderTransaction")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(INSIDER_SENTIMENT_).compare("StockFundamentalsInsiderSentiment")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_).compare("StockFundamentalsFinancial")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_AS_REPORTED_).compare("StockFundamentalsFinancialAsReported")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(REVENUE_BREAKDOWN_).compare("StockFundamentalsRevenueBreakdown")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SEC_FILINGS_).compare("StockFundamentalsSECFilings")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(INTERNATIONAL_FILINGS_).compare("StockFundamentalsInternationalFilings")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SEC_SENTIMENT_ANALYSIS_).compare("StockFundamentalsSECSentimentAnalysis")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SIMILARITY_INDEX_).compare("StockFundamentalsSimilarityIndex")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(IPO_CALENDAR_).compare("StockFundamentalsIPOCalendar")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(DIVIDENDS_).compare("StockFundamentalsDividends")== 0); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SYMBOL_LOOKUP_)== "StockFundamentalsSymbolLookup");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_SYMBOLS_)== "StockFundamentalsSymbols");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MARKET_STATUS_)== "StockFundamentalsMarketStatus");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MARKET_HOLIDAY_)== "StockFundamentalsMarketHoliday");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_PROFILE_)== "StockFundamentalsCompanyProfile"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_PROFILE_CONCISE_)== "StockFundamentalsCompanyProfileConcise");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_EXECUTIVE_)== "StockFundamentalsCompanyExecutive"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MARKET_NEWS_)== "StockFundamentalsMarketNews");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(COMPANY_NEWS_)== "StockFundamentalsCompanyNews");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(PRESS_RELEASE_)== "StockFundamentalsPressRelease"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(NEWS_SENTIMENT_)== "StockFundamentalsNewsSentiment");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(PEERS_)== "StockFundamentalsPeer");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(BASIC_FINANCIALS_)== "StockFundamentalsBasicFinancials");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(OWNERSHIP_)== "StockFundamentalsOwnership"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FUND_OWNERSHIP_)== "StockFundamentalsFundOwnership"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(INSIDER_TRANSACTION_)== "StockFundamentalsInsiderTransaction");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(INSIDER_SENTIMENT_)== "StockFundamentalsInsiderSentiment");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_)== "StockFundamentalsFinancial"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_AS_REPORTED_)== "StockFundamentalsFinancialAsReported");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(REVENUE_BREAKDOWN_)== "StockFundamentalsRevenueBreakdown");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SEC_FILINGS_)== "StockFundamentalsSECFilings");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(INTERNATIONAL_FILINGS_)== "StockFundamentalsInternationalFilings"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SEC_SENTIMENT_ANALYSIS_)== "StockFundamentalsSECSentimentAnalysis"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(SIMILARITY_INDEX_)== "StockFundamentalsSimilarityIndex"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(IPO_CALENDAR_)== "StockFundamentalsIPOCalendar");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(DIVIDENDS_)== "StockFundamentalsDividends"); //Premium
 
 		// Stock Estimates
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_RECOMMENDATION_TRENDS_).compare("StockEstimatesRecommendationTrends")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_PRICE_TARGET_).compare("StockEstimatesPriceTarget")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_UPGRADE_DOWNGRADE_).compare("StockEstimatesUpgradeDownGrade")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_REVENUE_ESTIMATES_).compare("StockEstimatesRevenueEstimates")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EPS_ESTIMATES_).compare("StockEstimatesEPSEstimates")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EBITDA_ESTIMATES_).compare("StockEstimatesEBITDAEstimates")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EBIT_ESTIMATES_).compare("StockEstimatesEBITEstimates")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EPS_SURPRISE_).compare("StockEstimatesEPSSurprise")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EARNING_CALENDAR_).compare("StockEstimatesEarningCalendar")== 0);
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_RECOMMENDATION_TRENDS_)== "StockEstimatesRecommendationTrends");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_PRICE_TARGET_)== "StockEstimatesPriceTarget");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_UPGRADE_DOWNGRADE_)== "StockEstimatesUpgradeDownGrade"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_REVENUE_ESTIMATES_)== "StockEstimatesRevenueEstimates"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EPS_ESTIMATES_)== "StockEstimatesEPSEstimates"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EBITDA_ESTIMATES_)== "StockEstimatesEBITDAEstimates"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EBIT_ESTIMATES_)== "StockEstimatesEBITEstimates"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EPS_SURPRISE_)== "StockEstimatesEPSSurprise");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_EARNING_CALENDAR_)== "StockEstimatesEarningCalendar");
 
 		// Stock Price
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_QUOTE_).compare("StockPriceQuote")== 0); // 实时数据优先级最低
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_CANDLES_).compare("StockPriceCandles")== 0); // 历史数据优先级低
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_TICK_DATA_).compare("StockPriceTickData")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_HISTORICAL_NBBO_).compare("StockPriceHistoricalNBBO")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_LAST_BID_ASK_).compare("StockPriceLastBidAsk")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_SPLITS_).compare("StockPriceSplits")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_DIVIDEND2_).compare("StockPriceDividend")== 0); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_QUOTE_)== "StockPriceQuote"); // 实时数据优先级最低
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_CANDLES_)== "StockPriceCandles"); // 历史数据优先级低
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_TICK_DATA_)== "StockPriceTickData"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_HISTORICAL_NBBO_)== "StockPriceHistoricalNBBO"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_LAST_BID_ASK_)== "StockPriceLastBidAsk"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_SPLITS_)== "StockPriceSplits"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(STOCK_PRICE_DIVIDEND2_)== "StockPriceDividend"); // Premium
 
 		// ETF & Indices
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_INDICES_CONSTITUENTS_).compare("ETFSIndicesConstituents")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_HISTORY_CONSTITUENTS_).compare("ETFSIndicesHistoryConstituents")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_PROFILE_).compare("ETFSIndicesProfile")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_HOLDINGS_).compare("ETFSIndicesHoldings")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_SECTOR_).compare("ETFSIndicesSector")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_COUNTRY_).compare("ETFSIndicesCountry")== 0); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_INDICES_CONSTITUENTS_)== "ETFSIndicesConstituents");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_HISTORY_CONSTITUENTS_)== "ETFSIndicesHistoryConstituents"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_PROFILE_)== "ETFSIndicesProfile"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_HOLDINGS_)== "ETFSIndicesHoldings"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_SECTOR_)== "ETFSIndicesSector"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ETFS_COUNTRY_)== "ETFSIndicesCountry"); //Premium
 
 		// Mutual funds
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_PROFILE_).compare("MutualFundProfile")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_HOLDINGS_).compare("MutualFundHoldings")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_SECTOR_).compare("MutualFundSector")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_COUNTRY_).compare("MutualFundCountry")== 0); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_PROFILE_)== "MutualFundProfile"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_HOLDINGS_)== "MutualFundHoldings"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_SECTOR_)== "MutualFundSector"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(MUTUAL_FUND_COUNTRY_)== "MutualFundCountry"); // Premium
 
 		// Bonds
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(BOND_PROFILE_).compare("BondProfile")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(BOND_PRICE_).compare("BondPrice")== 0); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(BOND_PROFILE_)== "BondProfile"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(BOND_PRICE_)== "BondPrice"); // Premium
 
 		// Forex
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_EXCHANGE_).compare("ForexExchange")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_SYMBOLS_).compare("ForexSymbols")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_CANDLES_).compare("ForexCandles")== 0); // 历史数据优先级低 Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_ALL_RATES_).compare("ForexAllRates")== 0); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_EXCHANGE_)== "ForexExchange");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_SYMBOLS_)== "ForexSymbols");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_CANDLES_)== "ForexCandles"); // 历史数据优先级低 Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(FOREX_ALL_RATES_)== "ForexAllRates"); // Premium
 
 		// Crypto
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_EXCHANGE_).compare("CryptoExchange")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_SYMBOLS_).compare("CryptoSymbols")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_PROFILE_).compare("CryptoProfile")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_CANDLES_).compare("CryptoCandles")== 0);
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_EXCHANGE_)== "CryptoExchange");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_SYMBOLS_)== "CryptoSymbols");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_PROFILE_)== "CryptoProfile"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(CRYPTO_CANDLES_)== "CryptoCandles");
 
 		// Technical Analysis
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_).compare("TechnicalAnalysisPatternRecognition")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_).compare("TechnicalAnalysisSupportResistance")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_).compare("TechnicalAnalysisAggregateIndicators")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_).compare("TechnicalAnalysisTechnicalIndicators")== 0);
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_)== "TechnicalAnalysisPatternRecognition"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_)== "TechnicalAnalysisSupportResistance"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_)== "TechnicalAnalysisAggregateIndicators"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_)== "TechnicalAnalysisTechnicalIndicators");
 
 		// Alternative Data
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_TRANSCRIPT_LIST_).compare("AlternativeDataTranscriptList")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_TRANSCRIPT_).compare("AlternativeDataTranscript")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_SOCIAL_SENTIMENT_).compare("AlternativeDataSentiment")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_INVEST_THEMES_).compare("AlternativeDataInvestThemes")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_SUPPLY_CHAIN_).compare("AlternativeDataSupplyChain")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_COMPANY_ESG_).compare("AlternativeDataCompanyESG")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_).compare("AlternativeDataQualityScore")== 0); // Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_USPTO_PATENTS_).compare("AlternativeDataUSPTOPatents")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_VISA_APPLICATION_).compare("AlternativeDataVISAApplication")== 0); //
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_COVID_19_).compare("AlternativeDataCOVID_19")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_FDA_CALENDAR_).compare("AlternativeDataFDACalendar")== 0);
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_TRANSCRIPT_LIST_)== "AlternativeDataTranscriptList"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_TRANSCRIPT_)== "AlternativeDataTranscript"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_SOCIAL_SENTIMENT_)== "AlternativeDataSentiment");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_INVEST_THEMES_)== "AlternativeDataInvestThemes"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_SUPPLY_CHAIN_)== "AlternativeDataSupplyChain"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_COMPANY_ESG_)== "AlternativeDataCompanyESG"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_)== "AlternativeDataQualityScore"); // Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_USPTO_PATENTS_)== "AlternativeDataUSPTOPatents");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_VISA_APPLICATION_)== "AlternativeDataVISAApplication"); //
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_COVID_19_)== "AlternativeDataCOVID_19");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_FDA_CALENDAR_)== "AlternativeDataFDACalendar");
 
 		// Economic
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_COUNTRY_LIST_).compare("EconomicCountryList")== 0);
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_CALENDAR_).compare("EconomicCalendar")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_CODES_).compare("EconomicCodes")== 0); //Premium
-		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_ECONOMIC_).compare("EconomicEconomic")== 0); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_COUNTRY_LIST_)== "EconomicCountryList");
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_CALENDAR_)== "EconomicCalendar"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_CODES_)== "EconomicCodes"); //Premium
+		EXPECT_TRUE(gl_FinnhubInquiryType.GetInquiryString(ECONOMIC_ECONOMIC_)== "EconomicEconomic"); //Premium
 	}
 
 	TEST_F(CXferFinnhubInquiryTest, TestGetFinnhubInquiryIndex) {

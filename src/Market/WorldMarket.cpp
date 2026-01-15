@@ -29,19 +29,21 @@
 #include "TiingoInaccessibleStock.h"
 #include "TimeConvert.h"
 
-template <typename TWebSocket>
-void ProcessWebSocketDataGeneric(const TWebSocket& pWebSocket, const std::string& prefix, const std::function<void(size_t)>& setProcessedFunc) {
-	const auto total = pWebSocket->DataSize();
-	size_t iTotalDataSize = 0;
-	for (size_t i = 0; i < total; i++) {
-		const auto pString = pWebSocket->PopData();
-		std::string strMessage = prefix;
-		strMessage += *pString;
-		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
-		iTotalDataSize += pString->size();
-		(pWebSocket->ParseWebSocketData)(pString);
+namespace {
+	template <typename TWebSocket>
+	void ProcessWebSocketDataGeneric(const TWebSocket& pWebSocket, const std::string& prefix, const std::function<void(size_t)>& setProcessedFunc) {
+		const auto total = pWebSocket->DataSize();
+		size_t iTotalDataSize = 0;
+		for (size_t i = 0; i < total; i++) {
+			const auto pString = pWebSocket->PopData();
+			std::string strMessage = prefix;
+			strMessage += *pString;
+			gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+			iTotalDataSize += pString->size();
+			(pWebSocket->ParseWebSocketData)(pString);
+		}
+		setProcessedFunc(iTotalDataSize);
 	}
-	setProcessedFunc(iTotalDataSize);
 }
 
 CWorldMarket::CWorldMarket() {
@@ -690,7 +692,7 @@ public:
 	int Rate;
 };
 
-void CWorldMarket::calculateNasdaq100MA200UpDownRate() const {
+void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	vector<upDownRate200MA> vUpDownRate;
 
 	long lBeginDate = GetPrevDay(GetMarketDate(), 365); // 最多计算一年内的数据
@@ -715,13 +717,17 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() const {
 		lCurrentDate = GetNextDay(lCurrentDate);
 	}
 
-	if (vUpDownRate.at(vUpDownRate.size() - 1).lDate == GetMarketDate()) {
-		if (vUpDownRate.at(vUpDownRate.size() - 1).Rate >= 80) {
-			gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate > 80%");
+	if (!vUpDownRate.empty()) {
+		if (vUpDownRate.at(vUpDownRate.size() - 1).lDate == GetMarketDate()) {
+			if (vUpDownRate.at(vUpDownRate.size() - 1).Rate >= 80) {
+				gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate > 80%");
+			}
+			if (vUpDownRate.at(vUpDownRate.size() - 1).Rate < 20) {
+				gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate < 20%");
+			}
 		}
-		if (vUpDownRate.at(vUpDownRate.size() - 1).Rate < 20) {
-			gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate < 20%");
-		}
+		string str = std::format("Nasdaq 100 200MA upDown rate calculated, current at {:d}", vUpDownRate.at(vUpDownRate.size() - 1).Rate);
+		gl_systemMessage.PushInformationMessage(str);
 	}
 
 	CSetIndexNasdaq100MA200UpDownRate setIndex;
@@ -1293,14 +1299,14 @@ void CWorldMarket::ProcessFinnhubWebSocketData() {
 	ProcessWebSocketDataGeneric(
 		gl_pFinnhubWebSocket,
 		"Finnhub: ",
-		[](size_t size) { gl_systemMessage.SetProcessedFinnhubWebSocket(size); });
+		[](const size_t size) { gl_systemMessage.SetProcessedFinnhubWebSocket(size); });
 }
 
 void CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	ProcessWebSocketDataGeneric(
 		gl_pTiingoIEXWebSocket,
 		"Tiingo IEX: ",
-		[](size_t size) { gl_systemMessage.SetProcessedTiingoIEXWebSocket(size); }
+		[](const size_t size) { gl_systemMessage.SetProcessedTiingoIEXWebSocket(size); }
 	);
 }
 
@@ -1308,7 +1314,7 @@ void CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	ProcessWebSocketDataGeneric(
 		gl_pTiingoCryptoWebSocket,
 		"Tiingo Crypto: ",
-		[](size_t size) { gl_systemMessage.SetProcessedTiingoCryptoWebSocket(size); }
+		[](const size_t size) { gl_systemMessage.SetProcessedTiingoCryptoWebSocket(size); }
 	);
 }
 
@@ -1316,7 +1322,7 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 	ProcessWebSocketDataGeneric(
 		gl_pTiingoForexWebSocket,
 		"Tiingo Forex: ",
-		[](size_t size) { gl_systemMessage.SetProcessedTiingoForexWebSocket(size); }
+		[](const size_t size) { gl_systemMessage.SetProcessedTiingoForexWebSocket(size); }
 	);
 }
 

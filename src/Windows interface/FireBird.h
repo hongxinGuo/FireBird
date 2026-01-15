@@ -32,7 +32,7 @@ public:
 	void LoadCustomState() override;
 	void SaveCustomState() override;
 
-public:
+protected:
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 };

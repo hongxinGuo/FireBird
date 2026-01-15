@@ -96,9 +96,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebDataTest, TestGetStockCode) {
-		EXPECT_TRUE(webData.GetStockCode().compare( "") == 0);
+		EXPECT_TRUE(webData.GetStockCode() == "");
 		webData.SetStockCode("abcdefg");
-		EXPECT_TRUE(webData.GetStockCode().compare( "abcdefg") == 0);
+		EXPECT_TRUE(webData.GetStockCode() == "abcdefg");
 	}
 	TEST_F(CWebDataTest, TestGetCurrentPos) {
 		EXPECT_EQ(webData.GetCurrentPos(), 0);

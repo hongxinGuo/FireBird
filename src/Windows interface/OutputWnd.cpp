@@ -14,9 +14,6 @@ COutputWnd::COutputWnd() {
 	m_uIdTimer = 0;
 }
 
-COutputWnd::~COutputWnd() {
-}
-
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -231,9 +228,6 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 /////////////////////////////////////////////////////////////////////////////
 // COutputList1
 
-COutputList::COutputList() {
-}
-
 void COutputList::TruncateList(long lNumberOfTruncation) {
 	for (long i = 0; i < lNumberOfTruncation; i++) {
 		DeleteString(0);
@@ -243,9 +237,6 @@ void COutputList::TruncateList(long lNumberOfTruncation) {
 void COutputList::SetCurAtLastLine() {
 	SetCurSel(GetCount() - 1);
 	SetTopIndex(GetCount() - 1);
-}
-
-COutputList::~COutputList() {
 }
 
 BEGIN_MESSAGE_MAP(COutputList, CListBox)
@@ -270,7 +261,7 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
 
 		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE)) return;
 
-		static_cast<CMDIFrameWndEx*>(AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
+		dynamic_cast<CMDIFrameWndEx*>(AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
 		UpdateDialogControls(this, FALSE);
 	}
 

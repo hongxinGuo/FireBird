@@ -7,7 +7,12 @@
 class COutputList : public CListBox {
 	// 构造
 public:
-	COutputList();
+	COutputList() = default;
+	COutputList(const COutputList&) = delete;
+	COutputList& operator=(const COutputList&) = delete;
+	COutputList(const COutputList&&) = delete;
+	COutputList& operator=(const COutputList&&) = delete;
+	~COutputList() override = default ;
 
 	// 实现
 	void TruncateList(long lNumberOfTruncation = 1000);
@@ -15,9 +20,6 @@ public:
 
 	int GetLineNumber() const noexcept { return m_iLineNumber; }
 	int AppendString(const string& str) { return AddString(Utf8ToWstring(str).c_str()); } // UNICODE下需要转换，utf-8 --> utf-16. 
-
-public:
-	~COutputList() override;
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
@@ -38,6 +40,11 @@ class COutputWnd : public CDockablePane {
 	// 构造
 public:
 	COutputWnd();
+	COutputWnd(const COutputWnd&) = delete;
+	COutputWnd& operator=(const COutputWnd&) = delete;
+	COutputWnd(const COutputWnd&&) = delete;
+	COutputWnd& operator=(const COutputWnd&&) = delete;
+	~COutputWnd() override = default;
 
 	void UpdateFonts();
 
@@ -59,8 +66,6 @@ protected:
 	void AdjustHorzScroll(CListBox& wndListBox);
 
 	// 实现
-public:
-	~COutputWnd() override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -99,7 +99,7 @@ namespace FireBirdTest {
 			case ERROR_HTTP_REDIRECT_FAILED:
 				counter++;
 				str = gl_mapNetError.at(i);
-				EXPECT_TRUE(str.size() > 0);
+				EXPECT_TRUE(!str.empty());
 				break;
 			default:
 				;

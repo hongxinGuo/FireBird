@@ -52,16 +52,18 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
 	}
 
-	// 不足三个字符
-	Test_FinnhubWebData finnhubWebData102(3, "AAPL", "{}");
-	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData103(4, "AAPL", R"("AAPL","DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR"])");
-	// 格式不对
-	Test_FinnhubWebData finnhubWebData104(5, "AAPL", R"(["AAPL,"DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR"])");
-	// 正确的数据,但超过200个字符
-	Test_FinnhubWebData finnhubWebData105(6, "AAPL", R"(["AAPL","DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"])");
-	// 正确的数据
-	Test_FinnhubWebData finnhubWebData110(10, "AAPL", R"(["AAPL","DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR"])");
+	namespace {
+		// 不足三个字符
+		Test_FinnhubWebData finnhubWebData102(3, "AAPL", "{}");
+		// 格式不对(缺开始的‘[’），无法顺利Parser
+		Test_FinnhubWebData finnhubWebData103(4, "AAPL", R"("AAPL","DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR"])");
+		// 格式不对
+		Test_FinnhubWebData finnhubWebData104(5, "AAPL", R"(["AAPL,"DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR"])");
+		// 正确的数据,但超过200个字符
+		Test_FinnhubWebData finnhubWebData105(6, "AAPL", R"(["AAPL","DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"])");
+		// 正确的数据
+		Test_FinnhubWebData finnhubWebData110(10, "AAPL", R"(["AAPL","DELL","HPQ","WDC","HPE","1337.HK","NTAP","PSTG","XRX","NCR"])");
+	}
 
 	class ParseFinnhubStockPeerTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

@@ -8,7 +8,7 @@ class FireBirdQT : public QMainWindow {
 
 public:
 	FireBirdQT(QWidget* parent = nullptr);
-	~FireBirdQT() override;
+	~FireBirdQT() override = default;
 
 protected:
 	//void paintEvent(QPaintEvent* event) override;

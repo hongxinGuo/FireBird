@@ -8,8 +8,11 @@
 
 using namespace testing;
 
+namespace {
+	CMockNeteaseRTDataSourcePtr s_pMockNeteaseRTDataSource; // 网易实时数据采集
+}
+
 namespace FireBirdTest {
-	CMockNeteaseRTDataSourcePtr m_pMockNeteaseRTDataSource; // 网易实时数据采集
 	class CMockNeteaseRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
@@ -25,56 +28,56 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			m_pMockNeteaseRTDataSource = make_shared<CMockNeteaseRTDataSource>();
+			s_pMockNeteaseRTDataSource = make_shared<CMockNeteaseRTDataSource>();
 		}
 
 		void TearDown() override {
 			// clearUp
-			m_pMockNeteaseRTDataSource = nullptr;
+			s_pMockNeteaseRTDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 	};
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInitialize) {
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryFunction(), "http://api.money.126.net/data/feed/");
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryToken(), "");
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << "DEBUG模式下网易默认值";
+		EXPECT_EQ(s_pMockNeteaseRTDataSource->GetInquiryFunction(), "http://api.money.126.net/data/feed/");
+		EXPECT_EQ(s_pMockNeteaseRTDataSource->GetInquiryToken(), "");
+		EXPECT_EQ(s_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << "DEBUG模式下网易默认值";
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
 		auto timePoint = chrono::time_point<chrono::steady_clock>();
 		auto p = make_shared<CVirtualWebProduct>();
 
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
+		EXPECT_FALSE(s_pMockNeteaseRTDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		gl_pChinaMarket->SetSystemReady(false); // 保证快速申请数据
 
-		EXPECT_CALL(*m_pMockNeteaseRTDataSource, GetTickCount()).Times(3)
+		EXPECT_CALL(*s_pMockNeteaseRTDataSource, GetTickCount()).Times(3)
 		.WillOnce(Return(timePoint))
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000));
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
+		EXPECT_FALSE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000));
+		EXPECT_FALSE(s_pMockNeteaseRTDataSource->IsInquiring());
 
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120100)) << "时间未到，继续等待";
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
+		EXPECT_FALSE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(120100)) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pMockNeteaseRTDataSource->IsInquiring());
+		EXPECT_TRUE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
 
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
+		EXPECT_TRUE(s_pMockNeteaseRTDataSource->HaveInquiry());
 
 		// 恢复原状
 		gl_pChinaMarket->SetSystemReady(true);
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInquireRTData) {
-		m_pMockNeteaseRTDataSource->SetInquiring(false);
+		s_pMockNeteaseRTDataSource->SetInquiring(false);
 
-		m_pMockNeteaseRTDataSource->Inquire(1010);
+		s_pMockNeteaseRTDataSource->Inquire(1010);
 
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->InquiryQueueSize(), 1);
-		const auto pProduct = m_pMockNeteaseRTDataSource->GetCurrentProduct();
+		EXPECT_EQ(s_pMockNeteaseRTDataSource->InquiryQueueSize(), 1);
+		const auto pProduct = s_pMockNeteaseRTDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*pProduct).name(), "class CProductNeteaseRT");
 	}
 
@@ -82,9 +85,9 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetSystemReady(true);
 		const auto p = make_shared<CProductNeteaseRT>();
 		p->SetInquiryFunction("http://api.money.126.net/data/feed/");
-		m_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
-		m_pMockNeteaseRTDataSource->CreateCurrentInquireString();
-		const string str = m_pMockNeteaseRTDataSource->GetInquiringString();
+		s_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
+		s_pMockNeteaseRTDataSource->CreateCurrentInquireString();
+		const string str = s_pMockNeteaseRTDataSource->GetInquiringString();
 		EXPECT_EQ(str.substr(0,35), "http://api.money.126.net/data/feed/");
 	}
 }

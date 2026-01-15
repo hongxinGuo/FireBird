@@ -24,6 +24,10 @@ class WatchdogQT : public QMainWindow {
 
 public:
 	WatchdogQT(QWidget* parent = nullptr);
+	WatchdogQT(const WatchdogQT&) = delete;
+	WatchdogQT& operator=(const WatchdogQT&) = delete;
+	WatchdogQT(WatchdogQT&&) = delete;
+	WatchdogQT& operator=(WatchdogQT&&) = delete;
 	~WatchdogQT() override;
 
 protected:

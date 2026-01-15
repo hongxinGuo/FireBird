@@ -1,4 +1,4 @@
-﻿#include "FireBirdQT.h"
+#include "FireBirdQT.h"
 
 #include <QPainter>
 #include <QPaintEvent>
@@ -9,10 +9,6 @@ FireBirdQT::FireBirdQT(QWidget* parent) : QMainWindow(parent) {
 	//this->setWindowState(Qt::WindowMaximized);
 
 	setWindowIcon(QIcon(":/FireBirdQT/Res/FireBird.ico"));
-}
-
-FireBirdQT::~FireBirdQT() {
-	// 创建状态栏
 }
 
 /*

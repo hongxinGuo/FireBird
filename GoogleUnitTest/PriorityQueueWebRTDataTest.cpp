@@ -4,9 +4,11 @@
 
 #include"PriorityQueueWebRTData.h"
 
-namespace FireBirdTest {
-	static CPriorityQueueWebRTData gl_PriorityQueueRTData;
+namespace {
+	CPriorityQueueWebRTData s_PriorityQueueRTData;
+}
 
+namespace FireBirdTest {
 	class CPriorityQueueRTDataTest : public ::testing::Test {
 	protected:
 		void SetUp() override {
@@ -16,7 +18,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			gl_PriorityQueueRTData.Reset();
+			s_PriorityQueueRTData.Reset();
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -25,10 +27,10 @@ namespace FireBirdTest {
 	TEST_F(CPriorityQueueRTDataTest, TestReset) {
 		const auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(1);
-		gl_PriorityQueueRTData.PushData(pRTData);
-		EXPECT_EQ(gl_PriorityQueueRTData.Size(), 1);
-		gl_PriorityQueueRTData.Reset();
-		EXPECT_EQ(gl_PriorityQueueRTData.Size(), 0);
+		s_PriorityQueueRTData.PushData(pRTData);
+		EXPECT_EQ(s_PriorityQueueRTData.Size(), 1);
+		s_PriorityQueueRTData.Reset();
+		EXPECT_EQ(s_PriorityQueueRTData.Size(), 0);
 	}
 
 	TEST_F(CPriorityQueueRTDataTest, TestPushPopData) {
@@ -36,9 +38,9 @@ namespace FireBirdTest {
 		pRTData->SetTransactionTime(1);
 		const auto pRTData2 = make_shared<CWebRTData>();
 		pRTData2->SetTransactionTime(0);
-		gl_PriorityQueueRTData.PushData(pRTData);
-		gl_PriorityQueueRTData.PushData(pRTData2);
-		const CWebRTDataPtr pRTData3 = gl_PriorityQueueRTData.PopData();
+		s_PriorityQueueRTData.PushData(pRTData);
+		s_PriorityQueueRTData.PushData(pRTData2);
+		const CWebRTDataPtr pRTData3 = s_PriorityQueueRTData.PopData();
 		EXPECT_EQ(pRTData3->GetTimePoint().time_since_epoch().count(), 0) << "有优先权的队列，交易时间早的位于前列";
 	}
 }

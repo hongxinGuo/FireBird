@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		EconomicCalendar.m_strCountry = "US";
 		EconomicCalendar.m_strImpact = "High";
 		EconomicCalendar.m_strTime = "20202020";
-		EconomicCalendar.m_strUnit = "Doller";
+		EconomicCalendar.m_strUnit = "Dollar";
 		EconomicCalendar.m_dActual = 1.2;
 		EconomicCalendar.m_dEstimate = 1.1;
 		EconomicCalendar.m_dPrev = 1.0;
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(EconomicCalendar2.m_strEvent, "Abcdefghighlmnop");
 		EXPECT_EQ(EconomicCalendar2.m_strImpact, "High");
 		EXPECT_EQ(EconomicCalendar2.m_strTime, "20202020");
-		EXPECT_EQ(EconomicCalendar2.m_strUnit, "Doller");
+		EXPECT_EQ(EconomicCalendar2.m_strUnit, "Dollar");
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dActual, 1.2);
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dEstimate, 1.1);
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dPrev, 1.0);

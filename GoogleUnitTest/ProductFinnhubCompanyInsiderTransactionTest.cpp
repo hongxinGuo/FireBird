@@ -81,12 +81,14 @@ namespace FireBirdTest {
 		pStock->SetUpdateProfileDB(false);
 	}
 
-	// 正确数据
-	Test_FinnhubWebData finnhubWebData133(3, "AAPL", R"({"data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-03","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "symbol" : "RIG"})");
-	// 缺乏 data项
-	Test_FinnhubWebData finnhubWebData134(4, "AAPL", R"({"no data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-02","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "symbol" : "RIG"})");
-	// 缺乏 Symbol项
-	Test_FinnhubWebData finnhubWebData135(5, "AAPL", R"({"data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-02","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "no symbol" : "RIG"})");
+	namespace {
+		// 正确数据
+		Test_FinnhubWebData finnhubWebData133(3, "AAPL", R"({"data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-03","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "symbol" : "RIG"})");
+		// 缺乏 data项
+		Test_FinnhubWebData finnhubWebData134(4, "AAPL", R"({"no data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-02","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "symbol" : "RIG"})");
+		// 缺乏 Symbol项
+		Test_FinnhubWebData finnhubWebData135(5, "AAPL", R"({"data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-02","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "no symbol" : "RIG"})");
+	}
 
 	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

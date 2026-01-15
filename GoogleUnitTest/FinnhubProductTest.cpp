@@ -40,7 +40,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string str = "{\"no error\":\"You don't have access to this resource.\"}";
+		const string str = R"({"no error":"You don't have access to this resource."})";
 		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 		finnhubProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string str = "{\"error\":\"You don't have access to this resource.\"}";
+		const string str = R"({"error":"You don't have access to this resource."})";
 		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 

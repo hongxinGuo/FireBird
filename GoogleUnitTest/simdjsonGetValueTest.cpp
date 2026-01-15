@@ -6,7 +6,8 @@ using namespace simdjson;
 
 using namespace testing;
 
-static auto s_simdjson1 = R"({
+namespace {
+	auto s_simdjson1 = R"({
 	"integer1": 1,
 	"double1" : 2.0,
 	"doing" : false,
@@ -22,6 +23,23 @@ static auto s_simdjson1 = R"({
 								],
 	"DataArray4" : [ 1, 2.0, true, "string2", [1, 2, 3],null, null, null, null, null]
 })"_padded;
+
+	auto s_simdjson2 = R"({ 
+		"item1" : { "a" : 1, "b" : 2.0, "c" : "string1", "d" : true, "e" : [ 1, 2, 3]},
+		"item2" : { "a" : 2, "b" : 4.0, "c" : "string2", "d" : false, "e" : [ 4, 5, 6]},
+		"item3" : { "a" : null, "b" : null, "c" : null, "d" : null, "e" : null} 
+	})"_padded;
+
+	auto s_BadSimdjson3 = R"({ 
+		"integer" : "string",
+		"double" : "string",
+		"string" : 1234,
+		"bool" : "not true",
+		"array" : { "abc" : 1 },
+		"DataArray" : [ "string", "string", 1234, "not true", { "abc" : 1}],
+		"DataArray2" :  { "integer" : "string", "double": "string", "string" : 1234, "bool" : 1234, "array" : { "abc" : 1 } }
+	})"_padded;
+}
 
 namespace FireBirdTest {
 	TEST(simdjsonGetValueTest, TestsimdjsonGetValue1) {
@@ -100,7 +118,7 @@ namespace FireBirdTest {
 			i = 0;
 			DataArray3 = simdjsonGetArray(doc, "DataArray3");
 			for (auto value : DataArray3) {
-				auto valueValue = value.value();
+				value.value();
 				ondemand::object object = value.get_object();
 				ai.push_back(simdjsonGetInt64(object, "integer"));
 				ad.push_back(simdjsonGetDouble(object, "double"));
@@ -184,12 +202,6 @@ namespace FireBirdTest {
 		}
 	}
 
-	static auto s_simdjson2 = R"({ 
-		"item1" : { "a" : 1, "b" : 2.0, "c" : "string1", "d" : true, "e" : [ 1, 2, 3]},
-		"item2" : { "a" : 2, "b" : 4.0, "c" : "string2", "d" : false, "e" : [ 4, 5, 6]},
-		"item3" : { "a" : null, "b" : null, "c" : null, "d" : null, "e" : null} 
-	})"_padded;
-
 	TEST(simdjsonGetValueTest, TestsimdjsonGetValue2) {
 		try {
 			vector<INT64> vi;
@@ -267,30 +279,20 @@ namespace FireBirdTest {
 		}
 	}
 
-	auto s_BadSimdjson3 = R"({ 
-		"integer" : "string",
-		"double" : "string",
-		"string" : 1234,
-		"bool" : "not true",
-		"array" : { "abc" : 1 },
-		"DataArray" : [ "string", "string", 1234, "not true", { "abc" : 1}],
-		"DataArray2" :  { "integer" : "string", "double": "string", "string" : 1234, "bool" : 1234, "array" : { "abc" : 1 } }
-	})"_padded;
-
 	TEST(simdjsonGetValueTest, TestSimdjsonGetValueOccurException) {
 		try {
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_BadSimdjson3).value();
-			EXPECT_THROW(INT64 i = simdjsonGetInt64(doc, ("No integer")), simdjson_error) << "没有这个键";
-			EXPECT_THROW(double d = simdjsonGetDouble(doc, ("No double")), simdjson_error) << "没有这个键";
-			EXPECT_THROW(string_view sv = simdjsonGetStringView(doc, "No string"), simdjson_error) << "没有这个键";
-			EXPECT_THROW(bool f = simdjsonGetBool(doc, "No bool"), simdjson_error) << "没有这个键";
-			EXPECT_THROW(auto array = simdjsonGetArray(doc, "No array"), simdjson_error) << "没有这个键";
-			EXPECT_THROW(INT64 i = simdjsonGetInt64(doc, ("integer")), simdjson_error);
-			EXPECT_THROW(double d = simdjsonGetDouble(doc, ("double")), simdjson_error);
-			EXPECT_THROW(string_view sv = simdjsonGetStringView(doc, "string"), simdjson_error);
-			EXPECT_THROW(bool f = simdjsonGetBool(doc, "bool"), simdjson_error);
-			EXPECT_THROW(auto array = simdjsonGetArray(doc, "array"), simdjson_error);
+			EXPECT_THROW(simdjsonGetInt64(doc, ("No integer")), simdjson_error) << "没有这个键";
+			EXPECT_THROW(simdjsonGetDouble(doc, ("No double")), simdjson_error) << "没有这个键";
+			EXPECT_THROW(simdjsonGetStringView(doc, "No string"), simdjson_error) << "没有这个键";
+			EXPECT_THROW(simdjsonGetBool(doc, "No bool"), simdjson_error) << "没有这个键";
+			EXPECT_THROW(simdjsonGetArray(doc, "No array"), simdjson_error) << "没有这个键";
+			EXPECT_THROW(simdjsonGetInt64(doc, ("integer")), simdjson_error);
+			EXPECT_THROW(simdjsonGetDouble(doc, ("double")), simdjson_error);
+			EXPECT_THROW(simdjsonGetStringView(doc, "string"), simdjson_error);
+			EXPECT_THROW(simdjsonGetBool(doc, "bool"), simdjson_error);
+			EXPECT_THROW(simdjsonGetArray(doc, "array"), simdjson_error);
 
 			ondemand::array array1 = doc["DataArray"].get_array();
 			int i = 0;
@@ -298,66 +300,66 @@ namespace FireBirdTest {
 				auto itemValue = item.value();
 				switch (i++) {
 				case 0:
-					EXPECT_THROW(auto int1 = simdjsonGetInt64(itemValue), simdjson_error);
+					EXPECT_THROW(simdjsonGetInt64(itemValue), simdjson_error);
 					break;
 				case 1:
-					EXPECT_THROW(double e = simdjsonGetDouble(itemValue), simdjson_error);
+					EXPECT_THROW(simdjsonGetDouble(itemValue), simdjson_error);
 					break;
 				case 2:
-					EXPECT_THROW(string_view str = simdjsonGetStringView(itemValue), simdjson_error);
+					EXPECT_THROW(simdjsonGetStringView(itemValue), simdjson_error);
 					break;
 				case 3:
-					EXPECT_THROW(bool b = simdjsonGetBool(itemValue), simdjson_error);
+					EXPECT_THROW(simdjsonGetBool(itemValue), simdjson_error);
 					break;
 				case 4:
-					EXPECT_THROW(auto a = simdjsonGetArray(itemValue), simdjson_error);
+					EXPECT_THROW(simdjsonGetArray(itemValue), simdjson_error);
 					break;
 				default:
 					EXPECT_TRUE(false);
 					break;
 				}
 			}
-			INT64 i2;
-			double d4;
 			ondemand::object object1 = doc["DataArray2"].get_object();
-			EXPECT_THROW(i2 = simdjsonGetInt64(object1, "No integer"), simdjson_error);
-			EXPECT_THROW(d4 = simdjsonGetDouble(object1, "no double"), simdjson_error);
-			EXPECT_THROW(string_view str2 = simdjsonGetStringView(object1, "no string"), simdjson_error);
-			EXPECT_THROW(bool b2 = simdjsonGetBool(object1, "no bool"), simdjson_error);
-			EXPECT_THROW(auto aa2 = simdjsonGetArray(object1, "no array"), simdjson_error);
-			EXPECT_THROW(i2 = simdjsonGetInt64(object1, "integer"), simdjson_error);
-			EXPECT_THROW(d4 = simdjsonGetDouble(object1, "double"), simdjson_error);
-			EXPECT_THROW(string_view str2 = simdjsonGetStringView(object1, "string"), simdjson_error);
-			EXPECT_THROW(bool b2 = simdjsonGetBool(object1, "bool"), simdjson_error);
-			EXPECT_THROW(auto aa2 = simdjsonGetArray(object1, "array"), simdjson_error);
+			EXPECT_THROW(simdjsonGetInt64(object1, "No integer"), simdjson_error);
+			EXPECT_THROW(simdjsonGetDouble(object1, "no double"), simdjson_error);
+			EXPECT_THROW(simdjsonGetStringView(object1, "no string"), simdjson_error);
+			EXPECT_THROW(simdjsonGetBool(object1, "no bool"), simdjson_error);
+			EXPECT_THROW(simdjsonGetArray(object1, "no array"), simdjson_error);
+			EXPECT_THROW(simdjsonGetInt64(object1, "integer"), simdjson_error);
+			EXPECT_THROW(simdjsonGetDouble(object1, "double"), simdjson_error);
+			EXPECT_THROW(simdjsonGetStringView(object1, "string"), simdjson_error);
+			EXPECT_THROW(simdjsonGetBool(object1, "bool"), simdjson_error);
+			EXPECT_THROW(simdjsonGetArray(object1, "array"), simdjson_error);
 			ondemand::value value2 = doc["DataArray2"].value();
 
-			EXPECT_THROW(i2 = simdjsonGetInt64(value2, "No integer"), simdjson_error);
-			EXPECT_THROW(d4 = simdjsonGetDouble(value2, "no double"), simdjson_error);
-			EXPECT_THROW(string_view str2 = simdjsonGetStringView(value2, "no string"), simdjson_error);
-			EXPECT_THROW(bool b2 = simdjsonGetBool(value2, "no bool"), simdjson_error);
-			EXPECT_THROW(auto aa2 = simdjsonGetArray(value2, "no array"), simdjson_error);
-			EXPECT_THROW(i2 = simdjsonGetInt64(value2, "integer"), simdjson_error);
-			EXPECT_THROW(d4 = simdjsonGetDouble(value2, "double"), simdjson_error);
-			EXPECT_THROW(string_view str2 = simdjsonGetStringView(value2, "string"), simdjson_error);
-			EXPECT_THROW(bool b2 = simdjsonGetBool(value2, "bool"), simdjson_error);
-			EXPECT_THROW(auto aa2 = simdjsonGetArray(value2, "array"), simdjson_error);
+			EXPECT_THROW(simdjsonGetInt64(value2, "No integer"), simdjson_error);
+			EXPECT_THROW(simdjsonGetDouble(value2, "no double"), simdjson_error);
+			EXPECT_THROW(simdjsonGetStringView(value2, "no string"), simdjson_error);
+			EXPECT_THROW(simdjsonGetBool(value2, "no bool"), simdjson_error);
+			EXPECT_THROW(simdjsonGetArray(value2, "no array"), simdjson_error);
+			EXPECT_THROW(simdjsonGetInt64(value2, "integer"), simdjson_error);
+			EXPECT_THROW(simdjsonGetDouble(value2, "double"), simdjson_error);
+			EXPECT_THROW(simdjsonGetStringView(value2, "string"), simdjson_error);
+			EXPECT_THROW(simdjsonGetBool(value2, "bool"), simdjson_error);
+			EXPECT_THROW(simdjsonGetArray(value2, "array"), simdjson_error);
 		} catch (simdjson_error& error) {
 			EXPECT_TRUE(false) << error.what();
 		}
 	}
 
-	struct jsonTestData {
-	public:
-		int m_iIndex;
-		string m_sData;
-	};
+	namespace {
+		struct jsonTestData {
+		public:
+			int m_iIndex;
+			string m_sData;
+		};
 
-	jsonTestData jsonTestData1(1, R"({"double" : 0.1,"double1" : null, "double2" : "not number", "double4" : 123})");
-	jsonTestData jsonTestData2(2, R"({"integer" : 1,"integer1" : null, "integer2" : "not number", "integer4" : 123})");
-	jsonTestData jsonTestData3(3, R"({"bool" : true,"bool1" : null, "bool2" : "not boolean", "bool4" : 123})");
-	jsonTestData jsonTestData4(4, R"({"string" : "abc","string1" : null, "string2" : 123, "string4" : 123})");
-	jsonTestData jsonTestData5(5, R"({"array" : [a,b,c],"array1" : null, "array2" : "not array", "array4" : [a, b, c]})");
+		jsonTestData jsonTestData1(1, R"({"double" : 0.1,"double1" : null, "double2" : "not number", "double4" : 123})");
+		jsonTestData jsonTestData2(2, R"({"integer" : 1,"integer1" : null, "integer2" : "not number", "integer4" : 123})");
+		jsonTestData jsonTestData3(3, R"({"bool" : true,"bool1" : null, "bool2" : "not boolean", "bool4" : 123})");
+		jsonTestData jsonTestData4(4, R"({"string" : "abc","string1" : null, "string2" : 123, "string4" : 123})");
+		jsonTestData jsonTestData5(5, R"({"array" : [a,b,c],"array1" : null, "array2" : "not array", "array4" : [a, b, c]})");
+	}
 
 	class simdjsonGetValueTest : public TestWithParam<jsonTestData*> {
 	protected:

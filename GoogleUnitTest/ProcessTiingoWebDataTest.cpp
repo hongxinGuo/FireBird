@@ -276,25 +276,27 @@ namespace FireBirdTest {
 		}
 	}
 
-	// 正确数据
-	TiingoWebSocketData tiingoIEXData1(1, "", "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",\"vym\",85.025]}");
-	TiingoWebSocketData tiingoIEXData2(2, "", "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.594808294-05:00\",\"wes\",50.123]}");
-	// authentication
-	TiingoWebSocketData tiingoIEXData3(3, "", "{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
-	// Heart beat
-	TiingoWebSocketData tiingoIEXData4(4, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
-	// messageType只能为'A''I''H'
-	TiingoWebSocketData tiingoIEXData5(5, "", "{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}");
-	// 错误。service的名称不为"iex",
-	TiingoWebSocketData tiingoIEXData7(7, "", "{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}");
-	// service错为servi
-	TiingoWebSocketData tiingoIEXData8(8, "", "{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}");
-	// json格式错误
-	TiingoWebSocketData tiingoIEXData9(9, "", "\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",81.58]}");
-	// subscribe
-	TiingoWebSocketData tiingoIEXData10(10, "", "{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
-	// error message
-	TiingoWebSocketData tiingoIEXData11(11, "", "{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}");
+	namespace {
+		// 正确数据
+		TiingoWebSocketData tiingoIEXData1(1, "", R"({"messageType":"A","service":"iex","data":["2019-01-30T13:33:45.383129126-05:00","vym",85.025]})");
+		TiingoWebSocketData tiingoIEXData2(2, "", R"({"messageType":"A","service":"iex","data":["2019-01-30T13:33:45.594808294-05:00","wes",50.123]})");
+		// authentication
+		TiingoWebSocketData tiingoIEXData3(3, "", R"({"data":{"subscriptionId":2563367},"messageType":"I","response":{"code":200,"message":"Success"}})");
+		// Heart beat
+		TiingoWebSocketData tiingoIEXData4(4, "", R"({"messageType":"H","response":{"code":200,"message":"HeartBeat"}})");
+		// messageType只能为'A''I''H'
+		TiingoWebSocketData tiingoIEXData5(5, "", R"({"messageType":"B","service":"iex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]})");
+		// 错误。service的名称不为"iex",
+		TiingoWebSocketData tiingoIEXData7(7, "", R"({"messageType":"A","service":"ex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]})");
+		// service错为servi
+		TiingoWebSocketData tiingoIEXData8(8, "", R"({"messageType":"A","servi":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]})");
+		// json格式错误
+		TiingoWebSocketData tiingoIEXData9(9, "", R"("messageType":"A","service":"iex","data":["2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",81.58]})");
+		// subscribe
+		TiingoWebSocketData tiingoIEXData10(10, "", R"({"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}})");
+		// error message
+		TiingoWebSocketData tiingoIEXData11(11, "", R"({"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid"}})");
+	}
 
 	class ProcessOneTiingoIEXWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:

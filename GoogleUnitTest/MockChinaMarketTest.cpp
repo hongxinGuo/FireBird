@@ -18,9 +18,11 @@
 using namespace testing;
 #include<memory>
 
-namespace FireBirdTest {
+namespace {
 	CMockChinaMarketPtr s_pMockChinaMarket;
+}
 
+namespace FireBirdTest {
 	class CMockChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {

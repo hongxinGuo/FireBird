@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include "ChinaMarket.h"
 #include "FinnhubInaccessibleExchange.h"
 #include"GeneralCheck.h"
 

@@ -10,9 +10,11 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
-	CMockTiingoDataSourcePtr m_pTiingoDataSource;
+namespace {
+	CMockTiingoDataSourcePtr s_pTiingoDataSource;
+}
 
+namespace FireBirdTest {
 	class CMockTiingoDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
@@ -28,12 +30,12 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			m_pTiingoDataSource = make_shared<CMockTiingoDataSource>();
+			s_pTiingoDataSource = make_shared<CMockTiingoDataSource>();
 		}
 
 		void TearDown() override {
 			// clearUp
-			m_pTiingoDataSource = nullptr;
+			s_pTiingoDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -45,41 +47,41 @@ namespace FireBirdTest {
 		auto timePoint = chrono::time_point<chrono::steady_clock>();
 		auto p = make_shared<CVirtualWebProduct>();
 
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
+		EXPECT_FALSE(s_pTiingoDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
 
 		InSequence Seq;
-		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(2)
+		EXPECT_CALL(*s_pTiingoDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateMarketNews()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateMarketNews()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateFundamentalDefinition()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateFundamentalDefinition()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateCompanySymbol()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateCompanySymbol()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateStockDailyMeta()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateStockDailyMeta()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateDayLine()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateDayLine()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateFinancialState()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateFinancialState()).Times(1)
 		.WillRepeatedly(DoAll([p]() {
-			m_pTiingoDataSource->SetInquiring(true);
-			m_pTiingoDataSource->StoreInquiry(p);
+			s_pTiingoDataSource->SetInquiring(true);
+			s_pTiingoDataSource->StoreInquiry(p);
 		}, Return(true)));
 
-		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
-		EXPECT_FALSE(m_pTiingoDataSource->HaveInquiry());
-		EXPECT_TRUE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+		EXPECT_FALSE(s_pTiingoDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pTiingoDataSource->IsInquiring());
+		EXPECT_FALSE(s_pTiingoDataSource->HaveInquiry());
+		EXPECT_TRUE(s_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
 
-		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
-		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
+		EXPECT_TRUE(s_pTiingoDataSource->IsInquiring());
+		EXPECT_TRUE(s_pTiingoDataSource->HaveInquiry());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0) << gl_systemMessage.PopInformationMessage();
 
 		//恢复原状
@@ -91,36 +93,36 @@ namespace FireBirdTest {
 
 		auto p = make_shared<CVirtualWebProduct>();
 
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
+		EXPECT_FALSE(s_pTiingoDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
 
 		InSequence Seq;
-		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(2)
+		EXPECT_CALL(*s_pTiingoDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateMarketNews()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateMarketNews()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateFundamentalDefinition()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateFundamentalDefinition()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateCompanySymbol()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateCompanySymbol()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
 		.WillRepeatedly(DoAll([p]() {
-			m_pTiingoDataSource->SetInquiring(true);
-			m_pTiingoDataSource->StoreInquiry(p);
+			s_pTiingoDataSource->SetInquiring(true);
+			s_pTiingoDataSource->StoreInquiry(p);
 		}, Return(true)));
 
-		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120000)) << "时间未到，继续等待";
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
-		EXPECT_FALSE(m_pTiingoDataSource->HaveInquiry());
-		EXPECT_TRUE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+		EXPECT_FALSE(s_pTiingoDataSource->GenerateInquiryMessage(120000)) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pTiingoDataSource->IsInquiring());
+		EXPECT_FALSE(s_pTiingoDataSource->HaveInquiry());
+		EXPECT_TRUE(s_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
 
-		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
-		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
+		EXPECT_TRUE(s_pTiingoDataSource->IsInquiring());
+		EXPECT_TRUE(s_pTiingoDataSource->HaveInquiry());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0) << gl_systemMessage.PopInformationMessage();
 
 		//恢复原状

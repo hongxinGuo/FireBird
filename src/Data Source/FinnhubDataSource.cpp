@@ -95,10 +95,6 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 
 void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
-	string s2;
-	string str;
-	string_view strView;
-	long l;
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	nlohmannJson js;

@@ -544,7 +544,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestGetPeer) {
 		EXPECT_TRUE(stock.GetPeer().empty());
-		const nlohmannJson jSon = nlohmannJson::parse("[\"abcdef\",\"000001.SS\"]");
+		const nlohmannJson jSon = nlohmannJson::parse(R"(["abcdef","000001.SS"])");
 		stock.SetPeer(jSon);
 		const nlohmannJson jSon2 = stock.GetPeer();
 		const string s1 = jSon2.dump();
@@ -781,14 +781,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB3) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
-		CDayLinePtr pDayLine;
 		CSetFinnhubStockDayLine setDayLine;
 
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(true); // 需要更新
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 
-		pDayLine = make_shared<CDayLine>();
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetDate(20200101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);

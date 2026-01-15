@@ -56,12 +56,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol("abcdefg.", "L"));
 	}
 
-	// 格式不对(缺开始的‘{’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData22(2, "AAPL", R"(["currency":"USD","description":"CERECOR INC","displaySymbol":"CERC","figi":"BBG001QHW0Y8","isin":null,"mic":"XNAS","shareClassFIGI":"","symbol":"CERC","symbol2":"","type":"Common Stock"},{"currency":"USD","description":"ACTIVE ENERGY GROUP PLC","displaySymbol":"ATGVF","figi":"BBG009LQZG05","isin":null,"mic":"OOTC","shareClassFIGI":"","symbol":"ATGVF","symbol2":"","type":"Common Stock"}])");
-	// 数据缺乏currency项
-	Test_FinnhubWebData finnhubWebData23(3, "AAPL", R"([{"cuency":"USD","description":"CERECOR INC","displaySymbol":"CERC","figi":"BBG001QHW0Y8","isin":null,"mic":"XNAS","shareClassFIGI":"","symbol":"CERC","symbol2":"","type":"Common Stock"},{"currency":"USD","description":"ACTIVE ENERGY GROUP PLC","displaySymbol":"ATGVF","figi":"BBG009LQZG05","isin":null,"mic":"OOTC","shareClassFIGI":"","symbol":"ATGVF","symbol2":"","type":"Common Stock"}])");
-	// 正确的数据
-	Test_FinnhubWebData finnhubWebData30(10, "AAPL", R"([{"currency":"USD","description":"CERECOR INC","displaySymbol":"A","figi":"BBG001QHW0Y8","isin":"not null","mic":"XNAS","shareClassFIGI":"","symbol":"A","symbol2":"","type":"Common Stock"},{"currency":"USD","description":"ACTIVE ENERGY GROUP PLC","displaySymbol":"AA","figi":"BBG009LQZG05","isin":null,"mic":"OOTC","shareClassFIGI":"","symbol":"New Symbol","symbol2":"","type":"Common Stock"}])");
+	namespace {
+		// 格式不对(缺开始的‘{’），无法顺利Parser
+		Test_FinnhubWebData finnhubWebData22(2, "AAPL", R"(["currency":"USD","description":"CERECOR INC","displaySymbol":"CERC","figi":"BBG001QHW0Y8","isin":null,"mic":"XNAS","shareClassFIGI":"","symbol":"CERC","symbol2":"","type":"Common Stock"},{"currency":"USD","description":"ACTIVE ENERGY GROUP PLC","displaySymbol":"ATGVF","figi":"BBG009LQZG05","isin":null,"mic":"OOTC","shareClassFIGI":"","symbol":"ATGVF","symbol2":"","type":"Common Stock"}])");
+		// 数据缺乏currency项
+		Test_FinnhubWebData finnhubWebData23(3, "AAPL", R"([{"cuency":"USD","description":"CERECOR INC","displaySymbol":"CERC","figi":"BBG001QHW0Y8","isin":null,"mic":"XNAS","shareClassFIGI":"","symbol":"CERC","symbol2":"","type":"Common Stock"},{"currency":"USD","description":"ACTIVE ENERGY GROUP PLC","displaySymbol":"ATGVF","figi":"BBG009LQZG05","isin":null,"mic":"OOTC","shareClassFIGI":"","symbol":"ATGVF","symbol2":"","type":"Common Stock"}])");
+		// 正确的数据
+		Test_FinnhubWebData finnhubWebData30(10, "AAPL", R"([{"currency":"USD","description":"CERECOR INC","displaySymbol":"A","figi":"BBG001QHW0Y8","isin":"not null","mic":"XNAS","shareClassFIGI":"","symbol":"A","symbol2":"","type":"Common Stock"},{"currency":"USD","description":"ACTIVE ENERGY GROUP PLC","displaySymbol":"AA","figi":"BBG009LQZG05","isin":null,"mic":"OOTC","shareClassFIGI":"","symbol":"New Symbol","symbol2":"","type":"Common Stock"}])");
+	}
 
 	class ParseFinnhubStockSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:

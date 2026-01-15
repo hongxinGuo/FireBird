@@ -17,8 +17,7 @@ namespace FireBirdTest {
 			m_pData->Test_SetBuffer_(strData);
 		}
 
-		~Test_FinnhubWebData() {
-		}
+		~Test_FinnhubWebData() = default;
 
 	public:
 		long m_lIndex;
@@ -31,9 +30,7 @@ namespace FireBirdTest {
 			m_lIndex = lIndex;
 			m_pData = strData;
 		}
-
-		~FinnhubWebSocketData() {
-		}
+		~FinnhubWebSocketData() = default;
 
 	public:
 		long m_lIndex;

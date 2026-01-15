@@ -9,21 +9,23 @@
 
 using namespace testing;
 
-namespace FireBirdTest {
-	static bool m_fSystemStatus;
-	CMockQuandlDataSourcePtr m_pMockQuandlDataSource; // 网易日线历史数据
+namespace {
+	bool s_fSystemStatus;
+	CMockQuandlDataSourcePtr s_pMockQuandlDataSource; // 网易日线历史数据
+}
 
+namespace FireBirdTest {
 	class CMockQuandlDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
+			s_fSystemStatus = gl_pWorldMarket->IsSystemReady();
 			gl_pWorldMarket->SetSystemReady(true); // Quandl引擎必须等待系统初始化后才可使用。
 		}
 
 		static void TearDownTestSuite() {
-			gl_pWorldMarket->SetSystemReady(m_fSystemStatus);
+			gl_pWorldMarket->SetSystemReady(s_fSystemStatus);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -32,12 +34,12 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			gl_pWorldMarket->CalculateTime();
-			m_pMockQuandlDataSource = make_shared<CMockQuandlDataSource>();
+			s_pMockQuandlDataSource = make_shared<CMockQuandlDataSource>();
 		}
 
 		void TearDown() override {
 			// clearUp
-			m_pMockQuandlDataSource = nullptr;
+			s_pMockQuandlDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -56,25 +58,25 @@ namespace FireBirdTest {
 		auto timePoint = chrono::time_point<chrono::steady_clock>();
 		auto p = make_shared<CVirtualWebProduct>();
 
-		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());
+		EXPECT_FALSE(s_pMockQuandlDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 
-		m_pMockQuandlDataSource->SetWebError(true);
-		EXPECT_CALL(*m_pMockQuandlDataSource, GetTickCount()).Times(2)
+		s_pMockQuandlDataSource->SetWebError(true);
+		EXPECT_CALL(*s_pMockQuandlDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()));
-		EXPECT_CALL(*m_pMockQuandlDataSource, Inquire()).Times(1)
+		EXPECT_CALL(*s_pMockQuandlDataSource, Inquire()).Times(1)
 		.WillRepeatedly(DoAll([p]() {
-			m_pMockQuandlDataSource->SetInquiring(true);
-			m_pMockQuandlDataSource->StoreInquiry(p);
+			s_pMockQuandlDataSource->SetInquiring(true);
+			s_pMockQuandlDataSource->StoreInquiry(p);
 		}, Return(true)));
 
-		EXPECT_FALSE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
-		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());
-		EXPECT_FALSE(m_pMockQuandlDataSource->HaveInquiry());
-		EXPECT_TRUE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "申请数据";
+		EXPECT_FALSE(s_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pMockQuandlDataSource->IsInquiring());
+		EXPECT_FALSE(s_pMockQuandlDataSource->HaveInquiry());
+		EXPECT_TRUE(s_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "申请数据";
 
-		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring());
-		EXPECT_TRUE(m_pMockQuandlDataSource->HaveInquiry());
+		EXPECT_TRUE(s_pMockQuandlDataSource->IsInquiring());
+		EXPECT_TRUE(s_pMockQuandlDataSource->HaveInquiry());
 	}
 }
