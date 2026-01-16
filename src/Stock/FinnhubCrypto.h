@@ -9,7 +9,7 @@
 
 class CFinnhubCrypto : public CVirtualStock {
 public:
-	CFinnhubCrypto();
+	CFinnhubCrypto() = default;
 	// 不允许赋值。
 	CFinnhubCrypto(const CFinnhubCrypto&) = delete;
 	CFinnhubCrypto& operator=(const CFinnhubCrypto&) = delete;
@@ -28,7 +28,7 @@ public:
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate();
-	bool HaveNewDayLineData();
+	bool HaveNewDayLineData() const;
 
 public:
 	CContainerCryptoDayLine m_dataDayLine;

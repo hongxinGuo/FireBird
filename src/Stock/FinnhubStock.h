@@ -1,7 +1,6 @@
 #pragma once
 
 #include"nlohmannJsonDeclaration.h"
-#include"nlohmann/json.hpp"
 
 #include"VirtualStock.h"
 
@@ -61,7 +60,7 @@ public:
 	CDayLinePtr GetDayLine(const size_t lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 
-	bool HaveNewDayLineData();
+	bool HaveNewDayLineData() const;
 
 	bool IsUpdateCompanyProfile() const noexcept { return m_fUpdateCompanyProfile; }
 	void SetUpdateCompanyProfile(const bool fFlag) noexcept { m_fUpdateCompanyProfile = fFlag; }

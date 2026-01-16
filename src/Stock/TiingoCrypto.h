@@ -9,7 +9,7 @@
 
 class CTiingoCrypto : public CVirtualStock {
 public:
-	CTiingoCrypto();
+	CTiingoCrypto() = default;
 	// 不允许赋值。
 	CTiingoCrypto(const CTiingoCrypto&) = delete;
 	CTiingoCrypto& operator=(const CTiingoCrypto&) = delete;

@@ -170,7 +170,7 @@ void CChinaStock::ClearRTDataDeque() {
 	}
 }
 
-bool CChinaStock::HaveNewDayLineData() {
+bool CChinaStock::HaveNewDayLineData() const {
 	if (m_dataDayLine.Size() <= 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;

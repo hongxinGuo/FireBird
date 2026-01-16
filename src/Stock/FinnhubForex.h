@@ -8,7 +8,7 @@
 
 class CFinnhubForex : public CVirtualStock {
 public:
-	CFinnhubForex();
+	CFinnhubForex() = default;
 	// 不允许赋值。
 	CFinnhubForex(const CFinnhubForex&) = delete;
 	CFinnhubForex& operator=(const CFinnhubForex&) = delete;
@@ -27,7 +27,7 @@ public:
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate();
-	bool HaveNewDayLineData();
+	bool HaveNewDayLineData() const;
 
 	CContainerForexDayLine m_dataDayLine;
 };

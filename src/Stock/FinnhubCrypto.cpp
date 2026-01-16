@@ -3,9 +3,6 @@
 #include"WorldMarket.h"
 #include "FinnhubCrypto.h"
 
-CFinnhubCrypto::CFinnhubCrypto() {
-}
-
 void CFinnhubCrypto::SetCheckingDayLineStatus() {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (IsNullStock()) {
@@ -49,7 +46,7 @@ void CFinnhubCrypto::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CFinnhubCrypto::HaveNewDayLineData() {
+bool CFinnhubCrypto::HaveNewDayLineData() const {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;

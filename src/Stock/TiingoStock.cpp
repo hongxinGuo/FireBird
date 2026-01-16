@@ -375,7 +375,7 @@ void CTiingoStock::RebuildStockSplitDB() {
 	}
 }
 
-bool CTiingoStock::HaveNewDayLineData() {
+bool CTiingoStock::HaveNewDayLineData() const {
 	if (m_dataDayLine.Empty()) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate())
 		|| (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate()))

@@ -976,10 +976,7 @@ long long CChinaMarket::GetWebErrorCode() {
 }
 
 bool CChinaMarket::CheckMarketOpen(long lCurrentTime) {
-	if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
-		m_fMarketOpened = false;
-	}
-	else if ((lCurrentTime > 92759) && (lCurrentTime < 150600)) {	// 市场结束接收数据的时间，皆定为150600（与停止存储临时数据的时间一样）
+	if (IsWorkingDay() && (lCurrentTime > 92759 && lCurrentTime < 150600)) {	// 市场结束接收数据的时间，皆定为150600（与停止存储临时数据的时间一样）
 		m_fMarketOpened = true;
 	}
 	else m_fMarketOpened = false;

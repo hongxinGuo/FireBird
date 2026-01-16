@@ -43,7 +43,7 @@ public:
 	CTiingoForexWebSocket(CTiingoForexWebSocket&& other) noexcept = delete;
 	CTiingoForexWebSocket& operator=(const CTiingoForexWebSocket& other) = delete;
 	CTiingoForexWebSocket& operator=(CTiingoForexWebSocket&& other) noexcept = delete;
-	~CTiingoForexWebSocket() override;
+	~CTiingoForexWebSocket() override = default;
 
 	void Connect() override;
 	void Send(const vectorString& vSymbol) override;

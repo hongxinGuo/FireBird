@@ -44,9 +44,6 @@ CTiingoForexWebSocket::CTiingoForexWebSocket() {
 	m_url = "wss://api.tiingo.com/fx";
 }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket() {
-}
-
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
 /// </summary>
@@ -69,7 +66,7 @@ void CTiingoForexWebSocket::Send(const vectorString& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
-	ix::WebSocketSendInfo info = m_webSocket.send(messageAuth);
+	m_webSocket.send(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 

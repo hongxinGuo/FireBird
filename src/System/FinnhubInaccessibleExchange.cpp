@@ -6,20 +6,6 @@
 
 #include <fstream>
 
-std::string Test_gl_sFinnhubInaccessibleExchange = R"(
-{ "UpdateDate" : 20221205,
- "InaccessibleExchange" :
-[
-{
-	"Function" : "StockFundamentalsCompanyProfileConcise",
-	"Exchange" : ["SS", "SZ"]
-},
-{
-	"Function" : "StockFundamentalsBasicFinancials",
-	"Exchange" : ["SS", "SZ"]
-}
-]})";
-
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("FinnhubInaccessibleExchange全局变量只允许存在一个实例\n"));
@@ -36,7 +22,7 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
 	tm tmLocal;
 	const auto time = gl_tpNow.time_since_epoch().count();
-	auto error = localtime_s(&tmLocal, &time);
+	localtime_s(&tmLocal, &time);
 	if (tmLocal.tm_mday == 1) {
 		DeleteAllUSExchange();
 	}

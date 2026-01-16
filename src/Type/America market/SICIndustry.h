@@ -7,6 +7,10 @@
 class CSICIndustry final {
 public:
 	CSICIndustry();
+	CSICIndustry(const CSICIndustry&) = delete;
+	CSICIndustry& operator=(const CSICIndustry&) = delete;
+	CSICIndustry(const CSICIndustry&&) noexcept = delete;
+	CSICIndustry& operator=(const CSICIndustry&&) noexcept = delete;
 	~CSICIndustry() = default;
 
 	void Append(CSetSICIndustry& setSICIndustry) const;

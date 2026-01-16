@@ -3,8 +3,7 @@
 #include"WorldMarket.h"
 #include "FinnhubForex.h"
 
-CFinnhubForex::CFinnhubForex() {
-}
+#include <algorithm>
 
 void CFinnhubForex::SetCheckingDayLineStatus() {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
@@ -20,10 +19,7 @@ void CFinnhubForex::SetCheckingDayLineStatus() {
 
 string CFinnhubForex::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
 	time_t tStartTime = gl_pWorldMarket->TransferToUTCTime(GetDayLineEndDate());
-	if (tStartTime < (tCurrentTime - static_cast<time_t>(365) * 24 * 3600)) {
-		// 免费账户只能读取一年以内的日线数据。
-		tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600);
-	}
+	tStartTime = max(tStartTime, tCurrentTime - static_cast<time_t>(365) * 24 * 3600);// 免费账户只能读取一年以内的日线数据。
 
 	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
 
@@ -49,7 +45,7 @@ void CFinnhubForex::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CFinnhubForex::HaveNewDayLineData() {
+bool CFinnhubForex::HaveNewDayLineData() const {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;

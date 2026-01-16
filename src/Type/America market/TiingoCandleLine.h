@@ -7,7 +7,8 @@ using std::vector;
 
 class CTiingoCandleLine : public CVirtualHistoryCandleExtend {
 public:
-	CTiingoCandleLine();
+	CTiingoCandleLine() = default;
+	~CTiingoCandleLine() override = default;
 	int GetRatio() const override; // TiingoDayLine的比率与TiingoStock相同
 };
 

@@ -154,7 +154,7 @@ public:
 
 	void RebuildStockSplitDB() override;
 
-	bool HaveNewDayLineData();
+	bool HaveNewDayLineData() const;
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckDayLineUpdateStatus(long llTodayDate);

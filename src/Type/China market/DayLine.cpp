@@ -2,7 +2,9 @@
 
 #include "DayLine.h"
 
-static CChinaStock s_stock;
+namespace {
+	CChinaStock s_stock;
+}
 
 CDayLine::CDayLine() {
 }

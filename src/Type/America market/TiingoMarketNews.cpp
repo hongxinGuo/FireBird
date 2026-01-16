@@ -18,7 +18,7 @@ void CTiingoMarketNews::Append(CSetTiingoMarketNews& setTiingoMarketNews) {
 	setTiingoMarketNews.Update();
 }
 
-void CTiingoMarketNews::Save(CSetTiingoMarketNews& setTiingoMarketNews) {
+void CTiingoMarketNews::Save(CSetTiingoMarketNews& setTiingoMarketNews) const {
 	if ((m_strDescription.length() > 500)
 		|| (m_strSource.length() > 100)
 		|| (m_strTags.length() > 400)

@@ -4,9 +4,6 @@
 
 #include "CharSetTransfer.h"
 
-CTiingoCrypto::CTiingoCrypto() {
-}
-
 void CTiingoCrypto::Load(const CSetTiingoCrypto& setTiingoCrypto) {
 	m_strSymbol = T2Utf8(setTiingoCrypto.m_Ticker);
 	m_strName = T2Utf8(setTiingoCrypto.m_Name);

@@ -1148,7 +1148,7 @@ void CWorldMarket::CalculateStockTotalValue(const vector<CTiingoStockPtr>& vStoc
 	while (index < vDayLineValue.size()) {
 		auto pValue2 = make_shared<dayLineValue>();
 		double value = 0.0;
-		const auto pValue = vDayLineValue[index];
+		const auto& pValue = vDayLineValue[index];
 		auto date = pValue->lDate;
 		pValue2->lDate = pValue->lDate;
 		do {
@@ -1376,13 +1376,13 @@ void CWorldMarket::UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& 
 }
 
 void CWorldMarket::UpdateMarketStatus(const CMarketStatusesPtr& pv) const {
-	for (auto p : *pv) {
+	for (const auto& p : *pv) {
 		m_pvMarketStatus->push_back(p);
 	}
 }
 
 void CWorldMarket::UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const {
-	for (auto p : *pv) {
+	for (const auto& p : *pv) {
 		m_pvMarketHoliday->push_back(p);
 	}
 }

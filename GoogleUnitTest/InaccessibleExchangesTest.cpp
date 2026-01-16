@@ -7,6 +7,22 @@
 #include"FinnhubInaccessibleExchange.h"
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
+namespace {
+	std::string s_sFinnhubInaccessibleExchange = R"(
+{ "UpdateDate" : 20221205,
+ "InaccessibleExchange" :
+[
+{
+	"Function" : "StockFundamentalsCompanyProfileConcise",
+	"Exchange" : ["SS", "SZ"]
+},
+{
+	"Function" : "StockFundamentalsBasicFinancials",
+	"Exchange" : ["SS", "SZ"]
+}
+]})";
+}
+
 namespace FireBirdTest {
 	class CFinnhubInaccessibleExchangeTest : public testing::Test {
 		void SetUp() override {
@@ -24,7 +40,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
-		nlohmannJson jsFinnhubInaccessibleExchange = nlohmannJson::parse(Test_gl_sFinnhubInaccessibleExchange);
+		nlohmannJson jsFinnhubInaccessibleExchange = nlohmannJson::parse(s_sFinnhubInaccessibleExchange);
 		CInaccessible exchange;
 		const string s2 = jsFinnhubInaccessibleExchange["InaccessibleExchange"][0]["Function"];
 		exchange.SetFunctionString(s2);

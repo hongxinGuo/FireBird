@@ -286,7 +286,7 @@ void CSystemDeque::PushMessage(const string& str) {
 }
 
 string CSystemDeque::PopMessage() {
-	string str = "";
+	string str;
 	m_queueMessage.try_dequeue(str);
 	return str;
 }

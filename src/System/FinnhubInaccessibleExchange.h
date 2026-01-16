@@ -68,5 +68,3 @@ protected:
 using CFinnhubInaccessibleExchangePtr = shared_ptr<CFinnhubInaccessibleExchange>;
 
 extern CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange;
-
-extern std::string Test_gl_sFinnhubInaccessibleExchange; // finnhub inaccessible exchange test data
