@@ -137,6 +137,9 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[ECONOMIC_CALENDAR_] = "EconomicCalendar"; //Premium
 	m_mapFinnhubInquiryIndexToString[ECONOMIC_CODES_] = "EconomicCodes"; //Premium
 	m_mapFinnhubInquiryIndexToString[ECONOMIC_ECONOMIC_] = "EconomicEconomic"; //Premium
+
+	// Tiingo
+	m_mapFinnhubInquiryIndexToString[TIINGO_STOCK_DAILY_META_] = "TiingoStockDailyMeta"; // Premium
 }
 
 void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
@@ -253,4 +256,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex["EconomicCalendar"] = ECONOMIC_CALENDAR_; //Premium
 	m_mapFinnhubInquiryStringToIndex["EconomicCodes"] = ECONOMIC_CODES_; //Premium
 	m_mapFinnhubInquiryStringToIndex["EconomicEconomic"] = ECONOMIC_ECONOMIC_; //Premium
+
+	// Tiingo
+	m_mapFinnhubInquiryStringToIndex["TiingoStockDailyMeta"] = TIINGO_STOCK_DAILY_META_; // Premium
 }

@@ -53,6 +53,11 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	BuildUI();
 
 	connect(ui.actionAbout, &QAction::triggered, this, &WatchdogQT::onActionAboutTriggered);
+
+	// 注册程序间通讯用消息
+	m_FireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
+	m_FireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
+	m_FireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
 }
 
 WatchdogQT::~WatchdogQT() {
@@ -76,30 +81,29 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 	if (eventType == "windows_generic_MSG") {
 		string s;
 		const MSG* msg = static_cast<MSG*>(message);
-		switch (msg->message) {
-		case WM_FIREBIRD_SCHEDULING_EXIT_:
+		if (msg->message == m_FireBirdSchedulingExit) { // 定时调度退出
 			time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
 			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告定时调度关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
-		case WM_FIREBIRD_RUNNING_:
+		}
+		if (msg->message == m_FireBirdRunning) { // FireBird启动
 			time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
 			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
-		case WM_FIREBIRD_EXIT_:
+		}
+		if (msg->message == m_FireBirdExit) { // FireBird退出
 			time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
 			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
-		default:
-			break;
 		}
 	}
 	return QMainWindow::nativeEvent(eventType, message, result);

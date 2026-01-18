@@ -163,7 +163,7 @@ bool CInquireEngine::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 CWebDataPtr CInquireEngine::CreateWebData() {
 	const auto pWebData = make_shared<CWebData>();
 	pWebData->SetTime(gl_tpNow);
-	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
+	MoveDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 
 	return pWebData;
 }
@@ -178,7 +178,7 @@ void CInquireEngine::VerifyDataLength() const {
 	}
 }
 
-void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
+void CInquireEngine::MoveDataToWebData(const CWebDataPtr& pWebData) {
 	SPDLOG_ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
 	m_sBuffer.resize(m_lByteRead); //Note 设置缓冲区大小为实际数据量，抛弃掉最后的字符0x000. 切记
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度

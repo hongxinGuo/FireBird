@@ -238,6 +238,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage("系统初始化中.....");
 	::SystemInitialization();
 	gl_systemMessage.PushInformationMessage("重置系统");
+	gl_FireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
+	gl_FireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
+	gl_FireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
+
 
 	// 生成系统外观显示部件
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;

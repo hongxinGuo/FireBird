@@ -39,7 +39,7 @@ using namespace concurrencpp;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-long long StrToDecimal(const std::string_view& svData, int power) {
+long long StrToDecimal(const std::string_view& svData, size_t power) {
 	std::string buffer;
 	buffer.reserve(svData.size() + power + 2);
 
@@ -56,14 +56,14 @@ long long StrToDecimal(const std::string_view& svData, int power) {
 		buffer.append(fraction);
 		buffer.append(power > fraction.size() ? power - fraction.size() : 0, '0');
 		return std::stoll(buffer);
-	} catch (std::out_of_range) {
+	} catch (std::out_of_range&) {
 		return 0;
-	} catch (std::invalid_argument) {
+	} catch (std::invalid_argument&) {
 		return 0;
 	}
 }
 
-long long StrToDecimal2(const std::string_view& svData, int power) {
+long long StrToDecimal2(const std::string_view& svData, size_t power) {
 	try {
 		auto iPointPosition = svData.find('.');
 		if (iPointPosition == std::string_view::npos) {
@@ -73,17 +73,17 @@ long long StrToDecimal2(const std::string_view& svData, int power) {
 		}
 		std::string result(svData.substr(0, iPointPosition));
 		auto fraction = svData.substr(iPointPosition + 1);
-		if (fraction.size() > static_cast<size_t>(power)) {
+		if (fraction.size() > power) {
 			fraction = fraction.substr(0, power);
 		}
 		result.append(fraction);
-		if (power > static_cast<int>(fraction.size())) {
+		if (power > fraction.size()) {
 			result.append(power - fraction.size(), '0');
 		}
 		return std::stoll(result);
-	} catch (std::out_of_range) {
+	} catch (std::out_of_range&) {
 		return 0;
-	} catch (std::invalid_argument) {
+	} catch (std::invalid_argument&) {
 		return 0;
 	}
 }
@@ -95,7 +95,7 @@ long long StrToDecimal2(const std::string_view& svData, int power) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-long Str2Long(const std::string_view& svData, int power) {
+long Str2Long(const std::string_view& svData, size_t power) {
 	std::string buffer;
 	buffer.reserve(svData.size() + power + 2);
 
@@ -112,9 +112,9 @@ long Str2Long(const std::string_view& svData, int power) {
 		buffer.append(fraction);
 		buffer.append(power > fraction.size() ? power - fraction.size() : 0, '0');
 		return std::stol(buffer);
-	} catch (std::out_of_range) {
+	} catch (std::out_of_range&) {
 		return 0;
-	} catch (std::invalid_argument) {
+	} catch (std::invalid_argument&) {
 		return 0;
 	}
 }
@@ -131,12 +131,12 @@ string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char de
 	const auto lEnd = sv.find_first_of(delimiter);
 	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
 	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
-	return string_view(sv.data(), lEnd);
+	return string_view{ sv.data(), lEnd };
 }
 
 void ReportJsonError(const nlohmannJson::parse_error& e, const std::string& s) {
 	char buffer[180]{};
-	int i;
+	size_t i;
 	for (i = 0; i < 180; i++) {
 		if ((e.byte - 90 + i) < s.size()) {
 			buffer[i] = s.at(e.byte - 90 + i);
@@ -459,7 +459,7 @@ bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string& s, const long l
 void ParseOneNeteaseRTData(const nlohmannJson::iterator& it, const CWebRTDataPtr& pWebRTData) {
 	string strSymbol4;
 	nlohmannJson js = it.value();
-	const string symbolName = it.key();
+	const string& symbolName = it.key();
 
 	try {
 		strSymbol4 = XferNeteaseToStandard(symbolName);
@@ -520,7 +520,7 @@ void ParseOneNeteaseRTData(const nlohmannJson::iterator& it, const CWebRTDataPtr
 
 //
 // Note 网易不再提供数据服务
-
+//
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(nlohmannJson* pjs) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 

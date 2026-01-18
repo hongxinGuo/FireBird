@@ -35,13 +35,15 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 创建输出窗格:
 	constexpr DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
-	if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-		!m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
-		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
-		!m_wndChinaMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
-		!m_wndWorldMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
-		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 8)) {
+	if (!m_wndStockMarketInformation.Create(dwStyle, rectDummy, &m_wndTabs, 1) ||
+		!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
+		!m_wndChinaMarketInformation.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+		!m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
+		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
+		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
+		!m_wndChinaMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 9) ||
+		!m_wndWorldMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 10) ||
+		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 11)) {
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
 	}
@@ -51,43 +53,33 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CString strTabName;
 
 	// 将列表窗口附加到选项卡。所有的串表必须有效。
-	/*
-	ASSERT(strTabName.LoadString(IDS_INFORMATION_TAB));
-	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
-	ASSERT(strTabName.LoadString(IDS_DAYLINE_INFO_TAB));
-	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)1);
-	ASSERT(strTabName.LoadString(IDS_CHINA_MARKET_TASK_QUEUE)); //中国市场任务执行序列 
-	m_wndTabs.AddTab(&m_wndChinaMarketTaskQueue, strTabName, (UINT)2);
-	ASSERT(strTabName.LoadString(IDS_WORLD_MARKET_TASK_QUEUE));  //美国市场任务执行序列
-	m_wndTabs.AddTab(&m_wndWorldMarketTaskQueue, strTabName, (UINT)3);
-	ASSERT(strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB)); // WebSocket消息
-	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)4);
-	ASSERT(strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2)); // 软件系统消息
-	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)5);
-	ASSERT(strTabName.LoadString(IDS_ERROR_MESSAGE)); // 错误消息
-	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)6);
-	*/
-	BOOL bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
+	BOOL bNameValid = strTabName.LoadString(IDS_SOCK_MARKET_INFORMATION);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
+	m_wndTabs.AddTab(&m_wndStockMarketInformation, strTabName, (UINT)1);
+	bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)2);
+	bNameValid = strTabName.LoadString(IDS_CHINA_MARKET_INFORMATION);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndChinaMarketInformation, strTabName, (UINT)3);
 	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)1);
+	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)6);
 	bNameValid = strTabName.LoadString(IDS_CHINA_MARKET_TASK_QUEUE);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndChinaMarketTaskQueue, strTabName, (UINT)2);  // 错误消息
+	m_wndTabs.AddTab(&m_wndChinaMarketTaskQueue, strTabName, (UINT)7);  // 错误消息
 	bNameValid = strTabName.LoadString(IDS_WORLD_MARKET_TASK_QUEUE);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndWorldMarketTaskQueue, strTabName, (UINT)3);  // 错误消息
+	m_wndTabs.AddTab(&m_wndWorldMarketTaskQueue, strTabName, (UINT)8);  // 错误消息
 	bNameValid = strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)4);
+	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)9);
 	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2); // WebSocket消息
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)5); // 软件系统消息
+	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)10); // 软件系统消息
 	bNameValid = strTabName.LoadString(IDS_ERROR_MESSAGE);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)6);  // 错误消息
+	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)11);  // 错误消息
 
 	// 设置500毫秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 500, nullptr);
@@ -122,7 +114,9 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
 }
 
 void COutputWnd::UpdateFonts() {
+	m_wndStockMarketInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
+	m_wndChinaMarketInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputWebSocketInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInnerSystemInformation.SetFont(&afxGlobalData.fontRegular);
@@ -140,85 +134,106 @@ void COutputWnd::UpdateFonts() {
 /////////////////////////////////////////////////////////////////////////////////////////
 void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	const auto time = GetUTCTime();
-	if (timeLast >= time) return; // 每秒更新一次
-	timeLast = time;
+	if (time > m_timeLast) {// 每秒更新一次
+		m_timeLast = time;
 
-	long lCurrentPos;
-	bool fUpdate = false;
-	const string sTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
+		long lCurrentPos;
+		bool fUpdate = false;
+		const string sTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 
-	// 如果显示列表超过10000个，则删除前面的1000个。
-	if (m_wndOutputInformation.GetCount() > 10000) m_wndOutputInformation.TruncateList(1000);
-	// 将输出信息拷贝到消息队列中。
-	if ((gl_systemMessage.InformationSize()) > 0) {
-		lCurrentPos = m_wndOutputInformation.GetCurSel();
-		if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayInformation(&m_wndOutputInformation, sTime);
-		if (fUpdate) {
-			m_wndOutputInformation.SetCurAtLastLine();
+		if (m_wndStockMarketInformation.GetCount() > 10000) m_wndStockMarketInformation.TruncateList(1000);
+		if (gl_systemMessage.StockMarketInformationSize() > 0) {
+			lCurrentPos = m_wndStockMarketInformation.GetCurSel();
+			if (m_wndStockMarketInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayStockMarketInformation(&m_wndStockMarketInformation, sTime);
+			if (fUpdate) {
+				m_wndStockMarketInformation.SetCurAtLastLine();
+			}
 		}
-	}
 
-	if (m_wndOutputDayLineInfo.GetCount() > 10000) m_wndOutputDayLineInfo.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.DayLineInfoSize()) > 0) {
-		lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
-		if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, sTime);
-		if (fUpdate) {
-			m_wndOutputDayLineInfo.SetCurAtLastLine();
+		// 如果显示列表超过10000个，则删除前面的1000个。
+		if (m_wndOutputInformation.GetCount() > 10000) m_wndOutputInformation.TruncateList(1000);
+		// 将输出信息拷贝到消息队列中。
+		if (gl_systemMessage.InformationSize() > 0) {
+			lCurrentPos = m_wndOutputInformation.GetCurSel();
+			if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayInformation(&m_wndOutputInformation, sTime);
+			if (fUpdate) {
+				m_wndOutputInformation.SetCurAtLastLine();
+			}
 		}
-	}
 
-	if (m_wndOutputWebSocketInfo.GetCount() > 10000) m_wndOutputWebSocketInfo.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.WebSocketInfoSize()) > 0) {
-		lCurrentPos = m_wndOutputWebSocketInfo.GetCurSel();
-		if (m_wndOutputWebSocketInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, sTime);
-		if (fUpdate) {
-			m_wndOutputWebSocketInfo.SetCurAtLastLine();
+		if (m_wndChinaMarketInformation.GetCount() > 10000) m_wndChinaMarketInformation.TruncateList(1000);
+		if (gl_systemMessage.ChinaMarketInformationSize() > 0) {
+			lCurrentPos = m_wndChinaMarketInformation.GetCurSel();
+			if (m_wndChinaMarketInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayChinaMarketInformation(&m_wndChinaMarketInformation, sTime);
+			if (fUpdate) {
+				m_wndChinaMarketInformation.SetCurAtLastLine();
+			}
 		}
-	}
 
-	if (m_wndOutputInnerSystemInformation.GetCount() > 10000) m_wndOutputInnerSystemInformation.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.InnerSystemInfoSize()) > 0) {
-		lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
-		if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, sTime);
-		if (fUpdate) {
-			m_wndOutputInnerSystemInformation.SetCurAtLastLine();
+		if (m_wndOutputDayLineInfo.GetCount() > 10000) m_wndOutputDayLineInfo.TruncateList(1000);
+		fUpdate = false;
+		if (gl_systemMessage.DayLineInfoSize() > 0) {
+			lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
+			if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, sTime);
+			if (fUpdate) {
+				m_wndOutputDayLineInfo.SetCurAtLastLine();
+			}
 		}
-	}
 
-	if (m_wndErrorMessage.GetCount() > 10000) m_wndErrorMessage.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.ErrorMessageSize()) > 0) {
-		lCurrentPos = m_wndErrorMessage.GetCurSel();
-		if (m_wndErrorMessage.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, sTime);
-		if (fUpdate) {
-			m_wndErrorMessage.SetCurAtLastLine();
+		if (m_wndOutputWebSocketInfo.GetCount() > 10000) m_wndOutputWebSocketInfo.TruncateList(1000);
+		fUpdate = false;
+		if (gl_systemMessage.WebSocketInfoSize() > 0) {
+			lCurrentPos = m_wndOutputWebSocketInfo.GetCurSel();
+			if (m_wndOutputWebSocketInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, sTime);
+			if (fUpdate) {
+				m_wndOutputWebSocketInfo.SetCurAtLastLine();
+			}
 		}
-	}
 
-	const auto validChinaTasks = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime());
-	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
-	int i = 0;
-	for (const auto& pTask : validChinaTasks) {
-		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
-		m_wndChinaMarketTaskQueue.AppendString(s);
-		if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
-	}
+		if (m_wndOutputInnerSystemInformation.GetCount() > 10000) m_wndOutputInnerSystemInformation.TruncateList(1000);
+		fUpdate = false;
+		if (gl_systemMessage.InnerSystemInfoSize() > 0) {
+			lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
+			if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, sTime);
+			if (fUpdate) {
+				m_wndOutputInnerSystemInformation.SetCurAtLastLine();
+			}
+		}
 
-	const auto validWorldTasks = gl_pWorldMarket->DiscardOutDatedTask(gl_pWorldMarket->GetMarketTime());
-	if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
-	i = 0;
-	for (const auto& pTask : validWorldTasks) {
-		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
-		m_wndWorldMarketTaskQueue.AppendString(s);
-		if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;
+		if (m_wndErrorMessage.GetCount() > 10000) m_wndErrorMessage.TruncateList(1000);
+		fUpdate = false;
+		if (gl_systemMessage.ErrorMessageSize() > 0) {
+			lCurrentPos = m_wndErrorMessage.GetCurSel();
+			if (m_wndErrorMessage.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, sTime);
+			if (fUpdate) {
+				m_wndErrorMessage.SetCurAtLastLine();
+			}
+		}
+
+		const auto validChinaTasks = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime());
+		if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
+		int i = 0;
+		for (const auto& pTask : validChinaTasks) {
+			string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
+			m_wndChinaMarketTaskQueue.AppendString(s);
+			if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
+		}
+
+		const auto validWorldTasks = gl_pWorldMarket->DiscardOutDatedTask(gl_pWorldMarket->GetMarketTime());
+		if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
+		i = 0;
+		for (const auto& pTask : validWorldTasks) {
+			string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
+			m_wndWorldMarketTaskQueue.AppendString(s);
+			if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;
+		}
 	}
 
 	// 调用基类的OnTimer函数

@@ -104,11 +104,20 @@ public:
 	CSystemMessage& operator=(const CSystemMessage&&) noexcept = delete;
 	~CSystemMessage();
 
+	void PushStockMarketInformationMessage(const string& str) { m_StockMarketInformation.PushMessage(str); }
+	string PopStockMarketInformationMessage() { return m_StockMarketInformation.PopMessage(); }
+	size_t StockMarketInformationSize() const { return m_StockMarketInformation.Size(); }
+	void DisplayStockMarketInformation(COutputList* pOutputList, const string& strTime) { m_StockMarketInformation.Display(pOutputList, strTime); }
+
 	void PushInformationMessage(const string& str) { m_SystemInformation.PushMessage(str); }
 	string PopInformationMessage() { return m_SystemInformation.PopMessage(); }
 	size_t InformationSize() const { return m_SystemInformation.Size(); }
-
 	void DisplayInformation(COutputList* pOutputList, const string& strTime) { m_SystemInformation.Display(pOutputList, strTime); }
+
+	void PushChinaMarketInformationMessage(const string& str) { m_ChinaMarketInformation.PushMessage(str); }
+	string PopChinaMarketInformationMessage() { return m_ChinaMarketInformation.PopMessage(); }
+	size_t ChinaMarketInformationSize() const { return m_ChinaMarketInformation.Size(); }
+	void DisplayChinaMarketInformation(COutputList* pOutputList, const string& strTime) { m_ChinaMarketInformation.Display(pOutputList, strTime); }
 
 	void PushDayLineInfoMessage(const string& s) { m_DayLineInformation.PushMessage(s); }
 	string PopDayLineInfoMessage() { return m_DayLineInformation.PopMessage(); }
@@ -177,7 +186,9 @@ public:
 
 protected:
 	// 信息输出队列群
+	CSystemDeque m_StockMarketInformation;
 	CSystemDeque m_SystemInformation;
+	CSystemDeque m_ChinaMarketInformation;
 	CSystemDeque m_DayLineInformation;
 	CSystemDeque m_WebSocketInfo;
 	CSystemDeque m_InnerSystemInformation;

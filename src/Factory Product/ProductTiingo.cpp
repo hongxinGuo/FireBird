@@ -28,11 +28,11 @@ void CProductTiingo::AddInaccessibleSymbol() {
 			pStock->AddSymbol(m_strInquiringSymbol);
 		}
 	} catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该证券名称
-		const auto pNewStock = make_shared<CInaccessible>();
-		pNewStock->SetFunction(m_iInquireType);
-		pNewStock->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));
-		pNewStock->AddSymbol(m_strInquiringSymbol);
-		gl_tiingoInaccessibleStock.SetStock(m_iInquireType, pNewStock);
+		const auto pNewInaccessibleSymbol = make_shared<CInaccessible>();
+		pNewInaccessibleSymbol->SetFunction(m_iInquireType);
+		pNewInaccessibleSymbol->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));
+		pNewInaccessibleSymbol->AddSymbol(m_strInquiringSymbol);
+		gl_tiingoInaccessibleStock.SetStock(m_iInquireType, pNewInaccessibleSymbol);
 	}
 }
 

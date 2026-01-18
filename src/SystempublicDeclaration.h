@@ -5,13 +5,12 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include <Windows.h>
-
-#define WM_FIREBIRD_RUNNING_            WM_APP + 0x301
-#define WM_FIREBIRD_SCHEDULING_EXIT_    WM_APP + 0x302
-#define WM_FIREBIRD_EXIT_               WM_APP + 0x303
 
 #include<string>
+
+inline std::wstring gl_wsFireBirdRunning{ L"FireBirdStockAnalysisRunningMutex" };
+inline std::wstring gl_wsFireBirdSchedulingExit{ L"FireBirdStockAnalysisSchedulingExitMutex" };
+inline std::wstring gl_wsFireBirdExit{ L"FireBirdStockAnalysisExitMutex" };
 
 inline std::string sFireBirdApp{ "FireBirdStockAnalysis" };
 inline std::string sWatchDogApp{ "WatchdogQT" };

@@ -121,7 +121,7 @@ namespace FireBirdTest {
 			m_iCount = pData->m_iCount;
 			m_lStringLength = pData->m_strData.length();
 			m_pNeteaseWebRTData->Resize(m_lStringLength);
-			for (int i = 0; i < m_lStringLength; i++) {
+			for (size_t i = 0; i < m_lStringLength; i++) {
 				m_pNeteaseWebRTData->SetData(i, pData->m_strData[i]);
 			}
 			m_pNeteaseWebRTData->ResetCurrentPos();
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 	public:
 		int m_iCount;
 		char* m_pData;
-		long m_lStringLength;
+		size_t m_lStringLength;
 		CWebDataPtr m_pNeteaseWebRTData;
 		CWebRTDataPtr m_pRTData;
 	};

@@ -48,4 +48,8 @@ extern int64_t gl_ChinaMarketTotalData;
 
 extern vector<string> gl_vNasdaq100Stocks;
 
+inline UINT gl_FireBirdExit{ 0 };
+inline UINT gl_FireBirdSchedulingExit{ 0 };
+inline UINT gl_FireBirdRunning{ 0 };
+
 #define TRACE_SCHEDULE_TASK_ // 跟踪任务调度

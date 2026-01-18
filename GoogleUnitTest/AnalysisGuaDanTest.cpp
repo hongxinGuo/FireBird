@@ -198,7 +198,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestGuadanData, RTDataGuadanTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
-		                         &Guadan5, &Guadan6, &Guadan7,
+		                         &Guadan5, &Guadan6, &Guadan7,&Guadan8,
 		                         &Guadan11, &Guadan12, &Guadan13, &Guadan14, &Guadan15));
 
 	TEST_P(RTDataGuadanTest, TestGuadan) {

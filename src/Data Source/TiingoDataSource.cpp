@@ -2,6 +2,8 @@
 
 #include"FinnhubInquiryType.h"
 #include "TiingoDataSource.h"
+
+#include "ProductTiingo.h"
 #include"VirtualWebProduct.h"
 
 #include "spdlog_assert.h"
@@ -11,13 +13,16 @@
 
 namespace {
 	map<string, enum_ErrorMessageData> mapTiingoErrorMap{
-		{ "You do not have permission to access the News API", ERROR_TIINGO_NO_RIGHT_TO_ACCESS_ }, // http状态码：403
-		{ "Error: resampleFreq must be in 'Min' or 'Hour' only", ERROR_TIINGO_FREQUENCY_ },
+		{ "You have run over your 500 symbol look up for this month. Please upgrade at", ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_ }, // http状态码：200
 		{ "You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT_ }, // http状态码：200
-		{ "Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_ }, // http状态码：429
 		{ "API limit reached.please try again later.Remaining limit:0", ERROR_TIINGO_REACH_MAX_API_LIMIT_ }, // http状态码：200
-		{ "Not found.", ERROR_TIINGO_NOT_FOUND_ },
-		{ "Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.", ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_ },
+		{ "Error: Endpoint only available for US and US-listed Stocks", ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK_ }, // http状态码：400
+		{ "Please supply a token", ERROR_TIINGO_MISSING_API_KEY_ }, // http状态码：403
+		{ "You do not have permission to access the News API", ERROR_TIINGO_NO_RIGHT_TO_ACCESS_ }, // http状态码：403
+		{ "Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.", ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_ }, // http状态码：403
+		{ "Not found.", ERROR_TIINGO_SYMBOL_NOT_FOUND_ }, // http状态码：404
+		{ "Error: resampleFreq must be in 'Min' or 'Hour' only", ERROR_TIINGO_FREQUENCY_ },
+		{ "Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.", ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_ }, // http状态码：429
 		{ "", ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH_ }
 	};
 }
@@ -85,7 +90,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	case 400: // bad request
 		if (pWebData->GetBufferLength() == 62) {
 			strView = pWebData->GetStringView(0, 62);
-			if (strView == "[\"Error: Endpoint only available for US and US-listed Stocks\"]") { 	// 非美国股票不提供此项数据
+			if (strView == R"(["Error: Endpoint only available for US and US-listed Stocks"])") { 	// 非美国股票不提供此项数据
 				gl_systemMessage.PushInnerSystemInformationMessage("Error: Endpoint only available for US and US - listed Stocks");
 				s2 = strView;
 				gl_errorLogger->warn("{}", s2);
@@ -141,22 +146,23 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 		m_eErrorMessageData = ERROR_TIINGO_NOT_HANDLED_;
 		return;
 	case 404:
-		if (pWebData->GetBufferLength() == 23) {
-			strView = pWebData->GetStringView(0, 23); // 
-			if (strView == R"({"detail":"Not found."})") { 	//
-				str = "Warning: Tiingo symbol not exist: ";
-				str += m_pCurrentProduct->GetInquiry();
-				gl_systemMessage.PushInnerSystemInformationMessage(str);
-				gl_errorLogger->warn("{}", str);
-				m_eErrorMessageData = ERROR_TIINGO_NOT_FOUND_;
-				return;
-			}
+		strView = pWebData->GetStringView(0, 23); // 
+		if (strView == R"({"detail":"Not found."})") { 	//
+			str = "Warning: Tiingo symbol not exist: ";
+			str += m_pCurrentProduct->GetInquiry();
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			gl_errorLogger->warn("{}", str);
+			m_eErrorMessageData = ERROR_TIINGO_SYMBOL_NOT_FOUND_;
 		}
-		str = "No right to access: " + m_pCurrentProduct->GetInquiry() + "Error message: " + pWebData->GetDataBuffer().substr(0, 50);
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
-		gl_errorLogger->warn("{}", str);
-		m_eErrorMessageData = ERROR_TIINGO_NO_RIGHT_TO_ACCESS_; // 目前日线数据无申请权利时返回错误代码404。
-		return;
+		else {
+			str = "No right to access: " + m_pCurrentProduct->GetInquiry() + "Error message: "
+			+ pWebData->GetDataBuffer().substr(0, 50);
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			gl_errorLogger->warn("{}", str);
+			m_eErrorMessageData = ERROR_TIINGO_NO_RIGHT_TO_ACCESS_; // 目前日线数据无申请权利时返回错误代码404。
+			return;
+		}
+		break;
 	case 429:
 		if (pWebData->GetBufferLength() == 152) {
 			strView = pWebData->GetStringView(0, 152); // 
@@ -240,7 +246,8 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			i = gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count();
 			gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(i + 200);
 			break;
-		case ERROR_TIINGO_NOT_FOUND_:
+		case ERROR_TIINGO_SYMBOL_NOT_FOUND_:
+			m_pCurrentProduct->AddInaccessibleSymbol();
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			gl_systemMessage.PushInnerSystemInformationMessage("Tiingo symbol not exist");
 			break;
@@ -409,12 +416,12 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
-		long lCurrentUpdatePos;
+		size_t lCurrentUpdatePos;
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
 		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
-			if (pTiingoStock->IsUpdateStockDailyMeta()) {
+			if (pTiingoStock->IsUpdateStockDailyMeta() && !gl_tiingoInaccessibleStock.HaveStock(TIINGO_STOCK_DAILY_META_, pTiingoStock->GetSymbol())) {
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 如果是付费账户的话，更新所有股票
 					fFound = true;
 					break;
@@ -452,12 +459,12 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
-		long lCurrentUpdatePos;
+		size_t lCurrentUpdatePos;
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
 		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
-			if (pTiingoStock->IsUpdateStockDailyMeta()) {
+			if (pTiingoStock->IsUpdateStockDailyMeta() && !gl_tiingoInaccessibleStock.HaveStock(TIINGO_STOCK_DAILY_META_, pTiingoStock->GetSymbol())) {
 				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新本日新出现的新股票，保证每月新代码不超过500个。
 					fFound = true;
 					break;
@@ -491,12 +498,12 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
-		long lCurrentUpdatePos;
+		size_t lCurrentUpdatePos;
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
 		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
-			if (pTiingoStock->IsUpdateStockDailyMeta()) {
+			if (pTiingoStock->IsUpdateStockDailyMeta() && !gl_tiingoInaccessibleStock.HaveStock(TIINGO_STOCK_DAILY_META_, pTiingoStock->GetSymbol())) {
 				fFound = true;
 			}
 		}
@@ -534,7 +541,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateDayLine()) {
-		long lCurrentUpdatePos;
+		size_t lCurrentUpdatePos;
 		CTiingoStockPtr pTiingoStock;
 		bool fFound = false;
 		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {

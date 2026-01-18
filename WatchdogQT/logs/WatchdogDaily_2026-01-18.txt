@@ -1,0 +1,2 @@
+[2026-01-18 07:58:00.984] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2026-01-18 07:58:48.490] [watchdog_daily_logger] [info] 2026年01月18日 07:58:41 FireBird报告启动

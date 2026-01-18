@@ -26,14 +26,12 @@ protected:
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditClear();
 	afx_msg void OnViewOutput();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
 
 protected:
 	int m_iLineNumber{ 10 }; // 可显示行数,初始为10行
-
-public:
-	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 class COutputWnd : public CDockablePane {
@@ -52,7 +50,9 @@ public:
 protected:
 	CMFCTabCtrl m_wndTabs;
 
+	COutputList m_wndStockMarketInformation;
 	COutputList m_wndOutputInformation;
+	COutputList m_wndChinaMarketInformation;
 	COutputList m_wndOutputDayLineInfo;
 	COutputList m_wndChinaMarketTaskQueue;
 	COutputList m_wndWorldMarketTaskQueue;
@@ -70,11 +70,8 @@ protected:
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	DECLARE_MESSAGE_MAP()
 
-	time_t timeLast{ 0 };
-
-public:
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	time_t m_timeLast{ 0 };
 };

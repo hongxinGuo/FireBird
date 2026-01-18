@@ -30,7 +30,7 @@ public:
 	CWebDataPtr CreateWebData();
 
 	void VerifyDataLength() const;
-	void TransferDataToWebData(const CWebDataPtr& pWebData); // 将接收到的数移至pWebData中
+	void MoveDataToWebData(const CWebDataPtr& pWebData); // 将接收到的数移至pWebData中，使用std::move来加快速度。
 
 	long GetByteRead() const noexcept { return m_lByteRead; }
 	void SetByteRead(long number) { m_lByteRead = number; } // 仅用于测试中

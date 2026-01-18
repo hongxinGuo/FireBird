@@ -617,18 +617,15 @@ void CWorldMarket::UpdateSECFilingsDB() {
 }
 
 void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime) {
-#ifndef DEBUG
 	if (!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks() || !gl_pTiingoDataSource->IsUpdateDayLine()) {
 		AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lCurrentTime, 0, 10, 0)); // 十分钟继续计算Nasdaq100 200MA比率
 		return;
 	}
-#endif
-	ASSERT(!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks()); // 每日更新Nasdaq100代码
 	gl_runtime.thread_executor()->post([this] {
 		this->LoadNasdaq100StocksDayLine().get();
 		this->CalculateNasdaq100StocksMA(200);
 		this->calculateNasdaq100MA200UpDownRate();
-		gl_systemMessage.PushInformationMessage("Nasdaq 100 200MA upDown rate calculated");
+		gl_systemMessage.PushStockMarketInformationMessage("Nasdaq 100 200MA upDown rate calculated");
 	});
 }
 
@@ -720,14 +717,14 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	if (!vUpDownRate.empty()) {
 		if (vUpDownRate.at(vUpDownRate.size() - 1).lDate == GetMarketDate()) {
 			if (vUpDownRate.at(vUpDownRate.size() - 1).Rate >= 80) {
-				gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate > 80%");
+				gl_systemMessage.PushStockMarketInformationMessage("Nasdaq 100 upDown rate > 80%");
 			}
 			if (vUpDownRate.at(vUpDownRate.size() - 1).Rate < 20) {
-				gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate < 20%");
+				gl_systemMessage.PushStockMarketInformationMessage("Nasdaq 100 upDown rate < 20%");
 			}
 		}
 		string str = std::format("Nasdaq 100 200MA upDown rate calculated, current at {:d}", vUpDownRate.at(vUpDownRate.size() - 1).Rate);
-		gl_systemMessage.PushInformationMessage(str);
+		gl_systemMessage.PushStockMarketInformationMessage(str);
 	}
 
 	CSetIndexNasdaq100MA200UpDownRate setIndex;

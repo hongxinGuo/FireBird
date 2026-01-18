@@ -42,6 +42,10 @@ private slots:
 	void onActionAboutTriggered();
 
 private:
+	UINT m_FireBirdExit{ 0 };
+	UINT m_FireBirdSchedulingExit{ 0 };
+	UINT m_FireBirdRunning{ 0 };
+
 	Ui::WatchdogQTClass ui;
 
 private:

@@ -61,7 +61,7 @@ protected:
 	bool m_fInitialized{ false };
 	bool m_fUpdateDB{ false };
 
-	nlohmannJson m_finnhubInaccessibleStock;
+	nlohmannJson m_tiingoInaccessibleStock;
 };
 
 using CTiingoInaccessibleStockPtr = shared_ptr<CTiingoInaccessibleStock>;

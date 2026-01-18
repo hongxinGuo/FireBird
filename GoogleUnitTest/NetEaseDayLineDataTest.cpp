@@ -51,9 +51,9 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const NetEaseDayLineData* pData = GetParam();
 			m_iCount = pData->m_iCount;
-			const long lLength = pData->m_strData.length();
+			const auto lLength = pData->m_strData.length();
 			m_pData.resize(lLength);
-			for (int i = 0; i < lLength; i++) {
+			for (size_t i = 0; i < lLength; i++) {
 				m_pData.at(i) = pData->m_strData.at(i);
 			}
 			m_lCountPos = 0;
@@ -205,9 +205,9 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const ReadDayLineOneValueData* pData = GetParam();
 			m_iCount = pData->m_iCount;
-			const long lLength = pData->m_strData.length();
+			const auto lLength = pData->m_strData.length();
 			m_pData.resize(lLength);
-			for (int i = 0; i < lLength; i++) {
+			for (size_t i = 0; i < lLength; i++) {
 				m_pData[i] = pData->m_strData[i];
 			}
 			m_lCountPos = 0;

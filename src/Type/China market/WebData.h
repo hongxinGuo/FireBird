@@ -44,9 +44,7 @@ public:
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	auto GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const size_t lValue) noexcept { m_lCurrentPos = lValue; }
-	//string_view GetStringView(const size_t iDataPos, const size_t iDataLength) const { return string_view(m_sDataBuffer.c_str() + iDataPos, iDataLength); }
 	string_view GetStringView(const size_t iDataPos, const size_t iDataLength) const { return m_svDataBuffer.substr(iDataPos, iDataLength); }
-	string_view GetStringView(const size_t iDataPos) const { return m_svDataBuffer.substr(iDataPos); }
 	string_view GetStringView() const { return m_svDataBuffer; }
 	bool GetData(char* buffer, size_t lDataLength) const; // 从m_lCurrentPos开始拷贝
 	bool SetData(const char* buffer, size_t lDataLength); // 从m_lCurrentPos开始填充。
