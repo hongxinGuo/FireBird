@@ -11,11 +11,9 @@
 
 #include "Inaccessible.h"
 
-using CInaccessibleStocksPtr = shared_ptr<CInaccessible>;
-
 class CTiingoInaccessibleStock {
 public:
-	CTiingoInaccessibleStock();
+	CTiingoInaccessibleStock(const string& strFileName);
 	// 只能有一个实例,不允许赋值、拷贝
 	CTiingoInaccessibleStock(const CTiingoInaccessibleStock&) = delete;
 	CTiingoInaccessibleStock& operator=(const CTiingoInaccessibleStock&) = delete;
@@ -31,7 +29,7 @@ public:
 	void UpdateJson();
 
 	void Clear() noexcept {
-		for (const auto& val : m_mapStock | views::values) {
+		for (const auto& val : m_mapInaccessible | views::values) {
 			val->Clear();
 		}
 	}
@@ -42,30 +40,31 @@ public:
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
 
-	static int GetTiingoInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
-	CInaccessibleStocksPtr GetStock(int iInquireType) { return m_mapStock.at(iInquireType); }
-	void SetStock(const int iInquireType, const CInaccessibleStocksPtr& pStock) { m_mapStock[iInquireType] = pStock; }
-	void DeleteStock(int iInquireType, const string& strStock);
-	bool HaveStock(int iInquireType, const string& strStockCode) const;
-	size_t GetItemSize() const noexcept { return m_mapStock.size(); }
+	static int GetInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
+	CInaccessiblePtr GetInaccessible(int iInquireType) { return m_mapInaccessible.at(iInquireType); }
+	void SetInaccessible(const int iInquireType, const CInaccessiblePtr& pInaccessible) { m_mapInaccessible[iInquireType] = pInaccessible; }
+	void DeleteInaccessible(int iInquireType, const string& strSymbol);
+	bool IsInaccessible(int iInquireType, const string& strSymbol) const;
+	size_t GetItemSize() const noexcept { return m_mapInaccessible.size(); }
 
 	bool IsUpdateDB() const noexcept { return m_fUpdateDB; }
 	void SetUpdateDB(const bool fUpdate) noexcept { m_fUpdateDB = fUpdate; }
 
 protected:
-	string m_strFileName{ "TiingoInaccessibleStock.json" }; // 配置文件名称
+	string m_strFileName{}; // 配置文件名称
 
 	long m_lUpdateDate{ 19800101 }; // 本文件更新日期
-	map<int, CInaccessibleStocksPtr> m_mapStock; //
+	map<int, CInaccessiblePtr> m_mapInaccessible; //
 
 	bool m_fInitialized{ false };
 	bool m_fUpdateDB{ false };
 
-	nlohmannJson m_tiingoInaccessibleStock;
+private :
+	nlohmannJson m_jsonInaccessible;
 };
 
 using CTiingoInaccessibleStockPtr = shared_ptr<CTiingoInaccessibleStock>;
 
 extern CTiingoInaccessibleStock gl_tiingoInaccessibleStock;
 
-extern std::string Test_gl_sTiingoInaccessibleStock; // finnhub inaccessible exchange test data
+extern std::string Test_gl_sTiingoInaccessibleStock; // tiingo inaccessible stock test data

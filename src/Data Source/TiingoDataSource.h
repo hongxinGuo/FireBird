@@ -17,6 +17,7 @@ public:
 
 	void ConfigureInternetOption() override; // 配置internet参数。
 	void CheckWebData(const CWebDataPtr& pWebData) override;
+	void CheckWebData2(const CWebDataPtr& pWebData);
 
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 

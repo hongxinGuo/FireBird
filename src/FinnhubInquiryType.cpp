@@ -93,10 +93,14 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[MUTUAL_FUND_HOLDINGS_] = "MutualFundHoldings"; // Premium
 	m_mapFinnhubInquiryIndexToString[MUTUAL_FUND_SECTOR_] = "MutualFundSector"; // Premium
 	m_mapFinnhubInquiryIndexToString[MUTUAL_FUND_COUNTRY_] = "MutualFundCountry"; // Premium
+	m_mapFinnhubInquiryIndexToString[MUTUAL_FUNDS_EET_] = "MutualFundsEET"; // Premium
+	m_mapFinnhubInquiryIndexToString[MUTUAL_FUNDS_EET_PAI_] = "MutualFundsEETPAI"; // Premium
 
 	// Bonds
 	m_mapFinnhubInquiryIndexToString[BOND_PROFILE_] = "BondProfile"; // Premium
 	m_mapFinnhubInquiryIndexToString[BOND_PRICE_] = "BondPrice"; // Premium
+	m_mapFinnhubInquiryIndexToString[BOND_TICK_TRADE_DATA_] = "BondTickTradeData"; // Premium
+	m_mapFinnhubInquiryIndexToString[BOND_YIELD_CURVE_] = "BondYieldCurve"; // Premium
 
 	// Forex
 	m_mapFinnhubInquiryIndexToString[FOREX_EXCHANGE_] = "ForexExchange";
@@ -139,7 +143,9 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[ECONOMIC_ECONOMIC_] = "EconomicEconomic"; //Premium
 
 	// Tiingo
+	m_mapFinnhubInquiryIndexToString[TIINGO_FUNDAMENTAL_DEFINITION_] = "TiingoFundamentalDefinition";
 	m_mapFinnhubInquiryIndexToString[TIINGO_STOCK_DAILY_META_] = "TiingoStockDailyMeta"; // Premium
+	m_mapFinnhubInquiryIndexToString[TIINGO_FINANCIAL_STATEMENT_] = "TiingoFinancialStatement"; // Premium
 }
 
 void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
@@ -212,10 +218,14 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex["MutualFundHoldings"] = MUTUAL_FUND_HOLDINGS_; // Premium
 	m_mapFinnhubInquiryStringToIndex["MutualFundSector"] = MUTUAL_FUND_SECTOR_; // Premium
 	m_mapFinnhubInquiryStringToIndex["MutualFundCountry"] = MUTUAL_FUND_COUNTRY_; // Premium
+	m_mapFinnhubInquiryStringToIndex["MutualFundsEET"] = MUTUAL_FUNDS_EET_; // Premium
+	m_mapFinnhubInquiryStringToIndex["MutualFundsEETPAI"] = MUTUAL_FUNDS_EET_PAI_; // Premium
 
 	// Bonds
 	m_mapFinnhubInquiryStringToIndex["BondProfile"] = BOND_PROFILE_; // Premium
 	m_mapFinnhubInquiryStringToIndex["BondPrice"] = BOND_PRICE_; // Premium
+	m_mapFinnhubInquiryStringToIndex["BondTickTradeData"] = BOND_TICK_TRADE_DATA_; // Premium
+	m_mapFinnhubInquiryStringToIndex["BondYieldCurve"] = BOND_YIELD_CURVE_; // Premium
 
 	// Forex
 	m_mapFinnhubInquiryStringToIndex["ForexExchange"] = FOREX_EXCHANGE_;
@@ -258,5 +268,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex["EconomicEconomic"] = ECONOMIC_ECONOMIC_; //Premium
 
 	// Tiingo
+	m_mapFinnhubInquiryStringToIndex["TiingoFundamentalDefinition"] = TIINGO_FUNDAMENTAL_DEFINITION_;
 	m_mapFinnhubInquiryStringToIndex["TiingoStockDailyMeta"] = TIINGO_STOCK_DAILY_META_; // Premium
+	m_mapFinnhubInquiryStringToIndex["TiingoFinancialStatement"] = TIINGO_FINANCIAL_STATEMENT_; // Premium
 }

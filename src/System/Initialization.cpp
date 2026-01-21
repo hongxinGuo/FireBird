@@ -18,8 +18,6 @@
 #include "simdjsonGetValue.h"
 #include "Thread.h"
 
-#include <spdlog/sinks/basic_file_sink.h>
-#include <spdlog/spdlog.h>
 using namespace spdlog;
 
 #include "CharSetTransfer.h"

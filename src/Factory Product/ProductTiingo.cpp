@@ -23,7 +23,7 @@ void CProductTiingo::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pv
 void CProductTiingo::AddInaccessibleSymbol() {
 	gl_tiingoInaccessibleStock.SetUpdateDB(true);
 	try { // 存在此申请类型
-		const auto pStock = gl_tiingoInaccessibleStock.GetStock(m_iInquireType);
+		const auto pStock = gl_tiingoInaccessibleStock.GetInaccessible(m_iInquireType);
 		if (!pStock->HaveSymbol(m_strInquiringSymbol)) {	// 新的证券代码？
 			pStock->AddSymbol(m_strInquiringSymbol);
 		}
@@ -32,7 +32,7 @@ void CProductTiingo::AddInaccessibleSymbol() {
 		pNewInaccessibleSymbol->SetFunction(m_iInquireType);
 		pNewInaccessibleSymbol->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));
 		pNewInaccessibleSymbol->AddSymbol(m_strInquiringSymbol);
-		gl_tiingoInaccessibleStock.SetStock(m_iInquireType, pNewInaccessibleSymbol);
+		gl_tiingoInaccessibleStock.SetInaccessible(m_iInquireType, pNewInaccessibleSymbol);
 	}
 }
 

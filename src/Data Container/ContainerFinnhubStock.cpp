@@ -7,13 +7,8 @@
 #include "pch.h"
 
 #include"WorldMarket.h"
-
 #include"SetFinnhubStock.h"
-
 #include "ContainerFinnhubStock.h"
-
-#include <algorithm>
-
 #include "CharSetTransfer.h"
 
 CContainerFinnhubStock::CContainerFinnhubStock() {

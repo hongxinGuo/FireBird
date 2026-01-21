@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "FinnhubInquiryType.h"
 #include"GeneralCheck.h"
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
@@ -8,9 +9,11 @@
 #include "ProductTiingoCryptoSymbol.h"
 #include "ProductTiingoFinancialState.h"
 #include "ProductTiingoFundamentalDefinition.h"
+#include "ProductTiingoStockDailyMeta.h"
 #include "ProductTiingoStockDayLine.h"
 #include "ProductTiingoStockProfile.h"
 #include"TestWebData.h"
+#include "TiingoInaccessibleStock.h"
 
 using namespace testing;
 
@@ -157,6 +160,55 @@ namespace FireBirdTest {
 		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
+	TEST_F(CTiingoDataSourceTest, TestCheckWebData6) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		pWebData->Test_SetBuffer_(R"({"detail":"Not found."})"); // 没找到
+		m_pTiingoDataSource->SetHTTPStatusCode(404); // not found
+		auto pProduct = make_shared<CProductTiingoStockDailyMeta>();
+		pProduct->SetInquireType(TIINGO_STOCK_DAILY_META_);
+		pProduct->SetInquiringSymbol("TZUP");
+		pProduct->SetReceivedDataStatus(GOOD_DATA_);
+		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
+
+		EXPECT_FALSE(gl_tiingoInaccessibleStock.IsInaccessible(TIINGO_STOCK_DAILY_META_, "TZUP"));
+
+		m_pTiingoDataSource->CheckWebData(pWebData);
+		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_SYMBOL_NOT_FOUND_);
+		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+
+		EXPECT_TRUE(gl_tiingoInaccessibleStock.IsInaccessible(TIINGO_STOCK_DAILY_META_, "TZUP"));
+
+		// 恢复原状
+		gl_tiingoInaccessibleStock.DeleteInaccessible(TIINGO_STOCK_DAILY_META_, "TZUP");
+		gl_systemMessage.PopInnerSystemInformationMessage();
+	}
+
+	TEST_F(CTiingoDataSourceTest, TestCheckWebData7) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		pWebData->Test_SetBuffer_(R"({"detail":"Error: Ticker 'TZUP' not found"})"); // 没找到
+		m_pTiingoDataSource->SetHTTPStatusCode(404); // not found
+		auto pProduct = make_shared<CProductTiingoStockDayLine>();
+		pProduct->SetInquireType(STOCK_PRICE_CANDLES_);
+		pProduct->SetInquiringSymbol("TZUP");
+		pProduct->SetReceivedDataStatus(GOOD_DATA_);
+		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
+
+		EXPECT_FALSE(gl_tiingoInaccessibleStock.IsInaccessible(STOCK_PRICE_CANDLES_, "TZUP"));
+
+		m_pTiingoDataSource->CheckWebData(pWebData);
+
+		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_SYMBOL_NOT_FOUND_);
+		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+
+		EXPECT_TRUE(gl_tiingoInaccessibleStock.IsInaccessible(STOCK_PRICE_CANDLES_, "TZUP"));
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+
+		// 恢复原状
+		gl_tiingoInaccessibleStock.DeleteInaccessible(STOCK_PRICE_CANDLES_, "TZUP");
+		gl_systemMessage.PopInnerSystemInformationMessage();
+	}
 	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoCompanySymbol) {
 		m_pTiingoDataSource->SetUpdateStockSymbol(false);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), 19800101);

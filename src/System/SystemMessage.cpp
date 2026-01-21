@@ -1,8 +1,6 @@
 #include"pch.h"
 
 #include "SystemMessage.h"
-
-#include <algorithm>
 #include"OutputWnd.h"
 
 map<long, string> gl_mapHTTPStatusCode{

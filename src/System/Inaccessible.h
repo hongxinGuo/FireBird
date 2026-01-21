@@ -1,12 +1,16 @@
 #pragma once
 
-#include<set>
 using std::set;
 
 class CInaccessible {
 public:
 	CInaccessible();
 	CInaccessible(const string& sFunction, int iFunction, const vector<string>& vSymbol);
+	// 不允许赋值、拷贝
+	CInaccessible(const CInaccessible&) = delete;
+	CInaccessible& operator=(const CInaccessible&) = delete;
+	CInaccessible(const CInaccessible&&) noexcept = delete;
+	CInaccessible& operator=(const CInaccessible&&) noexcept = delete;
 	virtual ~CInaccessible() = default;
 
 	bool Assign(const string& sFunction, int iFunction, const vector<string>& vSymbol);
@@ -21,12 +25,10 @@ public:
 	void Clear();
 
 	bool HaveSymbol(const string& sSymbol) const;
-	bool HaveSymbol() const { return !m_vSymbol.empty(); };
+	bool HaveSymbol() const { return !m_vSymbol.empty(); }
 
 	size_t Size() const noexcept { return m_vSymbol.size(); }
 	string GetSymbol(const size_t iIndex) { return m_vSymbol.at(iIndex); }
-
-public:
 
 protected:
 	string m_sFunction; // 功能名称
@@ -35,4 +37,4 @@ protected:
 	set<string> m_setSymbol; // 所禁止的交易所名称的集合
 };
 
-using CInaccessibleSymbolsPtr = shared_ptr<CInaccessible>;
+using CInaccessiblePtr = shared_ptr<CInaccessible>;

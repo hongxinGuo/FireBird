@@ -20,8 +20,10 @@ using namespace testing;
 #define FMT_UNICODE 1
 
 // 使用spdlog作为日志库
+#include <spdlog/spdlog.h>
 #include <spdlog/common.h>
 #include "spdlog/sinks/daily_file_sink.h"
+#include <spdlog/sinks/basic_file_sink.h>
 
 // nlohmann json库
 #include"nlohmann/json.hpp"

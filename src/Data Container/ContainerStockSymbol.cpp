@@ -62,8 +62,8 @@ void CContainerStockSymbol::Reset() {
 bool CContainerStockSymbol::CreateTotalStockContainer() {
 	CChinaStockPtr pStock = nullptr;
 
-	for (size_t i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
-		CreateStockSection(m_vCurrentSectionStockCode.at(i));
+	for (const auto& str : m_vCurrentSectionStockCode) {
+		CreateStockSection(str);
 	}
 	return true;
 }
@@ -132,7 +132,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 }
 
 void CContainerStockSymbol::CreateStockSection(const string& strFirstStockCode) {
-	string strCode = GetStockSymbol(strFirstStockCode);
+	const string strCode = GetStockSymbol(strFirstStockCode);
 	const int iCode = atoi(strCode.c_str());
 	int iMarket = 0;
 	CChinaStockPtr pStock = nullptr;

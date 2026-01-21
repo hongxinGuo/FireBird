@@ -150,7 +150,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible4) {
-		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, "SZ")) << "未加入SZ交易所";
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, "SZ")) << "未加入SZ交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string strData = R"({"error":"You don't have access to this resource."})";
@@ -161,14 +161,14 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "将SZ交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
-		EXPECT_TRUE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, "SZ")) << "已加入SZ交易所";
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, "SZ")) << "已加入SZ交易所";
 
 		// 恢复原状
-		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteSymbol("SZ");
+		gl_finnhubInaccessibleExchange.GetInaccessible(STOCK_PRICE_CANDLES_)->DeleteSymbol("SZ");
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible5) {
-		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, "US")) << "未加入US交易所";
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, "US")) << "未加入US交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string strData = R"({"error":"You don't have access to this resource."})";
@@ -190,10 +190,10 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "连续100次后，将US交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
-		EXPECT_TRUE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, "US")) << "已加入US交易所";
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, "US")) << "已加入US交易所";
 
 		// 恢复原状
-		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteSymbol("US");
-		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteSymbol("AD");
+		gl_finnhubInaccessibleExchange.GetInaccessible(STOCK_PRICE_CANDLES_)->DeleteSymbol("US");
+		gl_finnhubInaccessibleExchange.GetInaccessible(STOCK_PRICE_CANDLES_)->DeleteSymbol("AD");
 	}
 }

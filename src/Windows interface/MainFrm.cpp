@@ -173,6 +173,9 @@ CMainFrame::CMainFrame() {
 		sm_fGlobeInit = true;
 		ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
 	}
+	else {
+		ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
+	}
 
 	// 默认下后台工作线程数为32，使用系统配置降低至实际数量。
 	for (int i = 0; i < MAX_BACKGROUND_WORKING_THREAD_ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
@@ -200,6 +203,9 @@ CMainFrame::~CMainFrame() {
 
 	if (sm_fGlobeInit) {
 		sm_fGlobeInit = false;
+		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
+	}
+	else {
 		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
 	}
 
@@ -238,10 +244,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage("系统初始化中.....");
 	::SystemInitialization();
 	gl_systemMessage.PushInformationMessage("重置系统");
-	gl_FireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
-	gl_FireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
-	gl_FireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
 
+	gl_MsgFireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
+	gl_MsgFireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
+	gl_MsgFireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
 
 	// 生成系统外观显示部件
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;

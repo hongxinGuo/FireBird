@@ -74,10 +74,10 @@ void CProductFinnhubEconomicCalendar::UpdateSystemStatus() {
 	gl_systemMessage.PushInformationMessage("Finnhub economic calendar updated");
 	if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
-		gl_systemMessage.PushInnerSystemInformationMessage("free finnhub account");
+		gl_systemMessage.PushStockMarketInformationMessage("free finnhub account");
 	}
 	else {
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
-		gl_systemMessage.PushInnerSystemInformationMessage("paid finnhub account");
+		gl_systemMessage.PushStockMarketInformationMessage("paid finnhub account");
 	}
 }

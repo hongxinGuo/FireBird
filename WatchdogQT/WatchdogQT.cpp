@@ -19,14 +19,28 @@ using namespace std;
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 
-static void InitializeLogSystem() {
-	// Create a daily logger - a new file is created every day at 2:30 am
-	gl_dailyLogger = spdlog::daily_logger_mt("watchdog_daily_logger", "logs/WatchdogDaily.txt", 2, 30);
+namespace {
+	void InitializeLogSystem() {
+		// Create a daily logger - a new file is created every day at 2:30 am
+		gl_dailyLogger = spdlog::daily_logger_mt("watchdog_daily_logger", "logs/WatchdogDaily.txt", 2, 30);
 
-	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
-	gl_dailyLogger->flush_on(spdlog::level::info); // 信息等级及以上立刻刷新
+		//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+		gl_dailyLogger->flush_on(spdlog::level::info); // 信息等级及以上立刻刷新
 
-	gl_dailyLogger->info("WatchdogQT App begin running");
+		gl_dailyLogger->info("WatchdogQT App begin running");
+	}
+
+	bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
+		const HANDLE hMutex = CreateMutex(nullptr, false, Utf8ToWstring(strProgramToken).c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+		bool bAlreadyRunning = false;
+		if (hMutex) {
+			if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
+				bAlreadyRunning = true;
+			}
+		}
+		::CloseHandle(hMutex); // 无论成功与否，都要关闭此系统互斥变量。因系统互斥变量是计数的，当该变量已经存在时，生成之的实际行为是计数加一。计数为零时则自动删除。
+		return bAlreadyRunning;
+	}
 }
 
 WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
@@ -55,9 +69,9 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	connect(ui.actionAbout, &QAction::triggered, this, &WatchdogQT::onActionAboutTriggered);
 
 	// 注册程序间通讯用消息
-	m_FireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
-	m_FireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
-	m_FireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
+	m_MsgFireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
+	m_MsgFireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
+	m_MsgFireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
 }
 
 WatchdogQT::~WatchdogQT() {
@@ -81,7 +95,7 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 	if (eventType == "windows_generic_MSG") {
 		string s;
 		const MSG* msg = static_cast<MSG*>(message);
-		if (msg->message == m_FireBirdSchedulingExit) { // 定时调度退出
+		if (msg->message == m_MsgFireBirdSchedulingExit) { // 定时调度退出
 			time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
 			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告定时调度关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
@@ -89,7 +103,7 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 			gl_dailyLogger->info("{}", s);
 			return true;
 		}
-		if (msg->message == m_FireBirdRunning) { // FireBird启动
+		if (msg->message == m_MsgFireBirdRunning) { // FireBird启动
 			time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
 			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
@@ -97,7 +111,7 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 			gl_dailyLogger->info("{}", s);
 			return true;
 		}
-		if (msg->message == m_FireBirdExit) { // FireBird退出
+		if (msg->message == m_MsgFireBirdExit) { // FireBird退出
 			time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
 			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
@@ -129,18 +143,6 @@ void WatchdogQT::Update() {
 		ui.textBrowser->append(s1.c_str());
 	}
 	while (!m_listOutput.empty()) m_listOutput.pop_front();
-}
-
-static bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
-	const HANDLE hMutex = CreateMutex(nullptr, false, Utf8ToWstring(strProgramToken).c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
-	bool bAlreadyRunning = false;
-	if (hMutex) {
-		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
-			bAlreadyRunning = true;
-		}
-	}
-	::CloseHandle(hMutex); // 无论成功与否，都要关闭此系统互斥变量。因系统互斥变量是计数的，当该变量已经存在时，生成之的实际行为是计数加一。计数为零时则自动删除。
-	return bAlreadyRunning;
 }
 
 void WatchdogQT::UpdatePer10Second() {

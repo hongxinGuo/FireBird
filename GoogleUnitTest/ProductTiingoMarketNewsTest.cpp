@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"FinnhubStock.h"
 #include"WorldMarket.h"
 #include"TiingoDataSource.h"
 #include"ProductTiingoMarketNews.h"
@@ -59,11 +58,11 @@ namespace FireBirdTest {
 
 		gl_pTiingoDataSource->SetUpdateMarketNews(true);
 
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+		EXPECT_EQ(gl_systemMessage.StockMarketInformationSize(), 1);
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 
 		// 恢复原状
-		gl_systemMessage.PopInnerSystemInformationMessage();
+		gl_systemMessage.PopStockMarketInformationMessage();
 		gl_systemMessage.PopInformationMessage();
 		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(500);
 		gl_systemConfiguration.SetUpdateDB(false);
@@ -79,11 +78,11 @@ namespace FireBirdTest {
 		gl_pTiingoDataSource->SetUpdateMarketNews(true);
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count(), 500);
 
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+		EXPECT_EQ(gl_systemMessage.StockMarketInformationSize(), 1);
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 
 		// 恢复原状
-		gl_systemMessage.PopInnerSystemInformationMessage();
+		gl_systemMessage.PopStockMarketInformationMessage();
 		gl_systemMessage.PopInformationMessage();
 		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(500);
 		gl_systemConfiguration.SetUpdateDB(false);

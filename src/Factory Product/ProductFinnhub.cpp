@@ -22,7 +22,7 @@ void CProductFinnhub::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> p
 void CProductFinnhub::AddInaccessibleSymbol() {
 	gl_finnhubInaccessibleExchange.SetUpdateDB(true);
 	try { // 存在此申请类型
-		const auto pExchange = gl_finnhubInaccessibleExchange.GetExchange(m_iInquireType);
+		const auto pExchange = gl_finnhubInaccessibleExchange.GetInaccessible(m_iInquireType);
 		if (!pExchange->HaveSymbol(m_strInquiringExchange)) {	// 新的交易所代码？
 			pExchange->AddSymbol(m_strInquiringExchange);
 		}
@@ -31,7 +31,7 @@ void CProductFinnhub::AddInaccessibleSymbol() {
 		pNewExchange->SetFunction(m_iInquireType);
 		pNewExchange->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));
 		pNewExchange->AddSymbol(m_strInquiringExchange);
-		gl_finnhubInaccessibleExchange.SetExchange(m_iInquireType, pNewExchange);
+		gl_finnhubInaccessibleExchange.SetInaccessible(m_iInquireType, pNewExchange);
 	}
 }
 

@@ -13,11 +13,9 @@
 
 #include "Inaccessible.h"
 
-using CInaccessibleExchangesPtr = shared_ptr<CInaccessible>;
-
 class CFinnhubInaccessibleExchange {
 public:
-	CFinnhubInaccessibleExchange();
+	CFinnhubInaccessibleExchange(const string& strFileName);
 	// 不允许赋值、拷贝
 	CFinnhubInaccessibleExchange(const CFinnhubInaccessibleExchange&) = delete;
 	CFinnhubInaccessibleExchange& operator=(const CFinnhubInaccessibleExchange&) = delete;
@@ -34,37 +32,37 @@ public:
 
 	void Clear();
 
-	void DeleteAllUSExchange();
-
 	void SetFileName(const string& fileName) noexcept { m_strFileName = fileName; }
 	string GetFileName() { return m_strFileName; }
 
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
 
-	static int GetFinnhubInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
-	CInaccessibleExchangesPtr GetExchange(int iInquireType) { return m_mapExchange.at(iInquireType); }
-	void SetExchange(const int iInquireType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquireType] = pExchange; }
-	void AddExchange(int iInquireType, const string& strExchange);
-	void DeleteExchange(int iInquireType, const string& strExchange);
-	bool HaveExchange(int iInquireType, const string& strExchangeCode) const;
-	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }
+	static int GetInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
+	CInaccessiblePtr GetInaccessible(int iInquireType) { return m_mapInaccessible.at(iInquireType); }
+	void SetInaccessible(const int iInquireType, const CInaccessiblePtr& pInaccessible) { m_mapInaccessible[iInquireType] = pInaccessible; }
+	void AddInaccessible(int iInquireType, const string& strSymbol);
+	void DeleteInaccessible(int iInquireType, const string& strSymbol);
+	bool IsInaccessible(int iInquireType, const string& strSymbol) const;
+	size_t GetItemSize() const noexcept { return m_mapInaccessible.size(); }
 
 	bool IsUpdateDB() const noexcept { return m_fUpdateDB; }
 	void SetUpdateDB(const bool fUpdate) noexcept { m_fUpdateDB = fUpdate; }
 
 protected:
-	string m_strFileName{ "FinnhubInaccessibleExchange.json" };// 配置文件名称
+	string m_strFileName;// 配置文件名称
 
 	long m_lUpdateDate{ 19800101 }; // 本文件更新日期
-	map<int, CInaccessibleExchangesPtr> m_mapExchange; //
+	map<int, CInaccessiblePtr> m_mapInaccessible; //
 
 	bool m_fInitialized{ false };
 	bool m_fUpdateDB{ false };
 
-	nlohmannJson m_finnhubInaccessibleExchange;
+private:
+	nlohmannJson m_jsonInaccessible;
 };
 
 using CFinnhubInaccessibleExchangePtr = shared_ptr<CFinnhubInaccessibleExchange>;
 
+void DeleteAllFinnhubInaccessibleUSExchange();
 extern CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange;

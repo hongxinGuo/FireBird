@@ -22,7 +22,7 @@
 
 namespace {
 	auto s_isAccessible = [](int inquireType, const std::string& exchangeCode) {
-		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+		return !gl_finnhubInaccessibleExchange.IsInaccessible(inquireType, exchangeCode);
 	};
 	auto s_setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 

@@ -11,8 +11,6 @@
 
 #include "ChildFrm.h"
 
-#include <spdlog/spdlog.h>
-
 #include "Initialization.h"
 #include "SystemPublicDeclaration.h"
 #include "WorldMarket.h"

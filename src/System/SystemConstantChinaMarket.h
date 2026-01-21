@@ -1,8 +1,5 @@
 #pragma once
 
-// 中国股票市场起始日
-constexpr auto _CHINA_MARKET_BEGIN_DATE_ = 19900101;
-
 enum {
 	_STOCK_NOT_CHECKED_ = 128, // 尚未检查过的股票代码
 	_STOCK_IPOED_ = 255, // 正常股票标识

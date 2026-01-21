@@ -1,7 +1,5 @@
 #pragma once
 
-#include <spdlog/spdlog.h>
-
 #ifdef _DEBUG
 inline void SpdlogAssertFail(const char* expr,
                              const char* file,

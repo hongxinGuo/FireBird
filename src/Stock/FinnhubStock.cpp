@@ -8,8 +8,6 @@
 
 #include "FinnhubStock.h"
 
-#include <algorithm>
-
 #include "CharSetTransfer.h"
 #include"WorldMarket.h"
 

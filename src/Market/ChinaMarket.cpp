@@ -10,8 +10,6 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include <algorithm>
-
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
 #include"SetChinaMarketDayLineExtendInfo.h"

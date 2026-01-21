@@ -39,7 +39,7 @@ using namespace concurrencpp;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-long long StrToDecimal(const std::string_view& svData, size_t power) {
+long long StrToDecimal(const std::string_view& svData, const size_t power) {
 	std::string buffer;
 	buffer.reserve(svData.size() + power + 2);
 
@@ -63,7 +63,7 @@ long long StrToDecimal(const std::string_view& svData, size_t power) {
 	}
 }
 
-long long StrToDecimal2(const std::string_view& svData, size_t power) {
+long long StrToDecimal2(const std::string_view& svData, const size_t power) {
 	try {
 		auto iPointPosition = svData.find('.');
 		if (iPointPosition == std::string_view::npos) {
@@ -95,7 +95,7 @@ long long StrToDecimal2(const std::string_view& svData, size_t power) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-long Str2Long(const std::string_view& svData, size_t power) {
+long Str2Long(const std::string_view& svData, const size_t power) {
 	std::string buffer;
 	buffer.reserve(svData.size() + power + 2);
 
@@ -126,7 +126,7 @@ long Str2Long(const std::string_view& svData, size_t power) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char delimiter) {
+string_view GetNextField(const string_view& svData, size_t& lCurrentPos, const char delimiter) {
 	const string_view sv = svData.substr(lCurrentPos);
 	const auto lEnd = sv.find_first_of(delimiter);
 	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
@@ -134,18 +134,20 @@ string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char de
 	return string_view{ sv.data(), lEnd };
 }
 
-void ReportJsonError(const nlohmannJson::parse_error& e, const std::string& s) {
-	char buffer[180]{};
-	size_t i;
-	for (i = 0; i < 180; i++) {
-		if ((e.byte - 90 + i) < s.size()) {
-			buffer[i] = s.at(e.byte - 90 + i);
+namespace {
+	void ReportJsonError(const nlohmannJson::parse_error& e, const std::string& s) {
+		char buffer[180]{};
+		size_t i;
+		for (i = 0; i < 180; i++) {
+			if ((e.byte - 90 + i) < s.size()) {
+				buffer[i] = s.at(e.byte - 90 + i);
+			}
+			else break;
 		}
-		else break;
+		buffer[i] = 0x000;
+		const string s2 = fmt::format("Nlohmann JSon Reading Error {} {:Ld} {:Ld} {:d} {}", e.what(), s.size(), e.byte, i, buffer);
+		gl_systemMessage.PushErrorMessage(s2);
 	}
-	buffer[i] = 0x000;
-	string s2 = fmt::format("Nlohmann JSon Reading Error {} {:Ld} {:Ld} {:d} {}", e.what(), s.size(), e.byte, i, buffer);
-	gl_systemMessage.PushErrorMessage(s2);
 }
 
 void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWhat) {
@@ -175,6 +177,7 @@ void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWh
 // 使用这种多线程模式与单线程模式相比，4个线程时运行时间减至1/3，更多的线程会减少运行时间，但效率降低。
 //
 // Note 调用此函数得线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
+// Note 测试时，发现8个线程时效率反而下降，原因待查（CPU有8个物理核，16个逻辑核）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStringView) {
@@ -200,8 +203,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 
 	bool succeed = true;
 	for (auto& r : results) {
-		//auto a = r.resolve();
-		succeed &= co_await r; // r.get();
+		succeed &= co_await r; // r.get(); wait for each task to complete
 	}
 	//bool succeed = ranges::all_of(results, [](auto& r) { return  r.get(); });
 	co_return succeed;
@@ -214,8 +216,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 		pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 	}
 	if (pvStringView->empty()) return;
-	auto result = ParseSinaRTDataUsingCoroutine(pvStringView);
-	result.get(); // 堵塞在这里
+	ParseSinaRTDataUsingCoroutine(pvStringView).get();// 在这里堵塞
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,8 +285,7 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 		pvStringView->emplace_back(pWebData->GetCurrentTengxunData());
 	}
 	if (pvStringView->empty()) return;
-	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
-	result.get(); // 等待线程执行完后方继续。
+	ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView).get(); // 等待线程执行完后方继续。
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

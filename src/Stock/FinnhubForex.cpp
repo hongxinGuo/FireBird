@@ -3,8 +3,6 @@
 #include"WorldMarket.h"
 #include "FinnhubForex.h"
 
-#include <algorithm>
-
 void CFinnhubForex::SetCheckingDayLineStatus() {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (m_lIPOStatus == _STOCK_NULL_) {
