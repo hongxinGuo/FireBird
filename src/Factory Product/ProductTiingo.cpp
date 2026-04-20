@@ -4,7 +4,7 @@
 
 #include "FinnhubInquiryType.h"
 #include "TiingoDataSource.h"
-#include"TiingoInaccessibleStock.h"
+#include"InaccessibleSymbol.h"
 #include "WebData.h"
 
 void CProductTiingo::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {

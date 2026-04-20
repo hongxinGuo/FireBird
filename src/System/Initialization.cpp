@@ -13,6 +13,8 @@
 #include"QuandlDataSource.h"
 
 #include"ChinaMarket.h"
+#include "InaccessibleSymbol.h"
+#include "FinnhubInquiryType.h"
 #include"WorldMarket.h"
 
 #include "simdjsonGetValue.h"
@@ -24,7 +26,32 @@ using namespace spdlog;
 
 #include "AccessoryDataSource.h"
 
+void DeleteAllFinnhubInaccessibleUSExchange() {
+	for (int i = 0; i < END_OF_ALL_INQUIRY_TYPE_; i++) {
+		try {
+			auto pInaccessible = gl_finnhubInaccessibleExchange.GetInaccessible(i);
+			if (pInaccessible->HaveSymbol("US")) {
+				pInaccessible->DeleteSymbol("US");
+				gl_finnhubInaccessibleExchange.SetUpdateDB(true);
+			}
+		} catch (...) {
+			// do nothing
+		}
+	}
+}
+
 namespace {
+	void DeleteAllFinnhubInaccessibleUSExchangeAtFirstDay() {
+		// 每月第一天删除对US交易所的禁止访问
+		gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
+		tm tmLocal;
+		const auto time = gl_tpNow.time_since_epoch().count();
+		localtime_s(&tmLocal, &time);
+		if (tmLocal.tm_mday == 1) {
+			DeleteAllFinnhubInaccessibleUSExchange();
+		}
+	}
+
 	void CreateMarketContainer() {
 		ASSERT(gl_pChinaMarket != nullptr);
 		ASSERT(gl_pWorldMarket != nullptr);
@@ -100,6 +127,8 @@ void SystemInitialization() {
 	InitializeMarkets();
 	AssignDataSourceAndWebInquiryToMarket();
 	ResetMarkets(); // 要预先重置一次
+
+	DeleteAllFinnhubInaccessibleUSExchangeAtFirstDay();
 
 	// 设置工作线程最大数量
 	gl_systemConfiguration.SetThreadPoolExecutorCurrencyLevel(gl_runtime.thread_pool_executor()->max_concurrency_level());

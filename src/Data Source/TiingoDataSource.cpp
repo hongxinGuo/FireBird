@@ -3,11 +3,10 @@
 #include"FinnhubInquiryType.h"
 #include "TiingoDataSource.h"
 
-#include "ProductTiingo.h"
 #include"VirtualWebProduct.h"
 
 #include "spdlog_assert.h"
-#include "TiingoInaccessibleStock.h"
+#include "InaccessibleSymbol.h"
 #include "WebData.h"
 #include"WorldMarket.h"
 

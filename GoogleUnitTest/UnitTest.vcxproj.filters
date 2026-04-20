@@ -300,7 +300,7 @@
     <ClCompile Include="FinnhubCompanyNewsTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="InaccessibleExchangesTest.cpp">
+    <ClCompile Include="InaccessibleSymbolTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubProductTest.cpp">

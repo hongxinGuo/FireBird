@@ -145,7 +145,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			iCount++;
 		}
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage("Tiingo market news ", error.what());
+		ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
 	}
 
 	return pvTiingoIEXLastTopOFBook;

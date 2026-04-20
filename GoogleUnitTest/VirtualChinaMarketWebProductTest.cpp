@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include "FinnhubInaccessibleExchange.h"
+#include "InaccessibleSymbol.h"
 #include"GeneralCheck.h"
 
 #include"VirtualChinaMarketWebProduct.h"

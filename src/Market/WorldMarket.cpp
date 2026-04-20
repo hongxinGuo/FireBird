@@ -8,7 +8,7 @@
 #include "CharSetTransfer.h"
 #include"thread.h"
 
-#include"FinnhubInaccessibleExchange.h"
+#include"InaccessibleSymbol.h"
 
 #include"FinnhubDataSource.h"
 
@@ -26,7 +26,6 @@
 #include "SetIndexNasdaq100MA200UpDownRate.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
-#include "TiingoInaccessibleStock.h"
 #include "TimeConvert.h"
 
 namespace {

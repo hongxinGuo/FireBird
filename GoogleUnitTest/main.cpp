@@ -43,7 +43,7 @@
 #include"simdjsonGetValue.h"
 
 #include"Initialization.h"
-#include"FinnhubInaccessibleExchange.h"
+#include"InaccessibleSymbol.h"
 #include"ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include"TimeConvert.h"

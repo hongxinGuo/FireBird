@@ -450,7 +450,7 @@
     <ClInclude Include="..\src\ClassDeclaration.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h">
+    <ClInclude Include="..\src\System\InaccessibleSymbol.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h">
@@ -792,9 +792,6 @@
     <ClInclude Include="..\src\System\Inaccessible.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\TiingoInaccessibleStock.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
@@ -1016,7 +1013,7 @@
     <ClCompile Include="..\src\Stock\VirtualStock.cpp">
       <Filter>源文件\Stock</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp">
+    <ClCompile Include="..\src\System\InaccessibleSymbol.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\src\System\SystemConfiguration.cpp">
@@ -1410,9 +1407,6 @@
       <Filter>源文件\Stock\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\System\Inaccessilbe.cpp">
-      <Filter>源文件\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\System\TiingoInaccessibleStock.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.cpp">

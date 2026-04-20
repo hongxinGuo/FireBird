@@ -10,7 +10,7 @@
 #include"SystemConfiguration.h"
 
 #include"FinnhubInquiryType.h"
-#include"FinnhubInaccessibleExchange.h"
+#include"InaccessibleSymbol.h"
 
 #include "FinnhubDataSource.h"
 #include"VirtualWebProduct.h"

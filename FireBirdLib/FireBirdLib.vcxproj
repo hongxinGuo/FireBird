@@ -194,14 +194,13 @@
     <ClInclude Include="..\src\Stock\VirtualStock.h" />
     <ClInclude Include="..\src\Stock\FinnhubStock.h" />
     <ClInclude Include="..\src\SystempublicDeclaration.h" />
-    <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
+    <ClInclude Include="..\src\System\InaccessibleSymbol.h" />
     <ClInclude Include="..\src\System\Inaccessible.h" />
     <ClInclude Include="..\src\System\Initialization.h" />
     <ClInclude Include="..\src\System\SystemConfiguration.h" />
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h" />
     <ClInclude Include="..\src\System\SystemData.h" />
     <ClInclude Include="..\src\System\SystemMessage.h" />
-    <ClInclude Include="..\src\System\TiingoInaccessibleStock.h" />
     <ClInclude Include="..\src\targetver.h" />
     <ClInclude Include="..\src\Thread.h" />
     <ClInclude Include="..\src\Type\America market\Country.h" />
@@ -247,7 +246,10 @@
     <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Lib\simdjson\simdjson.cpp" />
+    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
@@ -430,12 +432,11 @@
     </ClCompile>
     <ClCompile Include="..\src\Stock\VirtualStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubStock.cpp" />
-    <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp" />
+    <ClCompile Include="..\src\System\InaccessibleSymbol.cpp" />
     <ClCompile Include="..\src\System\Inaccessilbe.cpp" />
     <ClCompile Include="..\src\System\Initialization.cpp" />
     <ClCompile Include="..\src\System\SystemConfiguration.cpp" />
     <ClCompile Include="..\src\System\SystemMessage.cpp" />
-    <ClCompile Include="..\src\System\TiingoInaccessibleStock.cpp" />
     <ClCompile Include="..\src\Type\America market\Country.cpp" />
     <ClCompile Include="..\src\Type\America market\EconomicCalendar.cpp" />
     <ClCompile Include="..\src\Type\America market\EPSSurprise.cpp" />

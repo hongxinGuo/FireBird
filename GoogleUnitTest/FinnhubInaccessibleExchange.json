@@ -1,49 +1,49 @@
 {
   "UpdateDate": 20231217,
-  "InaccessibleExchange": [
+  "InaccessibleSymbol": [
     {
       "Function": "StockFundamentalsSymbols",
-      "Exchange": [ "AD", "AQ", "AS", "AT", "AX", "BA", "BC", "BD", "BE", "BH", "BK", "BO", "BR", "CA", "CN", "CO", "CR", "CS", "DB", "DE", "DS", "DU", "F", "HA", "HE", "HK", "HM", "IC", "IR", "IS", "JK", "JO", "KL", "KQ", "KS", "KW", "L", "LN", "LS", "MC", "ME", "MI", "MU", "MX", "NE", "NL", "NS", "NZ", "OL", "PA", "PM", "PR", "QA", "RG", "SA", "SC", "SG", "SI", "SL", "SN", "SR", "SS", "ST", "SW", "SX", "SZ", "T", "TA", "TG", "TL", "TO", "TU", "TW", "TWO", "V", "VI", "VN", "VS", "WA", "XA" ]
+      "Symbol": [ "AD", "AQ", "AS", "AT", "AX", "BA", "BC", "BD", "BE", "BH", "BK", "BO", "BR", "CA", "CN", "CO", "CR", "CS", "DB", "DE", "DS", "DU", "F", "HA", "HE", "HK", "HM", "IC", "IR", "IS", "JK", "JO", "KL", "KQ", "KS", "KW", "L", "LN", "LS", "MC", "ME", "MI", "MU", "MX", "NE", "NL", "NS", "NZ", "OL", "PA", "PM", "PR", "QA", "RG", "SA", "SC", "SG", "SI", "SL", "SN", "SR", "SS", "ST", "SW", "SX", "SZ", "T", "TA", "TG", "TL", "TO", "TU", "TW", "TWO", "V", "VI", "VN", "VS", "WA", "XA" ]
     },
     {
       "Function": "StockFundamentalsMarketStatus",
-      "Exchange": [ "AD", "AQ", "AS", "AT", "AX", "BA", "BC", "BD", "BE", "BH", "BK", "BO", "BR", "CA", "CN", "CO", "CR", "CS", "DB", "DE", "DS", "DU", "F", "HA", "HE", "HK", "HM", "IC", "IR", "IS", "JK", "JO", "KL", "KQ", "KS", "KW", "L", "LN", "LS", "MC", "ME", "MI", "MU", "MX", "NE", "NL", "NS", "NZ", "OL", "PA", "PM", "PR", "QA", "RG", "SA", "SC", "SG", "SI", "SL", "SN", "SR", "SS", "ST", "SW", "SX", "SZ", "T", "TA", "TG", "TL", "TO", "TU", "TW", "TWO", "V", "VI", "VN", "VS", "WA", "XA" ]
+      "Symbol": [ "AD", "AQ", "AS", "AT", "AX", "BA", "BC", "BD", "BE", "BH", "BK", "BO", "BR", "CA", "CN", "CO", "CR", "CS", "DB", "DE", "DS", "DU", "F", "HA", "HE", "HK", "HM", "IC", "IR", "IS", "JK", "JO", "KL", "KQ", "KS", "KW", "L", "LN", "LS", "MC", "ME", "MI", "MU", "MX", "NE", "NL", "NS", "NZ", "OL", "PA", "PM", "PR", "QA", "RG", "SA", "SC", "SG", "SI", "SL", "SN", "SR", "SS", "ST", "SW", "SX", "SZ", "T", "TA", "TG", "TL", "TO", "TU", "TW", "TWO", "V", "VI", "VN", "VS", "WA", "XA" ]
     },
     {
       "Function": "StockFundamentalsMarketHoliday",
-      "Exchange": [ "AD", "AQ", "AS", "AT", "AX", "BA", "BC", "BD", "BE", "BH", "BK", "BO", "BR", "CA", "CN", "CO", "CR", "CS", "DB", "DE", "DS", "DU", "F", "HA", "HE", "HK", "HM", "IC", "IR", "IS", "JK", "JO", "KL", "KQ", "KS", "KW", "L", "LN", "LS", "MC", "ME", "MI", "MU", "MX", "NE", "NL", "NS", "NZ", "OL", "PA", "PM", "PR", "QA", "RG", "SA", "SC", "SG", "SI", "SL", "SN", "SR", "SS", "ST", "SW", "SX", "SZ", "T", "TA", "TG", "TL", "TO", "TU", "TW", "TWO", "V", "VI", "VN", "VS", "WA", "XA" ]
+      "Symbol": [ "AD", "AQ", "AS", "AT", "AX", "BA", "BC", "BD", "BE", "BH", "BK", "BO", "BR", "CA", "CN", "CO", "CR", "CS", "DB", "DE", "DS", "DU", "F", "HA", "HE", "HK", "HM", "IC", "IR", "IS", "JK", "JO", "KL", "KQ", "KS", "KW", "L", "LN", "LS", "MC", "ME", "MI", "MU", "MX", "NE", "NL", "NS", "NZ", "OL", "PA", "PM", "PR", "QA", "RG", "SA", "SC", "SG", "SI", "SL", "SN", "SR", "SS", "ST", "SW", "SX", "SZ", "T", "TA", "TG", "TL", "TO", "TU", "TW", "TWO", "V", "VI", "VN", "VS", "WA", "XA" ]
     },
     {
       "Function": "StockFundamentalsCompanyProfileConcise",
-      "Exchange": [ "SZ", "SS" ]
+      "Symbol": [ "SZ", "SS" ]
     },
     {
       "Function": "StockFundamentalsCompanyNews",
-      "Exchange": [ "SS", "SZ" ]
+      "Symbol": [ "SS", "SZ" ]
     },
     {
       "Function": "StockFundamentalsPeer",
-      "Exchange": [ "SZ", "SS" ]
+      "Symbol": [ "SZ", "SS" ]
     },
     {
       "Function": "StockFundamentalsBasicFinancials",
-      "Exchange": [ "SS", "SZ" ]
+      "Symbol": [ "SS", "SZ" ]
     },
     {
       "Function": "StockPriceCandles",
-      "Exchange": [ "SS", "SZ", "US" ]
+      "Symbol": [ "SS", "SZ", "US" ]
     },
     {
       "Function": "ForexCandles",
-      "Exchange": [ "oanda", "pepperstone", "pepperstoneuk", "ic markets", "fxpig", "fhfx", "capital" ]
+      "Symbol": [ "oanda", "pepperstone", "pepperstoneuk", "ic markets", "fxpig", "fhfx", "capital" ]
     },
     {
       "Function": "CryptoCandles",
-      "Exchange": [ "FXPIG", "KRAKEN", "HITBTC", "GEMINI", "COINBASE", "BITTREX", "HUOBI", "BITMEX", "BITFINEX", "KUCOIN", "OKEX", "POLONIEX", "BINANCE", "BINANCEUS" ]
+      "Symbol": [ "FXPIG", "KRAKEN", "HITBTC", "GEMINI", "COINBASE", "BITTREX", "HUOBI", "BITMEX", "BITFINEX", "KUCOIN", "OKEX", "POLONIEX", "BINANCE", "BINANCEUS" ]
     },
     {
       "Function": "EconomicCalendar",
-      "Exchange": [ "ALL" ]
+      "Symbol": [ "ALL" ]
     }
   ]
 }

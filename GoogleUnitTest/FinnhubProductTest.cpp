@@ -5,7 +5,7 @@
 #include"FinnhubInquiryType.h"
 
 #include"ProductFinnhub.h"
-#include"finnhubInaccessibleExchange.h"
+#include"InaccessibleSymbol.h"
 #include "WebData.h"
 
 using namespace testing;

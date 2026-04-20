@@ -2,7 +2,7 @@
 
 #include"VirtualWorldMarketWebProduct.h"
 #include "WorldMarket.h"
-#include "FinnhubInaccessibleExchange.h"
+#include "InaccessibleSymbol.h"
 #include"GeneralCheck.h"
 
 using namespace testing;

@@ -13,7 +13,7 @@
 #include "ProductTiingoStockDayLine.h"
 #include "ProductTiingoStockProfile.h"
 #include"TestWebData.h"
-#include "TiingoInaccessibleStock.h"
+#include "InaccessibleSymbol.h"
 
 using namespace testing;
 

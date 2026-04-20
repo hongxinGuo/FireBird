@@ -1,5 +1,7 @@
 #pragma once
 
+void DeleteAllFinnhubInaccessibleUSExchange();
+
 void SystemInitialization();
 
 void InitializeMarkets();

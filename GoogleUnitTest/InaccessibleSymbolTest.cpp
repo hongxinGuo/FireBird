@@ -1,30 +1,44 @@
 #include"pch.h"
 
-#include"WorldMarket.h"
-
 #include"GeneralCheck.h"
 
-#include"FinnhubInaccessibleExchange.h"
+#include"WorldMarket.h"
+#include"InaccessibleSymbol.h"
+#include "Initialization.h"
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 namespace {
 	std::string s_sFinnhubInaccessibleExchange = R"(
 { "UpdateDate" : 20221205,
- "InaccessibleExchange" :
+ "InaccessibleSymbol" :
 [
 {
 	"Function" : "StockFundamentalsCompanyProfileConcise",
-	"Exchange" : ["SS", "SZ"]
+	"Symbol" : ["SS", "SZ"]
 },
 {
 	"Function" : "StockFundamentalsBasicFinancials",
-	"Exchange" : ["SS", "SZ"]
+	"Symbol" : ["SS", "SZ"]
+}
+]})";
+
+	std::string Test_gl_sTiingoInaccessibleStock = R"(
+{ "UpdateDate" : 20221205,
+ "InaccessibleSymbol" :
+[
+{
+	"Function" : "StockDayLine",
+	"Symbol" : ["A", "AA"]
+},
+{
+	"Function" : "StockCompanyProfile",
+	"Symbol" : ["AAPL", "IBM"]
 }
 ]})";
 }
 
 namespace FireBirdTest {
-	class CFinnhubInaccessibleExchangeTest : public testing::Test {
+	class CInaccessibleSymbolTest : public testing::Test {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -39,12 +53,12 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
+	TEST_F(CInaccessibleSymbolTest, TestGlobeVariable) {
 		nlohmannJson jsFinnhubInaccessibleExchange = nlohmannJson::parse(s_sFinnhubInaccessibleExchange);
 		CInaccessible exchange;
-		const string s2 = jsFinnhubInaccessibleExchange["InaccessibleExchange"][0]["Function"];
+		const string s2 = jsFinnhubInaccessibleExchange["InaccessibleSymbol"][0]["Function"];
 		exchange.SetFunctionString(s2);
-		for (const auto& i : jsFinnhubInaccessibleExchange["InaccessibleExchange"][0]["Exchange"]) {
+		for (const auto& i : jsFinnhubInaccessibleExchange["InaccessibleSymbol"][0]["Symbol"]) {
 			string s = i;
 			exchange.AddSymbol(s);
 		}
@@ -54,7 +68,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(exchange.GetSymbol(1), "SZ");
 	}
 
-	TEST_F(CFinnhubInaccessibleExchangeTest, TestDeleteAllUSExchange) {
+	TEST_F(CInaccessibleSymbolTest, TestDeleteAllUSExchange) {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, "US"));
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(COMPANY_NEWS_, "US"));
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(INSIDER_TRANSACTION_, "US"));
@@ -78,13 +92,13 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 	}
 
-	TEST_F(CFinnhubInaccessibleExchangeTest, TestAddExchange) {
-		const auto pExchange = make_shared<CInaccessible>();
-		pExchange->SetFunctionString("WebSocketTrades");
-		pExchange->AddSymbol("SS");
-		pExchange->AddSymbol("SZ");
+	TEST_F(CInaccessibleSymbolTest, TestAddSymbol) {
+		const auto pInaccessible = make_shared<CInaccessible>();
+		pInaccessible->SetFunctionString("WebSocketTrades");
+		pInaccessible->AddSymbol("SS");
+		pInaccessible->AddSymbol("SZ");
 
-		gl_finnhubInaccessibleExchange.SetInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"), pExchange);
+		gl_finnhubInaccessibleExchange.SetInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"), pInaccessible);
 		gl_finnhubInaccessibleExchange.AddInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"), "US");
 
 		auto p = gl_finnhubInaccessibleExchange.GetInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"));
@@ -98,13 +112,13 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 	}
 
-	TEST_F(CFinnhubInaccessibleExchangeTest, TestDeleteExchange) {
-		const auto pExchange = make_shared<CInaccessible>();
-		pExchange->SetFunctionString("WebSocketTrades");
-		pExchange->AddSymbol("SS");
-		pExchange->AddSymbol("SZ");
+	TEST_F(CInaccessibleSymbolTest, TestDeleteSymbol) {
+		const auto pInaccessible = make_shared<CInaccessible>();
+		pInaccessible->SetFunctionString("WebSocketTrades");
+		pInaccessible->AddSymbol("SS");
+		pInaccessible->AddSymbol("SZ");
 
-		gl_finnhubInaccessibleExchange.SetInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"), pExchange);
+		gl_finnhubInaccessibleExchange.SetInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"), pInaccessible);
 		gl_finnhubInaccessibleExchange.DeleteInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"), "SS");
 
 		const auto p = gl_finnhubInaccessibleExchange.GetInaccessible(gl_FinnhubInquiryType.GetInquiryType("WebSocketTrades"));
@@ -115,17 +129,17 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 	}
 
-	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB1) {
+	TEST_F(CInaccessibleSymbolTest, TestSaveDB1) {
 		filesystem::remove(gl_systemConfiguration.GetConfigurationFileDirectory() + "FinnhubInaccessibleExchangeTest.json");
 		gl_finnhubInaccessibleExchange.SetFileName("FinnhubInaccessibleExchangeTest.json");
 
-		const auto pExchange = make_shared<CInaccessible>();
-		pExchange->SetFunctionString("WebSocketTrades");
-		pExchange->AddSymbol("SS");
-		pExchange->AddSymbol("SZ");
+		const auto pInaccessible = make_shared<CInaccessible>();
+		pInaccessible->SetFunctionString("WebSocketTrades");
+		pInaccessible->AddSymbol("SS");
+		pInaccessible->AddSymbol("SZ");
 
 		gl_finnhubInaccessibleExchange.SetUpdateDate(20230101);
-		gl_finnhubInaccessibleExchange.SetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()), pExchange);
+		gl_finnhubInaccessibleExchange.SetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()), pInaccessible);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
 
@@ -133,9 +147,9 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.LoadDB();
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(), "WebSocketTrades");
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()))->Size(), 2);
-		const string str = gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetFunctionString(), "WebSocketTrades");
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->Size(), 2);
+		const string str = gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetSymbol(0);
 		EXPECT_TRUE(str == "SS");
 
 		// 恢复原状
@@ -143,17 +157,17 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.SetFileName("FinnhubInaccessibleExchange.json");
 	}
 
-	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB2) {
+	TEST_F(CInaccessibleSymbolTest, TestSaveDB2) {
 		filesystem::remove(gl_systemConfiguration.GetConfigurationFileDirectory() + "FinnhubInaccessibleExchangeTest.json");
 		gl_finnhubInaccessibleExchange.SetFileName("FinnhubInaccessibleExchangeTest.json");
 
-		const auto pExchange = make_shared<CInaccessible>();
-		pExchange->SetFunctionString("WebSocketTrades");
-		pExchange->AddSymbol("SS");
-		pExchange->AddSymbol("SZ");
+		const auto pInaccessible = make_shared<CInaccessible>();
+		pInaccessible->SetFunctionString("WebSocketTrades");
+		pInaccessible->AddSymbol("SS");
+		pInaccessible->AddSymbol("SZ");
 
 		gl_finnhubInaccessibleExchange.SetUpdateDate(20230101);
-		gl_finnhubInaccessibleExchange.SetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()), pExchange);
+		gl_finnhubInaccessibleExchange.SetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()), pInaccessible);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
 
@@ -162,9 +176,9 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.LoadDB(strFileDirectory);
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(), "WebSocketTrades");
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()))->Size(), 2);
-		const string str = gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetFunctionString(), "WebSocketTrades");
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->Size(), 2);
+		const string str = gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetSymbol(0);
 		EXPECT_EQ(str, "SS");
 
 		// 恢复原状

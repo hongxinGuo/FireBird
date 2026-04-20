@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include "ChinaMarket.h"
-#include "FinnhubInaccessibleExchange.h"
+#include "InaccessibleSymbol.h"
 #include "FinnhubInquiryType.h"
 #include"GeneralCheck.h"
 #include "ProductFinnhub.h"

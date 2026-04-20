@@ -2,7 +2,7 @@
 
 #include"ProductFinnhub.h"
 
-#include"FinnhubInaccessibleExchange.h"
+#include"InaccessibleSymbol.h"
 #include "WebData.h"
 
 void CProductFinnhub::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
