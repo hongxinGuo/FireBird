@@ -383,6 +383,13 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 		m_fUpdateDB = true;
 	}
 
+	try {
+		sTemp = jsonData.at("AlphaVantage").at("Token"); //
+		m_strAlphaVantageToken = sTemp;
+	} catch (nlohmannJson::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+
 	// WebSocket
 	try {
 		m_bUsingFinnhubWebSocket = jsonData.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
@@ -543,6 +550,9 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	jsonData["Tiingo"]["DailyRequestLimit"] = m_lTiingoDailyRequestLimit;
 	jsonData["Tiingo"]["BandWidth"] = m_llTiingoBandWidth;
 	jsonData["Tiingo"]["BandWidthLeft"] = m_llTiingoBandWidthLeft;
+
+	// AlphaVantage
+	jsonData["AlphaVantage"]["Token"] = m_strAlphaVantageToken;
 
 	// Web socket
 	jsonData["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;

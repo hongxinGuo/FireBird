@@ -120,6 +120,7 @@ public:
 	size_t GetStockSplitCount() const noexcept { return m_vStockSplit.size(); }
 	CStockSplitPtr GetStockSplit(size_t index) const noexcept { return m_vStockSplit.at(index); }
 	void AddStockSplit(const CStockSplitPtr& pStockSplit) noexcept; // 按日期顺序添加拆股信息
+	void AddStockSplits(CStockSplitsPtr pStockSplit) noexcept; // 按日期顺序添加拆股信息
 	void ClearStockSplit() noexcept { m_vStockSplit.clear(); }
 
 	virtual void RebuildStockSplitDB() {} // 重建拆股数据库
@@ -135,9 +136,13 @@ public:
 	// 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(const bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+	bool IsUpdateSplit() const noexcept { return m_fUpdateSplit; }
+	void SetUpdateSplit(const bool fFlag) noexcept { m_fUpdateSplit = fFlag; }
 
 	bool IsUpdateDayLineDB() const noexcept { return m_fUpdateDayLineDB; }
 	void SetUpdateDayLineDB(const bool fFlag) noexcept { m_fUpdateDayLineDB = fFlag; }
+	bool IsUpdateSplitDB() const noexcept { return m_fUpdateSplitDB; }
+	void SetUpdateSplitDB(const bool fFlag) noexcept { m_fUpdateSplitDB = fFlag; }
 	bool IsUpdateProfileDB() const noexcept { return m_fUpdateProfileDB; }
 	void SetUpdateProfileDB(const bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
 
@@ -256,10 +261,12 @@ protected:
 	bool m_bSelected{ false }; // 在股票列表中被选中
 
 	atomic_bool m_fUpdateDayLine{ true }; // 日线需要更新。默认为真
+	atomic_bool m_fUpdateSplit{ true }; // 拆股信息需要更新。默认为真
 
 	atomic_bool m_fUpdateProfileDB{ false }; // 更新股票简介
 	atomic_bool m_fUpdateCompanyNewsDB{ false }; // 更新公司新闻
 	atomic_bool m_fUpdateDayLineDB{ false }; // 日线历史数据已处理，等待存储。
+	atomic_bool m_fUpdateSplitDB{ false }; // 拆股信息已处理，等待存储。
 };
 
 extern CVirtualStockPtr gl_pCurrentStock;

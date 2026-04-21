@@ -13,6 +13,7 @@ public:
 	~CContainerTiingoStock() override;
 	void Reset() override;
 
+	CTiingoStockPtr GetItem(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
 	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
 	CTiingoStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode)); }
 

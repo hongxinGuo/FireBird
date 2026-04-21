@@ -119,27 +119,35 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			auto itemValue = item.value();
 			pIEXLastTopOFBook = nullptr;
 			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
-			s1 = simdjsonGetStringView(itemValue, "ticker");
-			pIEXLastTopOFBook->m_strTicker = s1;
-			s1 = simdjsonGetStringView(itemValue, "timestamp");
-			ss.clear();
-			ss.str(s1);
-			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_timeStamp);
-			s1 = simdjsonGetStringView(itemValue, "lastSaleTimestamp");
-			ss.clear();
-			ss.str(s1);
-			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_lastSale);
-			s1 = simdjsonGetStringView(itemValue, "quoteTimestamp");
-			ss.clear();
-			ss.str(s1);
-			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_quote);
+			try {
+				s1 = simdjsonGetStringView(itemValue, "ticker");
+				pIEXLastTopOFBook->m_strTicker = s1;
+				s1 = simdjsonGetStringView(itemValue, "timestamp");
+				ss.clear();
+				ss.str(s1);
+				chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_timeStamp);
+				s1 = simdjsonGetStringView(itemValue, "lastSaleTimestamp");
+				ss.clear();
+				ss.str(s1);
+				chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_lastSale);
+				s1 = simdjsonGetStringView(itemValue, "quoteTimestamp");
+				ss.clear();
+				ss.str(s1);
+				chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_quote);
+			} catch (simdjson_error& error) {
+				ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
+			}
 
 			pIEXLastTopOFBook->m_lHigh = simdjsonGetDouble(itemValue, "high") * stock.GetRatio();
 			pIEXLastTopOFBook->m_lLow = simdjsonGetDouble(itemValue, "low") * stock.GetRatio();
 			pIEXLastTopOFBook->m_lLastClose = simdjsonGetDouble(itemValue, "prevClose") * stock.GetRatio();
 			pIEXLastTopOFBook->m_lOpen = simdjsonGetDouble(itemValue, "open") * stock.GetRatio();
 			pIEXLastTopOFBook->m_lNew = simdjsonGetDouble(itemValue, "last") * stock.GetRatio();
-			pIEXLastTopOFBook->m_llVolume = simdjsonGetInt64(itemValue, "volume");
+			try {
+				pIEXLastTopOFBook->m_llVolume = simdjsonGetDouble(itemValue, "volume");
+			} catch (simdjson_error& error) {
+				ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
+			}
 
 			pvTiingoIEXLastTopOFBook->push_back(pIEXLastTopOFBook);
 			iCount++;

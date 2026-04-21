@@ -440,9 +440,9 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	if (GenerateIEXTopOfBook()) return true; // Note 此项数据包含所有股票的即时信息，可以用来作为实时数据使用。
-	if (GenerateStockDailyMeta()) return true;
-	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+	if (GenerateIEXTopOfBook()) return true; // Note 此项数据已经不包含所有股票的即时信息，中止此项任务。
+	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
+	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateFinancialState()) return true;
 
 	SPDLOG_ASSERT(!IsInquiring());
@@ -509,7 +509,7 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 		reportMsg1,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction("Fundamental Definition"); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("Stock Symbol"); }
 
 	);
 }
@@ -552,7 +552,14 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 	);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////
+///
+/// 此项数据已经不包含所有股票的即时信息，中止此项任务。
+/// 函数直接返回false
+///
+///////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::GenerateIEXTopOfBook() {
+	return false; // 
 	auto isUpdateNeeded = [this]() { return IsUpdateIEXTopOfBook(); };
 	auto createProduct = [this](int inquireType) {
 		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);

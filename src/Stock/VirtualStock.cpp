@@ -94,11 +94,20 @@ void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 }
 
 void CVirtualStock::AddStockSplit(const CStockSplitPtr& pStockSplit) noexcept {
+	for (auto& p : m_vStockSplit) {
+		if (p->GetDate() == pStockSplit->GetDate()) return; // 已经有了，不添加了。
+	}
 	m_vStockSplit.push_back(pStockSplit);
 	//按日期顺序添加拆股信息
 	ranges::sort(m_vStockSplit, [](const CStockSplitPtr& a, const CStockSplitPtr& b) {
 		return a->GetDate() < b->GetDate();
 	});
+}
+
+void CVirtualStock::AddStockSplits(CStockSplitsPtr vStockSplit) noexcept {
+	for (const auto& pStockSplit : *vStockSplit) {
+		AddStockSplit(pStockSplit);
+	}
 }
 
 bool CVirtualStock::IsSameStock(const CVirtualStockPtr& pStock) const {

@@ -2,6 +2,7 @@
 
 #include "Initialization.h"
 
+#include "AlphaVantageDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"NeteaseRTDataSource.h"
@@ -73,6 +74,7 @@ namespace {
 		gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
 		gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
+		gl_pAlphaVantageDataSource = make_shared<CAlphaVantageDataSource>();
 		gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
 	}
 
@@ -197,6 +199,7 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	// world market's data source
 	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
 	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
+	//gl_pWorldMarket->StoreDataSource(gl_pAlphaVantageDataSource); // Alpha vantage的每日申请次数为25次，暂时不使用。
 	gl_pWorldMarket->StoreDataSource(gl_pAccessoryDataSource);
 }
 

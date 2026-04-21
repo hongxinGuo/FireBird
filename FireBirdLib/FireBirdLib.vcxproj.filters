@@ -220,6 +220,12 @@
     <Filter Include="头文件\Type\TechAnalysis">
       <UniqueIdentifier>{98f34aec-40ab-447f-9f6e-13bc2fb56afe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Factory-Product\AlphaVantage">
+      <UniqueIdentifier>{3821548c-13ae-49c5-b2e8-d78b1d812b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Factory-Product\AlphaVantage">
+      <UniqueIdentifier>{d8805d14-9375-4e8e-afb3-76eec1a7c832}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -921,6 +927,21 @@
     <ClInclude Include="..\src\Type\StockSplit.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Source\AlphaVantageDataSource.h">
+      <Filter>头文件\Data Source\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.h">
+      <Filter>头文件\Factory-Product\AlphaVantage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.h">
+      <Filter>头文件\Factory-Product\AlphaVantage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.h">
+      <Filter>头文件\Factory-Product\AlphaVantage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.h">
+      <Filter>头文件\Factory-Product\AlphaVantage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1513,6 +1534,21 @@
     </ClCompile>
     <ClCompile Include="..\src\System\Initialization.cpp">
       <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\AlphaVantageDataSource.cpp">
+      <Filter>源文件\Data Source\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.cpp">
+      <Filter>源文件\Factory-Product\AlphaVantage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.cpp">
+      <Filter>源文件\Factory-Product\AlphaVantage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp">
+      <Filter>源文件\Factory-Product\AlphaVantage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockSplits.cpp">
+      <Filter>源文件\Factory-Product\AlphaVantage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

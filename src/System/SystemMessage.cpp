@@ -154,6 +154,7 @@ namespace {
 	binary_semaphore s_CurrentTiingoWebSocketForex{ 1 };
 	binary_semaphore s_sReadCurrentFinnhubFunction{ 1 };
 	binary_semaphore s_sReadCurrentTiingoFunction{ 1 };
+	binary_semaphore s_sReadCurrentAlphaVantageFunction{ 1 };
 }
 
 CSystemDeque::CSystemDeque() = default;
@@ -264,6 +265,19 @@ void CSystemMessage::SetCurrentTiingoFunction(const string& str) {
 	s_sReadCurrentTiingoFunction.acquire();
 	m_sCurrentTiingoFunction = str;
 	s_sReadCurrentTiingoFunction.release();
+}
+
+string CSystemMessage::GetCurrentAlphaVantageFunction() const {
+	s_sReadCurrentAlphaVantageFunction.acquire();
+	string str = m_sCurrentAlphaVantageFunction;
+	s_sReadCurrentAlphaVantageFunction.release();
+	return str;
+}
+
+void CSystemMessage::SetCurrentAlphaVantageFunction(const string& str) {
+	s_sReadCurrentAlphaVantageFunction.acquire();
+	m_sCurrentAlphaVantageFunction = str;
+	s_sReadCurrentAlphaVantageFunction.release();
 }
 
 void CSystemDeque::Display(COutputList* pOutputList, const string& strTime) {

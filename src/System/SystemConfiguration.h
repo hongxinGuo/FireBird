@@ -106,6 +106,11 @@ public:
 		m_worldMarketQuandlInquiryTime = chrono::milliseconds(iWorldMarketQuandlInquiryTime);
 		m_fUpdateDB = true;
 	}
+	[[nodiscard]] auto GetWorldMarketAlphaVantageInquiryTime() const noexcept { return m_worldMarketQuandlInquiryTime; }
+	void SetWorldMarketAlphaVantageInquiryTime(const int iWorldMarketAlphaVantageInquiryTime) noexcept {
+		m_worldMarketAlphaVantageInquiryTime = chrono::milliseconds(iWorldMarketAlphaVantageInquiryTime);
+		m_fUpdateDB = true;
+	}
 
 	[[nodiscard]] EChinaMarketDataSourceServer GetRTServer() const { return m_iChinaMarketRealtimeServer; }
 	[[nodiscard]] bool IsUsingSinaRTServer() const noexcept { return m_iChinaMarketRealtimeServer == SinaRealTime_; }
@@ -163,6 +168,9 @@ public:
 		m_fUpdateDB = true;
 		m_lTiingoDailyRequestLimit = lTiingoDailyRequestLimit;
 	}
+
+	// Alpha Vantage
+	[[nodiscard]] string GetAlphaVantageToken() noexcept { return m_strAlphaVantageToken; }
 
 	// WebSocket
 	[[nodiscard]] bool IsUsingFinnhubWebSocket() const noexcept { return m_bUsingFinnhubWebSocket; }
@@ -352,6 +360,7 @@ protected:
 	chrono::milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
 	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 400 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
 	chrono::milliseconds m_worldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
+	chrono::milliseconds m_worldMarketAlphaVantageInquiryTime{ 3600000 / 1000 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询1000次
 	string m_strCurrentStock{ "" }; // 当前所选股票
 
 	// Tiingo.com
@@ -368,7 +377,8 @@ protected:
 	long long m_llTiingoBandWidthLeft{ 5368709120 };
 
 	// AlphaVantage.co
-	string m_strAlphaVantageToken{ "RPKDBN0TEW83ML5A" }; // 0可能是O
+	string m_strAlphaVantageToken{ "ZXN06FNPO7C23LRS" }; // 
+	string m_strAlphaVantageToken2{ "RPKDBN0TEW83ML5A" }; // 0可能是O
 
 	// WebSocket
 	bool m_bUsingFinnhubWebSocket{ true };

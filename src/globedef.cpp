@@ -32,6 +32,7 @@
 #include "AccessoryDataSource.h"
 
 #undef max
+#include "AlphaVantageDataSource.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
@@ -90,6 +91,7 @@ CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
 CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;
+CAlphaVantageDataSourcePtr gl_pAlphaVantageDataSource = nullptr;
 CAccessoryDataSourcePtr gl_pAccessoryDataSource = nullptr;
 
 // Web socket， 皆为唯一实例。

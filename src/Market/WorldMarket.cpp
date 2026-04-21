@@ -5,6 +5,7 @@
 #include "WorldMarket.h"
 
 #include "AccessoryDataSource.h"
+#include "AlphaVantageDataSource.h"
 #include "CharSetTransfer.h"
 #include"thread.h"
 
@@ -986,6 +987,13 @@ bool CWorldMarket::UpdateToken() {
 	}
 	else {
 		gl_systemMessage.PushInformationMessage("Quandl Token Needed");
+	}
+
+	if (gl_systemConfiguration.GetAlphaVantageToken().length() > 5) {
+		gl_pAlphaVantageDataSource->SetInquiryToken(gl_systemConfiguration.GetAlphaVantageToken());
+	}
+	else {
+		gl_systemMessage.PushInformationMessage("AlphaVantage Token Needed");
 	}
 
 	return true;
