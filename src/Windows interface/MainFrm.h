@@ -162,4 +162,10 @@ protected:
 	afx_msg void OnTiingoRebuildStockSplit();
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	afx_msg void OnTiingoDownloadAllDayline();
+	afx_msg void OnTiingoDownloadOneYearDayline();
+	afx_msg void OnBuildChinaStockOneYearDayline();
+	afx_msg void OnBuildChinaMarketAllStockDayline();
 };

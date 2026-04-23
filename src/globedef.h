@@ -20,6 +20,8 @@ using std::binary_semaphore;
 
 #define MAX_BACKGROUND_WORKING_THREAD_ 32
 
+constexpr auto CHINA_MARKET_BEGIN_DATE_ = 19900101;// 中国股票市场起始日
+
 constexpr double EPSILON = 1e-8;
 
 extern HANDLE gl_hFireBirdMutex;

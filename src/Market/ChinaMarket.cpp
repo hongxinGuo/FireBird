@@ -133,9 +133,9 @@ void CChinaMarket::Reset() {
 
 	m_iCountDownTengxunNumber = 10;
 
-	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDate = _CHINA_MARKET_BEGIN_DATE_;
+	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDate = CHINA_MARKET_BEGIN_DATE_;
 	m_lLastLoginTime = 0;
-	m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = _CHINA_MARKET_BEGIN_DATE_;
+	m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = CHINA_MARKET_BEGIN_DATE_;
 
 	m_fSelectedStockLoaded = false;
 
@@ -379,8 +379,8 @@ void CChinaMarket::CreateStock(const string& strStockCode, const string& strStoc
 	pStock->SetSymbol(strStockCode);
 	pStock->SetDisplaySymbol(strStockName);
 	pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
-	pStock->SetDayLineEndDate(19900101);
-	pStock->SetDayLineStartDate(19900101);
+	pStock->SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
+	pStock->SetDayLineStartDate(CHINA_MARKET_BEGIN_DATE_);
 	pStock->SetUpdateProfileDB(true);
 	pStock->SetNeedProcessRTData(fProcessRTData);
 	gl_dataContainerChinaStock.Add(pStock);
@@ -1384,6 +1384,23 @@ bool CChinaMarket::ProcessDayLine() {
 	return true;
 }
 
+void CChinaMarket::UpdateOneYearStockDayLine() {
+	long lOneYearAgoDate = GetPrevDay(GetMarketDate(), 365);
+	for (auto index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
+		auto pStock = gl_dataContainerChinaStock.GetStock(index);
+		pStock->SetDayLineEndDate(lOneYearAgoDate);
+		pStock->SetUpdateDayLine(true);
+	}
+}
+
+void CChinaMarket::UpdateAllStockDayLine() {
+	for (auto index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
+		auto pStock = gl_dataContainerChinaStock.GetStock(index);
+		pStock->SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
+		pStock->SetUpdateDayLine(true);
+	}
+}
+
 void CChinaMarket::Choice10RSStrongStockSet() {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
@@ -1649,27 +1666,27 @@ void CChinaMarket::LoadOptionDB() {
 	CSetOption setOption;
 	setOption.Open();
 	if (setOption.IsEOF()) {
-		SetRSStartDate(_CHINA_MARKET_BEGIN_DATE_);
-		SetRSEndDate(_CHINA_MARKET_BEGIN_DATE_);
-		SetLastLoginDate(_CHINA_MARKET_BEGIN_DATE_);
-		SetUpdatedDateFor10DaysRS1(_CHINA_MARKET_BEGIN_DATE_);
-		SetUpdatedDateFor10DaysRS2(_CHINA_MARKET_BEGIN_DATE_);
+		SetRSStartDate(CHINA_MARKET_BEGIN_DATE_);
+		SetRSEndDate(CHINA_MARKET_BEGIN_DATE_);
+		SetLastLoginDate(CHINA_MARKET_BEGIN_DATE_);
+		SetUpdatedDateFor10DaysRS1(CHINA_MARKET_BEGIN_DATE_);
+		SetUpdatedDateFor10DaysRS2(CHINA_MARKET_BEGIN_DATE_);
 	}
 	else {
 		if (setOption.m_RSEndDate == 0) {
-			SetRSEndDate(_CHINA_MARKET_BEGIN_DATE_);
+			SetRSEndDate(CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
 			SetRSEndDate(setOption.m_RSEndDate);
 		}
 		if (setOption.m_RSStartDate == 0) {
-			SetRSStartDate(_CHINA_MARKET_BEGIN_DATE_);
+			SetRSStartDate(CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
 			SetRSStartDate(setOption.m_RSStartDate);
 		}
 		if (setOption.m_LastLoginDate == 0) {
-			SetLastLoginDate(_CHINA_MARKET_BEGIN_DATE_);
+			SetLastLoginDate(CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
 			SetLastLoginDate(setOption.m_LastLoginDate);

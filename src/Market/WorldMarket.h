@@ -70,6 +70,17 @@ public:
 	concurrencpp::result<bool> LoadNasdaq100StocksDayLine();
 	void CalculateNasdaq100StocksMA(int length) const;
 	void calculateNasdaq100MA200UpDownRate();
+
+	void calculateStockYearHigherRate(); // 计算股票年内再次新高的数量和比例
+	void AddNewHighHigher(long lNewHighHigher) { m_iNewHighHigher += lNewHighHigher; }
+	long GetNewHighHigher() const { return m_iNewHighHigher; }
+	void AddNoNewHighHigher(long lNoNewHighHigher) { m_iNoNewHighHigher += lNoNewHighHigher; }
+	long GetNoNewHighHigher() const { return m_iNoNewHighHigher; }
+	void ResetNewHighHigher() {
+		m_iNewHighHigher = 0;
+		m_iNoNewHighHigher = 0;
+	}
+
 	// 各种状态
 
 	static bool UpdateToken();
@@ -89,6 +100,9 @@ public:
 	void RebuildPeer();
 	void RebuildBasicFinancial();
 	void RebuildTiingoStockSplitDB();
+
+	void UpdateOneYearStockDayLine();
+	void UpdateAllStockDayLine();
 
 	void RebuildIndustryRS();
 	void BuildIndustry();
@@ -146,6 +160,8 @@ protected:
 
 protected:
 	vector<CTiingoStockPtr> m_vNasdaq100TiingoStock;
+	atomic_int m_iNewHighHigher{ 0 };
+	atomic_int m_iNoNewHighHigher{ 0 };
 
 	array<vector<CTiingoStockPtr>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
 };

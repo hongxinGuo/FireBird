@@ -1549,12 +1549,12 @@ namespace FireBirdTest {
 		setOption.Close();
 		gl_pChinaMarket->LoadOptionDB();
 
-		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), _CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), _CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), _CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong2StockSet());
 	}
 

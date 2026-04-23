@@ -34,8 +34,8 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDayLineTest, TestGetDate) {
 		CDayLine dl;
-		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(dl.GetDate(), _CHINA_MARKET_BEGIN_DATE_);
+		dl.SetDate(CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetDate(), CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CStockDayLineTest, TestGetTime) {
@@ -664,7 +664,7 @@ namespace FireBirdTest {
 	TEST_F(CStockDayLineTest, TestLoadChinaMarketStockDayLine) {
 		CDayLine id, id2;
 		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
-		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
+		id.SetDate(CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol("600000.SS");
 		id.SetLastClose(1010);
 		id.SetOpen(1100);
@@ -684,7 +684,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.m_strSort = "[Date]";
 		setDayLineBasicInfo.Open();
 		id2.LoadBasicData(&setDayLineBasicInfo);
-		EXPECT_EQ(id2.GetDate(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(id2.GetDate(), CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_EQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id2.GetOpen(), 1100);
 		EXPECT_EQ(id2.GetClose(), 1150);

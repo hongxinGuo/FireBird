@@ -1207,11 +1207,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetDayLineEndDate(_CHINA_MARKET_BEGIN_DATE_);
+		stock.SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.CheckDayLineStatus());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetIPOStatus(_STOCK_DELISTED_);
-		stock.SetDayLineEndDate(_CHINA_MARKET_BEGIN_DATE_ + 1);
+		stock.SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_ + 1);
 		stock.CheckDayLineStatus();
 		if (gl_pChinaMarket->GetDayOfWeek() == 1)
 			EXPECT_TRUE(stock.IsUpdateDayLine());
@@ -2099,7 +2099,7 @@ namespace FireBirdTest {
 
 		for (int i = 0; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
-			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000 + 2);
+			pid->SetDate(CHINA_MARKET_BEGIN_DATE_ + i * 100000 + 2);
 			pid->SetStockSymbol("600004.SS");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
@@ -2121,8 +2121,8 @@ namespace FireBirdTest {
 		pStock->SetDayLineEndDate(20800100);
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
-		EXPECT_EQ(pStock->GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_ + 9 * 100000 + 2) << "日线最新日期已更新";
-		EXPECT_EQ(pStock->GetDayLineStartDate(), _CHINA_MARKET_BEGIN_DATE_ + 2) << "日线最初日期已更新";
+		EXPECT_EQ(pStock->GetDayLineEndDate(), CHINA_MARKET_BEGIN_DATE_ + 9 * 100000 + 2) << "日线最新日期已更新";
+		EXPECT_EQ(pStock->GetDayLineStartDate(), CHINA_MARKET_BEGIN_DATE_ + 2) << "日线最初日期已更新";
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "更新日线起止日期后，此标识也被设置";
 
@@ -2136,7 +2136,7 @@ namespace FireBirdTest {
 
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
-			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000);
+			pid->SetDate(CHINA_MARKET_BEGIN_DATE_ + i * 100000);
 			pid->SetStockSymbol("600008.SS");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
@@ -2173,7 +2173,7 @@ namespace FireBirdTest {
 
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
-			pid->SetDate(_CHINA_MARKET_BEGIN_DATE_ + i * 100000);
+			pid->SetDate(CHINA_MARKET_BEGIN_DATE_ + i * 100000);
 			pid->SetStockSymbol("600008.SS");
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);

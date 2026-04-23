@@ -289,7 +289,7 @@ void CContainerChinaStock::UnloadDayLine() noexcept {
 void CContainerChinaStock::SetDayLineNeedMaintain() const {
 	SetUpdateDayLine();
 	for (auto& pStock : m_vStock) {
-		pStock->SetDayLineEndDate(19900101);
+		pStock->SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
 	}
 }
 

@@ -38,8 +38,8 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestGetDate) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWeekLine dl;
-		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(dl.GetDate(), _CHINA_MARKET_BEGIN_DATE_);
+		dl.SetDate(CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetDate(), CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CWeekLineTest, TestGetTime) {
@@ -858,7 +858,7 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestLoadWeekLine) {
 		CWeekLine id, id2;
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
-		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
+		id.SetDate(CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol("600000.SS");
 		id.SetLastClose(1010);
 		id.SetOpen(1100);

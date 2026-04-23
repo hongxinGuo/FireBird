@@ -405,18 +405,18 @@ namespace FireBirdTest {
 	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {
 		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "初始时容器为空";
 
-		stock.Add52WeekLow(20000101);
-		stock.Add52WeekLow(20010101);
+		stock.Add52WeekLowDate(20000101);
+		stock.Add52WeekLowDate(20010101);
 
 		EXPECT_FALSE(stock.Have52WeekLowDate(19800101));
 		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
 		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
 
-		stock.Delete52WeekLow(19800101);
+		stock.Delete52WeekLowDate(19800101);
 		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
 		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
 
-		stock.Delete52WeekLow(20000101);
+		stock.Delete52WeekLowDate(20000101);
 		EXPECT_FALSE(stock.Have52WeekLowDate(20000101));
 		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
 	}
@@ -424,18 +424,18 @@ namespace FireBirdTest {
 	TEST_F(CTiingoStockTest, TestAdd52WeekHigh) {
 		EXPECT_FALSE(stock.Have52WeekHighDate(20000101)) << "初始时容器为空";
 
-		stock.Add52WeekHigh(20000101);
-		stock.Add52WeekHigh(20010101);
+		stock.Add52WeekHighDate(20000101);
+		stock.Add52WeekHighDate(20010101);
 
 		EXPECT_FALSE(stock.Have52WeekHighDate(19800101));
 		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
 		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
 
-		stock.Delete52WeekHigh(19800101);
+		stock.Delete52WeekHighDate(19800101);
 		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
 		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
 
-		stock.Delete52WeekHigh(20000101);
+		stock.Delete52WeekHighDate(20000101);
 		EXPECT_FALSE(stock.Have52WeekHighDate(20000101));
 		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
 	}
@@ -483,10 +483,10 @@ namespace FireBirdTest {
 		stock.SetCompanyWebSite("ijk");
 		stock.SetSECFilingWebSite("https://def.com");
 		stock.SetCompanyFinancialStatementUpdateDate(20202020);
-		stock.Add52WeekLow(20200101);
-		stock.Add52WeekLow(20240101);
-		stock.Add52WeekHigh(20000101);
-		stock.Add52WeekHigh(20040101);
+		stock.Add52WeekLowDate(20200101);
+		stock.Add52WeekLowDate(20240101);
+		stock.Add52WeekHighDate(20000101);
+		stock.Add52WeekHighDate(20040101);
 		stock.SetDayLineStartDate(20200101);
 		stock.SetDayLineEndDate(20240102);
 		auto p = make_shared<CStockSplit>();
@@ -753,16 +753,16 @@ namespace FireBirdTest {
 		pStock2->SetSymbol("ACI");
 		pStock2->ProcessDayLine2();
 
-		EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
-		EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		EXPECT_TRUE(pStock3->m_v52WeekLowDate.size() == pStock2->m_v52WeekLowDate.size());
+		EXPECT_TRUE(pStock3->m_v52WeekHighDate.size() == pStock2->m_v52WeekHighDate.size());
 		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
 		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 
-		for (size_t i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
-			EXPECT_TRUE(pStock3->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
+		for (size_t i = 0; i < pStock3->m_v52WeekLowDate.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekLowDate.at(i) == pStock2->m_v52WeekLowDate.at(i)) << i;
 		}
-		for (size_t i = 0; i < pStock3->m_v52WeekHigh.size(); i++) {
-			EXPECT_TRUE(pStock3->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
+		for (size_t i = 0; i < pStock3->m_v52WeekHighDate.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekHighDate.at(i) == pStock2->m_v52WeekHighDate.at(i)) << i;
 		}
 		/*
 		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {
@@ -790,16 +790,16 @@ namespace FireBirdTest {
 		pStock2->SetSymbol("A");
 		pStock2->ProcessDayLine2();
 
-		EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
-		EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		EXPECT_TRUE(pStock3->m_v52WeekLowDate.size() == pStock2->m_v52WeekLowDate.size());
+		EXPECT_TRUE(pStock3->m_v52WeekHighDate.size() == pStock2->m_v52WeekHighDate.size());
 		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
 		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 
-		for (size_t i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
-			EXPECT_TRUE(pStock3->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
+		for (size_t i = 0; i < pStock3->m_v52WeekLowDate.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekLowDate.at(i) == pStock2->m_v52WeekLowDate.at(i)) << i;
 		}
-		for (size_t i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
-			EXPECT_TRUE(pStock3->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
+		for (size_t i = 0; i < pStock3->m_v52WeekLowDate.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekHighDate.at(i) == pStock2->m_v52WeekHighDate.at(i)) << i;
 		}
 		/*
 		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {

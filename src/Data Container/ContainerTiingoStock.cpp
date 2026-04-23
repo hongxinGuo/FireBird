@@ -254,10 +254,10 @@ void CContainerTiingoStock::TaskCalculate() {
 	for (size_t index = 0; index < lSize; index++) {
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 		auto pStock = GetStock(index);
-		pStock->Load52WeekLow();
+		pStock->Load52WeekLowDB();
 		if (pStock->IsEnough52WeekLow()) {
 		}
-		pStock->m_v52WeekLow.clear(); //Note 直到这里才清空
+		pStock->m_v52WeekLowDate.clear(); //Note 直到这里才清空
 	}
 	setCurrentTrace.m_pDatabase->CommitTrans();
 	setCurrentTrace.Close();
@@ -281,11 +281,11 @@ void CContainerTiingoStock::TaskCalculate2() {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			bool fFound = false;
 			auto pStock = this->GetStock(index);
-			pStock->Load52WeekLow();
+			pStock->Load52WeekLowDB();
 			if (pStock->IsEnough52WeekLow()) {
 				fFound = true;
 			}
-			pStock->m_v52WeekLow.clear(); //Note 直到这里才清空
+			pStock->m_v52WeekLowDate.clear(); //Note 直到这里才清空
 			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 			gl_BackgroundWorkingThread.release();
 			if (fFound) return index;
@@ -408,6 +408,8 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::TaskProcessDayLine() {
 	gl_systemMessage.PushInnerSystemInformationMessage("开始处理Tiingo日线数据");
+	gl_pWorldMarket->ResetNewHighHigher();
+
 	auto lSize = Size();
 	vector<result<void>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
@@ -448,5 +450,13 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 		gl_dataContainerTiingoStock.TaskCalculate();
 	});
 	result5.get();
+
+	ReportHighHigherRate();
 	gl_systemMessage.PushInnerSystemInformationMessage("Tiingo日线数据处理完毕");
+}
+
+void CContainerTiingoStock::ReportHighHigherRate() {
+	auto s = fmt::format("3月内再创新高数:{:d}, 3月内未再次新高数:{:d}, 比率:{:.2f}", gl_pWorldMarket->GetNewHighHigher(), gl_pWorldMarket->GetNoNewHighHigher(),
+	                     static_cast<double>(gl_pWorldMarket->GetNewHighHigher()) / gl_pWorldMarket->GetNoNewHighHigher());
+	gl_systemMessage.PushInnerSystemInformationMessage(s);
 }

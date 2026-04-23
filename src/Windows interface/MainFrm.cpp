@@ -120,10 +120,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnCalculateNasdaq100200maUpdownRate)
 	ON_UPDATE_COMMAND_UI(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate)
 	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CMainFrame::OnTiingoRebuildStockSplit)
+	ON_COMMAND(ID_TIINGO_DOWNLOAD_ALL_DAYLINE, &CMainFrame::OnTiingoDownloadAllDayline)
+	ON_COMMAND(ID_TIINGO_DOWNLOAD_ONE_YEAR_DAYLINE, &CMainFrame::OnTiingoDownloadOneYearDayline)
+	ON_COMMAND(ID_BUILD_CHINA_STOCK_ONE_YEAR_DAYLINE, &CMainFrame::OnBuildChinaStockOneYearDayline)
+	ON_COMMAND(ID_BUILD_CHINA_MARKET_ALL_STOCK_DAYLINE, &CMainFrame::OnBuildChinaMarketAllStockDayline)
 END_MESSAGE_MAP()
 
 namespace {
-	 UINT indicators[] =
+	UINT indicators[] =
 	{
 		ID_SEPARATOR, // 状态行指示器
 		ID_CURRENT_INPUT,
@@ -142,7 +146,7 @@ namespace {
 		ID_CURRENT_TIME,
 	};
 
-	 UINT innerSystemIndicators[] =
+	UINT innerSystemIndicators[] =
 	{
 		ID_SEPARATOR, // 状态行指示器
 		ID_SHOW_SINA_RT,
@@ -563,13 +567,13 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	string s;
 	// 更新实时数据读取时间
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0: // 新浪实时数据
+	case SinaRealTime_: // 新浪实时数据
 		s = fmt::format("{:5Ld}", gl_pSinaRTDataSource->GetCurrentInquiryTime());
 		break;
-	case 1: // 更新网易实时数据读取时间
+	case NeteaseRealTime_: // 更新网易实时数据读取时间
 		s = fmt::format("{:5Ld}", gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
 		break;
-	case 2: // 更新腾讯实时数据读取时间
+	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		s = fmt::format("{:5Ld}", gl_pTengxunRTDataSource->GetCurrentInquiryTime());
 		break;
 	default: // error
@@ -827,7 +831,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
 	gl_runtime.thread_executor()->post([] {
-		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
+		ThreadBuildDayLineRS(gl_pChinaMarket, CHINA_MARKET_BEGIN_DATE_);
 	});
 }
 
@@ -977,7 +981,7 @@ void BuildWeekLine(long lStartDate) {
 	const CTimeSpan ts7Day(7, 0, 0, 0);
 	long lCurrentMonday = lStartMonday;
 
-	if (lStartDate > 19900101) {// 目前此种情况只用于重新生成本周周线
+	if (lStartDate > CHINA_MARKET_BEGIN_DATE_) {// 目前此种情况只用于重新生成本周周线
 		ASSERT(lStartMonday == GetCurrentMonday(gl_pChinaMarket->GetMarketDate()));
 		do {
 			gl_pChinaMarket->DeleteWeekLine(lCurrentMonday);
@@ -1001,7 +1005,7 @@ void BuildWeekLine(long lStartDate) {
 }
 
 void CMainFrame::OnBuildCreateWeekLine() {
-	auto lStartDate = 19900101;
+	auto lStartDate = CHINA_MARKET_BEGIN_DATE_;
 	gl_runtime.thread_executor()->post([lStartDate] {
 		BuildWeekLine(lStartDate);
 	});
@@ -1012,7 +1016,7 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	gl_runtime.thread_executor()->post([] {
-		ThreadBuildWeekLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
+		ThreadBuildWeekLineRS(gl_pChinaMarket, CHINA_MARKET_BEGIN_DATE_);
 	});
 }
 
@@ -1206,7 +1210,7 @@ void CMainFrame::OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI) {
 #ifndef _DEBUG
 		if (gl_pChinaMarket->GetMarketTime() > 151000)
 #endif
-		SysCallCmdUIEnable(pCmdUI, true);
+			SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);
@@ -1322,4 +1326,20 @@ void CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnTiingoRebuildStockSplit() {
 	gl_pWorldMarket->RebuildTiingoStockSplitDB();
+}
+
+void CMainFrame::OnTiingoDownloadAllDayline() {
+	gl_pWorldMarket->UpdateAllStockDayLine();
+}
+
+void CMainFrame::OnTiingoDownloadOneYearDayline() {
+	gl_pWorldMarket->UpdateOneYearStockDayLine();
+}
+
+void CMainFrame::OnBuildChinaStockOneYearDayline() {
+	gl_pChinaMarket->UpdateOneYearStockDayLine();
+}
+
+void CMainFrame::OnBuildChinaMarketAllStockDayline() {
+	gl_pChinaMarket->UpdateAllStockDayLine();
 }

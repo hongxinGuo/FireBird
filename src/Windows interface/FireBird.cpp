@@ -129,7 +129,7 @@ BOOL CFireBirdApp::InitInstance() {
 	                                             RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
 
 	CMultiDocTemplate* pDocTemplate = new CMultiDocTemplate(
-		IDR_FIREBIRDTYPE,
+		IDR_FIREBIRDTYPE, // 菜单和工具栏资源ID
 		RUNTIME_CLASS(CFireBirdDoc),
 		RUNTIME_CLASS(CChildFrame), // main SDI frame window
 		RUNTIME_CLASS(CFireBirdView));
@@ -178,25 +178,27 @@ int CFireBirdApp::ExitInstance() {
 // CFireBirdApp 消息处理程序
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-class CAboutDlg : public CDialogEx {
-public:
-	CAboutDlg();
+namespace {
+	class CAboutDlg : public CDialogEx {
+	public:
+		CAboutDlg();
 
-	// 对话框数据
+		// 对话框数据
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_ABOUTBOX };
+		enum { IDD = IDD_ABOUTBOX };
 #endif
 
-protected:
-	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV 支持
+	protected:
+		void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV 支持
 
-	// 实现
-protected:
-	DECLARE_MESSAGE_MAP()
+		// 实现
+	protected:
+		DECLARE_MESSAGE_MAP()
 
-public:
-	//	afx_msg void OnTiingoRebuildStockSplit();
-};
+	public:
+		//	afx_msg void OnTiingoRebuildStockSplit();
+	};
+}
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX) {
 }

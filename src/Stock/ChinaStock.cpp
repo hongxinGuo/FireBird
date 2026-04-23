@@ -337,7 +337,7 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 	bool fUpdated = false;
 
 	if (m_dataDayLine.Size() > 0) {
-		if ((GetDayLineStartDate() == 19900101) || (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate())) {
+		if ((GetDayLineStartDate() == CHINA_MARKET_BEGIN_DATE_) || (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate())) {
 			SetDayLineStartDate(m_dataDayLine.GetData(0)->GetDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
@@ -1179,7 +1179,7 @@ bool CChinaStock::CheckDayLineStatus() {
 		SetUpdateDayLine(false); // 日线数据不需要更新
 	}
 	else if (IsDelisted()) {// 退市股票如果已下载过日线数据，则每星期一复查日线数据
-		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != _CHINA_MARKET_BEGIN_DATE_)) {
+		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != CHINA_MARKET_BEGIN_DATE_)) {
 			SetUpdateDayLine(false);
 		}
 	}

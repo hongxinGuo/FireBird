@@ -750,12 +750,14 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	setIndex.Close();
 }
 
+void CWorldMarket::calculateStockYearHigherRate() {
+}
+
 bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
 			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
-			const string str = "世界市场初始化完毕";
-			gl_systemMessage.PushInformationMessage(str);
+			gl_systemMessage.PushInformationMessage("世界市场初始化完毕");
 			SetSystemReady(true);
 		}
 	}
@@ -1074,6 +1076,23 @@ void CWorldMarket::RebuildTiingoStockSplitDB() {
 			pStock->SetUpdateProfileDB(true);
 			gl_BackgroundWorkingThread.release();
 		});
+	}
+}
+
+void CWorldMarket::UpdateOneYearStockDayLine() {
+	long lBeginDate = GetPrevDay(GetMarketDate(), 365);
+	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
+		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
+		pStock->SetDayLineEndDate(lBeginDate);
+		pStock->SetUpdateDayLine(true);
+	}
+}
+
+void CWorldMarket::UpdateAllStockDayLine() {
+	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
+		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
+		pStock->SetDayLineEndDate(19800101); // 从1980年开始更新日线数据
+		pStock->SetUpdateDayLine(true);
 	}
 }
 

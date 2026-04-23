@@ -7,9 +7,6 @@
 using std::set;
 using std::atomic_int64_t;
 
-// 中国股票市场起始日
-constexpr auto _CHINA_MARKET_BEGIN_DATE_ = 19900101;
-
 constexpr int c_SelectedStockStartPosition = 0;
 constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
@@ -79,6 +76,8 @@ public:
 	bool TaskUpdateStockSection(); //
 
 	bool ProcessDayLine();
+	void UpdateOneYearStockDayLine();
+	void UpdateAllStockDayLine();
 
 	// 各工作线程调用包裹函数
 	virtual void Choice10RSStrongStockSet();

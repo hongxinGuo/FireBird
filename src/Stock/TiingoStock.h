@@ -178,43 +178,49 @@ public:
 	long GetDayLineProcessDate();
 	void SetDayLineProcessDate(long lDate) { m_jsonUpdateDate["DayLineProcessDate"] = lDate; }
 
-	bool Have52WeekLowDate(long lDate) { return std::ranges::find(m_v52WeekLow, lDate) != m_v52WeekLow.end(); }
-	bool Have52WeekHighDate(long lDate) { return std::ranges::find(m_v52WeekHigh, lDate) != m_v52WeekHigh.end(); }
-	void Add52WeekLow(long lDate) { m_v52WeekLow.push_back(lDate); }
-	void Delete52WeekLow(long lDate);
-	void Add52WeekHigh(long lDate) { m_v52WeekHigh.push_back(lDate); }
-	void Delete52WeekHigh(long lDate);
+	bool Have52WeekLowDate(long lDate) { return std::ranges::find(m_v52WeekLowDate, lDate) != m_v52WeekLowDate.end(); }
+	bool Have52WeekHighDate(long lDate) { return std::ranges::find(m_v52WeekHighDate, lDate) != m_v52WeekHighDate.end(); }
+	void Add52WeekLowDate(long lDate) { m_v52WeekLowDate.push_back(lDate); }
+	void Delete52WeekLowDate(long lDate);
+	void Add52WeekHighDate(long lDate) { m_v52WeekHighDate.push_back(lDate); }
+	void Delete52WeekHighDate(long lDate);
 
 	void Update52WeekHighDB(CSetTiingoStock52WeekHigh& set52WeekHigh) const;
 	void Update52WeekLowDB(CSetTiingoStock52WeekLow& set52WeekLow) const;
 	void Delete52WeekHighDB() const;
 	void Delete52WeekLowDB() const;
 	bool IsEnough52WeekLow();
-	void Load52WeekLow();
+	void Load52WeekLowDB();
 
 	void ProcessDayLine(); // 系统调用这个函数
 	void FindHighLow3(size_t endPos);
 	void FindHighLow2(size_t endPos);
-	void FindAll52WeekLow(size_t beginPos, size_t endPos);
-	void FindAll52WeekHigh(size_t beginPos, size_t endPos);
-	size_t FindCurrent52WeekLow(size_t beginPos, size_t endPos, double& value) const;
-	size_t FindCurrent52WeekHigh(size_t beginPos, size_t endPos, double& value) const;
+	void FindAll52WeekLowDate(size_t beginPos, size_t endPos);
+	void FindAll52WeekHighDate(size_t beginPos, size_t endPos);
+	size_t FindCurrent52WeekLowPos(size_t beginPos, size_t endPos, double& value) const;
+	size_t FindCurrent52WeekHighPos(size_t beginPos, size_t endPos, double& value) const;
 	double CalculateSplitFactor(size_t beginPos, size_t endPos) const;
-	void NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize);
+	void AdjustedStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize);
 	int IsLowOrHigh(size_t index, double dClose) const;
 
 	// 测试用函数
 	void ProcessDayLine2(); // 用于测试
 	void ProcessDayLine3(); // 用于测试
+	void CalculateNewHighHigher(int period = 90);
+	void CalculateNewLowLower(int period = 90);
 
-	void Clear52WeekLow() { m_v52WeekLow.clear(); }
-	void Clear52WeekHigh() { m_v52WeekHigh.clear(); }
+	void Clear52WeekLow() { m_v52WeekLowDate.clear(); }
+	void Clear52WeekHigh() { m_v52WeekHighDate.clear(); }
 
 public:
-	vector<long> m_v52WeekLow; // 年度最低价的日期
-	vector<long> m_v52WeekHigh; // 年度最高价的日期
-
+	vector<long> m_v52WeekLowDate; // 年度最低价的日期
+	vector<long> m_v52WeekHighDate; // 年度最高价的日期
 	vector<double> m_vClose; // 收盘价
+
+	long m_lHighHigher{ 0 };
+	long m_lNoHighHigher{ 0 };
+	long m_lLowLower{ 0 };
+	long m_lNoLowLower{ 0 };
 
 protected:
 	string m_strTiingoPermaTicker{ "" }; // Tiingo永久代码标识
