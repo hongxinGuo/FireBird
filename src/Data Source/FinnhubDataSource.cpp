@@ -57,7 +57,7 @@ bool CFinnhubDataSource::Reset() {
 	m_fUpdateMarketStatus = true;
 	m_fUpdateMarketHoliday = true;
 	m_fUpdateStockProfile = true;
-	m_fUpdateCompanyNews = true;
+	m_fUpdateCompanyNews = false; //Note 暂时不更新了
 	m_fUpdateCompanyPriceMetrics = true;
 	m_fUpdateStockBasicFinancial = true;
 	m_fUpdateStockDayLine = true;
