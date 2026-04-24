@@ -32,6 +32,7 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 }
 
 bool CContainerFinnhubEconomicCalendar::UpdateDB() {
+	return true; //todo 经济数据中有非法字符，暂时不存储了。
 	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
 		CSetEconomicCalendar setEconomicCalendar;
 		setEconomicCalendar.Open();

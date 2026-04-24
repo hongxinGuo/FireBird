@@ -26,6 +26,7 @@
 
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
+#include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
 
 CChinaMarket::CChinaMarket() {
@@ -1386,19 +1387,23 @@ bool CChinaMarket::ProcessDayLine() {
 
 void CChinaMarket::UpdateOneYearStockDayLine() {
 	long lOneYearAgoDate = GetPrevDay(GetMarketDate(), 365);
-	for (auto index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
+	for (size_t index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
 		auto pStock = gl_dataContainerChinaStock.GetStock(index);
-		pStock->SetDayLineEndDate(lOneYearAgoDate);
-		pStock->SetUpdateDayLine(true);
+		if (pStock->GetDayLineEndDate() > lOneYearAgoDate) {
+			pStock->SetDayLineEndDate(lOneYearAgoDate);
+			pStock->SetUpdateDayLine(true);
+		}
 	}
+	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
 }
 
 void CChinaMarket::UpdateAllStockDayLine() {
-	for (auto index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
+	for (size_t index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
 		auto pStock = gl_dataContainerChinaStock.GetStock(index);
 		pStock->SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
 		pStock->SetUpdateDayLine(true);
 	}
+	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
 }
 
 void CChinaMarket::Choice10RSStrongStockSet() {
