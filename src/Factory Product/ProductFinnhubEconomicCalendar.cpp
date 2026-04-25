@@ -52,7 +52,6 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 			string s = jsonGetString(it, "country");
 			if (!s.empty()) pEconomicCalendar->m_strCountry = s;
 			s = jsonGetString(it, "event");
-			ASSERT(s.length() < 100);
 			pEconomicCalendar->m_strEvent = s;
 			s = jsonGetString(it, "impact");
 			pEconomicCalendar->m_strImpact = s;

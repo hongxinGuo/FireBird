@@ -1,9 +1,5 @@
 // CSetEconomicCalendar.cpp : CSetEconomicCalendar 类的实现
 
-// CSetFinnhubStockDayLine 实现
-
-// 代码生成在 2019年6月2日, 5:10
-
 #include"pch.h"
 
 #include "SetEconomicCalendar.h"

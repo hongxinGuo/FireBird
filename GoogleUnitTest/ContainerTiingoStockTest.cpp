@@ -124,6 +124,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerTiingoStockTest, TestReportHighHigherRate) {
+		gl_pWorldMarket->ResetNewHighHigher();
 		gl_pWorldMarket->AddNewHighHigher(10000);
 		gl_pWorldMarket->AddNoNewHighHigher(20000);
 
@@ -133,5 +134,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		auto s = gl_systemMessage.PopInnerSystemInformationMessage();
 		EXPECT_TRUE(s.find("3月内再创新高数:10000, 3月内未再次新高数:20000, 比率:0.50") != string::npos);
+		gl_pWorldMarket->ResetNewHighHigher();
 	}
 }

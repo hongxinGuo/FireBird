@@ -26,7 +26,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	ASSERT(Size() > 0);
 
 	const size_t lSize = Size();
-	if (strStockSymbol.length() > 0) {
+	if (!strStockSymbol.empty()) {
 		pSetHistoryCandleBasic->m_strFilter = "[Symbol] = '";
 		pSetHistoryCandleBasic->m_strFilter += strStockSymbol.c_str();
 		pSetHistoryCandleBasic->m_strFilter += "'";

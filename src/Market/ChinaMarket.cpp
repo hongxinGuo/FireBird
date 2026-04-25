@@ -643,7 +643,7 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	}
 
 	// 每十秒钟存储一次日线历史数据。
-	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始更新日线历史数据。
+	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 93000); // 中午休市时开始更新日线历史数据。
 
 	// 每五分钟存储一次系统选项数据库
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lTimeMinute, 0, 3, 5)); // 开始执行时间为启动之后的三分钟。
@@ -1395,6 +1395,7 @@ void CChinaMarket::UpdateOneYearStockDayLine() {
 		}
 	}
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
+	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0, 0, 100));
 }
 
 void CChinaMarket::UpdateAllStockDayLine() {
@@ -1404,6 +1405,7 @@ void CChinaMarket::UpdateAllStockDayLine() {
 		pStock->SetUpdateDayLine(true);
 	}
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
+	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0, 0, 100));
 }
 
 void CChinaMarket::Choice10RSStrongStockSet() {
