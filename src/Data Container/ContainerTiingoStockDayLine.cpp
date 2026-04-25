@@ -213,6 +213,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	// 按拆分因子调整日线数据
 	vector<shared_ptr<CSplitFactor>> vpSplitFactor;
 	double dTotalFactor = 1.0;
+	// 找出所有的拆分因子，并计算累计拆分因子。注意，拆分因子是从后向前计算的。
 	for (long i = m_vHistoryData.size() - 1; i >= 0; i--) {
 		auto data = m_vHistoryData.at(i);
 		if (std::abs(data->GetSplitFactor() - 1.0) > EPSILON) {
@@ -229,24 +230,24 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	long j = 0;
 	long prevDate;
 	int i = m_vHistoryData.size() - 1;
-	double factor = 1.0;
-	auto data = m_vHistoryData.at(i);
+	double currentFactor = 1.0;
+	auto currentData = m_vHistoryData.at(i);
 	do {
-		auto date = vpSplitFactor.at(j)->date;
-		const double prevFactor = factor;
-		factor = vpSplitFactor.at(j)->factor;
+		auto currentSpiltDate = vpSplitFactor.at(j)->date;
+		const double prevFactor = currentFactor;
+		currentFactor = vpSplitFactor.at(j)->factor;
 		if (j < vpSplitFactor.size() - 1) prevDate = vpSplitFactor.at(j + 1)->date;
 		else prevDate = 0;
 
-		while (data->GetDate() > date) data = m_vHistoryData.at(i--);
-		if (data->GetDate() == date) {
-			data->SetLastClose(data->GetLastClose() * prevFactor / factor);
+		while (currentData->GetDate() > currentSpiltDate) currentData = m_vHistoryData.at(i--); // 找到拆分日的日线数据
+		if (currentData->GetDate() == currentSpiltDate) {
+			currentData->SetLastClose(currentData->GetLastClose() * prevFactor / currentFactor); // 拆分日只有前收盘价需要调整，其他价格不调整。
 		}
-		while (data->GetDate() > prevDate && i >= 0) {
-			data = m_vHistoryData.at(i--);
-			data->AdjustByFactor(factor);
+		while (currentData->GetDate() > prevDate && i >= 0) { // 调整拆分日之前的日线数据，直到下一个拆分日（如果有的话）
+			currentData = m_vHistoryData.at(i--);
+			currentData->AdjustByFactor(currentFactor);
 		}
 		j++;
-	} while (i > 0);
+	} while (i >= 0);
 	ASSERT(j == vpSplitFactor.size());
 }

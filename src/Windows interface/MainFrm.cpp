@@ -1297,7 +1297,12 @@ void CMainFrame::OnProcessTiingoDayLine() {
 }
 
 void CMainFrame::OnUpdateProcessTiingoDayLine(CCmdUI* pCmdUI) {
-	pCmdUI->Enable(true); // 随时可以执行
+	if (gl_pTiingoDataSource->IsUpdateDayLine()) {
+		pCmdUI->Enable(false); // 更新日线数据时，不允许处理日线数据。
+	}
+	else {
+		pCmdUI->Enable(true); // 随时可以执行
+	}
 }
 
 void CMainFrame::OnCalculateNewLowFiveTimes() {

@@ -411,26 +411,29 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	gl_pWorldMarket->ResetNewHighHigher();
 
 	auto lSize = Size();
+	auto lastCalculatedDate = gl_systemConfiguration.GetTiingoStockDayLineProcessedDate();
 	vector<result<void>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
-			gl_BackgroundWorkingThread.acquire();
-			auto result = gl_runtime.thread_executor()->submit([pStock] {
-				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				if (!gl_systemConfiguration.IsExitingSystem()) {
-					pStock->ProcessDayLine();
-				}
-				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-				gl_BackgroundWorkingThread.release();
-			});
-			vResults.emplace_back(std::move(result));
+			//gl_BackgroundWorkingThread.acquire();
+			//auto result = gl_runtime.thread_executor()->submit([pStock] {
+			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+			if (!gl_systemConfiguration.IsExitingSystem()) {
+				pStock->ProcessDayLine(lastCalculatedDate);
+			}
+			TRACE("Tiingo计算至%d位置\n", index);
+			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+			//gl_BackgroundWorkingThread.release();
+			//});
+			//vResults.emplace_back(std::move(result));
 		}
 	}
-	for (auto& result2 : vResults) {
-		result2.get(); // 在这里等待所有的线程执行完毕
-	}
+	//for (auto& result2 : vResults) {
+	//	result2.get(); // 在这里等待所有的线程执行完毕
+	//}
 	gl_systemConfiguration.SetTiingoStockDayLineProcessedDate(gl_pWorldMarket->GetMarketDate());
+	gl_systemMessage.PushInnerSystemInformationMessage("结束处理Tiingo日线任务，开始存储");
 
 	auto result2 = gl_runtime.thread_executor()->submit([] {
 		gl_dataContainerTiingoStock.TaskUpdate52WeekHighDB();

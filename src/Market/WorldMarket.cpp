@@ -557,9 +557,6 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskProcessDayLine();
 	});
-	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskProcessDayLine();
-	});
 }
 
 void CWorldMarket::TaskDeleteDelistedStock() {

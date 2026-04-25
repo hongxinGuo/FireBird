@@ -117,7 +117,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(data5->GetLastClose(), 101250000 / 112);
 		EXPECT_EQ(data5->GetClose(), 55630000/56);
 		EXPECT_EQ(data5->GetHigh(), 1016785);
-		data2 = m_dataTiingoStockDayLine.GetDayLine(19870617); // 上市第一天
+		data2 = m_dataTiingoStockDayLine.GetDayLine(19870617); // 拆股后第一天
 		EXPECT_EQ(data2->GetLastClose(), 41500000/112);
 		EXPECT_EQ(data2->GetClose(), 40500000 / 112);
 		EXPECT_EQ(data2->GetHigh(), 42500000 / 112);
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(data2->GetOpen(), 41500000 / 112);
 		auto data6 = m_dataTiingoStockDayLine.GetDayLine(19870616); // 2拆股
 		EXPECT_EQ(data6->GetLastClose(), 78500000 / 224);
-		EXPECT_EQ(data6->GetClose(), 41500000/112);
+		EXPECT_EQ(data6->GetClose(), 41500000 / 112);
 		EXPECT_EQ(data6->GetOpen(), 370535);
 		data2 = m_dataTiingoStockDayLine.GetDayLine(19801212); // 上市第一天
 		EXPECT_EQ(data2->GetLastClose(), 0);
@@ -133,5 +133,40 @@ namespace FireBirdTest {
 		EXPECT_EQ(data2->GetHigh(), 28870000 / 224);
 		EXPECT_EQ(data2->GetLow(), 28750000 / 224);
 		EXPECT_EQ(data2->GetOpen(), 28750000 / 224);
+	}
+
+	TEST_F(CDataTiingoStockDayLineTest, TestSplitAdjust2) {
+		m_dataTiingoStockDayLine.LoadDB("AYRO");
+
+		auto data = m_dataTiingoStockDayLine.GetDayLine(20250102);
+		auto data2 = m_dataTiingoStockDayLine.GetDayLine(20250626); // 1/16
+		EXPECT_EQ(data2->GetLastClose(), 430000 * 16);
+		EXPECT_EQ(data2->GetClose(), 7638600);
+		data2 = m_dataTiingoStockDayLine.GetDayLine(20230918); // 1/8
+		EXPECT_EQ(data2->GetLastClose(), 485400 * 16 * 8);
+		EXPECT_EQ(data2->GetClose(), 2930000 * 16);
+		EXPECT_EQ(data2->GetHigh(), 3603100 * 16);
+		EXPECT_EQ(data2->GetLow(), 2900000 * 16);
+		EXPECT_EQ(data2->GetOpen(), 3340000 * 16);
+		auto data3 = m_dataTiingoStockDayLine.GetDayLine(20200529); // 1/5
+		EXPECT_EQ(data3->GetLastClose(), 780000 * 16 * 8 * 5);
+		EXPECT_EQ(data3->GetClose(), 3050000 * 16 * 8);
+		EXPECT_EQ(data3->GetHigh(), 4099999 * 16 * 8);
+		auto data4 = m_dataTiingoStockDayLine.GetDayLine(20190311); // 1/6
+		EXPECT_EQ(data4->GetLastClose(), 2035159296); // 530000 * 16 * 8 * 5 * 6的近似值
+		long long ll = 4050000LL * 16 * 8 * 5;
+		EXPECT_EQ(data4->GetClose(), ll);
+		ll = 3030000LL * 16 * 8 * 5;
+		EXPECT_EQ(data4->GetLow(), ll);
+		auto data5 = m_dataTiingoStockDayLine.GetDayLine(20180131); // 1/4
+		EXPECT_EQ(data5->GetClose(), 13439731205); // 3500000LL * 16 * 8 * 5 * 6
+		EXPECT_EQ(data5->GetHigh(), 18393232135); //4790000LL * 16 * 8 * 5 * 6
+		EXPECT_EQ(data5->GetLastClose(), 15820483588);// 1030000LL * 16 * 8 * 5 * 6 * 4;
+		data2 = m_dataTiingoStockDayLine.GetDayLine(20180130); // 上市第一天
+		EXPECT_EQ(data2->GetLastClose(), 0);
+		EXPECT_EQ(data2->GetClose(), 15820483590); //1030000 * 16 * 5 * 6 * 4
+		EXPECT_EQ(data2->GetHigh(), 19660406791); // 1280000 * 16 * 5 * 6 * 4
+		EXPECT_EQ(data2->GetLow(), 15359692806); // 1000000 * 16 * 5 * 6 * 4
+		EXPECT_EQ(data2->GetOpen(), 16742065158); // 109000LL * 16 * 5 * 6 * 4
 	}
 }

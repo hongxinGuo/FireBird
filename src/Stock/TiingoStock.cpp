@@ -540,7 +540,7 @@ void CTiingoStock::Load52WeekLowDB() {
 /// 
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoStock::ProcessDayLine() {
+void CTiingoStock::ProcessDayLine(long lLastCalculatedDate) {
 	if (gl_systemConfiguration.IsExitingSystem()) return;
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
@@ -567,7 +567,7 @@ void CTiingoStock::ProcessDayLine() {
 	CalculateNewHighHigher();
 }
 
-void CTiingoStock::ProcessDayLine2() {
+void CTiingoStock::ProcessDayLine2(long lLastCalculatedDate) {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 	}
@@ -589,7 +589,7 @@ void CTiingoStock::ProcessDayLine2() {
 	SetUpdate52WeekHighLowDB(true);
 }
 
-void CTiingoStock::ProcessDayLine3() {
+void CTiingoStock::ProcessDayLine3(long lLastCalculatedDate) {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 	}

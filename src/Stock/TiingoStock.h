@@ -192,7 +192,7 @@ public:
 	bool IsEnough52WeekLow();
 	void Load52WeekLowDB();
 
-	void ProcessDayLine(); // 系统调用这个函数
+	void ProcessDayLine(long lLastCalculatedDate); // 系统调用这个函数
 	void FindHighLow3(size_t endPos);
 	void FindHighLow2(size_t endPos);
 	void FindAll52WeekLowDate(size_t beginPos, size_t endPos);
@@ -204,8 +204,8 @@ public:
 	int IsLowOrHigh(size_t index, double dClose) const;
 
 	// 测试用函数
-	void ProcessDayLine2(); // 用于测试
-	void ProcessDayLine3(); // 用于测试
+	void ProcessDayLine2(long lLastCalculatedDate); // 用于测试
+	void ProcessDayLine3(long lLastCalculatedDate); // 用于测试
 	void CalculateNewHighHigher(int period = 90);
 	void CalculateNewLowLower(int period = 90);
 

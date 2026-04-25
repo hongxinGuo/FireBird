@@ -48,18 +48,18 @@ public:
 	const string& GetStockSymbol() const { return m_strStockSymbol; }
 	void SetStockSymbol(const string& str) { m_strStockSymbol = str; }
 
-	long GetLastClose() const noexcept { return m_lLastClose; }
-	void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
-	long GetOpen() const noexcept { return m_lOpen; }
-	void SetOpen(const long lValue) noexcept { m_lOpen = lValue; }
-	long GetHigh() const noexcept { return m_lHigh; }
-	void SetHigh(const long lValue) noexcept { m_lHigh = lValue; }
-	long GetLow() const noexcept { return m_lLow; }
+	auto GetLastClose() const noexcept { return m_lLastClose; }
+	void SetLastClose(const long long lValue) noexcept { m_lLastClose = lValue; }
+	auto GetOpen() const noexcept { return m_lOpen; }
+	void SetOpen(const long long lValue) noexcept { m_lOpen = lValue; }
+	auto GetHigh() const noexcept { return m_lHigh; }
+	void SetHigh(const long long lValue) noexcept { m_lHigh = lValue; }
+	auto GetLow() const noexcept { return m_lLow; }
 	void SetLow(const string& str) noexcept { m_lLow = static_cast<long>(strtod(str.c_str(), nullptr)); }
-	void SetLow(const long lValue) noexcept { m_lLow = lValue; }
-	long GetClose() const noexcept { return m_lClose; }
+	void SetLow(const long long lValue) noexcept { m_lLow = lValue; }
+	auto GetClose() const noexcept { return m_lClose; }
 	void SetClose(const string& str) noexcept { m_lClose = static_cast<long>(strtod(str.c_str(), nullptr)); }
-	void SetClose(const long lValue) noexcept { m_lClose = lValue; }
+	void SetClose(const long long lValue) noexcept { m_lClose = lValue; }
 	double GetDividend() const noexcept { return m_dDividend; }
 	void SetDividend(const string& str) noexcept { m_dDividend = strtod(str.c_str(), nullptr); }
 	void SetDividend(const double dValue) noexcept { m_dDividend = dValue; }
@@ -113,11 +113,11 @@ protected:
 	string m_strStockSymbol{};
 
 	// 在不同的市场中，以下数据会放大若干倍（百倍、千倍、万倍等）。取决于价格使用几个小数点
-	long m_lLastClose{ 0 }; // 前收盘。
-	long m_lOpen{ 0 }; // 开盘价
-	long m_lHigh{ 0 }; // 最高价
-	long m_lLow{ 0 }; // 最低价
-	long m_lClose{ 0 }; // 收盘价
+	long long m_lLastClose{ 0 }; // 前收盘。
+	long long m_lOpen{ 0 }; // 开盘价
+	long long m_lHigh{ 0 }; // 最高价
+	long long m_lLow{ 0 }; // 最低价
+	long long m_lClose{ 0 }; // 收盘价
 
 	// 以下数值是实际值
 	double m_dDividend{ 0 }; // 股息
