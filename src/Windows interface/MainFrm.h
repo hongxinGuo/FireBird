@@ -2,6 +2,8 @@
 //
 #pragma once
 
+#include "FireBirdDoc.h"
+#include "FireBirdView.h"
 #include"stdafx.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
@@ -23,6 +25,9 @@ public:
 	// 操作
 	void CreateDocumentViewIfNeeded();
 	void CreateNewView();
+
+	CFireBirdDoc* GetCurrentDoc() { return dynamic_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument()); }
+	CFireBirdView* GetCurrentView() { return dynamic_cast<CFireBirdView*>(GetActiveFrame()->GetActiveView()); }
 	void SetCurrentDocumentStock(const CVirtualStockPtr& pStock);
 
 	void UpdateStatus();
@@ -35,10 +40,7 @@ public:
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
 	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CMDIFrameWndEx::OnTimer(nIDEvent); }
 	virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndStatusBar.SetPaneText(iIndex, lpszNewText); }
-	virtual void SysCallSetPaneText(int iIndex, const string& str) {
-		auto s = Utf8ToWstring(str);
-		m_wndStatusBar.SetPaneText(iIndex, Utf8ToWstring(str).c_str());
-	}
+	virtual void SysCallSetPaneText(int iIndex, const string& str) { m_wndStatusBar.SetPaneText(iIndex, Utf8ToWstring(str).c_str()); }
 	//virtual void SysCallSetPaneText(int iIndex, CStringW sNewText) { m_wndStatusBar.SetPaneText(iIndex, sNewText); }
 	virtual void SysCallSetInnerSystemPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndInnerSystemBar.SetPaneText(iIndex, lpszNewText); }
 	virtual void SysCallSetInnerSystemPaneText(int iIndex, const string& sNewText) { m_wndInnerSystemBar.SetPaneText(iIndex, Utf8ToWstring(sNewText).c_str()); }

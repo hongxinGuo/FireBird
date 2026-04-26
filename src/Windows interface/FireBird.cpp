@@ -54,7 +54,7 @@ CFireBirdApp::CFireBirdApp() {
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	SetAppID(_T("FireBird.AppID.0.31"));
+	SetAppID(_T("FireBird.AppID.0.32"));
 
 	// 将所有重要的初始化放置在 InitInstance 中
 }

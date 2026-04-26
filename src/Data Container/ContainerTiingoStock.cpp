@@ -422,7 +422,6 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 			if (!gl_systemConfiguration.IsExitingSystem()) {
 				pStock->ProcessDayLine(lastCalculatedDate);
 			}
-			TRACE("Tiingo计算至%d位置\n", index);
 			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 			//gl_BackgroundWorkingThread.release();
 			//});

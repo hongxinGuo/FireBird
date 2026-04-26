@@ -232,22 +232,22 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	int i = m_vHistoryData.size() - 1;
 	double currentFactor = 1.0;
 	auto currentData = m_vHistoryData.at(i);
+	auto currentSpiltDate = vpSplitFactor.at(j)->date;
+	while (currentData->GetDate() > currentSpiltDate) currentData = m_vHistoryData.at(--i); // 找到拆分日的日线数据
 	do {
-		auto currentSpiltDate = vpSplitFactor.at(j)->date;
 		const double prevFactor = currentFactor;
+		currentSpiltDate = vpSplitFactor.at(j)->date;
 		currentFactor = vpSplitFactor.at(j)->factor;
 		if (j < vpSplitFactor.size() - 1) prevDate = vpSplitFactor.at(j + 1)->date;
 		else prevDate = 0;
 
-		while (currentData->GetDate() > currentSpiltDate) currentData = m_vHistoryData.at(i--); // 找到拆分日的日线数据
-		if (currentData->GetDate() == currentSpiltDate) {
-			currentData->SetLastClose(currentData->GetLastClose() * prevFactor / currentFactor); // 拆分日只有前收盘价需要调整，其他价格不调整。
-		}
-		while (currentData->GetDate() > prevDate && i >= 0) { // 调整拆分日之前的日线数据，直到下一个拆分日（如果有的话）
-			currentData = m_vHistoryData.at(i--);
+		ASSERT(currentData->GetDate() == currentSpiltDate);
+		currentData->SetLastClose(currentData->GetLastClose() * prevFactor / currentFactor); // 拆分日只有前收盘价需要调整，其他价格不调整。
+
+		while (currentData->GetDate() > prevDate && i > 0) { // 调整拆分日之前的日线数据，直到下一个拆分日（如果有的话）
+			currentData = m_vHistoryData.at(--i);
 			currentData->AdjustByFactor(currentFactor);
 		}
 		j++;
-	} while (i >= 0);
-	ASSERT(j == vpSplitFactor.size());
+	} while (i > 0);
 }

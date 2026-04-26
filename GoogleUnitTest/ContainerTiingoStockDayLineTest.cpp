@@ -169,4 +169,22 @@ namespace FireBirdTest {
 		EXPECT_EQ(data2->GetLow(), 15359692806); // 1000000 * 16 * 5 * 6 * 4
 		EXPECT_EQ(data2->GetOpen(), 16742065158); // 109000LL * 16 * 5 * 6 * 4
 	}
+
+	TEST_F(CDataTiingoStockDayLineTest, TestSplitAdjust3) {
+		m_dataTiingoStockDayLine.LoadDB("BEEM");
+
+		auto data = m_dataTiingoStockDayLine.GetDayLine(20250102);
+		auto data2 = m_dataTiingoStockDayLine.GetDayLine(20190416); // 1/50
+		EXPECT_EQ(data2->GetLastClose(), 165000 * 50);
+		EXPECT_EQ(data2->GetClose(), 5440000);
+		EXPECT_EQ(data2->GetHigh(), 5500000);
+		EXPECT_EQ(data2->GetLow(), 5060000);
+		EXPECT_EQ(data2->GetOpen(), 5410000);
+		data2 = m_dataTiingoStockDayLine.GetDayLine(20100430); // 上市第一天，0.69并股
+		EXPECT_EQ(data2->GetLastClose(), 0);
+		EXPECT_EQ(data2->GetClose(), 350000 * 50);
+		EXPECT_EQ(data2->GetHigh(), 350000 * 50);
+		EXPECT_EQ(data2->GetLow(), 250000 * 50);
+		EXPECT_EQ(data2->GetOpen(), 260000 * 50);
+	}
 }
