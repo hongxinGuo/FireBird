@@ -22,49 +22,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void ShowRealtimeVolume(CDC* pDC, const vector<LONG>& vVolume, const vector<LONG>& vData, int iRightPos, CRect rectClient, bool fUpsideDown) {
-	ASSERT(vData.size() == 240);
-
-	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
-	                   crRed(RGB(255, 0, 0));
-	int iPenWidth = rectClient.Width() / 240;
-	CPen penGreen1(PS_SOLID, iPenWidth, crGreen), penWhite1(PS_SOLID, iPenWidth, crWhite), penRed1(PS_SOLID, iPenWidth, crRed);
-
-	if (fUpsideDown) { // sell volume
-		pDC->SelectObject(&penGreen1);
-	}
-	else { // buy volume
-		pDC->SelectObject(&penRed1);
-	}
-	LONG height;
-	if (vVolume.at(0) > 0) {
-		height = vData.at(0) * rectClient.Height() / vVolume.at(0);
-		if (fUpsideDown) {
-			pDC->MoveTo(rectClient.left, rectClient.top);
-			pDC->LineTo(rectClient.left, rectClient.top + height);
-		}
-		else {
-			pDC->MoveTo(rectClient.left, rectClient.bottom);
-			pDC->LineTo(rectClient.left, rectClient.bottom - height);
-		}
-	}
-
-	for (int i = 1; i < iRightPos; i++) {
-		INT64 differVolume = vVolume.at(i) - vVolume.at(i - 1);
-		if (differVolume > 0) {
-			height = (vData.at(i) - vData.at(i - 1)) * rectClient.Height() / differVolume;
-			if (fUpsideDown) {
-				pDC->MoveTo(rectClient.left + iPenWidth * i, rectClient.top);
-				pDC->LineTo(rectClient.left + iPenWidth * i, rectClient.top + height);
-			}
-			else {
-				pDC->MoveTo(rectClient.left + iPenWidth * i, rectClient.bottom);
-				pDC->LineTo(rectClient.left + iPenWidth * i, rectClient.bottom - height);
-			}
-		}
-	}
-}
-
 // CFireBirdView
 
 IMPLEMENT_DYNCREATE(CFireBirdView, CView)

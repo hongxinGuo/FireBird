@@ -16,7 +16,7 @@ public:
 	CInquireEngine& operator=(const CInquireEngine&) = delete;
 	CInquireEngine(const CInquireEngine&&) noexcept = delete;
 	CInquireEngine& operator=(const CInquireEngine&&) noexcept = delete;
-	virtual ~CInquireEngine() = default;
+	virtual ~CInquireEngine();
 
 	void ConfigureSession(const InternetOption& option) const;
 	CWebDataPtr GetWebData(); // 实际读取处理函数

@@ -55,10 +55,10 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[SIMILARITY_INDEX_] = "StockFundamentalsSimilarityIndex"; //Premium
 	m_mapFinnhubInquiryIndexToString[IPO_CALENDAR_] = "StockFundamentalsIPOCalendar";
 	m_mapFinnhubInquiryIndexToString[DIVIDENDS_] = "StockFundamentalsDividends"; //Premium
-	m_mapFinnhubInquiryIndexToString[SECTOR_METRICS_] = "SectorMetrics"; // Premium
-	m_mapFinnhubInquiryIndexToString[PRICE_METRICS_] = "PriceMetrics"; // Premium
-	m_mapFinnhubInquiryIndexToString[SYMBOL_CHANGE_] = "SymbolChange"; // Premium
-	m_mapFinnhubInquiryIndexToString[ISIN_CHANGE_] = "ISINChange"; // Premium
+	m_mapFinnhubInquiryIndexToString[SECTOR_METRICS_] = "StockFundamentalsSectorMetrics"; // Premium
+	m_mapFinnhubInquiryIndexToString[PRICE_METRICS_] = "StockFundamentalsPriceMetrics"; // Premium
+	m_mapFinnhubInquiryIndexToString[SYMBOL_CHANGE_] = "StockFundamentalsSymbolChange"; // Premium
+	m_mapFinnhubInquiryIndexToString[ISIN_CHANGE_] = "StockFundamentalsISINChange"; // Premium
 
 	// Stock Estimates
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_RECOMMENDATION_TRENDS_] = "StockEstimatesRecommendationTrends";

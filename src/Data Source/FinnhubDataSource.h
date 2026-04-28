@@ -33,6 +33,7 @@ public:
 	virtual bool GenerateInsiderTransaction();
 	virtual bool GenerateInsiderSentiment();
 	virtual bool GenerateEconomicCalendar();
+	virtual bool GenerateCompanySymbolChange();
 	virtual bool GenerateEPSSurprise();
 	virtual bool GenerateSECFilings();
 	virtual bool GenerateForexExchange();
@@ -84,6 +85,8 @@ public:
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
 	bool IsUpdateSECFilings() const noexcept { return m_fUpdateSECFilings; }
 	void SetUpdateSECFilings(const bool fFlag) noexcept { m_fUpdateSECFilings = fFlag; }
+	bool IsUpdateCompanySymbolChange() const noexcept { return m_fUpdateCompanySymbolChange; }
+	void SetUpdateCompanySymbolChange(const bool fFlag) noexcept { m_fUpdateCompanySymbolChange = fFlag; }
 
 protected:
 	// 每日更新项目，目前共21项。
@@ -108,6 +111,7 @@ protected:
 	bool m_fUpdateEconomicCalendar{ true }; // 每日更新经济日历数据
 	bool m_fUpdateEPSSurprise{ true };
 	bool m_fUpdateSECFilings{ true };
+	bool m_fUpdateCompanySymbolChange{ true };
 
 	CFinnhubFactory m_FinnhubFactory;
 

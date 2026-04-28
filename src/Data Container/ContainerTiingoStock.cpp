@@ -416,21 +416,21 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	for (size_t index = 0; index < lSize; index++) {
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
-			//gl_BackgroundWorkingThread.acquire();
-			//auto result = gl_runtime.thread_executor()->submit([pStock] {
-			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-			if (!gl_systemConfiguration.IsExitingSystem()) {
-				pStock->ProcessDayLine(lastCalculatedDate);
-			}
-			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-			//gl_BackgroundWorkingThread.release();
-			//});
-			//vResults.emplace_back(std::move(result));
+			gl_BackgroundWorkingThread.acquire();
+			auto result = gl_runtime.thread_executor()->submit([pStock, lastCalculatedDate] {
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+				if (!gl_systemConfiguration.IsExitingSystem()) {
+					pStock->ProcessDayLine(lastCalculatedDate);
+				}
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				gl_BackgroundWorkingThread.release();
+			});
+			vResults.emplace_back(std::move(result));
 		}
 	}
-	//for (auto& result2 : vResults) {
-	//	result2.get(); // 在这里等待所有的线程执行完毕
-	//}
+	for (auto& result2 : vResults) {
+		result2.get(); // 在这里等待所有的线程执行完毕
+	}
 	gl_systemConfiguration.SetTiingoStockDayLineProcessedDate(gl_pWorldMarket->GetMarketDate());
 	gl_systemMessage.PushInnerSystemInformationMessage("结束处理Tiingo日线任务，开始存储");
 
@@ -460,5 +460,5 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 void CContainerTiingoStock::ReportHighHigherRate() {
 	auto s = fmt::format("3月内再创新高数:{:d}, 3月内未再次新高数:{:d}, 比率:{:.2f}", gl_pWorldMarket->GetNewHighHigher(), gl_pWorldMarket->GetNoNewHighHigher(),
 	                     static_cast<double>(gl_pWorldMarket->GetNewHighHigher()) / gl_pWorldMarket->GetNoNewHighHigher());
-	gl_systemMessage.PushInnerSystemInformationMessage(s);
+	gl_systemMessage.PushStockMarketInformationMessage(s);
 }

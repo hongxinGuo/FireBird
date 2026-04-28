@@ -37,6 +37,10 @@ CInquireEngine::CInquireEngine(const InternetOption& option, const string& strIn
 	m_lByteRead = 0;
 }
 
+CInquireEngine::~CInquireEngine() {
+	m_pSession = nullptr;
+	m_pFile = nullptr;
+}
 void CInquireEngine::ConfigureSession(const InternetOption& option) const {
 	SPDLOG_ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);

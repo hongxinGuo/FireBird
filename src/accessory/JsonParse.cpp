@@ -280,12 +280,13 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 
 void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
-	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
+	shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
 	while (!pWebData->IsLastDataParagraph()) {
 		pvStringView->emplace_back(pWebData->GetCurrentTengxunData());
 	}
 	if (pvStringView->empty()) return;
 	ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView).get(); // 等待线程执行完后方继续。
+	pvStringView = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

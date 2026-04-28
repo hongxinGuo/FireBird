@@ -19,6 +19,7 @@ namespace testing {
 		MOCK_METHOD(bool, GenerateInsiderTransaction, (), (override));
 		MOCK_METHOD(bool, GenerateInsiderSentiment, (), (override));
 		MOCK_METHOD(bool, GenerateEconomicCalendar, (), (override));
+		MOCK_METHOD(bool, GenerateCompanySymbolChange, (), (override));
 		MOCK_METHOD(bool, GenerateEPSSurprise, (), (override));
 		MOCK_METHOD(bool, GenerateSECFilings, (), (override));
 		MOCK_METHOD(bool, GenerateForexExchange, (), (override));

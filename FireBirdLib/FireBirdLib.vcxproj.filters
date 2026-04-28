@@ -942,6 +942,12 @@
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.h">
       <Filter>头文件\Factory-Product\AlphaVantage</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1549,6 +1555,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockSplits.cpp">
       <Filter>源文件\Factory-Product\AlphaVantage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubCompanySymbolChange.cpp">
+      <Filter>源文件\Type\America market\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

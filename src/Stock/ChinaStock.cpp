@@ -652,9 +652,10 @@ bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
 ////////////////////////////////////////////////////////////////////////////////////
 void CChinaStock::ProcessRTData() {
 	const auto lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
+	CWebRTDataPtr pRTData = nullptr;
 	// 以下为计算挂单变化、股票活跃度、大单买卖情况
-	for (auto i = 0; i < lTotalNumber; i++) {
-		const CWebRTDataPtr pRTData = PopRTData(); // 采用同步机制获取数据
+	for (size_t i = 0; i < lTotalNumber; i++) {
+		pRTData = PopRTData(); // 采用同步机制获取数据
 		if (pRTData->IsActive()) {// 数据有效
 			UpdateRTData(pRTData); // 更新股票现时状态。
 			if (gl_pChinaMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
@@ -663,6 +664,7 @@ void CChinaStock::ProcessRTData() {
 			}
 		}
 	}
+	pRTData = nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

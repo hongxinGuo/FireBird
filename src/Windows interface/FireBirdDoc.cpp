@@ -108,6 +108,7 @@ long CFireBirdDoc::GetWeekLineDate(size_t countDownIndex){
 	if (weekLine->Size() < countDownIndex) return weekLine->GetData(0)->GetDate();
 	return weekLine->GetData(weekLine->Size() - countDownIndex)->GetDate();
 }
+
 long CFireBirdDoc::GetMonthLineDate(size_t countDownIndex){
 	if (m_pCurrentStock == nullptr) return 0;
 	auto mouthLine = m_pCurrentStock->MonthLine();

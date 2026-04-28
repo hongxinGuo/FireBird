@@ -159,7 +159,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	// Ensure we are not in the market reset window before proceeding
 	SPDLOG_ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
-	if (GenerateEconomicCalendar()) return true; // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
+	if (GenerateCompanySymbolChange()) return true; // 第一步申请股票代码更改。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	if (GenerateCountryList()) return true;
 	// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
 	if (GenerateForexExchange()) return true;
@@ -481,6 +481,17 @@ bool CFinnhubDataSource::GeneratePeer() {
 		setMessage,
 		setUpdateFlag,
 		finishedMsg
+	);
+}
+
+bool CFinnhubDataSource::GenerateCompanySymbolChange() {
+	auto isUpdateNeeded = [this]() { return IsUpdateCompanySymbolChange(); };
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	return GenerateSimpleInquiry(
+		SYMBOL_CHANGE_,
+		isUpdateNeeded,
+		createProduct,
+		[] { gl_systemMessage.SetCurrentFinnhubFunction("updating company symbol change"); }
 	);
 }
 

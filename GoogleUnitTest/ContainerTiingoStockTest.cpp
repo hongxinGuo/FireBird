@@ -131,8 +131,8 @@ namespace FireBirdTest {
 		m_dataTiingoStock.ReportHighHigherRate();
 		EXPECT_EQ(gl_pWorldMarket->GetNewHighHigher(), 10000);
 		EXPECT_EQ(gl_pWorldMarket->GetNoNewHighHigher(), 20000);
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		auto s = gl_systemMessage.PopInnerSystemInformationMessage();
+		EXPECT_EQ(gl_systemMessage.StockMarketInformationSize(), 1);
+		auto s = gl_systemMessage.PopStockMarketInformationMessage();
 		EXPECT_TRUE(s.find("3月内再创新高数:10000, 3月内未再次新高数:20000, 比率:0.50") != string::npos);
 		gl_pWorldMarket->ResetNewHighHigher();
 	}

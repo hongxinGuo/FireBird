@@ -132,6 +132,7 @@
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.h" />
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
     <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="..\src\Type\America market\EconomicCalendar.h" />
     <ClInclude Include="..\src\Type\America market\EPSSurprise.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h" />
+    <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h" />
     <ClInclude Include="..\src\Type\America market\StockExchange.h" />
@@ -370,6 +372,7 @@
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockSplits.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubSECFilings.cpp" />
@@ -451,6 +454,7 @@
     <ClCompile Include="..\src\Type\America market\EconomicCalendar.cpp" />
     <ClCompile Include="..\src\Type\America market\EPSSurprise.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp" />
+    <ClCompile Include="..\src\Type\America market\FinnhubCompanySymbolChange.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp" />
     <ClCompile Include="..\src\Type\America market\StockExchange.cpp" />

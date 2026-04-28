@@ -78,7 +78,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
 		.WillOnce(Return(timePoint + 300000ms + 100000ms));
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1)
+		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanySymbolChange()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCountryList()).Times(1)
 		.WillOnce(Return(false));
@@ -141,7 +141,7 @@ namespace FireBirdTest {
 		InSequence Seq;
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GetTickCount()).Times(1)
 		.WillOnce(Return(timePoint + 300000ms + 100000ms));
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1);
+		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanySymbolChange()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCountryList()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateForexExchange()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCryptoExchange()).Times(1);
@@ -176,7 +176,7 @@ namespace FireBirdTest {
 		InSequence Seq;
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GetTickCount()).Times(1)
 		.WillOnce(Return(timePoint + 300000ms + 100000ms));
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1);
+		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanySymbolChange()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCountryList()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateForexExchange()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCryptoExchange()).Times(1);

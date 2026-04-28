@@ -34,6 +34,7 @@
 
 #include "FinnhubFactory.h"
 
+#include "ProductFinnhubCompanySymbolChange.h"
 #include "ProductFinnhubSECFilings.h"
 
 CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
@@ -151,6 +152,9 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMark
 		break;
 	case ECONOMIC_CALENDAR_:
 		p = make_shared<CProductFinnhubEconomicCalendar>();
+		break;
+	case SYMBOL_CHANGE_:
+		p = make_shared<CProductFinnhubCompanySymbolChange>();
 		break;
 	default:
 		p = make_shared<CProductDummy>();
