@@ -242,18 +242,18 @@ namespace FireBirdTest {
 		TestSetUTCTime(tTime);
 	}
 
-	struct SinaRTData2 {
-		SinaRTData2(int count, const string& Data) {
-			m_iCount = count;
-			m_strData = Data;
-		}
-
-	public:
-		int m_iCount;
-		string m_strData;
-	};
-
 	namespace {
+		struct SinaRTData2 {
+			SinaRTData2(int count, const string& Data) {
+				m_iCount = count;
+				m_strData = Data;
+			}
+
+		public:
+			int m_iCount;
+			string m_strData;
+		};
+
 		// 无错误数据。只有交易日期没有交易时间，使用默认闭市时间（15:00:00).
 		SinaRTData2 Data1(0, R"(var hq_str_sh600000="浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,,00,";)");
 		// 所有的价格皆为0,交易时间为12:00:00

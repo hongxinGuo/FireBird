@@ -315,9 +315,6 @@
     <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleBasic.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleExtend.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualSetStockSymbol.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
@@ -993,9 +990,6 @@
       <Filter>源文件\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleBasic.cpp">
-      <Filter>源文件\Database</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleExtend.cpp">
       <Filter>源文件\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualSetStockSymbol.cpp">
