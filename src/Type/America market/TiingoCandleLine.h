@@ -1,11 +1,11 @@
 #pragma once
 
-#include"VirtualHistoryCandleExtend.h"
+#include"VirtualHistoryCandleBasic.h"
 
 #include<memory>
 using std::vector;
 
-class CTiingoCandleLine : public CVirtualHistoryCandleExtend {
+class CTiingoCandleLine : public CVirtualHistoryCandleBasic {
 public:
 	CTiingoCandleLine() = default;
 	~CTiingoCandleLine() override = default;

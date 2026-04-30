@@ -17,7 +17,7 @@ void CMovingAverage::Calculate(const vector<long>& vValue) {
 	}
 }
 
-void CMovingAverage::Calculate(const CVirtualDataHistoryCandleExtend* pData) {
+void CMovingAverage::Calculate(const CVirtualDataHistoryCandleBasic* pData) {
 	if (m_period >= pData->Size()) {
 		m_vMovingAverage.clear();
 		return;

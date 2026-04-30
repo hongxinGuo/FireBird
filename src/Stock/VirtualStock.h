@@ -1,6 +1,6 @@
 #pragma once
 
-#include "VirtualDataHistoryCandleExtend.h"
+#include "VirtualDataHistoryCandleBasic.h"
 #include"VirtualSetStockSymbol.h"
 #include "StockSplit.h"
 
@@ -78,15 +78,15 @@ public:
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 
-	virtual CVirtualDataHistoryCandleExtend* DayLine() noexcept {
+	virtual CVirtualDataHistoryCandleBasic* DayLine() noexcept {
 		ASSERT(0);
 		return nullptr;
 	}
-	virtual CVirtualDataHistoryCandleExtend* WeekLine() noexcept {
+	virtual CVirtualDataHistoryCandleBasic* WeekLine() noexcept {
 		ASSERT(0);
 		return nullptr;
 	}
-	virtual CVirtualDataHistoryCandleExtend* MonthLine() noexcept {
+	virtual CVirtualDataHistoryCandleBasic* MonthLine() noexcept {
 		ASSERT(0);
 		return nullptr;
 	}

@@ -27,8 +27,6 @@ public:
 	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
-	void UpdateTempRTDB();
-	static void DeleteTempRTData();
 	bool BuildDayLineRS(long lDate);
 	bool BuildWeekLineRS(long lDate);
 
@@ -40,18 +38,13 @@ public:
 	void ClearDayLineDBUpdatedFlag() noexcept;
 	void ClearDayLineNeedUpdateStatus() const;
 
-	[[nodiscard]] INT64 GetTotalAttackBuyAmount();
-	[[nodiscard]] INT64 GetTotalAttackSellAmount();
-
 	string CreateNeteaseDayLineInquiringStr();
 	string CreateTengxunDayLineInquiringStr();
 
-	void ProcessRTData();
 	bool TaskUpdateDayLineDB();
 
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 
-	bool Choice10RSStrong2StockSet();
 	bool Choice10RSStrong1StockSet();
 	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
@@ -59,7 +52,6 @@ public:
 
 private:
 	static void DeleteDayLineBasicInfo(long lDate);
-	static void DeleteDayLineExtendInfo(long lDate);
 
 protected:
 	size_t m_lLoadedStock; // 本次装载的股票总数

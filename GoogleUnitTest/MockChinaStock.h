@@ -11,7 +11,6 @@ namespace testing {
 		MOCK_METHOD(bool, LoadWeekLineDB, (), (override));
 		MOCK_METHOD(bool, BuildWeekLine, (long lStartDate), (override));
 		MOCK_METHOD(bool, Calculate10RSStrong1StockSet, (), (override));
-		MOCK_METHOD(bool, Calculate10RSStrong2StockSet, (), (override));
 		MOCK_METHOD(bool, Calculate10RSStrongStockSet, (const CRSReference* pRef), (override));
 	};
 

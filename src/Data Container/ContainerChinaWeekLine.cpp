@@ -3,7 +3,6 @@
 #include "ContainerChinaWeekLine.h"
 
 #include"SetWeekLineBasicInfo.h"
-#include"SetWeekLineExtendInfo.h"
 #include"SetCurrentWeekLine.h"
 
 #include "InfoReport.h"
@@ -11,9 +10,7 @@
 bool CContainerChinaWeekLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetWeekLineBasicInfo setWeekLineBasic;
-		CSetWeekLineExtendInfo setWeekLineExtend;
 		UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
-		SaveExtendDB(&setWeekLineExtend);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -30,7 +27,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 	setCurrentWeekLineInfo.m_strFilter = "[ID] = 1";
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
+	for (const auto& pData : m_vHistoryData) { pData->AppendBasicData(&setCurrentWeekLineInfo); }
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 	setCurrentWeekLineInfo.Close();
 	TRACE(_T("存储了%d个当前周周线数据\n"), m_vHistoryData.size());
@@ -38,7 +35,6 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 
 bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
-	CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
 	ASSERT(!m_fBasicDataLoaded);
 
@@ -50,15 +46,6 @@ bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 	setWeekLineBasicInfo.Open();
 	LoadBasicDB(&setWeekLineBasicInfo);
 	setWeekLineBasicInfo.Close();
-
-	// 装入WeekLineInfo数据
-	setWeekLineExtendInfo.m_strFilter = "[Symbol] = '";
-	setWeekLineExtendInfo.m_strFilter += strStockCode.c_str();
-	setWeekLineExtendInfo.m_strFilter += "'";
-	setWeekLineExtendInfo.m_strSort = "[Date]";
-	setWeekLineExtendInfo.Open();
-	LoadExtendDB(&setWeekLineExtendInfo);
-	setWeekLineExtendInfo.Close();
 
 	CalculateRSIndex0();
 	m_fDataLoaded = true;
@@ -75,7 +62,7 @@ bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	while (!setCurrentWeekLineInfo.IsEOF()) {
 		auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->Load(&setCurrentWeekLineInfo);
+		pWeekLine->LoadBasicData(&setCurrentWeekLineInfo);
 		Add(pWeekLine);
 		setCurrentWeekLineInfo.MoveNext();
 	}
@@ -102,7 +89,7 @@ void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLi
 	SetDataLoaded(true);
 }
 
-void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend) const {
+void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandleBasicPtr& pHistoryCandleExtend) const {
 	for (const auto& pData : m_vHistoryData) {
 		auto str = pData->GetStockSymbol();
 		if (str == pHistoryCandleExtend->GetStockSymbol()) {

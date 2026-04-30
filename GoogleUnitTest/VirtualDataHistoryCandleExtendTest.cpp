@@ -2,10 +2,10 @@
 
 #include"GeneralCheck.h"
 
-#include"VirtualDataHistoryCandleExtend.h"
+#include"VirtualDataHistoryCandleBasic.h"
 
 namespace FireBirdTest {
-	class CVirtualDataHistoryCandleExtendTest : public ::testing::Test {
+	class CVirtualDataHistoryCandleBasicTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
 			SCOPED_TRACE("");
@@ -29,19 +29,19 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestSaveDB) {
-		CVirtualDataHistoryCandleExtend id;
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestSaveDB) {
+		CVirtualDataHistoryCandleBasic id;
 		EXPECT_FALSE(id.SaveDB("600000.SS"));
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestLoadDB) {
-		CVirtualDataHistoryCandleExtend id;
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestLoadDB) {
+		CVirtualDataHistoryCandleBasic id;
 		EXPECT_FALSE(id.LoadDB("600000.SS"));
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetContainer) {
-		CVirtualDataHistoryCandleExtend id;
-		const auto pData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetContainer) {
+		CVirtualDataHistoryCandleBasic id;
+		const auto pData = make_shared<CVirtualHistoryCandleBasic>();
 		pData->SetStockSymbol("600008.SS");
 		pData->SetDate(20202020);
 		id.Add(pData);
@@ -50,17 +50,17 @@ namespace FireBirdTest {
 		EXPECT_EQ((*pContainer)[0]->GetDate(), 20202020);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS1) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRS1) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSIndex(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSIndex(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -72,17 +72,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRSIndex) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRSIndex) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSIndex(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSIndex(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -94,17 +94,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRSLogarithm) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRSLogarithm) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSLogarithm(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSLogarithm(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -116,17 +116,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS3) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRS3) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set3RS(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set3RS(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -138,17 +138,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS5) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRS5) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set5RS(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set5RS(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -160,17 +160,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS10) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRS10) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set10RS(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set10RS(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -182,17 +182,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS30) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRS30) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set30RS(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set30RS(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -204,17 +204,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS60) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRS60) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set60RS(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set60RS(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -226,17 +226,17 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS120) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestGetRS120) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set120RS(1.1);
-		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set120RS(2.2);
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
 		HistoryDataContainer.Add(pHistoryData);
 		HistoryDataContainer.Add(pHistoryData2);
 
@@ -248,22 +248,22 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(vRS[1], 2.2);
 	}
 
-	TEST_F(CVirtualDataHistoryCandleExtendTest, TestUpdateData1) {
-		const auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+	TEST_F(CVirtualDataHistoryCandleBasicTest, TestUpdateData1) {
+		const auto pHistoryData = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData->SetStockSymbol("600000.SS");
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetHigh(1000);
 		pHistoryData->SetLow(200);
 		pHistoryData->SetClose(100); // 确保此数据有效
-		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleBasic>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetHigh(11000);
 		pHistoryData2->SetLow(1200);
 		pHistoryData2->SetClose(100); // 确保此数据有效
 
-		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		vector<CVirtualHistoryCandleExtendPtr> vHistoryData;
+		CVirtualDataHistoryCandleBasic HistoryDataContainer;
+		vector<CVirtualHistoryCandleBasicPtr> vHistoryData;
 
 		vHistoryData.push_back(pHistoryData);
 		EXPECT_EQ(HistoryDataContainer.Size(), 0);

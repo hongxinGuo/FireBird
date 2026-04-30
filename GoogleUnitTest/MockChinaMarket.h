@@ -13,7 +13,6 @@ namespace testing {
 
 		MOCK_METHOD(void, UpdateOptionDB, (), (override));
 		MOCK_METHOD(void, AppendChosenStockDB, (), (override));
-		MOCK_METHOD(void, LoadTempRTData, (long lTheDate), (override));
 		MOCK_METHOD(bool, BuildCurrentWeekLine, (), (override));
 		MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
 

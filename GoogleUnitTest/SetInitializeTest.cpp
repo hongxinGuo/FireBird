@@ -12,15 +12,12 @@
 
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
-#include"SetChinaMarketDayLineExtendInfo.h"
-#include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
 #include"SetRSOption.h"
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetStockSection.h"
-#include"SetWeekLineExtendInfo.h"
 
 #include"SetCountry.h"
 #include"SetFinnhubStockBasicFinancialMetric.h"
@@ -99,30 +96,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setCurrentWeekLine.GetDefaultSQL(), _T("[CurrentWeekLine]"));
 	}
 
-	TEST_F(SetInitializeTest, TestDayLineExtendInfoInitialize) {
-		CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setDayLineExtendInfo.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setDayLineExtendInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setDayLineExtendInfo.GetDefaultSQL(), _T("[daylineinfo]"));
-	}
-
-	TEST_F(SetInitializeTest, TestDayLineTempInitialize) {
-		CSetDayLineTodaySaved setDayLineTemp;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setDayLineTemp.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setDayLineTemp.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setDayLineTemp.GetDefaultSQL(), _T("[today]"));
-	}
-
 	TEST_F(SetInitializeTest, TestOptionInitialize) {
 		CSetOption setOption;
 
@@ -193,18 +166,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setStockSection.GetDefaultSQL(), _T("[Stock_Code_Section]"));
-	}
-
-	TEST_F(SetInitializeTest, TestWeekLineExtendInfoInitialize) {
-		CSetWeekLineExtendInfo setWeekLineExtendInfo;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setWeekLineExtendInfo.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setWeekLineExtendInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setWeekLineExtendInfo.GetDefaultSQL(), _T("[WeekLineinfo]"));
 	}
 
 	TEST_F(SetInitializeTest, TestDayLineBasicInfoInitialize) {

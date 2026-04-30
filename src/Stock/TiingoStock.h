@@ -130,9 +130,9 @@ public:
 	CTiingoCandleLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
 
 	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
-	CVirtualDataHistoryCandleExtend* WeekLine() noexcept final { return &m_dataWeekLine; }
-	CVirtualDataHistoryCandleExtend* MonthLine() noexcept final { return &m_dataMonthLine; }
+	CVirtualDataHistoryCandleBasic* DayLine() noexcept final { return &m_dataDayLine; }
+	CVirtualDataHistoryCandleBasic* WeekLine() noexcept final { return &m_dataWeekLine; }
+	CVirtualDataHistoryCandleBasic* MonthLine() noexcept final { return &m_dataMonthLine; }
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }

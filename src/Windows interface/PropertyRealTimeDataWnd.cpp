@@ -154,41 +154,5 @@ void CPropertyRealtimeWnd::SetPropListFont() {
 }
 
 void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
-	if (gl_pCurrentStock != nullptr) {
-		m_pPropertyStock->SetName(Utf8ToWstring(gl_pCurrentStock->GetSymbol()).c_str());
-		if (IsChinaStock(gl_pCurrentStock)) {
-			CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
-			if (pStock->GetVolume() > 0) {
-				string s = fmt::format("{:Ld}", pStock->GetNew());
-				m_pPropNew->SetValue(s);
-				INT64 volume = pStock->GetVolume();
-				s = fmt::format("{:Ld}", volume);
-				m_pPropVolume->SetValue(s);
-				s = fmt::format("0.{:02Ld}", pStock->GetOrdinaryBuyVolume() * 100 / volume);
-				m_pPropStockOrdinaryBuy->SetValue(s);
-				s = fmt::format("0.{:02Ld}", pStock->GetOrdinarySellVolume() * 100 / volume);
-				m_pPropStockOrdinarySell->SetValue(s);
-
-				s = fmt::format("0.{:02Ld}", pStock->GetAttackBuyVolume() * 100 / volume);
-				m_pPropStockAttackBuy->SetValue(s);
-				s = fmt::format("0.{:02Ld}", pStock->GetAttackSellVolume() * 100 / volume);
-				m_pPropStockAttackSell->SetValue(s);
-
-				s = fmt::format("0.{:02Ld}", pStock->GetStrongBuyVolume() * 100 / volume);
-				m_pPropStockStrongBuy->SetValue(s);
-				s = fmt::format("0.{:02Ld}", pStock->GetStrongSellVolume() * 100 / volume);
-				m_pPropStockStrongSell->SetValue(s);
-
-				s = fmt::format("0.{:02Ld}", pStock->GetCanceledBuyVolume() * 100 / volume);
-				m_pPropStockCancelBuy->SetValue(s);
-				s = fmt::format("0.{:02Ld}", pStock->GetCanceledSellVolume() * 100 / volume);
-				m_pPropStockCancelSell->SetValue(s);
-			}
-		}
-	}
-	else {
-		m_pPropertyStock->SetName(_T(""));
-	}
-
 	CDockablePane::OnTimer(nIDEvent);
 }

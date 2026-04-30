@@ -273,12 +273,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineBasicInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineExtendInfo.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineTodaySaved.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -300,9 +294,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineBasicInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineExtendInfo.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
@@ -319,9 +310,6 @@
       <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualSetExchange.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleBasic.h">
@@ -414,13 +402,7 @@
     <ClInclude Include="..\src\Type\China market\WeekLine.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h">
-      <Filter>头文件\Type</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h">
-      <Filter>头文件\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h">
@@ -948,6 +930,9 @@
     <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\VirtualDataHistoryCandleBasic.h">
+      <Filter>头文件\Type</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1005,9 +990,6 @@
       <Filter>源文件\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp">
-      <Filter>源文件\Database</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.cpp">
       <Filter>源文件\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleBasic.cpp">
@@ -1094,13 +1076,7 @@
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\VirtualDataHistoryCandleExtend.cpp">
-      <Filter>源文件\Type</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp">
-      <Filter>源文件\Type</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.cpp">
       <Filter>源文件\Type</Filter>
     </ClCompile>
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.cpp">
@@ -1561,6 +1537,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\FinnhubCompanySymbolChange.cpp">
       <Filter>源文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\VirtualDataHistoryCandleBasic.cpp">
+      <Filter>源文件\Type</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

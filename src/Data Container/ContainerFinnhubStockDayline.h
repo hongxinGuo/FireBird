@@ -1,8 +1,8 @@
 #pragma once
 
-#include "VirtualDataHistoryCandleExtend.h"
+#include "VirtualDataHistoryCandleBasic.h"
 
-class CContainerFinnhubStockDayLine final : public CVirtualDataHistoryCandleExtend {
+class CContainerFinnhubStockDayLine final : public CVirtualDataHistoryCandleBasic {
 public:
 	CContainerFinnhubStockDayLine() = default;
 	CContainerFinnhubStockDayLine(const CContainerFinnhubStockDayLine& other) = delete;

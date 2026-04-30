@@ -3,9 +3,9 @@
 #include "SetTiingoStockDayLine.h"
 #include "TiingoCandleLine.h"
 
-#include "VirtualDataHistoryCandleExtend.h"
+#include "VirtualDataHistoryCandleBasic.h"
 
-class CContainerTiingoStockDayLine : public CVirtualDataHistoryCandleExtend {
+class CContainerTiingoStockDayLine : public CVirtualDataHistoryCandleBasic {
 public:
 	CContainerTiingoStockDayLine() = default;
 	CContainerTiingoStockDayLine(const CContainerTiingoStockDayLine& other) = delete;
@@ -24,8 +24,8 @@ public:
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();
 
-	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetData(lIndex)); }
-	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleExtend::GetCandle(lDate)); }
+	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleBasic::GetData(lIndex)); }
+	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleBasic::GetCandle(lDate)); }
 
 	bool Add(const CTiingoCandleLinePtr& pData) {
 		m_vHistoryData.push_back(pData);

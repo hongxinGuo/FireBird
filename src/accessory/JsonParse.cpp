@@ -286,7 +286,6 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	}
 	if (pvStringView->empty()) return;
 	ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView).get(); // 等待线程执行完后方继续。
-	pvStringView = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -876,18 +876,7 @@ void CMainFrame::OnCalculate10dayRS1() {
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
-	gl_runtime.thread_executor()->post([] {
-		gl_UpdateChinaMarketDB.acquire();
-		gl_systemMessage.SetChinaMarketSavingFunction("Calculate 10day RS2");
-		gl_systemMessage.PushInformationMessage("开始计算10日RS2\n");// 添加一个注释
-		if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
-			gl_systemMessage.PushInformationMessage("10日RS2计算完毕\n");
-			gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(gl_pChinaMarket->GetMarketDate());
-			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
-		}
-		gl_UpdateChinaMarketDB.release();
-	});
-	gl_pChinaMarket->SetChosen10RSStrong2StockSet(true);
+
 }
 
 void CMainFrame::OnCalculate10dayRS() {

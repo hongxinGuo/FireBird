@@ -47,7 +47,6 @@ public:
 	bool TaskCheckSystem(long lCurrentTime);
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	void TaskProcessAndSaveDayLine(long lCurrentTime);
-	void TaskUpdateTempRTDB(long lCurrentTime);
 	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
 	void TaskAccessoryPerMinuteTask(long lCurrentTime); // 每分钟重复执行的辅助任务
 	void TaskPreparingMarketOpen(long lCurrentTime);
@@ -56,7 +55,6 @@ public:
 
 	bool SetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
-	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
 
@@ -84,7 +82,6 @@ public:
 
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeRTData();
-	void CalculateRTData();
 
 	// 实时数据读取
 	string GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
@@ -103,8 +100,6 @@ public:
 
 	bool IsChosen10RSStrong1StockSet() const noexcept { return m_fChosen10RSStrong1StockSet; }
 	void SetChosen10RSStrong1StockSet(const bool fFlag) noexcept { m_fChosen10RSStrong1StockSet = fFlag; }
-	bool IsChosen10RSStrong2StockSet() const noexcept { return m_fChosen10RSStrong2StockSet; }
-	void SetChosen10RSStrong2StockSet(const bool fFlag) noexcept { m_fChosen10RSStrong2StockSet = fFlag; }
 	bool IsChosen10RSStrongStockSet() const noexcept { return m_fChosen10RSStrongStockSet; }
 	void SetChosen10RSStrongStockSet(const bool fFlag) noexcept { m_fChosen10RSStrongStockSet = fFlag; }
 	bool IsCalculateChosen10RS() const noexcept { return m_fCalculateChosen10RS; }
@@ -117,22 +112,16 @@ public:
 	void UpdateChosenStockDB() const;
 	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
-	bool TaskLoadTempRTData(long lTheDate, long lCurrentTime);
-	virtual void LoadTempRTData(long lTheDate);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
-
-	static bool ChangeDayLineStockCodeTypeToStandard();
 
 	virtual bool DeleteWeekLine();
 	static void DeleteWeekLineBasicInfo();
 	static void DeleteWeekLineExtendInfo();
 	virtual void DeleteWeekLine(long lMonday);
 	void DeleteWeekLineBasicInfo(long lMonday) const;
-	void DeleteWeekLineExtendInfo(long lMonday) const;
 
 	void DeleteDayLine(long lDate) const;
 	void DeleteDayLineBasicInfo(long lDate) const;
-	void DeleteDayLineExtendInfo(long lDate) const;
 
 	virtual bool DeleteCurrentWeekWeekLine();
 	static bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
@@ -147,7 +136,7 @@ public:
 	bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
 	virtual bool BuildCurrentWeekLine();
-	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandleExtendPtr>* pvData);
+	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandleBasicPtr>* pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(); // 使用周线表构建当前周周线表
 
 	// 股票历史数据处理
@@ -273,7 +262,6 @@ protected:
 	long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
 	long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。
 	bool m_fChosen10RSStrong1StockSet; // 本日的10日强势股票集已计算完成
-	bool m_fChosen10RSStrong2StockSet; // 本日的10日强势股票集已计算完成
 	bool m_fChosen10RSStrongStockSet; // 本日的10日强势股票集已计算完成
 	bool m_fCalculateChosen10RS;
 

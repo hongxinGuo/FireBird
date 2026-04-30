@@ -205,9 +205,6 @@
     <ClCompile Include="VirtualWorldMarketWebProductTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="FinnhubStockTest.cpp" />
-    <ClCompile Include="AnalysisGuaDanTest.cpp" />
-    <ClCompile Include="CalculateHighLowTest.cpp" />
-    <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
     <ClCompile Include="VirtualDataHistoryCandleExtendTest.cpp" />
     <ClCompile Include="VirtualHistoryCandleExtendTest.cpp" />

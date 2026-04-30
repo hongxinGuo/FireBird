@@ -10,20 +10,6 @@
 
 #include"ChinaMarket.h"
 
-UINT ThreadChoice10RSStrong2StockSet(const CChinaMarketPtr& pMarket) {
-	TRACE("choice10RS2\n");
-	gl_UpdateChinaMarketDB.acquire();
-	gl_systemMessage.PushInformationMessage("开始计算10日RS2\n");// 添加一个注释
-	if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
-		gl_systemMessage.PushInformationMessage("10日RS2计算完毕\n");
-		pMarket->SetUpdatedDateFor10DaysRS2(pMarket->GetMarketDate());
-		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
-	}
-	gl_UpdateChinaMarketDB.release();
-
-	return 102;
-}
-
 UINT ThreadChoice10RSStrong1StockSet(const CChinaMarketPtr& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	TRACE("choice10RS1\n");
@@ -100,27 +86,4 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
 	TRACE("calculated 10RS1\n");
 	gl_UpdateChinaMarketDB.release();
 	return 105;
-}
-
-UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock) {
-	gl_UpdateChinaMarketDB.acquire();
-	TRACE("calculate10RS2\n");
-	if (!gl_systemConfiguration.IsExitingSystem()) {
-		if (pStock->IsShareA() && pStock->IsActive()) {
-			if (!pStock->IsDayLineLoaded()) {
-				pStock->LoadDayLineDB();
-				pStock->SetDayLineLoaded(true);
-			}
-			if (pStock->Calculate10RSStrong2StockSet()) {
-				pv10RSStrongStock->push_back(pStock);
-			}
-			if (!pStock->IsSameStock(gl_pCurrentStock)) {
-				pStock->UnloadDayLine();
-				pStock->SetDayLineLoaded(false);
-			}
-		}
-	}
-	TRACE("calculated 10RS2\n");
-	gl_UpdateChinaMarketDB.release();
-	return 106;
 }

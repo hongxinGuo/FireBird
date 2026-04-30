@@ -71,12 +71,10 @@ namespace FireBirdTest {
 		pDayLine->SetDate(20200101);
 		pDayLine->SetHigh(10000);
 		pDayLine->SetLow(100);
-		pDayLine->SetTransactionNumber(101);
 		const auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol("600000.SS");
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
-		pWeekLine->SetTransactionNumber(1);
 
 		CContainerChinaWeekLine dataChinaWeekLine;
 
@@ -86,7 +84,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pWeekLine2->GetDate(), GetCurrentMonday(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
-		EXPECT_EQ(pWeekLine2->GetTransactionNumber(), 102);
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestStoreData1) {

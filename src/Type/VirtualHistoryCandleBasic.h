@@ -19,7 +19,7 @@ public:
 	void SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const; // 存储基本数据
 	void AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const;
 	void LoadBasicData(const CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic);
-	virtual int GetRatio() const = 0;
+	virtual int GetRatio() const { return 1000; };
 
 	void AdjustByFactor(double dFactor); // 按照复权因子调整数据
 

@@ -4,7 +4,6 @@
 
 #include "ContainerChinaDayLine.h"
 #include"SetChinaMarketDayLineBasicInfo.h"
-#include"SetChinaMarketDayLineExtendInfo.h"
 
 #include "InfoReport.h"
 
@@ -21,7 +20,6 @@ bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 
 bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
-	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
 	ASSERT(!m_fBasicDataLoaded);
 
@@ -33,15 +31,6 @@ bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	setDayLineBasicInfo.Open();
 	LoadBasicDB(&setDayLineBasicInfo);
 	setDayLineBasicInfo.Close();
-
-	// 装入DayLineExtendInfo数据
-	setDayLineExtendInfo.m_strFilter = "[Symbol] = '";
-	setDayLineExtendInfo.m_strFilter += strStockSymbol.c_str();
-	setDayLineExtendInfo.m_strFilter += "'";
-	setDayLineExtendInfo.m_strSort = "[Date]";
-	setDayLineExtendInfo.Open();
-	LoadExtendDB(&setDayLineExtendInfo);
-	setDayLineExtendInfo.Close();
 
 	CalculateRS0();
 	m_fDataLoaded = true;
