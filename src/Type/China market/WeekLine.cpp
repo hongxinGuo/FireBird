@@ -3,7 +3,7 @@
 #include"TimeConvert.h"
 #include "WeekLine.h"
 
-bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandleBasicPtr& pHistoryCandleExtend) {
+bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandlePtr& pHistoryCandleExtend) {
 	if (m_lDate == 0) m_lDate = GetCurrentMonday(pHistoryCandleExtend->GetDate());
 	if (GetMarketTime() == 0) m_tpTime = pHistoryCandleExtend->GetMarketTimePoint();
 	if (m_strStockSymbol.empty()) m_strStockSymbol = pHistoryCandleExtend->GetStockSymbol();

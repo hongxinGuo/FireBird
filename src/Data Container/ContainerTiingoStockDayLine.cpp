@@ -174,16 +174,16 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 	return fNeedUpdate;
 }
 
-bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandleBasic) {
-	ASSERT(pSetHistoryCandleBasic->IsOpen());
+bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandle) {
+	ASSERT(pSetHistoryCandle->IsOpen());
 
 	Unload(); // 卸载之前的日线
 	// 装入DayLine数据
-	while (!pSetHistoryCandleBasic->IsEOF()) {
+	while (!pSetHistoryCandle->IsEOF()) {
 		auto pHistoryCandle = make_shared<CTiingoCandleLine>();
-		pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
+		pHistoryCandle->LoadBasicData(pSetHistoryCandle);
 		Add(pHistoryCandle);
-		pSetHistoryCandleBasic->MoveNext();
+		pSetHistoryCandle->MoveNext();
 	}
 	m_fDataLoaded = true;
 

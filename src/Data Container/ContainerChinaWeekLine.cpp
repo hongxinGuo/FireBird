@@ -2,14 +2,14 @@
 
 #include "ContainerChinaWeekLine.h"
 
-#include"SetWeekLineBasicInfo.h"
+#include"SetWeekLineInfo.h"
 #include"SetCurrentWeekLine.h"
 
 #include "InfoReport.h"
 
 bool CContainerChinaWeekLine::SaveDB(const string& strStockSymbol) {
 	try {
-		CSetWeekLineBasicInfo setWeekLineBasic;
+		CSetWeekLineInfo setWeekLineBasic;
 		UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
 	} catch (CException& e) {
 		ReportInformation(e);
@@ -34,7 +34,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 }
 
 bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
-	CSetWeekLineBasicInfo setWeekLineBasicInfo;
+	CSetWeekLineInfo setWeekLineBasicInfo;
 
 	ASSERT(!m_fBasicDataLoaded);
 
@@ -89,7 +89,7 @@ void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLi
 	SetDataLoaded(true);
 }
 
-void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandleBasicPtr& pHistoryCandleExtend) const {
+void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandlePtr& pHistoryCandleExtend) const {
 	for (const auto& pData : m_vHistoryData) {
 		auto str = pData->GetStockSymbol();
 		if (str == pHistoryCandleExtend->GetStockSymbol()) {

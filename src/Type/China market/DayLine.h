@@ -1,12 +1,12 @@
 #pragma once
 
-#include"VirtualHistoryCandleBasic.h"
+#include"VirtualHistoryCandle.h"
 
 #include<memory>
 
 using std::vector;
 
-class CDayLine final : public CVirtualHistoryCandleBasic {
+class CDayLine final : public CVirtualHistoryCandle {
 public:
 	CDayLine();
 	int GetRatio() const override;

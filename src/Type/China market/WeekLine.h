@@ -1,12 +1,12 @@
 #pragma once
 
-#include"VirtualHistoryCandleBasic.h"
+#include"VirtualHistoryCandle.h"
 
-class CWeekLine final : public CVirtualHistoryCandleBasic {
+class CWeekLine final : public CVirtualHistoryCandle {
 public:
 	CWeekLine() = default;
 
-	bool UpdateWeekLine(const CVirtualHistoryCandleBasicPtr& pHistoryCandleExtend);
+	bool UpdateWeekLine(const CVirtualHistoryCandlePtr& pHistoryCandleExtend);
 };
 
 using CWeekLinePtr = shared_ptr<CWeekLine>;

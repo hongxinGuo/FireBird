@@ -19,8 +19,8 @@ enum {
 
 #include"VirtualStock.h"
 
-#include"SetChinaMarketDayLineBasicInfo.h"
-#include"SetWeekLineBasicInfo.h"
+#include"SetChinaMarketDayLineInfo.h"
+#include"SetWeekLineInfo.h"
 #include"SetChinaStockSymbol.h"
 
 #include"OneDeal.h"
@@ -112,10 +112,10 @@ public:
 	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(GetSymbol()); }
 	virtual bool SaveDayLineBasicInfo() { return m_dataDayLine.SaveDB(GetSymbol()); }
 
-	bool LoadDayLineBasicInfo(CSetChinaMarketDayLneBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
+	bool LoadDayLineBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
 
-	void AppendTodayBasicInfo(CSetChinaMarketDayLneBasicInfo* pSetDayLine) const; // 存储当日基本数据
-	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandleBasicPtr& pBeUpdated) const; // 用当前状态更新历史数据
+	void AppendTodayBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLine) const; // 存储当日基本数据
+	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
 	void CheckNeedProcessRTData();
@@ -124,7 +124,7 @@ public:
 	//周线历史数据存取
 	bool LoadWeekLineDB() override { return m_dataWeekLine.LoadDB(GetSymbol()); }
 	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
-	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* pSetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(pSetWeekLineBasicInfo); }
+	bool LoadWeekLineBasicInfo(CSetWeekLineInfo* pSetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(pSetWeekLineBasicInfo); }
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
 	// 月线历史数据存取
@@ -179,9 +179,9 @@ public:
 	void UpdateDayLine(const vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 	static void ReportDayLineDownLoaded();
 	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandleBasic* DayLine() noexcept final { return &m_dataDayLine; }
-	CVirtualDataHistoryCandleBasic* WeekLine() noexcept final { return &m_dataWeekLine; }
-	CVirtualDataHistoryCandleBasic* MonthLine() noexcept final { return &m_dataMonthLine; }
+	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
+	CVirtualDataHistoryCandle* WeekLine() noexcept final { return &m_dataWeekLine; }
+	CVirtualDataHistoryCandle* MonthLine() noexcept final { return &m_dataMonthLine; }
 
 	// 周线相关函数
 	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }

@@ -221,7 +221,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWeekLineTest, TestSaveData) {
-		CSetWeekLineBasicInfo setWeekLineBasicInfo;
+		CSetWeekLineInfo setWeekLineBasicInfo;
 		CWeekLine id, id2;
 
 		id.SetDate(21100101);
@@ -302,7 +302,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWeekLineTest, TestLoadData) {
-		CSetWeekLineBasicInfo setWeekLineBasicInfo;
+		CSetWeekLineInfo setWeekLineBasicInfo;
 		CWeekLine id, idLoaded;
 
 		id.SetDate(21100901);
@@ -366,7 +366,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWeekLineTest, TestLoadWeekLine) {
 		CWeekLine id, id2;
-		CSetWeekLineBasicInfo setWeekLineBasicInfo;
+		CSetWeekLineInfo setWeekLineBasicInfo;
 		id.SetDate(CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol("600000.SS");
 		id.SetLastClose(1010);

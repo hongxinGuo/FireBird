@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include"VirtualSetHistoryCandleBasic.h"
+#include"VirtualSetHistoryCandle.h"
 
-class CSetForexDayLine final : public CVirtualSetHistoryCandleBasic {
+class CSetForexDayLine final : public CVirtualSetHistoryCandle {
 public:
 	CSetForexDayLine(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_forex_dayline", CDatabase* pDatabase = nullptr)
-		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {}
+		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 	~CSetForexDayLine() override = default;
 };

@@ -1064,7 +1064,7 @@ bool CChinaMarket::BuildCurrentWeekLine() {
 	return true;
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandleBasicPtr>* pvData) {
+bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandlePtr>* pvData) {
 	vector<string> vectorStockCode;
 
 	for (const auto& pData : *pvData) {
@@ -1079,7 +1079,7 @@ bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtual
 bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 	try {
 		const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
-		CSetWeekLineBasicInfo setWeekLineBasicInfo;
+		CSetWeekLineInfo setWeekLineBasicInfo;
 		CWeekLinePtr pWeekLine = nullptr;
 		CContainerChinaWeekLine dataChinaWeekLine;
 
@@ -1099,7 +1099,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 }
 
 bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const {
-	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
 	string sDate = fmt::format("{:08Ld}", lDate);
 	setDayLineBasicInfo.m_strSort = "[Symbol]";
@@ -1179,7 +1179,7 @@ void CChinaMarket::DeleteWeekLineExtendInfo() {
 }
 
 void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
-	CSetWeekLineBasicInfo setWeekLineBasicInfo;
+	CSetWeekLineInfo setWeekLineBasicInfo;
 
 	string sDate = fmt::format("[Date] = {:08Ld}", lMonday);
 	setWeekLineBasicInfo.m_strFilter = sDate.c_str();
@@ -1291,7 +1291,7 @@ void CChinaMarket::DeleteDayLine(long lDate) const {
 
 void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 	char buffer[20]{};
-	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
 	_ltoa_s(lDate, buffer, 10);
 	const string strDate = buffer;

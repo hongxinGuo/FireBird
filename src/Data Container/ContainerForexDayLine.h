@@ -1,8 +1,8 @@
 #pragma once
 
-#include "VirtualDataHistoryCandleBasic.h"
+#include "VirtualDataHistoryCandle.h"
 
-class CContainerForexDayLine final : public CVirtualDataHistoryCandleBasic {
+class CContainerForexDayLine final : public CVirtualDataHistoryCandle {
 public:
 	CContainerForexDayLine() = default;
 	CContainerForexDayLine(const CContainerForexDayLine& other) = delete;

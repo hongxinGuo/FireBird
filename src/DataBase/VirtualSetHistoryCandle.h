@@ -1,4 +1,4 @@
-// VirtualSetHistoryCandleBasic.h : CVirtualSetHistoryCandleBasic 的声明
+// VirtualSetHistoryCandle.h : CVirtualSetHistoryCandle 的声明
 //
 // 所有的历史数据库的基本数据表，皆准备使用此类为基类，以简化存储过程。
 //
@@ -8,10 +8,10 @@
 
 #include"VirtualRecordset.h"
 
-class CVirtualSetHistoryCandleBasic : public CVirtualRecordset {
+class CVirtualSetHistoryCandle : public CVirtualRecordset {
 public:
-	CVirtualSetHistoryCandleBasic(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr);
-	~CVirtualSetHistoryCandleBasic() override = default;
+	CVirtualSetHistoryCandle(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr);
+	~CVirtualSetHistoryCandle() override = default;
 
 	// 字段/参数数据
 

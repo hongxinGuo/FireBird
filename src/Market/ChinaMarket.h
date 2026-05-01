@@ -136,7 +136,7 @@ public:
 	bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
 	virtual bool BuildCurrentWeekLine();
-	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandleBasicPtr>* pvData);
+	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandlePtr>* pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(); // 使用周线表构建当前周周线表
 
 	// 股票历史数据处理

@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include"VirtualSetHistoryCandleBasic.h"
+#include"VirtualSetHistoryCandle.h"
 
-class CSetCurrentWeekLine : public CVirtualSetHistoryCandleBasic {
+class CSetCurrentWeekLine : public CVirtualSetHistoryCandle {
 public:
 	CSetCurrentWeekLine(const CString& strSchema = "ChinaMarket", const CString& strTable = "CurrentWeekLine", CDatabase* pDatabase = nullptr)
-		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {}
+		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 };

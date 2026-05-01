@@ -3,13 +3,13 @@
 #include"TimeConvert.h"
 
 #include "ContainerChinaDayLine.h"
-#include"SetChinaMarketDayLineBasicInfo.h"
+#include"SetChinaMarketDayLineInfo.h"
 
 #include "InfoReport.h"
 
 bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	try {
-		CSetChinaMarketDayLneBasicInfo setDayLineBasic;
+		CSetChinaMarketDayLineInfo setDayLineBasic;
 		UpdateBasicDB(&setDayLineBasic, strStockSymbol);
 	} catch (CException& e) {
 		ReportInformation(e);
@@ -19,7 +19,7 @@ bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 }
 
 bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
-	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
 	ASSERT(!m_fBasicDataLoaded);
 

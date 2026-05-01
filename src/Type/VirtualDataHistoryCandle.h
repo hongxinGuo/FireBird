@@ -7,15 +7,15 @@
 #pragma once
 
 #include "DayLine.h"
-#include "VirtualHistoryCandleBasic.h"
-#include "VirtualSetHistoryCandleBasic.h"
+#include "VirtualHistoryCandle.h"
+#include "VirtualSetHistoryCandle.h"
 
 using std::atomic_bool;
 
-class CVirtualDataHistoryCandleBasic {
+class CVirtualDataHistoryCandle {
 public:
-	CVirtualDataHistoryCandleBasic();
-	virtual ~CVirtualDataHistoryCandleBasic() = default;
+	CVirtualDataHistoryCandle();
+	virtual ~CVirtualDataHistoryCandle() = default;
 	void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	void CalculateMA(size_t length) const;
 
@@ -29,19 +29,19 @@ public:
 		return false;
 	}
 
-	bool SaveBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic) const;
+	bool SaveBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle) const;
 
-	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic);
+	bool LoadBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle);
 
-	void UpdateData(const vector<CVirtualHistoryCandleBasicPtr>& vTempData);
+	void UpdateData(const vector<CVirtualHistoryCandlePtr>& vTempData);
 	void UpdateData(const vector<CDayLinePtr>& vTempData);
 	void UpdateData(const CDayLinesPtr& vTempDayLine);
 
 protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const string& strStockSymbol = "") const;
+	bool UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol = "") const;
 
 public:
-	vector<CVirtualHistoryCandleBasicPtr>* GetContainer() noexcept { return &m_vHistoryData; }
+	vector<CVirtualHistoryCandlePtr>* GetContainer() noexcept { return &m_vHistoryData; }
 
 	auto Size() const noexcept { return m_vHistoryData.size(); }
 	bool Empty() const noexcept { return m_vHistoryData.empty(); }
@@ -52,16 +52,16 @@ public:
 		m_fDataLoaded = false;
 		m_fBasicDataLoaded = false;
 	}
-	CVirtualHistoryCandleBasicPtr GetData(const size_t lIndex) const { return m_vHistoryData.at(lIndex); }
-	vector<CVirtualHistoryCandleBasicPtr>& GetDataVector() { return m_vHistoryData; }
+	CVirtualHistoryCandlePtr GetData(const size_t lIndex) const { return m_vHistoryData.at(lIndex); }
+	vector<CVirtualHistoryCandlePtr>& GetDataVector() { return m_vHistoryData; }
 
-	bool Add(const CVirtualHistoryCandleBasicPtr& pData) {
+	bool Add(const CVirtualHistoryCandlePtr& pData) {
 		m_vHistoryData.push_back(pData);
 		return true;
 	}
 
 	bool HaveDayLine(long lDate);
-	CVirtualHistoryCandleBasicPtr GetCandle(long lDate);
+	CVirtualHistoryCandlePtr GetCandle(long lDate);
 
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
@@ -101,10 +101,10 @@ public:
 	void ShowLine(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, const vector<double>& vData);
 
 protected:
-	vector<CVirtualHistoryCandleBasicPtr> m_vHistoryData;
+	vector<CVirtualHistoryCandlePtr> m_vHistoryData;
 	atomic_bool m_fDataLoaded{ false }; // 数据装载与否标识
 	bool m_fDatabaseTodayUpdated{ false }; // 数据库今日是否已更新标识
 	bool m_fBasicDataLoaded{ false };
 };
 
-using CVirtualDataHistoryCandleBasicPtr = shared_ptr<CVirtualDataHistoryCandleBasic>;
+using CVirtualDataHistoryCandlePtr = shared_ptr<CVirtualDataHistoryCandle>;

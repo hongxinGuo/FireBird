@@ -3,9 +3,9 @@
 #include "SetTiingoStockDayLine.h"
 #include "TiingoCandleLine.h"
 
-#include "VirtualDataHistoryCandleBasic.h"
+#include "VirtualDataHistoryCandle.h"
 
-class CContainerTiingoStockDayLine : public CVirtualDataHistoryCandleBasic {
+class CContainerTiingoStockDayLine : public CVirtualDataHistoryCandle {
 public:
 	CContainerTiingoStockDayLine() = default;
 	CContainerTiingoStockDayLine(const CContainerTiingoStockDayLine& other) = delete;
@@ -19,13 +19,13 @@ public:
 
 	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
 	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
-	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandleBasic);
+	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandle);
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();
 
-	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleBasic::GetData(lIndex)); }
-	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleBasic::GetCandle(lDate)); }
+	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetData(lIndex)); }
+	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
 	bool Add(const CTiingoCandleLinePtr& pData) {
 		m_vHistoryData.push_back(pData);

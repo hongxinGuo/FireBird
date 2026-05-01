@@ -1,9 +1,9 @@
 #pragma once
 
-#include "VirtualDataHistoryCandleBasic.h"
+#include "VirtualDataHistoryCandle.h"
 #include"WeekLine.h"
 
-class CContainerChinaWeekLine : public CVirtualDataHistoryCandleBasic {
+class CContainerChinaWeekLine : public CVirtualDataHistoryCandle {
 public:
 	CContainerChinaWeekLine() = default;
 	CContainerChinaWeekLine(const CContainerChinaWeekLine& other) = delete;
@@ -19,7 +19,7 @@ public:
 	bool LoadCurrentWeekLine();
 
 	void UpdateData(const vector<CWeekLinePtr>& vTempWeekLine);
-	void UpdateData(const CVirtualHistoryCandleBasicPtr& pHistoryCandleExtend) const;
+	void UpdateData(const CVirtualHistoryCandlePtr& pHistoryCandleExtend) const;
 
 	void StoreVectorData(const vector<CWeekLinePtr>& vWeekLine);
 };

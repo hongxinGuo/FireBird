@@ -431,7 +431,7 @@ bool CContainerChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iInd
 //////////////////////////////////////////////////////////////////////////////////
 long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	long iCount = 0;
-	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
 	string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的实时数据";
 	gl_systemMessage.PushInformationMessage(s);
@@ -466,7 +466,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 }
 
 void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
-	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
 	setDayLineBasicInfo.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
 	setDayLineBasicInfo.Open();
@@ -491,7 +491,7 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	vector<int> vIndex;
 	vector<double> vRS;
 	int iTotalAShare = 0;
-	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;
 	double dRSIndex;
@@ -594,7 +594,7 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	vector<int> vIndex;
 	vector<double> vRS;
 	int iTotalAShare = 0;
-	CSetWeekLineBasicInfo setWeekLineBasicInfo;
+	CSetWeekLineInfo setWeekLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;
 	double dRSIndex;

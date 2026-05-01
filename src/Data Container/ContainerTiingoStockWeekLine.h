@@ -2,9 +2,9 @@
 
 #include "TiingoCandleLine.h"
 
-#include "VirtualDataHistoryCandleBasic.h"
+#include "VirtualDataHistoryCandle.h"
 
-class CContainerTiingoStockWeekLine : public CVirtualDataHistoryCandleBasic {
+class CContainerTiingoStockWeekLine : public CVirtualDataHistoryCandle {
 public:
 	CContainerTiingoStockWeekLine() = default;
 	CContainerTiingoStockWeekLine(const CContainerTiingoStockWeekLine& other) = delete;
@@ -15,8 +15,8 @@ public:
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 
-	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleBasic::GetData(lIndex)); }
-	CTiingoCandleLinePtr GetWeekLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandleBasic::GetCandle(lDate)); }
+	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetData(lIndex)); }
+	CTiingoCandleLinePtr GetWeekLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
 	bool Add(const CTiingoCandleLinePtr& pData) {
 		m_vHistoryData.push_back(pData);

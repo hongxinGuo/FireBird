@@ -161,7 +161,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataChinaWeekLine.GetData(0)->GetDate(), 19901224) << "新存储数据的日期";
 
 		// 恢复原状
-		CSetWeekLineBasicInfo setChinaStockWeekLineBasic;
+		CSetWeekLineInfo setChinaStockWeekLineBasic;
 		setChinaStockWeekLineBasic.m_strFilter = "[Symbol] = '000003.SZ'";
 		setChinaStockWeekLineBasic.m_strSort = "[Date]";
 		setChinaStockWeekLineBasic.Open();

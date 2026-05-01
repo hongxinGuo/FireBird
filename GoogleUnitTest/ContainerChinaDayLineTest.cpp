@@ -364,7 +364,7 @@ namespace FireBirdTest {
 		pvDayLine->push_back(pDayLine);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
-		CSetChinaMarketDayLneBasicInfo setDayLineBasic;
+		CSetChinaMarketDayLineInfo setDayLineBasic;
 		setDayLineBasic.m_strFilter = "[symbol] = '000001.SZ'";
 		setDayLineBasic.m_strSort = "Date";
 		setDayLineBasic.Open();
@@ -385,7 +385,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataChinaDayLine.GetData(2)->GetDate(), 19910104) << "旧数据的第二个日期，之前存储的另一个日期为19910103的数据已被删除";
 
 		// 恢复原状
-		CSetChinaMarketDayLneBasicInfo setChinaStockDayLineBasic;
+		CSetChinaMarketDayLineInfo setChinaStockDayLineBasic;
 		setChinaStockDayLineBasic.m_strFilter = "[Symbol] = '000001.SZ'";
 		setChinaStockDayLineBasic.m_strSort = "[Date]";
 		setChinaStockDayLineBasic.Open();

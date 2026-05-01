@@ -2,8 +2,8 @@
 
 #include "GeneralCheck.h"
 
-#include"SetChinaMarketDayLineBasicInfo.h"
-#include"SetWeekLineBasicInfo.h"
+#include"SetChinaMarketDayLineInfo.h"
+#include"SetWeekLineInfo.h"
 
 #include"SetChinaChosenStock.h"
 #include"SetWorldChosenForex.h"
@@ -169,7 +169,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(SetInitializeTest, TestDayLineBasicInfoInitialize) {
-		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_STREQ(setDayLineBasicInfo.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
@@ -181,7 +181,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(SetInitializeTest, TestWeekLineBasicInfoInitialize) {
-		CSetWeekLineBasicInfo setWeekLineBasicInfo;
+		CSetWeekLineInfo setWeekLineBasicInfo;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_STREQ(setWeekLineBasicInfo.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));

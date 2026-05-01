@@ -1,8 +1,8 @@
 #pragma once
 
-#include "VirtualDataHistoryCandleBasic.h"
+#include "VirtualDataHistoryCandle.h"
 
-class CContainerCryptoDayLine final : public CVirtualDataHistoryCandleBasic {
+class CContainerCryptoDayLine final : public CVirtualDataHistoryCandle {
 public:
 	CContainerCryptoDayLine() = default;
 	// 单一实例，不允许赋值

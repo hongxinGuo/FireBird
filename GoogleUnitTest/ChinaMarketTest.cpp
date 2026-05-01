@@ -1472,7 +1472,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestDeleteDayLineBasicInfo) {
 		char buffer[20];
 
-		CSetChinaMarketDayLneBasicInfo setDayLine, setDayLine2;
+		CSetChinaMarketDayLineInfo setDayLine, setDayLine2;
 		const auto pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetStockSymbol("600000.SS");
@@ -1534,7 +1534,7 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->LoadDayLine(dataChinaDayLine, lDate);
 
-		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 		long i = 0;
 
 		setDayLineBasicInfo.m_strSort = "[Symbol]";
@@ -1550,12 +1550,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
-		vector<CVirtualHistoryCandleBasicPtr> vData;
-		auto pData = make_shared<CVirtualHistoryCandleBasic>();
+		vector<CVirtualHistoryCandlePtr> vData;
+		auto pData = make_shared<CVirtualHistoryCandle>();
 		pData->SetStockSymbol("600000.SS");
 		vData.resize(2);
 		vData[0] = pData;
-		pData = make_shared<CVirtualHistoryCandleBasic>();
+		pData = make_shared<CVirtualHistoryCandle>();
 		pData->SetStockSymbol("600004.SS");
 		vData[1] = pData;
 

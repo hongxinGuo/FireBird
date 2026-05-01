@@ -1,5 +1,5 @@
 #pragma once
-#include <VirtualDataHistoryCandleBasic.h>
+#include <VirtualDataHistoryCandle.h>
 
 class CMovingAverage {
 public:
@@ -13,7 +13,7 @@ public:
 	void SetPeriod(int period) noexcept { m_period = period; }
 	size_t Size() const { return m_vMovingAverage.size(); }
 	void Calculate(const vector<long>& vValue);
-	void Calculate(const CVirtualDataHistoryCandleBasic* pData);
+	void Calculate(const CVirtualDataHistoryCandle* pData);
 
 	void ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow);
 

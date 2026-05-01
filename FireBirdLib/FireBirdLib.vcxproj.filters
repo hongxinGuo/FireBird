@@ -270,7 +270,7 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetCurrentWeekLine.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineBasicInfo.h">
+    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h">
@@ -291,7 +291,7 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineBasicInfo.h">
+    <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h">
@@ -312,7 +312,7 @@
     <ClInclude Include="..\src\DataBase\VirtualSetExchange.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleBasic.h">
+    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualSetStockSymbol.h">
@@ -399,7 +399,7 @@
     <ClInclude Include="..\src\Type\China market\WeekLine.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h">
+    <ClInclude Include="..\src\Type\VirtualHistoryCandle.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h">
@@ -927,7 +927,7 @@
     <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualDataHistoryCandleBasic.h">
+    <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
   </ItemGroup>
@@ -989,7 +989,7 @@
     <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp">
       <Filter>源文件\Database</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleBasic.cpp">
+    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.cpp">
       <Filter>源文件\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualSetStockSymbol.cpp">

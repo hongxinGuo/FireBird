@@ -1,8 +1,8 @@
 #pragma once
 
-#include"VirtualHistoryCandleBasic.h"
+#include"VirtualHistoryCandle.h"
 
-class CMonthLine final : public CVirtualHistoryCandleBasic {
+class CMonthLine final : public CVirtualHistoryCandle {
 public:
 	CMonthLine() = default;
 };

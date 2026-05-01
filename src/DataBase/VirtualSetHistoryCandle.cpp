@@ -1,15 +1,15 @@
-// VirtualSetHistoryCandleBasic.cpp : CVirtualSetHistoryCandleBasic 类的实现
+// VirtualSetHistoryCandle.cpp : CVirtualSetHistoryCandle 类的实现
 
 #include"pch.h"
 
-#include "VirtualSetHistoryCandleBasic.h"
+#include "VirtualSetHistoryCandle.h"
 
-CVirtualSetHistoryCandleBasic::CVirtualSetHistoryCandleBasic(const CString& strSchema, const CString& strTable, CDatabase* pdb)
+CVirtualSetHistoryCandle::CVirtualSetHistoryCandle(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_nFields = 21;
 }
 
-void CVirtualSetHistoryCandleBasic::DoFieldExchange(CFieldExchange* pFX) {
+void CVirtualSetHistoryCandle::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。

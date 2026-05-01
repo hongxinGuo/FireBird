@@ -1,12 +1,12 @@
-// SetTiingoStockDayLine.h : CSetChinaMarketDayLneBasicInfo 的声明
+// SetTiingoStockDayLine.h : CSetChinaMarketDayLineInfo 的声明
 
 #pragma once
 
-#include"VirtualSetHistoryCandleBasic.h"
+#include"VirtualSetHistoryCandle.h"
 
-class CSetTiingoStockDayLine final : public CVirtualSetHistoryCandleBasic {
+class CSetTiingoStockDayLine final : public CVirtualSetHistoryCandle {
 public:
 	CSetTiingoStockDayLine(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_dayline", CDatabase* pDatabase = nullptr)
-		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {}
+		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 	~CSetTiingoStockDayLine() override = default;
 };

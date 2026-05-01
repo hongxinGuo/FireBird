@@ -1,24 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 历史数据的基类,其对应的数据库类为CVirtualHistoryCandleBasic
+// 历史数据的基类,其对应的数据库类为CVirtualHistoryCandle
 // 纯虚类，不允许生成实例。
 // 为了保证测试成功，故而没有声明为纯虚类。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualSetHistoryCandleBasic.h"
+#include"VirtualSetHistoryCandle.h"
 
 #include<memory>
 
-class CVirtualHistoryCandleBasic {
+class CVirtualHistoryCandle {
 public:
-	CVirtualHistoryCandleBasic() = default;
-	virtual ~CVirtualHistoryCandleBasic() = default;
+	CVirtualHistoryCandle() = default;
+	virtual ~CVirtualHistoryCandle() = default;
 
-	void SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const; // 存储基本数据
-	void AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const;
-	void LoadBasicData(const CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic);
+	void SaveBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const; // 存储基本数据
+	void AppendBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const;
+	void LoadBasicData(const CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
 	virtual int GetRatio() const { return 1000; };
 
 	void AdjustByFactor(double dFactor); // 按照复权因子调整数据
@@ -156,5 +156,5 @@ protected:
 	long m_l240Average{ 0 };
 };
 
-using CVirtualHistoryCandleBasicPtr = shared_ptr<CVirtualHistoryCandleBasic>;
-using CVirtualHistoryCandleBasicsPtr = shared_ptr<vector<CVirtualHistoryCandleBasicPtr>>;
+using CVirtualHistoryCandlePtr = shared_ptr<CVirtualHistoryCandle>;
+using CVirtualHistoryCandlesPtr = shared_ptr<vector<CVirtualHistoryCandlePtr>>;

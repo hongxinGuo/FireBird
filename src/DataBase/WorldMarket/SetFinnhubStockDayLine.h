@@ -1,12 +1,12 @@
-// SetFinnhubStockDayLine.h : CSetChinaMarketDayLneBasicInfo 的声明
+// SetFinnhubStockDayLine.h : CSetChinaMarketDayLineInfo 的声明
 
 #pragma once
 
-#include"VirtualSetHistoryCandleBasic.h"
+#include"VirtualSetHistoryCandle.h"
 
-class CSetFinnhubStockDayLine final : public CVirtualSetHistoryCandleBasic {
+class CSetFinnhubStockDayLine final : public CVirtualSetHistoryCandle {
 public:
 	CSetFinnhubStockDayLine(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_stock_dayline", CDatabase* pDatabase = nullptr)
-		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {}
+		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 	~CSetFinnhubStockDayLine() override = default;
 };
