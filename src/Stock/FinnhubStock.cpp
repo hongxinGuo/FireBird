@@ -275,8 +275,8 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 	try {
 		CSetInsiderTransaction setInsiderTransaction;
 
-		vector<CInsiderTransactionPtr> vInsiderTransaction;
-		CInsiderTransactionPtr pInsiderTransaction = nullptr;
+		vector<CInsiderTransaction> vInsiderTransaction;
+		CInsiderTransaction insiderTransaction;
 		long lSizeOfOldInsiderTransaction = 0;
 
 		ASSERT(!m_vInsiderTransaction.empty());
@@ -289,28 +289,27 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		while (!setInsiderTransaction.IsEOF()) {
-			pInsiderTransaction = make_shared<CInsiderTransaction>();
-			pInsiderTransaction->Load(setInsiderTransaction);
-			m_lInsiderTransactionEndDate = max(pInsiderTransaction->m_lTransactionDate, m_lInsiderTransactionEndDate);
-			vInsiderTransaction.push_back(pInsiderTransaction);
+			insiderTransaction.Load(setInsiderTransaction);
+			m_lInsiderTransactionEndDate = max(insiderTransaction.m_lTransactionDate, m_lInsiderTransactionEndDate);
+			vInsiderTransaction.push_back(insiderTransaction);
 			lSizeOfOldInsiderTransaction++;
 			setInsiderTransaction.MoveNext();
 		}
 
 		for (size_t i = 0; i < m_vInsiderTransaction.size(); i++) {
-			pInsiderTransaction = m_vInsiderTransaction.at(i);
-			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) {
-				pInsiderTransaction->Append(setInsiderTransaction); // 较新的数据直接存储之
+			insiderTransaction = m_vInsiderTransaction.at(i);
+			if (insiderTransaction.m_lTransactionDate > m_lInsiderTransactionEndDate) {
+				insiderTransaction.Append(setInsiderTransaction); // 较新的数据直接存储之
 			}
 			else { // 较旧的数据？
 				if (std::ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-				                         [pInsiderTransaction](const CInsiderTransactionPtr& p) {
-					                         return ((p->m_strSymbol == pInsiderTransaction->m_strSymbol) // 股票代码
-						                         && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-						                         && (p->m_strPersonName == pInsiderTransaction->m_strPersonName) // 内部交易人员
-						                         && (p->m_strTransactionCode == pInsiderTransaction->m_strTransactionCode)); // 交易细节
+				                         [insiderTransaction](const CInsiderTransaction& p) {
+					                         return ((p.m_strSymbol == insiderTransaction.m_strSymbol) // 股票代码
+						                         && (p.m_lTransactionDate == insiderTransaction.m_lTransactionDate) // 交易时间
+						                         && (p.m_strPersonName == insiderTransaction.m_strPersonName) // 内部交易人员
+						                         && (p.m_strTransactionCode == insiderTransaction.m_strTransactionCode)); // 交易细节
 				                         }) == vInsiderTransaction.end()) { // 如果没找到，则股票代码、人名、交易日期或者交易细节为新的数据，存储该数据
-					pInsiderTransaction->Append(setInsiderTransaction);
+					insiderTransaction.Append(setInsiderTransaction);
 				}
 			}
 		}
@@ -325,11 +324,9 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 	try {
 		CSetInsiderSentiment setInsiderSentiment;
 
-		vector<CInsiderSentimentPtr> vInsiderSentiment;
-		CInsiderSentimentPtr pInsiderSentiment = nullptr;
+		vector<CInsiderSentiment> vInsiderSentiment;
+		CInsiderSentiment insiderSentiment;
 		long lSizeOfOldInsiderSentiment = 0;
-
-		ASSERT(!m_vInsiderSentiment.empty());
 
 		setInsiderSentiment.m_strFilter = "[Symbol] = '";
 		setInsiderSentiment.m_strFilter += m_strSymbol.c_str();
@@ -338,23 +335,22 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 
 		setInsiderSentiment.Open();
 		while (!setInsiderSentiment.IsEOF()) {
-			pInsiderSentiment = make_shared<CInsiderSentiment>();
-			pInsiderSentiment->Load(setInsiderSentiment);
-			vInsiderSentiment.push_back(pInsiderSentiment);
+			insiderSentiment.Load(setInsiderSentiment);
+			vInsiderSentiment.push_back(insiderSentiment);
 			lSizeOfOldInsiderSentiment++;
 			setInsiderSentiment.MoveNext();
 		}
 		if (lSizeOfOldInsiderSentiment > 0) {
-			m_lInsiderSentimentStartDate = min(vInsiderSentiment.at(0)->m_lDate, m_lInsiderSentimentStartDate);
+			m_lInsiderSentimentStartDate = min(vInsiderSentiment.at(0).m_lDate, m_lInsiderSentimentStartDate);
 		}
 		setInsiderSentiment.m_pDatabase->BeginTrans();
-		for (size_t i = 0; i < m_vInsiderSentiment.size(); i++) {
-			pInsiderSentiment = m_vInsiderSentiment.at(i);
+		for (size_t i = 0; i < m_pvInsiderSentiment->size(); i++) {
+			insiderSentiment = m_pvInsiderSentiment->at(i);
 			if (std::ranges::find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
-			                         [pInsiderSentiment](const CInsiderSentimentPtr& p) {
-				                         return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
+			                         [insiderSentiment](const CInsiderSentiment& p) {
+				                         return (p.m_lDate == insiderSentiment.m_lDate); // 报告时间
 			                         }) == vInsiderSentiment.end()) { // 如果没找到，则报告日期为新的数据，存储该数据
-				pInsiderSentiment->Append(setInsiderSentiment);
+				insiderSentiment.Append(setInsiderSentiment);
 			}
 		}
 		setInsiderSentiment.m_pDatabase->CommitTrans();
@@ -374,7 +370,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 	ASSERT(!m_vCompanyNews.empty());
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
 	if (!m_strSymbol.empty()) {
-		CCompanyNewsPtr pCompanyNews;
+		CFinnhubCompanyNews companyNews;
 		CSetCompanyNews setCompanyNews;
 		long lCurrentPos = 0;
 		setCompanyNews.m_strFilter = "[Symbol] = '";
@@ -385,17 +381,17 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 		setCompanyNews.Open();
 		setCompanyNews.m_pDatabase->BeginTrans();
 		while (!setCompanyNews.IsEOF()) {
-			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
-			while ((_tstoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
+			companyNews = m_vCompanyNews.at(lCurrentPos);
+			while ((_tstoll(setCompanyNews.m_DateTime) < companyNews.m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
 			if (setCompanyNews.IsEOF()) break;
-			if ((_tstoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) {	// 没有这个时间点的新闻？
-				pCompanyNews->Append(setCompanyNews);
+			if ((_tstoll(setCompanyNews.m_DateTime) > companyNews.m_llDateTime)) {	// 没有这个时间点的新闻？
+				companyNews.Append(setCompanyNews);
 			}
 			if (++lCurrentPos == lSize) break;
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
-			pCompanyNews = m_vCompanyNews.at(i);
-			pCompanyNews->Append(setCompanyNews);
+			companyNews = m_vCompanyNews.at(i);
+			companyNews.Append(setCompanyNews);
 		}
 		setCompanyNews.m_pDatabase->CommitTrans();
 		setCompanyNews.Close();
@@ -408,19 +404,19 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 
 	if (m_vEPSSurprise.empty()) return true;
-	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > lLastEPSSurpriseUpdateDate) { SetUpdateProfileDB(true); }
+	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate > lLastEPSSurpriseUpdateDate) { SetUpdateProfileDB(true); }
 	else return false; // 没有新数据则返回
 
 	setEPSSurprise.m_strFilter = "[ID] = 1";
 	setEPSSurprise.Open();
 	setEPSSurprise.m_pDatabase->BeginTrans();
-	for (const auto& pEPSSurprise : m_vEPSSurprise) {
+	for (const auto& EPSSurprise : m_vEPSSurprise) {
 		// 数据是正序存储的，需要从头部开始存储
-		if (pEPSSurprise->m_lDate > lLastEPSSurpriseUpdateDate) { pEPSSurprise->Append(setEPSSurprise); }
+		if (EPSSurprise.m_lDate > lLastEPSSurpriseUpdateDate) { EPSSurprise.Append(setEPSSurprise); }
 	}
 	setEPSSurprise.m_pDatabase->CommitTrans();
 	setEPSSurprise.Close();
-	SetLastEPSSurpriseUpdateDate(m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate);
+	SetLastEPSSurpriseUpdateDate(m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate);
 
 	return true;
 }
@@ -435,7 +431,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 	ASSERT(!m_pvSECFilings->empty());
 	const long lSize = static_cast<long>(m_pvSECFilings->size());
 	if (!m_strSymbol.empty()) {
-		CSECFilingPtr pSECFilings;
+		CSECFiling SECFilings;
 		CSetSECFilings setSECFilings;
 		long lCurrentPos = 0;
 		setSECFilings.m_strFilter = "[Symbol] = '";
@@ -446,19 +442,19 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		setSECFilings.Open();
 		setSECFilings.m_pDatabase->BeginTrans();
 		while (!setSECFilings.IsEOF()) {
-			pSECFilings = m_pvSECFilings->at(lCurrentPos);
-			while (!setSECFilings.IsEOF() && pSECFilings->m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) > 0) {
+			SECFilings = m_pvSECFilings->at(lCurrentPos);
+			while (!setSECFilings.IsEOF() && SECFilings.m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) > 0) {
 				setSECFilings.MoveNext();
 			}
 			if (setSECFilings.IsEOF()) break;
-			if (pSECFilings->m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) < 0) {	// 没有这个AccessNumber的SEC Filings？
-				pSECFilings->Append(setSECFilings);
+			if (SECFilings.m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) < 0) {	// 没有这个AccessNumber的SEC Filings？
+				SECFilings.Append(setSECFilings);
 			}
 			if (++lCurrentPos == lSize) break;
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
-			pSECFilings = m_pvSECFilings->at(i);
-			pSECFilings->Append(setSECFilings);
+			SECFilings = m_pvSECFilings->at(i);
+			SECFilings.Append(setSECFilings);
 		}
 		setSECFilings.m_pDatabase->CommitTrans();
 		setSECFilings.Close();
@@ -521,12 +517,12 @@ void CFinnhubStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
 	}
-	std::ranges::sort(m_vCompanyNews, [](const CCompanyNewsPtr& p1, const CCompanyNewsPtr& p2) { return (p1->m_llDateTime < p2->m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
+	std::ranges::sort(m_vCompanyNews, [](const CFinnhubCompanyNews& p1, const CFinnhubCompanyNews& p2) { return (p1.m_llDateTime < p2.m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
-void CFinnhubStock::UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise) {
+void CFinnhubStock::UpdateEPSSurprise(const CEPSSurprisesPtr& pvEPSSurprise) {
 	m_vEPSSurprise.resize(0);
-	for (auto& p : vEPSSurprise) {
+	for (auto& p : *pvEPSSurprise) {
 		m_vEPSSurprise.push_back(p);
 	}
 }
@@ -616,11 +612,12 @@ bool CFinnhubStock::CheckPeerStatus(long lCurrentDate) {
 	return m_fUpdateFinnhubPeer;
 }
 
-void CFinnhubStock::UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>& vInsiderTransaction) {
+void CFinnhubStock::UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvInsiderTransaction) {
 	m_vInsiderTransaction.resize(0);
+	m_vInsiderTransaction.reserve(500);
 
-	for (const auto& pInsiderTransaction : vInsiderTransaction) {
-		m_vInsiderTransaction.push_back(pInsiderTransaction);
+	for (const auto& insiderTransaction : *pvInsiderTransaction) {
+		m_vInsiderTransaction.push_back(insiderTransaction);
 	}
 }
 
@@ -640,12 +637,8 @@ bool CFinnhubStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	return m_fUpdateFinnhubInsiderTransaction;
 }
 
-void CFinnhubStock::UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment) {
-	m_vInsiderSentiment.resize(0);
-
-	for (const auto& pInsiderSentiment : vInsiderSentiment) {
-		m_vInsiderSentiment.push_back(pInsiderSentiment);
-	}
+void CFinnhubStock::UpdateInsiderSentiment(const CInsiderSentimentsPtr& pvInsiderSentiment) {
+	m_pvInsiderSentiment = pvInsiderSentiment;
 }
 
 bool CFinnhubStock::CheckInsiderSentimentStatus(long lCurrentDate) {

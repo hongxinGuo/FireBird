@@ -53,7 +53,7 @@ public:
 
 	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews);
-	void UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise);
+	void UpdateEPSSurprise(const CEPSSurprisesPtr& vEPSSurprise);
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
@@ -68,7 +68,7 @@ public:
 	bool IsUpdateCompanyNews() const noexcept { return m_fUpdateCompanyNews; }
 	void SetUpdateCompanyNews(const bool fFlag) noexcept { m_fUpdateCompanyNews = fFlag; }
 	size_t GetCompanyNewsSize() const noexcept { return m_vCompanyNews.size(); }
-	long long GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex)->m_llDateTime; }
+	long long GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex).m_llDateTime; }
 
 	bool IsUpdateBasicFinancial() const noexcept { return m_fUpdateBasicFinancial; }
 	void SetUpdateBasicFinancial(const bool fFlag) noexcept { m_fUpdateBasicFinancial = fFlag; }
@@ -96,16 +96,16 @@ public:
 
 	bool HaveInsiderTransaction() const noexcept { return !m_vInsiderTransaction.empty(); }
 	void UnloadInsiderTransaction() { m_vInsiderTransaction.resize(0); }
-	void UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>& vInsiderTransaction);
+	void UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvInsiderTransaction);
 	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
 	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransaction = fFlag; }
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
 	bool IsUpdateInsiderTransactionDB() const noexcept { return m_fUpdateFinnhubInsiderTransactionDB; }
 	void SetUpdateInsiderTransactionDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransactionDB = fFlag; }
 
-	bool HaveInsiderSentiment() const noexcept { return !m_vInsiderSentiment.empty(); }
-	void UnloadInsiderSentiment() { m_vInsiderSentiment.resize(0); }
-	void UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment);
+	bool HaveInsiderSentiment() const noexcept { return !(m_pvInsiderSentiment == nullptr || m_pvInsiderSentiment->empty()); }
+	void UnloadInsiderSentiment() const { m_pvInsiderSentiment->resize(0); }
+	void UpdateInsiderSentiment(const CInsiderSentimentsPtr& pvInsiderSentiment);
 	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateFinnhubInsiderSentiment; }
 	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentiment = fFlag; }
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
@@ -204,14 +204,14 @@ public:
 	bool IsUSMarket() const;
 
 public:
-	vector<CEPSSurprisePtr> m_vEPSSurprise;
+	vector<CEPSSurprise> m_vEPSSurprise;
 	bool m_fUpdateEPSSurprise{ true };
 	atomic_bool m_fUpdateEPSSurpriseDB{ false };
 
-	vector<CInsiderTransactionPtr> m_vInsiderTransaction;
+	vector<CInsiderTransaction> m_vInsiderTransaction;
 	long m_lInsiderTransactionEndDate{ 19800101 };
 
-	vector<CInsiderSentimentPtr> m_vInsiderSentiment;
+	CInsiderSentimentsPtr m_pvInsiderSentiment{ nullptr };
 	long m_lInsiderSentimentStartDate{ 19800101 };
 
 	CSECFilingsPtr m_pvSECFilings{ nullptr };
@@ -259,7 +259,7 @@ protected:
 	// 系统生成信息
 	CContainerFinnhubStockDayLine m_dataDayLine;
 
-	vector<CCompanyNewsPtr> m_vCompanyNews;
+	vector<CFinnhubCompanyNews> m_vCompanyNews;
 
 	CFinnhubStockBasicFinancialPtr m_pBasicFinancial{ nullptr };
 

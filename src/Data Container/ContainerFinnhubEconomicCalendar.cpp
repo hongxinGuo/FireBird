@@ -18,11 +18,11 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 
 	setEconomicCalendar.Open();
 	while (!setEconomicCalendar.IsEOF()) {
-		pEconomicCalendar = make_shared<CEconomicCalendar>();
-		pEconomicCalendar->Load(setEconomicCalendar);
-		string strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+		CEconomicCalendar economicCalendar;
+		economicCalendar.Load(setEconomicCalendar);
+		string strSymbol = economicCalendar.m_strCountry + economicCalendar.m_strEvent + economicCalendar.m_strTime;
 		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
-		m_vEconomicCalendar.push_back(pEconomicCalendar);
+		m_vEconomicCalendar.push_back(economicCalendar);
 		setEconomicCalendar.MoveNext();
 	}
 	setEconomicCalendar.Close();
@@ -38,8 +38,8 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 		setEconomicCalendar.Open();
 		setEconomicCalendar.m_pDatabase->BeginTrans();
 		for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-			const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
-			pEconomicCalendar->Append(setEconomicCalendar);
+			const CEconomicCalendar economicCalendar = m_vEconomicCalendar.at(l);
+			economicCalendar.Append(setEconomicCalendar);
 		}
 		setEconomicCalendar.m_pDatabase->CommitTrans();
 		setEconomicCalendar.Close();
@@ -49,12 +49,12 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 	return true;
 }
 
-bool CContainerFinnhubEconomicCalendar::Update(const vector<CEconomicCalendarPtr>& vEconomicCalendar) {
-	for (auto& pEconomicCalendar : vEconomicCalendar) {
-		string strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+bool CContainerFinnhubEconomicCalendar::Update(const vector<CEconomicCalendar>& vEconomicCalendar) {
+	for (auto& economicCalendar : vEconomicCalendar) {
+		string strSymbol = economicCalendar.m_strCountry + economicCalendar.m_strEvent + economicCalendar.m_strTime;
 		if (!m_mapEconomicCalendar.contains(strSymbol)) {	// 新事件？
 			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
-			m_vEconomicCalendar.push_back(pEconomicCalendar);
+			m_vEconomicCalendar.push_back(economicCalendar);
 		}
 	}
 	return true;

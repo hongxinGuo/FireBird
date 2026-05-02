@@ -164,20 +164,20 @@ namespace FireBirdTest {
 			break;
 		case 5: // 第二个数据缺actual
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 1) << "第一个数据是正确的";
-			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, "%");
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0).m_dActual, 0.6);
+			EXPECT_EQ(m_pvEconomicCalendar->at(0).m_strUnit, "%");
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
-			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, "%");
-			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(1)->m_dActual, -0.2);
-			EXPECT_EQ(m_pvEconomicCalendar->at(1)->m_strUnit, "%");
-			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dEstimate, 0.6);
-			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dPrev, 1);
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strCountry, "CN");
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strEvent, "CPI MM");
-			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strTime, "2021-03-10 01:30:00");
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0).m_dActual, 0.6);
+			EXPECT_EQ(m_pvEconomicCalendar->at(0).m_strUnit, "%");
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(1).m_dActual, -0.2);
+			EXPECT_EQ(m_pvEconomicCalendar->at(1).m_strUnit, "%");
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0).m_dEstimate, 0.6);
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0).m_dPrev, 1);
+			EXPECT_EQ(m_pvEconomicCalendar->at(0).m_strCountry, "CN");
+			EXPECT_EQ(m_pvEconomicCalendar->at(0).m_strEvent, "CPI MM");
+			EXPECT_EQ(m_pvEconomicCalendar->at(0).m_strTime, "2021-03-10 01:30:00");
 			break;
 		default:
 			break;

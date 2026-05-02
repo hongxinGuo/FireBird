@@ -23,9 +23,9 @@ string CProductTiingoFundamentalDefinition::CreateMessage() {
 void CProductTiingoFundamentalDefinition::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvFundamentalDefinition = ParseTiingoFundamentalDefinition(pWebData);
 	if (!pvFundamentalDefinition->empty()) {
-		for ([[maybe_unused]] const auto& pDefinition : *pvFundamentalDefinition) {
-			if (!gl_dataContainerTiingoFundamentalDefinition.HaveDefinition(pDefinition->m_strDataCode)) {
-				gl_dataContainerTiingoFundamentalDefinition.Add(pDefinition);
+		for (auto& definition : *pvFundamentalDefinition) {
+			if (!gl_dataContainerTiingoFundamentalDefinition.HaveDefinition(definition.m_strDataCode)) {
+				gl_dataContainerTiingoFundamentalDefinition.Add(definition);
 				gl_dataContainerTiingoFundamentalDefinition.SetUpdateDB(true);
 			}
 		}
@@ -55,7 +55,8 @@ void CProductTiingoFundamentalDefinition::ParseAndStoreWebData(CWebDataPtr pWebD
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData) {
-	auto pvFundamentalDefinition = make_shared<vector<CTiingoFundamentalDefinitionPtr>>();
+	auto pvFundamentalDefinition = make_shared<vector<CTiingoFundamentalDefinition>>();
+	pvFundamentalDefinition->reserve(100); // 预先分配空间，减少内存重新分配的次数。
 	CTiingoFundamentalDefinitionPtr pFundamentalDefinition = nullptr;
 
 	if (!IsValidData(pWebData)) return pvFundamentalDefinition;
@@ -70,19 +71,19 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 		int iCount = 0;
 		for (auto item : doc) {
 			auto itemValue = item.value();
-			pFundamentalDefinition = make_shared<CTiingoFundamentalDefinition>();
+			CTiingoFundamentalDefinition fundamentalDefinition;
 			s1 = simdjsonGetStringView(itemValue, "dataCode");
-			pFundamentalDefinition->m_strDataCode = s1;
+			fundamentalDefinition.m_strDataCode = s1;
 			s1 = simdjsonGetStringView(itemValue, "name");
-			pFundamentalDefinition->m_strName = s1;
+			fundamentalDefinition.m_strName = s1;
 			s1 = simdjsonGetStringView(itemValue, "description");
-			pFundamentalDefinition->m_strDescription = s1;
+			fundamentalDefinition.m_strDescription = s1;
 			s1 = simdjsonGetStringView(itemValue, "statementType");
-			pFundamentalDefinition->m_strStatementType = s1;
+			fundamentalDefinition.m_strStatementType = s1;
 			s1 = simdjsonGetStringView(itemValue, "units");
-			pFundamentalDefinition->m_strUnits = s1;
+			fundamentalDefinition.m_strUnits = s1;
 
-			pvFundamentalDefinition->push_back(pFundamentalDefinition);
+			pvFundamentalDefinition->push_back(fundamentalDefinition);
 			iCount++;
 		}
 	} catch (simdjson_error& error) {

@@ -13,16 +13,16 @@ public:
 	CContainerTiingoFundamentalDefinition& operator=(CContainerTiingoFundamentalDefinition&& other) noexcept = delete;
 	~CContainerTiingoFundamentalDefinition() = default;
 
-	void Add(const CTiingoFundamentalDefinitionPtr& pTiingoFundamentalDefinition);
-	bool Delete(const CTiingoFundamentalDefinitionPtr& pTiingoFundamentalDefinition);
+	void Add(CTiingoFundamentalDefinition tiingoFundamentalDefinition);
+	bool Delete(CTiingoFundamentalDefinition tiingoFundamentalDefinition);
 	bool Delete(const string& strDataCode);
 	size_t GetTotalDefinition() const noexcept { return m_vTiingoFundamentalDefinition.size(); }
 
 	bool HaveDefinition(const string& strDataCode) const noexcept { return m_mapTiingoFundamentalDefinition.contains(strDataCode); }
-	bool HaveDefinition(const CTiingoFundamentalDefinitionPtr& pDefinition) const { return HaveDefinition(pDefinition->m_strDataCode); }
+	bool HaveDefinition(const CTiingoFundamentalDefinition& definition) const { return HaveDefinition(definition.m_strDataCode); }
 
-	CTiingoFundamentalDefinitionPtr GetFundamentalDefinition(const size_t lIndex) const { return m_vTiingoFundamentalDefinition.at(lIndex); }
-	CTiingoFundamentalDefinitionPtr GetFundamentalDefinition(const string& strDataCode) const { return m_vTiingoFundamentalDefinition.at(m_mapTiingoFundamentalDefinition.at(strDataCode)); }
+	CTiingoFundamentalDefinition GetFundamentalDefinition(const size_t lIndex) const { return m_vTiingoFundamentalDefinition.at(lIndex); }
+	CTiingoFundamentalDefinition GetFundamentalDefinition(const string& strDataCode) const { return m_vTiingoFundamentalDefinition.at(m_mapTiingoFundamentalDefinition.at(strDataCode)); }
 
 	bool UpdateDB();
 	bool LoadDB();
@@ -31,7 +31,7 @@ public:
 	void SetUpdateDB(bool fFlag) noexcept { m_fUpdated = fFlag; }
 
 protected:
-	vector<CTiingoFundamentalDefinitionPtr> m_vTiingoFundamentalDefinition;
+	vector<CTiingoFundamentalDefinition> m_vTiingoFundamentalDefinition;
 	map<string, size_t> m_mapTiingoFundamentalDefinition;
 
 	bool m_fUpdated{ false };

@@ -7,6 +7,10 @@
 class CInsiderTransaction final {
 public:
 	CInsiderTransaction();
+	CInsiderTransaction(const CInsiderTransaction&) = default;
+	CInsiderTransaction& operator=(const CInsiderTransaction&) = default;
+	CInsiderTransaction(CInsiderTransaction&&) noexcept = default;
+	CInsiderTransaction& operator=(CInsiderTransaction&&) noexcept = default;
 	~CInsiderTransaction() = default;
 
 	void Append(CSetInsiderTransaction& setInsiderTransaction) const;
@@ -27,4 +31,4 @@ public:
 };
 
 using CInsiderTransactionPtr = shared_ptr<CInsiderTransaction>;
-using CInsiderTransactionsPtr = shared_ptr<vector<CInsiderTransactionPtr>>;
+using CInsiderTransactionsPtr = shared_ptr<vector<CInsiderTransaction>>;

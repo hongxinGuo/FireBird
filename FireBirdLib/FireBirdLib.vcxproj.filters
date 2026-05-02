@@ -378,13 +378,7 @@
     <ClInclude Include="..\src\Type\China market\DayLine.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\Guadan.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\China market\DayLineWebData.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\OneDeal.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\China market\StockSection.h">
@@ -1049,13 +1043,7 @@
     <ClCompile Include="..\src\Type\China market\DayLine.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\China market\Guadan.cpp">
-      <Filter>源文件\Type\China market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp">
-      <Filter>源文件\Type\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\China market\OneDeal.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\China market\StockSection.cpp">
@@ -1070,7 +1058,7 @@
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp">
+    <ClCompile Include="..\src\Type\VirtualHistoryCandle.cpp">
       <Filter>源文件\Type</Filter>
     </ClCompile>
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.cpp">
@@ -1532,7 +1520,7 @@
     <ClCompile Include="..\src\Type\America market\FinnhubCompanySymbolChange.cpp">
       <Filter>源文件\Type\America market\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\VirtualDataHistoryCandleBasic.cpp">
+    <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.cpp">
       <Filter>源文件\Type</Filter>
     </ClCompile>
   </ItemGroup>

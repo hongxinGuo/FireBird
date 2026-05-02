@@ -7,6 +7,10 @@
 class CEPSSurprise final {
 public:
 	CEPSSurprise();
+	CEPSSurprise(const CEPSSurprise&) = default;
+	CEPSSurprise& operator=(const CEPSSurprise&) = default;
+	CEPSSurprise(CEPSSurprise&&) noexcept = default;
+	CEPSSurprise& operator=(CEPSSurprise&&) noexcept = default;
 	~CEPSSurprise() = default;
 
 	void Append(CSetEPSSurprise& setEPSSurprise) const;
@@ -20,4 +24,4 @@ public:
 };
 
 using CEPSSurprisePtr = shared_ptr<CEPSSurprise>;
-using CEPSSurprisesPtr = shared_ptr<vector<CEPSSurprisePtr>>;
+using CEPSSurprisesPtr = shared_ptr<vector<CEPSSurprise>>;

@@ -44,32 +44,32 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "测试库中有85个基本定义";
 		EXPECT_FALSE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 
-		CTiingoFundamentalDefinitionPtr pDefinition = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition->m_strDataCode = "AAA"; // 新代码
-		pDefinition->m_strName = "abc";
+		CTiingoFundamentalDefinition definition;
+		definition.m_strDataCode = "AAA"; // 新代码
+		definition.m_strName = "abc";
 
-		m_dataTiingoFundamentalDefinition.Add(pDefinition);
+		m_dataTiingoFundamentalDefinition.Add(definition);
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 86);
 		EXPECT_TRUE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 		m_dataTiingoFundamentalDefinition.SetUpdateDB(false);
 
-		CTiingoFundamentalDefinitionPtr pDefinition2 = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition2->m_strDataCode = "AAA"; // 已有代码
-		pDefinition2->m_strName = "abc";
+		CTiingoFundamentalDefinition definition2;
+		definition2.m_strDataCode = "AAA"; // 已有代码
+		definition2.m_strName = "abc";
 
-		m_dataTiingoFundamentalDefinition.Add(pDefinition2);
+		m_dataTiingoFundamentalDefinition.Add(definition2);
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 86) << "不添加已有代码";
 		EXPECT_FALSE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 
-		m_dataTiingoFundamentalDefinition.Delete(pDefinition);
+		m_dataTiingoFundamentalDefinition.Delete(definition);
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "删除已存在代码";
 		EXPECT_TRUE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 		m_dataTiingoFundamentalDefinition.SetUpdateDB(false);
 
-		pDefinition2->m_strDataCode = "AAA"; // 已删除代码
-		pDefinition2->m_strName = "abc";
+		definition2.m_strDataCode = "AAA"; // 已删除代码
+		definition2.m_strName = "abc";
 
-		m_dataTiingoFundamentalDefinition.Delete(pDefinition);
+		m_dataTiingoFundamentalDefinition.Delete(definition);
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "不存在该代码";
 		EXPECT_FALSE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 	}
@@ -82,20 +82,19 @@ namespace FireBirdTest {
 		m_dataTiingoFundamentalDefinition.Delete(("roa"));
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 83) << "测试库中有85个基本定义";
 
-		CTiingoFundamentalDefinitionPtr pDefinition = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition->m_strDataCode = "AAAA"; // 新代码
-		pDefinition->m_strName = "Test";
+		CTiingoFundamentalDefinition definition;
+		definition.m_strDataCode = "AAAA"; // 新代码
+		definition.m_strName = "Test";
 
-		m_dataTiingoFundamentalDefinition.Add(pDefinition);
+		m_dataTiingoFundamentalDefinition.Add(definition);
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 84);
 		EXPECT_TRUE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 		m_dataTiingoFundamentalDefinition.SetUpdateDB(false);
 
-		pDefinition = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition->m_strDataCode = "AAAAA"; // 新代码
-		pDefinition->m_strName = "Test";
+		definition.m_strDataCode = "AAAAA"; // 新代码
+		definition.m_strName = "Test";
 
-		m_dataTiingoFundamentalDefinition.Add(pDefinition);
+		m_dataTiingoFundamentalDefinition.Add(definition);
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85);
 		EXPECT_TRUE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 

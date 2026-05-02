@@ -11,6 +11,10 @@ public:
 		m_strTradingHour = "";
 		m_strTimeZone = "";
 	}
+	CMarketHoliday(const CMarketHoliday&) = default;
+	CMarketHoliday& operator=(const CMarketHoliday&) = default;
+	CMarketHoliday(CMarketHoliday&&) = default;
+	CMarketHoliday& operator=(CMarketHoliday&&) = default;
 	~CMarketHoliday() = default;
 
 public:
@@ -22,4 +26,4 @@ public:
 };
 
 using CMarketHolidayPtr = shared_ptr<CMarketHoliday>;
-using CMarketHolidaysPtr = shared_ptr<vector<CMarketHolidayPtr>>;
+using CMarketHolidaysPtr = shared_ptr<vector<CMarketHoliday>>;

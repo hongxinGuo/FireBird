@@ -26,7 +26,7 @@ string CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
 void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
-	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(*pvEPSSurprise); }
+	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(pvEPSSurprise); }
 	else {
 		pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
 		pStock->SetUpdateProfileDB(true);
@@ -36,8 +36,8 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 }
 
 CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
-	auto pvEPSSurprise = make_shared<vector<CEPSSurprisePtr>>();
-	CEPSSurprisePtr pEPSSurprise = nullptr;
+	auto pvEPSSurprise = make_shared<vector<CEPSSurprise>>();
+	CEPSSurprise pEPSSurprise;
 	string sError;
 	nlohmannJson js;
 
@@ -46,13 +46,12 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			pEPSSurprise = make_shared<CEPSSurprise>();
 			string s = jsonGetString(it, "symbol");
-			pEPSSurprise->m_strSymbol = s;
+			pEPSSurprise.m_strSymbol = s;
 			s = jsonGetString(it, "period");
-			pEPSSurprise->m_lDate = XferToYYYYMMDD(s);
-			pEPSSurprise->m_dEstimate = jsonGetDouble(it, "estimate");
-			pEPSSurprise->m_dActual = jsonGetDouble(it, "actual");
+			pEPSSurprise.m_lDate = XferToYYYYMMDD(s);
+			pEPSSurprise.m_dEstimate = jsonGetDouble(it, "estimate");
+			pEPSSurprise.m_dActual = jsonGetDouble(it, "actual");
 			pvEPSSurprise->push_back(pEPSSurprise);
 		}
 	} catch (nlohmannJson::exception& e) {
@@ -60,6 +59,6 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 		return pvEPSSurprise;
 	}
 	std::ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),
-	                  [](const CEPSSurprisePtr& p1, const CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
+	                  [](const CEPSSurprise& p1, const CEPSSurprise& p2) { return (p1.m_lDate < p2.m_lDate); }); // 以日期早晚顺序排列。
 	return pvEPSSurprise;
 }

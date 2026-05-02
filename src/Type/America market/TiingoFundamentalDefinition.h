@@ -10,11 +10,10 @@ using std::vector;
 class CTiingoFundamentalDefinition final {
 public:
 	CTiingoFundamentalDefinition();
-	// 不允许复制和赋值。
-	CTiingoFundamentalDefinition(const CTiingoFundamentalDefinition&) = delete;
-	CTiingoFundamentalDefinition& operator=(const CTiingoFundamentalDefinition&) = delete;
-	CTiingoFundamentalDefinition(const CTiingoFundamentalDefinition&&) noexcept = delete;
-	CTiingoFundamentalDefinition& operator=(const CTiingoFundamentalDefinition&&) noexcept = delete;
+	CTiingoFundamentalDefinition(const CTiingoFundamentalDefinition&) = default;
+	CTiingoFundamentalDefinition& operator=(const CTiingoFundamentalDefinition&) = default;
+	CTiingoFundamentalDefinition(CTiingoFundamentalDefinition&&) = default;
+	CTiingoFundamentalDefinition& operator=(CTiingoFundamentalDefinition&&) = default;
 	~CTiingoFundamentalDefinition() = default;
 
 	void Reset();
@@ -34,4 +33,4 @@ public:
 };
 
 using CTiingoFundamentalDefinitionPtr = shared_ptr<CTiingoFundamentalDefinition>;
-using CTiingoFundamentalDefinitionsPtr = shared_ptr<vector<CTiingoFundamentalDefinitionPtr>>;
+using CTiingoFundamentalDefinitionsPtr = shared_ptr<vector<CTiingoFundamentalDefinition>>;

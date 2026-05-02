@@ -62,7 +62,9 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
-	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
+	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFiling>>();
+	pvSECFilings->reserve(100);
+
 	string s1;
 	if (!IsValidData(pWebData)) return pvSECFilings;
 	try {
@@ -74,39 +76,39 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 
 		for (auto item : doc) {
 			auto itemValue = item.value();
-			auto pSECFiling = make_shared<CSECFiling>();
+			CSECFiling SECFiling;
 			s1 = simdjsonGetStringView(itemValue, "symbol");
-			pSECFiling->m_strSymbol = s1;
+			SECFiling.m_strSymbol = s1;
 			s1 = simdjsonGetStringView(itemValue, "accessNumber");
-			pSECFiling->m_strAccessNumber = s1;
+			SECFiling.m_strAccessNumber = s1;
 			s1 = simdjsonGetStringView(itemValue, "cik");
-			pSECFiling->m_iCIK = atoi(s1.c_str());
+			SECFiling.m_iCIK = atoi(s1.c_str());
 			s1 = simdjsonGetStringView(itemValue, "form");
-			pSECFiling->m_strForm = s1;
+			SECFiling.m_strForm = s1;
 			s1 = simdjsonGetStringView(itemValue, "filedDate");
 			ss.clear();
 			ss.str(s1);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%F %T", tpTime);
 			tpTime -= gl_pWorldMarket->GetTimeZoneOffset();
-			pSECFiling->m_iFiledDate = tpTime.time_since_epoch().count();
+			SECFiling.m_iFiledDate = tpTime.time_since_epoch().count();
 			s1 = simdjsonGetStringView(itemValue, "acceptedDate");
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%F %T", tpTime);
 			tpTime -= gl_pWorldMarket->GetTimeZoneOffset();
-			pSECFiling->m_iAcceptedDate = tpTime.time_since_epoch().count();
+			SECFiling.m_iAcceptedDate = tpTime.time_since_epoch().count();
 			s1 = simdjsonGetStringView(itemValue, "reportUrl");
-			pSECFiling->m_strReportURL = s1;
+			SECFiling.m_strReportURL = s1;
 			s1 = simdjsonGetStringView(itemValue, "filingUrl");
-			pSECFiling->m_strFilingURL = s1;
-			pvSECFilings->push_back(pSECFiling);
+			SECFiling.m_strFilingURL = s1;
+			pvSECFilings->push_back(SECFiling);
 		}
 	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage("finnhub SEC Filings ", error.what());
 	}
 	// 按accessNumber排序
-	std::ranges::sort(*pvSECFilings, [](const CSECFilingPtr& p1, const CSECFilingPtr& p2) { return p1->m_strAccessNumber.compare(p2->m_strAccessNumber); });
+	std::ranges::sort(*pvSECFilings, [](const CSECFiling& p1, const CSECFiling& p2) { return p1.m_strAccessNumber.compare(p2.m_strAccessNumber); });
 
 	return pvSECFilings;
 }

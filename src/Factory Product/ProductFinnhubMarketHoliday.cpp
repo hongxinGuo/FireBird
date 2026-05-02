@@ -52,8 +52,9 @@ void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData) {
-	auto pvHoliday = make_shared<vector<CMarketHolidayPtr>>();
-	CMarketHolidayPtr pHoliday = nullptr;
+	auto pvHoliday = make_shared<vector<CMarketHoliday>>();
+	pvHoliday->reserve(200);
+
 	string s, sError;
 	string sExchange, sTimeZone;
 	nlohmannJson js;
@@ -67,17 +68,17 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	if (!s.empty()) sTimeZone = s;
 	auto js1 = jsonGetChild(js, "data");
 	try {
+		CMarketHoliday holiday;
 		for (auto it = js1.begin(); it != js1.end(); ++it) {
-			pHoliday = make_shared<CMarketHoliday>();
 			s = jsonGetString(it, "eventName");
-			if (!s.empty()) pHoliday->m_strEventName = s;
+			if (!s.empty()) holiday.m_strEventName = s;
 			s = jsonGetString(it, "atDate");
-			pHoliday->m_lDate = XferToYYYYMMDD(s);
+			holiday.m_lDate = XferToYYYYMMDD(s);
 			s = jsonGetString(it, "tradingHour");
-			pHoliday->m_strTradingHour = s;
-			pHoliday->m_strExchange = sExchange;
-			pHoliday->m_strTimeZone = sTimeZone;
-			pvHoliday->push_back(pHoliday);
+			holiday.m_strTradingHour = s;
+			holiday.m_strExchange = sExchange;
+			holiday.m_strTimeZone = sTimeZone;
+			pvHoliday->push_back(holiday);
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub market holiday ", e.what());

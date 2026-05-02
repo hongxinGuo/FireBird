@@ -16,7 +16,8 @@ CVirtualStock::CVirtualStock() {
 void CVirtualStock::ResetAllUpdateDate() {
 	m_lDayLineStartDate = 29900101;
 	m_lDayLineEndDate = 19800101;
-	m_vStockSplit.clear();
+	m_pvStockSplit = make_shared<vector<CStockSplit>>();
+	m_pvStockSplit->reserve(100);
 	UpdateJsonUpdateDate();
 }
 
@@ -25,10 +26,10 @@ void CVirtualStock::UpdateJsonUpdateDate() {
 	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate;
 	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate;
 	nlohmannJson jsStockSplit = nlohmannJson::array();
-	for (const auto& pStockSplit : m_vStockSplit) {
+	for (auto StockSplit : *m_pvStockSplit) {
 		nlohmannJson js;
-		js["date"] = pStockSplit->GetDate();
-		js["ratio"] = pStockSplit->GetRatio();
+		js["date"] = StockSplit.GetDate();
+		js["ratio"] = StockSplit.GetRatio();
 		jsStockSplit.push_back(js);
 	}
 	m_jsonUpdateDate["StockSplit"] = jsStockSplit;
@@ -39,13 +40,13 @@ void CVirtualStock::UpdateAllUpdateDate() {
 	m_lDayLineStartDate = m_jsonUpdateDate["DayLineStartDate"];
 	m_lDayLineEndDate = m_jsonUpdateDate["DayLineEndDate"];
 
-	m_vStockSplit.clear();
+	m_pvStockSplit->clear();
 	auto js = m_jsonUpdateDate["StockSplit"];
 	for (auto it = js.begin(); it != js.end(); ++it) {
-		CStockSplitPtr pStockSplit = std::make_shared<CStockSplit>();
-		pStockSplit->SetDate(jsonGetLong(it, "date"));
-		pStockSplit->SetRatio(jsonGetDouble(it, "ratio"));
-		m_vStockSplit.push_back(pStockSplit);
+		CStockSplit StockSplit;
+		StockSplit.SetDate(jsonGetLong(it, "date"));
+		StockSplit.SetRatio(jsonGetDouble(it, "ratio"));
+		m_pvStockSplit->push_back(StockSplit);
 	}
 }
 
@@ -93,21 +94,19 @@ void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	ASSERT(sUpdateDate.size() < 10000);
 }
 
-void CVirtualStock::AddStockSplit(const CStockSplitPtr& pStockSplit) noexcept {
-	for (auto& p : m_vStockSplit) {
-		if (p->GetDate() == pStockSplit->GetDate()) return; // 已经有了，不添加了。
+void CVirtualStock::AddStockSplit(const CStockSplit& StockSplit) noexcept {
+	for (auto& p : *m_pvStockSplit) {
+		if (p.GetDate() == StockSplit.GetDate()) return; // 已经有了，不添加了。
 	}
-	m_vStockSplit.push_back(pStockSplit);
+	m_pvStockSplit->push_back(StockSplit);
 	//按日期顺序添加拆股信息
-	ranges::sort(m_vStockSplit, [](const CStockSplitPtr& a, const CStockSplitPtr& b) {
-		return a->GetDate() < b->GetDate();
+	ranges::sort(*m_pvStockSplit, [](const CStockSplit& a, const CStockSplit& b) {
+		return a.GetDate() < b.GetDate();
 	});
 }
 
-void CVirtualStock::AddStockSplits(CStockSplitsPtr vStockSplit) noexcept {
-	for (const auto& pStockSplit : *vStockSplit) {
-		AddStockSplit(pStockSplit);
-	}
+void CVirtualStock::AddStockSplits(const CStockSplitsPtr& pvStockSplit) noexcept {
+	m_pvStockSplit = pvStockSplit;
 }
 
 bool CVirtualStock::IsSameStock(const CVirtualStockPtr& pStock) const {

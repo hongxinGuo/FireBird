@@ -45,8 +45,9 @@ void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CWebDataPtr& pWebData) {
-	auto pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
-	CMarketStatusPtr pMarketStatus = nullptr;
+	auto pvMarketStatus = make_shared<vector<CMarketStatus>>();
+	pvMarketStatus->reserve(200);
+
 	string sError;
 	nlohmannJson js;
 
@@ -54,19 +55,19 @@ CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const C
 	if (!IsValidData(pWebData)) return pvMarketStatus;
 
 	try {
-		pMarketStatus = make_shared<CMarketStatus>();
+		CMarketStatus marketStatus;
 		string s = jsonGetString(js, "exchange");
-		if (!s.empty()) pMarketStatus->m_strExchange = s;
+		if (!s.empty()) marketStatus.m_strExchange = s;
 		s = jsonGetString(js, "holiday");
-		if (!s.empty()) pMarketStatus->m_strHoliday = s;
-		pMarketStatus->m_bOpen = js.at("isOpen");
+		if (!s.empty()) marketStatus.m_strHoliday = s;
+		marketStatus.m_bOpen = js.at("isOpen");
 		s = jsonGetString(js, "session");
-		if (!s.empty()) pMarketStatus->m_strSession = s;
+		if (!s.empty()) marketStatus.m_strSession = s;
 		s = jsonGetString(js, "timezone");
-		if (!s.empty()) pMarketStatus->m_strTimeZone = s;
-		pMarketStatus->m_tt = jsonGetLongLong(js, "t");
+		if (!s.empty()) marketStatus.m_strTimeZone = s;
+		marketStatus.m_tt = jsonGetLongLong(js, "t");
 
-		pvMarketStatus->push_back(pMarketStatus);
+		pvMarketStatus->push_back(marketStatus);
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Market Status ", e.what());
 		return pvMarketStatus;

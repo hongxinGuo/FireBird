@@ -117,11 +117,11 @@ public:
 	double GetShareCount() const { return m_dShareCount; }
 	void SetShareCount(double val) { m_dShareCount = val; }
 
-	size_t GetStockSplitCount() const noexcept { return m_vStockSplit.size(); }
-	CStockSplitPtr GetStockSplit(size_t index) const noexcept { return m_vStockSplit.at(index); }
-	void AddStockSplit(const CStockSplitPtr& pStockSplit) noexcept; // 按日期顺序添加拆股信息
-	void AddStockSplits(CStockSplitsPtr pStockSplit) noexcept; // 按日期顺序添加拆股信息
-	void ClearStockSplit() noexcept { m_vStockSplit.clear(); }
+	size_t GetStockSplitCount() const noexcept { return m_pvStockSplit->size(); }
+	CStockSplit GetStockSplit(size_t index) const noexcept { return m_pvStockSplit->at(index); }
+	void AddStockSplit(const CStockSplit& pStockSplit) noexcept; // 按日期顺序添加拆股信息
+	void AddStockSplits(const CStockSplitsPtr& pStockSplit) noexcept; // 按日期顺序添加拆股信息
+	void ClearStockSplit() const noexcept { m_pvStockSplit->clear(); }
 
 	virtual void RebuildStockSplitDB() {} // 重建拆股数据库
 
@@ -235,7 +235,7 @@ protected:
 	nlohmannJson m_jsonUpdateDate{ nlohmannJson({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 	long m_lDayLineStartDate{ 29900101 }; // 日线历史数据的起始日期。格式：YYYYMMDD
 	long m_lDayLineEndDate{ 19800101 }; // 日线历史数据的结束日期。格式：YYYYMMDD
-	vector<CStockSplitPtr> m_vStockSplit;
+	CStockSplitsPtr m_pvStockSplit{ nullptr };
 	double m_dShareCount{ 0.0 }; // 股本数量, 单位：百万股。从Finnhub获取。
 
 	// 实时数据区

@@ -212,14 +212,14 @@ namespace FireBirdTest {
 			break;
 		case 3: // 正确
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_strPersonName, "Long Brady K") << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_strSymbol, "RIG");
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lShare, 269036);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lChange, -14236);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lFilingDate, 20210303);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lTransactionDate, 20210303) << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(1)->m_dTransactionPrice, 3.68);
-			EXPECT_TRUE(m_pvInsiderTransaction->at(1)->m_lTransactionDate <= m_pvInsiderTransaction->at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
+			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_strPersonName, "Long Brady K") << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_strSymbol, "RIG");
+			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lShare, 269036);
+			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lChange, -14236);
+			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lFilingDate, 20210303);
+			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lTransactionDate, 20210303) << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(1).m_dTransactionPrice, 3.68);
+			EXPECT_TRUE(m_pvInsiderTransaction->at(1).m_lTransactionDate <= m_pvInsiderTransaction->at(1).m_lTransactionDate) << "此序列按交易日期顺序排列";
 			break;
 		case 4: // 缺乏data项
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);

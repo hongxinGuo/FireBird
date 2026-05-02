@@ -132,16 +132,16 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDataCode, "liabilitiesCurrent");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strName, "Current Liabilities");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDescription, "Debt or liabilities that are due within a year");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strStatementType, "balanceSheet");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strUnits, "$");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDataCode, "rps");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strName, "Revenue Per Share");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDescription, "Revenue per share");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strStatementType, "overview");
-			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strUnits, "$");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0).m_strDataCode, "liabilitiesCurrent");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0).m_strName, "Current Liabilities");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0).m_strDescription, "Debt or liabilities that are due within a year");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0).m_strStatementType, "balanceSheet");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0).m_strUnits, "$");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1).m_strDataCode, "rps");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1).m_strName, "Revenue Per Share");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1).m_strDescription, "Revenue per share");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1).m_strStatementType, "overview");
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1).m_strUnits, "$");
 			break;
 		default:
 			break;

@@ -8,6 +8,10 @@ using std::vector;
 class CEconomicCalendar final {
 public:
 	CEconomicCalendar();
+	CEconomicCalendar(const CEconomicCalendar&) = default;
+	CEconomicCalendar& operator=(const CEconomicCalendar&) = default;
+	CEconomicCalendar(CEconomicCalendar&&) noexcept = default;
+	CEconomicCalendar& operator=(CEconomicCalendar&&) noexcept = default;
 	~CEconomicCalendar() = default;
 
 	void Load(const CSetEconomicCalendar& setEconomicCalendar);
@@ -27,4 +31,4 @@ public:
 };
 
 using CEconomicCalendarPtr = shared_ptr<CEconomicCalendar>;
-using CEconomicCalendarsPtr = shared_ptr<vector<CEconomicCalendarPtr>>;
+using CEconomicCalendarsPtr = shared_ptr<vector<CEconomicCalendar>>;

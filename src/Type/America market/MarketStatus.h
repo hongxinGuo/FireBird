@@ -12,6 +12,11 @@ public:
 		m_strTimeZone = "";
 		m_tt = 0;
 	}
+	CMarketStatus(const CMarketStatus&) = default;
+	CMarketStatus& operator=(const CMarketStatus&) = default;
+	CMarketStatus(CMarketStatus&&) noexcept = default;
+	CMarketStatus& operator=(CMarketStatus&&) noexcept = default;
+
 	~CMarketStatus() = default;
 
 public:
@@ -24,4 +29,4 @@ public:
 };
 
 using CMarketStatusPtr = shared_ptr<CMarketStatus>;
-using CMarketStatusesPtr = shared_ptr<vector<CMarketStatusPtr>>;
+using CMarketStatusesPtr = shared_ptr<vector<CMarketStatus>>;

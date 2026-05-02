@@ -11,20 +11,20 @@ CContainerTiingoFundamentalDefinition::CContainerTiingoFundamentalDefinition() {
 	m_fUpdated = false;
 }
 
-void CContainerTiingoFundamentalDefinition::Add(const CTiingoFundamentalDefinitionPtr& pTiingoFundamentalDefinition) {
-	if (!HaveDefinition(pTiingoFundamentalDefinition)) {
-		m_mapTiingoFundamentalDefinition[pTiingoFundamentalDefinition->m_strDataCode] = m_vTiingoFundamentalDefinition.size();
-		m_vTiingoFundamentalDefinition.push_back(pTiingoFundamentalDefinition);
+void CContainerTiingoFundamentalDefinition::Add(CTiingoFundamentalDefinition tiingoFundamentalDefinition) {
+	if (!HaveDefinition(tiingoFundamentalDefinition)) {
+		m_mapTiingoFundamentalDefinition[tiingoFundamentalDefinition.m_strDataCode] = m_vTiingoFundamentalDefinition.size();
+		m_vTiingoFundamentalDefinition.push_back(tiingoFundamentalDefinition);
 		m_fUpdated = true;
 	}
 }
 
-bool CContainerTiingoFundamentalDefinition::Delete(const CTiingoFundamentalDefinitionPtr& pTiingoFundamentalDefinition) {
-	if (pTiingoFundamentalDefinition == nullptr) return false;
-	if (!HaveDefinition(pTiingoFundamentalDefinition)) return false;
+bool CContainerTiingoFundamentalDefinition::Delete(CTiingoFundamentalDefinition tiingoFundamentalDefinition) {
+	if (!HaveDefinition(tiingoFundamentalDefinition)) return false;
 
-	m_vTiingoFundamentalDefinition.erase(m_vTiingoFundamentalDefinition.begin() + m_mapTiingoFundamentalDefinition.at(pTiingoFundamentalDefinition->m_strDataCode));
-	m_mapTiingoFundamentalDefinition.erase(pTiingoFundamentalDefinition->m_strDataCode);
+	auto it = std::ranges::find(m_vTiingoFundamentalDefinition, tiingoFundamentalDefinition.m_strDataCode, &CTiingoFundamentalDefinition::m_strDataCode);
+	if (it != m_vTiingoFundamentalDefinition.end()) m_vTiingoFundamentalDefinition.erase(it);
+	m_mapTiingoFundamentalDefinition.erase(tiingoFundamentalDefinition.m_strDataCode);
 	m_fUpdated = true;
 
 	return true;
@@ -56,10 +56,9 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 		setTiingoFundamentalDefinition.Open();
 		setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
 		try {
-			for (const auto& pTiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
-				ASSERT(pTiingoFundamentalDefinition != nullptr);
-				if (!mapDefinition.contains(pTiingoFundamentalDefinition->m_strDataCode)) { // 只添加新增的项目。
-					pTiingoFundamentalDefinition->Append(setTiingoFundamentalDefinition);
+			for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
+				if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
+					tiingoFundamentalDefinition.Append(setTiingoFundamentalDefinition);
 				}
 			}
 		} catch (CException& e) {
@@ -82,8 +81,8 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
 	while (!setTiingoFundamentalDefinition.IsEOF()) {
 		if (!HaveDefinition(T2Utf8(setTiingoFundamentalDefinition.m_dataCode))) {
-			const auto pTiingoFundamentalDefinition = make_shared<CTiingoFundamentalDefinition>();
-			pTiingoFundamentalDefinition->Load(setTiingoFundamentalDefinition);
+			CTiingoFundamentalDefinition pTiingoFundamentalDefinition;
+			pTiingoFundamentalDefinition.Load(setTiingoFundamentalDefinition);
 			Add(pTiingoFundamentalDefinition);
 		}
 		else { setTiingoFundamentalDefinition.Delete(); }

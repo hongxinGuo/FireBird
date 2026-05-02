@@ -44,8 +44,8 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvFinnhubCompanyNews->empty()) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
 		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
-		for (const auto& pFinnhubCompanyNews : *pvFinnhubCompanyNews) {
-			pFinnhubCompanyNews->m_strCompanySymbol = pStock->GetSymbol();
+		for (auto& finnhubCompanyNews : *pvFinnhubCompanyNews) {
+			finnhubCompanyNews.m_strCompanySymbol = pStock->GetSymbol();
 		}
 		pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
 		pStock->SetUpdateCompanyNewsDB(true);
@@ -72,7 +72,7 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///		}
 CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
 	nlohmannJson js;
-	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
+	auto pvFinnhubCompanyNews = make_shared<vector<CFinnhubCompanyNews>>();
 
 	if (!pWebData->CreateJson(js)) return pvFinnhubCompanyNews;
 	if (!IsValidData(pWebData)) return pvFinnhubCompanyNews;
@@ -80,25 +80,25 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 	try {
 		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
+			CFinnhubCompanyNews pCompanyNews;
 			s = jsonGetString(it, "category");
-			if (!s.empty()) pCompanyNews->m_strCategory = s;
+			if (!s.empty()) pCompanyNews.m_strCategory = s;
 			const auto dateTime = jsonGetLongLong(it, "datetime");
-			pCompanyNews->m_llDateTime = ConvertToDateTime(dateTime, 0);
+			pCompanyNews.m_llDateTime = ConvertToDateTime(dateTime, 0);
 			s = jsonGetString(it, "headline");
-			if (!s.empty()) pCompanyNews->m_strHeadLine = s;
-			pCompanyNews->m_iNewsID = jsonGetInt(it, "id");
+			if (!s.empty()) pCompanyNews.m_strHeadLine = s;
+			pCompanyNews.m_iNewsID = jsonGetInt(it, "id");
 			s = jsonGetString(it, "image");
-			if (!s.empty()) pCompanyNews->m_strImage = s;
+			if (!s.empty()) pCompanyNews.m_strImage = s;
 			//if (s.size() > 0) pCompanyNews->m_strImage = s;
 			s = jsonGetString(it, "related");
-			if (!s.empty()) pCompanyNews->m_strRelatedSymbol = s;
+			if (!s.empty()) pCompanyNews.m_strRelatedSymbol = s;
 			s = jsonGetString(it, "source");
-			if (!s.empty()) pCompanyNews->m_strSource = s;
+			if (!s.empty()) pCompanyNews.m_strSource = s;
 			s = jsonGetString(it, "summary");
-			if (!s.empty()) pCompanyNews->m_strSummary = s;
+			if (!s.empty()) pCompanyNews.m_strSummary = s;
 			s = jsonGetString(it, "url");
-			if (!s.empty()) pCompanyNews->m_strURL = s;
+			if (!s.empty()) pCompanyNews.m_strURL = s;
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
 	} catch (nlohmannJson::exception& e) {

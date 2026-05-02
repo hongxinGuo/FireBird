@@ -8,6 +8,10 @@ using std::shared_ptr;
 class CSECFiling final {
 public:
 	CSECFiling();
+	CSECFiling(const CSECFiling&) = default;
+	CSECFiling& operator=(const CSECFiling&) = default;
+	CSECFiling(CSECFiling&&) = default;
+	CSECFiling& operator=(CSECFiling&&) = default;
 	~CSECFiling() = default;
 
 	void Append(CSetSECFilings& setSECFiling) const;
@@ -25,4 +29,4 @@ public:
 };
 
 using CSECFilingPtr = shared_ptr<CSECFiling>;
-using CSECFilingsPtr = shared_ptr<vector<CSECFilingPtr>>;
+using CSECFilingsPtr = shared_ptr<vector<CSECFiling>>;

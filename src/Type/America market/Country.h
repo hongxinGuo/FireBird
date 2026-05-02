@@ -8,6 +8,10 @@ using std::shared_ptr;
 class CCountry final {
 public:
 	CCountry();
+	CCountry(const CCountry& other) = default;
+	CCountry& operator=(const CCountry& other) = default;
+	CCountry(CCountry&& other) noexcept = default;
+	CCountry& operator=(CCountry&& other) noexcept = default;
 	~CCountry() = default;
 
 	void Append(CSetCountry& setCountry) const;
@@ -23,4 +27,4 @@ public:
 };
 
 using CCountryPtr = shared_ptr<CCountry>;
-using CCountriesPtr = shared_ptr<vector<CCountryPtr>>;
+using CCountriesPtr = shared_ptr<vector<CCountry>>;

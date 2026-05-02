@@ -23,8 +23,6 @@ enum {
 #include"SetWeekLineInfo.h"
 #include"SetChinaStockSymbol.h"
 
-#include"OneDeal.h"
-
 #include"DayLine.h"
 #include"ContainerChinaDayLine.h"
 #include"ContainerChinaWeekLine.h"
@@ -226,9 +224,7 @@ protected:
 	// 挂单的具体情况。
 	CWebRTDataPtr m_pLastRTData{ nullptr }; // 从m_qRTData读出的上一个实时数据。
 
-	queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
-
-	ConcurrentQueue<CWebRTDataPtr> m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
+	ConcurrentQueue<CWebRTDataPtr> m_qRTData{ 32 }; // 采用优先队列存储实时数据，这样可以保证多源。
 
 	// 日线容器
 	CContainerChinaDayLine m_dataDayLine;

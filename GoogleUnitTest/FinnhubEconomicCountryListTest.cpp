@@ -117,13 +117,13 @@ namespace FireBirdTest {
 			break;
 		case 4: // 第二个数据缺Code2
 			EXPECT_EQ(m_pvCountry->size(), 1);
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, "NR");
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, "AUD");
+			EXPECT_EQ(m_pvCountry->at(0).m_strCode2, "NR");
+			EXPECT_EQ(m_pvCountry->at(0).m_strCurrencyCode, "AUD");
 			break;
 		case 5: // 第二个数据缺CodeNo
 			EXPECT_EQ(m_pvCountry->size(), 1);
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, "NR");
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, "AUD");
+			EXPECT_EQ(m_pvCountry->at(0).m_strCode2, "NR");
+			EXPECT_EQ(m_pvCountry->at(0).m_strCurrencyCode, "AUD");
 			break;
 		case 6: // 空数据
 			EXPECT_TRUE(m_pvCountry->empty());
@@ -135,12 +135,12 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvCountry->size(), 2);
-			EXPECT_EQ(m_pvCountry->at(1)->m_strCountry, "Zero") << "以国家名称排序，位于第二个位置";
-			EXPECT_EQ(m_pvCountry->at(1)->m_strCode2, "NR");
-			EXPECT_EQ(m_pvCountry->at(1)->m_strCurrencyCode, "AUD");
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCountry, "Saint Martin (French part)") << "以国家名称排序，位于第一个位置";
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, "MF");
-			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, "ANG");
+			EXPECT_EQ(m_pvCountry->at(1).m_strCountry, "Zero") << "以国家名称排序，位于第二个位置";
+			EXPECT_EQ(m_pvCountry->at(1).m_strCode2, "NR");
+			EXPECT_EQ(m_pvCountry->at(1).m_strCurrencyCode, "AUD");
+			EXPECT_EQ(m_pvCountry->at(0).m_strCountry, "Saint Martin (French part)") << "以国家名称排序，位于第一个位置";
+			EXPECT_EQ(m_pvCountry->at(0).m_strCode2, "MF");
+			EXPECT_EQ(m_pvCountry->at(0).m_strCurrencyCode, "ANG");
 			break;
 		default:
 			break;

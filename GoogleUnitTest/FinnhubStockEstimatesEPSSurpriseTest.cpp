@@ -115,28 +115,28 @@ namespace FireBirdTest {
 			break;
 		case 4: // 第二个数据缺缺actual
 			EXPECT_EQ(m_pvEPSSurprise->size(), 1) << "错误数据不存储";
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_strSymbol, "AAPL");
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, 20201231);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_strSymbol, "AAPL");
 			break;
 		case 5: // 第三个数据缺CodeNo
 			EXPECT_EQ(m_pvEPSSurprise->size(), 2) << "第三个数据是错误的";
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_strSymbol, "AAPL");
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, 20201231);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_strSymbol, "AAPL");
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 0.6375);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 0.5765856);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20200331);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_strSymbol, "AAPL");
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
-			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_strSymbol, "AAPL");
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dActual, 0.6375);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dEstimate, 0.5765856);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, 20200331);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_strSymbol, "AAPL");
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3).m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3).m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(3).m_lDate, 20201231);
+			EXPECT_EQ(m_pvEPSSurprise->at(3).m_strSymbol, "AAPL");
 			break;
 		default:
 			break;

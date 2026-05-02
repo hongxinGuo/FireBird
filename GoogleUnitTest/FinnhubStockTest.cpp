@@ -851,40 +851,36 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestUpdateInsiderTransactionDB) {
 		//  测试数据库中只有4个数据，股票代码：A， 内部交易人员：a b c，
-		vector<CInsiderTransactionPtr> vInsiderTransaction;
+		CInsiderTransactionsPtr pvInsiderTransaction = make_shared<vector<CInsiderTransaction>>();
 		CSetInsiderTransaction setInsiderTransaction;
 
-		CInsiderTransactionPtr pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "B";
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_strPersonName = "a b c d";
-		pInsiderTransaction->m_lTransactionDate = 20210101; // 这个内部交易人员名称不符，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20210107;
-		pInsiderTransaction->m_strTransactionCode = "M"; // 这个数据库中有，无需添加
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期较新，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_lTransactionDate = 20210107;
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_strTransactionCode = "S"; // 这个交易类型不符，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
+		CInsiderTransaction insiderTransaction;
+		insiderTransaction.m_strSymbol = "B";
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_strPersonName = "a b c d";
+		insiderTransaction.m_lTransactionDate = 20210101; // 这个内部交易人员名称不符，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_lTransactionDate = 20210107;
+		insiderTransaction.m_strTransactionCode = "M"; // 这个数据库中有，无需添加
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_lTransactionDate = 20210124; // 这个日期较新，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_lTransactionDate = 20210107;
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_strTransactionCode = "S"; // 这个交易类型不符，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
 
 		stock.SetSymbol("A");
 		stock.SetInsiderTransactionUpdateDate(20210123);
-		stock.UpdateInsiderTransaction(vInsiderTransaction);
+		stock.UpdateInsiderTransaction(pvInsiderTransaction);
 
 		stock.UpdateInsiderTransactionDB();
 
@@ -923,25 +919,23 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestSaveInsiderSentiment) {
 		//  测试数据库中只有4个数据，股票代码：A，
-		vector<CInsiderSentimentPtr> vInsiderSentiment;
+		CInsiderSentimentsPtr pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
 		CSetInsiderSentiment setInsiderSentiment;
 
-		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = "B"; // 这个股票代码不符，不可能出现此种情况，故而不需要添加进数据库
-		pInsiderSentiment->m_lDate = 20200101;
-		vInsiderSentiment.push_back(pInsiderSentiment);
-		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = "A";
-		pInsiderSentiment->m_lDate = 20200101; // 这个数据库中有，无需添加
-		vInsiderSentiment.push_back(pInsiderSentiment);
-		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = "A";
-		pInsiderSentiment->m_lDate = 20210101; // 这个日期不符，需要添加进数据库
-		vInsiderSentiment.push_back(pInsiderSentiment);
+		CInsiderSentiment insiderSentiment;
+		insiderSentiment.m_strSymbol = "B"; // 这个股票代码不符，不可能出现此种情况，故而不需要添加进数据库
+		insiderSentiment.m_lDate = 20200101;
+		pvInsiderSentiment->push_back(insiderSentiment);
+		insiderSentiment.m_strSymbol = "A";
+		insiderSentiment.m_lDate = 20200101; // 这个数据库中有，无需添加
+		pvInsiderSentiment->push_back(insiderSentiment);
+		insiderSentiment.m_strSymbol = "A";
+		insiderSentiment.m_lDate = 20210101; // 这个日期不符，需要添加进数据库
+		pvInsiderSentiment->push_back(insiderSentiment);
 
 		stock.SetSymbol("A");
 		stock.SetInsiderSentimentUpdateDate(20210101);
-		stock.UpdateInsiderSentiment(vInsiderSentiment);
+		stock.UpdateInsiderSentiment(pvInsiderSentiment);
 
 		stock.UpdateInsiderSentimentDB();
 
@@ -960,23 +954,22 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateCompanyNewsDB) {
-		const auto pvCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
+		const auto pvCompanyNews = make_shared<vector<CFinnhubCompanyNews>>();
 		CSetCompanyNews setCompanyNews;
 
 		stock.SetSymbol("RIG");
 
-		CCompanyNewsPtr pCompanyNews = make_shared<CFinnhubCompanyNews>();
-		pCompanyNews->m_strCompanySymbol = "RIG";
-		pCompanyNews->m_llDateTime = 19800101;
-		pCompanyNews->m_strCategory = "test";
-		pCompanyNews->m_iNewsID = 4;
-		pvCompanyNews->push_back(pCompanyNews);
-		pCompanyNews = make_shared<CFinnhubCompanyNews>();
-		pCompanyNews->m_strCompanySymbol = "RIG";
-		pCompanyNews->m_llDateTime = 20200101;
-		pCompanyNews->m_strCategory = "test";
-		pCompanyNews->m_iNewsID = 5;
-		pvCompanyNews->push_back(pCompanyNews);
+		CFinnhubCompanyNews companyNews;
+		companyNews.m_strCompanySymbol = "RIG";
+		companyNews.m_llDateTime = 19800101;
+		companyNews.m_strCategory = "test";
+		companyNews.m_iNewsID = 4;
+		pvCompanyNews->push_back(companyNews);
+		companyNews.m_strCompanySymbol = "RIG";
+		companyNews.m_llDateTime = 20200101;
+		companyNews.m_strCategory = "test";
+		companyNews.m_iNewsID = 5;
+		pvCompanyNews->push_back(companyNews);
 
 		stock.UpdateCompanyNews(pvCompanyNews);
 		stock.UpdateCompanyNewsDB();
@@ -1112,42 +1105,42 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateEPSSurpriseDB2) {
-		vector<CEPSSurprisePtr> vEPS;
-		auto pEPS = make_shared<CEPSSurprise>();
+		CEPSSurprisesPtr pvEPS = make_shared<vector<CEPSSurprise>>();
 
-		pEPS->m_strSymbol = "600601.SS";
-		pEPS->m_lDate = 20200101;
-		pEPS->m_dActual = 1.0;
-		pEPS->m_dEstimate = 1.1;
-		vEPS.push_back(pEPS);
-		pEPS = make_shared<CEPSSurprise>();
-		pEPS->m_strSymbol = "600601.SS";
-		pEPS->m_lDate = 20200401;
-		pEPS->m_dActual = 2.0;
-		pEPS->m_dEstimate = 2.1;
-		vEPS.push_back(pEPS);
-		stock.UpdateEPSSurprise(vEPS);
+		CEPSSurprise EPS;
+
+		EPS.m_strSymbol = "600601.SS";
+		EPS.m_lDate = 20200101;
+		EPS.m_dActual = 1.0;
+		EPS.m_dEstimate = 1.1;
+		pvEPS->push_back(EPS);
+		EPS.m_strSymbol = "600601.SS";
+		EPS.m_lDate = 20200401;
+		EPS.m_dActual = 2.0;
+		EPS.m_dEstimate = 2.1;
+		pvEPS->push_back(EPS);
+		stock.UpdateEPSSurprise(pvEPS);
 
 		stock.SetLastEPSSurpriseUpdateDate(20210101);
 		EXPECT_FALSE(stock.UpdateEPSSurpriseDB()) << "没有新数据，返回假";
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateEPSSurpriseDB3) {
-		vector<CEPSSurprisePtr> vEPS;
-		auto pEPS = make_shared<CEPSSurprise>();
+		CEPSSurprisesPtr pvEPS = make_shared<vector<CEPSSurprise>>();
 
-		pEPS->m_strSymbol = "600601.US";
-		pEPS->m_lDate = 20200101;
-		pEPS->m_dActual = 1.0;
-		pEPS->m_dEstimate = 1.1;
-		vEPS.push_back(pEPS);
-		pEPS = make_shared<CEPSSurprise>();
-		pEPS->m_strSymbol = "600601.US";
-		pEPS->m_lDate = 20200401;
-		pEPS->m_dActual = 2.0;
-		pEPS->m_dEstimate = 2.1;
-		vEPS.push_back(pEPS);
-		stock.UpdateEPSSurprise(vEPS);
+		CEPSSurprise EPS;
+
+		EPS.m_strSymbol = "600601.US";
+		EPS.m_lDate = 20200101;
+		EPS.m_dActual = 1.0;
+		EPS.m_dEstimate = 1.1;
+		pvEPS->push_back(EPS);
+		EPS.m_strSymbol = "600601.US";
+		EPS.m_lDate = 20200401;
+		EPS.m_dActual = 2.0;
+		EPS.m_dEstimate = 2.1;
+		pvEPS->push_back(EPS);
+		stock.UpdateEPSSurprise(pvEPS);
 
 		stock.SetLastEPSSurpriseUpdateDate(20200101);
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
@@ -1175,19 +1168,17 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateSECFilingsDB1) {
-		CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
-		auto pSECFiling = make_shared<CSECFiling>();
-		pSECFiling->m_strSymbol = "MFI"; // 已存在代码
-		pSECFiling->m_strAccessNumber = "0"; // 新存取号，比原有的都小
-		pvSECFilings->push_back(pSECFiling);
-		pSECFiling = make_shared<CSECFiling>();
-		pSECFiling->m_strSymbol = "MFI"; // 已存在代码
-		pSECFiling->m_strAccessNumber = "0000814133-03-000033"; // 已存在存取号
-		pvSECFilings->push_back(pSECFiling);
-		pSECFiling = make_shared<CSECFiling>();
-		pSECFiling->m_strSymbol = "MFI"; // 已存在代码
-		pSECFiling->m_strAccessNumber = "1000950135-08-002549"; // 新存取号，比原有的都大
-		pvSECFilings->push_back(pSECFiling);
+		CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFiling>>();
+		CSECFiling SECFiling;
+		SECFiling.m_strSymbol = "MFI"; // 已存在代码
+		SECFiling.m_strAccessNumber = "0"; // 新存取号，比原有的都小
+		pvSECFilings->push_back(SECFiling);
+		SECFiling.m_strSymbol = "MFI"; // 已存在代码
+		SECFiling.m_strAccessNumber = "0000814133-03-000033"; // 已存在存取号
+		pvSECFilings->push_back(SECFiling);
+		SECFiling.m_strSymbol = "MFI"; // 已存在代码
+		SECFiling.m_strAccessNumber = "1000950135-08-002549"; // 新存取号，比原有的都大
+		pvSECFilings->push_back(SECFiling);
 
 		stock.SetSymbol("MFI");
 		stock.SetSECFilings(pvSECFilings);
@@ -1293,10 +1284,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestHaveInsiderTransaction) {
-		const auto pInsiderTransaction = make_shared<CInsiderTransaction>();
+		CInsiderTransaction insiderTransaction;
 
 		EXPECT_FALSE(stock.HaveInsiderTransaction());
-		stock.m_vInsiderTransaction.push_back(pInsiderTransaction);
+		stock.m_vInsiderTransaction.push_back(insiderTransaction);
 		EXPECT_TRUE(stock.HaveInsiderTransaction());
 		stock.UnloadInsiderTransaction();
 		EXPECT_FALSE(stock.HaveInsiderTransaction());
@@ -1322,10 +1313,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestHaveInsiderSentiment) {
-		const auto pInsiderSentiment = make_shared<CInsiderSentiment>();
+		CInsiderSentiment insiderSentiment;
 
 		EXPECT_FALSE(stock.HaveInsiderSentiment());
-		stock.m_vInsiderSentiment.push_back(pInsiderSentiment);
+		stock.m_pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
+		stock.m_pvInsiderSentiment->push_back(insiderSentiment);
 		EXPECT_TRUE(stock.HaveInsiderSentiment());
 		stock.UnloadInsiderSentiment();
 		EXPECT_FALSE(stock.HaveInsiderSentiment());

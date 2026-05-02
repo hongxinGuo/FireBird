@@ -216,7 +216,6 @@
     <ClCompile Include="MockChinaMarketTest.cpp" />
     <ClCompile Include="MockChinaStockTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
-    <ClCompile Include="GuadanTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
@@ -231,7 +230,6 @@
     <ClCompile Include="MockDataChinaWeekLineTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseWebRTDataTest.cpp" />
-    <ClCompile Include="OneDealTest.cpp" />
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />

@@ -3,6 +3,10 @@
 class CStockSplit {
 public:
 	CStockSplit() = default;
+	CStockSplit(const CStockSplit&) = default;
+	CStockSplit& operator=(const CStockSplit&) = default;
+	CStockSplit(CStockSplit&&) = default;
+	CStockSplit& operator=(CStockSplit&&) = default;
 	~CStockSplit() = default;
 
 	// Getter and Setter for m_date
@@ -21,4 +25,4 @@ protected:
 };
 
 using CStockSplitPtr = std::shared_ptr<CStockSplit>;
-using CStockSplitsPtr = std::shared_ptr<std::vector<CStockSplitPtr>>;
+using CStockSplitsPtr = std::shared_ptr<std::vector<CStockSplit>>;

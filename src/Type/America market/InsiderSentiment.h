@@ -7,6 +7,11 @@
 class CInsiderSentiment final {
 public:
 	CInsiderSentiment();
+	CInsiderSentiment(const CInsiderSentiment& other);
+	CInsiderSentiment& operator=(const CInsiderSentiment& other);
+	CInsiderSentiment(CInsiderSentiment&&) noexcept;
+	CInsiderSentiment& operator=(CInsiderSentiment&&) noexcept;
+
 	~CInsiderSentiment() = default;
 
 	void Append(CSetInsiderSentiment& setInsiderTransaction) const;
@@ -23,4 +28,4 @@ public:
 };
 
 using CInsiderSentimentPtr = shared_ptr<CInsiderSentiment>;
-using CInsiderSentimentsPtr = shared_ptr<vector<CInsiderSentimentPtr>>;
+using CInsiderSentimentsPtr = shared_ptr<vector<CInsiderSentiment>>;

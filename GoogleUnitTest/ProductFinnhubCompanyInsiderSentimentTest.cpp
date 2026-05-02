@@ -275,11 +275,11 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_strSymbol, "TSLA") << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << "使用有效日期：每月的第一天，故而要加一";
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lChange, 5540);
-			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1)->m_mspr, 12.209097);
-			EXPECT_TRUE(m_pvInsiderSentiment->at(1)->m_lDate <= m_pvInsiderSentiment->at(1)->m_lDate) << "此序列按交易日期顺序排列";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1).m_strSymbol, "TSLA") << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1).m_lDate, 20220301) << "使用有效日期：每月的第一天，故而要加一";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1).m_lChange, 5540);
+			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1).m_mspr, 12.209097);
+			EXPECT_TRUE(m_pvInsiderSentiment->at(1).m_lDate <= m_pvInsiderSentiment->at(1).m_lDate) << "此序列按交易日期顺序排列";
 			break;
 		case 3: // 缺乏data项
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);

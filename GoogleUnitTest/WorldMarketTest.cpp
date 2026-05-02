@@ -337,28 +337,28 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCountry) {
-		const auto pCountry = make_shared<CCountry>();
+		CCountry country;
 
 		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry("ABC"));
 		EXPECT_TRUE(gl_dataContainerFinnhubCountry.IsCountry("American Samoa"));
 
-		pCountry->m_strCountry = "ABC";
-		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(pCountry));
-		pCountry->m_strCountry = "American Samoa";
-		EXPECT_TRUE(gl_dataContainerFinnhubCountry.IsCountry(pCountry));
+		country.m_strCountry = "ABC";
+		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(country));
+		country.m_strCountry = "American Samoa";
+		EXPECT_TRUE(gl_dataContainerFinnhubCountry.IsCountry(country));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCountry) {
-		const auto pCountry = make_shared<CCountry>();
+		CCountry country;
 		const auto lTotalCountry = gl_dataContainerFinnhubCountry.GetTotalCountry();
-		pCountry->m_strCountry = "SZ";
+		country.m_strCountry = "SZ";
 
-		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(pCountry));
-		gl_dataContainerFinnhubCountry.Add(pCountry);
-		EXPECT_TRUE(gl_dataContainerFinnhubCountry.IsCountry(pCountry));
+		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(country));
+		gl_dataContainerFinnhubCountry.Add(country);
+		EXPECT_TRUE(gl_dataContainerFinnhubCountry.IsCountry(country));
 		EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), lTotalCountry + 1);
-		gl_dataContainerFinnhubCountry.Delete(pCountry);
-		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(pCountry));
+		gl_dataContainerFinnhubCountry.Delete(country);
+		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(country));
 		EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), lTotalCountry);
 	}
 
@@ -369,11 +369,11 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateCountryDB) {
 		const size_t lTotal = gl_dataContainerFinnhubCountry.GetTotalCountry();
 
-		const auto pCountry = make_shared<CCountry>();
-		pCountry->m_strCode2 = "AB";
-		pCountry->m_strCountry = "NoName";
-		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(pCountry));
-		gl_dataContainerFinnhubCountry.Add(pCountry);
+		CCountry country;
+		country.m_strCode2 = "AB";
+		country.m_strCountry = "NoName";
+		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(country));
+		gl_dataContainerFinnhubCountry.Add(country);
 		EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), lTotal + 1);
 		gl_dataContainerFinnhubCountry.UpdateDB(); // 此测试函数执行完后，新增了一个Country没有删除（数据库中的删除了）。
 
@@ -674,41 +674,38 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerFinnhubStock.GetItem("A")->GetInsiderTransactionUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
-		vector<CInsiderTransactionPtr> vInsiderTransaction;
+		CInsiderTransactionsPtr pvInsiderTransaction = make_shared<vector<CInsiderTransaction>>();
 		CSetInsiderTransaction setInsiderTransaction;
 
-		CInsiderTransactionPtr pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "B";
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_strPersonName = "a b c d";
-		pInsiderTransaction->m_lTransactionDate = 20210101; // 这个内部交易人员名称不符，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20210107;
-		pInsiderTransaction->m_strTransactionCode = "M"; // 这个数据库中有，无需添加
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期不符，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		pInsiderTransaction->m_strSymbol = "A";
-		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_strTransactionCode = "S"; // 这个交易类型不符，需要添加进数据库
-		vInsiderTransaction.push_back(pInsiderTransaction);
+		CInsiderTransaction insiderTransaction;
+		insiderTransaction.m_strSymbol = "B";
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_strPersonName = "a b c d";
+		insiderTransaction.m_lTransactionDate = 20210101; // 这个内部交易人员名称不符，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_lTransactionDate = 20210107;
+		insiderTransaction.m_strTransactionCode = "M"; // 这个数据库中有，无需添加
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_lTransactionDate = 20210124; // 这个日期不符，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
+		insiderTransaction.m_strSymbol = "A";
+		insiderTransaction.m_strPersonName = "a b c";
+		insiderTransaction.m_strTransactionCode = "S"; // 这个交易类型不符，需要添加进数据库
+		pvInsiderTransaction->push_back(insiderTransaction);
 
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("A");
 		EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "此时尚未存入数据";
 
 		pStock->SetUpdateInsiderTransactionDB(true);
 		pStock->SetInsiderTransactionUpdateDate(20210123);
-		pStock->UpdateInsiderTransaction(vInsiderTransaction);
+		pStock->UpdateInsiderTransaction(pvInsiderTransaction);
 
 		gl_pWorldMarket->UpdateInsiderTransactionDB();
 
@@ -759,29 +756,26 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->HaveInsiderSentiment());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
-		vector<CInsiderSentimentPtr> vInsiderSentiment;
+		CInsiderSentimentsPtr pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
 		CSetInsiderSentiment setInsiderSentiment;
 
-		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = "B";// 这个股票代码不符，需要添加进数据库
-		pInsiderSentiment->m_lDate = 20200101;
-		vInsiderSentiment.push_back(pInsiderSentiment);
-		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = "A";
-		pInsiderSentiment->m_lDate = 20200101;// 这个数据库中有，无需添加
-		vInsiderSentiment.push_back(pInsiderSentiment);
-		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = "A";
-		pInsiderSentiment->m_lDate = 20210101; // 这个日期不符，需要添加进数据库
-		vInsiderSentiment.push_back(pInsiderSentiment);
+		CInsiderSentiment insiderSentiment;
+		insiderSentiment.m_strSymbol = "B";// 这个股票代码不符，需要添加进数据库
+		insiderSentiment.m_lDate = 20200101;
+		pvInsiderSentiment->push_back(insiderSentiment);
+		insiderSentiment.m_strSymbol = "A";
+		insiderSentiment.m_lDate = 20200101;// 这个数据库中有，无需添加
+		pvInsiderSentiment->push_back(insiderSentiment);
+		insiderSentiment.m_strSymbol = "A";
+		insiderSentiment.m_lDate = 20210101; // 这个日期不符，需要添加进数据库
+		pvInsiderSentiment->push_back(insiderSentiment);
 
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("A");
 		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "此时尚未存入数据";
 
 		pStock->SetUpdateInsiderSentimentDB(true);
 		pStock->SetInsiderSentimentUpdateDate(20210101);
-		pStock->UpdateInsiderSentiment(vInsiderSentiment);
+		pStock->UpdateInsiderSentiment(pvInsiderSentiment);
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderSentimentDB());
 
@@ -808,19 +802,19 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
 		CSetEconomicCalendar setEconomicCalendar;
-		const auto pEconomicCalendar = make_shared<CEconomicCalendar>();
-		vector<CEconomicCalendarPtr> vEconomicCalendar;
+		CEconomicCalendar economicCalendar;
+		vector<CEconomicCalendar> vEconomicCalendar;
 
-		pEconomicCalendar->m_strCountry = "USA";
-		pEconomicCalendar->m_strTime = "20200101";
-		pEconomicCalendar->m_strEvent = "abc";
-		pEconomicCalendar->m_dActual = 1.0;
-		pEconomicCalendar->m_dEstimate = 2.0;
-		pEconomicCalendar->m_dPrev = 3.0;
-		pEconomicCalendar->m_strImpact = "s";
-		pEconomicCalendar->m_strUnit = "USD";
+		economicCalendar.m_strCountry = "USA";
+		economicCalendar.m_strTime = "20200101";
+		economicCalendar.m_strEvent = "abc";
+		economicCalendar.m_dActual = 1.0;
+		economicCalendar.m_dEstimate = 2.0;
+		economicCalendar.m_dPrev = 3.0;
+		economicCalendar.m_strImpact = "s";
+		economicCalendar.m_strUnit = "USD";
 
-		vEconomicCalendar.push_back(pEconomicCalendar);
+		vEconomicCalendar.push_back(economicCalendar);
 
 		EXPECT_TRUE(gl_dataContainerFinnhubEconomicCalendar.Update(vEconomicCalendar));
 		EXPECT_TRUE(gl_dataContainerFinnhubEconomicCalendar.UpdateDB());

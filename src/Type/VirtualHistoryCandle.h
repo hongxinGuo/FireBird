@@ -13,7 +13,12 @@
 
 class CVirtualHistoryCandle {
 public:
+	// 生成、复制、移动构造函数和赋值运算符，以及析构函数。都是浅拷贝，因为成员变量都是基本类型或者string类型。
 	CVirtualHistoryCandle() = default;
+	CVirtualHistoryCandle(const CVirtualHistoryCandle&) = default;
+	CVirtualHistoryCandle& operator=(const CVirtualHistoryCandle&) = default;
+	CVirtualHistoryCandle(CVirtualHistoryCandle&&) = default;
+	CVirtualHistoryCandle& operator=(CVirtualHistoryCandle&&) = default;
 	virtual ~CVirtualHistoryCandle() = default;
 
 	void SaveBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const; // 存储基本数据

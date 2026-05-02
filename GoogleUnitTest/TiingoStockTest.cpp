@@ -375,31 +375,29 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoStockTest, TestGetSetStockSplit) {
 		EXPECT_EQ(stock.GetStockSplitCount(), 0);
-		auto p = make_shared<CStockSplit>();
-		p->SetDate(20200101);
-		p->SetRatio(2.0);
+		CStockSplit p;
+		p.SetDate(20200101);
+		p.SetRatio(2.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 1);
-		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), 20200101);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 2.0);
-		p = make_shared<CStockSplit>();
-		p->SetDate(20210101);
-		p->SetRatio(3.0);
+		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), 20200101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 2.0);
+		p.SetDate(20210101);
+		p.SetRatio(3.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 2);
-		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), 20210101);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 3.0);
-		p = make_shared<CStockSplit>();
-		p->SetDate(20190101);
-		p->SetRatio(1.5);
+		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), 20210101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 3.0);
+		p.SetDate(20190101);
+		p.SetRatio(1.5);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 3);
-		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), 20190101);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 1.5);
-		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), 20200101);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 2.0);
-		EXPECT_EQ(stock.GetStockSplit(2)->GetDate(), 20210101);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2)->GetRatio(), 3.0);
+		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), 20190101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 1.5);
+		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), 20200101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 2.0);
+		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), 20210101);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2).GetRatio(), 3.0);
 	}
 
 	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {
@@ -489,17 +487,15 @@ namespace FireBirdTest {
 		stock.Add52WeekHighDate(20040101);
 		stock.SetDayLineStartDate(20200101);
 		stock.SetDayLineEndDate(20240102);
-		auto p = make_shared<CStockSplit>();
-		p->SetDate(20200101);
-		p->SetRatio(2.0);
+		CStockSplit p;
+		p.SetDate(20200101);
+		p.SetRatio(2.0);
 		stock.AddStockSplit(p);
-		p = make_shared<CStockSplit>();
-		p->SetDate(20210101);
-		p->SetRatio(3.0);
+		p.SetDate(20210101);
+		p.SetRatio(3.0);
 		stock.AddStockSplit(p);
-		p = make_shared<CStockSplit>();
-		p->SetDate(20190101);
-		p->SetRatio(1.5);
+		p.SetDate(20190101);
+		p.SetRatio(1.5);
 		stock.AddStockSplit(p);
 
 		setTiingoStock.Open();
@@ -539,8 +535,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());
 		EXPECT_EQ(stock.GetStockSplitCount(), stock2.GetStockSplitCount());
 		for (size_t i = 0; i < stock.GetStockSplitCount(); i++) {
-			EXPECT_EQ(stock.GetStockSplit(i)->GetDate(), stock2.GetStockSplit(i)->GetDate());
-			EXPECT_DOUBLE_EQ(stock.GetStockSplit(i)->GetRatio(), stock2.GetStockSplit(i)->GetRatio());
+			EXPECT_EQ(stock.GetStockSplit(i).GetDate(), stock2.GetStockSplit(i).GetDate());
+			EXPECT_DOUBLE_EQ(stock.GetStockSplit(i).GetRatio(), stock2.GetStockSplit(i).GetRatio());
 		}
 	}
 
@@ -823,15 +819,15 @@ namespace FireBirdTest {
 		stock.RebuildStockSplitDB();
 
 		EXPECT_EQ(stock.GetStockSplitCount(), 5);
-		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), 19870616);
-		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), 20000621);
-		EXPECT_EQ(stock.GetStockSplit(2)->GetDate(), 20050228);
-		EXPECT_EQ(stock.GetStockSplit(3)->GetDate(), 20140609);
-		EXPECT_EQ(stock.GetStockSplit(4)->GetDate(), 20200831);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 2.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 2.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2)->GetRatio(), 2.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(3)->GetRatio(), 7.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(4)->GetRatio(), 4.0);
+		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), 19870616);
+		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), 20000621);
+		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), 20050228);
+		EXPECT_EQ(stock.GetStockSplit(3).GetDate(), 20140609);
+		EXPECT_EQ(stock.GetStockSplit(4).GetDate(), 20200831);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2).GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(3).GetRatio(), 7.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(4).GetRatio(), 4.0);
 	}
 }

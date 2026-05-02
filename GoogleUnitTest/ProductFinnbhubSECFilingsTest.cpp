@@ -108,14 +108,14 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(pvSECFilings->size(), 1);
-			EXPECT_EQ(pvSECFilings->at(0)->m_strSymbol, "AAPL");
-			EXPECT_EQ(pvSECFilings->at(0)->m_strAccessNumber, "0000320193-24-000056");
-			EXPECT_EQ(pvSECFilings->at(0)->m_iCIK, 320193);
-			EXPECT_EQ(pvSECFilings->at(0)->m_strForm, "4");
-			EXPECT_EQ(pvSECFilings->at(0)->m_iAcceptedDate, 1713205871 - gl_pWorldMarket->GetTimeZone());
-			EXPECT_EQ(pvSECFilings->at(0)->m_iFiledDate, 1713139200 - gl_pWorldMarket->GetTimeZone());
-			EXPECT_EQ(pvSECFilings->at(0)->m_strFilingURL, "https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html");
-			EXPECT_EQ(pvSECFilings->at(0)->m_strReportURL, "https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml");
+			EXPECT_EQ(pvSECFilings->at(0).m_strSymbol, "AAPL");
+			EXPECT_EQ(pvSECFilings->at(0).m_strAccessNumber, "0000320193-24-000056");
+			EXPECT_EQ(pvSECFilings->at(0).m_iCIK, 320193);
+			EXPECT_EQ(pvSECFilings->at(0).m_strForm, "4");
+			EXPECT_EQ(pvSECFilings->at(0).m_iAcceptedDate, 1713205871 - gl_pWorldMarket->GetTimeZone());
+			EXPECT_EQ(pvSECFilings->at(0).m_iFiledDate, 1713139200 - gl_pWorldMarket->GetTimeZone());
+			EXPECT_EQ(pvSECFilings->at(0).m_strFilingURL, "https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html");
+			EXPECT_EQ(pvSECFilings->at(0).m_strReportURL, "https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml");
 			break;
 		default:
 			break;

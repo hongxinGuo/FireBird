@@ -30,6 +30,10 @@
 class CFinnhubCompanyNews final {
 public:
 	CFinnhubCompanyNews();
+	CFinnhubCompanyNews(const CFinnhubCompanyNews&) = default;
+	CFinnhubCompanyNews& operator=(const CFinnhubCompanyNews&) = default;
+	CFinnhubCompanyNews(CFinnhubCompanyNews&&) noexcept = default;
+	CFinnhubCompanyNews& operator=(CFinnhubCompanyNews&&) noexcept = default;
 	~CFinnhubCompanyNews() = default;
 
 	void Append(CSetCompanyNews& setCompanyNews) const;
@@ -52,4 +56,4 @@ public:
 };
 
 using CCompanyNewsPtr = shared_ptr<CFinnhubCompanyNews>;
-using CCompanyNewssPtr = shared_ptr<vector<CCompanyNewsPtr>>;
+using CCompanyNewssPtr = shared_ptr<vector<CFinnhubCompanyNews>>;

@@ -16,12 +16,12 @@ public:
 
 	bool LoadDB();
 	bool UpdateDB();
-	bool Update(const vector<CEconomicCalendarPtr>& vEconomicCalendar);
+	bool Update(const vector<CEconomicCalendar>& vEconomicCalendar);
 
 	bool IsUpdateDB() const noexcept { return m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size(); }
 
 protected:
-	vector<CEconomicCalendarPtr> m_vEconomicCalendar;
+	vector<CEconomicCalendar> m_vEconomicCalendar;
 	map<string, size_t> m_mapEconomicCalendar;
 	size_t m_lLastTotalEconomicCalendar;
 };

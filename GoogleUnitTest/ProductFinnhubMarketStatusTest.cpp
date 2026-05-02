@@ -93,8 +93,8 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确的数据
 			EXPECT_EQ(m_pvMarketStatus->size(), 1);
-			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strExchange, "US");
-			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strHoliday, "");
+			EXPECT_EQ(m_pvMarketStatus->at(0).m_strExchange, "US");
+			EXPECT_EQ(m_pvMarketStatus->at(0).m_strHoliday, "");
 			break;
 		default:
 			break;

@@ -65,8 +65,8 @@ CWorldMarket::CWorldMarket() {
 
 	CalculateTime();
 
-	m_pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
-	m_pvMarketHoliday = make_shared<vector<CMarketHolidayPtr>>();
+	m_pvMarketStatus = make_shared<vector<CMarketStatus>>();
+	m_pvMarketHoliday = make_shared<vector<CMarketHoliday>>();
 
 	Reset();
 

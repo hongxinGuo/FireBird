@@ -29,7 +29,7 @@ void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 	const CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	if (!pvInsiderSentiment->empty()) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
-		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);
+		pStock->UpdateInsiderSentiment(pvInsiderSentiment);
 		pStock->SetUpdateInsiderSentimentDB(true);
 	}
 }
@@ -64,11 +64,13 @@ void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
 //  "symbol": "TSLA"}
 //
 CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData) {
-	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
+	auto pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
+	pvInsiderSentiment->reserve(100);
+
 	nlohmannJson pt1;
 	string sError;
 	string stockSymbol;
-	CInsiderSentimentPtr pInsiderSentiment = nullptr;
+	CInsiderSentiment insiderSentiment;
 	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvInsiderSentiment;
@@ -85,25 +87,24 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	try {
 		string s;
 		for (auto it = pt1.begin(); it != pt1.end(); ++it) {
-			pInsiderSentiment = make_shared<CInsiderSentiment>();
-			pInsiderSentiment->m_strSymbol = stockSymbol;
+			insiderSentiment.m_strSymbol = stockSymbol;
 			s = jsonGetString(it, "symbol");
-			if (!s.empty()) pInsiderSentiment->m_strSymbol = s;
+			if (!s.empty()) insiderSentiment.m_strSymbol = s;
 			const long year = jsonGetLong(it, "year");
 			const long month = jsonGetLong(it, "month");
-			pInsiderSentiment->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, 1); // 日期要有效，故而使用每月的第一天
-			pInsiderSentiment->m_lChange = jsonGetLong(it, "change");
-			pInsiderSentiment->m_mspr = jsonGetDouble(it, "mspr");
-			pvInsiderSentiment->push_back(pInsiderSentiment);
+			insiderSentiment.m_lDate = XferYearMonthDayToYYYYMMDD(year, month, 1); // 日期要有效，故而使用每月的第一天
+			insiderSentiment.m_lChange = jsonGetLong(it, "change");
+			insiderSentiment.m_mspr = jsonGetDouble(it, "mspr");
+			pvInsiderSentiment->emplace_back(insiderSentiment);
 		}
 	} catch (nlohmannJson::exception& e) {
 		string str = "Finnhub Stock ";
-		str += pInsiderSentiment->m_strSymbol;
+		str += insiderSentiment.m_strSymbol;
 		str += " Insider Sentiment ";
 		ReportJSonErrorToSystemMessage(str, e.what());
 		return pvInsiderSentiment;
 	}
 	std::ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(),
-	                  [](const CInsiderSentimentPtr& p1, const CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
+	                  [](const CInsiderSentiment& p1, const CInsiderSentiment& p2) { return p1.m_lDate < p2.m_lDate; });
 	return pvInsiderSentiment;
 }

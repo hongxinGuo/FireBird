@@ -309,12 +309,6 @@
     <ClCompile Include="DayLineTest.cpp">
       <Filter>Test源文件\Type\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="GuadanTest.cpp">
-      <Filter>Test源文件\Type\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="OneDealTest.cpp">
-      <Filter>Test源文件\Type\China Market</Filter>
-    </ClCompile>
     <ClCompile Include="StockSectionTest.cpp">
       <Filter>Test源文件\Type\China Market</Filter>
     </ClCompile>

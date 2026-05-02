@@ -38,7 +38,9 @@ void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData)
 }
 
 CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {
-	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
+	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendar>>();
+	pvEconomicCalendar->reserve(1000);
+
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	nlohmannJson js;
 
@@ -48,21 +50,21 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 	try {
 		nlohmannJson js2 = jsonGetChild(js, "economicCalendar");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
-			pEconomicCalendar = make_shared<CEconomicCalendar>();
+			CEconomicCalendar economicCalendar;
 			string s = jsonGetString(it, "country");
-			if (!s.empty()) pEconomicCalendar->m_strCountry = s;
+			if (!s.empty()) economicCalendar.m_strCountry = s;
 			s = jsonGetString(it, "event");
-			pEconomicCalendar->m_strEvent = s;
+			economicCalendar.m_strEvent = s;
 			s = jsonGetString(it, "impact");
-			pEconomicCalendar->m_strImpact = s;
-			pEconomicCalendar->m_dEstimate = jsonGetDouble(it, "estimate");
-			pEconomicCalendar->m_dActual = jsonGetDouble(it, "actual");
-			pEconomicCalendar->m_dPrev = jsonGetDouble(it, "prev");
+			economicCalendar.m_strImpact = s;
+			economicCalendar.m_dEstimate = jsonGetDouble(it, "estimate");
+			economicCalendar.m_dActual = jsonGetDouble(it, "actual");
+			economicCalendar.m_dPrev = jsonGetDouble(it, "prev");
 			s = jsonGetString(it, "time");
-			pEconomicCalendar->m_strTime = s;
+			economicCalendar.m_strTime = s;
 			s = jsonGetString(it, "unit");
-			pEconomicCalendar->m_strUnit = s;
-			pvEconomicCalendar->push_back(pEconomicCalendar);
+			economicCalendar.m_strUnit = s;
+			pvEconomicCalendar->push_back(economicCalendar);
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Economic Calendar ", e.what());

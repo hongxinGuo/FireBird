@@ -364,13 +364,13 @@ void CTiingoStock::RebuildStockSplitDB() {
 		m_dataDayLine.LoadBasicDB(&setDayLine);
 		setDayLine.Close();
 	}
-	m_vStockSplit.clear();
+	m_pvStockSplit->clear();
 	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
 		if (std::abs(m_dataDayLine.GetData(index)->GetSplitFactor() - 1.0) > EPSILON) {
-			auto stockSplit = make_shared<CStockSplit>();
-			stockSplit->SetDate(m_dataDayLine.GetData(index)->GetDate());
-			stockSplit->SetRatio(m_dataDayLine.GetData(index)->GetSplitFactor());
-			m_vStockSplit.push_back(stockSplit);
+			CStockSplit stockSplit;
+			stockSplit.SetDate(m_dataDayLine.GetData(index)->GetDate());
+			stockSplit.SetRatio(m_dataDayLine.GetData(index)->GetSplitFactor());
+			m_pvStockSplit->push_back(stockSplit);
 		}
 	}
 }

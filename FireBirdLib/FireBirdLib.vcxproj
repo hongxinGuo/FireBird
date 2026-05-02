@@ -225,10 +225,8 @@
     <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
     <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.h" />
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
-    <ClInclude Include="..\src\Type\China market\Guadan.h" />
     <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
     <ClInclude Include="..\src\Type\China market\MonthLine.h" />
-    <ClInclude Include="..\src\Type\China market\OneDeal.h" />
     <ClInclude Include="..\src\Type\China market\StockSection.h" />
     <ClInclude Include="..\src\Type\China market\WebData.h" />
     <ClInclude Include="..\src\Type\China market\WebRTData.h" />
@@ -460,9 +458,7 @@
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLine.cpp" />
-    <ClCompile Include="..\src\Type\China market\Guadan.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp" />
-    <ClCompile Include="..\src\Type\China market\OneDeal.cpp" />
     <ClCompile Include="..\src\Type\China market\StockSection.cpp" />
     <ClCompile Include="..\src\Type\China market\WebData.cpp" />
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp" />
@@ -471,8 +467,8 @@
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.cpp" />
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
-    <ClCompile Include="..\src\Type\VirtualDataHistoryCandleBasic.cpp" />
-    <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp" />
+    <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.cpp" />
+    <ClCompile Include="..\src\Type\VirtualHistoryCandle.cpp" />
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\TiingoCryptoWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\TiingoForexWebSocket.cpp" />
