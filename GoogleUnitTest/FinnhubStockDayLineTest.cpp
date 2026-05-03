@@ -122,11 +122,13 @@ namespace FireBirdTest {
 		m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 2: // s项报告not ok
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			strMessage = "日线返回值不为ok";
 			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
@@ -134,36 +136,43 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3: // s项报告 no data
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 4:
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 5: // 缺乏C项，为无效数据
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 6:
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
 			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 7:
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
 			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 8:
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
 			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 9:
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
 			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
@@ -175,6 +184,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 11: // 没有s项
+			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());

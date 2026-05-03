@@ -7,10 +7,13 @@ using std::vector;
 
 class CTiingoCandleLine : public CVirtualHistoryCandle {
 public:
-	CTiingoCandleLine() = default;
+	CTiingoCandleLine();
+	CTiingoCandleLine(const CTiingoCandleLine& other) = default;
+	CTiingoCandleLine& operator=(const CTiingoCandleLine& other) = default;
+	CTiingoCandleLine(CTiingoCandleLine&& other) = default;
+	CTiingoCandleLine& operator=(CTiingoCandleLine&& other) = default;
 	~CTiingoCandleLine() override = default;
-	int GetRatio() const override; // TiingoDayLine的比率与TiingoStock相同
 };
 
 using CTiingoCandleLinePtr = shared_ptr<CTiingoCandleLine>;
-using CTiingoCandleLinesPtr = shared_ptr<vector<CTiingoCandleLinePtr>>;
+using CTiingoCandleLinesPtr = shared_ptr<vector<CTiingoCandleLine>>;

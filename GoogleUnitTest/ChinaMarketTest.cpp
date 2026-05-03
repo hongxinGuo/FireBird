@@ -1541,7 +1541,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.m_strFilter = fmt::format("[Date] ={:08Ld}", lDate).c_str();
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
-			const CDayLinePtr pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));
+			const CDayLine* pDayLine = dataChinaDayLine.GetData(i++);
 			EXPECT_TRUE(pDayLine->GetStockSymbol() == T2Utf8(setDayLineBasicInfo.m_Symbol));
 			setDayLineBasicInfo.MoveNext();
 		}
@@ -1550,14 +1550,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
-		vector<CVirtualHistoryCandlePtr> vData;
-		auto pData = make_shared<CVirtualHistoryCandle>();
-		pData->SetStockSymbol("600000.SS");
+		vector<CVirtualHistoryCandle> vData;
+		CVirtualHistoryCandle data;
+		data.SetStockSymbol("600000.SS");
 		vData.resize(2);
-		vData[0] = pData;
-		pData = make_shared<CVirtualHistoryCandle>();
-		pData->SetStockSymbol("600004.SS");
-		vData[1] = pData;
+		vData[0] = data;
+		data.SetStockSymbol("600004.SS");
+		vData[1] = data;
 
 		set<string> setStockCode;
 		gl_pChinaMarket->CreateStockCodeSet(setStockCode, &vData);

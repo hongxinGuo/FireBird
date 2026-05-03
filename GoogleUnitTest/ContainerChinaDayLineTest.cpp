@@ -35,36 +35,32 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestGetStartEndDate) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 星期三
-		pDayLine->SetHigh(10010);
-		pDayLine->SetLow(9910);
-		pDayLine->SetClose(10001);
-		pDayLine->SetLastClose(10005);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101); // 星期三
+		dayLine.SetHigh(10010);
+		dayLine.SetLow(9910);
+		dayLine.SetClose(10001);
+		dayLine.SetLastClose(10005);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102); // 星期四
-		pDayLine->SetHigh(10020);
-		pDayLine->SetLow(9920);
-		pDayLine->SetClose(10002);
-		pDayLine->SetLastClose(10001);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine.SetDate(20200102); // 星期四
+		dayLine.SetHigh(10020);
+		dayLine.SetLow(9920);
+		dayLine.SetClose(10002);
+		dayLine.SetLastClose(10001);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200103); // 星期五
-		pDayLine->SetHigh(10030);
-		pDayLine->SetLow(9930);
-		pDayLine->SetClose(10003);
-		pDayLine->SetLastClose(10002);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine.SetDate(20200103); // 星期五
+		dayLine.SetHigh(10030);
+		dayLine.SetLow(9930);
+		dayLine.SetClose(10003);
+		dayLine.SetLastClose(10002);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
 		dataChinaDayLine.UpdateData(pvDayLine);
@@ -78,36 +74,32 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestHaveDayLine) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 星期三
-		pDayLine->SetHigh(10010);
-		pDayLine->SetLow(9910);
-		pDayLine->SetClose(10001);
-		pDayLine->SetLastClose(10005);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101); // 星期三
+		dayLine.SetHigh(10010);
+		dayLine.SetLow(9910);
+		dayLine.SetClose(10001);
+		dayLine.SetLastClose(10005);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102); // 星期四
-		pDayLine->SetHigh(10020);
-		pDayLine->SetLow(9920);
-		pDayLine->SetClose(10002);
-		pDayLine->SetLastClose(10001);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine.SetDate(20200102); // 星期四
+		dayLine.SetHigh(10020);
+		dayLine.SetLow(9920);
+		dayLine.SetClose(10002);
+		dayLine.SetLastClose(10001);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200103); // 星期五
-		pDayLine->SetHigh(10030);
-		pDayLine->SetLow(9930);
-		pDayLine->SetClose(10003);
-		pDayLine->SetLastClose(10002);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine.SetDate(20200103); // 星期五
+		dayLine.SetHigh(10030);
+		dayLine.SetLow(9930);
+		dayLine.SetClose(10003);
+		dayLine.SetLastClose(10002);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
 		dataChinaDayLine.UpdateData(pvDayLine);
@@ -124,80 +116,76 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestGetDayLine) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 星期三
-		pDayLine->SetHigh(10010);
-		pDayLine->SetLow(9910);
-		pDayLine->SetClose(10001);
-		pDayLine->SetLastClose(10005);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101); // 星期三
+		dayLine.SetHigh(10010);
+		dayLine.SetLow(9910);
+		dayLine.SetClose(10001);
+		dayLine.SetLastClose(10005);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102); // 星期四
-		pDayLine->SetHigh(10020);
-		pDayLine->SetLow(9920);
-		pDayLine->SetClose(10002);
-		pDayLine->SetLastClose(10001);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200102); // 星期四
+		dayLine.SetHigh(10020);
+		dayLine.SetLow(9920);
+		dayLine.SetClose(10002);
+		dayLine.SetLastClose(10001);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200103); // 星期五
-		pDayLine->SetHigh(10030);
-		pDayLine->SetLow(9930);
-		pDayLine->SetClose(10003);
-		pDayLine->SetLastClose(10002);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200103); // 星期五
+		dayLine.SetHigh(10030);
+		dayLine.SetLow(9930);
+		dayLine.SetClose(10003);
+		dayLine.SetLastClose(10002);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
-		auto dayLine = dataChinaDayLine.GetCandle(20200101);
-		EXPECT_TRUE(dayLine->GetDate() == 20200101);
+		auto dayLine2 = dataChinaDayLine.GetCandle(20200101);
+		EXPECT_TRUE(dayLine2->GetDate() == 20200101);
 
-		dayLine = dataChinaDayLine.GetCandle(20200104);
-		EXPECT_TRUE(dayLine == nullptr);
+		dayLine2 = dataChinaDayLine.GetCandle(20200104);
+		EXPECT_TRUE(dayLine2 == nullptr);
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestUpdateData1) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 星期三
-		pDayLine->SetHigh(10010);
-		pDayLine->SetLow(9910);
-		pDayLine->SetClose(10001);
-		pDayLine->SetLastClose(10005);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101); // 星期三
+		dayLine.SetHigh(10010);
+		dayLine.SetLow(9910);
+		dayLine.SetClose(10001);
+		dayLine.SetLastClose(10005);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102); // 星期四
-		pDayLine->SetHigh(10020);
-		pDayLine->SetLow(9920);
-		pDayLine->SetClose(10002);
-		pDayLine->SetLastClose(10001);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200102); // 星期四
+		dayLine.SetHigh(10020);
+		dayLine.SetLow(9920);
+		dayLine.SetClose(10002);
+		dayLine.SetLastClose(10001);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200103); // 星期五
-		pDayLine->SetHigh(10030);
-		pDayLine->SetLow(9930);
-		pDayLine->SetClose(10003);
-		pDayLine->SetLastClose(10002);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200103); // 星期五
+		dayLine.SetHigh(10030);
+		dayLine.SetLow(9930);
+		dayLine.SetClose(10003);
+		dayLine.SetLastClose(10002);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
 
@@ -212,156 +200,148 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		long lCurrentDayLinePos = 0;
 
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 星期三
-		pDayLine->SetHigh(10010);
-		pDayLine->SetLow(9910);
-		pDayLine->SetClose(10001);
-		pDayLine->SetLastClose(10000); // 第一个数据为0
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101); // 星期三
+		dayLine.SetHigh(10010);
+		dayLine.SetLow(9910);
+		dayLine.SetClose(10001);
+		dayLine.SetLastClose(10000); // 第一个数据为0
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102); // 星期四
-		pDayLine->SetHigh(10020);
-		pDayLine->SetLow(9920);
-		pDayLine->SetClose(10002);
-		pDayLine->SetLastClose(10001);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200102); // 星期四
+		dayLine.SetHigh(10020);
+		dayLine.SetLow(9920);
+		dayLine.SetClose(10002);
+		dayLine.SetLastClose(10001);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200103); // 星期五
-		pDayLine->SetHigh(10030);
-		pDayLine->SetLow(9930);
-		pDayLine->SetClose(10003);
-		pDayLine->SetLastClose(10002);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200103); // 星期五
+		dayLine.SetHigh(10030);
+		dayLine.SetLow(9930);
+		dayLine.SetClose(10003);
+		dayLine.SetLastClose(10002);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200106); // 星期一
-		pDayLine->SetHigh(10040);
-		pDayLine->SetLow(9940);
-		pDayLine->SetClose(10004);
-		pDayLine->SetLastClose(10003);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		dayLine = CDayLine();
+		dayLine.SetDate(20200106); // 星期一
+		dayLine.SetHigh(10040);
+		dayLine.SetLow(9940);
+		dayLine.SetClose(10004);
+		dayLine.SetLastClose(10003);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
 
-		pDayLine->SetDate(20200107); // 星期二
-		pDayLine->SetHigh(10050);
-		pDayLine->SetLow(9950);
-		pDayLine->SetClose(10005);
-		pDayLine->SetLastClose(10004);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine.SetDate(20200107); // 星期二
+		dayLine.SetHigh(10050);
+		dayLine.SetLow(9950);
+		dayLine.SetClose(10005);
+		dayLine.SetLastClose(10004);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
 		dataChinaDayLine.UpdateData(pvDayLine);
-		CWeekLinePtr pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
+		CWeekLine weekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
-		EXPECT_THAT(pWeekLine->GetDate(), 20191230) << "本周一";
-		EXPECT_THAT(pWeekLine->GetClose(), 10003);
-		EXPECT_THAT(pWeekLine->GetLastClose(), 10000);
-		EXPECT_THAT(pWeekLine->GetHigh(), 10030);
-		EXPECT_THAT(pWeekLine->GetLow(), 9910);
-
-		pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
+		EXPECT_THAT(weekLine.GetDate(), 20191230) << "本周一";
+		EXPECT_THAT(weekLine.GetClose(), 10003);
+		EXPECT_THAT(weekLine.GetLastClose(), 10000);
+		EXPECT_THAT(weekLine.GetHigh(), 10030);
+		EXPECT_THAT(weekLine.GetLow(), 9910);
+		weekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 5);
-		EXPECT_THAT(pWeekLine->GetDate(), 20200106) << "本周一";
-		EXPECT_THAT(pWeekLine->GetClose(), 10005);
-		EXPECT_THAT(pWeekLine->GetLastClose(), 10003);
-		EXPECT_THAT(pWeekLine->GetHigh(), 10050);
-		EXPECT_THAT(pWeekLine->GetLow(), 9940);
+		EXPECT_THAT(weekLine.GetDate(), 20200106) << "本周一";
+		EXPECT_THAT(weekLine.GetClose(), 10005);
+		EXPECT_THAT(weekLine.GetLastClose(), 10003);
+		EXPECT_THAT(weekLine.GetHigh(), 10050);
+		EXPECT_THAT(weekLine.GetLow(), 9940);
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestBuildWeekLine) {
-		vector<CWeekLinePtr> vWeekLine;
+		vector<CWeekLine> vWeekLine;
 		CContainerChinaDayLine dataChinaDayLine;
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 星期三
-		pDayLine->SetHigh(10010);
-		pDayLine->SetLow(9910);
-		pDayLine->SetClose(10001);
-		pDayLine->SetLastClose(10000);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101); // 星期三
+		dayLine.SetHigh(10010);
+		dayLine.SetLow(9910);
+		dayLine.SetClose(10001);
+		dayLine.SetLastClose(10000);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102); // 星期四
-		pDayLine->SetHigh(10020);
-		pDayLine->SetLow(9920);
-		pDayLine->SetClose(10002);
-		pDayLine->SetLastClose(10001);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200102); // 星期四
+		dayLine.SetHigh(10020);
+		dayLine.SetLow(9920);
+		dayLine.SetClose(10002);
+		dayLine.SetLastClose(10001);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200103); // 星期五
-		pDayLine->SetHigh(10030);
-		pDayLine->SetLow(9930);
-		pDayLine->SetClose(10003);
-		pDayLine->SetLastClose(10002);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine = CDayLine();
+		dayLine.SetDate(20200103); // 星期五
+		dayLine.SetHigh(10030);
+		dayLine.SetLow(9930);
+		dayLine.SetClose(10003);
+		dayLine.SetLastClose(10002);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200106); // 星期一
-		pDayLine->SetHigh(10040);
-		pDayLine->SetLow(9940);
-		pDayLine->SetClose(10004);
-		pDayLine->SetLastClose(10003);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		dayLine = CDayLine();
+		dayLine.SetDate(20200106); // 星期一
+		dayLine.SetHigh(10040);
+		dayLine.SetLow(9940);
+		dayLine.SetClose(10004);
+		dayLine.SetLastClose(10003);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
 
-		pDayLine->SetDate(20200107); // 星期二
-		pDayLine->SetHigh(10050);
-		pDayLine->SetLow(9950);
-		pDayLine->SetClose(10005);
-		pDayLine->SetLastClose(10004);
-		pDayLine->SetVolume(10000);
-		pvDayLine->push_back(pDayLine);
+		dayLine.SetDate(20200107); // 星期二
+		dayLine.SetHigh(10050);
+		dayLine.SetLow(9950);
+		dayLine.SetClose(10005);
+		dayLine.SetLastClose(10004);
+		dayLine.SetVolume(10000);
+		pvDayLine->push_back(dayLine);
 
 		dataChinaDayLine.UpdateData(pvDayLine);
 		dataChinaDayLine.BuildWeekLine(vWeekLine);
 
 		EXPECT_THAT(vWeekLine.size(), 2);
-		EXPECT_THAT(vWeekLine.at(0)->GetDate(), 20191230) << "本周一";
-		EXPECT_THAT(vWeekLine.at(0)->GetClose(), 10003);
-		EXPECT_THAT(vWeekLine.at(0)->GetLastClose(), 10000);
-		EXPECT_THAT(vWeekLine.at(0)->GetHigh(), 10030);
-		EXPECT_THAT(vWeekLine.at(0)->GetLow(), 9910);
-
-		EXPECT_THAT(vWeekLine.at(1)->GetDate(), 20200106) << "本周一";
-		EXPECT_THAT(vWeekLine.at(1)->GetClose(), 10005);
-		EXPECT_THAT(vWeekLine.at(1)->GetLastClose(), 10003);
-		EXPECT_THAT(vWeekLine.at(1)->GetHigh(), 10050);
-		EXPECT_THAT(vWeekLine.at(1)->GetLow(), 9940);
+		EXPECT_THAT(vWeekLine.at(0).GetDate(), 20191230) << "本周一";
+		EXPECT_THAT(vWeekLine.at(0).GetClose(), 10003);
+		EXPECT_THAT(vWeekLine.at(0).GetLastClose(), 10000);
+		EXPECT_THAT(vWeekLine.at(0).GetHigh(), 10030);
+		EXPECT_THAT(vWeekLine.at(0).GetLow(), 9910);
+		EXPECT_THAT(vWeekLine.at(1).GetDate(), 20200106) << "本周一";
+		EXPECT_THAT(vWeekLine.at(1).GetClose(), 10005);
+		EXPECT_THAT(vWeekLine.at(1).GetLastClose(), 10003);
+		EXPECT_THAT(vWeekLine.at(1).GetHigh(), 10050);
+		EXPECT_THAT(vWeekLine.at(1).GetLow(), 9940);
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestSaveDB) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		CContainerChinaDayLine dataChinaDayLine;
 
-		const auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面
-		pDayLine->SetStockSymbol("000001.SZ");
-		pDayLine->SetClose(100);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面
+		dayLine.SetStockSymbol("000001.SZ");
+		dayLine.SetClose(100);
+		pvDayLine->push_back(dayLine);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
 		CSetChinaMarketDayLineInfo setDayLineBasic;

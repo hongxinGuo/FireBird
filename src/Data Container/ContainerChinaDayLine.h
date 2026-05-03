@@ -5,7 +5,7 @@
 
 class CContainerChinaDayLine : public CVirtualDataHistoryCandle {
 public:
-	CContainerChinaDayLine() = default;
+	CContainerChinaDayLine();
 	CContainerChinaDayLine(const CContainerChinaDayLine& other) = delete;
 	CContainerChinaDayLine(CContainerChinaDayLine&& other) noexcept = delete;
 	CContainerChinaDayLine& operator=(const CContainerChinaDayLine& other) = delete;
@@ -15,10 +15,13 @@ public:
 	bool SaveDB(const string& strStockSymbol) final;
 	bool LoadDB(const string& strStockSymbol) final;
 
-	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos) const;
+	CDayLine* GetData(const size_t lIndex) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
+	CDayLine* GetDayLine(long lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+
+	CWeekLine CreateNewWeekLine(long& lCurrentDayLinePos);
 
 	// 特有函数
-	bool BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) const;
+	bool BuildWeekLine(vector<CWeekLine>& vWeekLine);
 };
 
 using CContainerChinaDayLinePtr = shared_ptr<CContainerChinaDayLine>;

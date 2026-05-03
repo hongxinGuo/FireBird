@@ -717,29 +717,24 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestSaveDayLine) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		CSetFinnhubStockDayLine setDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20200101); // 这个日期早于数据库中的最早日期，需要添加进数据库
-		pDayLine->SetClose(10010);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210101); // 这个日期为新日期，需要添加进数据库
-		pDayLine->SetClose(12345);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
-		pDayLine->SetClose(10020);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210123); // 这个日期为新日期，需要添加进数据库
-		pDayLine->SetClose(10030);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(19990101); // 这个日期早于数据库中的最早日期，需要添加进数据库
+		dayLine.SetClose(10010);
+		pvDayLine->push_back(dayLine);
+		dayLine.Reset();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210101); // 这个日期为新日期，需要添加进数据库
+		dayLine.SetClose(12345);
+		pvDayLine->push_back(dayLine);
+		dayLine.Reset();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210123); // 这个日期为新日期，需要添加进数据库
+		dayLine.SetClose(10030);
+		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
@@ -751,7 +746,7 @@ namespace FireBirdTest {
 		setDayLine.m_strSort = "[Date]";
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(setDayLine.m_Date == 20200101);
+		EXPECT_TRUE(setDayLine.m_Date == 19990101);
 		EXPECT_STREQ(setDayLine.m_Close, _T("10.010"));
 		setDayLine.Delete();
 		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
@@ -780,33 +775,33 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB3) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		CSetFinnhubStockDayLine setDayLine;
 
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(true); // 需要更新
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20200101); // 这个需要添加进数据库
-		pDayLine->SetClose(10010);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210101); // 这个需要添加进数据库
-		pDayLine->SetClose(12345);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
-		pDayLine->SetClose(10020);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210123); // 这个需要添加进数据库
-		pDayLine->SetClose(10030);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20200101); // 这个需要添加进数据库
+		dayLine.SetClose(10010);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210101); // 这个需要添加进数据库
+		dayLine.SetClose(12345);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
+		dayLine.SetClose(10020);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210123); // 这个需要添加进数据库
+		dayLine.SetClose(10030);
+		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
 		stock.SetDayLineStartDate(20200101); // 日线开始日期不晚于当前日线数据日期
@@ -990,29 +985,29 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLine) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		CSetFinnhubStockDayLine setDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210101); // 这个需要添加进数据库
-		pDayLine->SetClose(10010);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210102); // 这个需要添加进数据库
-		pDayLine->SetClose(12345);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
-		pDayLine->SetClose(10020);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210123); // 这个需要添加进数据库
-		pDayLine->SetClose(10030);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210101); // 这个需要添加进数据库
+		dayLine.SetClose(10010);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210102); // 这个需要添加进数据库
+		dayLine.SetClose(12345);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
+		dayLine.SetClose(10020);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210123); // 这个需要添加进数据库
+		dayLine.SetClose(10030);
+		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
@@ -1020,7 +1015,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
-		pDayLine = stock.GetDayLine(1);
+		CDayLine* pDayLine = stock.GetDayLine(1);
 		EXPECT_EQ(pDayLine->GetDate(), 20210102);
 
 		stock.SetUpdateProfileDB(false);
@@ -1036,29 +1031,29 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineStartEndDate) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		CSetFinnhubStockDayLine setDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210101); // 这个需要添加进数据库
-		pDayLine->SetClose(10010);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210102); // 这个需要添加进数据库
-		pDayLine->SetClose(12345);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
-		pDayLine->SetClose(10020);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210123); // 这个需要添加进数据库
-		pDayLine->SetClose(10030);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210101); // 这个需要添加进数据库
+		dayLine.SetClose(10010);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210102); // 这个需要添加进数据库
+		dayLine.SetClose(12345);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
+		dayLine.SetClose(10020);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210123); // 这个需要添加进数据库
+		dayLine.SetClose(10030);
+		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
@@ -1207,32 +1202,32 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestHaveNewDayLineData) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		CSetFinnhubStockDayLine setDayLine;
 
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 		EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210101); // 这个需要添加进数据库
-		pDayLine->SetClose(10010);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210102); // 这个需要添加进数据库
-		pDayLine->SetClose(12345);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
-		pDayLine->SetClose(10020);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetDate(20210123); // 这个需要添加进数据库
-		pDayLine->SetClose(10030);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210101); // 这个需要添加进数据库
+		dayLine.SetClose(10010);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210102); // 这个需要添加进数据库
+		dayLine.SetClose(12345);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
+		dayLine.SetClose(10020);
+		pvDayLine->push_back(dayLine);
+		dayLine = CDayLine();
+		dayLine.SetStockSymbol("A");
+		dayLine.SetDate(20210123); // 这个需要添加进数据库
+		dayLine.SetClose(10030);
+		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
 		stock.SetDayLineEndDate(20210107);
@@ -1240,7 +1235,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
-		pDayLine = stock.GetDayLine(1);
+		CDayLine* pDayLine = stock.GetDayLine(1);
 		EXPECT_EQ(pDayLine->GetDate(), 20210102);
 
 		stock.SetUpdateProfileDB(false);

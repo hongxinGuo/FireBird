@@ -57,10 +57,10 @@ public:
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	CDayLinePtr GetDayLine(const size_t lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	CDayLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 
-	bool HaveNewDayLineData() const;
+	bool HaveNewDayLineData(); //todo 移至VirtualStock中，合并其他股票类型的同名函数
 
 	bool IsUpdateCompanyProfile() const noexcept { return m_fUpdateCompanyProfile; }
 	void SetUpdateCompanyProfile(const bool fFlag) noexcept { m_fUpdateCompanyProfile = fFlag; }
@@ -177,7 +177,7 @@ public:
 	void SetFinnhubIndustry(const string& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	nlohmannJson GetPeer() { return m_jsonPeer; }
 	void SetPeer(const nlohmannJson& jsonPeer) { m_jsonPeer = jsonPeer; }
-	void SetSECFilings(const CSECFilingsPtr& pv) noexcept { m_pvSECFilings = pv; }
+	void SetSECFilings(const CSECFilingsPtr& pv);
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
 	long GetCompanyNewsUpdateDate();
@@ -214,7 +214,7 @@ public:
 	CInsiderSentimentsPtr m_pvInsiderSentiment{ nullptr };
 	long m_lInsiderSentimentStartDate{ 19800101 };
 
-	CSECFilingsPtr m_pvSECFilings{ nullptr };
+	vector<CSECFiling> m_vSECFilings;
 	bool m_fUpdateSECFilings{ true };
 	atomic_bool m_fUpdateSECFilingsDB{ false };
 

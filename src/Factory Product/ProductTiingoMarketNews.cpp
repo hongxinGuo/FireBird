@@ -32,6 +32,7 @@ void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoMarketNews = ParseTiingoMarketNews(pWebData);
 	if (!pvTiingoMarketNews->empty()) {
 		for (const auto& pMarketNews : *pvTiingoMarketNews) {
+			// do nothing
 		}
 	}
 }
@@ -64,15 +65,17 @@ void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const CWebDataPtr& pWebData) {
-	auto pvTiingoMarketNews = make_shared<vector<CTiingoMarketNewsPtr>>();
-	CTiingoMarketNewsPtr pMarketNews = nullptr;
+CTiingoMarketNewssPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const CWebDataPtr& pWebData) {
+	auto pvTiingoMarketNews = make_shared<vector<CTiingoMarketNews>>();
+	pvTiingoMarketNews->reserve(1000);
+
 	string s1;
 	int year, month, day, hour, minute, second;
 	float f;
 	if (!IsValidData(pWebData)) return pvTiingoMarketNews;
 
 	try {
+		CTiingoMarketNews marketNews;
 		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
@@ -81,37 +84,36 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 		int iCount = 0;
 		for (auto item : doc) {
 			auto itemValue = item.value();
-			pMarketNews = make_shared<CTiingoMarketNews>();
 			s1 = simdjsonGetStringView(itemValue, "source");
-			pMarketNews->m_strSource = s1;
+			marketNews.m_strSource = s1;
 			s1 = simdjsonGetStringView(itemValue, "crawlDate");
 			sscanf_s(s1.c_str(), "%04i-%02i-%02iT%02i:%02i:%02i.%fZ", &year, &month, &day, &hour, &minute, &second, &f);
-			pMarketNews->m_llCrawlDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
+			marketNews.m_llCrawlDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 			s1 = simdjsonGetStringView(itemValue, "description");
-			pMarketNews->m_strDescription = s1;
+			marketNews.m_strDescription = s1;
 			s1 = simdjsonGetStringView(itemValue, "url");
-			pMarketNews->m_strUrl = s1;
+			marketNews.m_strUrl = s1;
 			long l = simdjsonGetInt64(itemValue, "id");
-			pMarketNews->m_lId = l;
+			marketNews.m_lId = l;
 			s1 = simdjsonGetStringView(itemValue, "title");
-			pMarketNews->m_strTitle = s1;
+			marketNews.m_strTitle = s1;
 			s1 = simdjsonGetStringView(itemValue, "publishedDate");
 			sscanf_s(s1.c_str(), "%04i-%02i-%02iT%02i:%02i:%02iZ", &year, &month, &day, &hour, &minute, &second);
-			pMarketNews->m_LLPublishDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
+			marketNews.m_LLPublishDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 
 			//auto jArray = simdjsonGetArray(itemValue, "tickers");
 			for (auto value : itemValue["tickers"]) {
 				auto s2 = value.get_string().value();
 				string s4(s2.data(), s2.length());
-				pMarketNews->m_strTickers = s4;
+				marketNews.m_strTickers = s4;
 				break; // 只存储第一个证券代码
 			}
 			auto array = simdjsonGetArray(itemValue, "tags");
 			auto s = array.raw_json().value();
 			string sTemp(s.data(), s.length());
-			pMarketNews->m_strTags = sTemp;
+			marketNews.m_strTags = sTemp;
 
-			pvTiingoMarketNews->push_back(pMarketNews);
+			pvTiingoMarketNews->push_back(marketNews);
 			iCount++;
 		}
 	} catch (simdjson_error& error) {

@@ -5,7 +5,7 @@
 
 class CContainerChinaWeekLine : public CVirtualDataHistoryCandle {
 public:
-	CContainerChinaWeekLine() = default;
+	CContainerChinaWeekLine();
 	CContainerChinaWeekLine(const CContainerChinaWeekLine& other) = delete;
 	CContainerChinaWeekLine(CContainerChinaWeekLine&& other) noexcept = delete;
 	CContainerChinaWeekLine& operator=(const CContainerChinaWeekLine& other) = delete;
@@ -18,10 +18,13 @@ public:
 	void SaveCurrentWeekLine() const;
 	bool LoadCurrentWeekLine();
 
-	void UpdateData(const vector<CWeekLinePtr>& vTempWeekLine);
-	void UpdateData(const CVirtualHistoryCandlePtr& pHistoryCandleExtend) const;
+	void UpdateData(const vector<CWeekLine>& vTempWeekLine);
+	void UpdateData(const CVirtualHistoryCandle* pHistoryCandle);
 
-	void StoreVectorData(const vector<CWeekLinePtr>& vWeekLine);
+	void StoreVectorData(const vector<CWeekLine>& vWeekLine);
+
+	CWeekLine* GetData(const size_t lIndex) { return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
+	CWeekLine* GetWeekLine(long lDate) { return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 };
 
 using CContainerChinaWeekLinePtr = shared_ptr<CContainerChinaWeekLine>;

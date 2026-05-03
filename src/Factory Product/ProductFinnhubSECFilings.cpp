@@ -63,7 +63,7 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
 	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFiling>>();
-	pvSECFilings->reserve(100);
+	pvSECFilings->reserve(1000);
 
 	string s1;
 	if (!IsValidData(pWebData)) return pvSECFilings;

@@ -97,7 +97,9 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData) {
-	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+	auto pvDayLine = make_shared<vector<CDayLine>>();
+	pvDayLine->reserve(7500); // 预留空间，避免频繁扩容。
+
 	string s;
 	nlohmannJson js;
 
@@ -115,21 +117,21 @@ CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDat
 	}
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			auto pDayLine = make_shared<CDayLine>();
+			CDayLine dayLine;
 			s = jsonGetString(it, "date");
 			long lTemp = XferToYYYYMMDD(s);
-			pDayLine->SetDate(lTemp);
+			dayLine.SetDate(lTemp);
 			double dTemp = jsonGetDouble(it, "close");
-			pDayLine->SetClose(dTemp * 1000);
+			dayLine.SetClose(dTemp * 1000);
 			dTemp = jsonGetDouble(it, "high");
-			pDayLine->SetHigh(dTemp * 1000);
+			dayLine.SetHigh(dTemp * 1000);
 			dTemp = jsonGetDouble(it, "low");
-			pDayLine->SetLow(dTemp * 1000);
+			dayLine.SetLow(dTemp * 1000);
 			dTemp = jsonGetDouble(it, "open");
-			pDayLine->SetOpen(dTemp * 1000);
+			dayLine.SetOpen(dTemp * 1000);
 			lTemp = jsonGetLong(it, "volume");
-			pDayLine->SetVolume(lTemp);
-			pvDayLine->push_back(pDayLine);
+			dayLine.SetVolume(lTemp);
+			pvDayLine->push_back(dayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();

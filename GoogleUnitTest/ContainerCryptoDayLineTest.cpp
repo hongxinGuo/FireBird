@@ -37,13 +37,13 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CDataCryptoDayLineTest, TestSaveDB) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		const CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 测试数据库中最早的日期为20200817，故此数据位于最前面
-		pDayLine->SetStockSymbol("BINANCE:USDTUAH");
-		pDayLine->SetClose(100);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101); // 测试数据库中最早的日期为20200817，故此数据位于最前面
+		dayLine.SetStockSymbol("BINANCE:USDTUAH");
+		dayLine.SetClose(100);
+		pvDayLine->push_back(dayLine);
 		m_dataCryptoDayLine.UpdateData(pvDayLine);
 
 		m_dataCryptoDayLine.SaveDB("BINANCE:USDTUAH");

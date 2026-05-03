@@ -1523,5 +1523,11 @@
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.cpp">
       <Filter>源文件\Type</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerChinaMonthLine.cpp">
+      <Filter>源文件\Data container\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\MonthLine.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

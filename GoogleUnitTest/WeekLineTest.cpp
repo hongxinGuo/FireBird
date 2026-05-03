@@ -396,98 +396,95 @@ namespace FireBirdTest {
 
 	TEST_F(CWeekLineTest, TestUpdateWeekLine1) {
 		CWeekLine weekLine;
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetTime(100100100100);
-		pDayLine->SetDate(20200202);
-		pDayLine->SetStockSymbol("600000.SS");
+		CDayLine dayLine;
+		dayLine.SetTime(100100100100);
+		dayLine.SetDate(20200202);
+		dayLine.SetStockSymbol("600000.SS");
 
-		pDayLine->SetOpen(1010);
-		pDayLine->SetClose(2020);
-		pDayLine->SetHigh(3030);
-		pDayLine->SetLow(4040);
-		pDayLine->SetLastClose(5050);
-		pDayLine->SetUpDown(static_cast<double>(pDayLine->GetClose() - pDayLine->GetLastClose()) / pDayLine->GetRatio());
-		pDayLine->SetVolume(1010101010101010);
-		pDayLine->SetAmount(2020202020202020);
-		pDayLine->SetCurrentValue(303030303030303);
-		pDayLine->SetTotalValue(4040404040404040);
+		dayLine.SetOpen(1010);
+		dayLine.SetClose(2020);
+		dayLine.SetHigh(3030);
+		dayLine.SetLow(4040);
+		dayLine.SetLastClose(5050);
+		dayLine.SetUpDown(static_cast<double>(dayLine.GetClose() - dayLine.GetLastClose()) / dayLine.GetRatio());
+		dayLine.SetVolume(1010101010101010);
+		dayLine.SetAmount(2020202020202020);
+		dayLine.SetCurrentValue(303030303030303);
+		dayLine.SetTotalValue(4040404040404040);
 
-		weekLine.UpdateWeekLine(pDayLine);
+		weekLine.UpdateWeekLine(&dayLine);
 
-		EXPECT_EQ(weekLine.GetDate(), GetCurrentMonday(pDayLine->GetDate())) << "周线日期总是当周的星期一";
-		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine->GetMarketTime());
-		EXPECT_TRUE(weekLine.GetStockSymbol() == pDayLine->GetStockSymbol());
+		EXPECT_EQ(weekLine.GetDate(), GetCurrentMonday(dayLine.GetDate())) << "周线日期总是当周的星期一";
+		EXPECT_EQ(weekLine.GetMarketTime(), dayLine.GetMarketTime());
+		EXPECT_TRUE(weekLine.GetStockSymbol() == dayLine.GetStockSymbol());
+		EXPECT_EQ(weekLine.GetOpen(), dayLine.GetOpen());
+		EXPECT_EQ(weekLine.GetClose(), dayLine.GetClose());
+		EXPECT_EQ(weekLine.GetHigh(), dayLine.GetHigh());
+		EXPECT_EQ(weekLine.GetLow(), dayLine.GetLow());
+		EXPECT_EQ(weekLine.GetLastClose(), dayLine.GetLastClose());
+		EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), dayLine.GetUpDown());
 
-		EXPECT_EQ(weekLine.GetOpen(), pDayLine->GetOpen());
-		EXPECT_EQ(weekLine.GetClose(), pDayLine->GetClose());
-		EXPECT_EQ(weekLine.GetHigh(), pDayLine->GetHigh());
-		EXPECT_EQ(weekLine.GetLow(), pDayLine->GetLow());
-		EXPECT_EQ(weekLine.GetLastClose(), pDayLine->GetLastClose());
-		EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), pDayLine->GetUpDown());
-
-		EXPECT_EQ(weekLine.GetVolume(), pDayLine->GetVolume());
-		EXPECT_EQ(weekLine.GetAmount(), pDayLine->GetAmount());
-		EXPECT_EQ(weekLine.GetCurrentValue(), pDayLine->GetCurrentValue());
-		EXPECT_EQ(weekLine.GetTotalValue(), pDayLine->GetTotalValue());
+		EXPECT_EQ(weekLine.GetVolume(), dayLine.GetVolume());
+		EXPECT_EQ(weekLine.GetAmount(), dayLine.GetAmount());
+		EXPECT_EQ(weekLine.GetCurrentValue(), dayLine.GetCurrentValue());
+		EXPECT_EQ(weekLine.GetTotalValue(), dayLine.GetTotalValue());
 	}
 
 	TEST_F(CWeekLineTest, TestUpdateWeekLine2) {
 		CWeekLine weekLine;
-		auto pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
-		pDayLine1->SetTime(100100100100);
-		pDayLine1->SetDate(20200727);
-		pDayLine1->SetStockSymbol("60000.SS");
+		CDayLine dayLine1, dayLine2;
+		dayLine1.SetTime(100100100100);
+		dayLine1.SetDate(20200727);
+		dayLine1.SetStockSymbol("60000.SS");
 
-		pDayLine1->SetOpen(1010);
-		pDayLine1->SetClose(2020);
-		pDayLine1->SetHigh(3030);
-		pDayLine1->SetLow(4040);
-		pDayLine1->SetLastClose(5050);
-		pDayLine1->SetUpDown(static_cast<double>(pDayLine1->GetClose() - pDayLine1->GetLastClose()) / pDayLine1->GetRatio());
+		dayLine1.SetOpen(1010);
+		dayLine1.SetClose(2020);
+		dayLine1.SetHigh(3030);
+		dayLine1.SetLow(4040);
+		dayLine1.SetLastClose(5050);
+		dayLine1.SetUpDown(static_cast<double>(dayLine1.GetClose() - dayLine1.GetLastClose()) / dayLine1.GetRatio());
 
-		pDayLine1->SetVolume(1010101010101010);
-		pDayLine1->SetAmount(2020202020202020);
-		pDayLine1->SetCurrentValue(303030303030303);
-		pDayLine1->SetTotalValue(4040404040404040);
+		dayLine1.SetVolume(1010101010101010);
+		dayLine1.SetAmount(2020202020202020);
+		dayLine1.SetCurrentValue(303030303030303);
+		dayLine1.SetTotalValue(4040404040404040);
 
-		pDayLine2->SetTime(10010010010); // 与第一个数据pDayLine1时间不同。
-		pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
-		pDayLine2->SetStockSymbol("600000.SS"); // 与第一个数据pDayLine1不同。
+		dayLine2.SetTime(10010010010); // 与第一个数据pDayLine1时间不同。
+		dayLine2.SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
+		dayLine2.SetStockSymbol("600000.SS"); // 与第一个数据pDayLine1不同。
+		dayLine2.SetOpen(10100);
+		dayLine2.SetClose(20200);
+		dayLine2.SetHigh(30300);
+		dayLine2.SetLow(40400);
+		dayLine2.SetLastClose(50600);
+		dayLine2.SetUpDown(static_cast<double>(dayLine2.GetClose() - dayLine2.GetLastClose()) / dayLine2.GetRatio());
 
-		pDayLine2->SetOpen(10100);
-		pDayLine2->SetClose(20200);
-		pDayLine2->SetHigh(30300);
-		pDayLine2->SetLow(40400);
-		pDayLine2->SetLastClose(50600);
-		pDayLine2->SetUpDown(static_cast<double>(pDayLine2->GetClose() - pDayLine2->GetLastClose()) / pDayLine2->GetRatio());
+		dayLine2.SetVolume(1010101010101010);
+		dayLine2.SetAmount(2020202020202020);
+		dayLine2.SetCurrentValue(303030303030303);
+		dayLine2.SetTotalValue(4040404040404040);
 
-		pDayLine2->SetVolume(1010101010101010);
-		pDayLine2->SetAmount(2020202020202020);
-		pDayLine2->SetCurrentValue(303030303030303);
-		pDayLine2->SetTotalValue(4040404040404040);
+		weekLine.UpdateWeekLine(&dayLine1);
+		weekLine.UpdateWeekLine(&dayLine2);
 
-		weekLine.UpdateWeekLine(pDayLine1);
-		weekLine.UpdateWeekLine(pDayLine2);
+		EXPECT_EQ(weekLine.GetDate(), dayLine1.GetDate()) << "使用第一个数据的日期";
+		EXPECT_NE(weekLine.GetDate(), dayLine2.GetDate()) << "使用第一个数据的日期";
+		EXPECT_EQ(weekLine.GetMarketTime(), dayLine1.GetMarketTime()) << "使用第一个数据的时间";
+		EXPECT_NE(weekLine.GetMarketTime(), dayLine2.GetMarketTime()) << "使用第一个数据的时间";
+		EXPECT_TRUE(weekLine.GetStockSymbol() == dayLine1.GetStockSymbol()) << "股票代码不为空时，不更改";
+		EXPECT_FALSE(weekLine.GetStockSymbol() == dayLine2.GetStockSymbol()) << "股票代码不为空时，不更改";
 
-		EXPECT_EQ(weekLine.GetDate(), pDayLine1->GetDate()) << "使用第一个数据的日期";
-		EXPECT_NE(weekLine.GetDate(), pDayLine2->GetDate()) << "使用第一个数据的日期";
-		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine1->GetMarketTime()) << "使用第一个数据的时间";
-		EXPECT_NE(weekLine.GetMarketTime(), pDayLine2->GetMarketTime()) << "使用第一个数据的时间";
-		EXPECT_TRUE(weekLine.GetStockSymbol() == pDayLine1->GetStockSymbol()) << "股票代码不为空时，不更改";
-		EXPECT_FALSE(weekLine.GetStockSymbol() == pDayLine2->GetStockSymbol()) << "股票代码不为空时，不更改";
-
-		EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());
-		EXPECT_NE(weekLine.GetOpen(), pDayLine2->GetOpen());
-		EXPECT_EQ(weekLine.GetClose(), pDayLine2->GetClose());
-		EXPECT_EQ(weekLine.GetHigh(), pDayLine1->GetHigh() > pDayLine2->GetHigh() ? pDayLine1->GetHigh() : pDayLine2->GetHigh());
-		EXPECT_EQ(weekLine.GetLow(), pDayLine1->GetLow() < pDayLine2->GetLow() ? pDayLine1->GetLow() : pDayLine2->GetLow());
-		EXPECT_EQ(weekLine.GetLastClose(), pDayLine1->GetLastClose());
-		EXPECT_NE(weekLine.GetLastClose(), pDayLine2->GetLastClose());
-		EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), static_cast<double>(pDayLine2->GetClose() - pDayLine1->GetLastClose()) / pDayLine2->GetRatio());
-
-		EXPECT_EQ(weekLine.GetVolume(), pDayLine1->GetVolume() + pDayLine2->GetVolume());
-		EXPECT_EQ(weekLine.GetAmount(), pDayLine1->GetAmount() + pDayLine2->GetAmount());
-		EXPECT_EQ(weekLine.GetCurrentValue(), pDayLine2->GetCurrentValue());
-		EXPECT_EQ(weekLine.GetTotalValue(), pDayLine2->GetTotalValue());
+		EXPECT_EQ(weekLine.GetOpen(), dayLine1.GetOpen());
+		EXPECT_NE(weekLine.GetOpen(), dayLine2.GetOpen());
+		EXPECT_EQ(weekLine.GetClose(), dayLine2.GetClose());
+		EXPECT_EQ(weekLine.GetHigh(), dayLine1.GetHigh() > dayLine2.GetHigh() ? dayLine1.GetHigh() : dayLine2.GetHigh());
+		EXPECT_EQ(weekLine.GetLow(), dayLine1.GetLow() < dayLine2.GetLow() ? dayLine1.GetLow() : dayLine2.GetLow());
+		EXPECT_EQ(weekLine.GetLastClose(), dayLine1.GetLastClose());
+		EXPECT_NE(weekLine.GetLastClose(), dayLine2.GetLastClose());
+		EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), static_cast<double>(dayLine2.GetClose() - dayLine1.GetLastClose()) / dayLine2.GetRatio());
+		EXPECT_EQ(weekLine.GetVolume(), dayLine1.GetVolume() + dayLine2.GetVolume());
+		EXPECT_EQ(weekLine.GetAmount(), dayLine1.GetAmount() + dayLine2.GetAmount());
+		EXPECT_EQ(weekLine.GetCurrentValue(), dayLine2.GetCurrentValue());
+		EXPECT_EQ(weekLine.GetTotalValue(), dayLine2.GetTotalValue());
 	}
 }

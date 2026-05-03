@@ -39,24 +39,22 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CDataTiingoStockDayLineTest, TestSaveDB) {
-		vector<CDayLinePtr> vDayLine;
-		CTiingoCandleLinesPtr dayLinesPtr = make_shared<vector<CTiingoCandleLinePtr>>();
+		vector<CDayLine> vDayLine;
+		CTiingoCandleLinesPtr dayLinesPtr = make_shared<vector<CTiingoCandleLine>>();
 
-		CTiingoCandleLinePtr pDayLine = make_shared<CTiingoCandleLine>();
-		pDayLine->SetDate(20241103); // 测试库中没有，插入
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetClose(100);
-		dayLinesPtr->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoCandleLine>();
-		pDayLine->SetDate(20241107); // 测试库中有
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetClose(100);
-		dayLinesPtr->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoCandleLine>();
-		pDayLine->SetDate(20241111); // 测试库中的数据最新日期为20241108，此日期位于其后
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetClose(100);
-		dayLinesPtr->push_back(pDayLine);
+		CTiingoCandleLine dayLine;
+		dayLine.SetDate(20241103); // 测试库中没有，插入
+		dayLine.SetStockSymbol("A");
+		dayLine.SetClose(100);
+		dayLinesPtr->push_back(dayLine);
+		dayLine.SetDate(20241107); // 测试库中有
+		dayLine.SetStockSymbol("A");
+		dayLine.SetClose(100);
+		dayLinesPtr->push_back(dayLine);
+		dayLine.SetDate(20241111); // 测试库中的数据最新日期为20241108，此日期位于其后
+		dayLine.SetStockSymbol("A");
+		dayLine.SetClose(100);
+		dayLinesPtr->push_back(dayLine);
 		m_dataTiingoStockDayLine.UpdateData(dayLinesPtr);
 
 		m_dataTiingoStockDayLine.SaveDB("A");

@@ -7,6 +7,14 @@
 
 #include "InfoReport.h"
 
+namespace {
+	CChinaStock s_stock;
+}
+
+CContainerChinaWeekLine::CContainerChinaWeekLine() {
+	m_ratio = s_stock.GetRatio();
+}
+
 bool CContainerChinaWeekLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetWeekLineInfo setWeekLineBasic;
@@ -27,7 +35,9 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 	setCurrentWeekLineInfo.m_strFilter = "[ID] = 1";
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	for (const auto& pData : m_vHistoryData) { pData->AppendBasicData(&setCurrentWeekLineInfo); }
+	for (const auto& data : m_vHistoryData) {
+		data.AppendBasicData(&setCurrentWeekLineInfo);
+	}
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 	setCurrentWeekLineInfo.Close();
 	TRACE(_T("存储了%d个当前周周线数据\n"), m_vHistoryData.size());
@@ -61,9 +71,9 @@ bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	while (!setCurrentWeekLineInfo.IsEOF()) {
-		auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadBasicData(&setCurrentWeekLineInfo);
-		Add(pWeekLine);
+		CWeekLine weekLine;
+		weekLine.LoadBasicData(&setCurrentWeekLineInfo);
+		Add(weekLine);
 		setCurrentWeekLineInfo.MoveNext();
 	}
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
@@ -72,8 +82,10 @@ bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 	return true;
 }
 
-void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLinePtr>& vWeekLine) {
-	for (const auto& pWeekLine : vWeekLine) { Add(pWeekLine); }
+void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLine>& vWeekLine) {
+	for (const auto& weekLine : vWeekLine) {
+		Add(weekLine);
+	}
 	SetDataLoaded(true);
 }
 
@@ -82,19 +94,20 @@ void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLinePtr>& vWeekL
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLine) {
+void CContainerChinaWeekLine::UpdateData(const vector<CWeekLine>& vTempWeekLine) {
 	Unload(); // 清除已载入的周线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (const auto& pWeekLine : vTempWeekLine) { Add(pWeekLine); }
+	for (const auto& pWeekLine : vTempWeekLine) {
+		Add(pWeekLine);
+	}
 	SetDataLoaded(true);
 }
 
-void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandlePtr& pHistoryCandleExtend) const {
-	for (const auto& pData : m_vHistoryData) {
-		auto str = pData->GetStockSymbol();
-		if (str == pHistoryCandleExtend->GetStockSymbol()) {
-			//
-			static_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pHistoryCandleExtend);
+void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandle* pHistoryCandle) {
+	for (size_t index = 0; index < m_vHistoryData.size(); ++index) {
+		auto str = GetData(index)->GetStockSymbol();
+		if (str == pHistoryCandle->GetStockSymbol()) {
+			GetData(index)->UpdateWeekLine(dynamic_cast<const CDayLine*>(pHistoryCandle));
 			break;
 		}
 	}

@@ -4,9 +4,9 @@
 
 class CWeekLine final : public CVirtualHistoryCandle {
 public:
-	CWeekLine() = default;
+	CWeekLine();
 
-	bool UpdateWeekLine(const CVirtualHistoryCandlePtr& pHistoryCandleExtend);
+	bool UpdateWeekLine(const CVirtualHistoryCandle* pDayLine);
 };
 
 using CWeekLinePtr = shared_ptr<CWeekLine>;

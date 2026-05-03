@@ -27,11 +27,11 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
 	pForexSymbol->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
-		for (const auto& pDayLine : *pvDayLine) {
-			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
-			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
-			const long lTemp = gl_pWorldMarket->ConvertToDate(pDayLine->GetMarketTime());
-			pDayLine->SetDate(lTemp);
+		for (auto& dayLine : *pvDayLine) {
+			dayLine.SetExchange(pForexSymbol->GetExchangeCode());
+			dayLine.SetStockSymbol(pForexSymbol->GetSymbol());
+			const long lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTime());
+			dayLine.SetDate(lTemp);
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
 		pForexSymbol->UpdateDayLine(pvDayLine);
@@ -48,9 +48,11 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebDataPtr& pWebData) {
-	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+	auto pvDayLine = make_shared<vector<CDayLine>>();
+	pvDayLine->reserve(1000); // 预先分配空间，避免频繁扩容。一般来说，外汇的日线数据不会超过1000条。
+
 	nlohmannJson js2;
-	CDayLinePtr pDayLine = nullptr;
+	CDayLine dayLine;
 	string sError;
 	nlohmannJson js;
 
@@ -78,11 +80,10 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = jsonGetLongLong(it);
-			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetTime(tTemp);
+			dayLine.SetTime(tTemp);
 			lTemp = gl_pWorldMarket->ConvertToDate(tTemp);
-			pDayLine->SetDate(lTemp);
-			pvDayLine->push_back(pDayLine);
+			dayLine.SetDate(lTemp);
+			pvDayLine->push_back(dayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Forex Candle missing 't' ", e.what());
@@ -96,36 +97,31 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetClose(dTemp * 1000);
+			pvDayLine->at(i++).SetClose(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "h");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetHigh(dTemp * 1000);
+			pvDayLine->at(i++).SetHigh(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "l");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetLow(dTemp * 1000);
+			pvDayLine->at(i++).SetLow(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "o");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetOpen(dTemp * 1000);
+			pvDayLine->at(i++).SetOpen(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "v");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			llTemp = jsonGetLongLong(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetVolume(llTemp);
+			pvDayLine->at(i++).SetVolume(llTemp);
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Forex Candle missing 'v' ", e.what());

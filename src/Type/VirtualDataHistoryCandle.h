@@ -7,6 +7,8 @@
 #pragma once
 
 #include "DayLine.h"
+#include "MonthLine.h"
+#include "TiingoCandleLine.h"
 #include "VirtualHistoryCandle.h"
 #include "VirtualSetHistoryCandle.h"
 
@@ -18,7 +20,7 @@ public:
 	virtual ~CVirtualDataHistoryCandle() = default;
 
 	void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
-	void CalculateMA(size_t length) const;
+	void CalculateMA(size_t length);
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
 	virtual bool SaveDB(const string&) {
@@ -34,15 +36,21 @@ public:
 
 	bool LoadBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle);
 
-	void UpdateData(const vector<CVirtualHistoryCandlePtr>& vTempData);
-	void UpdateData(const vector<CDayLinePtr>& vTempData);
+	void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
+	void UpdateData(const vector<CDayLine>& vTempData);
 	void UpdateData(const CDayLinesPtr& vTempDayLine);
 
+	int GetRatio() const {
+		if (m_ratio == 0)
+			ASSERT(0);
+		return m_ratio;
+	}
+
 protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol = "") const;
+	bool UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol = "");
 
 public:
-	vector<CVirtualHistoryCandlePtr>* GetContainer() noexcept { return &m_vHistoryData; }
+	vector<CVirtualHistoryCandle>* GetContainer() noexcept { return &m_vHistoryData; }
 
 	auto Size() const noexcept { return m_vHistoryData.size(); }
 	bool Empty() const noexcept { return m_vHistoryData.empty(); }
@@ -53,16 +61,16 @@ public:
 		m_fDataLoaded = false;
 		m_fBasicDataLoaded = false;
 	}
-	CVirtualHistoryCandlePtr GetData(const size_t lIndex) const { return m_vHistoryData.at(lIndex); }
-	vector<CVirtualHistoryCandlePtr>& GetDataVector() { return m_vHistoryData; }
+	CVirtualHistoryCandle* GetData(const size_t lIndex) { return &m_vHistoryData.at(lIndex); }
+	vector<CVirtualHistoryCandle>& GetDataVector() { return m_vHistoryData; }
 
-	bool Add(const CVirtualHistoryCandlePtr& pData) {
-		m_vHistoryData.push_back(pData);
-		return true;
+	void Add(CVirtualHistoryCandle data) {
+		data.SetRatio(m_ratio);
+		m_vHistoryData.push_back(data);
 	}
 
 	bool HaveDayLine(long lDate);
-	CVirtualHistoryCandlePtr GetCandle(long lDate);
+	CVirtualHistoryCandle* GetCandle(long lDate);
 
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
@@ -102,7 +110,8 @@ public:
 	void ShowLine(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, const vector<double>& vData);
 
 protected:
-	vector<CVirtualHistoryCandlePtr> m_vHistoryData;
+	int m_ratio{ 0 };
+	vector<CVirtualHistoryCandle> m_vHistoryData;
 	atomic_bool m_fDataLoaded{ false }; // 数据装载与否标识
 	bool m_fDatabaseTodayUpdated{ false }; // 数据库今日是否已更新标识
 	bool m_fBasicDataLoaded{ false };

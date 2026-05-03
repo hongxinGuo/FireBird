@@ -141,7 +141,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
 		CTiingoCandleLinesPtr pvDayLine;
-		CTiingoCandleLinePtr pDayLine;
+		CTiingoCandleLine dayLine;
 
 		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
 		switch (m_lIndex) {
@@ -171,19 +171,19 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(pvDayLine->size(), 2);
-			pDayLine = pvDayLine->at(0);
-			EXPECT_EQ(pDayLine->GetDate(), 20210311);
-			EXPECT_EQ(pDayLine->GetClose(), 121960000);
-			EXPECT_EQ(pDayLine->GetHigh(), 123210000);
-			EXPECT_EQ(pDayLine->GetLow(), 121260000);
-			EXPECT_EQ(pDayLine->GetOpen(), 122540000);
-			EXPECT_EQ(pDayLine->GetVolume(), 103026514);
-			EXPECT_DOUBLE_EQ(pDayLine->GetDividend(), 0);
-			EXPECT_DOUBLE_EQ(pDayLine->GetSplitFactor(), 1.0);
+			dayLine = pvDayLine->at(0);
+			EXPECT_EQ(dayLine.GetDate(), 20210311);
+			EXPECT_EQ(dayLine.GetClose(), 121960000);
+			EXPECT_EQ(dayLine.GetHigh(), 123210000);
+			EXPECT_EQ(dayLine.GetLow(), 121260000);
+			EXPECT_EQ(dayLine.GetOpen(), 122540000);
+			EXPECT_EQ(dayLine.GetVolume(), 103026514);
+			EXPECT_DOUBLE_EQ(dayLine.GetDividend(), 0);
+			EXPECT_DOUBLE_EQ(dayLine.GetSplitFactor(), 1.0);
 
-			pDayLine = pvDayLine->at(1);
-			EXPECT_DOUBLE_EQ(pDayLine->GetDividend(), 1.0);
-			EXPECT_DOUBLE_EQ(pDayLine->GetSplitFactor(), 3.0);
+			dayLine = pvDayLine->at(1);
+			EXPECT_DOUBLE_EQ(dayLine.GetDividend(), 1.0);
+			EXPECT_DOUBLE_EQ(dayLine.GetSplitFactor(), 3.0);
 			break;
 		case 11: // 股票没有日线数据
 			EXPECT_EQ(pvDayLine->size(), 0);

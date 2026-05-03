@@ -30,26 +30,23 @@ bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 }
 
 bool CDayLineWebData::ProcessNeteaseDayLineData() {
-	shared_ptr<CDayLine> pDayLine;
-
 	if (m_sDataBuffer.empty()) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
 	string_view svData = GetCurrentNeteaseData(); // 读过前缀
 	if (m_lCurrentPos >= m_sDataBuffer.size())return false;// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
 
-	CDayLinePtr pCurrentDayLine = nullptr;
 	while (m_lCurrentPos < m_sDataBuffer.size()) {	// 处理一条日线数据
 		svData = GetCurrentNeteaseData();
-		pCurrentDayLine = ProcessOneNeteaseDayLine(svData);
+		CDayLinePtr pCurrentDayLine = ProcessOneNeteaseDayLine(svData);
 		if (pCurrentDayLine == nullptr) {
 			TRACE(_T("%s日线数据出错\n"), Utf8ToWstring(m_strStockCode).c_str());
 			// 清除已暂存的日线数据
 			m_vTempDayLine.clear();
 			return false; // 数据出错，放弃载入
 		}
-		m_vTempDayLine.push_back(pCurrentDayLine); // 暂存于临时vector中，网易日线数据的时间顺序是颠倒的，最新的在最前面
+		m_vTempDayLine.push_back(*pCurrentDayLine); // 暂存于临时vector中，网易日线数据的时间顺序是颠倒的，最新的在最前面
 	}
 	// 正序排列
-	std::ranges::sort(m_vTempDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetDate() < p2->GetDate(); });
+	std::ranges::sort(m_vTempDayLine, [](const CDayLine& p1, const CDayLine& p2) { return p1.GetDate() < p2.GetDate(); });
 	ReportDayLineDownLoaded();
 
 	return true;

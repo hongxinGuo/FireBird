@@ -69,14 +69,14 @@ namespace FireBirdTest {
 
 		const auto vDayLine = pTengxunDayLine->GetProcessedDayLine();
 		EXPECT_EQ(vDayLine.size(), 4) << "两个数据各有两个日期的日线数据";
-		EXPECT_EQ(vDayLine.at(0)->GetStockSymbol(), "600601.SS") << "腾讯日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
-		EXPECT_EQ(vDayLine.at(0)->GetDate(), 20230119);
-		EXPECT_EQ(vDayLine.at(0)->GetLastClose(), 0) << "第一个数据没有收盘数据";
-		EXPECT_EQ(vDayLine.at(1)->GetDate(), 20230120);
-		EXPECT_EQ(vDayLine.at(1)->GetLastClose(), 2600);
-		EXPECT_EQ(vDayLine.at(2)->GetDate(), 20230123);
-		EXPECT_EQ(vDayLine.at(2)->GetLastClose(), 2620);
-		EXPECT_EQ(vDayLine.at(3)->GetDate(), 20230124);
-		EXPECT_EQ(vDayLine.at(3)->GetLastClose(), 2650);
+		EXPECT_EQ(vDayLine.at(0).GetStockSymbol(), "600601.SS") << "腾讯日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
+		EXPECT_EQ(vDayLine.at(0).GetDate(), 20230119);
+		EXPECT_EQ(vDayLine.at(0).GetLastClose(), 0) << "第一个数据没有收盘数据";
+		EXPECT_EQ(vDayLine.at(1).GetDate(), 20230120);
+		EXPECT_EQ(vDayLine.at(1).GetLastClose(), 2600);
+		EXPECT_EQ(vDayLine.at(2).GetDate(), 20230123);
+		EXPECT_EQ(vDayLine.at(2).GetLastClose(), 2620);
+		EXPECT_EQ(vDayLine.at(3).GetDate(), 20230124);
+		EXPECT_EQ(vDayLine.at(3).GetLastClose(), 2650);
 	}
 }

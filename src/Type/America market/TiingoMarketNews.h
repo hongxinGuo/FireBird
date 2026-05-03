@@ -9,10 +9,10 @@ class CTiingoMarketNews final {
 public:
 	CTiingoMarketNews();
 	// 不允许复制和赋值。
-	CTiingoMarketNews(const CTiingoMarketNews&) = delete;
-	CTiingoMarketNews& operator=(const CTiingoMarketNews&) = delete;
-	CTiingoMarketNews(const CTiingoMarketNews&&) noexcept = delete;
-	CTiingoMarketNews& operator=(const CTiingoMarketNews&&) noexcept = delete;
+	CTiingoMarketNews(const CTiingoMarketNews&) = default;
+	CTiingoMarketNews& operator=(const CTiingoMarketNews&) = default;
+	CTiingoMarketNews(CTiingoMarketNews&&) noexcept = default;
+	CTiingoMarketNews& operator=(CTiingoMarketNews&&) noexcept = default;
 	~CTiingoMarketNews() = default;
 
 	void Reset();
@@ -35,4 +35,4 @@ public:
 };
 
 using CTiingoMarketNewsPtr = shared_ptr<CTiingoMarketNews>;
-using CVectorTiingoMarketNewsPtr = shared_ptr<vector<CTiingoMarketNewsPtr>>;
+using CTiingoMarketNewssPtr = shared_ptr<vector<CTiingoMarketNews>>;

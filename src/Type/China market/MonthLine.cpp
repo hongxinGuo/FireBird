@@ -1,11 +1,11 @@
 #include"pch.h"
 
-#include "DayLine.h"
+#include"MonthLine.h"
 
 namespace {
 	CChinaStock s_stock;
 }
 
-CDayLine::CDayLine() {
+CMonthLine::CMonthLine() {
 	m_ratio = s_stock.GetRatio();
 }

@@ -4,7 +4,7 @@
 
 class CContainerFinnhubStockDayLine final : public CVirtualDataHistoryCandle {
 public:
-	CContainerFinnhubStockDayLine() = default;
+	CContainerFinnhubStockDayLine();
 	CContainerFinnhubStockDayLine(const CContainerFinnhubStockDayLine& other) = delete;
 	CContainerFinnhubStockDayLine(CContainerFinnhubStockDayLine&& other) noexcept = delete;
 	CContainerFinnhubStockDayLine& operator=(const CContainerFinnhubStockDayLine& other) = delete;
@@ -13,6 +13,9 @@ public:
 
 	bool SaveDB(const string& strStockSymbol) override;
 	bool LoadDB(const string& strStockSymbol) override;
+
+	CDayLine* GetData(const size_t lIndex) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
+	CDayLine* GetDayLine(long lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
 	// 特有函数
 };

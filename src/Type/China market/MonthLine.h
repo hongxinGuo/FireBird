@@ -4,7 +4,7 @@
 
 class CMonthLine final : public CVirtualHistoryCandle {
 public:
-	CMonthLine() = default;
+	CMonthLine();
 };
 
 using CMonthLinePtr = shared_ptr<CMonthLine>;

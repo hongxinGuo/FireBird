@@ -5,6 +5,29 @@
 
 #include "CharSetTransfer.h"
 
+void CVirtualHistoryCandle::Reset() {
+	m_lDate = 0;
+	m_strExchange.clear();
+	m_strStockSymbol.clear();
+	m_lLastClose = 0;
+	m_lOpen = 0;
+	m_lHigh = 0;
+	m_lLow = 0;
+	m_lClose = 0;
+	m_dSplitFactor = 1.0;
+	m_dDividend = 0.0;
+	m_dUpDown = 0.0;
+	m_llVolume = 0;
+	m_llAmount = 0;
+	m_dUpDownRate = 0.0;
+	m_dChangeHandRate = 0.0;
+	m_llTotalValue = 0;
+	m_llCurrentValue = 0;
+	m_dRS = 50.0; // 默认相对于市场的强度为50，表示与市场平均水平持平。
+	m_dRSIndex = 50.0; // 默认相对于市场指数的强度为50，表示与市场指数平均水平持平。
+	m_dRSBackup = 50.0; // 默认备用数据为50，表示与市场平均水平持平。
+}
+
 void CVirtualHistoryCandle::AdjustByFactor(double dFactor) {
 	m_lLastClose /= dFactor;
 	m_lOpen /= dFactor;

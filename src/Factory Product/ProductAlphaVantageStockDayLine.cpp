@@ -36,11 +36,11 @@ void CProductAlphaVantageStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData
 	auto pvDayLine = ParseAlphaVantageStockDayLine(pWebData);
 	if (!pvDayLine->empty()) {
 		long lastClose = 0;
-		for (const auto& pDayLine2 : *pvDayLine) {
-			pDayLine2->SetExchange(pTiingoStock->GetExchangeCode());
-			pDayLine2->SetStockSymbol(pTiingoStock->GetSymbol());
-			if (lastClose != 0 && pDayLine2->GetLastClose() == 0) pDayLine2->SetLastClose(lastClose);
-			lastClose = pDayLine2->GetClose();
+		for (auto& dayLine2 : *pvDayLine) {
+			dayLine2.SetExchange(pTiingoStock->GetExchangeCode());
+			dayLine2.SetStockSymbol(pTiingoStock->GetSymbol());
+			if (lastClose != 0 && dayLine2.GetLastClose() == 0) dayLine2.SetLastClose(lastClose);
+			lastClose = dayLine2.GetClose();
 		}
 		pTiingoStock->UpdateDayLine(pvDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);
@@ -92,7 +92,8 @@ void CProductAlphaVantageStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCandleLinesPtr CProductAlphaVantageStockDayLine::ParseAlphaVantageStockDayLine(const CWebDataPtr& pWebData) {
-	auto pvDayLine = make_shared<vector<CTiingoCandleLinePtr>>();
+	auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
+	pvDayLine->reserve(7500); // AlphaVantage免费账户的日线提供100个的数据；付费账户提供20年的数据。预先分配100个空间，避免多次分配内存。
 	string s;
 	nlohmannJson js;
 
@@ -111,26 +112,26 @@ CTiingoCandleLinesPtr CProductAlphaVantageStockDayLine::ParseAlphaVantageStockDa
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			CTiingoStock stock;
-			auto pDayLine = make_shared<CTiingoCandleLine>();
+			CTiingoCandleLine dayLine;
 			//pDayLine->SetExchange("US"); // 所有的AlphaVantage证券皆为美国市场。
 			s = jsonGetString(it, "date");
 			long lTemp = XferToYYYYMMDD(s);
-			pDayLine->SetDate(lTemp);
+			dayLine.SetDate(lTemp);
 			double dTemp = jsonGetDouble(it, "close");
-			pDayLine->SetClose(dTemp * stock.GetRatio());
+			dayLine.SetClose(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, "high");
-			pDayLine->SetHigh(dTemp * stock.GetRatio());
+			dayLine.SetHigh(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, "low");
-			pDayLine->SetLow(dTemp * stock.GetRatio());
+			dayLine.SetLow(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, "open");
-			pDayLine->SetOpen(dTemp * stock.GetRatio());
+			dayLine.SetOpen(dTemp * stock.GetRatio());
 			lTemp = jsonGetLong(it, "volume");
 			dTemp = jsonGetDouble(it, "divCash");
-			pDayLine->SetDividend(dTemp);
+			dayLine.SetDividend(dTemp);
 			dTemp = jsonGetDouble(it, "splitFactor");
-			pDayLine->SetSplitFactor(dTemp);
-			pDayLine->SetVolume(lTemp);
-			pvDayLine->push_back(pDayLine);
+			dayLine.SetSplitFactor(dTemp);
+			dayLine.SetVolume(lTemp);
+			pvDayLine->push_back(dayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
@@ -138,7 +139,7 @@ CTiingoCandleLinesPtr CProductAlphaVantageStockDayLine::ParseAlphaVantageStockDa
 		ReportJSonErrorToSystemMessage("AlphaVantage Stock DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
-	std::ranges::sort(*pvDayLine, [](const CTiingoCandleLinePtr& pData1, const CTiingoCandleLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); }); // 以日期早晚顺序排列。
+	std::ranges::sort(*pvDayLine, [](const CTiingoCandleLine& pData1, const CTiingoCandleLine& pData2) { return pData1.GetDate() < pData2.GetDate(); }); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

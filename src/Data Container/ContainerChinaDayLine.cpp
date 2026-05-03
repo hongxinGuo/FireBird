@@ -7,6 +7,14 @@
 
 #include "InfoReport.h"
 
+namespace {
+	CChinaStock s_stock;
+}
+
+CContainerChinaDayLine::CContainerChinaDayLine() {
+	m_ratio = s_stock.GetRatio();
+}
+
 bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetChinaMarketDayLineInfo setDayLineBasic;
@@ -39,11 +47,11 @@ bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	return true;
 }
 
-bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) const {
+bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 	ASSERT(IsDataLoaded());
 	ASSERT(Size() > 0);
 	long lCurrentDayLinePos = 0;
-	CWeekLinePtr pWeekLine = nullptr;
+	CWeekLine pWeekLine;
 
 	vWeekLine.clear();
 	do {
@@ -54,32 +62,32 @@ bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) cons
 	return true;
 }
 
-CWeekLinePtr CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) const {
+CWeekLine CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	ASSERT(Size() > 0);
 	ASSERT(lCurrentDayLinePos < Size());
 	auto data = GetData(lCurrentDayLinePos);
 	const long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetDate());
 	const long lNewestDay = GetData(Size() - 1)->GetDate();
-	auto pWeekLine = make_shared<CWeekLine>();
+	CWeekLine weekLine;
 	if (lNextMonday < lNewestDay) {
 		// 中间数据
 		while (GetData(lCurrentDayLinePos)->GetDate() < lNextMonday) {
-			pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
+			weekLine.UpdateWeekLine(GetData(lCurrentDayLinePos++));
 		}
 	}
 	else {
 		// 最后一组数据
 		while (lCurrentDayLinePos <= (Size() - 1)) {
-			pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
+			weekLine.UpdateWeekLine(GetData(lCurrentDayLinePos++));
 		}
 	}
 
-	if (pWeekLine->GetLastClose() > 0) {
-		pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetLastClose());
+	if (weekLine.GetLastClose() > 0) {
+		weekLine.SetUpDownRate(weekLine.GetUpDown() * 100 * 1000 / weekLine.GetLastClose());
 	}
 	else {
-		pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetOpen());
+		weekLine.SetUpDownRate(weekLine.GetUpDown() * 100 * 1000 / weekLine.GetOpen());
 	}
 
-	return pWeekLine;
+	return weekLine;
 }

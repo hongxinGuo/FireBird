@@ -4,6 +4,14 @@
 #include "InfoReport.h"
 #include"SetForexDayLine.h"
 
+namespace {
+	CTiingoStock s_stock;
+}
+
+CContainerForexDayLine::CContainerForexDayLine() {
+	m_ratio = s_stock.GetRatio();
+}
+
 bool CContainerForexDayLine::SaveDB(const string& strCryptoSymbol) {
 	try {
 		CSetForexDayLine setForexDayLineBasic;

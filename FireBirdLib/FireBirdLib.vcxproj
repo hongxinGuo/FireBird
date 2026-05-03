@@ -259,6 +259,7 @@
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerChinaMonthLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoNewSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.cpp" />
@@ -459,6 +460,7 @@
     <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLine.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp" />
+    <ClCompile Include="..\src\Type\China market\MonthLine.cpp" />
     <ClCompile Include="..\src\Type\China market\StockSection.cpp" />
     <ClCompile Include="..\src\Type\China market\WebData.cpp" />
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp" />

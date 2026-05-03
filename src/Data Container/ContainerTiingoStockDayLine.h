@@ -7,7 +7,7 @@
 
 class CContainerTiingoStockDayLine : public CVirtualDataHistoryCandle {
 public:
-	CContainerTiingoStockDayLine() = default;
+	CContainerTiingoStockDayLine();
 	CContainerTiingoStockDayLine(const CContainerTiingoStockDayLine& other) = delete;
 	CContainerTiingoStockDayLine(CContainerTiingoStockDayLine&& other) noexcept = delete;
 	CContainerTiingoStockDayLine& operator=(const CContainerTiingoStockDayLine& other) = delete;
@@ -17,19 +17,19 @@ public:
 	bool SaveDB(const string& strStockSymbol) override;
 	bool LoadDB(const string& strStockSymbol) override;
 
-	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
-	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
+	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
+	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
 	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandle);
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();
 
-	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CTiingoCandleLine* GetData(const size_t lIndex) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
+	CTiingoCandleLine* GetDayLine(long lDate) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
-	bool Add(const CTiingoCandleLinePtr& pData) {
-		m_vHistoryData.push_back(pData);
-		return true;
+	void Add(CTiingoCandleLine& data) {
+		data.SetRatio(m_ratio);
+		m_vHistoryData.push_back(data);
 	}
 
 	// 特有函数

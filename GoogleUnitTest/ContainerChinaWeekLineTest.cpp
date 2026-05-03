@@ -35,30 +35,29 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData1) {
-		const auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->SetStockSymbol("600000.SS");
-		pWeekLine->SetDate(20200101);
-		pWeekLine->SetHigh(1000);
-		pWeekLine->SetLow(200);
-		auto pWeekLine2 = make_shared<CWeekLine>();
-		pWeekLine2->SetStockSymbol("600001.SS");
-		pWeekLine2->SetDate(20200201);
-		pWeekLine2->SetHigh(11000);
-		pWeekLine2->SetLow(1200);
+		CWeekLine weekLine, weekLine2;
+		weekLine.SetStockSymbol("600000.SS");
+		weekLine.SetDate(20200101);
+		weekLine.SetHigh(1000);
+		weekLine.SetLow(200);
+		weekLine2.SetStockSymbol("600001.SS");
+		weekLine2.SetDate(20200201);
+		weekLine2.SetHigh(11000);
+		weekLine2.SetLow(1200);
 
 		CContainerChinaWeekLine dataChinaWeekLine;
-		vector<CWeekLinePtr> vWeekLine;
+		vector<CWeekLine> vWeekLine;
 
-		vWeekLine.push_back(pWeekLine);
+		vWeekLine.push_back(weekLine);
 		EXPECT_EQ(dataChinaWeekLine.Size(), 0);
-		dataChinaWeekLine.Add(pWeekLine2);
+		dataChinaWeekLine.Add(static_cast<CVirtualHistoryCandle>(weekLine2));
 		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
 
 		dataChinaWeekLine.UpdateData(vWeekLine);
 
 		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
-		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
+		const auto pWeekLine2 = dataChinaWeekLine.GetData(0);
 		EXPECT_EQ(pWeekLine2->GetDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
@@ -66,57 +65,56 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData2) {
-		const auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol("600000.SS");
-		pDayLine->SetDate(20200101);
-		pDayLine->SetHigh(10000);
-		pDayLine->SetLow(100);
-		const auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->SetStockSymbol("600000.SS");
-		pWeekLine->SetHigh(1000);
-		pWeekLine->SetLow(200);
+		CDayLine dayLine;
+		dayLine.SetStockSymbol("600000.SS");
+		dayLine.SetDate(20200101);
+		dayLine.SetHigh(10000);
+		dayLine.SetLow(100);
+		CWeekLine weekLine;
+		weekLine.SetStockSymbol("600000.SS");
+		weekLine.SetHigh(1000);
+		weekLine.SetLow(200);
 
 		CContainerChinaWeekLine dataChinaWeekLine;
 
-		dataChinaWeekLine.Add(pWeekLine);
-		dataChinaWeekLine.UpdateData(pDayLine);
-		const CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
+		dataChinaWeekLine.Add(static_cast<CVirtualHistoryCandle>(weekLine));
+		dataChinaWeekLine.UpdateData(&dayLine);
+		const CWeekLine* pWeekLine2 = dataChinaWeekLine.GetData(0);
 		EXPECT_EQ(pWeekLine2->GetDate(), GetCurrentMonday(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestStoreData1) {
-		const auto pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->SetStockSymbol("600000.SS");
-		pWeekLine->SetDate(20200101);
-		pWeekLine->SetHigh(1000);
-		pWeekLine->SetLow(200);
-		auto pWeekLine2 = make_shared<CWeekLine>();
-		pWeekLine2->SetStockSymbol("600001.SS");
-		pWeekLine2->SetDate(20200201);
-		pWeekLine2->SetHigh(11000);
-		pWeekLine2->SetLow(1200);
-
+		CWeekLine weekLine;
+		weekLine.SetStockSymbol("600000.SS");
+		weekLine.SetDate(20200101);
+		weekLine.SetHigh(1000);
+		weekLine.SetLow(200);
+		CWeekLine weekLine2;
+		weekLine2.SetStockSymbol("600001.SS");
+		weekLine2.SetDate(20200201);
+		weekLine2.SetHigh(11000);
+		weekLine2.SetLow(1200);
 		CContainerChinaWeekLine dataChinaWeekLine;
-		vector<CWeekLinePtr> vWeekLine;
+		vector<CWeekLine> vWeekLine;
 
-		vWeekLine.push_back(pWeekLine);
+		vWeekLine.push_back(weekLine);
 		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
 		EXPECT_EQ(dataChinaWeekLine.Size(), 0);
-		dataChinaWeekLine.Add(pWeekLine2);
+		dataChinaWeekLine.Add(weekLine2);
 		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 
 		dataChinaWeekLine.StoreVectorData(vWeekLine);
 
 		EXPECT_EQ(dataChinaWeekLine.Size(), 2);
-		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
+		auto pWeekLine2 = dataChinaWeekLine.GetData(0);
 		EXPECT_EQ(pWeekLine2->GetDate(), 20200201);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 11000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 1200);
 		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
 
-		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(1));
+		pWeekLine2 = dataChinaWeekLine.GetData(1);
 		EXPECT_EQ(pWeekLine2->GetDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
@@ -125,18 +123,17 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveLoadCurrentWeekLine) {
 		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
-		auto pWeekLine = make_shared<CWeekLine>();
+		CWeekLine weekLine;
 		CContainerChinaWeekLine dataChinaWeekLine, weekLineContainer2;
 
-		pWeekLine->SetStockSymbol("600000.SS");
-		pWeekLine->SetDate(GetCurrentMonday(20200101)); // 此日期为星期三，20191230为星期一。
-		dataChinaWeekLine.Add(pWeekLine);
-
+		weekLine.SetStockSymbol("600000.SS");
+		weekLine.SetDate(GetCurrentMonday(20200101)); // 此日期为星期三，20191230为星期一。
+		dataChinaWeekLine.Add(weekLine);
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
 		dataChinaWeekLine.SaveCurrentWeekLine();
 
 		weekLineContainer2.LoadCurrentWeekLine();
-		pWeekLine = static_pointer_cast<CWeekLine>(weekLineContainer2.GetData(0));
+		auto pWeekLine = weekLineContainer2.GetData(0);
 		EXPECT_EQ(pWeekLine->GetStockSymbol(), "600000.SS");
 		EXPECT_EQ(pWeekLine->GetDate(), 20191230) << "20200101之前的星期一";
 
@@ -145,14 +142,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveDB) {
-		vector<CWeekLinePtr> vWeekLine;
+		vector<CWeekLine> vWeekLine;
 		CContainerChinaWeekLine dataChinaWeekLine;
 
-		const CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->SetDate(19901224); // 测试数据库中000003.SZ最早的日期为19901231，故此数据位于最前面
-		pWeekLine->SetStockSymbol("000003.SZ");
-		pWeekLine->SetClose(100);
-		vWeekLine.push_back(pWeekLine);
+		CWeekLine weekLine;
+		weekLine.SetDate(19901224); // 测试数据库中000003.SZ最早的日期为19901231，故此数据位于最前面
+		weekLine.SetStockSymbol("000003.SZ");
+		weekLine.SetClose(100);
+		vWeekLine.push_back(weekLine);
 		dataChinaWeekLine.UpdateData(vWeekLine);
 
 		dataChinaWeekLine.SaveDB("000003.SZ");

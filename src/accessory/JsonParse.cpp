@@ -328,8 +328,10 @@ CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData) {
 // 使用simdjson解析速度release模式下比Nholmann json快50%，但debug模式下慢一倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const string& strStockCode) {
-	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strStockCode) {
+	auto pvDayLine = make_shared<vector<CDayLine>>();
+	pvDayLine->reserve(2000);
+
 	const string strStockSymbol = XferTengxunToStandard(strStockCode);
 	try {
 		long year, month, day;
@@ -354,34 +356,34 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 		//ondemand::value stock = field.value();
 		//ondemand::array dayArray = stock["day"].get_array();
 		for (auto dayLine : dayArray) {
-			auto pDayLine = make_shared<CDayLine>();
-			pDayLine->SetStockSymbol(strStockSymbol);
-			pDayLine->SetLastClose(lLastClose);
+			CDayLine dayLine2;
+			dayLine2.SetStockSymbol(strStockSymbol);
+			dayLine2.SetLastClose(lLastClose);
 			ondemand::array_iterator it = dayLine.get_array().begin();
 			ondemand::value item = (*it).value();
 			sv = simdjsonGetStringView(item);
 			string str1(sv.data(), sv.length()); // 这里需要转换一下，直接使用string_view会导致内存溢出
 			sscanf_s(str1.data(), "%4d-%02d-%02d", &year, &month, &day);
-			pDayLine->SetDate(year * 10000 + month * 100 + day);
+			dayLine2.SetDate(year * 10000 + month * 100 + day);
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			pDayLine->SetOpen(Str2Long(sv, 3));
+			dayLine2.SetOpen(Str2Long(sv, 3));
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
 			const long lClose = Str2Long(sv, 3);
-			pDayLine->SetClose(lClose);
+			dayLine2.SetClose(lClose);
 			lLastClose = lClose;
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			pDayLine->SetHigh(Str2Long(sv, 3));
+			dayLine2.SetHigh(Str2Long(sv, 3));
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			pDayLine->SetLow(Str2Long(sv, 3));
+			dayLine2.SetLow(Str2Long(sv, 3));
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
-			pDayLine->SetVolume(atof(sv.data()) * 100);
+			dayLine2.SetVolume(atof(sv.data()) * 100);
 
-			pvDayLine->push_back(pDayLine);
+			pvDayLine->push_back(dayLine2);
 		}
 	} catch (nlohmannJson::exception&) {
 		return pvDayLine;
@@ -414,11 +416,11 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
 	const string_view svData = pWebData->GetStringView();
 
-	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));
-	std::ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); });
-	for (const auto& pDayLine : *pvDayLine) {
-		pDayLine->SetStockSymbol(strSymbol);
-		pDayLineData->AppendDayLine(pDayLine);
+	const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));
+	std::ranges::sort(*pvDayLine, [](const CDayLine& pData1, const CDayLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
+	for (auto& dayLine : *pvDayLine) {
+		dayLine.SetStockSymbol(strSymbol);
+		pDayLineData->AppendDayLine(dayLine);
 	}
 	pDayLineData->SetStockCode(strSymbol);
 	return pDayLineData;

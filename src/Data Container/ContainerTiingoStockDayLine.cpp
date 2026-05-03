@@ -5,6 +5,14 @@
 #include "InfoReport.h"
 #include"SetTiingoStockDayLine.h"
 
+namespace {
+	CTiingoStock s_stock;
+}
+
+CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
+	m_ratio = s_stock.GetRatio();
+}
+
 bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetTiingoStockDayLine setTiingoStockDayLineBasic;
@@ -43,9 +51,9 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 //Note  更新完后，本container中的日线数据也自动更新为最新数据(以备以后的处理日线数据）
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const {
-	vector<CTiingoCandleLinePtr> vOldHistoryCandle;
-	CTiingoCandleLinePtr pHistoryCandle = nullptr;
+void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) {
+	vector<CTiingoCandleLine> vOldHistoryCandle;
+	const CTiingoCandleLine* pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
 
 	const size_t lSize = Size();
@@ -60,10 +68,10 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	while (!pSetTiingoStockDayLine->IsEOF()) {
 		if (pSetTiingoStockDayLine->m_Date > lLastDate) {
 			lLastDate = pSetTiingoStockDayLine->m_Date;
-			pHistoryCandle = make_shared<CTiingoCandleLine>();
-			pHistoryCandle->LoadBasicData(pSetTiingoStockDayLine);
+			CTiingoCandleLine candle;
+			candle.LoadBasicData(pSetTiingoStockDayLine);
 
-			vOldHistoryCandle.push_back(pHistoryCandle);
+			vOldHistoryCandle.push_back(candle);
 			lSizeOfOldDayLine++;
 		}
 		else {
@@ -76,13 +84,15 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 		long lCurrentPos = 0;
 		for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
-			if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0)->GetDate()) {	// 有更早的新数据？
+			auto a = pHistoryCandle->GetRatio();
+
+			if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0).GetDate()) {	// 有更早的新数据？
 				pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 			}
 			else {
-				while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos)->GetDate() < pHistoryCandle->GetDate())) lCurrentPos++;
+				while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos).GetDate() < pHistoryCandle->GetDate())) lCurrentPos++;
 				if (lCurrentPos < lSizeOfOldDayLine) {
-					if (vOldHistoryCandle.at(lCurrentPos)->GetDate() > pHistoryCandle->GetDate()) { // 前数据集中有遗漏的日期
+					if (vOldHistoryCandle.at(lCurrentPos).GetDate() > pHistoryCandle->GetDate()) { // 前数据集中有遗漏的日期
 						pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 					}
 				}
@@ -102,16 +112,17 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	pSetTiingoStockDayLine->Close();
 }
 
-bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const {
-	CTiingoCandleLinePtr pHistoryCandle = nullptr;
+bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) {
+	CTiingoCandleLine* pHistoryCandle = nullptr;
 	bool fNeedUpdate = false;
 	long lSizeOfOldDayLine = 0;
-	vector<CTiingoCandleLinePtr> vOldHistoryCandle;
+	vector<CTiingoCandleLine> vOldHistoryCandle;
 
 	ASSERT(Size() > 0);
 
 	const size_t lSize = Size();
 	if (!strStockSymbol.empty()) {
+		CTiingoCandleLine candle;
 		pSetTiingoStockDayLine->m_strFilter = "[Symbol] = '";
 		pSetTiingoStockDayLine->m_strFilter += strStockSymbol.c_str();
 		pSetTiingoStockDayLine->m_strFilter += "'";
@@ -123,10 +134,8 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 		while (!pSetTiingoStockDayLine->IsEOF()) {
 			if (pSetTiingoStockDayLine->m_Date > lLastDate) {
 				lLastDate = pSetTiingoStockDayLine->m_Date;
-				pHistoryCandle = make_shared<CTiingoCandleLine>();
-				pHistoryCandle->LoadBasicData(pSetTiingoStockDayLine);
-
-				vOldHistoryCandle.push_back(pHistoryCandle);
+				candle.LoadBasicData(pSetTiingoStockDayLine);
+				vOldHistoryCandle.push_back(candle);
 				lSizeOfOldDayLine++;
 			}
 			else {
@@ -144,13 +153,13 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 		long lCurrentPos = 0;
 		for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
-			if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0)->GetDate()) {	// 有更早的新数据？
+			if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0).GetDate()) {	// 有更早的新数据？
 				pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 			}
 			else {
-				while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos)->GetDate() < pHistoryCandle->GetDate())) lCurrentPos++;
+				while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos).GetDate() < pHistoryCandle->GetDate())) lCurrentPos++;
 				if (lCurrentPos < lSizeOfOldDayLine) {
-					if (vOldHistoryCandle.at(lCurrentPos)->GetDate() > pHistoryCandle->GetDate()) { // 前数据集中有遗漏的日期
+					if (vOldHistoryCandle.at(lCurrentPos).GetDate() > pHistoryCandle->GetDate()) { // 前数据集中有遗漏的日期
 						pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 						fNeedUpdate = true;
 					}
@@ -180,9 +189,9 @@ bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHisto
 	Unload(); // 卸载之前的日线
 	// 装入DayLine数据
 	while (!pSetHistoryCandle->IsEOF()) {
-		auto pHistoryCandle = make_shared<CTiingoCandleLine>();
-		pHistoryCandle->LoadBasicData(pSetHistoryCandle);
-		Add(pHistoryCandle);
+		CTiingoCandleLine candle;
+		candle.LoadBasicData(pSetHistoryCandle);
+		Add(candle);
 		pSetHistoryCandle->MoveNext();
 	}
 	m_fDataLoaded = true;
@@ -194,10 +203,10 @@ bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHisto
 void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine) {
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (const auto& pDayLine : *pvTempDayLine) {
-		if (pDayLine->IsActive()) {
+	for (auto& dayLine : *pvTempDayLine) {
+		if (dayLine.IsActive()) {
 			// 清除掉不再交易（停牌或退市后出现的）的股票日线
-			Add(pDayLine);
+			Add(dayLine);
 		}
 	}
 	m_fDataLoaded = true;
@@ -216,10 +225,10 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	// 找出所有的拆分因子，并计算累计拆分因子。注意，拆分因子是从后向前计算的。
 	for (long i = m_vHistoryData.size() - 1; i >= 0; i--) {
 		auto data = m_vHistoryData.at(i);
-		if (std::abs(data->GetSplitFactor() - 1.0) > EPSILON) {
-			dTotalFactor *= data->GetSplitFactor();
+		if (std::abs(data.GetSplitFactor() - 1.0) > EPSILON) {
+			dTotalFactor *= data.GetSplitFactor();
 			auto p = make_shared<CSplitFactor>();
-			p->date = data->GetDate();
+			p->date = data.GetDate();
 			p->factor = dTotalFactor;
 			vpSplitFactor.push_back(p);
 		}
@@ -231,9 +240,9 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	long prevDate;
 	int i = m_vHistoryData.size() - 1;
 	double currentFactor = 1.0;
-	auto currentData = m_vHistoryData.at(i);
+	auto currentData = GetData(i);
 	auto currentSpiltDate = vpSplitFactor.at(j)->date;
-	while (currentData->GetDate() > currentSpiltDate) currentData = m_vHistoryData.at(--i); // 找到拆分日的日线数据
+	while (currentData->GetDate() > currentSpiltDate) currentData = GetData(--i); // 找到拆分日的日线数据
 	do {
 		const double prevFactor = currentFactor;
 		currentSpiltDate = vpSplitFactor.at(j)->date;
@@ -245,7 +254,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 		currentData->SetLastClose(currentData->GetLastClose() * prevFactor / currentFactor); // 拆分日只有前收盘价需要调整，其他价格不调整。
 
 		while (currentData->GetDate() > prevDate && i > 0) { // 调整拆分日之前的日线数据，直到下一个拆分日（如果有的话）
-			currentData = m_vHistoryData.at(--i);
+			currentData = GetData(--i);
 			currentData->AdjustByFactor(currentFactor);
 		}
 		j++;

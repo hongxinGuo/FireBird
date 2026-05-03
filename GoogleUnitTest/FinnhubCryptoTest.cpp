@@ -121,12 +121,12 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestHaveNewDayLineData) {
 		CFinnhubCrypto symbol;
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		const CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102);
-		pDayLine->SetClose(100); // 确保此数据为有效数据
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200102);
+		dayLine.SetClose(100); // 确保此数据为有效数据
+		pvDayLine->push_back(dayLine);
 
 		EXPECT_FALSE(symbol.HaveNewDayLineData());
 		symbol.UpdateDayLine(pvDayLine);
@@ -136,7 +136,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineStartEndDate) {
 		CFinnhubCrypto symbol;
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		symbol.SetDayLineEndDate(19900101);
 		symbol.SetDayLineStartDate(19900101);
@@ -145,14 +145,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(symbol.GetDayLineEndDate(), 19800101);
 
 		EXPECT_EQ(symbol.GetDayLineSize(), 0);
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102);
-		pDayLine->SetClose(100);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200105);
-		pDayLine->SetClose(100);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200102);
+		dayLine.SetClose(100);
+		pvDayLine->push_back(dayLine);
+		dayLine.SetDate(20200105);
+		dayLine.SetClose(100);
+		pvDayLine->push_back(dayLine);
 		symbol.UpdateDayLine(pvDayLine);
 		EXPECT_EQ(symbol.GetDayLineSize(), 2);
 
@@ -293,14 +292,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
 		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
-		auto pDayLine = make_shared<CDayLine>();
+		CDayLine dayLine;
 		CSetCryptoDayLine setCryptoDayLine;
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		pDayLine->SetDate(19800101);
-		pDayLine->SetClose(100);
-		pDayLine->SetStockSymbol("NewSymbol");
-		pvDayLine->push_back(pDayLine);
+		dayLine.SetDate(19800101);
+		dayLine.SetClose(100);
+		dayLine.SetStockSymbol("NewSymbol");
+		pvDayLine->push_back(dayLine);
 		FinnhubCryptoSymbol.SetSymbol("NewSymbol"); // 新代码
 		FinnhubCryptoSymbol.UpdateDayLine(pvDayLine);
 

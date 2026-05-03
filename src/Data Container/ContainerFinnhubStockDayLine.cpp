@@ -5,6 +5,14 @@
 #include "InfoReport.h"
 #include"SetFinnhubStockDayLine.h"
 
+namespace {
+	CFinnhubStock s_stock;
+}
+
+CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {
+	m_ratio = s_stock.GetRatio();
+}
+
 bool CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;

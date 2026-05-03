@@ -27,12 +27,6 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CVirtualHistoryCandleTest, TestGetRatio) {
-		const CVirtualHistoryCandle dl;
-
-		EXPECT_EQ(dl.GetRatio(), 1000) << "默认比率为1000";
-	}
-
 	TEST_F(CVirtualHistoryCandleTest, TestGetDate) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CVirtualHistoryCandle dl;

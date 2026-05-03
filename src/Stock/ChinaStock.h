@@ -147,10 +147,10 @@ public:
 	//日线相关函数
 	// 日线历史数据
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	bool HaveNewDayLineData() const;
+	bool HaveNewDayLineData();
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
-	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.Add(pDayLine); }
-	CDayLinePtr GetDayLine(const size_t lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	void StoreDayLine(const CDayLine& dayLine) { m_dataDayLine.Add(dayLine); }
+	CDayLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
 	void Get1DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS1(vRS); }
 	void GetRSIndex1Day(vector<double>& vRS) const { m_dataDayLine.GetRSIndex1(vRS); }
 	void GetRSLogarithm1Day(vector<double>& vRS) const { m_dataDayLine.GetRSLogarithm1(vRS); }
@@ -174,7 +174,7 @@ public:
 	// 提取网易日线历史数据各函数
 	void UpdateStatusByDownloadedDayLine();
 
-	void UpdateDayLine(const vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
+	void UpdateDayLine(const vector<CDayLine>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 	static void ReportDayLineDownLoaded();
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
@@ -183,11 +183,11 @@ public:
 
 	// 周线相关函数
 	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }
-	CWeekLinePtr GetWeekLine(const long lIndex) const { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
+	CWeekLine* GetWeekLine(const long lIndex) { return m_dataWeekLine.GetData(lIndex); }
 	void UnloadWeekLine() noexcept { m_dataWeekLine.Unload(); }
 	bool CreateWeekLine(long lStartDate);
 	bool CreateWeekLine2(long lStartDate);
-	bool StoreWeekLine(const CWeekLinePtr& pWeekLine) { return m_dataWeekLine.Add(pWeekLine); }
+	void StoreWeekLine(const CWeekLine& weekLine) { m_dataWeekLine.Add(weekLine); }
 	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(const bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
 	// 周线相对强度计算

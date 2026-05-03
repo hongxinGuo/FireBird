@@ -27,11 +27,11 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvDayLine = ParseFinnhubCryptoCandle(pWebData);
 	pCryptoSymbol->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
-		for (const auto& pDayLine : *pvDayLine) {
-			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
-			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
-			const long lTemp = gl_pWorldMarket->ConvertToDate(pDayLine->GetMarketTime());
-			pDayLine->SetDate(lTemp);
+		for (auto& dayLine : *pvDayLine) {
+			dayLine.SetExchange(pCryptoSymbol->GetExchangeCode());
+			dayLine.SetStockSymbol(pCryptoSymbol->GetSymbol());
+			const long lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTime());
+			dayLine.SetDate(lTemp);
 		}
 		pCryptoSymbol->UpdateDayLine(pvDayLine);
 		pCryptoSymbol->UpdateDayLineStartEndDate();
@@ -54,10 +54,12 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {
-	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
-	auto pvDayLineReturn = make_shared<vector<CDayLinePtr>>();
+	auto pvDayLine = make_shared<vector<CDayLine>>();
+	pvDayLine->reserve(1000);
+
+	auto pvDayLineReturn = make_shared<vector<CDayLine>>();
 	nlohmannJson js2;
-	CDayLinePtr pDayLine = nullptr;
+	CDayLine dayLine;
 	string sError;
 	nlohmannJson js;
 
@@ -85,9 +87,8 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = it->get<INT64>();
-			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetTime(tTemp);
-			pvDayLine->push_back(pDayLine);
+			dayLine.SetTime(tTemp);
+			pvDayLine->push_back(dayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle missing 't' ", e.what());
@@ -101,36 +102,31 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetClose(static_cast<long>(dTemp * 1000));
+			pvDayLine->at(i++).SetClose(static_cast<long>(dTemp * 1000));
 		}
 		js2 = jsonGetChild(js, "h");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetHigh(static_cast<long>(1000 * dTemp));
+			pvDayLine->at(i++).SetHigh(static_cast<long>(1000 * dTemp));
 		}
 		js2 = jsonGetChild(js, "l");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetLow(static_cast<long>(1000 * dTemp));
+			pvDayLine->at(i++).SetLow(static_cast<long>(1000 * dTemp));
 		}
 		js2 = jsonGetChild(js, "o");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetOpen(static_cast<long>(1000 * dTemp));
+			pvDayLine->at(i++).SetOpen(static_cast<long>(1000 * dTemp));
 		}
 		js2 = jsonGetChild(js, "v");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			llTemp = jsonGetLongLong(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetVolume(llTemp);
+			pvDayLine->at(i++).SetVolume(llTemp);
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle ", e.what());
@@ -139,7 +135,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
 	// 清除掉交易日期为零的无效数据
 	for (auto& pDayLine2 : *pvDayLine) {
-		if (pDayLine2->GetMarketTime() > 0) {
+		if (pDayLine2.GetMarketTime() > 0) {
 			pvDayLineReturn->push_back(pDayLine2);
 		}
 	}

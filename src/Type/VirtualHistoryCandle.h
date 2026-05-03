@@ -21,10 +21,17 @@ public:
 	CVirtualHistoryCandle& operator=(CVirtualHistoryCandle&&) = default;
 	virtual ~CVirtualHistoryCandle() = default;
 
+	void Reset();
+
 	void SaveBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const; // 存储基本数据
 	void AppendBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const;
 	void LoadBasicData(const CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
-	virtual int GetRatio() const { return 1000; };
+	int GetRatio() const {
+		if (m_ratio == 0)
+			ASSERT(0);
+		return m_ratio;
+	};
+	void SetRatio(int ratio) { m_ratio = ratio; }
 
 	void AdjustByFactor(double dFactor); // 按照复权因子调整数据
 
@@ -123,6 +130,7 @@ protected:
 	long long m_lHigh{ 0 }; // 最高价
 	long long m_lLow{ 0 }; // 最低价
 	long long m_lClose{ 0 }; // 收盘价
+	int m_ratio{ 0 }; // 价格放大倍数。比如，ratio=1000表示价格放大了1000倍，实际价格需要除以1000才能得到。
 
 	// 以下数值是实际值
 	double m_dDividend{ 0 }; // 股息
@@ -162,4 +170,4 @@ protected:
 };
 
 using CVirtualHistoryCandlePtr = shared_ptr<CVirtualHistoryCandle>;
-using CVirtualHistoryCandlesPtr = shared_ptr<vector<CVirtualHistoryCandlePtr>>;
+using CVirtualHistoryCandlesPtr = shared_ptr<vector<CVirtualHistoryCandle>>;

@@ -4,6 +4,14 @@
 #include "InfoReport.h"
 #include"SetCryptoDayLine.h"
 
+namespace {
+	CTiingoStock s_stock;
+}
+
+CContainerCryptoDayLine::CContainerCryptoDayLine() {
+	m_ratio = s_stock.GetRatio();
+}
+
 bool CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 	try {
 		CSetCryptoDayLine setCryptoDayLineBasic;

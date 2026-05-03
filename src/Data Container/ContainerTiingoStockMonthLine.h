@@ -6,7 +6,7 @@
 
 class CContainerTiingoStockMonthLine : public CVirtualDataHistoryCandle {
 public:
-	CContainerTiingoStockMonthLine() = default;
+	CContainerTiingoStockMonthLine();
 	CContainerTiingoStockMonthLine(const CContainerTiingoStockMonthLine& other) = delete;
 	CContainerTiingoStockMonthLine(CContainerTiingoStockMonthLine&& other) noexcept = delete;
 	CContainerTiingoStockMonthLine& operator=(const CContainerTiingoStockMonthLine& other) = delete;
@@ -15,12 +15,12 @@ public:
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 
-	CTiingoCandleLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CTiingoCandleLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoCandleLine>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CTiingoCandleLine* GetData(const size_t lIndex) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
+	CTiingoCandleLine* GetDayLine(long lDate) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
-	bool Add(const CTiingoCandleLinePtr& pData) {
-		m_vHistoryData.push_back(pData);
-		return true;
+	void Add(CTiingoCandleLine& data) {
+		data.SetRatio(m_ratio);
+		m_vHistoryData.push_back(data);
 	}
 
 	// 特有函数

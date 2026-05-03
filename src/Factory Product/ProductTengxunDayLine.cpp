@@ -40,13 +40,13 @@ string CProductTengxunDayLine::CreateMessage() {
 void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {
 	ASSERT(pvWebData->size() <= m_iInquiryNumber);
 
-	vector<CDayLinePtr> vDayLine;
+	vector<CDayLine> vDayLine;
 	string strStockSymbol;
-	for (const auto& pWebData : *pvWebData) { // 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
+	for (auto& pWebData : *pvWebData) { // 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
 		const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
 		strStockSymbol = pDayLineWebData->GetStockCode();
 		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
-			if (gl_pChinaMarket->IsWorkingDay(pData->GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
+			if (gl_pChinaMarket->IsWorkingDay(pData.GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
 				vDayLine.push_back(pData);
 			}
 		}
@@ -61,15 +61,15 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 	gl_qDayLine.enqueue(p);
 }
 
-void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLinePtr>& vDayLine) {
+void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLine>& vDayLine) {
 	if (vDayLine.size() > 1) {
-		std::ranges::sort(vDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetDate() < p2->GetDate(); });
+		std::ranges::sort(vDayLine, [](const CDayLine& p1, const CDayLine& p2) { return p1.GetDate() < p2.GetDate(); });
 
 		for (size_t i = 0; i < vDayLine.size() - 1; i++) {
 			const auto& p1 = vDayLine.at(i);
-			const auto& p2 = vDayLine.at(i + 1);
-			ASSERT(p1->GetDate() < p2->GetDate()); // 没有重复数据
-			p2->SetLastClose(p1->GetClose());
+			auto& p2 = vDayLine.at(i + 1);
+			ASSERT(p1.GetDate() < p2.GetDate()); // 没有重复数据
+			p2.SetLastClose(p1.GetClose());
 		}
 	}
 }

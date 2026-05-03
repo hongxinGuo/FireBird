@@ -38,13 +38,13 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CDataFinnhubStockDayLineTest, TestSaveDB) {
-		CDayLinesPtr vDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr vDayLine = make_shared<vector<CDayLine>>();
 
-		const CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20220101); // 测试库中的数据最新日期为20210330，此日期位于其后
-		pDayLine->SetStockSymbol("A");
-		pDayLine->SetClose(100);
-		vDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20220101); // 测试库中的数据最新日期为20210330，此日期位于其后
+		dayLine.SetStockSymbol("A");
+		dayLine.SetClose(100);
+		vDayLine->push_back(dayLine);
 		m_dataFinnhubStockDayLine.UpdateData(vDayLine);
 
 		m_dataFinnhubStockDayLine.SaveDB("A");

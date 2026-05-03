@@ -1036,17 +1036,17 @@ bool CChinaMarket::BuildCurrentWeekLine() {
 	dataChinaWeekLine.LoadCurrentWeekLine();
 	CreateStockCodeSet(setWeekLineStockCode, dataChinaWeekLine.GetContainer());
 
-	for (const auto& pData : *pDayLineData) {
-		if (!setWeekLineStockCode.contains(pData->GetStockSymbol())) {
+	for (const auto& data : *pDayLineData) {
+		if (!setWeekLineStockCode.contains(data.GetStockSymbol())) {
 			//周线数据容器中无此日线数据
 			// 存储此日线数据至周线数据容器
-			const auto pWeekLine = make_shared<CWeekLine>();
-			pWeekLine->UpdateWeekLine(pData);
+			CWeekLine pWeekLine;
+			pWeekLine.UpdateWeekLine(&data);
 			dataChinaWeekLine.Add(pWeekLine);
 		}
 		else {
 			// 更新周线数据容器
-			dataChinaWeekLine.UpdateData(pData);
+			dataChinaWeekLine.UpdateData(&data);
 		}
 	}
 
@@ -1064,11 +1064,11 @@ bool CChinaMarket::BuildCurrentWeekLine() {
 	return true;
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandlePtr>* pvData) {
+bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData) {
 	vector<string> vectorStockCode;
 
-	for (const auto& pData : *pvData) {
-		string strStockSymbol = pData->GetStockSymbol();
+	for (auto& pData : *pvData) {
+		string strStockSymbol = pData.GetStockSymbol();
 		vectorStockCode.push_back(strStockSymbol);
 	}
 	setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
@@ -1117,15 +1117,15 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 
 	while (!setDayLineBasicInfo.IsEOF()) {
-		auto pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadBasicData(&setDayLineBasicInfo);
+		CDayLine dayLine;
+		dayLine.LoadBasicData(&setDayLineBasicInfo);
 		while (!setDayLineBasicInfo.IsEOF() && (setDayLineBasicInfo.m_Symbol.Compare(setDayLineBasicInfo.m_Symbol) < 0)) {
 			setDayLineBasicInfo.MoveNext();
 		}
 		if (!setDayLineBasicInfo.IsEOF() && (setDayLineBasicInfo.m_Symbol.Compare(setDayLineBasicInfo.m_Symbol) == 0)) {
-			pDayLine->LoadBasicData(&setDayLineBasicInfo);
+			dayLine.LoadBasicData(&setDayLineBasicInfo);
 		}
-		dataChinaDayLine.Add(pDayLine);
+		dataChinaDayLine.Add(dayLine);
 		setDayLineBasicInfo.MoveNext();
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();

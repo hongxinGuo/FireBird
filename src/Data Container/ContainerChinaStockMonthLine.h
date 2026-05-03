@@ -5,18 +5,19 @@
 
 class CContainerChinaStockMonthLine : public CVirtualDataHistoryCandle {
 public:
-	CContainerChinaStockMonthLine() = default;
+	CContainerChinaStockMonthLine();
 	~CContainerChinaStockMonthLine() override = default;
 	CContainerChinaStockMonthLine(const CContainerChinaStockMonthLine& other) = delete;
 	CContainerChinaStockMonthLine(CContainerChinaStockMonthLine&& other) noexcept = delete;
 	CContainerChinaStockMonthLine& operator=(const CContainerChinaStockMonthLine& other) = delete;
 	CContainerChinaStockMonthLine& operator=(CContainerChinaStockMonthLine&& other) noexcept = delete;
 
-	CMonthLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CMonthLine>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CMonthLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CMonthLine>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CMonthLine* GetData(const size_t lIndex) { return static_cast<CMonthLine*>((CVirtualDataHistoryCandle::GetData(lIndex))); }
+	CMonthLine* GetDayLine(long lDate) { return static_cast<CMonthLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
-	bool Add(const CMonthLinePtr& pData) {
-		m_vHistoryData.push_back(pData);
+	bool Add(CMonthLine& data) {
+		data.SetRatio(m_ratio);
+		m_vHistoryData.push_back(data);
 		return true;
 	}
 };

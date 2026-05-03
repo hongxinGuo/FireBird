@@ -43,7 +43,7 @@ void CFinnhubForex::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CFinnhubForex::HaveNewDayLineData() const {
+bool CFinnhubForex::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;

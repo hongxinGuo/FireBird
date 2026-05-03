@@ -10,8 +10,8 @@ public:
 
 	// 提取网易日线历史数据各函数
 	void ClearDayLine() noexcept { m_vTempDayLine.clear(); }
-	std::vector<CDayLinePtr>& GetProcessedDayLine() { return m_vTempDayLine; }
-	void AppendDayLine(const CDayLinePtr& pData) { m_vTempDayLine.push_back(pData); }
+	std::vector<CDayLine>& GetProcessedDayLine() { return m_vTempDayLine; }
+	void AppendDayLine(const CDayLine& data) { m_vTempDayLine.push_back(data); }
 	//void SetStockCode(CNeteaseDayLineDataSourcePtr pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
 
 	void SetStockCode(const string& strSymbol) noexcept { m_strStockCode = strSymbol; }
@@ -35,7 +35,7 @@ public:
 private:
 	string m_strStockCode;
 	string m_sDataBuffer; // 日线读取缓冲区
-	vector<CDayLinePtr> m_vTempDayLine; // 日线数据缓冲区
+	vector<CDayLine> m_vTempDayLine; // 日线数据缓冲区
 	INT64 m_lCurrentPos;
 };
 

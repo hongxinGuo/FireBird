@@ -121,7 +121,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CVectorTiingoMarketNewsPtr m_pvMarketNews;
+		CTiingoMarketNewssPtr m_pvMarketNews;
 		CProductTiingoMarketNews m_tiingoMarketNewsProduct;
 	};
 

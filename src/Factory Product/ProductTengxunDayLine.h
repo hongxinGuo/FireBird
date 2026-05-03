@@ -26,7 +26,7 @@ public:
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
 	int GetInquiryNumber() const { return m_iInquiryNumber; }
 
-	void CheckAndPrepareDayLine(vector<CDayLinePtr>& vDayLine);
+	void CheckAndPrepareDayLine(vector<CDayLine>& vDayLine);
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

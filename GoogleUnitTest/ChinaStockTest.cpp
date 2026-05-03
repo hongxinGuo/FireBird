@@ -562,9 +562,9 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.HaveNewDayLineData());
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
-		const auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101);
-		stock.StoreDayLine(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200101);
+		stock.StoreDayLine(dayLine);
 		EXPECT_EQ(stock.GetDayLineSize(), 1);
 		stock.SetDayLineEndDate(20200101);
 		EXPECT_FALSE(stock.HaveNewDayLineData());
@@ -811,29 +811,28 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
 		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-		CDayLinePtr pid;
 		CDayLine stock;
 		pStock = gl_dataContainerChinaStock.GetStock("600011.SS");
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(21900101);
 
-		pid = make_shared<CDayLine>();
-		pid->SetDate(21900101);
-		pid->SetStockSymbol("600011.SS");
-		pid->SetLastClose(335345);
-		pid->SetOpen(1000000);
-		pid->SetHigh(434543);
-		pid->SetLow(34345);
-		pid->SetClose(4535);
-		pid->SetVolume(34454);
-		pid->SetAmount(3245235345);
-		pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
-		pid->SetUpDownRate(123.45);
-		pid->SetTotalValue(234523452345);
-		pid->SetCurrentValue(234145345245);
-		pid->SetChangeHandRate(54.321);
-		pid->SetRS(14.5);
-		pStock->StoreDayLine(pid);
+		CDayLine dayLine;
+		dayLine.SetDate(21900101);
+		dayLine.SetStockSymbol("600011.SS");
+		dayLine.SetLastClose(335345);
+		dayLine.SetOpen(1000000);
+		dayLine.SetHigh(434543);
+		dayLine.SetLow(34345);
+		dayLine.SetClose(4535);
+		dayLine.SetVolume(34454);
+		dayLine.SetAmount(3245235345);
+		dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
+		dayLine.SetUpDownRate(123.45);
+		dayLine.SetTotalValue(234523452345);
+		dayLine.SetCurrentValue(234145345245);
+		dayLine.SetChangeHandRate(54.321);
+		dayLine.SetRS(14.5);
+		pStock->StoreDayLine(dayLine);
 
 		pStock->SetDayLineEndDate(21890101);
 		pStock->SetSymbol("600011.SS");
@@ -847,24 +846,24 @@ namespace FireBirdTest {
 		pStock->LoadDayLineDB();
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
 
-		CDayLinePtr pDayLine;
+		CDayLine* pDayLine;
 		pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
 		EXPECT_EQ(pDayLine->GetMarketTime(), 0);
 		EXPECT_EQ(pDayLine->GetStockSymbol(), "600011.SS");
-		EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
-		EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
-		EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
-		EXPECT_EQ(pDayLine->GetLow(), pid->GetLow());
-		EXPECT_EQ(pDayLine->GetClose(), pid->GetClose());
-		EXPECT_EQ(pDayLine->GetVolume(), pid->GetVolume());
-		EXPECT_EQ(pDayLine->GetAmount(), pid->GetAmount());
-		EXPECT_DOUBLE_EQ(pDayLine->GetUpDown(), pid->GetUpDown());
-		EXPECT_DOUBLE_EQ(pDayLine->GetUpDownRate(), pid->GetUpDownRate());
-		EXPECT_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
-		EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
-		EXPECT_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
-		EXPECT_EQ(pDayLine->GetRS(), pid->GetRS());
+		EXPECT_EQ(pDayLine->GetLastClose(), dayLine.GetLastClose());
+		EXPECT_EQ(pDayLine->GetOpen(), dayLine.GetOpen());
+		EXPECT_EQ(pDayLine->GetHigh(), dayLine.GetHigh());
+		EXPECT_EQ(pDayLine->GetLow(), dayLine.GetLow());
+		EXPECT_EQ(pDayLine->GetClose(), dayLine.GetClose());
+		EXPECT_EQ(pDayLine->GetVolume(), dayLine.GetVolume());
+		EXPECT_EQ(pDayLine->GetAmount(), dayLine.GetAmount());
+		EXPECT_DOUBLE_EQ(pDayLine->GetUpDown(), dayLine.GetUpDown());
+		EXPECT_DOUBLE_EQ(pDayLine->GetUpDownRate(), dayLine.GetUpDownRate());
+		EXPECT_EQ(pDayLine->GetTotalValue(), dayLine.GetTotalValue());
+		EXPECT_EQ(pDayLine->GetCurrentValue(), dayLine.GetCurrentValue());
+		EXPECT_EQ(pDayLine->GetChangeHandRate(), dayLine.GetChangeHandRate());
+		EXPECT_EQ(pDayLine->GetRS(), dayLine.GetRS());
 
 		setDayLineBasicInfo.m_strFilter = "[Date] = 21900101";
 		setDayLineBasicInfo.Open();
@@ -882,34 +881,32 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestSaveDayLine) {
 		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-		CDayLinePtr pid;
-		CDayLine dayLine;
 		pStock = gl_dataContainerChinaStock.GetStock("600016.SS");
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
-		pid = make_shared<CDayLine>();
-		pid->SetClose(1000);
-		pid->SetDate(19910101); // 早于数据库中的所有日期
-		pStock->StoreDayLine(pid);
+		CDayLine dayLine2;
+		dayLine2.SetClose(1000);
+		dayLine2.SetDate(19910101); // 早于数据库中的所有日期
+		pStock->StoreDayLine(dayLine2);
 		for (int i = 0; i < 10; i++) {
-			pid = make_shared<CDayLine>();
-			pid->SetDate(21111201);
-			pid->SetStockSymbol("600016.SS");
-			pid->SetLastClose(34235345);
-			pid->SetOpen(1000000 + i);
-			pid->SetHigh(45234543);
-			pid->SetLow(3452345);
-			pid->SetClose(452435);
-			pid->SetVolume(34523454);
-			pid->SetAmount(3245235345);
-			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
-			pid->SetUpDownRate(123.45);
-			pid->SetTotalValue(234523452345);
-			pid->SetCurrentValue(234145345245);
-			pid->SetChangeHandRate(54.321);
-			pid->SetRS(14.5);
-			pStock->StoreDayLine(pid);
+			CDayLine dayLine;
+			dayLine.SetDate(21111201);
+			dayLine.SetStockSymbol("600016.SS");
+			dayLine.SetLastClose(34235345);
+			dayLine.SetOpen(1000000 + i);
+			dayLine.SetHigh(45234543);
+			dayLine.SetLow(3452345);
+			dayLine.SetClose(452435);
+			dayLine.SetVolume(34523454);
+			dayLine.SetAmount(3245235345);
+			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
+			dayLine.SetUpDownRate(123.45);
+			dayLine.SetTotalValue(234523452345);
+			dayLine.SetCurrentValue(234145345245);
+			dayLine.SetChangeHandRate(54.321);
+			dayLine.SetRS(14.5);
+			pStock->StoreDayLine(dayLine);
 		}
 		pStock->SetDayLineEndDate(10190101);
 		pStock->SetSymbol("600016.SS");
@@ -921,8 +918,8 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.Open();
 		for (int i = 0; i < 10; i++) {
 			// 第一个数据日期为19910101
-			dayLine.LoadBasicData(&setDayLineBasicInfo);
-			pid = pStock->GetDayLine(i + 1);
+			dayLine2.LoadBasicData(&setDayLineBasicInfo);
+			auto pid = pStock->GetDayLine(i + 1);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetDate());
 			EXPECT_TRUE(pid->GetStockSymbol() == T2Utf8(setDayLineBasicInfo.m_Symbol));
 			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
@@ -963,29 +960,29 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestLoadDayLine) {
 		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-		CDayLinePtr pid;
+		CDayLine* pid;
 		CChinaStock stock;
 
 		pStock = gl_dataContainerChinaStock.GetStock("600010.SS");
 
 		for (int i = 0; i < 8; i++) {
-			pid = make_shared<CDayLine>();
-			pid->SetDate(21121201);
-			pid->SetStockSymbol("600010.SS");
-			pid->SetLastClose(34235345);
-			pid->SetOpen(100000 + i);
-			pid->SetHigh(45234543);
-			pid->SetLow(3452341);
-			pid->SetClose(452435);
-			pid->SetVolume(34523454);
-			pid->SetAmount(3245235345);
-			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
-			pid->SetUpDownRate(123.45);
-			pid->SetTotalValue(234523452345);
-			pid->SetCurrentValue(234145345245);
-			pid->SetChangeHandRate(54.321);
-			pid->SetRS(14.5);
-			pStock->StoreDayLine(pid);
+			CDayLine dayLine;
+			dayLine.SetDate(21121201);
+			dayLine.SetStockSymbol("600010.SS");
+			dayLine.SetLastClose(34235345);
+			dayLine.SetOpen(100000 + i);
+			dayLine.SetHigh(45234543);
+			dayLine.SetLow(3452341);
+			dayLine.SetClose(452435);
+			dayLine.SetVolume(34523454);
+			dayLine.SetAmount(3245235345);
+			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
+			dayLine.SetUpDownRate(123.45);
+			dayLine.SetTotalValue(234523452345);
+			dayLine.SetCurrentValue(234145345245);
+			dayLine.SetChangeHandRate(54.321);
+			dayLine.SetRS(14.5);
+			pStock->StoreDayLine(dayLine);
 		}
 		pStock->SetSymbol("600010.SS");
 		pStock->SetDayLineEndDate(10190101);
@@ -998,7 +995,7 @@ namespace FireBirdTest {
 		stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
 		for (int i = 0; i < 8; i++) {
 			pid = stock.GetDayLine(i);
-			const CDayLinePtr pDayLine = pStock->GetDayLine(i);
+			auto pDayLine = pStock->GetDayLine(i);
 			EXPECT_EQ(pDayLine->GetDate(), pid->GetDate());
 			EXPECT_EQ(pDayLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
@@ -1050,7 +1047,7 @@ namespace FireBirdTest {
 			pid->SetCurrentValue(234145345245);
 			pid->SetChangeHandRate(54.321);
 			pid->SetRS(14.5);
-			pStock->StoreDayLine(pid);
+			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600004.SS");
 		pStock->SetDayLineStartDate(19920102);
@@ -1087,7 +1084,7 @@ namespace FireBirdTest {
 			pid->SetCurrentValue(234145345245);
 			pid->SetChangeHandRate(54.321);
 			pid->SetRS(14.5);
-			pStock->StoreDayLine(pid);
+			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600008.SS");
 		pStock->SetDayLineStartDate(19900101);
@@ -1124,7 +1121,7 @@ namespace FireBirdTest {
 			pid->SetCurrentValue(234145345245);
 			pid->SetChangeHandRate(54.321);
 			pid->SetRS(14.5);
-			pStock->StoreDayLine(pid);
+			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600008.SS");
 		pStock->SetDayLineStartDate(19900102);
@@ -1147,14 +1144,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestStoreDayLine) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		for (int i = 0; i < 10; i++) {
-			CDayLinePtr pDayLine = make_shared<CDayLine>();
-			pDayLine->SetDate(19900101 + i);
-			pDayLine->SetClose(10);
-			pDayLine->SetLastClose(10);
-			pvDayLine->push_back(pDayLine);
+			CDayLine dayLine;
+			dayLine.SetDate(19900101 + i);
+			dayLine.SetClose(10);
+			dayLine.SetLastClose(10);
+			pvDayLine->push_back(dayLine);
 		}
 		EXPECT_EQ(pvDayLine->size(), 10);
 		CChinaStock stock;
@@ -1169,11 +1166,11 @@ namespace FireBirdTest {
 		CDayLineWebData data;
 
 		for (int i = 0; i < 10; i++) {
-			CDayLinePtr pDayLine = make_shared<CDayLine>();
-			pDayLine->SetDate(19900101 + i);
-			pDayLine->SetClose(10);
-			pDayLine->SetLastClose(10);
-			data.AppendDayLine(pDayLine);
+			CDayLine dayLine;
+			dayLine.SetDate(19900101 + i);
+			dayLine.SetClose(10);
+			dayLine.SetLastClose(10);
+			data.AppendDayLine(dayLine);
 		}
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineLoaded());
@@ -1185,29 +1182,29 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestSaveWeekLine) {
 		CSetWeekLineInfo setWeekLineBasicInfo;
-		CWeekLinePtr pid;
+		CWeekLine* pid;
 		CWeekLine stock;
 		pStock = gl_dataContainerChinaStock.GetStock("600016.SS");
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
 		for (int i = 0; i < 10; i++) {
-			pid = make_shared<CWeekLine>();
-			pid->SetDate(21100501);
-			pid->SetStockSymbol("600016.SS");
-			pid->SetLastClose(34235345);
-			pid->SetOpen(1000000 + i);
-			pid->SetHigh(45234543);
-			pid->SetLow(3452345);
-			pid->SetClose(452435);
-			pid->SetVolume(34523454);
-			pid->SetAmount(3245235345);
-			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
-			pid->SetUpDownRate(123.45);
-			pid->SetTotalValue(234523452345);
-			pid->SetCurrentValue(234145345245);
-			pid->SetChangeHandRate(54.321);
-			pid->SetRS(14.5);
-			pStock->StoreWeekLine(pid);
+			CWeekLine dayLine;
+			dayLine.SetDate(21100501);
+			dayLine.SetStockSymbol("600016.SS");
+			dayLine.SetLastClose(34235345);
+			dayLine.SetOpen(1000000 + i);
+			dayLine.SetHigh(45234543);
+			dayLine.SetLow(3452345);
+			dayLine.SetClose(452435);
+			dayLine.SetVolume(34523454);
+			dayLine.SetAmount(3245235345);
+			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
+			dayLine.SetUpDownRate(123.45);
+			dayLine.SetTotalValue(234523452345);
+			dayLine.SetCurrentValue(234145345245);
+			dayLine.SetChangeHandRate(54.321);
+			dayLine.SetRS(14.5);
+			pStock->StoreWeekLine(dayLine);
 		}
 		pStock->SetSymbol("600016.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -1252,29 +1249,29 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestLoadWeekLine) {
 		CSetWeekLineInfo setWeekLineBasicInfo;
-		CWeekLinePtr pid;
+		CWeekLine* pid;
 		CChinaStock stock;
 
 		pStock = gl_dataContainerChinaStock.GetStock("600010.SS");
 
 		for (int i = 0; i < 10; i++) {
-			pid = make_shared<CWeekLine>();
-			pid->SetDate(21101201);
-			pid->SetStockSymbol("600010.SS");
-			pid->SetLastClose(34235345);
-			pid->SetOpen(1000000 + i);
-			pid->SetHigh(45234543);
-			pid->SetLow(3452342);
-			pid->SetClose(452435);
-			pid->SetVolume(34523454);
-			pid->SetAmount(3245235345);
-			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
-			pid->SetUpDownRate(123.45);
-			pid->SetTotalValue(234523452345);
-			pid->SetCurrentValue(234145345245);
-			pid->SetChangeHandRate(54.321);
-			pid->SetRS(14.5);
-			pStock->StoreWeekLine(pid);
+			CWeekLine dayLine;
+			dayLine.SetDate(21101201);
+			dayLine.SetStockSymbol("600010.SS");
+			dayLine.SetLastClose(34235345);
+			dayLine.SetOpen(1000000 + i);
+			dayLine.SetHigh(45234543);
+			dayLine.SetLow(3452342);
+			dayLine.SetClose(452435);
+			dayLine.SetVolume(34523454);
+			dayLine.SetAmount(3245235345);
+			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
+			dayLine.SetUpDownRate(123.45);
+			dayLine.SetTotalValue(234523452345);
+			dayLine.SetCurrentValue(234145345245);
+			dayLine.SetChangeHandRate(54.321);
+			dayLine.SetRS(14.5);
+			pStock->StoreWeekLine(dayLine);
 		}
 		pStock->SetSymbol("600010.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -1286,7 +1283,7 @@ namespace FireBirdTest {
 		stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
 		for (int i = 0; i < 10; i++) {
 			pid = stock.GetWeekLine(i);
-			const CWeekLinePtr pWeekLine = pStock->GetWeekLine(i);
+			const CWeekLine* pWeekLine = pStock->GetWeekLine(i);
 			EXPECT_EQ(pWeekLine->GetDate(), pid->GetDate());
 			EXPECT_EQ(pWeekLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());

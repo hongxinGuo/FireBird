@@ -14,7 +14,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CVectorTiingoMarketNewsPtr ParseTiingoMarketNews(const CWebDataPtr& pWebData);
+	CTiingoMarketNewssPtr ParseTiingoMarketNews(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
 };

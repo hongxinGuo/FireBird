@@ -13,16 +13,16 @@ using namespace testing;
 
 namespace FireBirdTest {
 	TEST(CallableFunctionTest, TestCompareDayLine) {
-		const auto p1 = make_shared<CDayLine>();
-		const auto p2 = make_shared<CDayLine>();
-		p1->SetDate(0);
-		p2->SetDate(1);
+		CDayLine p1;
+		CDayLine p2;
+		p1.SetDate(0);
+		p2.SetDate(1);
 		EXPECT_TRUE(CompareDayLineDate(p1, p2));
-		p1->SetDate(1);
-		p2->SetDate(1);
+		p1.SetDate(1);
+		p2.SetDate(1);
 		EXPECT_FALSE(CompareDayLineDate(p1, p2));
-		p1->SetDate(2);
-		p2->SetDate(1);
+		p1.SetDate(2);
+		p2.SetDate(1);
 		EXPECT_FALSE(CompareDayLineDate(p1, p2));
 	}
 

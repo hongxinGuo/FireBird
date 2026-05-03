@@ -4,7 +4,7 @@
 
 class CContainerCryptoDayLine final : public CVirtualDataHistoryCandle {
 public:
-	CContainerCryptoDayLine() = default;
+	CContainerCryptoDayLine();
 	// 单一实例，不允许赋值
 	CContainerCryptoDayLine(const CContainerCryptoDayLine& other) = delete;
 	CContainerCryptoDayLine(CContainerCryptoDayLine&& other) = delete;

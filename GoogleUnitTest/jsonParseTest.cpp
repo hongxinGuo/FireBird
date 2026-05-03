@@ -185,25 +185,25 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 	TEST_F(jsonParseTest, TestParseTengxunDayLine) {
 		const string sTengxunDayLine = R"({"code":0,"msg":"","data":{"sh600601":{"day":[["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],"qt":{},"mx_price":{"mx":[],"price":[]},"prec":"2.560","version":"16"}}})";
 		string_view svData = sTengxunDayLine;
-		const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, "sh600601");
+		const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLine(svData, "sh600601");
 
 		EXPECT_EQ(pvDayLine->size(), 2);
-		EXPECT_EQ(pvDayLine->at(0)->GetStockSymbol(), "600601.SS") << "此时使用标准股票代码形式";
-		EXPECT_EQ(pvDayLine->at(0)->GetDate(), 20230119);
-		EXPECT_EQ(pvDayLine->at(0)->GetOpen(), 2550);
-		EXPECT_EQ(pvDayLine->at(0)->GetClose(), 2600);
-		EXPECT_EQ(pvDayLine->at(0)->GetHigh(), 2610);
-		EXPECT_EQ(pvDayLine->at(0)->GetLow(), 2550);
-		EXPECT_EQ(pvDayLine->at(0)->GetLastClose(), 0) << "第一个数据没有昨收盘数据";
-		EXPECT_EQ(pvDayLine->at(0)->GetVolume(), 8616200);
-		EXPECT_EQ(pvDayLine->at(1)->GetStockSymbol(), "600601.SS") << "此时使用标准股票代码形式";
-		EXPECT_EQ(pvDayLine->at(1)->GetDate(), 20230120);
-		EXPECT_EQ(pvDayLine->at(1)->GetOpen(), 2600);
-		EXPECT_EQ(pvDayLine->at(1)->GetClose(), 2620);
-		EXPECT_EQ(pvDayLine->at(1)->GetHigh(), 2620);
-		EXPECT_EQ(pvDayLine->at(1)->GetLow(), 2590);
-		EXPECT_EQ(pvDayLine->at(1)->GetLastClose(), 2600) << "第二个数据使用前一天的收盘数据";
-		EXPECT_EQ(pvDayLine->at(1)->GetVolume(), 10073500);
+		EXPECT_EQ(pvDayLine->at(0).GetStockSymbol(), "600601.SS") << "此时使用标准股票代码形式";
+		EXPECT_EQ(pvDayLine->at(0).GetDate(), 20230119);
+		EXPECT_EQ(pvDayLine->at(0).GetOpen(), 2550);
+		EXPECT_EQ(pvDayLine->at(0).GetClose(), 2600);
+		EXPECT_EQ(pvDayLine->at(0).GetHigh(), 2610);
+		EXPECT_EQ(pvDayLine->at(0).GetLow(), 2550);
+		EXPECT_EQ(pvDayLine->at(0).GetLastClose(), 0) << "第一个数据没有昨收盘数据";
+		EXPECT_EQ(pvDayLine->at(0).GetVolume(), 8616200);
+		EXPECT_EQ(pvDayLine->at(1).GetStockSymbol(), "600601.SS") << "此时使用标准股票代码形式";
+		EXPECT_EQ(pvDayLine->at(1).GetDate(), 20230120);
+		EXPECT_EQ(pvDayLine->at(1).GetOpen(), 2600);
+		EXPECT_EQ(pvDayLine->at(1).GetClose(), 2620);
+		EXPECT_EQ(pvDayLine->at(1).GetHigh(), 2620);
+		EXPECT_EQ(pvDayLine->at(1).GetLow(), 2590);
+		EXPECT_EQ(pvDayLine->at(1).GetLastClose(), 2600) << "第二个数据使用前一天的收盘数据";
+		EXPECT_EQ(pvDayLine->at(1).GetVolume(), 10073500);
 	}
 
 	TEST_F(jsonParseTest, TestIsTengxunRTDataInvalid) {

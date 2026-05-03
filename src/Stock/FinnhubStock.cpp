@@ -428,8 +428,7 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::UpdateSECFilingsDB() const {
-	ASSERT(!m_pvSECFilings->empty());
-	const long lSize = static_cast<long>(m_pvSECFilings->size());
+	const long lSize = static_cast<long>(m_vSECFilings.size());
 	if (!m_strSymbol.empty()) {
 		CSECFiling SECFilings;
 		CSetSECFilings setSECFilings;
@@ -442,7 +441,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		setSECFilings.Open();
 		setSECFilings.m_pDatabase->BeginTrans();
 		while (!setSECFilings.IsEOF()) {
-			SECFilings = m_pvSECFilings->at(lCurrentPos);
+			SECFilings = m_vSECFilings.at(lCurrentPos);
 			while (!setSECFilings.IsEOF() && SECFilings.m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) > 0) {
 				setSECFilings.MoveNext();
 			}
@@ -453,7 +452,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 			if (++lCurrentPos == lSize) break;
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
-			SECFilings = m_pvSECFilings->at(i);
+			SECFilings = m_vSECFilings.at(i);
 			SECFilings.Append(setSECFilings);
 		}
 		setSECFilings.m_pDatabase->CommitTrans();
@@ -522,6 +521,8 @@ void CFinnhubStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 
 void CFinnhubStock::UpdateEPSSurprise(const CEPSSurprisesPtr& pvEPSSurprise) {
 	m_vEPSSurprise.resize(0);
+	m_vEPSSurprise.reserve(500);
+
 	for (auto& p : *pvEPSSurprise) {
 		m_vEPSSurprise.push_back(p);
 	}
@@ -541,7 +542,7 @@ void CFinnhubStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CFinnhubStock::HaveNewDayLineData() const {
+bool CFinnhubStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate())
 		|| (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate()))
@@ -655,6 +656,15 @@ bool CFinnhubStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 		m_fUpdateFinnhubInsiderSentiment = true;
 	}
 	return m_fUpdateFinnhubInsiderSentiment;
+}
+
+void CFinnhubStock::SetSECFilings(const CSECFilingsPtr& pv) {
+	m_vSECFilings.resize(0);
+	m_vSECFilings.reserve(500);
+
+	for (const auto& secFiling : *pv) {
+		m_vSECFilings.push_back(secFiling);
+	}
 }
 
 long CFinnhubStock::GetProfileUpdateDate() {

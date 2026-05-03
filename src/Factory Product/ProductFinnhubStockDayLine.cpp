@@ -29,13 +29,13 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
 	pStock->SetUpdateDayLine(false);
 	long lastClose = 0;
-	for (const auto& pDayLine : *pvDayLine) {
-		pDayLine->SetExchange(pStock->GetExchangeCode());
-		pDayLine->SetStockSymbol(pStock->GetSymbol());
-		const auto lTemp = gl_pWorldMarket->ConvertToDate(pDayLine->GetMarketTime());
-		pDayLine->SetDate(lTemp);
-		if ((lastClose != 0) && (pDayLine->GetLastClose() == 0)) pDayLine->SetLastClose(lastClose);
-		lastClose = pDayLine->GetClose();
+	for (auto& dayLine : *pvDayLine) {
+		dayLine.SetExchange(pStock->GetExchangeCode());
+		dayLine.SetStockSymbol(pStock->GetSymbol());
+		const auto lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTime());
+		dayLine.SetDate(lTemp);
+		if ((lastClose != 0) && (dayLine.GetLastClose() == 0)) dayLine.SetLastClose(lastClose);
+		lastClose = dayLine.GetClose();
 	}
 	if (!pvDayLine->empty()) {
 		pStock->UpdateDayLine(pvDayLine);
@@ -53,9 +53,11 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebDataPtr& pWebData) {
-	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+	auto pvDayLine = make_shared<vector<CDayLine>>();
+	pvDayLine->reserve(7500); // 预先分配空间，避免频繁扩容。一般来说，日线数据不会超过1000条。
+
 	nlohmannJson js2;
-	CDayLinePtr pDayLine = nullptr;
+	CDayLine pDayLine;
 	string sError;
 	nlohmannJson js;
 
@@ -83,8 +85,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebData
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = jsonGetLongLong(it);
-			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetTime(tTemp);
+			pDayLine.SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
@@ -99,36 +100,31 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebData
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetClose(dTemp * 1000);
+			pvDayLine->at(i++).SetClose(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "o");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetOpen(dTemp * 1000);
+			pvDayLine->at(i++).SetOpen(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "h");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetHigh(dTemp * 1000);
+			pvDayLine->at(i++).SetHigh(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "l");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetLow(dTemp * 1000);
+			pvDayLine->at(i++).SetLow(dTemp * 1000);
 		}
 		js2 = jsonGetChild(js, "v");
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			llTemp = jsonGetLongLong(it);
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetVolume(llTemp);
+			pvDayLine->at(i++).SetVolume(llTemp);
 		}
 	} catch (nlohmannJson::exception& e) { ReportJSonErrorToSystemMessage("Finnhub Stock Candle Error#3 " + GetInquiryFunction(), e.what()); }
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。

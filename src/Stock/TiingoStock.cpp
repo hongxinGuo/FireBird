@@ -120,7 +120,7 @@ void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
 
 void CTiingoStock::UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine) {
 	m_dataDayLine.Unload();
-	for (const auto& p : *vTempDayLine) {
+	for (auto& p : *vTempDayLine) {
 		m_dataDayLine.Add(p);
 	}
 	m_dataDayLine.SetDataLoaded(true);
@@ -294,30 +294,30 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 void CTiingoStock::CreateWeekLine() {
 	ASSERT(m_dataDayLine.IsDataLoaded());
 	size_t index = 0;
-	CTiingoCandleLinePtr pWeekLine = nullptr;
+	CTiingoCandleLine weekLine;
 	size_t dayLineSize = m_dataDayLine.Size();
 	long lastClose = 0;
 	while (index < dayLineSize) {
+		weekLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index);
 		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
-		pWeekLine = make_shared<CTiingoCandleLine>();
-		pWeekLine->SetDate(pDayLine->GetDate());
-		pWeekLine->SetLastClose(lastClose);
-		pWeekLine->SetOpen(pDayLine->GetOpen());
-		pWeekLine->SetLow(pDayLine->GetLow());
+		weekLine.SetDate(pDayLine->GetDate());
+		weekLine.SetLastClose(lastClose);
+		weekLine.SetOpen(pDayLine->GetOpen());
+		weekLine.SetLow(pDayLine->GetLow());
 		do {
-			if (pDayLine->GetHigh() > pWeekLine->GetHigh()) pWeekLine->SetHigh(pDayLine->GetHigh());
-			if (pDayLine->GetLow() < pWeekLine->GetLow()) pWeekLine->SetLow(pDayLine->GetLow());
-			pWeekLine->SetVolume(pWeekLine->GetVolume() + pDayLine->GetVolume());
-			pWeekLine->SetAmount(pWeekLine->GetAmount() + pDayLine->GetAmount());
-			pWeekLine->SetClose(pDayLine->GetClose());
+			if (pDayLine->GetHigh() > weekLine.GetHigh()) weekLine.SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < weekLine.GetLow()) weekLine.SetLow(pDayLine->GetLow());
+			weekLine.SetVolume(weekLine.GetVolume() + pDayLine->GetVolume());
+			weekLine.SetAmount(weekLine.GetAmount() + pDayLine->GetAmount());
+			weekLine.SetClose(pDayLine->GetClose());
 			index++;
 			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
 			else break;
 			if (pDayLine->GetDate() >= lCurrentEndDate) break;
 		} while (true);
-		lastClose = pWeekLine->GetClose();
-		if (pWeekLine->GetClose() > 0) m_dataWeekLine.Add(pWeekLine); // 有数据才存储
+		lastClose = weekLine.GetClose();
+		if (weekLine.GetClose() > 0) m_dataWeekLine.Add(weekLine); // 有数据才存储
 	}
 
 	m_dataWeekLine.SetDataLoaded(true);
@@ -326,28 +326,27 @@ void CTiingoStock::CreateWeekLine() {
 void CTiingoStock::CreateMonthLine() {
 	ASSERT(m_dataDayLine.IsDataLoaded());
 	size_t index = 0;
-	CTiingoCandleLinePtr pMonthLine = nullptr;
+	CTiingoCandleLine monthLine;
 	size_t monthLineSize = m_dataDayLine.Size();
 	while (index < monthLineSize) {
 		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
-		pMonthLine = make_shared<CTiingoCandleLine>();
-		pMonthLine->SetDate(pDayLine->GetDate());
-		pMonthLine->SetOpen(pDayLine->GetOpen());
-		pMonthLine->SetLow(pDayLine->GetLow());
+		monthLine.SetDate(pDayLine->GetDate());
+		monthLine.SetOpen(pDayLine->GetOpen());
+		monthLine.SetLow(pDayLine->GetLow());
 		do {
-			if (pDayLine->GetHigh() > pMonthLine->GetHigh()) pMonthLine->SetHigh(pDayLine->GetHigh());
-			if (pDayLine->GetLow() < pMonthLine->GetLow()) pMonthLine->SetLow(pDayLine->GetLow());
-			pMonthLine->SetVolume(pMonthLine->GetVolume() + pDayLine->GetVolume());
-			pMonthLine->SetAmount(pMonthLine->GetAmount() + pDayLine->GetAmount());
-			pMonthLine->SetClose(pDayLine->GetClose());
+			if (pDayLine->GetHigh() > monthLine.GetHigh()) monthLine.SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < monthLine.GetLow()) monthLine.SetLow(pDayLine->GetLow());
+			monthLine.SetVolume(monthLine.GetVolume() + pDayLine->GetVolume());
+			monthLine.SetAmount(monthLine.GetAmount() + pDayLine->GetAmount());
+			monthLine.SetClose(pDayLine->GetClose());
 			if (index < monthLineSize) pDayLine = m_dataDayLine.GetData(index);
 			else break;
 			if (pDayLine->GetDate() < lCurrentEndDate) index++;
 			else break;
 		} while (true);
 
-		if (pMonthLine->GetClose() > 0) m_dataMonthLine.Add(pMonthLine); // 有数据才存储
+		if (monthLine.GetClose() > 0) m_dataMonthLine.Add(monthLine); // 有数据才存储
 	}
 
 	m_dataMonthLine.SetDataLoaded(true);
@@ -375,7 +374,7 @@ void CTiingoStock::RebuildStockSplitDB() {
 	}
 }
 
-bool CTiingoStock::HaveNewDayLineData() const {
+bool CTiingoStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate())
 		|| (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate()))
@@ -783,7 +782,7 @@ size_t CTiingoStock::FindCurrent52WeekHighPos(size_t beginPos, size_t endPos, do
 	return pos;
 }
 
-double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) const {
+double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) {
 	double dRatio = 1;
 	for (auto index = beginPos; index < endPos; index++) {
 		auto splitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();

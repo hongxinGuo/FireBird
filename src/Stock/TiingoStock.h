@@ -126,8 +126,8 @@ public:
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	bool HaveDayLine(const long lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
-	CTiingoCandleLinePtr GetDayLine(const size_t lIndex) const { return m_dataDayLine.GetData(lIndex); }
-	CTiingoCandleLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
+	CTiingoCandleLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
+	CTiingoCandleLine* GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
 
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
@@ -150,11 +150,11 @@ public:
 	void CreateWeekLine();
 	void CreateMonthLine();
 
-	void CalculateDayLineMA(const int length) const { m_dataDayLine.CalculateMA(length); }
+	void CalculateDayLineMA(const int length) { m_dataDayLine.CalculateMA(length); }
 
 	void RebuildStockSplitDB() override;
 
-	bool HaveNewDayLineData() const;
+	bool HaveNewDayLineData(); //todo 移至VirtualStock中，合并其他股票类型的同名函数
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckDayLineUpdateStatus(long llTodayDate);
@@ -199,7 +199,7 @@ public:
 	void FindAll52WeekHighDate(size_t beginPos, size_t endPos);
 	size_t FindCurrent52WeekLowPos(size_t beginPos, size_t endPos, double& value) const;
 	size_t FindCurrent52WeekHighPos(size_t beginPos, size_t endPos, double& value) const;
-	double CalculateSplitFactor(size_t beginPos, size_t endPos) const;
+	double CalculateSplitFactor(size_t beginPos, size_t endPos);
 	void AdjustedStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize);
 	int IsLowOrHigh(size_t index, double dClose) const;
 

@@ -38,13 +38,13 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CDataForexDayLineTest, TestSaveDB) {
-		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		const CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200411); // 此日为星期六，新数据
-		pDayLine->SetStockSymbol("OANDA:AUD_SGD");
-		pDayLine->SetClose(100);
-		pvDayLine->push_back(pDayLine);
+		CDayLine dayLine;
+		dayLine.SetDate(20200411); // 此日为星期六，新数据
+		dayLine.SetStockSymbol("OANDA:AUD_SGD");
+		dayLine.SetClose(100);
+		pvDayLine->push_back(dayLine);
 		m_dataForexDayLine.UpdateData(pvDayLine);
 
 		m_dataForexDayLine.SaveDB("OANDA:AUD_SGD");
