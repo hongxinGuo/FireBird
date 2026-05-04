@@ -52,7 +52,6 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 	pvDayLine->reserve(1000); // 预先分配空间，避免频繁扩容。一般来说，外汇的日线数据不会超过1000条。
 
 	nlohmannJson js2;
-	CDayLine dayLine;
 	string sError;
 	nlohmannJson js;
 
@@ -75,6 +74,7 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 		return pvDayLine;
 	}
 	try {
+		CDayLine dayLine;
 		time_t tTemp;
 		long lTemp;
 		js2 = jsonGetChild(js, "t");
@@ -84,6 +84,7 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 			lTemp = gl_pWorldMarket->ConvertToDate(tTemp);
 			dayLine.SetDate(lTemp);
 			pvDayLine->push_back(dayLine);
+			dayLine.Reset();
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Forex Candle missing 't' ", e.what());

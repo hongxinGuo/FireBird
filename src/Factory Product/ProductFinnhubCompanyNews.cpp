@@ -80,26 +80,27 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 	try {
 		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			CFinnhubCompanyNews pCompanyNews;
+			CFinnhubCompanyNews companyNews;
 			s = jsonGetString(it, "category");
-			if (!s.empty()) pCompanyNews.m_strCategory = s;
+			if (!s.empty()) companyNews.m_strCategory = s;
 			const auto dateTime = jsonGetLongLong(it, "datetime");
-			pCompanyNews.m_llDateTime = ConvertToDateTime(dateTime, 0);
+			companyNews.m_llDateTime = ConvertToDateTime(dateTime, 0);
 			s = jsonGetString(it, "headline");
-			if (!s.empty()) pCompanyNews.m_strHeadLine = s;
-			pCompanyNews.m_iNewsID = jsonGetInt(it, "id");
+			if (!s.empty()) companyNews.m_strHeadLine = s;
+			companyNews.m_iNewsID = jsonGetInt(it, "id");
 			s = jsonGetString(it, "image");
-			if (!s.empty()) pCompanyNews.m_strImage = s;
+			if (!s.empty()) companyNews.m_strImage = s;
 			//if (s.size() > 0) pCompanyNews->m_strImage = s;
 			s = jsonGetString(it, "related");
-			if (!s.empty()) pCompanyNews.m_strRelatedSymbol = s;
+			if (!s.empty()) companyNews.m_strRelatedSymbol = s;
 			s = jsonGetString(it, "source");
-			if (!s.empty()) pCompanyNews.m_strSource = s;
+			if (!s.empty()) companyNews.m_strSource = s;
 			s = jsonGetString(it, "summary");
-			if (!s.empty()) pCompanyNews.m_strSummary = s;
+			if (!s.empty()) companyNews.m_strSummary = s;
 			s = jsonGetString(it, "url");
-			if (!s.empty()) pCompanyNews.m_strURL = s;
-			pvFinnhubCompanyNews->push_back(pCompanyNews);
+			if (!s.empty()) companyNews.m_strURL = s;
+			pvFinnhubCompanyNews->push_back(companyNews);
+			companyNews.Reset();
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Stock News ", e.what());

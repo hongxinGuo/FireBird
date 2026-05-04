@@ -4,6 +4,10 @@
 #include "CharSetTransfer.h"
 
 CSECFiling::CSECFiling() {
+	Reset();
+}
+
+void CSECFiling::Reset() {
 	m_strSymbol = " ";
 	m_strAccessNumber = " ";
 	m_strFilingURL = " ";
@@ -13,7 +17,6 @@ CSECFiling::CSECFiling() {
 	m_iFiledDate = 0;
 	m_iCIK = 0;
 }
-
 void CSECFiling::Append(CSetSECFilings& setSECFiling) const {
 	setSECFiling.AddNew();
 	setSECFiling.m_Symbol = m_strSymbol.c_str();

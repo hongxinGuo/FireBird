@@ -425,6 +425,7 @@ bool CChinaStock::CreateMonthLine() {
 	CMonthLine monthLine;
 	size_t monthLineSize = m_dataDayLine.Size();
 	while (index < monthLineSize) {
+		monthLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
 		monthLine.SetDate(pDayLine->GetDate());
@@ -477,14 +478,15 @@ bool CChinaStock::CreateWeekLine2(long lStartDate) {
 	ASSERT(IsDayLineLoaded());
 	ASSERT(m_dataDayLine.Size() > 0);
 	long i = 0;
-	CWeekLine weekLine;
 
 	m_dataWeekLine.Unload();
 	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetDate() < lStartDate)) {
 		i++;
 	}
 	if (i < m_dataDayLine.Size()) {
+		CWeekLine weekLine;
 		do {
+			weekLine.Reset();
 			weekLine = m_dataDayLine.CreateNewWeekLine(i);
 			m_dataWeekLine.Add(weekLine);
 		} while (i < m_dataDayLine.Size());
@@ -500,6 +502,7 @@ bool CChinaStock::CreateWeekLine(long lStartDate) {
 	CTiingoCandleLine weekLine;
 	size_t dayLineSize = m_dataDayLine.Size();
 	while (index < dayLineSize) {
+		weekLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
 		weekLine.SetDate(pDayLine->GetDate());

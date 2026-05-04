@@ -92,8 +92,7 @@ bool CVirtualDataHistoryCandle::UpdateBasicDB(CVirtualSetHistoryCandle* pSetHist
 
 bool CVirtualDataHistoryCandle::LoadBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle) {
 	if (gl_systemConfiguration.IsWorkingMode())
-		ASSERT(!m_fBasicDataLoaded);
-	ASSERT(pSetHistoryCandle->IsOpen());
+		ASSERT(pSetHistoryCandle->IsOpen());
 
 	Unload(); // 卸载之前的日线
 	// 装入DayLine数据
@@ -105,7 +104,6 @@ bool CVirtualDataHistoryCandle::LoadBasicDB(CVirtualSetHistoryCandle* pSetHistor
 		Add(historyCandle);
 		pSetHistoryCandle->MoveNext();
 	}
-	m_fBasicDataLoaded = true;
 	return true;
 }
 
@@ -176,8 +174,6 @@ void CVirtualDataHistoryCandle::Reset() {
 
 	m_fDataLoaded = false;
 	m_fDatabaseTodayUpdated = false;
-
-	m_fBasicDataLoaded = false;
 }
 
 void CVirtualDataHistoryCandle::CalculateMA(size_t length) {

@@ -660,7 +660,7 @@ bool CFinnhubStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 
 void CFinnhubStock::SetSECFilings(const CSECFilingsPtr& pv) {
 	m_vSECFilings.resize(0);
-	m_vSECFilings.reserve(500);
+	m_vSECFilings.reserve(100);
 
 	for (const auto& secFiling : *pv) {
 		m_vSECFilings.push_back(secFiling);

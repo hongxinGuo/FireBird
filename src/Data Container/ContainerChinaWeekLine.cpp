@@ -46,8 +46,6 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 	CSetWeekLineInfo setWeekLineBasicInfo;
 
-	ASSERT(!m_fBasicDataLoaded);
-
 	// 装入WeekLine数据
 	setWeekLineBasicInfo.m_strFilter = "[Symbol] = '";
 	setWeekLineBasicInfo.m_strFilter += strStockCode.c_str();
@@ -59,8 +57,6 @@ bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 
 	CalculateRSIndex0();
 	m_fDataLoaded = true;
-
-	ASSERT(!m_fBasicDataLoaded);
 
 	return true;
 }

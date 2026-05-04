@@ -14,6 +14,8 @@ public:
 	CSECFiling& operator=(CSECFiling&&) = default;
 	~CSECFiling() = default;
 
+	void Reset();
+
 	void Append(CSetSECFilings& setSECFiling) const;
 	void Load(const CSetSECFilings& setSECFiling);
 

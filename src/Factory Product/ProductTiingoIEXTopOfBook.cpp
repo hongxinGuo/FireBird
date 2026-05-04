@@ -43,11 +43,11 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	time_t ttNewestTradeDay = gl_pWorldMarket->TransferToUTCTime(lNewestTradeDay, 0); //使用当日数据
 	if (pvTiingoIEXTopOFBook->empty()) return;
 	TRACE(_T("Tiingo IEX TopOfBook number: %d\n"), pvTiingoIEXTopOFBook->size());
-	for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
-		if (pIEXTopOFBook->m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
-		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
-		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
-		pTiingoStock->UpdateRTData(pIEXTopOFBook);
+	for (auto& IEXTopOFBook : *pvTiingoIEXTopOFBook) {
+		if (IEXTopOFBook.m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
+		if (!gl_dataContainerTiingoStock.IsSymbol(IEXTopOFBook.m_strTicker)) continue; // 只更新已有代码
+		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(IEXTopOFBook.m_strTicker);
+		pTiingoStock->UpdateRTData(IEXTopOFBook);
 		i++;
 	}
 	TRACE("Tiingo IEX active number: %d\n", i);
@@ -101,8 +101,7 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData) {
-	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
-	CTiingoIEXTopOfBookPtr pIEXLastTopOFBook = nullptr;
+	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBook>>();
 	if (!IsValidData(pWebData)) return pvTiingoIEXLastTopOFBook;
 
 	try {
@@ -115,41 +114,41 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 
 		int iCount = 0;
 		for (auto item : doc) {
+			CTiingoIEXTopOfBook IEXLastTopOFBook;
 			CTiingoStock stock;
 			auto itemValue = item.value();
-			pIEXLastTopOFBook = nullptr;
-			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
 			try {
 				s1 = simdjsonGetStringView(itemValue, "ticker");
-				pIEXLastTopOFBook->m_strTicker = s1;
+				IEXLastTopOFBook.m_strTicker = s1;
 				s1 = simdjsonGetStringView(itemValue, "timestamp");
 				ss.clear();
 				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_timeStamp);
+				chrono::from_stream(ss, "%FT%T%Ez", IEXLastTopOFBook.m_timeStamp);
 				s1 = simdjsonGetStringView(itemValue, "lastSaleTimestamp");
 				ss.clear();
 				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_lastSale);
+				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook.m_lastSale);
 				s1 = simdjsonGetStringView(itemValue, "quoteTimestamp");
 				ss.clear();
 				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_quote);
+				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook.m_quote);
 			} catch (simdjson_error& error) {
 				ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
 			}
 
-			pIEXLastTopOFBook->m_lHigh = simdjsonGetDouble(itemValue, "high") * stock.GetRatio();
-			pIEXLastTopOFBook->m_lLow = simdjsonGetDouble(itemValue, "low") * stock.GetRatio();
-			pIEXLastTopOFBook->m_lLastClose = simdjsonGetDouble(itemValue, "prevClose") * stock.GetRatio();
-			pIEXLastTopOFBook->m_lOpen = simdjsonGetDouble(itemValue, "open") * stock.GetRatio();
-			pIEXLastTopOFBook->m_lNew = simdjsonGetDouble(itemValue, "last") * stock.GetRatio();
+			IEXLastTopOFBook.m_lHigh = simdjsonGetDouble(itemValue, "high") * stock.GetRatio();
+			IEXLastTopOFBook.m_lLow = simdjsonGetDouble(itemValue, "low") * stock.GetRatio();
+			IEXLastTopOFBook.m_lLastClose = simdjsonGetDouble(itemValue, "prevClose") * stock.GetRatio();
+			IEXLastTopOFBook.m_lOpen = simdjsonGetDouble(itemValue, "open") * stock.GetRatio();
+			IEXLastTopOFBook.m_lNew = simdjsonGetDouble(itemValue, "last") * stock.GetRatio();
 			try {
-				pIEXLastTopOFBook->m_llVolume = simdjsonGetDouble(itemValue, "volume");
+				IEXLastTopOFBook.m_llVolume = simdjsonGetDouble(itemValue, "volume");
 			} catch (simdjson_error& error) {
 				ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
 			}
 
-			pvTiingoIEXLastTopOFBook->push_back(pIEXLastTopOFBook);
+			pvTiingoIEXLastTopOFBook->push_back(IEXLastTopOFBook);
+			IEXLastTopOFBook.Reset();
 			iCount++;
 		}
 	} catch (simdjson_error& error) {

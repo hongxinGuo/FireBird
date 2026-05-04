@@ -3,7 +3,835 @@
 
 #include "CharSetTransfer.h"
 
+CBasicFinancialOfSeason::CBasicFinancialOfSeason() {
+	Reset();
+}
+
+CBasicFinancialOfSeason::CBasicFinancialOfSeason(const CBasicFinancialOfSeason& other) {
+	m_cashRatio = other.m_cashRatio;
+	m_currentRatio = other.m_currentRatio;
+	m_ebitPerShare = other.m_ebitPerShare;
+	m_eps = other.m_eps;
+	m_grossMargin = other.m_grossMargin;
+	m_longtermDebtTotalAsset = other.m_longtermDebtTotalAsset;
+	m_longtermDebtTotalCapital = other.m_longtermDebtTotalCapital;
+	m_longtermDebtTotalEquity = other.m_longtermDebtTotalEquity;
+	m_netDebtToTotalCapital = other.m_netDebtToTotalCapital;
+	m_netDebtToTotalEquity = other.m_netDebtToTotalEquity;
+	m_netMargin = other.m_netMargin;
+	m_operatingMargin = other.m_operatingMargin;
+	m_pretaxMargin = other.m_pretaxMargin;
+	m_salesPerShare = other.m_salesPerShare;
+	m_sgaToSale = other.m_sgaToSale;
+	m_totalDebtToEquity = other.m_totalDebtToEquity;
+	m_totalDebtToTotalAsset = other.m_totalDebtToTotalAsset;
+	m_totalDebtToTotalCapital = other.m_totalDebtToTotalCapital;
+	m_totalRatio = other.m_totalRatio;
+}
+
+CBasicFinancialOfSeason::CBasicFinancialOfSeason(CBasicFinancialOfSeason&& other) noexcept {
+	m_cashRatio = std::move(other.m_cashRatio);
+	m_currentRatio = std::move(other.m_currentRatio);
+	m_ebitPerShare = std::move(other.m_ebitPerShare);
+	m_eps = std::move(other.m_eps);
+	m_grossMargin = std::move(other.m_grossMargin);
+	m_longtermDebtTotalAsset = std::move(other.m_longtermDebtTotalAsset);
+	m_longtermDebtTotalCapital = std::move(other.m_longtermDebtTotalCapital);
+	m_longtermDebtTotalEquity = std::move(other.m_longtermDebtTotalEquity);
+	m_netDebtToTotalCapital = std::move(other.m_netDebtToTotalCapital);
+	m_netDebtToTotalEquity = std::move(other.m_netDebtToTotalEquity);
+	m_netMargin = std::move(other.m_netMargin);
+	m_operatingMargin = std::move(other.m_operatingMargin);
+	m_pretaxMargin = std::move(other.m_pretaxMargin);
+	m_salesPerShare = std::move(other.m_salesPerShare);
+	m_sgaToSale = std::move(other.m_sgaToSale);
+	m_totalDebtToEquity = std::move(other.m_totalDebtToEquity);
+	m_totalDebtToTotalAsset = std::move(other.m_totalDebtToTotalAsset);
+	m_totalDebtToTotalCapital = std::move(other.m_totalDebtToTotalCapital);
+	m_totalRatio = std::move(other.m_totalRatio);
+}
+
+CBasicFinancialOfSeason& CBasicFinancialOfSeason::operator=(CBasicFinancialOfSeason&& other) noexcept {
+	m_cashRatio = std::move(other.m_cashRatio);
+	m_currentRatio = std::move(other.m_currentRatio);
+	m_ebitPerShare = std::move(other.m_ebitPerShare);
+	m_eps = std::move(other.m_eps);
+	m_grossMargin = std::move(other.m_grossMargin);
+	m_longtermDebtTotalAsset = std::move(other.m_longtermDebtTotalAsset);
+	m_longtermDebtTotalCapital = std::move(other.m_longtermDebtTotalCapital);
+	m_longtermDebtTotalEquity = std::move(other.m_longtermDebtTotalEquity);
+	m_netDebtToTotalCapital = std::move(other.m_netDebtToTotalCapital);
+	m_netDebtToTotalEquity = std::move(other.m_netDebtToTotalEquity);
+	m_netMargin = std::move(other.m_netMargin);
+	m_operatingMargin = std::move(other.m_operatingMargin);
+	m_pretaxMargin = std::move(other.m_pretaxMargin);
+	m_salesPerShare = std::move(other.m_salesPerShare);
+	m_sgaToSale = std::move(other.m_sgaToSale);
+	m_totalDebtToEquity = std::move(other.m_totalDebtToEquity);
+	m_totalDebtToTotalAsset = std::move(other.m_totalDebtToTotalAsset);
+	m_totalDebtToTotalCapital = std::move(other.m_totalDebtToTotalCapital);
+	m_totalRatio = std::move(other.m_totalRatio);
+	return *this;
+}
+CBasicFinancialOfSeason::~CBasicFinancialOfSeason() = default;
+
+void CBasicFinancialOfSeason::Reset() {
+	m_cashRatio.clear();
+	m_currentRatio.clear();
+	m_ebitPerShare.clear();
+	m_eps.clear();
+	m_grossMargin.clear();
+	m_longtermDebtTotalAsset.clear();
+	m_longtermDebtTotalCapital.clear();
+	m_longtermDebtTotalEquity.clear();
+	m_netDebtToTotalCapital.clear();
+	m_netDebtToTotalEquity.clear();
+	m_netMargin.clear();
+	m_operatingMargin.clear();
+	m_pretaxMargin.clear();
+	m_salesPerShare.clear();
+	m_sgaToSale.clear();
+	m_totalDebtToEquity.clear();
+	m_totalDebtToTotalAsset.clear();
+	m_totalDebtToTotalCapital.clear();
+	m_totalRatio.clear();
+}
+
 CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
+	Reset();
+}
+
+CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial(const CFinnhubStockBasicFinancial& other) {
+	m_symbol = other.m_symbol;
+	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
+	m_52WeekHigh = other.m_52WeekHigh;
+	m_52WeekHighDate = other.m_52WeekHighDate;
+	m_52WeekLow = other.m_52WeekLow;
+	m_52WeekLowDate = other.m_52WeekLowDate;
+	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
+	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
+	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
+	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
+	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
+	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
+	m_beta = other.m_beta;
+	m_bookValuePerShareAnnual = other.m_bookValuePerShareAnnual;
+	m_bookValuePerShareQuarterly = other.m_bookValuePerShareQuarterly;
+	m_bookValueShareGrowth5Y = other.m_bookValueShareGrowth5Y;
+	m_capitalSpendingGrowth5Y = other.m_capitalSpendingGrowth5Y;
+	m_cashFlowPerShareAnnual = other.m_cashFlowPerShareAnnual;
+	m_cashFlowPerShareTTM = other.m_cashFlowPerShareTTM;
+	m_cashPerSharePerShareAnnual = other.m_cashPerSharePerShareAnnual;
+	m_cashPerSharePerShareQuarterly = other.m_cashPerSharePerShareQuarterly;
+	m_currentDividendYieldTTM = other.m_currentDividendYieldTTM;
+	m_currentEV_freeCashFlowAnnual = other.m_currentEV_freeCashFlowAnnual;
+	m_currentEV_freeCashFlowTTM = other.m_currentEV_freeCashFlowTTM;
+	m_currentRatioAnnual = other.m_currentRatioAnnual;
+	m_currentRatioQuarterly = other.m_currentRatioQuarterly;
+	m_dividendGrowthRate5Y = other.m_dividendGrowthRate5Y;
+	m_dividendPerShare5Y = other.m_dividendPerShare5Y;
+	m_dividendPerShareAnnual = other.m_dividendPerShareAnnual;
+	m_dividendYield5Y = other.m_dividendYield5Y;
+	m_dividendYieldIndicatedAnnual = other.m_dividendYieldIndicatedAnnual;
+	m_dividendsPerShareTTM = other.m_dividendsPerShareTTM;
+	m_ebitdaCagr5Y = other.m_ebitdaCagr5Y;
+	m_ebitdaInterimCagr5Y = other.m_ebitdaInterimCagr5Y;
+	m_ebitdPerShareTTM = other.m_ebitdPerShareTTM;
+	m_epsBasicExclExtraItemsAnnual = other.m_epsBasicExclExtraItemsAnnual;
+	m_epsBasicExclExtraItemsTTM = other.m_epsBasicExclExtraItemsTTM;
+	m_epsExclExtraItemsAnnual = other.m_epsExclExtraItemsAnnual;
+	m_epsExclExtraItemsTTM = other.m_epsExclExtraItemsTTM;
+	m_epsGrowth3Y = other.m_epsGrowth3Y;
+	m_epsGrowth5Y = other.m_epsGrowth5Y;
+	m_epsGrowthQuarterlyYoy = other.m_epsGrowthQuarterlyYoy;
+	m_epsGrowthTTMYoy = other.m_epsGrowthTTMYoy;
+	m_epsInclExtraItemsAnnual = other.m_epsInclExtraItemsAnnual;
+	m_epsInclExtraItemsTTM = other.m_epsInclExtraItemsTTM;
+	m_epsNormalizedAnnual = other.m_epsNormalizedAnnual;
+	m_focfCagr5Y = other.m_focfCagr5Y;
+	m_freeCashFlowAnnual = other.m_freeCashFlowAnnual;
+	m_freeCashFlowPerShareTTM = other.m_freeCashFlowPerShareTTM;
+	m_freeCashFlowTTM = other.m_freeCashFlowTTM;
+	m_freeOperatingCashFlow_revenue5Y = other.m_freeOperatingCashFlow_revenue5Y;
+	m_freeOperatingCashFlow_revenueTTM = other.m_freeOperatingCashFlow_revenueTTM;
+
+	m_grossMargin5Y = other.m_grossMargin5Y;
+	m_grossMarginAnnual = other.m_grossMarginAnnual;
+	m_grossMarginTTM = other.m_grossMarginTTM;
+
+	m_inventoryTurnoverAnnual = other.m_inventoryTurnoverAnnual;
+	m_inventoryTurnoverTTM = other.m_inventoryTurnoverTTM;
+
+	m_longTermDebt_equityAnnual = other.m_longTermDebt_equityAnnual;
+	m_longTermDebt_equityQuarterly = other.m_longTermDebt_equityQuarterly;
+
+	m_marketCapitalization = other.m_marketCapitalization;
+	m_monthToDatePriceReturnDaily = other.m_monthToDatePriceReturnDaily;
+
+	m_netDebtAnnual = other.m_netDebtAnnual;
+	m_netDebtInterim = other.m_netDebtInterim;
+	m_netIncomeEmployeeAnnual = other.m_netIncomeEmployeeAnnual;
+	m_netIncomeEmployeeTTM = other.m_netIncomeEmployeeTTM;
+	m_netInterestCoverageAnnual = other.m_netInterestCoverageAnnual;
+	m_netInterestCoverageTTM = other.m_netInterestCoverageTTM;
+	m_netMarginGrowth5Y = other.m_netMarginGrowth5Y;
+	m_netProfitMargin5Y = other.m_netProfitMargin5Y;
+	m_netProfitMarginAnnual = other.m_netProfitMarginAnnual;
+	m_netProfitMarginTTM = other.m_netProfitMarginTTM;
+
+	m_operatingMargin5Y = other.m_operatingMargin5Y;
+	m_operatingMarginAnnual = other.m_operatingMarginAnnual;
+	m_operatingMarginTTM = other.m_operatingMarginTTM;
+
+	m_payoutRatioAnnual = other.m_payoutRatioAnnual;
+	m_payoutRatioTTM = other.m_payoutRatioTTM;
+	m_pbAnnual = other.m_pbAnnual;
+	m_pbQuarterly = other.m_pbQuarterly;
+	m_pcfShareTTM = other.m_pcfShareTTM;
+	m_peBasicExclExtraTTM = other.m_peBasicExclExtraTTM;
+	m_peExclExtraAnnual = other.m_peExclExtraAnnual;
+	m_peExclExtraHighTTM = other.m_peExclExtraHighTTM;
+	m_peExclExtraTTM = other.m_peExclExtraTTM;
+	m_peExclLowTTM = other.m_peExclLowTTM;
+	m_peInclExtraTTM = other.m_peInclExtraTTM;
+	m_peNormalizedAnnual = other.m_peNormalizedAnnual;
+	m_pfcfShareTTM = other.m_pfcfShareTTM;
+	m_pfcfShareAnnual = other.m_pfcfShareAnnual;
+	m_pretaxMargin5Y = other.m_pretaxMargin5Y;
+	m_pretaxMarginAnnual = other.m_pretaxMarginAnnual;
+	m_pretaxMarginTTM = other.m_pretaxMarginTTM;
+	m_priceRelativeToSP50013Week = other.m_priceRelativeToSP50013Week;
+	m_priceRelativeToSP50026Week = other.m_priceRelativeToSP50026Week;
+	m_priceRelativeToSP5004Week = other.m_priceRelativeToSP5004Week;
+	m_priceRelativeToSP50052Week = other.m_priceRelativeToSP50052Week;
+	m_priceRelativeToSP500Ytd = other.m_priceRelativeToSP500Ytd;
+	m_psAnnual = other.m_psAnnual;
+	m_psTTM = other.m_psTTM;
+	m_ptbvAnnual = other.m_ptbvAnnual;
+	m_ptbvQuarterly = other.m_ptbvQuarterly;
+
+	m_quickRatioAnnual = other.m_quickRatioAnnual;
+	m_quickRatioQuarterly = other.m_quickRatioQuarterly;
+	m_receivablesTurnoverAnnual = other.m_receivablesTurnoverAnnual;
+	m_receivablesTurnoverTTM = other.m_receivablesTurnoverTTM;
+	m_revenueEmployeeAnnual = other.m_revenueEmployeeAnnual;
+	m_revenueEmployeeTTM = other.m_revenueEmployeeTTM;
+	m_revenueGrowth5Y = other.m_revenueGrowth5Y;
+	m_revenueGrowth3Y = other.m_revenueGrowth3Y;
+	m_revenueGrowthQuarterlyYoy = other.m_revenueGrowthQuarterlyYoy;
+	m_revenueGrowthTTMYoy = other.m_revenueGrowthTTMYoy;
+	m_revenuePerShareAnnual = other.m_revenuePerShareAnnual;
+	m_revenuePerShareTTM = other.m_revenuePerShareTTM;
+	m_revenueShareGrowth5Y = other.m_revenueShareGrowth5Y;
+	m_roaRfy = other.m_roaRfy;
+	m_roaa5Y = other.m_roaa5Y;
+	m_roae5Y = other.m_roae5Y;
+	m_roaeTTM = other.m_roaeTTM;
+	m_roeRfy = other.m_roeRfy;
+	m_roeTTM = other.m_roeTTM;
+	m_roi5Y = other.m_roi5Y;
+	m_roiAnnual = other.m_roiAnnual;
+	m_roiTTM = other.m_roiTTM;
+
+	m_tangibleBookValuePerShareAnnual = other.m_tangibleBookValuePerShareAnnual;
+	m_tangibleBookValuePerShareQuarterly = other.m_tangibleBookValuePerShareQuarterly;
+	m_tbvCagr5Y = other.m_tbvCagr5Y;
+	m_totalDebt_totalEquityAnnual = other.m_totalDebt_totalEquityAnnual;
+	m_totalDebt_totalEquityQuarterly = other.m_totalDebt_totalEquityQuarterly;
+	m_totalDebtCagr5Y = other.m_totalDebtCagr5Y;
+
+	m_yearToDatePriceReturnDaily = other.m_yearToDatePriceReturnDaily;
+
+	m_annual.m_cashRatio = other.m_annual.m_cashRatio;
+	m_annual.m_currentRatio = other.m_annual.m_currentRatio;
+	m_annual.m_ebitPerShare = other.m_annual.m_ebitPerShare;
+	m_annual.m_eps = other.m_annual.m_eps;
+	m_annual.m_grossMargin = other.m_annual.m_grossMargin;
+	m_annual.m_longtermDebtTotalAsset = other.m_annual.m_longtermDebtTotalAsset;
+	m_annual.m_longtermDebtTotalCapital = other.m_annual.m_longtermDebtTotalCapital;
+	m_annual.m_longtermDebtTotalEquity = other.m_annual.m_longtermDebtTotalEquity;
+	m_annual.m_netDebtToTotalCapital = other.m_annual.m_netDebtToTotalCapital;
+	m_annual.m_netDebtToTotalEquity = other.m_annual.m_netDebtToTotalEquity;
+	m_annual.m_netMargin = other.m_annual.m_netMargin;
+	m_annual.m_operatingMargin = other.m_annual.m_operatingMargin;
+	m_annual.m_pretaxMargin = other.m_annual.m_pretaxMargin;
+	m_annual.m_salesPerShare = other.m_annual.m_salesPerShare;
+	m_annual.m_sgaToSale = other.m_annual.m_sgaToSale;
+	m_annual.m_totalDebtToEquity = other.m_annual.m_totalDebtToEquity;
+	m_annual.m_totalDebtToTotalAsset = other.m_annual.m_totalDebtToTotalAsset;
+	m_annual.m_totalDebtToTotalCapital = other.m_annual.m_totalDebtToTotalCapital;
+	m_annual.m_totalRatio = other.m_annual.m_totalRatio;
+
+	m_quarter.m_cashRatio = other.m_quarter.m_cashRatio;
+	m_quarter.m_currentRatio = other.m_quarter.m_currentRatio;
+	m_quarter.m_ebitPerShare = other.m_quarter.m_ebitPerShare;
+	m_quarter.m_eps = other.m_quarter.m_eps;
+	m_quarter.m_grossMargin = other.m_quarter.m_grossMargin;
+	m_quarter.m_longtermDebtTotalAsset = other.m_quarter.m_longtermDebtTotalAsset;
+	m_quarter.m_longtermDebtTotalCapital = other.m_quarter.m_longtermDebtTotalCapital;
+	m_quarter.m_longtermDebtTotalEquity = other.m_quarter.m_longtermDebtTotalEquity;
+	m_quarter.m_netDebtToTotalCapital = other.m_quarter.m_netDebtToTotalCapital;
+	m_quarter.m_netDebtToTotalEquity = other.m_quarter.m_netDebtToTotalEquity;
+	m_quarter.m_netMargin = other.m_quarter.m_netMargin;
+	m_quarter.m_operatingMargin = other.m_quarter.m_operatingMargin;
+	m_quarter.m_pretaxMargin = other.m_quarter.m_pretaxMargin;
+	m_quarter.m_salesPerShare = other.m_quarter.m_salesPerShare;
+	m_quarter.m_sgaToSale = other.m_quarter.m_sgaToSale;
+	m_quarter.m_totalDebtToEquity = other.m_quarter.m_totalDebtToEquity;
+	m_quarter.m_totalDebtToTotalAsset = other.m_quarter.m_totalDebtToTotalAsset;
+	m_quarter.m_totalDebtToTotalCapital = other.m_quarter.m_totalDebtToTotalCapital;
+	m_quarter.m_totalRatio = other.m_quarter.m_totalRatio;
+}
+CFinnhubStockBasicFinancial& CFinnhubStockBasicFinancial::operator=(const CFinnhubStockBasicFinancial& other) {
+	m_symbol = other.m_symbol;
+	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
+	m_52WeekHigh = other.m_52WeekHigh;
+	m_52WeekHighDate = other.m_52WeekHighDate;
+	m_52WeekLow = other.m_52WeekLow;
+	m_52WeekLowDate = other.m_52WeekLowDate;
+	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
+	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
+	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
+	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
+	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
+	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
+	m_beta = other.m_beta;
+	m_bookValuePerShareAnnual = other.m_bookValuePerShareAnnual;
+	m_bookValuePerShareQuarterly = other.m_bookValuePerShareQuarterly;
+	m_bookValueShareGrowth5Y = other.m_bookValueShareGrowth5Y;
+	m_capitalSpendingGrowth5Y = other.m_capitalSpendingGrowth5Y;
+	m_cashFlowPerShareAnnual = other.m_cashFlowPerShareAnnual;
+	m_cashFlowPerShareTTM = other.m_cashFlowPerShareTTM;
+	m_cashPerSharePerShareAnnual = other.m_cashPerSharePerShareAnnual;
+	m_cashPerSharePerShareQuarterly = other.m_cashPerSharePerShareQuarterly;
+	m_currentDividendYieldTTM = other.m_currentDividendYieldTTM;
+	m_currentEV_freeCashFlowAnnual = other.m_currentEV_freeCashFlowAnnual;
+	m_currentEV_freeCashFlowTTM = other.m_currentEV_freeCashFlowTTM;
+	m_currentRatioAnnual = other.m_currentRatioAnnual;
+	m_currentRatioQuarterly = other.m_currentRatioQuarterly;
+	m_dividendGrowthRate5Y = other.m_dividendGrowthRate5Y;
+	m_dividendPerShare5Y = other.m_dividendPerShare5Y;
+	m_dividendPerShareAnnual = other.m_dividendPerShareAnnual;
+	m_dividendYield5Y = other.m_dividendYield5Y;
+	m_dividendYieldIndicatedAnnual = other.m_dividendYieldIndicatedAnnual;
+	m_dividendsPerShareTTM = other.m_dividendsPerShareTTM;
+	m_ebitdaCagr5Y = other.m_ebitdaCagr5Y;
+	m_ebitdaInterimCagr5Y = other.m_ebitdaInterimCagr5Y;
+	m_ebitdPerShareTTM = other.m_ebitdPerShareTTM;
+	m_epsBasicExclExtraItemsAnnual = other.m_epsBasicExclExtraItemsAnnual;
+	m_epsBasicExclExtraItemsTTM = other.m_epsBasicExclExtraItemsTTM;
+	m_epsExclExtraItemsAnnual = other.m_epsExclExtraItemsAnnual;
+	m_epsExclExtraItemsTTM = other.m_epsExclExtraItemsTTM;
+	m_epsGrowth3Y = other.m_epsGrowth3Y;
+	m_epsGrowth5Y = other.m_epsGrowth5Y;
+	m_epsGrowthQuarterlyYoy = other.m_epsGrowthQuarterlyYoy;
+	m_epsGrowthTTMYoy = other.m_epsGrowthTTMYoy;
+	m_epsInclExtraItemsAnnual = other.m_epsInclExtraItemsAnnual;
+	m_epsInclExtraItemsTTM = other.m_epsInclExtraItemsTTM;
+	m_epsNormalizedAnnual = other.m_epsNormalizedAnnual;
+	m_focfCagr5Y = other.m_focfCagr5Y;
+	m_freeCashFlowAnnual = other.m_freeCashFlowAnnual;
+	m_freeCashFlowPerShareTTM = other.m_freeCashFlowPerShareTTM;
+	m_freeCashFlowTTM = other.m_freeCashFlowTTM;
+	m_freeOperatingCashFlow_revenue5Y = other.m_freeOperatingCashFlow_revenue5Y;
+	m_freeOperatingCashFlow_revenueTTM = other.m_freeOperatingCashFlow_revenueTTM;
+
+	m_grossMargin5Y = other.m_grossMargin5Y;
+	m_grossMarginAnnual = other.m_grossMarginAnnual;
+	m_grossMarginTTM = other.m_grossMarginTTM;
+
+	m_inventoryTurnoverAnnual = other.m_inventoryTurnoverAnnual;
+	m_inventoryTurnoverTTM = other.m_inventoryTurnoverTTM;
+
+	m_longTermDebt_equityAnnual = other.m_longTermDebt_equityAnnual;
+	m_longTermDebt_equityQuarterly = other.m_longTermDebt_equityQuarterly;
+
+	m_marketCapitalization = other.m_marketCapitalization;
+	m_monthToDatePriceReturnDaily = other.m_monthToDatePriceReturnDaily;
+
+	m_netDebtAnnual = other.m_netDebtAnnual;
+	m_netDebtInterim = other.m_netDebtInterim;
+	m_netIncomeEmployeeAnnual = other.m_netIncomeEmployeeAnnual;
+	m_netIncomeEmployeeTTM = other.m_netIncomeEmployeeTTM;
+	m_netInterestCoverageAnnual = other.m_netInterestCoverageAnnual;
+	m_netInterestCoverageTTM = other.m_netInterestCoverageTTM;
+	m_netMarginGrowth5Y = other.m_netMarginGrowth5Y;
+	m_netProfitMargin5Y = other.m_netProfitMargin5Y;
+	m_netProfitMarginAnnual = other.m_netProfitMarginAnnual;
+	m_netProfitMarginTTM = other.m_netProfitMarginTTM;
+
+	m_operatingMargin5Y = other.m_operatingMargin5Y;
+	m_operatingMarginAnnual = other.m_operatingMarginAnnual;
+	m_operatingMarginTTM = other.m_operatingMarginTTM;
+
+	m_payoutRatioAnnual = other.m_payoutRatioAnnual;
+	m_payoutRatioTTM = other.m_payoutRatioTTM;
+	m_pbAnnual = other.m_pbAnnual;
+	m_pbQuarterly = other.m_pbQuarterly;
+	m_pcfShareTTM = other.m_pcfShareTTM;
+	m_peBasicExclExtraTTM = other.m_peBasicExclExtraTTM;
+	m_peExclExtraAnnual = other.m_peExclExtraAnnual;
+	m_peExclExtraHighTTM = other.m_peExclExtraHighTTM;
+	m_peExclExtraTTM = other.m_peExclExtraTTM;
+	m_peExclLowTTM = other.m_peExclLowTTM;
+	m_peInclExtraTTM = other.m_peInclExtraTTM;
+	m_peNormalizedAnnual = other.m_peNormalizedAnnual;
+	m_pfcfShareTTM = other.m_pfcfShareTTM;
+	m_pfcfShareAnnual = other.m_pfcfShareAnnual;
+	m_pretaxMargin5Y = other.m_pretaxMargin5Y;
+	m_pretaxMarginAnnual = other.m_pretaxMarginAnnual;
+	m_pretaxMarginTTM = other.m_pretaxMarginTTM;
+	m_priceRelativeToSP50013Week = other.m_priceRelativeToSP50013Week;
+	m_priceRelativeToSP50026Week = other.m_priceRelativeToSP50026Week;
+	m_priceRelativeToSP5004Week = other.m_priceRelativeToSP5004Week;
+	m_priceRelativeToSP50052Week = other.m_priceRelativeToSP50052Week;
+	m_priceRelativeToSP500Ytd = other.m_priceRelativeToSP500Ytd;
+	m_psAnnual = other.m_psAnnual;
+	m_psTTM = other.m_psTTM;
+	m_ptbvAnnual = other.m_ptbvAnnual;
+	m_ptbvQuarterly = other.m_ptbvQuarterly;
+
+	m_quickRatioAnnual = other.m_quickRatioAnnual;
+	m_quickRatioQuarterly = other.m_quickRatioQuarterly;
+	m_receivablesTurnoverAnnual = other.m_receivablesTurnoverAnnual;
+	m_receivablesTurnoverTTM = other.m_receivablesTurnoverTTM;
+	m_revenueEmployeeAnnual = other.m_revenueEmployeeAnnual;
+	m_revenueEmployeeTTM = other.m_revenueEmployeeTTM;
+	m_revenueGrowth5Y = other.m_revenueGrowth5Y;
+	m_revenueGrowth3Y = other.m_revenueGrowth3Y;
+	m_revenueGrowthQuarterlyYoy = other.m_revenueGrowthQuarterlyYoy;
+	m_revenueGrowthTTMYoy = other.m_revenueGrowthTTMYoy;
+	m_revenuePerShareAnnual = other.m_revenuePerShareAnnual;
+	m_revenuePerShareTTM = other.m_revenuePerShareTTM;
+	m_revenueShareGrowth5Y = other.m_revenueShareGrowth5Y;
+	m_roaRfy = other.m_roaRfy;
+	m_roaa5Y = other.m_roaa5Y;
+	m_roae5Y = other.m_roae5Y;
+	m_roaeTTM = other.m_roaeTTM;
+	m_roeRfy = other.m_roeRfy;
+	m_roeTTM = other.m_roeTTM;
+	m_roi5Y = other.m_roi5Y;
+	m_roiAnnual = other.m_roiAnnual;
+	m_roiTTM = other.m_roiTTM;
+
+	m_tangibleBookValuePerShareAnnual = other.m_tangibleBookValuePerShareAnnual;
+	m_tangibleBookValuePerShareQuarterly = other.m_tangibleBookValuePerShareQuarterly;
+	m_tbvCagr5Y = other.m_tbvCagr5Y;
+	m_totalDebt_totalEquityAnnual = other.m_totalDebt_totalEquityAnnual;
+	m_totalDebt_totalEquityQuarterly = other.m_totalDebt_totalEquityQuarterly;
+	m_totalDebtCagr5Y = other.m_totalDebtCagr5Y;
+
+	m_yearToDatePriceReturnDaily = other.m_yearToDatePriceReturnDaily;
+
+	m_annual.m_cashRatio = other.m_annual.m_cashRatio;
+	m_annual.m_currentRatio = other.m_annual.m_currentRatio;
+	m_annual.m_ebitPerShare = other.m_annual.m_ebitPerShare;
+	m_annual.m_eps = other.m_annual.m_eps;
+	m_annual.m_grossMargin = other.m_annual.m_grossMargin;
+	m_annual.m_longtermDebtTotalAsset = other.m_annual.m_longtermDebtTotalAsset;
+	m_annual.m_longtermDebtTotalCapital = other.m_annual.m_longtermDebtTotalCapital;
+	m_annual.m_longtermDebtTotalEquity = other.m_annual.m_longtermDebtTotalEquity;
+	m_annual.m_netDebtToTotalCapital = other.m_annual.m_netDebtToTotalCapital;
+	m_annual.m_netDebtToTotalEquity = other.m_annual.m_netDebtToTotalEquity;
+	m_annual.m_netMargin = other.m_annual.m_netMargin;
+	m_annual.m_operatingMargin = other.m_annual.m_operatingMargin;
+	m_annual.m_pretaxMargin = other.m_annual.m_pretaxMargin;
+	m_annual.m_salesPerShare = other.m_annual.m_salesPerShare;
+	m_annual.m_sgaToSale = other.m_annual.m_sgaToSale;
+	m_annual.m_totalDebtToEquity = other.m_annual.m_totalDebtToEquity;
+	m_annual.m_totalDebtToTotalAsset = other.m_annual.m_totalDebtToTotalAsset;
+	m_annual.m_totalDebtToTotalCapital = other.m_annual.m_totalDebtToTotalCapital;
+	m_annual.m_totalRatio = other.m_annual.m_totalRatio;
+
+	m_quarter.m_cashRatio = other.m_quarter.m_cashRatio;
+	m_quarter.m_currentRatio = other.m_quarter.m_currentRatio;
+	m_quarter.m_ebitPerShare = other.m_quarter.m_ebitPerShare;
+	m_quarter.m_eps = other.m_quarter.m_eps;
+	m_quarter.m_grossMargin = other.m_quarter.m_grossMargin;
+	m_quarter.m_longtermDebtTotalAsset = other.m_quarter.m_longtermDebtTotalAsset;
+	m_quarter.m_longtermDebtTotalCapital = other.m_quarter.m_longtermDebtTotalCapital;
+	m_quarter.m_longtermDebtTotalEquity = other.m_quarter.m_longtermDebtTotalEquity;
+	m_quarter.m_netDebtToTotalCapital = other.m_quarter.m_netDebtToTotalCapital;
+	m_quarter.m_netDebtToTotalEquity = other.m_quarter.m_netDebtToTotalEquity;
+	m_quarter.m_netMargin = other.m_quarter.m_netMargin;
+	m_quarter.m_operatingMargin = other.m_quarter.m_operatingMargin;
+	m_quarter.m_pretaxMargin = other.m_quarter.m_pretaxMargin;
+	m_quarter.m_salesPerShare = other.m_quarter.m_salesPerShare;
+	m_quarter.m_sgaToSale = other.m_quarter.m_sgaToSale;
+	m_quarter.m_totalDebtToEquity = other.m_quarter.m_totalDebtToEquity;
+	m_quarter.m_totalDebtToTotalAsset = other.m_quarter.m_totalDebtToTotalAsset;
+	m_quarter.m_totalDebtToTotalCapital = other.m_quarter.m_totalDebtToTotalCapital;
+	m_quarter.m_totalRatio = other.m_quarter.m_totalRatio;
+	return *this;
+}
+CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial(CFinnhubStockBasicFinancial&& other) noexcept {
+	m_symbol = std::move(other.m_symbol);
+	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
+	m_52WeekHigh = other.m_52WeekHigh;
+	m_52WeekHighDate = other.m_52WeekHighDate;
+	m_52WeekLow = other.m_52WeekLow;
+	m_52WeekLowDate = other.m_52WeekLowDate;
+	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
+	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
+	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
+	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
+	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
+	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
+	m_beta = other.m_beta;
+	m_bookValuePerShareAnnual = other.m_bookValuePerShareAnnual;
+	m_bookValuePerShareQuarterly = other.m_bookValuePerShareQuarterly;
+	m_bookValueShareGrowth5Y = other.m_bookValueShareGrowth5Y;
+	m_capitalSpendingGrowth5Y = other.m_capitalSpendingGrowth5Y;
+	m_cashFlowPerShareAnnual = other.m_cashFlowPerShareAnnual;
+	m_cashFlowPerShareTTM = other.m_cashFlowPerShareTTM;
+	m_cashPerSharePerShareAnnual = other.m_cashPerSharePerShareAnnual;
+	m_cashPerSharePerShareQuarterly = other.m_cashPerSharePerShareQuarterly;
+	m_currentDividendYieldTTM = other.m_currentDividendYieldTTM;
+	m_currentEV_freeCashFlowAnnual = other.m_currentEV_freeCashFlowAnnual;
+	m_currentEV_freeCashFlowTTM = other.m_currentEV_freeCashFlowTTM;
+	m_currentRatioAnnual = other.m_currentRatioAnnual;
+	m_currentRatioQuarterly = other.m_currentRatioQuarterly;
+	m_dividendGrowthRate5Y = other.m_dividendGrowthRate5Y;
+	m_dividendPerShare5Y = other.m_dividendPerShare5Y;
+	m_dividendPerShareAnnual = other.m_dividendPerShareAnnual;
+	m_dividendYield5Y = other.m_dividendYield5Y;
+	m_dividendYieldIndicatedAnnual = other.m_dividendYieldIndicatedAnnual;
+	m_dividendsPerShareTTM = other.m_dividendsPerShareTTM;
+	m_ebitdaCagr5Y = other.m_ebitdaCagr5Y;
+	m_ebitdaInterimCagr5Y = other.m_ebitdaInterimCagr5Y;
+	m_ebitdPerShareTTM = other.m_ebitdPerShareTTM;
+	m_epsBasicExclExtraItemsAnnual = other.m_epsBasicExclExtraItemsAnnual;
+	m_epsBasicExclExtraItemsTTM = other.m_epsBasicExclExtraItemsTTM;
+	m_epsExclExtraItemsAnnual = other.m_epsExclExtraItemsAnnual;
+	m_epsExclExtraItemsTTM = other.m_epsExclExtraItemsTTM;
+	m_epsGrowth3Y = other.m_epsGrowth3Y;
+	m_epsGrowth5Y = other.m_epsGrowth5Y;
+	m_epsGrowthQuarterlyYoy = other.m_epsGrowthQuarterlyYoy;
+	m_epsGrowthTTMYoy = other.m_epsGrowthTTMYoy;
+	m_epsInclExtraItemsAnnual = other.m_epsInclExtraItemsAnnual;
+	m_epsInclExtraItemsTTM = other.m_epsInclExtraItemsTTM;
+	m_epsNormalizedAnnual = other.m_epsNormalizedAnnual;
+	m_focfCagr5Y = other.m_focfCagr5Y;
+	m_freeCashFlowAnnual = other.m_freeCashFlowAnnual;
+	m_freeCashFlowPerShareTTM = other.m_freeCashFlowPerShareTTM;
+	m_freeCashFlowTTM = other.m_freeCashFlowTTM;
+	m_freeOperatingCashFlow_revenue5Y = other.m_freeOperatingCashFlow_revenue5Y;
+	m_freeOperatingCashFlow_revenueTTM = other.m_freeOperatingCashFlow_revenueTTM;
+
+	m_grossMargin5Y = other.m_grossMargin5Y;
+	m_grossMarginAnnual = other.m_grossMarginAnnual;
+	m_grossMarginTTM = other.m_grossMarginTTM;
+	m_inventoryTurnoverAnnual = other.m_inventoryTurnoverAnnual;
+	m_inventoryTurnoverTTM = other.m_inventoryTurnoverTTM;
+
+	m_longTermDebt_equityAnnual = other.m_longTermDebt_equityAnnual;
+	m_longTermDebt_equityQuarterly = other.m_longTermDebt_equityQuarterly;
+
+	m_marketCapitalization = other.m_marketCapitalization;
+	m_monthToDatePriceReturnDaily = other.m_monthToDatePriceReturnDaily;
+
+	m_netDebtAnnual = other.m_netDebtAnnual;
+	m_netDebtInterim = other.m_netDebtInterim;
+	m_netIncomeEmployeeAnnual = other.m_netIncomeEmployeeAnnual;
+	m_netIncomeEmployeeTTM = other.m_netIncomeEmployeeTTM;
+	m_netInterestCoverageAnnual = other.m_netInterestCoverageAnnual;
+	m_netInterestCoverageTTM = other.m_netInterestCoverageTTM;
+	m_netMarginGrowth5Y = other.m_netMarginGrowth5Y;
+	m_netProfitMargin5Y = other.m_netProfitMargin5Y;
+	m_netProfitMarginAnnual = other.m_netProfitMarginAnnual;
+	m_netProfitMarginTTM = other.m_netProfitMarginTTM;
+
+	m_operatingMargin5Y = other.m_operatingMargin5Y;
+	m_operatingMarginAnnual = other.m_operatingMarginAnnual;
+	m_operatingMarginTTM = other.m_operatingMarginTTM;
+
+	m_payoutRatioAnnual = other.m_payoutRatioAnnual;
+	m_payoutRatioTTM = other.m_payoutRatioTTM;
+	m_pbAnnual = other.m_pbAnnual;
+	m_pbQuarterly = other.m_pbQuarterly;
+	m_pcfShareTTM = other.m_pcfShareTTM;
+	m_peBasicExclExtraTTM = other.m_peBasicExclExtraTTM;
+	m_peExclExtraAnnual = other.m_peExclExtraAnnual;
+	m_peExclExtraHighTTM = other.m_peExclExtraHighTTM;
+	m_peExclExtraTTM = other.m_peExclExtraTTM;
+	m_peExclLowTTM = other.m_peExclLowTTM;
+	m_peInclExtraTTM = other.m_peInclExtraTTM;
+	m_peNormalizedAnnual = other.m_peNormalizedAnnual;
+	m_pfcfShareTTM = other.m_pfcfShareTTM;
+	m_pfcfShareAnnual = other.m_pfcfShareAnnual;
+	m_pretaxMargin5Y = other.m_pretaxMargin5Y;
+	m_pretaxMarginAnnual = other.m_pretaxMarginAnnual;
+	m_pretaxMarginTTM = other.m_pretaxMarginTTM;
+	m_priceRelativeToSP50013Week = other.m_priceRelativeToSP50013Week;
+	m_priceRelativeToSP50026Week = other.m_priceRelativeToSP50026Week;
+	m_priceRelativeToSP5004Week = other.m_priceRelativeToSP5004Week;
+	m_priceRelativeToSP50052Week = other.m_priceRelativeToSP50052Week;
+	m_priceRelativeToSP500Ytd = other.m_priceRelativeToSP500Ytd;
+	m_psAnnual = other.m_psAnnual;
+	m_psTTM = other.m_psTTM;
+	m_ptbvAnnual = other.m_ptbvAnnual;
+	m_ptbvQuarterly = other.m_ptbvQuarterly;
+
+	m_quickRatioAnnual = other.m_quickRatioAnnual;
+	m_quickRatioQuarterly = other.m_quickRatioQuarterly;
+	m_receivablesTurnoverAnnual = other.m_receivablesTurnoverAnnual;
+	m_receivablesTurnoverTTM = other.m_receivablesTurnoverTTM;
+	m_revenueEmployeeAnnual = other.m_revenueEmployeeAnnual;
+	m_revenueEmployeeTTM = other.m_revenueEmployeeTTM;
+	m_revenueGrowth5Y = other.m_revenueGrowth5Y;
+	m_revenueGrowth3Y = other.m_revenueGrowth3Y;
+	m_revenueGrowthQuarterlyYoy = other.m_revenueGrowthQuarterlyYoy;
+	m_revenueGrowthTTMYoy = other.m_revenueGrowthTTMYoy;
+	m_revenuePerShareAnnual = other.m_revenuePerShareAnnual;
+	m_revenuePerShareTTM = other.m_revenuePerShareTTM;
+	m_revenueShareGrowth5Y = other.m_revenueShareGrowth5Y;
+	m_roaRfy = other.m_roaRfy;
+	m_roaa5Y = other.m_roaa5Y;
+	m_roae5Y = other.m_roae5Y;
+	m_roaeTTM = other.m_roaeTTM;
+	m_roeRfy = other.m_roeRfy;
+	m_roeTTM = other.m_roeTTM;
+	m_roi5Y = other.m_roi5Y;
+	m_roiAnnual = other.m_roiAnnual;
+	m_roiTTM = other.m_roiTTM;
+
+	m_tangibleBookValuePerShareAnnual = other.m_tangibleBookValuePerShareAnnual;
+	m_tangibleBookValuePerShareQuarterly = other.m_tangibleBookValuePerShareQuarterly;
+	m_tbvCagr5Y = other.m_tbvCagr5Y;
+	m_totalDebt_totalEquityAnnual = other.m_totalDebt_totalEquityAnnual;
+	m_totalDebt_totalEquityQuarterly = other.m_totalDebt_totalEquityQuarterly;
+	m_totalDebtCagr5Y = other.m_totalDebtCagr5Y;
+
+	m_yearToDatePriceReturnDaily = other.m_yearToDatePriceReturnDaily;
+
+	m_annual.m_cashRatio = std::move(other.m_annual.m_cashRatio);
+	m_annual.m_currentRatio = std::move(other.m_annual.m_currentRatio);
+	m_annual.m_ebitPerShare = std::move(other.m_annual.m_ebitPerShare);
+	m_annual.m_eps = std::move(other.m_annual.m_eps);
+	m_annual.m_grossMargin = std::move(other.m_annual.m_grossMargin);
+	m_annual.m_longtermDebtTotalAsset = std::move(other.m_annual.m_longtermDebtTotalAsset);
+	m_annual.m_longtermDebtTotalCapital = std::move(other.m_annual.m_longtermDebtTotalCapital);
+	m_annual.m_longtermDebtTotalEquity = std::move(other.m_annual.m_longtermDebtTotalEquity);
+	m_annual.m_netDebtToTotalCapital = std::move(other.m_annual.m_netDebtToTotalCapital);
+	m_annual.m_netDebtToTotalEquity = std::move(other.m_annual.m_netDebtToTotalEquity);
+	m_annual.m_netMargin = std::move(other.m_annual.m_netMargin);
+	m_annual.m_operatingMargin = std::move(other.m_annual.m_operatingMargin);
+	m_annual.m_pretaxMargin = std::move(other.m_annual.m_pretaxMargin);
+	m_annual.m_salesPerShare = std::move(other.m_annual.m_salesPerShare);
+	m_annual.m_sgaToSale = std::move(other.m_annual.m_sgaToSale);
+	m_annual.m_totalDebtToEquity = std::move(other.m_annual.m_totalDebtToEquity);
+	m_annual.m_totalDebtToTotalAsset = std::move(other.m_annual.m_totalDebtToTotalAsset);
+	m_annual.m_totalDebtToTotalCapital = std::move(other.m_annual.m_totalDebtToTotalCapital);
+	m_annual.m_totalRatio = std::move(other.m_annual.m_totalRatio);
+
+	m_quarter.m_cashRatio = std::move(other.m_quarter.m_cashRatio);
+	m_quarter.m_currentRatio = std::move(other.m_quarter.m_currentRatio);
+	m_quarter.m_ebitPerShare = std::move(other.m_quarter.m_ebitPerShare);
+	m_quarter.m_eps = std::move(other.m_quarter.m_eps);
+	m_quarter.m_grossMargin = std::move(other.m_quarter.m_grossMargin);
+	m_quarter.m_longtermDebtTotalAsset = std::move(other.m_quarter.m_longtermDebtTotalAsset);
+	m_quarter.m_longtermDebtTotalCapital = std::move(other.m_quarter.m_longtermDebtTotalCapital);
+	m_quarter.m_longtermDebtTotalEquity = std::move(other.m_quarter.m_longtermDebtTotalEquity);
+	m_quarter.m_netDebtToTotalCapital = std::move(other.m_quarter.m_netDebtToTotalCapital);
+	m_quarter.m_netDebtToTotalEquity = std::move(other.m_quarter.m_netDebtToTotalEquity);
+	m_quarter.m_netMargin = std::move(other.m_quarter.m_netMargin);
+	m_quarter.m_operatingMargin = std::move(other.m_quarter.m_operatingMargin);
+	m_quarter.m_pretaxMargin = std::move(other.m_quarter.m_pretaxMargin);
+	m_quarter.m_salesPerShare = std::move(other.m_quarter.m_salesPerShare);
+	m_quarter.m_sgaToSale = std::move(other.m_quarter.m_sgaToSale);
+	m_quarter.m_totalDebtToEquity = std::move(other.m_quarter.m_totalDebtToEquity);
+	m_quarter.m_totalDebtToTotalAsset = std::move(other.m_quarter.m_totalDebtToTotalAsset);
+	m_quarter.m_totalDebtToTotalCapital = std::move(other.m_quarter.m_totalDebtToTotalCapital);
+	m_quarter.m_totalRatio = std::move(other.m_quarter.m_totalRatio);
+}
+
+CFinnhubStockBasicFinancial& CFinnhubStockBasicFinancial::operator=(CFinnhubStockBasicFinancial&& other) noexcept {
+	m_symbol = std::move(other.m_symbol);
+	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
+	m_52WeekHigh = other.m_52WeekHigh;
+	m_52WeekHighDate = other.m_52WeekHighDate;
+	m_52WeekLow = other.m_52WeekLow;
+	m_52WeekLowDate = other.m_52WeekLowDate;
+	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
+	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
+	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
+	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
+	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
+	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
+	m_beta = other.m_beta;
+	m_bookValuePerShareAnnual = other.m_bookValuePerShareAnnual;
+	m_bookValuePerShareQuarterly = other.m_bookValuePerShareQuarterly;
+	m_bookValueShareGrowth5Y = other.m_bookValueShareGrowth5Y;
+	m_capitalSpendingGrowth5Y = other.m_capitalSpendingGrowth5Y;
+	m_cashFlowPerShareAnnual = other.m_cashFlowPerShareAnnual;
+	m_cashFlowPerShareTTM = other.m_cashFlowPerShareTTM;
+	m_cashPerSharePerShareAnnual = other.m_cashPerSharePerShareAnnual;
+	m_cashPerSharePerShareQuarterly = other.m_cashPerSharePerShareQuarterly;
+	m_currentDividendYieldTTM = other.m_currentDividendYieldTTM;
+	m_currentEV_freeCashFlowAnnual = other.m_currentEV_freeCashFlowAnnual;
+	m_currentEV_freeCashFlowTTM = other.m_currentEV_freeCashFlowTTM;
+	m_currentRatioAnnual = other.m_currentRatioAnnual;
+	m_currentRatioQuarterly = other.m_currentRatioQuarterly;
+	m_dividendGrowthRate5Y = other.m_dividendGrowthRate5Y;
+	m_dividendPerShare5Y = other.m_dividendPerShare5Y;
+	m_dividendPerShareAnnual = other.m_dividendPerShareAnnual;
+	m_dividendYield5Y = other.m_dividendYield5Y;
+	m_dividendYieldIndicatedAnnual = other.m_dividendYieldIndicatedAnnual;
+	m_dividendsPerShareTTM = other.m_dividendsPerShareTTM;
+	m_ebitdaCagr5Y = other.m_ebitdaCagr5Y;
+	m_ebitdaInterimCagr5Y = other.m_ebitdaInterimCagr5Y;
+	m_ebitdPerShareTTM = other.m_ebitdPerShareTTM;
+	m_epsBasicExclExtraItemsAnnual = other.m_epsBasicExclExtraItemsAnnual;
+	m_epsBasicExclExtraItemsTTM = other.m_epsBasicExclExtraItemsTTM;
+	m_epsExclExtraItemsAnnual = other.m_epsExclExtraItemsAnnual;
+	m_epsExclExtraItemsTTM = other.m_epsExclExtraItemsTTM;
+	m_epsGrowth3Y = other.m_epsGrowth3Y;
+	m_epsGrowth5Y = other.m_epsGrowth5Y;
+	m_epsGrowthQuarterlyYoy = other.m_epsGrowthQuarterlyYoy;
+	m_epsGrowthTTMYoy = other.m_epsGrowthTTMYoy;
+	m_epsInclExtraItemsAnnual = other.m_epsInclExtraItemsAnnual;
+	m_epsInclExtraItemsTTM = other.m_epsInclExtraItemsTTM;
+	m_epsNormalizedAnnual = other.m_epsNormalizedAnnual;
+	m_focfCagr5Y = other.m_focfCagr5Y;
+	m_freeCashFlowAnnual = other.m_freeCashFlowAnnual;
+	m_freeCashFlowPerShareTTM = other.m_freeCashFlowPerShareTTM;
+	m_freeCashFlowTTM = other.m_freeCashFlowTTM;
+	m_freeOperatingCashFlow_revenue5Y = other.m_freeOperatingCashFlow_revenue5Y;
+	m_freeOperatingCashFlow_revenueTTM = other.m_freeOperatingCashFlow_revenueTTM;
+
+	m_grossMargin5Y = other.m_grossMargin5Y;
+	m_grossMarginAnnual = other.m_grossMarginAnnual;
+	m_grossMarginTTM = other.m_grossMarginTTM;
+	m_inventoryTurnoverAnnual = other.m_inventoryTurnoverAnnual;
+	m_inventoryTurnoverTTM = other.m_inventoryTurnoverTTM;
+
+	m_longTermDebt_equityAnnual = other.m_longTermDebt_equityAnnual;
+	m_longTermDebt_equityQuarterly = other.m_longTermDebt_equityQuarterly;
+
+	m_marketCapitalization = other.m_marketCapitalization;
+	m_monthToDatePriceReturnDaily = other.m_monthToDatePriceReturnDaily;
+
+	m_netDebtAnnual = other.m_netDebtAnnual;
+	m_netDebtInterim = other.m_netDebtInterim;
+	m_netIncomeEmployeeAnnual = other.m_netIncomeEmployeeAnnual;
+	m_netIncomeEmployeeTTM = other.m_netIncomeEmployeeTTM;
+	m_netInterestCoverageAnnual = other.m_netInterestCoverageAnnual;
+	m_netInterestCoverageTTM = other.m_netInterestCoverageTTM;
+	m_netMarginGrowth5Y = other.m_netMarginGrowth5Y;
+	m_netProfitMargin5Y = other.m_netProfitMargin5Y;
+	m_netProfitMarginAnnual = other.m_netProfitMarginAnnual;
+	m_netProfitMarginTTM = other.m_netProfitMarginTTM;
+
+	m_operatingMargin5Y = other.m_operatingMargin5Y;
+	m_operatingMarginAnnual = other.m_operatingMarginAnnual;
+	m_operatingMarginTTM = other.m_operatingMarginTTM;
+
+	m_payoutRatioAnnual = other.m_payoutRatioAnnual;
+	m_payoutRatioTTM = other.m_payoutRatioTTM;
+	m_pbAnnual = other.m_pbAnnual;
+	m_pbQuarterly = other.m_pbQuarterly;
+	m_pcfShareTTM = other.m_pcfShareTTM;
+	m_peBasicExclExtraTTM = other.m_peBasicExclExtraTTM;
+	m_peExclExtraAnnual = other.m_peExclExtraAnnual;
+	m_peExclExtraHighTTM = other.m_peExclExtraHighTTM;
+	m_peExclExtraTTM = other.m_peExclExtraTTM;
+	m_peExclLowTTM = other.m_peExclLowTTM;
+	m_peInclExtraTTM = other.m_peInclExtraTTM;
+	m_peNormalizedAnnual = other.m_peNormalizedAnnual;
+	m_pfcfShareTTM = other.m_pfcfShareTTM;
+	m_pfcfShareAnnual = other.m_pfcfShareAnnual;
+	m_pretaxMargin5Y = other.m_pretaxMargin5Y;
+	m_pretaxMarginAnnual = other.m_pretaxMarginAnnual;
+	m_pretaxMarginTTM = other.m_pretaxMarginTTM;
+	m_priceRelativeToSP50013Week = other.m_priceRelativeToSP50013Week;
+	m_priceRelativeToSP50026Week = other.m_priceRelativeToSP50026Week;
+	m_priceRelativeToSP5004Week = other.m_priceRelativeToSP5004Week;
+	m_priceRelativeToSP50052Week = other.m_priceRelativeToSP50052Week;
+	m_priceRelativeToSP500Ytd = other.m_priceRelativeToSP500Ytd;
+	m_psAnnual = other.m_psAnnual;
+	m_psTTM = other.m_psTTM;
+	m_ptbvAnnual = other.m_ptbvAnnual;
+	m_ptbvQuarterly = other.m_ptbvQuarterly;
+
+	m_quickRatioAnnual = other.m_quickRatioAnnual;
+	m_quickRatioQuarterly = other.m_quickRatioQuarterly;
+	m_receivablesTurnoverAnnual = other.m_receivablesTurnoverAnnual;
+	m_receivablesTurnoverTTM = other.m_receivablesTurnoverTTM;
+	m_revenueEmployeeAnnual = other.m_revenueEmployeeAnnual;
+	m_revenueEmployeeTTM = other.m_revenueEmployeeTTM;
+	m_revenueGrowth5Y = other.m_revenueGrowth5Y;
+	m_revenueGrowth3Y = other.m_revenueGrowth3Y;
+	m_revenueGrowthQuarterlyYoy = other.m_revenueGrowthQuarterlyYoy;
+	m_revenueGrowthTTMYoy = other.m_revenueGrowthTTMYoy;
+	m_revenuePerShareAnnual = other.m_revenuePerShareAnnual;
+	m_revenuePerShareTTM = other.m_revenuePerShareTTM;
+	m_revenueShareGrowth5Y = other.m_revenueShareGrowth5Y;
+	m_roaRfy = other.m_roaRfy;
+	m_roaa5Y = other.m_roaa5Y;
+	m_roae5Y = other.m_roae5Y;
+	m_roaeTTM = other.m_roaeTTM;
+	m_roeRfy = other.m_roeRfy;
+	m_roeTTM = other.m_roeTTM;
+	m_roi5Y = other.m_roi5Y;
+	m_roiAnnual = other.m_roiAnnual;
+	m_roiTTM = other.m_roiTTM;
+
+	m_tangibleBookValuePerShareAnnual = other.m_tangibleBookValuePerShareAnnual;
+	m_tangibleBookValuePerShareQuarterly = other.m_tangibleBookValuePerShareQuarterly;
+	m_tbvCagr5Y = other.m_tbvCagr5Y;
+	m_totalDebt_totalEquityAnnual = other.m_totalDebt_totalEquityAnnual;
+	m_totalDebt_totalEquityQuarterly = other.m_totalDebt_totalEquityQuarterly;
+	m_totalDebtCagr5Y = other.m_totalDebtCagr5Y;
+
+	m_yearToDatePriceReturnDaily = other.m_yearToDatePriceReturnDaily;
+
+	m_annual.m_cashRatio = std::move(other.m_annual.m_cashRatio);
+	m_annual.m_currentRatio = std::move(other.m_annual.m_currentRatio);
+	m_annual.m_ebitPerShare = std::move(other.m_annual.m_ebitPerShare);
+	m_annual.m_eps = std::move(other.m_annual.m_eps);
+	m_annual.m_grossMargin = std::move(other.m_annual.m_grossMargin);
+	m_annual.m_longtermDebtTotalAsset = std::move(other.m_annual.m_longtermDebtTotalAsset);
+	m_annual.m_longtermDebtTotalCapital = std::move(other.m_annual.m_longtermDebtTotalCapital);
+	m_annual.m_longtermDebtTotalEquity = std::move(other.m_annual.m_longtermDebtTotalEquity);
+	m_annual.m_netDebtToTotalCapital = std::move(other.m_annual.m_netDebtToTotalCapital);
+	m_annual.m_netDebtToTotalEquity = std::move(other.m_annual.m_netDebtToTotalEquity);
+	m_annual.m_netMargin = std::move(other.m_annual.m_netMargin);
+	m_annual.m_operatingMargin = std::move(other.m_annual.m_operatingMargin);
+	m_annual.m_pretaxMargin = std::move(other.m_annual.m_pretaxMargin);
+	m_annual.m_salesPerShare = std::move(other.m_annual.m_salesPerShare);
+	m_annual.m_sgaToSale = std::move(other.m_annual.m_sgaToSale);
+	m_annual.m_totalDebtToEquity = std::move(other.m_annual.m_totalDebtToEquity);
+	m_annual.m_totalDebtToTotalAsset = std::move(other.m_annual.m_totalDebtToTotalAsset);
+	m_annual.m_totalDebtToTotalCapital = std::move(other.m_annual.m_totalDebtToTotalCapital);
+	m_annual.m_totalRatio = std::move(other.m_annual.m_totalRatio);
+
+	m_quarter.m_cashRatio = std::move(other.m_quarter.m_cashRatio);
+	m_quarter.m_currentRatio = std::move(other.m_quarter.m_currentRatio);
+	m_quarter.m_ebitPerShare = std::move(other.m_quarter.m_ebitPerShare);
+	m_quarter.m_eps = std::move(other.m_quarter.m_eps);
+	m_quarter.m_grossMargin = std::move(other.m_quarter.m_grossMargin);
+	m_quarter.m_longtermDebtTotalAsset = std::move(other.m_quarter.m_longtermDebtTotalAsset);
+	m_quarter.m_longtermDebtTotalCapital = std::move(other.m_quarter.m_longtermDebtTotalCapital);
+	m_quarter.m_longtermDebtTotalEquity = std::move(other.m_quarter.m_longtermDebtTotalEquity);
+	m_quarter.m_netDebtToTotalCapital = std::move(other.m_quarter.m_netDebtToTotalCapital);
+	m_quarter.m_netDebtToTotalEquity = std::move(other.m_quarter.m_netDebtToTotalEquity);
+	m_quarter.m_netMargin = std::move(other.m_quarter.m_netMargin);
+	m_quarter.m_operatingMargin = std::move(other.m_quarter.m_operatingMargin);
+	m_quarter.m_pretaxMargin = std::move(other.m_quarter.m_pretaxMargin);
+	m_quarter.m_salesPerShare = std::move(other.m_quarter.m_salesPerShare);
+	m_quarter.m_sgaToSale = std::move(other.m_quarter.m_sgaToSale);
+	m_quarter.m_totalDebtToEquity = std::move(other.m_quarter.m_totalDebtToEquity);
+	m_quarter.m_totalDebtToTotalAsset = std::move(other.m_quarter.m_totalDebtToTotalAsset);
+	m_quarter.m_totalDebtToTotalCapital = std::move(other.m_quarter.m_totalDebtToTotalCapital);
+	m_quarter.m_totalRatio = std::move(other.m_quarter.m_totalRatio);
+	return *this;
+}
+
+void CFinnhubStockBasicFinancial::Reset() {
 	m_symbol = "";
 	m_10DayAverageTradingVolume = 0.0;
 	m_52WeekHigh = 0.0;
@@ -151,6 +979,9 @@ CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
 	m_totalDebtCagr5Y = 0.0;
 
 	m_yearToDatePriceReturnDaily = 0.0;
+
+	m_annual.Reset();
+	m_quarter.Reset();
 }
 
 void CFinnhubStockBasicFinancial::LoadMetric(const CSetFinnhubStockBasicFinancialMetric& setMetric) {

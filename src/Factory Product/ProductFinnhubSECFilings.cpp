@@ -63,7 +63,7 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
 	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFiling>>();
-	pvSECFilings->reserve(1000);
+	pvSECFilings->reserve(100);
 
 	string s1;
 	if (!IsValidData(pWebData)) return pvSECFilings;
@@ -77,14 +77,11 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 		for (auto item : doc) {
 			auto itemValue = item.value();
 			CSECFiling SECFiling;
-			s1 = simdjsonGetStringView(itemValue, "symbol");
-			SECFiling.m_strSymbol = s1;
-			s1 = simdjsonGetStringView(itemValue, "accessNumber");
-			SECFiling.m_strAccessNumber = s1;
+			SECFiling.m_strSymbol = simdjsonGetStringView(itemValue, "symbol");
+			SECFiling.m_strAccessNumber = simdjsonGetStringView(itemValue, "accessNumber");
 			s1 = simdjsonGetStringView(itemValue, "cik");
 			SECFiling.m_iCIK = atoi(s1.c_str());
-			s1 = simdjsonGetStringView(itemValue, "form");
-			SECFiling.m_strForm = s1;
+			SECFiling.m_strForm = simdjsonGetStringView(itemValue, "form");
 			s1 = simdjsonGetStringView(itemValue, "filedDate");
 			ss.clear();
 			ss.str(s1);
@@ -103,6 +100,7 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			s1 = simdjsonGetStringView(itemValue, "filingUrl");
 			SECFiling.m_strFilingURL = s1;
 			pvSECFilings->push_back(SECFiling);
+			SECFiling.Reset();
 		}
 	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage("finnhub SEC Filings ", error.what());

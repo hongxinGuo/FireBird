@@ -8,11 +8,30 @@
 
 class CValueOfPeriod {
 public:
+	CValueOfPeriod() = default;
+	CValueOfPeriod(int period, double value) : m_period(period), m_value(value) {}
+	CValueOfPeriod(const CValueOfPeriod& other) = default;
+	CValueOfPeriod& operator=(const CValueOfPeriod& other) = default;
+	CValueOfPeriod(CValueOfPeriod&&) noexcept = default;
+	CValueOfPeriod& operator=(CValueOfPeriod&&) noexcept = default;
+	~CValueOfPeriod() = default;
+
+public:
 	int m_period;
 	double m_value;
 };
 
 class CBasicFinancialOfSeason {
+public:
+	CBasicFinancialOfSeason();
+	CBasicFinancialOfSeason(const CBasicFinancialOfSeason& other);
+	CBasicFinancialOfSeason& operator=(CBasicFinancialOfSeason& other) = default;
+	CBasicFinancialOfSeason(CBasicFinancialOfSeason&& other) noexcept;
+	CBasicFinancialOfSeason& operator=(CBasicFinancialOfSeason&& other) noexcept;
+	~CBasicFinancialOfSeason();
+
+	void Reset();
+
 public:
 	vector<CValueOfPeriod> m_cashRatio;
 	vector<CValueOfPeriod> m_currentRatio;
@@ -200,7 +219,13 @@ public:
 class CFinnhubStockBasicFinancial final {
 public:
 	CFinnhubStockBasicFinancial();
+	CFinnhubStockBasicFinancial(const CFinnhubStockBasicFinancial& other);
+	CFinnhubStockBasicFinancial& operator=(const CFinnhubStockBasicFinancial& other);
+	CFinnhubStockBasicFinancial(CFinnhubStockBasicFinancial&& other) noexcept;
+	CFinnhubStockBasicFinancial& operator=(CFinnhubStockBasicFinancial&& other) noexcept;
 	~CFinnhubStockBasicFinancial() = default;
+
+	void Reset();
 
 	void AppendMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const;
 	void UpdateMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const;

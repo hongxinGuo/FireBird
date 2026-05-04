@@ -7,7 +7,17 @@
 class CTiingoIndustry final {
 public:
 	CTiingoIndustry();
+	CTiingoIndustry(const CTiingoIndustry&) = default;
+	CTiingoIndustry& operator=(const CTiingoIndustry& other) = default;
+	CTiingoIndustry(CTiingoIndustry&&) noexcept = default;
+	CTiingoIndustry& operator=(CTiingoIndustry&&) noexcept = default;
 	~CTiingoIndustry() = default;
+
+	void Reset() noexcept {
+		m_strIndustry.clear();
+		m_strSector.clear();
+		m_fUpdated = false;
+	}
 
 	void Append(CSetTiingoIndustry& setTiingoIndustry) const;
 	void Load(const CSetTiingoIndustry& setTiingoIndustry);
@@ -23,4 +33,4 @@ public:
 };
 
 using CTiingoIndustryPtr = shared_ptr<CTiingoIndustry>;
-using CTiingoIndustriesPtr = shared_ptr<vector<CTiingoIndustryPtr>>;
+using CTiingoIndustriesPtr = shared_ptr<vector<CTiingoIndustry>>;

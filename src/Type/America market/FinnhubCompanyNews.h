@@ -36,6 +36,8 @@ public:
 	CFinnhubCompanyNews& operator=(CFinnhubCompanyNews&&) noexcept = default;
 	~CFinnhubCompanyNews() = default;
 
+	void Reset();
+
 	void Append(CSetCompanyNews& setCompanyNews) const;
 	void Update(CSetCompanyNews& setCompanyNews) const;
 	void Save(CSetCompanyNews& setCompanyNews) const;

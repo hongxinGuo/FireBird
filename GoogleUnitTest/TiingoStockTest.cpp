@@ -436,22 +436,22 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
-		CTiingoIEXTopOfBookPtr pIEX = make_shared<CTiingoIEXTopOfBook>();
-		pIEX->m_timeStamp = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(123456));
-		pIEX->m_lOpen = 12340;
-		pIEX->m_lHigh = 23450;
-		pIEX->m_lLow = 1230;
-		pIEX->m_lLastClose = 234560;
-		pIEX->m_lNew = 230;
-		pIEX->m_llVolume = 100000;
-		stock.UpdateRTData(pIEX);
-		EXPECT_EQ(stock.GetTransactionTime(), pIEX->m_timeStamp.time_since_epoch().count());
-		EXPECT_EQ(stock.GetOpen(), pIEX->m_lOpen);
-		EXPECT_EQ(stock.GetHigh(), pIEX->m_lHigh);
-		EXPECT_EQ(stock.GetLow(), pIEX->m_lLow);
-		EXPECT_EQ(stock.GetLastClose(), pIEX->m_lLastClose);
-		EXPECT_EQ(stock.GetNew(), pIEX->m_lNew);
-		EXPECT_EQ(stock.GetVolume(), pIEX->m_llVolume);
+		CTiingoIEXTopOfBook IEX;
+		IEX.m_timeStamp = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(123456));
+		IEX.m_lOpen = 12340;
+		IEX.m_lHigh = 23450;
+		IEX.m_lLow = 1230;
+		IEX.m_lLastClose = 234560;
+		IEX.m_lNew = 230;
+		IEX.m_llVolume = 100000;
+		stock.UpdateRTData(IEX);
+		EXPECT_EQ(stock.GetTransactionTime(), IEX.m_timeStamp.time_since_epoch().count());
+		EXPECT_EQ(stock.GetOpen(), IEX.m_lOpen);
+		EXPECT_EQ(stock.GetHigh(), IEX.m_lHigh);
+		EXPECT_EQ(stock.GetLow(), IEX.m_lLow);
+		EXPECT_EQ(stock.GetLastClose(), IEX.m_lLastClose);
+		EXPECT_EQ(stock.GetNew(), IEX.m_lNew);
+		EXPECT_EQ(stock.GetVolume(), IEX.m_llVolume);
 	}
 
 	TEST_F(CTiingoStockTest, TestSave) {

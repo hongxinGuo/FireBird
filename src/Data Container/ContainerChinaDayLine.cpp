@@ -29,8 +29,6 @@ bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
-	ASSERT(!m_fBasicDataLoaded);
-
 	// 装入DayLine数据
 	setDayLineBasicInfo.m_strFilter = "[Symbol] = '";
 	setDayLineBasicInfo.m_strFilter += strStockSymbol.c_str();
@@ -42,7 +40,6 @@ bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 
 	CalculateRS0();
 	m_fDataLoaded = true;
-	ASSERT(!m_fBasicDataLoaded);
 
 	return true;
 }

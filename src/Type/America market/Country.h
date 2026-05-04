@@ -14,6 +14,8 @@ public:
 	CCountry& operator=(CCountry&& other) noexcept = default;
 	~CCountry() = default;
 
+	void Reset();
+
 	void Append(CSetCountry& setCountry) const;
 	void Load(const CSetCountry& setCountry);
 

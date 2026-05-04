@@ -38,8 +38,7 @@ void CProductFinnhubCompanySymbolChange::ParseAndStoreWebData(CWebDataPtr pWebDa
 }
 
 CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::ParseFinnhubCompanySymbolChange(const CWebDataPtr& pWebData) {
-	auto pvCompanySymbolChange = make_shared<vector<CCompanySymbolChangePtr>>();
-	CCompanySymbolChangePtr pCompanySymbolChange = nullptr;
+	auto pvCompanySymbolChange = make_shared<vector<CCompanySymbolChange>>();
 	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvCompanySymbolChange;
@@ -48,15 +47,15 @@ CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::ParseFinnhubCompany
 	try {
 		nlohmannJson js2 = jsonGetChild(js, "data");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
-			pCompanySymbolChange = make_shared<CCompanySymbolChange>();
+			CCompanySymbolChange companySymbolChange;
 			string s = jsonGetString(it, "atDate");
-			pCompanySymbolChange->m_sTime = s;
+			companySymbolChange.m_sTime = s;
 			s = jsonGetString(it, "newSymbol");
-			pCompanySymbolChange->m_sNewSymbol = s;
+			companySymbolChange.m_sNewSymbol = s;
 			s = jsonGetString(it, "oldSymbol");
-			pCompanySymbolChange->m_sOldSymbol = s;
-
-			pvCompanySymbolChange->push_back(pCompanySymbolChange);
+			companySymbolChange.m_sOldSymbol = s;
+			pvCompanySymbolChange->push_back(companySymbolChange);
+			companySymbolChange.Reset();
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub company symbol change ", e.what());

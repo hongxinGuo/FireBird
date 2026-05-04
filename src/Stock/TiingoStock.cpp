@@ -108,14 +108,14 @@ void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.Update();
 }
 
-void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
-	m_tpTime = pIEXTopOfBook->m_timeStamp;
-	m_lOpen = pIEXTopOfBook->m_lOpen;
-	m_lHigh = pIEXTopOfBook->m_lHigh;
-	m_lLow = pIEXTopOfBook->m_lLow;
-	m_lLastClose = pIEXTopOfBook->m_lLastClose;
-	m_lNew = pIEXTopOfBook->m_lNew;
-	m_llVolume = pIEXTopOfBook->m_llVolume;
+void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBook& IEXTopOfBook) {
+	m_tpTime = IEXTopOfBook.m_timeStamp;
+	m_lOpen = IEXTopOfBook.m_lOpen;
+	m_lHigh = IEXTopOfBook.m_lHigh;
+	m_lLow = IEXTopOfBook.m_lLow;
+	m_lLastClose = IEXTopOfBook.m_lLastClose;
+	m_lNew = IEXTopOfBook.m_lNew;
+	m_llVolume = IEXTopOfBook.m_llVolume;
 }
 
 void CTiingoStock::UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine) {
@@ -329,6 +329,7 @@ void CTiingoStock::CreateMonthLine() {
 	CTiingoCandleLine monthLine;
 	size_t monthLineSize = m_dataDayLine.Size();
 	while (index < monthLineSize) {
+		monthLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index++);
 		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
 		monthLine.SetDate(pDayLine->GetDate());

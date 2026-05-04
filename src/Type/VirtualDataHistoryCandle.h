@@ -59,7 +59,6 @@ public:
 	void Unload() noexcept {
 		m_vHistoryData.clear();
 		m_fDataLoaded = false;
-		m_fBasicDataLoaded = false;
 	}
 	CVirtualHistoryCandle* GetData(const size_t lIndex) { return &m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandle>& GetDataVector() { return m_vHistoryData; }
@@ -114,7 +113,6 @@ protected:
 	vector<CVirtualHistoryCandle> m_vHistoryData;
 	atomic_bool m_fDataLoaded{ false }; // 数据装载与否标识
 	bool m_fDatabaseTodayUpdated{ false }; // 数据库今日是否已更新标识
-	bool m_fBasicDataLoaded{ false };
 };
 
 using CVirtualDataHistoryCandlePtr = shared_ptr<CVirtualDataHistoryCandle>;

@@ -5,18 +5,21 @@
 #include "CharSetTransfer.h"
 
 CFinnhubCompanyNews::CFinnhubCompanyNews() {
-	m_llDateTime = 0;
-	m_iNewsID = 0;
-	m_strCategory = "";
-	m_strCompanySymbol = "";
-	m_strHeadLine = "";
-	m_strImage = "";
-	m_strRelatedSymbol = "";
-	m_strSource = "";
-	m_strSummary = "";
-	m_strURL = "";
+	Reset();
 }
 
+void CFinnhubCompanyNews::Reset() {
+	m_llDateTime = 0;
+	m_iNewsID = 0;
+	m_strCategory.clear();
+	m_strCompanySymbol.clear();
+	m_strHeadLine.clear();
+	m_strImage.clear();
+	m_strRelatedSymbol.clear();
+	m_strSource.clear();
+	m_strSummary.clear();
+	m_strURL.clear();
+}
 void CFinnhubCompanyNews::Append(CSetCompanyNews& setCompanyNews) const {
 	setCompanyNews.AddNew();
 	Save(setCompanyNews);

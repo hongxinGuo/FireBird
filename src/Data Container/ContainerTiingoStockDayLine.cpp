@@ -69,6 +69,7 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 		if (pSetTiingoStockDayLine->m_Date > lLastDate) {
 			lLastDate = pSetTiingoStockDayLine->m_Date;
 			CTiingoCandleLine candle;
+			candle.Reset();
 			candle.LoadBasicData(pSetTiingoStockDayLine);
 
 			vOldHistoryCandle.push_back(candle);

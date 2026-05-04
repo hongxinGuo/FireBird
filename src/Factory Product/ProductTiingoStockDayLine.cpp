@@ -147,6 +147,7 @@ CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const 
 			dayLine.SetSplitFactor(dTemp);
 			dayLine.SetVolume(lTemp);
 			pvDayLine->push_back(dayLine);
+			dayLine.Reset(); //Note 需要重置对象，以免下次循环时，之前的数据还在，导致数据错误。
 		}
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();

@@ -59,7 +59,6 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 
 	auto pvDayLineReturn = make_shared<vector<CDayLine>>();
 	nlohmannJson js2;
-	CDayLine dayLine;
 	string sError;
 	nlohmannJson js;
 
@@ -83,12 +82,14 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 		return pvDayLine;
 	}
 	try {
+		CDayLine dayLine;
 		time_t tTemp = 0;
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = it->get<INT64>();
 			dayLine.SetTime(tTemp);
 			pvDayLine->push_back(dayLine);
+			dayLine.Reset();
 		}
 	} catch (nlohmannJson::exception& e) {
 		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle missing 't' ", e.what());

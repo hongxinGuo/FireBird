@@ -113,7 +113,7 @@ public:
 	bool IsMonthLineLoaded() const noexcept override { return m_dataMonthLine.IsDataLoaded(); }
 	void SetMonthLineLoaded(bool fFlag) noexcept override { m_dataMonthLine.SetDataLoaded(fFlag); }
 
-	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
+	void UpdateRTData(const CTiingoIEXTopOfBook& IEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine);
 	void UpdateFinancialStateDB();
