@@ -148,11 +148,11 @@ namespace FireBirdTest {
 		dataChinaDayLine.SetDataLoaded(false);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
-		auto dayLine2 = dataChinaDayLine.GetCandle(20200101);
-		EXPECT_TRUE(dayLine2->GetDate() == 20200101);
+		auto pDayLine2 = dataChinaDayLine.GetCandle(20200101);
+		EXPECT_TRUE(pDayLine2->GetDate() == 20200101);
 
-		dayLine2 = dataChinaDayLine.GetCandle(20200104);
-		EXPECT_TRUE(dayLine2 == nullptr);
+		pDayLine2 = dataChinaDayLine.GetCandle(20200104);
+		EXPECT_TRUE(pDayLine2 == nullptr);
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestUpdateData1) {

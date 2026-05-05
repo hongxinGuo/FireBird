@@ -167,6 +167,7 @@ CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(long lDate) {
 	if (it != m_vHistoryData.end()) {
 		return &*it;
 	}
+	return nullptr;
 }
 
 void CVirtualDataHistoryCandle::Reset() {

@@ -252,6 +252,7 @@ void CContainerFinnhubStock::ClearUpdateBasicFinancialFlag(const vector<CFinnhub
 	for (const auto& pStock : vStock) {
 		if (pStock->IsUpdateBasicFinancialDB()) {
 			pStock->SetUpdateBasicFinancialDB(false);
+			pStock->ClearBasicFinancialState();
 		}
 	}
 }
