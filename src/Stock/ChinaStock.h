@@ -161,6 +161,7 @@ public:
 	void Get60DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS60(vRS); }
 	void Get120DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS120(vRS); }
 
+	void ProcessRTData();
 	// 日线相对强度计算
 	bool CalculateDayLineRS() { return m_dataDayLine.CalculateRS0(); }
 	bool CalculateDayLineRSIndex() { return m_dataDayLine.CalculateRSIndex0(); }

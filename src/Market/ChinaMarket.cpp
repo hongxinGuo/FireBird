@@ -559,6 +559,7 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 
 			this->DistributeRTData();
+			this->CalculateRTData();
 
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			this->SetDistributeAndCalculateTime((end - start).count());
@@ -583,14 +584,20 @@ void CChinaMarket::DistributeRTData() {
 	bool succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	const bool queueNotEmpty = succeed;
 	while (succeed) {
-		//Note 不再计算试试数据，直接抛掉即可。
-		//DistributeRTDataToStock(pRTData);
+		DistributeRTDataToStock(pRTData);
 		pRTData = nullptr;
 		m_lRTDataReceivedInCurrentMinute++;
 		succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	}
 	pRTData = nullptr;
 	if (queueNotEmpty) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+}
+
+void CChinaMarket::CalculateRTData() {
+	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
+		gl_dataContainerChinaStock.ProcessRTData();
+		SetRTDataNeedCalculate(false);
+	}
 }
 
 void CChinaMarket::TaskCreateTask(long lCurrentTime) {

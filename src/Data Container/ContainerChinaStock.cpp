@@ -248,6 +248,15 @@ string CContainerChinaStock::GetStockName(const string& strStockCode) {
 	}
 }
 
+void CContainerChinaStock::ProcessRTData() {
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CChinaStockPtr pStock = GetStock(l);
+		if (pStock->IsActive()) {
+			pStock->ProcessRTData();
+		}
+	}
+}
+
 void CContainerChinaStock::UnloadDayLine() noexcept {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);

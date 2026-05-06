@@ -82,6 +82,7 @@ public:
 
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeRTData();
+	void CalculateRTData();
 
 	// 实时数据读取
 	string GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);

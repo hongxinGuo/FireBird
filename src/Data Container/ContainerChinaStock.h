@@ -22,6 +22,8 @@ public:
 	CChinaStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
 	string GetStockName(const string& strStockCode);
 
+	void ProcessRTData();
+
 	long LoadStockProfileDB();
 	void UpdateStockProfileDB();
 	void UnloadDayLine() noexcept;

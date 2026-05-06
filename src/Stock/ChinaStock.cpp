@@ -82,6 +82,25 @@ bool CChinaStock::HaveNewDayLineData() {
 	return false;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 此函数被工作线程ThreadCalculatingRTDataProc调用，尽量减少对全局变量的操作。
+//
+// 交易情况和挂单情况似乎分开计算比较好，思路容易清晰。目前来看计算能力尚够，但要考虑旧机器的速度了。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
+void CChinaStock::ProcessRTData() {
+	size_t lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
+	// 以下为计算挂单变化、股票活跃度、大单买卖情况
+	for (size_t i = 0; i < lTotalNumber; i++) {
+		const CWebRTDataPtr pRTData = PopRTData(); // 采用同步机制获取数据
+		if (pRTData->IsActive()) {// 数据有效
+			UpdateRTData(pRTData); // 更新股票现时状态。
+			m_fRTDataCalculated = true;
+		}
+	}
+}
 void CChinaStock::UpdateStatusByDownloadedDayLine() {
 	if (m_dataDayLine.Empty()) return;
 	if (IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
