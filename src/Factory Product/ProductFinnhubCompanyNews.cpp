@@ -38,7 +38,7 @@ string CProductFinnhubCompanyNews::CreateMessage() {
 }
 
 void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
+	auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
 	if (!pvFinnhubCompanyNews->empty()) {
@@ -48,6 +48,7 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			finnhubCompanyNews.m_strCompanySymbol = pStock->GetSymbol();
 		}
 		pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
+		pvFinnhubCompanyNews = nullptr;
 		pStock->SetUpdateCompanyNewsDB(true);
 	}
 	pStock->SetCompanyNewsUpdateDate(gl_pWorldMarket->GetMarketDate());
@@ -73,6 +74,7 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
 	nlohmannJson js;
 	auto pvFinnhubCompanyNews = make_shared<vector<CFinnhubCompanyNews>>();
+	pvFinnhubCompanyNews->reserve(100);
 
 	if (!pWebData->CreateJson(js)) return pvFinnhubCompanyNews;
 	if (!IsValidData(pWebData)) return pvFinnhubCompanyNews;

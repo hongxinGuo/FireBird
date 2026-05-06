@@ -583,7 +583,8 @@ void CChinaMarket::DistributeRTData() {
 	bool succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	const bool queueNotEmpty = succeed;
 	while (succeed) {
-		DistributeRTDataToStock(pRTData);
+		//Note 不再计算试试数据，直接抛掉即可。
+		//DistributeRTDataToStock(pRTData);
 		pRTData = nullptr;
 		m_lRTDataReceivedInCurrentMinute++;
 		succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);

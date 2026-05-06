@@ -70,6 +70,7 @@ public:
 	void SetUpdateCompanyNews(const bool fFlag) noexcept { m_fUpdateCompanyNews = fFlag; }
 	size_t GetCompanyNewsSize() const noexcept { return m_vCompanyNews.size(); }
 	long long GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex).m_llDateTime; }
+	void ClearCompanyNews() { m_vCompanyNews.clear(); }
 
 	bool IsUpdateBasicFinancial() const noexcept { return m_fUpdateBasicFinancial; }
 	void SetUpdateBasicFinancial(const bool fFlag) noexcept { m_fUpdateBasicFinancial = fFlag; }

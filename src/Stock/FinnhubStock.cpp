@@ -386,12 +386,14 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 			if (setCompanyNews.IsEOF()) break;
 			if ((_tstoll(setCompanyNews.m_DateTime) > companyNews.m_llDateTime)) {	// 没有这个时间点的新闻？
 				companyNews.Append(setCompanyNews);
+				companyNews.Reset();
 			}
 			if (++lCurrentPos == lSize) break;
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
 			companyNews = m_vCompanyNews.at(i);
 			companyNews.Append(setCompanyNews);
+			companyNews.Reset();
 		}
 		setCompanyNews.m_pDatabase->CommitTrans();
 		setCompanyNews.Close();
@@ -512,7 +514,7 @@ void CFinnhubStock::AppendBasicFinancialQuarter() const {
 }
 
 void CFinnhubStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
-	m_vCompanyNews.resize(0);
+	m_vCompanyNews.reserve(pvCompanyNews->size());
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
 	}

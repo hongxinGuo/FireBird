@@ -1011,8 +1011,9 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 	for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 		const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateCompanyNewsDB()) {
-			pStock->SetUpdateCompanyNewsDB(false);
 			pStock->UpdateCompanyNewsDB();
+			pStock->ClearCompanyNews();
+			pStock->SetUpdateCompanyNewsDB(false);
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
