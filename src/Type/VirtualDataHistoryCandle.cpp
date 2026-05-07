@@ -19,6 +19,7 @@ CVirtualDataHistoryCandle::CVirtualDataHistoryCandle() {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataHistoryCandle::UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol) {
 	vector<CVirtualHistoryCandle> vOldHistoryCandle;
+	vOldHistoryCandle.reserve(5000);
 	long lSizeOfOldDayLine = 0;
 	bool fNeedUpdate = false;
 
@@ -95,6 +96,7 @@ bool CVirtualDataHistoryCandle::LoadBasicDB(CVirtualSetHistoryCandle* pSetHistor
 		ASSERT(pSetHistoryCandle->IsOpen());
 
 	Unload(); // 卸载之前的日线
+	Reserve(5000);
 	// 装入DayLine数据
 	while (!pSetHistoryCandle->IsEOF()) {
 		CVirtualHistoryCandle historyCandle;
@@ -114,6 +116,7 @@ bool CVirtualDataHistoryCandle::LoadBasicDB(CVirtualSetHistoryCandle* pSetHistor
 /////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataHistoryCandle::UpdateData(const vector<CVirtualHistoryCandle>& vTempData) {
 	Unload(); // 清除已载入的数据（如果有的话）
+	Reserve(vTempData.size());
 	for (auto& p : vTempData) {
 		if (p.IsActive()) Add(p);
 	}
@@ -122,6 +125,7 @@ void CVirtualDataHistoryCandle::UpdateData(const vector<CVirtualHistoryCandle>& 
 
 void CVirtualDataHistoryCandle::UpdateData(const vector<CDayLine>& vTempData) {
 	Unload(); // 清除已载入的数据（如果有的话）
+	Reserve(vTempData.size());
 	for (const auto& p : vTempData) {
 		if (p.IsActive()) Add(static_cast<CVirtualHistoryCandle>(p));
 	}
@@ -133,10 +137,11 @@ void CVirtualDataHistoryCandle::UpdateData(const vector<CDayLine>& vTempData) {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataHistoryCandle::UpdateData(const CDayLinesPtr& vTempDayLine) {
+void CVirtualDataHistoryCandle::UpdateData(const CDayLinesPtr& pvTempDayLine) {
 	Unload(); // 清除已载入的日线数据（如果有的话）
+	Reserve(pvTempDayLine->size());
 	// 将日线数据以时间为正序存入
-	for (auto& dayLine : *vTempDayLine) {
+	for (auto& dayLine : *pvTempDayLine) {
 		if (dayLine.IsActive()) {	// 清除掉不再交易（停牌或退市后出现的）的股票日线
 			Add(dayLine);
 		}

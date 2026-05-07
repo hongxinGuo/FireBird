@@ -20,7 +20,9 @@ public:
 	virtual ~CVirtualDataHistoryCandle() = default;
 
 	void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
-	void CalculateMA(size_t length);
+	auto Size() const noexcept { return m_vHistoryData.size(); }
+	bool Empty() const noexcept { return m_vHistoryData.empty(); }
+	void Reserve(size_t size) { m_vHistoryData.reserve(size); }
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
 	virtual bool SaveDB(const string&) {
@@ -38,7 +40,7 @@ public:
 
 	void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
 	void UpdateData(const vector<CDayLine>& vTempData);
-	void UpdateData(const CDayLinesPtr& vTempDayLine);
+	void UpdateData(const CDayLinesPtr& pvTempDayLine);
 
 	int GetRatio() const {
 		if (m_ratio == 0)
@@ -46,14 +48,8 @@ public:
 		return m_ratio;
 	}
 
-protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol = "");
-
-public:
 	vector<CVirtualHistoryCandle>* GetContainer() noexcept { return &m_vHistoryData; }
 
-	auto Size() const noexcept { return m_vHistoryData.size(); }
-	bool Empty() const noexcept { return m_vHistoryData.empty(); }
 	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
 
 	void Unload() noexcept {
@@ -62,20 +58,20 @@ public:
 	}
 	CVirtualHistoryCandle* GetData(const size_t lIndex) { return &m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandle>& GetDataVector() { return m_vHistoryData; }
+	CVirtualHistoryCandle* GetCandle(long lDate);
 
 	void Add(CVirtualHistoryCandle data) {
 		data.SetRatio(m_ratio);
 		m_vHistoryData.push_back(data);
 	}
-
 	bool HaveDayLine(long lDate);
-	CVirtualHistoryCandle* GetCandle(long lDate);
 
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
 	bool IsDataLoaded() const noexcept { return m_fDataLoaded.load(); }
 	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
+	void CalculateMA(size_t length);
 	bool CalculateRS0();
 	virtual bool CalculateRS1(INT64 lNumber);
 	bool CalculateRSIndex0();
@@ -107,6 +103,9 @@ public:
 	void ShowRSLogarithm(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
 	void ShowRS1(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
 	void ShowLine(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, const vector<double>& vData);
+
+protected:
+	bool UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol = "");
 
 protected:
 	int m_ratio{ 0 };

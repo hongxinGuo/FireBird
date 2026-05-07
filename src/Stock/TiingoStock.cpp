@@ -120,6 +120,8 @@ void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBook& IEXTopOfBook) {
 
 void CTiingoStock::UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine) {
 	m_dataDayLine.Unload();
+	m_dataDayLine.Reserve(vTempDayLine->size());
+
 	for (auto& p : *vTempDayLine) {
 		m_dataDayLine.Add(p);
 	}

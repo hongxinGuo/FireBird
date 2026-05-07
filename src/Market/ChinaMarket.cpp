@@ -594,7 +594,7 @@ void CChinaMarket::DistributeRTData() {
 }
 
 void CChinaMarket::CalculateRTData() {
-	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
+	if (IsSystemReady() && IsRTDataNeedCalculate()) {
 		gl_dataContainerChinaStock.ProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
@@ -829,13 +829,13 @@ bool CChinaMarket::IsWebBusy() {
 	static std::atomic_bool s_bWebBusy = false;
 	bool bWebBusy = false;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0: // 新浪实时数据
+	case SinaRealTime_: // 新浪实时数据
 		bWebBusy = gl_pSinaRTDataSource->IsWebBusy();
 		break;
-	case 1: // 更新网易实时数据读取时间
+	case NeteaseRealTime_: // 更新网易实时数据读取时间
 		bWebBusy = gl_pNeteaseRTDataSource->IsWebBusy();
 		break;
-	case 2: // 更新腾讯实时数据读取时间
+	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		bWebBusy = gl_pTengxunRTDataSource->IsWebBusy();
 		break;
 	default: // error
@@ -859,13 +859,13 @@ bool CChinaMarket::IsWebBusy() {
 long long CChinaMarket::GetHTTPStatus() {
 	long long httpStatus = 200;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0: // 新浪实时数据
+	case SinaRealTime_: // 新浪实时数据
 		httpStatus = gl_pSinaRTDataSource->GetHTTPStatusCode();
 		break;
-	case 1: // 更新网易实时数据读取时间
+	case NeteaseRealTime_: // 更新网易实时数据读取时间
 		httpStatus = gl_pNeteaseRTDataSource->GetHTTPStatusCode();
 		break;
-	case 2: // 更新腾讯实时数据读取时间
+	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		httpStatus = gl_pTengxunRTDataSource->GetHTTPStatusCode();
 		break;
 	default: // error
@@ -878,13 +878,13 @@ long long CChinaMarket::GetHTTPStatus() {
 bool CChinaMarket::IsWebError() {
 	bool webError = false;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0: // 新浪实时数据
+	case SinaRealTime_: // 新浪实时数据
 		webError = gl_pSinaRTDataSource->IsWebError();
 		break;
-	case 1: // 更新网易实时数据读取时间
+	case NeteaseRealTime_: // 更新网易实时数据读取时间
 		webError = gl_pNeteaseRTDataSource->IsWebError();
 		break;
-	case 2: // 更新腾讯实时数据读取时间
+	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		webError = gl_pTengxunRTDataSource->IsWebError();
 		break;
 	default: // error
@@ -897,13 +897,13 @@ bool CChinaMarket::IsWebError() {
 long long CChinaMarket::GetWebErrorCode() {
 	long long errorCode = 0;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0: // 新浪实时数据
+	case SinaRealTime_: // 新浪实时数据
 		errorCode = gl_pSinaRTDataSource->GetWebErrorCode();
 		break;
-	case 1: // 更新网易实时数据读取时间
+	case NeteaseRealTime_: // 更新网易实时数据读取时间
 		errorCode = gl_pNeteaseRTDataSource->GetWebErrorCode();
 		break;
-	case 2: // 更新腾讯实时数据读取时间
+	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		errorCode = gl_pTengxunRTDataSource->GetWebErrorCode();
 		break;
 	default: // error
