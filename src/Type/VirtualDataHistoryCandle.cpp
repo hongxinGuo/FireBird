@@ -127,7 +127,7 @@ void CVirtualDataHistoryCandle::UpdateData(const vector<CDayLine>& vTempData) {
 	Unload(); // 清除已载入的数据（如果有的话）
 	Reserve(vTempData.size());
 	for (const auto& p : vTempData) {
-		if (p.IsActive()) Add(static_cast<CVirtualHistoryCandle>(p));
+		if (p.IsActive()) Add(p);
 	}
 	SetDataLoaded(true);
 }
@@ -154,6 +154,7 @@ bool CVirtualDataHistoryCandle::GetStartEndDate(long& lStartDate, long& lEndDate
 
 	lStartDate = m_vHistoryData.at(0).GetDate();
 	lEndDate = m_vHistoryData.at(m_vHistoryData.size() - 1).GetDate();
+	ASSERT(lStartDate <= lEndDate);
 	return true;
 }
 

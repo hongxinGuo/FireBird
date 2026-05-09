@@ -145,6 +145,9 @@
     <Filter Include="Test源文件\Factory Product\Accessory">
       <UniqueIdentifier>{a7806a7f-5b4a-4580-92ed-95fa51066bad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Type\Indicator">
+      <UniqueIdentifier>{53a639f4-4218-41c2-9b79-f9dade2fc745}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -641,6 +644,9 @@
     </ClCompile>
     <ClCompile Include="CharSetTransferTest.cpp">
       <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="IndicatorMACDTest.cpp">
+      <Filter>Test源文件\Type\Indicator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

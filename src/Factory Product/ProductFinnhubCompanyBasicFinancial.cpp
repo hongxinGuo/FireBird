@@ -43,9 +43,8 @@ string CProductFinnhubCompanyBasicFinancial::CreateMessage() {
 //
 //
 void CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
-	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
+	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
 	if (pFinnhubStockBasicFinancial != nullptr) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
 		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
@@ -253,8 +252,8 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 	ptMetric.clear();
 	ptSeries.clear();
 
-	if (!pWebData->CreateJson(js)) return pBasicFinancial;
-	if (!IsValidData(pWebData)) return pBasicFinancial;
+	if (!pWebData->CreateJson(js)) return nullptr;
+	if (!IsValidData(pWebData)) return nullptr;
 
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	try {

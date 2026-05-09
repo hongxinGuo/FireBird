@@ -1,6 +1,6 @@
 #pragma once
 
-class CKDJ {
+struct Kdj {
 public:
 	double m_RSV{ 0.0 };
 	double m_K{ 0.0 };
@@ -27,5 +27,5 @@ protected:
 	int m_Period{ 9 }; // 默认九天为一个周期
 
 	CVirtualDataHistoryCandle* m_pvCandle{ nullptr };
-	vector<CKDJ> m_vKDJ;
+	vector<Kdj> m_vKDJ;
 };

@@ -178,13 +178,13 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 
 		for (auto item : doc) {
 			int iCount = 0;
-			auto pFinancialStatePtr = make_shared<CTiingoCompanyFinancialState>();
-			pFinancialStatePtr->m_symbol = symbol;
-			pFinancialStatePtr->m_exchange = exchange;
+			auto pFinancialState = make_shared<CTiingoCompanyFinancialState>();
+			pFinancialState->m_symbol = symbol;
+			pFinancialState->m_exchange = exchange;
 			auto itemValue = item.value();
 			auto year2 = simdjsonGetInt64(itemValue, "year");
 			auto quarter = simdjsonGetInt64(itemValue, "quarter");
-			pFinancialStatePtr->m_yearQuarter = year2 * 100 + quarter;
+			pFinancialState->m_yearQuarter = year2 * 100 + quarter;
 			simdjsonGetStringView(itemValue, "date");
 			auto item2 = itemValue["statementData"];
 			try {
@@ -203,7 +203,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
-					pFinancialStatePtr->Assign(index, value4);
+					pFinancialState->Assign(index, value4);
 				}
 			} catch (simdjson_error&) {
 			}
@@ -223,7 +223,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
-					pFinancialStatePtr->Assign(index, value4);
+					pFinancialState->Assign(index, value4);
 				}
 			} catch (simdjson_error&) {
 			}
@@ -243,7 +243,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
-					pFinancialStatePtr->Assign(index, value4);
+					pFinancialState->Assign(index, value4);
 				}
 			} catch (simdjson_error&) {
 			}
@@ -263,11 +263,11 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
-					pFinancialStatePtr->Assign(index, value4);
+					pFinancialState->Assign(index, value4);
 				}
 			} catch (simdjson_error&) {
 			}
-			pvTiingoFinancialState->push_back(pFinancialStatePtr);
+			pvTiingoFinancialState->push_back(pFinancialState);
 		}
 	} catch (simdjson_error&) {
 	}

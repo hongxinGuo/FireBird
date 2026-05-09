@@ -101,9 +101,10 @@ void CContainerChinaWeekLine::UpdateData(const vector<CWeekLine>& vTempWeekLine)
 
 void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandle* pHistoryCandle) {
 	for (size_t index = 0; index < m_vHistoryData.size(); ++index) {
-		auto str = GetData(index)->GetStockSymbol();
+		auto pWeekLine = GetData(index);
+		auto str = pWeekLine->GetStockSymbol();
 		if (str == pHistoryCandle->GetStockSymbol()) {
-			GetData(index)->UpdateWeekLine(dynamic_cast<const CDayLine*>(pHistoryCandle));
+			pWeekLine->UpdateWeekLine(pHistoryCandle);
 			break;
 		}
 	}

@@ -235,6 +235,7 @@
     <ClInclude Include="..\src\Type\StockSplit.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h" />
+    <ClInclude Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.h" />
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandle.h" />
@@ -468,6 +469,7 @@
     <ClCompile Include="..\src\Type\SECFiling.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.cpp" />
+    <ClCompile Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.cpp" />
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandle.cpp" />

@@ -91,6 +91,7 @@
     <ClCompile Include="ContainerFinnhubStockTest.cpp" />
     <ClCompile Include="FinnhubDataSourceTest.cpp" />
     <ClCompile Include="InaccessibleTest.cpp" />
+    <ClCompile Include="IndicatorMACDTest.cpp" />
     <ClCompile Include="InquireEngineTest.cpp" />
     <ClCompile Include="MarketTaskQueueTest.cpp" />
     <ClCompile Include="MarketTaskTest.cpp" />

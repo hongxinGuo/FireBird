@@ -5,6 +5,7 @@
 
 #include"MovingAverage.h"
 #include"IndicatorKDJ.h"
+#include "MovingAverageConvergenceDivergence.h"
 
 class CFireBirdDoc : public CDocument {
 protected: // 仅从序列化创建
@@ -175,6 +176,18 @@ public:
 		m_monthLineKDJ.ToShow(pDC, rectDraw, iStepWidth);
 	}
 
+	void ShowDayLineMACD(CDC* pDC, CRect rectDraw, int iStepWidth) {
+		m_dayLineMACD.ToShow(pDC, rectDraw, iStepWidth);
+	}
+
+	void ShowWeekLineMACD(CDC* pDC, CRect rectDraw, int iStepWidth) {
+		m_weekLineMACD.ToShow(pDC, rectDraw, iStepWidth);
+	}
+
+	void ShowMonthLineMACD(CDC* pDC, CRect rectDraw, int iStepWidth) {
+		m_monthLineMACD.ToShow(pDC, rectDraw, iStepWidth);
+	}
+
 	// 重写
 public:
 	BOOL OnNewDocument() override;
@@ -219,6 +232,10 @@ protected:
 	CIndicatorKDJ m_dayLineKDJ;
 	CIndicatorKDJ m_weekLineKDJ;
 	CIndicatorKDJ m_monthLineKDJ;
+
+	CIndicatorMACD m_dayLineMACD;
+	CIndicatorMACD m_weekLineMACD;
+	CIndicatorMACD m_monthLineMACD;
 
 	// 生成的消息映射函数
 protected:

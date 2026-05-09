@@ -7,8 +7,6 @@
 #pragma once
 
 #include "DayLine.h"
-#include "MonthLine.h"
-#include "TiingoCandleLine.h"
 #include "VirtualHistoryCandle.h"
 #include "VirtualSetHistoryCandle.h"
 
@@ -64,6 +62,7 @@ public:
 		data.SetRatio(m_ratio);
 		m_vHistoryData.push_back(data);
 	}
+	void Add(const CDayLine& data) { Add(static_cast<CVirtualHistoryCandle>(data)); }
 	bool HaveDayLine(long lDate);
 
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }

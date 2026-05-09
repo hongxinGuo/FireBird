@@ -35,6 +35,7 @@ public:
 	void ShowIndicator(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorRS(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea);
 	void Show8020Line(CDC* pDC, CRect rectDrawArea);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
@@ -174,6 +175,10 @@ protected:
 	afx_msg void OnUpdateShowIndicatorKdj(CCmdUI* pCmdUI);
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	afx_msg void OnShowIndicatorMacd();
+	afx_msg void OnUpdateShowIndicatorMacd(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中
