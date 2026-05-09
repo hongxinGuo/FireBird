@@ -8,8 +8,8 @@ public:
 		hist = std::numeric_limits<double>::quiet_NaN();
 	}
 
-	double Max();
-	double Min();
+	double Max() const;
+	double Min() const;
 	double macd;    // MACD line (fastEMA - slowEMA) 
 	double signal;  // signal line (EMA of MACD) 
 	double hist;    // histogram = macd - signal };
@@ -56,6 +56,7 @@ public:
 
 	// Batch compute: returns vector of Result aligned with input prices; entries before availability are NaN.
 	void Calculate(int fastPeriod = 12, int slowPeriod = 26, int signalPeriod = 9);
+	void Calculate2(int fastPeriod = 12, int slowPeriod = 26, int signalPeriod = 9);
 
 	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
 
@@ -76,5 +77,6 @@ private:
 	double currentDif_;
 
 	CVirtualDataHistoryCandle* m_pvCandle{ nullptr };
+	vector<double> m_vClose;
 	vector<MACDResult> m_vMACD;
 };

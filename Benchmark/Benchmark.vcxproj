@@ -117,6 +117,7 @@
     <ClCompile Include="Benchmark.cpp" />
     <ClCompile Include="JsonParseBenchmark.cpp" />
     <ClCompile Include="ChinaMarketBenchmark.cpp" />
+    <ClCompile Include="StockIndicatorBanchmark.cpp" />
     <ClCompile Include="WebRTDataBenchmark.cpp" />
   </ItemGroup>
   <ItemGroup>

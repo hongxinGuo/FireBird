@@ -46,7 +46,7 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 			m_monthLineMACD.Calculate();
 			m_bDataReady = true;
 		});
-	}
+	} 
 }
 void CFireBirdDoc::CalculateDayLineMovingAverage(const CVirtualStockPtr& pStock) {
 	auto pvDayLine = pStock->DayLine();

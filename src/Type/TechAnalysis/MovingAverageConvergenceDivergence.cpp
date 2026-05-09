@@ -2,7 +2,7 @@
 
 #include "MovingAverageConvergenceDivergence.h"
 
-double MACDResult::Max() {
+double MACDResult::Max() const {
 	if (macd >= hist) {
 		if (macd >= signal) return macd;
 		else return signal;
@@ -13,7 +13,7 @@ double MACDResult::Max() {
 	}
 }
 
-double MACDResult::Min() {
+double MACDResult::Min() const {
 	if (macd <= hist) {
 		if (macd <= signal) return macd;
 		else return signal;
@@ -33,8 +33,100 @@ void CIndicatorMACD::reset() {
 	currentDif_ = std::numeric_limits<double>::quiet_NaN();
 }
 
-// Batch compute: returns vector of Result aligned with input prices; entries before availability are NaN.
+// Batch compute
 void CIndicatorMACD::Calculate(int fastPeriod, int slowPeriod, int signalPeriod) {
+	auto candleSize = m_pvCandle->Size();
+	if (m_pvCandle->Empty()) return;
+
+	m_vClose.clear();
+	m_vClose.reserve(candleSize);
+	for (std::size_t i = 0; i < candleSize; ++i) {
+		m_vClose.push_back(static_cast<double>(m_pvCandle->GetData(i)->GetClose()) / m_pvCandle->GetRatio());
+	}
+
+	auto sma = [](const vector<double>& v, std::size_t start, std::size_t len) {
+		double s = 0.0;
+		for (std::size_t i = start; i < start + len; ++i) s += v[i];
+		return s / static_cast<double>(len);
+	};
+
+	std::vector<double> fastEMA(candleSize, std::numeric_limits<double>::quiet_NaN());
+	std::vector<double> slowEMA(candleSize, std::numeric_limits<double>::quiet_NaN());
+	std::vector<double> macdLine(candleSize, std::numeric_limits<double>::quiet_NaN());
+
+	double alphaFast = 2.0 / (fastPeriod + 1.0);
+	double alphaSlow = 2.0 / (slowPeriod + 1.0);
+
+	if (candleSize >= static_cast<std::size_t>(fastPeriod)) {
+		fastEMA[fastPeriod - 1] = sma(m_vClose, 0, fastPeriod);
+		for (std::size_t i = fastPeriod; i < candleSize; ++i)
+			fastEMA[i] = alphaFast * m_vClose[i] + (1.0 - alphaFast) * fastEMA[i - 1];
+	}
+	else {
+		// initialize first point
+		fastEMA[0] = m_vClose[0];
+		for (std::size_t i = 1; i < candleSize; ++i)
+			fastEMA[i] = alphaFast * m_vClose[i] + (1.0 - alphaFast) * fastEMA[i - 1];
+	}
+
+	if (candleSize >= static_cast<std::size_t>(slowPeriod)) {
+		slowEMA[slowPeriod - 1] = sma(m_vClose, 0, slowPeriod);
+		for (std::size_t i = slowPeriod; i < candleSize; ++i)
+			slowEMA[i] = alphaSlow * m_vClose[i] + (1.0 - alphaSlow) * slowEMA[i - 1];
+	}
+	else {
+		slowEMA[0] = m_vClose[0];
+		for (std::size_t i = 1; i < candleSize; ++i)
+			slowEMA[i] = alphaSlow * m_vClose[i] + (1.0 - alphaSlow) * slowEMA[i - 1];
+	}
+
+	for (std::size_t i = 0; i < candleSize; ++i) {
+		if (!std::isnan(fastEMA[i]) && !std::isnan(slowEMA[i]))
+			macdLine[i] = fastEMA[i] - slowEMA[i];
+	}
+
+	// compute signal EMA on macdLine
+	std::vector<double> signalEMA(candleSize, std::numeric_limits<double>::quiet_NaN());
+	double alphaSignal = 2.0 / (signalPeriod + 1.0);
+	// find first valid macd index
+	std::size_t firstMacdIdx = candleSize;
+	for (std::size_t i = 0; i < candleSize; ++i)
+		if (!std::isnan(macdLine[i])) {
+			firstMacdIdx = i;
+			break;
+		}
+	if (firstMacdIdx == candleSize) return; // no macd values
+
+	if (candleSize - firstMacdIdx >= static_cast<std::size_t>(signalPeriod)) {
+		// SMA over first signalPeriod macd values starting at firstMacdIdx
+		double s = 0.0;
+		for (std::size_t i = 0; i < static_cast<std::size_t>(signalPeriod); ++i) s += macdLine[firstMacdIdx + i];
+		signalEMA[firstMacdIdx + signalPeriod - 1] = s / static_cast<double>(signalPeriod);
+		for (std::size_t i = firstMacdIdx + signalPeriod; i < candleSize; ++i)
+			signalEMA[i] = alphaSignal * macdLine[i] + (1.0 - alphaSignal) * signalEMA[i - 1];
+	}
+	else {
+		// fallback: initialize first known macd value then compute
+		signalEMA[firstMacdIdx] = macdLine[firstMacdIdx];
+		for (std::size_t i = firstMacdIdx + 1; i < candleSize; ++i)
+			if (!std::isnan(macdLine[i]))
+				signalEMA[i] = alphaSignal * macdLine[i] + (1.0 - alphaSignal) * signalEMA[i - 1];
+	}
+
+	m_vMACD.clear();
+	m_vMACD.reserve(candleSize);
+	for (std::size_t i = 0; i < candleSize; ++i) {
+		MACDResult macd;
+		macd.macd = macdLine[i];
+		macd.signal = signalEMA[i];
+		macd.hist = std::numeric_limits<double>::quiet_NaN();
+		if (!std::isnan(macd.macd) && !std::isnan(macd.signal)) macd.hist = 2 * (macd.macd - macd.signal); // 放大一倍， 以便在图上更清晰地显示正负柱状图
+		m_vMACD.push_back(macd);
+		macd.Reset();
+	}
+}
+
+void CIndicatorMACD::Calculate2(int fastPeriod, int slowPeriod, int signalPeriod) {
 	auto candleSize = m_pvCandle->Size();
 	if (m_pvCandle->Empty()) return;
 
@@ -58,7 +150,7 @@ void CIndicatorMACD::Calculate(int fastPeriod, int slowPeriod, int signalPeriod)
 	}
 	else {
 		// initialize first point
-		fastEMA[0] = m_pvCandle->GetData(0)->GetClose();
+		fastEMA[0] = static_cast<double>(m_pvCandle->GetData(0)->GetClose()) / m_pvCandle->GetRatio();
 		for (std::size_t i = 1; i < candleSize; ++i)
 			fastEMA[i] = alphaFast * static_cast<double>(m_pvCandle->GetData(i)->GetClose()) / m_pvCandle->GetRatio() + (1.0 - alphaFast) * fastEMA[i - 1];
 	}
@@ -69,7 +161,7 @@ void CIndicatorMACD::Calculate(int fastPeriod, int slowPeriod, int signalPeriod)
 			slowEMA[i] = alphaSlow * static_cast<double>(m_pvCandle->GetData(i)->GetClose()) / m_pvCandle->GetRatio() + (1.0 - alphaSlow) * slowEMA[i - 1];
 	}
 	else {
-		slowEMA[0] = m_pvCandle->GetData(0)->GetClose();
+		slowEMA[0] = static_cast<double>(m_pvCandle->GetData(0)->GetClose()) / m_pvCandle->GetRatio();
 		for (std::size_t i = 1; i < candleSize; ++i)
 			slowEMA[i] = alphaSlow * static_cast<double>(m_pvCandle->GetData(i)->GetClose()) / m_pvCandle->GetRatio() + (1.0 - alphaSlow) * slowEMA[i - 1];
 	}
@@ -107,13 +199,14 @@ void CIndicatorMACD::Calculate(int fastPeriod, int slowPeriod, int signalPeriod)
 				signalEMA[i] = alphaSignal * macdLine[i] + (1.0 - alphaSignal) * signalEMA[i - 1];
 	}
 
+	m_vMACD.clear();
 	m_vMACD.reserve(candleSize);
 	for (std::size_t i = 0; i < candleSize; ++i) {
 		MACDResult macd;
 		macd.macd = macdLine[i];
 		macd.signal = signalEMA[i];
 		macd.hist = std::numeric_limits<double>::quiet_NaN();
-		if (!std::isnan(macd.macd) && !std::isnan(macd.signal)) macd.hist = macd.macd - macd.signal;
+		if (!std::isnan(macd.macd) && !std::isnan(macd.signal)) macd.hist = 2 * (macd.macd - macd.signal); // 放大一倍，便于在窗口中显示	
 		m_vMACD.push_back(macd);
 		macd.Reset();
 	}
@@ -140,10 +233,11 @@ void CIndicatorMACD::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	auto it = m_vMACD.end();
 	int i = 1;
 	--it;
-	long y = rectDrawArea.bottom - (((it--)->macd - currentLow_) / currentDif_) * rectDrawArea.Height();
+	long y = rectDrawArea.bottom - ((it->macd - currentLow_) / currentDif_) * rectDrawArea.Height();
+	--it;
 	pDC->MoveTo(rectDrawArea.right - offset, y);
 	for (; it != m_vMACD.begin(); --it, i++) {
-		y = rectDrawArea.bottom - (((it)->macd - currentLow_) / currentDif_) * rectDrawArea.Height();
+		y = rectDrawArea.bottom - ((it->macd - currentLow_) / currentDif_) * rectDrawArea.Height();
 		pDC->LineTo(rectDrawArea.right - offset - iStepWidth * i, y);
 		if (i >= m_vMACD.size()) break;
 		if (rectDrawArea.right <= iStepWidth * i) break; // 画到窗口左边框为止
@@ -153,10 +247,11 @@ void CIndicatorMACD::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	it = m_vMACD.end();
 	i = 1;
 	--it;
-	y = rectDrawArea.bottom - (((it--)->signal - currentLow_) / currentDif_) * rectDrawArea.Height();
+	y = rectDrawArea.bottom - ((it->signal - currentLow_) / currentDif_) * rectDrawArea.Height();
+	--it;
 	pDC->MoveTo(rectDrawArea.right - offset, y);
 	for (; it != m_vMACD.begin(); --it, i++) {
-		y = rectDrawArea.bottom - (((it)->signal - currentLow_) / currentDif_) * rectDrawArea.Height();
+		y = rectDrawArea.bottom - ((it->signal - currentLow_) / currentDif_) * rectDrawArea.Height();
 		pDC->LineTo(rectDrawArea.right - offset - iStepWidth * i, y);
 		if (i >= m_vMACD.size()) break;
 		if (rectDrawArea.right <= iStepWidth * i) break; // 画到窗口左边框为止
@@ -168,7 +263,7 @@ void CIndicatorMACD::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	long y01 = rectDrawArea.bottom - ((0 - currentLow_) / currentDif_) * rectDrawArea.Height();
 	for (; it != m_vMACD.begin(); --it, i++) {
 		pDC->MoveTo(rectDrawArea.right - offset - iStepWidth * i, y01);
-		y = rectDrawArea.bottom - (((it)->hist - currentLow_) / currentDif_) * rectDrawArea.Height();
+		y = rectDrawArea.bottom - ((it->hist - currentLow_) / currentDif_) * rectDrawArea.Height();
 		if (y < y01) pDC->SelectObject(&penRed1);
 		else pDC->SelectObject(&penGreen);
 		pDC->LineTo(rectDrawArea.right - offset - iStepWidth * i, y);
