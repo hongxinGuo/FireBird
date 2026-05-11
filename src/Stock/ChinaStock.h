@@ -130,10 +130,6 @@ public:
 
 	bool CreateMonthLine();
 
-	// 判断10日强势股票
-	virtual bool Calculate10RSStrong1StockSet();
-	virtual bool Calculate10RSStrongStockSet(const CRSReference* pRef);
-
 	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.enqueue(pData); }
 	CWebRTDataPtr PopRTData() {
 		CWebRTDataPtr pData = nullptr;

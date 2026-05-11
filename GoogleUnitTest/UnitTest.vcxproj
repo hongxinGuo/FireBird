@@ -191,7 +191,6 @@
     <ClCompile Include="SICIndustryTest.cpp" />
     <ClCompile Include="StockSectionTest.cpp" />
     <ClCompile Include="SystemDataTest.cpp" />
-    <ClCompile Include="ThreadCalculateRSTest.cpp" />
     <ClCompile Include="TiingoFactoryTest.cpp" />
     <ClCompile Include="TiingoIndustryTest.cpp" />
     <ClCompile Include="ProductTiingoStockDayLineTest.cpp" />
@@ -235,7 +234,6 @@
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
-    <ClCompile Include="ThreadBuildDayLineRSOfDayTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />

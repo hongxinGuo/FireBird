@@ -24,8 +24,6 @@ enum {
 	CHINA_MARKET_BUILD_TODAY_DATABASE__,  // 实时数据处理。每日一次，时间为150500
 	CHINA_MARKET_VALIDATE_TODAY_DATABASE__, //not implemented 检查今日数据是否处理过，没有的话则处理之
 
-	CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, // 实时数据处理。每日一次，时间为150500
-
 	CHINA_MARKET_UPDATE_OPTION_DB__, // 每五分钟更新一次系统选项数据库
 	CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, // 每五分钟更新一次股票简介数据库
 	CHINA_MARKET_UPDATE_STOCK_SECTION__, // 更新全段股票数据库

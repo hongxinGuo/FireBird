@@ -14,9 +14,6 @@
 #include "InfoReport.h"
 #include"SetOption.h"
 #include"SetChinaChosenStock.h"
-#include"SetRSStrong2Stock.h"
-#include"SetRSStrong1Stock.h"
-#include"SetRSStrongStock.h"
 #include"SetRSOption.h"
 
 #include"SetCurrentWeekLine.h"
@@ -82,10 +79,7 @@ void CChinaMarket::ResetMarket() {
 	gl_dataContainerChinaStock.LoadStockProfileDB();
 	LoadOptionDB();
 	LoadChosenStockDB();
-	Load10DaysRSStrong1StockSet();
-	Load10DaysRSStrong2StockSet();
 	LoadCalculatingRSOption();
-	Load10DaysRSStrongStockDB();
 
 	if (!gl_systemConfiguration.GetCurrentStock().empty()) {
 		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__);
@@ -238,9 +232,6 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 		case CHINA_MARKET_PREPARING_MARKET_OPEN__:
 			TaskPreparingMarketOpen(lCurrentTime);
 			break;
-		case CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__:
-			TaskChoiceRSSet(lCurrentTime);
-			break;
 		default:
 			ASSERT(0); // 错误的任务号
 			break;
@@ -341,22 +332,6 @@ void CChinaMarket::ChangeToPrevStock() {
 		}
 	}
 	gl_pCurrentStock = pStock;
-}
-
-void CChinaMarket::ChangeToPrevStockSet() {
-	do {
-		if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
-		else { m_lCurrentSelectedStockSet = c_10DaysRSStockSetStartPosition + 9; }
-		ASSERT(m_lCurrentSelectedStockSet < 20);
-	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
-}
-
-void CChinaMarket::ChangeToNextStockSet() {
-	do {
-		if (m_lCurrentSelectedStockSet == (c_10DaysRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
-		else { m_lCurrentSelectedStockSet++; }
-		ASSERT(m_lCurrentSelectedStockSet < 20);
-	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 }
 
 size_t CChinaMarket::GetCurrentStockSetSize() const {
@@ -518,22 +493,6 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const string& str) con
 	return true;
 }
 
-void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
-	if (m_fCalculateChosen10RS) {
-		if (gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() <= 0 && gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() <= 0) {
-			gl_runtime.thread_executor()->post([this, lCurrentTime] {
-				gl_ProcessChinaMarketRTData.acquire();
-				this->TaskChoice10RSStrongStockSet(lCurrentTime);
-				this->TaskChoice10RSStrong1StockSet(lCurrentTime);
-				gl_ProcessChinaMarketRTData.release();
-			});
-		}
-		else {
-			AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, GetNextTime(lCurrentTime, 0, 1, 0));
-		}
-	}
-}
-
 void CChinaMarket::TaskSetCurrentStock() {
 	if (!gl_systemConfiguration.GetCurrentStock().empty()) { // 当前有选择股票
 		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock())) {
@@ -638,10 +597,6 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lTimeMinute, 0, 4, 10)); // 开始执行时间为启动之后的四分钟。
 
 	if (IsWorkingDay()) {
-		AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 150700); // 
-	}
-
-	if (IsWorkingDay()) {
 		if (lCurrentTime < 150300) {
 			// 生成本日历史数据
 			AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150530); // 开始执行时间为：150530
@@ -728,34 +683,6 @@ bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 		return true;
 	}
 	m_fCheckActiveStock = false;
-	return false;
-}
-
-bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
-	if (IsSystemReady() && !m_fChosen10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
-		gl_runtime.thread_executor()->post([this] {
-			gl_UpdateChinaMarketDB.acquire();
-			gl_systemMessage.SetChinaMarketSavingFunction("choice 10 RS1");
-			gl_systemMessage.PushInformationMessage("开始计算10日RS1\n");// 添加一个注释
-			if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
-				gl_systemMessage.PushInformationMessage("10日RS1计算完毕\n");
-				this->SetUpdatedDateFor10DaysRS1(this->GetMarketDate());
-				this->SetUpdateOptionDB(true); // 更新选项数据库
-			}
-			gl_UpdateChinaMarketDB.release();
-		});
-		m_fChosen10RSStrong1StockSet = true;
-		return true;
-	}
-	return false;
-}
-
-bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
-	if (IsSystemReady() && !m_fChosen10RSStrongStockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
-		Choice10RSStrongStockSet();
-		m_fChosen10RSStrongStockSet = true;
-		return true;
-	}
 	return false;
 }
 
@@ -1280,19 +1207,6 @@ void CChinaMarket::UpdateAllStockDayLine() {
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0, 0, 100));
 }
 
-void CChinaMarket::Choice10RSStrongStockSet() {
-	for (int i = 0; i < 10; i++) {
-		if (m_aRSStrongOption.at(i).m_fActive) {
-			auto pref = &m_aRSStrongOption.at(i);
-			gl_runtime.thread_executor()->post([pref, i] {
-				ThreadChoice10RSStrongStockSet(pref, i);
-			});
-		}
-	}
-	SetUpdatedDateFor10DaysRS(GetMarketDate());
-	SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
-}
-
 void CChinaMarket::DeleteDayLine(long lDate) const {
 	DeleteDayLineBasicInfo(lDate);
 }
@@ -1313,40 +1227,6 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();
 	setDayLineBasicInfo.Close();
-}
-
-bool CChinaMarket::Load10DaysRSStrong1StockSet() {
-	CSetRSStrong1Stock setRSStrong1;
-
-	m_v10RSStrong1Stock.clear();
-	setRSStrong1.Open();
-	while (!setRSStrong1.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setRSStrong1.m_Symbol))) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setRSStrong1.m_Symbol));
-			m_v10RSStrong1Stock.push_back(pStock);
-		}
-		setRSStrong1.MoveNext();
-	}
-	setRSStrong1.Close();
-
-	return true;
-}
-
-bool CChinaMarket::Load10DaysRSStrong2StockSet() {
-	CSetRSStrong2Stock setRSStrong2;
-
-	m_v10RSStrong2Stock.clear();
-	setRSStrong2.Open();
-	while (!setRSStrong2.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setRSStrong2.m_Symbol))) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setRSStrong2.m_Symbol));
-			m_v10RSStrong2Stock.push_back(pStock);
-		}
-		setRSStrong2.MoveNext();
-	}
-	setRSStrong2.Close();
-
-	return true;
 }
 
 bool CChinaMarket::LoadCalculatingRSOption() {
@@ -1408,31 +1288,6 @@ void CChinaMarket::SaveCalculatingRSOption() const {
 	}
 	setRSOption.m_pDatabase->CommitTrans();
 	setRSOption.Close();
-}
-
-bool CChinaMarket::Load10DaysRSStrongStockDB() {
-	for (int i = 0; i < 10; i++) {
-		LoadOne10DaysRSStrongStockDB(i);
-	}
-	return true;
-}
-
-bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
-	m_lCurrentRSStrongIndex = lIndex;
-	CSetRSStrongStock setRSStrongStock(lIndex);
-
-	setRSStrongStock.Open();
-	while (!setRSStrongStock.IsEOF()) {
-		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setRSStrongStock.m_Symbol))) {
-			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setRSStrongStock.m_Symbol));
-			m_avChosenStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock);
-			// 10日RS股票集起始位置为第10个。
-		}
-		setRSStrongStock.MoveNext();
-	}
-	setRSStrongStock.Close();
-
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

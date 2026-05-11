@@ -14,9 +14,6 @@
 #include"SetCurrentWeekLine.h"
 #include"SetOption.h"
 #include"SetRSOption.h"
-#include"SetRSStrong1Stock.h"
-#include"SetRSStrong2Stock.h"
-#include"SetRSStrongStock.h"
 #include"SetStockSection.h"
 
 #include"SetCountry.h"
@@ -118,42 +115,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setRSOption.GetDefaultSQL(), _T("[option_calculatingrs]"));
-	}
-
-	TEST_F(SetInitializeTest, TestRSStrong1StockInitialize) {
-		CSetRSStrong1Stock setRSStrong1Stock;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setRSStrong1Stock.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setRSStrong1Stock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setRSStrong1Stock.GetDefaultSQL(), _T("[10rs1above55]"));
-	}
-
-	TEST_F(SetInitializeTest, TestRSStrong2StockInitialize) {
-		CSetRSStrong2Stock setRSStrong2Stock;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setRSStrong2Stock.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setRSStrong2Stock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setRSStrong2Stock.GetDefaultSQL(), _T("[10rs2above55]"));
-	}
-
-	TEST_F(SetInitializeTest, TestRSStrongStockInitialize) {
-		CSetRSStrongStock setRSStrongStock(1);
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setRSStrongStock.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setRSStrongStock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setRSStrongStock.GetDefaultSQL(), _T("[selected_rs_1]"));
 	}
 
 	TEST_F(SetInitializeTest, TestStockSectionInitialize) {

@@ -47,9 +47,6 @@ public:
 
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 
-	bool Choice10RSStrong1StockSet();
-	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
-
 	[[nodiscard]] static double GetUpDownRate(const string& strClose, const string& strLastClose) noexcept;
 
 private:

@@ -9,8 +9,6 @@ namespace testing {
 		MOCK_METHOD(void, TaskExitSystem, (), (override));
 		MOCK_METHOD(bool, TaskResetMarket, (long lCurrentTime), (override));
 
-		MOCK_METHOD(void, Choice10RSStrongStockSet, (), (override));
-
 		MOCK_METHOD(void, UpdateOptionDB, (), (override));
 		MOCK_METHOD(void, AppendChosenStockDB, (), (override));
 		MOCK_METHOD(bool, BuildCurrentWeekLine, (), (override));

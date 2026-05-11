@@ -75,9 +75,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSOption.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrong1Stock.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrong2Stock.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrongStock.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h" />
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h" />
@@ -302,9 +299,6 @@
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSOption.cpp" />
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrong1Stock.cpp" />
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrong2Stcok.cpp" />
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrongStock.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetStockSection.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualRecordset.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetChoicedStake.cpp" />
@@ -480,7 +474,6 @@
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp" />
-    <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />
     <ClCompile Include="..\src\Working thread\ThreadLoadSelectedStockDayLine.cpp" />
   </ItemGroup>
   <ItemGroup>

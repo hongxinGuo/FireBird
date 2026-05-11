@@ -17,6 +17,8 @@
 #include "TengxunRTDataSource.h"
 
 using namespace testing;
+#include<fmt/core.h>
+using namespace fmt;
 
 #include<memory>
 
@@ -26,18 +28,6 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-
-			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // 装入各十日强度股票集
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(10) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(11) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(12) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(13) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(14) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(15) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(16) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(17) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(18) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(19) > 0);
 
 			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(i);
@@ -224,11 +214,6 @@ namespace FireBirdTest {
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 			EXPECT_EQ(pTask->GetTime(), 150530);
-
-			pTask = gl_pChinaMarket->GetMarketTask();
-			gl_pChinaMarket->DiscardCurrentMarketTask();
-			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
-			EXPECT_EQ(pTask->GetTime(), 150700);
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
@@ -289,11 +274,6 @@ namespace FireBirdTest {
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 			EXPECT_EQ(pTask->GetTime(), 150530);
-
-			pTask = gl_pChinaMarket->GetMarketTask();
-			gl_pChinaMarket->DiscardCurrentMarketTask();
-			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
-			EXPECT_EQ(pTask->GetTime(), 150700);
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
@@ -346,11 +326,6 @@ namespace FireBirdTest {
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 			EXPECT_EQ(pTask->GetTime(), 150530);
-
-			pTask = gl_pChinaMarket->GetMarketTask();
-			gl_pChinaMarket->DiscardCurrentMarketTask();
-			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
-			EXPECT_EQ(pTask->GetTime(), 150700);
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
@@ -396,11 +371,6 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__);
-		EXPECT_EQ(pTask->GetTime(), 150700);
-
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
 		EXPECT_EQ(pTask->GetTime(), 150700);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
@@ -1272,29 +1242,6 @@ namespace FireBirdTest {
 		gl_pCurrentStock = nullptr;
 	}
 
-	TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock2) {
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10、11、12 股票集中有股票
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentSelectedStock() != nullptr);
-		gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
-
-		gl_pChinaMarket->ChangeToPrevStock();
-		gl_pChinaMarket->ChangeToNextStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedPosition(), 0);
-		gl_pChinaMarket->ChangeToNextStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedPosition(), 1);
-		gl_pChinaMarket->ChangeToPrevStock();
-		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentStockSetSize(), gl_pChinaMarket->GetCurrentSelectedPosition() + 1);
-
-		gl_pChinaMarket->SetCurrentSelectedPosition(0);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
-
-		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
-		gl_pCurrentStock = nullptr;
-	}
-
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock1) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 		gl_pCurrentStock = gl_dataContainerChinaStock.GetStock(1); // 选取A股指数
@@ -1306,59 +1253,6 @@ namespace FireBirdTest {
 		//恢复原状
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 		gl_pCurrentStock = nullptr;
-	}
-
-	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock2) {
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10、11、12 股票集中有股票
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentSelectedStock() != nullptr);
-		gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
-
-		gl_pChinaMarket->ChangeToNextStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedPosition(), 1);
-		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedPosition(), 0);
-		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedPosition() + 1, gl_pChinaMarket->GetCurrentStockSetSize());
-
-		gl_pChinaMarket->SetCurrentSelectedPosition(0);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
-
-		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
-		gl_pCurrentStock = nullptr;
-	}
-
-	TEST_F(CChinaMarketTest, TestChangeToPrevStockSet) {
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->ChangeToPrevStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 19);
-		gl_pChinaMarket->ChangeToPrevStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 18);
-		gl_pChinaMarket->ChangeToPrevStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 12);
-		gl_pChinaMarket->ChangeToPrevStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 11);
-		gl_pChinaMarket->ChangeToPrevStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 10);
-
-		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
-	}
-
-	TEST_F(CChinaMarketTest, TestChangeToNextStockSet) {
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->ChangeToNextStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 10);
-		gl_pChinaMarket->ChangeToNextStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 11);
-		gl_pChinaMarket->ChangeToNextStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 12);
-		gl_pChinaMarket->ChangeToNextStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 18);
-		gl_pChinaMarket->ChangeToNextStockSet();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 19);
-
-		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 	}
 
 	TEST_F(CChinaMarketTest, TestIsTotalStockSetSelected) {

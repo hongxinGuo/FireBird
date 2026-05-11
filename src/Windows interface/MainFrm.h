@@ -104,12 +104,6 @@ protected:
 	afx_msg void OnUpdateRebuildChinaMarketStockDayLineRS(CCmdUI* pCmdUI);
 	afx_msg void OnAbortBuildingRS();
 	afx_msg void OnUpdateAbortBuildingRS(CCmdUI* pCmdUI);
-	afx_msg void OnCalculate10dayRS1();
-	afx_msg void OnCalculate10dayRS2();
-	afx_msg void OnCalculate10dayRS();
-	afx_msg void OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateCalculate10dayRS(CCmdUI* pCmdUI);
 	afx_msg void OnStopUpdateDayLine();
 	afx_msg void OnUsingNeteaseRealtimeDataServer();
 	afx_msg void OnUsingSinaRealtimeDataServer();

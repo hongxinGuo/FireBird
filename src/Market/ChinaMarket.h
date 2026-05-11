@@ -8,7 +8,6 @@ using std::set;
 using std::atomic_int64_t;
 
 constexpr int c_SelectedStockStartPosition = 0;
-constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
 class CChinaMarket : public CVirtualMarket {
 public:
@@ -50,12 +49,9 @@ public:
 	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
 	void TaskAccessoryPerMinuteTask(long lCurrentTime); // 每分钟重复执行的辅助任务
 	void TaskPreparingMarketOpen(long lCurrentTime);
-	void TaskChoiceRSSet(long lCurrentTime);
 	void TaskSetCurrentStock();
 
 	bool SetCheckActiveStockFlag(long lCurrentTime);
-	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
-	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
 
 	void ProcessTodayStock();
@@ -78,7 +74,6 @@ public:
 	void UpdateAllStockDayLine();
 
 	// 各工作线程调用包裹函数
-	virtual void Choice10RSStrongStockSet();
 
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeRTData();
@@ -127,14 +122,8 @@ public:
 	virtual bool DeleteCurrentWeekWeekLine();
 	static bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
 
-	bool Load10DaysRSStrong1StockSet();
-	bool Load10DaysRSStrong2StockSet();
-
 	bool LoadCalculatingRSOption();
 	void SaveCalculatingRSOption() const;
-
-	bool Load10DaysRSStrongStockDB();
-	bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
 	virtual bool BuildCurrentWeekLine();
 	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData);
@@ -233,8 +222,6 @@ public:
 
 	void ChangeToNextStock();
 	void ChangeToPrevStock();
-	void ChangeToPrevStockSet();
-	void ChangeToNextStockSet();
 
 	bool IsTotalStockSetSelected() const noexcept {
 		if (m_lCurrentSelectedStockSet == -1) return true;

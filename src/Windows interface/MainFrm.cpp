@@ -62,12 +62,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildChinaMarketStockDayLineRS)
 	ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
-	ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
-	ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRS2)
-	ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRS)
-	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnUpdateCalculate10dayRS1)
-	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
-	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
+//	ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
+//	ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRS2)
+//	ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRS)
+//	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnUpdateCalculate10dayRS1)
+//	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
+//	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
 	ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
 	ON_COMMAND(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUsingNeteaseRealtimeDataServer)
 	ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
@@ -858,51 +858,6 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
-}
-
-void CMainFrame::OnCalculate10dayRS1() {
-	gl_runtime.thread_executor()->post([] {
-		gl_UpdateChinaMarketDB.acquire();
-		gl_systemMessage.SetChinaMarketSavingFunction("Calculate 10day RS1");
-		gl_systemMessage.PushInformationMessage("开始计算10日RS1\n");// 添加一个注释
-		if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
-			gl_systemMessage.PushInformationMessage("10日RS1计算完毕\n");
-			gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(gl_pChinaMarket->GetMarketDate());
-			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
-		}
-		gl_UpdateChinaMarketDB.release();
-	});
-	gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
-}
-
-void CMainFrame::OnCalculate10dayRS2() {
-
-}
-
-void CMainFrame::OnCalculate10dayRS() {
-	gl_pChinaMarket->Choice10RSStrongStockSet();
-	gl_pChinaMarket->SetChosen10RSStrongStockSet(true);
-}
-
-void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
-	if ((gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else SysCallCmdUIEnable(pCmdUI, true);
-}
-
-void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
-	if ((gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else SysCallCmdUIEnable(pCmdUI, true);
-}
-
-void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
-	if ((gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else SysCallCmdUIEnable(pCmdUI, true);
 }
 
 void CMainFrame::OnStopUpdateDayLine() {

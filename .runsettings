@@ -74,33 +74,24 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>ReportJsonError</Function>
 								<Function>ReportWebError</Function>
 								<Function>to_byte_string</Function>
-                                <Function>ThreadBuildDayLineRS</Function>
-                                <Function>ThreadBuildWeekLineRS</Function>
+                <Function>ThreadBuildDayLineRS</Function>
+                <Function>ThreadBuildWeekLineRS</Function>
 
-								<Function>CChinaStock::Calculate10RSStrongStockSet</Function>
-								<Function>CChinaStock::Calculate10RSStrong1StockSet</Function>
-								<Function>CChinaStock::Calculate10RSStrong2StockSet</Function>
+			
 								<Function>CChinaStock::CalculateWeekLine</Function>
 								<Function>CChinaStock::ReportGuadan</Function>
 								<Function>CChinaStock::BuildWeekLine</Function>
 								<Function>CChinaStock::CalculatingWeekLine</Function>
 
-								<Function>CContainerChinaStock::DeleteTempRTData</Function>
-								<Function>CContainerChinaStock::UpdateTempRTDB</Function>
 								<Function>CContainerChinaStock::UnloadDayLine</Function>
 
 								<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
 								<Function>CChinaMarket::BuildWeekLineOfCurrentWeek</Function>
 								<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
-								<Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
-								<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
-								<Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
 								<Function>CChinaMarket::DeleteWeekLine</Function>
 								<Function>CChinaMarket::SaveRTData</Function>
 								<Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
-								<Function>CChinaMarket::TaskChoiceRSSet</Function>
 								<Function>CChinaMarket::TaskLoadCurrentStockHistoryData</Function>
-                                <Function>CChinaMarket::TaskLoadCurrentStockHistoryData</Function>
 
 								<Function>CWorldMarket::StartFinnhubWebSocket</Function>
 								<Function>CWorldMarket::StartTiingoIEXWebSocket</Function>
@@ -116,7 +107,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 								<Function>CWorldMarket::TaskUpdateSicIndustry</Function>
-                                <Function>CWorldMarket::TaskUpdateNaicsIndustry</Function>
+                <Function>CWorldMarket::TaskUpdateNaicsIndustry</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 

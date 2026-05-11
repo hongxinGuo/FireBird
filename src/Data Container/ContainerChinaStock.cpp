@@ -13,10 +13,6 @@
 #include"RSReference.h"
 #include"Thread.h"
 
-#include"SetRSStrongStock.h"
-#include"SetRSStrong1Stock.h"
-#include"SetRSStrong2Stock.h"
-
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
 }
@@ -355,76 +351,6 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(100); }
 	gl_systemMessage.PushInformationMessage("周线历史数据生成完毕");
-
-	return true;
-}
-
-bool CContainerChinaStock::Choice10RSStrong1StockSet() {
-	vector<CChinaStockPtr> v10RSStrongStock;
-
-	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CChinaStockPtr pStock = GetStock(l);
-		thread thread1(ThreadCalculate10RSStrong1Stock, &v10RSStrongStock, pStock);
-		thread1.detach();
-	}
-	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_systemConfiguration.IsExitingSystem()) return false;
-		Sleep(100); // 等待工作线程完成所有任务
-	}
-
-	CSetRSStrong1Stock setRSStrong1;
-
-	setRSStrong1.Open();
-	setRSStrong1.m_pDatabase->BeginTrans();
-	while (!setRSStrong1.IsEOF()) {
-		setRSStrong1.Delete();
-		setRSStrong1.MoveNext();
-	}
-	setRSStrong1.m_pDatabase->CommitTrans();
-	setRSStrong1.m_pDatabase->BeginTrans();
-	for (const auto& pStock : v10RSStrongStock) {
-		setRSStrong1.AddNew();
-		setRSStrong1.m_Symbol = pStock->GetSymbol().c_str();
-		setRSStrong1.Update();
-	}
-	setRSStrong1.m_pDatabase->CommitTrans();
-	setRSStrong1.Close();
-
-	return true;
-}
-
-bool CContainerChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
-	vector<CChinaStockPtr> v10RSStrongStock;
-
-	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CChinaStockPtr pStock = GetStock(l);
-		thread thread1(ThreadCalculate10RSStrongStock, &v10RSStrongStock, pRef, pStock);
-		thread1.detach();
-	}
-
-	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_systemConfiguration.IsExitingSystem()) return false;
-		Sleep(100); // 等待工作线程完成所有任务
-	}
-
-	gl_pChinaMarket->SetCurrentRSStrongIndex(iIndex); // CSetRSStrongStock需要此m_lCurrentRSStrongIndex来选择正确的数据表。
-	CSetRSStrongStock setRSStrong(iIndex);
-
-	setRSStrong.Open();
-	setRSStrong.m_pDatabase->BeginTrans();
-	while (!setRSStrong.IsEOF()) {
-		setRSStrong.Delete();
-		setRSStrong.MoveNext();
-	}
-	setRSStrong.m_pDatabase->CommitTrans();
-	setRSStrong.m_pDatabase->BeginTrans();
-	for (const auto& pStock : v10RSStrongStock) {
-		setRSStrong.AddNew();
-		setRSStrong.m_Symbol = pStock->GetSymbol().c_str();
-		setRSStrong.Update();
-	}
-	setRSStrong.m_pDatabase->CommitTrans();
-	setRSStrong.Close();
 
 	return true;
 }

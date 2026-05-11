@@ -10,8 +10,6 @@ namespace testing {
 		MOCK_METHOD(bool, SaveWeekLine, (), (override));
 		MOCK_METHOD(bool, LoadWeekLineDB, (), (override));
 		MOCK_METHOD(bool, BuildWeekLine, (long lStartDate), (override));
-		MOCK_METHOD(bool, Calculate10RSStrong1StockSet, (), (override));
-		MOCK_METHOD(bool, Calculate10RSStrongStockSet, (const CRSReference* pRef), (override));
 	};
 
 	using CMockChinaStockPtr = shared_ptr<CMockChinaStock>;

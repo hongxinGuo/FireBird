@@ -203,31 +203,4 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
-
-	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrongStockSet) {
-		tm tm_{};
-		tm_.tm_wday = 1; // 星期一
-		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		s_pMockChinaMarket->SetSystemReady(false);
-		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
-		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		s_pMockChinaMarket->SetSystemReady(true);
-		s_pMockChinaMarket->SetChosen10RSStrongStockSet(true);
-		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
-		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		s_pMockChinaMarket->SetSystemReady(true);
-		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
-		EXPECT_CALL(*s_pMockChinaMarket, Choice10RSStrongStockSet)
-		.Times(1);
-		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
-		EXPECT_TRUE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		EXPECT_TRUE(s_pMockChinaMarket->IsChosen10RSStrongStockSet());
-
-		tm_.tm_wday = 0; // 星期日
-		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
-		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrongStockSet()) << "休息日不处理";
-		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
-	}
 }

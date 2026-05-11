@@ -279,15 +279,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSOption.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrong1Stock.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrong2Stock.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrongStock.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -965,15 +956,6 @@
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSOption.cpp">
       <Filter>源文件\Database\ChinaMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrong1Stock.cpp">
-      <Filter>源文件\Database\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrong2Stcok.cpp">
-      <Filter>源文件\Database\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrongStock.cpp">
-      <Filter>源文件\Database\ChinaMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetStockSection.cpp">
       <Filter>源文件\Database\ChinaMarket</Filter>
     </ClCompile>
@@ -1083,9 +1065,6 @@
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp">
-      <Filter>源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp">
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
