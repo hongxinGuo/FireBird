@@ -13,7 +13,6 @@
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
 #include"SetOption.h"
-#include"SetRSOption.h"
 #include"SetStockSection.h"
 
 #include"SetCountry.h"
@@ -78,7 +77,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setChinaStockSymbol.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setChinaStockSymbol.GetDefaultSQL(), _T("[stockcode]"));
+		EXPECT_STREQ(setChinaStockSymbol.GetDefaultSQL(), _T("[china_stock_code]"));
 	}
 
 	TEST_F(SetInitializeTest, TestCurrentWeekLineInitialize) {
@@ -90,7 +89,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setCurrentWeekLine.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setCurrentWeekLine.GetDefaultSQL(), _T("[CurrentWeekLine]"));
+		EXPECT_STREQ(setCurrentWeekLine.GetDefaultSQL(), _T("[china_current_weekline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestOptionInitialize) {
@@ -102,19 +101,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setOption.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setOption.GetDefaultSQL(), _T("[options]"));
-	}
-
-	TEST_F(SetInitializeTest, TestRSOptionInitialize) {
-		CSetRSOption setRSOption;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setRSOption.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setRSOption.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setRSOption.GetDefaultSQL(), _T("[option_calculatingrs]"));
+		EXPECT_STREQ(setOption.GetDefaultSQL(), _T("[china_market_options]"));
 	}
 
 	TEST_F(SetInitializeTest, TestStockSectionInitialize) {
@@ -126,7 +113,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setStockSection.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setStockSection.GetDefaultSQL(), _T("[Stock_Code_Section]"));
+		EXPECT_STREQ(setStockSection.GetDefaultSQL(), _T("[china_stock_code_section]"));
 	}
 
 	TEST_F(SetInitializeTest, TestDayLineBasicInfoInitialize) {
@@ -138,7 +125,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setDayLineBasicInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setDayLineBasicInfo.GetDefaultSQL(), _T("[dayline]"));
+		EXPECT_STREQ(setDayLineBasicInfo.GetDefaultSQL(), _T("[china_stock_dayline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWeekLineBasicInfoInitialize) {
@@ -150,7 +137,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWeekLineBasicInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWeekLineBasicInfo.GetDefaultSQL(), _T("[weekline]"));
+		EXPECT_STREQ(setWeekLineBasicInfo.GetDefaultSQL(), _T("[china_stock_weekline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestFinnhubStockDayLineInitialize) {
@@ -198,7 +185,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setChinaChosenStock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setChinaChosenStock.GetDefaultSQL(), _T("[choice_stock]"));
+		EXPECT_STREQ(setChinaChosenStock.GetDefaultSQL(), _T("[china_choice_stock]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWorldChosenForexInitialize) {
@@ -210,7 +197,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldChosenForex.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldChosenForex.GetDefaultSQL(), _T("[choice_forex]"));
+		EXPECT_STREQ(setWorldChosenForex.GetDefaultSQL(), _T("[world_choice_forex]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWorldChosenCryptoInitialize) {
@@ -222,7 +209,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultSQL(), _T("[choice_crypto]"));
+		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultSQL(), _T("[world_choice_crypto]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWorldChosenStockInitialize) {
@@ -234,7 +221,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldChosenStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldChosenStock.GetDefaultSQL(), _T("[choice_stock]"));
+		EXPECT_STREQ(setWorldChosenStock.GetDefaultSQL(), _T("[world_choice_stock]"));
 	}
 
 	TEST_F(SetInitializeTest, TestCountryInitialize) {

@@ -221,8 +221,6 @@ CMainFrame::~CMainFrame() {
 		gl_pChinaMarket->UpdateChosenStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
-	gl_pChinaMarket->SaveCalculatingRSOption();
-
 	while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1); // 等待处理日线历史数据的线程结束。
 
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。

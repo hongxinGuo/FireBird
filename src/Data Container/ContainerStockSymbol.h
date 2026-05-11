@@ -28,7 +28,7 @@ public:
 	bool Delete(const string& strSymbol);
 	void Add(const string& strSymbol);
 
-	void LoadStockSectionDB() const;
+	void LoadStockSectionDB();
 	void UpdateStockSectionDB();
 
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
@@ -48,6 +48,9 @@ protected:
 	vector<string> m_vCurrentSectionStockCode; // 当前股票集的第一个代码。字符串的格式为600000.SS、sz000001
 	vector<CStockSectionPtr> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
 	bool m_fUpdateStockSection; // 更新StockSection标识
+
+private:
+	bool m_fDBLoaded{ false };
 };
 
 using CContainerStockSymbolPtr = shared_ptr<CContainerStockSymbol>;

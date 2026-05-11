@@ -10,11 +10,12 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
+#include <fmt/format.h>
+
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
 #include"SetOption.h"
 #include"SetChinaChosenStock.h"
-#include"SetRSOption.h"
 
 #include"SetCurrentWeekLine.h"
 
@@ -79,7 +80,6 @@ void CChinaMarket::ResetMarket() {
 	gl_dataContainerChinaStock.LoadStockProfileDB();
 	LoadOptionDB();
 	LoadChosenStockDB();
-	LoadCalculatingRSOption();
 
 	if (!gl_systemConfiguration.GetCurrentStock().empty()) {
 		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__);
@@ -1070,50 +1070,6 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 }
 
 void CChinaMarket::DeleteWeekLine(long lMonday) {
-	DeleteWeekLineBasicInfo(lMonday);
-}
-
-bool CChinaMarket::DeleteWeekLine() {
-	if (!gl_systemConfiguration.IsWorkingMode()) {
-		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-		exit(1);
-	}
-	DeleteWeekLineBasicInfo();
-	DeleteWeekLineExtendInfo();
-	return true;
-}
-
-void CChinaMarket::DeleteWeekLineBasicInfo() {
-	CDatabase database;
-
-	if (!gl_systemConfiguration.IsWorkingMode()) {
-		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-		exit(1);
-	}
-
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weekline`;"));
-	database.CommitTrans();
-	database.Close();
-}
-
-void CChinaMarket::DeleteWeekLineExtendInfo() {
-	CDatabase database;
-
-	if (!gl_systemConfiguration.IsWorkingMode()) {
-		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-		exit(1);
-	}
-
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weeklineinfo`;"));
-	database.CommitTrans();
-	database.Close();
-}
-
-void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
 	CSetWeekLineInfo setWeekLineBasicInfo;
 
 	string sDate = fmt::format("[Date] = {:08Ld}", lMonday);
@@ -1126,6 +1082,21 @@ void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
 	}
 	setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 	setWeekLineBasicInfo.Close();
+}
+
+bool CChinaMarket::DeleteWeekLine() {
+	if (!gl_systemConfiguration.IsWorkingMode()) {
+		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+		exit(1);
+	}
+	CDatabase database;
+
+	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+	database.BeginTrans();
+	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`china_stock_weekline`;"));
+	database.CommitTrans();
+	database.Close();
+	return true;
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLine() {
@@ -1227,67 +1198,6 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();
 	setDayLineBasicInfo.Close();
-}
-
-bool CChinaMarket::LoadCalculatingRSOption() {
-	CSetRSOption setRSOption;
-
-	setRSOption.Open();
-	while (!setRSOption.IsEOF()) {
-		m_aRSStrongOption.at(setRSOption.m_Index).m_fActive = setRSOption.m_Active;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lDayLength[0] = setRSOption.m_DayLengthFirst;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lDayLength[1] = setRSOption.m_DayLengthSecond;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lDayLength[2] = setRSOption.m_DayLengthThird;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lDayLength[3] = setRSOption.m_DayLengthFourth;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lStrongDayLength[0] = setRSOption.m_StrongDayLengthFirst;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lStrongDayLength[1] = setRSOption.m_StrongDayLengthSecond;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lStrongDayLength[2] = setRSOption.m_StrongDayLengthThird;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_lStrongDayLength[3] = setRSOption.m_StrongDayLengthFourth;
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[0] = _tstof(setRSOption.m_RSStrongFirst);
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[1] = _tstof(setRSOption.m_RSStrongSecond);
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[2] = _tstof(setRSOption.m_RSStrongThird);
-		m_aRSStrongOption.at(setRSOption.m_Index).m_dRSStrong[3] = _tstof(setRSOption.m_RSStrongFourth);
-		setRSOption.MoveNext();
-	}
-	setRSOption.Close();
-	return true;
-}
-
-void CChinaMarket::SaveCalculatingRSOption() const {
-	CSetRSOption setRSOption;
-
-	setRSOption.Open();
-	setRSOption.m_pDatabase->BeginTrans();
-	while (!setRSOption.IsEOF()) {
-		setRSOption.Delete();
-		setRSOption.MoveNext();
-	}
-	setRSOption.m_pDatabase->CommitTrans();
-	setRSOption.Close();
-
-	setRSOption.m_strFilter = "[ID] = 1";
-	setRSOption.Open();
-	setRSOption.m_pDatabase->BeginTrans();
-	for (int i = 0; i < 10; i++) {
-		setRSOption.AddNew();
-		setRSOption.m_Index = i;
-		setRSOption.m_Active = m_aRSStrongOption.at(i).m_fActive;
-		setRSOption.m_DayLengthFirst = m_aRSStrongOption.at(i).m_lDayLength[0];
-		setRSOption.m_DayLengthSecond = m_aRSStrongOption.at(i).m_lDayLength[1];
-		setRSOption.m_DayLengthThird = m_aRSStrongOption.at(i).m_lDayLength[2];
-		setRSOption.m_DayLengthFourth = m_aRSStrongOption.at(i).m_lDayLength[3];
-		setRSOption.m_StrongDayLengthFirst = m_aRSStrongOption.at(i).m_lStrongDayLength[0];
-		setRSOption.m_StrongDayLengthSecond = m_aRSStrongOption.at(i).m_lStrongDayLength[1];
-		setRSOption.m_StrongDayLengthThird = m_aRSStrongOption.at(i).m_lStrongDayLength[2];
-		setRSOption.m_StrongDayLengthFourth = m_aRSStrongOption.at(i).m_lStrongDayLength[3];
-		setRSOption.m_RSStrongFirst = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[0]);
-		setRSOption.m_RSStrongSecond = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[1]);
-		setRSOption.m_RSStrongThird = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[2]);
-		setRSOption.m_RSStrongFourth = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[3]);
-		setRSOption.Update();
-	}
-	setRSOption.m_pDatabase->CommitTrans();
-	setRSOption.Close();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

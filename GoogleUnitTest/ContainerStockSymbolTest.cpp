@@ -18,6 +18,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			s_pDataStockSymbol = make_shared<CContainerStockSymbol>();
+			s_pDataStockSymbol->Reset(); // 在此装入预设数据库
 
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 			EXPECT_EQ(s_pDataStockSymbol->Size(), 14000) << "默认装入的StockSymbol数为14000";

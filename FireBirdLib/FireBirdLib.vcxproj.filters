@@ -276,9 +276,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSOption.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -951,9 +948,6 @@
       <Filter>源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp">
-      <Filter>源文件\Database\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSOption.cpp">
       <Filter>源文件\Database\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetStockSection.cpp">

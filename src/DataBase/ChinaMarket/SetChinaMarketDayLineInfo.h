@@ -6,6 +6,6 @@
 
 class CSetChinaMarketDayLineInfo : public CVirtualSetHistoryCandle {
 public:
-	CSetChinaMarketDayLineInfo(const CString& strSchema = "ChinaMarket", const CString& strTable = "dayline", CDatabase* pDatabase = nullptr)
+	CSetChinaMarketDayLineInfo(const CString& strSchema = "ChinaMarket", const CString& strTable = "china_stock_dayline", CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 };

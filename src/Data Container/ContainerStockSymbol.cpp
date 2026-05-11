@@ -7,7 +7,40 @@
 #include"SetStockSection.h"
 
 CContainerStockSymbol::CContainerStockSymbol() {
-	CContainerStockSymbol::Reset();
+	m_vStockSymbol.resize(0);
+	m_mapStockSymbol.clear();
+	m_vCurrentSectionStockCode.resize(0);
+	// 预设股票代码集如下
+	m_vCurrentSectionStockCode.emplace_back("000000.SS"); // 上海指数
+	m_vCurrentSectionStockCode.emplace_back("600000.SS"); // 上海主板
+	m_vCurrentSectionStockCode.emplace_back("601000.SS"); // 上海主板
+	m_vCurrentSectionStockCode.emplace_back("603000.SS"); // 上海三板
+	m_vCurrentSectionStockCode.emplace_back("688000.SS"); // 上海科创板
+	m_vCurrentSectionStockCode.emplace_back("900000.SS"); // 上海B股
+	m_vCurrentSectionStockCode.emplace_back("000000.SZ"); // 深圳主板
+	m_vCurrentSectionStockCode.emplace_back("001000.SZ"); // 深圳主板
+	m_vCurrentSectionStockCode.emplace_back("002000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.emplace_back("003000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.emplace_back("004000.SZ"); // 深圳中小板
+	m_vCurrentSectionStockCode.emplace_back("200000.SZ"); // 深圳B股
+	m_vCurrentSectionStockCode.emplace_back("300000.SZ"); // 深圳创业板
+	m_vCurrentSectionStockCode.emplace_back("399000.SZ"); // 深圳指数
+	// 从股票代码集数据库中读入其他股票集
+
+	//重置StockSection
+	m_vStockSection.resize(0);
+	m_vStockSection.resize(2000); // 沪深各1000个段。
+	for (int i = 0; i < 2000; i++) {
+		const auto pStockSection = make_shared<CStockSection>();
+		pStockSection->SetIndexNumber(i);
+		if (i < 1000) pStockSection->SetMarket(_SHANGHAI_MARKET_);
+		else pStockSection->SetMarket(_SHENZHEN_MARKET_);
+		m_vStockSection.at(i) = pStockSection;
+	}
+	for (const auto& pStockSection : m_vStockSection) {
+		pStockSection->SetBuildStockPtr(false);
+	}
+	m_fUpdateStockSection = false;
 }
 
 void CContainerStockSymbol::Reset() {
@@ -48,8 +81,6 @@ void CContainerStockSymbol::Reset() {
 	}
 	m_fUpdateStockSection = false;
 
-	LoadStockSectionDB();
-
 	// 生成股票代码池
 	CreateTotalStockContainer();
 }
@@ -60,7 +91,7 @@ void CContainerStockSymbol::Reset() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerStockSymbol::CreateTotalStockContainer() {
-	CChinaStockPtr pStock = nullptr;
+	LoadStockSectionDB();
 
 	for (const auto& str : m_vCurrentSectionStockCode) {
 		CreateStockSection(str);
@@ -78,7 +109,7 @@ size_t CContainerStockSymbol::Size() {
 	}
 }
 
-void CContainerStockSymbol::LoadStockSectionDB() const {
+void CContainerStockSymbol::LoadStockSectionDB() {
 	CSetStockSection setStockSection;
 
 	setStockSection.Open();
@@ -92,6 +123,7 @@ void CContainerStockSymbol::LoadStockSectionDB() const {
 		setStockSection.MoveNext();
 	}
 	setStockSection.Close();
+	m_fDBLoaded = true;
 }
 
 void CContainerStockSymbol::UpdateStockSectionDB() {

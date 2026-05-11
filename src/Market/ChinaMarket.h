@@ -111,19 +111,13 @@ public:
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
 
 	virtual bool DeleteWeekLine();
-	static void DeleteWeekLineBasicInfo();
-	static void DeleteWeekLineExtendInfo();
 	virtual void DeleteWeekLine(long lMonday);
-	void DeleteWeekLineBasicInfo(long lMonday) const;
 
 	void DeleteDayLine(long lDate) const;
 	void DeleteDayLineBasicInfo(long lDate) const;
 
 	virtual bool DeleteCurrentWeekWeekLine();
 	static bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
-
-	bool LoadCalculatingRSOption();
-	void SaveCalculatingRSOption() const;
 
 	virtual bool BuildCurrentWeekLine();
 	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData);
