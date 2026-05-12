@@ -7,7 +7,7 @@
 class CSetCompanyNews : public CVirtualRecordset
 {
 public:
-	CSetCompanyNews(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_company_news"), CDatabase* pDatabase = nullptr);
+	CSetCompanyNews(CString strSchema = _T("stock_market"), CString strTable = _T("finnhub_company_news"), CDatabase* pDatabase = nullptr);
 //	DECLARE_DYNAMIC(CSetCompanyNews)
 
 		// 字段/参数数据

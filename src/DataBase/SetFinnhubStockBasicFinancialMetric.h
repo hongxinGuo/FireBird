@@ -158,7 +158,7 @@
 ///
 class CSetFinnhubStockBasicFinancialMetric : public CVirtualRecordset {
 public:
-	CSetFinnhubStockBasicFinancialMetric(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_basic_financials_metric"), CDatabase* pDatabase = nullptr);
+	CSetFinnhubStockBasicFinancialMetric(const CString& strSchema = _T("stock_market"), const CString& strTable = _T("finnhub_stock_basic_financials_metric"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
