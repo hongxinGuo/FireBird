@@ -5,7 +5,7 @@
 
 class CSetSICIndustry : public CVirtualRecordset {
 public:
-	CSetSICIndustry(const CString& strSchema = "WorldMarket", const CString& strTable = "sic_industry", CDatabase* pDatabase = nullptr);
+	CSetSICIndustry(const CString& strSchema = "stock_market", const CString& strTable = "sic_industry", CDatabase* pDatabase = nullptr);
 	~CSetSICIndustry() override = default;
 	// 字段/参数数据
 

@@ -14,7 +14,7 @@ CString CVirtualRecordset::GetSchemaConnect() const {
 		gl_systemConfiguration.GetDatabaseAccountPassword().c_str() + ";charset=utf8mb4"; // 运行时的DSN使用原schema名称
 	}
 	// 测试时使用固定的用户名Test和密码test。
-	return "DSN=" + m_Schema + "Test;UID=Test;PASSWORD=test;charset=utf8mb4"; // Test操作时DSN名称后要加上后缀Test
+	return "DSN=" + m_Schema + "_test;UID=Test;PASSWORD=test;charset=utf8mb4"; // Test操作时DSN名称后要加上后缀_test
 }
 
 CString CVirtualRecordset::GetDefaultConnect() {

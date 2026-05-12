@@ -6,7 +6,7 @@
 
 class CSetWeekLineInfo final : public CVirtualSetHistoryCandle {
 public:
-	CSetWeekLineInfo(const CString& strSchema = "ChinaMarket", const CString& strTable = "china_stock_weekline", CDatabase* pDatabase = nullptr)
+	CSetWeekLineInfo(const CString& strSchema = "stock_market", const CString& strTable = "china_stock_weekline", CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 	~CSetWeekLineInfo() override = default;
 };

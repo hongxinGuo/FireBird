@@ -6,7 +6,7 @@
 
 class CSetInsiderSentiment : public CVirtualRecordset {
 public:
-	CSetInsiderSentiment(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_insider_sentiment", CDatabase* pDatabase = nullptr);
+	CSetInsiderSentiment(const CString& strSchema = "stock_market", const CString& strTable = "finnhub_insider_sentiment", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

@@ -6,6 +6,6 @@
 
 class CSetCurrentWeekLine : public CVirtualSetHistoryCandle {
 public:
-	CSetCurrentWeekLine(const CString& strSchema = "ChinaMarket", const CString& strTable = "china_current_weekline", CDatabase* pDatabase = nullptr)
+	CSetCurrentWeekLine(const CString& strSchema = "stock_market", const CString& strTable = "china_current_weekline", CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 };

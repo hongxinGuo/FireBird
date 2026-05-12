@@ -6,7 +6,7 @@
 
 class CSetForexDayLine final : public CVirtualSetHistoryCandle {
 public:
-	CSetForexDayLine(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_forex_dayline", CDatabase* pDatabase = nullptr)
+	CSetForexDayLine(const CString& strSchema = "stock_market", const CString& strTable = "finnhub_forex_dayline", CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {}
 	~CSetForexDayLine() override = default;
 };

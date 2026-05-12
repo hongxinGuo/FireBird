@@ -368,9 +368,9 @@ void CContainerTiingoStock::TaskFixDayLine() {
 void CContainerTiingoStock::Delete52WeekHighData() {
 	CDatabase database;
 
-	database.Open(_T("WorldMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+	database.Open(_T("stock_market"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `worldmarket`.`tiingo_stock_52week_high`;"));
+	database.ExecuteSQL(_T("TRUNCATE `stock_market`.`tiingo_stock_52week_high`;"));
 	database.CommitTrans();
 	database.Close();
 }
@@ -378,9 +378,9 @@ void CContainerTiingoStock::Delete52WeekHighData() {
 void CContainerTiingoStock::Delete52WeekLowData() {
 	CDatabase database;
 
-	database.Open(_T("WorldMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+	database.Open(_T("stock_market"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `worldmarket`.`tiingo_stock_52week_low`;"));
+	database.ExecuteSQL(_T("TRUNCATE `stock_market`.`tiingo_stock_52week_low`;"));
 	database.CommitTrans();
 	database.Close();
 }

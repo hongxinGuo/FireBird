@@ -5,7 +5,7 @@
 
 class CSetTiingoMarketNews : public CVirtualRecordset {
 public:
-	CSetTiingoMarketNews(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_market_news", CDatabase* pDatabase = nullptr);
+	CSetTiingoMarketNews(const CString& strSchema = "stock_market", const CString& strTable = "tiingo_market_news", CDatabase* pDatabase = nullptr);
 	~CSetTiingoMarketNews() override = default;
 
 	// 字段/参数数据

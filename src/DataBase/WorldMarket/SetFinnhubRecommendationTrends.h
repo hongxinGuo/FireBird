@@ -6,7 +6,7 @@
 
 class CSetFinnhubRecommendationTrends : public CVirtualRecordset {
 public:
-	CSetFinnhubRecommendationTrends(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_recommendation_trends", CDatabase* pDatabase = nullptr);
+	CSetFinnhubRecommendationTrends(const CString& strSchema = "stock_market", const CString& strTable = "finnhub_recommendation_trends", CDatabase* pDatabase = nullptr);
 	~CSetFinnhubRecommendationTrends() override = default;
 
 	long m_ID{ 0 };

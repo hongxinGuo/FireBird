@@ -5,7 +5,7 @@
 
 class CSetTiingoFundamentalDefinition : public CVirtualRecordset {
 public:
-	CSetTiingoFundamentalDefinition(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_fundamental_definitions", CDatabase* pDatabase = nullptr);
+	CSetTiingoFundamentalDefinition(const CString& strSchema = "stock_market", const CString& strTable = "tiingo_fundamental_definitions", CDatabase* pDatabase = nullptr);
 	~CSetTiingoFundamentalDefinition() override {}
 	// 字段/参数数据
 

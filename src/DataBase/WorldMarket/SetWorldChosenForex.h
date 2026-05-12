@@ -4,7 +4,7 @@
 
 class CSetWorldChosenForex : public CVirtualSetChosenStake {
 public:
-	CSetWorldChosenForex(const CString& strSchema = "WorldMarket", const CString& strTable = "world_choice_forex", CDatabase* pDatabase = nullptr)
+	CSetWorldChosenForex(const CString& strSchema = "stock_market", const CString& strTable = "world_choice_forex", CDatabase* pDatabase = nullptr)
 		: CVirtualSetChosenStake(strSchema, strTable, pDatabase) {}
 	~CSetWorldChosenForex() override = default;
 };

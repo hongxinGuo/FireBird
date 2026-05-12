@@ -3,7 +3,7 @@
 
 class CSetTiingoStockNewSymbol : public CVirtualRecordset {
 public:
-	CSetTiingoStockNewSymbol(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_new_symbol", CDatabase* pDatabase = nullptr);
+	CSetTiingoStockNewSymbol(const CString& strSchema = "stock_market", const CString& strTable = "tiingo_stock_new_symbol", CDatabase* pDatabase = nullptr);
 	~CSetTiingoStockNewSymbol() override = default;
 
 	// 字段/参数数据

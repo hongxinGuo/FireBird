@@ -5,7 +5,7 @@
 
 class CSetTiingoStock : public CVirtualRecordset {
 public:
-	CSetTiingoStock(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_fundamental", CDatabase* pDatabase = nullptr);
+	CSetTiingoStock(const CString& strSchema = "stock_market", const CString& strTable = "tiingo_stock_fundamental", CDatabase* pDatabase = nullptr);
 	~CSetTiingoStock() override {}
 
 	// 字段/参数数据

@@ -1091,9 +1091,9 @@ bool CChinaMarket::DeleteWeekLine() {
 	}
 	CDatabase database;
 
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+	database.Open(_T("stock_market"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`china_stock_weekline`;"));
+	database.ExecuteSQL(_T("TRUNCATE `stock_market`.`china_stock_weekline`;"));
 	database.CommitTrans();
 	database.Close();
 	return true;

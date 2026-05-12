@@ -9,7 +9,7 @@
 
 class CSetFinnhubCryptoExchange : public CVirtualSetExchange {
 public:
-	CSetFinnhubCryptoExchange(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_crypto_exchange", CDatabase* pDatabase = nullptr)
+	CSetFinnhubCryptoExchange(const CString& strSchema = "stock_market", const CString& strTable = "finnhub_crypto_exchange", CDatabase* pDatabase = nullptr)
 		: CVirtualSetExchange(strSchema, strTable, pDatabase) {}
 	~CSetFinnhubCryptoExchange() override = default;
 };

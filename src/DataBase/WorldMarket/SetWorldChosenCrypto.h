@@ -5,7 +5,7 @@
 
 class CSetWorldChosenCrypto : public CVirtualSetChosenStake {
 public:
-	CSetWorldChosenCrypto(const CString& strSchema = "WorldMarket", const CString& strTable = "world_choice_crypto", CDatabase* pDatabase = nullptr)
+	CSetWorldChosenCrypto(const CString& strSchema = "stock_market", const CString& strTable = "world_choice_crypto", CDatabase* pDatabase = nullptr)
 		: CVirtualSetChosenStake(strSchema, strTable, pDatabase) {}
 	~CSetWorldChosenCrypto() override = default;
 };

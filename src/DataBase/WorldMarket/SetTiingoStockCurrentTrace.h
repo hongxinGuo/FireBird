@@ -5,7 +5,7 @@
 
 class CSetTiingoStockCurrentTrace : public CVirtualRecordset {
 public:
-	CSetTiingoStockCurrentTrace(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_stock_current_trace", CDatabase* pDatabase = nullptr);
+	CSetTiingoStockCurrentTrace(const CString& strSchema = "stock_market", const CString& strTable = "tiingo_stock_current_trace", CDatabase* pDatabase = nullptr);
 	~CSetTiingoStockCurrentTrace() override = default;
 	// 字段/参数数据
 

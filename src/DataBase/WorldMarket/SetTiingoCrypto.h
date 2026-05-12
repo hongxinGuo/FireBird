@@ -5,7 +5,7 @@
 
 class CSetTiingoCrypto : public CVirtualRecordset {
 public:
-	CSetTiingoCrypto(const CString& strSchema = "WorldMarket", const CString& strTable = "tiingo_crypto_symbol", CDatabase* pDatabase = nullptr);
+	CSetTiingoCrypto(const CString& strSchema = "stock_market", const CString& strTable = "tiingo_crypto_symbol", CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

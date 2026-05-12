@@ -5,7 +5,7 @@
 
 class CSetFinnhubForexSymbol : public CVirtualSetStockSymbol {
 public:
-	CSetFinnhubForexSymbol(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_forex_symbol", CDatabase* pDatabase = nullptr)
+	CSetFinnhubForexSymbol(const CString& strSchema = "stock_market", const CString& strTable = "finnhub_forex_symbol", CDatabase* pDatabase = nullptr)
 		: CVirtualSetStockSymbol(strSchema, strTable, pDatabase) {}
 	~CSetFinnhubForexSymbol() override = default;
 };

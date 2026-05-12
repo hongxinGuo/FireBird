@@ -5,7 +5,7 @@
 
 class CSetFinnhubStock : public CVirtualRecordset {
 public:
-	CSetFinnhubStock(const CString& strSchema = "WorldMarket", const CString& strTable = "finnhub_stock_profile", CDatabase* pDatabase = nullptr);
+	CSetFinnhubStock(const CString& strSchema = "stock_market", const CString& strTable = "finnhub_stock_profile", CDatabase* pDatabase = nullptr);
 	~CSetFinnhubStock() override = default;
 
 	// 字段/参数数据
