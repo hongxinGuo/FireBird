@@ -250,16 +250,16 @@ public:
 	string m_symbol;
 
 	// Metric financials data
-	double m_10DayAverageTradingVolume;
-	double m_13WeekPriceReturnDaily;
-	double m_26WeekPriceReturnDaily;
-	double m_3MonthAverageTradingVolume;
-	double m_52WeekHigh;
-	int m_52WeekHighDate;
-	double m_52WeekLow;
-	int m_52WeekLowDate;
-	double m_52WeekPriceReturnDaily;
-	double m_5DayPriceReturnDaily;
+	double m_AverageTradingVolume10Day;
+	double m_PriceReturnDaily13Week;
+	double m_PriceReturnDaily26Week;
+	double m_AverageTradingVolume2Month;
+	double m_High52Week;
+	int m_HighDate52Week;
+	double m_Low52Week;
+	int m_LowDate52Week;
+	double m_PriceReturnDaily52Week;
+	double m_PriceReturnDaily5Day;
 
 	double m_assetTurnoverAnnual;
 	double m_assetTurnoverTTM;

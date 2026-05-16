@@ -25,13 +25,14 @@ string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 
 void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
-	const CInsiderTransactionsPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
+	CInsiderTransactionsPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
 	pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateInsiderTransaction(false);
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderTransaction->empty()) {
 		pStock->UpdateInsiderTransaction(pvInsiderTransaction);
 		pStock->SetUpdateInsiderTransactionDB(true);
+		pvInsiderTransaction = nullptr;
 	}
 }
 

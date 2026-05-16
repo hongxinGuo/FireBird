@@ -26,11 +26,12 @@ string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 }
 
 void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
+	CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	if (!pvInsiderSentiment->empty()) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 		pStock->UpdateInsiderSentiment(pvInsiderSentiment);
 		pStock->SetUpdateInsiderSentimentDB(true);
+		pvInsiderSentiment = nullptr;
 	}
 }
 

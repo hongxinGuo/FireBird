@@ -48,8 +48,8 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			finnhubCompanyNews.m_strCompanySymbol = pStock->GetSymbol();
 		}
 		pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
-		pvFinnhubCompanyNews = nullptr;
 		pStock->SetUpdateCompanyNewsDB(true);
+		pvFinnhubCompanyNews = nullptr;
 	}
 	pStock->SetCompanyNewsUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateCompanyNews(false);

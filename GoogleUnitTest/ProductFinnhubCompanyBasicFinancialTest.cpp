@@ -537,11 +537,11 @@ namespace FireBirdTest {
 		case 2: // 正确
 			EXPECT_FALSE(pBasicFinancial == nullptr);
 			EXPECT_EQ(pBasicFinancial->m_symbol, "AAPL");
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_AverageTradingVolume10Day, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_currentEV_freeCashFlowAnnual, 1.2);
-			EXPECT_EQ(pBasicFinancial->m_52WeekHighDate, 20220408);
-			EXPECT_EQ(pBasicFinancial->m_52WeekLowDate, 20210820);
+			EXPECT_EQ(pBasicFinancial->m_HighDate52Week, 20220408);
+			EXPECT_EQ(pBasicFinancial->m_LowDate52Week, 20210820);
 			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.size(), 2);
 			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_period, 20201231);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_value, 0.7634660421545667);
@@ -550,15 +550,15 @@ namespace FireBirdTest {
 		case 3: //
 			EXPECT_FALSE(pBasicFinancial == nullptr);
 			EXPECT_EQ(pBasicFinancial->m_symbol, "MBWS.PA") << "BVDRF的本土代码名称为MBWS.PA";
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_AverageTradingVolume10Day, 0.43212);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4:
 			EXPECT_FALSE(pBasicFinancial == nullptr);
 			EXPECT_EQ(pBasicFinancial->m_symbol, "OTSCS");
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekHigh, 1.18);
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekLow, 1.0);
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.0) << "没有此项数据，故而其值为初始值";
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_High52Week, 1.18);
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_Low52Week, 1.0);
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_AverageTradingVolume10Day, 0.0) << "没有此项数据，故而其值为初始值";
 			break;
 		case 5:
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1) << "Metric out of range";

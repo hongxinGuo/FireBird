@@ -51,6 +51,7 @@ void CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 		pFinnhubStockBasicFinancial->m_symbol = pStock->GetSymbol(); // 使用pStock中的股票代码
 		pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
 		pStock->SetUpdateBasicFinancialDB(true);
+		pFinnhubStockBasicFinancial = nullptr;
 	}
 }
 
@@ -263,49 +264,49 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 
 		ptMetric = jsonGetChild(js, "metric");
 		try {
-			pBasicFinancial->m_10DayAverageTradingVolume = jsonGetDouble(ptMetric, "10DayAverageTradingVolume");
+			pBasicFinancial->m_AverageTradingVolume10Day = jsonGetDouble(ptMetric, "10DayAverageTradingVolume");
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
-			pBasicFinancial->m_13WeekPriceReturnDaily = jsonGetDouble(ptMetric, "13WeekPriceReturnDaily");
+			pBasicFinancial->m_PriceReturnDaily13Week = jsonGetDouble(ptMetric, "13WeekPriceReturnDaily");
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
-			pBasicFinancial->m_26WeekPriceReturnDaily = jsonGetDouble(ptMetric, "26WeekPriceReturnDaily");
+			pBasicFinancial->m_PriceReturnDaily26Week = jsonGetDouble(ptMetric, "26WeekPriceReturnDaily");
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
-			pBasicFinancial->m_3MonthAverageTradingVolume = jsonGetDouble(ptMetric, "3MonthAverageTradingVolume");
+			pBasicFinancial->m_AverageTradingVolume2Month = jsonGetDouble(ptMetric, "3MonthAverageTradingVolume");
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
-			pBasicFinancial->m_52WeekHigh = jsonGetDouble(ptMetric, "52WeekHigh");
+			pBasicFinancial->m_High52Week = jsonGetDouble(ptMetric, "52WeekHigh");
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
-			pBasicFinancial->m_52WeekLow = jsonGetDouble(ptMetric, "52WeekLow");
+			pBasicFinancial->m_Low52Week = jsonGetDouble(ptMetric, "52WeekLow");
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
 			s = jsonGetString(ptMetric, "52WeekLowDate");
 			if (!s.empty()) {
-				pBasicFinancial->m_52WeekLowDate = XferToYYYYMMDD(s);
+				pBasicFinancial->m_LowDate52Week = XferToYYYYMMDD(s);
 			}
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
 			s = jsonGetString(ptMetric, "52WeekHighDate");
 			if (!s.empty()) {
-				pBasicFinancial->m_52WeekHighDate = XferToYYYYMMDD(s);
+				pBasicFinancial->m_HighDate52Week = XferToYYYYMMDD(s);
 			}
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
-			pBasicFinancial->m_52WeekPriceReturnDaily = jsonGetDouble(ptMetric, "52WeekPriceReturnDaily");
+			pBasicFinancial->m_PriceReturnDaily52Week = jsonGetDouble(ptMetric, "52WeekPriceReturnDaily");
 		} catch (nlohmannJson::exception&) {
 		}
 		try {
-			pBasicFinancial->m_5DayPriceReturnDaily = jsonGetDouble(ptMetric, "5DayPriceReturnDaily");
+			pBasicFinancial->m_PriceReturnDaily5Day = jsonGetDouble(ptMetric, "5DayPriceReturnDaily");
 		} catch (nlohmannJson::exception&) {
 		}
 
@@ -860,6 +861,7 @@ void CProductFinnhubCompanyBasicFinancial::GetSeasonData(nlohmannJson* pjs, vect
 		ptChild = jsonGetChild(pjs, szMsg);
 		vector<CValueOfPeriod> vDataTemp;
 		Parse(&ptChild, vDataTemp);
+		vData.reserve(vDataTemp.size()); // 预先分配内存，防止出现碎片化。
 		for (size_t i = 0; i < vDataTemp.size(); i++) {
 			vData.push_back(vDataTemp[i]);
 		}

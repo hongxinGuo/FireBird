@@ -1314,7 +1314,7 @@ namespace FireBirdTest {
 		stock.m_pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
 		stock.m_pvInsiderSentiment->push_back(insiderSentiment);
 		EXPECT_TRUE(stock.HaveInsiderSentiment());
-		stock.UnloadInsiderSentiment();
+		stock.ClearInsiderSentiment();
 		EXPECT_FALSE(stock.HaveInsiderSentiment());
 	}
 

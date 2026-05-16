@@ -19,8 +19,9 @@ public:
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);
 
-	void UpdateDB();
-	bool LoadDB();
+	void UpdateProfileDB();
+	bool LoadProfileDB();
+	bool LoadProfileDB2();
 
 	void ResetDayLineStartEndDate();
 	void BuildDayLine(long lDate);

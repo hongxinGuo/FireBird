@@ -695,16 +695,16 @@ namespace FireBirdTest {
 
 		instance.m_symbol = "NEW_CODE";
 
-		instance.m_10DayAverageTradingVolume = 1;
-		instance.m_13WeekPriceReturnDaily = 2;
-		instance.m_26WeekPriceReturnDaily = 3;
-		instance.m_52WeekPriceReturnDaily = 4;
-		instance.m_3MonthAverageTradingVolume = 5;
-		instance.m_52WeekHigh = 6;
-		instance.m_52WeekHighDate = 7;
-		instance.m_52WeekLow = 8;
-		instance.m_52WeekLowDate = 9;
-		instance.m_5DayPriceReturnDaily = 10;
+		instance.m_AverageTradingVolume10Day = 1;
+		instance.m_PriceReturnDaily13Week = 2;
+		instance.m_PriceReturnDaily26Week = 3;
+		instance.m_PriceReturnDaily52Week = 4;
+		instance.m_AverageTradingVolume2Month = 5;
+		instance.m_High52Week = 6;
+		instance.m_HighDate52Week = 7;
+		instance.m_Low52Week = 8;
+		instance.m_LowDate52Week = 9;
+		instance.m_PriceReturnDaily5Day = 10;
 
 		instance.m_assetTurnoverAnnual = 11;
 		instance.m_assetTurnoverTTM = 12;
@@ -853,16 +853,16 @@ namespace FireBirdTest {
 		instanceLoaded.LoadMetric(setMetricLoad);
 		setMetricLoad.Close();
 
-		EXPECT_DOUBLE_EQ(instance.m_10DayAverageTradingVolume, instanceLoaded.m_10DayAverageTradingVolume);
-		EXPECT_DOUBLE_EQ(instance.m_13WeekPriceReturnDaily, instanceLoaded.m_13WeekPriceReturnDaily);
-		EXPECT_DOUBLE_EQ(instance.m_26WeekPriceReturnDaily, instanceLoaded.m_26WeekPriceReturnDaily);
-		EXPECT_DOUBLE_EQ(instance.m_3MonthAverageTradingVolume, instanceLoaded.m_3MonthAverageTradingVolume);
-		EXPECT_DOUBLE_EQ(instance.m_52WeekPriceReturnDaily, instanceLoaded.m_52WeekPriceReturnDaily);
-		EXPECT_DOUBLE_EQ(instance.m_52WeekHigh, instanceLoaded.m_52WeekHigh);
-		EXPECT_EQ(instance.m_52WeekHighDate, instanceLoaded.m_52WeekHighDate);
-		EXPECT_DOUBLE_EQ(instance.m_52WeekLow, instanceLoaded.m_52WeekLow);
-		EXPECT_EQ(instance.m_52WeekLowDate, instanceLoaded.m_52WeekLowDate);
-		EXPECT_DOUBLE_EQ(instance.m_5DayPriceReturnDaily, instanceLoaded.m_5DayPriceReturnDaily);
+		EXPECT_DOUBLE_EQ(instance.m_AverageTradingVolume10Day, instanceLoaded.m_AverageTradingVolume10Day);
+		EXPECT_DOUBLE_EQ(instance.m_PriceReturnDaily13Week, instanceLoaded.m_PriceReturnDaily13Week);
+		EXPECT_DOUBLE_EQ(instance.m_PriceReturnDaily26Week, instanceLoaded.m_PriceReturnDaily26Week);
+		EXPECT_DOUBLE_EQ(instance.m_AverageTradingVolume2Month, instanceLoaded.m_AverageTradingVolume2Month);
+		EXPECT_DOUBLE_EQ(instance.m_PriceReturnDaily52Week, instanceLoaded.m_PriceReturnDaily52Week);
+		EXPECT_DOUBLE_EQ(instance.m_High52Week, instanceLoaded.m_High52Week);
+		EXPECT_EQ(instance.m_HighDate52Week, instanceLoaded.m_HighDate52Week);
+		EXPECT_DOUBLE_EQ(instance.m_Low52Week, instanceLoaded.m_Low52Week);
+		EXPECT_EQ(instance.m_LowDate52Week, instanceLoaded.m_LowDate52Week);
+		EXPECT_DOUBLE_EQ(instance.m_PriceReturnDaily5Day, instanceLoaded.m_PriceReturnDaily5Day);
 
 		EXPECT_DOUBLE_EQ(instance.m_assetTurnoverAnnual, instanceLoaded.m_assetTurnoverAnnual);
 		EXPECT_DOUBLE_EQ(instance.m_assetTurnoverTTM, instanceLoaded.m_assetTurnoverTTM);

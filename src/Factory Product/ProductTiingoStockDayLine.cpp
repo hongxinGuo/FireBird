@@ -58,6 +58,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 		pTiingoStock->UpdateDayLine(pvDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);
+		pvDayLine = nullptr;
 	}
 	// 清除tiingo stock的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);

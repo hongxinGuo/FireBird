@@ -175,7 +175,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 	if (GenerateCompanyProfileConcise()) return true;
 	if (GenerateCompanyNews()) return true;
-	if (GenerateCompanyBasicFinancial()) return true;
+	//if (GenerateCompanyBasicFinancial()) return true; Note: 不再查询此类数据。
 	if (GeneratePeer()) return true;
 	if (GenerateInsiderTransaction()) return true;
 	if (GenerateInsiderSentiment()) return true;

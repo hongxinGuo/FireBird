@@ -6,9 +6,9 @@ CSetFinnhubStockBasicFinancialMetric::CSetFinnhubStockBasicFinancialMetric(const
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_symbol = "";
-	m_13WeekPriceReturnDaily = 0;
-	m_26WeekPriceReturnDaily = 0;
-	m_52WeekPriceReturnDaily = 0;
+	m_PriceReturnDaily13Week = 0;
+	m_PriceReturnDaily26Week = 0;
+	m_PriceReturnDaily52Week = 0;
 
 	m_nFields = 131; // 129个实际字段，一个ID，一个代码名称。
 }
@@ -21,16 +21,16 @@ void CSetFinnhubStockBasicFinancialMetric::DoFieldExchange(CFieldExchange* pFX) 
 	RFX_Long(pFX, _T("[ID]"), m_ID);
 	RFX_Text(pFX, _T("[Symbol]"), m_symbol);
 
-	RFX_Double(pFX, _T("[10DayAverageTradingVolume]"), m_10DayAverageTradingVolume);
-	RFX_Double(pFX, _T("[13WeekPriceReturnDaily]"), m_13WeekPriceReturnDaily);
-	RFX_Double(pFX, _T("[26WeekPriceReturnDaily]"), m_26WeekPriceReturnDaily);
-	RFX_Double(pFX, _T("[3MonthAverageTradingVolume]"), m_3MonthAverageTradingVolume);
-	RFX_Double(pFX, _T("[52WeekHigh]"), m_52WeekHigh);
-	RFX_Int(pFX, _T("[52WeekHighDate]"), m_52WeekHighDate);
-	RFX_Double(pFX, _T("[52WeekLow]"), m_52WeekLow);
-	RFX_Int(pFX, _T("[52WeekLowDate]"), m_52WeekLowDate);
-	RFX_Double(pFX, _T("[52WeekPriceReturnDaily]"), m_52WeekPriceReturnDaily);
-	RFX_Double(pFX, _T("[5DayPriceReturnDaily]"), m_5DayPriceReturnDaily);
+	RFX_Double(pFX, _T("[10DayAverageTradingVolume]"), m_AverageTradingVolume10Day);
+	RFX_Double(pFX, _T("[13WeekPriceReturnDaily]"), m_PriceReturnDaily13Week);
+	RFX_Double(pFX, _T("[26WeekPriceReturnDaily]"), m_PriceReturnDaily26Week);
+	RFX_Double(pFX, _T("[3MonthAverageTradingVolume]"), m_AverageTradingVolume3Month);
+	RFX_Double(pFX, _T("[52WeekHigh]"), m_High52Week);
+	RFX_Int(pFX, _T("[52WeekHighDate]"), m_HighDate52Week);
+	RFX_Double(pFX, _T("[52WeekLow]"), m_Low52Week);
+	RFX_Int(pFX, _T("[52WeekLowDate]"), m_LowDate52Week);
+	RFX_Double(pFX, _T("[52WeekPriceReturnDaily]"), m_PriceReturnDaily52Week);
+	RFX_Double(pFX, _T("[5DayPriceReturnDaily]"), m_PriceReturnDaily5Day);
 
 	RFX_Double(pFX, _T("[assetTurnoverAnnual]"), m_assetTurnoverAnnual);
 	RFX_Double(pFX, _T("[assetTurnoverTTM]"), m_assetTurnoverTTM);

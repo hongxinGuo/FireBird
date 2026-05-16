@@ -117,6 +117,7 @@ public:
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine);
 	void UpdateFinancialStateDB();
+	void ClearFinancialState() { m_pvFinancialState.reset(); }
 	bool UpdateDayLineDB();
 	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库
 

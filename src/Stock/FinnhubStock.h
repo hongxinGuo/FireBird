@@ -50,7 +50,7 @@ public:
 	void AppendBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->AppendMetric(set); }
 	void AppendBasicFinancialAnnual() const;
 	void AppendBasicFinancialQuarter() const;
-	void ClearBasicFinancialState() { m_pBasicFinancial = nullptr; }
+	void ClearBasicFinancialState() { m_pBasicFinancial.reset(); }
 
 	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews);
@@ -106,8 +106,8 @@ public:
 	void SetUpdateInsiderTransactionDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransactionDB = fFlag; }
 
 	bool HaveInsiderSentiment() const noexcept { return !(m_pvInsiderSentiment == nullptr || m_pvInsiderSentiment->empty()); }
-	void UnloadInsiderSentiment() const { m_pvInsiderSentiment->resize(0); }
 	void UpdateInsiderSentiment(const CInsiderSentimentsPtr& pvInsiderSentiment);
+	void ClearInsiderSentiment() { m_pvInsiderSentiment.reset(); }
 	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateFinnhubInsiderSentiment; }
 	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentiment = fFlag; }
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
@@ -180,6 +180,7 @@ public:
 	nlohmannJson GetPeer() { return m_jsonPeer; }
 	void SetPeer(const nlohmannJson& jsonPeer) { m_jsonPeer = jsonPeer; }
 	void SetSECFilings(const CSECFilingsPtr& pv);
+	void ClearSECFilings() { m_vSECFilings.clear(); }
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
 	long GetCompanyNewsUpdateDate();

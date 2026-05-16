@@ -143,7 +143,7 @@ void CWorldMarket::ResetMarket() {
 	gl_dataContainerChosenWorldCrypto.LoadDB();
 	gl_dataContainerFinnhubEconomicCalendar.LoadDB();
 
-	gl_dataContainerTiingoStock.LoadDB();
+	gl_dataContainerTiingoStock.LoadProfileDB();
 	gl_dataContainerTiingoCryptoSymbol.LoadDB();
 	gl_dataContainerTiingoFundamentalDefinition.LoadDB();
 
@@ -607,7 +607,8 @@ void CWorldMarket::UpdateSECFilingsDB() {
 		pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateSECFilingsDB()) {
 			pStock->SetUpdateSECFilingsDB(false);
-			ASSERT(pStock->UpdateSECFilingsDB());
+			pStock->UpdateSECFilingsDB();
+			pStock->ClearSECFilings(); // 存储完毕后清除数据，节省内存占用。
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
@@ -860,7 +861,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_systemMessage.SetWorldMarketSavingFunction("T profile");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			gl_dataContainerTiingoStock.UpdateDB();
+			gl_dataContainerTiingoStock.UpdateProfileDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = fmt::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
@@ -1028,6 +1029,7 @@ bool CWorldMarket::UpdateInsiderSentimentDB() {
 			pStock->SetUpdateInsiderSentimentDB(false);
 			if (pStock->HaveInsiderSentiment()) {
 				pStock->UpdateInsiderSentimentDB();
+				pStock->ClearInsiderSentiment();
 			}
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。

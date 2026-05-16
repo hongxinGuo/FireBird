@@ -586,7 +586,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "添加了两个股票";
 
-		gl_dataContainerTiingoStock.UpdateDB(); // 更新代码集
+		gl_dataContainerTiingoStock.UpdateProfileDB(); // 更新代码集
 
 		// 恢复原状
 		setTiingoStock.m_strFilter = "[SICSector] = 'Test'";
@@ -781,7 +781,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->IsUpdateInsiderSentimentDB());
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem("A")->HaveInsiderSentiment()) << "存储后并没有删除数据";
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->HaveInsiderSentiment()) << "存储后删除数据";
 
 		// 验证并恢复原状
 		setInsiderSentiment.m_strFilter = "[Symbol] = 'B'";
@@ -796,8 +796,6 @@ namespace FireBirdTest {
 		setInsiderSentiment.Delete();
 		setInsiderSentiment.m_pDatabase->CommitTrans();
 		setInsiderSentiment.Close();
-
-		gl_dataContainerFinnhubStock.GetItem("A")->UnloadInsiderSentiment();
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {

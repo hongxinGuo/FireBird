@@ -76,6 +76,7 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h" />
+    <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h" />
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetChosenStake.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetExchange.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubForexSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.h" />

@@ -103,16 +103,16 @@ CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
 
 CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial(const CFinnhubStockBasicFinancial& other) {
 	m_symbol = other.m_symbol;
-	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
-	m_52WeekHigh = other.m_52WeekHigh;
-	m_52WeekHighDate = other.m_52WeekHighDate;
-	m_52WeekLow = other.m_52WeekLow;
-	m_52WeekLowDate = other.m_52WeekLowDate;
-	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
-	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
-	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
-	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
-	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_AverageTradingVolume10Day = other.m_AverageTradingVolume10Day;
+	m_High52Week = other.m_High52Week;
+	m_HighDate52Week = other.m_HighDate52Week;
+	m_Low52Week = other.m_Low52Week;
+	m_LowDate52Week = other.m_LowDate52Week;
+	m_PriceReturnDaily52Week = other.m_PriceReturnDaily52Week;
+	m_PriceReturnDaily13Week = other.m_PriceReturnDaily13Week;
+	m_PriceReturnDaily26Week = other.m_PriceReturnDaily26Week;
+	m_AverageTradingVolume2Month = other.m_AverageTradingVolume2Month;
+	m_PriceReturnDaily5Day = other.m_PriceReturnDaily5Day;
 	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
 	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
 	m_beta = other.m_beta;
@@ -285,16 +285,16 @@ CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial(const CFinnhubStockBasi
 }
 CFinnhubStockBasicFinancial& CFinnhubStockBasicFinancial::operator=(const CFinnhubStockBasicFinancial& other) {
 	m_symbol = other.m_symbol;
-	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
-	m_52WeekHigh = other.m_52WeekHigh;
-	m_52WeekHighDate = other.m_52WeekHighDate;
-	m_52WeekLow = other.m_52WeekLow;
-	m_52WeekLowDate = other.m_52WeekLowDate;
-	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
-	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
-	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
-	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
-	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_AverageTradingVolume10Day = other.m_AverageTradingVolume10Day;
+	m_High52Week = other.m_High52Week;
+	m_HighDate52Week = other.m_HighDate52Week;
+	m_Low52Week = other.m_Low52Week;
+	m_LowDate52Week = other.m_LowDate52Week;
+	m_PriceReturnDaily52Week = other.m_PriceReturnDaily52Week;
+	m_PriceReturnDaily13Week = other.m_PriceReturnDaily13Week;
+	m_PriceReturnDaily26Week = other.m_PriceReturnDaily26Week;
+	m_AverageTradingVolume2Month = other.m_AverageTradingVolume2Month;
+	m_PriceReturnDaily5Day = other.m_PriceReturnDaily5Day;
 	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
 	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
 	m_beta = other.m_beta;
@@ -468,16 +468,16 @@ CFinnhubStockBasicFinancial& CFinnhubStockBasicFinancial::operator=(const CFinnh
 }
 CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial(CFinnhubStockBasicFinancial&& other) noexcept {
 	m_symbol = std::move(other.m_symbol);
-	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
-	m_52WeekHigh = other.m_52WeekHigh;
-	m_52WeekHighDate = other.m_52WeekHighDate;
-	m_52WeekLow = other.m_52WeekLow;
-	m_52WeekLowDate = other.m_52WeekLowDate;
-	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
-	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
-	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
-	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
-	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_AverageTradingVolume10Day = other.m_AverageTradingVolume10Day;
+	m_High52Week = other.m_High52Week;
+	m_HighDate52Week = other.m_HighDate52Week;
+	m_Low52Week = other.m_Low52Week;
+	m_LowDate52Week = other.m_LowDate52Week;
+	m_PriceReturnDaily52Week = other.m_PriceReturnDaily52Week;
+	m_PriceReturnDaily13Week = other.m_PriceReturnDaily13Week;
+	m_PriceReturnDaily26Week = other.m_PriceReturnDaily26Week;
+	m_AverageTradingVolume2Month = other.m_AverageTradingVolume2Month;
+	m_PriceReturnDaily5Day = other.m_PriceReturnDaily5Day;
 	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
 	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
 	m_beta = other.m_beta;
@@ -650,16 +650,16 @@ CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial(CFinnhubStockBasicFinan
 
 CFinnhubStockBasicFinancial& CFinnhubStockBasicFinancial::operator=(CFinnhubStockBasicFinancial&& other) noexcept {
 	m_symbol = std::move(other.m_symbol);
-	m_10DayAverageTradingVolume = other.m_10DayAverageTradingVolume;
-	m_52WeekHigh = other.m_52WeekHigh;
-	m_52WeekHighDate = other.m_52WeekHighDate;
-	m_52WeekLow = other.m_52WeekLow;
-	m_52WeekLowDate = other.m_52WeekLowDate;
-	m_52WeekPriceReturnDaily = other.m_52WeekPriceReturnDaily;
-	m_13WeekPriceReturnDaily = other.m_13WeekPriceReturnDaily;
-	m_26WeekPriceReturnDaily = other.m_26WeekPriceReturnDaily;
-	m_3MonthAverageTradingVolume = other.m_3MonthAverageTradingVolume;
-	m_5DayPriceReturnDaily = other.m_5DayPriceReturnDaily;
+	m_AverageTradingVolume10Day = other.m_AverageTradingVolume10Day;
+	m_High52Week = other.m_High52Week;
+	m_HighDate52Week = other.m_HighDate52Week;
+	m_Low52Week = other.m_Low52Week;
+	m_LowDate52Week = other.m_LowDate52Week;
+	m_PriceReturnDaily52Week = other.m_PriceReturnDaily52Week;
+	m_PriceReturnDaily13Week = other.m_PriceReturnDaily13Week;
+	m_PriceReturnDaily26Week = other.m_PriceReturnDaily26Week;
+	m_AverageTradingVolume2Month = other.m_AverageTradingVolume2Month;
+	m_PriceReturnDaily5Day = other.m_PriceReturnDaily5Day;
 	m_assetTurnoverAnnual = other.m_assetTurnoverAnnual;
 	m_assetTurnoverTTM = other.m_assetTurnoverTTM;
 	m_beta = other.m_beta;
@@ -833,16 +833,16 @@ CFinnhubStockBasicFinancial& CFinnhubStockBasicFinancial::operator=(CFinnhubStoc
 
 void CFinnhubStockBasicFinancial::Reset() {
 	m_symbol = "";
-	m_10DayAverageTradingVolume = 0.0;
-	m_52WeekHigh = 0.0;
-	m_52WeekHighDate = 19800101;
-	m_52WeekLow = 0.0;
-	m_52WeekLowDate = 19800101;
-	m_52WeekPriceReturnDaily = 0.0;
-	m_13WeekPriceReturnDaily = 0.0;
-	m_26WeekPriceReturnDaily = 0.0;
-	m_3MonthAverageTradingVolume = 0.0;
-	m_5DayPriceReturnDaily = 0.0;
+	m_AverageTradingVolume10Day = 0.0;
+	m_High52Week = 0.0;
+	m_HighDate52Week = 19800101;
+	m_Low52Week = 0.0;
+	m_LowDate52Week = 19800101;
+	m_PriceReturnDaily52Week = 0.0;
+	m_PriceReturnDaily13Week = 0.0;
+	m_PriceReturnDaily26Week = 0.0;
+	m_AverageTradingVolume2Month = 0.0;
+	m_PriceReturnDaily5Day = 0.0;
 
 	m_assetTurnoverAnnual = 0.0;
 	m_assetTurnoverTTM = 0.0;
@@ -989,16 +989,16 @@ void CFinnhubStockBasicFinancial::LoadMetric(const CSetFinnhubStockBasicFinancia
 
 	m_symbol = T2Utf8(setMetric.m_symbol);
 
-	m_10DayAverageTradingVolume = setMetric.m_10DayAverageTradingVolume;
-	m_13WeekPriceReturnDaily = setMetric.m_13WeekPriceReturnDaily;
-	m_26WeekPriceReturnDaily = setMetric.m_26WeekPriceReturnDaily;
-	m_3MonthAverageTradingVolume = setMetric.m_3MonthAverageTradingVolume;
-	m_52WeekHigh = setMetric.m_52WeekHigh;
-	m_52WeekHighDate = setMetric.m_52WeekHighDate;
-	m_52WeekLow = setMetric.m_52WeekLow;
-	m_52WeekLowDate = setMetric.m_52WeekLowDate;
-	m_52WeekPriceReturnDaily = setMetric.m_52WeekPriceReturnDaily;
-	m_5DayPriceReturnDaily = setMetric.m_5DayPriceReturnDaily;
+	m_AverageTradingVolume10Day = setMetric.m_AverageTradingVolume10Day;
+	m_PriceReturnDaily13Week = setMetric.m_PriceReturnDaily13Week;
+	m_PriceReturnDaily26Week = setMetric.m_PriceReturnDaily26Week;
+	m_AverageTradingVolume2Month = setMetric.m_AverageTradingVolume3Month;
+	m_High52Week = setMetric.m_High52Week;
+	m_HighDate52Week = setMetric.m_HighDate52Week;
+	m_Low52Week = setMetric.m_Low52Week;
+	m_LowDate52Week = setMetric.m_LowDate52Week;
+	m_PriceReturnDaily52Week = setMetric.m_PriceReturnDaily52Week;
+	m_PriceReturnDaily5Day = setMetric.m_PriceReturnDaily5Day;
 
 	m_assetTurnoverAnnual = setMetric.m_assetTurnoverAnnual;
 	m_assetTurnoverTTM = setMetric.m_assetTurnoverTTM;
@@ -1288,16 +1288,16 @@ void CFinnhubStockBasicFinancial::UpdateMetric(CSetFinnhubStockBasicFinancialMet
 
 void CFinnhubStockBasicFinancial::SaveMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const {
 	setMetric.m_symbol = m_symbol.c_str();
-	setMetric.m_10DayAverageTradingVolume = m_10DayAverageTradingVolume;
-	setMetric.m_13WeekPriceReturnDaily = m_13WeekPriceReturnDaily;
-	setMetric.m_26WeekPriceReturnDaily = m_26WeekPriceReturnDaily;
-	setMetric.m_3MonthAverageTradingVolume = m_3MonthAverageTradingVolume;
-	setMetric.m_52WeekHigh = m_52WeekHigh;
-	setMetric.m_52WeekHighDate = m_52WeekHighDate;
-	setMetric.m_52WeekLow = m_52WeekLow;
-	setMetric.m_52WeekLowDate = m_52WeekLowDate;
-	setMetric.m_52WeekPriceReturnDaily = m_52WeekPriceReturnDaily;
-	setMetric.m_5DayPriceReturnDaily = m_5DayPriceReturnDaily;
+	setMetric.m_AverageTradingVolume10Day = m_AverageTradingVolume10Day;
+	setMetric.m_PriceReturnDaily13Week = m_PriceReturnDaily13Week;
+	setMetric.m_PriceReturnDaily26Week = m_PriceReturnDaily26Week;
+	setMetric.m_AverageTradingVolume3Month = m_AverageTradingVolume2Month;
+	setMetric.m_High52Week = m_High52Week;
+	setMetric.m_HighDate52Week = m_HighDate52Week;
+	setMetric.m_Low52Week = m_Low52Week;
+	setMetric.m_LowDate52Week = m_LowDate52Week;
+	setMetric.m_PriceReturnDaily52Week = m_PriceReturnDaily52Week;
+	setMetric.m_PriceReturnDaily5Day = m_PriceReturnDaily5Day;
 
 	setMetric.m_assetTurnoverAnnual = m_assetTurnoverAnnual;
 	setMetric.m_assetTurnoverTTM = m_assetTurnoverTTM;

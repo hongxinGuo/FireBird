@@ -81,7 +81,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "添加了两个股票";
 
-		gl_dataContainerTiingoStock.UpdateDB(); // 更新代码集
+		gl_dataContainerTiingoStock.UpdateProfileDB(); // 更新代码集
 
 		// 恢复原状
 		setTiingoStock.m_strFilter = "[SICSector] = 'Test'";
