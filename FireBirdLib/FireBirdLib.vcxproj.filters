@@ -915,11 +915,14 @@
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.h">
+      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
+    <ClInclude Include="..\src\dataBaseConnector.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1513,6 +1516,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\dataBaseConnector.cpp">
+      <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

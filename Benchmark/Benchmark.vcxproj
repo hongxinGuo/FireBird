@@ -109,12 +109,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Market\MarketTask.cpp" />
     <ClCompile Include="..\src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Benchmark.cpp" />
+    <ClCompile Include="DataBaseBenchMark.cpp" />
     <ClCompile Include="JsonParseBenchmark.cpp" />
     <ClCompile Include="ChinaMarketBenchmark.cpp" />
     <ClCompile Include="StockIndicatorBanchmark.cpp" />

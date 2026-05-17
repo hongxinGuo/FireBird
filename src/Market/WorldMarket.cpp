@@ -144,6 +144,7 @@ void CWorldMarket::ResetMarket() {
 	gl_dataContainerFinnhubEconomicCalendar.LoadDB();
 
 	gl_dataContainerTiingoStock.LoadProfileDB();
+	gl_dataContainerTiingoStock.CheckUpdateStatus();
 	gl_dataContainerTiingoCryptoSymbol.LoadDB();
 	gl_dataContainerTiingoFundamentalDefinition.LoadDB();
 

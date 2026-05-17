@@ -30,10 +30,10 @@
     <ClCompile Include="ChinaMarketBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Market\MarketTask.cpp">
+    <ClCompile Include="StockIndicatorBanchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StockIndicatorBanchmark.cpp">
+    <ClCompile Include="DataBaseBenchMark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

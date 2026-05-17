@@ -42,8 +42,13 @@ CREATE TABLE `china_stock_weekline` (
   `UpDownRate` decimal(10,3) DEFAULT '0.000',
   `ChangeHandRate` decimal(10,3) DEFAULT '0.000',
   `TotalValue` decimal(20,0) DEFAULT '0',
-  `CurrentValue` decimal(20,0) DEFAULT '0'
-);
+  `CurrentValue` decimal(20,0) DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  KEY `TIME` (`Date`,`UpDownRate`),
+  KEY `DAY` (`Date`,`Symbol`),
+  KEY `Symbol` (`Symbol`,`Date`)
+) ENGINE=InnoDB AUTO_INCREMENT=9278171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,8 +64,11 @@ CREATE TABLE `finnhub_forex_symbol` (
   `Exchange` varchar(100) DEFAULT ' ',
   `Symbol` varchar(100) DEFAULT ' ',
   `IPOStatus` int DEFAULT '128',
-  `UpdateDate` varchar(10000) DEFAULT ''
-);
+  `UpdateDate` varchar(10000) DEFAULT '',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  KEY `Symbol` (`Symbol`)
+) ENGINE=InnoDB AUTO_INCREMENT=1436 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

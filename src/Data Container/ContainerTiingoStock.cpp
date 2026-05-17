@@ -11,12 +11,12 @@
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
-/*
-#include <sqlpp11/mysql/mysql.h>
-using namespace sqlpp::mysql;
-// sqlpp11 generated table header (optional)
+#undef min
+#undef max
+#include "dataBaseConnector.h"
+#include <sqlpp11/sqlpp11.h>
+
 #include "StockMarketSQLTable.h"
-*/
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();
@@ -79,56 +79,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 	}
 }
 
-bool CContainerTiingoStock::LoadProfileDB() {
-	// Option A: use sqlpp11 when enabled at compile time
-#ifdef USE_SQLPP11
-	// Use generated StockMarketSQLTable.h and sqlpp11 typed query API
-	try {
-		sqlpp::mysql::global_library_init();
-		sqlpp::mysql::connection_config config;
-		config.user = "FireBird";
-		config.password = "firebird";
-		config.database = "stock_market";
-		config.host = "localhost";
-
-		sqlpp::mysql::connection db{ config };
-
-		// Generated header is expected to provide namespace StockMarket and a table object tiingo_stock_fundamental
-		using namespace StockMarket;
-		const auto t = tiingo_stock_fundamental;
-
-		// Typed select of relevant columns
-		for (const auto& row : db(sqlpp::select(t.tiingo_perma_ticker, t.ticker, t.name, t.is_active, t.is_adr, t.sic_code, t.sic_industry, t.sic_sector, t.tiingo_industry, t.tiingo_sector, t.reporting_currency, t.location, t.company_web_site, t.sec_filing_web_site, t.ipo_status, t.update_date).from(t).order_by(t.ticker))) {
-			CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
-
-			pTiingoStock->SetTiingoPermaTicker(row.tiingo_perma_ticker);
-			pTiingoStock->SetSymbol(row.ticker);
-			pTiingoStock->SetName(row.name);
-			pTiingoStock->SetActive(static_cast<bool>(row.is_active));
-			pTiingoStock->SetIsADR(static_cast<bool>(row.is_adr));
-			pTiingoStock->SetSicCode(static_cast<INT32>(row.sic_code));
-			pTiingoStock->SetSicIndustry(row.sic_industry);
-			pTiingoStock->SetSicSector(row.sic_sector);
-			pTiingoStock->SetTiingoIndustry(row.tiingo_industry);
-			pTiingoStock->SetTiingoSector(row.tiingo_sector);
-			pTiingoStock->SetReportingCurrency(row.reporting_currency);
-			pTiingoStock->SetLocation(row.location);
-			pTiingoStock->SetCompanyWebSite(row.company_web_site);
-			pTiingoStock->SetSECFilingWebSite(row.sec_filing_web_site);
-			pTiingoStock->SetIPOStatus(static_cast<int>(row.ipo_status));
-			pTiingoStock->LoadUpdateDate(row.update_date);
-
-			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-			Add(pTiingoStock);
-		}
-	} catch (const std::exception& ex) {
-		gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
-		return false;
-	}
-
-	return true;
-#else
-	// Fallback: original implementation using CRecordset-like wrapper
+bool CContainerTiingoStock::LoadProfileDB2() {
 	CSetTiingoStock setTiingoStock;
 
 	setTiingoStock.m_strSort = "[Ticker]";
@@ -138,7 +89,6 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		if (!IsSymbol(T2Utf8(setTiingoStock.m_Ticker))) {
 			const auto pTiingoStock = make_shared<CTiingoStock>();
 			pTiingoStock->Load(setTiingoStock);
-			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pTiingoStock);
 		}
 		else {
@@ -150,56 +100,60 @@ bool CContainerTiingoStock::LoadProfileDB() {
 	setTiingoStock.Close();
 
 	return true;
-#endif
 }
 
-bool CContainerTiingoStock::LoadProfileDB2() {
-	/*	// Use generated StockMarketSQLTable.h and sqlpp11 typed query API
-		try {
-			sqlpp::mysql::global_library_init();
-			sqlpp::mysql::connection_config config;
-			config.user = "FireBird";
-			config.password = "firebird";
-			config.database = "stock_market";
-			config.host = "localhost";
-	
-			sqlpp::mysql::connection db{ config };
-	
-			// Generated header is expected to provide namespace StockMarket and a table object tiingo_stock_fundamental
-			using namespace StockMarket;
-			const auto t = StockMarket:;
-	
-			// Typed select of relevant columns
-			for (const auto& row : db(sqlpp::select(t.tiingo_perma_ticker, t.ticker, t.name, t.is_active, t.is_adr, t.sic_code, t.sic_industry, t.sic_sector, t.tiingo_industry, t.tiingo_sector, t.reporting_currency, t.location, t.company_web_site, t.sec_filing_web_site, t.ipo_status, t.update_date).from(t).order_by(t.ticker))) {
-				CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
-	
-				pTiingoStock->SetTiingoPermaTicker(row.tiingo_perma_ticker);
-				pTiingoStock->SetSymbol(row.ticker);
-				pTiingoStock->SetName(row.name);
-				pTiingoStock->SetActive(static_cast<bool>(row.is_active));
-				pTiingoStock->SetIsADR(static_cast<bool>(row.is_adr));
-				pTiingoStock->SetSicCode(static_cast<INT32>(row.sic_code));
-				pTiingoStock->SetSicIndustry(row.sic_industry);
-				pTiingoStock->SetSicSector(row.sic_sector);
-				pTiingoStock->SetTiingoIndustry(row.tiingo_industry);
-				pTiingoStock->SetTiingoSector(row.tiingo_sector);
-				pTiingoStock->SetReportingCurrency(row.reporting_currency);
-				pTiingoStock->SetLocation(row.location);
-				pTiingoStock->SetCompanyWebSite(row.company_web_site);
-				pTiingoStock->SetSECFilingWebSite(row.sec_filing_web_site);
-				pTiingoStock->SetIPOStatus(static_cast<int>(row.ipo_status));
-				pTiingoStock->LoadUpdateDate(row.update_date);
-	
-				pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+bool CContainerTiingoStock::LoadProfileDB() {
+	// Use sqlpp11 typed query API to load profile data
+
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockFundamental{};
+
+		auto db = gl_dbStockMarket.get(sqlpp::connection_check::ping);
+
+		for (const auto& row : db(select(t.TiingoPermaTicker, t.Ticker, t.Name, t.IsActive, t.IsADR, t.SICCode, t.SICIndustry, t.SICSector, t.TiingoIndustry, t.TiingoSector, t.ReportingCurrency, t.Location, t.CompanyWebSite, t.SECFilingWebSite, t.IPOStatus, t.UpdateDate).from(t).unconditionally().order_by(t.Ticker.asc()))) {
+			//for (const auto& row : result) {
+			const std::string symbol = row.Ticker;
+			if (!IsSymbol(symbol)) {
+				const auto pTiingoStock = make_shared<CTiingoStock>();
+
+				pTiingoStock->SetTiingoPermaTicker(row.TiingoPermaTicker);
+				pTiingoStock->SetSymbol(row.Ticker);
+				pTiingoStock->SetName(row.Name);
+				pTiingoStock->SetActive(static_cast<bool>(row.IsActive));
+				pTiingoStock->SetIsADR(static_cast<bool>(row.IsADR));
+				pTiingoStock->SetSicCode(static_cast<INT32>(row.SICCode));
+				pTiingoStock->SetSicIndustry(row.SICIndustry);
+				pTiingoStock->SetSicSector(row.SICSector);
+				pTiingoStock->SetTiingoIndustry(row.TiingoIndustry);
+				pTiingoStock->SetTiingoSector(row.TiingoSector);
+				pTiingoStock->SetReportingCurrency(row.ReportingCurrency);
+				pTiingoStock->SetLocation(row.Location);
+				pTiingoStock->SetCompanyWebSite(row.CompanyWebSite);
+				pTiingoStock->SetSECFilingWebSite(row.SECFilingWebSite);
+				pTiingoStock->SetIPOStatus(static_cast<int>(row.IPOStatus));
+				pTiingoStock->LoadUpdateDate(row.UpdateDate);
 				Add(pTiingoStock);
 			}
-		} catch (const std::exception& ex) {
-			gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
-			return false;
+			else {
+				// delete duplicate record from database
+				string s = row.Ticker;
+				gl_systemMessage.PushInnerSystemInformationMessage(fmt::format("Tiingo stock found duplicate code : {}", s.c_str()));
+			}
 		}
-		*/
+	} catch (const std::exception& ex) {
+		gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
+		return false;
+	}
 
 	return true;
+}
+
+void CContainerTiingoStock::CheckUpdateStatus() {
+	for (size_t i = 0; i < Size(); i++) {
+		const auto pStock = GetStock(i);
+		pStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+	}
 }
 
 void CContainerTiingoStock::ResetDayLineStartEndDate() {

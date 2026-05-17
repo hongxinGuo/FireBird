@@ -27,6 +27,8 @@
 #error "fmt 使用unicode"
 #endif
 
+#include "dataBaseConnector.h"
+
 // CFireBirdApp
 
 BEGIN_MESSAGE_MAP(CFireBirdApp, CWinAppEx)
@@ -42,6 +44,8 @@ END_MESSAGE_MAP()
 
 CFireBirdApp::CFireBirdApp() {
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now()); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
+
+	//sqlpp::mysql::global_library_init(); // 初始化sqlpp11的MySQL库，且只能初始化一次。
 
 	m_bHiColorIcons = TRUE;
 
@@ -86,6 +90,9 @@ BOOL CFireBirdApp::InitInstance() {
 		           MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
+
+	// 连接数据库，生成链接池
+	InitSqlppConnectionPool("FireBird", "firebird", "stock_market", "localhost", 5, true);
 
 	InitializeLogSystem();
 
