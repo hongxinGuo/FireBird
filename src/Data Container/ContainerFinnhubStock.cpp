@@ -9,7 +9,13 @@
 #include"WorldMarket.h"
 #include"SetFinnhubStock.h"
 #include "ContainerFinnhubStock.h"
+
+#include <sqlpp11/transaction.h>
+
 #include "CharSetTransfer.h"
+#include "dataBaseConnector.h"
+#include "jsonParse.h"
+#include "StockMarketSQLTable.h"
 
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();
@@ -60,11 +66,12 @@ void CContainerFinnhubStock::ResetDayLine() {
 	}
 }
 
-bool CContainerFinnhubStock::LoadDB() {
+bool CContainerFinnhubStock::LoadProfileDB() {
 	CSetFinnhubStock setFinnhubStock;
 	CFinnhubStockPtr pFinnhubStock = nullptr;
 	long lMaxSymbolLength = 0;
 
+	Reset();
 	setFinnhubStock.m_strSort = "[Symbol]";
 	setFinnhubStock.Open();
 	setFinnhubStock.m_pDatabase->BeginTrans();
@@ -85,6 +92,82 @@ bool CContainerFinnhubStock::LoadDB() {
 	}
 	setFinnhubStock.m_pDatabase->CommitTrans();
 	setFinnhubStock.Close();
+	Sort();
+
+	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
+	string s = fmt::format("WorldMarket股票代码最长长度为{:Ld}", lMaxSymbolLength);
+#ifdef _DEBUG
+	gl_systemMessage.PushInnerSystemInformationMessage(s);
+#endif
+
+	return true;
+}
+
+bool CContainerFinnhubStock::LoadProfileDB2() {
+	using namespace StockMarket;
+	const auto& t = FinnhubStockProfile{};
+
+	Reset();
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
+	auto rowCount = result.size();
+	Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
+	CFinnhubStockPtr pFinnhubStock = nullptr;
+	long lMaxSymbolLength = 0;
+
+	for (const auto& row : result) {
+		pFinnhubStock = make_shared<CFinnhubStock>();
+		pFinnhubStock->SetSymbol(row.Symbol);
+		pFinnhubStock->SetExchangeCode(row.ExchangeCode);
+		pFinnhubStock->SetDescription(row.Description);
+		pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol);
+		pFinnhubStock->SetType(row.Type);
+		pFinnhubStock->SetMic(row.Mic);
+		pFinnhubStock->SetFigi(row.Figi);
+		pFinnhubStock->SetCurrency(row.Currency);
+		pFinnhubStock->SetAddress(row.Address);
+		pFinnhubStock->SetCity(row.City);
+		pFinnhubStock->SetCountry(row.Country);
+		pFinnhubStock->SetCusip(row.cusip);
+		pFinnhubStock->SetSedol(row.sedol);
+		pFinnhubStock->SetEmployeeTotal(row.EmployeeTotal);
+		pFinnhubStock->SetGgroup(row.ggroup);
+		pFinnhubStock->SetGind(row.gind);
+		pFinnhubStock->SetGsector(row.gsector);
+		pFinnhubStock->SetGsubind(row.gsubind);
+		pFinnhubStock->SetIPODate(row.IPODate);
+		pFinnhubStock->SetIsin((row.isin));
+		pFinnhubStock->SetMarketCapitalization(row.MarketCapitalization);
+		pFinnhubStock->SetNaics(row.naics);
+		pFinnhubStock->SetNaicsNationalIndustry(row.naicsNationalIndustry);
+		pFinnhubStock->SetNaicsSector(row.naicsSector);
+		pFinnhubStock->SetNaicsSubsector(row.naicsSubsector);
+		pFinnhubStock->SetName(row.Name);
+		pFinnhubStock->SetPhone(row.Phone);
+		pFinnhubStock->SetShareOutstanding(row.ShareOutstanding);
+		pFinnhubStock->SetState(row.state);
+		pFinnhubStock->SetTicker(row.Ticker);
+		pFinnhubStock->SetWebURL(row.WebURL);
+		pFinnhubStock->SetLogo(row.Logo);
+		pFinnhubStock->SetFinnhubIndustry(row.FinnhubIndustry);
+		string str = row.Peer;
+		if (str.length() > 2) {
+			nlohmannJson js;
+			CreateJsonWithNlohmann(js, row.Peer);
+			pFinnhubStock->SetPeer(js);
+		}
+		pFinnhubStock->SetIPOStatus(row.IPOStatus);
+
+		pFinnhubStock->LoadUpdateDate(row.UpdateDate);
+		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
+			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+			Add(pFinnhubStock);
+			lMaxSymbolLength = std::max<std::basic_string<char>::size_type>(pFinnhubStock->GetSymbol().length(), lMaxSymbolLength);
+		}
+	}
+	tx.commit();
+
 	Sort();
 
 	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符

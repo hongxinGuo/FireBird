@@ -642,6 +642,9 @@
     <ClCompile Include="IndicatorMACDTest.cpp">
       <Filter>Test源文件\Type\Indicator</Filter>
     </ClCompile>
+    <ClCompile Include="ContainerFinnhubCountryTest.cpp">
+      <Filter>Test源文件\Data Container\Finnhub</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneralCheck.h">

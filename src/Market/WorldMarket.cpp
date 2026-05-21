@@ -133,7 +133,7 @@ void CWorldMarket::ResetMarket() {
 	UpdateToken();
 
 	gl_dataContainerFinnhubCountry.LoadDB();
-	gl_dataContainerFinnhubStock.LoadDB();
+	gl_dataContainerFinnhubStock.LoadProfileDB();
 	gl_dataContainerChosenFinnhubStock.LoadDB();
 	gl_dataContainerFinnhubForexExchange.LoadDB();
 	gl_dataFinnhubForexSymbol.LoadDB();

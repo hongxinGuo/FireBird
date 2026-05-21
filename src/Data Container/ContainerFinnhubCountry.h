@@ -11,6 +11,7 @@ public:
 	CContainerFinnhubCountry& operator=(CContainerFinnhubCountry&& other) noexcept = delete;
 	~CContainerFinnhubCountry() = default;
 	void Reset();
+	void Reserve(size_t size);
 
 	auto GetTotalCountry() const noexcept { return m_vCountry.size(); }
 	auto GetLastTotalCountry() const noexcept { return m_llLastTotalCountry; }
@@ -26,6 +27,6 @@ public:
 
 protected:
 	vector<CCountry> m_vCountry;
-	map<string, size_t> m_mapCountry;
+	unordered_map<string, size_t> m_mapCountry;
 	size_t m_llLastTotalCountry;
 };

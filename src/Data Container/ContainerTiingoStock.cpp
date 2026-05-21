@@ -118,6 +118,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 bool CContainerTiingoStock::LoadProfileDB2() {
 	CSetTiingoStock setTiingoStock;
 
+	Reset();
 	setTiingoStock.m_strSort = "[Ticker]";
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
@@ -146,10 +147,12 @@ bool CContainerTiingoStock::LoadProfileDB2() {
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerTiingoStock::LoadProfileDB() {
 	// Use sqlpp11 typed query API to load profile data
+	bool fFindDuplicatedCode = false;
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockFundamental{};
 
+		Reset();
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 		auto result = db(select(t.TiingoPermaTicker, t.Ticker, t.Name, t.IsActive, t.IsADR, t.SICCode, t.SICIndustry, t.SICSector, t.TiingoIndustry, t.TiingoSector, t.ReportingCurrency, t.Location, t.CompanyWebSite, t.SECFilingWebSite, t.IPOStatus, t.UpdateDate).from(t).unconditionally().order_by(t.Ticker.asc()));
@@ -181,7 +184,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 				Add(pTiingoStock);
 			}
 			else {
-				DeleteDuplicatedStockDB();
+				fFindDuplicatedCode = true;
 			}
 		}
 		tx.commit();
@@ -189,7 +192,9 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
 		return false;
 	}
-
+	if (fFindDuplicatedCode) {
+		DeleteDuplicatedStockDB();
+	}
 	return true;
 }
 

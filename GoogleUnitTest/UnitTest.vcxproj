@@ -76,6 +76,7 @@
     </ClCompile>
     <ClCompile Include="CharSetTransferTest.cpp" />
     <ClCompile Include="CompanyNewsTest.cpp" />
+    <ClCompile Include="ContainerFinnhubCountryTest.cpp" />
     <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp" />
     <ClCompile Include="ContainerTiingoFundamentalDefinitionTest.cpp" />
     <ClCompile Include="ContainerTiingoStockDayLineTest.cpp" />

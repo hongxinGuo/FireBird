@@ -15,7 +15,6 @@
 #include"SetOption.h"
 #include"SetStockSection.h"
 
-#include"SetCountry.h"
 #include"SetFinnhubStockBasicFinancialMetric.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 #include"SetFinnhubStockBasicFinancialQuarter.h"
@@ -222,18 +221,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setWorldChosenStock.GetDefaultSQL(), _T("[world_choice_stock]"));
-	}
-
-	TEST_F(SetInitializeTest, TestCountryInitialize) {
-		CSetCountry setCountry;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setCountry.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setCountry.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setCountry.GetDefaultSQL(), _T("[finnhub_country_list]"));
 	}
 
 	TEST_F(SetInitializeTest, TestEconomicCalendarInitialize) {

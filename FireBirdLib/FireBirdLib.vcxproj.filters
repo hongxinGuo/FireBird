@@ -705,9 +705,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetCountry.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
@@ -1324,9 +1321,6 @@
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetCountry.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEconimicCalendar.cpp">
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>

@@ -83,7 +83,6 @@
     <ClInclude Include="..\src\DataBase\VirtualSetExchange.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetStockSymbol.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetCountry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetCryptoDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEPSSurprise.h" />
@@ -308,7 +307,6 @@
     <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetStockSymbol.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetCountry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp" />

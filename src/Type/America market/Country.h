@@ -1,7 +1,5 @@
 #pragma once
 
-#include"SetCountry.h"
-
 using std::vector;
 using std::shared_ptr;
 
@@ -15,9 +13,6 @@ public:
 	~CCountry() = default;
 
 	void Reset();
-
-	void Append(CSetCountry& setCountry) const;
-	void Load(const CSetCountry& setCountry);
 
 public:
 	string m_strCode2;

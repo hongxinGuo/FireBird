@@ -3,12 +3,19 @@
 #include<vector>
 #include "ContainerFinnhubCountry.h"
 
+#include "dataBaseConnector.h"
+#include "StockMarketSQLTable.h"
+
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 
 void CContainerFinnhubCountry::Reset() {
 	m_vCountry.resize(0);
 	m_mapCountry.clear();
 	m_llLastTotalCountry = 0;
+}
+void CContainerFinnhubCountry::Reserve(size_t size) {
+	m_vCountry.reserve(size);
+	m_mapCountry.reserve(size);
 }
 
 void CContainerFinnhubCountry::Add(const CCountry& pCountry) {
@@ -33,33 +40,49 @@ bool CContainerFinnhubCountry::Delete(const CCountry& country) {
 //////////////////////////////////////////////////////////////////////////
 void CContainerFinnhubCountry::UpdateDB() {
 	if (m_llLastTotalCountry < m_vCountry.size()) {
-		CSetCountry setCountry;
-		setCountry.Open();
-		setCountry.m_pDatabase->BeginTrans();
+		using namespace StockMarket;
+		const auto& t = FinnhubCountryList{};
+		auto db = GetStockMarketDB();
+		auto tx = sqlpp::start_transaction(db);
 		for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
-			const CCountry country = m_vCountry.at(l);
-			country.Append(setCountry);
+			const CCountry& country = m_vCountry.at(l);
+			db(insert_into(t).set(
+				t.Code2 = country.m_strCode2,
+				t.Code3 = country.m_strCode3,
+				t.CodeNo = country.m_strCodeNo,
+				t.Country = country.m_strCountry,
+				t.Currency = country.m_strCurrency,
+				t.CurrencyCode = country.m_strCurrencyCode
+			));
 		}
-		setCountry.m_pDatabase->CommitTrans();
-		setCountry.Close();
-		m_llLastTotalCountry = m_vCountry.size();
+		tx.commit();
 	}
 }
 
 bool CContainerFinnhubCountry::LoadDB() {
-	CSetCountry setCountry;
-	CCountryPtr pCountry = nullptr;
+	using namespace StockMarket;
+	const auto& t = FinnhubCountryList{};
 
-	setCountry.m_strSort = "[Country]";
-	setCountry.Open();
-	while (!setCountry.IsEOF()) {
+	Reset();
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Country.asc()));
+	Reserve(result.size());
+
+	int counter = 0;
+	for (const auto& row : result) {
 		CCountry country;
-		country.Load(setCountry);
-		m_mapCountry[country.m_strCountry] = m_vCountry.size();
+		country.m_strCode2 = row.Code2;
+		country.m_strCode3 = row.Code3;
+		country.m_strCodeNo = row.CodeNo;
+		country.m_strCountry = row.Country;
+		country.m_strCurrency = row.Currency;
+		country.m_strCurrencyCode = row.CurrencyCode;
+		m_mapCountry[country.m_strCountry] = counter;
+		counter++;
 		m_vCountry.push_back(country);
-		setCountry.MoveNext();
 	}
-	setCountry.Close();
+	tx.commit();
 	m_llLastTotalCountry = m_vCountry.size();
 
 	return true;

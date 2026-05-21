@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "dataBaseConnector.h"
 #include"GeneralCheck.h"
 
 #include"FinnhubStock.h"
@@ -14,6 +15,7 @@
 
 #include"FinnhubDataSource.h"
 #include"FinnhubCrypto.h"
+#include "StockMarketSQLTable.h"
 #include "WorldMarket.h"
 
 using namespace testing;
@@ -362,10 +364,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), lTotalCountry);
 	}
 
-	TEST_F(CWorldMarketTest, TestLoadExchangeCode) {
-		// not implemented
-	}
-
 	TEST_F(CWorldMarketTest, TestUpdateCountryDB) {
 		const size_t lTotal = gl_dataContainerFinnhubCountry.GetTotalCountry();
 
@@ -377,17 +375,12 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), lTotal + 1);
 		gl_dataContainerFinnhubCountry.UpdateDB(); // 此测试函数执行完后，新增了一个Country没有删除（数据库中的删除了）。
 
-		CSetCountry setCountry;
-		setCountry.m_strFilter = "[Country] = 'NoName'";
-		setCountry.Open();
-		EXPECT_FALSE(setCountry.IsEOF());
-		setCountry.m_pDatabase->BeginTrans();
-		while (!setCountry.IsEOF()) {
-			setCountry.Delete();
-			setCountry.MoveNext();
-		}
-		setCountry.m_pDatabase->CommitTrans();
-		setCountry.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubCountryList{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(remove_from(t).where(t.Code2 == std::string("AB")));
+		tx.commit();
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {

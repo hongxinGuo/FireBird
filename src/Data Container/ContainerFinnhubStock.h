@@ -22,7 +22,8 @@ public:
 	void ResetBasicFinancial();
 	void ResetDayLine();
 
-	bool LoadDB();
+	bool LoadProfileDB();
+	bool LoadProfileDB2();
 	void UpdateProfileDB();
 
 	bool UpdateBasicFinancialDB();

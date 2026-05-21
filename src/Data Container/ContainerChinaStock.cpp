@@ -41,9 +41,9 @@ size_t CContainerChinaStock::GetActiveStockSize() const {
 
 long CContainerChinaStock::LoadProfileDB2() {
 	CSetChinaStockSymbol setChinaStockSymbol;
-	char buffer[30]{ 0, 0, 0 };
 	long lDayLineNeedCheck = 0;
 
+	Reset();
 	setChinaStockSymbol.m_strSort = "[Symbol]";
 	setChinaStockSymbol.Open();
 	setChinaStockSymbol.m_pDatabase->BeginTrans();
@@ -82,6 +82,7 @@ long CContainerChinaStock::LoadProfileDB() {
 	using namespace StockMarket;
 	const auto& t = ChinaStockCode{};
 
+	Reset();
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
