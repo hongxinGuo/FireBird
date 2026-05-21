@@ -93,7 +93,7 @@ void CProductAlphaVantageStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCandleLinesPtr CProductAlphaVantageStockDayLine::ParseAlphaVantageStockDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
-	pvDayLine->reserve(7500); // AlphaVantage免费账户的日线提供100个的数据；付费账户提供20年的数据。预先分配100个空间，避免多次分配内存。
+	pvDayLine->reserve(3000); // AlphaVantage免费账户的日线提供100个的数据；付费账户提供20年的数据。预先分配100个空间，避免多次分配内存。
 	string s;
 	nlohmannJson js;
 

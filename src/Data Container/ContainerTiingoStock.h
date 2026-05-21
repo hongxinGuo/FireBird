@@ -21,8 +21,8 @@ public:
 
 	void UpdateProfileDB();
 	bool LoadProfileDB();
+	void DeleteDuplicatedStockDB();
 	bool LoadProfileDB2();
-	void CheckUpdateStatus();
 
 	void ResetDayLineStartEndDate();
 	void BuildDayLine(long lDate);

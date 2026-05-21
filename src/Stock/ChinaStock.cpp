@@ -4,6 +4,8 @@
 #include"ChinaStockCodeConverter.h"
 
 #include "ChinaStock.h"
+
+#include "CharSetTransfer.h"
 #include"ChinaMarket.h"
 #include"MonthLine.h"
 
@@ -206,6 +208,15 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 
 bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 	LoadSymbol(setChinaStockSymbol);
+	return true;
+}
+bool CChinaStock::LoadStockCode(const CStockSymbol& stockSymbol) {
+	m_strDescription = stockSymbol.m_Description;
+	m_strDisplaySymbol = stockSymbol.m_DisplaySymbol;
+	m_strExchangeCode = stockSymbol.m_Exchange;
+	m_strSymbol = stockSymbol.m_Symbol;
+	m_lIPOStatus = stockSymbol.m_IPOStatus;
+	LoadUpdateDate(stockSymbol.m_UpdateDate);
 
 	return true;
 }

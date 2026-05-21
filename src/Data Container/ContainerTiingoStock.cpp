@@ -79,6 +79,42 @@ void CContainerTiingoStock::UpdateProfileDB() {
 	}
 }
 
+/*
+ *void CContainerTiingoStock::UpdateProfileDB() {
+	if (IsUpdateProfileDB()) {
+		CSetTiingoStock setTiingoStock;
+		setTiingoStock.m_strSort = "[Ticker]";
+		setTiingoStock.Open();
+		setTiingoStock.m_pDatabase->BeginTrans();
+		while (!setTiingoStock.IsEOF()) {	//更新原有的代码集状态
+			if (IsSymbol(T2Utf8(setTiingoStock.m_Ticker))) {
+				const CTiingoStockPtr pStock = GetStock(T2Utf8(setTiingoStock.m_Ticker));
+				ASSERT(pStock != nullptr);
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->Update(setTiingoStock);
+					pStock->SetUpdateProfileDB(false);
+				}
+			}
+			else {
+				setTiingoStock.Delete(); // 删除已不存在的代码。
+			}
+			setTiingoStock.MoveNext();
+		}
+		for (size_t l = 0; l < m_vStock.size(); l++) {
+			const CTiingoStockPtr pStock = GetStock(l);
+			ASSERT(pStock != nullptr);
+			if (pStock->IsUpdateProfileDB()) {
+				pStock->Append(setTiingoStock);
+				pStock->SetUpdateProfileDB(false);
+				pStock->SetTodayNewStock(false);
+			}
+		}
+		setTiingoStock.m_pDatabase->CommitTrans();
+		setTiingoStock.Close();
+	}
+}
+ */
+
 bool CContainerTiingoStock::LoadProfileDB2() {
 	CSetTiingoStock setTiingoStock;
 
@@ -102,16 +138,24 @@ bool CContainerTiingoStock::LoadProfileDB2() {
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 使用sqlpp11的类型化查询接口来加载数据，sqlpp11的查询接口比传统的方式快10倍。
+/// 
+///
+//////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerTiingoStock::LoadProfileDB() {
 	// Use sqlpp11 typed query API to load profile data
-
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockFundamental{};
 
-		auto db = gl_dbStockMarket.get(sqlpp::connection_check::ping);
-
-		for (const auto& row : db(select(t.TiingoPermaTicker, t.Ticker, t.Name, t.IsActive, t.IsADR, t.SICCode, t.SICIndustry, t.SICSector, t.TiingoIndustry, t.TiingoSector, t.ReportingCurrency, t.Location, t.CompanyWebSite, t.SECFilingWebSite, t.IPOStatus, t.UpdateDate).from(t).unconditionally().order_by(t.Ticker.asc()))) {
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto result = db(select(t.TiingoPermaTicker, t.Ticker, t.Name, t.IsActive, t.IsADR, t.SICCode, t.SICIndustry, t.SICSector, t.TiingoIndustry, t.TiingoSector, t.ReportingCurrency, t.Location, t.CompanyWebSite, t.SECFilingWebSite, t.IPOStatus, t.UpdateDate).from(t).unconditionally().order_by(t.Ticker.asc()));
+		auto rowCount = result.size();
+		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
+		for (const auto& row : result) {
 			//for (const auto& row : result) {
 			const std::string symbol = row.Ticker;
 			if (!IsSymbol(symbol)) {
@@ -120,9 +164,9 @@ bool CContainerTiingoStock::LoadProfileDB() {
 				pTiingoStock->SetTiingoPermaTicker(row.TiingoPermaTicker);
 				pTiingoStock->SetSymbol(row.Ticker);
 				pTiingoStock->SetName(row.Name);
-				pTiingoStock->SetActive(static_cast<bool>(row.IsActive));
-				pTiingoStock->SetIsADR(static_cast<bool>(row.IsADR));
-				pTiingoStock->SetSicCode(static_cast<INT32>(row.SICCode));
+				pTiingoStock->SetActive(row.IsActive);
+				pTiingoStock->SetIsADR(row.IsADR);
+				pTiingoStock->SetSicCode(row.SICCode);
 				pTiingoStock->SetSicIndustry(row.SICIndustry);
 				pTiingoStock->SetSicSector(row.SICSector);
 				pTiingoStock->SetTiingoIndustry(row.TiingoIndustry);
@@ -131,16 +175,16 @@ bool CContainerTiingoStock::LoadProfileDB() {
 				pTiingoStock->SetLocation(row.Location);
 				pTiingoStock->SetCompanyWebSite(row.CompanyWebSite);
 				pTiingoStock->SetSECFilingWebSite(row.SECFilingWebSite);
-				pTiingoStock->SetIPOStatus(static_cast<int>(row.IPOStatus));
+				pTiingoStock->SetIPOStatus(row.IPOStatus);
 				pTiingoStock->LoadUpdateDate(row.UpdateDate);
+				pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 				Add(pTiingoStock);
 			}
 			else {
-				// delete duplicate record from database
-				string s = row.Ticker;
-				gl_systemMessage.PushInnerSystemInformationMessage(fmt::format("Tiingo stock found duplicate code : {}", s.c_str()));
+				DeleteDuplicatedStockDB();
 			}
 		}
+		tx.commit();
 	} catch (const std::exception& ex) {
 		gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
 		return false;
@@ -149,11 +193,17 @@ bool CContainerTiingoStock::LoadProfileDB() {
 	return true;
 }
 
-void CContainerTiingoStock::CheckUpdateStatus() {
-	for (size_t i = 0; i < Size(); i++) {
-		const auto pStock = GetStock(i);
-		pStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-	}
+void CContainerTiingoStock::DeleteDuplicatedStockDB() {
+	using namespace StockMarket;
+	const auto& t = TiingoStockFundamental{};
+
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
+	db.execute("DELETE t1 FROM tiingo_stock_fundamental t1 INNER JOIN tiingo_stock_fundamental t2 ON t1.Ticker = t2.Ticker AND t1.ID > t2.ID");
+	//db.execute("COMMIT");
+	tx.commit();
 }
 
 void CContainerTiingoStock::ResetDayLineStartEndDate() {

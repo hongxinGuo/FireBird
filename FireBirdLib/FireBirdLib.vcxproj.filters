@@ -924,6 +924,12 @@
     <ClInclude Include="..\src\dataBaseConnector.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\TechAnalysis\RelativeStrengthIndex.h">
+      <Filter>头文件\Type\TechAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\StockSymbol.h">
+      <Filter>头文件\Type</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1517,8 +1523,8 @@
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\dataBaseConnector.cpp">
-      <Filter>源文件\Accessory</Filter>
+    <ClCompile Include="..\src\Type\TechAnalysis\RelativeStrengthIndex.cpp">
+      <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

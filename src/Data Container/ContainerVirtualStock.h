@@ -14,6 +14,10 @@ public:
 
 	bool IsEmpty() override { return m_vStock.empty(); }
 	size_t Size() override { return m_vStock.size(); }
+	void Reserve(size_t size) {
+		m_vStock.reserve(size);
+		m_mapSymbol.reserve(size);
+	}
 
 	bool IsSymbol(const string& strSymbol) const { return m_mapSymbol.contains(strSymbol); }
 	bool IsSymbol(const CVirtualStockPtr& p) const { return IsSymbol(p->GetSymbol()); }
@@ -38,5 +42,5 @@ public:
 
 protected:
 	vector<CVirtualStockPtr> m_vStock; //Note 此容器中真实存储的，为CVirtualStock类的各继承类，使用时需要使用dynamic_pointer_cast<>转换成对应的继承类。
-	map<string, size_t> m_mapSymbol; // m_vStock在容器中的具体偏移量。
+	unordered_map<string, size_t> m_mapSymbol; // m_vStock在容器中的具体偏移量。使用unordered_map是为了提高查询效率。注意：当删除股票时，需要更新此map中所有股票的偏移量。
 };

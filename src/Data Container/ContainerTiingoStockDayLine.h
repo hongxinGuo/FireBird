@@ -19,7 +19,6 @@ public:
 
 	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
 	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
-	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandle);
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();

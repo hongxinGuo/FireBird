@@ -5,6 +5,8 @@
 #include"WorldMarket.h"
 
 #include"ContainerTiingoStock.h"
+#include "dataBaseConnector.h"
+#include "StockMarketSQLTable.h"
 
 using namespace testing;
 
@@ -135,5 +137,43 @@ namespace FireBirdTest {
 		auto s = gl_systemMessage.PopStockMarketInformationMessage();
 		EXPECT_TRUE(s.find("3月内再创新高数:10000, 3月内未再次新高数:20000, 比率:0.50") != string::npos);
 		gl_pWorldMarket->ResetNewHighHigher();
+	}
+
+	TEST_F(CContainerTiingoStockTest, TestDeleteDuplicatedStockDB) {
+		using namespace StockMarket;
+		const auto t = TiingoStockFundamental{};
+		// Ensure no leftover test symbols
+		auto db = GetStockMarketDB();
+		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));
+
+		// Insert duplicate rows for the same Symbol
+		db(insert_into(t).set(t.Ticker = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP1")));
+		db(insert_into(t).set(t.Ticker = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP2")));
+		db(insert_into(t).set(t.Ticker = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP3")));
+
+		// Ensure inserts are committed and visible to other connections
+		db.execute("COMMIT");
+
+		// Verify duplicates were inserted
+		db = GetStockMarketDB(); // 执行完插入后，重新获取数据库连接，以确保看到最新的数据
+		auto resBefore = db(select(all_of(t)).from(t).where(t.Ticker == std::string("DUPLICATE")));
+		EXPECT_TRUE(resBefore.size() >= 3);
+		// Call the function under test
+		m_dataTiingoStock.DeleteDuplicatedStockDB();
+		// Verify only one row remains for that symbol
+		db = GetStockMarketDB();
+		auto resAfter = db(select(all_of(t)).from(t).where(t.Ticker == std::string("DUPLICATE")));
+
+		for (auto& row : resAfter) {
+			string displaySymbol = row.Name;
+			string symbol = row.Ticker;
+		}
+		EXPECT_EQ(resAfter.size(), 1);
+
+		// Clean up test data
+		db = GetStockMarketDB(); // 执行完删除重复代码任务后，重新获取数据库连接，以确保看到最新的数据
+		auto tx = start_transaction(db);
+		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));
+		tx.commit();
 	}
 }

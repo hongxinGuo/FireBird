@@ -1476,7 +1476,7 @@ namespace FireBirdTest {
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetIPOStatus(_STOCK_DELISTED_);
 
-		gl_dataContainerChinaStock.UpdateStockProfileDB();
+		gl_dataContainerChinaStock.UpdateProfileDB();
 
 		CSetChinaStockSymbol setChinaStock;
 		setChinaStock.m_strFilter = "[Symbol] = '000001.SS'";

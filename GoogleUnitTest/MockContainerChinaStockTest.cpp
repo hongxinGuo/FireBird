@@ -19,7 +19,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			s_pMockContainerChinaStock = make_shared<CMockContainerChinaStock>();
-			s_pMockContainerChinaStock->LoadStockProfileDB();
+			s_pMockContainerChinaStock->LoadProfileDB();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 		}
 

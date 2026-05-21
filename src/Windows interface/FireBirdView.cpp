@@ -72,6 +72,8 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_KDJ, &CFireBirdView::OnUpdateShowIndicatorKdj)
 	ON_COMMAND(ID_SHOW_INDICATOR_MACD, &CFireBirdView::OnShowIndicatorMacd)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_MACD, &CFireBirdView::OnUpdateShowIndicatorMacd)
+	ON_COMMAND(ID_SHOW_INDICATOR_RSI, &CFireBirdView::OnShowIndicatorRsi)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_RSI, &CFireBirdView::OnUpdateShowIndicatorRsi)
 END_MESSAGE_MAP()
 
 // CFireBirdView 构造/析构
@@ -237,6 +239,9 @@ void CFireBirdView::ShowIndicator(CDC* pDC, CRect rectDrawArea) {
 	case SHOW_INDICATOR_KDJ_:
 		ShowIndicatorKDJ(pDC, rectDrawArea);
 		break;
+	case SHOW_INDICATOR_RSI_:
+		ShowIndicatorRSI(pDC, rectDrawArea);
+		break;
 	case SHOW_INDICATOR_MACD_:
 		ShowIndicatorMACD(pDC, rectDrawArea);
 		break;
@@ -330,6 +335,24 @@ void CFireBirdView::ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea) {
 		break;
 	case SHOW_MONTH_LINE_DATA_:
 		GetDocument()->ShowMonthLineMACD(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	default:
+		break;
+	}
+}
+
+void CFireBirdView::ShowIndicatorRSI(CDC* pDC, CRect rectDrawArea) {
+	if (GetDocument()->GetCurrentStock() == nullptr) return;
+	Show8020Line(pDC, rectDrawArea);
+	switch (m_iCurrentShowType) {
+	case SHOW_DAY_LINE_DATA_:
+		GetDocument()->ShowDayLineRSI(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	case SHOW_WEEK_LINE_DATA_:
+		GetDocument()->ShowWeekLineRSI(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	case SHOW_MONTH_LINE_DATA_:
+		GetDocument()->ShowMonthLineRSI(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
 	default:
 		break;
@@ -762,5 +785,17 @@ void CFireBirdView::OnShowIndicatorMacd() {
 
 void CFireBirdView::OnUpdateShowIndicatorMacd(CCmdUI* pCmdUI) {
 	if (m_iShowIndicator == SHOW_INDICATOR_MACD_) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowIndicatorRsi() {
+	if (m_iShowIndicator != SHOW_INDICATOR_RSI_) {
+		m_iShowIndicator = SHOW_INDICATOR_RSI_;
+		InvalidateRect(m_rectIndicator);
+	}
+}
+
+void CFireBirdView::OnUpdateShowIndicatorRsi(CCmdUI* pCmdUI) {
+	if (m_iShowIndicator == SHOW_INDICATOR_RSI_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }

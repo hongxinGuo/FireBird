@@ -155,7 +155,7 @@ public:
 
 	void RebuildStockSplitDB() override;
 
-	bool HaveNewDayLineData(); //todo 移至VirtualStock中，合并其他股票类型的同名函数
+	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckDayLineUpdateStatus(long llTodayDate);

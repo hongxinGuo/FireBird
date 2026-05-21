@@ -708,8 +708,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
 		CreateJsonWithNlohmann(jsonUpdateDate, T2Utf8(setChinaStockSymbol.m_UpdateDate));
 
-		//todo EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
-		//todo EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
+		//Todo: EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
+		//Todo: EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		setChinaStockSymbol.Close();
 	}
 

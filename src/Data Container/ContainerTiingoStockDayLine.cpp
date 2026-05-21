@@ -5,6 +5,9 @@
 #include "InfoReport.h"
 #include"SetTiingoStockDayLine.h"
 
+#include"dataBaseConnector.h"
+#include"StockMarketSQLTable.h"
+
 namespace {
 	CTiingoStock s_stock;
 }
@@ -27,13 +30,24 @@ bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	CSetTiingoStockDayLine setDayLineBasic;
 
-	// 装入DayLine数据
+	Unload(); // 卸载之前的日线
+	Reserve(3000);
+
 	setDayLineBasic.m_strFilter = "[Symbol] = '";
 	setDayLineBasic.m_strFilter += strStockSymbol.c_str();
 	setDayLineBasic.m_strFilter += "'";
 	setDayLineBasic.m_strSort = "[Date]";
 	setDayLineBasic.Open();
-	LoadBasicDB(&setDayLineBasic);
+	// 装入DayLine数据
+	while (!setDayLineBasic.IsEOF()) {
+		CTiingoCandleLine candle;
+		candle.LoadBasicData(&setDayLineBasic);
+		Add(candle);
+		setDayLineBasic.MoveNext();
+	}
+	m_fDataLoaded = true;
+
+	SplitAdjust();
 	setDayLineBasic.Close();
 
 	return true;
@@ -53,7 +67,7 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 //////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) {
 	vector<CTiingoCandleLine> vOldHistoryCandle;
-	vOldHistoryCandle.reserve(7500);
+	vOldHistoryCandle.reserve(3000);
 
 	const CTiingoCandleLine* pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
@@ -120,7 +134,7 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 	bool fNeedUpdate = false;
 	long lSizeOfOldDayLine = 0;
 	vector<CTiingoCandleLine> vOldHistoryCandle;
-	vOldHistoryCandle.reserve(7500);
+	vOldHistoryCandle.reserve(3000);
 
 	ASSERT(Size() > 0);
 
@@ -185,24 +199,6 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 	pSetTiingoStockDayLine->Close();
 
 	return fNeedUpdate;
-}
-
-bool CContainerTiingoStockDayLine::LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandle) {
-	ASSERT(pSetHistoryCandle->IsOpen());
-
-	Unload(); // 卸载之前的日线
-	Reserve(5000);
-	// 装入DayLine数据
-	while (!pSetHistoryCandle->IsEOF()) {
-		CTiingoCandleLine candle;
-		candle.LoadBasicData(pSetHistoryCandle);
-		Add(candle);
-		pSetHistoryCandle->MoveNext();
-	}
-	m_fDataLoaded = true;
-
-	SplitAdjust();
-	return true;
 }
 
 void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine) {

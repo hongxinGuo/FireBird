@@ -21,16 +21,16 @@ void CSetFinnhubStockBasicFinancialMetric::DoFieldExchange(CFieldExchange* pFX) 
 	RFX_Long(pFX, _T("[ID]"), m_ID);
 	RFX_Text(pFX, _T("[Symbol]"), m_symbol);
 
-	RFX_Double(pFX, _T("[10DayAverageTradingVolume]"), m_AverageTradingVolume10Day);
-	RFX_Double(pFX, _T("[13WeekPriceReturnDaily]"), m_PriceReturnDaily13Week);
-	RFX_Double(pFX, _T("[26WeekPriceReturnDaily]"), m_PriceReturnDaily26Week);
-	RFX_Double(pFX, _T("[3MonthAverageTradingVolume]"), m_AverageTradingVolume3Month);
-	RFX_Double(pFX, _T("[52WeekHigh]"), m_High52Week);
-	RFX_Int(pFX, _T("[52WeekHighDate]"), m_HighDate52Week);
-	RFX_Double(pFX, _T("[52WeekLow]"), m_Low52Week);
-	RFX_Int(pFX, _T("[52WeekLowDate]"), m_LowDate52Week);
-	RFX_Double(pFX, _T("[52WeekPriceReturnDaily]"), m_PriceReturnDaily52Week);
-	RFX_Double(pFX, _T("[5DayPriceReturnDaily]"), m_PriceReturnDaily5Day);
+	RFX_Double(pFX, _T("[AverageTradingVolume10Day]"), m_AverageTradingVolume10Day);
+	RFX_Double(pFX, _T("[PriceReturnDaily13Week]"), m_PriceReturnDaily13Week);
+	RFX_Double(pFX, _T("[PriceReturnDaily26Week]"), m_PriceReturnDaily26Week);
+	RFX_Double(pFX, _T("[AverageTradingVolume3Month]"), m_AverageTradingVolume3Month);
+	RFX_Double(pFX, _T("[High52Week]"), m_High52Week);
+	RFX_Int(pFX, _T("[HighDate52Week]"), m_HighDate52Week);
+	RFX_Double(pFX, _T("[Low52Week]"), m_Low52Week);
+	RFX_Int(pFX, _T("[LowDate52Week]"), m_LowDate52Week);
+	RFX_Double(pFX, _T("[PriceReturnDaily52Week]"), m_PriceReturnDaily52Week);
+	RFX_Double(pFX, _T("[PriceReturnDaily5Day]"), m_PriceReturnDaily5Day);
 
 	RFX_Double(pFX, _T("[assetTurnoverAnnual]"), m_assetTurnoverAnnual);
 	RFX_Double(pFX, _T("[assetTurnoverTTM]"), m_assetTurnoverTTM);

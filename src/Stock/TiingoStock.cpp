@@ -357,14 +357,7 @@ void CTiingoStock::CreateMonthLine() {
 
 void CTiingoStock::RebuildStockSplitDB() {
 	if (!m_dataDayLine.IsDataLoaded()) {
-		CSetTiingoStockDayLine setDayLine;
-		setDayLine.m_strFilter = "[Symbol] = '";
-		setDayLine.m_strFilter += m_strSymbol.c_str();
-		setDayLine.m_strFilter += "'";
-		setDayLine.m_strSort = "[Date]";
-		setDayLine.Open();
-		m_dataDayLine.LoadBasicDB(&setDayLine);
-		setDayLine.Close();
+		m_dataDayLine.LoadDB(m_strSymbol);
 	}
 	m_pvStockSplit->clear();
 	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {

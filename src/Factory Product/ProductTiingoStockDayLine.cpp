@@ -108,7 +108,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
-	pvDayLine->reserve(7500); // 预先分配7500个元素的空间，避免频繁扩容。Tiingo日线数据最多有几十年，每年250个交易日，1000个元素足够了。
+	pvDayLine->reserve(3000); // 预先分配7500个元素的空间，避免频繁扩容。Tiingo日线数据最多有几十年，每年250个交易日，1000个元素足够了。
 
 	string s;
 	nlohmannJson js;

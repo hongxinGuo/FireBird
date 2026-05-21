@@ -3,6 +3,8 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaStock.h"
+#include "dataBaseConnector.h"
+#include "StockMarketSQLTable.h"
 
 using namespace testing;
 
@@ -112,7 +114,7 @@ namespace FireBirdTest {
 	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedMaintain) {
 		vector<int> vEndDate;
 		vEndDate.resize(m_containerChinaStock.Size());
-		for (int i = 0; i < m_containerChinaStock.Size(); i++) {
+		for (size_t i = 0; i < m_containerChinaStock.Size(); i++) {
 			vEndDate[i] = m_containerChinaStock.GetStock(i)->GetDayLineEndDate();
 		}
 		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
@@ -126,8 +128,46 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 19900101);
 
 		// 恢复原状
-		for (int i = 0; i < m_containerChinaStock.Size(); i++) {
+		for (auto i = 0; i < m_containerChinaStock.Size(); i++) {
 			m_containerChinaStock.GetStock(i)->SetDayLineEndDate(vEndDate[i]);
 		}
+	}
+
+	TEST_F(CContainerChinaStockTest, TestDeleteDuplicatedStockDB) {
+		using namespace StockMarket;
+		const auto t = ChinaStockCode{};
+		// Ensure no leftover test symbols
+		auto db = GetStockMarketDB();
+		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
+
+		// Insert duplicate rows for the same Symbol
+		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.DisplaySymbol = std::string("TEST_DUP1")));
+		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.DisplaySymbol = std::string("TEST_DUP2")));
+		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.DisplaySymbol = std::string("TEST_DUP3")));
+
+		// Ensure inserts are committed and visible to other connections
+		db.execute("COMMIT");
+
+		// Verify duplicates were inserted
+		db = GetStockMarketDB(); // 执行完插入后，重新获取数据库连接，以确保看到最新的数据
+		auto resBefore = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
+		EXPECT_TRUE(resBefore.size() >= 3) << resBefore.size() << " rows found, expected at least 3";
+		// Call the function under test
+		m_containerChinaStock.DeleteDuplicatedStockDB();
+		// Verify only one row remains for that symbol
+		db = GetStockMarketDB();
+		auto resAfter = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
+
+		for (auto& row : resAfter) {
+			string displaySymbol = row.DisplaySymbol;
+			string symbol = row.Symbol;
+		}
+		EXPECT_EQ(resAfter.size(), 1);
+
+		// Clean up test data
+		db = GetStockMarketDB(); // 执行完删除重复代码任务后，重新获取数据库连接，以确保看到最新的数据
+		auto tx = start_transaction(db);
+		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
+		tx.commit();
 	}
 }

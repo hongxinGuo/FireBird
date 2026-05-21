@@ -27,7 +27,7 @@ public:
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate();
-	bool HaveNewDayLineData(); //todo 移至VirtualStock中，合并其他股票类型的同名函数
+	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 
 	CContainerForexDayLine m_dataDayLine;
 };

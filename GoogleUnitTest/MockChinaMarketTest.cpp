@@ -38,7 +38,7 @@ namespace FireBirdTest {
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
 				if (pStock->GetDayLineEndDate() > 20251101) {
-					pStock->SetDayLineEndDate(20250101);//todo 测试用，避免日线结束日期过晚,过一段时间后删除此行
+					pStock->SetDayLineEndDate(20250101);//Todo: 测试用，避免日线结束日期过晚,过一段时间后删除此行
 					pStock->SetUpdateProfileDB(true);
 				}
 				pStock->SetUpdateDayLine(true);

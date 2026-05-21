@@ -10,7 +10,8 @@
 #include "ContainerChinaStock.h"
 
 #include "CharSetTransfer.h"
-#include"RSReference.h"
+#include "dataBaseConnector.h"
+#include "StockMarketSQLTable.h"
 #include"Thread.h"
 
 CContainerChinaStock::CContainerChinaStock() {
@@ -38,7 +39,7 @@ size_t CContainerChinaStock::GetActiveStockSize() const {
 	return lTotalActiveStock;
 }
 
-long CContainerChinaStock::LoadStockProfileDB() {
+long CContainerChinaStock::LoadProfileDB2() {
 	CSetChinaStockSymbol setChinaStockSymbol;
 	char buffer[30]{ 0, 0, 0 };
 	long lDayLineNeedCheck = 0;
@@ -64,9 +65,7 @@ long CContainerChinaStock::LoadStockProfileDB() {
 	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
 		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
-		_itoa_s(lDayLineNeedCheck, buffer, 10);
-		string str = buffer;
-		str += "个股票需要检查日线数据";
+		auto str = std::format("{:d}个股票需要检查日线数据", lDayLineNeedCheck);
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	setChinaStockSymbol.m_pDatabase->CommitTrans();
@@ -77,7 +76,55 @@ long CContainerChinaStock::LoadStockProfileDB() {
 	return lDayLineNeedCheck;
 }
 
-void CContainerChinaStock::UpdateStockProfileDB() {
+long CContainerChinaStock::LoadProfileDB() {
+	long lDayLineNeedCheck = 0;
+	bool bDeleteDuplicatedCode = false;
+	using namespace StockMarket;
+	const auto& t = ChinaStockCode{};
+
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
+	auto rowCount = result.size();
+	Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
+	for (const auto& row : result) {
+		// 装入股票代码数据库
+		const auto pStock = make_shared<CChinaStock>();
+		string str;
+		str = row.Symbol;
+		if (!IsSymbol(str)) {
+			pStock->SetSymbol(str);
+			pStock->SetDisplaySymbol(row.DisplaySymbol);
+			pStock->SetDescription(row.Description);
+			pStock->SetExchangeCode(row.Exchange);
+			pStock->SetIPOStatus(row.IPOStatus);
+			pStock->LoadUpdateDate(row.UpdateDate);
+
+			pStock->CheckNeedProcessRTData();
+			pStock->CheckIPOStatus();
+			pStock->CheckDayLineStatus();
+			Add(pStock);
+		}
+		else bDeleteDuplicatedCode = true;
+	}
+	tx.commit();
+
+	if (IsUpdateDayLine()) {
+		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
+		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
+		auto str = std::format("{:d}个股票需要检查日线数据", lDayLineNeedCheck);
+		gl_systemMessage.PushInformationMessage(str);
+	}
+	m_lLoadedStock = m_vStock.size();
+	Sort();
+
+	if (bDeleteDuplicatedCode) {
+		DeleteDuplicatedStockDB();
+	}
+	return lDayLineNeedCheck;
+}
+
+void CContainerChinaStock::UpdateProfileDB() {
 	if (IsUpdateProfileDB()) {
 		try {
 			int iCount = 0;
@@ -125,6 +172,19 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			ReportInformation(e);
 		}
 	}
+}
+
+void CContainerChinaStock::DeleteDuplicatedStockDB() {
+	using namespace StockMarket;
+	const auto& t = ChinaStockCode{};
+
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
+	db.execute("DELETE t1 FROM china_stock_code t1 INNER JOIN china_stock_code t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
+	//db.execute("COMMIT");
+	tx.commit();
 }
 
 bool CContainerChinaStock::IsDayLineDBUpdated() noexcept {

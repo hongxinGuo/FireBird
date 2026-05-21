@@ -19,7 +19,7 @@ CVirtualDataHistoryCandle::CVirtualDataHistoryCandle() {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataHistoryCandle::UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol) {
 	vector<CVirtualHistoryCandle> vOldHistoryCandle;
-	vOldHistoryCandle.reserve(5000);
+	vOldHistoryCandle.reserve(3000);
 	long lSizeOfOldDayLine = 0;
 	bool fNeedUpdate = false;
 
@@ -96,7 +96,7 @@ bool CVirtualDataHistoryCandle::LoadBasicDB(CVirtualSetHistoryCandle* pSetHistor
 		ASSERT(pSetHistoryCandle->IsOpen());
 
 	Unload(); // 卸载之前的日线
-	Reserve(5000);
+	Reserve(3000);
 	// 装入DayLine数据
 	while (!pSetHistoryCandle->IsEOF()) {
 		CVirtualHistoryCandle historyCandle;
@@ -229,8 +229,8 @@ bool CVirtualDataHistoryCandle::CalculateRSIndex0() {
 }
 
 bool CVirtualDataHistoryCandle::CalculateRSLogarithm1(INT64 lNumber) {
-	const INT64 lTotalNumber = m_vHistoryData.size();
-	for (INT64 i = lNumber; i < lTotalNumber; i++) {
+	const size_t lTotalNumber = m_vHistoryData.size();
+	for (size_t i = lNumber; i < lTotalNumber; i++) {
 		double dTempRS = 0;
 		for (INT64 j = i - lNumber; j < i; j++) { dTempRS += m_vHistoryData.at(j).GetRSLogarithm(); }
 		switch (lNumber) {

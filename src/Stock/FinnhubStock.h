@@ -61,7 +61,7 @@ public:
 	CDayLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 
-	bool HaveNewDayLineData(); //todo 移至VirtualStock中，合并其他股票类型的同名函数
+	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 
 	bool IsUpdateCompanyProfile() const noexcept { return m_fUpdateCompanyProfile; }
 	void SetUpdateCompanyProfile(const bool fFlag) noexcept { m_fUpdateCompanyProfile = fFlag; }

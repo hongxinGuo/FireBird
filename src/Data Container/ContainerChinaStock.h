@@ -24,8 +24,11 @@ public:
 
 	void ProcessRTData();
 
-	long LoadStockProfileDB();
-	void UpdateStockProfileDB();
+	long LoadProfileDB();
+	long LoadProfileDB2();
+	void UpdateProfileDB();
+	void DeleteDuplicatedStockDB();
+
 	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);

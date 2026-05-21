@@ -185,6 +185,10 @@
 #define ID_BUILD_CHINA_MARKET_ALL_STOCK_DAYLINE 32961
 #define ID_32962                        32962
 #define ID_SHOW_INDICATOR_MACD          32963
+#define ID_32965                        32965
+#define D_SHOW_INDICATOR_RSI            32966
+#define ID_SHOW_INDICATOR_RSI           32967
+#define ID_BUTTON32970                  32970
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -228,7 +232,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32965
+#define _APS_NEXT_COMMAND_VALUE         32971
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

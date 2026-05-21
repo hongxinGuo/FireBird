@@ -38,6 +38,7 @@
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
+#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 
 #include"simdjsonGetValue.h"
@@ -94,9 +95,12 @@ namespace FireBirdTest {
 
 			SetMaxCurrencyLevel();
 
+			//Note: 使用测试环境的数据库连接池，避免对正式环境的数据库造成影响。测试环境的数据库连接池在测试结束时会自动析构。
+			InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 5, false);
+
 			InitializeLogSystem();
 
-			//Bug Resharper的UnitTest要运行程序才能找到所有的测试函数，结果这里产生副作用。工作目录为X64/Debug,如果目录中没有systemConfiguration.json文件时，
+			//Warning: Resharper的UnitTest要运行程序才能找到所有的测试函数，结果这里产生副作用。工作目录为X64/Debug,如果目录中没有systemConfiguration.json文件时，
 			// 程序就会生成一个新文件，导致下面的断言失败。目前先屏蔽掉这个断言
 			//ASSERT_TRUE(gl_systemConfiguration.IsNeedUpdate()) << gl_systemConfiguration.GetConfigurationFileDirectoryAndName();
 			//gl_systemConfiguration.NeedUpdate(false);
@@ -121,10 +125,10 @@ namespace FireBirdTest {
 			//EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
 			//EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateProfileDB());
-			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
+			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
 				if (pStock->GetDayLineEndDate() > 20251101) {
-					pStock->SetDayLineEndDate(20250101);//todo 测试用，避免日线结束日期过晚,过一段时间后删除此行
+					pStock->SetDayLineEndDate(20250101);//Todo: 测试用，避免日线结束日期过晚,过一段时间后删除此行
 					pStock->SetUpdateProfileDB(true);
 				}
 				pStock->SetUpdateDayLine(true);

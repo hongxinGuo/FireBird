@@ -19,8 +19,10 @@
 
 #include"SetCurrentWeekLine.h"
 
+#include "dataBaseConnector.h"
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
+#include "StockMarketSQLTable.h"
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
 
@@ -77,7 +79,7 @@ void CChinaMarket::ResetMarket() {
 
 	Reset();
 
-	gl_dataContainerChinaStock.LoadStockProfileDB();
+	gl_dataContainerChinaStock.LoadProfileDB();
 	LoadOptionDB();
 	LoadChosenStockDB();
 
@@ -710,7 +712,7 @@ void CChinaMarket::ProcessTodayStock() {
 		// 生成周线数据
 		BuildCurrentWeekLine();
 		gl_dataContainerChinaStock.BuildWeekLineRS(GetCurrentMonday(lDate));
-		gl_dataContainerChinaStock.UpdateStockProfileDB();
+		gl_dataContainerChinaStock.UpdateProfileDB();
 		if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
 			SetRSEndDate(GetMarketDate());
 			SetUpdateOptionDB(true); // 更新状态
@@ -881,7 +883,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.SetChinaMarketSavingFunction("update stock profile");
-			gl_dataContainerChinaStock.UpdateStockProfileDB();
+			gl_dataContainerChinaStock.UpdateProfileDB();
 			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
@@ -1243,9 +1245,13 @@ void CChinaMarket::UpdateOptionDB() {
 }
 
 void CChinaMarket::LoadOptionDB() {
-	CSetOption setOption;
-	setOption.Open();
-	if (setOption.IsEOF()) {
+	using namespace StockMarket;
+	const auto& t = ChinaMarketOptions{};
+
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	if (result.begin() == result.end()) {
 		SetRSStartDate(CHINA_MARKET_BEGIN_DATE_);
 		SetRSEndDate(CHINA_MARKET_BEGIN_DATE_);
 		SetLastLoginDate(CHINA_MARKET_BEGIN_DATE_);
@@ -1253,35 +1259,35 @@ void CChinaMarket::LoadOptionDB() {
 		SetUpdatedDateFor10DaysRS2(CHINA_MARKET_BEGIN_DATE_);
 	}
 	else {
-		if (setOption.m_RSEndDate == 0) {
+		const auto& row = result.front();
+		if (static_cast<int>(row.RelativeStrongEndDate) == 0) {
 			SetRSEndDate(CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
-			SetRSEndDate(setOption.m_RSEndDate);
+			SetRSEndDate(row.RelativeStrongEndDate);
 		}
-		if (setOption.m_RSStartDate == 0) {
+		if (static_cast<int>(row.RelativeStrongStartDate) == 0) {
 			SetRSStartDate(CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
-			SetRSStartDate(setOption.m_RSStartDate);
+			SetRSStartDate(row.RelativeStrongStartDate);
 		}
-		if (setOption.m_LastLoginDate == 0) {
+		if (static_cast<int>(row.LastLoginDate) == 0) {
 			SetLastLoginDate(CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
-			SetLastLoginDate(setOption.m_LastLoginDate);
+			SetLastLoginDate(row.LastLoginDate);
 		}
-		SetLastLoginTime(setOption.m_LastLoginTime);
-		SetUpdatedDateFor10DaysRS1(setOption.m_UpdatedDateFor10DaysRS1);
-		SetUpdatedDateFor10DaysRS2(setOption.m_UpdatedDateFor10DaysRS2);
-		SetUpdatedDateFor10DaysRS(setOption.m_UpdatedDateFor10DaysRS);
-		if (setOption.m_UpdatedDateFor10DaysRS1 < GetMarketDate()) m_fChosen10RSStrong1StockSet = false;
+		SetLastLoginTime(row.LastLoginTime);
+		SetUpdatedDateFor10DaysRS1(row.UpdatedDateFor10DaysRS1);
+		SetUpdatedDateFor10DaysRS2(row.UpdatedDateFor10DaysRS2);
+		SetUpdatedDateFor10DaysRS(row.UpdatedDateFor10DaysRS);
+		if (static_cast<int>(row.UpdatedDateFor10DaysRS1) < GetMarketDate()) m_fChosen10RSStrong1StockSet = false;
 		else m_fChosen10RSStrong1StockSet = true;
-		if (setOption.m_UpdatedDateFor10DaysRS < GetMarketDate()) m_fChosen10RSStrongStockSet = false;
+		if (static_cast<int>(row.UpdatedDateFor10DaysRS) < GetMarketDate()) m_fChosen10RSStrongStockSet = false;
 		else m_fChosen10RSStrongStockSet = true;
 	}
-
-	setOption.Close();
+	tx.commit();
 }
 
 void CChinaMarket::UpdateChosenStockDB() const {

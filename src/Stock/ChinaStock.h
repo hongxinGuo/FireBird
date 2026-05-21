@@ -1,5 +1,6 @@
 #pragma once
 
+#include "StockSymbol.h"
 #include "WebRTData.h"
 
 //成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
@@ -116,6 +117,7 @@ public:
 	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
+	bool LoadStockCode(const CStockSymbol& stockSymbol);
 	void CheckNeedProcessRTData();
 	void CheckIPOStatus();
 	bool CheckDayLineStatus();

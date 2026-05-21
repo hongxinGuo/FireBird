@@ -144,7 +144,6 @@ void CWorldMarket::ResetMarket() {
 	gl_dataContainerFinnhubEconomicCalendar.LoadDB();
 
 	gl_dataContainerTiingoStock.LoadProfileDB();
-	gl_dataContainerTiingoStock.CheckUpdateStatus();
 	gl_dataContainerTiingoCryptoSymbol.LoadDB();
 	gl_dataContainerTiingoFundamentalDefinition.LoadDB();
 
@@ -1132,7 +1131,7 @@ using dayLineValuePtr = std::shared_ptr<dayLineValue>;
 ///
 /// 计算某一行业的每日总市值。
 ///
-///todo: 目前仅支持SIC行业分类。
+///Todo:: 目前仅支持SIC行业分类。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::CalculateStockTotalValue(const vector<CTiingoStockPtr>& vStocks) {

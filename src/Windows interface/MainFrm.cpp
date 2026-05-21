@@ -226,7 +226,7 @@ CMainFrame::~CMainFrame() {
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		ASSERT(!gl_ThreadStatus.IsSavingThreadRunning());
-		gl_dataContainerChinaStock.UpdateStockProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+		gl_dataContainerChinaStock.UpdateProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(1); // 等待后台工作线程运行结束
@@ -1015,7 +1015,7 @@ void CMainFrame::OnUpdateStockCode() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.SetChinaMarketSavingFunction("update stock code");
-		gl_dataContainerChinaStock.UpdateStockProfileDB();
+		gl_dataContainerChinaStock.UpdateProfileDB();
 		gl_UpdateChinaMarketDB.release();
 	});
 }

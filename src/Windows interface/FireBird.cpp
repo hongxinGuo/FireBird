@@ -92,7 +92,7 @@ BOOL CFireBirdApp::InitInstance() {
 	}
 
 	// 连接数据库，生成链接池
-	InitSqlppConnectionPool("FireBird", "firebird", "stock_market", "localhost", 5, true);
+	InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 5, false);
 
 	InitializeLogSystem();
 

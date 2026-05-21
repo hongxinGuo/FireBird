@@ -54,7 +54,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
-	pvDayLine->reserve(7500); // 预先分配空间，避免频繁扩容。一般来说，日线数据不会超过1000条。
+	pvDayLine->reserve(3000); // 预先分配空间，避免频繁扩容。一般来说，日线数据不会超过1000条。
 
 	nlohmannJson js2;
 	CDayLine pDayLine;

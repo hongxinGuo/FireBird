@@ -105,7 +105,7 @@ void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
-	pvDayLine->reserve(7500);
+	pvDayLine->reserve(3000);
 
 	string s;
 	nlohmannJson js;

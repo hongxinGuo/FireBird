@@ -98,7 +98,7 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
-	pvDayLine->reserve(7500); // 预留空间，避免频繁扩容。
+	pvDayLine->reserve(3000); // 预留空间，避免频繁扩容。
 
 	string s;
 	nlohmannJson js;

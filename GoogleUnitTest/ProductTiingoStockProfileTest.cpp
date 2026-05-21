@@ -217,7 +217,7 @@ namespace FireBirdTest {
 	                         testing::Values(&tiingoStockWebData1, &tiingoStockWebData2,
 		                         &tiingoStockWebData3, &tiingoStockWebData4, &tiingoStockWebData10));
 
-	//todo 完善之
+	//Todo: 完善之
 	TEST_P(ProcessTiingoStockProfileTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
 		m_tiingoStockProduct.ParseAndStoreWebData(m_pWebData);
