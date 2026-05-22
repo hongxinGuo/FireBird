@@ -15,7 +15,7 @@ class CDataBaseBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
 		//Todo: benchmark目前使用工作数据库，考虑改用测试数据库，避免对正式环境的数据库造成影响。
-		InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 5, false);
+		InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false);
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	}
@@ -50,18 +50,6 @@ BENCHMARK_F(CDataBaseBenchmark, LoadChinaStockProfileDB_using_mfc_record)(benchm
 BENCHMARK_F(CDataBaseBenchmark, LoadChinaStockProfileDB_using_sqlpp11)(benchmark::State& state) {
 	for (auto _ : state) {
 		chinaContainer.LoadProfileDB();
-	}
-}
-
-BENCHMARK_F(CDataBaseBenchmark, LoadTiingoStockDayLineDB_using_mfc_record)(benchmark::State& state) {
-	for (auto _ : state) {
-		tiingoDayLineContainer.LoadDB2("AAPL");
-	}
-}
-
-BENCHMARK_F(CDataBaseBenchmark, LoadTiingoStockDayLineDB_using_sqlpp11)(benchmark::State& state) {
-	for (auto _ : state) {
-		tiingoDayLineContainer.LoadDB("AAPL");
 	}
 }
 

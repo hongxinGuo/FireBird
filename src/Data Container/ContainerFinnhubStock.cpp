@@ -15,7 +15,6 @@
 #include "CharSetTransfer.h"
 #include "dataBaseConnector.h"
 #include "jsonParse.h"
-#include "StockMarketSQLTable.h"
 
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();
@@ -165,7 +164,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	tx.commit();
 
 	if (fDeleteDuplicatedSymbol) {
-		DeleteDuplicatedSymbolDB();// 删除重复的股票代码
+		DeleteDuplicatedSymbolFromDB();// 删除重复的股票代码
 	}
 
 	Sort();
@@ -173,7 +172,15 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	return true;
 }
 
-void CContainerFinnhubStock::DeleteDuplicatedSymbolDB() {
+//////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 删除数据库中重复的股票代码。由于之前的代码逻辑问题，可能会在数据库中存储多个相同代码的股票简介，此函数用来删除这些重复的股票代码。
+/// Note: MySQL数据库不允许在同一张表中使用DELETE语句删除重复的记录，因此需要使用JOIN的方式来删除重复的记录。
+/// 具体来说，使用INNER JOIN将表自身连接起来，找到重复的记录，并删除其中一个记录。
+///
+///
+//////////////////////////////////////////////////////////////////////////////////////////////////
+void CContainerFinnhubStock::DeleteDuplicatedSymbolFromDB() {
 	auto db = gl_dbStockMarket.get();
 	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
 	db.execute("DELETE t1 FROM finnhub_stock_profile t1 INNER JOIN finnhub_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");

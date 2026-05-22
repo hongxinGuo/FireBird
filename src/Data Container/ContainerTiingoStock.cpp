@@ -3,20 +3,13 @@
 #include "ContainerTiingoStock.h"
 
 #include "CharSetTransfer.h"
-#include "ConvertToString.h"
 #include "SetTiingoStockCurrentTrace.h"
-#include "SetTiingoStockDayLine.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
-#undef min
-#undef max
 #include "dataBaseConnector.h"
-#include <sqlpp11/sqlpp11.h>
-
-#include "StockMarketSQLTable.h"
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();
@@ -193,12 +186,20 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		return false;
 	}
 	if (fFindDuplicatedCode) {
-		DeleteDuplicatedStockDB();
+		DeleteDuplicatedSymbolFromDB();
 	}
 	return true;
 }
 
-void CContainerTiingoStock::DeleteDuplicatedStockDB() {
+//////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 删除数据库中重复的股票代码。由于之前的代码逻辑问题，可能会在数据库中存储多个相同代码的股票简介，此函数用来删除这些重复的股票代码。
+/// Note: MySQL数据库不允许在同一张表中使用DELETE语句删除重复的记录，因此需要使用JOIN的方式来删除重复的记录。
+/// 具体来说，使用INNER JOIN将表自身连接起来，找到重复的记录，并删除其中一个记录。
+///
+///
+//////////////////////////////////////////////////////////////////////////////////////////////////
+void CContainerTiingoStock::DeleteDuplicatedSymbolFromDB() {
 	auto db = gl_dbStockMarket.get();
 	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
 	db.execute("DELETE t1 FROM tiingo_stock_fundamental t1 INNER JOIN tiingo_stock_fundamental t2 ON t1.Ticker = t2.Ticker AND t1.ID > t2.ID");
@@ -427,7 +428,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 	vector<int> vPos;
 	gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
 	auto lSize = Size();
-	for (int index = 0; index < lSize; index++) {
+	for (auto index = 0; index < lSize; index++) {
 		gl_BackgroundWorkingThread.acquire();
 		auto result = gl_runtime.thread_executor()->submit([this, index] {
 			if (gl_systemConfiguration.IsExitingSystem()) return -1;
@@ -469,7 +470,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 	setCurrentTrace.m_strFilter = "[ID] = 1";
 	setCurrentTrace.Open();
 	setCurrentTrace.m_pDatabase->BeginTrans();
-	for (auto index = 0; index < vPos.size(); index++) {
+	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
 		setCurrentTrace.AddNew();
 		setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
@@ -480,42 +481,6 @@ void CContainerTiingoStock::TaskCalculate2() {
 	setCurrentTrace.m_pDatabase->CommitTrans();
 	setCurrentTrace.Close();
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 改正tiingo日线数据中的错误数据。
-//
-//////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::TaskFixDayLine() {
-	for (size_t i = 0; i < m_vStock.size(); i++) {
-		auto pStock = GetStock(i);
-
-		CSetTiingoStockDayLine setDayLineBasic;
-		long lLastClose = 0;
-		auto ratio = pStock->GetRatio();
-
-		// 装入DayLine数据
-		setDayLineBasic.m_strFilter = "[Symbol] = '";
-		setDayLineBasic.m_strFilter += pStock->GetSymbol().c_str();
-		setDayLineBasic.m_strFilter += "'";
-		setDayLineBasic.m_strSort = "[Date]";
-		setDayLineBasic.Open();
-		setDayLineBasic.m_pDatabase->BeginTrans();
-		while (!setDayLineBasic.IsEOF()) {
-			long currentLastClose = _tstof(setDayLineBasic.m_LastClose) * ratio;
-			// 如果本交易日的上一个交易日收盘价为零的话，使用上一个交易日的收盘价修复之。
-			if (currentLastClose == 0) {
-				setDayLineBasic.Edit();
-				setDayLineBasic.m_LastClose = ConvertValueToCString(lLastClose, ratio);
-				setDayLineBasic.Update();
-			}
-			lLastClose = _tstof(setDayLineBasic.m_Close) * ratio;
-			setDayLineBasic.MoveNext();
-		}
-		setDayLineBasic.m_pDatabase->CommitTrans();
-		setDayLineBasic.Close();
-	}
 }
 
 void CContainerTiingoStock::Delete52WeekHighData() {

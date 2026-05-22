@@ -23,7 +23,7 @@ public:
 	void ResetDayLine();
 
 	bool LoadProfileDB();
-	void DeleteDuplicatedSymbolDB();
+	static void DeleteDuplicatedSymbolFromDB();
 	bool LoadProfileDB2();
 	void UpdateProfileDB();
 

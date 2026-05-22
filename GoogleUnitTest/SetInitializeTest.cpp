@@ -32,7 +32,6 @@
 #include "SetIndexNasdaq100MA200UpDownRate.h"
 
 #include "SetTiingoMarketNews.h"
-#include "SetTiingoStockDayLine.h"
 #include"SetTiingoStock.h"
 #include"SetTiingoCompanyFinancialState.h"
 #include"SetTiingoIndustry.h"
@@ -377,18 +376,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setTiingoMarketNews.GetDefaultSQL(), _T("[tiingo_market_news]"));
-	}
-
-	TEST_F(SetInitializeTest, TestTiingoStockDayLineInitialize) {
-		CSetTiingoStockDayLine setTiingoStockDayLine;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setTiingoStockDayLine.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setTiingoStockDayLine.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setTiingoStockDayLine.GetDefaultSQL(), _T("[tiingo_stock_dayline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestFinnhubStockInitialize) {

@@ -112,7 +112,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h" />

@@ -4,7 +4,6 @@
 
 #include"ContainerFinnhubStock.h"
 #include "dataBaseConnector.h"
-#include "StockMarketSQLTable.h"
 
 using namespace testing;
 
@@ -197,7 +196,7 @@ namespace FireBirdTest {
 		auto resBefore = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
 		EXPECT_TRUE(resBefore.size() >= 3);
 		// Call the function under test
-		gl_dataContainerFinnhubStock.DeleteDuplicatedSymbolDB();
+		gl_dataContainerFinnhubStock.DeleteDuplicatedSymbolFromDB();
 		// Verify only one row remains for that symbol
 		db = GetStockMarketDB();
 		auto resAfter = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));

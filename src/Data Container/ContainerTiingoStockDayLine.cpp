@@ -2,11 +2,7 @@
 
 #include "ContainerTiingoStockDayLine.h"
 
-#include "InfoReport.h"
-#include"SetTiingoStockDayLine.h"
-
 #include"dataBaseConnector.h"
-#include"StockMarketSQLTable.h"
 
 namespace {
 	CTiingoStock s_stock;
@@ -17,38 +13,7 @@ CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
 }
 
 bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
-	try {
-		CSetTiingoStockDayLine setDayLine;
-		UpdateDB(&setDayLine, strStockSymbol);
-	} catch (CException& e) {
-		ReportInformation(e);
-	}
-
-	return true;
-}
-
-bool CContainerTiingoStockDayLine::LoadDB2(const string& strStockSymbol) {
-	CSetTiingoStockDayLine setDayLineBasic;
-
-	Unload(); // 卸载之前的日线
-	Reserve(3000);
-
-	setDayLineBasic.m_strFilter = "[Symbol] = '";
-	setDayLineBasic.m_strFilter += strStockSymbol.c_str();
-	setDayLineBasic.m_strFilter += "'";
-	setDayLineBasic.m_strSort = "[Date]";
-	setDayLineBasic.Open();
-	// 装入DayLine数据
-	while (!setDayLineBasic.IsEOF()) {
-		CTiingoCandleLine candle;
-		candle.LoadBasicData(&setDayLineBasic);
-		Add(candle);
-		setDayLineBasic.MoveNext();
-	}
-	m_fDataLoaded = true;
-
-	SplitAdjust();
-	setDayLineBasic.Close();
+	UpdateDB(strStockSymbol);
 
 	return true;
 }
@@ -105,72 +70,9 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 //Note  更新完后，本container中的日线数据也自动更新为最新数据(以备以后的处理日线数据）
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) {
+void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 	vector<CTiingoCandleLine> vOldHistoryCandle;
-	vOldHistoryCandle.reserve(3000);
-
-	const CTiingoCandleLine* pHistoryCandle = nullptr;
-	long lSizeOfOldDayLine = 0;
-
-	const size_t lSize = Size();
-	long lLastDate = 0;
-	pSetTiingoStockDayLine->m_strFilter = "[Symbol] = '";
-	pSetTiingoStockDayLine->m_strFilter += strStockSymbol.c_str();
-	pSetTiingoStockDayLine->m_strFilter += "'";
-	pSetTiingoStockDayLine->m_strSort = "[Date]";
-
-	pSetTiingoStockDayLine->Open();
-	pSetTiingoStockDayLine->m_pDatabase->BeginTrans();
-	while (!pSetTiingoStockDayLine->IsEOF()) {
-		if (pSetTiingoStockDayLine->m_Date > lLastDate) {
-			lLastDate = pSetTiingoStockDayLine->m_Date;
-			CTiingoCandleLine candle;
-			candle.Reset();
-			candle.LoadBasicData(pSetTiingoStockDayLine);
-
-			vOldHistoryCandle.push_back(candle);
-			lSizeOfOldDayLine++;
-		}
-		else {
-			pSetTiingoStockDayLine->Delete(); //删除日期重复的数据
-		}
-		pSetTiingoStockDayLine->MoveNext();
-	}
-
-	if (lSizeOfOldDayLine > 0) {// 有旧数据
-		long lCurrentPos = 0;
-		for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = GetData(i);
-			auto a = pHistoryCandle->GetRatio();
-
-			if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0).GetDate()) {	// 有更早的新数据？
-				pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
-			}
-			else {
-				while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos).GetDate() < pHistoryCandle->GetDate())) lCurrentPos++;
-				if (lCurrentPos < lSizeOfOldDayLine) {
-					if (vOldHistoryCandle.at(lCurrentPos).GetDate() > pHistoryCandle->GetDate()) { // 前数据集中有遗漏的日期
-						pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
-					}
-				}
-				else {
-					pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
-				}
-			}
-		}
-	}
-	else {// 没有旧数据
-		for (size_t i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = GetData(i);
-			pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
-		}
-	}
-	pSetTiingoStockDayLine->m_pDatabase->CommitTrans();
-	pSetTiingoStockDayLine->Close();
-}
-
-void CContainerTiingoStockDayLine::UpdateDB2(const string& strStockSymbol) {
-	vector<CTiingoCandleLine> vOldHistoryCandle;
+	auto ratio = GetRatio();
 
 	using namespace StockMarket;
 	const auto& t = TiingoStockDayline{};
@@ -190,11 +92,11 @@ void CContainerTiingoStockDayLine::UpdateDB2(const string& strStockSymbol) {
 			candle.SetDate(row.Date);
 			candle.SetExchange(row.Exchange);
 			candle.SetStockSymbol(row.Symbol);
-			candle.SetLastClose(row.LastClose);
-			candle.SetOpen(row.Open);
-			candle.SetHigh(row.High);
-			candle.SetLow(row.Low);
-			candle.SetClose(row.Close);
+			candle.SetLastClose(row.LastClose * ratio);
+			candle.SetOpen(row.Open * ratio);
+			candle.SetHigh(row.High * ratio);
+			candle.SetLow(row.Low * ratio);
+			candle.SetClose(row.Close * ratio);
 			candle.SetSplitFactor(row.SplitFactor);
 			candle.SetDividend(row.Dividend);
 			candle.SetUpDown(row.UpAndDown);
@@ -236,11 +138,11 @@ void CContainerTiingoStockDayLine::UpdateDB2(const string& strStockSymbol) {
 			t.Date = pC->GetDate(),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
-			t.LastClose = pC->GetLastClose(),
-			t.Open = pC->GetOpen(),
-			t.High = pC->GetHigh(),
-			t.Low = pC->GetLow(),
-			t.Close = pC->GetClose(),
+			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
+			t.Open = static_cast<double>(pC->GetOpen()) / ratio,
+			t.High = static_cast<double>(pC->GetHigh()) / ratio,
+			t.Low = static_cast<double>(pC->GetLow()) / ratio,
+			t.Close = static_cast<double>(pC->GetClose()) / ratio,
 			t.SplitFactor = pC->GetSplitFactor(),
 			t.Dividend = pC->GetDividend(),
 			t.UpAndDown = pC->GetUpDown(), // note: field name in DB was UpAndDown in original; match whatever sqlpp table defines

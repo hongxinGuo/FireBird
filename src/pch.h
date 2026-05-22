@@ -7,6 +7,9 @@
 #ifndef PCH_H_INCLUDE_
 #define PCH_H_INCLUDE_
 
+#include <sqlpp11/sqlpp11.h> // 包含sqlpp11的主头文件，确保所有必要的定义都被包含
+#include"StockMarketSQLTable.h" // 包含数据库表定义，确保sqlpp11的相关定义被包含
+
 #include"stdafx.h"
 using namespace std;
 

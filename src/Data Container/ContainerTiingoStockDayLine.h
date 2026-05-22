@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SetTiingoStockDayLine.h"
 #include "TiingoCandleLine.h"
 
 #include "VirtualDataHistoryCandle.h"
@@ -16,10 +15,8 @@ public:
 
 	bool SaveDB(const string& strStockSymbol) override;
 	bool LoadDB(const string& strStockSymbol) override;
-	bool LoadDB2(const string& strStockSymbol);
 
-	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
-	void UpdateDB2(const string& strStockSymbol);
+	void UpdateDB(const string& strStockSymbol);
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();

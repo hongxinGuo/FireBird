@@ -1,7 +1,7 @@
 #include"pch.h"
 
+#include "dataBaseConnector.h"
 #include"GeneralCheck.h"
-#include "SetTiingoStockDayLine.h"
 
 #include"TiingoStock.h"
 
@@ -313,7 +313,6 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoStockTest, TestUpdateDayLineStartEndDate) {
 		auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
-		CSetTiingoStockDayLine setDayLine;
 
 		CTiingoCandleLine dayLine;
 		dayLine.SetStockSymbol("A");
@@ -538,8 +537,19 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
+			// 清除可能的测试遗留数据（如果有的话），以保证后续操作的正确性。
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			tx.commit();
+		}
 		auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
-		CSetTiingoStockDayLine setDayLine;
 
 		CTiingoCandleLine dayLine;
 		dayLine.SetStockSymbol("A");
@@ -569,22 +579,32 @@ namespace FireBirdTest {
 
 		stock.SaveDayLineDB();
 
-		setDayLine.m_strFilter = "[Symbol] = 'A'";
-		setDayLine.m_strSort = "[Date]";
-		setDayLine.Open();
-		setDayLine.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(setDayLine.m_Date == 19800101);
-		EXPECT_STREQ(setDayLine.m_Close, _T("0.000115"));
-		setDayLine.Delete();
-		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
-		EXPECT_STREQ(setDayLine.m_Close, _T("0.012340"));
-		setDayLine.Delete();
-		while (setDayLine.m_Date != 20241111) setDayLine.MoveNext();
-		EXPECT_TRUE(setDayLine.m_Date = 20241111);
-		EXPECT_STREQ(setDayLine.m_Close, _T("0.000135"));
-		setDayLine.Delete();
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
+			// 清除可能的测试遗留数据（如果有的话），以保证后续操作的正确性。
+			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			EXPECT_TRUE(result.size() == 1);
+			auto& row = result.front();
+			double value = row.Close;
+			EXPECT_DOUBLE_EQ(value, 0.000115);
+			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			EXPECT_TRUE(result.size() == 1);
+			auto& row2 = result.front();
+			value = row2.Close;
+			EXPECT_DOUBLE_EQ(value, 0.012340);
+			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			EXPECT_TRUE(result.size() == 1);
+			auto& row3 = result.front();
+			value = row3.Close;
+			EXPECT_DOUBLE_EQ(value, 0.000135);
+
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			tx.commit();
+		}
 	}
 
 	TEST_F(CTiingoStockTest, TestCreateWeekLine) {

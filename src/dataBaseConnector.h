@@ -3,11 +3,10 @@
 #undef min
 #undef max
 #include <sqlpp11/mysql/connection_pool.h>
-#include <sqlpp11/sqlpp11.h> // 包含sqlpp11的主头文件，确保所有必要的定义都被包含
 
 // Inline global connection pool. Using an inline variable so the header can be
 // included from multiple translation units without violating the one-definition rule.
-inline sqlpp::mysql::connection_pool gl_dbStockMarket(std::make_shared<sqlpp::mysql::connection_config>(), 5);
+inline sqlpp::mysql::connection_pool gl_dbStockMarket(std::make_shared<sqlpp::mysql::connection_config>(), 20);
 
 // Initialize the global sqlpp11 MySQL connection pool. This will call
 // sqlpp::mysql::global_library_init() once and construct the pool.
@@ -16,7 +15,7 @@ inline void InitSqlppMySQLConnectionPool(const std::string& user,
                                          const std::string& database,
                                          const std::string& host,
                                          int port = 3306,
-                                         std::size_t poolSize = 5,
+                                         std::size_t poolSize = 20,
                                          bool debug = false) {
 	static std::once_flag g_sqlppInitFlag;
 	std::call_once(g_sqlppInitFlag, [] {

@@ -4,7 +4,6 @@
 
 #include"ContainerChinaStock.h"
 #include "dataBaseConnector.h"
-#include "StockMarketSQLTable.h"
 
 using namespace testing;
 

@@ -15,7 +15,6 @@
 
 #include"FinnhubDataSource.h"
 #include"FinnhubCrypto.h"
-#include "StockMarketSQLTable.h"
 #include "WorldMarket.h"
 
 using namespace testing;

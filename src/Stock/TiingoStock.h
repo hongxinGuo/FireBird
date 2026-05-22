@@ -7,7 +7,6 @@
 #include"SetTiingoStock.h"
 #include "SetTiingoStock52WeekHigh.h"
 #include "SetTiingoStock52WeekLow.h"
-#include "SetTiingoStockDayLine.h"
 
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
@@ -119,7 +118,6 @@ public:
 	void UpdateFinancialStateDB();
 	void ClearFinancialState() { m_pvFinancialState.reset(); }
 	bool UpdateDayLineDB();
-	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);
 	void UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta);

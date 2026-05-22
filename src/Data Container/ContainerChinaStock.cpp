@@ -11,7 +11,6 @@
 
 #include "CharSetTransfer.h"
 #include "dataBaseConnector.h"
-#include "StockMarketSQLTable.h"
 #include"Thread.h"
 
 CContainerChinaStock::CContainerChinaStock() {

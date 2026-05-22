@@ -220,22 +220,6 @@ bool CTiingoStock::UpdateDayLineDB() {
 	return false;
 }
 
-void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const {
-	setDayLine.AddNew();
-	setDayLine.m_Date = lTradeDay;
-	setDayLine.m_Symbol = m_strSymbol.c_str();
-	setDayLine.m_Exchange = m_strExchangeCode.c_str();
-	setDayLine.m_Open = ConvertValueToCString(m_lOpen, GetRatio());
-	setDayLine.m_High = ConvertValueToCString(m_lHigh, GetRatio());
-	setDayLine.m_Low = ConvertValueToCString(m_lLow, GetRatio());
-	setDayLine.m_Close = ConvertValueToCString(m_lNew, GetRatio());
-	setDayLine.m_LastClose = ConvertValueToCString(m_lLastClose, GetRatio());
-	setDayLine.m_Volume = ConvertValueToCString(m_llVolume);
-	setDayLine.m_dividend = ConvertValueToCString(m_fDividend);
-	setDayLine.m_splitFactor = ConvertValueToCString(m_fSplitFactor);
-	setDayLine.Update();
-}
-
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
 	if (pStock->m_strTiingoSector.length() > 1) m_strTiingoSector = pStock->m_strTiingoSector;

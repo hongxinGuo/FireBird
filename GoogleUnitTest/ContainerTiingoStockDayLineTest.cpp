@@ -7,9 +7,6 @@
 #include "dataBaseConnector.h"
 #include "ProductTiingoStockDayLine.h"
 
-#include"SEtTiingoStockDayLine.h"
-#include "StockMarketSQLTable.h"
-
 using namespace testing;
 
 namespace FireBirdTest {
@@ -95,7 +92,7 @@ namespace FireBirdTest {
 
 		// Load via container
 		CContainerTiingoStockDayLine container;
-		const bool loaded = container.LoadDB2(uniqueSymbol);
+		const bool loaded = container.LoadDB(uniqueSymbol);
 		EXPECT_TRUE(loaded);
 		EXPECT_GT(container.Size(), 0u);
 
@@ -187,8 +184,8 @@ namespace FireBirdTest {
 			container.Add(c2);
 		}
 
-		// Call UpdateDB2 to insert rows into DB
-		container.UpdateDB2(testSymbol);
+		// Call UpdateDB_sqlpp11 to insert rows into DB
+		container.UpdateDB(testSymbol);
 
 		// Verify DB contains two rows for the symbol
 		{
@@ -222,7 +219,7 @@ namespace FireBirdTest {
 			c0.SetCurrentValue(4.9e8);
 			container.Add(c0);
 
-			container.UpdateDB2(testSymbol);
+			container.UpdateDB(testSymbol);
 
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
@@ -266,30 +263,16 @@ namespace FireBirdTest {
 		          20241111) << "新存储数据位于最后";
 
 		// 恢复原状
-		CSetTiingoStockDayLine setTiingoStockDayLineBasic;
-		setTiingoStockDayLineBasic.m_strFilter = "[Date] = 20241111";
-		setTiingoStockDayLineBasic.Open();
-		setTiingoStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setTiingoStockDayLineBasic.IsEOF()) << "新存储数据的日期";
-		EXPECT_STREQ(setTiingoStockDayLineBasic.m_Symbol, _T("A"));
-		while (!setTiingoStockDayLineBasic.IsEOF()) {
-			setTiingoStockDayLineBasic.Delete();
-			setTiingoStockDayLineBasic.MoveNext();
-		}
-		setTiingoStockDayLineBasic.m_pDatabase->CommitTrans();
-		setTiingoStockDayLineBasic.Close();
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
 
-		setTiingoStockDayLineBasic.m_strFilter = "[Date] = 20241103";
-		setTiingoStockDayLineBasic.Open();
-		setTiingoStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setTiingoStockDayLineBasic.IsEOF()) << "插入数据的日期";
-		EXPECT_STREQ(setTiingoStockDayLineBasic.m_Symbol, _T( "A"));
-		while (!setTiingoStockDayLineBasic.IsEOF()) {
-			setTiingoStockDayLineBasic.Delete();
-			setTiingoStockDayLineBasic.MoveNext();
-		}
-		setTiingoStockDayLineBasic.m_pDatabase->CommitTrans();
-		setTiingoStockDayLineBasic.Close();
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241103));
+		db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+
+		tx.commit();
 	}
 
 	TEST_F(CContainerTiingoStockDayLineTest, TestSplitAdjust) {

@@ -4,7 +4,6 @@
 #include "ContainerFinnhubCountry.h"
 
 #include "dataBaseConnector.h"
-#include "StockMarketSQLTable.h"
 
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 

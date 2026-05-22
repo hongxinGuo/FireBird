@@ -21,7 +21,7 @@ public:
 
 	void UpdateProfileDB();
 	bool LoadProfileDB();
-	void DeleteDuplicatedStockDB();
+	static void DeleteDuplicatedSymbolFromDB();
 	bool LoadProfileDB2();
 
 	void ResetDayLineStartEndDate();
@@ -36,8 +36,6 @@ public:
 	void TaskUpdate52WeekLowDB();
 	void TaskCalculate();
 	void TaskCalculate2();
-
-	void TaskFixDayLine();
 
 	void Delete52WeekHighData();
 

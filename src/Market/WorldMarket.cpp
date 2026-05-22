@@ -21,6 +21,7 @@
 #include"SetFinnhubStockDayLine.h"
 
 #include "ChinaMarket.h"
+#include "dataBaseConnector.h"
 #include "InfoReport.h"
 #include "QuandlDataSource.h"
 #include "SetIndexNasdaq100.h"
@@ -1422,19 +1423,15 @@ void CWorldMarket::DeleteTiingoDelistedStock() {
 }
 
 void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
-	CSetTiingoStockDayLine setDayLine;
-	setDayLine.m_strFilter = "[Symbol] = '";
-	setDayLine.m_strFilter += pStock->GetSymbol().c_str();
-	setDayLine.m_strFilter += "'";
+	using namespace StockMarket;
+	const auto& t = TiingoStockDayline{};
 
-	setDayLine.Open();
-	setDayLine.m_pDatabase->BeginTrans();
-	while (!setDayLine.IsEOF()) {
-		setDayLine.Delete();
-		setDayLine.MoveNext();
-	}
-	setDayLine.m_pDatabase->CommitTrans();
-	setDayLine.Close();
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	db(remove_from(t).where(t.Symbol == pStock->GetSymbol()));
+
+	tx.commit();
 }
 
 void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {

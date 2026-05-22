@@ -22,7 +22,6 @@
 #include "dataBaseConnector.h"
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
-#include "StockMarketSQLTable.h"
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
 

@@ -143,7 +143,6 @@ protected:
 	afx_msg void OnUpdateProcessTiingoDayLine(CCmdUI* pCmdUI);
 	afx_msg void OnCalculateNewLowFiveTimes();
 	afx_msg void OnInquireIexTopOfBook();
-	afx_msg void OnTiingoFixDayLine();
 	afx_msg void OnCalculateNasdaq100200maUpdownRate();
 	afx_msg void OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI);
 	afx_msg void OnTiingoRebuildStockSplit();

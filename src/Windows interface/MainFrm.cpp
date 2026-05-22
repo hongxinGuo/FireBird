@@ -100,7 +100,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayLine)
 	ON_COMMAND(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnCalculateNewLowFiveTimes)
 	ON_COMMAND(ID_INQUIRE_IEX_TOP_OF_BOOK, &CMainFrame::OnInquireIexTopOfBook)
-	ON_COMMAND(ID_TIINGO_FIX_DAYLINE, &CMainFrame::OnTiingoFixDayLine)
 	ON_COMMAND(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnCalculateNasdaq100200maUpdownRate)
 	ON_UPDATE_COMMAND_UI(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate)
 	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CMainFrame::OnTiingoRebuildStockSplit)
@@ -1172,12 +1171,6 @@ void CMainFrame::OnCalculateNewLowFiveTimes() {
 
 void CMainFrame::OnInquireIexTopOfBook() {
 	gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
-}
-
-void CMainFrame::OnTiingoFixDayLine() {
-	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskFixDayLine();
-	});
 }
 
 void CMainFrame::OnCalculateNasdaq100200maUpdownRate() {

@@ -3,7 +3,6 @@
 #include "GeneralCheck.h"
 #include "ContainerFinnhubCountry.h"
 #include "dataBaseConnector.h"
-#include "StockMarketSQLTable.h"
 
 #include <sqlpp11/transaction.h>
 
