@@ -149,21 +149,9 @@ public:
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
 	void StoreDayLine(const CDayLine& dayLine) { m_dataDayLine.Add(dayLine); }
 	CDayLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
-	void Get1DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS1(vRS); }
-	void GetRSIndex1Day(vector<double>& vRS) const { m_dataDayLine.GetRSIndex1(vRS); }
-	void GetRSLogarithm1Day(vector<double>& vRS) const { m_dataDayLine.GetRSLogarithm1(vRS); }
-	void Get3DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS3(vRS); }
-	void Get5DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS5(vRS); }
-	void Get10DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS10(vRS); }
-	void Get30DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS30(vRS); }
-	void Get60DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS60(vRS); }
-	void Get120DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS120(vRS); }
 
 	void ProcessRTData();
 	// 日线相对强度计算
-	bool CalculateDayLineRS() { return m_dataDayLine.CalculateRS0(); }
-	bool CalculateDayLineRSIndex() { return m_dataDayLine.CalculateRSIndex0(); }
-	bool CalculateDayLineRSLogarithm() { return m_dataDayLine.CalculateRSLogarithm0(); }
 
 	bool IsDayLineDBUpdated() const noexcept { return (m_fDayLineDBUpdated); }
 	void SetDayLineDBUpdated(const bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
@@ -189,10 +177,6 @@ public:
 	void StoreWeekLine(const CWeekLine& weekLine) { m_dataWeekLine.Add(weekLine); }
 	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(const bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
-	// 周线相对强度计算
-	bool CalculateWeekLineRS() { return m_dataWeekLine.CalculateRS0(); }
-	bool CalculateWeekLineRSIndex() { return m_dataWeekLine.CalculateRSIndex0(); }
-	bool CalculateWeekLineRSLogarithm() { return m_dataWeekLine.CalculateRSLogarithm0(); }
 
 	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
 

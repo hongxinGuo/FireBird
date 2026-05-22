@@ -42,7 +42,6 @@ CChinaMarket::CChinaMarket() {
 	m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
 
 	m_avChosenStock.resize(30);
-	m_aRSStrongOption.resize(10);
 
 	m_fUpdateOptionDB = false;
 
@@ -98,8 +97,6 @@ void CChinaMarket::Reset() {
 	gl_dataContainerChinaStock.Reset();
 	gl_dataContainerChinaStockSymbol.Reset();
 
-	m_v10RSStrong1Stock.resize(0);
-	m_v10RSStrong2Stock.resize(0);
 	m_lCurrentSelectedPosition = 0;
 	m_lCurrentRSStrongIndex = 0;
 	m_lCurrentSelectedStockSet = -1; // 选择使用全体股票集、
@@ -115,8 +112,6 @@ void CChinaMarket::Reset() {
 	gl_SystemData.ClearDataQueue();
 
 	m_RTDataNeedCalculate = false;
-	m_CalculatingDayLineRS = false;
-	m_CalculatingWeekLineRS = false;
 
 	m_fFastReceivingRTData = true;
 	m_fRTDataSetCleared = false;
@@ -126,9 +121,7 @@ void CChinaMarket::Reset() {
 
 	m_iCountDownTengxunNumber = 10;
 
-	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDate = CHINA_MARKET_BEGIN_DATE_;
 	m_lLastLoginTime = 0;
-	m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = CHINA_MARKET_BEGIN_DATE_;
 
 	m_fSelectedStockLoaded = false;
 
@@ -707,14 +700,10 @@ void CChinaMarket::ProcessTodayStock() {
 	const long lDate = GetMarketDate(GetTransactionTime());
 	if (lDate == GetMarketDate()) {
 		gl_dataContainerChinaStock.BuildDayLine(lDate);
-		// 计算本日日线相对强度
-		gl_dataContainerChinaStock.BuildDayLineRS(lDate);
 		// 生成周线数据
 		BuildCurrentWeekLine();
-		gl_dataContainerChinaStock.BuildWeekLineRS(GetCurrentMonday(lDate));
 		gl_dataContainerChinaStock.UpdateProfileDB();
 		if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
-			SetRSEndDate(GetMarketDate());
 			SetUpdateOptionDB(true); // 更新状态
 		}
 	}
@@ -1217,24 +1206,14 @@ void CChinaMarket::UpdateOptionDB() {
 		setOption.m_pDatabase->BeginTrans();
 		if (setOption.IsEOF()) {
 			setOption.AddNew();
-			setOption.m_RSEndDate = GetRSEndDate();
-			setOption.m_RSStartDate = GetRSStartDate();
 			setOption.m_LastLoginDate = GetMarketDate();
 			setOption.m_LastLoginTime = GetMarketTime();
-			setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
-			setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
-			setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
 			setOption.Update();
 		}
 		else {
 			setOption.Edit();
-			setOption.m_RSEndDate = GetRSEndDate();
-			setOption.m_RSStartDate = GetRSStartDate();
 			setOption.m_LastLoginDate = GetMarketDate();
 			setOption.m_LastLoginTime = GetMarketTime();
-			setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
-			setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
-			setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
 			setOption.Update();
 		}
 		setOption.m_pDatabase->CommitTrans();
@@ -1252,26 +1231,10 @@ void CChinaMarket::LoadOptionDB() {
 	auto tx = start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).unconditionally());
 	if (result.begin() == result.end()) {
-		SetRSStartDate(CHINA_MARKET_BEGIN_DATE_);
-		SetRSEndDate(CHINA_MARKET_BEGIN_DATE_);
 		SetLastLoginDate(CHINA_MARKET_BEGIN_DATE_);
-		SetUpdatedDateFor10DaysRS1(CHINA_MARKET_BEGIN_DATE_);
-		SetUpdatedDateFor10DaysRS2(CHINA_MARKET_BEGIN_DATE_);
 	}
 	else {
 		const auto& row = result.front();
-		if (static_cast<int>(row.RelativeStrongEndDate) == 0) {
-			SetRSEndDate(CHINA_MARKET_BEGIN_DATE_);
-		}
-		else {
-			SetRSEndDate(row.RelativeStrongEndDate);
-		}
-		if (static_cast<int>(row.RelativeStrongStartDate) == 0) {
-			SetRSStartDate(CHINA_MARKET_BEGIN_DATE_);
-		}
-		else {
-			SetRSStartDate(row.RelativeStrongStartDate);
-		}
 		if (static_cast<int>(row.LastLoginDate) == 0) {
 			SetLastLoginDate(CHINA_MARKET_BEGIN_DATE_);
 		}
@@ -1279,13 +1242,6 @@ void CChinaMarket::LoadOptionDB() {
 			SetLastLoginDate(row.LastLoginDate);
 		}
 		SetLastLoginTime(row.LastLoginTime);
-		SetUpdatedDateFor10DaysRS1(row.UpdatedDateFor10DaysRS1);
-		SetUpdatedDateFor10DaysRS2(row.UpdatedDateFor10DaysRS2);
-		SetUpdatedDateFor10DaysRS(row.UpdatedDateFor10DaysRS);
-		if (static_cast<int>(row.UpdatedDateFor10DaysRS1) < GetMarketDate()) m_fChosen10RSStrong1StockSet = false;
-		else m_fChosen10RSStrong1StockSet = true;
-		if (static_cast<int>(row.UpdatedDateFor10DaysRS) < GetMarketDate()) m_fChosen10RSStrongStockSet = false;
-		else m_fChosen10RSStrongStockSet = true;
 	}
 	tx.commit();
 }

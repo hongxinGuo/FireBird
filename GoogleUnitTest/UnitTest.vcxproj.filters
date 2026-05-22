@@ -264,12 +264,6 @@
     <ClCompile Include="ContainerChinaWeekLineTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="MockContainerChinaDayLineTest.cpp">
-      <Filter>Test源文件\Data Container\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="MockDataChinaWeekLineTest.cpp">
-      <Filter>Test源文件\Data Container\China Market</Filter>
-    </ClCompile>
     <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
@@ -387,12 +381,6 @@
     <ClCompile Include="WorldMarketTest.cpp">
       <Filter>Test源文件\Market\World market</Filter>
     </ClCompile>
-    <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp">
-      <Filter>Test源文件\Market\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="MockFinnhubForexSymbolTest.cpp">
-      <Filter>Test源文件\Market\World market</Filter>
-    </ClCompile>
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp">
       <Filter>Test源文件\Market\World market</Filter>
     </ClCompile>
@@ -403,9 +391,6 @@
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="ChinaStockTest.cpp">
-      <Filter>Test源文件\Stock\China stock</Filter>
-    </ClCompile>
-    <ClCompile Include="MockChinaStockTest.cpp">
       <Filter>Test源文件\Stock\China stock</Filter>
     </ClCompile>
     <ClCompile Include="JsonGetValueTest.cpp">
@@ -450,16 +435,10 @@
     <ClCompile Include="VirtualDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="MockVirtualDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
     <ClCompile Include="MockTiingoDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="MockQuandlDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MockNeteaseDayLineDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp">
@@ -540,12 +519,6 @@
     <ClCompile Include="ProductTengxunRTTest.cpp">
       <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualWorldMarketWebProductTest.cpp">
-      <Filter>Test源文件\Factory Product</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualChinaMarketWebProductTest.cpp">
-      <Filter>Test源文件\Factory Product</Filter>
-    </ClCompile>
     <ClCompile Include="simdjsonGetValueTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
@@ -619,9 +592,6 @@
       <Filter>Test源文件\Data Container\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubStockTest.cpp">
-      <Filter>Test源文件\Stock\World stock</Filter>
-    </ClCompile>
-    <ClCompile Include="MockFinnhubStockTest.cpp">
       <Filter>Test源文件\Stock\World stock</Filter>
     </ClCompile>
     <ClCompile Include="ProductTiingoStockDailyMetaTest.cpp">

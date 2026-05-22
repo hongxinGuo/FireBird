@@ -23,9 +23,6 @@ void CVirtualHistoryCandle::Reset() {
 	m_dChangeHandRate = 0.0;
 	m_llTotalValue = 0;
 	m_llCurrentValue = 0;
-	m_dRS = 50.0; // 默认相对于市场的强度为50，表示与市场平均水平持平。
-	m_dRSIndex = 50.0; // 默认相对于市场指数的强度为50，表示与市场指数平均水平持平。
-	m_dRSBackup = 50.0; // 默认备用数据为50，表示与市场平均水平持平。
 }
 
 void CVirtualHistoryCandle::AdjustByFactor(double dFactor) {
@@ -34,18 +31,6 @@ void CVirtualHistoryCandle::AdjustByFactor(double dFactor) {
 	m_lHigh /= dFactor;
 	m_lLow /= dFactor;
 	m_lClose /= dFactor;
-}
-void CVirtualHistoryCandle::CalculateRSLogarithm1(double dRS) {
-	const double dLog50 = log10(50.0);
-	const double dLog100 = log10(100.0);
-	const double dLog = dLog100 - dLog50;
-	if ((dRS - 50) > 0) {
-		m_dRSLogarithm = 50 + (log10(dRS) - dLog50) * 50 / dLog;
-	}
-	else if ((dRS - 50) < 0) {
-		m_dRSLogarithm = 50 - (log10(100 - dRS) - dLog50) * 50 / dLog;
-	}
-	else m_dRSLogarithm = 50;
 }
 
 bool CVirtualHistoryCandle::IsActive() const {
@@ -131,9 +116,6 @@ void CVirtualHistoryCandle::SaveBasicData(CVirtualSetHistoryCandle* pVirtualSetH
 	pVirtualSetHistoryCandle->m_ChangeHandRate = ConvertValueToCString(GetChangeHandRate());
 	pVirtualSetHistoryCandle->m_TotalValue = ConvertValueToCString(GetTotalValue());
 	pVirtualSetHistoryCandle->m_CurrentValue = ConvertValueToCString(GetCurrentValue());
-	pVirtualSetHistoryCandle->m_RS = ConvertValueToCString(GetRS());
-	pVirtualSetHistoryCandle->m_RSIndex = ConvertValueToCString(GetRSIndex());
-	pVirtualSetHistoryCandle->m_RSBackup = ConvertValueToCString(GetRSBackup());
 }
 
 void CVirtualHistoryCandle::AppendBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const {
@@ -164,9 +146,4 @@ void CVirtualHistoryCandle::LoadBasicData(const CVirtualSetHistoryCandle* pVirtu
 	m_dChangeHandRate = _tstof(pVirtualSetHistoryCandle->m_ChangeHandRate);
 	m_llTotalValue = _tstoll(pVirtualSetHistoryCandle->m_TotalValue);
 	m_llCurrentValue = _tstoll(pVirtualSetHistoryCandle->m_CurrentValue);
-	m_dRS = _tstof(pVirtualSetHistoryCandle->m_RS);
-	m_dRSIndex = _tstof(pVirtualSetHistoryCandle->m_RSIndex);
-	m_dRSBackup = _tstof(pVirtualSetHistoryCandle->m_RSBackup);
-
-	CalculateRSLogarithm1(m_dRS);
 }

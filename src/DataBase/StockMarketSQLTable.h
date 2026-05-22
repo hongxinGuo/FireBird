@@ -8,2242 +8,6 @@
 
 namespace StockMarket
 {
-  namespace ChinaStockWeekline_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct LastClose
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastClose";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastClose;
-            T& operator()() { return LastClose; }
-            const T& operator()() const { return LastClose; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Open
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Open";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Open;
-            T& operator()() { return Open; }
-            const T& operator()() const { return Open; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct High
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "High";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T High;
-            T& operator()() { return High; }
-            const T& operator()() const { return High; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Low
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Low";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Low;
-            T& operator()() { return Low; }
-            const T& operator()() const { return Low; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Close
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Close";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Close;
-            T& operator()() { return Close; }
-            const T& operator()() const { return Close; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Volume
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Volume";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Volume;
-            T& operator()() { return Volume; }
-            const T& operator()() const { return Volume; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Amount
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Amount";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Amount;
-            T& operator()() { return Amount; }
-            const T& operator()() const { return Amount; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Dividend
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Dividend";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Dividend;
-            T& operator()() { return Dividend; }
-            const T& operator()() const { return Dividend; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrong
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrong";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrong;
-            T& operator()() { return RelativeStrong; }
-            const T& operator()() const { return RelativeStrong; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongIndex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongIndex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongIndex;
-            T& operator()() { return RelativeStrongIndex; }
-            const T& operator()() const { return RelativeStrongIndex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongBackup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongBackup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongBackup;
-            T& operator()() { return RelativeStrongBackup; }
-            const T& operator()() const { return RelativeStrongBackup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpAndDown
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpAndDown";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpAndDown;
-            T& operator()() { return UpAndDown; }
-            const T& operator()() const { return UpAndDown; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpDownRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpDownRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpDownRate;
-            T& operator()() { return UpDownRate; }
-            const T& operator()() const { return UpDownRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct ChangeHandRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ChangeHandRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ChangeHandRate;
-            T& operator()() { return ChangeHandRate; }
-            const T& operator()() const { return ChangeHandRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct TotalValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TotalValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TotalValue;
-            T& operator()() { return TotalValue; }
-            const T& operator()() const { return TotalValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct CurrentValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrentValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrentValue;
-            T& operator()() { return CurrentValue; }
-            const T& operator()() const { return CurrentValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace ChinaStockWeekline_
-
-  struct ChinaStockWeekline: sqlpp::table_t<ChinaStockWeekline,
-               ChinaStockWeekline_::ID,
-               ChinaStockWeekline_::Date,
-               ChinaStockWeekline_::Exchange,
-               ChinaStockWeekline_::Symbol,
-               ChinaStockWeekline_::LastClose,
-               ChinaStockWeekline_::Open,
-               ChinaStockWeekline_::High,
-               ChinaStockWeekline_::Low,
-               ChinaStockWeekline_::Close,
-               ChinaStockWeekline_::Volume,
-               ChinaStockWeekline_::Amount,
-               ChinaStockWeekline_::Dividend,
-               ChinaStockWeekline_::SplitFactor,
-               ChinaStockWeekline_::RelativeStrong,
-               ChinaStockWeekline_::RelativeStrongIndex,
-               ChinaStockWeekline_::RelativeStrongBackup,
-               ChinaStockWeekline_::UpAndDown,
-               ChinaStockWeekline_::UpDownRate,
-               ChinaStockWeekline_::ChangeHandRate,
-               ChinaStockWeekline_::TotalValue,
-               ChinaStockWeekline_::CurrentValue>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "china_stock_weekline";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T chinaStockWeekline;
-        T& operator()() { return chinaStockWeekline; }
-        const T& operator()() const { return chinaStockWeekline; }
-      };
-    };
-  };
-  namespace FinnhubForexSymbol_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Description
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Description";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Description;
-            T& operator()() { return Description; }
-            const T& operator()() const { return Description; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct DisplaySymbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "DisplaySymbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T DisplaySymbol;
-            T& operator()() { return DisplaySymbol; }
-            const T& operator()() const { return DisplaySymbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct IPOStatus
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IPOStatus";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IPOStatus;
-            T& operator()() { return IPOStatus; }
-            const T& operator()() const { return IPOStatus; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct UpdateDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpdateDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpdateDate;
-            T& operator()() { return UpdateDate; }
-            const T& operator()() const { return UpdateDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubForexSymbol_
-
-  struct FinnhubForexSymbol: sqlpp::table_t<FinnhubForexSymbol,
-               FinnhubForexSymbol_::ID,
-               FinnhubForexSymbol_::Description,
-               FinnhubForexSymbol_::DisplaySymbol,
-               FinnhubForexSymbol_::Exchange,
-               FinnhubForexSymbol_::Symbol,
-               FinnhubForexSymbol_::IPOStatus,
-               FinnhubForexSymbol_::UpdateDate>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_forex_symbol";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubForexSymbol;
-        T& operator()() { return finnhubForexSymbol; }
-        const T& operator()() const { return finnhubForexSymbol; }
-      };
-    };
-  };
-  namespace FinnhubForexExchange_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Code
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "code";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T code;
-            T& operator()() { return code; }
-            const T& operator()() const { return code; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Name
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "name";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T name;
-            T& operator()() { return name; }
-            const T& operator()() const { return name; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Mic
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "mic";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T mic;
-            T& operator()() { return mic; }
-            const T& operator()() const { return mic; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Timezone
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "timezone";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T timezone;
-            T& operator()() { return timezone; }
-            const T& operator()() const { return timezone; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct PreMarket
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "pre_market";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T preMarket;
-            T& operator()() { return preMarket; }
-            const T& operator()() const { return preMarket; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Hour
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "hour";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T hour;
-            T& operator()() { return hour; }
-            const T& operator()() const { return hour; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct PostMarket
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "post_market";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T postMarket;
-            T& operator()() { return postMarket; }
-            const T& operator()() const { return postMarket; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct CloseDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "close_date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T closeDate;
-            T& operator()() { return closeDate; }
-            const T& operator()() const { return closeDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Country
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "country";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T country;
-            T& operator()() { return country; }
-            const T& operator()() const { return country; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct CountryName
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "country_name";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T countryName;
-            T& operator()() { return countryName; }
-            const T& operator()() const { return countryName; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Source
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "source";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T source;
-            T& operator()() { return source; }
-            const T& operator()() const { return source; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct MyUnknownColumn
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "MyUnknownColumn";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T MyUnknownColumn;
-            T& operator()() { return MyUnknownColumn; }
-            const T& operator()() const { return MyUnknownColumn; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubForexExchange_
-
-  struct FinnhubForexExchange: sqlpp::table_t<FinnhubForexExchange,
-               FinnhubForexExchange_::ID,
-               FinnhubForexExchange_::Code,
-               FinnhubForexExchange_::Name,
-               FinnhubForexExchange_::Mic,
-               FinnhubForexExchange_::Timezone,
-               FinnhubForexExchange_::PreMarket,
-               FinnhubForexExchange_::Hour,
-               FinnhubForexExchange_::PostMarket,
-               FinnhubForexExchange_::CloseDate,
-               FinnhubForexExchange_::Country,
-               FinnhubForexExchange_::CountryName,
-               FinnhubForexExchange_::Source,
-               FinnhubForexExchange_::MyUnknownColumn>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_forex_exchange";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubForexExchange;
-        T& operator()() { return finnhubForexExchange; }
-        const T& operator()() const { return finnhubForexExchange; }
-      };
-    };
-  };
-  namespace FinnhubInsiderTransaction_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct PersonName
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "PersonName";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T PersonName;
-            T& operator()() { return PersonName; }
-            const T& operator()() const { return PersonName; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Share
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Share";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Share;
-            T& operator()() { return Share; }
-            const T& operator()() const { return Share; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Change
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Change";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Change;
-            T& operator()() { return Change; }
-            const T& operator()() const { return Change; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct FilingDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "FilingDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T FilingDate;
-            T& operator()() { return FilingDate; }
-            const T& operator()() const { return FilingDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct TransactionDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TransactionDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TransactionDate;
-            T& operator()() { return TransactionDate; }
-            const T& operator()() const { return TransactionDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct TransactionCode
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TransactionCode";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TransactionCode;
-            T& operator()() { return TransactionCode; }
-            const T& operator()() const { return TransactionCode; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct TransactionPrice
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TransactionPrice";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TransactionPrice;
-            T& operator()() { return TransactionPrice; }
-            const T& operator()() const { return TransactionPrice; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubInsiderTransaction_
-
-  struct FinnhubInsiderTransaction: sqlpp::table_t<FinnhubInsiderTransaction,
-               FinnhubInsiderTransaction_::ID,
-               FinnhubInsiderTransaction_::Symbol,
-               FinnhubInsiderTransaction_::PersonName,
-               FinnhubInsiderTransaction_::Share,
-               FinnhubInsiderTransaction_::Change,
-               FinnhubInsiderTransaction_::FilingDate,
-               FinnhubInsiderTransaction_::TransactionDate,
-               FinnhubInsiderTransaction_::TransactionCode,
-               FinnhubInsiderTransaction_::TransactionPrice>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_insider_transaction";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubInsiderTransaction;
-        T& operator()() { return finnhubInsiderTransaction; }
-        const T& operator()() const { return finnhubInsiderTransaction; }
-      };
-    };
-  };
-  namespace NaicsIndustry_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Naics
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Naics";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Naics;
-            T& operator()() { return Naics; }
-            const T& operator()() const { return Naics; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct NationalIndustry
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "NationalIndustry";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T NationalIndustry;
-            T& operator()() { return NationalIndustry; }
-            const T& operator()() const { return NationalIndustry; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Sector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Sector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Sector;
-            T& operator()() { return Sector; }
-            const T& operator()() const { return Sector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct SubSector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SubSector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SubSector;
-            T& operator()() { return SubSector; }
-            const T& operator()() const { return SubSector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace NaicsIndustry_
-
-  struct NaicsIndustry: sqlpp::table_t<NaicsIndustry,
-               NaicsIndustry_::ID,
-               NaicsIndustry_::Naics,
-               NaicsIndustry_::NationalIndustry,
-               NaicsIndustry_::Sector,
-               NaicsIndustry_::SubSector>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "naics_industry";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T naicsIndustry;
-        T& operator()() { return naicsIndustry; }
-        const T& operator()() const { return naicsIndustry; }
-      };
-    };
-  };
-  namespace FinnhubCountryList_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Code2
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Code2";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Code2;
-            T& operator()() { return Code2; }
-            const T& operator()() const { return Code2; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Code3
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Code3";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Code3;
-            T& operator()() { return Code3; }
-            const T& operator()() const { return Code3; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct CodeNo
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CodeNo";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CodeNo;
-            T& operator()() { return CodeNo; }
-            const T& operator()() const { return CodeNo; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Country
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Country";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Country;
-            T& operator()() { return Country; }
-            const T& operator()() const { return Country; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Currency
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Currency";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Currency;
-            T& operator()() { return Currency; }
-            const T& operator()() const { return Currency; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct CurrencyCode
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrencyCode";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrencyCode;
-            T& operator()() { return CurrencyCode; }
-            const T& operator()() const { return CurrencyCode; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubCountryList_
-
-  struct FinnhubCountryList: sqlpp::table_t<FinnhubCountryList,
-               FinnhubCountryList_::ID,
-               FinnhubCountryList_::Code2,
-               FinnhubCountryList_::Code3,
-               FinnhubCountryList_::CodeNo,
-               FinnhubCountryList_::Country,
-               FinnhubCountryList_::Currency,
-               FinnhubCountryList_::CurrencyCode>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_country_list";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubCountryList;
-        T& operator()() { return finnhubCountryList; }
-        const T& operator()() const { return finnhubCountryList; }
-      };
-    };
-  };
-  namespace TiingoStockFundamental_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct TiingoPermaTicker
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TiingoPermaTicker";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TiingoPermaTicker;
-            T& operator()() { return TiingoPermaTicker; }
-            const T& operator()() const { return TiingoPermaTicker; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Ticker
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Ticker";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Ticker;
-            T& operator()() { return Ticker; }
-            const T& operator()() const { return Ticker; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Name
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Name";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Name;
-            T& operator()() { return Name; }
-            const T& operator()() const { return Name; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct IsActive
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IsActive";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IsActive;
-            T& operator()() { return IsActive; }
-            const T& operator()() const { return IsActive; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct IsADR
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IsADR";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IsADR;
-            T& operator()() { return IsADR; }
-            const T& operator()() const { return IsADR; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct TiingoIndustry
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TiingoIndustry";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TiingoIndustry;
-            T& operator()() { return TiingoIndustry; }
-            const T& operator()() const { return TiingoIndustry; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct TiingoSector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TiingoSector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TiingoSector;
-            T& operator()() { return TiingoSector; }
-            const T& operator()() const { return TiingoSector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct SICCode
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SICCode";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SICCode;
-            T& operator()() { return SICCode; }
-            const T& operator()() const { return SICCode; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct SICIndustry
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SICIndustry";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SICIndustry;
-            T& operator()() { return SICIndustry; }
-            const T& operator()() const { return SICIndustry; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct SICSector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SICSector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SICSector;
-            T& operator()() { return SICSector; }
-            const T& operator()() const { return SICSector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct ReportingCurrency
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ReportingCurrency";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ReportingCurrency;
-            T& operator()() { return ReportingCurrency; }
-            const T& operator()() const { return ReportingCurrency; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Location
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Location";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Location;
-            T& operator()() { return Location; }
-            const T& operator()() const { return Location; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct CompanyWebSite
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CompanyWebSite";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CompanyWebSite;
-            T& operator()() { return CompanyWebSite; }
-            const T& operator()() const { return CompanyWebSite; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct SECFilingWebSite
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SECFilingWebSite";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SECFilingWebSite;
-            T& operator()() { return SECFilingWebSite; }
-            const T& operator()() const { return SECFilingWebSite; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct IPOStatus
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IPOStatus";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IPOStatus;
-            T& operator()() { return IPOStatus; }
-            const T& operator()() const { return IPOStatus; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct UpdateDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpdateDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpdateDate;
-            T& operator()() { return UpdateDate; }
-            const T& operator()() const { return UpdateDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoStockFundamental_
-
-  struct TiingoStockFundamental: sqlpp::table_t<TiingoStockFundamental,
-               TiingoStockFundamental_::ID,
-               TiingoStockFundamental_::TiingoPermaTicker,
-               TiingoStockFundamental_::Ticker,
-               TiingoStockFundamental_::Name,
-               TiingoStockFundamental_::IsActive,
-               TiingoStockFundamental_::IsADR,
-               TiingoStockFundamental_::TiingoIndustry,
-               TiingoStockFundamental_::TiingoSector,
-               TiingoStockFundamental_::SICCode,
-               TiingoStockFundamental_::SICIndustry,
-               TiingoStockFundamental_::SICSector,
-               TiingoStockFundamental_::ReportingCurrency,
-               TiingoStockFundamental_::Location,
-               TiingoStockFundamental_::CompanyWebSite,
-               TiingoStockFundamental_::SECFilingWebSite,
-               TiingoStockFundamental_::IPOStatus,
-               TiingoStockFundamental_::UpdateDate>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "tiingo_stock_fundamental";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T tiingoStockFundamental;
-        T& operator()() { return tiingoStockFundamental; }
-        const T& operator()() const { return tiingoStockFundamental; }
-      };
-    };
-  };
-  namespace WorldChoiceStock_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace WorldChoiceStock_
-
-  struct WorldChoiceStock: sqlpp::table_t<WorldChoiceStock,
-               WorldChoiceStock_::ID,
-               WorldChoiceStock_::Symbol>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "world_choice_stock";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T worldChoiceStock;
-        T& operator()() { return worldChoiceStock; }
-        const T& operator()() const { return worldChoiceStock; }
-      };
-    };
-  };
-  namespace FinnhubInsiderSentiment_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Change
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Change";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Change;
-            T& operator()() { return Change; }
-            const T& operator()() const { return Change; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Mspr
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "mspr";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T mspr;
-            T& operator()() { return mspr; }
-            const T& operator()() const { return mspr; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubInsiderSentiment_
-
-  struct FinnhubInsiderSentiment: sqlpp::table_t<FinnhubInsiderSentiment,
-               FinnhubInsiderSentiment_::ID,
-               FinnhubInsiderSentiment_::Symbol,
-               FinnhubInsiderSentiment_::Date,
-               FinnhubInsiderSentiment_::Change,
-               FinnhubInsiderSentiment_::Mspr>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_insider_sentiment";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubInsiderSentiment;
-        T& operator()() { return finnhubInsiderSentiment; }
-        const T& operator()() const { return finnhubInsiderSentiment; }
-      };
-    };
-  };
-  namespace StockSplits_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace StockSplits_
-
-  struct StockSplits: sqlpp::table_t<StockSplits,
-               StockSplits_::ID,
-               StockSplits_::Symbol,
-               StockSplits_::Date,
-               StockSplits_::SplitFactor>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "stock_splits";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T stockSplits;
-        T& operator()() { return stockSplits; }
-        const T& operator()() const { return stockSplits; }
-      };
-    };
-  };
-  namespace TiingoStock52WeekHigh_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoStock52WeekHigh_
-
-  struct TiingoStock52WeekHigh: sqlpp::table_t<TiingoStock52WeekHigh,
-               TiingoStock52WeekHigh_::ID,
-               TiingoStock52WeekHigh_::Symbol,
-               TiingoStock52WeekHigh_::Exchange,
-               TiingoStock52WeekHigh_::Date>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "tiingo_stock_52week_high";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T tiingoStock52WeekHigh;
-        T& operator()() { return tiingoStock52WeekHigh; }
-        const T& operator()() const { return tiingoStock52WeekHigh; }
-      };
-    };
-  };
-  namespace ChinaStockDayline_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct LastClose
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastClose";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastClose;
-            T& operator()() { return LastClose; }
-            const T& operator()() const { return LastClose; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Open
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Open";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Open;
-            T& operator()() { return Open; }
-            const T& operator()() const { return Open; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct High
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "High";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T High;
-            T& operator()() { return High; }
-            const T& operator()() const { return High; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Low
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Low";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Low;
-            T& operator()() { return Low; }
-            const T& operator()() const { return Low; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Close
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Close";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Close;
-            T& operator()() { return Close; }
-            const T& operator()() const { return Close; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Volume
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Volume";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Volume;
-            T& operator()() { return Volume; }
-            const T& operator()() const { return Volume; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Amount
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Amount";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Amount;
-            T& operator()() { return Amount; }
-            const T& operator()() const { return Amount; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Dividend
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Dividend";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Dividend;
-            T& operator()() { return Dividend; }
-            const T& operator()() const { return Dividend; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrong
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrong";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrong;
-            T& operator()() { return RelativeStrong; }
-            const T& operator()() const { return RelativeStrong; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongIndex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongIndex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongIndex;
-            T& operator()() { return RelativeStrongIndex; }
-            const T& operator()() const { return RelativeStrongIndex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongBackup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongBackup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongBackup;
-            T& operator()() { return RelativeStrongBackup; }
-            const T& operator()() const { return RelativeStrongBackup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpAndDown
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpAndDown";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpAndDown;
-            T& operator()() { return UpAndDown; }
-            const T& operator()() const { return UpAndDown; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpDownRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpDownRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpDownRate;
-            T& operator()() { return UpDownRate; }
-            const T& operator()() const { return UpDownRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct ChangeHandRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ChangeHandRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ChangeHandRate;
-            T& operator()() { return ChangeHandRate; }
-            const T& operator()() const { return ChangeHandRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct TotalValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TotalValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TotalValue;
-            T& operator()() { return TotalValue; }
-            const T& operator()() const { return TotalValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct CurrentValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrentValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrentValue;
-            T& operator()() { return CurrentValue; }
-            const T& operator()() const { return CurrentValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace ChinaStockDayline_
-
-  struct ChinaStockDayline: sqlpp::table_t<ChinaStockDayline,
-               ChinaStockDayline_::ID,
-               ChinaStockDayline_::Date,
-               ChinaStockDayline_::Exchange,
-               ChinaStockDayline_::Symbol,
-               ChinaStockDayline_::LastClose,
-               ChinaStockDayline_::Open,
-               ChinaStockDayline_::High,
-               ChinaStockDayline_::Low,
-               ChinaStockDayline_::Close,
-               ChinaStockDayline_::Volume,
-               ChinaStockDayline_::Amount,
-               ChinaStockDayline_::Dividend,
-               ChinaStockDayline_::SplitFactor,
-               ChinaStockDayline_::RelativeStrong,
-               ChinaStockDayline_::RelativeStrongIndex,
-               ChinaStockDayline_::RelativeStrongBackup,
-               ChinaStockDayline_::UpAndDown,
-               ChinaStockDayline_::UpDownRate,
-               ChinaStockDayline_::ChangeHandRate,
-               ChinaStockDayline_::TotalValue,
-               ChinaStockDayline_::CurrentValue>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "china_stock_dayline";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T chinaStockDayline;
-        T& operator()() { return chinaStockDayline; }
-        const T& operator()() const { return chinaStockDayline; }
-      };
-    };
-  };
-  namespace WorldChoiceForex_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace WorldChoiceForex_
-
-  struct WorldChoiceForex: sqlpp::table_t<WorldChoiceForex,
-               WorldChoiceForex_::ID,
-               WorldChoiceForex_::Symbol>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "world_choice_forex";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T worldChoiceForex;
-        T& operator()() { return worldChoiceForex; }
-        const T& operator()() const { return worldChoiceForex; }
-      };
-    };
-  };
   namespace ChinaChoiceStock_
   {
     struct ID
@@ -2294,6 +58,178 @@ namespace StockMarket
         T chinaChoiceStock;
         T& operator()() { return chinaChoiceStock; }
         const T& operator()() const { return chinaChoiceStock; }
+      };
+    };
+  };
+  namespace FinnhubCompanyExective_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct CompanySymbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CompanySymbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CompanySymbol;
+            T& operator()() { return CompanySymbol; }
+            const T& operator()() const { return CompanySymbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Age
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Age";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Age;
+            T& operator()() { return Age; }
+            const T& operator()() const { return Age; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Compensation
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Compensation";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Compensation;
+            T& operator()() { return Compensation; }
+            const T& operator()() const { return Compensation; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Currency
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Currency";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Currency;
+            T& operator()() { return Currency; }
+            const T& operator()() const { return Currency; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Name
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Name";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Name;
+            T& operator()() { return Name; }
+            const T& operator()() const { return Name; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Position
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Position";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Position;
+            T& operator()() { return Position; }
+            const T& operator()() const { return Position; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Sex
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Sex";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Sex;
+            T& operator()() { return Sex; }
+            const T& operator()() const { return Sex; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Since
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Since";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Since;
+            T& operator()() { return Since; }
+            const T& operator()() const { return Since; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubCompanyExective_
+
+  struct FinnhubCompanyExective: sqlpp::table_t<FinnhubCompanyExective,
+               FinnhubCompanyExective_::ID,
+               FinnhubCompanyExective_::CompanySymbol,
+               FinnhubCompanyExective_::Age,
+               FinnhubCompanyExective_::Compensation,
+               FinnhubCompanyExective_::Currency,
+               FinnhubCompanyExective_::Name,
+               FinnhubCompanyExective_::Position,
+               FinnhubCompanyExective_::Sex,
+               FinnhubCompanyExective_::Since>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_company_exective";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubCompanyExective;
+        T& operator()() { return finnhubCompanyExective; }
+        const T& operator()() const { return finnhubCompanyExective; }
       };
     };
   };
@@ -2486,453 +422,7 @@ namespace StockMarket
       };
     };
   };
-  namespace ChinaCurrentWeekline_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct LastClose
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastClose";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastClose;
-            T& operator()() { return LastClose; }
-            const T& operator()() const { return LastClose; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Open
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Open";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Open;
-            T& operator()() { return Open; }
-            const T& operator()() const { return Open; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct High
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "High";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T High;
-            T& operator()() { return High; }
-            const T& operator()() const { return High; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Low
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Low";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Low;
-            T& operator()() { return Low; }
-            const T& operator()() const { return Low; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Close
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Close";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Close;
-            T& operator()() { return Close; }
-            const T& operator()() const { return Close; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Volume
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Volume";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Volume;
-            T& operator()() { return Volume; }
-            const T& operator()() const { return Volume; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Amount
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Amount";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Amount;
-            T& operator()() { return Amount; }
-            const T& operator()() const { return Amount; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Dividend
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Dividend";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Dividend;
-            T& operator()() { return Dividend; }
-            const T& operator()() const { return Dividend; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrong
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrong";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrong;
-            T& operator()() { return RelativeStrong; }
-            const T& operator()() const { return RelativeStrong; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongIndex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongIndex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongIndex;
-            T& operator()() { return RelativeStrongIndex; }
-            const T& operator()() const { return RelativeStrongIndex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongBackup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongBackup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongBackup;
-            T& operator()() { return RelativeStrongBackup; }
-            const T& operator()() const { return RelativeStrongBackup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpAndDown
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpAndDown";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpAndDown;
-            T& operator()() { return UpAndDown; }
-            const T& operator()() const { return UpAndDown; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpDownRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpDownRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpDownRate;
-            T& operator()() { return UpDownRate; }
-            const T& operator()() const { return UpDownRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct ChangeHandRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ChangeHandRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ChangeHandRate;
-            T& operator()() { return ChangeHandRate; }
-            const T& operator()() const { return ChangeHandRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct TotalValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TotalValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TotalValue;
-            T& operator()() { return TotalValue; }
-            const T& operator()() const { return TotalValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct CurrentValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrentValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrentValue;
-            T& operator()() { return CurrentValue; }
-            const T& operator()() const { return CurrentValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace ChinaCurrentWeekline_
-
-  struct ChinaCurrentWeekline: sqlpp::table_t<ChinaCurrentWeekline,
-               ChinaCurrentWeekline_::ID,
-               ChinaCurrentWeekline_::Date,
-               ChinaCurrentWeekline_::Exchange,
-               ChinaCurrentWeekline_::Symbol,
-               ChinaCurrentWeekline_::LastClose,
-               ChinaCurrentWeekline_::Open,
-               ChinaCurrentWeekline_::High,
-               ChinaCurrentWeekline_::Low,
-               ChinaCurrentWeekline_::Close,
-               ChinaCurrentWeekline_::Volume,
-               ChinaCurrentWeekline_::Amount,
-               ChinaCurrentWeekline_::Dividend,
-               ChinaCurrentWeekline_::SplitFactor,
-               ChinaCurrentWeekline_::RelativeStrong,
-               ChinaCurrentWeekline_::RelativeStrongIndex,
-               ChinaCurrentWeekline_::RelativeStrongBackup,
-               ChinaCurrentWeekline_::UpAndDown,
-               ChinaCurrentWeekline_::UpDownRate,
-               ChinaCurrentWeekline_::ChangeHandRate,
-               ChinaCurrentWeekline_::TotalValue,
-               ChinaCurrentWeekline_::CurrentValue>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "china_current_weekline";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T chinaCurrentWeekline;
-        T& operator()() { return chinaCurrentWeekline; }
-        const T& operator()() const { return chinaCurrentWeekline; }
-      };
-    };
-  };
-  namespace IndexNasdaq100_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct ExpiredDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ExpiredDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ExpiredDate;
-            T& operator()() { return ExpiredDate; }
-            const T& operator()() const { return ExpiredDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace IndexNasdaq100_
-
-  struct IndexNasdaq100: sqlpp::table_t<IndexNasdaq100,
-               IndexNasdaq100_::ID,
-               IndexNasdaq100_::Symbol,
-               IndexNasdaq100_::ExpiredDate>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "index_nasdaq100";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T indexNasdaq100;
-        T& operator()() { return indexNasdaq100; }
-        const T& operator()() const { return indexNasdaq100; }
-      };
-    };
-  };
-  namespace TiingoStockCurrentTrace_
+  namespace TiingoStockNewSymbol_
   {
     struct ID
     {
@@ -2982,320 +472,28 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-    struct SICCode
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SICCode";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SICCode;
-            T& operator()() { return SICCode; }
-            const T& operator()() const { return SICCode; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoStockCurrentTrace_
+  } // namespace TiingoStockNewSymbol_
 
-  struct TiingoStockCurrentTrace: sqlpp::table_t<TiingoStockCurrentTrace,
-               TiingoStockCurrentTrace_::ID,
-               TiingoStockCurrentTrace_::Symbol,
-               TiingoStockCurrentTrace_::Date,
-               TiingoStockCurrentTrace_::SICCode>
+  struct TiingoStockNewSymbol: sqlpp::table_t<TiingoStockNewSymbol,
+               TiingoStockNewSymbol_::ID,
+               TiingoStockNewSymbol_::Symbol,
+               TiingoStockNewSymbol_::Date>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "tiingo_stock_current_trace";
+      static constexpr const char _literal[] =  "tiingo_stock_new_symbol";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T tiingoStockCurrentTrace;
-        T& operator()() { return tiingoStockCurrentTrace; }
-        const T& operator()() const { return tiingoStockCurrentTrace; }
+        T tiingoStockNewSymbol;
+        T& operator()() { return tiingoStockNewSymbol; }
+        const T& operator()() const { return tiingoStockNewSymbol; }
       };
     };
   };
-  namespace TiingoFundamentalDefinitions_
+  namespace IndexNasdaq100_200MaUpdownRate_
   {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct DataCode
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "dataCode";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T dataCode;
-            T& operator()() { return dataCode; }
-            const T& operator()() const { return dataCode; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Name
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "name";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T name;
-            T& operator()() { return name; }
-            const T& operator()() const { return name; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Description
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "description";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T description;
-            T& operator()() { return description; }
-            const T& operator()() const { return description; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct StatementType
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "statementType";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T statementType;
-            T& operator()() { return statementType; }
-            const T& operator()() const { return statementType; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Units
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "units";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T units;
-            T& operator()() { return units; }
-            const T& operator()() const { return units; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoFundamentalDefinitions_
-
-  struct TiingoFundamentalDefinitions: sqlpp::table_t<TiingoFundamentalDefinitions,
-               TiingoFundamentalDefinitions_::ID,
-               TiingoFundamentalDefinitions_::DataCode,
-               TiingoFundamentalDefinitions_::Name,
-               TiingoFundamentalDefinitions_::Description,
-               TiingoFundamentalDefinitions_::StatementType,
-               TiingoFundamentalDefinitions_::Units>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "tiingo_fundamental_definitions";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T tiingoFundamentalDefinitions;
-        T& operator()() { return tiingoFundamentalDefinitions; }
-        const T& operator()() const { return tiingoFundamentalDefinitions; }
-      };
-    };
-  };
-  namespace WorldMarketOption_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct FinnhubToken
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "FinnhubToken";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T FinnhubToken;
-            T& operator()() { return FinnhubToken; }
-            const T& operator()() const { return FinnhubToken; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct FinnhubMaxPerHour
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "FinnhubMaxPerHour";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T FinnhubMaxPerHour;
-            T& operator()() { return FinnhubMaxPerHour; }
-            const T& operator()() const { return FinnhubMaxPerHour; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct TiingoToken
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TiingoToken";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TiingoToken;
-            T& operator()() { return TiingoToken; }
-            const T& operator()() const { return TiingoToken; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct TiingoMaxPerHour
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TiingoMaxPerHour";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TiingoMaxPerHour;
-            T& operator()() { return TiingoMaxPerHour; }
-            const T& operator()() const { return TiingoMaxPerHour; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct QuandlToken
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "QuandlToken";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T QuandlToken;
-            T& operator()() { return QuandlToken; }
-            const T& operator()() const { return QuandlToken; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct QuandlMaxPerHour
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "QuandlMaxPerHour";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T QuandlMaxPerHour;
-            T& operator()() { return QuandlMaxPerHour; }
-            const T& operator()() const { return QuandlMaxPerHour; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace WorldMarketOption_
-
-  struct WorldMarketOption: sqlpp::table_t<WorldMarketOption,
-               WorldMarketOption_::ID,
-               WorldMarketOption_::FinnhubToken,
-               WorldMarketOption_::FinnhubMaxPerHour,
-               WorldMarketOption_::TiingoToken,
-               WorldMarketOption_::TiingoMaxPerHour,
-               WorldMarketOption_::QuandlToken,
-               WorldMarketOption_::QuandlMaxPerHour>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "world_market_option";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T worldMarketOption;
-        T& operator()() { return worldMarketOption; }
-        const T& operator()() const { return worldMarketOption; }
-      };
-    };
-  };
-  namespace FinnhubForexDayline_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
     struct Date
     {
       struct _alias_t
@@ -3310,661 +508,44 @@ namespace StockMarket
             const T& operator()() const { return Date; }
           };
       };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::require_insert>;
+    };
+    struct Rate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Rate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Rate;
+            T& operator()() { return Rate; }
+            const T& operator()() const { return Rate; }
+          };
+      };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct LastClose
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastClose";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastClose;
-            T& operator()() { return LastClose; }
-            const T& operator()() const { return LastClose; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Open
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Open";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Open;
-            T& operator()() { return Open; }
-            const T& operator()() const { return Open; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct High
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "High";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T High;
-            T& operator()() { return High; }
-            const T& operator()() const { return High; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Low
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Low";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Low;
-            T& operator()() { return Low; }
-            const T& operator()() const { return Low; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Close
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Close";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Close;
-            T& operator()() { return Close; }
-            const T& operator()() const { return Close; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Volume
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Volume";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Volume;
-            T& operator()() { return Volume; }
-            const T& operator()() const { return Volume; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Amount
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Amount";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Amount;
-            T& operator()() { return Amount; }
-            const T& operator()() const { return Amount; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Dividend
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Dividend";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Dividend;
-            T& operator()() { return Dividend; }
-            const T& operator()() const { return Dividend; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrong
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrong";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrong;
-            T& operator()() { return RelativeStrong; }
-            const T& operator()() const { return RelativeStrong; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongIndex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongIndex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongIndex;
-            T& operator()() { return RelativeStrongIndex; }
-            const T& operator()() const { return RelativeStrongIndex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongBackup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongBackup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongBackup;
-            T& operator()() { return RelativeStrongBackup; }
-            const T& operator()() const { return RelativeStrongBackup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpAndDown
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpAndDown";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpAndDown;
-            T& operator()() { return UpAndDown; }
-            const T& operator()() const { return UpAndDown; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpDownRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpDownRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpDownRate;
-            T& operator()() { return UpDownRate; }
-            const T& operator()() const { return UpDownRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct ChangeHandRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ChangeHandRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ChangeHandRate;
-            T& operator()() { return ChangeHandRate; }
-            const T& operator()() const { return ChangeHandRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct TotalValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TotalValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TotalValue;
-            T& operator()() { return TotalValue; }
-            const T& operator()() const { return TotalValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct CurrentValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrentValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrentValue;
-            T& operator()() { return CurrentValue; }
-            const T& operator()() const { return CurrentValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubForexDayline_
+  } // namespace IndexNasdaq100_200MaUpdownRate_
 
-  struct FinnhubForexDayline: sqlpp::table_t<FinnhubForexDayline,
-               FinnhubForexDayline_::ID,
-               FinnhubForexDayline_::Date,
-               FinnhubForexDayline_::Exchange,
-               FinnhubForexDayline_::Symbol,
-               FinnhubForexDayline_::LastClose,
-               FinnhubForexDayline_::Open,
-               FinnhubForexDayline_::High,
-               FinnhubForexDayline_::Low,
-               FinnhubForexDayline_::Close,
-               FinnhubForexDayline_::Volume,
-               FinnhubForexDayline_::Amount,
-               FinnhubForexDayline_::Dividend,
-               FinnhubForexDayline_::SplitFactor,
-               FinnhubForexDayline_::RelativeStrong,
-               FinnhubForexDayline_::RelativeStrongIndex,
-               FinnhubForexDayline_::RelativeStrongBackup,
-               FinnhubForexDayline_::UpAndDown,
-               FinnhubForexDayline_::UpDownRate,
-               FinnhubForexDayline_::ChangeHandRate,
-               FinnhubForexDayline_::TotalValue,
-               FinnhubForexDayline_::CurrentValue>
+  struct IndexNasdaq100_200MaUpdownRate: sqlpp::table_t<IndexNasdaq100_200MaUpdownRate,
+               IndexNasdaq100_200MaUpdownRate_::Date,
+               IndexNasdaq100_200MaUpdownRate_::Rate>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "finnhub_forex_dayline";
+      static constexpr const char _literal[] =  "index_nasdaq100_200ma_updown_rate";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T finnhubForexDayline;
-        T& operator()() { return finnhubForexDayline; }
-        const T& operator()() const { return finnhubForexDayline; }
+        T indexNasdaq100_200MaUpdownRate;
+        T& operator()() { return indexNasdaq100_200MaUpdownRate; }
+        const T& operator()() const { return indexNasdaq100_200MaUpdownRate; }
       };
     };
   };
-  namespace ChinaStockCode_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Description
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Description";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Description;
-            T& operator()() { return Description; }
-            const T& operator()() const { return Description; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct DisplaySymbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "DisplaySymbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T DisplaySymbol;
-            T& operator()() { return DisplaySymbol; }
-            const T& operator()() const { return DisplaySymbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct IPOStatus
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IPOStatus";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IPOStatus;
-            T& operator()() { return IPOStatus; }
-            const T& operator()() const { return IPOStatus; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct UpdateDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpdateDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpdateDate;
-            T& operator()() { return UpdateDate; }
-            const T& operator()() const { return UpdateDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace ChinaStockCode_
-
-  struct ChinaStockCode: sqlpp::table_t<ChinaStockCode,
-               ChinaStockCode_::ID,
-               ChinaStockCode_::Exchange,
-               ChinaStockCode_::Description,
-               ChinaStockCode_::Symbol,
-               ChinaStockCode_::DisplaySymbol,
-               ChinaStockCode_::IPOStatus,
-               ChinaStockCode_::UpdateDate>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "china_stock_code";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T chinaStockCode;
-        T& operator()() { return chinaStockCode; }
-        const T& operator()() const { return chinaStockCode; }
-      };
-    };
-  };
-  namespace FinnhubStockSecFilings_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T symbol;
-            T& operator()() { return symbol; }
-            const T& operator()() const { return symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct AccessNumber
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "accessNumber";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T accessNumber;
-            T& operator()() { return accessNumber; }
-            const T& operator()() const { return accessNumber; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Cik
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "cik";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T cik;
-            T& operator()() { return cik; }
-            const T& operator()() const { return cik; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Form
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "form";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T form;
-            T& operator()() { return form; }
-            const T& operator()() const { return form; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct AcceptedDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "acceptedDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T acceptedDate;
-            T& operator()() { return acceptedDate; }
-            const T& operator()() const { return acceptedDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct FiledDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "filedDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T filedDate;
-            T& operator()() { return filedDate; }
-            const T& operator()() const { return filedDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct FilingURL
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "filingURL";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T filingURL;
-            T& operator()() { return filingURL; }
-            const T& operator()() const { return filingURL; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct ReportURL
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "reportURL";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T reportURL;
-            T& operator()() { return reportURL; }
-            const T& operator()() const { return reportURL; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubStockSecFilings_
-
-  struct FinnhubStockSecFilings: sqlpp::table_t<FinnhubStockSecFilings,
-               FinnhubStockSecFilings_::ID,
-               FinnhubStockSecFilings_::Symbol,
-               FinnhubStockSecFilings_::AccessNumber,
-               FinnhubStockSecFilings_::Cik,
-               FinnhubStockSecFilings_::Form,
-               FinnhubStockSecFilings_::AcceptedDate,
-               FinnhubStockSecFilings_::FiledDate,
-               FinnhubStockSecFilings_::FilingURL,
-               FinnhubStockSecFilings_::ReportURL>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_stock_sec_filings";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubStockSecFilings;
-        T& operator()() { return finnhubStockSecFilings; }
-        const T& operator()() const { return finnhubStockSecFilings; }
-      };
-    };
-  };
-  namespace FinnhubStockEstimatesEpsSurprise_
+  namespace WorldChoiceStock_
   {
     struct ID
     {
@@ -3998,1475 +579,22 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Actual
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Actual";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Actual;
-            T& operator()() { return Actual; }
-            const T& operator()() const { return Actual; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Estimate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Estimate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Estimate;
-            T& operator()() { return Estimate; }
-            const T& operator()() const { return Estimate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubStockEstimatesEpsSurprise_
+  } // namespace WorldChoiceStock_
 
-  struct FinnhubStockEstimatesEpsSurprise: sqlpp::table_t<FinnhubStockEstimatesEpsSurprise,
-               FinnhubStockEstimatesEpsSurprise_::ID,
-               FinnhubStockEstimatesEpsSurprise_::Symbol,
-               FinnhubStockEstimatesEpsSurprise_::Date,
-               FinnhubStockEstimatesEpsSurprise_::Actual,
-               FinnhubStockEstimatesEpsSurprise_::Estimate>
+  struct WorldChoiceStock: sqlpp::table_t<WorldChoiceStock,
+               WorldChoiceStock_::ID,
+               WorldChoiceStock_::Symbol>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "finnhub_stock_estimates_eps_surprise";
+      static constexpr const char _literal[] =  "world_choice_stock";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T finnhubStockEstimatesEpsSurprise;
-        T& operator()() { return finnhubStockEstimatesEpsSurprise; }
-        const T& operator()() const { return finnhubStockEstimatesEpsSurprise; }
-      };
-    };
-  };
-  namespace FinnhubStockProfile_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct ExchangeCode
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ExchangeCode";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ExchangeCode;
-            T& operator()() { return ExchangeCode; }
-            const T& operator()() const { return ExchangeCode; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Description
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Description";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Description;
-            T& operator()() { return Description; }
-            const T& operator()() const { return Description; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct DisplaySymbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "DisplaySymbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T DisplaySymbol;
-            T& operator()() { return DisplaySymbol; }
-            const T& operator()() const { return DisplaySymbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Type
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Type";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Type;
-            T& operator()() { return Type; }
-            const T& operator()() const { return Type; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Mic
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Mic";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Mic;
-            T& operator()() { return Mic; }
-            const T& operator()() const { return Mic; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Figi
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Figi";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Figi;
-            T& operator()() { return Figi; }
-            const T& operator()() const { return Figi; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Currency
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Currency";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Currency;
-            T& operator()() { return Currency; }
-            const T& operator()() const { return Currency; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Address
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Address";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Address;
-            T& operator()() { return Address; }
-            const T& operator()() const { return Address; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct City
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "City";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T City;
-            T& operator()() { return City; }
-            const T& operator()() const { return City; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Country
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Country";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Country;
-            T& operator()() { return Country; }
-            const T& operator()() const { return Country; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Cusip
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "cusip";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T cusip;
-            T& operator()() { return cusip; }
-            const T& operator()() const { return cusip; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Sedol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "sedol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T sedol;
-            T& operator()() { return sedol; }
-            const T& operator()() const { return sedol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct EmployeeTotal
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "EmployeeTotal";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T EmployeeTotal;
-            T& operator()() { return EmployeeTotal; }
-            const T& operator()() const { return EmployeeTotal; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Ggroup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ggroup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ggroup;
-            T& operator()() { return ggroup; }
-            const T& operator()() const { return ggroup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Gind
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "gind";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T gind;
-            T& operator()() { return gind; }
-            const T& operator()() const { return gind; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Gsector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "gsector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T gsector;
-            T& operator()() { return gsector; }
-            const T& operator()() const { return gsector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Gsubind
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "gsubind";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T gsubind;
-            T& operator()() { return gsubind; }
-            const T& operator()() const { return gsubind; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct IPODate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IPODate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IPODate;
-            T& operator()() { return IPODate; }
-            const T& operator()() const { return IPODate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Isin
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "isin";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T isin;
-            T& operator()() { return isin; }
-            const T& operator()() const { return isin; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct MarketCapitalization
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "MarketCapitalization";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T MarketCapitalization;
-            T& operator()() { return MarketCapitalization; }
-            const T& operator()() const { return MarketCapitalization; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Naics
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "naics";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T naics;
-            T& operator()() { return naics; }
-            const T& operator()() const { return naics; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct NaicsNationalIndustry
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "naicsNationalIndustry";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T naicsNationalIndustry;
-            T& operator()() { return naicsNationalIndustry; }
-            const T& operator()() const { return naicsNationalIndustry; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct NaicsSector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "naicsSector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T naicsSector;
-            T& operator()() { return naicsSector; }
-            const T& operator()() const { return naicsSector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct NaicsSubsector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "naicsSubsector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T naicsSubsector;
-            T& operator()() { return naicsSubsector; }
-            const T& operator()() const { return naicsSubsector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Name
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Name";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Name;
-            T& operator()() { return Name; }
-            const T& operator()() const { return Name; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Phone
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Phone";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Phone;
-            T& operator()() { return Phone; }
-            const T& operator()() const { return Phone; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct ShareOutstanding
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ShareOutstanding";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ShareOutstanding;
-            T& operator()() { return ShareOutstanding; }
-            const T& operator()() const { return ShareOutstanding; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct State
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "state";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T state;
-            T& operator()() { return state; }
-            const T& operator()() const { return state; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Ticker
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Ticker";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Ticker;
-            T& operator()() { return Ticker; }
-            const T& operator()() const { return Ticker; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct WebURL
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "WebURL";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T WebURL;
-            T& operator()() { return WebURL; }
-            const T& operator()() const { return WebURL; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Logo
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Logo";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Logo;
-            T& operator()() { return Logo; }
-            const T& operator()() const { return Logo; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct FinnhubIndustry
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "FinnhubIndustry";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T FinnhubIndustry;
-            T& operator()() { return FinnhubIndustry; }
-            const T& operator()() const { return FinnhubIndustry; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Peer
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Peer";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Peer;
-            T& operator()() { return Peer; }
-            const T& operator()() const { return Peer; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct IPOStatus
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IPOStatus";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IPOStatus;
-            T& operator()() { return IPOStatus; }
-            const T& operator()() const { return IPOStatus; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct UpdateDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpdateDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpdateDate;
-            T& operator()() { return UpdateDate; }
-            const T& operator()() const { return UpdateDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubStockProfile_
-
-  struct FinnhubStockProfile: sqlpp::table_t<FinnhubStockProfile,
-               FinnhubStockProfile_::ID,
-               FinnhubStockProfile_::Symbol,
-               FinnhubStockProfile_::ExchangeCode,
-               FinnhubStockProfile_::Description,
-               FinnhubStockProfile_::DisplaySymbol,
-               FinnhubStockProfile_::Type,
-               FinnhubStockProfile_::Mic,
-               FinnhubStockProfile_::Figi,
-               FinnhubStockProfile_::Currency,
-               FinnhubStockProfile_::Address,
-               FinnhubStockProfile_::City,
-               FinnhubStockProfile_::Country,
-               FinnhubStockProfile_::Cusip,
-               FinnhubStockProfile_::Sedol,
-               FinnhubStockProfile_::EmployeeTotal,
-               FinnhubStockProfile_::Ggroup,
-               FinnhubStockProfile_::Gind,
-               FinnhubStockProfile_::Gsector,
-               FinnhubStockProfile_::Gsubind,
-               FinnhubStockProfile_::IPODate,
-               FinnhubStockProfile_::Isin,
-               FinnhubStockProfile_::MarketCapitalization,
-               FinnhubStockProfile_::Naics,
-               FinnhubStockProfile_::NaicsNationalIndustry,
-               FinnhubStockProfile_::NaicsSector,
-               FinnhubStockProfile_::NaicsSubsector,
-               FinnhubStockProfile_::Name,
-               FinnhubStockProfile_::Phone,
-               FinnhubStockProfile_::ShareOutstanding,
-               FinnhubStockProfile_::State,
-               FinnhubStockProfile_::Ticker,
-               FinnhubStockProfile_::WebURL,
-               FinnhubStockProfile_::Logo,
-               FinnhubStockProfile_::FinnhubIndustry,
-               FinnhubStockProfile_::Peer,
-               FinnhubStockProfile_::IPOStatus,
-               FinnhubStockProfile_::UpdateDate>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_stock_profile";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubStockProfile;
-        T& operator()() { return finnhubStockProfile; }
-        const T& operator()() const { return finnhubStockProfile; }
-      };
-    };
-  };
-  namespace FinnhubStockDayline_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct LastClose
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastClose";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastClose;
-            T& operator()() { return LastClose; }
-            const T& operator()() const { return LastClose; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Open
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Open";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Open;
-            T& operator()() { return Open; }
-            const T& operator()() const { return Open; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct High
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "High";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T High;
-            T& operator()() { return High; }
-            const T& operator()() const { return High; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Low
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Low";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Low;
-            T& operator()() { return Low; }
-            const T& operator()() const { return Low; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Close
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Close";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Close;
-            T& operator()() { return Close; }
-            const T& operator()() const { return Close; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Volume
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Volume";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Volume;
-            T& operator()() { return Volume; }
-            const T& operator()() const { return Volume; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Amount
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Amount";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Amount;
-            T& operator()() { return Amount; }
-            const T& operator()() const { return Amount; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Dividend
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Dividend";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Dividend;
-            T& operator()() { return Dividend; }
-            const T& operator()() const { return Dividend; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrong
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrong";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrong;
-            T& operator()() { return RelativeStrong; }
-            const T& operator()() const { return RelativeStrong; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongIndex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongIndex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongIndex;
-            T& operator()() { return RelativeStrongIndex; }
-            const T& operator()() const { return RelativeStrongIndex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongBackup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongBackup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongBackup;
-            T& operator()() { return RelativeStrongBackup; }
-            const T& operator()() const { return RelativeStrongBackup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpAndDown
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpAndDown";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpAndDown;
-            T& operator()() { return UpAndDown; }
-            const T& operator()() const { return UpAndDown; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpDownRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpDownRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpDownRate;
-            T& operator()() { return UpDownRate; }
-            const T& operator()() const { return UpDownRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct ChangeHandRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ChangeHandRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ChangeHandRate;
-            T& operator()() { return ChangeHandRate; }
-            const T& operator()() const { return ChangeHandRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct TotalValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TotalValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TotalValue;
-            T& operator()() { return TotalValue; }
-            const T& operator()() const { return TotalValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct CurrentValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrentValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrentValue;
-            T& operator()() { return CurrentValue; }
-            const T& operator()() const { return CurrentValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubStockDayline_
-
-  struct FinnhubStockDayline: sqlpp::table_t<FinnhubStockDayline,
-               FinnhubStockDayline_::ID,
-               FinnhubStockDayline_::Date,
-               FinnhubStockDayline_::Exchange,
-               FinnhubStockDayline_::Symbol,
-               FinnhubStockDayline_::LastClose,
-               FinnhubStockDayline_::Open,
-               FinnhubStockDayline_::High,
-               FinnhubStockDayline_::Low,
-               FinnhubStockDayline_::Close,
-               FinnhubStockDayline_::Volume,
-               FinnhubStockDayline_::Amount,
-               FinnhubStockDayline_::Dividend,
-               FinnhubStockDayline_::SplitFactor,
-               FinnhubStockDayline_::RelativeStrong,
-               FinnhubStockDayline_::RelativeStrongIndex,
-               FinnhubStockDayline_::RelativeStrongBackup,
-               FinnhubStockDayline_::UpAndDown,
-               FinnhubStockDayline_::UpDownRate,
-               FinnhubStockDayline_::ChangeHandRate,
-               FinnhubStockDayline_::TotalValue,
-               FinnhubStockDayline_::CurrentValue>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_stock_dayline";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubStockDayline;
-        T& operator()() { return finnhubStockDayline; }
-        const T& operator()() const { return finnhubStockDayline; }
-      };
-    };
-  };
-  namespace FinnhubCompanyNews_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Category
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Category";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Category;
-            T& operator()() { return Category; }
-            const T& operator()() const { return Category; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct DateTime
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "DateTime";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T DateTime;
-            T& operator()() { return DateTime; }
-            const T& operator()() const { return DateTime; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Headline
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Headline";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Headline;
-            T& operator()() { return Headline; }
-            const T& operator()() const { return Headline; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct NewsID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "NewsID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T NewsID;
-            T& operator()() { return NewsID; }
-            const T& operator()() const { return NewsID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Image
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Image";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Image;
-            T& operator()() { return Image; }
-            const T& operator()() const { return Image; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct RelatedSymbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelatedSymbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelatedSymbol;
-            T& operator()() { return RelatedSymbol; }
-            const T& operator()() const { return RelatedSymbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Source
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Source";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Source;
-            T& operator()() { return Source; }
-            const T& operator()() const { return Source; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Summary
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Summary";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Summary;
-            T& operator()() { return Summary; }
-            const T& operator()() const { return Summary; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct URL
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "URL";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T URL;
-            T& operator()() { return URL; }
-            const T& operator()() const { return URL; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubCompanyNews_
-
-  struct FinnhubCompanyNews: sqlpp::table_t<FinnhubCompanyNews,
-               FinnhubCompanyNews_::ID,
-               FinnhubCompanyNews_::Symbol,
-               FinnhubCompanyNews_::Category,
-               FinnhubCompanyNews_::DateTime,
-               FinnhubCompanyNews_::Headline,
-               FinnhubCompanyNews_::NewsID,
-               FinnhubCompanyNews_::Image,
-               FinnhubCompanyNews_::RelatedSymbol,
-               FinnhubCompanyNews_::Source,
-               FinnhubCompanyNews_::Summary,
-               FinnhubCompanyNews_::URL>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_company_news";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubCompanyNews;
-        T& operator()() { return finnhubCompanyNews; }
-        const T& operator()() const { return finnhubCompanyNews; }
-      };
-    };
-  };
-  namespace FinnhubEconomicCalendar_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Time
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Time";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Time;
-            T& operator()() { return Time; }
-            const T& operator()() const { return Time; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Country
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Country";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Country;
-            T& operator()() { return Country; }
-            const T& operator()() const { return Country; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Event
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Event";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Event;
-            T& operator()() { return Event; }
-            const T& operator()() const { return Event; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Impact
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Impact";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Impact;
-            T& operator()() { return Impact; }
-            const T& operator()() const { return Impact; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Actual
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Actual";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Actual;
-            T& operator()() { return Actual; }
-            const T& operator()() const { return Actual; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Estimate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Estimate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Estimate;
-            T& operator()() { return Estimate; }
-            const T& operator()() const { return Estimate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Prev
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Prev";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Prev;
-            T& operator()() { return Prev; }
-            const T& operator()() const { return Prev; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Unit
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Unit";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Unit;
-            T& operator()() { return Unit; }
-            const T& operator()() const { return Unit; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubEconomicCalendar_
-
-  struct FinnhubEconomicCalendar: sqlpp::table_t<FinnhubEconomicCalendar,
-               FinnhubEconomicCalendar_::ID,
-               FinnhubEconomicCalendar_::Time,
-               FinnhubEconomicCalendar_::Country,
-               FinnhubEconomicCalendar_::Event,
-               FinnhubEconomicCalendar_::Impact,
-               FinnhubEconomicCalendar_::Actual,
-               FinnhubEconomicCalendar_::Estimate,
-               FinnhubEconomicCalendar_::Prev,
-               FinnhubEconomicCalendar_::Unit>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_economic_calendar";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubEconomicCalendar;
-        T& operator()() { return finnhubEconomicCalendar; }
-        const T& operator()() const { return finnhubEconomicCalendar; }
+        T worldChoiceStock;
+        T& operator()() { return worldChoiceStock; }
+        const T& operator()() const { return worldChoiceStock; }
       };
     };
   };
@@ -7002,1227 +2130,6 @@ namespace StockMarket
       };
     };
   };
-  namespace TiingoStockDayline_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct LastClose
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastClose";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastClose;
-            T& operator()() { return LastClose; }
-            const T& operator()() const { return LastClose; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Open
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Open";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Open;
-            T& operator()() { return Open; }
-            const T& operator()() const { return Open; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct High
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "High";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T High;
-            T& operator()() { return High; }
-            const T& operator()() const { return High; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Low
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Low";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Low;
-            T& operator()() { return Low; }
-            const T& operator()() const { return Low; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Close
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Close";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Close;
-            T& operator()() { return Close; }
-            const T& operator()() const { return Close; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Volume
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Volume";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Volume;
-            T& operator()() { return Volume; }
-            const T& operator()() const { return Volume; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Amount
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Amount";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Amount;
-            T& operator()() { return Amount; }
-            const T& operator()() const { return Amount; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Dividend
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Dividend";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Dividend;
-            T& operator()() { return Dividend; }
-            const T& operator()() const { return Dividend; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrong
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrong";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrong;
-            T& operator()() { return RelativeStrong; }
-            const T& operator()() const { return RelativeStrong; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongIndex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongIndex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongIndex;
-            T& operator()() { return RelativeStrongIndex; }
-            const T& operator()() const { return RelativeStrongIndex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongBackup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongBackup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongBackup;
-            T& operator()() { return RelativeStrongBackup; }
-            const T& operator()() const { return RelativeStrongBackup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpAndDown
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpAndDown";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpAndDown;
-            T& operator()() { return UpAndDown; }
-            const T& operator()() const { return UpAndDown; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpDownRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpDownRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpDownRate;
-            T& operator()() { return UpDownRate; }
-            const T& operator()() const { return UpDownRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct ChangeHandRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ChangeHandRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ChangeHandRate;
-            T& operator()() { return ChangeHandRate; }
-            const T& operator()() const { return ChangeHandRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct TotalValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TotalValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TotalValue;
-            T& operator()() { return TotalValue; }
-            const T& operator()() const { return TotalValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct CurrentValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrentValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrentValue;
-            T& operator()() { return CurrentValue; }
-            const T& operator()() const { return CurrentValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoStockDayline_
-
-  struct TiingoStockDayline: sqlpp::table_t<TiingoStockDayline,
-               TiingoStockDayline_::ID,
-               TiingoStockDayline_::Date,
-               TiingoStockDayline_::Exchange,
-               TiingoStockDayline_::Symbol,
-               TiingoStockDayline_::LastClose,
-               TiingoStockDayline_::Open,
-               TiingoStockDayline_::High,
-               TiingoStockDayline_::Low,
-               TiingoStockDayline_::Close,
-               TiingoStockDayline_::Volume,
-               TiingoStockDayline_::Amount,
-               TiingoStockDayline_::Dividend,
-               TiingoStockDayline_::SplitFactor,
-               TiingoStockDayline_::RelativeStrong,
-               TiingoStockDayline_::RelativeStrongIndex,
-               TiingoStockDayline_::RelativeStrongBackup,
-               TiingoStockDayline_::UpAndDown,
-               TiingoStockDayline_::UpDownRate,
-               TiingoStockDayline_::ChangeHandRate,
-               TiingoStockDayline_::TotalValue,
-               TiingoStockDayline_::CurrentValue>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "tiingo_stock_dayline";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T tiingoStockDayline;
-        T& operator()() { return tiingoStockDayline; }
-        const T& operator()() const { return tiingoStockDayline; }
-      };
-    };
-  };
-  namespace TiingoStockDelistedSymbol_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoStockDelistedSymbol_
-
-  struct TiingoStockDelistedSymbol: sqlpp::table_t<TiingoStockDelistedSymbol,
-               TiingoStockDelistedSymbol_::ID,
-               TiingoStockDelistedSymbol_::Symbol,
-               TiingoStockDelistedSymbol_::Date>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "tiingo_stock_delisted_symbol";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T tiingoStockDelistedSymbol;
-        T& operator()() { return tiingoStockDelistedSymbol; }
-        const T& operator()() const { return tiingoStockDelistedSymbol; }
-      };
-    };
-  };
-  namespace ChinaStockCodeSection_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::require_insert>;
-    };
-    struct Active
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Active";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Active;
-            T& operator()() { return Active; }
-            const T& operator()() const { return Active; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Market
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Market";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Market;
-            T& operator()() { return Market; }
-            const T& operator()() const { return Market; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct IndexNumber
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "IndexNumber";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T IndexNumber;
-            T& operator()() { return IndexNumber; }
-            const T& operator()() const { return IndexNumber; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Comment
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Comment";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Comment;
-            T& operator()() { return Comment; }
-            const T& operator()() const { return Comment; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace ChinaStockCodeSection_
-
-  struct ChinaStockCodeSection: sqlpp::table_t<ChinaStockCodeSection,
-               ChinaStockCodeSection_::ID,
-               ChinaStockCodeSection_::Active,
-               ChinaStockCodeSection_::Market,
-               ChinaStockCodeSection_::IndexNumber,
-               ChinaStockCodeSection_::Comment>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "china_stock_code_section";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T chinaStockCodeSection;
-        T& operator()() { return chinaStockCodeSection; }
-        const T& operator()() const { return chinaStockCodeSection; }
-      };
-    };
-  };
-  namespace FinnhubCryptoDayline_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct LastClose
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastClose";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastClose;
-            T& operator()() { return LastClose; }
-            const T& operator()() const { return LastClose; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Open
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Open";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Open;
-            T& operator()() { return Open; }
-            const T& operator()() const { return Open; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct High
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "High";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T High;
-            T& operator()() { return High; }
-            const T& operator()() const { return High; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Low
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Low";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Low;
-            T& operator()() { return Low; }
-            const T& operator()() const { return Low; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Close
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Close";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Close;
-            T& operator()() { return Close; }
-            const T& operator()() const { return Close; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Volume
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Volume";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Volume;
-            T& operator()() { return Volume; }
-            const T& operator()() const { return Volume; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Amount
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Amount";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Amount;
-            T& operator()() { return Amount; }
-            const T& operator()() const { return Amount; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct Dividend
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Dividend";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Dividend;
-            T& operator()() { return Dividend; }
-            const T& operator()() const { return Dividend; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct SplitFactor
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "SplitFactor";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T SplitFactor;
-            T& operator()() { return SplitFactor; }
-            const T& operator()() const { return SplitFactor; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrong
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrong";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrong;
-            T& operator()() { return RelativeStrong; }
-            const T& operator()() const { return RelativeStrong; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongIndex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongIndex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongIndex;
-            T& operator()() { return RelativeStrongIndex; }
-            const T& operator()() const { return RelativeStrongIndex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct RelativeStrongBackup
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongBackup";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongBackup;
-            T& operator()() { return RelativeStrongBackup; }
-            const T& operator()() const { return RelativeStrongBackup; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpAndDown
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpAndDown";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpAndDown;
-            T& operator()() { return UpAndDown; }
-            const T& operator()() const { return UpAndDown; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct UpDownRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpDownRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpDownRate;
-            T& operator()() { return UpDownRate; }
-            const T& operator()() const { return UpDownRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct ChangeHandRate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ChangeHandRate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ChangeHandRate;
-            T& operator()() { return ChangeHandRate; }
-            const T& operator()() const { return ChangeHandRate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct TotalValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "TotalValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T TotalValue;
-            T& operator()() { return TotalValue; }
-            const T& operator()() const { return TotalValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-    struct CurrentValue
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "CurrentValue";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T CurrentValue;
-            T& operator()() { return CurrentValue; }
-            const T& operator()() const { return CurrentValue; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubCryptoDayline_
-
-  struct FinnhubCryptoDayline: sqlpp::table_t<FinnhubCryptoDayline,
-               FinnhubCryptoDayline_::ID,
-               FinnhubCryptoDayline_::Date,
-               FinnhubCryptoDayline_::Exchange,
-               FinnhubCryptoDayline_::Symbol,
-               FinnhubCryptoDayline_::LastClose,
-               FinnhubCryptoDayline_::Open,
-               FinnhubCryptoDayline_::High,
-               FinnhubCryptoDayline_::Low,
-               FinnhubCryptoDayline_::Close,
-               FinnhubCryptoDayline_::Volume,
-               FinnhubCryptoDayline_::Amount,
-               FinnhubCryptoDayline_::Dividend,
-               FinnhubCryptoDayline_::SplitFactor,
-               FinnhubCryptoDayline_::RelativeStrong,
-               FinnhubCryptoDayline_::RelativeStrongIndex,
-               FinnhubCryptoDayline_::RelativeStrongBackup,
-               FinnhubCryptoDayline_::UpAndDown,
-               FinnhubCryptoDayline_::UpDownRate,
-               FinnhubCryptoDayline_::ChangeHandRate,
-               FinnhubCryptoDayline_::TotalValue,
-               FinnhubCryptoDayline_::CurrentValue>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "finnhub_crypto_dayline";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T finnhubCryptoDayline;
-        T& operator()() { return finnhubCryptoDayline; }
-        const T& operator()() const { return finnhubCryptoDayline; }
-      };
-    };
-  };
-  namespace TiingoStock52WeekLow_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Symbol
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Symbol";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Symbol;
-            T& operator()() { return Symbol; }
-            const T& operator()() const { return Symbol; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Exchange
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Exchange";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Exchange;
-            T& operator()() { return Exchange; }
-            const T& operator()() const { return Exchange; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Date
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Date";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Date;
-            T& operator()() { return Date; }
-            const T& operator()() const { return Date; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoStock52WeekLow_
-
-  struct TiingoStock52WeekLow: sqlpp::table_t<TiingoStock52WeekLow,
-               TiingoStock52WeekLow_::ID,
-               TiingoStock52WeekLow_::Symbol,
-               TiingoStock52WeekLow_::Exchange,
-               TiingoStock52WeekLow_::Date>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "tiingo_stock_52week_low";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T tiingoStock52WeekLow;
-        T& operator()() { return tiingoStock52WeekLow; }
-        const T& operator()() const { return tiingoStock52WeekLow; }
-      };
-    };
-  };
-  namespace ChinaMarketOptions_
-  {
-    struct RelativeStrongStartDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongStartDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongStartDate;
-            T& operator()() { return RelativeStrongStartDate; }
-            const T& operator()() const { return RelativeStrongStartDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer>;
-    };
-    struct RelativeStrongEndDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "RelativeStrongEndDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T RelativeStrongEndDate;
-            T& operator()() { return RelativeStrongEndDate; }
-            const T& operator()() const { return RelativeStrongEndDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct LastLoginDate
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastLoginDate";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastLoginDate;
-            T& operator()() { return LastLoginDate; }
-            const T& operator()() const { return LastLoginDate; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct LastLoginTime
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "LastLoginTime";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T LastLoginTime;
-            T& operator()() { return LastLoginTime; }
-            const T& operator()() const { return LastLoginTime; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct UpdatedDateFor10DaysRS1
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpdatedDateFor10DaysRS1";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpdatedDateFor10DaysRS1;
-            T& operator()() { return UpdatedDateFor10DaysRS1; }
-            const T& operator()() const { return UpdatedDateFor10DaysRS1; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct UpdatedDateFor10DaysRS2
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpdatedDateFor10DaysRS2";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpdatedDateFor10DaysRS2;
-            T& operator()() { return UpdatedDateFor10DaysRS2; }
-            const T& operator()() const { return UpdatedDateFor10DaysRS2; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-    struct UpdatedDateFor10DaysRS
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "UpdatedDateFor10DaysRS";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T UpdatedDateFor10DaysRS;
-            T& operator()() { return UpdatedDateFor10DaysRS; }
-            const T& operator()() const { return UpdatedDateFor10DaysRS; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace ChinaMarketOptions_
-
-  struct ChinaMarketOptions: sqlpp::table_t<ChinaMarketOptions,
-               ChinaMarketOptions_::RelativeStrongStartDate,
-               ChinaMarketOptions_::RelativeStrongEndDate,
-               ChinaMarketOptions_::LastLoginDate,
-               ChinaMarketOptions_::LastLoginTime,
-               ChinaMarketOptions_::UpdatedDateFor10DaysRS1,
-               ChinaMarketOptions_::UpdatedDateFor10DaysRS2,
-               ChinaMarketOptions_::UpdatedDateFor10DaysRS>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "china_market_options";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T chinaMarketOptions;
-        T& operator()() { return chinaMarketOptions; }
-        const T& operator()() const { return chinaMarketOptions; }
-      };
-    };
-  };
-  namespace TiingoIndustry_
-  {
-    struct ID
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "ID";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T ID;
-            T& operator()() { return ID; }
-            const T& operator()() const { return ID; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
-    };
-    struct Industry
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Industry";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Industry;
-            T& operator()() { return Industry; }
-            const T& operator()() const { return Industry; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Sector
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Sector";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Sector;
-            T& operator()() { return Sector; }
-            const T& operator()() const { return Sector; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-  } // namespace TiingoIndustry_
-
-  struct TiingoIndustry: sqlpp::table_t<TiingoIndustry,
-               TiingoIndustry_::ID,
-               TiingoIndustry_::Industry,
-               TiingoIndustry_::Sector>
-  {
-    struct _alias_t
-    {
-      static constexpr const char _literal[] =  "tiingo_industry";
-      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-      template<typename T>
-      struct _member_t
-      {
-        T tiingoIndustry;
-        T& operator()() { return tiingoIndustry; }
-        const T& operator()() const { return tiingoIndustry; }
-      };
-    };
-  };
   namespace FinnhubCryptoExchange_
   {
     struct ID
@@ -8463,6 +2370,1554 @@ namespace StockMarket
       };
     };
   };
+  namespace FinnhubCompanyNews_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Category
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Category";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Category;
+            T& operator()() { return Category; }
+            const T& operator()() const { return Category; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct DateTime
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "DateTime";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T DateTime;
+            T& operator()() { return DateTime; }
+            const T& operator()() const { return DateTime; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Headline
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Headline";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Headline;
+            T& operator()() { return Headline; }
+            const T& operator()() const { return Headline; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct NewsID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "NewsID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T NewsID;
+            T& operator()() { return NewsID; }
+            const T& operator()() const { return NewsID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Image
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Image";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Image;
+            T& operator()() { return Image; }
+            const T& operator()() const { return Image; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct RelatedSymbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "RelatedSymbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T RelatedSymbol;
+            T& operator()() { return RelatedSymbol; }
+            const T& operator()() const { return RelatedSymbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Source
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Source";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Source;
+            T& operator()() { return Source; }
+            const T& operator()() const { return Source; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Summary
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Summary";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Summary;
+            T& operator()() { return Summary; }
+            const T& operator()() const { return Summary; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct URL
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "URL";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T URL;
+            T& operator()() { return URL; }
+            const T& operator()() const { return URL; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubCompanyNews_
+
+  struct FinnhubCompanyNews: sqlpp::table_t<FinnhubCompanyNews,
+               FinnhubCompanyNews_::ID,
+               FinnhubCompanyNews_::Symbol,
+               FinnhubCompanyNews_::Category,
+               FinnhubCompanyNews_::DateTime,
+               FinnhubCompanyNews_::Headline,
+               FinnhubCompanyNews_::NewsID,
+               FinnhubCompanyNews_::Image,
+               FinnhubCompanyNews_::RelatedSymbol,
+               FinnhubCompanyNews_::Source,
+               FinnhubCompanyNews_::Summary,
+               FinnhubCompanyNews_::URL>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_company_news";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubCompanyNews;
+        T& operator()() { return finnhubCompanyNews; }
+        const T& operator()() const { return finnhubCompanyNews; }
+      };
+    };
+  };
+  namespace FinnhubInsiderTransaction_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct PersonName
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "PersonName";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T PersonName;
+            T& operator()() { return PersonName; }
+            const T& operator()() const { return PersonName; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Share
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Share";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Share;
+            T& operator()() { return Share; }
+            const T& operator()() const { return Share; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Change
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Change";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Change;
+            T& operator()() { return Change; }
+            const T& operator()() const { return Change; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct FilingDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "FilingDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T FilingDate;
+            T& operator()() { return FilingDate; }
+            const T& operator()() const { return FilingDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct TransactionDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TransactionDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TransactionDate;
+            T& operator()() { return TransactionDate; }
+            const T& operator()() const { return TransactionDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct TransactionCode
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TransactionCode";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TransactionCode;
+            T& operator()() { return TransactionCode; }
+            const T& operator()() const { return TransactionCode; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct TransactionPrice
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TransactionPrice";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TransactionPrice;
+            T& operator()() { return TransactionPrice; }
+            const T& operator()() const { return TransactionPrice; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubInsiderTransaction_
+
+  struct FinnhubInsiderTransaction: sqlpp::table_t<FinnhubInsiderTransaction,
+               FinnhubInsiderTransaction_::ID,
+               FinnhubInsiderTransaction_::Symbol,
+               FinnhubInsiderTransaction_::PersonName,
+               FinnhubInsiderTransaction_::Share,
+               FinnhubInsiderTransaction_::Change,
+               FinnhubInsiderTransaction_::FilingDate,
+               FinnhubInsiderTransaction_::TransactionDate,
+               FinnhubInsiderTransaction_::TransactionCode,
+               FinnhubInsiderTransaction_::TransactionPrice>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_insider_transaction";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubInsiderTransaction;
+        T& operator()() { return finnhubInsiderTransaction; }
+        const T& operator()() const { return finnhubInsiderTransaction; }
+      };
+    };
+  };
+  namespace TiingoStock52WeekHigh_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+  } // namespace TiingoStock52WeekHigh_
+
+  struct TiingoStock52WeekHigh: sqlpp::table_t<TiingoStock52WeekHigh,
+               TiingoStock52WeekHigh_::ID,
+               TiingoStock52WeekHigh_::Symbol,
+               TiingoStock52WeekHigh_::Exchange,
+               TiingoStock52WeekHigh_::Date>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "tiingo_stock_52week_high";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T tiingoStock52WeekHigh;
+        T& operator()() { return tiingoStock52WeekHigh; }
+        const T& operator()() const { return tiingoStock52WeekHigh; }
+      };
+    };
+  };
+  namespace SicIndustry_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Code
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Code";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Code;
+            T& operator()() { return Code; }
+            const T& operator()() const { return Code; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Industry
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Industry";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Industry;
+            T& operator()() { return Industry; }
+            const T& operator()() const { return Industry; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Sector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Sector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Sector;
+            T& operator()() { return Sector; }
+            const T& operator()() const { return Sector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace SicIndustry_
+
+  struct SicIndustry: sqlpp::table_t<SicIndustry,
+               SicIndustry_::ID,
+               SicIndustry_::Code,
+               SicIndustry_::Industry,
+               SicIndustry_::Sector>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "sic_industry";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T sicIndustry;
+        T& operator()() { return sicIndustry; }
+        const T& operator()() const { return sicIndustry; }
+      };
+    };
+  };
+  namespace FinnhubForexSymbol_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Description
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Description";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Description;
+            T& operator()() { return Description; }
+            const T& operator()() const { return Description; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct DisplaySymbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "DisplaySymbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T DisplaySymbol;
+            T& operator()() { return DisplaySymbol; }
+            const T& operator()() const { return DisplaySymbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct IPOStatus
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IPOStatus";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IPOStatus;
+            T& operator()() { return IPOStatus; }
+            const T& operator()() const { return IPOStatus; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct UpdateDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpdateDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpdateDate;
+            T& operator()() { return UpdateDate; }
+            const T& operator()() const { return UpdateDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubForexSymbol_
+
+  struct FinnhubForexSymbol: sqlpp::table_t<FinnhubForexSymbol,
+               FinnhubForexSymbol_::ID,
+               FinnhubForexSymbol_::Description,
+               FinnhubForexSymbol_::DisplaySymbol,
+               FinnhubForexSymbol_::Exchange,
+               FinnhubForexSymbol_::Symbol,
+               FinnhubForexSymbol_::IPOStatus,
+               FinnhubForexSymbol_::UpdateDate>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_forex_symbol";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubForexSymbol;
+        T& operator()() { return finnhubForexSymbol; }
+        const T& operator()() const { return finnhubForexSymbol; }
+      };
+    };
+  };
+  namespace NaicsIndustry_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Naics
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Naics";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Naics;
+            T& operator()() { return Naics; }
+            const T& operator()() const { return Naics; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct NationalIndustry
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "NationalIndustry";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T NationalIndustry;
+            T& operator()() { return NationalIndustry; }
+            const T& operator()() const { return NationalIndustry; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Sector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Sector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Sector;
+            T& operator()() { return Sector; }
+            const T& operator()() const { return Sector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct SubSector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SubSector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SubSector;
+            T& operator()() { return SubSector; }
+            const T& operator()() const { return SubSector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace NaicsIndustry_
+
+  struct NaicsIndustry: sqlpp::table_t<NaicsIndustry,
+               NaicsIndustry_::ID,
+               NaicsIndustry_::Naics,
+               NaicsIndustry_::NationalIndustry,
+               NaicsIndustry_::Sector,
+               NaicsIndustry_::SubSector>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "naics_industry";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T naicsIndustry;
+        T& operator()() { return naicsIndustry; }
+        const T& operator()() const { return naicsIndustry; }
+      };
+    };
+  };
+  namespace ChinaStockWeekline_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct LastClose
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastClose";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastClose;
+            T& operator()() { return LastClose; }
+            const T& operator()() const { return LastClose; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Open
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Open";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Open;
+            T& operator()() { return Open; }
+            const T& operator()() const { return Open; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct High
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "High";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T High;
+            T& operator()() { return High; }
+            const T& operator()() const { return High; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Low
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Low";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Low;
+            T& operator()() { return Low; }
+            const T& operator()() const { return Low; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Close
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Close";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Close;
+            T& operator()() { return Close; }
+            const T& operator()() const { return Close; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Volume
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Volume";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Volume;
+            T& operator()() { return Volume; }
+            const T& operator()() const { return Volume; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Amount
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Amount";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Amount;
+            T& operator()() { return Amount; }
+            const T& operator()() const { return Amount; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Dividend
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Dividend";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Dividend;
+            T& operator()() { return Dividend; }
+            const T& operator()() const { return Dividend; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpAndDown
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpAndDown";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpAndDown;
+            T& operator()() { return UpAndDown; }
+            const T& operator()() const { return UpAndDown; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpDownRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpDownRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpDownRate;
+            T& operator()() { return UpDownRate; }
+            const T& operator()() const { return UpDownRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct ChangeHandRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ChangeHandRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ChangeHandRate;
+            T& operator()() { return ChangeHandRate; }
+            const T& operator()() const { return ChangeHandRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct TotalValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TotalValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TotalValue;
+            T& operator()() { return TotalValue; }
+            const T& operator()() const { return TotalValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct CurrentValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrentValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrentValue;
+            T& operator()() { return CurrentValue; }
+            const T& operator()() const { return CurrentValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace ChinaStockWeekline_
+
+  struct ChinaStockWeekline: sqlpp::table_t<ChinaStockWeekline,
+               ChinaStockWeekline_::ID,
+               ChinaStockWeekline_::Date,
+               ChinaStockWeekline_::Exchange,
+               ChinaStockWeekline_::Symbol,
+               ChinaStockWeekline_::LastClose,
+               ChinaStockWeekline_::Open,
+               ChinaStockWeekline_::High,
+               ChinaStockWeekline_::Low,
+               ChinaStockWeekline_::Close,
+               ChinaStockWeekline_::Volume,
+               ChinaStockWeekline_::Amount,
+               ChinaStockWeekline_::Dividend,
+               ChinaStockWeekline_::SplitFactor,
+               ChinaStockWeekline_::UpAndDown,
+               ChinaStockWeekline_::UpDownRate,
+               ChinaStockWeekline_::ChangeHandRate,
+               ChinaStockWeekline_::TotalValue,
+               ChinaStockWeekline_::CurrentValue>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "china_stock_weekline";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T chinaStockWeekline;
+        T& operator()() { return chinaStockWeekline; }
+        const T& operator()() const { return chinaStockWeekline; }
+      };
+    };
+  };
+  namespace FinnhubInsiderSentiment_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Change
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Change";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Change;
+            T& operator()() { return Change; }
+            const T& operator()() const { return Change; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Mspr
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "mspr";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T mspr;
+            T& operator()() { return mspr; }
+            const T& operator()() const { return mspr; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubInsiderSentiment_
+
+  struct FinnhubInsiderSentiment: sqlpp::table_t<FinnhubInsiderSentiment,
+               FinnhubInsiderSentiment_::ID,
+               FinnhubInsiderSentiment_::Symbol,
+               FinnhubInsiderSentiment_::Date,
+               FinnhubInsiderSentiment_::Change,
+               FinnhubInsiderSentiment_::Mspr>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_insider_sentiment";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubInsiderSentiment;
+        T& operator()() { return finnhubInsiderSentiment; }
+        const T& operator()() const { return finnhubInsiderSentiment; }
+      };
+    };
+  };
+  namespace TiingoStockDayline_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct LastClose
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastClose";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastClose;
+            T& operator()() { return LastClose; }
+            const T& operator()() const { return LastClose; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Open
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Open";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Open;
+            T& operator()() { return Open; }
+            const T& operator()() const { return Open; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct High
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "High";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T High;
+            T& operator()() { return High; }
+            const T& operator()() const { return High; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Low
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Low";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Low;
+            T& operator()() { return Low; }
+            const T& operator()() const { return Low; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Close
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Close";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Close;
+            T& operator()() { return Close; }
+            const T& operator()() const { return Close; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Volume
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Volume";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Volume;
+            T& operator()() { return Volume; }
+            const T& operator()() const { return Volume; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Amount
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Amount";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Amount;
+            T& operator()() { return Amount; }
+            const T& operator()() const { return Amount; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Dividend
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Dividend";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Dividend;
+            T& operator()() { return Dividend; }
+            const T& operator()() const { return Dividend; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpAndDown
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpAndDown";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpAndDown;
+            T& operator()() { return UpAndDown; }
+            const T& operator()() const { return UpAndDown; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpDownRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpDownRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpDownRate;
+            T& operator()() { return UpDownRate; }
+            const T& operator()() const { return UpDownRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct ChangeHandRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ChangeHandRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ChangeHandRate;
+            T& operator()() { return ChangeHandRate; }
+            const T& operator()() const { return ChangeHandRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct TotalValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TotalValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TotalValue;
+            T& operator()() { return TotalValue; }
+            const T& operator()() const { return TotalValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct CurrentValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrentValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrentValue;
+            T& operator()() { return CurrentValue; }
+            const T& operator()() const { return CurrentValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace TiingoStockDayline_
+
+  struct TiingoStockDayline: sqlpp::table_t<TiingoStockDayline,
+               TiingoStockDayline_::ID,
+               TiingoStockDayline_::Date,
+               TiingoStockDayline_::Exchange,
+               TiingoStockDayline_::Symbol,
+               TiingoStockDayline_::LastClose,
+               TiingoStockDayline_::Open,
+               TiingoStockDayline_::High,
+               TiingoStockDayline_::Low,
+               TiingoStockDayline_::Close,
+               TiingoStockDayline_::Volume,
+               TiingoStockDayline_::Amount,
+               TiingoStockDayline_::Dividend,
+               TiingoStockDayline_::SplitFactor,
+               TiingoStockDayline_::UpAndDown,
+               TiingoStockDayline_::UpDownRate,
+               TiingoStockDayline_::ChangeHandRate,
+               TiingoStockDayline_::TotalValue,
+               TiingoStockDayline_::CurrentValue>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "tiingo_stock_dayline";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T tiingoStockDayline;
+        T& operator()() { return tiingoStockDayline; }
+        const T& operator()() const { return tiingoStockDayline; }
+      };
+    };
+  };
   namespace WorldChoiceCrypto_
   {
     struct ID
@@ -8516,8 +3971,574 @@ namespace StockMarket
       };
     };
   };
-  namespace IndexNasdaq100_200MaUpdownRate_
+  namespace FinnhubCryptoSymbol_
   {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Description
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Description";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Description;
+            T& operator()() { return Description; }
+            const T& operator()() const { return Description; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct DisplaySymbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "DisplaySymbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T DisplaySymbol;
+            T& operator()() { return DisplaySymbol; }
+            const T& operator()() const { return DisplaySymbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct IPOStatus
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IPOStatus";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IPOStatus;
+            T& operator()() { return IPOStatus; }
+            const T& operator()() const { return IPOStatus; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct UpdateDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpdateDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpdateDate;
+            T& operator()() { return UpdateDate; }
+            const T& operator()() const { return UpdateDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubCryptoSymbol_
+
+  struct FinnhubCryptoSymbol: sqlpp::table_t<FinnhubCryptoSymbol,
+               FinnhubCryptoSymbol_::ID,
+               FinnhubCryptoSymbol_::Description,
+               FinnhubCryptoSymbol_::DisplaySymbol,
+               FinnhubCryptoSymbol_::Exchange,
+               FinnhubCryptoSymbol_::Symbol,
+               FinnhubCryptoSymbol_::IPOStatus,
+               FinnhubCryptoSymbol_::UpdateDate>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_crypto_symbol";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubCryptoSymbol;
+        T& operator()() { return finnhubCryptoSymbol; }
+        const T& operator()() const { return finnhubCryptoSymbol; }
+      };
+    };
+  };
+  namespace FinnhubEconomicCalendar_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Time
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Time";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Time;
+            T& operator()() { return Time; }
+            const T& operator()() const { return Time; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Country
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Country";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Country;
+            T& operator()() { return Country; }
+            const T& operator()() const { return Country; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Event
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Event";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Event;
+            T& operator()() { return Event; }
+            const T& operator()() const { return Event; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Impact
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Impact";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Impact;
+            T& operator()() { return Impact; }
+            const T& operator()() const { return Impact; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Actual
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Actual";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Actual;
+            T& operator()() { return Actual; }
+            const T& operator()() const { return Actual; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Estimate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Estimate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Estimate;
+            T& operator()() { return Estimate; }
+            const T& operator()() const { return Estimate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Prev
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Prev";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Prev;
+            T& operator()() { return Prev; }
+            const T& operator()() const { return Prev; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Unit
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Unit";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Unit;
+            T& operator()() { return Unit; }
+            const T& operator()() const { return Unit; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubEconomicCalendar_
+
+  struct FinnhubEconomicCalendar: sqlpp::table_t<FinnhubEconomicCalendar,
+               FinnhubEconomicCalendar_::ID,
+               FinnhubEconomicCalendar_::Time,
+               FinnhubEconomicCalendar_::Country,
+               FinnhubEconomicCalendar_::Event,
+               FinnhubEconomicCalendar_::Impact,
+               FinnhubEconomicCalendar_::Actual,
+               FinnhubEconomicCalendar_::Estimate,
+               FinnhubEconomicCalendar_::Prev,
+               FinnhubEconomicCalendar_::Unit>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_economic_calendar";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubEconomicCalendar;
+        T& operator()() { return finnhubEconomicCalendar; }
+        const T& operator()() const { return finnhubEconomicCalendar; }
+      };
+    };
+  };
+  namespace FinnhubForexExchange_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Code
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "code";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T code;
+            T& operator()() { return code; }
+            const T& operator()() const { return code; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Name
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "name";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T name;
+            T& operator()() { return name; }
+            const T& operator()() const { return name; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Mic
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "mic";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T mic;
+            T& operator()() { return mic; }
+            const T& operator()() const { return mic; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Timezone
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "timezone";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T timezone;
+            T& operator()() { return timezone; }
+            const T& operator()() const { return timezone; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct PreMarket
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "pre_market";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T preMarket;
+            T& operator()() { return preMarket; }
+            const T& operator()() const { return preMarket; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Hour
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "hour";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T hour;
+            T& operator()() { return hour; }
+            const T& operator()() const { return hour; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct PostMarket
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "post_market";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T postMarket;
+            T& operator()() { return postMarket; }
+            const T& operator()() const { return postMarket; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct CloseDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "close_date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T closeDate;
+            T& operator()() { return closeDate; }
+            const T& operator()() const { return closeDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Country
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "country";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T country;
+            T& operator()() { return country; }
+            const T& operator()() const { return country; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct CountryName
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "country_name";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T countryName;
+            T& operator()() { return countryName; }
+            const T& operator()() const { return countryName; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Source
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "source";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T source;
+            T& operator()() { return source; }
+            const T& operator()() const { return source; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct MyUnknownColumn
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "MyUnknownColumn";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T MyUnknownColumn;
+            T& operator()() { return MyUnknownColumn; }
+            const T& operator()() const { return MyUnknownColumn; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubForexExchange_
+
+  struct FinnhubForexExchange: sqlpp::table_t<FinnhubForexExchange,
+               FinnhubForexExchange_::ID,
+               FinnhubForexExchange_::Code,
+               FinnhubForexExchange_::Name,
+               FinnhubForexExchange_::Mic,
+               FinnhubForexExchange_::Timezone,
+               FinnhubForexExchange_::PreMarket,
+               FinnhubForexExchange_::Hour,
+               FinnhubForexExchange_::PostMarket,
+               FinnhubForexExchange_::CloseDate,
+               FinnhubForexExchange_::Country,
+               FinnhubForexExchange_::CountryName,
+               FinnhubForexExchange_::Source,
+               FinnhubForexExchange_::MyUnknownColumn>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_forex_exchange";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubForexExchange;
+        T& operator()() { return finnhubForexExchange; }
+        const T& operator()() const { return finnhubForexExchange; }
+      };
+    };
+  };
+  namespace ChinaStockDayline_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
     struct Date
     {
       struct _alias_t
@@ -8532,40 +4553,2039 @@ namespace StockMarket
             const T& operator()() const { return Date; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::require_insert>;
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-    struct Rate
+    struct Exchange
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Rate";
+        static constexpr const char _literal[] =  "Exchange";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Rate;
-            T& operator()() { return Rate; }
-            const T& operator()() const { return Rate; }
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-  } // namespace IndexNasdaq100_200MaUpdownRate_
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct LastClose
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastClose";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastClose;
+            T& operator()() { return LastClose; }
+            const T& operator()() const { return LastClose; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Open
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Open";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Open;
+            T& operator()() { return Open; }
+            const T& operator()() const { return Open; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct High
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "High";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T High;
+            T& operator()() { return High; }
+            const T& operator()() const { return High; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Low
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Low";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Low;
+            T& operator()() { return Low; }
+            const T& operator()() const { return Low; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Close
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Close";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Close;
+            T& operator()() { return Close; }
+            const T& operator()() const { return Close; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Volume
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Volume";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Volume;
+            T& operator()() { return Volume; }
+            const T& operator()() const { return Volume; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Amount
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Amount";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Amount;
+            T& operator()() { return Amount; }
+            const T& operator()() const { return Amount; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Dividend
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Dividend";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Dividend;
+            T& operator()() { return Dividend; }
+            const T& operator()() const { return Dividend; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpAndDown
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpAndDown";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpAndDown;
+            T& operator()() { return UpAndDown; }
+            const T& operator()() const { return UpAndDown; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpDownRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpDownRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpDownRate;
+            T& operator()() { return UpDownRate; }
+            const T& operator()() const { return UpDownRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct ChangeHandRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ChangeHandRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ChangeHandRate;
+            T& operator()() { return ChangeHandRate; }
+            const T& operator()() const { return ChangeHandRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct TotalValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TotalValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TotalValue;
+            T& operator()() { return TotalValue; }
+            const T& operator()() const { return TotalValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct CurrentValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrentValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrentValue;
+            T& operator()() { return CurrentValue; }
+            const T& operator()() const { return CurrentValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace ChinaStockDayline_
 
-  struct IndexNasdaq100_200MaUpdownRate: sqlpp::table_t<IndexNasdaq100_200MaUpdownRate,
-               IndexNasdaq100_200MaUpdownRate_::Date,
-               IndexNasdaq100_200MaUpdownRate_::Rate>
+  struct ChinaStockDayline: sqlpp::table_t<ChinaStockDayline,
+               ChinaStockDayline_::ID,
+               ChinaStockDayline_::Date,
+               ChinaStockDayline_::Exchange,
+               ChinaStockDayline_::Symbol,
+               ChinaStockDayline_::LastClose,
+               ChinaStockDayline_::Open,
+               ChinaStockDayline_::High,
+               ChinaStockDayline_::Low,
+               ChinaStockDayline_::Close,
+               ChinaStockDayline_::Volume,
+               ChinaStockDayline_::Amount,
+               ChinaStockDayline_::Dividend,
+               ChinaStockDayline_::SplitFactor,
+               ChinaStockDayline_::UpAndDown,
+               ChinaStockDayline_::UpDownRate,
+               ChinaStockDayline_::ChangeHandRate,
+               ChinaStockDayline_::TotalValue,
+               ChinaStockDayline_::CurrentValue>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "index_nasdaq100_200ma_updown_rate";
+      static constexpr const char _literal[] =  "china_stock_dayline";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T indexNasdaq100_200MaUpdownRate;
-        T& operator()() { return indexNasdaq100_200MaUpdownRate; }
-        const T& operator()() const { return indexNasdaq100_200MaUpdownRate; }
+        T chinaStockDayline;
+        T& operator()() { return chinaStockDayline; }
+        const T& operator()() const { return chinaStockDayline; }
+      };
+    };
+  };
+  namespace IndexNasdaq100_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct ExpiredDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ExpiredDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ExpiredDate;
+            T& operator()() { return ExpiredDate; }
+            const T& operator()() const { return ExpiredDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+  } // namespace IndexNasdaq100_
+
+  struct IndexNasdaq100: sqlpp::table_t<IndexNasdaq100,
+               IndexNasdaq100_::ID,
+               IndexNasdaq100_::Symbol,
+               IndexNasdaq100_::ExpiredDate>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "index_nasdaq100";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T indexNasdaq100;
+        T& operator()() { return indexNasdaq100; }
+        const T& operator()() const { return indexNasdaq100; }
+      };
+    };
+  };
+  namespace FinnhubCryptoDayline_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct LastClose
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastClose";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastClose;
+            T& operator()() { return LastClose; }
+            const T& operator()() const { return LastClose; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Open
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Open";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Open;
+            T& operator()() { return Open; }
+            const T& operator()() const { return Open; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct High
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "High";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T High;
+            T& operator()() { return High; }
+            const T& operator()() const { return High; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Low
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Low";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Low;
+            T& operator()() { return Low; }
+            const T& operator()() const { return Low; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Close
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Close";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Close;
+            T& operator()() { return Close; }
+            const T& operator()() const { return Close; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Volume
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Volume";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Volume;
+            T& operator()() { return Volume; }
+            const T& operator()() const { return Volume; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Amount
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Amount";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Amount;
+            T& operator()() { return Amount; }
+            const T& operator()() const { return Amount; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Dividend
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Dividend";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Dividend;
+            T& operator()() { return Dividend; }
+            const T& operator()() const { return Dividend; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpAndDown
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpAndDown";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpAndDown;
+            T& operator()() { return UpAndDown; }
+            const T& operator()() const { return UpAndDown; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpDownRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpDownRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpDownRate;
+            T& operator()() { return UpDownRate; }
+            const T& operator()() const { return UpDownRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct ChangeHandRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ChangeHandRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ChangeHandRate;
+            T& operator()() { return ChangeHandRate; }
+            const T& operator()() const { return ChangeHandRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct TotalValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TotalValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TotalValue;
+            T& operator()() { return TotalValue; }
+            const T& operator()() const { return TotalValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct CurrentValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrentValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrentValue;
+            T& operator()() { return CurrentValue; }
+            const T& operator()() const { return CurrentValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubCryptoDayline_
+
+  struct FinnhubCryptoDayline: sqlpp::table_t<FinnhubCryptoDayline,
+               FinnhubCryptoDayline_::ID,
+               FinnhubCryptoDayline_::Date,
+               FinnhubCryptoDayline_::Exchange,
+               FinnhubCryptoDayline_::Symbol,
+               FinnhubCryptoDayline_::LastClose,
+               FinnhubCryptoDayline_::Open,
+               FinnhubCryptoDayline_::High,
+               FinnhubCryptoDayline_::Low,
+               FinnhubCryptoDayline_::Close,
+               FinnhubCryptoDayline_::Volume,
+               FinnhubCryptoDayline_::Amount,
+               FinnhubCryptoDayline_::Dividend,
+               FinnhubCryptoDayline_::SplitFactor,
+               FinnhubCryptoDayline_::UpAndDown,
+               FinnhubCryptoDayline_::UpDownRate,
+               FinnhubCryptoDayline_::ChangeHandRate,
+               FinnhubCryptoDayline_::TotalValue,
+               FinnhubCryptoDayline_::CurrentValue>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_crypto_dayline";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubCryptoDayline;
+        T& operator()() { return finnhubCryptoDayline; }
+        const T& operator()() const { return finnhubCryptoDayline; }
+      };
+    };
+  };
+  namespace FinnhubStockSecFilings_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T symbol;
+            T& operator()() { return symbol; }
+            const T& operator()() const { return symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct AccessNumber
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "accessNumber";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T accessNumber;
+            T& operator()() { return accessNumber; }
+            const T& operator()() const { return accessNumber; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Cik
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "cik";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T cik;
+            T& operator()() { return cik; }
+            const T& operator()() const { return cik; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Form
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "form";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T form;
+            T& operator()() { return form; }
+            const T& operator()() const { return form; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct AcceptedDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "acceptedDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T acceptedDate;
+            T& operator()() { return acceptedDate; }
+            const T& operator()() const { return acceptedDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct FiledDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "filedDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T filedDate;
+            T& operator()() { return filedDate; }
+            const T& operator()() const { return filedDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct FilingURL
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "filingURL";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T filingURL;
+            T& operator()() { return filingURL; }
+            const T& operator()() const { return filingURL; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct ReportURL
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "reportURL";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T reportURL;
+            T& operator()() { return reportURL; }
+            const T& operator()() const { return reportURL; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubStockSecFilings_
+
+  struct FinnhubStockSecFilings: sqlpp::table_t<FinnhubStockSecFilings,
+               FinnhubStockSecFilings_::ID,
+               FinnhubStockSecFilings_::Symbol,
+               FinnhubStockSecFilings_::AccessNumber,
+               FinnhubStockSecFilings_::Cik,
+               FinnhubStockSecFilings_::Form,
+               FinnhubStockSecFilings_::AcceptedDate,
+               FinnhubStockSecFilings_::FiledDate,
+               FinnhubStockSecFilings_::FilingURL,
+               FinnhubStockSecFilings_::ReportURL>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_stock_sec_filings";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubStockSecFilings;
+        T& operator()() { return finnhubStockSecFilings; }
+        const T& operator()() const { return finnhubStockSecFilings; }
+      };
+    };
+  };
+  namespace FinnhubCountryList_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Code2
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Code2";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Code2;
+            T& operator()() { return Code2; }
+            const T& operator()() const { return Code2; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Code3
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Code3";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Code3;
+            T& operator()() { return Code3; }
+            const T& operator()() const { return Code3; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct CodeNo
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CodeNo";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CodeNo;
+            T& operator()() { return CodeNo; }
+            const T& operator()() const { return CodeNo; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Country
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Country";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Country;
+            T& operator()() { return Country; }
+            const T& operator()() const { return Country; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Currency
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Currency";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Currency;
+            T& operator()() { return Currency; }
+            const T& operator()() const { return Currency; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct CurrencyCode
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrencyCode";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrencyCode;
+            T& operator()() { return CurrencyCode; }
+            const T& operator()() const { return CurrencyCode; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubCountryList_
+
+  struct FinnhubCountryList: sqlpp::table_t<FinnhubCountryList,
+               FinnhubCountryList_::ID,
+               FinnhubCountryList_::Code2,
+               FinnhubCountryList_::Code3,
+               FinnhubCountryList_::CodeNo,
+               FinnhubCountryList_::Country,
+               FinnhubCountryList_::Currency,
+               FinnhubCountryList_::CurrencyCode>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_country_list";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubCountryList;
+        T& operator()() { return finnhubCountryList; }
+        const T& operator()() const { return finnhubCountryList; }
+      };
+    };
+  };
+  namespace TiingoStock52WeekLow_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+  } // namespace TiingoStock52WeekLow_
+
+  struct TiingoStock52WeekLow: sqlpp::table_t<TiingoStock52WeekLow,
+               TiingoStock52WeekLow_::ID,
+               TiingoStock52WeekLow_::Symbol,
+               TiingoStock52WeekLow_::Exchange,
+               TiingoStock52WeekLow_::Date>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "tiingo_stock_52week_low";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T tiingoStock52WeekLow;
+        T& operator()() { return tiingoStock52WeekLow; }
+        const T& operator()() const { return tiingoStock52WeekLow; }
+      };
+    };
+  };
+  namespace TiingoStockCurrentTrace_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct SICCode
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SICCode";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SICCode;
+            T& operator()() { return SICCode; }
+            const T& operator()() const { return SICCode; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+  } // namespace TiingoStockCurrentTrace_
+
+  struct TiingoStockCurrentTrace: sqlpp::table_t<TiingoStockCurrentTrace,
+               TiingoStockCurrentTrace_::ID,
+               TiingoStockCurrentTrace_::Symbol,
+               TiingoStockCurrentTrace_::Date,
+               TiingoStockCurrentTrace_::SICCode>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "tiingo_stock_current_trace";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T tiingoStockCurrentTrace;
+        T& operator()() { return tiingoStockCurrentTrace; }
+        const T& operator()() const { return tiingoStockCurrentTrace; }
+      };
+    };
+  };
+  namespace FinnhubStockDayline_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct LastClose
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastClose";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastClose;
+            T& operator()() { return LastClose; }
+            const T& operator()() const { return LastClose; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Open
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Open";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Open;
+            T& operator()() { return Open; }
+            const T& operator()() const { return Open; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct High
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "High";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T High;
+            T& operator()() { return High; }
+            const T& operator()() const { return High; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Low
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Low";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Low;
+            T& operator()() { return Low; }
+            const T& operator()() const { return Low; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Close
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Close";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Close;
+            T& operator()() { return Close; }
+            const T& operator()() const { return Close; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Volume
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Volume";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Volume;
+            T& operator()() { return Volume; }
+            const T& operator()() const { return Volume; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Amount
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Amount";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Amount;
+            T& operator()() { return Amount; }
+            const T& operator()() const { return Amount; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Dividend
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Dividend";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Dividend;
+            T& operator()() { return Dividend; }
+            const T& operator()() const { return Dividend; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpAndDown
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpAndDown";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpAndDown;
+            T& operator()() { return UpAndDown; }
+            const T& operator()() const { return UpAndDown; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpDownRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpDownRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpDownRate;
+            T& operator()() { return UpDownRate; }
+            const T& operator()() const { return UpDownRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct ChangeHandRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ChangeHandRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ChangeHandRate;
+            T& operator()() { return ChangeHandRate; }
+            const T& operator()() const { return ChangeHandRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct TotalValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TotalValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TotalValue;
+            T& operator()() { return TotalValue; }
+            const T& operator()() const { return TotalValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct CurrentValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrentValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrentValue;
+            T& operator()() { return CurrentValue; }
+            const T& operator()() const { return CurrentValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubStockDayline_
+
+  struct FinnhubStockDayline: sqlpp::table_t<FinnhubStockDayline,
+               FinnhubStockDayline_::ID,
+               FinnhubStockDayline_::Date,
+               FinnhubStockDayline_::Exchange,
+               FinnhubStockDayline_::Symbol,
+               FinnhubStockDayline_::LastClose,
+               FinnhubStockDayline_::Open,
+               FinnhubStockDayline_::High,
+               FinnhubStockDayline_::Low,
+               FinnhubStockDayline_::Close,
+               FinnhubStockDayline_::Volume,
+               FinnhubStockDayline_::Amount,
+               FinnhubStockDayline_::Dividend,
+               FinnhubStockDayline_::SplitFactor,
+               FinnhubStockDayline_::UpAndDown,
+               FinnhubStockDayline_::UpDownRate,
+               FinnhubStockDayline_::ChangeHandRate,
+               FinnhubStockDayline_::TotalValue,
+               FinnhubStockDayline_::CurrentValue>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_stock_dayline";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubStockDayline;
+        T& operator()() { return finnhubStockDayline; }
+        const T& operator()() const { return finnhubStockDayline; }
+      };
+    };
+  };
+  namespace TiingoIndustry_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Industry
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Industry";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Industry;
+            T& operator()() { return Industry; }
+            const T& operator()() const { return Industry; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Sector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Sector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Sector;
+            T& operator()() { return Sector; }
+            const T& operator()() const { return Sector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace TiingoIndustry_
+
+  struct TiingoIndustry: sqlpp::table_t<TiingoIndustry,
+               TiingoIndustry_::ID,
+               TiingoIndustry_::Industry,
+               TiingoIndustry_::Sector>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "tiingo_industry";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T tiingoIndustry;
+        T& operator()() { return tiingoIndustry; }
+        const T& operator()() const { return tiingoIndustry; }
+      };
+    };
+  };
+  namespace ChinaMarketOptions_
+  {
+    struct LastLoginDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastLoginDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastLoginDate;
+            T& operator()() { return LastLoginDate; }
+            const T& operator()() const { return LastLoginDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct LastLoginTime
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastLoginTime";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastLoginTime;
+            T& operator()() { return LastLoginTime; }
+            const T& operator()() const { return LastLoginTime; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+  } // namespace ChinaMarketOptions_
+
+  struct ChinaMarketOptions: sqlpp::table_t<ChinaMarketOptions,
+               ChinaMarketOptions_::LastLoginDate,
+               ChinaMarketOptions_::LastLoginTime>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "china_market_options";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T chinaMarketOptions;
+        T& operator()() { return chinaMarketOptions; }
+        const T& operator()() const { return chinaMarketOptions; }
+      };
+    };
+  };
+  namespace StockSplits_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace StockSplits_
+
+  struct StockSplits: sqlpp::table_t<StockSplits,
+               StockSplits_::ID,
+               StockSplits_::Symbol,
+               StockSplits_::Date,
+               StockSplits_::SplitFactor>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "stock_splits";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T stockSplits;
+        T& operator()() { return stockSplits; }
+        const T& operator()() const { return stockSplits; }
+      };
+    };
+  };
+  namespace WorldMarketOption_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct FinnhubToken
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "FinnhubToken";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T FinnhubToken;
+            T& operator()() { return FinnhubToken; }
+            const T& operator()() const { return FinnhubToken; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct FinnhubMaxPerHour
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "FinnhubMaxPerHour";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T FinnhubMaxPerHour;
+            T& operator()() { return FinnhubMaxPerHour; }
+            const T& operator()() const { return FinnhubMaxPerHour; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct TiingoToken
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TiingoToken";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TiingoToken;
+            T& operator()() { return TiingoToken; }
+            const T& operator()() const { return TiingoToken; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct TiingoMaxPerHour
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TiingoMaxPerHour";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TiingoMaxPerHour;
+            T& operator()() { return TiingoMaxPerHour; }
+            const T& operator()() const { return TiingoMaxPerHour; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct QuandlToken
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "QuandlToken";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T QuandlToken;
+            T& operator()() { return QuandlToken; }
+            const T& operator()() const { return QuandlToken; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct QuandlMaxPerHour
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "QuandlMaxPerHour";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T QuandlMaxPerHour;
+            T& operator()() { return QuandlMaxPerHour; }
+            const T& operator()() const { return QuandlMaxPerHour; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+  } // namespace WorldMarketOption_
+
+  struct WorldMarketOption: sqlpp::table_t<WorldMarketOption,
+               WorldMarketOption_::ID,
+               WorldMarketOption_::FinnhubToken,
+               WorldMarketOption_::FinnhubMaxPerHour,
+               WorldMarketOption_::TiingoToken,
+               WorldMarketOption_::TiingoMaxPerHour,
+               WorldMarketOption_::QuandlToken,
+               WorldMarketOption_::QuandlMaxPerHour>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "world_market_option";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T worldMarketOption;
+        T& operator()() { return worldMarketOption; }
+        const T& operator()() const { return worldMarketOption; }
+      };
+    };
+  };
+  namespace ChinaStockCode_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Description
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Description";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Description;
+            T& operator()() { return Description; }
+            const T& operator()() const { return Description; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct DisplaySymbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "DisplaySymbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T DisplaySymbol;
+            T& operator()() { return DisplaySymbol; }
+            const T& operator()() const { return DisplaySymbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct IPOStatus
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IPOStatus";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IPOStatus;
+            T& operator()() { return IPOStatus; }
+            const T& operator()() const { return IPOStatus; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct UpdateDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpdateDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpdateDate;
+            T& operator()() { return UpdateDate; }
+            const T& operator()() const { return UpdateDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace ChinaStockCode_
+
+  struct ChinaStockCode: sqlpp::table_t<ChinaStockCode,
+               ChinaStockCode_::ID,
+               ChinaStockCode_::Exchange,
+               ChinaStockCode_::Description,
+               ChinaStockCode_::Symbol,
+               ChinaStockCode_::DisplaySymbol,
+               ChinaStockCode_::IPOStatus,
+               ChinaStockCode_::UpdateDate>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "china_stock_code";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T chinaStockCode;
+        T& operator()() { return chinaStockCode; }
+        const T& operator()() const { return chinaStockCode; }
+      };
+    };
+  };
+  namespace WorldChoiceForex_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace WorldChoiceForex_
+
+  struct WorldChoiceForex: sqlpp::table_t<WorldChoiceForex,
+               WorldChoiceForex_::ID,
+               WorldChoiceForex_::Symbol>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "world_choice_forex";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T worldChoiceForex;
+        T& operator()() { return worldChoiceForex; }
+        const T& operator()() const { return worldChoiceForex; }
       };
     };
   };
@@ -8809,7 +6829,7 @@ namespace StockMarket
       };
     };
   };
-  namespace SicIndustry_
+  namespace TiingoStockFundamental_
   {
     struct ID
     {
@@ -8827,76 +6847,1270 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
     };
-    struct Code
+    struct TiingoPermaTicker
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Code";
+        static constexpr const char _literal[] =  "TiingoPermaTicker";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Code;
-            T& operator()() { return Code; }
-            const T& operator()() const { return Code; }
+            T TiingoPermaTicker;
+            T& operator()() { return TiingoPermaTicker; }
+            const T& operator()() const { return TiingoPermaTicker; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Ticker
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Ticker";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Ticker;
+            T& operator()() { return Ticker; }
+            const T& operator()() const { return Ticker; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Name
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Name";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Name;
+            T& operator()() { return Name; }
+            const T& operator()() const { return Name; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct IsActive
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IsActive";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IsActive;
+            T& operator()() { return IsActive; }
+            const T& operator()() const { return IsActive; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-    struct Industry
+    struct IsADR
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Industry";
+        static constexpr const char _literal[] =  "IsADR";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Industry;
-            T& operator()() { return Industry; }
-            const T& operator()() const { return Industry; }
+            T IsADR;
+            T& operator()() { return IsADR; }
+            const T& operator()() const { return IsADR; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-    struct Sector
+    struct TiingoIndustry
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Sector";
+        static constexpr const char _literal[] =  "TiingoIndustry";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Sector;
-            T& operator()() { return Sector; }
-            const T& operator()() const { return Sector; }
+            T TiingoIndustry;
+            T& operator()() { return TiingoIndustry; }
+            const T& operator()() const { return TiingoIndustry; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-  } // namespace SicIndustry_
+    struct TiingoSector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TiingoSector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TiingoSector;
+            T& operator()() { return TiingoSector; }
+            const T& operator()() const { return TiingoSector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct SICCode
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SICCode";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SICCode;
+            T& operator()() { return SICCode; }
+            const T& operator()() const { return SICCode; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct SICIndustry
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SICIndustry";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SICIndustry;
+            T& operator()() { return SICIndustry; }
+            const T& operator()() const { return SICIndustry; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct SICSector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SICSector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SICSector;
+            T& operator()() { return SICSector; }
+            const T& operator()() const { return SICSector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct ReportingCurrency
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ReportingCurrency";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ReportingCurrency;
+            T& operator()() { return ReportingCurrency; }
+            const T& operator()() const { return ReportingCurrency; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Location
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Location";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Location;
+            T& operator()() { return Location; }
+            const T& operator()() const { return Location; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct CompanyWebSite
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CompanyWebSite";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CompanyWebSite;
+            T& operator()() { return CompanyWebSite; }
+            const T& operator()() const { return CompanyWebSite; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct SECFilingWebSite
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SECFilingWebSite";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SECFilingWebSite;
+            T& operator()() { return SECFilingWebSite; }
+            const T& operator()() const { return SECFilingWebSite; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct IPOStatus
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IPOStatus";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IPOStatus;
+            T& operator()() { return IPOStatus; }
+            const T& operator()() const { return IPOStatus; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct UpdateDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpdateDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpdateDate;
+            T& operator()() { return UpdateDate; }
+            const T& operator()() const { return UpdateDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace TiingoStockFundamental_
 
-  struct SicIndustry: sqlpp::table_t<SicIndustry,
-               SicIndustry_::ID,
-               SicIndustry_::Code,
-               SicIndustry_::Industry,
-               SicIndustry_::Sector>
+  struct TiingoStockFundamental: sqlpp::table_t<TiingoStockFundamental,
+               TiingoStockFundamental_::ID,
+               TiingoStockFundamental_::TiingoPermaTicker,
+               TiingoStockFundamental_::Ticker,
+               TiingoStockFundamental_::Name,
+               TiingoStockFundamental_::IsActive,
+               TiingoStockFundamental_::IsADR,
+               TiingoStockFundamental_::TiingoIndustry,
+               TiingoStockFundamental_::TiingoSector,
+               TiingoStockFundamental_::SICCode,
+               TiingoStockFundamental_::SICIndustry,
+               TiingoStockFundamental_::SICSector,
+               TiingoStockFundamental_::ReportingCurrency,
+               TiingoStockFundamental_::Location,
+               TiingoStockFundamental_::CompanyWebSite,
+               TiingoStockFundamental_::SECFilingWebSite,
+               TiingoStockFundamental_::IPOStatus,
+               TiingoStockFundamental_::UpdateDate>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "sic_industry";
+      static constexpr const char _literal[] =  "tiingo_stock_fundamental";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T sicIndustry;
-        T& operator()() { return sicIndustry; }
-        const T& operator()() const { return sicIndustry; }
+        T tiingoStockFundamental;
+        T& operator()() { return tiingoStockFundamental; }
+        const T& operator()() const { return tiingoStockFundamental; }
       };
     };
   };
-  namespace TiingoStockNewSymbol_
+  namespace ChinaCurrentWeekline_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Exchange
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Exchange";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct LastClose
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "LastClose";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T LastClose;
+            T& operator()() { return LastClose; }
+            const T& operator()() const { return LastClose; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Open
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Open";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Open;
+            T& operator()() { return Open; }
+            const T& operator()() const { return Open; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct High
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "High";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T High;
+            T& operator()() { return High; }
+            const T& operator()() const { return High; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Low
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Low";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Low;
+            T& operator()() { return Low; }
+            const T& operator()() const { return Low; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Close
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Close";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Close;
+            T& operator()() { return Close; }
+            const T& operator()() const { return Close; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Volume
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Volume";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Volume;
+            T& operator()() { return Volume; }
+            const T& operator()() const { return Volume; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Amount
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Amount";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Amount;
+            T& operator()() { return Amount; }
+            const T& operator()() const { return Amount; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Dividend
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Dividend";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Dividend;
+            T& operator()() { return Dividend; }
+            const T& operator()() const { return Dividend; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpAndDown
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpAndDown";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpAndDown;
+            T& operator()() { return UpAndDown; }
+            const T& operator()() const { return UpAndDown; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpDownRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpDownRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpDownRate;
+            T& operator()() { return UpDownRate; }
+            const T& operator()() const { return UpDownRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct ChangeHandRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ChangeHandRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ChangeHandRate;
+            T& operator()() { return ChangeHandRate; }
+            const T& operator()() const { return ChangeHandRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct TotalValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TotalValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TotalValue;
+            T& operator()() { return TotalValue; }
+            const T& operator()() const { return TotalValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct CurrentValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrentValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrentValue;
+            T& operator()() { return CurrentValue; }
+            const T& operator()() const { return CurrentValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace ChinaCurrentWeekline_
+
+  struct ChinaCurrentWeekline: sqlpp::table_t<ChinaCurrentWeekline,
+               ChinaCurrentWeekline_::ID,
+               ChinaCurrentWeekline_::Date,
+               ChinaCurrentWeekline_::Exchange,
+               ChinaCurrentWeekline_::Symbol,
+               ChinaCurrentWeekline_::LastClose,
+               ChinaCurrentWeekline_::Open,
+               ChinaCurrentWeekline_::High,
+               ChinaCurrentWeekline_::Low,
+               ChinaCurrentWeekline_::Close,
+               ChinaCurrentWeekline_::Volume,
+               ChinaCurrentWeekline_::Amount,
+               ChinaCurrentWeekline_::Dividend,
+               ChinaCurrentWeekline_::SplitFactor,
+               ChinaCurrentWeekline_::UpAndDown,
+               ChinaCurrentWeekline_::UpDownRate,
+               ChinaCurrentWeekline_::ChangeHandRate,
+               ChinaCurrentWeekline_::TotalValue,
+               ChinaCurrentWeekline_::CurrentValue>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "china_current_weekline";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T chinaCurrentWeekline;
+        T& operator()() { return chinaCurrentWeekline; }
+        const T& operator()() const { return chinaCurrentWeekline; }
+      };
+    };
+  };
+  namespace FinnhubStockProfile_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Symbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Symbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct ExchangeCode
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ExchangeCode";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ExchangeCode;
+            T& operator()() { return ExchangeCode; }
+            const T& operator()() const { return ExchangeCode; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Description
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Description";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Description;
+            T& operator()() { return Description; }
+            const T& operator()() const { return Description; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct DisplaySymbol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "DisplaySymbol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T DisplaySymbol;
+            T& operator()() { return DisplaySymbol; }
+            const T& operator()() const { return DisplaySymbol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Type
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Type";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Type;
+            T& operator()() { return Type; }
+            const T& operator()() const { return Type; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Mic
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Mic";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Mic;
+            T& operator()() { return Mic; }
+            const T& operator()() const { return Mic; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Figi
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Figi";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Figi;
+            T& operator()() { return Figi; }
+            const T& operator()() const { return Figi; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Currency
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Currency";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Currency;
+            T& operator()() { return Currency; }
+            const T& operator()() const { return Currency; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Address
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Address";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Address;
+            T& operator()() { return Address; }
+            const T& operator()() const { return Address; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct City
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "City";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T City;
+            T& operator()() { return City; }
+            const T& operator()() const { return City; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Country
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Country";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Country;
+            T& operator()() { return Country; }
+            const T& operator()() const { return Country; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Cusip
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "cusip";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T cusip;
+            T& operator()() { return cusip; }
+            const T& operator()() const { return cusip; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Sedol
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "sedol";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T sedol;
+            T& operator()() { return sedol; }
+            const T& operator()() const { return sedol; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct EmployeeTotal
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "EmployeeTotal";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T EmployeeTotal;
+            T& operator()() { return EmployeeTotal; }
+            const T& operator()() const { return EmployeeTotal; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Ggroup
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ggroup";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ggroup;
+            T& operator()() { return ggroup; }
+            const T& operator()() const { return ggroup; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Gind
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "gind";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T gind;
+            T& operator()() { return gind; }
+            const T& operator()() const { return gind; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Gsector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "gsector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T gsector;
+            T& operator()() { return gsector; }
+            const T& operator()() const { return gsector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Gsubind
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "gsubind";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T gsubind;
+            T& operator()() { return gsubind; }
+            const T& operator()() const { return gsubind; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct IPODate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IPODate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IPODate;
+            T& operator()() { return IPODate; }
+            const T& operator()() const { return IPODate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Isin
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "isin";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T isin;
+            T& operator()() { return isin; }
+            const T& operator()() const { return isin; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct MarketCapitalization
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "MarketCapitalization";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T MarketCapitalization;
+            T& operator()() { return MarketCapitalization; }
+            const T& operator()() const { return MarketCapitalization; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Naics
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "naics";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T naics;
+            T& operator()() { return naics; }
+            const T& operator()() const { return naics; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct NaicsNationalIndustry
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "naicsNationalIndustry";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T naicsNationalIndustry;
+            T& operator()() { return naicsNationalIndustry; }
+            const T& operator()() const { return naicsNationalIndustry; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct NaicsSector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "naicsSector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T naicsSector;
+            T& operator()() { return naicsSector; }
+            const T& operator()() const { return naicsSector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct NaicsSubsector
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "naicsSubsector";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T naicsSubsector;
+            T& operator()() { return naicsSubsector; }
+            const T& operator()() const { return naicsSubsector; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Name
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Name";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Name;
+            T& operator()() { return Name; }
+            const T& operator()() const { return Name; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Phone
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Phone";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Phone;
+            T& operator()() { return Phone; }
+            const T& operator()() const { return Phone; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct ShareOutstanding
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ShareOutstanding";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ShareOutstanding;
+            T& operator()() { return ShareOutstanding; }
+            const T& operator()() const { return ShareOutstanding; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct State
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "state";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T state;
+            T& operator()() { return state; }
+            const T& operator()() const { return state; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Ticker
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Ticker";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Ticker;
+            T& operator()() { return Ticker; }
+            const T& operator()() const { return Ticker; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct WebURL
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "WebURL";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T WebURL;
+            T& operator()() { return WebURL; }
+            const T& operator()() const { return WebURL; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Logo
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Logo";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Logo;
+            T& operator()() { return Logo; }
+            const T& operator()() const { return Logo; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct FinnhubIndustry
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "FinnhubIndustry";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T FinnhubIndustry;
+            T& operator()() { return FinnhubIndustry; }
+            const T& operator()() const { return FinnhubIndustry; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Peer
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Peer";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Peer;
+            T& operator()() { return Peer; }
+            const T& operator()() const { return Peer; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct IPOStatus
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IPOStatus";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IPOStatus;
+            T& operator()() { return IPOStatus; }
+            const T& operator()() const { return IPOStatus; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct UpdateDate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpdateDate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpdateDate;
+            T& operator()() { return UpdateDate; }
+            const T& operator()() const { return UpdateDate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubStockProfile_
+
+  struct FinnhubStockProfile: sqlpp::table_t<FinnhubStockProfile,
+               FinnhubStockProfile_::ID,
+               FinnhubStockProfile_::Symbol,
+               FinnhubStockProfile_::ExchangeCode,
+               FinnhubStockProfile_::Description,
+               FinnhubStockProfile_::DisplaySymbol,
+               FinnhubStockProfile_::Type,
+               FinnhubStockProfile_::Mic,
+               FinnhubStockProfile_::Figi,
+               FinnhubStockProfile_::Currency,
+               FinnhubStockProfile_::Address,
+               FinnhubStockProfile_::City,
+               FinnhubStockProfile_::Country,
+               FinnhubStockProfile_::Cusip,
+               FinnhubStockProfile_::Sedol,
+               FinnhubStockProfile_::EmployeeTotal,
+               FinnhubStockProfile_::Ggroup,
+               FinnhubStockProfile_::Gind,
+               FinnhubStockProfile_::Gsector,
+               FinnhubStockProfile_::Gsubind,
+               FinnhubStockProfile_::IPODate,
+               FinnhubStockProfile_::Isin,
+               FinnhubStockProfile_::MarketCapitalization,
+               FinnhubStockProfile_::Naics,
+               FinnhubStockProfile_::NaicsNationalIndustry,
+               FinnhubStockProfile_::NaicsSector,
+               FinnhubStockProfile_::NaicsSubsector,
+               FinnhubStockProfile_::Name,
+               FinnhubStockProfile_::Phone,
+               FinnhubStockProfile_::ShareOutstanding,
+               FinnhubStockProfile_::State,
+               FinnhubStockProfile_::Ticker,
+               FinnhubStockProfile_::WebURL,
+               FinnhubStockProfile_::Logo,
+               FinnhubStockProfile_::FinnhubIndustry,
+               FinnhubStockProfile_::Peer,
+               FinnhubStockProfile_::IPOStatus,
+               FinnhubStockProfile_::UpdateDate>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "finnhub_stock_profile";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T finnhubStockProfile;
+        T& operator()() { return finnhubStockProfile; }
+        const T& operator()() const { return finnhubStockProfile; }
+      };
+    };
+  };
+  namespace TiingoStockDelistedSymbol_
   {
     struct ID
     {
@@ -8946,23 +8160,23 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-  } // namespace TiingoStockNewSymbol_
+  } // namespace TiingoStockDelistedSymbol_
 
-  struct TiingoStockNewSymbol: sqlpp::table_t<TiingoStockNewSymbol,
-               TiingoStockNewSymbol_::ID,
-               TiingoStockNewSymbol_::Symbol,
-               TiingoStockNewSymbol_::Date>
+  struct TiingoStockDelistedSymbol: sqlpp::table_t<TiingoStockDelistedSymbol,
+               TiingoStockDelistedSymbol_::ID,
+               TiingoStockDelistedSymbol_::Symbol,
+               TiingoStockDelistedSymbol_::Date>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "tiingo_stock_new_symbol";
+      static constexpr const char _literal[] =  "tiingo_stock_delisted_symbol";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T tiingoStockNewSymbol;
-        T& operator()() { return tiingoStockNewSymbol; }
-        const T& operator()() const { return tiingoStockNewSymbol; }
+        T tiingoStockDelistedSymbol;
+        T& operator()() { return tiingoStockDelistedSymbol; }
+        const T& operator()() const { return tiingoStockDelistedSymbol; }
       };
     };
   };
@@ -9104,7 +8318,7 @@ namespace StockMarket
       };
     };
   };
-  namespace FinnhubCryptoSymbol_
+  namespace TiingoFundamentalDefinitions_
   {
     struct ID
     {
@@ -9122,37 +8336,246 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
     };
-    struct Description
+    struct DataCode
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Description";
+        static constexpr const char _literal[] =  "dataCode";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Description;
-            T& operator()() { return Description; }
-            const T& operator()() const { return Description; }
+            T dataCode;
+            T& operator()() { return dataCode; }
+            const T& operator()() const { return dataCode; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-    struct DisplaySymbol
+    struct Name
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "DisplaySymbol";
+        static constexpr const char _literal[] =  "name";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T DisplaySymbol;
-            T& operator()() { return DisplaySymbol; }
-            const T& operator()() const { return DisplaySymbol; }
+            T name;
+            T& operator()() { return name; }
+            const T& operator()() const { return name; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Description
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "description";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T description;
+            T& operator()() { return description; }
+            const T& operator()() const { return description; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct StatementType
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "statementType";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T statementType;
+            T& operator()() { return statementType; }
+            const T& operator()() const { return statementType; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+    struct Units
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "units";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T units;
+            T& operator()() { return units; }
+            const T& operator()() const { return units; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace TiingoFundamentalDefinitions_
+
+  struct TiingoFundamentalDefinitions: sqlpp::table_t<TiingoFundamentalDefinitions,
+               TiingoFundamentalDefinitions_::ID,
+               TiingoFundamentalDefinitions_::DataCode,
+               TiingoFundamentalDefinitions_::Name,
+               TiingoFundamentalDefinitions_::Description,
+               TiingoFundamentalDefinitions_::StatementType,
+               TiingoFundamentalDefinitions_::Units>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "tiingo_fundamental_definitions";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T tiingoFundamentalDefinitions;
+        T& operator()() { return tiingoFundamentalDefinitions; }
+        const T& operator()() const { return tiingoFundamentalDefinitions; }
+      };
+    };
+  };
+  namespace ChinaStockCodeSection_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::require_insert>;
+    };
+    struct Active
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Active";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Active;
+            T& operator()() { return Active; }
+            const T& operator()() const { return Active; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Market
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Market";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Market;
+            T& operator()() { return Market; }
+            const T& operator()() const { return Market; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct IndexNumber
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "IndexNumber";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T IndexNumber;
+            T& operator()() { return IndexNumber; }
+            const T& operator()() const { return IndexNumber; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+    };
+    struct Comment
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Comment";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Comment;
+            T& operator()() { return Comment; }
+            const T& operator()() const { return Comment; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+    };
+  } // namespace ChinaStockCodeSection_
+
+  struct ChinaStockCodeSection: sqlpp::table_t<ChinaStockCodeSection,
+               ChinaStockCodeSection_::ID,
+               ChinaStockCodeSection_::Active,
+               ChinaStockCodeSection_::Market,
+               ChinaStockCodeSection_::IndexNumber,
+               ChinaStockCodeSection_::Comment>
+  {
+    struct _alias_t
+    {
+      static constexpr const char _literal[] =  "china_stock_code_section";
+      using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+      template<typename T>
+      struct _member_t
+      {
+        T chinaStockCodeSection;
+        T& operator()() { return chinaStockCodeSection; }
+        const T& operator()() const { return chinaStockCodeSection; }
+      };
+    };
+  };
+  namespace FinnhubForexDayline_
+  {
+    struct ID
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ID";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ID;
+            T& operator()() { return ID; }
+            const T& operator()() const { return ID; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
+    };
+    struct Date
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Date";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
     struct Exchange
     {
@@ -9186,63 +8609,266 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-    struct IPOStatus
+    struct LastClose
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "IPOStatus";
+        static constexpr const char _literal[] =  "LastClose";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T IPOStatus;
-            T& operator()() { return IPOStatus; }
-            const T& operator()() const { return IPOStatus; }
+            T LastClose;
+            T& operator()() { return LastClose; }
+            const T& operator()() const { return LastClose; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
-    struct UpdateDate
+    struct Open
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "UpdateDate";
+        static constexpr const char _literal[] =  "Open";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T UpdateDate;
-            T& operator()() { return UpdateDate; }
-            const T& operator()() const { return UpdateDate; }
+            T Open;
+            T& operator()() { return Open; }
+            const T& operator()() const { return Open; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
-  } // namespace FinnhubCryptoSymbol_
+    struct High
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "High";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T High;
+            T& operator()() { return High; }
+            const T& operator()() const { return High; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Low
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Low";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Low;
+            T& operator()() { return Low; }
+            const T& operator()() const { return Low; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Close
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Close";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Close;
+            T& operator()() { return Close; }
+            const T& operator()() const { return Close; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Volume
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Volume";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Volume;
+            T& operator()() { return Volume; }
+            const T& operator()() const { return Volume; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Amount
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Amount";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Amount;
+            T& operator()() { return Amount; }
+            const T& operator()() const { return Amount; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct Dividend
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "Dividend";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T Dividend;
+            T& operator()() { return Dividend; }
+            const T& operator()() const { return Dividend; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct SplitFactor
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "SplitFactor";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T SplitFactor;
+            T& operator()() { return SplitFactor; }
+            const T& operator()() const { return SplitFactor; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpAndDown
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpAndDown";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpAndDown;
+            T& operator()() { return UpAndDown; }
+            const T& operator()() const { return UpAndDown; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct UpDownRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "UpDownRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T UpDownRate;
+            T& operator()() { return UpDownRate; }
+            const T& operator()() const { return UpDownRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct ChangeHandRate
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "ChangeHandRate";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T ChangeHandRate;
+            T& operator()() { return ChangeHandRate; }
+            const T& operator()() const { return ChangeHandRate; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct TotalValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "TotalValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T TotalValue;
+            T& operator()() { return TotalValue; }
+            const T& operator()() const { return TotalValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+    struct CurrentValue
+    {
+      struct _alias_t
+      {
+        static constexpr const char _literal[] =  "CurrentValue";
+        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
+        template<typename T>
+        struct _member_t
+          {
+            T CurrentValue;
+            T& operator()() { return CurrentValue; }
+            const T& operator()() const { return CurrentValue; }
+          };
+      };
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
+    };
+  } // namespace FinnhubForexDayline_
 
-  struct FinnhubCryptoSymbol: sqlpp::table_t<FinnhubCryptoSymbol,
-               FinnhubCryptoSymbol_::ID,
-               FinnhubCryptoSymbol_::Description,
-               FinnhubCryptoSymbol_::DisplaySymbol,
-               FinnhubCryptoSymbol_::Exchange,
-               FinnhubCryptoSymbol_::Symbol,
-               FinnhubCryptoSymbol_::IPOStatus,
-               FinnhubCryptoSymbol_::UpdateDate>
+  struct FinnhubForexDayline: sqlpp::table_t<FinnhubForexDayline,
+               FinnhubForexDayline_::ID,
+               FinnhubForexDayline_::Date,
+               FinnhubForexDayline_::Exchange,
+               FinnhubForexDayline_::Symbol,
+               FinnhubForexDayline_::LastClose,
+               FinnhubForexDayline_::Open,
+               FinnhubForexDayline_::High,
+               FinnhubForexDayline_::Low,
+               FinnhubForexDayline_::Close,
+               FinnhubForexDayline_::Volume,
+               FinnhubForexDayline_::Amount,
+               FinnhubForexDayline_::Dividend,
+               FinnhubForexDayline_::SplitFactor,
+               FinnhubForexDayline_::UpAndDown,
+               FinnhubForexDayline_::UpDownRate,
+               FinnhubForexDayline_::ChangeHandRate,
+               FinnhubForexDayline_::TotalValue,
+               FinnhubForexDayline_::CurrentValue>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "finnhub_crypto_symbol";
+      static constexpr const char _literal[] =  "finnhub_forex_dayline";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T finnhubCryptoSymbol;
-        T& operator()() { return finnhubCryptoSymbol; }
-        const T& operator()() const { return finnhubCryptoSymbol; }
+        T finnhubForexDayline;
+        T& operator()() { return finnhubForexDayline; }
+        const T& operator()() const { return finnhubForexDayline; }
       };
     };
   };
-  namespace FinnhubCompanyExective_
+  namespace FinnhubStockEstimatesEpsSurprise_
   {
     struct ID
     {
@@ -9260,157 +8886,89 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
     };
-    struct CompanySymbol
+    struct Symbol
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "CompanySymbol";
+        static constexpr const char _literal[] =  "Symbol";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T CompanySymbol;
-            T& operator()() { return CompanySymbol; }
-            const T& operator()() const { return CompanySymbol; }
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-    struct Age
+    struct Date
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Age";
+        static constexpr const char _literal[] =  "Date";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Age;
-            T& operator()() { return Age; }
-            const T& operator()() const { return Age; }
+            T Date;
+            T& operator()() { return Date; }
+            const T& operator()() const { return Date; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-    struct Compensation
+    struct Actual
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Compensation";
+        static constexpr const char _literal[] =  "Actual";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Compensation;
-            T& operator()() { return Compensation; }
-            const T& operator()() const { return Compensation; }
+            T Actual;
+            T& operator()() { return Actual; }
+            const T& operator()() const { return Actual; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
-    struct Currency
+    struct Estimate
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Currency";
+        static constexpr const char _literal[] =  "Estimate";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Currency;
-            T& operator()() { return Currency; }
-            const T& operator()() const { return Currency; }
+            T Estimate;
+            T& operator()() { return Estimate; }
+            const T& operator()() const { return Estimate; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
-    struct Name
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Name";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Name;
-            T& operator()() { return Name; }
-            const T& operator()() const { return Name; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Position
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Position";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Position;
-            T& operator()() { return Position; }
-            const T& operator()() const { return Position; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Sex
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Sex";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Sex;
-            T& operator()() { return Sex; }
-            const T& operator()() const { return Sex; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct Since
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "Since";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T Since;
-            T& operator()() { return Since; }
-            const T& operator()() const { return Since; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
-  } // namespace FinnhubCompanyExective_
+  } // namespace FinnhubStockEstimatesEpsSurprise_
 
-  struct FinnhubCompanyExective: sqlpp::table_t<FinnhubCompanyExective,
-               FinnhubCompanyExective_::ID,
-               FinnhubCompanyExective_::CompanySymbol,
-               FinnhubCompanyExective_::Age,
-               FinnhubCompanyExective_::Compensation,
-               FinnhubCompanyExective_::Currency,
-               FinnhubCompanyExective_::Name,
-               FinnhubCompanyExective_::Position,
-               FinnhubCompanyExective_::Sex,
-               FinnhubCompanyExective_::Since>
+  struct FinnhubStockEstimatesEpsSurprise: sqlpp::table_t<FinnhubStockEstimatesEpsSurprise,
+               FinnhubStockEstimatesEpsSurprise_::ID,
+               FinnhubStockEstimatesEpsSurprise_::Symbol,
+               FinnhubStockEstimatesEpsSurprise_::Date,
+               FinnhubStockEstimatesEpsSurprise_::Actual,
+               FinnhubStockEstimatesEpsSurprise_::Estimate>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "finnhub_company_exective";
+      static constexpr const char _literal[] =  "finnhub_stock_estimates_eps_surprise";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T finnhubCompanyExective;
-        T& operator()() { return finnhubCompanyExective; }
-        const T& operator()() const { return finnhubCompanyExective; }
+        T finnhubStockEstimatesEpsSurprise;
+        T& operator()() { return finnhubStockEstimatesEpsSurprise; }
+        const T& operator()() const { return finnhubStockEstimatesEpsSurprise; }
       };
     };
   };

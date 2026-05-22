@@ -15,7 +15,6 @@ enum Indicators {
 	SHOW_INDICATOR_MACD_,
 	SHOW_INDICATOR_RSI_,
 	SHOW_INDICATOR_BOLL_,
-	SHOW_INDICATOR_RS_,
 };
 
 class CFireBirdView : public CView {
@@ -33,23 +32,18 @@ public:
 	void ShowCandleData(CDC* pDC, CRect rectDrawArea);
 	void ShowCross(CDC* pDC, CPoint ptCurrent);
 	void ShowIndicator(CDC* pDC, CRect rectDrawArea);
-	void ShowIndicatorRS(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorRSI(CDC* pDC, CRect rectDrawArea);
 	void Show8020Line(CDC* pDC, CRect rectDrawArea);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
-	bool IsShowRS() const noexcept { return m_fShowRS; }
 	bool IsShow5Days() const noexcept { return m_fShow5Days; }
 	bool IsShow10Days() const noexcept { return m_fShow10Days; }
 	bool IsShow30Days() const noexcept { return m_fShow30Days; }
 	bool IsShow60Days() const noexcept { return m_fShow60Days; }
-	bool IsShow120Days() const noexcept { return m_fShow250Days; }
-	bool IsShowRSInLogarithm() const noexcept { return (m_iShowRSOption == 2); }
-	bool IsShowRSInLinear() const noexcept { return (m_iShowRSOption == 1); }
-	bool IsShowRSInIndex() const noexcept { return (m_iShowRSOption == 0); }
-	void SetShowRSOption(const int iValue) noexcept { m_iShowRSOption = iValue; }
+	bool IsShow120Days() const noexcept { return m_fShow120Days; }
+	bool IsShow250Days() const noexcept { return m_fShow250Days; }
 
 	// 操作
 public:
@@ -127,14 +121,12 @@ protected:
 
 	long m_lCurrentPos;
 
-	bool m_fShowRS;
 	bool m_fShow5Days;
 	bool m_fShow10Days;
 	bool m_fShow30Days;
 	bool m_fShow60Days;
+	bool m_fShow120Days;
 	bool m_fShow250Days;
-	int m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
-	vector<double> m_vRSShow;
 
 	// 生成的消息映射函数
 protected:
@@ -143,24 +135,17 @@ protected:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	//	afx_msg void OnShowRs3();
-	afx_msg void OnShowRs5();
-	afx_msg void OnShowRs10();
-	afx_msg void OnShowRs30();
-	afx_msg void OnShowRs60();
-	afx_msg void OnShowRs250();
-	afx_msg void OnUpdateShowRs10(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateShowRs250(CCmdUI* pCmdUI);
-	//	afx_msg void OnUpdateShowRs3(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateShowRs30(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateShowRs5(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateShowRs60(CCmdUI* pCmdUI);
-	afx_msg void OnShowRsInLogarithm();
-	afx_msg void OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI);
-	afx_msg void OnShowRsInLinear();
-	afx_msg void OnUpdateShowRsInLinear(CCmdUI* pCmdUI);
-	afx_msg void OnShowRsIndex();
-	afx_msg void OnUpdateShowRsIndex(CCmdUI* pCmdUI);
+	afx_msg void OnShowAV5();
+	afx_msg void OnShowAV10();
+	afx_msg void OnShowAV30();
+	afx_msg void OnShowAV60();
+	void OnShowAV120();
+	afx_msg void OnShowAV250();
+	afx_msg void OnUpdateShowAV10(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateShowAV250(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateShowAV30(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateShowAV5(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateShowAV60(CCmdUI* pCmdUI);
 	afx_msg void OnShowDayLine();
 	afx_msg void OnUpdateShowDayLine(CCmdUI* pCmdUI);
 	afx_msg void OnShowWeekLine();
@@ -170,8 +155,6 @@ protected:
 	afx_msg void OnUpdateShowMonthLine(CCmdUI* pCmdUI);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnShowIndicatorRs();
-	afx_msg void OnUpdateShowIndicatorRs(CCmdUI* pCmdUI);
 	afx_msg void OnShowIndicatorKdj();
 	afx_msg void OnUpdateShowIndicatorKdj(CCmdUI* pCmdUI);
 
@@ -182,6 +165,18 @@ public:
 	afx_msg void OnUpdateShowIndicatorMacd(CCmdUI* pCmdUI);
 	afx_msg void OnShowIndicatorRsi();
 	afx_msg void OnUpdateShowIndicatorRsi(CCmdUI* pCmdUI);
+	afx_msg void OnShowAv5();
+	afx_msg void OnUpdateShowAv5(CCmdUI* pCmdUI);
+	afx_msg void OnShowAv10();
+	afx_msg void OnUpdateShowAv10(CCmdUI* pCmdUI);
+	afx_msg void OnShowAv30();
+	afx_msg void OnUpdateShowAv30(CCmdUI* pCmdUI);
+	afx_msg void OnShowAv60();
+	afx_msg void OnUpdateShowAv60(CCmdUI* pCmdUI);
+	afx_msg void OnShowAv120();
+	afx_msg void OnUpdateShowAv120(CCmdUI* pCmdUI);
+	afx_msg void OnShowAv250();
+	afx_msg void OnUpdateShowAv250(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

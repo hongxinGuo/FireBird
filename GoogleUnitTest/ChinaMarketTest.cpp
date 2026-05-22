@@ -1065,16 +1065,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), 19900102);
 	}
 
-	TEST_F(CChinaMarketTest, TestGetRSStartDate) {
-		gl_pChinaMarket->SetRSStartDate(19900202);
-		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), 19900202);
-	}
-
-	TEST_F(CChinaMarketTest, TestGetRSEndDate) {
-		gl_pChinaMarket->SetRSEndDate(19900302);
-		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 19900302);
-	}
-
 	TEST_F(CChinaMarketTest, TestGetNewestTransactionTime) {
 		gl_pChinaMarket->SetTransactionTime(10101010);
 		EXPECT_EQ(gl_pChinaMarket->GetTransactionTime(), 10101010);
@@ -1298,52 +1288,25 @@ namespace FireBirdTest {
 		}
 		setOption.m_pDatabase->CommitTrans();
 		setOption.Close();
-
-		gl_pChinaMarket->SetRSStartDate(20200101);
-		gl_pChinaMarket->SetRSEndDate(20200202);
 		gl_pChinaMarket->SetLastLoginDate(gl_pChinaMarket->GetMarketDate());
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(19990101);
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(19990202);
 
 		gl_pChinaMarket->UpdateOptionDB();
 
-		gl_pChinaMarket->SetRSStartDate(1);
-		gl_pChinaMarket->SetRSEndDate(1);
 		gl_pChinaMarket->SetLastLoginDate(1);
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(1);
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(1);
 
 		gl_pChinaMarket->LoadOptionDB();
 
-		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), 20200101);
-		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20200202);
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate());
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19990101);
-		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19990202);
 
-		gl_pChinaMarket->SetRSStartDate(20100101);
-		gl_pChinaMarket->SetRSEndDate(20100202);
 		gl_pChinaMarket->SetLastLoginDate(20200303);
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(19980101);
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(19980202);
 
 		gl_pChinaMarket->UpdateOptionDB();
 
-		gl_pChinaMarket->SetRSStartDate(1);
-		gl_pChinaMarket->SetRSEndDate(1);
 		gl_pChinaMarket->SetLastLoginDate(1);
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(1);
-		gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(1);
 
 		gl_pChinaMarket->LoadOptionDB();
 
-		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), 20100101);
-		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20100202);
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << "永远是当前日期\n";
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19980101);
-		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19980202);
 
 		setOption.Open();
 		setOption.m_pDatabase->BeginTrans();
@@ -1355,12 +1318,7 @@ namespace FireBirdTest {
 		setOption.Close();
 		gl_pChinaMarket->LoadOptionDB();
 
-		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CChinaMarketTest, TestDeleteDayLineBasicInfo) {
@@ -1644,26 +1602,6 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetRTDataNeedCalculate(false);
 		EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 	}
-
-	TEST_F(CChinaMarketTest, TestIsCalculatingDayLineRS) {
-		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingDayLineRS());
-		gl_pChinaMarket->SetCalculatingDayLineRS(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsCalculatingDayLineRS());
-		gl_pChinaMarket->SetCalculatingDayLineRS(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingDayLineRS());
-	}
-
-	TEST_F(CChinaMarketTest, TestIsCalculatingWeekLineRS) {
-		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingWeekLineRS());
-		gl_pChinaMarket->SetCalculatingWeekLineRS(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsCalculatingWeekLineRS());
-		gl_pChinaMarket->SetCalculatingWeekLineRS(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingWeekLineRS());
-	}
-
-	// Tests for CChinaMarket routing of web/data-source status APIs.
-	// Append to the end of the existing GoogleUnitTest\ChinaMarketTest.cpp file.
-
 	TEST_F(CChinaMarketTest, TestGetHTTPStatus_IsWebError_GetWebErrorCode_Routing) {
 		// Save and restore current server selection
 		const EChinaMarketDataSourceServer oldServer = gl_systemConfiguration.GetChinaMarketRealtimeServer();

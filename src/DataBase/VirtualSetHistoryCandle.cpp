@@ -6,7 +6,7 @@
 
 CVirtualSetHistoryCandle::CVirtualSetHistoryCandle(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_nFields = 21;
+	m_nFields = 18;
 }
 
 void CVirtualSetHistoryCandle::DoFieldExchange(CFieldExchange* pFX) {
@@ -32,7 +32,4 @@ void CVirtualSetHistoryCandle::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[ChangeHandRate]"), m_ChangeHandRate);
 	RFX_Text(pFX, _T("[TotalValue]"), m_TotalValue);
 	RFX_Text(pFX, _T("[CurrentValue]"), m_CurrentValue);
-	RFX_Text(pFX, _T("[RelativeStrong]"), m_RS);	//相对于总市场的强度
-	RFX_Text(pFX, _T("[RelativeStrongIndex]"), m_RSIndex);	//相对于市场指数的强度
-	RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RSBackup);	//相对于市场指数的强度
 }

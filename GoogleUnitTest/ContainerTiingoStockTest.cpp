@@ -141,7 +141,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoStockTest, TestDeleteDuplicatedStockDB) {
 		using namespace StockMarket;
-		const auto t = TiingoStockFundamental{};
+		const auto& t = TiingoStockFundamental{};
 		// Ensure no leftover test symbols
 		auto db = GetStockMarketDB();
 		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));
@@ -163,17 +163,12 @@ namespace FireBirdTest {
 		// Verify only one row remains for that symbol
 		db = GetStockMarketDB();
 		auto resAfter = db(select(all_of(t)).from(t).where(t.Ticker == std::string("DUPLICATE")));
-
-		for (auto& row : resAfter) {
-			string displaySymbol = row.Name;
-			string symbol = row.Ticker;
-		}
 		EXPECT_EQ(resAfter.size(), 1);
 
 		// Clean up test data
 		db = GetStockMarketDB(); // 执行完删除重复代码任务后，重新获取数据库连接，以确保看到最新的数据
-		auto tx = start_transaction(db);
+		auto tx2 = start_transaction(db);
 		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));
-		tx.commit();
+		tx2.commit();
 	}
 }

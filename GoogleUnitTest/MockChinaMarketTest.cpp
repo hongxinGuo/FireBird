@@ -87,8 +87,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
-
-			s_pMockChinaMarket->SetRSEndDate(19900101);
 		}
 
 		void TearDown() override {
@@ -103,7 +101,6 @@ namespace FireBirdTest {
 					}
 				}
 			}
-			s_pMockChinaMarket->SetRSEndDate(19900101);
 			s_pMockChinaMarket->SetUpdateOptionDB(false);
 
 			EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());

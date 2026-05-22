@@ -831,7 +831,6 @@ namespace FireBirdTest {
 		dayLine.SetTotalValue(234523452345);
 		dayLine.SetCurrentValue(234145345245);
 		dayLine.SetChangeHandRate(54.321);
-		dayLine.SetRS(14.5);
 		pStock->StoreDayLine(dayLine);
 
 		pStock->SetDayLineEndDate(21890101);
@@ -863,7 +862,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pDayLine->GetTotalValue(), dayLine.GetTotalValue());
 		EXPECT_EQ(pDayLine->GetCurrentValue(), dayLine.GetCurrentValue());
 		EXPECT_EQ(pDayLine->GetChangeHandRate(), dayLine.GetChangeHandRate());
-		EXPECT_EQ(pDayLine->GetRS(), dayLine.GetRS());
 
 		setDayLineBasicInfo.m_strFilter = "[Date] = 21900101";
 		setDayLineBasicInfo.Open();
@@ -905,7 +903,6 @@ namespace FireBirdTest {
 			dayLine.SetTotalValue(234523452345);
 			dayLine.SetCurrentValue(234145345245);
 			dayLine.SetChangeHandRate(54.321);
-			dayLine.SetRS(14.5);
 			pStock->StoreDayLine(dayLine);
 		}
 		pStock->SetDayLineEndDate(10190101);
@@ -934,7 +931,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_TotalValue), pid->GetTotalValue());
 			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
 			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_RS), pid->GetRS());
 			setDayLineBasicInfo.MoveNext();
 		}
 		setDayLineBasicInfo.Close();
@@ -981,7 +977,6 @@ namespace FireBirdTest {
 			dayLine.SetTotalValue(234523452345);
 			dayLine.SetCurrentValue(234145345245);
 			dayLine.SetChangeHandRate(54.321);
-			dayLine.SetRS(14.5);
 			pStock->StoreDayLine(dayLine);
 		}
 		pStock->SetSymbol("600010.SS");
@@ -1010,7 +1005,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
 			EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
 			EXPECT_DOUBLE_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
-			EXPECT_DOUBLE_EQ(pDayLine->GetRS(), pid->GetRS());
 		}
 		setDayLineBasicInfo.Close();
 
@@ -1046,7 +1040,6 @@ namespace FireBirdTest {
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
 			pid->SetChangeHandRate(54.321);
-			pid->SetRS(14.5);
 			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600004.SS");
@@ -1083,7 +1076,6 @@ namespace FireBirdTest {
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
 			pid->SetChangeHandRate(54.321);
-			pid->SetRS(14.5);
 			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600008.SS");
@@ -1120,7 +1112,6 @@ namespace FireBirdTest {
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
 			pid->SetChangeHandRate(54.321);
-			pid->SetRS(14.5);
 			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600008.SS");
@@ -1203,7 +1194,6 @@ namespace FireBirdTest {
 			dayLine.SetTotalValue(234523452345);
 			dayLine.SetCurrentValue(234145345245);
 			dayLine.SetChangeHandRate(54.321);
-			dayLine.SetRS(14.5);
 			pStock->StoreWeekLine(dayLine);
 		}
 		pStock->SetSymbol("600016.SS");
@@ -1230,7 +1220,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_TotalValue), pid->GetTotalValue());
 			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
 			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_RS), pid->GetRS());
 			setWeekLineBasicInfo.MoveNext();
 		}
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
@@ -1270,7 +1259,6 @@ namespace FireBirdTest {
 			dayLine.SetTotalValue(234523452345);
 			dayLine.SetCurrentValue(234145345245);
 			dayLine.SetChangeHandRate(54.321);
-			dayLine.SetRS(14.5);
 			pStock->StoreWeekLine(dayLine);
 		}
 		pStock->SetSymbol("600010.SS");
@@ -1298,7 +1286,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(pWeekLine->GetTotalValue(), pid->GetTotalValue());
 			EXPECT_EQ(pWeekLine->GetCurrentValue(), pid->GetCurrentValue());
 			EXPECT_DOUBLE_EQ(pWeekLine->GetChangeHandRate(), pid->GetChangeHandRate());
-			EXPECT_DOUBLE_EQ(pWeekLine->GetRS(), pid->GetRS());
 		}
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();

@@ -4,14 +4,16 @@
 
 #include"DayLine.h"
 #include"ContainerTiingoStockDayLine.h"
+#include "dataBaseConnector.h"
 #include "ProductTiingoStockDayLine.h"
 
 #include"SEtTiingoStockDayLine.h"
+#include "StockMarketSQLTable.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataTiingoStockDayLineTest : public ::testing::Test {
+	class CContainerTiingoStockDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -38,7 +40,94 @@ namespace FireBirdTest {
 		CContainerTiingoStockDayLine m_dataTiingoStockDayLine;
 	};
 
-	TEST_F(CDataTiingoStockDayLineTest, TestSaveDB) {
+	TEST_F(CContainerTiingoStockDayLineTest, LoadDB2_LoadsInsertedRow) {
+		CTiingoStock stock;
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+
+		// unique symbol to avoid collisions
+		const string uniqueSymbol = "UT_TI_" + to_string(std::chrono::system_clock::now().time_since_epoch().count());
+
+		// sample values
+		const long date = 20250101;
+		const string exchange = "NASDAQ";
+		const double lastClose = 123.45;
+		const double open = 120.0;
+		const double high = 125.0;
+		const double low = 119.0;
+		const double close = 124.0;
+		const double splitFactor = 1.0;
+		const double dividend = 0.0;
+		const double upAndDown = 1.0;
+		const INT64 volume = 1000;
+		const INT64 amount = 124000000;
+		const double upDownRate = 0.8;
+		const double changeHandRate = 0.1;
+		const INT64 totalValue = 1000000;
+		const INT64 currentValue = 100000;
+		const double rs = 50.0;
+		const double rsIndex = 1.0;
+		const double rsBackup = 0.0;
+
+		// Insert a deterministic row for the test
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(insert_into(t).set(
+			t.Date = date,
+			t.Exchange = exchange,
+			t.Symbol = uniqueSymbol,
+			t.LastClose = lastClose,
+			t.Open = open,
+			t.High = high,
+			t.Low = low,
+			t.Close = close,
+			t.SplitFactor = splitFactor,
+			t.Dividend = dividend,
+			t.UpAndDown = upAndDown,
+			t.Volume = volume,
+			t.Amount = amount,
+			t.UpDownRate = upDownRate,
+			t.ChangeHandRate = changeHandRate,
+			t.TotalValue = totalValue,
+			t.CurrentValue = currentValue
+		));
+		tx.commit();
+
+		// Load via container
+		CContainerTiingoStockDayLine container;
+		const bool loaded = container.LoadDB2(uniqueSymbol);
+		EXPECT_TRUE(loaded);
+		EXPECT_GT(container.Size(), 0u);
+
+		// verify first row matches inserted data
+		auto p = container.GetData(0);
+		ASSERT_NE(p, nullptr);
+		EXPECT_EQ(p->GetDate(), date);
+		EXPECT_EQ(p->GetExchange(), exchange);
+		EXPECT_EQ(p->GetStockSymbol(), uniqueSymbol);
+		EXPECT_DOUBLE_EQ(static_cast<double>(p->GetOpen()) / stock.GetRatio(), open);
+		EXPECT_DOUBLE_EQ(static_cast<double>(p->GetHigh()) / stock.GetRatio(), high);
+		EXPECT_DOUBLE_EQ(static_cast<double>(p->GetLow()) / stock.GetRatio(), low);
+		EXPECT_DOUBLE_EQ(static_cast<double>(p->GetClose()) / stock.GetRatio(), close);
+		EXPECT_DOUBLE_EQ(static_cast<double>(p->GetLastClose()) / stock.GetRatio(), lastClose);
+		EXPECT_DOUBLE_EQ(p->GetSplitFactor(), splitFactor);
+		EXPECT_DOUBLE_EQ(p->GetDividend(), dividend);
+		EXPECT_DOUBLE_EQ(p->GetUpDown(), upAndDown);
+		EXPECT_EQ(p->GetVolume(), volume);
+		EXPECT_EQ(p->GetAmount(), amount);
+		EXPECT_DOUBLE_EQ(p->GetUpDownRate(), upDownRate);
+		EXPECT_DOUBLE_EQ(p->GetChangeHandRate(), changeHandRate);
+		EXPECT_EQ(p->GetTotalValue(), totalValue);
+		EXPECT_EQ(p->GetCurrentValue(), currentValue);
+
+		// Cleanup: delete test rows
+		auto db2 = gl_dbStockMarket.get();
+		auto tx2 = sqlpp::start_transaction(db2);
+		db2(remove_from(t).where(t.Symbol == uniqueSymbol));
+		tx2.commit();
+	}
+
+	TEST_F(CContainerTiingoStockDayLineTest, TestSaveDB) {
 		vector<CDayLine> vDayLine;
 		CTiingoCandleLinesPtr dayLinesPtr = make_shared<vector<CTiingoCandleLine>>();
 
@@ -90,7 +179,7 @@ namespace FireBirdTest {
 		setTiingoStockDayLineBasic.Close();
 	}
 
-	TEST_F(CDataTiingoStockDayLineTest, TestSplitAdjust) {
+	TEST_F(CContainerTiingoStockDayLineTest, TestSplitAdjust) {
 		m_dataTiingoStockDayLine.LoadDB("AAPL");
 
 		auto data = m_dataTiingoStockDayLine.GetDayLine(20250102);
@@ -133,7 +222,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(data2->GetOpen(), 28750000 / 224);
 	}
 
-	TEST_F(CDataTiingoStockDayLineTest, TestSplitAdjust2) {
+	TEST_F(CContainerTiingoStockDayLineTest, TestSplitAdjust2) {
 		m_dataTiingoStockDayLine.LoadDB("AYRO");
 
 		auto data = m_dataTiingoStockDayLine.GetDayLine(20250102);
@@ -168,7 +257,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(data2->GetOpen(), 16742065158); // 109000LL * 16 * 5 * 6 * 4
 	}
 
-	TEST_F(CDataTiingoStockDayLineTest, TestSplitAdjust3) {
+	TEST_F(CContainerTiingoStockDayLineTest, TestSplitAdjust3) {
 		m_dataTiingoStockDayLine.LoadDB("BEEM");
 
 		auto data = m_dataTiingoStockDayLine.GetDayLine(20250102);

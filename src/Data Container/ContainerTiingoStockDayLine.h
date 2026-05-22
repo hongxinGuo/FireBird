@@ -16,6 +16,7 @@ public:
 
 	bool SaveDB(const string& strStockSymbol) override;
 	bool LoadDB(const string& strStockSymbol) override;
+	bool LoadDB2(const string& strStockSymbol);
 
 	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
 	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);

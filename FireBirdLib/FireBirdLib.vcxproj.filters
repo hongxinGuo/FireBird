@@ -1067,12 +1067,6 @@
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.cpp">
       <Filter>源文件\Web Socket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp">
-      <Filter>源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp">
-      <Filter>源文件\Working thread\China market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

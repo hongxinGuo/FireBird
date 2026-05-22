@@ -135,19 +135,9 @@ public:
 	bool IsTodayTempRTDataLoaded() const noexcept { return m_fTodayTempDataLoaded; }
 	void SetTodayTempRTDataLoaded(const bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-	long GetRSStartDate() const noexcept { return m_lRSStartDate; }
-	void SetRSStartDate(const long lDate) noexcept { m_lRSStartDate = lDate; }
-	long GetRSEndDate() const noexcept { return m_lRSEndDate; }
-	void SetRSEndDate(const long lDate) noexcept { m_lRSEndDate = lDate; }
 	long GetLastLoginDate() const noexcept { return m_lLastLoginDate; }
 	void SetLastLoginDate(const long lDate) noexcept { m_lLastLoginDate = lDate; }
 	void SetLastLoginTime(const long lTime) noexcept { m_lLastLoginTime = lTime; }
-	long GetUpdatedDateFor10DaysRS1() const noexcept { return m_lUpdatedDateFor10DaysRS1; }
-	void SetUpdatedDateFor10DaysRS1(const long lDate) noexcept { m_lUpdatedDateFor10DaysRS1 = lDate; }
-	long GetUpdatedDateFor10DaysRS2() const noexcept { return m_lUpdatedDateFor10DaysRS2; }
-	void SetUpdatedDateFor10DaysRS2(const long lDate) noexcept { m_lUpdatedDateFor10DaysRS2 = lDate; }
-	long GetUpdatedDateFor10DaysRS() const noexcept { return m_lUpdatedDateFor10DaysRS; }
-	void SetUpdatedDateFor10DaysRS(const long lDate) noexcept { m_lUpdatedDateFor10DaysRS = lDate; }
 
 	//处理实时股票变化等
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
@@ -187,12 +177,6 @@ public:
 	// 实时数据需要计算与否和设置
 	void SetRTDataNeedCalculate(const bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
 	bool IsRTDataNeedCalculate() const noexcept { return m_RTDataNeedCalculate; }
-	// 计算若干天日线相对强度与否和设置
-	void SetCalculatingDayLineRS(const bool fFlag) noexcept { m_CalculatingDayLineRS = fFlag; }
-	bool IsCalculatingDayLineRS() const noexcept { return m_CalculatingDayLineRS; }
-	// 计算若干天周线相对强度与否和设置
-	void SetCalculatingWeekLineRS(const bool fFlag) noexcept { m_CalculatingWeekLineRS = fFlag; }
-	bool IsCalculatingWeekLineRS() const noexcept { return m_CalculatingWeekLineRS; }
 
 	bool AddChosenStock(const CChinaStockPtr& pStock);
 	bool DeleteChosenStock(const CChinaStockPtr& pStock);
@@ -236,9 +220,6 @@ public:
 	atomic_int64_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
 
 protected:
-	vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
-	vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
-	vector<CRSReference> m_aRSStrongOption; // 用于计算RS的参数，最多十个。
 	vector<vector<CChinaStockPtr>> m_avChosenStock; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
 	long m_lCurrentSelectedPosition; // 当前股票集的位置
 	long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
@@ -251,8 +232,6 @@ protected:
 	atomic_int m_iCurrentDayRTDataCounter{ 0 };
 
 	bool m_RTDataNeedCalculate;
-	bool m_CalculatingDayLineRS;
-	bool m_CalculatingWeekLineRS;
 
 	bool m_fMarketOpened; // 是否开市
 	bool m_fFastReceivingRTData; // 是否开始接收实时数据
@@ -267,13 +246,8 @@ protected:
 	int m_iCountDownTengxunNumber;
 
 	// Option各选项
-	long m_lRSStartDate;
-	long m_lRSEndDate;
 	long m_lLastLoginDate; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 	long m_lLastLoginTime;
-	long m_lUpdatedDateFor10DaysRS2;
-	long m_lUpdatedDateFor10DaysRS1;
-	long m_lUpdatedDateFor10DaysRS;
 
 	bool m_fSelectedStockLoaded;
 

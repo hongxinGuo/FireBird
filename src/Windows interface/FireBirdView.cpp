@@ -32,32 +32,11 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CFireBirdView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
-	//	ON_WM_RBUTTONUP()
 	ON_WM_TIMER()
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	//	ON_COMMAND(ID_SHOW_RS3, &CFireBirdView::OnShowRs3)
-	ON_COMMAND(ID_SHOW_RS5, &CFireBirdView::OnShowRs5)
-	ON_COMMAND(ID_SHOW_RS10, &CFireBirdView::OnShowRs10)
-	ON_COMMAND(ID_SHOW_RS30, &CFireBirdView::OnShowRs30)
-	ON_COMMAND(ID_SHOW_RS60, &CFireBirdView::OnShowRs60)
-	ON_COMMAND(ID_SHOW_RS120, &CFireBirdView::OnShowRs250)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CFireBirdView::OnUpdateShowRs10)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CFireBirdView::OnUpdateShowRs250)
-	//	ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CFireBirdView::OnUpdateShowRs3)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CFireBirdView::OnUpdateShowRs30)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CFireBirdView::OnUpdateShowRs5)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CFireBirdView::OnUpdateShowRs60)
-	ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CFireBirdView::OnShowRsInLogarithm)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CFireBirdView::OnUpdateShowRsInLogarithm)
-	ON_COMMAND(ID_SHOW_RS_IN_LINEAR, &CFireBirdView::OnShowRsInLinear)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CFireBirdView::OnUpdateShowRsInLinear)
-	ON_COMMAND(ID_SHOW_RS_INDEX, &CFireBirdView::OnShowRsIndex)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CFireBirdView::OnUpdateShowRsIndex)
 	ON_COMMAND(ID_SHOW_DAYLINE, &CFireBirdView::OnShowDayLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CFireBirdView::OnUpdateShowDayLine)
-	//	ON_COMMAND(ID_SHOW_REALTIME, &CFireBirdView::OnShowRealTime)
-	//	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CFireBirdView::OnUpdateShowRealTime)
 	ON_COMMAND(ID_SHOW_WEEKLINE, &CFireBirdView::OnShowWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CFireBirdView::OnUpdateShowWeekLine)
 	ON_WM_SETFOCUS()
@@ -66,14 +45,24 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
-	ON_COMMAND(ID_SHOW_INDACATOR_RS, &CFireBirdView::OnShowIndicatorRs)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_INDACATOR_RS, &CFireBirdView::OnUpdateShowIndicatorRs)
 	ON_COMMAND(ID_SHOW_INDICATOR_KDJ, &CFireBirdView::OnShowIndicatorKdj)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_KDJ, &CFireBirdView::OnUpdateShowIndicatorKdj)
 	ON_COMMAND(ID_SHOW_INDICATOR_MACD, &CFireBirdView::OnShowIndicatorMacd)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_MACD, &CFireBirdView::OnUpdateShowIndicatorMacd)
 	ON_COMMAND(ID_SHOW_INDICATOR_RSI, &CFireBirdView::OnShowIndicatorRsi)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_RSI, &CFireBirdView::OnUpdateShowIndicatorRsi)
+	ON_COMMAND(ID_SHOW_AV5, &CFireBirdView::OnShowAv5)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_AV5, &CFireBirdView::OnUpdateShowAv5)
+	ON_COMMAND(ID_SHOW_AV10, &CFireBirdView::OnShowAv10)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_AV10, &CFireBirdView::OnUpdateShowAv10)
+	ON_COMMAND(ID_SHOW_AV30, &CFireBirdView::OnShowAv30)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_AV30, &CFireBirdView::OnUpdateShowAv30)
+	ON_COMMAND(ID_SHOW_AV60, &CFireBirdView::OnShowAv60)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_AV60, &CFireBirdView::OnUpdateShowAv60)
+	ON_COMMAND(ID_SHOW_AV120, &CFireBirdView::OnShowAv120)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_AV120, &CFireBirdView::OnUpdateShowAv120)
+	ON_COMMAND(ID_SHOW_AV250, &CFireBirdView::OnShowAv250)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_AV250, &CFireBirdView::OnUpdateShowAv250)
 END_MESSAGE_MAP()
 
 // CFireBirdView 构造/析构
@@ -118,13 +107,12 @@ CFireBirdView::CFireBirdView() {
 	m_rectCancelSellVolume.right = rectArea.right;
 	m_rectCancelSellVolume.bottom = m_rectCancelBuyVolume.bottom + iHeight;
 
-	m_fShowRS = false;
 	m_fShow5Days = false;
 	m_fShow10Days = true;
 	m_fShow30Days = true;
 	m_fShow60Days = false;
+	m_fShow120Days = false;
 	m_fShow250Days = false;
-	m_iShowRSOption = 0; // 默认值为指数相对强度
 	m_fShowTransactionGraph = false;
 
 	m_uIdTimer = 0;
@@ -149,6 +137,7 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 		if (m_fShow5Days) GetDocument()->ShowDayLine5MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 		if (m_fShow30Days) GetDocument()->ShowDayLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 		if (m_fShow60Days) GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
+		if (m_fShow120Days) GetDocument()->ShowDayLine120MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 		if (m_fShow250Days) GetDocument()->ShowDayLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 
 		break;
@@ -161,6 +150,7 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 		if (m_fShow10Days) GetDocument()->ShowWeekLine10MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		if (m_fShow30Days) GetDocument()->ShowWeekLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		if (m_fShow60Days) GetDocument()->ShowWeekLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
+		if (m_fShow120Days) GetDocument()->ShowWeekLine120MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		if (m_fShow250Days) GetDocument()->ShowWeekLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
 		break;
 	case SHOW_MONTH_LINE_DATA_:
@@ -172,6 +162,7 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 		if (m_fShow10Days) GetDocument()->ShowMonthLine10MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		if (m_fShow30Days) GetDocument()->ShowMonthLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		if (m_fShow60Days) GetDocument()->ShowMonthLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
+		if (m_fShow120Days) GetDocument()->ShowMonthLine120MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		if (m_fShow250Days) GetDocument()->ShowMonthLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lMonthLineHigh, m_lMonthLineLow);
 		break;
 	default:
@@ -233,9 +224,6 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
 
 void CFireBirdView::ShowIndicator(CDC* pDC, CRect rectDrawArea) {
 	switch (m_iShowIndicator) {
-	case SHOW_INDICATOR_RS_:
-		ShowIndicatorRS(pDC, rectDrawArea);
-		break;
 	case SHOW_INDICATOR_KDJ_:
 		ShowIndicatorKDJ(pDC, rectDrawArea);
 		break;
@@ -247,59 +235,6 @@ void CFireBirdView::ShowIndicator(CDC* pDC, CRect rectDrawArea) {
 		break;
 	case SHOW_INDICATOR_BOLL_:
 		break;
-	default:
-		break;
-	}
-}
-
-void CFireBirdView::ShowIndicatorRS(CDC* pDC, CRect rectDrawArea) {
-	if (GetDocument()->GetCurrentStock() == nullptr) return;
-
-	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
-	constexpr COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-	CPen penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penWhite3(PS_SOLID, 3, crWhite);
-	CPen penRed1(PS_SOLID, 1, crRed), penRed2(PS_SOLID, 2, crRed), penRed3(PS_SOLID, 3, crRed);
-	CPen penGreen1(PS_SOLID, 1, crGreen), penGreen2(PS_SOLID, 2, crGreen), penGreen3(PS_SOLID, 3, crGreen);
-	CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
-	CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
-
-	SysCallMoveTo(pDC, rectDrawArea.right, rectDrawArea.bottom - rectDrawArea.Height() / 2);
-	SysCallLineTo(pDC, 0, rectDrawArea.bottom - rectDrawArea.Height() / 2);
-
-	switch (m_iCurrentShowType) {
-	case SHOW_DAY_LINE_DATA_:
-		if (IsChinaStock(GetCurrentStock())) {
-			// 画相对强度
-			if (m_fShowRS) {
-				pDC->SelectObject(&penWhite1);
-				switch (m_iShowRSOption) {
-				case 0: // 显示相对指数的强度
-					GetCurrentStock()->ShowDayLineRSIndex(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 1);
-					break;
-				case 1:
-					GetCurrentStock()->ShowDayLineRS1(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 1);
-					break;
-				case 2:
-					GetCurrentStock()->ShowDayLineRSLogarithm(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 1);
-					break;
-				default:
-					// 错误
-					break;
-				}
-			}
-
-			// 画相对强度10日均线
-			GetCurrentStock()->ShowDayLineRS10(pDC, &penRed1, m_rectIndicator, m_iCandleWidth, 3);
-			// 画相对强度30日均线
-			GetCurrentStock()->ShowDayLineRS30(pDC, &penYellow1, m_rectIndicator, m_iCandleWidth, 3);
-			// 画相对强度120日均线
-			GetCurrentStock()->ShowDayLineRS120(pDC, &penWhite1, m_rectIndicator, m_iCandleWidth, 6);
-		}
-		break;
-	case SHOW_WEEK_LINE_DATA_:
-		break; // 周线不显示相对强度
-	case SHOW_MONTH_LINE_DATA_:
-		break; // 月线不显示相对强度
 	default:
 		break;
 	}
@@ -547,125 +482,65 @@ void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
 	m_rectIndicator.bottom = m_rectClient.bottom;
 }
 
-void CFireBirdView::OnShowRs5() {
+void CFireBirdView::OnShowAV5() {
 	if (m_fShow5Days) m_fShow5Days = false;
 	else m_fShow5Days = true;
 	m_bDrawAll = true;
 }
 
-void CFireBirdView::OnShowRs10() {
+void CFireBirdView::OnShowAV10() {
 	if (m_fShow10Days) m_fShow10Days = false;
 	else m_fShow10Days = true;
 	m_bDrawAll = true;
 }
 
-void CFireBirdView::OnShowRs30() {
+void CFireBirdView::OnShowAV30() {
 	if (m_fShow30Days) m_fShow30Days = false;
 	else m_fShow30Days = true;
 	m_bDrawAll = true;
 }
 
-void CFireBirdView::OnShowRs60() {
+void CFireBirdView::OnShowAV60() {
 	if (m_fShow60Days) m_fShow60Days = false;
 	else m_fShow60Days = true;
 	m_bDrawAll = true;
 }
 
-void CFireBirdView::OnShowRs250() {
+void CFireBirdView::OnShowAV120() {
+	if (m_fShow120Days) m_fShow120Days = false;
+	else m_fShow120Days = true;
+	m_bDrawAll = true;
+}
+
+void CFireBirdView::OnShowAV250() {
 	if (m_fShow250Days) m_fShow250Days = false;
 	else m_fShow250Days = true;
 	m_bDrawAll = true;
 }
 
-void CFireBirdView::OnUpdateShowRs10(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowAV10(CCmdUI* pCmdUI) {
 	if (m_fShow10Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CFireBirdView::OnUpdateShowRs250(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowAV250(CCmdUI* pCmdUI) {
 	if (m_fShow250Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CFireBirdView::OnUpdateShowRs30(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowAV30(CCmdUI* pCmdUI) {
 	if (m_fShow30Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CFireBirdView::OnUpdateShowRs5(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowAV5(CCmdUI* pCmdUI) {
 	if (m_fShow5Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CFireBirdView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowAV60(CCmdUI* pCmdUI) {
 	if (m_fShow60Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
-}
-
-void CFireBirdView::OnShowRsInLogarithm() {
-	if (m_iShowRSOption != 2) {
-		m_iShowRSOption = 2;
-		if (IsChinaStock(GetCurrentStock())) {
-			auto pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
-			pStock->CalculateDayLineRSLogarithm();
-			pStock->CalculateDayLineRSLogarithm();
-		}
-	}
-}
-
-void CFireBirdView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
-	if (IsChinaStock(GetCurrentStock())) {
-		SysCallCmdUIEnable(pCmdUI, true);
-		if (m_iShowRSOption == 2) SysCallCmdUISetCheck(pCmdUI, 1);
-		else SysCallCmdUISetCheck(pCmdUI, 0);
-	}
-	else {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-}
-
-void CFireBirdView::OnShowRsInLinear() {
-	if (m_iShowRSOption != 1) {
-		m_iShowRSOption = 1;
-		if (IsChinaStock(GetCurrentStock())) {
-			CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
-			pStock->CalculateDayLineRS();
-			pStock->CalculateWeekLineRS();
-		}
-	}
-}
-
-void CFireBirdView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
-	if (IsChinaStock(GetCurrentStock())) {
-		SysCallCmdUIEnable(pCmdUI, true);
-		if (m_iShowRSOption == 1) SysCallCmdUISetCheck(pCmdUI, 1);
-		else SysCallCmdUISetCheck(pCmdUI, 0);
-	}
-	else {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-}
-
-void CFireBirdView::OnShowRsIndex() {
-	if (m_iShowRSOption != 0) {
-		m_iShowRSOption = 0;
-		if (IsChinaStock(GetCurrentStock())) {
-			auto pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
-			pStock->CalculateDayLineRSIndex();
-			pStock->CalculateWeekLineRSIndex();
-		}
-	}
-}
-
-void CFireBirdView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
-	if (IsChinaStock(GetCurrentStock())) {
-		SysCallCmdUIEnable(pCmdUI, true);
-		if (m_iShowRSOption == 0) SysCallCmdUISetCheck(pCmdUI, 1);
-		else SysCallCmdUISetCheck(pCmdUI, 0);
-	}
-	else {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
 }
 
 void CFireBirdView::OnShowDayLine() {
@@ -747,23 +622,6 @@ void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
 	CView::OnMouseMove(nFlags, point);
 }
 
-void CFireBirdView::OnShowIndicatorRs() {
-	if (m_iShowIndicator != SHOW_INDICATOR_RS_) {
-		m_iShowIndicator = SHOW_INDICATOR_RS_;
-		InvalidateRect(m_rectIndicator);
-	}
-}
-
-void CFireBirdView::OnUpdateShowIndicatorRs(CCmdUI* pCmdUI) {
-	auto pStock = GetDocument()->GetCurrentStock();
-
-	if (pStock == nullptr || !IsChinaStock(pStock)) SysCallCmdUIEnable(pCmdUI, false);
-	else SysCallCmdUIEnable(pCmdUI, true);
-
-	if (m_iShowIndicator == SHOW_INDICATOR_RS_) SysCallCmdUISetCheck(pCmdUI, 1);
-	else SysCallCmdUISetCheck(pCmdUI, 0);
-}
-
 void CFireBirdView::OnShowIndicatorKdj() {
 	if (m_iShowIndicator != SHOW_INDICATOR_KDJ_) {
 		m_iShowIndicator = SHOW_INDICATOR_KDJ_;
@@ -797,5 +655,59 @@ void CFireBirdView::OnShowIndicatorRsi() {
 
 void CFireBirdView::OnUpdateShowIndicatorRsi(CCmdUI* pCmdUI) {
 	if (m_iShowIndicator == SHOW_INDICATOR_RSI_) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowAv5() {
+	OnShowAV5();
+}
+
+void CFireBirdView::OnUpdateShowAv5(CCmdUI* pCmdUI) {
+	if (m_fShow5Days) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowAv10() {
+	OnShowAV10();
+}
+
+void CFireBirdView::OnUpdateShowAv10(CCmdUI* pCmdUI) {
+	if (m_fShow10Days) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowAv30() {
+	OnShowAV30();
+}
+
+void CFireBirdView::OnUpdateShowAv30(CCmdUI* pCmdUI) {
+	if (m_fShow30Days) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowAv60() {
+	OnShowAV60();
+}
+
+void CFireBirdView::OnUpdateShowAv60(CCmdUI* pCmdUI) {
+	if (m_fShow60Days) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowAv120() {
+	OnShowAV120();
+}
+
+void CFireBirdView::OnUpdateShowAv120(CCmdUI* pCmdUI) {
+	if (m_fShow120Days) SysCallCmdUISetCheck(pCmdUI, 1);
+	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnShowAv250() {
+	OnShowAV250();
+}
+
+void CFireBirdView::OnUpdateShowAv250(CCmdUI* pCmdUI) {
+	if (m_fShow250Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }

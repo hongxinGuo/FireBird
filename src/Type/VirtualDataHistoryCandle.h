@@ -71,36 +71,11 @@ public:
 	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
 	void CalculateMA(size_t length);
-	bool CalculateRS0();
-	virtual bool CalculateRS1(INT64 lNumber);
-	bool CalculateRSIndex0();
-	virtual bool CalculateRSIndex1(INT64 lNumber);
-	bool CalculateRSLogarithm0();
-	virtual bool CalculateRSLogarithm1(INT64 lNumber);
-
-	void GetRS1(vector<double>& vRS) const;
-	void GetRSIndex1(vector<double>& vRS) const;
-	void GetRSLogarithm1(vector<double>& vRS) const;
-	void GetRS3(vector<double>& vRS) const;
-	void GetRS5(vector<double>& vRS) const;
-	void GetRS10(vector<double>& vRS) const;
-	void GetRS30(vector<double>& vRS) const;
-	void GetRS60(vector<double>& vRS) const;
-	void GetRS120(vector<double>& vRS) const;
 
 	// 显示此容器
 	std::pair<long, long> GetHighLow(int iCandleNumber);
 	void ToShow(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow);
 
-	void ShowRS3(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRS5(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRS10(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRS30(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRS60(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRS120(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRSIndex(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRSLogarithm(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
-	void ShowRS1(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio);
 	void ShowLine(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, const vector<double>& vData);
 
 protected:

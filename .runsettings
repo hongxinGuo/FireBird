@@ -74,9 +74,6 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>ReportJsonError</Function>
 								<Function>ReportWebError</Function>
 								<Function>to_byte_string</Function>
-                <Function>ThreadBuildDayLineRS</Function>
-                <Function>ThreadBuildWeekLineRS</Function>
-
 			
 								<Function>CChinaStock::CalculateWeekLine</Function>
 								<Function>CChinaStock::ReportGuadan</Function>
@@ -107,17 +104,12 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 								<Function>CWorldMarket::TaskUpdateSicIndustry</Function>
-                <Function>CWorldMarket::TaskUpdateNaicsIndustry</Function>
+							   <Function>CWorldMarket::TaskUpdateNaicsIndustry</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 
 								<Function>CContainerChinaStock::BuildDayLine</Function>
-								<Function>CContainerChinaStock::BuildDayLineRS</Function>
 								<Function>CContainerChinaStock::BuildWeekLine</Function>
-								<Function>CContainerChinaStock::BuildWeekLineRS</Function>
-								<Function>CContainerChinaStock::Choice10RSStrong1StockSet</Function>
-								<Function>CContainerChinaStock::Choice10RSStrong2StockSet</Function>
-								<Function>CContainerChinaStock::Choice10RSStrongStockSet</Function>
 								<Function>CContainerChinaStock::DeleteDayLineBasicInfo</Function>
 								<Function>CContainerChinaStock::DeleteDayLineExtendInfo</Function>
 								<Function>CContainerChinaStock::DeleteTodayTempDB</Function>
@@ -148,18 +140,12 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CMainFrame::OnRecordTiingoForexWebSocket</Function>
 								<Function>CMainFrame::OnRecordTiingoIEXWebSocket</Function>
 								<Function>CMainFrame::OnRecordFinnhubWebSocket</Function>
-								<Function>CMainFrame::OnCalculate10dayRS1</Function>
-								<Function>CMainFrame::OnCalculate10dayRS2</Function>
-								<Function>CMainFrame::OnCalculate10dayRS</Function>
 								<Function>CMainFrame::OnUpdateStockSection</Function>
 								<Function>CMainFrame::ProcessChinaMarketStock</Function>
 								<Function>CMainFrame::~CMainFrame</Function>
-								<Function>CMainFrame::OnRebuildChinaMarketStockDayLineRS</Function>
-								<Function>CMainFrame::OnRebuildChinaMarketStockWeekLineRS</Function>
 								<Function>CMainFrame::OnBuildCurrentWeekLine</Function>
 								<Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
 								<Function>CMainFrame::ScheduleMarketTask</Function>
-								<Function>CMainFrame::CalculateTodayRS</Function>
 								<Function>CMainFrame::OnStopUpdateDayLine</Function>
 								<Function>CMainFrame::OnBuildCreateWeekLine</Function>
 								<Function>CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable</Function>

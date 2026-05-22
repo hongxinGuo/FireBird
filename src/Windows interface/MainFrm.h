@@ -53,7 +53,6 @@ public:
 	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
 	virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
 
-	virtual void CalculateTodayRS();
 	virtual void ProcessChinaMarketStock();
 
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
@@ -95,15 +94,9 @@ protected:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnProcessTodayStock();
 	afx_msg void OnUpdateProcessTodayStock(CCmdUI* pCmdUI);
-	afx_msg void OnCalculateTodayRS();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnUpdateCalculateTodayRS(CCmdUI* pCmdUI);
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnRebuildChinaMarketStockDayLineRS();
-	afx_msg void OnUpdateRebuildChinaMarketStockDayLineRS(CCmdUI* pCmdUI);
-	afx_msg void OnAbortBuildingRS();
-	afx_msg void OnUpdateAbortBuildingRS(CCmdUI* pCmdUI);
 	afx_msg void OnStopUpdateDayLine();
 	afx_msg void OnUsingNeteaseRealtimeDataServer();
 	afx_msg void OnUsingSinaRealtimeDataServer();
@@ -111,8 +104,6 @@ protected:
 	afx_msg void OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnBuildCreateWeekLine();
 	afx_msg void OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI);
-	afx_msg void OnRebuildChinaMarketStockWeekLineRS();
-	afx_msg void OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI);
 	afx_msg void OnBuildCurrentWeekLine();
 	afx_msg void OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI);
 	afx_msg void OnBuildRebuildCurrentWeekLine();

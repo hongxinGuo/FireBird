@@ -135,7 +135,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerChinaStockTest, TestDeleteDuplicatedStockDB) {
 		using namespace StockMarket;
-		const auto t = ChinaStockCode{};
+		const auto& t = ChinaStockCode{};
 		// Ensure no leftover test symbols
 		auto db = GetStockMarketDB();
 		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
@@ -157,11 +157,6 @@ namespace FireBirdTest {
 		// Verify only one row remains for that symbol
 		db = GetStockMarketDB();
 		auto resAfter = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
-
-		for (auto& row : resAfter) {
-			string displaySymbol = row.DisplaySymbol;
-			string symbol = row.Symbol;
-		}
 		EXPECT_EQ(resAfter.size(), 1);
 
 		// Clean up test data

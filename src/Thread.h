@@ -11,8 +11,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"ClassDeclaration.h"
-
 #undef max //Note 包含concurrencpp.h之前，需要undefined max
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
@@ -21,11 +19,6 @@ extern concurrencpp::runtime gl_runtime;
 extern concurrencpp::thread_pool_executor gl_webInquiryExecutor; // 网络申请线程池工作线程运行调度器
 
 extern long gl_concurrency_level; // 并行计算允许最大数量
-
-// 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
-UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate); // 此工作线程返回值为11, 参数为当前最后计算日期
-// 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDate执行具体任务，最多生成8个工作线程。
-UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate); // 此工作线程返回值为30, 参数为当前最后计算日期
 
 // 装载当前股票日线
 UINT TaskLoadSelectedStockHistoryData(); // 此线程返回值为111

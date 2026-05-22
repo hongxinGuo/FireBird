@@ -96,7 +96,8 @@ namespace FireBirdTest {
 			SetMaxCurrencyLevel();
 
 			//Note: 使用测试环境的数据库连接池，避免对正式环境的数据库造成影响。测试环境的数据库连接池在测试结束时会自动析构。
-			InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 5, false);
+			//InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 5, false); //Note:: 连接正式环境的数据库，谨慎使用
+			InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 5, false); // Note:: 连接测试环境的数据库
 
 			InitializeLogSystem();
 

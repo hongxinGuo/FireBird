@@ -102,7 +102,6 @@
     <ClCompile Include="JsonGetValueTest.cpp" />
     <ClCompile Include="MockFinnhubWebSocketTest.cpp" />
     <ClCompile Include="MockInquireEngineTest.cpp" />
-    <ClCompile Include="MockNeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="MockNeteaseRTDataSourceTest.cpp" />
     <ClCompile Include="MockQuandlDataSourceTest.cpp" />
     <ClCompile Include="MockSinaRTDataSourceTest.cpp" />
@@ -112,7 +111,6 @@
     <ClCompile Include="MockTiingoDataSourceTest.cpp" />
     <ClCompile Include="MockTiingoForexWebSocketTest.cpp" />
     <ClCompile Include="MockTiingoIEXWebSocketTest.cpp" />
-    <ClCompile Include="MockVirtualDataSourceTest.cpp" />
     <ClCompile Include="MockVirtualWebSocketTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="NeteaseRTDataParserTest.cpp" />
@@ -181,10 +179,7 @@
     <ClCompile Include="ProcessWebSocketDataTest.cpp" />
     <ClCompile Include="GeneralCheck.cpp" />
     <ClCompile Include="InsiderTransactionTest.cpp" />
-    <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp" />
-    <ClCompile Include="MockFinnhubForexSymbolTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
-    <ClCompile Include="MockFinnhubStockTest.cpp" />
     <ClCompile Include="NaicsIndustryTest.cpp" />
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
     <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
@@ -198,12 +193,10 @@
     <ClCompile Include="ProductTiingoStockProfileTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="TimeConvertTest.cpp" />
-    <ClCompile Include="VirtualChinaMarketWebProductTest.cpp" />
     <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="VirtualRecordsetTest.cpp" />
     <ClCompile Include="VirtualWebProductTest.cpp" />
     <ClCompile Include="VirtualWebSocketTest.cpp" />
-    <ClCompile Include="VirtualWorldMarketWebProductTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="FinnhubStockTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
@@ -215,12 +208,10 @@
     <ClCompile Include="FinnhubExchangeTest.cpp" />
     <ClCompile Include="FinnhubForexSymbolTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
-    <ClCompile Include="MockChinaStockTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
-    <ClCompile Include="MockContainerChinaDayLineTest.cpp" />
     <ClCompile Include="XferFinnhubInquiryTest.cpp" />
     <ClInclude Include="GeneralCheck.h" />
     <ClInclude Include="MockContainerChinaStock.h" />
@@ -228,7 +219,6 @@
     <ClInclude Include="MockFinnhubDataSource.h" />
     <ClInclude Include="MockFinnhubForexSymbol.h" />
     <ClInclude Include="MockDataChinaWeekLine.h" />
-    <ClCompile Include="MockDataChinaWeekLineTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseWebRTDataTest.cpp" />
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />

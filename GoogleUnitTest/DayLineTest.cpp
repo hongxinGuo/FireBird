@@ -146,34 +146,6 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 
-	TEST_F(CStockDayLineTest, TestGetRS) {
-		CDayLine dl;
-		EXPECT_DOUBLE_EQ(dl.GetRS(), 0);
-		dl.SetRS(50.50);
-		EXPECT_DOUBLE_EQ(dl.GetRS(), 50.50);
-	}
-
-	TEST_F(CStockDayLineTest, TestGetRSIndex) {
-		CDayLine dl;
-		EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 0);
-		dl.SetRSIndex(50.5023);
-		EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 50.5023);
-	}
-
-	TEST_F(CStockDayLineTest, TestGetRSBackup) {
-		CDayLine dl;
-		EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 0);
-		dl.SetRSBackup(50.506);
-		EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 50.506);
-	}
-
-	TEST_F(CStockDayLineTest, TestGetRSLogarithm) {
-		CDayLine dl;
-		EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 0.0);
-		dl.SetRSLogarithm(50.50);
-		EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 50.50);
-	}
-
 	TEST_F(CStockDayLineTest, TestSaveData) {
 		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 		CDayLine id, id2;
@@ -192,9 +164,6 @@ namespace FireBirdTest {
 		id.SetTotalValue(234523452345);
 		id.SetCurrentValue(234145345245);
 		id.SetChangeHandRate(54.321);
-		id.SetRS(14.5);
-		id.SetRSIndex(15.6);
-		id.SetRSBackup(20.9);
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setDayLineBasicInfo.m_strFilter = "[ID] = 1";
@@ -221,9 +190,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_TotalValue), id.GetTotalValue());
 		EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_CurrentValue), id.GetCurrentValue());
 		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_ChangeHandRate), id.GetChangeHandRate());
-		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_RS), id.GetRS());
-		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_RSIndex), id.GetRSIndex());
-		EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_RSBackup), id.GetRSBackup());
 		setDayLineBasicInfo.Close();
 
 		EXPECT_EQ(id2.GetDate(), id.GetDate());
@@ -240,9 +206,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(id2.GetTotalValue(), id.GetTotalValue());
 		EXPECT_EQ(id2.GetCurrentValue(), id.GetCurrentValue());
 		EXPECT_DOUBLE_EQ(id2.GetChangeHandRate(), id.GetChangeHandRate());
-		EXPECT_DOUBLE_EQ(id2.GetRS(), id.GetRS());
-		EXPECT_DOUBLE_EQ(id2.GetRSIndex(), id.GetRSIndex());
-		EXPECT_DOUBLE_EQ(id2.GetRSBackup(), id.GetRSBackup());
 
 		setDayLineBasicInfo.m_strFilter = "[Date] = 21100201";
 		setDayLineBasicInfo.Open();
@@ -273,9 +236,6 @@ namespace FireBirdTest {
 		id.SetTotalValue(234523452345);
 		id.SetCurrentValue(234145345245);
 		id.SetChangeHandRate(54.321);
-		id.SetRS(14.5);
-		id.SetRSIndex(135.6);
-		id.SetRSBackup(120.9);
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setDayLineBasicInfo.m_strFilter = "[ID] = 1";
@@ -302,9 +262,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(idLoaded.GetTotalValue(), id.GetTotalValue());
 		EXPECT_EQ(idLoaded.GetCurrentValue(), id.GetCurrentValue());
 		EXPECT_DOUBLE_EQ(idLoaded.GetChangeHandRate(), id.GetChangeHandRate());
-		EXPECT_DOUBLE_EQ(idLoaded.GetRS(), id.GetRS());
-		EXPECT_DOUBLE_EQ(idLoaded.GetRSIndex(), id.GetRSIndex());
-		EXPECT_DOUBLE_EQ(idLoaded.GetRSBackup(), id.GetRSBackup());
 		setDayLineBasicInfo.Close();
 
 		setDayLineBasicInfo.m_strFilter = "[Date] = 21101001";

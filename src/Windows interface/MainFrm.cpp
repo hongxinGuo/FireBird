@@ -51,22 +51,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnProcessTodayStock)
 	ON_UPDATE_COMMAND_UI(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnUpdateProcessTodayStock)
-	ON_COMMAND(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnCalculateTodayRS)
 	ON_WM_SYSCOMMAND()
-	ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRS)
 	ON_WM_CHAR()
 	ON_WM_KEYUP()
-	ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildChinaMarketStockDayLineRS)
-	//	ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
-	ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildChinaMarketStockDayLineRS)
-	ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
-	ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
-	//	ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
-	//	ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRS2)
-	//	ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRS)
-	//	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnUpdateCalculate10dayRS1)
-	//	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
-	//	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
 	ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
 	ON_COMMAND(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUsingNeteaseRealtimeDataServer)
 	ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
@@ -74,8 +61,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
 	ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
-	ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildChinaMarketStockWeekLineRS)
-	ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS)
 	ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
@@ -664,16 +649,6 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	SysCallOnSysCommand(nID, lParam);
 }
 
-void CMainFrame::OnCalculateTodayRS() {
-	CalculateTodayRS();
-}
-
-void CMainFrame::CalculateTodayRS() {
-	gl_runtime.thread_executor()->post([] {
-		ThreadBuildDayLineRS(gl_pChinaMarket, gl_pChinaMarket->GetMarketDate());
-	});
-}
-
 void CMainFrame::OnProcessTodayStock() {
 	if (gl_pChinaMarket->IsSystemReady()) {
 		ProcessChinaMarketStock();
@@ -697,20 +672,6 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 		SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else SysCallCmdUIEnable(pCmdUI, false);
-}
-
-void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->IsSystemReady()) {
-		if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
-			SysCallCmdUIEnable(pCmdUI, false);
-		}
-		else {
-			SysCallCmdUIEnable(pCmdUI, true);
-		}
-	}
-	else {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -825,39 +786,6 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
-	gl_runtime.thread_executor()->post([] {
-		ThreadBuildDayLineRS(gl_pChinaMarket, CHINA_MARKET_BEGIN_DATE_);
-	});
-}
-
-void CMainFrame::OnUpdateRebuildChinaMarketStockDayLineRS(CCmdUI* pCmdUI) {
-	// 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
-	if ((gl_pChinaMarket->GetMarketTime() > 83000) && (gl_pChinaMarket->GetMarketTime() < 93000)) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else {
-		SysCallCmdUIEnable(pCmdUI, true);
-	}
-}
-
-void CMainFrame::OnAbortBuildingRS() {
-	ASSERT(!gl_systemConfiguration.IsExitingCalculatingRS());
-	gl_systemConfiguration.SetExitingCalculatingRS(true);
-}
-
-void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
-		SysCallCmdUIEnable(pCmdUI, true);
-	}
-	else {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-}
-
 void CMainFrame::OnStopUpdateDayLine() {
 	gl_dataContainerChinaStock.ClearDayLineNeedUpdateStatus();
 }
@@ -952,15 +880,6 @@ void CMainFrame::OnBuildCreateWeekLine() {
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
-}
-
-void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
-	gl_runtime.thread_executor()->post([] {
-		ThreadBuildWeekLineRS(gl_pChinaMarket, CHINA_MARKET_BEGIN_DATE_);
-	});
-}
-
-void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildCurrentWeekLine() {

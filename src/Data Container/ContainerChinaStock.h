@@ -32,8 +32,6 @@ public:
 	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
-	bool BuildDayLineRS(long lDate);
-	bool BuildWeekLineRS(long lDate);
 
 	[[nodiscard]] bool IsDayLineDBUpdated() noexcept;
 

@@ -27,7 +27,7 @@ bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 	return true;
 }
 
-bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
+bool CContainerTiingoStockDayLine::LoadDB2(const string& strStockSymbol) {
 	CSetTiingoStockDayLine setDayLineBasic;
 
 	Unload(); // 卸载之前的日线
@@ -49,6 +49,46 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 
 	SplitAdjust();
 	setDayLineBasic.Close();
+
+	return true;
+}
+
+bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
+	Unload(); // 卸载之前的日线
+
+	using namespace StockMarket;
+	const auto& t = TiingoStockDayline{};
+
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol).order_by(t.Date.asc()));
+	Reserve(result.size() + 2);
+	for (const auto& row : result) {
+		CTiingoCandleLine candle;
+		auto ratio = GetRatio();
+
+		candle.SetDate(row.Date);
+		candle.SetExchange(row.Exchange);
+		candle.SetStockSymbol(row.Symbol);
+		candle.SetLastClose(row.LastClose * ratio);
+		candle.SetOpen(row.Open * ratio);
+		candle.SetHigh(row.High * ratio);
+		candle.SetLow(row.Low * ratio);
+		candle.SetClose(row.Close * ratio);
+		candle.SetSplitFactor(row.SplitFactor);
+		candle.SetDividend(row.Dividend);
+		candle.SetUpDown(row.UpAndDown);
+		candle.SetVolume(row.Volume);
+		candle.SetAmount(row.Amount);
+		candle.SetUpDownRate(row.UpDownRate);
+		candle.SetChangeHandRate(row.ChangeHandRate);
+		candle.SetTotalValue(row.TotalValue);
+		candle.SetCurrentValue(row.CurrentValue);
+		Add(candle);
+	}
+	tx.commit();
+	m_fDataLoaded = true;
+	SplitAdjust();
 
 	return true;
 }
