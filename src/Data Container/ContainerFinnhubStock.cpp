@@ -156,7 +156,6 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pFinnhubStock);
-
 			ASSERT(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
 		}
 		else {
