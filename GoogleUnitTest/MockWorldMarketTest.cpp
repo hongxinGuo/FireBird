@@ -36,7 +36,6 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << gl_systemMessage.PopInformationMessage();
 			gl_systemMessage.PopInformationMessage();
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << gl_systemMessage.PopInnerSystemInformationMessage();
 			gl_systemMessage.PopInnerSystemInformationMessage();
 
 			while (!s_pMockWorldMarket->IsMarketTaskEmpty()) s_pMockWorldMarket->DiscardCurrentMarketTask();

@@ -66,7 +66,7 @@ void CContainerFinnhubStock::ResetDayLine() {
 	}
 }
 
-bool CContainerFinnhubStock::LoadProfileDB() {
+bool CContainerFinnhubStock::LoadProfileDB2() {
 	CSetFinnhubStock setFinnhubStock;
 	CFinnhubStockPtr pFinnhubStock = nullptr;
 	long lMaxSymbolLength = 0;
@@ -81,29 +81,22 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pFinnhubStock);
-			lMaxSymbolLength = std::max<std::basic_string<char>::size_type>(pFinnhubStock->GetSymbol().length(), lMaxSymbolLength);
+			ASSERT(pFinnhubStock->GetSymbol().length() < 12); // 目前WorldMarket数据库的股票代码长度限制为12个字符
 		}
 		else {
 			setFinnhubStock.Delete(); // 删除此重复代码
 		}
 		setFinnhubStock.MoveNext();
-
-		//ValidateStockSymbol(pFinnhubStock);
 	}
 	setFinnhubStock.m_pDatabase->CommitTrans();
 	setFinnhubStock.Close();
 	Sort();
 
-	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
-	string s = fmt::format("WorldMarket股票代码最长长度为{:Ld}", lMaxSymbolLength);
-#ifdef _DEBUG
-	gl_systemMessage.PushInnerSystemInformationMessage(s);
-#endif
-
 	return true;
 }
 
-bool CContainerFinnhubStock::LoadProfileDB2() {
+bool CContainerFinnhubStock::LoadProfileDB() {
+	bool fDeleteDuplicatedSymbol = false;
 	using namespace StockMarket;
 	const auto& t = FinnhubStockProfile{};
 
@@ -112,7 +105,7 @@ bool CContainerFinnhubStock::LoadProfileDB2() {
 	auto tx = sqlpp::start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
 	auto rowCount = result.size();
-	Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
+	Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
 	CFinnhubStockPtr pFinnhubStock = nullptr;
 	long lMaxSymbolLength = 0;
 
@@ -163,20 +156,29 @@ bool CContainerFinnhubStock::LoadProfileDB2() {
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pFinnhubStock);
-			lMaxSymbolLength = std::max<std::basic_string<char>::size_type>(pFinnhubStock->GetSymbol().length(), lMaxSymbolLength);
+
+			ASSERT(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
+		}
+		else {
+			fDeleteDuplicatedSymbol = true;
 		}
 	}
 	tx.commit();
 
+	if (fDeleteDuplicatedSymbol) {
+		DeleteDuplicatedSymbolDB();// 删除重复的股票代码
+	}
+
 	Sort();
 
-	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
-	string s = fmt::format("WorldMarket股票代码最长长度为{:Ld}", lMaxSymbolLength);
-#ifdef _DEBUG
-	gl_systemMessage.PushInnerSystemInformationMessage(s);
-#endif
-
 	return true;
+}
+
+void CContainerFinnhubStock::DeleteDuplicatedSymbolDB() {
+	auto db = gl_dbStockMarket.get();
+	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
+	db.execute("DELETE t1 FROM finnhub_stock_profile t1 INNER JOIN finnhub_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
+	db.execute("COMMIT");
 }
 
 /// <summary>

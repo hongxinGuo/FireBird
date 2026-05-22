@@ -220,69 +220,113 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::BuildDayLine(long lDate) {
-	CSetTiingoStockDayLine setDayLine;
+	// 使用 sqlpp11 批量插入日线数据
 	auto lSize = Size();
-	time_t tMarketCloseTime = gl_pWorldMarket->TransferToUTCTime(lDate, 0); // Note 使用当日数据，无论是否是闭市后的数据。
+	time_t tMarketCloseTime = gl_pWorldMarket->TransferToUTCTime(lDate, 0); // 使用当日数据，无论是否是闭市后的数据。
 
+	// 先载入并删除当天旧数据（与原逻辑保持一致）
 	LoadDayLine(lDate);
-
 	DeleteDayLine(lDate);
 
-	setDayLine.m_strFilter = "[ID] = 1"; // 这里必须设定一个限定项，否则当数据表很大时，打开时间会非常长
-	setDayLine.Open();
-	setDayLine.m_pDatabase->BeginTrans();
-	for (size_t i = 0; i < lSize; i++) {
-		auto pTiingoStock = GetStock(i);
-		if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
-			pTiingoStock->SaveCurrentDataToDayLineDB(setDayLine, lDate);
-			pTiingoStock->SetDayLineEndDate(lDate);
-			pTiingoStock->SetUpdateProfileDB(true);
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		for (size_t i = 0; i < lSize; i++) {
+			auto pTiingoStock = GetStock(i);
+			if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
+				// 将内部整数/单位值转换为数据库存储的浮点值（与 LoadDayLine 中的乘比率相反）
+				const double ratio = static_cast<double>(pTiingoStock->GetRatio());
+
+				db(insert_into(t).set(
+					t.Date = lDate,
+					t.Exchange = pTiingoStock->GetExchangeCode(),
+					t.Symbol = pTiingoStock->GetSymbol(),
+					t.LastClose = static_cast<double>(pTiingoStock->GetLastClose()) / ratio,
+					t.Open = static_cast<double>(pTiingoStock->GetOpen()) / ratio,
+					t.High = static_cast<double>(pTiingoStock->GetHigh()) / ratio,
+					t.Low = static_cast<double>(pTiingoStock->GetLow()) / ratio,
+					t.Close = static_cast<double>(pTiingoStock->GetNew()) / ratio,
+					t.Volume = pTiingoStock->GetVolume(),
+					t.Amount = pTiingoStock->GetAmount(),
+					t.Dividend = pTiingoStock->GetDividend(),
+					t.SplitFactor = pTiingoStock->GetSplitFactor(),
+					t.UpAndDown = static_cast<double>(pTiingoStock->GetUpDown()) / ratio,
+					t.UpDownRate = pTiingoStock->GetUpDownRate(),
+					t.ChangeHandRate = pTiingoStock->GetChangeHandRate(),
+					t.TotalValue = pTiingoStock->GetTotalValue(),
+					t.CurrentValue = pTiingoStock->GetCurrentValue()
+				));
+
+				// 保持原有对象状态更新
+				pTiingoStock->SetDayLineEndDate(lDate);
+				pTiingoStock->SetUpdateProfileDB(true);
+			}
 		}
+
+		tx.commit();
+	} catch (const std::exception& ex) {
+		gl_systemMessage.PushErrorMessage(fmt::format("BuildDayLine(sqlpp11) failed: {}", ex.what()));
+		return;
 	}
-	setDayLine.m_pDatabase->CommitTrans();
-	setDayLine.Close();
 
 	gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(lDate);
 }
 
 void CContainerTiingoStock::LoadDayLine(long lDate) {
-	CSetTiingoStockDayLine setDayLine;
-	time_t ttTradeDay = ConvertToTTime(lDate, gl_pWorldMarket->GetTimeZone(), 170000); // 美股下午4点收市
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
 
-	setDayLine.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
-	setDayLine.Open();
-	setDayLine.m_pDatabase->BeginTrans();
-	while (!setDayLine.IsEOF()) {
-		if (IsSymbol(T2Utf8(setDayLine.m_Symbol))) {
-			auto pStock = GetStock(T2Utf8(setDayLine.m_Symbol));
-			pStock->SetTransactionTime(ttTradeDay);
-			pStock->SetHigh(_tcstod(setDayLine.m_High, nullptr) * pStock->GetRatio());
-			pStock->SetLow(_tstof(setDayLine.m_Low) * pStock->GetRatio());
-			pStock->SetOpen(_tstof(setDayLine.m_Open) * pStock->GetRatio());
-			pStock->SetNew(_tstof(setDayLine.m_Close) * pStock->GetRatio());
-			pStock->SetLastClose(_tstof(setDayLine.m_LastClose) * pStock->GetRatio());
-			pStock->SetVolume(_tstof(setDayLine.m_Volume));
-			pStock->SetDividend(_tstof(setDayLine.m_dividend));
-			pStock->SetSplitFactor(_tstof(setDayLine.m_splitFactor));
+		time_t ttTradeDay = ConvertToTTime(lDate, gl_pWorldMarket->GetTimeZone(), 170000); // 美股下午4点收市
+
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		// select rows for the given trade date
+		auto result = db(select(all_of(t)).from(t).where(t.Date == lDate).order_by(t.Symbol.asc()));
+
+		for (const auto& row : result) {
+			const std::string symbol = row.Symbol;
+			if (IsSymbol(symbol)) {
+				auto pStock = GetStock(symbol);
+				if (pStock == nullptr) continue;
+
+				pStock->SetTransactionTime(ttTradeDay);
+
+				const double ratio = pStock->GetRatio();
+
+				// numeric fields from sqlpp11 are used directly
+				pStock->SetHigh(row.High * ratio);
+				pStock->SetLow(row.Low * ratio);
+				pStock->SetOpen(row.Open * ratio);
+				pStock->SetNew(row.Close * ratio);
+				pStock->SetLastClose(row.LastClose * ratio);
+
+				pStock->SetVolume(row.Volume);
+				pStock->SetDividend(row.Dividend);
+				pStock->SetSplitFactor(row.SplitFactor);
+			}
 		}
-		setDayLine.MoveNext();
+		tx.commit();
+	} catch (const std::exception& ex) {
+		gl_systemMessage.PushErrorMessage(fmt::format("LoadDayLine(sqlpp11) failed: {}", ex.what()));
 	}
-	setDayLine.m_pDatabase->CommitTrans();
-	setDayLine.Close();
 }
 
 void CContainerTiingoStock::DeleteDayLine(long lDate) {
-	CSetTiingoStockDayLine setDayLine;
+	using namespace StockMarket;
+	const auto& t = TiingoStockDayline{};
 
-	setDayLine.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
-	setDayLine.Open();
-	setDayLine.m_pDatabase->BeginTrans();
-	while (!setDayLine.IsEOF()) {
-		setDayLine.Delete();
-		setDayLine.MoveNext();
-	}
-	setDayLine.m_pDatabase->CommitTrans();
-	setDayLine.Close();
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	// Delete all rows for the given trade date in one statement
+	db(remove_from(t).where(t.Date == lDate));
+	tx.commit();
 }
 
 long CContainerTiingoStock::GetTotalActiveStocks() {

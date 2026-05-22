@@ -26,6 +26,7 @@ public:
 	CContainerTiingoStock tiingoContainer;
 	CContainerChinaStock chinaContainer;
 	CContainerTiingoStockDayLine tiingoDayLineContainer;
+	CContainerFinnhubStock finnhubStockContainer;
 };
 
 BENCHMARK_F(CDataBaseBenchmark, LoadTiingoStockProfileDB_using_mfc_record)(benchmark::State& state) {
@@ -51,6 +52,7 @@ BENCHMARK_F(CDataBaseBenchmark, LoadChinaStockProfileDB_using_sqlpp11)(benchmark
 		chinaContainer.LoadProfileDB();
 	}
 }
+
 BENCHMARK_F(CDataBaseBenchmark, LoadTiingoStockDayLineDB_using_mfc_record)(benchmark::State& state) {
 	for (auto _ : state) {
 		tiingoDayLineContainer.LoadDB2("AAPL");
@@ -60,5 +62,17 @@ BENCHMARK_F(CDataBaseBenchmark, LoadTiingoStockDayLineDB_using_mfc_record)(bench
 BENCHMARK_F(CDataBaseBenchmark, LoadTiingoStockDayLineDB_using_sqlpp11)(benchmark::State& state) {
 	for (auto _ : state) {
 		tiingoDayLineContainer.LoadDB("AAPL");
+	}
+}
+
+BENCHMARK_F(CDataBaseBenchmark, LoadFinnhubStockDayLineDB_using_mfc_record)(benchmark::State& state) {
+	for (auto _ : state) {
+		finnhubStockContainer.LoadProfileDB2();
+	}
+}
+
+BENCHMARK_F(CDataBaseBenchmark, LoadFinnhubStockDayLineDB_using_sqlpp11)(benchmark::State& state) {
+	for (auto _ : state) {
+		finnhubStockContainer.LoadProfileDB();
 	}
 }

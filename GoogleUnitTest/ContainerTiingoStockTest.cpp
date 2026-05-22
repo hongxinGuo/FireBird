@@ -30,6 +30,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			gl_systemConfiguration.SetUpdateDB(false);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -170,5 +171,97 @@ namespace FireBirdTest {
 		auto tx2 = start_transaction(db);
 		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));
 		tx2.commit();
+	}
+
+	TEST_F(CContainerTiingoStockTest, BuildDayLine_InsertsRow) {
+		// Choose a test symbol and date
+		const std::string symbol = "UTTEST";
+		const long lDate = gl_pWorldMarket->GetMarketDate(); //使用最新的日期，防止更新其他股票
+
+		// Ensure no pre-existing test symbol in container
+		if (gl_dataContainerTiingoStock.IsSymbol(symbol)) {
+			gl_dataContainerTiingoStock.Delete(symbol);
+		}
+
+		// Create a test stock and set fields (values are scaled by GetRatio())
+		auto pStock = std::make_shared<CTiingoStock>();
+		pStock->SetSymbol(symbol);
+		pStock->SetExchangeCode("US");
+		EXPECT_FALSE(pStock->IsUpdateProfileDB());
+
+		const int ratio = pStock->GetRatio(); // typically 1000000
+
+		// set prices as integer internal representation
+		pStock->SetLastClose(static_cast<long>(1.00 * ratio));
+		pStock->SetOpen(static_cast<long>(1.10 * ratio));
+		pStock->SetHigh(static_cast<long>(1.20 * ratio));
+		pStock->SetLow(static_cast<long>(0.95 * ratio));
+		pStock->SetNew(static_cast<long>(1.15 * ratio));
+
+		pStock->SetVolume(1234);
+		pStock->SetAmount(123400); // in cents/units expected by code
+		pStock->SetDividend(0.0);
+		pStock->SetSplitFactor(1.0);
+
+		// ensure transaction time is at/after market close for the given date
+		time_t tt = gl_pWorldMarket->TransferToUTCTime(lDate, 160000);
+		pStock->SetTransactionTime(tt);
+
+		// Add to global container
+		gl_dataContainerTiingoStock.Add(pStock);
+		EXPECT_FALSE(pStock->IsUpdateProfileDB());
+
+		// Run the function under test
+		gl_dataContainerTiingoStock.BuildDayLine(lDate);
+
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
+		pStock->SetUpdateProfileDB(false);
+
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), lDate) << "Expected TiingoIEXTopOfBookUpdateDate to be set to the date of the built dayline";
+		gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(19800101);
+
+		// Verify DB row inserted for our symbol and date using sqlpp11
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where((t.Date == lDate) and (t.Symbol == symbol)));
+		ASSERT_EQ(result.size(), 1u) << "Expected exactly one inserted row for symbol";
+
+		// inspect the row values (numeric DB values are unscaled)
+		for (const auto& row : result) {
+			// Close in DB should equal pStock->GetNew() / ratio
+			const double expectedClose = static_cast<double>(pStock->GetNew()) / static_cast<double>(ratio);
+			EXPECT_NEAR(row.Close, expectedClose, 1e-9);
+
+			const double expectedOpen = static_cast<double>(pStock->GetOpen()) / static_cast<double>(ratio);
+			EXPECT_NEAR(row.Open, expectedOpen, 1e-9);
+
+			const double expectedHigh = static_cast<double>(pStock->GetHigh()) / static_cast<double>(ratio);
+			EXPECT_NEAR(row.High, expectedHigh, 1e-9);
+
+			const double expectedLow = static_cast<double>(pStock->GetLow()) / static_cast<double>(ratio);
+			EXPECT_NEAR(row.Low, expectedLow, 1e-9);
+
+			INT64 value = row.Volume;
+			EXPECT_EQ(value, pStock->GetVolume());
+			value = row.Amount;
+			EXPECT_EQ(value, pStock->GetAmount());
+
+			string str = row.Symbol;
+			EXPECT_EQ(str, symbol);
+			long date = row.Date;
+			EXPECT_EQ(date, lDate);
+		}
+
+		// cleanup: remove inserted row for this symbol/date only
+		db(remove_from(t).where((t.Date == lDate) and (t.Symbol == symbol)));
+		tx.commit();
+
+		// remove from in-memory container
+		gl_dataContainerTiingoStock.Delete(symbol);
+
+		gl_systemConfiguration.SetUpdateDB(false);
 	}
 }

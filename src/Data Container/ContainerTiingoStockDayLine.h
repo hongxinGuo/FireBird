@@ -19,7 +19,7 @@ public:
 	bool LoadDB2(const string& strStockSymbol);
 
 	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
-	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
+	void UpdateDB2(const string& strStockSymbol);
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();

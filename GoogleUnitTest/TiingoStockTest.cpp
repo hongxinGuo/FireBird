@@ -545,18 +545,22 @@ namespace FireBirdTest {
 		dayLine.SetStockSymbol("A");
 		dayLine.SetDate(19800101); // 这个日期早于数据库中的最早日期，需要添加进数据库
 		dayLine.SetClose(115);
+		dayLine.SetRatio(stock.GetRatio());
 		pvDayLine->push_back(dayLine);
 		dayLine.SetStockSymbol("A");
 		dayLine.SetDate(20210101); // 这个日期为新日期，需要添加进数据库
 		dayLine.SetClose(12340);
+		dayLine.SetRatio(stock.GetRatio());
 		pvDayLine->push_back(dayLine);
 		dayLine.SetStockSymbol("A");
 		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
 		dayLine.SetClose(10020);
+		dayLine.SetRatio(stock.GetRatio());
 		pvDayLine->push_back(dayLine);
 		dayLine.SetStockSymbol("A");
 		dayLine.SetDate(20241111); // 这个日期为新日期，需要添加进数据库
 		dayLine.SetClose(135);
+		dayLine.SetRatio(stock.GetRatio());
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");

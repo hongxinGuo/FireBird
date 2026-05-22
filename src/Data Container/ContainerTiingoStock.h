@@ -27,7 +27,7 @@ public:
 	void ResetDayLineStartEndDate();
 	void BuildDayLine(long lDate);
 	void LoadDayLine(long lDate);
-	static void DeleteDayLine(long lDate);
+	void DeleteDayLine(long lDate);
 
 	long GetTotalActiveStocks();
 

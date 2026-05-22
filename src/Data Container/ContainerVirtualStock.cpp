@@ -53,7 +53,7 @@ void CContainerVirtualStock::Add(const CVirtualStockPtr& pStock) {
 	}
 
 	m_mapSymbol[pStock->GetSymbol()] = m_vStock.size(); // 使用下标生成新的映射
-	m_vStock.push_back(pStock);
+	m_vStock.emplace_back(pStock);
 }
 
 void CContainerVirtualStock::Delete(const CVirtualStockPtr& pStock) {
