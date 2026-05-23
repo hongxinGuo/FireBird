@@ -124,7 +124,7 @@ namespace FireBirdTest {
 		s_pDataStockSymbol->Add("800800.SS");
 		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("800800.SS"));
 
-		// ??????????
+		// 恢复原状
 		EXPECT_TRUE(s_pDataStockSymbol->Delete("800800.SS"));
 	}
 
@@ -135,7 +135,7 @@ namespace FireBirdTest {
 		s_pDataStockSymbol->LoadStockSectionDB();
 		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(800));
 
-		// ??????????
+		// 恢复原状
 		s_pDataStockSymbol->SetStockSectionActiveFlag(800, false);
 		s_pDataStockSymbol->UpdateStockSectionDB();
 	}

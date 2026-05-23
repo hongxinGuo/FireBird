@@ -146,7 +146,8 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 				t.Active = pStockSection->IsActive() ? 1 : 0,
 				t.Market = pStockSection->GetMarket(),
 				t.IndexNumber = pStockSection->GetIndexNumber(),
-				t.Comment = pStockSection->GetComment().c_str()));
+				t.Comment = pStockSection->GetComment()
+			));
 		}
 	}
 	else {// 表已存在
@@ -156,7 +157,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 				t.Active = pStockSection->IsActive() ? 1 : 0,
 				t.Market = pStockSection->GetMarket(),
 				t.IndexNumber = pStockSection->GetIndexNumber(),
-				t.Comment = pStockSection->GetComment().c_str()
+				t.Comment = pStockSection->GetComment()
 			).where(t.ID == i));
 		}
 	}

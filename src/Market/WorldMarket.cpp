@@ -24,8 +24,6 @@
 #include "dataBaseConnector.h"
 #include "InfoReport.h"
 #include "QuandlDataSource.h"
-#include "SetIndexNasdaq100.h"
-#include "SetIndexNasdaq100MA200UpDownRate.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
@@ -630,19 +628,18 @@ void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime) {
 
 concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 	m_vNasdaq100TiingoStock.clear();
-	CSetIndexNasdaq100 setIndexNasdaq100;
-
-	setIndexNasdaq100.Open();
-	while (!setIndexNasdaq100.IsEOF()) {
-		string sSymbol = T2Utf8(setIndexNasdaq100.m_Symbol);
-		if (gl_dataContainerTiingoStock.IsSymbol(sSymbol)) {
-			// 只计算代码集中的股票。目前GOOG代码不存在，只有GOOGL.
-			auto pStock = gl_dataContainerTiingoStock.GetStock(sSymbol);
+	using namespace StockMarket;
+	const auto& t = IndexNasdaq100{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto rows = db(select(all_of(t)).from(t).unconditionally());
+	for (const auto& row : rows) {
+		if (gl_dataContainerTiingoStock.IsSymbol(row.Symbol)) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(row.Symbol);
 			m_vNasdaq100TiingoStock.push_back(pStock);
 		}
-		setIndexNasdaq100.MoveNext();
 	}
-	setIndexNasdaq100.Close();
+	tx.commit();
 
 	vector<result<bool>> results;
 
@@ -663,13 +660,6 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 		//auto a = r.resolve();
 		succeed &= co_await r;
 	}
-
-	/*
-	for (auto pStock : m_vNasdaq100TiingoStock) {
-		if (!pStock->IsDayLineLoaded()) {
-			pStock->LoadDayLineDB();
-		}
-	}*/
 
 	co_return succeed;
 }
@@ -726,27 +716,27 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 		gl_systemMessage.PushStockMarketInformationMessage(str);
 	}
 
-	CSetIndexNasdaq100MA200UpDownRate setIndex;
-	lCurrentDate = 0;
+	using namespace StockMarket;
+	const auto& t = IndexNasdaq100_200MaUpdownRate{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setIndex.m_strSort = "[Date]";
-	setIndex.Open();
-	setIndex.m_pDatabase->BeginTrans();
-	if (!setIndex.IsEOF()) {
-		setIndex.MoveLast();
-		lCurrentDate = setIndex.m_Date;
-		setIndex.MoveNext();
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	int rows = result.size();
+	if (rows > 0) {
+		for (int i = 0; i < rows - 1; i++) {
+			result.pop_front();
+		}
+		auto& row = result.front();
+		lCurrentDate = row.Date;
 	}
+
 	for (auto upDownRate : vUpDownRate) {
 		if (upDownRate.lDate > lCurrentDate) {
-			setIndex.AddNew();
-			setIndex.m_Date = upDownRate.lDate;
-			setIndex.m_Rate = upDownRate.Rate;
-			setIndex.Update();
+			db(sqlpp::insert_into(t).set(t.Date = upDownRate.lDate, t.Rate = upDownRate.Rate));
 		}
 	}
-	setIndex.m_pDatabase->CommitTrans();
-	setIndex.Close();
+	tx.commit();
 }
 
 void CWorldMarket::calculateStockYearHigherRate() {

@@ -101,7 +101,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 
 	Reset();
 	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	auto tx = start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
 	auto rowCount = result.size();
 	Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
@@ -150,7 +150,6 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 			pFinnhubStock->SetPeer(js);
 		}
 		pFinnhubStock->SetIPOStatus(row.IPOStatus);
-
 		pFinnhubStock->LoadUpdateDate(row.UpdateDate);
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());

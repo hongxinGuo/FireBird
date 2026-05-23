@@ -663,12 +663,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
@@ -783,17 +777,11 @@
     <ClInclude Include="..\src\Type\America market\TiingoCandleLine.h">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Market\MarketTaskQueue.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Market\MarketTask.h">
       <Filter>头文件\Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\StockExchange.h">
       <Filter>头文件\Type</Filter>
@@ -809,12 +797,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Data Source\InternetOption.h">
       <Filter>头文件\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100.h">
-      <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.h">
-      <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\AccessoryFactory.h">
       <Filter>头文件\Factory-Product\Accessory</Filter>
@@ -1274,15 +1256,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
     </ClCompile>
@@ -1355,29 +1328,17 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Market\MarketTask.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Market\MarketTaskQueue.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Type\America market\StockExchange.cpp">
       <Filter>源文件\Type</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerStockExchange.cpp">
       <Filter>源文件\Data container</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100.cpp">
-      <Filter>源文件\Database\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.cpp">
-      <Filter>源文件\Database\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp">
       <Filter>源文件\Factory-Product\Accessory</Filter>
@@ -1398,9 +1359,6 @@
       <Filter>源文件\Type\America market\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoCandleLine.cpp">
-      <Filter>源文件\Type\America market\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp">
       <Filter>源文件\Type\America market\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp">
@@ -1471,6 +1429,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\RelativeStrengthIndex.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

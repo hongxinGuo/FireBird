@@ -1,10 +1,5 @@
 #pragma once
 
-#include"SetTiingoMarketNews.h"
-
-#include<memory>
-#include<vector>
-
 class CTiingoMarketNews final {
 public:
 	CTiingoMarketNews();
@@ -16,10 +11,6 @@ public:
 	~CTiingoMarketNews() = default;
 
 	void Reset();
-
-	void Load(const CSetTiingoMarketNews& setTiingoMarketNews);
-	void Append(CSetTiingoMarketNews& setTiingoMarketNews);
-	void Save(CSetTiingoMarketNews& setTiingoMarketNews) const;
 
 public:
 	long m_lId;

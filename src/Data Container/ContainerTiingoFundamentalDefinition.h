@@ -13,6 +13,9 @@ public:
 	CContainerTiingoFundamentalDefinition& operator=(CContainerTiingoFundamentalDefinition&& other) noexcept = delete;
 	~CContainerTiingoFundamentalDefinition() = default;
 
+	void Reset();
+	void Reserve(size_t size);
+
 	void Add(CTiingoFundamentalDefinition tiingoFundamentalDefinition);
 	bool Delete(CTiingoFundamentalDefinition tiingoFundamentalDefinition);
 	bool Delete(const string& strDataCode);
@@ -32,7 +35,7 @@ public:
 
 protected:
 	vector<CTiingoFundamentalDefinition> m_vTiingoFundamentalDefinition;
-	map<string, size_t> m_mapTiingoFundamentalDefinition;
+	unordered_map<string, size_t> m_mapTiingoFundamentalDefinition;
 
 	bool m_fUpdated{ false };
 };

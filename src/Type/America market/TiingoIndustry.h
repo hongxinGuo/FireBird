@@ -1,7 +1,5 @@
 #pragma once
 
-#include"SetTiingoIndustry.h"
-
 #include<memory>
 
 class CTiingoIndustry final {
@@ -18,9 +16,6 @@ public:
 		m_strSector.clear();
 		m_fUpdated = false;
 	}
-
-	void Append(CSetTiingoIndustry& setTiingoIndustry) const;
-	void Load(const CSetTiingoIndustry& setTiingoIndustry);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated() const noexcept { return m_fUpdated; }

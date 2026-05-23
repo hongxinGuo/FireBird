@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerTiingoFundamentalDefinition.h"
+#include "dataBaseConnector.h"
 
 using namespace testing;
 
@@ -100,18 +101,15 @@ namespace FireBirdTest {
 
 		m_dataTiingoFundamentalDefinition.UpdateDB();
 
-		CSetTiingoFundamentalDefinition setDefinition;
-		setDefinition.m_strFilter = "[name] = 'Test'";
-		setDefinition.Open();
-		setDefinition.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setDefinition.IsEOF());
-		setDefinition.Delete();
-		setDefinition.MoveNext();
-		setDefinition.Delete();
-		setDefinition.MoveNext();
-		EXPECT_TRUE(setDefinition.IsEOF());
-		setDefinition.m_pDatabase->CommitTrans();
-		setDefinition.Close();
+		using namespace StockMarket;
+		const auto& t = TiingoFundamentalDefinitions{};
+		auto db = gl_dbStockMarket.get();
+
+		auto result = db(select(all_of(t)).from(t).where(t.name == "Test"));
+		EXPECT_EQ(result.size(), 2) << "数据库中应该有2条测试数据";
+		auto tx = start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.name == "Test")); // 先删除测试数据
+		tx.commit();
 
 		m_dataTiingoFundamentalDefinition.LoadDB();
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85);

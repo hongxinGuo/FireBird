@@ -6,7 +6,6 @@
 #include "ProductTiingoStockProfile.h"
 
 #include "dataBaseConnector.h"
-#include "SetTiingoStockDelistedSymbol.h"
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
@@ -256,23 +255,19 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 }
 
 void CProductTiingoStockProfile::SaveDelistedSymbol() {
-	CSetTiingoStockDelistedSymbol setDelistedSymbol;
-	string s = fmt::format("[Date] ={:8Ld}", gl_pWorldMarket->GetMarketDate());
-	setDelistedSymbol.m_strFilter = s.c_str();
-	setDelistedSymbol.Open();
-	setDelistedSymbol.m_pDatabase->BeginTrans();
-	// 删除之前存储的代码
-	while (!setDelistedSymbol.IsEOF()) {
-		setDelistedSymbol.Delete();
-		setDelistedSymbol.MoveNext();
-	}
+	using namespace StockMarket;
+	const auto& t = TiingoStockDelistedSymbol{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	db(sqlpp::remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate()));
+
 	for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
-		setDelistedSymbol.AddNew();
-		setDelistedSymbol.m_date = gl_pWorldMarket->GetMarketDate();
-		setDelistedSymbol.m_symbol = pStock->GetSymbol().c_str();
-		setDelistedSymbol.Update();
+		db(insert_into(t).set(
+			t.Date = gl_pWorldMarket->GetMarketDate(),
+			t.Symbol = pStock->GetSymbol()
+		)); // 注意：如果没有任何退市股票，则至少插入一条记录，保证每天都有记录，以便后续查询。
 	}
-	setDelistedSymbol.m_pDatabase->CommitTrans();
-	setDelistedSymbol.Close();
+	tx.commit();
 }

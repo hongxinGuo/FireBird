@@ -3,12 +3,23 @@
 #include "ContainerTiingoFundamentalDefinition.h"
 
 #include "CharSetTransfer.h"
+#include "dataBaseConnector.h"
 #include "InfoReport.h"
 
 CContainerTiingoFundamentalDefinition::CContainerTiingoFundamentalDefinition() {
 	m_vTiingoFundamentalDefinition.resize(0);
 	m_mapTiingoFundamentalDefinition.clear();
 	m_fUpdated = false;
+}
+
+void CContainerTiingoFundamentalDefinition::Reset() {
+	m_vTiingoFundamentalDefinition.clear();
+	m_mapTiingoFundamentalDefinition.clear();
+}
+
+void CContainerTiingoFundamentalDefinition::Reserve(size_t size) {
+	m_vTiingoFundamentalDefinition.reserve(size);
+	m_mapTiingoFundamentalDefinition.reserve(size);
 }
 
 void CContainerTiingoFundamentalDefinition::Add(CTiingoFundamentalDefinition tiingoFundamentalDefinition) {
@@ -41,55 +52,54 @@ bool CContainerTiingoFundamentalDefinition::Delete(const string& strDataCode) {
 }
 
 bool CContainerTiingoFundamentalDefinition::UpdateDB() {
-	if (m_fUpdated) {
-		CSetTiingoFundamentalDefinition setTiingoFundamentalDefinition, setDefinition;
-		map<string, size_t> mapDefinition;
-		setDefinition.Open();
-		setDefinition.m_pDatabase->BeginTrans();
-		while (!setDefinition.IsEOF()) {
-			mapDefinition[T2Utf8(setDefinition.m_dataCode)] = mapDefinition.size();
-			setDefinition.MoveNext();
-		}
-		setDefinition.m_pDatabase->CommitTrans();
-		setDefinition.Close();
+	ASSERT(m_fUpdated);
+	map<string, size_t> mapDefinition;
+	using namespace StockMarket;
+	const auto& t = TiingoFundamentalDefinitions{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-		setTiingoFundamentalDefinition.Open();
-		setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
-		try {
-			for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
-				if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
-					tiingoFundamentalDefinition.Append(setTiingoFundamentalDefinition);
-				}
-			}
-		} catch (CException& e) {
-			ReportInformation(e);
-		}
-		setTiingoFundamentalDefinition.m_pDatabase->CommitTrans();
-		setTiingoFundamentalDefinition.Close();
-		m_fUpdated = false;
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	for (const auto& row : result) {
+		mapDefinition[row.dataCode] = mapDefinition.size();
 	}
+
+	for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
+		if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
+			db(sqlpp::insert_into(t).set(
+				t.dataCode = tiingoFundamentalDefinition.m_strDataCode,
+				t.name = tiingoFundamentalDefinition.m_strName.c_str(),
+				t.description = tiingoFundamentalDefinition.m_strDescription.c_str(),
+				t.statementType = tiingoFundamentalDefinition.m_strStatementType.c_str(),
+				t.units = tiingoFundamentalDefinition.m_strUnits.c_str()
+			));
+		}
+	}
+	tx.commit();
+	m_fUpdated = false;
+
 	return true;
 }
 
 bool CContainerTiingoFundamentalDefinition::LoadDB() {
-	CSetTiingoFundamentalDefinition setTiingoFundamentalDefinition;
+	using namespace StockMarket;
+	const auto& t = TiingoFundamentalDefinitions{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	m_vTiingoFundamentalDefinition.clear();
-	m_mapTiingoFundamentalDefinition.clear();
-
-	setTiingoFundamentalDefinition.Open();
-	setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
-	while (!setTiingoFundamentalDefinition.IsEOF()) {
-		if (!HaveDefinition(T2Utf8(setTiingoFundamentalDefinition.m_dataCode))) {
-			CTiingoFundamentalDefinition pTiingoFundamentalDefinition;
-			pTiingoFundamentalDefinition.Load(setTiingoFundamentalDefinition);
-			Add(pTiingoFundamentalDefinition);
-		}
-		else { setTiingoFundamentalDefinition.Delete(); }
-		setTiingoFundamentalDefinition.MoveNext();
+	Reset();
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	size_t rows = result.size();
+	Reserve(rows);
+	for (const auto& row : result) {
+		CTiingoFundamentalDefinition tiingoFundamentalDefinition;
+		tiingoFundamentalDefinition.m_strDataCode = row.dataCode;
+		tiingoFundamentalDefinition.m_strName = row.name;
+		tiingoFundamentalDefinition.m_strDescription = row.description;
+		tiingoFundamentalDefinition.m_strStatementType = row.statementType;
+		tiingoFundamentalDefinition.m_strUnits = row.units;
+		Add(tiingoFundamentalDefinition);
 	}
-	setTiingoFundamentalDefinition.m_pDatabase->CommitTrans();
-	setTiingoFundamentalDefinition.Close();
 	m_fUpdated = false;
 
 	return true;

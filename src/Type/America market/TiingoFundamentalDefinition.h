@@ -18,10 +18,6 @@ public:
 
 	void Reset();
 
-	void Load(const CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition);
-	void Append(CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition);
-	void Save(CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition);
-
 public:
 	string m_strDataCode{ "" };
 	string m_strName{ "" };

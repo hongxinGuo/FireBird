@@ -3,7 +3,7 @@
 #include "ProductIndexNasdaq100Stocks.h"
 
 #include "AccessoryDataSource.h"
-#include "SetIndexNasdaq100.h"
+#include "dataBaseConnector.h"
 #include "simdjsonGetValue.h"
 
 #include"WebData.h"
@@ -22,21 +22,16 @@ void CProductIndexNasdaq100Stocks::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	std::ranges::sort(gl_vNasdaq100Stocks, [](const string& s1, const string& s2) { return s1 < s2; });
 
 	if (gl_vNasdaq100Stocks.size() >= 90) {
-		CSetIndexNasdaq100 setNasdaq100;
+		using namespace StockMarket;
+		const auto& t = IndexNasdaq100{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-		setNasdaq100.Open();
-		setNasdaq100.m_pDatabase->BeginTrans();
-		while (!setNasdaq100.IsEOF()) {
-			setNasdaq100.Delete();
-			setNasdaq100.MoveNext();
-		}
+		db(remove_from(t).unconditionally());
 		for (auto& s : gl_vNasdaq100Stocks) {
-			setNasdaq100.AddNew();
-			setNasdaq100.m_Symbol = s.c_str();
-			setNasdaq100.Update();
+			db(insert_into(t).set(t.Symbol = s));
 		}
-		setNasdaq100.m_pDatabase->CommitTrans();
-		setNasdaq100.Close();
+		tx.commit();
 	}
 }
 

@@ -3,7 +3,6 @@
 #include "ContainerTiingoStock.h"
 
 #include "CharSetTransfer.h"
-#include "SetTiingoStockCurrentTrace.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TimeConvert.h"
@@ -387,21 +386,39 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 
 void CContainerTiingoStock::TaskCalculate() {
 	gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
+
+	vector<result<int>> results;
+	vector<int> vPos;
 	auto lSize = Size();
-	CSetTiingoStockCurrentTrace setCurrentTrace;
-	setCurrentTrace.m_strFilter = "[ID] = 1";
-	setCurrentTrace.Open();
-	setCurrentTrace.m_pDatabase->BeginTrans();
+
 	for (size_t index = 0; index < lSize; index++) {
-		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
+		bool fFound = false;
 		auto pStock = GetStock(index);
 		pStock->Load52WeekLowDB();
 		if (pStock->IsEnough52WeekLow()) {
+			fFound = true;
 		}
 		pStock->m_v52WeekLowDate.clear(); //Note 直到这里才清空
+		if (fFound) vPos.push_back(index); // vPos中存储找到的位置。
 	}
-	setCurrentTrace.m_pDatabase->CommitTrans();
-	setCurrentTrace.Close();
+
+	using namespace StockMarket;
+	const auto& t = TiingoStockCurrentTrace{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+	db(remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate())); // 先删除原有数据
+
+	for (size_t index = 0; index < vPos.size(); index++) {
+		auto pStock = GetStock(vPos.at(index));
+		db(sqlpp::insert_into(t).set(
+			t.Date = gl_pWorldMarket->GetMarketDate(),
+			t.Symbol = pStock->GetSymbol(),
+			t.SICCode = pStock->GetSicCode()
+		));
+	}
+	tx.commit();
+
+	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 }
 
@@ -442,31 +459,22 @@ void CContainerTiingoStock::TaskCalculate2() {
 		}
 	}
 
-	CSetTiingoStockCurrentTrace setCurrentTrace1;
-	setCurrentTrace1.m_strFilter = fmt::format("[Date] = {:8Ld}", gl_pWorldMarket->GetMarketDate()).c_str();
-	setCurrentTrace1.Open();
-	setCurrentTrace1.m_pDatabase->BeginTrans();
-	while (!setCurrentTrace1.IsEOF()) {
-		setCurrentTrace1.Delete();
-		setCurrentTrace1.MoveNext();
-	}
-	setCurrentTrace1.m_pDatabase->CommitTrans();
-	setCurrentTrace1.Close();
+	using namespace StockMarket;
+	const auto& t = TiingoStockCurrentTrace{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+	db(remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate())); // 先删除原有数据
 
-	CSetTiingoStockCurrentTrace setCurrentTrace;
-	setCurrentTrace.m_strFilter = "[ID] = 1";
-	setCurrentTrace.Open();
-	setCurrentTrace.m_pDatabase->BeginTrans();
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
-		setCurrentTrace.AddNew();
-		setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
-		setCurrentTrace.m_Symbol = pStock->GetSymbol().c_str();
-		setCurrentTrace.m_SICCode = pStock->GetSicCode();
-		setCurrentTrace.Update();
+		db(sqlpp::insert_into(t).set(
+			t.Date = gl_pWorldMarket->GetMarketDate(),
+			t.Symbol = pStock->GetSymbol(),
+			t.SICCode = pStock->GetSicCode()
+		));
 	}
-	setCurrentTrace.m_pDatabase->CommitTrans();
-	setCurrentTrace.Close();
+	tx.commit();
+
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 }
 
