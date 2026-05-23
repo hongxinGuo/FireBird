@@ -22,7 +22,6 @@ public:
 	void UpdateProfileDB();
 	bool LoadProfileDB();
 	static void DeleteDuplicatedSymbolFromDB();
-	bool LoadProfileDB2();
 
 	void ResetDayLineStartEndDate();
 	void BuildDayLine(long lDate);

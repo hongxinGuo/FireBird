@@ -19,7 +19,7 @@ public:
 
 	void UpdateSystemStatus() override;
 	static CTiingoStocksPtr DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock);
-	void SaveNewSymbol();
+	static void SaveNewSymbol();
 	void SaveDelistedSymbol();
 };
 

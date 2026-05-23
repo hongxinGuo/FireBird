@@ -110,7 +110,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
@@ -332,7 +331,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStock.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp" />

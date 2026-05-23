@@ -534,7 +534,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
-		CSetTiingoStock setTiingoStock;
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "函数UpdateProfile只运行在付费账户状态下";
 
@@ -576,29 +575,25 @@ namespace FireBirdTest {
 		pTiingoStock->SetUpdateProfileDB(true);
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 
-		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "添加了两个股票";
+		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "更新了两个股票";
 
 		gl_dataContainerTiingoStock.UpdateProfileDB(); // 更新代码集
 
 		// 恢复原状
-		setTiingoStock.m_strFilter = "[SICSector] = 'Test'";
-		setTiingoStock.m_strSort = "[Ticker]";
-		setTiingoStock.Open();
-		EXPECT_FALSE(setTiingoStock.IsEOF()) << "存入了两股票代码";
-		setTiingoStock.m_pDatabase->BeginTrans();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "已存在代码";
-		EXPECT_EQ(setTiingoStock.m_SicCode, 1002);
-		setTiingoStock.Edit();
-		setTiingoStock.m_SicSector = "";
-		setTiingoStock.m_SicCode = 0;
-		setTiingoStock.Update();
-		setTiingoStock.MoveNext();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("ABCDEF")) << "新代码";
-		setTiingoStock.Delete();
-		setTiingoStock.MoveNext();
-		EXPECT_TRUE(setTiingoStock.IsEOF());
-		setTiingoStock.m_pDatabase->CommitTrans();
-		setTiingoStock.Close();
+		using namespace StockMarket;
+		const auto& t = TiingoStockFundamental{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).order_by(t.Ticker.asc()).where(t.SICSector == std::string("Test")));
+		int rows = result.size();
+		EXPECT_EQ(rows, 2);
+		EXPECT_EQ(result.front().Ticker, "A");
+		result.pop_front();
+		EXPECT_EQ(result.front().Ticker, "ABCDEF");
+
+		db(update(t).set(t.SICSector = std::string("")).where(t.Ticker == std::string("A")));
+		db(remove_from(t).where(t.Ticker == std::string("ABCDEF")));
+		tx.commit();
 
 		gl_dataContainerTiingoStock.Delete(pTiingoStock);
 	}

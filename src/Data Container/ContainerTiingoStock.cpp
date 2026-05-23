@@ -108,30 +108,6 @@ void CContainerTiingoStock::UpdateProfileDB() {
 }
  */
 
-bool CContainerTiingoStock::LoadProfileDB2() {
-	CSetTiingoStock setTiingoStock;
-
-	Reset();
-	setTiingoStock.m_strSort = "[Ticker]";
-	setTiingoStock.Open();
-	setTiingoStock.m_pDatabase->BeginTrans();
-	while (!setTiingoStock.IsEOF()) {
-		if (!IsSymbol(T2Utf8(setTiingoStock.m_Ticker))) {
-			const auto pTiingoStock = make_shared<CTiingoStock>();
-			pTiingoStock->Load(setTiingoStock);
-			Add(pTiingoStock);
-		}
-		else {
-			setTiingoStock.Delete(); // 删除重复代码
-		}
-		setTiingoStock.MoveNext();
-	}
-	setTiingoStock.m_pDatabase->CommitTrans();
-	setTiingoStock.Close();
-
-	return true;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///
 /// 使用sqlpp11的类型化查询接口来加载数据，sqlpp11的查询接口比传统的方式快10倍。
