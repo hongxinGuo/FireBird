@@ -3,8 +3,7 @@
 #include"ChinaStockCodeConverter.h"
 #include "ContainerStockSymbol.h"
 
-#include "CharSetTransfer.h"
-#include"SetStockSection.h"
+#include "dataBaseConnector.h"
 
 CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSymbol.resize(0);
@@ -110,55 +109,58 @@ size_t CContainerStockSymbol::Size() {
 }
 
 void CContainerStockSymbol::LoadStockSectionDB() {
-	CSetStockSection setStockSection;
+	using namespace StockMarket;
+	const auto& t = ChinaStockCodeSection{};
 
-	setStockSection.Open();
-	while (!setStockSection.IsEOF()) {
-		if (!m_vStockSection.at(setStockSection.m_IndexNumber)->IsActive()) {
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(T2Utf8(setStockSection.m_Comment));
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	auto result = db(sqlpp::select(all_of(t)).from(t).unconditionally());
+	for (const auto& row : result) {
+		if (!m_vStockSection.at(row.IndexNumber)->IsActive()) {
+			m_vStockSection.at(row.IndexNumber)->SetActive(row.Active);
+			m_vStockSection.at(row.IndexNumber)->SetMarket(row.Market);
+			m_vStockSection.at(row.IndexNumber)->SetIndexNumber(row.IndexNumber);
+			m_vStockSection.at(row.IndexNumber)->SetComment(row.Comment);
 		}
-		setStockSection.MoveNext();
 	}
-	setStockSection.Close();
+	tx.commit();
+
 	m_fDBLoaded = true;
 }
 
 void CContainerStockSymbol::UpdateStockSectionDB() {
-	CSetStockSection setStockSection;
+	using namespace StockMarket;
+	const auto& t = ChinaStockCodeSection{};
 
-	setStockSection.m_strSort = "[ID]";
-	setStockSection.Open();
-	setStockSection.m_pDatabase->BeginTrans();
-	if (setStockSection.IsEOF()) {// 空表
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	auto result = db(sqlpp::select(all_of(t)).from(t).unconditionally());
+	int rows = result.size();
+	if (rows == 0) {
 		for (int i = 0; i < 2000; i++) {
 			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
-			setStockSection.AddNew();
-			setStockSection.m_ID = i;
-			setStockSection.m_Active = pStockSection->IsActive();
-			setStockSection.m_Market = pStockSection->GetMarket();
-			setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
-			setStockSection.m_Comment = pStockSection->GetComment().c_str();
-			setStockSection.Update();
+			db(insert_into(t).set(
+				t.ID = i,
+				t.Active = pStockSection->IsActive() ? 1 : 0,
+				t.Market = pStockSection->GetMarket(),
+				t.IndexNumber = pStockSection->GetIndexNumber(),
+				t.Comment = pStockSection->GetComment().c_str()));
 		}
 	}
 	else {// 表已存在
-		while (!setStockSection.IsEOF()) {
-			if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
-				setStockSection.Edit();
-				setStockSection.m_Active = m_vStockSection.at(setStockSection.m_ID)->IsActive();
-				setStockSection.m_Market = m_vStockSection.at(setStockSection.m_ID)->GetMarket();
-				setStockSection.m_IndexNumber = m_vStockSection.at(setStockSection.m_ID)->GetIndexNumber();
-				setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment().c_str();
-				setStockSection.Update();
-			}
-			setStockSection.MoveNext();
+		for (int i = 0; i < 2000; i++) {
+			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
+			db(update(t).set(
+				t.Active = pStockSection->IsActive() ? 1 : 0,
+				t.Market = pStockSection->GetMarket(),
+				t.IndexNumber = pStockSection->GetIndexNumber(),
+				t.Comment = pStockSection->GetComment().c_str()
+			).where(t.ID == i));
 		}
 	}
-	setStockSection.m_pDatabase->CommitTrans();
-	setStockSection.Close();
+	tx.commit();
 
 	m_fUpdateStockSection = false;
 }

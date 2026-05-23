@@ -1,0 +1,2 @@
+[2026-05-23 16:33:35.836] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2026-05-23 16:33:39.886] [watchdog_daily_logger] [info] WatchdogQT App exit

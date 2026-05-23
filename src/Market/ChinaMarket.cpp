@@ -14,7 +14,6 @@
 
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
-#include"SetOption.h"
 #include"SetChinaChosenStock.h"
 
 #include"SetCurrentWeekLine.h"
@@ -1199,24 +1198,26 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 //////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::UpdateOptionDB() {
 	try {
-		CSetOption setOption;
+		using namespace StockMarket;
+		const auto& t = ChinaMarketOptions{};
 
-		setOption.Open();
-		setOption.m_pDatabase->BeginTrans();
-		if (setOption.IsEOF()) {
-			setOption.AddNew();
-			setOption.m_LastLoginDate = GetMarketDate();
-			setOption.m_LastLoginTime = GetMarketTime();
-			setOption.Update();
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).unconditionally());
+		if (result.size<int>() == 0) {
+			db(sqlpp::insert_into(t).set(
+				t.LastLoginDate = GetMarketDate(),
+				t.LastLoginTime = GetMarketTime()
+			));
 		}
 		else {
-			setOption.Edit();
-			setOption.m_LastLoginDate = GetMarketDate();
-			setOption.m_LastLoginTime = GetMarketTime();
-			setOption.Update();
+			db(update(t).set(
+				t.LastLoginDate = GetMarketDate(),
+				t.LastLoginTime = GetMarketTime()
+			).unconditionally());
 		}
-		setOption.m_pDatabase->CommitTrans();
-		setOption.Close();
+		tx.commit();
 	} catch (CException& e) {
 		ReportInformation(e);
 	}

@@ -2,7 +2,6 @@
 
 #include"../src/SystemPublicDeclaration.h"
 
-#include <afx.h>
 #include<QMessageBox>
 #include<QLabel>
 #include<QChronoTimer>
@@ -11,8 +10,6 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/daily_file_sink.h>
 using namespace std;
-
-#include"../src/CharSetTransfer.h"
 
 //#include"resource.h"
 
@@ -31,7 +28,7 @@ namespace {
 	}
 
 	bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
-		const HANDLE hMutex = CreateMutex(nullptr, false, Utf8ToWstring(strProgramToken).c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+		const HANDLE hMutex = CreateMutexA(nullptr, false, strProgramToken.c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 		bool bAlreadyRunning = false;
 		if (hMutex) {
 			if (ERROR_ALREADY_EXISTS == ::GetLastError()) {

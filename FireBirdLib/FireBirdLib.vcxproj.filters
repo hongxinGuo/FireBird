@@ -273,12 +273,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -943,12 +937,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp">
       <Filter>源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp">
-      <Filter>源文件\Database\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetStockSection.cpp">
-      <Filter>源文件\Database\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualRecordset.cpp">
       <Filter>源文件\Database</Filter>

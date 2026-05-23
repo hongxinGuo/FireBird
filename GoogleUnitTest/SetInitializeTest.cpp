@@ -12,8 +12,6 @@
 
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
-#include"SetOption.h"
-#include"SetStockSection.h"
 
 #include"SetFinnhubStockBasicFinancialMetric.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
@@ -88,30 +86,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setCurrentWeekLine.GetDefaultSQL(), _T("[china_current_weekline]"));
-	}
-
-	TEST_F(SetInitializeTest, TestOptionInitialize) {
-		CSetOption setOption;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setOption.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setOption.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setOption.GetDefaultSQL(), _T("[china_market_options]"));
-	}
-
-	TEST_F(SetInitializeTest, TestStockSectionInitialize) {
-		CSetStockSection setStockSection;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setStockSection.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setStockSection.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setStockSection.GetDefaultSQL(), _T("[china_stock_code_section]"));
 	}
 
 	TEST_F(SetInitializeTest, TestDayLineBasicInfoInitialize) {

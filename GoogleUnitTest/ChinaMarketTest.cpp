@@ -6,8 +6,8 @@
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
+#include "dataBaseConnector.h"
 
-#include"SetOption.h"
 #include"SetCurrentWeekLine.h"
 #include"SetChinaChosenStock.h"
 
@@ -1278,20 +1278,18 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadOptionDB) {
-		CSetOption setOption;
+		using namespace StockMarket;
+		const auto& t = ChinaMarketOptions{};
 
-		setOption.Open();
-		setOption.m_pDatabase->BeginTrans();
-		while (!setOption.IsEOF()) {
-			setOption.Delete();
-			setOption.MoveNext();
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+			db(remove_from(t).unconditionally());
+			tx.commit();
 		}
-		setOption.m_pDatabase->CommitTrans();
-		setOption.Close();
+
 		gl_pChinaMarket->SetLastLoginDate(gl_pChinaMarket->GetMarketDate());
-
 		gl_pChinaMarket->UpdateOptionDB();
-
 		gl_pChinaMarket->SetLastLoginDate(1);
 
 		gl_pChinaMarket->LoadOptionDB();
@@ -1308,14 +1306,13 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << "永远是当前日期\n";
 
-		setOption.Open();
-		setOption.m_pDatabase->BeginTrans();
-		while (!setOption.IsEOF()) {
-			setOption.Delete();
-			setOption.MoveNext();
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+			db(remove_from(t).unconditionally());
+			tx.commit();
 		}
-		setOption.m_pDatabase->CommitTrans();
-		setOption.Close();
+
 		gl_pChinaMarket->LoadOptionDB();
 
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), CHINA_MARKET_BEGIN_DATE_);

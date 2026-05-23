@@ -74,8 +74,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h" />
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h" />
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h" />
@@ -295,8 +293,6 @@
     <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp" />
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp" />
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetStockSection.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualRecordset.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp" />
