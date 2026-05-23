@@ -4,6 +4,7 @@
 
 #include "CharSetTransfer.h"
 #include "ConvertToString.h"
+#include "dataBaseConnector.h"
 
 #include "TiingoStockDailyMeta.h"
 #include "TimeConvert.h"
@@ -420,62 +421,26 @@ void CTiingoStock::Delete52WeekHighDate(long lDate) {
 	}
 }
 
-void CTiingoStock::Update52WeekHighDB(CSetTiingoStock52WeekHigh& set52WeekHigh) const {
-	auto lSize = m_v52WeekHighDate.size();
-
-	for (size_t index = 0; index < lSize; index++) {
-		set52WeekHigh.AddNew();
-		set52WeekHigh.m_Symbol = GetSymbol().c_str();
-		set52WeekHigh.m_Exchange = GetExchangeCode().c_str();
-		set52WeekHigh.m_Date = m_v52WeekHighDate.at(index);
-		set52WeekHigh.Update();
-	}
-}
-
-void CTiingoStock::Update52WeekLowDB(CSetTiingoStock52WeekLow& set52WeekLow) const {
-	auto lSize = m_v52WeekLowDate.size();
-
-	for (size_t index = 0; index < lSize; index++) {
-		set52WeekLow.AddNew();
-		set52WeekLow.m_Symbol = GetSymbol().c_str();
-		set52WeekLow.m_Exchange = GetExchangeCode().c_str();
-		set52WeekLow.m_Date = m_v52WeekLowDate.at(index);
-		set52WeekLow.Update();
-	}
-}
-
 void CTiingoStock::Delete52WeekHighDB() const {
-	CSetTiingoStock52WeekHigh set52WeekHigh;
+	using namespace StockMarket;
+	const auto& t = TiingoStock52WeekHigh{};
 
-	set52WeekHigh.m_strFilter = "[Symbol] ='";
-	set52WeekHigh.m_strFilter += GetSymbol().c_str();
-	set52WeekHigh.m_strFilter += "'";
-	set52WeekHigh.m_strSort = "[Date]";
-	set52WeekHigh.Open();
-	set52WeekHigh.m_pDatabase->BeginTrans();
-	while (!set52WeekHigh.IsEOF()) {
-		set52WeekHigh.Delete();
-		set52WeekHigh.MoveNext();
-	}
-	set52WeekHigh.m_pDatabase->CommitTrans();
-	set52WeekHigh.Close();
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol()));
+	tx.commit();
 }
 
 void CTiingoStock::Delete52WeekLowDB() const {
-	CSetTiingoStock52WeekLow set52WeekLow;
+	using namespace StockMarket;
+	const auto& t = TiingoStock52WeekLow{};
 
-	set52WeekLow.m_strFilter = "[Symbol] ='";
-	set52WeekLow.m_strFilter += GetSymbol().c_str();
-	set52WeekLow.m_strFilter += "'";
-	set52WeekLow.m_strSort = "[Date]";
-	set52WeekLow.Open();
-	set52WeekLow.m_pDatabase->BeginTrans();
-	while (!set52WeekLow.IsEOF()) {
-		set52WeekLow.Delete();
-		set52WeekLow.MoveNext();
-	}
-	set52WeekLow.m_pDatabase->CommitTrans();
-	set52WeekLow.Close();
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol()));
+	tx.commit();
 }
 
 bool CTiingoStock::IsEnough52WeekLow() {
@@ -493,19 +458,18 @@ bool CTiingoStock::IsEnough52WeekLow() {
 void CTiingoStock::Load52WeekLowDB() {
 	if (!m_v52WeekLowDate.empty()) return; // 如果已经装入了， 直接返回。
 
-	CSetTiingoStock52WeekLow setLow;
-	setLow.m_strFilter = "[Symbol] = '";
-	setLow.m_strFilter += GetSymbol().c_str();
-	setLow.m_strFilter += "'";
-	setLow.m_strSort = "[Date]";
-	setLow.Open();
-	setLow.m_pDatabase->BeginTrans();
-	while (!setLow.IsEOF()) {
-		m_v52WeekLowDate.push_back(setLow.m_Date);
-		setLow.MoveNext();
+	using namespace StockMarket;
+	const auto& t = TiingoStock52WeekLow{};
+
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	auto result = db(select(all_of(t)).from(t).where(t.Symbol == GetSymbol()).order_by(t.Date.asc()));
+	m_v52WeekLowDate.reserve(result.size<>());
+	for (const auto& row : result) {
+		m_v52WeekLowDate.push_back(row.Date);
 	}
-	setLow.m_pDatabase->CommitTrans();
-	setLow.Close();
+	tx.commit();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -354,20 +354,26 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 	Delete52WeekHighData();
 	auto lSize = Size();
 
-	CSetTiingoStock52WeekHigh set52WeekHigh;
-	set52WeekHigh.m_strFilter = "[ID] = 1";
-	set52WeekHigh.Open();
-	set52WeekHigh.m_pDatabase->BeginTrans();
+	using namespace StockMarket;
+	const auto& t = TiingoStock52WeekHigh{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
 	for (size_t i = 0; i < lSize; i++) {
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 		const CTiingoStockPtr pStock = GetStock(i);
 		if (pStock->IsUpdate52WeekHighLowDB()) {
-			pStock->Update52WeekHighDB(set52WeekHigh);
+			auto Size = pStock->Get52WeekHighSize();
+			for (size_t index = 0; index < Size; index++) {
+				db(insert_into(t).set(
+					t.Symbol = pStock->GetSymbol(),
+					t.Exchange = pStock->GetExchangeCode(),
+					t.Date = pStock->Get52WeekHighDate(index)
+				));
+			}
 		}
 	}
-	set52WeekHigh.m_pDatabase->CommitTrans();
-	set52WeekHigh.Close();
+	tx.commit();
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
 	gl_systemMessage.PushInnerSystemInformationMessage("tiingo 52 week high calculated");
@@ -378,21 +384,26 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 	Delete52WeekLowData();
 	auto lSize = Size();
 
-	CSetTiingoStock52WeekLow set52WeekLow;
-	set52WeekLow.m_strFilter = "[ID] = 1";
-	set52WeekLow.Open();
-	set52WeekLow.m_pDatabase->BeginTrans();
+	using namespace StockMarket;
+	const auto& t = TiingoStock52WeekLow{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
 	for (size_t i = 0; i < lSize; i++) {
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 		const CTiingoStockPtr pStock = GetStock(i);
 		if (pStock->IsUpdate52WeekHighLowDB()) {
-			pStock->Update52WeekLowDB(set52WeekLow);
+			auto Size = pStock->Get52WeekLowSize();
+			for (size_t index = 0; index < Size; index++) {
+				db(insert_into(t).set(
+					t.Symbol = pStock->GetSymbol(),
+					t.Exchange = pStock->GetExchangeCode(),
+					t.Date = pStock->Get52WeekLowDate(index)
+				));
+			}
 		}
 	}
-
-	set52WeekLow.m_pDatabase->CommitTrans();
-	set52WeekLow.Close();
+	tx.commit();
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
 	gl_systemMessage.PushInnerSystemInformationMessage("tiingo 52 week low calculated");

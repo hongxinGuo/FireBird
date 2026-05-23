@@ -789,12 +789,6 @@
     <ClInclude Include="..\src\Type\America market\TiingoCandleLine.h">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
@@ -1375,12 +1369,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>

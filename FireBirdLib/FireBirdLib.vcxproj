@@ -108,8 +108,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.h" />
@@ -332,22 +330,6 @@
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStock.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.cpp" />
