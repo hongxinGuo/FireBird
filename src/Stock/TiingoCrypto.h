@@ -2,11 +2,6 @@
 
 #include"VirtualStock.h"
 
-#include"SetTiingoCrypto.h"
-
-#include<memory>
-#include<vector>
-
 class CTiingoCrypto : public CVirtualStock {
 public:
 	CTiingoCrypto() = default;
@@ -17,12 +12,7 @@ public:
 	CTiingoCrypto& operator=(const CTiingoCrypto&&) noexcept = delete;
 	~CTiingoCrypto() override = default;
 
-	int GetRatio() const override { return 3; };
-
-	void Load(const CSetTiingoCrypto& setTiingoCrypto);
-	void Append(CSetTiingoCrypto& setTiingoCrypto);
-	void Save(CSetTiingoCrypto& setTiingoCrypto);
-	void Update(CSetTiingoCrypto& setTiingoCrypto);
+	int GetRatio() const override { return 100000; };
 
 	//string m_strTicker; //由VirtualStock中的m_strSymbol代替
 	string m_strName{ "" };

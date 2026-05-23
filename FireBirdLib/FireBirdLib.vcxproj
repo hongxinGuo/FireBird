@@ -103,7 +103,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h" />
@@ -320,7 +319,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSICIndustry.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
@@ -420,7 +418,6 @@
     <ClCompile Include="..\src\Stock\ChinaStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubForex.cpp" />
-    <ClCompile Include="..\src\Stock\TiingoCrypto.cpp" />
     <ClCompile Include="..\src\Stock\TiingoStock.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>

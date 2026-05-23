@@ -9,7 +9,7 @@ public:
 	CContainerTiingoCryptoSymbol(CContainerTiingoCryptoSymbol&& other) noexcept = delete;
 	CContainerTiingoCryptoSymbol& operator=(const CContainerTiingoCryptoSymbol& other) = delete;
 	CContainerTiingoCryptoSymbol& operator=(CContainerTiingoCryptoSymbol&& other) noexcept = delete;
-	~CContainerTiingoCryptoSymbol() override;
+	~CContainerTiingoCryptoSymbol() override = default;
 	void Reset() override;
 
 	CTiingoCryptoPtr GetCrypto(const size_t lIndex) { return dynamic_pointer_cast<CTiingoCrypto>(Get(lIndex)); }

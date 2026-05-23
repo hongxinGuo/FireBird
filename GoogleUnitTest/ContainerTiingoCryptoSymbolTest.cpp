@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerTiingoCryptoSymbol.h"
+#include "dataBaseConnector.h"
 
 using namespace testing;
 
@@ -86,13 +87,11 @@ namespace FireBirdTest {
 		m_dataTiingoCryptoSymbol.UpdateDB();
 
 		// 恢复原状
-		CSetTiingoCrypto setCryptoSymbol;
-		setCryptoSymbol.m_strFilter = "[Ticker] = 'AA.BB'";
-		setCryptoSymbol.Open();
-		EXPECT_FALSE(setCryptoSymbol.IsEOF());
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		setCryptoSymbol.Delete();
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
+		using namespace StockMarket;
+		const auto& t = TiingoCryptoSymbol{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		db(remove_from(t).where(t.Ticker == "AA.BB"));
+		tx.commit();
 	}
 }

@@ -2,17 +2,11 @@
 #include "ContainerTiingoCryptoSymbol.h"
 
 #include "CharSetTransfer.h"
+#include "dataBaseConnector.h"
 #include "InfoReport.h"
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
 	CContainerTiingoCryptoSymbol::Reset();
-}
-
-CContainerTiingoCryptoSymbol::~CContainerTiingoCryptoSymbol() {
-	//for (const auto& pStock : m_vStock) {
-	//pStock->SetUpdateProfileDB(true);
-	//}
-	//UpdateDB();
 }
 
 void CContainerTiingoCryptoSymbol::Reset() {
@@ -20,29 +14,34 @@ void CContainerTiingoCryptoSymbol::Reset() {
 }
 
 bool CContainerTiingoCryptoSymbol::LoadDB() {
-	CSetTiingoCrypto setCryptoSymbol;
+	using namespace StockMarket;
+	const auto& t = TiingoCryptoSymbol{};
 
-	setCryptoSymbol.m_strSort = "[Ticker]";
-	setCryptoSymbol.Open();
-	setCryptoSymbol.m_pDatabase->BeginTrans();
-	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(T2Utf8(setCryptoSymbol.m_Ticker))) {
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Ticker.asc()));
+	Reserve(result.size() + 2);
+	for (const auto& row : result) {
+		if (!IsSymbol(row.Ticker)) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
-			pSymbol->Load(setCryptoSymbol);
+			pSymbol->SetSymbol(row.Ticker);
+			pSymbol->m_strName = row.Name;
+			pSymbol->SetDescription(row.Description);
+			pSymbol->m_strBaseCurrency = row.BaseCurrency;
+			pSymbol->m_strQuoteCurrency = row.QuoteCurrency;
 			Add(pSymbol);
 		}
 		else {
-			setCryptoSymbol.Delete();
+			db(remove_from(t).where(t.Ticker == row.Ticker));
 		}
-		setCryptoSymbol.MoveNext();
 	}
-	setCryptoSymbol.m_pDatabase->CommitTrans();
-	setCryptoSymbol.Close();
+	tx.commit();
 
 	return true;
 }
 
-void CContainerTiingoCryptoSymbol::UpdateDB() {
+/*
+void CContainerTiingoCryptoSymbol::UpdateDB2() {
 	if (IsUpdateProfileDB()) {
 		try {
 			CSetTiingoCrypto setWorldCrypto;
@@ -76,5 +75,63 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 		} catch (CException& e) {
 			ReportInformation(e);
 		}
+	}
+}
+*/
+
+void CContainerTiingoCryptoSymbol::UpdateDB() {
+	if (!IsUpdateProfileDB()) return;
+
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoCryptoSymbol{};
+
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		// 1) 更新或删除数据库中已有但容器中不存在的记录
+		auto rows = db(select(all_of(t)).from(t).unconditionally().order_by(t.Ticker.asc()));
+		for (const auto& row : rows) {
+			if (IsSymbol(row.Ticker)) {
+				const CTiingoCryptoPtr pCrypto = GetCrypto(row.Ticker);
+				ASSERT(pCrypto != nullptr);
+				if (pCrypto->IsUpdateProfileDB()) {
+					// 更新已有记录
+					db(update(t).set(
+						t.Name = pCrypto->m_strName,
+						t.Description = pCrypto->GetDescription(),
+						t.BaseCurrency = pCrypto->m_strBaseCurrency,
+						t.QuoteCurrency = pCrypto->m_strQuoteCurrency
+					).where(t.Ticker == row.Ticker));
+					pCrypto->SetUpdateProfileDB(false);
+				}
+			}
+			else {
+				// 数据库中存在但容器没有，删除之
+				db(remove_from(t).where(t.Ticker == row.Ticker));
+			}
+		}
+
+		// 2) 插入容器中新添加或标记为需写入的记录
+		for (size_t l = 0; l < m_vStock.size(); l++) {
+			const CTiingoCryptoPtr pCrypto = GetCrypto(l);
+			ASSERT(pCrypto != nullptr);
+			if (pCrypto->IsUpdateProfileDB()) {
+				db(insert_into(t).set(
+					t.Ticker = pCrypto->GetSymbol(),
+					t.Name = pCrypto->m_strName,
+					t.Description = pCrypto->GetDescription(),
+					t.BaseCurrency = pCrypto->m_strBaseCurrency,
+					t.QuoteCurrency = pCrypto->m_strQuoteCurrency
+				));
+				pCrypto->SetUpdateProfileDB(false);
+			}
+		}
+
+		tx.commit();
+	} catch (CException& e) {
+		ReportInformation(e);
+	} catch (std::exception& e) {
+		ReportErrorToSystemMessage("CContainerTiingoCryptoSymbol::UpdateDB", e);
 	}
 }

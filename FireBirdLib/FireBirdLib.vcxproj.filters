@@ -663,9 +663,6 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
@@ -1295,9 +1292,6 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
     </ClCompile>
@@ -1353,9 +1347,6 @@
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Stock\TiingoStock.cpp">
-      <Filter>源文件\Stock\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Stock\TiingoCrypto.cpp">
       <Filter>源文件\Stock\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp">
