@@ -377,7 +377,7 @@ CREATE TABLE `finnhub_crypto_symbol` (
 
 CREATE TABLE `finnhub_economic_calendar` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Time` bigint DEFAULT '0',
+  `Time` varchar(45) DEFAULT ' ',
   `Country` varchar(45) DEFAULT ' ',
   `Event` varchar(100) DEFAULT ' ',
   `Impact` varchar(45) DEFAULT ' ',

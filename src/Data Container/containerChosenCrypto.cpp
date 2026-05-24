@@ -1,9 +1,8 @@
 #include "pch.h"
 
-#include"SetWorldChosenCrypto.h"
 #include "containerChosenCrypto.h"
 
-#include "CharSetTransfer.h"
+#include "dataBaseConnector.h"
 #include"FinnhubCrypto.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
@@ -17,24 +16,27 @@ void CContainerChosenCrypto::Reset() {
 }
 
 bool CContainerChosenCrypto::LoadDB() {
-	CSetWorldChosenCrypto setWorldChosenCrypto;
-	CFinnhubCryptoPtr pCrypto = nullptr;
+	bool fDeleteDuplicatedSymbol = false;
+	using namespace StockMarket;
+	const auto& t = WorldChoiceCrypto{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setWorldChosenCrypto.Open();
-	setWorldChosenCrypto.m_pDatabase->BeginTrans();
-	while (!setWorldChosenCrypto.IsEOF()) {
-		if (gl_dataFinnhubCryptoSymbol.IsSymbol(T2Utf8(setWorldChosenCrypto.m_Symbol))) {
-			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(T2Utf8(setWorldChosenCrypto.m_Symbol));
-			m_mapSymbol[T2Utf8(setWorldChosenCrypto.m_Symbol)] = m_mapSymbol.size();
-			m_vStock.push_back(pCrypto);
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	Reset();
+	size_t rows = result.size();
+	Reserve(rows + 10);
+	for (const auto& row : result) {
+		if (gl_dataFinnhubCryptoSymbol.IsSymbol(row.Symbol)) {
+			auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(row.Symbol);
+			m_mapSymbol[row.Symbol] = m_mapSymbol.size();
+			m_vStock.push_back(pStock);
 		}
 		else {
-			setWorldChosenCrypto.Delete(); // 删除已不存在的代码
+			fDeleteDuplicatedSymbol = true;
 		}
-		setWorldChosenCrypto.MoveNext();
 	}
-	setWorldChosenCrypto.m_pDatabase->CommitTrans();
-	setWorldChosenCrypto.Close();
+	tx.commit();
 
 	return true;
 }

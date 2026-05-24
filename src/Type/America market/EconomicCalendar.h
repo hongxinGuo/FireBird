@@ -1,10 +1,5 @@
 #pragma once
 
-#include"SetEconomicCalendar.h"
-
-using std::shared_ptr;
-using std::vector;
-
 class CEconomicCalendar final {
 public:
 	CEconomicCalendar();
@@ -14,12 +9,7 @@ public:
 	CEconomicCalendar& operator=(CEconomicCalendar&&) noexcept = default;
 	~CEconomicCalendar() = default;
 
-	void Load(const CSetEconomicCalendar& setEconomicCalendar);
-	void Append(CSetEconomicCalendar& setEconomicCalendar) const;
-	void Save(CSetEconomicCalendar& setEconomicCalendar) const;
-
 public:
-	INT64 m_iTime; // 不存储这个数据
 	string m_strTime;
 	string m_strCountry;
 	string m_strEvent;

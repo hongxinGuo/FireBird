@@ -82,7 +82,6 @@
     <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetStockSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetCryptoDayLine.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEPSSurprise.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoExchange.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubForexExchange.h" />
@@ -95,13 +94,9 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\AccessoryFactory.h" />
@@ -288,7 +283,6 @@
     <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetStockSymbol.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp" />

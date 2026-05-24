@@ -785,7 +785,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
-		CSetEconomicCalendar setEconomicCalendar;
 		CEconomicCalendar economicCalendar;
 		vector<CEconomicCalendar> vEconomicCalendar;
 
@@ -804,23 +803,27 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerFinnhubEconomicCalendar.UpdateDB());
 
 		// 测试并恢复原状
-		setEconomicCalendar.Open();
-		EXPECT_FALSE(setEconomicCalendar.IsEOF());
-		EXPECT_STREQ(setEconomicCalendar.m_Country, _T("USA"));
-		EXPECT_STREQ(setEconomicCalendar.m_Time, _T("20200101"));
-		EXPECT_STREQ(setEconomicCalendar.m_Event, _T("abc"));
-		EXPECT_DOUBLE_EQ(_tstof(setEconomicCalendar.m_Actual), 1.0);
-		EXPECT_DOUBLE_EQ(_tstof(setEconomicCalendar.m_Estimate), 2.0);
-		EXPECT_DOUBLE_EQ(_tstof(setEconomicCalendar.m_Prev), 3.0);
-		EXPECT_STREQ(setEconomicCalendar.m_Impact, _T("s"));
-		EXPECT_STREQ(setEconomicCalendar.m_Unit, _T("USD"));
-		setEconomicCalendar.m_pDatabase->BeginTrans();
-		while (!setEconomicCalendar.IsEOF()) {
-			setEconomicCalendar.Delete();
-			setEconomicCalendar.MoveNext();
-		}
-		setEconomicCalendar.m_pDatabase->CommitTrans();
-		setEconomicCalendar.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubEconomicCalendar{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Country == std::string("USA") && t.Time == std::string("20200101") && t.Event == std::string("abc")));
+		auto rows = result.size();
+		auto& row = result.front();
+		EXPECT_FALSE(rows == 0);
+
+		EXPECT_EQ(row.Country, "USA");
+		EXPECT_EQ(row.Time, "20200101");
+		EXPECT_EQ(row.Event, "abc");
+		EXPECT_DOUBLE_EQ(row.Actual, 1.0);
+		EXPECT_DOUBLE_EQ(row.Estimate, 2.0);
+		EXPECT_DOUBLE_EQ(row.Prev, 3.0);
+		EXPECT_EQ(row.Impact, "s");
+		EXPECT_EQ(row.Unit, "USD");
+
+		db(remove_from(t).unconditionally());
+		tx.commit();
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {

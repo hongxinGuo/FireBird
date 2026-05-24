@@ -6,9 +6,6 @@
 #include"SetWeekLineInfo.h"
 
 #include"SetChinaChosenStock.h"
-#include"SetWorldChosenForex.h"
-#include"SetWorldChosenCrypto.h"
-#include"SetWorldChosenStock.h"
 
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
@@ -16,7 +13,6 @@
 #include"SetFinnhubStockBasicFinancialMetric.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 #include"SetFinnhubStockBasicFinancialQuarter.h"
-#include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
 #include"SetInsiderTransaction.h"
 #include"SetInsiderSentiment.h"
@@ -152,54 +148,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setChinaChosenStock.GetDefaultSQL(), _T("[china_choice_stock]"));
-	}
-
-	TEST_F(SetInitializeTest, TestWorldChosenForexInitialize) {
-		CSetWorldChosenForex setWorldChosenForex;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setWorldChosenForex.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setWorldChosenForex.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setWorldChosenForex.GetDefaultSQL(), _T("[world_choice_forex]"));
-	}
-
-	TEST_F(SetInitializeTest, TestWorldChosenCryptoInitialize) {
-		CSetWorldChosenCrypto setWorldChosenCrypto;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultSQL(), _T("[world_choice_crypto]"));
-	}
-
-	TEST_F(SetInitializeTest, TestWorldChosenStockInitialize) {
-		CSetWorldChosenStock setWorldChosenStock;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setWorldChosenStock.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setWorldChosenStock.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setWorldChosenStock.GetDefaultSQL(), _T("[world_choice_stock]"));
-	}
-
-	TEST_F(SetInitializeTest, TestEconomicCalendarInitialize) {
-		CSetEconomicCalendar setEconomicCalendar;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setEconomicCalendar.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setEconomicCalendar.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setEconomicCalendar.GetDefaultSQL(), _T("[finnhub_economic_calendar]"));
 	}
 
 	TEST_F(SetInitializeTest, TestEPSSurpriseInitialize) {

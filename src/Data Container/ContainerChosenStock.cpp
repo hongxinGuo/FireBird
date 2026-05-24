@@ -1,11 +1,8 @@
 #include "pch.h"
 
-#include"WorldMarket.h"
-#include"SetWorldChosenStock.h"
-
 #include "ContainerChosenStock.h"
 
-#include "CharSetTransfer.h"
+#include "dataBaseConnector.h"
 
 CContainerChosenStock::CContainerChosenStock() {
 	CContainerChosenStock::Reset();
@@ -18,25 +15,27 @@ void CContainerChosenStock::Reset() {
 }
 
 bool CContainerChosenStock::LoadDB() {
-	CSetWorldChosenStock setWorldChosenStock;
-	CFinnhubStockPtr pStock = nullptr;
+	bool fDeleteDuplicatedSymbol = false;
+	using namespace StockMarket;
+	const auto& t = WorldChoiceStock{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	ASSERT(gl_pWorldMarket != nullptr);
-	setWorldChosenStock.Open();
-	setWorldChosenStock.m_pDatabase->BeginTrans();
-	while (!setWorldChosenStock.IsEOF()) {
-		if (gl_dataContainerFinnhubStock.IsSymbol(T2Utf8(setWorldChosenStock.m_Symbol))) {
-			pStock = gl_dataContainerFinnhubStock.GetItem(T2Utf8(setWorldChosenStock.m_Symbol));
-			m_mapSymbol[T2Utf8(setWorldChosenStock.m_Symbol)] = m_mapSymbol.size();
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	Reset();
+	size_t rows = result.size();
+	Reserve(rows + 10);
+	for (const auto& row : result) {
+		if (gl_dataContainerFinnhubStock.IsSymbol(row.Symbol)) {
+			auto pStock = gl_dataContainerFinnhubStock.GetItem(row.Symbol);
+			m_mapSymbol[row.Symbol] = m_mapSymbol.size();
 			m_vStock.push_back(pStock);
 		}
 		else {
-			setWorldChosenStock.Delete();
+			fDeleteDuplicatedSymbol = true;
 		}
-		setWorldChosenStock.MoveNext();
 	}
-	setWorldChosenStock.m_pDatabase->CommitTrans();
-	setWorldChosenStock.Close();
+	tx.commit();
 
 	return true;
 }

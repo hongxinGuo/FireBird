@@ -13,6 +13,7 @@ public:
 	CContainerFinnhubEconomicCalendar& operator=(CContainerFinnhubEconomicCalendar&& other) noexcept = delete;
 	~CContainerFinnhubEconomicCalendar() = default;
 	void Reset();
+	void Reserve(size_t lSize);
 
 	bool LoadDB();
 	bool UpdateDB();
@@ -22,6 +23,6 @@ public:
 
 protected:
 	vector<CEconomicCalendar> m_vEconomicCalendar;
-	map<string, size_t> m_mapEconomicCalendar;
+	unordered_map<string, size_t> m_mapEconomicCalendar;
 	size_t m_lLastTotalEconomicCalendar;
 };

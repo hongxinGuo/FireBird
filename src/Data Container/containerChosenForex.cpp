@@ -1,9 +1,8 @@
 #include "pch.h"
 
-#include "CharSetTransfer.h"
 #include"FinnhubForex.h"
-#include"SetWorldChosenForex.h"
 #include "ContainerChosenForex.h"
+#include "dataBaseConnector.h"
 
 CContainerChosenForex::CContainerChosenForex() {
 	CContainerChosenForex::Reset();
@@ -16,24 +15,27 @@ void CContainerChosenForex::Reset() {
 }
 
 bool CContainerChosenForex::LoadDB() {
-	CSetWorldChosenForex setWorldChosenForex;
-	CForexSymbolPtr pForex = nullptr;
+	bool fDeleteDuplicatedSymbol = false;
+	using namespace StockMarket;
+	const auto& t = WorldChoiceForex{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setWorldChosenForex.Open();
-	setWorldChosenForex.m_pDatabase->BeginTrans();
-	while (!setWorldChosenForex.IsEOF()) {
-		if (gl_dataFinnhubForexSymbol.IsSymbol(T2Utf8(setWorldChosenForex.m_Symbol))) {
-			pForex = gl_dataFinnhubForexSymbol.GetItem(T2Utf8(setWorldChosenForex.m_Symbol));
-			m_mapSymbol[T2Utf8(setWorldChosenForex.m_Symbol)] = m_mapSymbol.size();
-			m_vStock.push_back(pForex);
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	Reset();
+	size_t rows = result.size();
+	Reserve(rows + 10);
+	for (const auto& row : result) {
+		if (gl_dataFinnhubForexSymbol.IsSymbol(row.Symbol)) {
+			auto pStock = gl_dataFinnhubForexSymbol.GetItem(row.Symbol);
+			m_mapSymbol[row.Symbol] = m_mapSymbol.size();
+			m_vStock.push_back(pStock);
 		}
 		else {
-			setWorldChosenForex.Delete();
+			fDeleteDuplicatedSymbol = true;
 		}
-		setWorldChosenForex.MoveNext();
 	}
-	setWorldChosenForex.m_pDatabase->CommitTrans();
-	setWorldChosenForex.Close();
+	tx.commit();
 
 	return true;
 }

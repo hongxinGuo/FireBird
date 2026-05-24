@@ -4141,7 +4141,7 @@ namespace StockMarket
             const T& operator()() const { return Time; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
     struct Country
     {

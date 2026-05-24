@@ -276,15 +276,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h">
-      <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h">
-      <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h">
-      <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
@@ -675,9 +666,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEPSSurprise.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
@@ -691,9 +679,6 @@
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h">
@@ -1243,9 +1228,6 @@
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetEconimicCalendar.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp">
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
