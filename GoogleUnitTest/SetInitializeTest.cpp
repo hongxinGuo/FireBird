@@ -21,7 +21,6 @@
 #include"SetInsiderTransaction.h"
 #include"SetInsiderSentiment.h"
 #include"SetNaicsIndustry.h"
-#include"SetSICIndustry.h"
 #include"SetFinnhubStock.h"
 #include"SetFinnhubStockDayLine.h"
 #include"SetCryptoDayLine.h"
@@ -249,18 +248,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setNaicsIndustry.GetDefaultSQL(), _T("[naics_industry]"));
-	}
-
-	TEST_F(SetInitializeTest, TestSICIndustryInitialize) {
-		CSetSICIndustry setSICIndustry;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setSICIndustry.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setSICIndustry.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setSICIndustry.GetDefaultSQL(), _T("[sic_industry]"));
 	}
 
 	TEST_F(SetInitializeTest, TestTiingoCompanyFinancialStateInitialize) {

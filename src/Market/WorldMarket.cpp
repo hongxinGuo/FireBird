@@ -135,10 +135,10 @@ void CWorldMarket::ResetMarket() {
 	gl_dataContainerFinnhubStock.LoadProfileDB();
 	gl_dataContainerChosenFinnhubStock.LoadDB();
 	gl_dataContainerFinnhubForexExchange.LoadDB();
-	gl_dataFinnhubForexSymbol.LoadDB();
+	gl_dataFinnhubForexSymbol.LoadProfileDB();
 	gl_dataContainerChosenWorldForex.LoadDB();
 	gl_dataContainerFinnhubCryptoExchange.LoadDB();
-	gl_dataFinnhubCryptoSymbol.LoadDB();
+	gl_dataFinnhubCryptoSymbol.LoadProfileDB();
 	gl_dataContainerChosenWorldCrypto.LoadDB();
 	gl_dataContainerFinnhubEconomicCalendar.LoadDB();
 
@@ -772,7 +772,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataFinnhubForexSymbol.IsUpdateProfileDB()) { // Forex symbol
 		gl_runtime.background_executor()->post([] {
 			gl_systemMessage.SetWorldMarketSavingFunction("F Forex Symbol");
-			gl_dataFinnhubForexSymbol.UpdateDB();
+			gl_dataFinnhubForexSymbol.UpdateProfileDB();
 		});
 	}
 	if (gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate()) { // Crypto Exchange
@@ -784,7 +784,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataFinnhubCryptoSymbol.IsUpdateProfileDB()) { // crypto symbol
 		gl_runtime.background_executor()->post([] {
 			gl_systemMessage.SetWorldMarketSavingFunction("F Crypto symbol");
-			gl_dataFinnhubCryptoSymbol.UpdateDB();
+			gl_dataFinnhubCryptoSymbol.UpdateProfileDB();
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB()) { // Insider Transaction

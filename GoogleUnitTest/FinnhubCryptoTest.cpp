@@ -4,7 +4,6 @@
 #include"GeneralCheck.h"
 
 #include"FinnhubCrypto.h"
-#include"SetFinnhubCryptoSymbol.h"
 #include"SetCryptoDayLine.h"
 
 using namespace testing;
@@ -179,115 +178,6 @@ namespace FireBirdTest {
 		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
 		EXPECT_EQ(str, "ABCDE&resolution=D&from=1100000000&to=1131536000") << "365 * 24 * 3600 = 31536000";
-	}
-
-	TEST_F(CFinnhubCryptoSymbolTest, TestAppend) {
-		CSetFinnhubCryptoSymbol setFinnhubCryptoSymbol, setFinnhubCryptoSymbol2;
-		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
-
-		FinnhubCryptoSymbol.SetDescription("abc");
-		FinnhubCryptoSymbol.SetDisplaySymbol("cba");
-		FinnhubCryptoSymbol.SetSymbol("AAAAA");
-		FinnhubCryptoSymbol.SetExchangeCode("US");
-		FinnhubCryptoSymbol.SetDayLineStartDate(20000101);
-		FinnhubCryptoSymbol.SetDayLineEndDate(10000101);
-		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_DELISTED_);
-		FinnhubCryptoSymbol.SetUpdateDayLine(false);
-		FinnhubCryptoSymbol.SetUpdateDayLineDB(true);
-		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
-
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setFinnhubCryptoSymbol.Open();
-		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
-		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);
-		setFinnhubCryptoSymbol.m_pDatabase->CommitTrans();
-		setFinnhubCryptoSymbol.Close();
-
-		setFinnhubCryptoSymbol2.m_strFilter = "[Symbol] = 'AAAAA'";
-		setFinnhubCryptoSymbol2.Open();
-		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "此时已经存入了AA";
-		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "abc");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "cba");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "AAAAA");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), "US");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 20000101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 10000101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_DELISTED_);
-		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateDayLine());
-		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateDayLineDB());
-		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateProfileDB());
-		setFinnhubCryptoSymbol2.m_pDatabase->BeginTrans();
-		while (!setFinnhubCryptoSymbol2.IsEOF()) {
-			setFinnhubCryptoSymbol2.Delete();
-			setFinnhubCryptoSymbol2.MoveNext();
-		}
-		setFinnhubCryptoSymbol2.m_pDatabase->CommitTrans();
-		setFinnhubCryptoSymbol2.Close();
-	}
-
-	TEST_F(CFinnhubCryptoSymbolTest, TestUpdate) {
-		CSetFinnhubCryptoSymbol setFinnhubCryptoSymbol, setFinnhubCryptoSymbol2, setFinnhubCryptoSymbol3;
-		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
-
-		FinnhubCryptoSymbol.SetDescription("abc");
-		FinnhubCryptoSymbol.SetDisplaySymbol("cba");
-		FinnhubCryptoSymbol.SetSymbol("AAAAA");
-		FinnhubCryptoSymbol.SetExchangeCode("US");
-		FinnhubCryptoSymbol.SetDayLineStartDate(20000101);
-		FinnhubCryptoSymbol.SetDayLineEndDate(10000101);
-		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_DELISTED_);
-		FinnhubCryptoSymbol.SetUpdateDayLine(false);
-		FinnhubCryptoSymbol.SetUpdateDayLineDB(true);
-		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
-
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setFinnhubCryptoSymbol.Open();
-		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
-		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);
-		setFinnhubCryptoSymbol.m_pDatabase->CommitTrans();
-		setFinnhubCryptoSymbol.Close();
-
-		// 改成新值
-		FinnhubCryptoSymbol.SetDescription("abc changed");
-		FinnhubCryptoSymbol.SetDisplaySymbol("changed");
-		FinnhubCryptoSymbol.SetSymbol("AAAAA");
-		FinnhubCryptoSymbol.SetExchangeCode("US changed");
-		FinnhubCryptoSymbol.SetDayLineStartDate(101);
-		FinnhubCryptoSymbol.SetDayLineEndDate(101);
-		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_IPOED_);
-		FinnhubCryptoSymbol.SetUpdateDayLine(TRUE);
-		FinnhubCryptoSymbol.SetUpdateDayLineDB(FALSE);
-		FinnhubCryptoSymbol.SetUpdateProfileDB(FALSE);
-
-		setFinnhubCryptoSymbol3.m_strFilter = "[Symbol] = 'AAAAA'";
-		setFinnhubCryptoSymbol3.Open();
-		setFinnhubCryptoSymbol3.m_pDatabase->BeginTrans();
-		FinnhubCryptoSymbol.UpdateSymbol(setFinnhubCryptoSymbol3);
-		setFinnhubCryptoSymbol3.m_pDatabase->CommitTrans();
-		setFinnhubCryptoSymbol3.Close();
-
-		setFinnhubCryptoSymbol2.m_strFilter = "[Symbol] = 'AAAAA'";
-		setFinnhubCryptoSymbol2.Open();
-		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "此时已经存入了AA";
-		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "abc changed");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "changed");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "AAAAA");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), "US changed");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_IPOED_);
-		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateDayLine());
-		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateDayLineDB());
-		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateProfileDB());
-		setFinnhubCryptoSymbol2.m_pDatabase->BeginTrans();
-		while (!setFinnhubCryptoSymbol2.IsEOF()) {
-			setFinnhubCryptoSymbol2.Delete();
-			setFinnhubCryptoSymbol2.MoveNext();
-		}
-		setFinnhubCryptoSymbol2.m_pDatabase->CommitTrans();
-		setFinnhubCryptoSymbol2.Close();
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {

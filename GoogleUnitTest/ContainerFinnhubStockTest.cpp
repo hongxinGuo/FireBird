@@ -158,7 +158,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateCompanyNewsDB(false);
 	}
 
-	TEST_F(CContainerFinnhubStockTest, TestLoadProfileDB_LoadsSymbols) {
+	TEST_F(CContainerFinnhubStockTest, TestLoadProfileDB) {
 		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "测试数据库中的代码数量为4847";
 		gl_dataContainerFinnhubStock.Reset();
 		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 0) << "重置后代码数量应为0";

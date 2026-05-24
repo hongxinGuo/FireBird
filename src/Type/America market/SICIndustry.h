@@ -1,8 +1,5 @@
 #pragma once
 
-#include"SetSICIndustry.h"
-
-#include<memory>
 
 class CSICIndustry final {
 public:
@@ -12,9 +9,6 @@ public:
 	CSICIndustry(const CSICIndustry&&) noexcept = delete;
 	CSICIndustry& operator=(const CSICIndustry&&) noexcept = delete;
 	~CSICIndustry() = default;
-
-	void Append(CSetSICIndustry& setSICIndustry) const;
-	void Load(const CSetSICIndustry& setSICIndustry);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated() const noexcept { return m_fUpdated; }

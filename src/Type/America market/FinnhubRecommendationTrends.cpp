@@ -1,8 +1,6 @@
 #include"pch.h"
 #include"FinnhubRecommendationTrends.h"
 
-#include "CharSetTransfer.h"
-
 CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
 	m_strSymbol = "";
 	m_lPeriod = 19700101; // 格式：2020-03-01
@@ -11,26 +9,4 @@ CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
 	m_lHold = 0;
 	m_lSell = 0;
 	m_lStrongSell = 0;
-}
-
-void CFinnhubRecommendationTrends::Append(CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends) const {
-	setFinnhubRecommendationTrends.AddNew();
-	setFinnhubRecommendationTrends.m_Symbol = m_strSymbol.c_str();
-	setFinnhubRecommendationTrends.m_Period = m_lPeriod;
-	setFinnhubRecommendationTrends.m_StrongBuy = m_lStrongBuy;
-	setFinnhubRecommendationTrends.m_Buy = m_lBuy;
-	setFinnhubRecommendationTrends.m_Hold = m_lHold;
-	setFinnhubRecommendationTrends.m_Sell = m_lSell;
-	setFinnhubRecommendationTrends.m_StrongSell = m_lStrongSell;
-	setFinnhubRecommendationTrends.Update();
-}
-
-void CFinnhubRecommendationTrends::Load(const CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends) {
-	m_strSymbol = T2Utf8(setFinnhubRecommendationTrends.m_Symbol);
-	m_lPeriod = setFinnhubRecommendationTrends.m_Period;
-	m_lStrongBuy = setFinnhubRecommendationTrends.m_StrongBuy;
-	m_lBuy = setFinnhubRecommendationTrends.m_Buy;
-	m_lHold = setFinnhubRecommendationTrends.m_Hold;
-	m_lSell = setFinnhubRecommendationTrends.m_Sell;
-	m_lStrongSell = setFinnhubRecommendationTrends.m_StrongSell;
 }

@@ -39,6 +39,7 @@ public:
 	void SetSymbol(const string& str) noexcept { m_strSymbol = str; }
 	string GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }
 	void SetDisplaySymbol(const string& str) noexcept { m_strDisplaySymbol = str; }
+	nlohmannJson GetJsonUpdateDate() const noexcept { return m_jsonUpdateDate; }
 
 	// 基本实时数据，需要更新
 	std::chrono::sys_seconds GetTimePoint() const noexcept { return m_tpTime; }

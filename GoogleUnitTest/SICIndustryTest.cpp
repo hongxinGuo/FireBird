@@ -44,34 +44,4 @@ namespace FireBirdTest {
 		finnhubExchange.SetUpdated(true);
 		EXPECT_TRUE(finnhubExchange.IsUpdated());
 	}
-
-	TEST_F(CSICIndustryTest, TestAppend) {
-		CSetSICIndustry setSICIndustry, setSICIndustry2;
-		CSICIndustry SICIndustry, SICIndustry2;
-
-		SICIndustry.m_lCode = 1234;
-		SICIndustry.m_strIndustry = "aaa";
-		SICIndustry.m_strSector = "abdc";
-		SICIndustry.m_fUpdated = true;
-
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setSICIndustry.Open();
-		setSICIndustry.m_pDatabase->BeginTrans();
-		SICIndustry.Append(setSICIndustry);
-		setSICIndustry.m_pDatabase->CommitTrans();
-		setSICIndustry.Close();
-
-		setSICIndustry2.m_strFilter = "[Code] = 1234";
-		setSICIndustry2.Open();
-		setSICIndustry2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setSICIndustry2.IsEOF()) << "此时已经存入了AA";
-		SICIndustry2.Load(setSICIndustry2);
-		EXPECT_EQ(SICIndustry.m_lCode, 1234);
-		EXPECT_EQ(SICIndustry.m_strIndustry, "aaa");
-		EXPECT_EQ(SICIndustry.m_strSector, "abdc");
-		EXPECT_TRUE(SICIndustry.m_fUpdated);
-		setSICIndustry2.Delete();
-		setSICIndustry2.m_pDatabase->CommitTrans();
-		setSICIndustry2.Close();
-	}
 }

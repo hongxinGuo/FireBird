@@ -85,10 +85,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEPSSurprise.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoExchange.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubForexExchange.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubForexSymbol.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
@@ -202,7 +199,6 @@
     <ClInclude Include="..\src\Type\America market\MarketHoliday.h" />
     <ClInclude Include="..\src\Type\America market\MarketStatus.h" />
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
-    <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoCandleLine.h" />
     <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h" />
@@ -295,7 +291,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp" />
@@ -303,7 +298,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetSICIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
@@ -403,11 +397,11 @@
     <ClCompile Include="..\src\Type\America market\FinnhubCompanySymbolChange.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp" />
+    <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\StockExchange.cpp" />
     <ClCompile Include="..\src\Type\America market\InsiderSentment.cpp" />
     <ClCompile Include="..\src\Type\America market\InsiderTransaction.cpp" />
     <ClCompile Include="..\src\Type\America market\NaicesIndustry.cpp" />
-    <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoCandleLine.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp" />

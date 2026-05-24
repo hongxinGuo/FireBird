@@ -2,9 +2,9 @@
 
 #include "ContainerFinnhubCrypto.h"
 
-#include "CharSetTransfer.h"
-#include"SetFinnhubCryptoSymbol.h"
+#include "dataBaseConnector.h"
 #include"FinnhubCrypto.h"
+#include "InfoReport.h"
 
 CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();
@@ -23,80 +23,74 @@ void CContainerFinnhubCrypto::Reset() {
 	m_llLastTotalSymbol = 0;
 }
 
-bool CContainerFinnhubCrypto::LoadDB() {
-	CSetFinnhubCryptoSymbol setCryptoSymbol;
-	CFinnhubCryptoPtr pSymbol = nullptr;
+bool CContainerFinnhubCrypto::LoadProfileDB() {
+	using namespace StockMarket;
+	const auto& t = FinnhubCryptoSymbol{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setCryptoSymbol.m_strSort = "[Symbol]";
-	setCryptoSymbol.Open();
-	setCryptoSymbol.m_pDatabase->BeginTrans();
-	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(T2Utf8(setCryptoSymbol.m_Symbol))) {
-			pSymbol = make_shared<CFinnhubCrypto>();
-			pSymbol->LoadSymbol(setCryptoSymbol);
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
+	Reset();
+	size_t rows = result.size();
+	Reserve(rows + 10);
+	for (const auto& row : result) {
+		const std::string symbol = row.Symbol;
+		if (!IsSymbol(symbol)) {
+			const auto pSymbol = make_shared<CFinnhubCrypto>();
+			pSymbol->SetSymbol(row.Symbol);
+			pSymbol->SetDescription(row.Description);
+			pSymbol->SetExchangeCode(row.Exchange);
+			pSymbol->SetDisplaySymbol(row.DisplaySymbol);
+			pSymbol->SetIPOStatus(row.IPOStatus);
+			pSymbol->LoadUpdateDate(row.UpdateDate);
 			pSymbol->SetCheckingDayLineStatus();
-			if (m_mapSymbol.contains(pSymbol->GetSymbol())) {
-				string s = "Finnhub Crypto发现重复代码：";
-				s += pSymbol->GetSymbol();
-				gl_systemMessage.PushErrorMessage(s);
-			}
 			Add(pSymbol);
 		}
-		else {
-			setCryptoSymbol.Delete();
-		}
-		setCryptoSymbol.MoveNext();
 	}
-	setCryptoSymbol.m_pDatabase->CommitTrans();
-	setCryptoSymbol.Close();
 	m_llLastTotalSymbol = m_vStock.size();
 
 	return true;
 }
 
-bool CContainerFinnhubCrypto::UpdateDB() {
-	const auto lTotalCryptoSymbol = m_vStock.size();
-	CFinnhubCryptoPtr pSymbol;
-	CSetFinnhubCryptoSymbol setCryptoSymbol;
-	bool fUpdateSymbol = false;
+void CContainerFinnhubCrypto::UpdateProfileDB() {
+	if (IsUpdateProfileDB()) {
+		try {
+			using namespace StockMarket;
+			const auto& t = FinnhubCryptoSymbol{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
 
-	if (m_llLastTotalSymbol < lTotalCryptoSymbol) {
-		setCryptoSymbol.Open();
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		for (auto l = m_llLastTotalSymbol; l < lTotalCryptoSymbol; l++) {
-			pSymbol = GetItem(l);
-			pSymbol->AppendSymbol(setCryptoSymbol);
-		}
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
-		m_llLastTotalSymbol = lTotalCryptoSymbol;
-	}
-
-	for (const auto& pSymbol2 : m_vStock) {
-		if (pSymbol2->IsUpdateProfileDB()) {
-			fUpdateSymbol = true;
-			break;
-		}
-	}
-	if (fUpdateSymbol) {
-		setCryptoSymbol.Open();
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		while (!setCryptoSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(T2Utf8(setCryptoSymbol.m_Symbol))) {
-				pSymbol = GetItem(T2Utf8(setCryptoSymbol.m_Symbol));
-				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->UpdateSymbol(setCryptoSymbol);
-					pSymbol->SetUpdateProfileDB(false);
+			for (size_t i = 0; i < m_vStock.size(); ++i) {
+				const auto& pStock = m_vStock[i];
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->UpdateJsonUpdateDate();
+					if (pStock->IsTodayNewStock()) {//插入新股票代码
+						db(sqlpp::insert_into(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchangeCode(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.IPOStatus = pStock->GetIPOStatus(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						));
+						pStock->SetTodayNewStock(false);
+					}
+					else {//更新现有股票代码
+						db(sqlpp::update(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchangeCode(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.IPOStatus = pStock->GetIPOStatus(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						).where(t.Symbol == pStock->GetSymbol()));
+					}
+					pStock->SetUpdateProfileDB(false);
 				}
 			}
-			else {
-				setCryptoSymbol.Delete();
-			}
-			setCryptoSymbol.MoveNext();
+			tx.commit();
+		} catch (CException& e) {
+			ReportInformation(e);
 		}
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
 	}
-
-	return true;
 }

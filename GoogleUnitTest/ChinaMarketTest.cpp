@@ -1433,29 +1433,30 @@ namespace FireBirdTest {
 
 		gl_dataContainerChinaStock.UpdateProfileDB();
 
-		CSetChinaStockSymbol setChinaStock;
-		setChinaStock.m_strFilter = "[Symbol] = '000001.SS'";
-		setChinaStock.Open();
-		EXPECT_EQ(setChinaStock.m_IPOStatus, _STOCK_DELISTED_);
-		setChinaStock.m_pDatabase->BeginTrans();
-		setChinaStock.Edit();
-		setChinaStock.m_IPOStatus = _STOCK_IPOED_;
-		setChinaStock.Update();
-		setChinaStock.m_pDatabase->CommitTrans();
-		setChinaStock.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaStockCode{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "000001.SS"));
+		int rows = result.size<int>();
+		EXPECT_EQ(rows, 1);
+		auto& row = result.front();
+		int value2 = row.IPOStatus;
+		EXPECT_EQ(value2, _STOCK_DELISTED_);
+
+		int value3 = _STOCK_IPOED_;
+		db(update(t).set(t.IPOStatus = value3).where(t.Symbol == "000001.SS"));
+
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701,增加了一个";
 
-		setChinaStock.m_strFilter = "[Symbol] = 'SS.SS.SS'";
-		setChinaStock.Open();
-		EXPECT_FALSE(setChinaStock.IsEOF());
-		setChinaStock.m_pDatabase->BeginTrans();
-		while (!setChinaStock.IsEOF()) {
-			setChinaStock.Delete();
-			setChinaStock.MoveNext();
-		}
-		setChinaStock.m_pDatabase->CommitTrans();
-		setChinaStock.Close();
-		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701，增加了一个";
+		auto result1 = db(select(all_of(t)).from(t).where(t.Symbol == "SS.SS.SS"));
+		int rows1 = result.size<int>();
+		EXPECT_EQ(rows1, 1);
+
+		db(remove_from(t).where(t.Symbol == "SS.SS.SS"));
+		tx.commit();
+
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701，内存中的尚未删除";
 
 		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 		pStock->SetIPOStatus(_STOCK_IPOED_); // 恢复原状

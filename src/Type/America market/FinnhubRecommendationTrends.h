@@ -1,16 +1,11 @@
 #pragma once
 
-#include"SetFinnhubRecommendationTrends.h"
-
 #include<memory>
 
 class CFinnhubRecommendationTrends final {
 public:
 	CFinnhubRecommendationTrends();
 	~CFinnhubRecommendationTrends() = default;
-
-	void Append(CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends) const;
-	void Load(const CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends);
 
 public:
 	string m_strSymbol;

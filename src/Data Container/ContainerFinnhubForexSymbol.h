@@ -13,8 +13,8 @@ public:
 	~CContainerFinnhubForexSymbol() override;
 	void Reset() override;
 
-	bool LoadDB();
-	bool UpdateDB();
+	bool LoadProfileDB();
+	void UpdateProfileDB();
 
 	CForexSymbolPtr GetItem(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubForex>(Get(lIndex)); }
 	CForexSymbolPtr GetItem(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode)); }

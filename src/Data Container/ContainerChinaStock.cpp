@@ -38,43 +38,6 @@ size_t CContainerChinaStock::GetActiveStockSize() const {
 	return lTotalActiveStock;
 }
 
-long CContainerChinaStock::LoadProfileDB2() {
-	CSetChinaStockSymbol setChinaStockSymbol;
-	long lDayLineNeedCheck = 0;
-
-	Reset();
-	setChinaStockSymbol.m_strSort = "[Symbol]";
-	setChinaStockSymbol.Open();
-	setChinaStockSymbol.m_pDatabase->BeginTrans();
-	// 装入股票代码数据库
-	while (!setChinaStockSymbol.IsEOF()) {
-		const auto pStock = make_shared<CChinaStock>();
-		if (!IsSymbol(T2Utf8(setChinaStockSymbol.m_Symbol))) {
-			pStock->LoadStockCodeDB(setChinaStockSymbol);
-			pStock->CheckNeedProcessRTData();
-			pStock->CheckIPOStatus();
-			pStock->CheckDayLineStatus();
-			Add(pStock);
-		}
-		else {
-			setChinaStockSymbol.Delete(); // 删除此重复代码
-		}
-		setChinaStockSymbol.MoveNext();
-	}
-	if (IsUpdateDayLine()) {
-		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
-		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
-		auto str = std::format("{:d}个股票需要检查日线数据", lDayLineNeedCheck);
-		gl_systemMessage.PushInformationMessage(str);
-	}
-	setChinaStockSymbol.m_pDatabase->CommitTrans();
-	setChinaStockSymbol.Close();
-	m_lLoadedStock = m_vStock.size();
-	Sort();
-
-	return lDayLineNeedCheck;
-}
-
 long CContainerChinaStock::LoadProfileDB() {
 	long lDayLineNeedCheck = 0;
 	bool bDeleteDuplicatedCode = false;
@@ -127,47 +90,41 @@ long CContainerChinaStock::LoadProfileDB() {
 void CContainerChinaStock::UpdateProfileDB() {
 	if (IsUpdateProfileDB()) {
 		try {
-			int iCount = 0;
-			int iStockCodeNeedUpdate = 0;
-			CSetChinaStockSymbol setChinaStockSymbol;
-			for (const auto& pStock2 : m_vStock) {
-				if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
-			}
-			setChinaStockSymbol.m_strSort = "[Symbol]";
-			setChinaStockSymbol.Open();
-			setChinaStockSymbol.m_pDatabase->BeginTrans();
-			while (iCount < iStockCodeNeedUpdate) {	//更新原有的代码集状态
-				if (setChinaStockSymbol.IsEOF()) break;
-				if (IsSymbol(T2Utf8(setChinaStockSymbol.m_Symbol))) {
-					const CChinaStockPtr pStock = GetStock(T2Utf8(setChinaStockSymbol.m_Symbol));
-					if (pStock->IsUpdateProfileDB()) {
-						pStock->SetUpdateProfileDB(false);
-						//ASSERT(!pStock3->IsTodayNewStock());
-						iCount++;
-						pStock->UpdateSymbol(setChinaStockSymbol);
+			using namespace StockMarket;
+			const auto& t = ChinaStockCode{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
+			for (size_t i = 0; i < m_vStock.size(); ++i) {
+				const auto& pStock = m_vStock[i];
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->UpdateJsonUpdateDate();
+					if (pStock->IsTodayNewStock()) {	// 插入新股票代码
+						db(sqlpp::insert_into(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchangeCode(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.IPOStatus = pStock->GetIPOStatus(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						));
+						pStock->SetTodayNewStock(false);
 					}
-				}
-				else {
-					setChinaStockSymbol.Delete(); // 删除未使用的代码
-				}
-				setChinaStockSymbol.MoveNext();
-			}
-			if (iCount < iStockCodeNeedUpdate) { // 添加新股票代码
-				for (const auto& pStock3 : m_vStock) {
-					if (pStock3->IsUpdateProfileDB()) {
-						pStock3->SetUpdateProfileDB(false);
-						ASSERT(pStock3->IsTodayNewStock());
-						iCount++;
-						pStock3->AppendSymbol(setChinaStockSymbol);
-						pStock3->SetTodayNewStock(false);
+					else {// 更新现有股票代码
+						db(sqlpp::update(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchangeCode(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.IPOStatus = pStock->GetIPOStatus(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						).where(t.Symbol == pStock->GetSymbol()));
 					}
-					if (iCount >= iStockCodeNeedUpdate) break;
+					pStock->SetUpdateProfileDB(false);
 				}
 			}
-			setChinaStockSymbol.m_pDatabase->CommitTrans();
-			setChinaStockSymbol.Close();
+			tx.commit();
 			m_lLoadedStock = m_vStock.size();
-			ASSERT(iCount == iStockCodeNeedUpdate);
 		} catch (CException& e) {
 			ReportInformation(e);
 		}

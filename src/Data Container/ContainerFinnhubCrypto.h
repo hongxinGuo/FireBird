@@ -13,8 +13,8 @@ public:
 	~CContainerFinnhubCrypto() override;
 	void Reset() override;
 
-	bool LoadDB();
-	bool UpdateDB();
+	bool LoadProfileDB();
+	void UpdateProfileDB();
 
 	CFinnhubCryptoPtr GetItem(size_t lIndex) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(lIndex)); }
 	CFinnhubCryptoPtr GetItem(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode)); };

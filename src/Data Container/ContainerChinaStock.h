@@ -25,7 +25,6 @@ public:
 	void ProcessRTData();
 
 	long LoadProfileDB();
-	long LoadProfileDB2();
 	void UpdateProfileDB();
 	void DeleteDuplicatedStockDB();
 

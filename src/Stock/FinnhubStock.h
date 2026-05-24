@@ -199,6 +199,7 @@ public:
 	void SetLastEPSSurpriseUpdateDate(long lDate) noexcept;
 	void SetSECFilingsUpdateDate(long lDate) noexcept;
 	long GetSECFilingsUpdateDate();
+	nlohmannJson GetJsonPeer() const noexcept { return m_jsonPeer; }
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
 	string GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;

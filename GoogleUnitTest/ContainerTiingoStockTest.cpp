@@ -39,7 +39,6 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerTiingoStockTest, TestUpdateTiingoStockDB) {
-		CSetTiingoStock setTiingoStock;
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "函数UpdateProfile只运行在付费账户状态下";
 
@@ -79,6 +78,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetTiingoPermaTicker("abcdefg");
 		pTiingoStock->SetTiingoSector("gfedcba");
 		pTiingoStock->SetUpdateProfileDB(true);
+		pTiingoStock->SetTodayNewStock(true);
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "添加了两个股票";
@@ -86,24 +86,28 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.UpdateProfileDB(); // 更新代码集
 
 		// 恢复原状
-		setTiingoStock.m_strFilter = "[SICSector] = 'Test'";
-		setTiingoStock.m_strSort = "[Ticker]";
-		setTiingoStock.Open();
-		EXPECT_FALSE(setTiingoStock.IsEOF()) << "存入了两股票代码";
-		setTiingoStock.m_pDatabase->BeginTrans();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "已存在代码";
-		EXPECT_EQ(setTiingoStock.m_SicCode, 1002);
-		setTiingoStock.Edit();
-		setTiingoStock.m_SicSector = "";
-		setTiingoStock.m_SicCode = 0;
-		setTiingoStock.Update();
-		setTiingoStock.MoveNext();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("ABCDEF")) << "新代码";
-		setTiingoStock.Delete();
-		setTiingoStock.MoveNext();
-		EXPECT_TRUE(setTiingoStock.IsEOF());
-		setTiingoStock.m_pDatabase->CommitTrans();
-		setTiingoStock.Close();
+		using namespace StockMarket;
+		const auto& t = TiingoStockFundamental{};
+		auto db = GetStockMarketDB();
+		auto tx = start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).where(t.SICSector == std::string("Test")).order_by(t.Ticker.asc()));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 2) << "应该有两行数据";
+		auto& row = result.front();
+		string str = row.Ticker;
+		EXPECT_STREQ(str.c_str(), "A") << "已存在代码";
+		int sicCode = row.SICCode;
+		EXPECT_EQ(sicCode, 1002);
+		result.pop_front();
+		auto& row2 = result.front();
+		str = row2.Ticker;
+		EXPECT_STREQ(str.c_str(), "ABCDEF") << "新代码";
+		tx.commit();
+
+		auto tx1 = start_transaction(db);
+		db(update(t).set(t.SICSector = std::string("")).where(t.Ticker == std::string("A")));
+		db(remove_from(t).where(t.Ticker == std::string("ABCDEF")));
+		tx1.commit();
 
 		gl_dataContainerTiingoStock.Delete(pTiingoStock);
 	}

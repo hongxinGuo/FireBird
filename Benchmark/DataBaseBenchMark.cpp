@@ -29,18 +29,6 @@ public:
 	CContainerFinnhubStock finnhubStockContainer;
 };
 
-BENCHMARK_F(CDataBaseBenchmark, LoadChinaStockProfileDB_using_mfc_record)(benchmark::State& state) {
-	for (auto _ : state) {
-		chinaContainer.LoadProfileDB2();
-	}
-}
-
-BENCHMARK_F(CDataBaseBenchmark, LoadChinaStockProfileDB_using_sqlpp11)(benchmark::State& state) {
-	for (auto _ : state) {
-		chinaContainer.LoadProfileDB();
-	}
-}
-
 BENCHMARK_F(CDataBaseBenchmark, LoadFinnhubStockDayLineDB_using_mfc_record)(benchmark::State& state) {
 	for (auto _ : state) {
 		finnhubStockContainer.LoadProfileDB2();

@@ -106,7 +106,6 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	auto rowCount = result.size();
 	Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
 	CFinnhubStockPtr pFinnhubStock = nullptr;
-	long lMaxSymbolLength = 0;
 
 	for (const auto& row : result) {
 		pFinnhubStock = make_shared<CFinnhubStock>();
@@ -186,47 +185,107 @@ void CContainerFinnhubStock::DeleteDuplicatedSymbolFromDB() {
 	db.execute("COMMIT");
 }
 
-/// <summary>
-/// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
-/// </summary>
 void CContainerFinnhubStock::UpdateProfileDB() {
-	if (IsUpdateProfileDB()) {
-		CSetFinnhubStock setFinnhubStock;
-		int iStockNeedUpdate = 0;
-		for (const auto& pStock : m_vStock) {
-			if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
-		}
-		setFinnhubStock.m_strSort = "[Symbol]";
-		setFinnhubStock.Open();
-		int iCurrentUpdated = 0;
-		setFinnhubStock.m_pDatabase->BeginTrans();
-		while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
-			if (setFinnhubStock.IsEOF()) break;
-			const CFinnhubStockPtr pStock = GetItem(T2Utf8(setFinnhubStock.m_Symbol));
-			ASSERT(pStock != nullptr);
-			if (pStock->IsUpdateProfileDB()) {
-				iCurrentUpdated++;
-				pStock->Update(setFinnhubStock);
-				pStock->SetUpdateProfileDB(false);
+	ASSERT(IsUpdateProfileDB());
+
+	using namespace StockMarket;
+	const auto& t = FinnhubStockProfile{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CFinnhubStockPtr pStock = GetItem(l);
+		ASSERT(pStock != nullptr);
+		if (pStock->IsUpdateProfileDB()) {
+			pStock->UpdateJsonUpdateDate();
+			nlohmannJson jsPeer = pStock->GetPeer();
+			string sPeer = pStock->GetJsonPeer().dump();
+			string sUpdateDate = pStock->GetJsonUpdateDate().dump();
+			if (pStock->IsTodayNewStock()) {// 新代码，插入。
+				db(insert_into(t).set(
+					t.Symbol = pStock->GetSymbol(),
+					t.ExchangeCode = pStock->GetExchangeCode(),
+					t.Description = pStock->GetDescription(),
+					t.DisplaySymbol = pStock->GetDisplaySymbol(),
+					t.Type = pStock->GetType(),
+					t.Mic = pStock->GetMic(),
+					t.Figi = pStock->GetFigi(),
+					t.Currency = pStock->GetCurrency(),
+					t.Address = pStock->GetAddress(),
+					t.City = pStock->GetCity(),
+					t.Country = pStock->GetCountry(),
+					t.cusip = pStock->GetCusip(),
+					t.sedol = pStock->GetSedol(),
+					t.EmployeeTotal = pStock->GetEmployeeTotal(),
+					t.ggroup = pStock->GetGgroup(),
+					t.gind = pStock->GetGind(),
+					t.gsector = pStock->GetGsector(),
+					t.gsubind = pStock->GetGsubind(),
+					t.IPODate = pStock->GetIPODate(),
+					t.isin = pStock->GetIsin(),
+					t.MarketCapitalization = pStock->GetMarketCapitalization(),
+					t.naics = pStock->GetNaics(),
+					t.naicsNationalIndustry = pStock->GetNaicsNationalIndustry(),
+					t.naicsSector = pStock->GetNaicsSector(),
+					t.naicsSubsector = pStock->GetNaicsSubsector(),
+					t.Name = pStock->GetName(),
+					t.Phone = pStock->GetPhone(),
+					t.ShareOutstanding = pStock->GetShareOutstanding(),
+					t.state = pStock->GetState(),
+					t.Ticker = pStock->GetTicker(),
+					t.WebURL = pStock->GetWebURL(),
+					t.Logo = pStock->GetLogo(),
+					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
+					t.Peer = sPeer,
+					t.IPOStatus = pStock->GetIPOStatus(),
+					t.UpdateDate = sUpdateDate
+				));
+				pStock->SetTodayNewStock(false);
 			}
-			setFinnhubStock.MoveNext();
-		}
-		if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
-			for (size_t l = 0; l < m_vStock.size(); l++) {
-				const CFinnhubStockPtr pStock = GetItem(l);
-				ASSERT(pStock != nullptr);
-				if (pStock->IsUpdateProfileDB()) {
-					iCurrentUpdated++;
-					pStock->Append(setFinnhubStock);
-					pStock->SetUpdateProfileDB(false);
-					pStock->SetTodayNewStock(false);
-				}
-				if (iCurrentUpdated >= iStockNeedUpdate) break;
+			else { // 如果是原有的代码，则更新
+				db(update(t).set(
+					t.Symbol = pStock->GetSymbol(),
+					t.ExchangeCode = pStock->GetExchangeCode(),
+					t.Description = pStock->GetDescription(),
+					t.DisplaySymbol = pStock->GetDisplaySymbol(),
+					t.Type = pStock->GetType(),
+					t.Mic = pStock->GetMic(),
+					t.Figi = pStock->GetFigi(),
+					t.Currency = pStock->GetCurrency(),
+					t.Address = pStock->GetAddress(),
+					t.City = pStock->GetCity(),
+					t.Country = pStock->GetCountry(),
+					t.cusip = pStock->GetCusip(),
+					t.sedol = pStock->GetSedol(),
+					t.EmployeeTotal = pStock->GetEmployeeTotal(),
+					t.ggroup = pStock->GetGgroup(),
+					t.gind = pStock->GetGind(),
+					t.gsector = pStock->GetGsector(),
+					t.gsubind = pStock->GetGsubind(),
+					t.IPODate = pStock->GetIPODate(),
+					t.isin = pStock->GetIsin(),
+					t.MarketCapitalization = pStock->GetMarketCapitalization(),
+					t.naics = pStock->GetNaics(),
+					t.naicsNationalIndustry = pStock->GetNaicsNationalIndustry(),
+					t.naicsSector = pStock->GetNaicsSector(),
+					t.naicsSubsector = pStock->GetNaicsSubsector(),
+					t.Name = pStock->GetName(),
+					t.Phone = pStock->GetPhone(),
+					t.ShareOutstanding = pStock->GetShareOutstanding(),
+					t.state = pStock->GetState(),
+					t.Ticker = pStock->GetTicker(),
+					t.WebURL = pStock->GetWebURL(),
+					t.Logo = pStock->GetLogo(),
+					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
+					t.Peer = sPeer,
+					t.IPOStatus = pStock->GetIPOStatus(),
+					t.UpdateDate = sUpdateDate
+				).where(t.Symbol == pStock->GetSymbol()));
 			}
+			pStock->SetUpdateProfileDB(false);
 		}
-		setFinnhubStock.m_pDatabase->CommitTrans();
-		setFinnhubStock.Close();
 	}
+	tx.commit();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

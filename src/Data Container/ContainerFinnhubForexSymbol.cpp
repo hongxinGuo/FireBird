@@ -1,9 +1,9 @@
 #include "pch.h"
 
-#include "CharSetTransfer.h"
 #include"containerFinnhubForexSymbol.h"
-#include"SetFinnhubForexSymbol.h"
+#include "dataBaseConnector.h"
 #include"FinnhubForex.h"
+#include "InfoReport.h"
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();
@@ -22,74 +22,74 @@ void CContainerFinnhubForexSymbol::Reset() {
 	m_lastTotalSymbol = 0;
 }
 
-bool CContainerFinnhubForexSymbol::LoadDB() {
-	CSetFinnhubForexSymbol setForexSymbol;
+bool CContainerFinnhubForexSymbol::LoadProfileDB() {
+	using namespace StockMarket;
+	const auto& t = FinnhubForexSymbol{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setForexSymbol.m_strSort = "[Symbol]";
-	setForexSymbol.Open();
-	setForexSymbol.m_pDatabase->BeginTrans();
-	while (!setForexSymbol.IsEOF()) {
-		if (!IsSymbol(T2Utf8(setForexSymbol.m_Symbol))) {
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
+	Reset();
+	size_t rows = result.size();
+	Reserve(rows + 10);
+	for (const auto& row : result) {
+		const std::string symbol = row.Symbol;
+		if (!IsSymbol(symbol)) {
 			const auto pSymbol = make_shared<CFinnhubForex>();
-			pSymbol->LoadSymbol(setForexSymbol);
+			pSymbol->SetSymbol(row.Symbol);
+			pSymbol->SetDescription(row.Description);
+			pSymbol->SetExchangeCode(row.Exchange);
+			pSymbol->SetDisplaySymbol(row.DisplaySymbol);
+			pSymbol->SetIPOStatus(row.IPOStatus);
+			pSymbol->LoadUpdateDate(row.UpdateDate);
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
 		}
-		else {
-			setForexSymbol.Delete();
-		}
-		setForexSymbol.MoveNext();
 	}
-	setForexSymbol.m_pDatabase->CommitTrans();
-	setForexSymbol.Close();
 	m_lastTotalSymbol = m_vStock.size();
 
 	return true;
 }
 
-bool CContainerFinnhubForexSymbol::UpdateDB() {
-	const auto lTotalForexSymbol = m_vStock.size();
-	CForexSymbolPtr pSymbol;
-	CSetFinnhubForexSymbol setForexSymbol;
-	bool fUpdateSymbol = false;
+void CContainerFinnhubForexSymbol::UpdateProfileDB() {
+	if (IsUpdateProfileDB()) {
+		try {
+			using namespace StockMarket;
+			const auto& t = FinnhubForexSymbol{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
 
-	if (m_lastTotalSymbol < lTotalForexSymbol) {
-		setForexSymbol.Open();
-		setForexSymbol.m_pDatabase->BeginTrans();
-		for (auto l = m_lastTotalSymbol; l < lTotalForexSymbol; l++) {
-			pSymbol = GetItem(l);
-			pSymbol->AppendSymbol(setForexSymbol);
-		}
-		setForexSymbol.m_pDatabase->CommitTrans();
-		setForexSymbol.Close();
-		m_lastTotalSymbol = lTotalForexSymbol;
-	}
-
-	for (const auto& pSymbol2 : m_vStock) {
-		if (pSymbol2->IsUpdateProfileDB()) {
-			fUpdateSymbol = true;
-			break;
-		}
-	}
-	if (fUpdateSymbol) {
-		setForexSymbol.Open();
-		setForexSymbol.m_pDatabase->BeginTrans();
-		while (!setForexSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(T2Utf8(setForexSymbol.m_Symbol))) {
-				pSymbol = GetItem(T2Utf8(setForexSymbol.m_Symbol));
-				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->UpdateSymbol(setForexSymbol);
-					pSymbol->SetUpdateProfileDB(false);
+			for (size_t i = 0; i < m_vStock.size(); ++i) {
+				const auto& pStock = m_vStock[i];
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->UpdateJsonUpdateDate();
+					if (pStock->IsTodayNewStock()) {//插入新股票代码
+						db(sqlpp::insert_into(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchangeCode(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.IPOStatus = pStock->GetIPOStatus(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						));
+						pStock->SetTodayNewStock(false);
+					}
+					else {//更新现有股票代码
+						db(sqlpp::update(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchangeCode(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.IPOStatus = pStock->GetIPOStatus(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						).where(t.Symbol == pStock->GetSymbol()));
+					}
+					pStock->SetUpdateProfileDB(false);
 				}
 			}
-			else {
-				setForexSymbol.Delete();
-			}
-			setForexSymbol.MoveNext();
+			tx.commit();
+		} catch (CException& e) {
+			ReportInformation(e);
 		}
-		setForexSymbol.m_pDatabase->CommitTrans();
-		setForexSymbol.Close();
 	}
-
-	return true;
 }

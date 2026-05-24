@@ -38,74 +38,74 @@ void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 ///
 /// </summary>
 void CContainerTiingoStock::UpdateProfileDB() {
-	if (IsUpdateProfileDB()) {
-		CSetTiingoStock setTiingoStock;
-		setTiingoStock.m_strSort = "[Ticker]";
-		setTiingoStock.Open();
-		setTiingoStock.m_pDatabase->BeginTrans();
-		while (!setTiingoStock.IsEOF()) {	//更新原有的代码集状态
-			if (IsSymbol(T2Utf8(setTiingoStock.m_Ticker))) {
-				const CTiingoStockPtr pStock = GetStock(T2Utf8(setTiingoStock.m_Ticker));
-				ASSERT(pStock != nullptr);
-				if (pStock->IsUpdateProfileDB()) {
-					pStock->Update(setTiingoStock);
-					pStock->SetUpdateProfileDB(false);
-				}
-			}
-			else {
-				setTiingoStock.Delete(); // 删除已不存在的代码。
-			}
-			setTiingoStock.MoveNext();
-		}
-		for (size_t l = 0; l < m_vStock.size(); l++) {
-			const CTiingoStockPtr pStock = GetStock(l);
-			ASSERT(pStock != nullptr);
-			if (pStock->IsUpdateProfileDB()) {
-				pStock->Append(setTiingoStock);
-				pStock->SetUpdateProfileDB(false);
-				pStock->SetTodayNewStock(false);
-			}
-		}
-		setTiingoStock.m_pDatabase->CommitTrans();
-		setTiingoStock.Close();
-	}
-}
+	ASSERT(IsUpdateProfileDB());
 
-/*
- *void CContainerTiingoStock::UpdateProfileDB() {
-	if (IsUpdateProfileDB()) {
-		CSetTiingoStock setTiingoStock;
-		setTiingoStock.m_strSort = "[Ticker]";
-		setTiingoStock.Open();
-		setTiingoStock.m_pDatabase->BeginTrans();
-		while (!setTiingoStock.IsEOF()) {	//更新原有的代码集状态
-			if (IsSymbol(T2Utf8(setTiingoStock.m_Ticker))) {
-				const CTiingoStockPtr pStock = GetStock(T2Utf8(setTiingoStock.m_Ticker));
-				ASSERT(pStock != nullptr);
-				if (pStock->IsUpdateProfileDB()) {
-					pStock->Update(setTiingoStock);
-					pStock->SetUpdateProfileDB(false);
-				}
+	set<string> setExistingSymbols;
+
+	using namespace StockMarket;
+	const auto& t = TiingoStockFundamental{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	for (const auto& row : db(select(all_of(t)).from(t).unconditionally())) {
+		setExistingSymbols.insert(row.Ticker);
+	}
+
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CTiingoStockPtr pStock = GetStock(l);
+		ASSERT(pStock != nullptr);
+		if (pStock->IsUpdateProfileDB()) {
+			int IsActive = pStock->IsActive() ? 1 : 0;
+			int IsADR = pStock->IsADR() ? 1 : 0;
+			if (setExistingSymbols.contains(pStock->GetSymbol())) { // 如果是原有的代码，则更新；如果是新代码，则插入。
+				pStock->UpdateJsonUpdateDate();
+				string sUpdateDate = pStock->GetJsonUpdateDate().dump();
+				db(update(t).set(
+					t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
+					t.Name = pStock->GetName(),
+					t.IsActive = IsActive,
+					t.IsADR = IsADR,
+					t.SICCode = pStock->GetSicCode(),
+					t.SICIndustry = pStock->GetSicIndustry(),
+					t.SICSector = pStock->GetSicSector(),
+					t.TiingoIndustry = pStock->GetTiingoIndustry(),
+					t.TiingoSector = pStock->GetTiingoSector(),
+					t.ReportingCurrency = pStock->GetReportingCurrency(),
+					t.Location = pStock->GetLocation(),
+					t.CompanyWebSite = pStock->GetCompanyWebSite(),
+					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
+					t.IPOStatus = pStock->GetIPOStatus(),
+					t.UpdateDate = sUpdateDate
+				).where(t.Ticker == pStock->GetSymbol()));
 			}
-			else {
-				setTiingoStock.Delete(); // 删除已不存在的代码。
-			}
-			setTiingoStock.MoveNext();
-		}
-		for (size_t l = 0; l < m_vStock.size(); l++) {
-			const CTiingoStockPtr pStock = GetStock(l);
-			ASSERT(pStock != nullptr);
-			if (pStock->IsUpdateProfileDB()) {
-				pStock->Append(setTiingoStock);
-				pStock->SetUpdateProfileDB(false);
+			else { // 新代码，插入。
+				pStock->UpdateJsonUpdateDate();
+				string sUpdateDate = pStock->GetJsonUpdateDate().dump();
+				db(insert_into(t).set(
+					t.Ticker = pStock->GetSymbol(),
+					t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
+					t.Name = pStock->GetName(),
+					t.IsActive = IsActive,
+					t.IsADR = IsADR,
+					t.SICCode = pStock->GetSicCode(),
+					t.SICIndustry = pStock->GetSicIndustry(),
+					t.SICSector = pStock->GetSicSector(),
+					t.TiingoIndustry = pStock->GetTiingoIndustry(),
+					t.TiingoSector = pStock->GetTiingoSector(),
+					t.ReportingCurrency = pStock->GetReportingCurrency(),
+					t.Location = pStock->GetLocation(),
+					t.CompanyWebSite = pStock->GetCompanyWebSite(),
+					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
+					t.IPOStatus = pStock->GetIPOStatus(),
+					t.UpdateDate = sUpdateDate
+				));
 				pStock->SetTodayNewStock(false);
 			}
+			pStock->SetUpdateProfileDB(false);
 		}
-		setTiingoStock.m_pDatabase->CommitTrans();
-		setTiingoStock.Close();
 	}
+	tx.commit();
 }
- */
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///
