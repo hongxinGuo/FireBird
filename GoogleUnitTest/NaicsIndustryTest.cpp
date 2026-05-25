@@ -46,35 +46,4 @@ namespace FireBirdTest {
 		EXPECT_TRUE(finnhubExchange.IsUpdated());
 	}
 
-	TEST_F(CNaicsIndustryTest, TestAppend) {
-		CSetNaicsIndustry setNaicsIndustry, setNaicsIndustry2;
-		CNaicsIndustry NaicsIndustry, NaicsIndustry2;
-
-		NaicsIndustry.m_strNaics = "AA";
-		NaicsIndustry.m_strNationalIndustry = "aaa";
-		NaicsIndustry.m_strSector = "abdc";
-		NaicsIndustry.m_strSubSector = "Beijing";
-		NaicsIndustry.m_fUpdated = true;
-
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setNaicsIndustry.Open();
-		setNaicsIndustry.m_pDatabase->BeginTrans();
-		NaicsIndustry.Append(setNaicsIndustry);
-		setNaicsIndustry.m_pDatabase->CommitTrans();
-		setNaicsIndustry.Close();
-
-		setNaicsIndustry2.m_strFilter = "[Naics] = 'AA'";
-		setNaicsIndustry2.Open();
-		setNaicsIndustry2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "此时已经存入了AA";
-		NaicsIndustry2.Load(setNaicsIndustry2);
-		EXPECT_EQ(NaicsIndustry.m_strNaics, "AA");
-		EXPECT_EQ(NaicsIndustry.m_strNationalIndustry, "aaa");
-		EXPECT_EQ(NaicsIndustry.m_strSector, "abdc");
-		EXPECT_EQ(NaicsIndustry.m_strSubSector, "Beijing");
-		EXPECT_TRUE(NaicsIndustry.m_fUpdated);
-		setNaicsIndustry2.Delete();
-		setNaicsIndustry2.m_pDatabase->CommitTrans();
-		setNaicsIndustry2.Close();
-	}
 }

@@ -215,7 +215,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_strPersonName, "Long Brady K") << "数据按日期排列，此第一条排到了第二位";
 			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_strSymbol, "RIG");
 			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lShare, 269036);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lChange, -14236);
+			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lShareChange, -14236);
 			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lFilingDate, 20210303);
 			EXPECT_EQ(m_pvInsiderTransaction->at(1).m_lTransactionDate, 20210303) << "数据按日期排列，此第一条排到了第二位";
 			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(1).m_dTransactionPrice, 3.68);

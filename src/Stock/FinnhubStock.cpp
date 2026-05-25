@@ -273,48 +273,64 @@ void CFinnhubStock::Append(CSetFinnhubStock& setFinnhubStock) {
 
 void CFinnhubStock::UpdateInsiderTransactionDB() {
 	try {
-		CSetInsiderTransaction setInsiderTransaction;
+		using namespace StockMarket;
+		const auto& t = FinnhubInsiderTransaction{};
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
 
-		vector<CInsiderTransaction> vInsiderTransaction;
-		CInsiderTransaction insiderTransaction;
-		long lSizeOfOldInsiderTransaction = 0;
-
-		ASSERT(!m_vInsiderTransaction.empty());
-
-		setInsiderTransaction.m_strFilter = "[Symbol] = '";
-		setInsiderTransaction.m_strFilter += m_strSymbol.c_str();
-		setInsiderTransaction.m_strFilter += "'";
-		setInsiderTransaction.m_strSort = "[TransactionDate]";
-
-		setInsiderTransaction.Open();
-		setInsiderTransaction.m_pDatabase->BeginTrans();
-		while (!setInsiderTransaction.IsEOF()) {
-			insiderTransaction.Load(setInsiderTransaction);
-			m_lInsiderTransactionEndDate = max(insiderTransaction.m_lTransactionDate, m_lInsiderTransactionEndDate);
-			vInsiderTransaction.push_back(insiderTransaction);
-			lSizeOfOldInsiderTransaction++;
-			setInsiderTransaction.MoveNext();
+			{
+				auto result = db(select(all_of(t)).from(t).order_by(t.TransactionDate.desc()).where(t.Symbol == m_strSymbol.c_str()));
+				auto rows = result.size();
+				if (rows == 0) {
+					m_lInsiderTransactionEndDate = 19800101;
+				}
+				else {
+					auto& row = result.front();
+					m_lInsiderTransactionEndDate = row.TransactionDate; // 倒序排序，最新的日期位于第一个。
+				}
+			}
+			tx.commit();
 		}
-
+		CInsiderTransaction insiderTransaction;
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 		for (size_t i = 0; i < m_vInsiderTransaction.size(); i++) {
 			insiderTransaction = m_vInsiderTransaction.at(i);
 			if (insiderTransaction.m_lTransactionDate > m_lInsiderTransactionEndDate) {
-				insiderTransaction.Append(setInsiderTransaction); // 较新的数据直接存储之
+				db(sqlpp::insert_into(t).set(
+					t.Symbol = insiderTransaction.m_strSymbol,
+					t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
+					t.Share = insiderTransaction.m_lShare, // 交易股数有可能超过int的范围，故而使用INT64。
+					t.FilingDate = insiderTransaction.m_lFilingDate,
+					t.TransactionDate = insiderTransaction.m_lTransactionDate,
+					t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
+					t.ShareChange = insiderTransaction.m_lShareChange,// 交易股数有可能超过int的范围，故而使用INT64。
+					t.TransactionPrice = insiderTransaction.m_dTransactionPrice
+				));
 			}
-			else { // 较旧的数据？
-				if (std::ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-				                         [insiderTransaction](const CInsiderTransaction& p) {
-					                         return ((p.m_strSymbol == insiderTransaction.m_strSymbol) // 股票代码
-						                         && (p.m_lTransactionDate == insiderTransaction.m_lTransactionDate) // 交易时间
-						                         && (p.m_strPersonName == insiderTransaction.m_strPersonName) // 内部交易人员
-						                         && (p.m_strTransactionCode == insiderTransaction.m_strTransactionCode)); // 交易细节
-				                         }) == vInsiderTransaction.end()) { // 如果没找到，则股票代码、人名、交易日期或者交易细节为新的数据，存储该数据
-					insiderTransaction.Append(setInsiderTransaction);
+			else {
+				auto result2 = db(select(all_of(t)).from(t).where(
+					t.Symbol == insiderTransaction.m_strSymbol.c_str() // 股票代码
+					&& t.TransactionDate == insiderTransaction.m_lTransactionDate // 交易时间
+					&& t.PersonName == insiderTransaction.m_strPersonName.c_str() // 内部交易人员
+					&& t.TransactionCode == insiderTransaction.m_strTransactionCode.c_str()));
+				auto rows2 = result2.size();
+				if (rows2 == 0) {
+					db(sqlpp::insert_into(t).set(
+						t.Symbol = insiderTransaction.m_strSymbol,
+						t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
+						t.Share = insiderTransaction.m_lShare, // 交易股数有可能超过int的范围，故而使用INT64。
+						t.ShareChange = insiderTransaction.m_lShareChange,// 交易股数有可能超过int的范围，故而使用INT64。
+						t.FilingDate = insiderTransaction.m_lFilingDate,
+						t.TransactionDate = insiderTransaction.m_lTransactionDate,
+						t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
+						t.TransactionPrice = insiderTransaction.m_dTransactionPrice
+					));
 				}
 			}
 		}
-		setInsiderTransaction.m_pDatabase->CommitTrans();
-		setInsiderTransaction.Close();
+		tx.commit();
 	} catch (CException& e) {
 		ReportInformation(e);
 	}

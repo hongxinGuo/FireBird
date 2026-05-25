@@ -2642,18 +2642,18 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
-    struct Change
+    struct ShareChange
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Change";
+        static constexpr const char _literal[] =  "ShareChange";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Change;
-            T& operator()() { return Change; }
-            const T& operator()() const { return Change; }
+            T ShareChange;
+            T& operator()() { return ShareChange; }
+            const T& operator()() const { return ShareChange; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
@@ -2729,7 +2729,7 @@ namespace StockMarket
                FinnhubInsiderTransaction_::Symbol,
                FinnhubInsiderTransaction_::PersonName,
                FinnhubInsiderTransaction_::Share,
-               FinnhubInsiderTransaction_::Change,
+               FinnhubInsiderTransaction_::ShareChange,
                FinnhubInsiderTransaction_::FilingDate,
                FinnhubInsiderTransaction_::TransactionDate,
                FinnhubInsiderTransaction_::TransactionCode,

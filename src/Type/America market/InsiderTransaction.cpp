@@ -1,51 +1,14 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
 #include"InsiderTransaction.h"
-
-#include "CharSetTransfer.h"
 
 CInsiderTransaction::CInsiderTransaction() {
 	m_strSymbol = " ";
 	m_strPersonName = " ";
 	m_lShare = 0;
-	m_lChange = 0;
+	m_lShareChange = 0;
 	m_lFilingDate = 19800101;
 	m_lTransactionDate = 19800101;
-	m_strTransactionCode = " ";
+	m_strTransactionCode = "";
 	m_dTransactionPrice = 0.0;
-}
-
-void CInsiderTransaction::Append(CSetInsiderTransaction& setInsiderTransaction) const {
-	setInsiderTransaction.AddNew();
-	Save(setInsiderTransaction);
-	setInsiderTransaction.Update();
-}
-
-void CInsiderTransaction::Update(CSetInsiderTransaction& setInsiderTransaction) const {
-	setInsiderTransaction.Edit();
-	Save(setInsiderTransaction);
-	setInsiderTransaction.Update();
-}
-
-void CInsiderTransaction::Save(CSetInsiderTransaction& setInsiderTransaction) const {
-	setInsiderTransaction.m_Symbol = m_strSymbol.c_str();
-	setInsiderTransaction.m_PersonName = m_strPersonName.substr(0, 100).c_str(); // 人名最多100个字符
-	setInsiderTransaction.m_Share = ConvertValueToCString(m_lShare); // 交易股数有可能超过int的范围，故而使用INT64。
-	setInsiderTransaction.m_Change = ConvertValueToCString(m_lChange);// 交易股数有可能超过int的范围，故而使用INT64。
-	setInsiderTransaction.m_FilingDate = m_lFilingDate;
-	setInsiderTransaction.m_TransactionDate = m_lTransactionDate;
-	setInsiderTransaction.m_TransactionCode = m_strTransactionCode.substr(0, 4).c_str(); // 交易代码最多4个字符
-	setInsiderTransaction.m_TransactionPrice = m_dTransactionPrice;
-}
-
-void CInsiderTransaction::Load(const CSetInsiderTransaction& setInsiderTransaction) {
-	m_strSymbol = T2Utf8(setInsiderTransaction.m_Symbol);
-	m_strPersonName = T2Utf8(setInsiderTransaction.m_PersonName);
-	m_lShare = _tstoll(setInsiderTransaction.m_Share);
-	m_lChange = _tstoll(setInsiderTransaction.m_Change);
-	m_lFilingDate = setInsiderTransaction.m_FilingDate;
-	m_lTransactionDate = setInsiderTransaction.m_TransactionDate;
-	m_strTransactionCode = T2Utf8(setInsiderTransaction.m_TransactionCode);
-	m_dTransactionPrice = setInsiderTransaction.m_TransactionPrice;
 }

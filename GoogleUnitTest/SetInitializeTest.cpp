@@ -11,9 +11,7 @@
 #include"SetFinnhubStockBasicFinancialMetric.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 #include"SetFinnhubStockBasicFinancialQuarter.h"
-#include"SetInsiderTransaction.h"
 #include"SetInsiderSentiment.h"
-#include"SetNaicsIndustry.h"
 #include"SetFinnhubStock.h"
 #include"SetFinnhubStockDayLine.h"
 #include"SetCryptoDayLine.h"
@@ -135,18 +133,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setForexDayLine.GetDefaultSQL(), _T("[finnhub_forex_dayline]"));
 	}
 
-	TEST_F(SetInitializeTest, TestInsiderTransactionInitialize) {
-		CSetInsiderTransaction setInsiderTransaction;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setInsiderTransaction.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setInsiderTransaction.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setInsiderTransaction.GetDefaultSQL(), _T("[finnhub_insider_transaction]"));
-	}
-
 	TEST_F(SetInitializeTest, TestInsiderSentimentInitialize) {
 		CSetInsiderSentiment setInsiderSentiment;
 
@@ -157,18 +143,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setInsiderSentiment.GetDefaultSQL(), _T("[finnhub_insider_sentiment]"));
-	}
-
-	TEST_F(SetInitializeTest, TestNaicsIndustryInitialize) {
-		CSetNaicsIndustry setNaicsIndustry;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setNaicsIndustry.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setNaicsIndustry.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setNaicsIndustry.GetDefaultSQL(), _T("[naics_industry]"));
 	}
 
 	TEST_F(SetInitializeTest, TestTiingoCompanyFinancialStateInitialize) {

@@ -13,7 +13,6 @@
 #include"WorldMarket.h"
 
 #include"SetFinnhubStockDayLine.h"
-#include"SetInsiderTransaction.h"
 
 using namespace testing;
 
@@ -848,13 +847,8 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockTest, TestUpdateInsiderTransactionDB) {
 		//  测试数据库中只有4个数据，股票代码：A， 内部交易人员：a b c，
 		CInsiderTransactionsPtr pvInsiderTransaction = make_shared<vector<CInsiderTransaction>>();
-		CSetInsiderTransaction setInsiderTransaction;
 
 		CInsiderTransaction insiderTransaction;
-		insiderTransaction.m_strSymbol = "B";
-		insiderTransaction.m_strPersonName = "a b c";
-		insiderTransaction.m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
-		pvInsiderTransaction->push_back(insiderTransaction);
 		insiderTransaction.m_strSymbol = "A";
 		insiderTransaction.m_strPersonName = "a b c d";
 		insiderTransaction.m_lTransactionDate = 20210101; // 这个内部交易人员名称不符，需要添加进数据库
@@ -880,37 +874,40 @@ namespace FireBirdTest {
 
 		stock.UpdateInsiderTransactionDB();
 
-		setInsiderTransaction.m_strFilter = "[Symbol] = 'B'";
-		setInsiderTransaction.Open();
-		setInsiderTransaction.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setInsiderTransaction.IsEOF());
-		setInsiderTransaction.Delete();
-		setInsiderTransaction.m_pDatabase->CommitTrans();
-		setInsiderTransaction.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubInsiderTransaction{};
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
 
-		setInsiderTransaction.m_strFilter = "[PersonName] = 'a b c d'";
-		setInsiderTransaction.Open();
-		setInsiderTransaction.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setInsiderTransaction.IsEOF());
-		setInsiderTransaction.Delete();
-		setInsiderTransaction.m_pDatabase->CommitTrans();
-		setInsiderTransaction.Close();
+			auto result = db(select(all_of(t)).from(t).where(t.PersonName == "a b c d"));
+			size_t rows = result.size();
+			EXPECT_EQ(rows, 1);
+			db(sqlpp::remove_from(t).where(t.PersonName == "a b c d"));
+			tx.commit();
+		}
 
-		setInsiderTransaction.m_strFilter = "[TransactionDate] = '20210124'";
-		setInsiderTransaction.Open();
-		setInsiderTransaction.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setInsiderTransaction.IsEOF());
-		setInsiderTransaction.Delete();
-		setInsiderTransaction.m_pDatabase->CommitTrans();
-		setInsiderTransaction.Close();
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
 
-		setInsiderTransaction.m_strFilter = "[TransactionCode] = 'S'";
-		setInsiderTransaction.Open();
-		setInsiderTransaction.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setInsiderTransaction.IsEOF());
-		setInsiderTransaction.Delete();
-		setInsiderTransaction.m_pDatabase->CommitTrans();
-		setInsiderTransaction.Close();
+			auto result = db(select(all_of(t)).from(t).where(t.TransactionDate == 20210124));
+			size_t rows = result.size();
+			EXPECT_EQ(rows, 1);
+			db(sqlpp::remove_from(t).where(t.TransactionDate == 20210124));
+			tx.commit();
+		}
+
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
+			auto result = db(select(all_of(t)).from(t).where(t.TransactionCode == "S"));
+			size_t rows = result.size();
+			EXPECT_EQ(rows, 1);
+			db(sqlpp::remove_from(t).where(t.TransactionCode == "S"));
+			tx.commit();
+		}
 	}
 
 	TEST_F(CFinnhubStockTest, TestSaveInsiderSentiment) {

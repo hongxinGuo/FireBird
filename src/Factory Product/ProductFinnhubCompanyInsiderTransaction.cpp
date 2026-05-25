@@ -95,7 +95,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			s = jsonGetString(it, "name");
 			if (!s.empty()) insiderTransaction.m_strPersonName = s;
 			insiderTransaction.m_lShare = jsonGetLongLong(it, "share");
-			insiderTransaction.m_lChange = jsonGetLongLong(it, "change");
+			insiderTransaction.m_lShareChange = jsonGetLongLong(it, "change");
 			s = jsonGetString(it, "filingDate");
 			insiderTransaction.m_lFilingDate = XferToYYYYMMDD(s);
 			s = jsonGetString(it, "transactionDate");

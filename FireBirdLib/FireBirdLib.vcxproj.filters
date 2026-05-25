@@ -657,12 +657,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
@@ -1224,12 +1218,6 @@
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderSemtiment.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.cpp">
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp">

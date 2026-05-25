@@ -86,8 +86,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetForexDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h" />
@@ -283,8 +281,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderSemtiment.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">

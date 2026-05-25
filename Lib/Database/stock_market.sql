@@ -221,7 +221,7 @@ CREATE TABLE `finnhub_insider_transaction` (
   `Symbol` varchar(45) DEFAULT NULL,
   `PersonName` varchar(200) DEFAULT NULL,
   `Share` decimal(20,0) DEFAULT NULL,
-  `Change` decimal(20,0) DEFAULT NULL,
+  `ShareChange` decimal(20,0) DEFAULT NULL,
   `FilingDate` int DEFAULT NULL,
   `TransactionDate` int DEFAULT NULL,
   `TransactionCode` varchar(5) DEFAULT NULL,
