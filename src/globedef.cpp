@@ -114,7 +114,7 @@ CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;
 CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
 CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
 
-CContainerStockExchange gl_dataContainerStockExchange; // 直接装入预存交易所数据。
+CContainerStockExchange gl_dataContainerStockExchange; // 直接装入预存交易所数据，
 CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;
 CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
 

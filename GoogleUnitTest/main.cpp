@@ -48,7 +48,6 @@
 #include"ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include"TimeConvert.h"
-//#include"TestWebData.h"
 
 using namespace testing;
 
@@ -94,10 +93,6 @@ namespace FireBirdTest {
 			CreateSimdjsonEmptyArray();
 
 			SetMaxCurrencyLevel();
-
-			//Note: 使用测试环境的数据库连接池，避免对正式环境的数据库造成影响。测试环境的数据库连接池在测试结束时会自动析构。
-			//InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 20, false); //Note:: 连接正式环境的数据库，谨慎使用
-			InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false); // Note:: 连接测试环境的数据库
 
 			InitializeLogSystem();
 
@@ -224,6 +219,8 @@ namespace FireBirdTest {
 			gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 			// 不更新systemConfiguration文件
 			gl_systemConfiguration.SetUpdateDB(false);
+
+			TRACE("测试环境已清理完毕，退出测试系统");
 		}
 	};
 }
@@ -246,6 +243,32 @@ using namespace FireBirdTest;
 #include"windows.h"
 #include"shellapi.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 测试数据库有时会由于测试没有顺利结束而导致遗留中间数据，本函数删除之
+///
+///
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+void ClearTestDataBase() {
+	using namespace StockMarket;
+	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
+		const auto& t = FinnhubCryptoExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
+		tx.commit();
+	}
+
+	{ // 删除gl_dataFinnhubForexExchange中的中间数据
+		const auto& t = FinnhubForexExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
+		tx.commit();
+	}
+}
+
 int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd) {
 	int argc = 0;
 	wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
@@ -255,6 +278,13 @@ int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	GTEST_FLAG_SET(death_test_style, "fast");
 	::InitGoogleTest(&argc, argv);
+
+	//Note: 使用测试环境的数据库连接池，避免对正式环境的数据库造成影响。测试环境的数据库连接池在测试结束时会自动析构。
+	//InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 20, false); //Note:: 连接正式环境的数据库，谨慎使用
+	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false); // Note:: 连接测试环境的数据库
+
+	ClearTestDataBase(); // 清理测试数据库
+
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 

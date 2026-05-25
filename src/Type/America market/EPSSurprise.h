@@ -1,7 +1,5 @@
 #pragma once
 
-#include"SetEPSSurprise.h"
-
 #include<memory>
 
 class CEPSSurprise final {
@@ -12,9 +10,6 @@ public:
 	CEPSSurprise(CEPSSurprise&&) noexcept = default;
 	CEPSSurprise& operator=(CEPSSurprise&&) noexcept = default;
 	~CEPSSurprise() = default;
-
-	void Append(CSetEPSSurprise& setEPSSurprise) const;
-	void Load(const CSetEPSSurprise& setEPSSurprise);
 
 public:
 	string m_strSymbol;

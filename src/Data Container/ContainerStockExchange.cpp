@@ -9,13 +9,20 @@
 #include "pch.h"
 #include "ContainerStockExchange.h"
 
+#include "dataBaseConnector.h"
+
 CContainerStockExchange::CContainerStockExchange() {
-	LoadDB();
+	LoadDB(); // 生成时即装载数据库。
 }
 
 void CContainerStockExchange::Reset() {
-	m_vStockExchange.resize(0);
+	m_vStockExchange.empty();
 	m_mapStockExchange.clear();
+}
+
+void CContainerStockExchange::Reserve(size_t size) {
+	m_vStockExchange.reserve(size);
+	m_mapStockExchange.reserve(size);
 }
 
 CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymbol) const {
@@ -32,21 +39,41 @@ CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymb
 }
 
 bool CContainerStockExchange::LoadDB() {
-	CStockExchangePtr pExchange = nullptr;
-
 	if (m_vStockExchange.empty()) {
-		CSetStockExchange setExchange;
-		setExchange.m_strSort = "[Code]";
-		setExchange.Open();
-		while (!setExchange.IsEOF()) {
+		// 交易所信息永远使用工作数据库。
+		InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false);
+		using namespace StockMarket;
+		const auto& t = FinnhubStockExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.code.asc()));
+		auto rows = result.size();
+		Reserve(rows);
+
+		for (const auto& row : result) {
+			CStockExchangePtr pExchange;
 			pExchange = make_shared<CStockExchange>();
-			pExchange->Load(setExchange);
+			pExchange->SetExchangeCode(row.code);
+			pExchange->m_strName = row.name;
+			pExchange->m_strMic = row.mic;
+			pExchange->m_strTimeZone = row.timezone;
+			pExchange->m_strPreMarket = row.preMarket;
+			pExchange->m_strHour = row.hour;
+			pExchange->m_strPostMarket = row.postMarket;
+			pExchange->m_strCloseDate = row.closeDate;
+			pExchange->m_strCountry = row.country;
+			pExchange->m_strCountryName = row.countryName;
+			pExchange->m_strSource = row.source;
+
+			int openHour, openMinute, endHour, endMinute;
+			sscanf_s(pExchange->m_strHour.c_str(), "%2d:%2d-%2d:%2d", &openHour, &openMinute, &endHour, &endMinute);
+			pExchange->m_lMarketOpenTime = (openHour * 60 + openMinute) * 60;
+			pExchange->m_lMarketCloseTime = (endHour * 60 + endMinute) * 60;
 			m_vStockExchange.push_back(pExchange);
 			m_mapStockExchange[pExchange->GetExchangeCode()] = m_vStockExchange.size();
-			setExchange.MoveNext();
 		}
-		setExchange.Close();
+		tx.commit();
 	}
-
 	return true;
 }

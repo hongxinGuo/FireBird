@@ -6,7 +6,6 @@
 
 #include "AccessoryDataSource.h"
 #include "AlphaVantageDataSource.h"
-#include "CharSetTransfer.h"
 #include"thread.h"
 
 #include"InaccessibleSymbol.h"
@@ -50,6 +49,8 @@ CWorldMarket::CWorldMarket() {
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("CWorldMarket市场变量只允许存在一个实例\n"));
 	}
+
+	gl_dataContainerStockExchange.LoadDB(); // 交易所信息只需装载一次。
 
 	m_strMarketId = "US";
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);

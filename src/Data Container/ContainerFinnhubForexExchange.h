@@ -8,7 +8,9 @@ public:
 	CContainerFinnhubForexExchange& operator=(const CContainerFinnhubForexExchange& other) = delete;
 	CContainerFinnhubForexExchange& operator=(CContainerFinnhubForexExchange&& other) noexcept = delete;
 	~CContainerFinnhubForexExchange() = default;
+
 	void Reset();
+	void Reserve(size_t size);
 
 	bool IsExchange(const string& strExchange) const noexcept { return m_mapForexExchange.contains(strExchange); }
 	size_t Size() const noexcept { return m_vForexExchange.size(); }
@@ -25,6 +27,6 @@ public:
 
 protected:
 	vector<string> m_vForexExchange;
-	map<string, size_t> m_mapForexExchange;
+	unordered_map<string, size_t> m_mapForexExchange;
 	size_t m_llLastTotalForexExchange{ 0 };
 };

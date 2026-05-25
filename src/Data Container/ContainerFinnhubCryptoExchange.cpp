@@ -2,8 +2,7 @@
 
 #include "ContainerFinnhubCryptoExchange.h"
 
-#include "CharSetTransfer.h"
-#include"SetFinnhubCryptoExchange.h"
+#include "dataBaseConnector.h"
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();
@@ -13,6 +12,11 @@ void CContainerFinnhubCryptoExchange::Reset() {
 	m_vCryptoExchange.resize(0);
 	m_mapCryptoExchange.clear();
 	m_lLastTotalCryptoExchange = 0;
+}
+
+void CContainerFinnhubCryptoExchange::Reserve(size_t size) {
+	m_vCryptoExchange.reserve(size);
+	m_mapCryptoExchange.reserve(size);
 }
 
 bool CContainerFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
@@ -31,16 +35,22 @@ void CContainerFinnhubCryptoExchange::Add(const string& sCryptoExchange) {
 }
 
 bool CContainerFinnhubCryptoExchange::LoadDB() {
-	CSetFinnhubCryptoExchange setCryptoExchange;
-	int i = 0;
+	using namespace StockMarket;
+	const auto& t = FinnhubCryptoExchange{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setCryptoExchange.Open();
-	while (!setCryptoExchange.IsEOF()) {
-		m_vCryptoExchange.push_back(T2Utf8(setCryptoExchange.m_Code));
-		m_mapCryptoExchange[T2Utf8(setCryptoExchange.m_Code)] = i++;
-		setCryptoExchange.MoveNext();
+	Reset();
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto rows = result.size();
+	Reserve(rows);
+	int i = 0;
+	for (const auto& row : result) {
+		string str = row.code;
+		m_vCryptoExchange.push_back(str);
+		m_mapCryptoExchange[str] = i++;
 	}
-	setCryptoExchange.Close();
+	tx.commit();
 	m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
 
 	return true;
@@ -48,16 +58,17 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 
 bool CContainerFinnhubCryptoExchange::UpdateDB() {
 	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
-		CSetFinnhubCryptoExchange setCryptoExchange;
-		setCryptoExchange.Open();
-		setCryptoExchange.m_pDatabase->BeginTrans();
+		using namespace StockMarket;
+		const auto& t = FinnhubCryptoExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
 		for (auto l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
-			setCryptoExchange.AddNew();
-			setCryptoExchange.m_Code = m_vCryptoExchange.at(l).c_str();
-			setCryptoExchange.Update();
+			db(sqlpp::insert_into(t).set(
+				t.code = m_vCryptoExchange.at(l)
+			));
 		}
-		setCryptoExchange.m_pDatabase->CommitTrans();
-		setCryptoExchange.Close();
+		tx.commit();
 		m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
 		return true;
 	}

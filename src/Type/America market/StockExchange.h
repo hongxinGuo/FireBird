@@ -1,15 +1,9 @@
 #pragma once
 
-#include"SetStockExchange.h"
-
 class CStockExchange final {
 public:
 	CStockExchange();
 	~CStockExchange() = default;
-
-	void Append(CSetStockExchange& setExchange) const;
-
-	void Load(const CSetStockExchange& setExchange);
 
 	void SetUpdateStockSymbol(const bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
 	bool IsUpdateStockSymbol() const noexcept { return m_fUpdateStockSymbol; }

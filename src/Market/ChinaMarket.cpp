@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
 #include"Thread.h"
@@ -10,11 +9,8 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include <fmt/format.h>
-
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
-#include"SetChinaChosenStock.h"
 
 #include"SetCurrentWeekLine.h"
 
@@ -1248,25 +1244,19 @@ void CChinaMarket::LoadOptionDB() {
 
 void CChinaMarket::UpdateChosenStockDB() const {
 	try {
-		CSetChinaChosenStock setChinaChosenStock;
+		using namespace StockMarket;
+		const auto& t = ChinaChoiceStock{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-		setChinaChosenStock.Open();
-		setChinaChosenStock.m_pDatabase->BeginTrans();
-		while (!setChinaChosenStock.IsEOF()) {
-			setChinaChosenStock.Delete();
-			setChinaChosenStock.MoveNext();
-		}
-		setChinaChosenStock.m_pDatabase->CommitTrans();
-		setChinaChosenStock.m_pDatabase->BeginTrans();
+		db(remove_from(t).unconditionally());
+
 		for (const auto& pStock : m_avChosenStock.at(0)) {
-			ASSERT(pStock->IsChosen());
-			setChinaChosenStock.AddNew();
-			setChinaChosenStock.m_Symbol = pStock->GetSymbol().c_str();
-			setChinaChosenStock.Update();
-			pStock->SetUpdateChosenStockDB(true);
+			db(sqlpp::insert_into(t).set(
+				t.Symbol = pStock->GetSymbol()
+			));
 		}
-		setChinaChosenStock.m_pDatabase->CommitTrans();
-		setChinaChosenStock.Close();
+		tx.commit();
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -1274,47 +1264,45 @@ void CChinaMarket::UpdateChosenStockDB() const {
 
 void CChinaMarket::AppendChosenStockDB() {
 	try {
-		CSetChinaChosenStock setChinaChosenStock;
+		using namespace StockMarket;
+		const auto& t = ChinaChoiceStock{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-		setChinaChosenStock.Open();
-		setChinaChosenStock.m_pDatabase->BeginTrans();
 		for (const auto& pStock : m_avChosenStock.at(0)) {
-			ASSERT(pStock->IsChosen());
 			if (!pStock->IsUpdateChosenStockDB()) {
-				setChinaChosenStock.AddNew();
-				setChinaChosenStock.m_Symbol = pStock->GetSymbol().c_str();
-				setChinaChosenStock.Update();
-				pStock->SetUpdateChosenStockDB(true);
+				db(insert_into(t).set(
+					t.Symbol = pStock->GetSymbol()
+				));
 			}
 		}
-		setChinaChosenStock.m_pDatabase->CommitTrans();
-		setChinaChosenStock.Close();
+		tx.commit();
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
 }
 
 void CChinaMarket::LoadChosenStockDB() {
-	CSetChinaChosenStock setChinaChosenStock;
+	using namespace StockMarket;
+	const auto& t = ChinaChoiceStock{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setChinaChosenStock.Open();
-	// 装入股票代码数据库
-	while (!setChinaChosenStock.IsEOF()) {
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto rows = result.size<int>();
+
+	for (const auto& row : result) {
 		CChinaStockPtr pStock = nullptr;
-		if (gl_dataContainerChinaStock.IsSymbol(T2Utf8(setChinaChosenStock.m_Symbol))) {
-			pStock = gl_dataContainerChinaStock.GetStock(T2Utf8(setChinaChosenStock.m_Symbol));
+		if (gl_dataContainerChinaStock.IsSymbol(row.Symbol)) {
+			pStock = gl_dataContainerChinaStock.GetStock(row.Symbol);
 			if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 				m_avChosenStock.at(0).push_back(pStock);
 			}
 			pStock->SetChosen(true);
 			pStock->SetUpdateChosenStockDB(true);
 		}
-		else {
-			setChinaChosenStock.Delete();
-		}
-		setChinaChosenStock.MoveNext();
 	}
-	setChinaChosenStock.Close();
+	tx.commit();
 }
 
 void CChinaMarket::ResetEffectiveRTDataRatio() {

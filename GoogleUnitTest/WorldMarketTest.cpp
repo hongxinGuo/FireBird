@@ -8,9 +8,6 @@
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCompanyInsiderSentiment.h"
 
-#include"SetFinnhubForexExchange.h"
-#include"SetFinnhubCryptoExchange.h"
-
 #include"FinnhubDataSource.h"
 #include"FinnhubCrypto.h"
 #include "WorldMarket.h"
@@ -385,7 +382,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol("SS.SS.US");
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock)); // 确保是一个新股票代码
 		pStock->SetTodayNewStock(true);
-		pStock->SetCurrency("Currency");
+		pStock->SetCurrency("No Currency");
 		pStock->SetUpdateProfileDB(true);
 		gl_dataContainerFinnhubStock.Add(pStock);
 		pStock = gl_dataContainerFinnhubStock.GetItem("000001.SS");
@@ -422,9 +419,9 @@ namespace FireBirdTest {
 		auto result2 = db(select(all_of(t)).from(t).where(t.Symbol == std::string("SS.SS.US")));
 		size_t rows2 = result2.size();
 		EXPECT_EQ(rows2, 1);
-		auto& row2 = result.front();
-		string str2 = row.Currency;
-		EXPECT_STREQ(str2.c_str(), "Currency") << "此条目已更新";
+		auto& row2 = result2.front();
+		string str2 = row2.Currency;
+		EXPECT_STREQ(str2.c_str(), "No Currency") << "此条目已更新";
 
 		db(sqlpp::remove_from(t).where(t.Symbol == std::string("SS.SS.US")));
 		tx.commit();
@@ -608,17 +605,16 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
 		EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.UpdateDB());
 
-		CSetFinnhubForexExchange setForexExchange;
-		setForexExchange.m_strFilter = "[Code] = 'US.US.US'";
-		setForexExchange.Open();
-		EXPECT_FALSE(setForexExchange.IsEOF());
-		setForexExchange.m_pDatabase->BeginTrans();
-		while (!setForexExchange.IsEOF()) {
-			setForexExchange.Delete();
-			setForexExchange.MoveNext();
-		}
-		setForexExchange.m_pDatabase->CommitTrans();
-		setForexExchange.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubForexExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.code == "US.US.US"));
+		auto rows = result.size();
+		EXPECT_EQ(rows, 1);
+		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
+		tx.commit();
 
 		// 恢复原状
 		gl_dataContainerFinnhubForexExchange.Delete(strSymbol);
@@ -637,17 +633,16 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
 		EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.UpdateDB());
 
-		CSetFinnhubCryptoExchange setCryptoExchange;
-		setCryptoExchange.m_strFilter = "[Code] = 'US.US.US'";
-		setCryptoExchange.Open();
-		EXPECT_FALSE(setCryptoExchange.IsEOF());
-		setCryptoExchange.m_pDatabase->BeginTrans();
-		while (!setCryptoExchange.IsEOF()) {
-			setCryptoExchange.Delete(); // 删除新添加的这个代码
-			setCryptoExchange.MoveNext();
-		}
-		setCryptoExchange.m_pDatabase->CommitTrans();
-		setCryptoExchange.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubCryptoExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.code == "US.US.US"));
+		auto rows = result.size();
+		EXPECT_EQ(rows, 1);
+		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
+		tx.commit();
 
 		// 恢复原状
 		gl_dataContainerFinnhubCryptoExchange.Delete(sSymbol);

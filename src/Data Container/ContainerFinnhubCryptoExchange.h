@@ -8,7 +8,9 @@ public:
 	CContainerFinnhubCryptoExchange& operator=(const CContainerFinnhubCryptoExchange& other) = delete;
 	CContainerFinnhubCryptoExchange& operator=(CContainerFinnhubCryptoExchange&& other) noexcept = delete;
 	~CContainerFinnhubCryptoExchange() = default;
+
 	void Reset();
+	void Reserve(size_t size);
 
 	bool IsExchange(const string& sExchange) const noexcept { return m_mapCryptoExchange.contains(sExchange); }
 
@@ -25,6 +27,6 @@ public:
 
 protected:
 	vector<string> m_vCryptoExchange;
-	map<string, size_t> m_mapCryptoExchange;
+	unordered_map<string, size_t> m_mapCryptoExchange;
 	size_t m_lLastTotalCryptoExchange{ 0 };
 };

@@ -5,15 +5,12 @@
 #include"SetChinaMarketDayLineInfo.h"
 #include"SetWeekLineInfo.h"
 
-#include"SetChinaChosenStock.h"
-
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
 
 #include"SetFinnhubStockBasicFinancialMetric.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 #include"SetFinnhubStockBasicFinancialQuarter.h"
-#include"SetEPSSurprise.h"
 #include"SetInsiderTransaction.h"
 #include"SetInsiderSentiment.h"
 #include"SetNaicsIndustry.h"
@@ -136,30 +133,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setForexDayLine.GetDefaultSQL(), _T("[finnhub_forex_dayline]"));
-	}
-
-	TEST_F(SetInitializeTest, TestChinaChosenStockInitialize) {
-		CSetChinaChosenStock setChinaChosenStock;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setChinaChosenStock.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setChinaChosenStock.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setChinaChosenStock.GetDefaultSQL(), _T("[china_choice_stock]"));
-	}
-
-	TEST_F(SetInitializeTest, TestEPSSurpriseInitialize) {
-		CSetEPSSurprise setEPSSurprise;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setEPSSurprise.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setEPSSurprise.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setEPSSurprise.GetDefaultSQL(), _T("[finnhub_stock_estimates_eps_surprise]"));
 	}
 
 	TEST_F(SetInitializeTest, TestInsiderTransactionInitialize) {

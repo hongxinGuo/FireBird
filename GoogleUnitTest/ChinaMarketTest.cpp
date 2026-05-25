@@ -9,7 +9,6 @@
 #include "dataBaseConnector.h"
 
 #include"SetCurrentWeekLine.h"
-#include"SetChinaChosenStock.h"
 
 #include"GeneralCheck.h"
 #include "NeteaseRTDataSource.h"
@@ -1438,7 +1437,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "000001.SS"));
-		int rows = result.size<int>();
+		int rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
 		int value2 = row.IPOStatus;
@@ -1580,17 +1579,13 @@ namespace FireBirdTest {
 		pStock = gl_dataContainerChinaStock.GetStock("000002.SZ");
 		gl_pChinaMarket->DeleteChosenStock(pStock);
 
-		CSetChinaChosenStock setChinaChosenStock;
-		setChinaChosenStock.Open();
-		setChinaChosenStock.m_pDatabase->BeginTrans();
-		setChinaChosenStock.MoveLast();
-		EXPECT_STREQ(setChinaChosenStock.m_Symbol, _T("000002.SZ"));
-		setChinaChosenStock.Delete();
-		setChinaChosenStock.MovePrev();
-		EXPECT_STREQ(setChinaChosenStock.m_Symbol, _T("600000.SS"));
-		setChinaChosenStock.Delete();
-		setChinaChosenStock.m_pDatabase->CommitTrans();
-		setChinaChosenStock.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaChoiceStock{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		db(remove_from(t).where(t.Symbol == "600000.SS" || t.Symbol == "000002.SZ"));
+		tx.commit();
 	}
 
 	TEST_F(CChinaMarketTest, TestIsRTDataNeedCalculate) {

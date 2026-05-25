@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "dataBaseConnector.h"
 #include"GeneralCheck.h"
 
 #include"TimeConvert.h"
@@ -1143,23 +1144,22 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 20200401);
 
-		CSetEPSSurprise setEPSSurprise;
-		int i = 0;
-		setEPSSurprise.m_strFilter = "[Symbol] = '600601.US'";
-		setEPSSurprise.Open();
-		setEPSSurprise.m_pDatabase->BeginTrans();
-		while (!setEPSSurprise.IsEOF()) {
-			EXPECT_DOUBLE_EQ(setEPSSurprise.m_Actual, 2.0);
-			EXPECT_DOUBLE_EQ(setEPSSurprise.m_Estimate, 2.1);
-			EXPECT_EQ(setEPSSurprise.m_Date, 20200401);
-			EXPECT_STREQ(setEPSSurprise.m_Symbol, _T("600601.US"));
-			setEPSSurprise.Delete();
-			setEPSSurprise.MoveNext();
-			i++;
-		}
-		setEPSSurprise.m_pDatabase->CommitTrans();
-		setEPSSurprise.Close();
-		EXPECT_EQ(i, 1);
+		using namespace StockMarket;
+		const auto& t = FinnhubStockEstimatesEpsSurprise{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "600601.US"));
+		int rows = result.size();
+		EXPECT_EQ(rows, 1);
+		auto& row = result.front();
+		EXPECT_DOUBLE_EQ(row.Actual, 2.0);
+		EXPECT_DOUBLE_EQ(row.Estimate, 2.1);
+		int date = row.Date;
+		EXPECT_EQ(date, 20200401);
+		EXPECT_EQ(row.Symbol, "600601.US");
+
+		db(sqlpp::remove_from(t).where(t.Symbol == "600601.US"));
+		tx.commit();
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateSECFilingsDB1) {

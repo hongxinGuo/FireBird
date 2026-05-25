@@ -2,9 +2,8 @@
 
 #include "ContainerFinnhubForexExchange.h"
 
-#include "CharSetTransfer.h"
+#include "dataBaseConnector.h"
 #include "InfoReport.h"
-#include"SetFinnhubForexExchange.h"
 
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
 	Reset();
@@ -14,6 +13,11 @@ void CContainerFinnhubForexExchange::Reset() {
 	m_vForexExchange.resize(0);
 	m_mapForexExchange.clear();
 	m_llLastTotalForexExchange = 0;
+}
+
+void CContainerFinnhubForexExchange::Reserve(size_t size) {
+	m_vForexExchange.reserve(size);
+	m_mapForexExchange.reserve(size);
 }
 
 bool CContainerFinnhubForexExchange::Delete(const string& strForexExchange) {
@@ -32,16 +36,22 @@ void CContainerFinnhubForexExchange::Add(const string& strForexExchange) {
 }
 
 bool CContainerFinnhubForexExchange::LoadDB() {
-	CSetFinnhubForexExchange setForexExchange;
-	int i = 0;
+	using namespace StockMarket;
+	const auto& t = FinnhubForexExchange{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setForexExchange.Open();
-	while (!setForexExchange.IsEOF()) {
-		m_vForexExchange.push_back(T2Utf8(setForexExchange.m_Code));
-		m_mapForexExchange[T2Utf8(setForexExchange.m_Code)] = i++;
-		setForexExchange.MoveNext();
+	Reset();
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto rows = result.size();
+	Reserve(rows);
+	int i = 0;
+	for (const auto& row : result) {
+		string str = row.code;
+		m_vForexExchange.push_back(str);
+		m_mapForexExchange[str] = i++;
 	}
-	setForexExchange.Close();
+	tx.commit();
 	m_llLastTotalForexExchange = m_vForexExchange.size();
 
 	return true;
@@ -50,16 +60,17 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 bool CContainerFinnhubForexExchange::UpdateDB() {
 	if (m_llLastTotalForexExchange < m_vForexExchange.size()) {
 		try {
-			CSetFinnhubForexExchange setForexExchange;
-			setForexExchange.Open();
-			setForexExchange.m_pDatabase->BeginTrans();
+			using namespace StockMarket;
+			const auto& t = FinnhubForexExchange{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
 			for (auto l = m_llLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
-				setForexExchange.AddNew();
-				setForexExchange.m_Code = m_vForexExchange.at(l).c_str();
-				setForexExchange.Update();
+				db(sqlpp::insert_into(t).set(
+					t.code = m_vForexExchange.at(l)
+				));
 			}
-			setForexExchange.m_pDatabase->CommitTrans();
-			setForexExchange.Close();
+			tx.commit();
 			m_llLastTotalForexExchange = m_vForexExchange.size();
 		} catch (CException& e) {
 			ReportInformation(e);

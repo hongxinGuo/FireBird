@@ -9,6 +9,7 @@
 #include "FinnhubStock.h"
 
 #include "CharSetTransfer.h"
+#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"
@@ -16,7 +17,6 @@
 #include "JsonParse.h"
 
 #include"SetInsiderSentiment.h"
-#include"SetEPSSurprise.h"
 #include "SetSECFilings.h"
 
 CFinnhubStock::CFinnhubStock() {
@@ -402,22 +402,27 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 }
 
 bool CFinnhubStock::UpdateEPSSurpriseDB() {
-	CSetEPSSurprise setEPSSurprise;
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 
 	if (m_vEPSSurprise.empty()) return true;
 	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate > lLastEPSSurpriseUpdateDate) { SetUpdateProfileDB(true); }
 	else return false; // 没有新数据则返回
 
-	setEPSSurprise.m_strFilter = "[ID] = 1";
-	setEPSSurprise.Open();
-	setEPSSurprise.m_pDatabase->BeginTrans();
+	using namespace StockMarket;
+	const auto& t = FinnhubStockEstimatesEpsSurprise{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 	for (const auto& EPSSurprise : m_vEPSSurprise) {
-		// 数据是正序存储的，需要从头部开始存储
-		if (EPSSurprise.m_lDate > lLastEPSSurpriseUpdateDate) { EPSSurprise.Append(setEPSSurprise); }
+		if (EPSSurprise.m_lDate > lLastEPSSurpriseUpdateDate) {
+			db(sqlpp::insert_into(t).set(
+				t.Symbol = EPSSurprise.m_strSymbol,
+				t.Date = EPSSurprise.m_lDate,
+				t.Actual = EPSSurprise.m_dActual,
+				t.Estimate = EPSSurprise.m_dEstimate
+			));
+		}
 	}
-	setEPSSurprise.m_pDatabase->CommitTrans();
-	setEPSSurprise.Close();
+	tx.commit();
 	SetLastEPSSurpriseUpdateDate(m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate);
 
 	return true;

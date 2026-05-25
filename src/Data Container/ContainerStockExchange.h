@@ -10,7 +10,9 @@ public:
 	CContainerStockExchange& operator=(const CContainerStockExchange& other) = delete;
 	CContainerStockExchange& operator=(CContainerStockExchange&& other) noexcept = delete;
 	~CContainerStockExchange() = default;
+
 	void Reset();
+	void Reserve(size_t size);
 
 	CStockExchangePtr GetItem(const size_t lIndex) const { return m_vStockExchange.at(lIndex); }
 	CStockExchangePtr GetItem(const string& strExchangeSymbol) const;
@@ -21,5 +23,5 @@ public:
 
 protected:
 	vector<CStockExchangePtr> m_vStockExchange;
-	map<string, size_t> m_mapStockExchange;
+	unordered_map<string, size_t> m_mapStockExchange;
 };

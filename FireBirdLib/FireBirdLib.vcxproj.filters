@@ -261,9 +261,6 @@
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaChosenStock.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -280,9 +277,6 @@
       <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualSetChosenStake.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetExchange.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h">
@@ -654,19 +648,10 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoExchange.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubForexExchange.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetEPSSurprise.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h">
@@ -758,9 +743,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\StockExchange.h">
       <Filter>头文件\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetStockExchange.h">
-      <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerStockExchange.h">
       <Filter>头文件\Data container</Filter>
@@ -861,6 +843,9 @@
     <ClInclude Include="..\src\Type\StockSymbol.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DataBase\VirtualSetExchange.h">
+      <Filter>头文件\database</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -897,9 +882,6 @@
       <Filter>源文件\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualSetChoicedStake.cpp">
-      <Filter>源文件\Database</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp">
       <Filter>源文件\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.cpp">
@@ -1229,9 +1211,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp">
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
@@ -1396,6 +1375,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp">
       <Filter>源文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp">
+      <Filter>源文件\Database</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

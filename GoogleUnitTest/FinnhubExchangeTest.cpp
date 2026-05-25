@@ -67,44 +67,4 @@ namespace FireBirdTest {
 		finnhubExchange.SetUpdateMarketHoliday(false);
 		EXPECT_FALSE(finnhubExchange.IsUpdateMarketHoliday());
 	}
-
-	TEST_F(CExchangeTest, TestAppend) {
-		CSetStockExchange setExchange, setExchange2;
-		CStockExchange Exchange, Exchange2;
-
-		Exchange.SetExchangeCode("AA");
-		Exchange.m_strName = "aaa";
-		Exchange.m_strMic = "abdc";
-		Exchange.m_strTimeZone = "Beijing";
-		Exchange.m_strHour = "10101010";
-		Exchange.m_strCloseDate = "20202020";
-		Exchange.m_strCountry = "dfe";
-		Exchange.m_strSource = "abc";
-		Exchange.m_fUpdateStockSymbol = false;
-
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setExchange.Open();
-		setExchange.m_pDatabase->BeginTrans();
-		Exchange.Append(setExchange);
-		setExchange.m_pDatabase->CommitTrans();
-		setExchange.Close();
-
-		setExchange2.m_strFilter = "[Code] = 'AA'";
-		setExchange2.Open();
-		setExchange2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setExchange2.IsEOF()) << "此时已经存入了AA";
-		Exchange2.Load(setExchange2);
-		EXPECT_EQ(Exchange.GetExchangeCode(), "AA");
-		EXPECT_EQ(Exchange.m_strName, "aaa");
-		EXPECT_EQ(Exchange.m_strMic, "abdc");
-		EXPECT_EQ(Exchange.m_strTimeZone, "Beijing");
-		EXPECT_EQ(Exchange.m_strHour, "10101010");
-		EXPECT_EQ(Exchange.m_strCloseDate, "20202020");
-		EXPECT_EQ(Exchange.m_strCountry, "dfe");
-		EXPECT_EQ(Exchange.m_strSource, "abc");
-		EXPECT_FALSE(Exchange.m_fUpdateStockSymbol) << "这个参数不存入数据库";
-		setExchange2.Delete();
-		setExchange2.m_pDatabase->CommitTrans();
-		setExchange2.Close();
-	}
 }
