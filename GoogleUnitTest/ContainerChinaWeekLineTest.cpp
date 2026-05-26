@@ -6,8 +6,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaWeekLine.h"
-
-#include"SetCurrentWeekLine.h"
+#include "dataBaseConnector.h"
 
 namespace FireBirdTest {
 	class CStockDataChinaWeekLineTest : public ::testing::Test {
@@ -122,7 +121,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveLoadCurrentWeekLine) {
-		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
 		CWeekLine weekLine;
 		CContainerChinaWeekLine dataChinaWeekLine, weekLineContainer2;
 
@@ -144,28 +142,32 @@ namespace FireBirdTest {
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveDB) {
 		vector<CWeekLine> vWeekLine;
 		CContainerChinaWeekLine dataChinaWeekLine;
-
 		CWeekLine weekLine;
+
 		weekLine.SetDate(19901224); // 测试数据库中000003.SZ最早的日期为19901231，故此数据位于最前面
-		weekLine.SetStockSymbol("000003.SZ");
+		weekLine.SetStockSymbol("000001.SZ");
 		weekLine.SetClose(100);
 		vWeekLine.push_back(weekLine);
 		dataChinaWeekLine.UpdateData(vWeekLine);
 
-		dataChinaWeekLine.SaveDB("000003.SZ");
+		dataChinaWeekLine.SaveDB("000001.SZ");
 
-		dataChinaWeekLine.LoadDB("000003.SZ");
+		dataChinaWeekLine.LoadDB("000001.SZ");
 		EXPECT_EQ(dataChinaWeekLine.GetData(0)->GetDate(), 19901224) << "新存储数据的日期";
 
 		// 恢复原状
-		CSetWeekLineInfo setChinaStockWeekLineBasic;
-		setChinaStockWeekLineBasic.m_strFilter = "[Symbol] = '000003.SZ'";
-		setChinaStockWeekLineBasic.m_strSort = "[Date]";
-		setChinaStockWeekLineBasic.Open();
-		setChinaStockWeekLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_EQ(setChinaStockWeekLineBasic.m_Date, 19901224) << "新存储数据的日期";
-		setChinaStockWeekLineBasic.Delete();
-		setChinaStockWeekLineBasic.m_pDatabase->CommitTrans();
-		setChinaStockWeekLineBasic.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaStockWeekline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).order_by(t.Date.asc()).where(t.Symbol == "000001.SZ"));
+		size_t rows = result.size();
+		EXPECT_GT(rows, 1);
+		auto& row = result.front();
+		EXPECT_EQ(row.Date.value(), 19901224) << "新存储数据的日期";
+
+		db(sqlpp::remove_from(t).where(t.Symbol == "000001.SZ" && t.Date == 19901224));
+		tx.commit();
 	}
 }

@@ -12,8 +12,6 @@
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
 
-#include"SetCurrentWeekLine.h"
-
 #include "dataBaseConnector.h"
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
@@ -997,23 +995,11 @@ bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtual
 }
 
 bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
-	try {
-		const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
-		CSetWeekLineInfo setWeekLineBasicInfo;
-		CWeekLinePtr pWeekLine = nullptr;
-		CContainerChinaWeekLine dataChinaWeekLine;
+	CContainerChinaWeekLine dataChinaWeekLine;
 
-		DeleteCurrentWeekWeekLine();
+	DeleteCurrentWeekWeekLine();
 
-		string sDate = fmt::format("[Date] = {:08Ld}", lCurrentMonday);
-		setWeekLineBasicInfo.m_strFilter = sDate.c_str();
-		setWeekLineBasicInfo.m_strSort = "[Symbol]";
-		setWeekLineBasicInfo.Open();
-
-		dataChinaWeekLine.SaveCurrentWeekLine();
-	} catch (CException& e) {
-		ReportInformation(e);
-	}
+	dataChinaWeekLine.SaveCurrentWeekLine();
 
 	return true;
 }
@@ -1055,63 +1041,47 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 }
 
 void CChinaMarket::DeleteWeekLine(long lMonday) {
-	CSetWeekLineInfo setWeekLineBasicInfo;
+	using namespace StockMarket;
+	const auto& t = ChinaStockWeekline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	string sDate = fmt::format("[Date] = {:08Ld}", lMonday);
-	setWeekLineBasicInfo.m_strFilter = sDate.c_str();
-	setWeekLineBasicInfo.Open();
-	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-	while (!setWeekLineBasicInfo.IsEOF()) {
-		setWeekLineBasicInfo.Delete();
-		setWeekLineBasicInfo.MoveNext();
-	}
-	setWeekLineBasicInfo.m_pDatabase->CommitTrans();
-	setWeekLineBasicInfo.Close();
+	db(sqlpp::remove_from(t).where(t.Date == lMonday));
+	tx.commit();
 }
 
 bool CChinaMarket::DeleteWeekLine() {
-	if (!gl_systemConfiguration.IsWorkingMode()) {
-		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-		exit(1);
-	}
-	CDatabase database;
+	using namespace StockMarket;
+	const auto& t = ChinaStockWeekline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	database.Open(_T("stock_market"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `stock_market`.`china_stock_weekline`;"));
-	database.CommitTrans();
-	database.Close();
+	db(sqlpp::remove_from(t).unconditionally());
+	tx.commit();
+
 	return true;
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLine() {
-	CSetCurrentWeekLine setCurrentWeekLineInfo;
+	using namespace StockMarket;
+	const auto& t = ChinaCurrentWeekline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	setCurrentWeekLineInfo.Open();
-	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	while (!setCurrentWeekLineInfo.IsEOF()) {
-		setCurrentWeekLineInfo.Delete();
-		setCurrentWeekLineInfo.MoveNext();
-	}
-	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-	setCurrentWeekLineInfo.Close();
+	db(sqlpp::remove_from(t).unconditionally());
+	tx.commit();
 
 	return true;
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate) {
-	CSetCurrentWeekLine setCurrentWeekLineInfo;
+	using namespace StockMarket;
+	const auto& t = ChinaCurrentWeekline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	setCurrentWeekLineInfo.Open();
-	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	while (!setCurrentWeekLineInfo.IsEOF()) {
-		if (setCurrentWeekLineInfo.m_Date < lCutOffDate) {
-			setCurrentWeekLineInfo.Delete();
-		}
-		setCurrentWeekLineInfo.MoveNext();
-	}
-	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-	setCurrentWeekLineInfo.Close();
+	db(sqlpp::remove_from(t).where(t.Date < lCutOffDate));
+	tx.commit();
 
 	return true;
 }
@@ -1164,25 +1134,13 @@ void CChinaMarket::UpdateAllStockDayLine() {
 }
 
 void CChinaMarket::DeleteDayLine(long lDate) const {
-	DeleteDayLineBasicInfo(lDate);
-}
+	using namespace StockMarket;
+	const auto& t = ChinaStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
-	char buffer[20]{};
-	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-
-	_ltoa_s(lDate, buffer, 10);
-	const string strDate = buffer;
-	setDayLineBasicInfo.m_strFilter = "[Date] =";
-	setDayLineBasicInfo.m_strFilter += strDate.c_str();
-	setDayLineBasicInfo.Open();
-	setDayLineBasicInfo.m_pDatabase->BeginTrans();
-	while (!setDayLineBasicInfo.IsEOF()) {
-		setDayLineBasicInfo.Delete();
-		setDayLineBasicInfo.MoveNext();
-	}
-	setDayLineBasicInfo.m_pDatabase->CommitTrans();
-	setDayLineBasicInfo.Close();
+	db(sqlpp::remove_from(t).where(t.Date == lDate));
+	tx.commit();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

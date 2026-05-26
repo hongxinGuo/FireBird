@@ -114,7 +114,6 @@ public:
 	virtual void DeleteWeekLine(long lMonday);
 
 	void DeleteDayLine(long lDate) const;
-	void DeleteDayLineBasicInfo(long lDate) const;
 
 	virtual bool DeleteCurrentWeekWeekLine();
 	static bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);

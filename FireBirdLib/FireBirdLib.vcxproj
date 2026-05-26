@@ -71,7 +71,6 @@
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h" />
     <ClInclude Include="..\src\dataBaseConnector.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h" />
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h" />
@@ -88,9 +87,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\AccessoryFactory.h" />
     <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.h" />
@@ -291,7 +288,6 @@
       <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStock.cpp" />
     <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp" />

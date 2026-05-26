@@ -6,13 +6,11 @@
 #include"SetWeekLineInfo.h"
 
 #include"SetChinaStockSymbol.h"
-#include"SetCurrentWeekLine.h"
 
 #include"SetFinnhubStockBasicFinancialMetric.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 #include"SetFinnhubStockBasicFinancialQuarter.h"
 #include"SetInsiderSentiment.h"
-#include"SetFinnhubStock.h"
 #include"SetFinnhubStockDayLine.h"
 #include"SetCryptoDayLine.h"
 #include"SetForexDayLine.h"
@@ -59,18 +57,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setChinaStockSymbol.GetDefaultSQL(), _T("[china_stock_code]"));
-	}
-
-	TEST_F(SetInitializeTest, TestCurrentWeekLineInitialize) {
-		CSetCurrentWeekLine setCurrentWeekLine;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setCurrentWeekLine.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setCurrentWeekLine.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setCurrentWeekLine.GetDefaultSQL(), _T("[china_current_weekline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestDayLineBasicInfoInitialize) {
@@ -179,18 +165,6 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setTiingoFinancialState.GetDefaultSQL(), _T("[tiingo_company_financial_state]"));
-	}
-
-	TEST_F(SetInitializeTest, TestFinnhubStockInitialize) {
-		CSetFinnhubStock setFinnhubStock;
-
-		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setFinnhubStock.GetDefaultConnect(), _T("DSN=stock_market_test;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setFinnhubStock.GetDefaultConnect(), _T("DSN=stock_market;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-		gl_systemConfiguration.SetWorkingMode(false);
-
-		EXPECT_STREQ(setFinnhubStock.GetDefaultSQL(), _T("[finnhub_stock_profile]"));
 	}
 
 	TEST_F(SetInitializeTest, TestFinnhubStockBasicFinancialMetricInitialize) {

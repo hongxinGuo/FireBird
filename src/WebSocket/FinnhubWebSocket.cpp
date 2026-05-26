@@ -125,7 +125,7 @@ void CFinnhubWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// https://finnhub.io/docs/api/websocket-trades
 ///
 /// 目前三种。
-/// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+/// 格式为：{"data":[{"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 ///        {"type":"ping"}
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
 /// </summary>
@@ -138,7 +138,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 		if (nlohmannJson pt; CreateJsonWithNlohmann(pt, *pData)) {
 			string sType;
 			sType = jsonGetString(&pt, "type");
-			if (sType == "trade") { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+			if (sType == "trade") { // {"data":[{"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 				nlohmannJson js2;
 				nlohmannJson pt3;
 				// 交易数据
@@ -146,10 +146,6 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				for (auto it = js2.begin(); it != js2.end(); ++it) {
 					const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
 					pFinnhubDataPtr->m_sSymbol = jsonGetString(it, "s");
-					pt3 = jsonGetChild(it, "c");
-					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) {
-						pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2));
-					}
 					pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(it, "p");
 					pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(it, "v");
 					pFinnhubDataPtr->m_iSeconds = jsonGetLongLong(it, "t");
@@ -204,18 +200,11 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<s
 		const padded_string jsonPadded(*pData);
 		s_docFinnhubWebSocket = s_parserFinnhubWebSocket.iterate(jsonPadded).value();
 		const string_view sType = simdjsonGetStringView(s_docFinnhubWebSocket, "type");
-		if (sType == "trade") { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+		if (sType == "trade") { // {"data":[{"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 			auto data_array = simdjsonGetArray(s_docFinnhubWebSocket, "data");
 			for (auto item : data_array) {
 				auto itemValue = item.value();
 				const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
-				auto condition_array = simdjsonGetArray(itemValue, "c");
-				for (auto condition_item : condition_array) {
-					const string_view s5 = simdjsonGetStringView(condition_item.value());
-					string_view s6 = s5.substr(0, s5.length());
-					string s2(s6);
-					pFinnhubDataPtr->m_vCode.push_back(s2);
-				}
 				pFinnhubDataPtr->m_dLastPrice = simdjsonGetDouble(itemValue, "p");
 				const string_view symbol = simdjsonGetStringView(itemValue, "s");
 				const string_view symbol2 = symbol.substr(0, symbol.length());

@@ -47,48 +47,6 @@ void CFinnhubStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
 }
 
-void CFinnhubStock::Load(const CSetFinnhubStock& setFinnhubStock) {
-	m_strSymbol = T2Utf8(setFinnhubStock.m_Symbol);
-	m_strExchangeCode = T2Utf8(setFinnhubStock.m_ExchangeCode);
-	m_strDescription = T2Utf8(setFinnhubStock.m_Description);
-	m_strDisplaySymbol = T2Utf8(setFinnhubStock.m_DisplaySymbol);
-	m_strType = T2Utf8(setFinnhubStock.m_Type);
-	m_strMic = T2Utf8(setFinnhubStock.m_Mic);
-	m_strFigi = T2Utf8(setFinnhubStock.m_Figi);
-	m_strCurrency = T2Utf8(setFinnhubStock.m_Currency);
-	m_strAddress = T2Utf8(setFinnhubStock.m_Address);
-	m_strCity = T2Utf8(setFinnhubStock.m_City);
-	m_strCountry = T2Utf8(setFinnhubStock.m_Country);
-	m_strCusip = T2Utf8(setFinnhubStock.m_Cusip);
-	m_strSedol = T2Utf8(setFinnhubStock.m_Sedol);
-	m_lEmployeeTotal = setFinnhubStock.m_EmployeeTotal;
-	m_strGgroup = T2Utf8(setFinnhubStock.m_Ggroup);
-	m_strGind = T2Utf8(setFinnhubStock.m_Gind);
-	m_strGsector = T2Utf8(setFinnhubStock.m_Gsector);
-	m_strGsubind = T2Utf8(setFinnhubStock.m_Gsubind);
-	m_strIPODate = T2Utf8(setFinnhubStock.m_IPODate);
-	m_strIsin = T2Utf8(setFinnhubStock.m_Isin);
-	m_dMarketCapitalization = _tstof(setFinnhubStock.m_MarketCapitalization);
-	m_strNaics = T2Utf8(setFinnhubStock.m_Naics);
-	m_strNaicsNationalIndustry = T2Utf8(setFinnhubStock.m_NaicsNationalIndustry);
-	m_strNaicsSector = T2Utf8(setFinnhubStock.m_NaicsSector);
-	m_strNaicsSubsector = T2Utf8(setFinnhubStock.m_NaicsSubsector);
-	m_strName = T2Utf8(setFinnhubStock.m_Name);
-	m_strPhone = T2Utf8(setFinnhubStock.m_Phone);
-	m_dShareOutstanding = _tstof(setFinnhubStock.m_ShareOutstanding);
-	m_strState = T2Utf8(setFinnhubStock.m_State);
-	m_strTicker = T2Utf8(setFinnhubStock.m_Ticker);
-	m_strWebURL = T2Utf8(setFinnhubStock.m_WebURL);
-	m_strLogo = T2Utf8(setFinnhubStock.m_Logo);
-	m_strFinnhubIndustry = T2Utf8(setFinnhubStock.m_FinnhubIndustry);
-	if (setFinnhubStock.m_Peer.GetLength() > 2) {
-		CreateJsonWithNlohmann(m_jsonPeer, T2Utf8(setFinnhubStock.m_Peer));
-	}
-	m_lIPOStatus = setFinnhubStock.m_IPOStatus;
-
-	LoadUpdateDate(T2Utf8(setFinnhubStock.m_UpdateDate));
-}
-
 void CFinnhubStock::CheckUpdateStatus(long lTodayDate) {
 	CheckProfileUpdateStatus(lTodayDate);
 	CheckBasicFinancialUpdateStatus(lTodayDate);
@@ -210,65 +168,6 @@ bool CFinnhubStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDat
 		}
 	}
 	return m_fUpdateDayLine;
-}
-
-void CFinnhubStock::Save(CSetFinnhubStock& setFinnhubStock) {
-	// 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
-	setFinnhubStock.m_Symbol = m_strSymbol.substr(0, 20).c_str();
-	setFinnhubStock.m_ExchangeCode = m_strExchangeCode.substr(0, 3).c_str();
-	setFinnhubStock.m_Description = m_strDescription.substr(0, 200).c_str();
-	setFinnhubStock.m_DisplaySymbol = m_strDisplaySymbol.substr(0, 20).c_str();
-	setFinnhubStock.m_Type = m_strType.substr(0, 25).c_str();
-	setFinnhubStock.m_Mic = m_strMic.substr(0, 20).c_str();
-	setFinnhubStock.m_Figi = m_strFigi.substr(0, 20).c_str();
-	setFinnhubStock.m_Currency = m_strCurrency.substr(0, 20).c_str();
-	setFinnhubStock.m_Address = m_strAddress.substr(0, 100).c_str();
-	setFinnhubStock.m_City = m_strCity.substr(0, 20).c_str();
-	setFinnhubStock.m_Country = m_strCountry.substr(0, 20).c_str();
-	setFinnhubStock.m_Cusip = m_strCusip.substr(0, 20).c_str();
-	setFinnhubStock.m_Sedol = m_strSedol.substr(0, 45).c_str();
-	setFinnhubStock.m_EmployeeTotal = m_lEmployeeTotal;
-	//setFinnhubStock.m_ListedExchange = m_strExchangeCode.substr(0,100);
-	setFinnhubStock.m_Ggroup = m_strGgroup.substr(0, 45).c_str();
-	setFinnhubStock.m_Gind = m_strGind.substr(0, 45).c_str();
-	setFinnhubStock.m_Gsector = m_strGsector.substr(0, 45).c_str();
-	setFinnhubStock.m_Gsubind = m_strGsubind.substr(0, 45).c_str();
-	setFinnhubStock.m_IPODate = m_strIPODate.substr(0, 20).c_str();
-	setFinnhubStock.m_Isin = m_strIsin.substr(0, 45).c_str();
-	setFinnhubStock.m_MarketCapitalization = ConvertValueToCString(m_dMarketCapitalization);
-	setFinnhubStock.m_Naics = m_strNaics.substr(0, 45).c_str();
-	setFinnhubStock.m_NaicsNationalIndustry = m_strNaicsNationalIndustry.substr(0, 100).c_str();
-	setFinnhubStock.m_NaicsSector = m_strNaicsSector.substr(0, 100).c_str();
-	setFinnhubStock.m_NaicsSubsector = m_strNaicsSubsector.substr(0, 100).c_str();
-	setFinnhubStock.m_Name = m_strName.substr(0, 200).c_str();
-	setFinnhubStock.m_Phone = m_strPhone.substr(0, 100).c_str();
-	setFinnhubStock.m_ShareOutstanding = ConvertValueToCString(m_dShareOutstanding);
-	setFinnhubStock.m_State = m_strState.substr(0, 45).c_str();
-	setFinnhubStock.m_Ticker = m_strTicker.substr(0, 45).c_str();
-	setFinnhubStock.m_WebURL = m_strWebURL.substr(0, 150).c_str();
-	setFinnhubStock.m_Logo = m_strLogo.substr(0, 110).c_str();
-	setFinnhubStock.m_FinnhubIndustry = m_strFinnhubIndustry.substr(0, 100).c_str();
-	const string sPeer = m_jsonPeer.dump();
-	ASSERT(sPeer.size() < 2000);
-	setFinnhubStock.m_Peer = sPeer.c_str();
-
-	UpdateJsonUpdateDate();
-	const string sUpdateDate = m_jsonUpdateDate.dump();
-	setFinnhubStock.m_UpdateDate = sUpdateDate.c_str();
-	ASSERT(sUpdateDate.size() < 10000);
-	setFinnhubStock.m_IPOStatus = m_lIPOStatus;
-}
-
-void CFinnhubStock::Update(CSetFinnhubStock& setFinnhubStock) {
-	setFinnhubStock.Edit();
-	Save(setFinnhubStock);
-	setFinnhubStock.Update();
-}
-
-void CFinnhubStock::Append(CSetFinnhubStock& setFinnhubStock) {
-	setFinnhubStock.AddNew();
-	Save(setFinnhubStock);
-	setFinnhubStock.Update();
 }
 
 void CFinnhubStock::UpdateInsiderTransactionDB() {

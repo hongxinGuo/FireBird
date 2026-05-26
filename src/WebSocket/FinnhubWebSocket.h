@@ -19,7 +19,6 @@ public:
 	double m_dLastPrice;
 	INT64 m_iSeconds; // UNIX milliseconds timestamp
 	double m_dLastVolume;
-	vectorString m_vCode; // trade conditions
 };
 
 using CFinnhubSocketPtr = shared_ptr<CFinnhubSocket>;

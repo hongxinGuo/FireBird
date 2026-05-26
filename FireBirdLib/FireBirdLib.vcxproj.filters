@@ -264,9 +264,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetCurrentWeekLine.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -642,9 +639,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
@@ -658,9 +652,6 @@
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h">
@@ -1221,9 +1212,6 @@
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStock.cpp">
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Stock\TiingoStock.cpp">

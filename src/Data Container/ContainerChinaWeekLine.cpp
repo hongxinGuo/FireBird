@@ -2,8 +2,8 @@
 
 #include "ContainerChinaWeekLine.h"
 
+#include "dataBaseConnector.h"
 #include"SetWeekLineInfo.h"
-#include"SetCurrentWeekLine.h"
 
 #include "InfoReport.h"
 
@@ -27,52 +27,113 @@ bool CContainerChinaWeekLine::SaveDB(const string& strStockSymbol) {
 }
 
 void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
-	CSetCurrentWeekLine setCurrentWeekLineInfo;
-	CWeekLinePtr pWeekLine = nullptr;
+	using namespace StockMarket;
+	const auto& t = ChinaCurrentWeekline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto ratio = GetRatio();
 
-	ASSERT(!m_vHistoryData.empty());
-
-	setCurrentWeekLineInfo.m_strFilter = "[ID] = 1";
-	setCurrentWeekLineInfo.Open();
-	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	for (const auto& data : m_vHistoryData) {
-		data.AppendBasicData(&setCurrentWeekLineInfo);
+		db(sqlpp::insert_into(t).set(
+			t.Date = data.GetDate(),
+			t.Exchange = data.GetExchange(),
+			t.Symbol = data.GetStockSymbol(),
+			t.LastClose = data.GetLastClose() / ratio,
+			t.High = data.GetHigh() / ratio,
+			t.Low = data.GetLow() / ratio,
+			t.Open = data.GetOpen() / ratio,
+			t.Close = data.GetClose() / ratio,
+			t.Dividend = data.GetDividend(),
+			t.SplitFactor = data.GetSplitFactor(),
+			t.Volume = data.GetVolume(),
+			t.Amount = data.GetAmount(),
+			t.UpAndDown = data.GetUpDown(),
+			t.UpDownRate = data.GetUpDownRate(),
+			t.ChangeHandRate = data.GetChangeHandRate(),
+			t.TotalValue = data.GetTotalValue(),
+			t.CurrentValue = data.GetCurrentValue()
+		));
 	}
-	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-	setCurrentWeekLineInfo.Close();
+	tx.commit();
+
 	TRACE(_T("存储了%d个当前周周线数据\n"), m_vHistoryData.size());
 }
 
 bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
-	CSetWeekLineInfo setWeekLineBasicInfo;
+	using namespace StockMarket;
+	const auto& t = ChinaStockWeekline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	// 装入WeekLine数据
-	setWeekLineBasicInfo.m_strFilter = "[Symbol] = '";
-	setWeekLineBasicInfo.m_strFilter += strStockCode.c_str();
-	setWeekLineBasicInfo.m_strFilter += "'";
-	setWeekLineBasicInfo.m_strSort = "[Date]";
-	setWeekLineBasicInfo.Open();
-	LoadBasicDB(&setWeekLineBasicInfo);
-	setWeekLineBasicInfo.Close();
+	Reset();
+	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockCode).order_by(t.Date.asc()));
+	size_t rows = result.size();
+	Reserve(rows);
+
+	for (const auto& row : result) {
+		CVirtualHistoryCandle historyCandle;
+		int ratio = GetRatio();
+		historyCandle.Reset();
+		historyCandle.SetRatio(ratio);
+		historyCandle.SetDate(row.Date);
+		historyCandle.SetExchange(row.Exchange);
+		historyCandle.SetStockSymbol(row.Symbol);
+		historyCandle.SetLastClose(row.LastClose * ratio);
+		historyCandle.SetOpen(row.Open * ratio);
+		historyCandle.SetHigh(row.High * ratio);
+		historyCandle.SetLow(row.Low * ratio);
+		historyCandle.SetClose(row.Close * ratio);
+		historyCandle.SetSplitFactor(row.SplitFactor);
+		historyCandle.SetDividend(row.Dividend);
+		historyCandle.SetUpDown(row.UpAndDown);
+		historyCandle.SetVolume(row.Volume);
+		historyCandle.SetAmount(row.Amount);
+		historyCandle.SetUpDownRate(row.UpDownRate);
+		historyCandle.SetChangeHandRate(row.ChangeHandRate);
+		historyCandle.SetTotalValue(row.TotalValue);
+		historyCandle.SetCurrentValue(row.CurrentValue);
+		historyCandle.SetRatio(ratio);
+		Add(historyCandle);
+	}
+	tx.commit();
 
 	m_fDataLoaded = true;
-
 	return true;
 }
 
 bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
-	CSetCurrentWeekLine setCurrentWeekLineInfo;
+	using namespace StockMarket;
+	const auto& t = ChinaCurrentWeekline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	setCurrentWeekLineInfo.Open();
-	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	while (!setCurrentWeekLineInfo.IsEOF()) {
-		CWeekLine weekLine;
-		weekLine.LoadBasicData(&setCurrentWeekLineInfo);
-		Add(weekLine);
-		setCurrentWeekLineInfo.MoveNext();
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	for (const auto& row : result) {
+		CVirtualHistoryCandle historyCandle;
+		int ratio = GetRatio();
+		historyCandle.Reset();
+		historyCandle.SetRatio(ratio);
+		historyCandle.SetDate(row.Date);
+		historyCandle.SetExchange(row.Exchange);
+		historyCandle.SetStockSymbol(row.Symbol);
+		historyCandle.SetLastClose(row.LastClose * ratio);
+		historyCandle.SetOpen(row.Open * ratio);
+		historyCandle.SetHigh(row.High * ratio);
+		historyCandle.SetLow(row.Low * ratio);
+		historyCandle.SetClose(row.Close * ratio);
+		historyCandle.SetSplitFactor(row.SplitFactor);
+		historyCandle.SetDividend(row.Dividend);
+		historyCandle.SetUpDown(row.UpAndDown);
+		historyCandle.SetVolume(row.Volume);
+		historyCandle.SetAmount(row.Amount);
+		historyCandle.SetUpDownRate(row.UpDownRate);
+		historyCandle.SetChangeHandRate(row.ChangeHandRate);
+		historyCandle.SetTotalValue(row.TotalValue);
+		historyCandle.SetCurrentValue(row.CurrentValue);
+		historyCandle.SetRatio(ratio);
+		Add(historyCandle);
 	}
-	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-	setCurrentWeekLineInfo.Close();
+	tx.commit();
 
 	return true;
 }

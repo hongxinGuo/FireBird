@@ -22,21 +22,4 @@ public:
 
 	void TearDown(const ::benchmark::State& state) override {
 	}
-
-	CContainerTiingoStock tiingoContainer;
-	CContainerChinaStock chinaContainer;
-	CContainerTiingoStockDayLine tiingoDayLineContainer;
-	CContainerFinnhubStock finnhubStockContainer;
 };
-
-BENCHMARK_F(CDataBaseBenchmark, LoadFinnhubStockDayLineDB_using_mfc_record)(benchmark::State& state) {
-	for (auto _ : state) {
-		finnhubStockContainer.LoadProfileDB2();
-	}
-}
-
-BENCHMARK_F(CDataBaseBenchmark, LoadFinnhubStockDayLineDB_using_sqlpp11)(benchmark::State& state) {
-	for (auto _ : state) {
-		finnhubStockContainer.LoadProfileDB();
-	}
-}

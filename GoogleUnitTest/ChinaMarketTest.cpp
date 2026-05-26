@@ -8,8 +8,6 @@
 #include"ChinaStock.h"
 #include "dataBaseConnector.h"
 
-#include"SetCurrentWeekLine.h"
-
 #include"GeneralCheck.h"
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
@@ -1342,7 +1340,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(setDayLine.IsEOF());
 		setDayLine.Close();
 
-		gl_pChinaMarket->DeleteDayLineBasicInfo(19900101);
+		gl_pChinaMarket->DeleteDayLine(19900101);
 
 		setDayLine2.m_strFilter = "[Date] =";
 		setDayLine2.m_strFilter += strDate.c_str();
@@ -1352,28 +1350,59 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
-		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
 		const auto pWeekLine = make_shared<CWeekLine>();
+		auto ratio = pWeekLine->GetRatio();
 
-		pWeekLine->SetStockSymbol("600000.SS");
-		pWeekLine->SetDate(GetCurrentMonday(20200101));
-		setCurrentWeekLine.m_strFilter = "[ID] = 1";
-		setCurrentWeekLine.Open();
-		setCurrentWeekLine.m_pDatabase->BeginTrans();
-		pWeekLine->AppendBasicData(&setCurrentWeekLine);
-		setCurrentWeekLine.m_pDatabase->CommitTrans();
-		setCurrentWeekLine.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaCurrentWeekline{};
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
 
-		setCurrentWeekLine.m_strFilter = "";
-		setCurrentWeekLine.Open();
-		EXPECT_FALSE(setCurrentWeekLine.IsEOF());
-		setCurrentWeekLine.Close();
+			db(sqlpp::insert_into(t).set(
+				t.Date = pWeekLine->GetDate(),
+				t.Exchange = pWeekLine->GetExchange(),
+				t.Symbol = pWeekLine->GetStockSymbol(),
+				t.LastClose = pWeekLine->GetLastClose() / ratio,
+				t.High = pWeekLine->GetHigh() / ratio,
+				t.Low = pWeekLine->GetLow() / ratio,
+				t.Open = pWeekLine->GetOpen() / ratio,
+				t.Close = pWeekLine->GetClose() / ratio,
+				t.Dividend = pWeekLine->GetDividend(),
+				t.SplitFactor = pWeekLine->GetSplitFactor(),
+				t.Volume = pWeekLine->GetVolume(),
+				t.Amount = pWeekLine->GetAmount(),
+				t.UpAndDown = pWeekLine->GetUpDown(),
+				t.UpDownRate = pWeekLine->GetUpDownRate(),
+				t.ChangeHandRate = pWeekLine->GetChangeHandRate(),
+				t.TotalValue = pWeekLine->GetTotalValue(),
+				t.CurrentValue = pWeekLine->GetCurrentValue()
+			));
+			tx.commit();
+		}
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+
+			auto result = db(select(all_of(t)).from(t).unconditionally());
+			tx.commit();
+
+			size_t rows = result.size();
+			EXPECT_TRUE(rows > 0);
+		}
 
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
 
-		setCurrentWeekLine2.Open();
-		EXPECT_TRUE(setCurrentWeekLine2.IsEOF());
-		setCurrentWeekLine2.Close();
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+
+			auto result = db(select(all_of(t)).from(t).unconditionally());
+			tx.commit();
+
+			size_t rows = result.size();
+			EXPECT_TRUE(rows == 0);
+		}
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadDayLine) {

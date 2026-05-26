@@ -7,7 +7,6 @@
 #include "pch.h"
 
 #include"WorldMarket.h"
-#include"SetFinnhubStock.h"
 #include "ContainerFinnhubStock.h"
 
 #include <sqlpp11/transaction.h>
@@ -63,35 +62,6 @@ void CContainerFinnhubStock::ResetDayLine() {
 		pStock->SetUpdateDayLine(true);
 		pStock->SetUpdateProfileDB(true);
 	}
-}
-
-bool CContainerFinnhubStock::LoadProfileDB2() {
-	CSetFinnhubStock setFinnhubStock;
-	CFinnhubStockPtr pFinnhubStock = nullptr;
-	long lMaxSymbolLength = 0;
-
-	Reset();
-	setFinnhubStock.m_strSort = "[Symbol]";
-	setFinnhubStock.Open();
-	setFinnhubStock.m_pDatabase->BeginTrans();
-	while (!setFinnhubStock.IsEOF()) {
-		pFinnhubStock = make_shared<CFinnhubStock>();
-		pFinnhubStock->Load(setFinnhubStock);
-		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
-			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-			Add(pFinnhubStock);
-			ASSERT(pFinnhubStock->GetSymbol().length() < 12); // 目前WorldMarket数据库的股票代码长度限制为12个字符
-		}
-		else {
-			setFinnhubStock.Delete(); // 删除此重复代码
-		}
-		setFinnhubStock.MoveNext();
-	}
-	setFinnhubStock.m_pDatabase->CommitTrans();
-	setFinnhubStock.Close();
-	Sort();
-
-	return true;
 }
 
 bool CContainerFinnhubStock::LoadProfileDB() {

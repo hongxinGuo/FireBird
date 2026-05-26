@@ -14,8 +14,6 @@
 #include "InsiderTransaction.h"
 #include "SECFiling.h"
 
-#include"SetFinnhubStock.h"
-
 class CFinnhubStock : public CVirtualStock {
 public:
 	CFinnhubStock();
@@ -29,15 +27,11 @@ public:
 	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
-	void Load(const CSetFinnhubStock& setFinnhubStock);
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckProfileUpdateStatus(long lTodayDate);
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
-	void Save(CSetFinnhubStock& setFinnhubStock);
-	void Update(CSetFinnhubStock& setFinnhubStock);
-	void Append(CSetFinnhubStock& setFinnhubStock);
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();

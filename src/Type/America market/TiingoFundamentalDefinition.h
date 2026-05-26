@@ -1,10 +1,5 @@
 #pragma once
 
-#include"SetTiingoFundamentalDefinition.h"
-
-#include<memory>
-#include<vector>
-
 using std::vector;
 
 class CTiingoFundamentalDefinition final {
