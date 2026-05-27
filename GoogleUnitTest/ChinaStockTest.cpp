@@ -241,11 +241,11 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestIsTodayNewStock) {
 		CChinaStock stock;
 
-		EXPECT_FALSE(stock.IsTodayNewStock());
+		EXPECT_FALSE(stock.IsNewStock());
 		stock.SetTodayNewStock(true);
-		EXPECT_TRUE(stock.IsTodayNewStock());
+		EXPECT_TRUE(stock.IsNewStock());
 		stock.SetTodayNewStock(false);
-		EXPECT_FALSE(stock.IsTodayNewStock());
+		EXPECT_FALSE(stock.IsNewStock());
 	}
 
 	TEST_F(CChinaStockTest, TestIsUpdateStockProfileDB) {
@@ -744,7 +744,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineEndDate(21890101);
 		pStock->SetSymbol("600011.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		pStock->SaveDayLineBasicInfo();
+		pStock->SaveDayLineDB();
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
 		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(21900101));
@@ -816,7 +816,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineEndDate(10190101);
 		pStock->SetSymbol("600016.SS");
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		pStock->SaveDayLineBasicInfo();
+		pStock->SaveDayLineDB();
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
 		setDayLineBasicInfo.m_strFilter = "[Date] = 21111201";
@@ -890,7 +890,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol("600010.SS");
 		pStock->SetDayLineEndDate(10190101);
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		pStock->SaveDayLineBasicInfo();
+		pStock->SaveDayLineDB();
 
 		setDayLineBasicInfo.m_strFilter = "[Symbol] = '600010.SS'";
 		setDayLineBasicInfo.m_strSort = "[Date]";
@@ -1210,6 +1210,53 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pStock2->IsShareA());
 		pStock2->SetSymbol("10001.SZ");
 		EXPECT_FALSE(pStock2->IsShareA());
+	}
+
+	TEST_F(CChinaStockTest, TestDeleteDuplicatedDayLine) {
+		using namespace StockMarket;
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		pStock = gl_dataContainerChinaStock.GetStock("000001.SZ");
+		gl_pChinaMarket->TEST_SetFormattedMarketDate(202100309);
+		for (int i = 0; i < 10; i++) {
+			CDayLine dayLine;
+			dayLine.SetDate(20210302 + i); // 数据库中已有20210301的数据，此处插入重复数据进行测试
+			dayLine.SetStockSymbol("000001.SZ");
+			dayLine.SetLastClose(34235345);
+			dayLine.SetOpen(1000000 + i);
+			dayLine.SetHigh(45234543);
+			dayLine.SetLow(3452345);
+			dayLine.SetClose(452435);
+			dayLine.SetVolume(34523454);
+			dayLine.SetAmount(3245235345);
+			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
+			dayLine.SetUpDownRate(123.45);
+			dayLine.SetTotalValue(234523452345);
+			dayLine.SetCurrentValue(234145345245);
+			dayLine.SetChangeHandRate(54.321);
+			pStock->StoreDayLine(dayLine);
+		}
+		pStock->SetSymbol("000001.SZ");
+		pStock->SetDayLineEndDate(20210301);
+
+		db(sqlpp::insert_into(t).set(
+			t.Date = 20210302,
+			t.Symbol = "000001.SZ",
+			t.ChangeHandRate = 54.321
+		));
+		db(sqlpp::insert_into(t).set(
+			t.Date = 20210303,
+			t.Symbol = "000001.SZ",
+			t.ChangeHandRate = 54.321
+		));
+		tx.commit();
+
+		pStock->DeleteDuplicatedDayLine();
+
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "000001.SZ" && t.Date > 20210301));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 0) << "重复数据已被删除";
 	}
 
 	//TEST_F_TRAITS();

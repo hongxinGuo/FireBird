@@ -108,7 +108,6 @@ public:
 	void UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine);
 	void UpdateFinancialStateDB();
 	void ClearFinancialState() { m_pvFinancialState.reset(); }
-	bool UpdateDayLineDB();
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);
 	void UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta);
@@ -125,18 +124,19 @@ public:
 	CVirtualDataHistoryCandle* MonthLine() noexcept final { return &m_dataMonthLine; }
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
+	bool UpdateDayLineDB();
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
+	bool IsDayLineDuplicated() noexcept final;
+	void DeleteDuplicatedDayLine() noexcept final;
 	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(m_strSymbol); }
 	bool LoadWeekLineDB() override {
 		CreateWeekLine();
 		return true;
 	}
-
 	bool LoadMonthLineDB() override {
 		CreateMonthLine();
 		return true;
 	}
-
 	void CreateWeekLine();
 	void CreateMonthLine();
 

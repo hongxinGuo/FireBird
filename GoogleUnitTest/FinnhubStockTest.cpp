@@ -153,11 +153,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsTodayNewStock) {
-		EXPECT_FALSE(stock.IsTodayNewStock());
+		EXPECT_FALSE(stock.IsNewStock());
 		stock.SetTodayNewStock(true);
-		EXPECT_TRUE(stock.IsTodayNewStock());
+		EXPECT_TRUE(stock.IsNewStock());
 		stock.SetTodayNewStock(false);
-		EXPECT_FALSE(stock.IsTodayNewStock());
+		EXPECT_FALSE(stock.IsNewStock());
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUpdateStockProfileDB) {

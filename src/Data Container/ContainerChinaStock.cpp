@@ -97,7 +97,7 @@ void CContainerChinaStock::UpdateProfileDB() {
 				const auto& pStock = m_vStock[i];
 				if (pStock->IsUpdateProfileDB()) {
 					pStock->UpdateJsonUpdateDate();
-					if (pStock->IsTodayNewStock()) {	// 插入新股票代码
+					if (pStock->IsNewStock()) {	// 插入新股票代码
 						db(sqlpp::insert_into(t).set(
 							t.Symbol = pStock->GetSymbol(),
 							t.Description = pStock->GetDescription(),
@@ -304,16 +304,7 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 					gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
 					gl_runtime.thread_executor()->post([pStock] {
 						gl_UpdateChinaMarketDB.acquire();
-						if (!gl_systemConfiguration.IsExitingSystem()) {
-							const bool fDataSaved = pStock->SaveDayLineBasicInfo();
-							pStock->UpdateDayLineStartEndDate();
-							if (fDataSaved) {
-								string str = pStock->GetSymbol();
-								str += "日线资料存储完成";
-								gl_systemMessage.PushDayLineInfoMessage(str);
-							}
-							pStock->UnloadDayLine();// 为防止出现同步问题，卸载日线历史数据的任务也由本线程执行。
-						}
+						pStock->UpdateDayLineDB();
 						gl_UpdateChinaMarketDB.release();
 					});
 					fSave = true;

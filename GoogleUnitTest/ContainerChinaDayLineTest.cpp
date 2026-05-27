@@ -346,20 +346,6 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
-		// 重复存储一个日期的数据，测试是否会删除之前存储的同一日期的数据。
-		CSetChinaMarketDayLineInfo setDayLineBasic;
-		setDayLineBasic.m_strFilter = "[symbol] = '000001.SZ'";
-		setDayLineBasic.m_strSort = "Date";
-		setDayLineBasic.Open();
-		setDayLineBasic.m_pDatabase->BeginTrans();
-		setDayLineBasic.AddNew();
-		setDayLineBasic.m_Date = 19910103; // 这个日期存在于数据集中
-		setDayLineBasic.m_Symbol = "000001.SZ";
-		setDayLineBasic.m_Exchange = "Test";// 用这个作为删除此数据的标志。
-		setDayLineBasic.Update();
-		setDayLineBasic.m_pDatabase->CommitTrans();
-		setDayLineBasic.Close();
-
 		dataChinaDayLine.SaveDB("000001.SZ");
 
 		dataChinaDayLine.LoadDB("000001.SZ");

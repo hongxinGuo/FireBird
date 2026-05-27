@@ -73,8 +73,8 @@ public:
 	virtual void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
 
 	//
-	bool IsTodayNewStock() const noexcept { return m_fTodayNewStock; }
-	void SetTodayNewStock(const bool fFlag) noexcept { m_fTodayNewStock = fFlag; }
+	bool IsNewStock() const noexcept { return m_fNewStock; }
+	void SetTodayNewStock(const bool fFlag) noexcept { m_fNewStock = fFlag; }
 
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
@@ -110,11 +110,16 @@ public:
 		return false;
 	}
 
+	virtual bool IsDayLineDuplicated() noexcept {
+		ASSERT(0);
+		return false;
+	}
+	virtual void DeleteDuplicatedDayLine() noexcept { ASSERT(0); }
+
 	long GetDayLineStartDate() const noexcept { return m_lDayLineStartDate; }
 	void SetDayLineStartDate(const long lDate) noexcept { m_lDayLineStartDate = lDate; }
 	long GetDayLineEndDate() const noexcept { return m_lDayLineEndDate; }
 	void SetDayLineEndDate(const long lDate) noexcept { m_lDayLineEndDate = lDate; }
-	// Getter and Setter for m_dShareOutstanding
 	double GetShareCount() const { return m_dShareCount; }
 	void SetShareCount(double val) { m_dShareCount = val; }
 
@@ -198,7 +203,7 @@ protected:
 	INT64 m_llTotalValue{ 0 }; // 总市值。单位：万元
 	INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
 
-	bool m_fTodayNewStock{ false }; // 本日新发现的股票
+	bool m_fNewStock{ false }; // 本日新发现的股票
 	bool m_fActive{ false }; // 是否是活跃股票
 	long m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。

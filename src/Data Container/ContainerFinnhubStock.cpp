@@ -151,7 +151,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 			nlohmannJson jsPeer = pStock->GetPeer();
 			string sPeer = pStock->GetJsonPeer().dump();
 			string sUpdateDate = pStock->GetJsonUpdateDate().dump();
-			if (pStock->IsTodayNewStock()) {// 新代码，插入。
+			if (pStock->IsNewStock()) {// 新代码，插入。
 				db(insert_into(t).set(
 					t.Symbol = pStock->GetSymbol(),
 					t.ExchangeCode = pStock->GetExchangeCode(),

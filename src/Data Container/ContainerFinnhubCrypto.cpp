@@ -64,7 +64,7 @@ void CContainerFinnhubCrypto::UpdateProfileDB() {
 				const auto& pStock = m_vStock[i];
 				if (pStock->IsUpdateProfileDB()) {
 					pStock->UpdateJsonUpdateDate();
-					if (pStock->IsTodayNewStock()) {//插入新股票代码
+					if (pStock->IsNewStock()) {//插入新股票代码
 						db(sqlpp::insert_into(t).set(
 							t.Symbol = pStock->GetSymbol(),
 							t.Description = pStock->GetDescription(),

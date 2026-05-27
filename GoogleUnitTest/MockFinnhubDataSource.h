@@ -12,7 +12,6 @@ namespace testing {
 		MOCK_METHOD(bool, GenerateCompanySymbol, (), (override));
 		MOCK_METHOD(bool, GenerateCompanyProfileConcise, (), (override));
 		MOCK_METHOD(bool, GenerateCompanyNews, (), (override));
-		MOCK_METHOD(bool, GenerateCompanyBasicFinancial, (), (override));
 		MOCK_METHOD(bool, GenerateStockDayLine, (), (override));
 		MOCK_METHOD(bool, GenerateRTQuote, (), (override));
 		MOCK_METHOD(bool, GeneratePeer, (), (override));

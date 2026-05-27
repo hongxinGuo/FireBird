@@ -101,8 +101,6 @@ namespace FireBirdTest {
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyNews()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyBasicFinancial()).Times(1)
-		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GeneratePeer()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderTransaction()).Times(1)
@@ -154,7 +152,6 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateSECFilings()).Times(0);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyProfileConcise()).Times(0);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyNews()).Times(0);
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyBasicFinancial()).Times(0);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GeneratePeer()).Times(0);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderTransaction()).Times(0);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderSentiment()).Times(0);
@@ -188,7 +185,6 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyProfileConcise()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyNews()).Times(1);
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCompanyBasicFinancial()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GeneratePeer()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderTransaction()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderSentiment()).Times(1);

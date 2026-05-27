@@ -51,7 +51,7 @@ public:
 	bool TaskRebuildTiingoStockSplitDB();
 	bool TaskRebuildTiingoIndustryRS();
 
-	void TaskUpdateTiingoStockDayLineDB();
+	int TaskUpdateTiingoStockDayLineDB();
 
 	bool TaskUpdateForexDayLineDB();
 	bool TaskUpdateCryptoDayLineDB();

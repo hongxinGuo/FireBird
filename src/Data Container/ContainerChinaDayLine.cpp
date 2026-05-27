@@ -18,6 +18,87 @@ CContainerChinaDayLine::CContainerChinaDayLine() {
 }
 
 bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
+	using namespace StockMarket;
+	const auto& t = ChinaStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	// Helper: insert a single candle into DB (ratio applied inside)
+	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
+		db(insert_into(t).set(
+			t.Date = pCandle->GetDate(),
+			t.Exchange = pCandle->GetExchange(),
+			t.Symbol = pCandle->GetStockSymbol(),
+			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
+			t.High = static_cast<double>(pCandle->GetHigh()) / m_ratio,
+			t.Low = static_cast<double>(pCandle->GetLow()) / m_ratio,
+			t.Open = static_cast<double>(pCandle->GetOpen()) / m_ratio,
+			t.Close = static_cast<double>(pCandle->GetClose()) / m_ratio,
+			t.Dividend = pCandle->GetDividend(),
+			t.SplitFactor = pCandle->GetSplitFactor(),
+			t.Volume = pCandle->GetVolume(),
+			t.Amount = pCandle->GetAmount(),
+			t.UpAndDown = pCandle->GetUpDown(),
+			t.UpDownRate = pCandle->GetUpDownRate(),
+			t.ChangeHandRate = pCandle->GetChangeHandRate(),
+			t.TotalValue = pCandle->GetTotalValue(),
+			t.CurrentValue = pCandle->GetCurrentValue()
+		));
+	};
+
+	size_t lSize = Size();
+	for (size_t i = 0; i < lSize; ++i) {
+		auto pCandle = GetData(i);
+		insertCandle(pCandle);
+	}
+	tx.commit();
+
+	return true;
+}
+
+bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
+	using namespace StockMarket;
+	const auto& t = ChinaStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	Reset();
+	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol).order_by(t.Date.asc()));
+	size_t rows = result.size();
+	Reserve(rows);
+
+	for (const auto& row : result) {
+		CVirtualHistoryCandle historyCandle;
+		int ratio = GetRatio();
+		historyCandle.Reset();
+		historyCandle.SetRatio(ratio);
+		historyCandle.SetDate(row.Date);
+		historyCandle.SetExchange(row.Exchange);
+		historyCandle.SetStockSymbol(row.Symbol);
+		historyCandle.SetLastClose(row.LastClose * ratio);
+		historyCandle.SetOpen(row.Open * ratio);
+		historyCandle.SetHigh(row.High * ratio);
+		historyCandle.SetLow(row.Low * ratio);
+		historyCandle.SetClose(row.Close * ratio);
+		historyCandle.SetSplitFactor(row.SplitFactor);
+		historyCandle.SetDividend(row.Dividend);
+		historyCandle.SetUpDown(row.UpAndDown);
+		historyCandle.SetVolume(row.Volume);
+		historyCandle.SetAmount(row.Amount);
+		historyCandle.SetUpDownRate(row.UpDownRate);
+		historyCandle.SetChangeHandRate(row.ChangeHandRate);
+		historyCandle.SetTotalValue(row.TotalValue);
+		historyCandle.SetCurrentValue(row.CurrentValue);
+		historyCandle.SetRatio(ratio);
+		Add(historyCandle);
+	}
+	tx.commit();
+
+	m_fDataLoaded = true;
+	return true;
+}
+
+bool CContainerChinaDayLine::UpdateDB(const string& strStockSymbol) {
 	// NOTE:
 	// - This branch shows a sqlpp11-based implementation sketch.
 	// - It is guarded by USE_SQLPP11 so builds don't break until you
@@ -160,48 +241,6 @@ bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	}
 
 	return fNeedUpdate;
-}
-
-bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
-	using namespace StockMarket;
-	const auto& t = ChinaStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	Reset();
-	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol).order_by(t.Date.asc()));
-	size_t rows = result.size();
-	Reserve(rows);
-
-	for (const auto& row : result) {
-		CVirtualHistoryCandle historyCandle;
-		int ratio = GetRatio();
-		historyCandle.Reset();
-		historyCandle.SetRatio(ratio);
-		historyCandle.SetDate(row.Date);
-		historyCandle.SetExchange(row.Exchange);
-		historyCandle.SetStockSymbol(row.Symbol);
-		historyCandle.SetLastClose(row.LastClose * ratio);
-		historyCandle.SetOpen(row.Open * ratio);
-		historyCandle.SetHigh(row.High * ratio);
-		historyCandle.SetLow(row.Low * ratio);
-		historyCandle.SetClose(row.Close * ratio);
-		historyCandle.SetSplitFactor(row.SplitFactor);
-		historyCandle.SetDividend(row.Dividend);
-		historyCandle.SetUpDown(row.UpAndDown);
-		historyCandle.SetVolume(row.Volume);
-		historyCandle.SetAmount(row.Amount);
-		historyCandle.SetUpDownRate(row.UpDownRate);
-		historyCandle.SetChangeHandRate(row.ChangeHandRate);
-		historyCandle.SetTotalValue(row.TotalValue);
-		historyCandle.SetCurrentValue(row.CurrentValue);
-		historyCandle.SetRatio(ratio);
-		Add(historyCandle);
-	}
-	tx.commit();
-
-	m_fDataLoaded = true;
-	return true;
 }
 
 bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {

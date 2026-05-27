@@ -370,10 +370,10 @@ bool CWorldMarket::TaskRebuildTiingoIndustryRS() {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-void CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
+int CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 	CTiingoStockPtr pTiingoStock = nullptr;
 	const size_t symbolSize = gl_dataContainerTiingoStock.Size();
-
+	int iUpdatedCount = 0;
 	for (size_t i = 0; i < symbolSize; i++) {
 		if (gl_systemConfiguration.IsExitingSystem()) break;// 如果程序正在退出，则停止存储。
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
@@ -384,8 +384,10 @@ void CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 			pTiingoStock->UnloadDayLine();
 			pTiingoStock->SetUpdateDayLineDB(false);
 			pTiingoStock->SetUpdateProfileDB(true);
+			iUpdatedCount++;
 		}
 	}
+	return iUpdatedCount;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -897,10 +899,10 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_systemMessage.SetWorldMarketSavingFunction("T stock dayline");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			gl_pWorldMarket->TaskUpdateTiingoStockDayLineDB();
+			auto iUpdatedCount = gl_pWorldMarket->TaskUpdateTiingoStockDayLineDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				string s = fmt::format("Tiingo Stock dayLine Saving time: {:Ld}ms", (end - start).count());
+				string s = fmt::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			gl_UpdateWorldMarketDB.release();

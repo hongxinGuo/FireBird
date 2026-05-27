@@ -192,11 +192,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestIsTodayNewStock) {
-		EXPECT_FALSE(stock.IsTodayNewStock());
+		EXPECT_FALSE(stock.IsNewStock());
 		stock.SetTodayNewStock(true);
-		EXPECT_TRUE(stock.IsTodayNewStock());
+		EXPECT_TRUE(stock.IsNewStock());
 		stock.SetTodayNewStock(false);
-		EXPECT_FALSE(stock.IsTodayNewStock());
+		EXPECT_FALSE(stock.IsNewStock());
 	}
 
 	TEST_F(CTiingoStockTest, TestIsUpdateStockProfileDB) {
@@ -761,6 +761,110 @@ namespace FireBirdTest {
 			auto& row3 = result.front();
 			EXPECT_EQ(row3.YearQuarter.value(), 202404);
 			db(remove_from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test"));
+			tx.commit();
+		}
+	}
+
+	TEST_F(CTiingoStockTest, TestUpdateDayLineDB) {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		// Ensure clean DB state for the test
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			tx.commit();
+		}
+
+		// Prepare local day line data (same as in TestSaveDayLine)
+		auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
+		CTiingoCandleLine dayLine;
+
+		dayLine.SetStockSymbol("A");
+		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
+		dayLine.SetDate(19800101);
+		dayLine.SetClose(115);
+		dayLine.SetRatio(stock.GetRatio());
+		pvDayLine->push_back(dayLine);
+
+		dayLine.SetStockSymbol("A");
+		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
+		dayLine.SetDate(20210101);
+		dayLine.SetClose(12340);
+		dayLine.SetRatio(stock.GetRatio());
+		pvDayLine->push_back(dayLine);
+
+		dayLine.SetStockSymbol("A");
+		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
+		dayLine.SetDate(20210107);
+		dayLine.SetClose(10020);
+		dayLine.SetRatio(stock.GetRatio());
+		pvDayLine->push_back(dayLine);
+
+		dayLine.SetStockSymbol("A");
+		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
+		dayLine.SetDate(20241111);
+		dayLine.SetClose(135);
+		dayLine.SetRatio(stock.GetRatio());
+		pvDayLine->push_back(dayLine);
+
+		// Load into stock and mark for DB update
+		stock.SetSymbol("A");
+		stock.SetDayLineEndDate(20210107);
+		stock.UpdateDayLine(pvDayLine);
+
+		// Pre-conditions
+		EXPECT_TRUE(stock.IsDayLineLoaded());
+		EXPECT_TRUE(stock.IsUpdateDayLineDB() == false);
+
+		stock.SetUpdateDayLineDB(true);
+		EXPECT_TRUE(stock.IsUpdateDayLineDB());
+
+		// Act
+		const bool updated = stock.UpdateDayLineDB();
+
+		// Assert function returned true and flags/loads updated
+		EXPECT_TRUE(updated);
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+		// UpdateDayLineDB calls SetUpdateProfileDB(true)
+		EXPECT_TRUE(stock.IsUpdateProfileDB());
+		// It should have unloaded day line
+		EXPECT_FALSE(stock.IsDayLineLoaded());
+
+		// Verify DB rows were inserted and values are scaled correctly
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
+			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			EXPECT_EQ(result.size(), 1u);
+			if (!result.empty()) {
+				auto& row = result.front();
+				EXPECT_DOUBLE_EQ(row.Close, 0.000115);
+			}
+
+			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			EXPECT_EQ(result.size(), 1u);
+			if (!result.empty()) {
+				auto& row = result.front();
+				EXPECT_DOUBLE_EQ(row.Close, 0.012340);
+			}
+
+			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			EXPECT_EQ(result.size(), 1u);
+			if (!result.empty()) {
+				auto& row = result.front();
+				EXPECT_DOUBLE_EQ(row.Close, 0.000135);
+			}
+
+			// cleanup
+			EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
+			gl_systemMessage.PopDayLineInfoMessage();
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
 			tx.commit();
 		}
 	}

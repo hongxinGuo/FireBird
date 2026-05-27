@@ -16,8 +16,6 @@ public:
 	bool SaveDB(const string& strStockSymbol) override;
 	bool LoadDB(const string& strStockSymbol) override;
 
-	void UpdateDB(const string& strStockSymbol);
-
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();
 

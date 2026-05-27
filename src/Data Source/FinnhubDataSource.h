@@ -26,7 +26,6 @@ public:
 	virtual bool GenerateMarketHoliday();
 	virtual bool GenerateCompanyProfileConcise();
 	virtual bool GenerateCompanyNews();
-	virtual bool GenerateCompanyBasicFinancial();
 	virtual bool GenerateStockDayLine();
 	virtual bool GenerateRTQuote();
 	virtual bool GeneratePeer();

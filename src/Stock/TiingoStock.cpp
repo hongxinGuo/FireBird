@@ -123,29 +123,6 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	SetUpdateProfileDB(true);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 由于tiingo更新完日线数据后需要再次处理日线，故而此处默认为不卸载日线。这样能够加速后面的处理过程。
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoStock::UpdateDayLineDB() {
-	if (IsUpdateDayLineDB()) {
-		SetUpdateDayLineDB(false);
-		SaveDayLineDB();
-		UpdateDayLineStartEndDate();
-		SetUpdateProfileDB(true);
-		string str = GetSymbol();
-		str += "日线资料存储完成";
-		gl_systemMessage.PushDayLineInfoMessage(str);
-		UnloadDayLine();
-		ASSERT(!IsUpdateDayLineDB());
-		return true;
-	}
-	ASSERT(!IsUpdateDayLineDB());
-	return false;
-}
-
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
 	if (pStock->m_strTiingoSector.length() > 1) m_strTiingoSector = pStock->m_strTiingoSector;
@@ -263,6 +240,49 @@ void CTiingoStock::CreateMonthLine() {
 	}
 
 	m_dataMonthLine.SetDataLoaded(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 由于tiingo更新完日线数据后需要再次处理日线，故而此处默认为不卸载日线。这样能够加速后面的处理过程。
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CTiingoStock::UpdateDayLineDB() {
+	if (IsUpdateDayLineDB()) {
+		SetUpdateDayLineDB(false);
+		if (IsDayLineDuplicated()) {
+			DeleteDuplicatedDayLine();
+		}
+		SaveDayLineDB();
+		UpdateDayLineStartEndDate();
+		SetUpdateProfileDB(true);
+		string str = GetSymbol();
+		str += "日线资料存储完成";
+		gl_systemMessage.PushDayLineInfoMessage(str);
+		UnloadDayLine();
+		ASSERT(!IsUpdateDayLineDB());
+		return true;
+	}
+	ASSERT(!IsUpdateDayLineDB());
+	return false;
+}
+
+bool CTiingoStock::IsDayLineDuplicated() noexcept {
+	if (m_dataDayLine.Empty()) return false;
+	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
+	return true;
+}
+
+void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
+	ASSERT(!m_dataDayLine.Empty());
+	using namespace StockMarket;
+	const auto& t = TiingoStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= m_dataDayLine.GetData(0)->GetDate()));
+	tx.commit();
 }
 
 void CTiingoStock::RebuildStockSplitDB() {

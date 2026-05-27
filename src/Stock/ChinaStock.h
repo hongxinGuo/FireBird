@@ -105,7 +105,10 @@ public:
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
 	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(GetSymbol()); }
-	virtual bool SaveDayLineBasicInfo() { return m_dataDayLine.SaveDB(GetSymbol()); }
+	void UpdateDayLineDB();
+	virtual bool SaveDayLineDB() { return m_dataDayLine.SaveDB(GetSymbol()); }
+	bool IsDayLineDuplicated() noexcept final;
+	void DeleteDuplicatedDayLine() noexcept final;
 
 	bool LoadDayLineBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
 

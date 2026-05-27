@@ -7,6 +7,7 @@
 
 #include "CharSetTransfer.h"
 #include"ChinaMarket.h"
+#include "dataBaseConnector.h"
 #include"MonthLine.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,6 +119,32 @@ void CChinaStock::ReportDayLineDownLoaded() {
 	//string strTemp = GetSymbol();
 	//strTemp += "日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
+}
+
+void CChinaStock::UpdateDayLineDB() {
+	if (IsDayLineDuplicated()) {
+		DeleteDuplicatedDayLine();
+	}
+	SaveDayLineDB();
+	UpdateDayLineStartEndDate();
+	UnloadDayLine();
+}
+
+bool CChinaStock::IsDayLineDuplicated() noexcept {
+	if (m_dataDayLine.Empty()) return false;
+	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
+	return true;
+}
+
+void CChinaStock::DeleteDuplicatedDayLine() noexcept {
+	ASSERT(!m_dataDayLine.Empty());
+	using namespace StockMarket;
+	const auto& t = ChinaStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= m_dataDayLine.GetData(0)->GetDate()));
+	tx.commit();
 }
 
 void CChinaStock::AppendTodayBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLineBasicInfo) const {
