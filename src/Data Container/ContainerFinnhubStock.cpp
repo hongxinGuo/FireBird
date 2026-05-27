@@ -65,7 +65,6 @@ void CContainerFinnhubStock::ResetDayLine() {
 }
 
 bool CContainerFinnhubStock::LoadProfileDB() {
-	bool fDeleteDuplicatedSymbol = false;
 	using namespace StockMarket;
 	const auto& t = FinnhubStockProfile{};
 
@@ -126,33 +125,14 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 			ASSERT(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
 		}
 		else {
-			fDeleteDuplicatedSymbol = true;
+			db(sqlpp::remove_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 		}
 	}
 	tx.commit();
 
-	if (fDeleteDuplicatedSymbol) {
-		DeleteDuplicatedSymbolFromDB();// 删除重复的股票代码
-	}
-
 	Sort();
 
 	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-///
-/// 删除数据库中重复的股票代码。由于之前的代码逻辑问题，可能会在数据库中存储多个相同代码的股票简介，此函数用来删除这些重复的股票代码。
-/// Note: MySQL数据库不允许在同一张表中使用DELETE语句删除重复的记录，因此需要使用JOIN的方式来删除重复的记录。
-/// 具体来说，使用INNER JOIN将表自身连接起来，找到重复的记录，并删除其中一个记录。
-///
-///
-//////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerFinnhubStock::DeleteDuplicatedSymbolFromDB() {
-	auto db = gl_dbStockMarket.get();
-	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
-	db.execute("DELETE t1 FROM finnhub_stock_profile t1 INNER JOIN finnhub_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
-	db.execute("COMMIT");
 }
 
 void CContainerFinnhubStock::UpdateProfileDB() {
@@ -256,124 +236,6 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 		}
 	}
 	tx.commit();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 更新基本金融信息
-//
-// Note 更新300条信息大致需要45秒。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerFinnhubStock::UpdateBasicFinancialDB() {
-	static bool s_fInProcess = false;
-	vector<CFinnhubStockPtr> vStock{};
-
-	if (s_fInProcess) {
-		gl_systemMessage.PushErrorMessage("UpdateBasicFinancialDB任务用时超过五分钟");
-		return false;
-	}
-	s_fInProcess = true;
-
-	vStock.clear();
-	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CFinnhubStockPtr pStock = GetItem(l);
-		if (pStock->IsUpdateBasicFinancialDB()) {
-			vStock.push_back(pStock);
-		}
-	}
-
-	UpdateBasicFinancialAnnualDB(vStock);
-	UpdateBasicFinancialQuarterDB(vStock);
-	UpdateBasicFinancialMetricDB(vStock);
-
-	ClearUpdateBasicFinancialFlag(vStock);
-
-	s_fInProcess = false;
-	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 这个函数比较占用CPU的计算能力，故而当使用较慢的CPU时，不使用工作线程做并行处理
-//
-// 发现使用并行处理方式时，数据库偶尔会出现故障，估计是MySQL数据库的同步问题，目前不容易找到问题之所在。
-// 决定还是使用串行方式，不再生成线程。--20221101
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerFinnhubStock::UpdateBasicFinancialQuarterDB(const vector<CFinnhubStockPtr>& vStock) {
-	for (const auto& pStock : vStock) {
-		if (gl_systemConfiguration.IsExitingSystem()) break;
-		pStock->AppendBasicFinancialQuarter();
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 这个函数比较占用CPU的计算能力，故而当使用较慢的CPU时，不使用工作线程做并行处理
-//
-// 发现使用并行处理方式时，数据库偶尔会出现故障，估计是MySQL数据库的同步问题，目前不容易找到问题之所在。
-// 决定还是使用串行方式，不再生成线程。--20221101
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerFinnhubStock::UpdateBasicFinancialAnnualDB(const vector<CFinnhubStockPtr>& vStock) {
-	for (const auto& pStock : vStock) {
-		if (gl_systemConfiguration.IsExitingSystem()) break;
-		pStock->AppendBasicFinancialAnnual();
-	}
-}
-
-void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubStockPtr>& vStock) {
-	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-	const auto iBasicFinancialNeedUpdate = vStock.size();
-	size_t iCurrentUpdated = 0;
-
-	setBasicFinancialMetric.m_strSort = "[Symbol]";
-	setBasicFinancialMetric.Open();
-	setBasicFinancialMetric.m_pDatabase->BeginTrans();
-	//更新原有的基本财务信息
-	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-		if (setBasicFinancialMetric.IsEOF()) break;
-		if (IsSymbol(T2Utf8(setBasicFinancialMetric.m_symbol))) {
-			CFinnhubStockPtr pStockNeedUpdate = GetItem(T2Utf8(setBasicFinancialMetric.m_symbol));
-			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
-				iCurrentUpdated++;
-				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
-				pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
-			}
-		}
-		else {
-			setBasicFinancialMetric.Delete(); //Note 自动删除代码已不存在的数据。
-		}
-		setBasicFinancialMetric.MoveNext();
-	}
-	// 添加新的基本财务数据
-	if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-		ASSERT(setBasicFinancialMetric.IsEOF());
-		for (size_t i = 0; i < iBasicFinancialNeedUpdate; i++) {
-			const auto& pStockNeedAppend = vStock.at(i);
-			if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
-				iCurrentUpdated++;
-				pStockNeedAppend->AppendBasicFinancialMetric(setBasicFinancialMetric);
-				pStockNeedAppend->SetUpdateBasicFinancialDB(false);
-				ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
-			}
-		}
-	}
-	setBasicFinancialMetric.m_pDatabase->CommitTrans();
-	setBasicFinancialMetric.Close();
-	ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
-}
-
-void CContainerFinnhubStock::ClearUpdateBasicFinancialFlag(const vector<CFinnhubStockPtr>& vStock) {
-	for (const auto& pStock : vStock) {
-		if (pStock->IsUpdateBasicFinancialDB()) {
-			pStock->SetUpdateBasicFinancialDB(false);
-			pStock->ClearBasicFinancialState();
-		}
-	}
 }
 
 void CContainerFinnhubStock::UpdateInsiderTransactionDB() {

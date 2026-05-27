@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "dataBaseConnector.h"
 #include"GeneralCheck.h"
 
 #include"TiingoCompanyFinancialState.h"
@@ -123,7 +124,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoCompanyFinancialStateTest, TestAppend) {
-		CSetTiingoCompanyFinancialState setTiingoCompanyFinancialState, setTiingoFinancialStateNew;
 		CTiingoCompanyFinancialState financialStateToBeSaved;
 
 		financialStateToBeSaved.m_symbol = "AAAAA";
@@ -216,6 +216,8 @@ namespace FireBirdTest {
 		financialStateToBeSaved.m_trailingPEG1Y = 84;
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
+
+		CSetTiingoCompanyFinancialState setTiingoCompanyFinancialState, setTiingoFinancialStateNew;
 		setTiingoCompanyFinancialState.Open();
 		setTiingoCompanyFinancialState.m_pDatabase->BeginTrans();
 		financialStateToBeSaved.Append(setTiingoCompanyFinancialState);

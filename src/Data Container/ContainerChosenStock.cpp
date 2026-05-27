@@ -15,7 +15,6 @@ void CContainerChosenStock::Reset() {
 }
 
 bool CContainerChosenStock::LoadDB() {
-	bool fDeleteDuplicatedSymbol = false;
 	using namespace StockMarket;
 	const auto& t = WorldChoiceStock{};
 	auto db = gl_dbStockMarket.get();
@@ -32,7 +31,7 @@ bool CContainerChosenStock::LoadDB() {
 			m_vStock.push_back(pStock);
 		}
 		else {
-			fDeleteDuplicatedSymbol = true;
+			db(sqlpp::remove_from(t).where(t.ID == row.ID));
 		}
 	}
 	tx.commit();

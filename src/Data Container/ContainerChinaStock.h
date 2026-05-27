@@ -26,7 +26,6 @@ public:
 
 	long LoadProfileDB();
 	void UpdateProfileDB();
-	void DeleteDuplicatedStockDB();
 
 	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);

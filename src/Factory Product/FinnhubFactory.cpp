@@ -7,7 +7,6 @@
 #include"ProductFinnhubCompanyProfileConcise.h"
 #include"ProductFinnhubCompanyNews.h"
 #include"ProductFinnhubCompanyPeer.h"
-#include"ProductFinnhubCompanyBasicFinancial.h"
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCompanyInsiderSentiment.h"
 #include"ProductFinnhubCryptoDayLine.h"
@@ -69,9 +68,6 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMark
 		break;
 	case PEERS_:
 		p = make_shared<CProductFinnhubCompanyPeer>();
-		break;
-	case BASIC_FINANCIALS_:
-		p = make_shared<CProductFinnhubCompanyBasicFinancial>();
 		break;
 	case INSIDER_TRANSACTION_:
 		p = make_shared<CProductFinnhubCompanyInsiderTransaction>();

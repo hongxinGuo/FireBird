@@ -1,9 +1,9 @@
 #include"pch.h"
 
-#include "dataBaseConnector.h"
 #include"GeneralCheck.h"
 
 #include"TiingoStock.h"
+#include "dataBaseConnector.h"
 
 namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {
@@ -453,89 +453,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetVolume(), IEX.m_llVolume);
 	}
 
-	TEST_F(CTiingoStockTest, TestSave) {
-		CTiingoStock stock2;
-		CSetTiingoStock setTiingoStock;
-
-		setTiingoStock.m_strFilter = "[Ticker] = '000001.US'";
-		setTiingoStock.Open();
-		EXPECT_TRUE(setTiingoStock.IsEOF());
-		setTiingoStock.Close();
-
-		stock.SetTiingoPermaTicker("aasdfasdfj");
-		stock.SetSymbol("000001.US");
-		stock.SetName("adkjkf");
-		stock.SetActive(true);
-		stock.SetIsADR(true);
-		stock.SetSicCode(1234);
-		stock.SetSicIndustry("defg");
-		stock.SetSicSector("efg");
-		stock.SetTiingoIndustry("ghi");
-		stock.SetTiingoSector("defghijk");
-		stock.SetReportingCurrency("US");
-		stock.SetLocation("Irvine");
-		stock.SetCompanyWebSite("ijk");
-		stock.SetSECFilingWebSite("https://def.com");
-		stock.SetCompanyFinancialStatementUpdateDate(20202020);
-		stock.Add52WeekLowDate(20200101);
-		stock.Add52WeekLowDate(20240101);
-		stock.Add52WeekHighDate(20000101);
-		stock.Add52WeekHighDate(20040101);
-		stock.SetDayLineStartDate(20200101);
-		stock.SetDayLineEndDate(20240102);
-		CStockSplit p;
-		p.SetDate(20200101);
-		p.SetRatio(2.0);
-		stock.AddStockSplit(p);
-		p.SetDate(20210101);
-		p.SetRatio(3.0);
-		stock.AddStockSplit(p);
-		p.SetDate(20190101);
-		p.SetRatio(1.5);
-		stock.AddStockSplit(p);
-
-		setTiingoStock.Open();
-		setTiingoStock.m_pDatabase->BeginTrans();
-		stock.Append(setTiingoStock);
-		setTiingoStock.m_pDatabase->CommitTrans();// 使用CommitTrans()后会真正更新数据库。
-		setTiingoStock.Close();
-
-		setTiingoStock.m_strFilter = "[Ticker] = '000001.US'";
-		setTiingoStock.Open();
-		setTiingoStock.m_pDatabase->BeginTrans();
-		stock2.Load(setTiingoStock);
-		setTiingoStock.Delete(); // 删掉新增的代码
-		setTiingoStock.m_pDatabase->CommitTrans(); // 必须使用CommitTrans()来真正删除数据库中的数据。
-		setTiingoStock.Close();
-
-		EXPECT_TRUE(stock.GetTiingoPermaTicker() == stock2.GetTiingoPermaTicker());
-		EXPECT_TRUE(stock.GetSymbol() == stock2.GetSymbol());
-		EXPECT_TRUE(stock.GetName() == stock2.GetName());
-		EXPECT_TRUE(stock.IsActive() == stock2.IsActive());
-		EXPECT_TRUE(stock.IsADR() == stock2.IsADR());
-		EXPECT_EQ(stock.GetSicCode(), stock2.GetSicCode());
-		EXPECT_TRUE(stock.GetSicIndustry() == stock2.GetSicIndustry());
-		EXPECT_TRUE(stock.GetSicSector() == stock2.GetSicSector());
-		EXPECT_TRUE(stock.GetTiingoIndustry() == stock2.GetTiingoIndustry());
-		EXPECT_TRUE(stock.GetTiingoSector() == stock2.GetTiingoSector());
-		EXPECT_TRUE(stock.GetReportingCurrency() == stock2.GetReportingCurrency());
-		EXPECT_TRUE(stock.GetLocation() == stock2.GetLocation());
-		EXPECT_TRUE(stock.GetCompanyWebSite() == stock2.GetCompanyWebSite());
-		EXPECT_TRUE(stock.GetSECFilingWebSite() == stock2.GetSECFilingWebSite());
-		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), stock2.GetCompanyFinancialStatementUpdateDate());
-		EXPECT_TRUE(stock.Have52WeekLowDate(20200101));
-		EXPECT_TRUE(stock.Have52WeekLowDate(20240101));
-		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekHighDate(20040101));
-		EXPECT_EQ(stock.GetDayLineStartDate(), stock2.GetDayLineStartDate());
-		EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());
-		EXPECT_EQ(stock.GetStockSplitCount(), stock2.GetStockSplitCount());
-		for (size_t i = 0; i < stock.GetStockSplitCount(); i++) {
-			EXPECT_EQ(stock.GetStockSplit(i).GetDate(), stock2.GetStockSplit(i).GetDate());
-			EXPECT_DOUBLE_EQ(stock.GetStockSplit(i).GetRatio(), stock2.GetStockSplit(i).GetRatio());
-		}
-	}
-
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
@@ -700,58 +617,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.HaveNewDayLineData());
 	}
 
-	TEST_F(CTiingoStockTest, TestUpdateFinancialStateDB) {
-		stock.SetSymbol("AAPL");
-		CTiingoCompanyFinancialStatesPtr pvState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
-		CTiingoCompanyFinancialStatePtr pState = make_shared<CTiingoCompanyFinancialState>();
-		pState->m_symbol = "AAPL";
-		pState->m_yearQuarter = 202001; // 早于最早的数据
-		pState->m_exchange = "Test"; // 虚假交易所代码，用于删除
-		pvState->push_back(pState);
-		pState = make_shared<CTiingoCompanyFinancialState>();
-		pState->m_symbol = "AAPL";
-		pState->m_yearQuarter = 202301; // 存在于集合中
-		pState->m_exchange = "Test";
-		pvState->push_back(pState);
-		pState = make_shared<CTiingoCompanyFinancialState>();
-		pState->m_symbol = "AAPL";
-		pState->m_yearQuarter = 202305; // 居中新数据
-		pState->m_exchange = "Test";
-		pvState->push_back(pState);
-		pState = make_shared<CTiingoCompanyFinancialState>();
-		pState->m_symbol = "AAPL";
-		pState->m_yearQuarter = 202404; // 晚于最新数据
-		pState->m_exchange = "Test";
-		pvState->push_back(pState);
-
-		stock.UpdateFinancialState(pvState);
-
-		stock.UpdateFinancialStateDB();
-
-		CSetTiingoCompanyFinancialState setState;
-
-		setState.m_strFilter = "[Exchange] = 'Test'";
-		setState.m_strSort = "[yearQuarter]";
-		setState.Open();
-		setState.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setState.IsEOF());
-		EXPECT_EQ(setState.m_yearQuarter, 202001);
-		setState.Delete();
-		setState.MoveNext();
-		EXPECT_FALSE(setState.IsEOF());
-		EXPECT_EQ(setState.m_yearQuarter, 202305);
-		setState.Delete();
-		setState.MoveNext();
-		EXPECT_FALSE(setState.IsEOF());
-		EXPECT_EQ(setState.m_yearQuarter, 202404);
-		setState.Delete();
-		setState.MoveNext();
-		EXPECT_TRUE(setState.IsEOF());
-
-		setState.m_pDatabase->CommitTrans();
-		setState.Close();
-	}
-
 	TEST_F(CTiingoStockTest, TestProcessDayLine) {
 		//auto pStock = make_shared<CTiingoStock>();
 		//pStock->SetSymbol("AAPL");
@@ -845,5 +710,58 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2).GetRatio(), 2.0);
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(3).GetRatio(), 7.0);
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(4).GetRatio(), 4.0);
+	}
+
+	TEST_F(CTiingoStockTest, TestUpdateFinancialStateDB) {
+		stock.SetSymbol("AAPL");
+		CTiingoCompanyFinancialStatesPtr pvState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
+		CTiingoCompanyFinancialStatePtr pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = "AAPL";
+		pState->m_yearQuarter = 202001; // 早于最早的数据
+		pState->m_exchange = "Test"; // 虚假交易所代码，用于删除
+		pvState->push_back(pState);
+		pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = "AAPL";
+		pState->m_yearQuarter = 202301; // 存在于集合中
+		pState->m_exchange = "Test";
+		pvState->push_back(pState);
+		pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = "AAPL";
+		pState->m_yearQuarter = 202305; // 居中新数据
+		pState->m_exchange = "Test";
+		pvState->push_back(pState);
+		pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = "AAPL";
+		pState->m_yearQuarter = 202404; // 晚于最新数据
+		pState->m_exchange = "Test";
+		pvState->push_back(pState);
+
+		stock.UpdateFinancialState(pvState);
+
+		stock.UpdateFinancialStateDB();
+
+		{
+			using namespace StockMarket;
+			const auto& t = TiingoCompanyFinancialState{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+			//auto result = db(select(count(all_of(table))).from(table).where(table.Symbol == "AAPL" && table.Exchange == "Test").order_by(table.YearQuarter.asc()));
+			//Note: Resharper误报，无法识别result的类型，实际为vector<TiingoCompanyFinancialState>
+			//resharper disable all
+			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test").order_by(t.YearQuarter.asc())); //NOLINT
+			//resharper restore all
+			size_t rows = result.size();
+			EXPECT_TRUE(rows == 3);
+			auto& row1 = result.front();
+			EXPECT_EQ(row1.YearQuarter.value(), 202001);
+			result.pop_front();
+			auto& row2 = result.front();
+			EXPECT_EQ(row2.YearQuarter.value(), 202305);
+			result.pop_front();
+			auto& row3 = result.front();
+			EXPECT_EQ(row3.YearQuarter.value(), 202404);
+			db(remove_from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test"));
+			tx.commit();
+		}
 	}
 }

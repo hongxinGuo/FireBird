@@ -4,8 +4,6 @@
 #include "ContainerTiingoStockWeekLine.h"
 #include "ContainerTiingoStockMonthLine.h"
 
-#include"SetTiingoStock.h"
-
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
 #include "TiingoStockDailyMeta.h"
@@ -86,11 +84,6 @@ public:
 
 	void ResetAllUpdateDate() override;
 	int GetRatio() const override { return 1000000; }; // 
-
-	void Load(const CSetTiingoStock& setTiingoStock);
-	void Append(CSetTiingoStock& setTiingoStock);
-	void Save(CSetTiingoStock& setTiingoStock);
-	void Update(CSetTiingoStock& setTiingoStock);
 
 	bool IsUpdateStockDailyMeta() const noexcept { return m_fUpdateStockDailyMeta; }
 	void SetUpdateStockDailyMeta(bool fFlag) noexcept { m_fUpdateStockDailyMeta = fFlag; }

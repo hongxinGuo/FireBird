@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaDayLine.h"
+#include "dataBaseConnector.h"
 
 using namespace testing;
 
@@ -340,10 +341,12 @@ namespace FireBirdTest {
 		CDayLine dayLine;
 		dayLine.SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面
 		dayLine.SetStockSymbol("000001.SZ");
+		dayLine.SetExchange("Test"); // 用这个作为删除此数据的标志。
 		dayLine.SetClose(100);
 		pvDayLine->push_back(dayLine);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
+		// 重复存储一个日期的数据，测试是否会删除之前存储的同一日期的数据。
 		CSetChinaMarketDayLineInfo setDayLineBasic;
 		setDayLineBasic.m_strFilter = "[symbol] = '000001.SZ'";
 		setDayLineBasic.m_strSort = "Date";
@@ -352,7 +355,7 @@ namespace FireBirdTest {
 		setDayLineBasic.AddNew();
 		setDayLineBasic.m_Date = 19910103; // 这个日期存在于数据集中
 		setDayLineBasic.m_Symbol = "000001.SZ";
-		setDayLineBasic.m_Amount = "10000"; // 用这个作为删除此数据的标志。
+		setDayLineBasic.m_Exchange = "Test";// 用这个作为删除此数据的标志。
 		setDayLineBasic.Update();
 		setDayLineBasic.m_pDatabase->CommitTrans();
 		setDayLineBasic.Close();
@@ -365,14 +368,18 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataChinaDayLine.GetData(2)->GetDate(), 19910104) << "旧数据的第二个日期，之前存储的另一个日期为19910103的数据已被删除";
 
 		// 恢复原状
-		CSetChinaMarketDayLineInfo setChinaStockDayLineBasic;
-		setChinaStockDayLineBasic.m_strFilter = "[Symbol] = '000001.SZ'";
-		setChinaStockDayLineBasic.m_strSort = "[Date]";
-		setChinaStockDayLineBasic.Open();
-		setChinaStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_EQ(setChinaStockDayLineBasic.m_Date, 19910102) << "新存储数据的日期";
-		setChinaStockDayLineBasic.Delete();
-		setChinaStockDayLineBasic.m_pDatabase->CommitTrans();
-		setChinaStockDayLineBasic.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "000001.SZ" && t.Date == 19910102));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 1);
+		auto& row = result.front();
+		EXPECT_EQ(row.Date.value(), 19910102) << "新存储数据的日期";
+
+		db(sqlpp::remove_from(t).where(t.Date == 19910102 && t.Symbol == "000001.SZ" && t.Exchange == "Test"));
+		tx.commit();
 	}
 }

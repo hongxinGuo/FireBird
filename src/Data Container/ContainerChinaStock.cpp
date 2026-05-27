@@ -40,7 +40,6 @@ size_t CContainerChinaStock::GetActiveStockSize() const {
 
 long CContainerChinaStock::LoadProfileDB() {
 	long lDayLineNeedCheck = 0;
-	bool bDeleteDuplicatedCode = false;
 	using namespace StockMarket;
 	const auto& t = ChinaStockCode{};
 
@@ -68,7 +67,9 @@ long CContainerChinaStock::LoadProfileDB() {
 			pStock->CheckDayLineStatus();
 			Add(pStock);
 		}
-		else bDeleteDuplicatedCode = true;
+		else {
+			db(sqlpp::remove_from(t).where(t.ID == row.ID));
+		}
 	}
 	tx.commit();
 
@@ -81,9 +82,6 @@ long CContainerChinaStock::LoadProfileDB() {
 	m_lLoadedStock = m_vStock.size();
 	Sort();
 
-	if (bDeleteDuplicatedCode) {
-		DeleteDuplicatedStockDB();
-	}
 	return lDayLineNeedCheck;
 }
 
@@ -129,13 +127,6 @@ void CContainerChinaStock::UpdateProfileDB() {
 			ReportInformation(e);
 		}
 	}
-}
-
-void CContainerChinaStock::DeleteDuplicatedStockDB() {
-	auto db = gl_dbStockMarket.get();
-	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
-	db.execute("DELETE t1 FROM china_stock_code t1 INNER JOIN china_stock_code t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
-	db.execute("COMMIT");
 }
 
 bool CContainerChinaStock::IsDayLineDBUpdated() noexcept {
@@ -377,7 +368,6 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 //////////////////////////////////////////////////////////////////////////////////
 long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	long iCount = 0;
-	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 
 	string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的实时数据";
 	gl_systemMessage.PushInformationMessage(s);
@@ -385,22 +375,38 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	DeleteDayLineBasicInfo(lCurrentTradeDay);
 
 	// 存储当前交易日的数据
-	setDayLineBasicInfo.m_strFilter = "[ID] = 1";
-	setDayLineBasicInfo.Open();
-	setDayLineBasicInfo.m_pDatabase->BeginTrans();
+	using namespace StockMarket;
+	const auto& t = ChinaStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
-			continue;
+		if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
+			iCount++;
+			pStock->SetDayLineEndDate(lCurrentTradeDay);
+			pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
+			pStock->SetUpdateProfileDB(true);
+			db(sqlpp::insert_into(t).set(
+				t.Date = lCurrentTradeDay,
+				t.Exchange = pStock->GetExchangeCode(),
+				t.Symbol = pStock->GetSymbol(),
+				t.LastClose = pStock->GetLastClose(),
+				t.Open = pStock->GetOpen(),
+				t.High = pStock->GetHigh(),
+				t.Low = pStock->GetLow(),
+				t.Close = pStock->GetNew(),
+				t.Volume = pStock->GetVolume(),
+				t.Amount = pStock->GetAmount(),
+				t.UpAndDown = pStock->GetUpDown(),
+				t.UpDownRate = pStock->GetUpDownRate(),
+				t.ChangeHandRate = pStock->GetTotalValue() ? static_cast<double>(100) * pStock->GetAmount() / pStock->GetTotalValue() : 0.0,
+				t.CurrentValue = pStock->GetCurrentValue(),
+				t.TotalValue = pStock->GetTotalValue()
+			));
 		}
-		iCount++;
-		pStock->SetDayLineEndDate(lCurrentTradeDay);
-		pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
-		pStock->SetUpdateProfileDB(true);
-		pStock->AppendTodayBasicInfo(&setDayLineBasicInfo);
 	}
-	setDayLineBasicInfo.m_pDatabase->CommitTrans();
-	setDayLineBasicInfo.Close();
+	tx.commit();
 
 	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的日线数据已生成";
 	gl_systemMessage.PushInformationMessage(s);
@@ -412,17 +418,13 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 }
 
 void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
-	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
+	using namespace StockMarket;
+	const auto& t = ChinaStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	setDayLineBasicInfo.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
-	setDayLineBasicInfo.Open();
-	setDayLineBasicInfo.m_pDatabase->BeginTrans();
-	while (!setDayLineBasicInfo.IsEOF()) {
-		setDayLineBasicInfo.Delete();
-		setDayLineBasicInfo.MoveNext();
-	}
-	setDayLineBasicInfo.m_pDatabase->CommitTrans();
-	setDayLineBasicInfo.Close();
+	db(sqlpp::remove_from(t).where(t.Date == lDate));
+	tx.commit();
 }
 
 double CContainerChinaStock::GetUpDownRate(const string& strClose, const string& strLastClose) noexcept {

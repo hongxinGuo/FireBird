@@ -23,15 +23,7 @@ public:
 	void ResetDayLine();
 
 	bool LoadProfileDB();
-	static void DeleteDuplicatedSymbolFromDB();
-	bool LoadProfileDB2();
 	void UpdateProfileDB();
-
-	bool UpdateBasicFinancialDB();
-	static void UpdateBasicFinancialAnnualDB(const vector<CFinnhubStockPtr>& vStock);
-	static void UpdateBasicFinancialQuarterDB(const vector<CFinnhubStockPtr>& vStock);
-	void UpdateBasicFinancialMetricDB(const vector<CFinnhubStockPtr>& vStock);
-	static void ClearUpdateBasicFinancialFlag(const vector<CFinnhubStockPtr>& vStock);
 
 	void UpdateInsiderTransactionDB();
 

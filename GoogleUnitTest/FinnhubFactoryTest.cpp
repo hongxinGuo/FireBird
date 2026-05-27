@@ -51,7 +51,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, COMPANY_PROFILE_CONCISE_)).name(), "class CProductFinnhubCompanyProfileConcise");
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, COMPANY_NEWS_)).name(), "class CProductFinnhubCompanyNews");
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, PEERS_)).name(), "class CProductFinnhubCompanyPeer");
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, BASIC_FINANCIALS_)).name(), "class CProductFinnhubCompanyBasicFinancial");
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, INSIDER_TRANSACTION_)).name(), "class CProductFinnhubCompanyInsiderTransaction");
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, INSIDER_SENTIMENT_)).name(), "class CProductFinnhubCompanyInsiderSentiment");
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, CRYPTO_CANDLES_)).name(), "class CProductFinnhubCryptoDayLine");

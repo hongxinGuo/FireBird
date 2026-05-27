@@ -16,7 +16,6 @@ void CContainerChosenCrypto::Reset() {
 }
 
 bool CContainerChosenCrypto::LoadDB() {
-	bool fDeleteDuplicatedSymbol = false;
 	using namespace StockMarket;
 	const auto& t = WorldChoiceCrypto{};
 	auto db = gl_dbStockMarket.get();
@@ -33,7 +32,7 @@ bool CContainerChosenCrypto::LoadDB() {
 			m_vStock.push_back(pStock);
 		}
 		else {
-			fDeleteDuplicatedSymbol = true;
+			db(sqlpp::remove_from(t).where(t.ID == row.ID));
 		}
 	}
 	tx.commit();

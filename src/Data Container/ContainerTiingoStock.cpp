@@ -115,7 +115,6 @@ void CContainerTiingoStock::UpdateProfileDB() {
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerTiingoStock::LoadProfileDB() {
 	// Use sqlpp11 typed query API to load profile data
-	bool fFindDuplicatedCode = false;
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockFundamental{};
@@ -123,7 +122,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		Reset();
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
-		auto result = db(select(t.TiingoPermaTicker, t.Ticker, t.Name, t.IsActive, t.IsADR, t.SICCode, t.SICIndustry, t.SICSector, t.TiingoIndustry, t.TiingoSector, t.ReportingCurrency, t.Location, t.CompanyWebSite, t.SECFilingWebSite, t.IPOStatus, t.UpdateDate).from(t).unconditionally().order_by(t.Ticker.asc()));
+		auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Ticker.asc()));
 		auto rowCount = result.size();
 		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 		for (const auto& row : result) {
@@ -152,16 +151,13 @@ bool CContainerTiingoStock::LoadProfileDB() {
 				Add(pTiingoStock);
 			}
 			else {
-				fFindDuplicatedCode = true;
+				db(sqlpp::remove_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 			}
 		}
 		tx.commit();
 	} catch (const std::exception& ex) {
 		gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
 		return false;
-	}
-	if (fFindDuplicatedCode) {
-		DeleteDuplicatedSymbolFromDB();
 	}
 	return true;
 }

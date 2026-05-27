@@ -206,10 +206,6 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
-	LoadSymbol(setChinaStockSymbol);
-	return true;
-}
 bool CChinaStock::LoadStockCode(const CStockSymbol& stockSymbol) {
 	m_strDescription = stockSymbol.m_Description;
 	m_strDisplaySymbol = stockSymbol.m_DisplaySymbol;

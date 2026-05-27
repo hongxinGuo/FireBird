@@ -225,7 +225,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestDeleteForexExchange) {
 		// do nothing. 已经在TestAddForexExchange中测试了DeleteForexExchange函数
-		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.Delete("US.US.US")) << "此符号在符号集中不存在";
+		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.Delete("Test")) << "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsForexSymbol) {
@@ -288,7 +288,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoExchange) {
 		// do nothing. 已经在TestAddCryptoExchange中测试了DeleteCryptoExchange函数
-		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.Delete("US.US.US")) << "此符号在符号集中不存在";
+		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.Delete("Test")) << "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoSymbol) {
@@ -595,7 +595,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexExchangeDB) {
-		const string strSymbol = "US.US.US";
+		const string strSymbol = "Test";
 
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.UpdateDB()) << "没有新Forex Exchange";
@@ -610,10 +610,10 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).where(t.code == "US.US.US"));
+		auto result = db(select(all_of(t)).from(t).where(t.code == "Test"));
 		auto rows = result.size();
 		EXPECT_EQ(rows, 1);
-		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
+		db(sqlpp::remove_from(t).where(t.code == "Test"));
 		tx.commit();
 
 		// 恢复原状
@@ -623,7 +623,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCryptoExchangeDB) {
-		const string sSymbol = "US.US.US";
+		const string sSymbol = "Test";
 
 		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
 		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.UpdateDB()) << "没有新Crypto Exchange";
@@ -638,10 +638,10 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).where(t.code == "US.US.US"));
+		auto result = db(select(all_of(t)).from(t).where(t.code == "Test"));
 		auto rows = result.size();
 		EXPECT_EQ(rows, 1);
-		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
+		db(sqlpp::remove_from(t).where(t.code == "Test"));
 		tx.commit();
 
 		// 恢复原状

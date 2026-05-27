@@ -5,7 +5,7 @@
 #include"DayLine.h"
 
 #include"ContainerForexDayLine.h"
-#include"SetForexDayLine.h"
+#include "dataBaseConnector.h"
 
 using namespace testing;
 
@@ -43,6 +43,7 @@ namespace FireBirdTest {
 		CDayLine dayLine;
 		dayLine.SetDate(20200411); // 此日为星期六，新数据
 		dayLine.SetStockSymbol("OANDA:AUD_SGD");
+		dayLine.SetExchange("Test");
 		dayLine.SetClose(100);
 		pvDayLine->push_back(dayLine);
 		m_dataForexDayLine.UpdateData(pvDayLine);
@@ -53,16 +54,16 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), 20200411) << "新存储数据位于第六位";
 
 		// 恢复原状
-		CSetForexDayLine setForexDayLineBasic;
-		setForexDayLineBasic.m_strFilter = "[Date] = 20200411";
-		setForexDayLineBasic.Open();
-		setForexDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setForexDayLineBasic.IsEOF()) << "新存储数据的日期";
-		while (!setForexDayLineBasic.IsEOF()) {
-			setForexDayLineBasic.Delete();
-			setForexDayLineBasic.MoveNext();
-		}
-		setForexDayLineBasic.m_pDatabase->CommitTrans();
-		setForexDayLineBasic.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubForexDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Date == 20200411));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 1) << "刚存储的数据";
+
+		db(sqlpp::remove_from(t).where(t.Date == 20200411));
+		tx.commit();
 	}
 }

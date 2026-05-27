@@ -1,10 +1,10 @@
 #include"pch.h"
 
+#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
 #include"FinnhubCrypto.h"
-#include"SetCryptoDayLine.h"
 
 using namespace testing;
 
@@ -183,25 +183,30 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
 		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 		CDayLine dayLine;
-		CSetCryptoDayLine setCryptoDayLine;
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		dayLine.SetDate(19800101);
 		dayLine.SetClose(100);
 		dayLine.SetStockSymbol("NewSymbol");
+		dayLine.SetExchange("Test"); // 用于删除测试数据
 		pvDayLine->push_back(dayLine);
 		FinnhubCryptoSymbol.SetSymbol("NewSymbol"); // 新代码
 		FinnhubCryptoSymbol.UpdateDayLine(pvDayLine);
 
 		FinnhubCryptoSymbol.UpdateDayLineDB();
 
-		setCryptoDayLine.m_strFilter = "[Symbol] = 'NewSymbol'";
-		setCryptoDayLine.m_strSort = "[Date]";
-		setCryptoDayLine.Open();
-		EXPECT_EQ(setCryptoDayLine.m_Date, 19800101) << "这个是新存储的数据";
-		setCryptoDayLine.m_pDatabase->BeginTrans();
-		setCryptoDayLine.Delete();
-		setCryptoDayLine.m_pDatabase->CommitTrans();
-		setCryptoDayLine.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubCryptoDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "NewSymbol").order_by(t.Date.asc()));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 1) << "新存储数据的行数";
+		auto& row = result.front();
+		EXPECT_EQ(row.Date.value(), 19800101) << "新存储数据的日期";
+
+		db(sqlpp::remove_from(t).where(t.Symbol == "NewSymbol"));
+		tx.commit();
 	}
 }

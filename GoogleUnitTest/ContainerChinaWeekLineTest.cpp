@@ -170,4 +170,71 @@ namespace FireBirdTest {
 		db(sqlpp::remove_from(t).where(t.Symbol == "000001.SZ" && t.Date == 19901224));
 		tx.commit();
 	}
+
+	TEST_F(CStockDataChinaWeekLineTest, SaveDB_InsertsMissingRows) {
+		using namespace StockMarket;
+		const string testSymbol = "TEST";
+
+		// Ensure no existing rows for the test symbol
+		{
+			const auto& t = ChinaStockWeekline{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+			db(remove_from(t).where(t.Symbol == testSymbol));
+			tx.commit();
+		}
+
+		// Build container with one weekline entry
+		CContainerChinaWeekLine container;
+		const int ratio = container.GetRatio();
+		CWeekLine wk;
+		wk.SetStockSymbol(testSymbol);
+		wk.SetDate(20250101);
+		wk.SetExchange("Test");
+		// set prices scaled by ratio so DB stores normalized values (value/ratio)
+		wk.SetLastClose(500LL * ratio);
+		wk.SetOpen(600LL * ratio);
+		wk.SetHigh(700LL * ratio);
+		wk.SetLow(400LL * ratio);
+		wk.SetClose(650LL * ratio);
+		wk.SetVolume(123456LL);
+		wk.SetAmount(789012LL);
+
+		vector<CWeekLine> v{ wk };
+		container.StoreVectorData(v);
+
+		// Call SaveDB and expect it to insert rows
+		EXPECT_TRUE(container.SaveDB(testSymbol));
+
+		// Verify DB now contains exactly one row for the symbol with expected (normalized) values
+		{
+			const auto& t = ChinaStockWeekline{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+			auto result = db(select(all_of(t)).from(t).where(t.Symbol == testSymbol));
+			tx.commit();
+
+			ASSERT_EQ(result.size(), 1u);
+			const auto& row = result.front();
+			EXPECT_EQ(row.Date.value(), 20250101);
+			EXPECT_EQ(row.Exchange, "Test");
+			// In SaveDB we insert price = candle.GetOpen() / m_ratio etc.
+			EXPECT_DOUBLE_EQ(row.LastClose.value(), static_cast<double>(wk.GetLastClose()) / ratio);
+			EXPECT_DOUBLE_EQ(row.Open.value(), static_cast<double>(wk.GetOpen()) / ratio);
+			EXPECT_DOUBLE_EQ(row.High.value(), static_cast<double>(wk.GetHigh()) / ratio);
+			EXPECT_DOUBLE_EQ(row.Low.value(), static_cast<double>(wk.GetLow()) / ratio);
+			EXPECT_DOUBLE_EQ(row.Close.value(), static_cast<double>(wk.GetClose()) / ratio);
+			EXPECT_EQ(row.Volume.value(), wk.GetVolume());
+			EXPECT_EQ(row.Amount.value(), wk.GetAmount());
+		}
+
+		// Cleanup
+		{
+			const auto& t = ChinaStockWeekline{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+			db(remove_from(t).where(t.Symbol == testSymbol));
+			tx.commit();
+		}
+	}
 }

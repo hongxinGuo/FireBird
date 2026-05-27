@@ -5,7 +5,6 @@
 #include"WorldMarket.h"
 
 #include"MockFinnhubDataSource.h"
-#include "ProductFinnhubCompanyBasicFinancial.h"
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 #include "ProductFinnhubCompanyNews.h"
@@ -575,53 +574,6 @@ namespace FireBirdTest {
 			pStock->SetUpdateInsiderSentiment(true);
 		}
 		m_FinnhubDataSource.SetUpdateInsiderSentiment(true);
-	}
-
-	TEST_F(CFinnhubDataSourceTest, TestGenerateStockBasicFinancial) {
-		CFinnhubStockPtr pStock;
-		CVirtualProductWebDataPtr p = nullptr;
-
-		gl_pWorldMarket->SetSystemReady(true);
-		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			pStock->SetUpdateBasicFinancial(false);
-		}
-		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateBasicFinancial(true);
-		gl_dataContainerFinnhubStock.GetItem(10)->SetUpdateBasicFinancial(true);
-		m_FinnhubDataSource.SetUpdateStockBasicFinancial(false);
-		EXPECT_FALSE(m_FinnhubDataSource.GenerateCompanyBasicFinancial()) << "Stock News Updated";
-
-		m_FinnhubDataSource.SetUpdateStockBasicFinancial(true);
-		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_TRUE(m_FinnhubDataSource.GenerateCompanyBasicFinancial());
-		EXPECT_TRUE(m_FinnhubDataSource.HaveInquiry());
-		p = m_FinnhubDataSource.GetCurrentProduct();
-		EXPECT_EQ(typeid(*p), typeid(CProductFinnhubCompanyBasicFinancial));
-		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateBasicFinancial()) << "此更新标识需要等待处理完数据后才设置";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(10)->IsUpdateBasicFinancial());
-		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateBasicFinancial(false);
-
-		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_TRUE(m_FinnhubDataSource.GenerateCompanyBasicFinancial());
-		p = m_FinnhubDataSource.GetCurrentProduct();
-		EXPECT_EQ(typeid(*p), typeid(CProductFinnhubCompanyBasicFinancial));
-		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateBasicFinancial());
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(10)->IsUpdateBasicFinancial()) << "此更新标识需要等待处理完数据后才设置";
-		gl_dataContainerFinnhubStock.GetItem(10)->SetUpdateBasicFinancial(false);
-
-		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.GenerateCompanyBasicFinancial()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockBasicFinancial()) << "股票都查询完了";
-		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "Finnhub basic financial updated");
-
-		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			pStock->SetUpdateBasicFinancial(true);
-		}
-		m_FinnhubDataSource.SetUpdateStockBasicFinancial(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestGenerateFinnhubStockDayLine) {

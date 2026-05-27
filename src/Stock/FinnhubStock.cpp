@@ -404,35 +404,6 @@ bool CFinnhubStock::UpdateDayLineDB() {
 	return false;
 }
 
-void CFinnhubStock::AppendBasicFinancialAnnual() const {
-	try {
-		CSetFinnhubStockBasicFinancialAnnual setAnnual;
-		setAnnual.m_strFilter = "[ID] = 1";
-		setAnnual.Open();
-		setAnnual.m_pDatabase->BeginTrans();
-		m_pBasicFinancial->AppendAnnualData(setAnnual);
-		setAnnual.m_pDatabase->CommitTrans();
-		setAnnual.Close();
-	} catch (CException& e) {
-		ReportInformation(e);
-	}
-}
-
-void CFinnhubStock::AppendBasicFinancialQuarter() const {
-	try {
-		CSetFinnhubStockBasicFinancialQuarter setQuarter;
-
-		setQuarter.m_strFilter = "[ID] = 1";
-		setQuarter.Open();
-		setQuarter.m_pDatabase->BeginTrans();
-		m_pBasicFinancial->AppendQuarterData(setQuarter);
-		setQuarter.m_pDatabase->CommitTrans();
-		setQuarter.Close();
-	} catch (CException& e) {
-		ReportInformation(e);
-	}
-}
-
 void CFinnhubStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 	m_vCompanyNews.reserve(pvCompanyNews->size());
 	for (auto& p : *pvCompanyNews) {
@@ -470,12 +441,6 @@ bool CFinnhubStock::HaveNewDayLineData() {
 		|| (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate()))
 		return true;
 	return false;
-}
-
-bool CFinnhubStock::UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial) {
-	m_pBasicFinancial = pFinnhubStockBasicFinancial;
-
-	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

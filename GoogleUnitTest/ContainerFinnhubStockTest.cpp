@@ -62,28 +62,6 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CContainerFinnhubStockTest, TestClearUpdateBasicFinancialFlag) {
-		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
-			EXPECT_FALSE(pStock->IsUpdateBasicFinancialDB());
-			pStock->SetUpdateBasicFinancialDB(true);
-		}
-		vector<CFinnhubStockPtr> vStock;
-		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
-			vStock.push_back(pStock);
-		}
-
-		gl_dataContainerFinnhubStock.ClearUpdateBasicFinancialFlag(vStock);
-
-		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
-			EXPECT_FALSE(pStock->IsUpdateBasicFinancialDB());
-		}
-
-		// 恢复原状
-	}
-
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol1) {
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("AAPL");
@@ -174,38 +152,5 @@ namespace FireBirdTest {
 		auto p = gl_dataContainerFinnhubStock.GetItem("AAPL");
 		ASSERT_NE(p, nullptr);
 		EXPECT_EQ(p->GetSymbol(), "AAPL");
-	}
-
-	TEST_F(CContainerFinnhubStockTest, TestDeleteDuplicatedSymbolDB) {
-		using namespace StockMarket;
-		const auto& t = FinnhubStockProfile{};
-		// Ensure no leftover test symbols
-		auto db = GetStockMarketDB();
-		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
-
-		// Insert duplicate rows for the same Symbol
-		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP1")));
-		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP2")));
-		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP3")));
-
-		// Ensure inserts are committed and visible to other connections
-		db.execute("COMMIT");
-
-		// Verify duplicates were inserted
-		db = GetStockMarketDB(); // 执行完插入后，重新获取数据库连接，以确保看到最新的数据
-		auto resBefore = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
-		EXPECT_TRUE(resBefore.size() >= 3);
-		// Call the function under test
-		gl_dataContainerFinnhubStock.DeleteDuplicatedSymbolFromDB();
-		// Verify only one row remains for that symbol
-		db = GetStockMarketDB();
-		auto resAfter = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
-		EXPECT_EQ(resAfter.size(), 1);
-
-		// Clean up test data
-		db = GetStockMarketDB(); // 执行完删除重复代码任务后，重新获取数据库连接，以确保看到最新的数据
-		auto tx2 = start_transaction(db);
-		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
-		tx2.commit();
 	}
 }

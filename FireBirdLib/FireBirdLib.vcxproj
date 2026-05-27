@@ -70,24 +70,16 @@
     <ClInclude Include="..\src\Data Source\TiingoDataSource.h" />
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h" />
     <ClInclude Include="..\src\dataBaseConnector.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h" />
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h" />
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetChosenStake.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetExchange.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetStockSymbol.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetCryptoDayLine.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetForexDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\AccessoryFactory.h" />
     <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.h" />
@@ -113,7 +105,6 @@
     <ClInclude Include="..\src\Factory Product\FinnhubFactory.h" />
     <ClInclude Include="..\src\Factory Product\ProductDummy.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhub.h" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyBasicFinancial.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyNews.h" />
@@ -177,7 +168,6 @@
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h" />
-    <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h" />
     <ClInclude Include="..\src\Type\America market\StockExchange.h" />
     <ClInclude Include="..\src\Type\America market\InsiderSentiment.h" />
     <ClInclude Include="..\src\Type\America market\InsiderTransaction.h" />
@@ -274,20 +264,9 @@
     <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetStockSymbol.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderSemtiment.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp" />
@@ -302,7 +281,6 @@
     <ClCompile Include="..\src\Factory Product\FinnhubFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductDummy.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhub.cpp" />
-    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyBasicFinancial.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyNews.cpp" />
@@ -376,7 +354,6 @@
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubCompanySymbolChange.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp" />
-    <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp" />
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\StockExchange.cpp" />
     <ClCompile Include="..\src\Type\America market\InsiderSentment.cpp" />

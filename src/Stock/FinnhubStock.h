@@ -4,8 +4,6 @@
 
 #include"VirtualStock.h"
 
-#include"FinnhubStockBasicFinancial.h"
-
 #include"DayLine.h"
 #include"ContainerFinnhubStockDayLine.h"
 #include "EPSSurprise.h"
@@ -40,12 +38,6 @@ public:
 	bool UpdateSECFilingsDB() const;
 	virtual bool UpdateDayLineDB();
 
-	void UpdateBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->UpdateMetric(set); }
-	void AppendBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->AppendMetric(set); }
-	void AppendBasicFinancialAnnual() const;
-	void AppendBasicFinancialQuarter() const;
-	void ClearBasicFinancialState() { m_pBasicFinancial.reset(); }
-
 	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews);
 	void UpdateEPSSurprise(const CEPSSurprisesPtr& vEPSSurprise);
@@ -70,9 +62,6 @@ public:
 	void SetUpdateBasicFinancial(const bool fFlag) noexcept { m_fUpdateBasicFinancial = fFlag; }
 	bool IsUpdateBasicFinancialDB() const noexcept { return m_fUpdateFinnhubBasicFinancialDB; }
 	void SetUpdateBasicFinancialDB(const bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
-
-	bool UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial);
-	CFinnhubStockBasicFinancialPtr GetBasicFinancial() noexcept { return m_pBasicFinancial; }
 
 	bool IsUpdateEPSSurprise() const noexcept { return m_fUpdateEPSSurprise; }
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
@@ -258,8 +247,6 @@ protected:
 	CContainerFinnhubStockDayLine m_dataDayLine;
 
 	vector<CFinnhubCompanyNews> m_vCompanyNews;
-
-	CFinnhubStockBasicFinancialPtr m_pBasicFinancial{ nullptr };
 
 	// 无需存储数据区
 	bool m_fUpdateCompanyProfile{ true }; // 更新公司简介

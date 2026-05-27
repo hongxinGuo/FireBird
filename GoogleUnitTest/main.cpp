@@ -225,6 +225,48 @@ namespace FireBirdTest {
 	};
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 测试数据库有时会由于测试没有顺利结束而导致遗留中间数据，本函数删除之
+///
+///
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+void ClearTestDataBase() {
+	using namespace StockMarket;
+	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
+		const auto& t = FinnhubCryptoExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.code == "Test"));
+		tx.commit();
+	}
+
+	{ // 删除gl_dataFinnhubForexExchange中的中间数据
+		const auto& t = FinnhubForexExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.code == "Test"));
+		tx.commit();
+	}
+
+	{ // 删除china weekline中的中间数据
+		const auto& t = ChinaStockWeekline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+		tx.commit();
+	}
+
+	{ // 删除china dayline中的中间数据
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+		tx.commit();
+	}
+}
+
 using namespace FireBirdTest;
 
 // 空数据
@@ -243,32 +285,6 @@ using namespace FireBirdTest;
 #include"windows.h"
 #include"shellapi.h"
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-///
-/// 测试数据库有时会由于测试没有顺利结束而导致遗留中间数据，本函数删除之
-///
-///
-///
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ClearTestDataBase() {
-	using namespace StockMarket;
-	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
-		const auto& t = FinnhubCryptoExchange{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
-		tx.commit();
-	}
-
-	{ // 删除gl_dataFinnhubForexExchange中的中间数据
-		const auto& t = FinnhubForexExchange{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.code == "US.US.US"));
-		tx.commit();
-	}
-}
-
 int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd) {
 	int argc = 0;
 	wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
@@ -283,7 +299,8 @@ int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 20, false); //Note:: 连接正式环境的数据库，谨慎使用
 	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false); // Note:: 连接测试环境的数据库
 
-	ClearTestDataBase(); // 清理测试数据库
+	//Note:清理测试数据库的工作由ClearData项目负责，避免每次运行测试系统都要清理一次数据库，节省时间。
+	//ClearTestDataBase(); // 删除测试数据库中的中间数据
 
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);

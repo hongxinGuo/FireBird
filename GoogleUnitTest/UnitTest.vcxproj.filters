@@ -264,9 +264,6 @@
     <ClCompile Include="ContainerChinaWeekLineTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp">
-      <Filter>Test源文件\Factory Product\Finnhub</Filter>
-    </ClCompile>
     <ClCompile Include="SystemConfigurationTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
@@ -337,9 +334,6 @@
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubForexSymbolTest.cpp">
-      <Filter>Test源文件\Type\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp">
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
     <ClCompile Include="InsiderTransactionTest.cpp">

@@ -5,7 +5,6 @@
 #include"GeneralCheck.h"
 
 #include"DayLine.h"
-#include"SetForexDayLine.h"
 
 namespace FireBirdTest {
 	class CStockDayLineTest : public ::testing::Test {
@@ -312,24 +311,5 @@ namespace FireBirdTest {
 
 		setDayLineBasicInfo.Delete(); // 清除此新加的数据
 		setDayLineBasicInfo.Close();
-	}
-
-	TEST_F(CStockDayLineTest, TestLoadHistoryCandle) {
-		CSetForexDayLine setForexDayLine;
-		CDayLine dayLine;
-
-		setForexDayLine.m_strFilter = "[ID] = 1";
-		setForexDayLine.Open();
-		dayLine.LoadBasicData(&setForexDayLine);
-		setForexDayLine.Close();
-
-		EXPECT_EQ(dayLine.GetDate(), 20200406);
-		EXPECT_EQ(dayLine.GetExchange(), "oanda");
-		EXPECT_EQ(dayLine.GetStockSymbol(), "OANDA:AUD_SGD");
-		EXPECT_EQ(dayLine.GetLastClose(), 0);
-		EXPECT_EQ(dayLine.GetOpen(), 863);
-		EXPECT_EQ(dayLine.GetHigh(), 874);
-		EXPECT_EQ(dayLine.GetLow(), 861);
-		EXPECT_EQ(dayLine.GetClose(), 871);
 	}
 }

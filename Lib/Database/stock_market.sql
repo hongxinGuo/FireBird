@@ -83,7 +83,7 @@ CREATE TABLE `tiingo_company_financial_state` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(45) DEFAULT NULL,
   `Exchange` varchar(45) DEFAULT NULL,
-  `yearQuarter` int DEFAULT NULL,
+  `YearQuarter` int DEFAULT NULL,
   `accoci` decimal(30,0) DEFAULT NULL,
   `acctPay` decimal(30,0) DEFAULT NULL,
   `acctRec` decimal(30,0) DEFAULT NULL,

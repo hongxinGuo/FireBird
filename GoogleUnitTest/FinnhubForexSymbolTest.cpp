@@ -1,10 +1,10 @@
 #include"pch.h"
 
+#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
 #include"FinnhubForex.h"
-#include"SetForexDayLine.h"
 
 using namespace testing;
 
@@ -188,12 +188,12 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexSymbolTest, TestSaveDayLine) {
 		CFinnhubForex FinnhubForexSymbol, FinnhubForexSymbol2;
 		CDayLine dayLine;
-		CSetForexDayLine setForexDayLine;
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		dayLine.SetDate(19800101);
 		dayLine.SetClose(100);
 		dayLine.SetStockSymbol("OANDA:AUD_SGD");
+		dayLine.SetExchange("Test"); // 用于删除遗留的测试数据
 		pvDayLine->push_back(dayLine);
 		FinnhubForexSymbol.SetSymbol("OANDA:AUD_SGD");
 		FinnhubForexSymbol.UpdateDayLine(pvDayLine);
@@ -202,13 +202,20 @@ namespace FireBirdTest {
 
 		FinnhubForexSymbol.UpdateDayLineDB();
 
-		setForexDayLine.m_strFilter = "[Symbol] = 'OANDA:AUD_SGD'";
-		setForexDayLine.m_strSort = "[Date]";
-		setForexDayLine.Open();
-		EXPECT_EQ(setForexDayLine.m_Date, 19800101) << "刚存储的数据";
-		setForexDayLine.m_pDatabase->BeginTrans();
-		setForexDayLine.Delete();
-		setForexDayLine.m_pDatabase->CommitTrans();
-		setForexDayLine.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubForexDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "OANDA:AUD_SGD" && t.Date == 19800101).order_by(t.Date.asc()));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 1) << "刚存储的数据";
+		auto& row = result.front();
+		string exchange = row.Exchange;
+		double value = row.Close * FinnhubForexSymbol.GetRatio();
+		EXPECT_DOUBLE_EQ(value, 100);
+
+		db(sqlpp::remove_from(t).where(t.Symbol == "OANDA:AUD_SGD" && t.Date == 19800101));
+		tx.commit();
 	}
 }

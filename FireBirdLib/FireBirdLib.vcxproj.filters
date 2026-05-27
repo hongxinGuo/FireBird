@@ -261,13 +261,7 @@
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineInfo.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h">
@@ -415,9 +409,6 @@
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhub.h">
-      <Filter>头文件\Factory-Product\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyBasicFinancial.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.h">
@@ -639,15 +630,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
@@ -655,12 +637,6 @@
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetCryptoDayLine.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetForexDayLine.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Stock\TiingoCrypto.h">
@@ -706,9 +682,6 @@
       <Filter>头文件\Type\America market\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h">
-      <Filter>头文件\Type\America market\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h">
       <Filter>头文件\Type\America market\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h">
@@ -812,9 +785,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h">
       <Filter>头文件</Filter>
@@ -987,9 +957,6 @@
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductFinnhub.cpp">
-      <Filter>源文件\Factory-Product\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyBasicFinancial.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.cpp">
@@ -1193,19 +1160,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
-      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp">
-      <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp">
       <Filter>源文件\Database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderSemtiment.cpp">
@@ -1290,9 +1245,6 @@
       <Filter>源文件\Type\America market\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp">
-      <Filter>源文件\Type\America market\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp">
       <Filter>源文件\Type\America market\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp">

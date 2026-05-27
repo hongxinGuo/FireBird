@@ -6,6 +6,7 @@
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+#include "dataBaseConnector.h"
 #include"WebRTData.h"
 #include"DayLineWebData.h"
 #include "jsonParse.h"
@@ -620,99 +621,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsTodayDataChanged());
 	}
 
-	TEST_F(CChinaStockTest, TestSaveStockCodeDB) {
-		CSetChinaStockSymbol setChinaStockSymbol;
-		CChinaStock stock;
-		stock.SetDescription("abcdefg");
-		stock.SetExchangeCode("SS");
-		stock.SetSymbol("400000.SS"); // 这个必须用未曾使用过的股票代码，已利于随后删除
-		stock.SetDisplaySymbol("未使用过");
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
-		stock.SetDayLineStartDate(19900101);
-		setChinaStockSymbol.m_strFilter = "[ID] = 1";
-		setChinaStockSymbol.Open();
-		stock.AppendSymbol(setChinaStockSymbol);
-		setChinaStockSymbol.Close();
-
-		setChinaStockSymbol.m_strFilter = "[Symbol] = '400000.SS'";
-		setChinaStockSymbol.Open();
-		EXPECT_STREQ(setChinaStockSymbol.m_Description, _T("abcdefg"));
-		EXPECT_STREQ(setChinaStockSymbol.m_Exchange, _T("SS"));
-		EXPECT_EQ(setChinaStockSymbol.m_IPOStatus, _STOCK_IPOED_);
-		EXPECT_EQ(setChinaStockSymbol.m_Symbol, _T("400000.SS"));
-		setChinaStockSymbol.Delete();
-		setChinaStockSymbol.Close();
-	}
-
-	TEST_F(CChinaStockTest, TestUpdateStockCodeDB) {
-		CSetChinaStockSymbol setChinaStockSymbol;
-		CChinaStock stock;
-
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsUpdateDayLine());
-		EXPECT_TRUE(stock.IsNotChecked());
-		setChinaStockSymbol.Open();
-		stock.LoadStockCodeDB(setChinaStockSymbol);
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsUpdateDayLine());
-		EXPECT_TRUE(stock.IsIPOed());
-		EXPECT_EQ(stock.GetSymbol(), "000001.SS");
-		stock.SetIPOStatus(_STOCK_NULL_);
-		stock.UpdateSymbol(setChinaStockSymbol);
-		setChinaStockSymbol.Close();
-
-		setChinaStockSymbol.Open();
-		EXPECT_THAT(setChinaStockSymbol.m_IPOStatus, Eq(_STOCK_NULL_)) << "此时状态已变为NULL";
-		setChinaStockSymbol.Edit();
-		setChinaStockSymbol.m_IPOStatus = _STOCK_IPOED_; // 000001.SS的原有状态为IPOED，必须设置成此状态
-		setChinaStockSymbol.Update();
-		setChinaStockSymbol.Close();
-	}
-
-	TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
-		CSetChinaStockSymbol setChinaStockSymbol;
-		CChinaStock stock;
-		nlohmannJson jsonUpdateDate;
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsUpdateDayLine());
-		EXPECT_TRUE(stock.IsNotChecked());
-		setChinaStockSymbol.m_strSort = "[ID]";
-		setChinaStockSymbol.Open();
-		stock.LoadStockCodeDB(setChinaStockSymbol);
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsUpdateDayLine());
-		EXPECT_TRUE(stock.IsIPOed());
-		EXPECT_EQ(stock.GetSymbol(), "000001.SS") << _T("第一个股票");
-		CreateJsonWithNlohmann(jsonUpdateDate, T2Utf8(setChinaStockSymbol.m_UpdateDate));
-
-		EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
-		EXPECT_EQ(stock.GetDayLineEndDate(), jsonUpdateDate["DayLineEndDate"]);
-		setChinaStockSymbol.Close();
-	}
-
-	TEST_F(CChinaStockTest, TestLoadStockCodeDB3) {
-		CSetChinaStockSymbol setChinaStockSymbol;
-		CChinaStock stock;
-		nlohmannJson jsonUpdateDate;
-
-		gl_pChinaMarket->CalculateTime();
-		stock.SetDayLineEndDate(GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsUpdateDayLine());
-		EXPECT_TRUE(stock.IsNotChecked());
-		setChinaStockSymbol.m_strFilter = "[Symbol] = '000003.SZ'";
-		setChinaStockSymbol.Open();
-		stock.LoadStockCodeDB(setChinaStockSymbol);
-		EXPECT_EQ(stock.GetSymbol(), "000003.SZ");
-		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
-		CreateJsonWithNlohmann(jsonUpdateDate, T2Utf8(setChinaStockSymbol.m_UpdateDate));
-
-		//Todo: EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate["DayLineStartDate"]);
-		//Todo: EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
-		setChinaStockSymbol.Close();
-	}
-
 	TEST_F(CChinaStockTest, TestCheckNeedProcessRTData) {
 		CChinaStock stock;
 		stock.SetSymbol("000001.SS");
@@ -1172,7 +1080,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestSaveWeekLine) {
-		CSetWeekLineInfo setWeekLineBasicInfo;
 		CWeekLine* pid;
 		CWeekLine stock;
 		pStock = gl_dataContainerChinaStock.GetStock("600016.SS");
@@ -1182,6 +1089,7 @@ namespace FireBirdTest {
 			CWeekLine dayLine;
 			dayLine.SetDate(21100501);
 			dayLine.SetStockSymbol("600016.SS");
+			dayLine.SetExchange("Test"); // 周线表中没有这个字段，用于删除遗留的测试数据。
 			dayLine.SetLastClose(34235345);
 			dayLine.SetOpen(1000000 + i);
 			dayLine.SetHigh(45234543);
@@ -1200,44 +1108,40 @@ namespace FireBirdTest {
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveWeekLine();
 
-		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100501";
-		setWeekLineBasicInfo.Open();
-		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-		for (int i = 0; i < 10; i++) {
-			stock.LoadBasicData(&setWeekLineBasicInfo);
-			pid = pStock->GetWeekLine(i);
-			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetDate());
-			EXPECT_TRUE(pid->GetStockSymbol() == T2Utf8( setWeekLineBasicInfo.m_Symbol));
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Low) * pid->GetRatio(), pid->GetLow());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_Close) * pid->GetRatio(), pid->GetClose());
-			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_Volume), pid->GetVolume());
-			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_Amount), pid->GetAmount());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_UpAndDown), pid->GetUpDown());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
-			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_TotalValue), pid->GetTotalValue());
-			EXPECT_EQ(_tstoll(setWeekLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
-			EXPECT_DOUBLE_EQ(_tstof(setWeekLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-			setWeekLineBasicInfo.MoveNext();
-		}
-		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
-		setWeekLineBasicInfo.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaStockWeekline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-		setWeekLineBasicInfo.m_strFilter = "[Date] = 21100501";
-		setWeekLineBasicInfo.Open();
-		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-		while (!setWeekLineBasicInfo.IsEOF()) {
-			setWeekLineBasicInfo.Delete();
-			setWeekLineBasicInfo.MoveNext();
+		auto result = db(select(all_of(t)).from(t).where(t.Date == 21100501));
+		int i = 0;
+		int ratio = pStock->GetRatio();
+		for (const auto& row : result) {
+			pid = pStock->GetWeekLine(i);
+			double d = row.LastClose;
+			EXPECT_EQ(row.Date.value(), pid->GetDate());
+			EXPECT_EQ(row.Symbol, pid->GetStockSymbol());
+			EXPECT_DOUBLE_EQ(double(row.LastClose.value()) * ratio, pid->GetLastClose());
+			EXPECT_DOUBLE_EQ(double(row.Open.value()) * ratio, pid->GetOpen());
+			EXPECT_DOUBLE_EQ(double(row.High.value()) * ratio, pid->GetHigh());
+			EXPECT_DOUBLE_EQ(double(row.Low.value()) * ratio, pid->GetLow());
+			EXPECT_DOUBLE_EQ(double(row.Close.value()) * ratio, pid->GetClose());
+			EXPECT_EQ(row.Volume.value(), pid->GetVolume());
+			EXPECT_EQ(row.Amount.value(), pid->GetAmount());
+			EXPECT_DOUBLE_EQ(row.UpAndDown.value(), pid->GetUpDown());
+			EXPECT_DOUBLE_EQ(row.UpDownRate.value(), pid->GetUpDownRate());
+			EXPECT_EQ(row.TotalValue.value(), pid->GetTotalValue());
+			EXPECT_EQ(row.CurrentValue.value(), pid->GetCurrentValue());
+			EXPECT_DOUBLE_EQ(row.ChangeHandRate.value(), pid->GetChangeHandRate());
+			i++;
+			if (i >= 10) break;
 		}
-		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
-		setWeekLineBasicInfo.Close();
+
+		db(sqlpp::remove_from(t).where(t.Date == 21100501));
+		tx.commit();
 	}
 
 	TEST_F(CChinaStockTest, TestLoadWeekLine) {
-		CSetWeekLineInfo setWeekLineBasicInfo;
 		CWeekLine* pid;
 		CChinaStock stock;
 
@@ -1265,40 +1169,35 @@ namespace FireBirdTest {
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveWeekLine();
 
-		setWeekLineBasicInfo.m_strFilter = "[Date] = 21101201";
-		setWeekLineBasicInfo.Open();
-		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-		stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
-		for (int i = 0; i < 10; i++) {
-			pid = stock.GetWeekLine(i);
-			const CWeekLine* pWeekLine = pStock->GetWeekLine(i);
-			EXPECT_EQ(pWeekLine->GetDate(), pid->GetDate());
-			EXPECT_EQ(pWeekLine->GetStockSymbol(), pid->GetStockSymbol());
-			EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());
-			EXPECT_EQ(pWeekLine->GetOpen(), pid->GetOpen());
-			EXPECT_EQ(pWeekLine->GetHigh(), pid->GetHigh());
-			EXPECT_EQ(pWeekLine->GetLow(), pid->GetLow());
-			EXPECT_EQ(pWeekLine->GetClose(), pid->GetClose());
-			EXPECT_EQ(pWeekLine->GetVolume(), pid->GetVolume());
-			EXPECT_EQ(pWeekLine->GetAmount(), pid->GetAmount());
-			EXPECT_DOUBLE_EQ(pWeekLine->GetUpDown(), pid->GetUpDown());
-			EXPECT_DOUBLE_EQ(pWeekLine->GetUpDownRate(), pid->GetUpDownRate());
-			EXPECT_EQ(pWeekLine->GetTotalValue(), pid->GetTotalValue());
-			EXPECT_EQ(pWeekLine->GetCurrentValue(), pid->GetCurrentValue());
-			EXPECT_DOUBLE_EQ(pWeekLine->GetChangeHandRate(), pid->GetChangeHandRate());
-		}
-		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
-		setWeekLineBasicInfo.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaStockWeekline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-		setWeekLineBasicInfo.m_strFilter = "[Date] = 21101201";
-		setWeekLineBasicInfo.Open();
-		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-		while (!setWeekLineBasicInfo.IsEOF()) {
-			setWeekLineBasicInfo.Delete();
-			setWeekLineBasicInfo.MoveNext();
+		auto result = db(select(all_of(t)).from(t).where(t.Date == 21101201));
+		int i = 0;
+		for (const auto& row : result) {
+			pid = pStock->GetWeekLine(i);
+			EXPECT_EQ(row.Date.value(), pid->GetDate());
+			EXPECT_EQ(row.Symbol, pid->GetStockSymbol());
+			EXPECT_EQ(row.LastClose * pid->GetRatio(), pid->GetLastClose());
+			EXPECT_EQ(row.Open * pid->GetRatio(), pid->GetOpen());
+			EXPECT_EQ(row.High * pid->GetRatio(), pid->GetHigh());
+			EXPECT_EQ(row.Low * pid->GetRatio(), pid->GetLow());
+			EXPECT_EQ(row.Close * pid->GetRatio(), pid->GetClose());
+			EXPECT_EQ(row.Volume.value(), pid->GetVolume());
+			EXPECT_EQ(row.Amount.value(), pid->GetAmount());
+			EXPECT_DOUBLE_EQ(row.UpAndDown.value(), pid->GetUpDown());
+			EXPECT_DOUBLE_EQ(row.UpDownRate.value(), pid->GetUpDownRate());
+			EXPECT_EQ(row.TotalValue.value(), pid->GetTotalValue());
+			EXPECT_EQ(row.CurrentValue.value(), pid->GetCurrentValue());
+			EXPECT_DOUBLE_EQ(row.ChangeHandRate.value(), pid->GetChangeHandRate());
+			i++;
+			if (i >= 10) break;
 		}
-		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
-		setWeekLineBasicInfo.Close();
+
+		db(sqlpp::remove_from(t).where(t.Date == 21101201));
+		tx.commit();
 	}
 
 	TEST_F(CChinaStockTest, TestIsAStock) {

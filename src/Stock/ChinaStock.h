@@ -16,13 +16,9 @@ enum {
 	NO_TRANSACTION_ = 8
 };
 
-#include"RSReference.h"
-
 #include"VirtualStock.h"
 
 #include"SetChinaMarketDayLineInfo.h"
-#include"SetWeekLineInfo.h"
-#include"SetChinaStockSymbol.h"
 
 #include"DayLine.h"
 #include"ContainerChinaDayLine.h"
@@ -116,7 +112,6 @@ public:
 	void AppendTodayBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLine) const; // 存储当日基本数据
 	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
-	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
 	bool LoadStockCode(const CStockSymbol& stockSymbol);
 	void CheckNeedProcessRTData();
 	void CheckIPOStatus();
@@ -124,7 +119,6 @@ public:
 	//周线历史数据存取
 	bool LoadWeekLineDB() override { return m_dataWeekLine.LoadDB(GetSymbol()); }
 	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
-	bool LoadWeekLineBasicInfo(CSetWeekLineInfo* pSetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(pSetWeekLineBasicInfo); }
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
 	// 月线历史数据存取

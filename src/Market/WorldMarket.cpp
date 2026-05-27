@@ -826,12 +826,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_pWorldMarket->UpdateCompanyNewsDB();
 		});
 	}
-	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) { // Basic financial
-		gl_runtime.background_executor()->post([] {
-			gl_systemMessage.SetWorldMarketSavingFunction("F Basic financial");
-			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB(); // 此任务很费时，原因待查。目前先不使用此隔绝区
-		});
-	}
 	if (gl_dataContainerFinnhubStock.IsUpdateEPSSurpriseDB()) { // stock EPS surprise
 		gl_runtime.background_executor()->post([] {
 			gl_systemMessage.SetWorldMarketSavingFunction("F EPS surprise");
@@ -1421,24 +1415,17 @@ void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 	auto tx = start_transaction(db);
 
 	db(remove_from(t).where(t.Symbol == pStock->GetSymbol()));
-
 	tx.commit();
 }
 
 void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {
-	CSetTiingoCompanyFinancialState setDayLine;
-	setDayLine.m_strFilter = "[Symbol] = '";
-	setDayLine.m_strFilter += pStock->GetSymbol().c_str();
-	setDayLine.m_strFilter += "'";
+	using namespace StockMarket;
+	const auto& t = TiingoCompanyFinancialState{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	setDayLine.Open();
-	setDayLine.m_pDatabase->BeginTrans();
-	while (!setDayLine.IsEOF()) {
-		setDayLine.Delete();
-		setDayLine.MoveNext();
-	}
-	setDayLine.m_pDatabase->CommitTrans();
-	setDayLine.Close();
+	db(sqlpp::remove_from(t).where(t.Symbol == pStock->GetSymbol()));
+	tx.commit();
 }
 
 bool CWorldMarket::IsTodayMarketEnded() {

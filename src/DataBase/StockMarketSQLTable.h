@@ -652,14 +652,14 @@ namespace StockMarket
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "yearQuarter";
+        static constexpr const char _literal[] =  "YearQuarter";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T yearQuarter;
-            T& operator()() { return yearQuarter; }
-            const T& operator()() const { return yearQuarter; }
+            T YearQuarter;
+            T& operator()() { return YearQuarter; }
+            const T& operator()() const { return YearQuarter; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
