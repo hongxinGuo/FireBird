@@ -7,7 +7,6 @@ namespace testing {
 	public:
 		MOCK_METHOD(bool, UpdateFinnhubStockDayLineDB, (), (override));
 		MOCK_METHOD(bool, UpdateInsiderSentimentDB, (), (override));
-		MOCK_METHOD(void, UpdateStockDayLineStartEndDate, (), (override));
 		MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateSicIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));

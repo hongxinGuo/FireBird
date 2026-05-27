@@ -32,10 +32,6 @@ public:
 		return false;
 	}
 
-	bool SaveBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle) const;
-
-	bool LoadBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle);
-
 	void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
 	void UpdateData(const vector<CDayLine>& vTempData);
 	void UpdateData(const CDayLinesPtr& pvTempDayLine);
@@ -77,9 +73,6 @@ public:
 	void ToShow(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow);
 
 	void ShowLine(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, const vector<double>& vData);
-
-protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandle* pSetHistoryCandle, const string& strStockSymbol = "");
 
 protected:
 	int m_ratio{ 0 };

@@ -42,15 +42,15 @@ namespace FireBirdTest {
 
 		CDayLine dayLine;
 		dayLine.SetDate(20200411); // 此日为星期六，新数据
-		dayLine.SetStockSymbol("OANDA:AUD_SGD");
-		dayLine.SetExchange("Test");
+		dayLine.SetStockSymbol("OANDA:USD_DKK");
+		dayLine.SetExchange("Test"); // 外汇日线表中没有这个字段，用于删除遗留的测试数据。
 		dayLine.SetClose(100);
 		pvDayLine->push_back(dayLine);
 		m_dataForexDayLine.UpdateData(pvDayLine);
 
-		m_dataForexDayLine.SaveDB("OANDA:AUD_SGD");
+		m_dataForexDayLine.SaveDB("OANDA:USD_DKK");
 
-		m_dataForexDayLine.LoadDB("OANDA:AUD_SGD");
+		m_dataForexDayLine.LoadDB("OANDA:USD_DKK");
 		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), 20200411) << "新存储数据位于第六位";
 
 		// 恢复原状

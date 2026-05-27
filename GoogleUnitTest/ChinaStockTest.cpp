@@ -452,48 +452,6 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(stock.GetRSIndex(), 10101010.0);
 	}
 
-	TEST_F(CChinaStockTest, TestSaveTodayInfo) {
-		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-		CChinaStock stock;
-		constexpr long lDate = 21091101;
-		const time_t tt = ConvertToTTime(lDate, gl_pChinaMarket->GetTimeZone(), 150000);
-		const string strDate = "21091101"; // 最好设置此日期为未来，以防止误操作实际数据库
-
-		stock.SetSymbol("600000.SS");
-		stock.SetDisplaySymbol("浦东发展");
-		stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.ConvertToDate()作比较
-		stock.SetLastClose(101010);
-		stock.SetOpen(202020);
-		stock.SetHigh(303030);
-		stock.SetLow(404040);
-		stock.SetNew(505050);
-		stock.SetVolume(6060606060);
-		stock.SetAmount(70707070707);
-		stock.SetUpDown(stock.GetOpen() - stock.GetNew());
-		stock.SetUpDownRate(static_cast<double>(stock.GetUpDown()) / stock.GetLastClose() * 100);
-		stock.SetCurrentValue(8080808080808);
-		stock.SetTotalValue(9090909090909);
-
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-
-		setDayLineBasicInfo.m_strFilter = "[Date] =";
-		setDayLineBasicInfo.m_strFilter += strDate.c_str();
-		setDayLineBasicInfo.Open();
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		while (!setDayLineBasicInfo.IsEOF()) {
-			setDayLineBasicInfo.Delete();
-			setDayLineBasicInfo.MoveNext();
-		}
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
-		setDayLineBasicInfo.m_strFilter = "[ID] = 1"; // 存储新数据时无需查询旧数据，故而使用最简单的主索引ID
-		setDayLineBasicInfo.Open();
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		stock.AppendTodayBasicInfo(&setDayLineBasicInfo);
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
-	}
-
 	TEST_F(CChinaStockTest, TestIsUpdateChosenStockDB) {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsUpdateChosenStockDB());
@@ -717,153 +675,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
 	}
 
-	TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
-		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-		CDayLine stock;
-		pStock = gl_dataContainerChinaStock.GetStock("600011.SS");
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
-		gl_pChinaMarket->TEST_SetFormattedMarketDate(21900101);
-
-		CDayLine dayLine;
-		dayLine.SetDate(21900101);
-		dayLine.SetStockSymbol("600011.SS");
-		dayLine.SetLastClose(335345);
-		dayLine.SetOpen(1000000);
-		dayLine.SetHigh(434543);
-		dayLine.SetLow(34345);
-		dayLine.SetClose(4535);
-		dayLine.SetVolume(34454);
-		dayLine.SetAmount(3245235345);
-		dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
-		dayLine.SetUpDownRate(123.45);
-		dayLine.SetTotalValue(234523452345);
-		dayLine.SetCurrentValue(234145345245);
-		dayLine.SetChangeHandRate(54.321);
-		pStock->StoreDayLine(dayLine);
-
-		pStock->SetDayLineEndDate(21890101);
-		pStock->SetSymbol("600011.SS");
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		pStock->SaveDayLineDB();
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
-
-		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(21900101));
-
-		EXPECT_FALSE(pStock->IsDayLineLoaded());
-		pStock->LoadDayLineDB();
-		EXPECT_TRUE(pStock->IsDayLineLoaded());
-
-		CDayLine* pDayLine;
-		pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
-
-		EXPECT_EQ(pDayLine->GetMarketTime(), 0);
-		EXPECT_EQ(pDayLine->GetStockSymbol(), "600011.SS");
-		EXPECT_EQ(pDayLine->GetLastClose(), dayLine.GetLastClose());
-		EXPECT_EQ(pDayLine->GetOpen(), dayLine.GetOpen());
-		EXPECT_EQ(pDayLine->GetHigh(), dayLine.GetHigh());
-		EXPECT_EQ(pDayLine->GetLow(), dayLine.GetLow());
-		EXPECT_EQ(pDayLine->GetClose(), dayLine.GetClose());
-		EXPECT_EQ(pDayLine->GetVolume(), dayLine.GetVolume());
-		EXPECT_EQ(pDayLine->GetAmount(), dayLine.GetAmount());
-		EXPECT_DOUBLE_EQ(pDayLine->GetUpDown(), dayLine.GetUpDown());
-		EXPECT_DOUBLE_EQ(pDayLine->GetUpDownRate(), dayLine.GetUpDownRate());
-		EXPECT_EQ(pDayLine->GetTotalValue(), dayLine.GetTotalValue());
-		EXPECT_EQ(pDayLine->GetCurrentValue(), dayLine.GetCurrentValue());
-		EXPECT_EQ(pDayLine->GetChangeHandRate(), dayLine.GetChangeHandRate());
-
-		setDayLineBasicInfo.m_strFilter = "[Date] = 21900101";
-		setDayLineBasicInfo.Open();
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		while (!setDayLineBasicInfo.IsEOF()) {
-			setDayLineBasicInfo.Delete();
-			setDayLineBasicInfo.MoveNext();
-		}
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
-
-		// 恢复原状
-		pStock->UnloadDayLine();
-	}
-
-	TEST_F(CChinaStockTest, TestSaveDayLine) {
-		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-		pStock = gl_dataContainerChinaStock.GetStock("600016.SS");
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
-		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
-
-		CDayLine dayLine2;
-		dayLine2.SetClose(1000);
-		dayLine2.SetDate(19910101); // 早于数据库中的所有日期
-		pStock->StoreDayLine(dayLine2);
-		for (int i = 0; i < 10; i++) {
-			CDayLine dayLine;
-			dayLine.SetDate(21111201);
-			dayLine.SetStockSymbol("600016.SS");
-			dayLine.SetLastClose(34235345);
-			dayLine.SetOpen(1000000 + i);
-			dayLine.SetHigh(45234543);
-			dayLine.SetLow(3452345);
-			dayLine.SetClose(452435);
-			dayLine.SetVolume(34523454);
-			dayLine.SetAmount(3245235345);
-			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
-			dayLine.SetUpDownRate(123.45);
-			dayLine.SetTotalValue(234523452345);
-			dayLine.SetCurrentValue(234145345245);
-			dayLine.SetChangeHandRate(54.321);
-			pStock->StoreDayLine(dayLine);
-		}
-		pStock->SetDayLineEndDate(10190101);
-		pStock->SetSymbol("600016.SS");
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		pStock->SaveDayLineDB();
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
-
-		setDayLineBasicInfo.m_strFilter = "[Date] = 21111201";
-		setDayLineBasicInfo.Open();
-		for (int i = 0; i < 10; i++) {
-			// 第一个数据日期为19910101
-			dayLine2.LoadBasicData(&setDayLineBasicInfo);
-			auto pid = pStock->GetDayLine(i + 1);
-			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetDate());
-			EXPECT_TRUE(pid->GetStockSymbol() == T2Utf8(setDayLineBasicInfo.m_Symbol));
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Low) * pid->GetRatio(), pid->GetLow());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_Close) * pid->GetRatio(), pid->GetClose());
-			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_Volume), pid->GetVolume());
-			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_Amount), pid->GetAmount());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_UpAndDown), pid->GetUpDown());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
-			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_TotalValue), pid->GetTotalValue());
-			EXPECT_EQ(_tstoll(setDayLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
-			EXPECT_DOUBLE_EQ(_tstof(setDayLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-			setDayLineBasicInfo.MoveNext();
-		}
-		setDayLineBasicInfo.Close();
-
-		setDayLineBasicInfo.m_strFilter = "[Date] = 21111201";
-		setDayLineBasicInfo.Open();
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		while (!setDayLineBasicInfo.IsEOF()) {
-			setDayLineBasicInfo.Delete();
-			setDayLineBasicInfo.MoveNext();
-		}
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
-
-		setDayLineBasicInfo.m_strFilter = "[Date] = 19910101";
-		setDayLineBasicInfo.Open();
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setDayLineBasicInfo.IsEOF());
-		setDayLineBasicInfo.Delete();
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
-	}
-
 	TEST_F(CChinaStockTest, TestLoadDayLine) {
-		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
 		CDayLine* pid;
 		CChinaStock stock;
 
@@ -892,10 +704,9 @@ namespace FireBirdTest {
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineDB();
 
-		setDayLineBasicInfo.m_strFilter = "[Symbol] = '600010.SS'";
-		setDayLineBasicInfo.m_strSort = "[Date]";
-		setDayLineBasicInfo.Open();
-		stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
+		stock.SetSymbol("600010.SS");
+		stock.LoadDayLineDB();
+
 		for (int i = 0; i < 8; i++) {
 			pid = stock.GetDayLine(i);
 			auto pDayLine = pStock->GetDayLine(i);
@@ -914,17 +725,14 @@ namespace FireBirdTest {
 			EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
 			EXPECT_DOUBLE_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
 		}
-		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = "[Date] = 21121201";
-		setDayLineBasicInfo.Open();
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		while (!setDayLineBasicInfo.IsEOF()) {
-			setDayLineBasicInfo.Delete();
-			setDayLineBasicInfo.MoveNext();
-		}
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
+		using namespace StockMarket;
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		db(sqlpp::remove_from(t).where(t.Symbol == "600010.SS" && t.Date == 21121201));
+		tx.commit();
 	}
 
 	TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate) {
@@ -1118,7 +926,6 @@ namespace FireBirdTest {
 		int ratio = pStock->GetRatio();
 		for (const auto& row : result) {
 			pid = pStock->GetWeekLine(i);
-			double d = row.LastClose;
 			EXPECT_EQ(row.Date.value(), pid->GetDate());
 			EXPECT_EQ(row.Symbol, pid->GetStockSymbol());
 			EXPECT_DOUBLE_EQ(double(row.LastClose.value()) * ratio, pid->GetLastClose());

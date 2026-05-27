@@ -95,7 +95,6 @@ public:
 	virtual bool UpdateNaicsIndustry();
 
 	void RebuildStockDayLineDB();
-	virtual void UpdateStockDayLineStartEndDate();
 	void RebuildEPSSurprise();
 	void RebuildPeer();
 	void RebuildBasicFinancial();

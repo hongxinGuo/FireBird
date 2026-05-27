@@ -4,8 +4,7 @@
 
 #include"DayLine.h"
 #include"ContainerFinnhubStockDayLine.h"
-
-#include"SEtFinnhubStockDayLine.h"
+#include "dataBaseConnector.h"
 
 using namespace testing;
 
@@ -43,6 +42,7 @@ namespace FireBirdTest {
 		CDayLine dayLine;
 		dayLine.SetDate(20220101); // 测试库中的数据最新日期为20210330，此日期位于其后
 		dayLine.SetStockSymbol("A");
+		dayLine.SetExchange("Test"); // 日线表中没有这个字段，用于删除遗留的测试数据。
 		dayLine.SetClose(100);
 		vDayLine->push_back(dayLine);
 		m_dataFinnhubStockDayLine.UpdateData(vDayLine);
@@ -54,17 +54,16 @@ namespace FireBirdTest {
 		          20220101) << "新存储数据位于最后";
 
 		// 恢复原状
-		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;
-		setFinnhubStockDayLineBasic.m_strFilter = "[Date] = 20220101";
-		setFinnhubStockDayLineBasic.Open();
-		setFinnhubStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setFinnhubStockDayLineBasic.IsEOF()) << "新存储数据的日期";
-		EXPECT_STREQ(setFinnhubStockDayLineBasic.m_Symbol, _T("A"));
-		while (!setFinnhubStockDayLineBasic.IsEOF()) {
-			setFinnhubStockDayLineBasic.Delete();
-			setFinnhubStockDayLineBasic.MoveNext();
-		}
-		setFinnhubStockDayLineBasic.m_pDatabase->CommitTrans();
-		setFinnhubStockDayLineBasic.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Date == 20220101));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 1);
+
+		db(remove_from(t).where(t.Date == 20220101));
+		tx.commit();
 	}
 }

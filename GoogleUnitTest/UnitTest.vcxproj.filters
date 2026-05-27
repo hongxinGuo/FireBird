@@ -174,9 +174,6 @@
     <ClCompile Include="GeneralCheck.cpp">
       <Filter>Test源文件\辅助检查函数</Filter>
     </ClCompile>
-    <ClCompile Include="SetInitializeTest.cpp">
-      <Filter>Test源文件\DataBase</Filter>
-    </ClCompile>
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
       <Filter>Test源文件\Type\China Market\NeteaseDayLineWebData</Filter>
     </ClCompile>

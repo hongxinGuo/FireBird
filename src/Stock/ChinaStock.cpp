@@ -147,15 +147,6 @@ void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 	tx.commit();
 }
 
-void CChinaStock::AppendTodayBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLineBasicInfo) const {
-	const auto pDayLine = make_shared<CDayLine>();
-
-	ASSERT(pSetDayLineBasicInfo->IsOpen());
-
-	UpdateCurrentHistoryCandle(pDayLine);
-	pDayLine->AppendBasicData(pSetDayLineBasicInfo);
-}
-
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const {
 	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(GetTransactionTime()));
 	pBeUpdated->SetExchange(m_strExchangeCode);

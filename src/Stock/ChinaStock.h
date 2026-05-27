@@ -18,8 +18,6 @@ enum {
 
 #include"VirtualStock.h"
 
-#include"SetChinaMarketDayLineInfo.h"
-
 #include"DayLine.h"
 #include"ContainerChinaDayLine.h"
 #include"ContainerChinaWeekLine.h"
@@ -104,15 +102,12 @@ public:
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
-	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(GetSymbol()); }
+	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(m_strSymbol); }
 	void UpdateDayLineDB();
 	virtual bool SaveDayLineDB() { return m_dataDayLine.SaveDB(GetSymbol()); }
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 
-	bool LoadDayLineBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
-
-	void AppendTodayBasicInfo(CSetChinaMarketDayLineInfo* pSetDayLine) const; // 存储当日基本数据
 	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
 	bool LoadStockCode(const CStockSymbol& stockSymbol);

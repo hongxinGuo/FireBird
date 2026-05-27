@@ -17,11 +17,8 @@
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 
-#include"SetFinnhubStockDayLine.h"
-
 #include "ChinaMarket.h"
 #include "dataBaseConnector.h"
-#include "InfoReport.h"
 #include "QuandlDataSource.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
@@ -459,6 +456,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	bool fUpdated = false;
+	int iUpdated = 0;
 	CFinnhubCryptoPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
 
@@ -473,15 +471,10 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 						gl_UpdateWorldMarketDB.acquire();
 						gl_systemMessage.SetWorldMarketSavingFunction("F crypto dayLine");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-						if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
-							pSymbol->UpdateDayLineDB();
-							pSymbol->UpdateDayLineStartEndDate();
-							pSymbol->SetUpdateProfileDB(true);
-							pSymbol->UnloadDayLine();
-							string str2 = pSymbol->GetSymbol();
-							str2 += "日线资料存储完成";
-							gl_systemMessage.PushDayLineInfoMessage(str2);
-						}
+						pSymbol->UpdateDayLineDB();
+						string str2 = pSymbol->GetSymbol();
+						str2 += "日线资料存储完成";
+						gl_systemMessage.PushDayLineInfoMessage(str2);
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if ((end - start).count() > 2000) {
 							string s = fmt::format("Finnhub update Crypto dayLine Saving time: {:Ld}ms", (end - start).count());
@@ -1173,34 +1166,6 @@ void CWorldMarket::CalculateStockTotalValue(const vector<CTiingoStockPtr>& vStoc
 void CWorldMarket::RebuildStockDayLineDB() {
 	gl_dataContainerFinnhubStock.ResetDayLine();
 	gl_pFinnhubDataSource->SetUpdateStockProfile(true);
-}
-
-void CWorldMarket::UpdateStockDayLineStartEndDate() {
-	try {
-		const string strFilterPrefix = "[Symbol] = '";
-		CSetFinnhubStockDayLine setFinnhubStockDayLine;
-
-		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
-			setFinnhubStockDayLine.m_strFilter = (strFilterPrefix + pStock->GetSymbol() + "'").c_str();
-			setFinnhubStockDayLine.m_strSort = "[Date]";
-			setFinnhubStockDayLine.Open();
-			if (!setFinnhubStockDayLine.IsEOF()) {
-				if (setFinnhubStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
-					pStock->SetDayLineStartDate(setFinnhubStockDayLine.m_Date);
-					pStock->SetUpdateProfileDB(true);
-				}
-				setFinnhubStockDayLine.MoveLast();
-				if (setFinnhubStockDayLine.m_Date > pStock->GetDayLineEndDate()) {
-					pStock->SetDayLineEndDate(setFinnhubStockDayLine.m_Date);
-					pStock->SetUpdateProfileDB(true);
-				}
-			}
-			setFinnhubStockDayLine.Close();
-		}
-	} catch (CException& e) {
-		ReportInformation(e);
-	}
 }
 
 /// <summary>

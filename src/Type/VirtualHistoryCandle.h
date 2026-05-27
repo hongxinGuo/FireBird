@@ -23,9 +23,6 @@ public:
 
 	void Reset();
 
-	void SaveBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const; // 存储基本数据
-	void AppendBasicData(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) const;
-	void LoadBasicData(const CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
 	int GetRatio() const {
 		if (m_ratio == 0)
 			ASSERT(0);

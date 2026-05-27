@@ -72,7 +72,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
 	ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
 	ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayLine)
-	ON_COMMAND(ID_UPDATE_AMERICA_STOCK_DAYLINE_START_END, &CMainFrame::OnUpdateFinnhubStockDayLineStartEnd)
 	ON_COMMAND(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnRecordFinnhubWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnUpdateRecordFinnhubWebSocket)
 	ON_COMMAND(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnRecordTiingoCryptoWebSocket)
@@ -950,14 +949,6 @@ void CMainFrame::OnRebuildDayLine() {
 	gl_pWorldMarket->RebuildStockDayLineDB();
 }
 
-void CMainFrame::OnUpdateFinnhubStockDayLineStartEnd() {
-	gl_runtime.thread_executor()->post([] {
-		gl_UpdateWorldMarketDB.acquire();
-		gl_systemMessage.SetWorldMarketSavingFunction("F stock dayLine");
-		gl_pWorldMarket->UpdateStockDayLineStartEndDate();
-		gl_UpdateWorldMarketDB.release();
-	});
-}
 
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {

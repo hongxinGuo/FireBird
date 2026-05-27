@@ -1005,37 +1005,44 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 }
 
 bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const {
-	CSetChinaMarketDayLineInfo setDayLineBasicInfo;
+	using namespace StockMarket;
+	const auto& t = ChinaStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
 
-	string sDate = fmt::format("{:08Ld}", lDate);
-	setDayLineBasicInfo.m_strSort = "[Symbol]";
-	setDayLineBasicInfo.m_strFilter = "[Date] =";
-	setDayLineBasicInfo.m_strFilter += sDate.c_str();
-	setDayLineBasicInfo.Open();
-	if (setDayLineBasicInfo.IsEOF()) {
+	auto result = db(select(all_of(t)).from(t).where(t.Date == lDate).order_by(t.Symbol.asc()));
+	size_t rows = result.size();
+	if (rows == 0) {
 		// 数据集为空，表明此日没有交易
-		setDayLineBasicInfo.Close();
-		string str = sDate;
+		string str = fmt::format("{:08Ld}", lDate);
 		str += "日数据集为空，无需处理周线数据";
 		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
 		return false;
 	}
-	setDayLineBasicInfo.m_pDatabase->BeginTrans();
-
-	while (!setDayLineBasicInfo.IsEOF()) {
-		CDayLine dayLine;
-		dayLine.LoadBasicData(&setDayLineBasicInfo);
-		while (!setDayLineBasicInfo.IsEOF() && (setDayLineBasicInfo.m_Symbol.Compare(setDayLineBasicInfo.m_Symbol) < 0)) {
-			setDayLineBasicInfo.MoveNext();
-		}
-		if (!setDayLineBasicInfo.IsEOF() && (setDayLineBasicInfo.m_Symbol.Compare(setDayLineBasicInfo.m_Symbol) == 0)) {
-			dayLine.LoadBasicData(&setDayLineBasicInfo);
-		}
-		dataChinaDayLine.Add(dayLine);
-		setDayLineBasicInfo.MoveNext();
+	for (const auto& row : result) {
+		CDayLine dayline;
+		int ratio = dayline.GetRatio();
+		dayline.SetRatio(ratio);
+		dayline.SetDate(row.Date);
+		dayline.SetExchange(row.Exchange);
+		dayline.SetStockSymbol(row.Symbol);
+		dayline.SetLastClose(row.LastClose * ratio);
+		dayline.SetOpen(row.Open * ratio);
+		dayline.SetHigh(row.High * ratio);
+		dayline.SetLow(row.Low * ratio);
+		dayline.SetClose(row.Close * ratio);
+		dayline.SetSplitFactor(row.SplitFactor);
+		dayline.SetDividend(row.Dividend);
+		dayline.SetUpDown(row.UpAndDown);
+		dayline.SetVolume(row.Volume);
+		dayline.SetAmount(row.Amount);
+		dayline.SetUpDownRate(row.UpDownRate);
+		dayline.SetChangeHandRate(row.ChangeHandRate);
+		dayline.SetTotalValue(row.TotalValue);
+		dayline.SetCurrentValue(row.CurrentValue);
+		dataChinaDayLine.Add(dayline);
 	}
-	setDayLineBasicInfo.m_pDatabase->CommitTrans();
-	setDayLineBasicInfo.Close();
+	tx.commit();
 
 	return true;
 }

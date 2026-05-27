@@ -3,6 +3,8 @@
 #include"WorldMarket.h"
 #include "FinnhubCrypto.h"
 
+#include "dataBaseConnector.h"
+
 void CFinnhubCrypto::SetCheckingDayLineStatus() {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (IsNullStock()) {
@@ -50,4 +52,30 @@ bool CFinnhubCrypto::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;
+}
+
+void CFinnhubCrypto::UpdateDayLineDB() {
+	if (IsDayLineDuplicated()) {
+		DeleteDuplicatedDayLine();
+	}
+	SaveDayLineDB();
+	UpdateDayLineStartEndDate();
+	UnloadDayLine();
+}
+
+bool CFinnhubCrypto::IsDayLineDuplicated() noexcept {
+	if (m_dataDayLine.Empty()) return false;
+	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
+	return true;
+}
+
+void CFinnhubCrypto::DeleteDuplicatedDayLine() noexcept {
+	ASSERT(!m_dataDayLine.Empty());
+	using namespace StockMarket;
+	const auto& t = FinnhubCryptoDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= m_dataDayLine.GetData(0)->GetDate()));
+	tx.commit();
 }

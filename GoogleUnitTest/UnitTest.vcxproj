@@ -181,7 +181,6 @@
     <ClCompile Include="NaicsIndustryTest.cpp" />
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
     <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
-    <ClCompile Include="SetInitializeTest.cpp" />
     <ClCompile Include="SICIndustryTest.cpp" />
     <ClCompile Include="StockSectionTest.cpp" />
     <ClCompile Include="SystemDataTest.cpp" />

@@ -18,8 +18,6 @@ public:
 
 	int GetRatio() const override { return 1000; } // 比例为1000
 
-	virtual bool UpdateDayLineDB() { return m_dataDayLine.SaveDB(m_strSymbol); }
-
 	void SetCheckingDayLineStatus();
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
@@ -29,6 +27,11 @@ public:
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate();
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
+
+	void UpdateDayLineDB();
+	virtual bool SaveDayLineDB() { return m_dataDayLine.SaveDB(GetSymbol()); }
+	bool IsDayLineDuplicated() noexcept final;
+	void DeleteDuplicatedDayLine() noexcept final;
 
 public:
 	CContainerCryptoDayLine m_dataDayLine;

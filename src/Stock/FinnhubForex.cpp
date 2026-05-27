@@ -3,6 +3,8 @@
 #include"WorldMarket.h"
 #include "FinnhubForex.h"
 
+#include "dataBaseConnector.h"
+
 void CFinnhubForex::SetCheckingDayLineStatus() {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (m_lIPOStatus == _STOCK_NULL_) {
@@ -22,6 +24,32 @@ string CFinnhubForex::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
 	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
 
 	return sParam;
+}
+
+void CFinnhubForex::UpdateDayLineDB() {
+	if (IsDayLineDuplicated()) {
+		DeleteDuplicatedDayLine();
+	}
+	SaveDayLineDB();
+	UpdateDayLineStartEndDate();
+	UnloadDayLine();
+}
+
+bool CFinnhubForex::IsDayLineDuplicated() noexcept {
+	if (m_dataDayLine.Empty()) return false;
+	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
+	return true;
+}
+
+void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
+	ASSERT(!m_dataDayLine.Empty());
+	using namespace StockMarket;
+	const auto& t = FinnhubForexDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= m_dataDayLine.GetData(0)->GetDate()));
+	tx.commit();
 }
 
 void CFinnhubForex::UpdateDayLineStartEndDate() {

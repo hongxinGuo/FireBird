@@ -3,8 +3,6 @@
 #include "ContainerFinnhubStockDayLine.h"
 
 #include "dataBaseConnector.h"
-#include "InfoReport.h"
-#include"SetFinnhubStockDayLine.h"
 
 namespace {
 	CFinnhubStock s_stock;

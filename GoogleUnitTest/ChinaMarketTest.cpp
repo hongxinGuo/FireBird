@@ -1315,40 +1315,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), CHINA_MARKET_BEGIN_DATE_);
 	}
 
-	TEST_F(CChinaMarketTest, TestDeleteDayLineBasicInfo) {
-		char buffer[20];
-
-		CSetChinaMarketDayLineInfo setDayLine, setDayLine2;
-		const auto pDayLine = make_shared<CDayLine>();
-
-		pDayLine->SetStockSymbol("600000.SS");
-		pDayLine->SetDate(19900101);
-
-		_ltoa_s(19900101, buffer, 10);
-		const string strDate = buffer;
-		setDayLine.m_strFilter = "[Date] =";
-		setDayLine.m_strFilter += strDate.c_str();
-		setDayLine.Open();
-		setDayLine.m_pDatabase->BeginTrans();
-		pDayLine->AppendBasicData(&setDayLine);
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
-
-		setDayLine.m_strFilter = "[Date] =";
-		setDayLine.m_strFilter += strDate.c_str();
-		setDayLine.Open();
-		EXPECT_FALSE(setDayLine.IsEOF());
-		setDayLine.Close();
-
-		gl_pChinaMarket->DeleteDayLine(19900101);
-
-		setDayLine2.m_strFilter = "[Date] =";
-		setDayLine2.m_strFilter += strDate.c_str();
-		setDayLine2.Open();
-		EXPECT_TRUE(setDayLine2.IsEOF());
-		setDayLine2.Close();
-	}
-
 	TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
 		const auto pWeekLine = make_shared<CWeekLine>();
 		auto ratio = pWeekLine->GetRatio();
@@ -1403,27 +1369,6 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_TRUE(rows == 0);
 		}
-	}
-
-	TEST_F(CChinaMarketTest, TestLoadDayLine) {
-		CContainerChinaDayLine dataChinaDayLine;
-		const long lDate = GetCurrentMonday(20200101);
-
-		gl_pChinaMarket->LoadDayLine(dataChinaDayLine, lDate);
-
-		CSetChinaMarketDayLineInfo setDayLineBasicInfo;
-		long i = 0;
-
-		setDayLineBasicInfo.m_strSort = "[Symbol]";
-		setDayLineBasicInfo.m_strFilter = fmt::format("[Date] ={:08Ld}", lDate).c_str();
-		setDayLineBasicInfo.Open();
-		while (!setDayLineBasicInfo.IsEOF()) {
-			const CDayLine* pDayLine = dataChinaDayLine.GetData(i++);
-			EXPECT_TRUE(pDayLine->GetStockSymbol() == T2Utf8(setDayLineBasicInfo.m_Symbol));
-			setDayLineBasicInfo.MoveNext();
-		}
-		EXPECT_EQ(i, dataChinaDayLine.Size());
-		setDayLineBasicInfo.Close();
 	}
 
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {

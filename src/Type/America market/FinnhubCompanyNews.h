@@ -1,7 +1,5 @@
 #pragma once
 
-#include"SetFinnhubCompanyNews.h"
-
 //[
 //{
 //"category": "company news",
@@ -37,12 +35,6 @@ public:
 	~CFinnhubCompanyNews() = default;
 
 	void Reset();
-
-	void Append(CSetCompanyNews& setCompanyNews) const;
-	void Update(CSetCompanyNews& setCompanyNews) const;
-	void Save(CSetCompanyNews& setCompanyNews) const;
-
-	void Load(const CSetCompanyNews& setCompanyNews);
 
 public:
 	string m_strCompanySymbol;

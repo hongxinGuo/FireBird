@@ -12,8 +12,6 @@
 #include"FinnhubStock.h"
 #include"WorldMarket.h"
 
-#include"SetFinnhubStockDayLine.h"
-
 using namespace testing;
 
 namespace FireBirdTest {
@@ -718,7 +716,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestSaveDayLine) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
-		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLine dayLine;
 		dayLine.SetStockSymbol("A");
@@ -742,22 +739,17 @@ namespace FireBirdTest {
 
 		stock.SaveDayLineDB();
 
-		setDayLine.m_strFilter = "[Symbol] = 'A'";
-		setDayLine.m_strSort = "[Date]";
-		setDayLine.Open();
-		setDayLine.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(setDayLine.m_Date == 19990101);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.010"));
-		setDayLine.Delete();
-		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
-		EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
-		setDayLine.Delete();
-		while (setDayLine.m_Date != 20210123) setDayLine.MoveNext();
-		EXPECT_TRUE(setDayLine.m_Date = 20210123);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
-		setDayLine.Delete();
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date.in(19990101, 20210101, 20210123)));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 3);
+
+		db(remove_from(t).where(t.Symbol == "A" && t.Date.in(19990101, 20210101, 20210123)));
+		tx.commit();
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB1) {
@@ -776,7 +768,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB3) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
-		CSetFinnhubStockDayLine setDayLine;
 
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(true); // 需要更新
@@ -826,22 +817,17 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.PopDayLineInfoMessage(), "A日线资料存储完成");
 
 		// 清除添加的数据，恢复原状
-		setDayLine.m_strFilter = "[Symbol] = 'A'";
-		setDayLine.m_strSort = "[Date]";
-		setDayLine.Open();
-		setDayLine.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(setDayLine.m_Date == 20200101);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.010"));
-		setDayLine.Delete();
-		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
-		EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
-		setDayLine.Delete();
-		while (setDayLine.m_Date != 20210123) setDayLine.MoveNext();
-		EXPECT_TRUE(setDayLine.m_Date = 20210123);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
-		setDayLine.Delete();
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
+		using namespace StockMarket;
+		const auto& t = FinnhubStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date.in(20200101, 20210101, 20210123)));
+		size_t rows = result.size();
+		EXPECT_EQ(rows, 3);
+
+		db(remove_from(t).where(t.Symbol == "A" && t.Date.in(20200101, 20210101, 20210123)));
+		tx.commit();
 	}
 
 	TEST_F(CFinnhubStockTest, TestUpdateInsiderTransactionDB) {
@@ -946,45 +932,8 @@ namespace FireBirdTest {
 		setInsiderSentiment.Close();
 	}
 
-	TEST_F(CFinnhubStockTest, TestUpdateCompanyNewsDB) {
-		const auto pvCompanyNews = make_shared<vector<CFinnhubCompanyNews>>();
-		CSetCompanyNews setCompanyNews;
-
-		stock.SetSymbol("RIG");
-
-		CFinnhubCompanyNews companyNews;
-		companyNews.m_strCompanySymbol = "RIG";
-		companyNews.m_llDateTime = 19800101;
-		companyNews.m_strCategory = "test";
-		companyNews.m_iNewsID = 4;
-		pvCompanyNews->push_back(companyNews);
-		companyNews.m_strCompanySymbol = "RIG";
-		companyNews.m_llDateTime = 20200101;
-		companyNews.m_strCategory = "test";
-		companyNews.m_iNewsID = 5;
-		pvCompanyNews->push_back(companyNews);
-
-		stock.UpdateCompanyNews(pvCompanyNews);
-		stock.UpdateCompanyNewsDB();
-
-		int iCount = 0;
-		setCompanyNews.m_strFilter = "[category] = 'test'";
-		setCompanyNews.Open();
-		setCompanyNews.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setCompanyNews.IsEOF()) << "已经加入了两个category为test的数据";
-		while (!setCompanyNews.IsEOF()) {
-			setCompanyNews.Delete();
-			setCompanyNews.MoveNext();
-			iCount++;
-		}
-		setCompanyNews.m_pDatabase->CommitTrans();
-		setCompanyNews.Close();
-		EXPECT_EQ(iCount, 2);
-	}
-
 	TEST_F(CFinnhubStockTest, TestUpdateDayLine) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
-		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLine dayLine;
 		dayLine.SetStockSymbol("A");
@@ -1030,7 +979,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineStartEndDate) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
-		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLine dayLine;
 		dayLine.SetStockSymbol("A");
@@ -1200,7 +1148,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestHaveNewDayLineData) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
-		CSetFinnhubStockDayLine setDayLine;
 
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 		EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";

@@ -284,35 +284,8 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 bool CFinnhubStock::UpdateCompanyNewsDB() {
 	ASSERT(!m_vCompanyNews.empty());
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
-	if (!m_strSymbol.empty()) {
-		CFinnhubCompanyNews companyNews;
-		CSetCompanyNews setCompanyNews;
-		long lCurrentPos = 0;
-		setCompanyNews.m_strFilter = "[Symbol] = '";
-		setCompanyNews.m_strFilter += m_strSymbol.c_str();
-		setCompanyNews.m_strFilter += "'";
-		setCompanyNews.m_strSort = "[DateTime]";
-
-		setCompanyNews.Open();
-		setCompanyNews.m_pDatabase->BeginTrans();
-		while (!setCompanyNews.IsEOF()) {
-			companyNews = m_vCompanyNews.at(lCurrentPos);
-			while ((_tstoll(setCompanyNews.m_DateTime) < companyNews.m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
-			if (setCompanyNews.IsEOF()) break;
-			if ((_tstoll(setCompanyNews.m_DateTime) > companyNews.m_llDateTime)) {	// 没有这个时间点的新闻？
-				companyNews.Append(setCompanyNews);
-				companyNews.Reset();
-			}
-			if (++lCurrentPos == lSize) break;
-		}
-		for (long i = lCurrentPos; i < lSize; i++) {
-			companyNews = m_vCompanyNews.at(i);
-			companyNews.Append(setCompanyNews);
-			companyNews.Reset();
-		}
-		setCompanyNews.m_pDatabase->CommitTrans();
-		setCompanyNews.Close();
-	}
+	//Note: 可以优化为二分法查找，找到第一个大于数据库中最新日期的新闻的索引位置，然后从该位置开始存储数据。
+	//Todo: 可以优化为批量存储数据，而不是一条一条地存储数据。
 	return true;
 }
 

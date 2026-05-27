@@ -5,9 +5,6 @@
 #include "ContainerChinaDayLine.h"
 
 #include "dataBaseConnector.h"
-#include"SetChinaMarketDayLineInfo.h"
-
-#include "InfoReport.h"
 
 namespace {
 	CChinaStock s_stock;
