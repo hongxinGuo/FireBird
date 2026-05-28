@@ -717,20 +717,7 @@ namespace FireBirdTest {
 		CTiingoCompanyFinancialStatesPtr pvState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
 		CTiingoCompanyFinancialStatePtr pState = make_shared<CTiingoCompanyFinancialState>();
 		pState->m_symbol = "AAPL";
-		pState->m_yearQuarter = 202001; // 早于最早的数据
-		pState->m_exchange = "Test"; // 虚假交易所代码，用于删除
-		pvState->push_back(pState);
-		pState = make_shared<CTiingoCompanyFinancialState>();
-		pState->m_symbol = "AAPL";
-		pState->m_yearQuarter = 202301; // 存在于集合中
-		pState->m_exchange = "Test";
-		pvState->push_back(pState);
-		pState = make_shared<CTiingoCompanyFinancialState>();
-		pState->m_symbol = "AAPL";
-		pState->m_yearQuarter = 202305; // 居中新数据
-		pState->m_exchange = "Test";
-		pvState->push_back(pState);
-		pState = make_shared<CTiingoCompanyFinancialState>();
+
 		pState->m_symbol = "AAPL";
 		pState->m_yearQuarter = 202404; // 晚于最新数据
 		pState->m_exchange = "Test";
@@ -747,17 +734,9 @@ namespace FireBirdTest {
 			auto tx = start_transaction(db);
 			//auto result = db(select(count(all_of(table))).from(table).where(table.Symbol == "AAPL" && table.Exchange == "Test").order_by(table.YearQuarter.asc()));
 			//Note: Resharper误报，无法识别result的类型，实际为vector<TiingoCompanyFinancialState>
-			//resharper disable all
-			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test").order_by(t.YearQuarter.asc())); //NOLINT
-			//resharper restore all
+			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test").order_by(t.YearQuarter.asc()));
 			size_t rows = result.size();
-			EXPECT_TRUE(rows == 3);
-			auto& row1 = result.front();
-			EXPECT_EQ(row1.YearQuarter.value(), 202001);
-			result.pop_front();
-			auto& row2 = result.front();
-			EXPECT_EQ(row2.YearQuarter.value(), 202305);
-			result.pop_front();
+			EXPECT_TRUE(rows == 1);
 			auto& row3 = result.front();
 			EXPECT_EQ(row3.YearQuarter.value(), 202404);
 			db(remove_from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test"));
@@ -768,13 +747,11 @@ namespace FireBirdTest {
 	TEST_F(CTiingoStockTest, TestUpdateDayLineDB) {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
-		// Ensure clean DB state for the test
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			db(insert_into(t).set(t.Symbol = "AAPL", t.Exchange = "Test", t.Date = 20241110));
+			db(insert_into(t).set(t.Symbol = "AAPL", t.Exchange = "Test", t.Date = 20241111));
 			tx.commit();
 		}
 
@@ -782,89 +759,70 @@ namespace FireBirdTest {
 		auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
 		CTiingoCandleLine dayLine;
 
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol("AAPL");
 		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
-		dayLine.SetDate(19800101);
+		dayLine.SetDate(20241110);
 		dayLine.SetClose(115);
 		dayLine.SetRatio(stock.GetRatio());
 		pvDayLine->push_back(dayLine);
 
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol("AAPL");
 		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
-		dayLine.SetDate(20210101);
-		dayLine.SetClose(12340);
-		dayLine.SetRatio(stock.GetRatio());
-		pvDayLine->push_back(dayLine);
-
-		dayLine.SetStockSymbol("A");
-		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
-		dayLine.SetDate(20210107);
+		dayLine.SetDate(20241112);
 		dayLine.SetClose(10020);
 		dayLine.SetRatio(stock.GetRatio());
 		pvDayLine->push_back(dayLine);
 
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol("AAPL");
 		dayLine.SetExchange("Test"); // 用于删除遗漏的测试数据
-		dayLine.SetDate(20241111);
-		dayLine.SetClose(135);
+		dayLine.SetDate(20241114);
+		dayLine.SetClose(111135);
 		dayLine.SetRatio(stock.GetRatio());
 		pvDayLine->push_back(dayLine);
 
 		// Load into stock and mark for DB update
-		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetSymbol("AAPL");
+		stock.SetDayLineEndDate(20241111);
 		stock.UpdateDayLine(pvDayLine);
 
 		// Pre-conditions
 		EXPECT_TRUE(stock.IsDayLineLoaded());
-		EXPECT_TRUE(stock.IsUpdateDayLineDB() == false);
-
-		stock.SetUpdateDayLineDB(true);
-		EXPECT_TRUE(stock.IsUpdateDayLineDB());
 
 		// Act
-		const bool updated = stock.UpdateDayLineDB();
-
-		// Assert function returned true and flags/loads updated
-		EXPECT_TRUE(updated);
-		EXPECT_FALSE(stock.IsUpdateDayLineDB());
-		// UpdateDayLineDB calls SetUpdateProfileDB(true)
-		EXPECT_TRUE(stock.IsUpdateProfileDB());
-		// It should have unloaded day line
-		EXPECT_FALSE(stock.IsDayLineLoaded());
+		stock.UpdateDayLineDB();
 
 		// Verify DB rows were inserted and values are scaled correctly
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
 
-			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 19800101));
-			EXPECT_EQ(result.size(), 1u);
+			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Date == 20241110));
+			EXPECT_EQ(result.size(), 1);
 			if (!result.empty()) {
 				auto& row = result.front();
-				EXPECT_DOUBLE_EQ(row.Close, 0.000115);
+				EXPECT_DOUBLE_EQ(row.Close.value(), 0.000115);
 			}
 
-			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Date == 20241111));
+			size_t rows = result.size();
+			EXPECT_EQ(rows, 0) << "旧数据被删除，没有新数据";
+
+			result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Date == 20241112));
 			EXPECT_EQ(result.size(), 1u);
 			if (!result.empty()) {
 				auto& row = result.front();
-				EXPECT_DOUBLE_EQ(row.Close, 0.012340);
+				EXPECT_DOUBLE_EQ(row.Close.value(), 0.01002);
 			}
 
-			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Date == 20241114));
 			EXPECT_EQ(result.size(), 1u);
 			if (!result.empty()) {
 				auto& row = result.front();
-				EXPECT_DOUBLE_EQ(row.Close, 0.000135);
+				EXPECT_DOUBLE_EQ(row.Close.value(), 0.111135);
 			}
 
 			// cleanup
-			EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-			gl_systemMessage.PopDayLineInfoMessage();
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			db(remove_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 	}

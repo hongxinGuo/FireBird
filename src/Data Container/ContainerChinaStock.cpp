@@ -371,16 +371,18 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	for (size_t l = 0; l < m_vStock.size(); l++) {
+	size_t lSize = m_vStock.size();
+	for (size_t l = 0; l < lSize; l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
 			iCount++;
+			TRACE("sss \n");
 			pStock->SetDayLineEndDate(lCurrentTradeDay);
 			pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
 			pStock->SetUpdateProfileDB(true);
 			db(sqlpp::insert_into(t).set(
 				t.Date = lCurrentTradeDay,
-				t.Exchange = pStock->GetExchangeCode(),
+				//t.Exchange = pStock->GetExchangeCode(),
 				t.Symbol = pStock->GetSymbol(),
 				t.LastClose = pStock->GetLastClose(),
 				t.Open = pStock->GetOpen(),
@@ -388,12 +390,12 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 				t.Low = pStock->GetLow(),
 				t.Close = pStock->GetNew(),
 				t.Volume = pStock->GetVolume(),
-				t.Amount = pStock->GetAmount(),
-				t.UpAndDown = pStock->GetUpDown(),
-				t.UpDownRate = pStock->GetUpDownRate(),
-				t.ChangeHandRate = pStock->GetTotalValue() ? static_cast<double>(100) * pStock->GetAmount() / pStock->GetTotalValue() : 0.0,
-				t.CurrentValue = pStock->GetCurrentValue(),
-				t.TotalValue = pStock->GetTotalValue()
+				t.Amount = pStock->GetAmount()
+				//t.UpAndDown = pStock->GetUpDown(),
+				//t.UpDownRate = pStock->GetUpDownRate(),
+				//t.ChangeHandRate = 0.0,
+				//t.CurrentValue = pStock->GetCurrentValue(),
+				//t.TotalValue = pStock->GetTotalValue()
 			));
 		}
 	}

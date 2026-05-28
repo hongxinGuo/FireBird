@@ -60,40 +60,6 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 	}
 }
 
-void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
-	m_strDescription = T2Utf8(setStockSymbol.m_Description);
-	m_strDisplaySymbol = W2Utf8(setStockSymbol.m_DisplaySymbol);
-	m_strExchangeCode = T2Utf8(setStockSymbol.m_Exchange);
-	m_strSymbol = T2Utf8(setStockSymbol.m_Symbol);
-	m_lIPOStatus = setStockSymbol.m_IPOStatus;
-	LoadUpdateDate(T2Utf8(setStockSymbol.m_UpdateDate));
-}
-
-void CVirtualStock::AppendSymbol(CVirtualSetStockSymbol& setStockSymbol) {
-	setStockSymbol.AddNew();
-	SaveSymbol(setStockSymbol);
-	setStockSymbol.Update();
-}
-
-void CVirtualStock::UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol) {
-	setStockSymbol.Edit();
-	SaveSymbol(setStockSymbol);
-	setStockSymbol.Update();
-}
-
-void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
-	setStockSymbol.m_Description = m_strDescription.c_str();
-	wstring s = Utf8ToWstring(m_strDisplaySymbol);
-	setStockSymbol.m_DisplaySymbol = Utf8ToWstring(m_strDisplaySymbol).c_str(); //只用前19个字符
-	setStockSymbol.m_Exchange = m_strExchangeCode.c_str();
-	setStockSymbol.m_Symbol = m_strSymbol.c_str();
-	setStockSymbol.m_IPOStatus = m_lIPOStatus;
-	UpdateJsonUpdateDate();
-	const string sUpdateDate = m_jsonUpdateDate.dump();
-	setStockSymbol.m_UpdateDate = sUpdateDate.c_str();
-	ASSERT(sUpdateDate.size() < 10000);
-}
-
 void CVirtualStock::AddStockSplit(const CStockSplit& StockSplit) noexcept {
 	for (auto& p : *m_pvStockSplit) {
 		if (p.GetDate() == StockSplit.GetDate()) return; // 已经有了，不添加了。

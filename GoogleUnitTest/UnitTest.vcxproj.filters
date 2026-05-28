@@ -279,9 +279,6 @@
     <ClCompile Include="InfoReportTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualRecordsetTest.cpp">
-      <Filter>Test源文件\DataBase</Filter>
-    </ClCompile>
     <ClCompile Include="ChinaStockCodeConverterTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>

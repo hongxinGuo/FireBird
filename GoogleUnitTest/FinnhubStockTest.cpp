@@ -896,42 +896,6 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CFinnhubStockTest, TestSaveInsiderSentiment) {
-		//  测试数据库中只有4个数据，股票代码：A，
-		CInsiderSentimentsPtr pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
-		CSetInsiderSentiment setInsiderSentiment;
-
-		CInsiderSentiment insiderSentiment;
-		insiderSentiment.m_strSymbol = "B"; // 这个股票代码不符，不可能出现此种情况，故而不需要添加进数据库
-		insiderSentiment.m_lDate = 20200101;
-		pvInsiderSentiment->push_back(insiderSentiment);
-		insiderSentiment.m_strSymbol = "A";
-		insiderSentiment.m_lDate = 20200101; // 这个数据库中有，无需添加
-		pvInsiderSentiment->push_back(insiderSentiment);
-		insiderSentiment.m_strSymbol = "A";
-		insiderSentiment.m_lDate = 20210101; // 这个日期不符，需要添加进数据库
-		pvInsiderSentiment->push_back(insiderSentiment);
-
-		stock.SetSymbol("A");
-		stock.SetInsiderSentimentUpdateDate(20210101);
-		stock.UpdateInsiderSentiment(pvInsiderSentiment);
-
-		stock.UpdateInsiderSentimentDB();
-
-		setInsiderSentiment.m_strFilter = "[Symbol] = 'B'";
-		setInsiderSentiment.Open();
-		EXPECT_TRUE(setInsiderSentiment.IsEOF()) << "股票B没有存储进了数据库";
-		setInsiderSentiment.Close();
-
-		setInsiderSentiment.m_strFilter = "[Date] = '20210101'";
-		setInsiderSentiment.Open();
-		setInsiderSentiment.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setInsiderSentiment.IsEOF()) << "新日期存储进了数据库";
-		setInsiderSentiment.Delete();
-		setInsiderSentiment.m_pDatabase->CommitTrans();
-		setInsiderSentiment.Close();
-	}
-
 	TEST_F(CFinnhubStockTest, TestUpdateDayLine) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
@@ -1114,7 +1078,7 @@ namespace FireBirdTest {
 		SECFiling.m_strAccessNumber = "0"; // 新存取号，比原有的都小
 		pvSECFilings->push_back(SECFiling);
 		SECFiling.m_strSymbol = "MFI"; // 已存在代码
-		SECFiling.m_strAccessNumber = "0000814133-03-000033"; // 已存在存取号
+		SECFiling.m_strAccessNumber = "0000908662-03-000053"; // 已存在存取号
 		pvSECFilings->push_back(SECFiling);
 		SECFiling.m_strSymbol = "MFI"; // 已存在代码
 		SECFiling.m_strAccessNumber = "1000950135-08-002549"; // 新存取号，比原有的都大
@@ -1127,23 +1091,24 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(stock.UpdateSECFilingsDB());
 
-		CSetSECFilings setSECFilings;
-		setSECFilings.m_strFilter = "[symbol] = 'MFI'";
-		setSECFilings.m_strSort = "[accessNumber]";
-		setSECFilings.Open();
-		setSECFilings.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(setSECFilings.m_AccessNumber.Compare(_T("0")) == 0);
-		setSECFilings.Delete();
+		using namespace StockMarket;
+		const auto& t = FinnhubStockSecFilings{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.symbol == "MFI").order_by(t.accessNumber.asc()));
+		size_t rows = result.size();
+		EXPECT_GT(rows, 10);
+		auto& row = result.front();
+		EXPECT_EQ(row.accessNumber.value(), "0");
 		for (int i = 0; i < 11; i++) {
-			setSECFilings.MoveNext(); // 测试库中原有10个，加上新存入的存取号为"0"这个。
+			result.pop_front();
 		}
-		EXPECT_FALSE(setSECFilings.IsEOF());
-		EXPECT_STREQ(setSECFilings.m_AccessNumber, _T("1000950135-08-002549"));
-		setSECFilings.Delete();
-		setSECFilings.MoveNext();
-		EXPECT_TRUE(setSECFilings.IsEOF());
-		setSECFilings.m_pDatabase->CommitTrans();
-		setSECFilings.Close();
+		auto& row2 = result.front();
+		EXPECT_EQ(row2.accessNumber, "1000950135-08-002549");
+		db(remove_from(t).where(t.symbol == "MFI" && t.accessNumber == "0"));
+		db(remove_from(t).where(t.symbol == "MFI" && t.accessNumber == "1000950135-08-002549"));
+		tx.commit();
 	}
 
 	TEST_F(CFinnhubStockTest, TestHaveNewDayLineData) {

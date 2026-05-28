@@ -1,10 +1,5 @@
 #pragma once
 
-#include"SetTiingoCompanyFinancialState.h"
-
-#include<memory>
-#include<vector>
-
 class CTiingoCompanyFinancialState final {
 public:
 	CTiingoCompanyFinancialState();
@@ -14,10 +9,6 @@ public:
 	CTiingoCompanyFinancialState(const CTiingoCompanyFinancialState&&) noexcept = delete;
 	CTiingoCompanyFinancialState& operator=(const CTiingoCompanyFinancialState&&) noexcept = delete;
 	~CTiingoCompanyFinancialState() = default;
-
-	void Load(const CSetTiingoCompanyFinancialState& setTiingoFinancialState);
-	void Append(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const;
-	void Save(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const;
 
 	void Assign(int index, double fValue);
 

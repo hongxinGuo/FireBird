@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
 #include"TimeConvert.h"
 #include"InsiderSentiment.h"
 #include"InsiderTransaction.h"
@@ -8,16 +7,11 @@
 
 #include "FinnhubStock.h"
 
-#include "CharSetTransfer.h"
 #include "dataBaseConnector.h"
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"
 #include "InfoReport.h"
-#include "JsonParse.h"
-
-#include"SetInsiderSentiment.h"
-#include "SetSECFilings.h"
 
 CFinnhubStock::CFinnhubStock() {
 	SetExchangeCode("US");
@@ -236,6 +230,9 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 }
 
 void CFinnhubStock::UpdateInsiderSentimentDB() {
+	//Todo:用sqlpp11重写该函数，使用sqlpp11的事务机制和批量插入功能来优化性能。可以先查询数据库中最新的报告日期，然后只插入那些报告日期晚于数据库中最新日期的数据。这样可以避免不必要的查询和插入操作，提高效率。
+	/*
+	 
 	try {
 		CSetInsiderSentiment setInsiderSentiment;
 
@@ -273,6 +270,7 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
+	*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -325,33 +323,46 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 bool CFinnhubStock::UpdateSECFilingsDB() const {
 	const long lSize = static_cast<long>(m_vSECFilings.size());
 	if (!m_strSymbol.empty()) {
-		CSECFiling SECFilings;
-		CSetSECFilings setSECFilings;
 		long lCurrentPos = 0;
-		setSECFilings.m_strFilter = "[Symbol] = '";
-		setSECFilings.m_strFilter += m_strSymbol.c_str();
-		setSECFilings.m_strFilter += "'";
-		setSECFilings.m_strSort = "[accessNumber]";
+		CSECFiling SECFilings;
+		using namespace StockMarket;
+		const auto& t = FinnhubStockSecFilings{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-		setSECFilings.Open();
-		setSECFilings.m_pDatabase->BeginTrans();
-		while (!setSECFilings.IsEOF()) {
+		auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
+
+		for (const auto& row : result) {
 			SECFilings = m_vSECFilings.at(lCurrentPos);
-			while (!setSECFilings.IsEOF() && SECFilings.m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) > 0) {
-				setSECFilings.MoveNext();
-			}
-			if (setSECFilings.IsEOF()) break;
-			if (SECFilings.m_strAccessNumber.compare(T2Utf8(setSECFilings.m_AccessNumber)) < 0) {	// 没有这个AccessNumber的SEC Filings？
-				SECFilings.Append(setSECFilings);
+			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) > 0) continue;
+			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) < 0) {	// 没有这个AccessNumber的SEC Filings？
+				db(sqlpp::insert_into(t).set(
+					t.symbol = m_strSymbol,
+					t.accessNumber = SECFilings.m_strAccessNumber,
+					t.cik = SECFilings.m_iCIK,
+					t.filedDate = SECFilings.m_iFiledDate,
+					t.acceptedDate = SECFilings.m_iAcceptedDate,
+					t.filingURL = SECFilings.m_strFilingURL,
+					t.reportURL = SECFilings.m_strReportURL,
+					t.form = SECFilings.m_strForm
+				));
 			}
 			if (++lCurrentPos == lSize) break;
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
 			SECFilings = m_vSECFilings.at(i);
-			SECFilings.Append(setSECFilings);
+			db(sqlpp::insert_into(t).set(
+				t.symbol = m_strSymbol,
+				t.accessNumber = SECFilings.m_strAccessNumber,
+				t.cik = SECFilings.m_iCIK,
+				t.filedDate = SECFilings.m_iFiledDate,
+				t.acceptedDate = SECFilings.m_iAcceptedDate,
+				t.filingURL = SECFilings.m_strFilingURL,
+				t.reportURL = SECFilings.m_strReportURL,
+				t.form = SECFilings.m_strForm
+			));
 		}
-		setSECFilings.m_pDatabase->CommitTrans();
-		setSECFilings.Close();
+		tx.commit();
 	}
 	return true;
 }

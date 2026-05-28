@@ -1,7 +1,5 @@
 #pragma once
 
-#include"SetSECFilings.h"
-
 using std::vector;
 using std::shared_ptr;
 
@@ -15,9 +13,6 @@ public:
 	~CSECFiling() = default;
 
 	void Reset();
-
-	void Append(CSetSECFilings& setSECFiling) const;
-	void Load(const CSetSECFilings& setSECFiling);
 
 public:
 	string m_strSymbol;

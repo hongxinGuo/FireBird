@@ -96,6 +96,7 @@ CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
 	m_trailingPEG1Y = 0;
 }
 
+/*
 void CTiingoCompanyFinancialState::Load(const CSetTiingoCompanyFinancialState& setTiingoFinancialState) {
 	m_symbol = T2Utf8(setTiingoFinancialState.m_symbol);
 	m_exchange = T2Utf8(setTiingoFinancialState.m_exchange);
@@ -187,11 +188,6 @@ void CTiingoCompanyFinancialState::Load(const CSetTiingoCompanyFinancialState& s
 	m_trailingPEG1Y = _tstof(setTiingoFinancialState.m_trailingPEG1Y);
 }
 
-void CTiingoCompanyFinancialState::Append(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const {
-	setTiingoFinancialState.AddNew();
-	Save(setTiingoFinancialState);
-	setTiingoFinancialState.Update();
-}
 
 void CTiingoCompanyFinancialState::Save(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const {
 	setTiingoFinancialState.m_symbol = m_symbol.c_str();
@@ -283,7 +279,7 @@ void CTiingoCompanyFinancialState::Save(CSetTiingoCompanyFinancialState& setTiin
 	setTiingoFinancialState.m_totalLiabilities = ConvertValueToCString(m_totalLiabilities);
 	setTiingoFinancialState.m_trailingPEG1Y = ConvertValueToCString(m_trailingPEG1Y);
 }
-
+*/
 void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	switch (index) {
 	case 1:

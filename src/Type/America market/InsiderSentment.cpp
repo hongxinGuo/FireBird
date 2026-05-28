@@ -41,29 +41,3 @@ CInsiderSentiment& CInsiderSentiment::operator=(CInsiderSentiment&& other) noexc
 	m_mspr = other.m_mspr;
 	return *this;
 }
-
-void CInsiderSentiment::Append(CSetInsiderSentiment& setInsiderSentiment) const {
-	setInsiderSentiment.AddNew();
-	Save(setInsiderSentiment);
-	setInsiderSentiment.Update();
-}
-
-void CInsiderSentiment::Update(CSetInsiderSentiment& setInsiderSentiment) const {
-	setInsiderSentiment.Edit();
-	Save(setInsiderSentiment);
-	setInsiderSentiment.Update();
-}
-
-void CInsiderSentiment::Save(CSetInsiderSentiment& setInsiderSentiment) const {
-	setInsiderSentiment.m_Symbol = m_strSymbol.c_str();
-	setInsiderSentiment.m_Date = m_lDate;
-	setInsiderSentiment.m_Change = m_lChange;
-	setInsiderSentiment.m_mspr = m_mspr;
-}
-
-void CInsiderSentiment::Load(const CSetInsiderSentiment& setInsiderSentiment) {
-	m_strSymbol = T2Utf8(setInsiderSentiment.m_Symbol);
-	m_lDate = setInsiderSentiment.m_Date;
-	m_lChange = setInsiderSentiment.m_Change;
-	m_mspr = setInsiderSentiment.m_mspr;
-}

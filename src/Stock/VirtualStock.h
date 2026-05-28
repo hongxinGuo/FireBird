@@ -1,11 +1,7 @@
 #pragma once
 
 #include "VirtualDataHistoryCandle.h"
-#include"VirtualSetStockSymbol.h"
 #include "StockSplit.h"
-
-using std::shared_ptr;
-using std::atomic_bool;
 
 class CVirtualStock;
 using CVirtualStockPtr = shared_ptr<CVirtualStock>;
@@ -26,10 +22,6 @@ public:
 	virtual void UpdateJsonUpdateDate();
 	virtual void UpdateAllUpdateDate();
 	void LoadUpdateDate(const string& strUpdateDate);
-	virtual void LoadSymbol(CVirtualSetStockSymbol& setStockSymbol);
-	virtual void AppendSymbol(CVirtualSetStockSymbol& setStockSymbol);
-	virtual void UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol);
-	virtual void SaveSymbol(CVirtualSetStockSymbol& setStockSymbol);
 
 	string GetDescription() const noexcept { return m_strDescription; }
 	void SetDescription(const string& strDescription) noexcept { m_strDescription = strDescription; }

@@ -742,7 +742,7 @@ namespace StockMarket
             const T& operator()() const { return assetsNonCurrent; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct AssetTurnover
     {
@@ -758,7 +758,7 @@ namespace StockMarket
             const T& operator()() const { return assetTurnover; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct BookVal
     {
@@ -774,7 +774,7 @@ namespace StockMarket
             const T& operator()() const { return bookVal; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct BusinessAcqDisposals
     {
@@ -790,7 +790,7 @@ namespace StockMarket
             const T& operator()() const { return businessAcqDisposals; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Bvps
     {
@@ -806,7 +806,7 @@ namespace StockMarket
             const T& operator()() const { return bvps; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Capex
     {
@@ -822,7 +822,7 @@ namespace StockMarket
             const T& operator()() const { return capex; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct CashAndEq
     {
@@ -838,7 +838,7 @@ namespace StockMarket
             const T& operator()() const { return cashAndEq; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct ConsolidatedIncome
     {
@@ -854,7 +854,7 @@ namespace StockMarket
             const T& operator()() const { return consolidatedIncome; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct CostRev
     {
@@ -870,7 +870,7 @@ namespace StockMarket
             const T& operator()() const { return costRev; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct CurrentRatio
     {
@@ -886,7 +886,7 @@ namespace StockMarket
             const T& operator()() const { return currentRatio; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Debt
     {
@@ -902,7 +902,7 @@ namespace StockMarket
             const T& operator()() const { return debt; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct DebtCurrent
     {
@@ -918,7 +918,7 @@ namespace StockMarket
             const T& operator()() const { return debtCurrent; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct DebtEquity
     {
@@ -934,7 +934,7 @@ namespace StockMarket
             const T& operator()() const { return debtEquity; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct DebtNonCurrent
     {
@@ -950,7 +950,7 @@ namespace StockMarket
             const T& operator()() const { return debtNonCurrent; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct DeferredRev
     {
@@ -966,7 +966,7 @@ namespace StockMarket
             const T& operator()() const { return deferredRev; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Depamor
     {
@@ -982,7 +982,7 @@ namespace StockMarket
             const T& operator()() const { return depamor; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Deposits
     {
@@ -998,7 +998,7 @@ namespace StockMarket
             const T& operator()() const { return deposits; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ebit
     {
@@ -1014,7 +1014,7 @@ namespace StockMarket
             const T& operator()() const { return ebit; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ebitda
     {
@@ -1030,7 +1030,7 @@ namespace StockMarket
             const T& operator()() const { return ebitda; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ebt
     {
@@ -1046,7 +1046,7 @@ namespace StockMarket
             const T& operator()() const { return ebt; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct EnterpriseVal
     {
@@ -1062,7 +1062,7 @@ namespace StockMarket
             const T& operator()() const { return enterpriseVal; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Eps
     {
@@ -1078,7 +1078,7 @@ namespace StockMarket
             const T& operator()() const { return eps; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct EpsDil
     {
@@ -1094,7 +1094,7 @@ namespace StockMarket
             const T& operator()() const { return epsDil; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct EpsQoQ
     {
@@ -1110,7 +1110,7 @@ namespace StockMarket
             const T& operator()() const { return epsQoQ; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Equity
     {
@@ -1126,7 +1126,7 @@ namespace StockMarket
             const T& operator()() const { return equity; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct FreeCashFlow
     {
@@ -1142,7 +1142,7 @@ namespace StockMarket
             const T& operator()() const { return freeCashFlow; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct FxRate
     {
@@ -1158,7 +1158,7 @@ namespace StockMarket
             const T& operator()() const { return fxRate; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct GrossMargin
     {
@@ -1174,7 +1174,7 @@ namespace StockMarket
             const T& operator()() const { return grossMargin; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct GrossProfit
     {
@@ -1190,7 +1190,7 @@ namespace StockMarket
             const T& operator()() const { return grossProfit; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Intangibles
     {
@@ -1206,7 +1206,7 @@ namespace StockMarket
             const T& operator()() const { return intangibles; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Intexp
     {
@@ -1222,7 +1222,7 @@ namespace StockMarket
             const T& operator()() const { return intexp; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Inventory
     {
@@ -1238,7 +1238,7 @@ namespace StockMarket
             const T& operator()() const { return inventory; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Investments
     {
@@ -1254,7 +1254,7 @@ namespace StockMarket
             const T& operator()() const { return investments; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct InvestmentsAcqDisposals
     {
@@ -1270,7 +1270,7 @@ namespace StockMarket
             const T& operator()() const { return investmentsAcqDisposals; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct InvestmentsCurrent
     {
@@ -1286,7 +1286,7 @@ namespace StockMarket
             const T& operator()() const { return investmentsCurrent; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct InvestmentsNonCurrent
     {
@@ -1302,7 +1302,7 @@ namespace StockMarket
             const T& operator()() const { return investmentsNonCurrent; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct IssrepayDebt
     {
@@ -1318,7 +1318,7 @@ namespace StockMarket
             const T& operator()() const { return issrepayDebt; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct IssrepayEquity
     {
@@ -1334,7 +1334,7 @@ namespace StockMarket
             const T& operator()() const { return issrepayEquity; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct LiabilitiesCurrent
     {
@@ -1350,7 +1350,7 @@ namespace StockMarket
             const T& operator()() const { return liabilitiesCurrent; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct LiabilitiesNonCurrent
     {
@@ -1366,7 +1366,7 @@ namespace StockMarket
             const T& operator()() const { return liabilitiesNonCurrent; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct LongTermDebtEquity
     {
@@ -1382,7 +1382,7 @@ namespace StockMarket
             const T& operator()() const { return longTermDebtEquity; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct MarketCap
     {
@@ -1398,7 +1398,7 @@ namespace StockMarket
             const T& operator()() const { return marketCap; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ncf
     {
@@ -1414,7 +1414,7 @@ namespace StockMarket
             const T& operator()() const { return ncf; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ncff
     {
@@ -1430,7 +1430,7 @@ namespace StockMarket
             const T& operator()() const { return ncff; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ncfi
     {
@@ -1446,7 +1446,7 @@ namespace StockMarket
             const T& operator()() const { return ncfi; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ncfo
     {
@@ -1462,7 +1462,7 @@ namespace StockMarket
             const T& operator()() const { return ncfo; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ncfx
     {
@@ -1478,7 +1478,7 @@ namespace StockMarket
             const T& operator()() const { return ncfx; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Netinc
     {
@@ -1494,7 +1494,7 @@ namespace StockMarket
             const T& operator()() const { return netinc; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct NetIncComStock
     {
@@ -1510,7 +1510,7 @@ namespace StockMarket
             const T& operator()() const { return netIncComStock; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct NetIncDiscOps
     {
@@ -1526,7 +1526,7 @@ namespace StockMarket
             const T& operator()() const { return netIncDiscOps; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct NetMargin
     {
@@ -1542,7 +1542,7 @@ namespace StockMarket
             const T& operator()() const { return netMargin; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct NonControllingInterests
     {
@@ -1558,7 +1558,7 @@ namespace StockMarket
             const T& operator()() const { return nonControllingInterests; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Opex
     {
@@ -1574,7 +1574,7 @@ namespace StockMarket
             const T& operator()() const { return opex; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Opinc
     {
@@ -1590,7 +1590,7 @@ namespace StockMarket
             const T& operator()() const { return opinc; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct OpMargin
     {
@@ -1606,7 +1606,7 @@ namespace StockMarket
             const T& operator()() const { return opMargin; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct PayDiv
     {
@@ -1622,7 +1622,7 @@ namespace StockMarket
             const T& operator()() const { return payDiv; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct PbRatio
     {
@@ -1638,7 +1638,7 @@ namespace StockMarket
             const T& operator()() const { return pbRatio; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct PeRatio
     {
@@ -1654,7 +1654,7 @@ namespace StockMarket
             const T& operator()() const { return peRatio; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct PiotroskiFScore
     {
@@ -1670,7 +1670,7 @@ namespace StockMarket
             const T& operator()() const { return piotroskiFScore; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Ppeq
     {
@@ -1686,7 +1686,7 @@ namespace StockMarket
             const T& operator()() const { return ppeq; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct PrefDVDs
     {
@@ -1702,7 +1702,7 @@ namespace StockMarket
             const T& operator()() const { return prefDVDs; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct ProfitMargin
     {
@@ -1718,7 +1718,7 @@ namespace StockMarket
             const T& operator()() const { return profitMargin; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct RetainedEarnings
     {
@@ -1734,7 +1734,7 @@ namespace StockMarket
             const T& operator()() const { return retainedEarnings; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Revenue
     {
@@ -1750,7 +1750,7 @@ namespace StockMarket
             const T& operator()() const { return revenue; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct RevenueQoQ
     {
@@ -1766,7 +1766,7 @@ namespace StockMarket
             const T& operator()() const { return revenueQoQ; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Rnd
     {
@@ -1782,7 +1782,7 @@ namespace StockMarket
             const T& operator()() const { return rnd; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Roa
     {
@@ -1798,7 +1798,7 @@ namespace StockMarket
             const T& operator()() const { return roa; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Roe
     {
@@ -1814,7 +1814,7 @@ namespace StockMarket
             const T& operator()() const { return roe; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Rps
     {
@@ -1830,7 +1830,7 @@ namespace StockMarket
             const T& operator()() const { return rps; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Sbcomp
     {
@@ -1846,7 +1846,7 @@ namespace StockMarket
             const T& operator()() const { return sbcomp; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Sga
     {
@@ -1862,7 +1862,7 @@ namespace StockMarket
             const T& operator()() const { return sga; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct ShareFactor
     {
@@ -1878,7 +1878,7 @@ namespace StockMarket
             const T& operator()() const { return shareFactor; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct SharesBasic
     {
@@ -1894,7 +1894,7 @@ namespace StockMarket
             const T& operator()() const { return sharesBasic; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct Shareswa
     {
@@ -1910,7 +1910,7 @@ namespace StockMarket
             const T& operator()() const { return shareswa; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct ShareswaDil
     {
@@ -1926,7 +1926,7 @@ namespace StockMarket
             const T& operator()() const { return shareswaDil; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct TaxAssets
     {
@@ -1942,7 +1942,7 @@ namespace StockMarket
             const T& operator()() const { return taxAssets; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct TaxExp
     {
@@ -1958,7 +1958,7 @@ namespace StockMarket
             const T& operator()() const { return taxExp; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct TaxLiabilities
     {
@@ -1974,7 +1974,7 @@ namespace StockMarket
             const T& operator()() const { return taxLiabilities; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct TotalAssets
     {
@@ -1990,7 +1990,7 @@ namespace StockMarket
             const T& operator()() const { return totalAssets; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct TotalLiabilities
     {
@@ -2006,7 +2006,7 @@ namespace StockMarket
             const T& operator()() const { return totalLiabilities; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
     struct TrailingPEG1Y
     {
@@ -2022,7 +2022,7 @@ namespace StockMarket
             const T& operator()() const { return trailingPEG1Y; }
           };
       };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
+      using _traits = sqlpp::make_traits<sqlpp::floating_point, sqlpp::tag::can_be_null>;
     };
   } // namespace TiingoCompanyFinancialState_
 

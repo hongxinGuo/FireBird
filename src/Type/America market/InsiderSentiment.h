@@ -1,9 +1,5 @@
 #pragma once
 
-#include"SetInsiderSentiment.h"
-
-#include<memory>
-
 class CInsiderSentiment final {
 public:
 	CInsiderSentiment();
@@ -13,12 +9,6 @@ public:
 	CInsiderSentiment& operator=(CInsiderSentiment&&) noexcept;
 
 	~CInsiderSentiment() = default;
-
-	void Append(CSetInsiderSentiment& setInsiderTransaction) const;
-	void Update(CSetInsiderSentiment& setInsiderTransaction) const;
-
-	void Save(CSetInsiderSentiment& setInsiderTransaction) const;
-	void Load(const CSetInsiderSentiment& setInsiderTransaction);
 
 public:
 	string m_strSymbol;

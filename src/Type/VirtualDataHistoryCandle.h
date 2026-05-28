@@ -8,9 +8,6 @@
 
 #include "DayLine.h"
 #include "VirtualHistoryCandle.h"
-#include "VirtualSetHistoryCandle.h"
-
-using std::atomic_bool;
 
 class CVirtualDataHistoryCandle {
 public:

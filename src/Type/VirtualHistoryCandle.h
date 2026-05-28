@@ -7,10 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualSetHistoryCandle.h"
-
-#include<memory>
-
 class CVirtualHistoryCandle {
 public:
 	// 生成、复制、移动构造函数和赋值运算符，以及析构函数。都是浅拷贝，因为成员变量都是基本类型或者string类型。
@@ -31,8 +27,6 @@ public:
 	void SetRatio(int ratio) { m_ratio = ratio; }
 
 	void AdjustByFactor(double dFactor); // 按照复权因子调整数据
-
-	void CalculateRSLogarithm1(double dRS);
 
 	bool IsActive() const;
 

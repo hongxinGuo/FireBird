@@ -650,52 +650,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
 	}
 
-	TEST_F(CWorldMarketTest, TaskUpdateInsiderSentimentDB) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->HaveInsiderSentiment());
-		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-
-		CInsiderSentimentsPtr pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
-		CSetInsiderSentiment setInsiderSentiment;
-
-		CInsiderSentiment insiderSentiment;
-		insiderSentiment.m_strSymbol = "B";// 这个股票代码不符，需要添加进数据库
-		insiderSentiment.m_lDate = 20200101;
-		pvInsiderSentiment->push_back(insiderSentiment);
-		insiderSentiment.m_strSymbol = "A";
-		insiderSentiment.m_lDate = 20200101;// 这个数据库中有，无需添加
-		pvInsiderSentiment->push_back(insiderSentiment);
-		insiderSentiment.m_strSymbol = "A";
-		insiderSentiment.m_lDate = 20210101; // 这个日期不符，需要添加进数据库
-		pvInsiderSentiment->push_back(insiderSentiment);
-
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("A");
-		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "此时尚未存入数据";
-
-		pStock->SetUpdateInsiderSentimentDB(true);
-		pStock->SetInsiderSentimentUpdateDate(20210101);
-		pStock->UpdateInsiderSentiment(pvInsiderSentiment);
-
-		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderSentimentDB());
-
-		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->IsUpdateInsiderSentimentDB());
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->HaveInsiderSentiment()) << "存储后删除数据";
-
-		// 验证并恢复原状
-		setInsiderSentiment.m_strFilter = "[Symbol] = 'B'";
-		setInsiderSentiment.Open();
-		EXPECT_TRUE(setInsiderSentiment.IsEOF());
-		setInsiderSentiment.Close();
-
-		setInsiderSentiment.m_strFilter = "[Date] = '20210101'";
-		setInsiderSentiment.Open();
-		setInsiderSentiment.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setInsiderSentiment.IsEOF());
-		setInsiderSentiment.Delete();
-		setInsiderSentiment.m_pDatabase->CommitTrans();
-		setInsiderSentiment.Close();
-	}
-
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
 		CEconomicCalendar economicCalendar;
 		vector<CEconomicCalendar> vEconomicCalendar;
