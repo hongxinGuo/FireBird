@@ -93,6 +93,8 @@ void CContainerChinaStock::UpdateProfileDB() {
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
 
+			//auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange,t.DisplaySymbol, t.IPOStatus, t.UpdateDate);
+
 			for (size_t i = 0; i < m_vStock.size(); ++i) {
 				const auto& pStock = m_vStock[i];
 				if (pStock->IsUpdateProfileDB()) {
@@ -349,21 +351,22 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-//
-// 处理当前交易日的实时数据，生成日线各基本数据（相对强度、进攻性买卖盘）。
-//
-// 只有下载完日线历史数据后，方可执行处理实时数据，否则可能误判股票代码存在与否。
-//
-// long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
-//
+///
+/// 处理当前交易日的实时数据，生成日线各基本数据（相对强度、进攻性买卖盘）。
+///
+/// 只有下载完日线历史数据后，方可执行处理实时数据，否则可能误判股票代码存在与否。
+///
+/// long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
+///
+/// Note: 需要使用大宗插入模式，否则出错
 //////////////////////////////////////////////////////////////////////////////////
 long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	long iCount = 0;
-
+	int ratio = 1000; // 由于日线历史数据是以整数形式存储的，故而这里要除以一个比例因子才能得到正确的价格数据。
 	string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的实时数据";
 	gl_systemMessage.PushInformationMessage(s);
 
-	DeleteDayLineBasicInfo(lCurrentTradeDay);
+	DeleteDayLine(lCurrentTradeDay);
 
 	// 存储当前交易日的数据
 	using namespace StockMarket;
@@ -371,7 +374,11 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
+	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
+	                                           t.LastClose, t.Open, t.High, t.Low, t.Close,
+	                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
 	size_t lSize = m_vStock.size();
+	int nValue = 0;
 	for (size_t l = 0; l < lSize; l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
@@ -380,25 +387,28 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 			pStock->SetDayLineEndDate(lCurrentTradeDay);
 			pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
 			pStock->SetUpdateProfileDB(true);
-			db(sqlpp::insert_into(t).set(
+
+			multi_insert.values.add(
 				t.Date = lCurrentTradeDay,
-				//t.Exchange = pStock->GetExchangeCode(),
+				t.Exchange = pStock->GetExchangeCode(),
 				t.Symbol = pStock->GetSymbol(),
-				t.LastClose = pStock->GetLastClose(),
-				t.Open = pStock->GetOpen(),
-				t.High = pStock->GetHigh(),
-				t.Low = pStock->GetLow(),
-				t.Close = pStock->GetNew(),
-				t.Volume = pStock->GetVolume(),
-				t.Amount = pStock->GetAmount()
-				//t.UpAndDown = pStock->GetUpDown(),
-				//t.UpDownRate = pStock->GetUpDownRate(),
-				//t.ChangeHandRate = 0.0,
-				//t.CurrentValue = pStock->GetCurrentValue(),
-				//t.TotalValue = pStock->GetTotalValue()
-			));
+				t.LastClose = static_cast<double>(pStock->GetLastClose()) / ratio,
+				t.Open = static_cast<double>(pStock->GetOpen()) / ratio,
+				t.High = static_cast<double>(pStock->GetHigh()) / ratio,
+				t.Low = static_cast<double>(pStock->GetLow()) / ratio,
+				t.Close = static_cast<double>(pStock->GetNew()) / ratio,
+				t.Volume = static_cast<double>(pStock->GetVolume()),
+				t.Amount = static_cast<double>(pStock->GetAmount()),
+				t.UpAndDown = static_cast<double>(pStock->GetUpDown()) / ratio,
+				t.UpDownRate = pStock->GetUpDownRate() / ratio,
+				t.ChangeHandRate = 0.0,
+				t.CurrentValue = static_cast<double>(pStock->GetCurrentValue()),
+				t.TotalValue = static_cast<double>(pStock->GetTotalValue())
+			);
+			nValue++;
 		}
 	}
+	if (nValue > 0) db(multi_insert);
 	tx.commit();
 
 	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的日线数据已生成";
@@ -410,7 +420,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	return iCount;
 }
 
-void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
+void CContainerChinaStock::DeleteDayLine(long lDate) {
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();

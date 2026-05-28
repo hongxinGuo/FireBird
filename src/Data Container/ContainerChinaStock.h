@@ -49,7 +49,7 @@ public:
 	[[nodiscard]] static double GetUpDownRate(const string& strClose, const string& strLastClose) noexcept;
 
 private:
-	static void DeleteDayLineBasicInfo(long lDate);
+	static void DeleteDayLine(long lDate);
 
 protected:
 	size_t m_lLoadedStock; // 本次装载的股票总数

@@ -43,17 +43,22 @@ void CContainerFinnhubCountry::UpdateDB() {
 		const auto& t = FinnhubCountryList{};
 		auto db = GetStockMarketDB();
 		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Code2, t.Code3, t.CodeNo,
+		                                           t.Country, t.Currency, t.CurrencyCode);
+		int nValues = 0;
 		for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
 			const CCountry& country = m_vCountry.at(l);
-			db(insert_into(t).set(
+			multi_insert.values.add(
 				t.Code2 = country.m_strCode2,
 				t.Code3 = country.m_strCode3,
 				t.CodeNo = country.m_strCodeNo,
 				t.Country = country.m_strCountry,
 				t.Currency = country.m_strCurrency,
 				t.CurrencyCode = country.m_strCurrencyCode
-			));
+			);
+			nValues++;
 		}
+		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	}
 }

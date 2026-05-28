@@ -60,21 +60,25 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 	auto tx = start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto multi_insert = insert_into(t).columns(t.dataCode, t.name, t.description, t.statementType, t.units);
 	for (const auto& row : result) {
 		mapDefinition[row.dataCode] = mapDefinition.size();
 	}
 
+	int nValues = 0;
 	for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
 		if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
-			db(sqlpp::insert_into(t).set(
+			multi_insert.values.add(
 				t.dataCode = tiingoFundamentalDefinition.m_strDataCode,
 				t.name = tiingoFundamentalDefinition.m_strName.c_str(),
 				t.description = tiingoFundamentalDefinition.m_strDescription.c_str(),
 				t.statementType = tiingoFundamentalDefinition.m_strStatementType.c_str(),
 				t.units = tiingoFundamentalDefinition.m_strUnits.c_str()
-			));
+			);
+			nValues++;
 		}
 	}
+	if (nValues > 0) db(multi_insert);
 	tx.commit();
 	m_fUpdated = false;
 

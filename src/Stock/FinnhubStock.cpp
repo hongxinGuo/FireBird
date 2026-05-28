@@ -188,19 +188,24 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		CInsiderTransaction insiderTransaction;
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Symbol, t.PersonName, t.Share, t.FilingDate, t.TransactionDate,
+		                                           t.TransactionCode, t.ShareChange, t.TransactionPrice);
+
+		int nValues = 0;
 		for (size_t i = 0; i < m_vInsiderTransaction.size(); i++) {
 			insiderTransaction = m_vInsiderTransaction.at(i);
 			if (insiderTransaction.m_lTransactionDate > m_lInsiderTransactionEndDate) {
-				db(sqlpp::insert_into(t).set(
+				multi_insert.values.add(
 					t.Symbol = insiderTransaction.m_strSymbol,
 					t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
-					t.Share = insiderTransaction.m_lShare, // 交易股数有可能超过int的范围，故而使用INT64。
+					t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用INT64。
 					t.FilingDate = insiderTransaction.m_lFilingDate,
 					t.TransactionDate = insiderTransaction.m_lTransactionDate,
 					t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
-					t.ShareChange = insiderTransaction.m_lShareChange,// 交易股数有可能超过int的范围，故而使用INT64。
+					t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用INT64。
 					t.TransactionPrice = insiderTransaction.m_dTransactionPrice
-				));
+				);
+				nValues++;
 			}
 			else {
 				auto result2 = db(select(all_of(t)).from(t).where(
@@ -210,18 +215,22 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 					&& t.TransactionCode == insiderTransaction.m_strTransactionCode.c_str()));
 				auto rows2 = result2.size();
 				if (rows2 == 0) {
-					db(sqlpp::insert_into(t).set(
+					multi_insert.values.add(
 						t.Symbol = insiderTransaction.m_strSymbol,
 						t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
-						t.Share = insiderTransaction.m_lShare, // 交易股数有可能超过int的范围，故而使用INT64。
-						t.ShareChange = insiderTransaction.m_lShareChange,// 交易股数有可能超过int的范围，故而使用INT64。
+						t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用INT64。
 						t.FilingDate = insiderTransaction.m_lFilingDate,
 						t.TransactionDate = insiderTransaction.m_lTransactionDate,
 						t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
+						t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用INT64。
 						t.TransactionPrice = insiderTransaction.m_dTransactionPrice
-					));
+					);
+					nValues++;
 				}
 			}
+		}
+		if (nValues > 0) {
+			db(multi_insert);
 		}
 		tx.commit();
 	} catch (CException& e) {
@@ -298,15 +307,19 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	const auto& t = FinnhubStockEstimatesEpsSurprise{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date, t.Actual, t.Estimate);
 	for (const auto& EPSSurprise : m_vEPSSurprise) {
 		if (EPSSurprise.m_lDate > lLastEPSSurpriseUpdateDate) {
-			db(sqlpp::insert_into(t).set(
+			multi_insert.values.add(
 				t.Symbol = EPSSurprise.m_strSymbol,
 				t.Date = EPSSurprise.m_lDate,
 				t.Actual = EPSSurprise.m_dActual,
 				t.Estimate = EPSSurprise.m_dEstimate
-			));
+			);
 		}
+	}
+	if (m_vEPSSurprise.size() > 0) {
+		db(multi_insert);
 	}
 	tx.commit();
 	SetLastEPSSurpriseUpdateDate(m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate);
@@ -329,6 +342,8 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		const auto& t = FinnhubStockSecFilings{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.symbol, t.accessNumber, t.cik, t.filedDate,
+		                                           t.acceptedDate, t.filingURL, t.reportURL, t.form);
 
 		auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
 
@@ -336,7 +351,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 			SECFilings = m_vSECFilings.at(lCurrentPos);
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) > 0) continue;
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) < 0) {	// 没有这个AccessNumber的SEC Filings？
-				db(sqlpp::insert_into(t).set(
+				multi_insert.values.add(
 					t.symbol = m_strSymbol,
 					t.accessNumber = SECFilings.m_strAccessNumber,
 					t.cik = SECFilings.m_iCIK,
@@ -345,13 +360,13 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 					t.filingURL = SECFilings.m_strFilingURL,
 					t.reportURL = SECFilings.m_strReportURL,
 					t.form = SECFilings.m_strForm
-				));
+				);
 			}
 			if (++lCurrentPos == lSize) break;
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
 			SECFilings = m_vSECFilings.at(i);
-			db(sqlpp::insert_into(t).set(
+			multi_insert.values.add(
 				t.symbol = m_strSymbol,
 				t.accessNumber = SECFilings.m_strAccessNumber,
 				t.cik = SECFilings.m_iCIK,
@@ -360,7 +375,10 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 				t.filingURL = SECFilings.m_strFilingURL,
 				t.reportURL = SECFilings.m_strReportURL,
 				t.form = SECFilings.m_strForm
-			));
+			);
+		}
+		if (m_vSECFilings.size() > 0) {
+			db(multi_insert);
 		}
 		tx.commit();
 	}

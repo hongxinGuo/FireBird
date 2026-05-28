@@ -75,8 +75,11 @@ bool CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 	}
 
 	// helper to insert one CTiingoCandleLine into DB via sqlpp11
+	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol, t.LastClose, t.Open,
+	                                           t.High, t.Low, t.Close, t.Volume, t.Amount, t.Dividend, t.SplitFactor,
+	                                           t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
 	auto insertCandle = [&](const CVirtualHistoryCandle* pC) {
-		db(insert_into(t).set(
+		multi_insert.values.add(
 			t.Date = pC->GetDate(),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
@@ -85,20 +88,20 @@ bool CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 			t.High = static_cast<double>(pC->GetHigh()) / ratio,
 			t.Low = static_cast<double>(pC->GetLow()) / ratio,
 			t.Close = static_cast<double>(pC->GetClose()) / ratio,
-			t.SplitFactor = pC->GetSplitFactor(),
+			t.Volume = static_cast<double>(pC->GetVolume()),
+			t.Amount = static_cast<double>(pC->GetAmount()),
 			t.Dividend = pC->GetDividend(),
+			t.SplitFactor = pC->GetSplitFactor(),
 			t.UpAndDown = pC->GetUpDown(), // note: field name in DB was UpAndDown in original; match whatever sqlpp table defines
-			t.Volume = pC->GetVolume(),
-			t.Amount = pC->GetAmount(),
 			t.UpDownRate = pC->GetUpDownRate(),
 			t.ChangeHandRate = pC->GetChangeHandRate(),
-			t.TotalValue = pC->GetTotalValue(),
-			t.CurrentValue = pC->GetCurrentValue()
-		));
+			t.CurrentValue = static_cast<double>(pC->GetCurrentValue()),
+			t.TotalValue = static_cast<double>(pC->GetTotalValue())
+		);
 	};
 
 	const size_t lSize = Size();
-
+	int nValues = 0;
 	if (!vOldHistoryCandle.empty()) { // 有旧数据 -> 只插入缺失或更早的条目
 		size_t lCurrentPos = 0;
 		for (size_t i = 0; i < lSize; ++i) {
@@ -107,6 +110,7 @@ bool CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 			if (pHistoryCandle->GetDate() < vOldHistoryCandle.front().GetDate()) {
 				// 整体更早的新数据：直接插入
 				insertCandle(pHistoryCandle);
+				nValues++;
 			}
 			else {
 				// 找到在旧数据中的位置（或越过）
@@ -119,12 +123,14 @@ bool CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 					// 如果当前旧数据的日期大于待插入的日期，说明旧数据集中缺失该日期 -> 插入
 					if (vOldHistoryCandle.at(lCurrentPos).GetDate() > pHistoryCandle->GetDate()) {
 						insertCandle(pHistoryCandle);
+						nValues++;
 					}
 					// 否则数据库已有该日期，不插入
 				}
 				else {
 					// 已越过旧数据末尾，插入剩余所有新数据
 					insertCandle(pHistoryCandle);
+					nValues++;
 				}
 			}
 		}
@@ -133,8 +139,10 @@ bool CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 		for (size_t i = 0; i < lSize; ++i) {
 			const CVirtualHistoryCandle* pHistoryCandle = GetData(i);
 			insertCandle(pHistoryCandle);
+			nValues++;
 		}
 	}
+	if (nValues > 0) db(multi_insert);
 	tx.commit();
 
 	return true;

@@ -26,10 +26,15 @@ void CProductIndexNasdaq100Stocks::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		const auto& t = IndexNasdaq100{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Symbol);
 
 		db(remove_from(t).unconditionally());
+
 		for (auto& s : gl_vNasdaq100Stocks) {
-			db(insert_into(t).set(t.Symbol = s));
+			multi_insert.values.add(t.Symbol = s);
+		}
+		if (gl_vNasdaq100Stocks.size() > 0) {
+			db(multi_insert);
 		}
 		tx.commit();
 	}

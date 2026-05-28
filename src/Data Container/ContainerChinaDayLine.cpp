@@ -19,28 +19,31 @@ bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
+	                                           t.LastClose, t.Open, t.High, t.Low, t.Close, t.Volume, t.Amount, t.Dividend, t.SplitFactor,
+	                                           t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
 
 	// Helper: insert a single candle into DB (ratio applied inside)
 	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
-		db(insert_into(t).set(
+		multi_insert.values.add(
 			t.Date = pCandle->GetDate(),
 			t.Exchange = pCandle->GetExchange(),
 			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
+			t.Open = static_cast<double>(pCandle->GetOpen()) / m_ratio,
 			t.High = static_cast<double>(pCandle->GetHigh()) / m_ratio,
 			t.Low = static_cast<double>(pCandle->GetLow()) / m_ratio,
-			t.Open = static_cast<double>(pCandle->GetOpen()) / m_ratio,
 			t.Close = static_cast<double>(pCandle->GetClose()) / m_ratio,
+			t.Volume = static_cast<double>(pCandle->GetVolume()),
+			t.Amount = static_cast<double>(pCandle->GetAmount()),
 			t.Dividend = pCandle->GetDividend(),
 			t.SplitFactor = pCandle->GetSplitFactor(),
-			t.Volume = pCandle->GetVolume(),
-			t.Amount = pCandle->GetAmount(),
 			t.UpAndDown = pCandle->GetUpDown(),
 			t.UpDownRate = pCandle->GetUpDownRate(),
 			t.ChangeHandRate = pCandle->GetChangeHandRate(),
-			t.TotalValue = pCandle->GetTotalValue(),
-			t.CurrentValue = pCandle->GetCurrentValue()
-		));
+			t.TotalValue = static_cast<double>(pCandle->GetTotalValue()),
+			t.CurrentValue = static_cast<double>(pCandle->GetCurrentValue())
+		);
 	};
 
 	size_t lSize = Size();
@@ -48,6 +51,7 @@ bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 		auto pCandle = GetData(i);
 		insertCandle(pCandle);
 	}
+	if (lSize > 0) db(multi_insert);
 	tx.commit();
 
 	return true;
@@ -164,27 +168,31 @@ bool CContainerChinaDayLine::UpdateDB(const string& strStockSymbol) {
 		}
 	};
 
+	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
+	                                           t.LastClose, t.Open, t.High, t.Low, t.Close, t.Volume, t.Amount, t.Dividend, t.SplitFactor,
+	                                           t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
+
 	// Helper: insert a single candle into DB (ratio applied inside)
 	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
-		db(insert_into(t).set(
+		multi_insert.values.add(
 			t.Date = pCandle->GetDate(),
 			t.Exchange = pCandle->GetExchange(),
 			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
+			t.Open = static_cast<double>(pCandle->GetOpen()) / m_ratio,
 			t.High = static_cast<double>(pCandle->GetHigh()) / m_ratio,
 			t.Low = static_cast<double>(pCandle->GetLow()) / m_ratio,
-			t.Open = static_cast<double>(pCandle->GetOpen()) / m_ratio,
 			t.Close = static_cast<double>(pCandle->GetClose()) / m_ratio,
+			t.Volume = static_cast<double>(pCandle->GetVolume()),
+			t.Amount = static_cast<double>(pCandle->GetAmount()),
 			t.Dividend = pCandle->GetDividend(),
 			t.SplitFactor = pCandle->GetSplitFactor(),
-			t.Volume = pCandle->GetVolume(),
-			t.Amount = pCandle->GetAmount(),
 			t.UpAndDown = pCandle->GetUpDown(),
 			t.UpDownRate = pCandle->GetUpDownRate(),
 			t.ChangeHandRate = pCandle->GetChangeHandRate(),
-			t.TotalValue = pCandle->GetTotalValue(),
-			t.CurrentValue = pCandle->GetCurrentValue()
-		));
+			t.TotalValue = static_cast<double>(pCandle->GetTotalValue()),
+			t.CurrentValue = static_cast<double>(pCandle->GetCurrentValue())
+		);
 	};
 
 	if (!strStockSymbol.empty()) {
@@ -194,12 +202,12 @@ bool CContainerChinaDayLine::UpdateDB(const string& strStockSymbol) {
 	// Insert missing/new data.
 	long lSizeOfOldDayLine = static_cast<long>(vOldHistoryCandle.size());
 	const size_t lSize = Size();
-
+	int nValues = 0;
 	try {
 		if (lSizeOfOldDayLine > 0) {
 			long lCurrentPos = 0;
 			for (size_t i = 0; i < lSize; ++i) {
-				CVirtualHistoryCandle* pCandle = GetData(i);
+				const CVirtualHistoryCandle* pCandle = GetData(i);
 				const auto newDate = pCandle->GetDate();
 				if (newDate < vOldHistoryCandle.at(0).GetDate()) {
 					// insert full record (this is before existing DB range)
@@ -211,6 +219,7 @@ bool CContainerChinaDayLine::UpdateDB(const string& strStockSymbol) {
 					if (lCurrentPos < lSizeOfOldDayLine) {
 						if (vOldHistoryCandle.at(lCurrentPos).GetDate() > newDate) {
 							insertCandle(pCandle);
+							++nValues;
 							fNeedUpdate = true;
 						}
 						// else dates equal -> skip (duplicate)
@@ -218,6 +227,8 @@ bool CContainerChinaDayLine::UpdateDB(const string& strStockSymbol) {
 					else {
 						// past end of old data -> insert
 						insertCandle(pCandle);
+						++nValues;
+
 						fNeedUpdate = true;
 					}
 				}
@@ -228,9 +239,12 @@ bool CContainerChinaDayLine::UpdateDB(const string& strStockSymbol) {
 			for (size_t i = 0; i < lSize; ++i) {
 				auto pCandle = GetData(i);
 				insertCandle(pCandle);
+				++nValues;
+
 				fNeedUpdate = true;
 			}
 		}
+		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (...) {
 		tx.rollback();

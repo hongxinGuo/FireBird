@@ -88,6 +88,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Ticker, t.BaseCurrency, t.QuoteCurrency, t.Name, t.Description, t.UpdateDate);
 
 		// 1) 更新或删除数据库中已有但容器中不存在的记录
 		auto rows = db(select(all_of(t)).from(t).unconditionally().order_by(t.Ticker.asc()));
@@ -113,21 +114,24 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 		}
 
 		// 2) 插入容器中新添加或标记为需写入的记录
+		int nValues = 0;
 		for (size_t l = 0; l < m_vStock.size(); l++) {
 			const CTiingoCryptoPtr pCrypto = GetCrypto(l);
 			ASSERT(pCrypto != nullptr);
 			if (pCrypto->IsUpdateProfileDB()) {
-				db(insert_into(t).set(
+				multi_insert.values.add(
 					t.Ticker = pCrypto->GetSymbol(),
+					t.BaseCurrency = pCrypto->m_strBaseCurrency,
+					t.QuoteCurrency = pCrypto->m_strQuoteCurrency,
 					t.Name = pCrypto->m_strName,
 					t.Description = pCrypto->GetDescription(),
-					t.BaseCurrency = pCrypto->m_strBaseCurrency,
-					t.QuoteCurrency = pCrypto->m_strQuoteCurrency
-				));
+					t.UpdateDate = pCrypto->GetJsonUpdateDate().dump()
+				);
+				nValues++;
 				pCrypto->SetUpdateProfileDB(false);
 			}
 		}
-
+		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (CException& e) {
 		ReportInformation(e);

@@ -716,6 +716,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	const auto& t = IndexNasdaq100_200MaUpdownRate{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Date, t.Rate);
 
 	auto result = db(select(all_of(t)).from(t).unconditionally());
 	int rows = result.size();
@@ -727,10 +728,15 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 		lCurrentDate = row.Date;
 	}
 
+	int nValues = 0;
 	for (auto upDownRate : vUpDownRate) {
 		if (upDownRate.lDate > lCurrentDate) {
-			db(sqlpp::insert_into(t).set(t.Date = upDownRate.lDate, t.Rate = upDownRate.Rate));
+			multi_insert.values.add(t.Date = upDownRate.lDate, t.Rate = upDownRate.Rate);
+			nValues++;
 		}
+	}
+	if (nValues > 0) {
+		db(multi_insert);
 	}
 	tx.commit();
 }

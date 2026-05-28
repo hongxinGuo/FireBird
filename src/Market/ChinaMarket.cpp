@@ -1166,7 +1166,7 @@ void CChinaMarket::UpdateOptionDB() {
 		auto tx = start_transaction(db);
 
 		auto result = db(select(all_of(t)).from(t).unconditionally());
-		if (result.size<int>() == 0) {
+		if (result.size() == 0) {
 			db(sqlpp::insert_into(t).set(
 				t.LastLoginDate = GetMarketDate(),
 				t.LastLoginTime = GetMarketTime()
@@ -1254,7 +1254,7 @@ void CChinaMarket::LoadChosenStockDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).unconditionally());
-	auto rows = result.size<int>();
+	auto rows = result.size();
 
 	for (const auto& row : result) {
 		CChinaStockPtr pStock = nullptr;

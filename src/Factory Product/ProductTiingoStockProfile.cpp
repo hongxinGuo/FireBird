@@ -245,13 +245,20 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 	const auto& t = TiingoStockNewSymbol{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
 
 	db(sqlpp::remove_from(t).unconditionally());
-
+	int nValues = 0;
 	for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
-		db(sqlpp::insert_into(t).set(t.Date = gl_pWorldMarket->GetMarketDate(), t.Symbol = pStock->GetSymbol()));
+		multi_insert.values.add(
+			t.Symbol = pStock->GetSymbol(),
+			t.Date = (int)(gl_pWorldMarket->GetMarketDate())
+		);
+		++nValues;
 	}
+	if (nValues > 0) db(multi_insert);
+	tx.commit();
 }
 
 void CProductTiingoStockProfile::SaveDelistedSymbol() {
@@ -259,15 +266,15 @@ void CProductTiingoStockProfile::SaveDelistedSymbol() {
 	const auto& t = TiingoStockDelistedSymbol{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
 
 	db(sqlpp::remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate()));
-
+	int nValues = 0;
 	for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
-		db(insert_into(t).set(
-			t.Date = gl_pWorldMarket->GetMarketDate(),
-			t.Symbol = pStock->GetSymbol()
-		)); // 注意：如果没有任何退市股票，则至少插入一条记录，保证每天都有记录，以便后续查询。
+		multi_insert.values.add(t.Symbol = pStock->GetSymbol(), t.Date = gl_pWorldMarket->GetMarketDate());
+		++nValues;
 	}
+	if (nValues > 0) db(multi_insert);
 	tx.commit();
 }

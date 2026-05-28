@@ -54,11 +54,13 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 	const auto& t = FinnhubEconomicCalendar{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Time, t.Country, t.Event,
+	                                           t.Impact, t.Actual, t.Estimate, t.Prev, t.Unit);
 
 	if (m_lLastTotalEconomicCalendar >= m_vEconomicCalendar.size()) return false;
-
+	int nValues = 0;
 	for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-		db(insert_into(t).set(
+		multi_insert.values.add(
 			t.Time = m_vEconomicCalendar.at(l).m_strTime,
 			t.Country = m_vEconomicCalendar.at(l).m_strCountry.c_str(),
 			t.Event = m_vEconomicCalendar.at(l).m_strEvent.c_str(),
@@ -67,8 +69,10 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 			t.Estimate = m_vEconomicCalendar.at(l).m_dEstimate,
 			t.Prev = m_vEconomicCalendar.at(l).m_dPrev,
 			t.Unit = m_vEconomicCalendar.at(l).m_strUnit.c_str()
-		));
+		);
+		nValues++;
 	}
+	if (nValues > 0) db(multi_insert);
 	tx.commit();
 
 	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();

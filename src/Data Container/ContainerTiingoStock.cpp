@@ -206,14 +206,17 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol, t.LastClose, t.Open,
+		                                           t.High, t.Low, t.Close, t.Volume, t.Amount, t.Dividend, t.SplitFactor,
+		                                           t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
 
+		int nValues = 0;
 		for (size_t i = 0; i < lSize; i++) {
 			auto pTiingoStock = GetStock(i);
 			if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
 				// 将内部整数/单位值转换为数据库存储的浮点值（与 LoadDayLine 中的乘比率相反）
 				const double ratio = static_cast<double>(pTiingoStock->GetRatio());
-
-				db(insert_into(t).set(
+				multi_insert.values.add(
 					t.Date = lDate,
 					t.Exchange = pTiingoStock->GetExchangeCode(),
 					t.Symbol = pTiingoStock->GetSymbol(),
@@ -222,23 +225,23 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 					t.High = static_cast<double>(pTiingoStock->GetHigh()) / ratio,
 					t.Low = static_cast<double>(pTiingoStock->GetLow()) / ratio,
 					t.Close = static_cast<double>(pTiingoStock->GetNew()) / ratio,
-					t.Volume = pTiingoStock->GetVolume(),
-					t.Amount = pTiingoStock->GetAmount(),
-					t.Dividend = pTiingoStock->GetDividend(),
-					t.SplitFactor = pTiingoStock->GetSplitFactor(),
+					t.Volume = static_cast<double>(pTiingoStock->GetVolume()),
+					t.Amount = static_cast<double>(pTiingoStock->GetAmount()),
+					t.Dividend = static_cast<double>(pTiingoStock->GetDividend()),
+					t.SplitFactor = static_cast<double>(pTiingoStock->GetSplitFactor()),
 					t.UpAndDown = static_cast<double>(pTiingoStock->GetUpDown()) / ratio,
-					t.UpDownRate = pTiingoStock->GetUpDownRate(),
-					t.ChangeHandRate = pTiingoStock->GetChangeHandRate(),
-					t.TotalValue = pTiingoStock->GetTotalValue(),
-					t.CurrentValue = pTiingoStock->GetCurrentValue()
-				));
-
+					t.UpDownRate = static_cast<double>(pTiingoStock->GetUpDownRate()),
+					t.ChangeHandRate = static_cast<double>(pTiingoStock->GetChangeHandRate()),
+					t.CurrentValue = static_cast<double>(pTiingoStock->GetCurrentValue()),
+					t.TotalValue = static_cast<double>(pTiingoStock->GetTotalValue())
+				);
+				nValues++;
 				// 保持原有对象状态更新
 				pTiingoStock->SetDayLineEndDate(lDate);
 				pTiingoStock->SetUpdateProfileDB(true);
 			}
 		}
-
+		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (const std::exception& ex) {
 		gl_systemMessage.PushErrorMessage(fmt::format("BuildDayLine(sqlpp11) failed: {}", ex.what()));
@@ -359,21 +362,25 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 	const auto& t = TiingoStock52WeekLow{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Symbol, t.Exchange, t.Date);
 
+	int Values = 0;
 	for (size_t i = 0; i < lSize; i++) {
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 		const CTiingoStockPtr pStock = GetStock(i);
 		if (pStock->IsUpdate52WeekHighLowDB()) {
 			auto Size = pStock->Get52WeekLowSize();
 			for (size_t index = 0; index < Size; index++) {
-				db(insert_into(t).set(
+				multi_insert.values.add(
 					t.Symbol = pStock->GetSymbol(),
 					t.Exchange = pStock->GetExchangeCode(),
 					t.Date = pStock->Get52WeekLowDate(index)
-				));
+				);
+				Values++;
 			}
 		}
 	}
+	if (Values > 0) db(multi_insert);
 	tx.commit();
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
@@ -402,16 +409,19 @@ void CContainerTiingoStock::TaskCalculate() {
 	const auto& t = TiingoStockCurrentTrace{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Date, t.Symbol, t.SICCode);
+
 	db(remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate())); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
-		db(sqlpp::insert_into(t).set(
+		multi_insert.values.add(
 			t.Date = gl_pWorldMarket->GetMarketDate(),
 			t.Symbol = pStock->GetSymbol(),
 			t.SICCode = pStock->GetSicCode()
-		));
+		);
 	}
+	if (vPos.size() > 0) db(multi_insert);
 	tx.commit();
 
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");

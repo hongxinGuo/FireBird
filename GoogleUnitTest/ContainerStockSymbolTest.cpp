@@ -131,7 +131,9 @@ namespace FireBirdTest {
 	TEST_F(CDataStockSymbolTest, TestUpdateStockSectionDB) {
 		EXPECT_FALSE(s_pDataStockSymbol->IsStockSectionActive(800));
 		s_pDataStockSymbol->SetStockSectionActiveFlag(800, true);
+
 		s_pDataStockSymbol->UpdateStockSectionDB();
+
 		s_pDataStockSymbol->LoadStockSectionDB();
 		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(800));
 

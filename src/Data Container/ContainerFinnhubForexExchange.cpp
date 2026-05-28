@@ -64,12 +64,15 @@ bool CContainerFinnhubForexExchange::UpdateDB() {
 			const auto& t = FinnhubForexExchange{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-
+			auto multi_insert = insert_into(t).columns(t.code);
+			int nValues = 0;
 			for (auto l = m_llLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
-				db(sqlpp::insert_into(t).set(
+				multi_insert.values.add(
 					t.code = m_vForexExchange.at(l)
-				));
+				);
+				nValues++;
 			}
+			if (nValues > 0) db(multi_insert);
 			tx.commit();
 			m_llLastTotalForexExchange = m_vForexExchange.size();
 		} catch (CException& e) {

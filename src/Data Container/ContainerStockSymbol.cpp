@@ -137,23 +137,26 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(sqlpp::select(all_of(t)).from(t).unconditionally());
+	auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.Market, t.IndexNumber, t.Comment);
 	int rows = result.size();
 	if (rows == 0) {
 		for (int i = 0; i < 2000; i++) {
 			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
-			db(insert_into(t).set(
+			multi_insert.values.add(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.Market = pStockSection->GetMarket(),
-				t.IndexNumber = pStockSection->GetIndexNumber(),
+				t.Market = (int)pStockSection->GetMarket(),
+				t.IndexNumber = (int)pStockSection->GetIndexNumber(),
 				t.Comment = pStockSection->GetComment()
-			));
+			);
 		}
+		db(multi_insert);
 	}
 	else {// 表已存在
 		for (int i = 0; i < 2000; i++) {
 			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
 			db(update(t).set(
+				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
 				t.Market = pStockSection->GetMarket(),
 				t.IndexNumber = pStockSection->GetIndexNumber(),
