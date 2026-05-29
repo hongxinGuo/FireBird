@@ -410,7 +410,6 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
-						gl_UpdateWorldMarketDB.acquire();
 						gl_systemMessage.SetWorldMarketSavingFunction("F forex dayLine");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
@@ -427,7 +426,6 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 							string s = fmt::format("FFinnhub Update forex dayLine  Saving time: {:Ld}ms", (end - start).count());
 							gl_systemMessage.PushInnerSystemInformationMessage(s);
 						}
-						gl_UpdateWorldMarketDB.release();
 					});
 					fUpdated = true;
 				}
@@ -468,7 +466,6 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
-						gl_UpdateWorldMarketDB.acquire();
 						gl_systemMessage.SetWorldMarketSavingFunction("F crypto dayLine");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						pSymbol->UpdateDayLineDB();
@@ -480,7 +477,6 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 							string s = fmt::format("Finnhub update Crypto dayLine Saving time: {:Ld}ms", (end - start).count());
 							gl_systemMessage.PushInnerSystemInformationMessage(s);
 						}
-						gl_UpdateWorldMarketDB.release();
 					});
 					fUpdated = true;
 				}
@@ -516,12 +512,10 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 		if (IsEndMarketIEXTopOfBookUpdated()) {// 已接收到了IEX TopOfBook数据？
 			gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
 			gl_runtime.thread_executor()->post([] {
-				gl_UpdateWorldMarketDB.acquire();
 				TRACE("process IEX data\n");
 				gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
 				gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
 				TRACE("process IEX data ended\n");
-				gl_UpdateWorldMarketDB.release();
 			});
 			if (lCurrentTime < 233000) {
 				SetEndMarketIEXTopOfBookUpdate(false);
@@ -758,6 +752,16 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	return IsSystemReady();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 更新数据库的任务。由于更新数据库的任务可能比较耗时，故而此函数中的每项任务都采用线程模式执行，以免阻塞主线程。
+/// Note: 目前使用的sqlpp11的sqlite3接口是线程安全的，故而在工作线程中直接调用数据库更新函数即可，无需担心线程安全问题。
+///       不必采用互斥锁等同步机制来保护数据库访问。
+///
+///
+///
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubCountry.GetLastTotalCountry() < gl_dataContainerFinnhubCountry.GetTotalCountry()) { // 国家名称
 		gl_runtime.background_executor()->post([] {
@@ -809,10 +813,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateDayLineDB()) { // stock dayLine
 		gl_runtime.background_executor()->post([] {
-			gl_UpdateWorldMarketDB.acquire();
 			gl_systemMessage.SetWorldMarketSavingFunction("F Stock dayLine");
 			gl_pWorldMarket->UpdateFinnhubStockDayLineDB();
-			gl_UpdateWorldMarketDB.release();
 		});
 	}
 	if (gl_dataContainerFinnhubEconomicCalendar.IsUpdateDB()) { // Economic Calendar
@@ -841,11 +843,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 
 	// Tiingo部分
-	static std::atomic<bool> s_bUpdatingTiingoStockProfile = false;
-	if (gl_dataContainerTiingoStock.IsUpdateProfileDB() && !gl_ThreadStatus.IsSavingWorldMarketThreadRunning() && !s_bUpdatingTiingoStockProfile) { // Tiingo Stock
+	if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo Stock
 		gl_runtime.background_executor()->post([] {
-			s_bUpdatingTiingoStockProfile = true;
-			gl_UpdateWorldMarketDB.acquire();
 			gl_systemMessage.SetWorldMarketSavingFunction("T profile");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_dataContainerTiingoStock.UpdateProfileDB();
@@ -854,17 +853,13 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 				string s = fmt::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
-			gl_UpdateWorldMarketDB.release();
-			s_bUpdatingTiingoStockProfile = false;
 		});
 	}
 
 	if (gl_dataContainerTiingoCryptoSymbol.IsUpdateProfileDB()) { // Tiingo crypto symbol
 		gl_runtime.background_executor()->post([] {
-			gl_UpdateWorldMarketDB.acquire();
 			gl_systemMessage.SetWorldMarketSavingFunction("T crypto symbol");
 			gl_dataContainerTiingoCryptoSymbol.UpdateDB();
-			gl_UpdateWorldMarketDB.release();
 		});
 	}
 
@@ -875,10 +870,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	static bool s_updatingTiingoFinancialState = false;
-	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB() && !s_updatingTiingoFinancialState) {
+	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB()) {
 		gl_runtime.background_executor()->post([] {
-			s_updatingTiingoFinancialState = true;
 			gl_systemMessage.SetWorldMarketSavingFunction("T financial state");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_dataContainerTiingoStock.UpdateFinancialStateDB();
@@ -887,15 +880,11 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 				string s = fmt::format("Tiingo Financial statement Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
-			s_updatingTiingoFinancialState = true;
 		});
 	}
 
-	static bool s_updatingTiingoStockDayLine = false;
-	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB() && !s_updatingTiingoStockDayLine) {
+	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) {
 		gl_runtime.background_executor()->post([] {
-			s_updatingTiingoStockDayLine = true;
-			gl_UpdateWorldMarketDB.acquire();
 			gl_systemMessage.SetWorldMarketSavingFunction("T stock dayline");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			auto iUpdatedCount = gl_pWorldMarket->TaskUpdateTiingoStockDayLineDB();
@@ -904,8 +893,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 				string s = fmt::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
-			gl_UpdateWorldMarketDB.release();
-			s_updatingTiingoStockDayLine = false;
 		});
 	}
 
@@ -916,7 +903,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		static int s_counter2 = 0;
 		if (s_counter2 > 30) {
 			gl_runtime.background_executor()->post([] {
-				gl_UpdateWorldMarketDB.acquire();
 				TRACE("Finnhub profile\n");
 				gl_systemMessage.SetWorldMarketSavingFunction("F stock profile");
 				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -927,7 +913,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 					gl_systemMessage.PushInnerSystemInformationMessage(s);
 				}
 				TRACE("Finnhub profile updated\n");
-				gl_UpdateWorldMarketDB.release();
 			});
 			s_counter2 = 0;
 		}
@@ -1066,21 +1051,23 @@ void CWorldMarket::RebuildTiingoStockSplitDB() {
 	}
 }
 
-void CWorldMarket::UpdateOneYearStockDayLine() {
+void CWorldMarket::UpdateTiingoOneYearStockDayLine() {
 	long lBeginDate = GetPrevDay(GetMarketDate(), 365);
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
 		pStock->SetDayLineEndDate(lBeginDate);
 		pStock->SetUpdateDayLine(true);
 	}
+	gl_pTiingoDataSource->SetUpdateDayLine(true);
 }
 
-void CWorldMarket::UpdateAllStockDayLine() {
+void CWorldMarket::UpdateTiingoAllStockDayLine() {
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
 		pStock->SetDayLineEndDate(19800101); // 从1980年开始更新日线数据
 		pStock->SetUpdateDayLine(true);
 	}
+	gl_pTiingoDataSource->SetUpdateDayLine(true);
 }
 
 void CWorldMarket::RebuildIndustryRS() {

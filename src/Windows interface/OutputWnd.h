@@ -19,7 +19,7 @@ public:
 	void SetCurAtLastLine();
 
 	int GetLineNumber() const noexcept { return m_iLineNumber; }
-	int AppendString(const string& str) { return AddString(Utf8ToWstring(str).c_str()); } // UNICODE下需要转换，utf-8 --> utf-16. 
+	int AppendString(const string& str) { return AddString(Utf8ToW(str).c_str()); } // UNICODE下需要转换，utf-8 --> utf-16. 
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);

@@ -16,10 +16,6 @@ CContainerChinaStock::CContainerChinaStock() {
 }
 
 CContainerChinaStock::~CContainerChinaStock() {
-	//for (const auto& pStock : m_vStock) {
-	//pStock->SetUpdateProfileDB(true);
-	//}
-	//UpdateStockProfileDB();
 }
 
 void CContainerChinaStock::Reset() {
@@ -303,9 +299,7 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 				if (pStock->HaveNewDayLineData()) {
 					gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
 					gl_runtime.thread_executor()->post([pStock] {
-						gl_UpdateChinaMarketDB.acquire();
 						pStock->UpdateDayLineDB();
-						gl_UpdateChinaMarketDB.release();
 					});
 					fSave = true;
 				}

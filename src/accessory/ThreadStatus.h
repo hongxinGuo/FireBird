@@ -17,10 +17,6 @@ public:
 	[[nodiscard]] bool IsBackGroundThreadsWorking() const noexcept { return m_NumberOfBackGroundWorkingThreads.load() > 0; } //计算日线的线程是否处于运行中
 	[[nodiscard]] int GetNumberOfBackGroundWorkingThread() const noexcept { return m_NumberOfBackGroundWorkingThreads.load(); }
 
-	static bool IsSavingChinaMarketThreadRunning() noexcept;
-	static bool IsSavingWorldMarketThreadRunning() noexcept;
-	static bool IsSavingThreadRunning() noexcept;
-
 protected:
 	atomic_int m_NumberOfBackGroundWorkingThreads; //正在计算日线相对强度的线程数。目前最多同时允许BackGroundThreadPermittedNumber个线程
 	atomic_int m_NumberOfWebInquiringThread; //正在运行的提取网络数据工作线程数量

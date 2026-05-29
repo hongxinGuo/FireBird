@@ -106,8 +106,8 @@ CWebDataPtr CInquireEngine::GetWebData() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInquireEngine::OpenFile() {
-	const wstring wstr = Utf8ToWstring(m_strHeaders);
-	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(Utf8ToWstring(m_strInquiry).c_str(), 1,
+	const wstring wstr = Utf8ToW(m_strHeaders);
+	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(Utf8ToW(m_strInquiry).c_str(), 1,
 	                                                       INTERNET_FLAG_TRANSFER_ASCII,
 	                                                       wstr.c_str(), wstr.length()));
 }

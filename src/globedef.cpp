@@ -61,8 +61,6 @@ CInaccessibleSymbol gl_tiingoInaccessibleStock{ "TiingoInaccessibleStock.json" }
 std::chrono::sys_seconds gl_tpNow; // 当前系统时钟的时间戳， 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 
 // 为了事先初始化，信号量必须声明为全局变量
-binary_semaphore gl_UpdateChinaMarketDB{ 1 }; // 用于更新ChinaMarket数据库。todo 由于对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
-binary_semaphore gl_UpdateWorldMarketDB{ 1 }; // 用于更新WorldMarket数据库。todo 由于对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
 binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // 当处理中国市场的实时数据时，不允许同时存储之。
 counting_semaphore<MAX_BACKGROUND_WORKING_THREAD_> gl_BackgroundWorkingThread{ MAX_BACKGROUND_WORKING_THREAD_ }; // 最多后台工作线程允许数量，使用系统配置设定为实际大小
 

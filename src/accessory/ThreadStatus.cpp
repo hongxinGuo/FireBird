@@ -21,23 +21,3 @@ CThreadStatus::CThreadStatus() {
 	m_NumberOfBackGroundWorkingThreads = 0;
 	m_NumberOfWebInquiringThread = 0;
 }
-
-bool CThreadStatus::IsSavingWorldMarketThreadRunning() noexcept {
-	if (gl_UpdateWorldMarketDB.try_acquire()) {
-		gl_UpdateWorldMarketDB.release();
-		return false;
-	}
-	return true;
-}
-
-bool CThreadStatus::IsSavingChinaMarketThreadRunning() noexcept {
-	if (gl_UpdateChinaMarketDB.try_acquire()) {
-		gl_UpdateChinaMarketDB.release();
-		return false;
-	}
-	return true;
-}
-
-bool CThreadStatus::IsSavingThreadRunning() noexcept {
-	return IsSavingChinaMarketThreadRunning() || IsSavingWorldMarketThreadRunning();
-}

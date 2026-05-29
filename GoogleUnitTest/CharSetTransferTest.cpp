@@ -6,7 +6,7 @@ using namespace testing;
 
 TEST(CharSetTransferTest, Utf8ToWstring_Empty) {
 	std::string empty;
-	std::wstring out = Utf8ToWstring(empty);
+	std::wstring out = Utf8ToW(empty);
 	EXPECT_TRUE(out.empty());
 }
 
@@ -14,7 +14,7 @@ TEST(CharSetTransferTest, Utf8ToWstring_Roundtrip_ASCIIAndUnicode) {
 	std::string utf8 = "Hello 世界";
 	std::u8string utf = u8"(Hello 世界)";
 	// Convert UTF-8 -> wstring -> UTF-8 (via W2Utf8(wstring))
-	std::wstring wide = Utf8ToWstring(utf8);
+	std::wstring wide = Utf8ToW(utf8);
 	EXPECT_FALSE(wide.empty());
 	std::string round = W2Utf8(wide);
 	EXPECT_EQ(round, utf8);
@@ -31,7 +31,7 @@ TEST(CharSetTransferTest, WtoUTF8_From_wstring) {
 TEST(CharSetTransferTest, UTF8toW_ASCII) {
 	const std::string ascii = "plain ascii";
 	const std::wstring wstr = L"plain ascii";
-	std::wstring w = Utf8ToWstring(ascii);
+	std::wstring w = Utf8ToW(ascii);
 	EXPECT_EQ(w, wstr);
 	EXPECT_EQ(w.size(), wstr.size());
 }
@@ -55,7 +55,7 @@ TEST(CharSetTransferTest, UTF8ToGBK_and_GBKtoUTF8_ASCII_Roundtrip) {
 
 TEST(CharSetTransferTest, GBKToWstring_Empty) {
 	std::string empty;
-	std::wstring out = Gbk2Wstring(empty);
+	std::wstring out = Gbk2W(empty);
 	EXPECT_TRUE(out.empty());
 }
 

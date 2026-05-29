@@ -18,13 +18,13 @@ inline std::string W2Utf8(const std::wstring& utf16) {
 	return std::string(utf8.m_psz);
 }
 
-inline std::wstring Utf8ToWstring(const std::string& utf8) {
+inline std::wstring Utf8ToW(const std::string& utf8) {
 	if (utf8.empty()) return {};
 	CA2W wide(utf8.c_str(), CP_UTF8);
 	return std::wstring(wide.m_psz);
 }
 
-inline std::wstring Gbk2Wstring(const std::string& gbk) {
+inline std::wstring Gbk2W(const std::string& gbk) {
 	if (gbk.empty()) return {};
 	CA2W wide(gbk.c_str(), 936);
 	return std::wstring(wide.m_psz);
@@ -32,7 +32,7 @@ inline std::wstring Gbk2Wstring(const std::string& gbk) {
 
 inline std::string Gbk2Utf8(const std::string& gbk) {
 	if (gbk.empty()) return {};
-	return W2Utf8(Gbk2Wstring(gbk));
+	return W2Utf8(Gbk2W(gbk));
 }
 
 inline std::string Utf8ToGbk(const std::string& utf8) {

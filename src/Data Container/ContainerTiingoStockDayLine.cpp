@@ -20,10 +20,13 @@ bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
+	                                           t.LastClose, t.Open, t.High, t.Low, t.Close, t.Dividend, t.SplitFactor,
+	                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
 
 	// helper to insert one CTiingoCandleLine into DB via sqlpp11
 	auto insertCandle = [&](const CTiingoCandleLine* pC) {
-		db(insert_into(t).set(
+		multi_insert.values.add(
 			t.Date = pC->GetDate(),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
@@ -32,16 +35,16 @@ bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 			t.High = static_cast<double>(pC->GetHigh()) / ratio,
 			t.Low = static_cast<double>(pC->GetLow()) / ratio,
 			t.Close = static_cast<double>(pC->GetClose()) / ratio,
-			t.SplitFactor = pC->GetSplitFactor(),
 			t.Dividend = pC->GetDividend(),
+			t.SplitFactor = pC->GetSplitFactor(),
+			t.Volume = static_cast<double>(pC->GetVolume()),
+			t.Amount = static_cast<double>(pC->GetAmount()),
 			t.UpAndDown = pC->GetUpDown(), // note: field name in DB was UpAndDown in original; match whatever sqlpp table defines
-			t.Volume = pC->GetVolume(),
-			t.Amount = pC->GetAmount(),
 			t.UpDownRate = pC->GetUpDownRate(),
 			t.ChangeHandRate = pC->GetChangeHandRate(),
-			t.TotalValue = pC->GetTotalValue(),
-			t.CurrentValue = pC->GetCurrentValue()
-		));
+			t.TotalValue = static_cast<double>(pC->GetTotalValue()),
+			t.CurrentValue = static_cast<double>(pC->GetCurrentValue())
+		);
 	};
 
 	auto lSize = Size();
@@ -49,6 +52,7 @@ bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 		const CTiingoCandleLine* pHistoryCandle = GetData(i);
 		insertCandle(pHistoryCandle);
 	}
+	db(multi_insert);
 	tx.commit();
 
 	return true;

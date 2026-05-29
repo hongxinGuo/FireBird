@@ -100,8 +100,8 @@ public:
 	void RebuildBasicFinancial();
 	void RebuildTiingoStockSplitDB();
 
-	void UpdateOneYearStockDayLine();
-	void UpdateAllStockDayLine();
+	void UpdateTiingoOneYearStockDayLine();
+	void UpdateTiingoAllStockDayLine();
 
 	void RebuildIndustryRS();
 	void BuildIndustry();

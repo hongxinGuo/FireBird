@@ -205,7 +205,7 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
 	CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
 	auto oldTextColor = pDC->SetTextColor(RGB(255, 255, 255));
 	pDC->SetBkColor(RGB(0, 0, 0));
-	wstring wstr = Utf8ToWstring(strDate + strValue); //Note: Windows GDI TextOutW 使用宽字符
+	wstring wstr = Utf8ToW(strDate + strValue); //Note: Windows GDI TextOutW 使用宽字符
 	pDC->TextOutW(0, 0, wstr.c_str(), static_cast<int>(wstr.size()));
 	pDC->SetTextColor(oldTextColor);
 

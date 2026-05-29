@@ -203,8 +203,6 @@ namespace FireBirdTest {
 			//gl_pMockMainFrame = nullptr;
 			//EXPECT_TRUE(gl_systemConfiguration.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
-			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
-
 			// 以下真实的数据指针需要主动赋值为nullptr
 			gl_pWorldMarket = nullptr;
 			gl_pChinaMarket = nullptr;

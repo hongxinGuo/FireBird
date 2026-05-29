@@ -22,7 +22,6 @@ namespace FireBirdTest { namespace {
 		}
 
 		static void TearDownTestSuite() {
-			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

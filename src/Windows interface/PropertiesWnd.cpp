@@ -427,8 +427,6 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	}
 	m_pPropChinaMarketWebStatus->SetValue(s);
 	// china market thread status
-	if (gl_ThreadStatus.IsSavingChinaMarketThreadRunning()) m_pPropChinaMarketThreadStatus->SetValue("Thread running");
-	else m_pPropChinaMarketThreadStatus->SetValue("idle");
 
 	// finnhub web status
 	if (gl_pFinnhubDataSource->IsWebError()) {

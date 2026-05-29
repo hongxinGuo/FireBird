@@ -40,18 +40,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsUpdateDB()) << "不允许更新禁入交易所名单";
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
-		if (gl_UpdateChinaMarketDB.try_acquire()) {
-			gl_UpdateChinaMarketDB.release();
-		}
-		else {
-			EXPECT_TRUE(false) << "gl_UpdateChinaMarketDB被锁住了";
-		}
-		if (gl_UpdateWorldMarketDB.try_acquire()) {
-			gl_UpdateWorldMarketDB.release();
-		}
-		else {
-			EXPECT_TRUE(false) << "gl_UpdateWorldMarketDB被锁住了";
-		}
 
 		ASSERT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "正常测试时不允许更改，需要更改时注释掉本行";
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());

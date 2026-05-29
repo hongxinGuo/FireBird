@@ -38,7 +38,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 		svData = GetCurrentNeteaseData();
 		CDayLinePtr pCurrentDayLine = ProcessOneNeteaseDayLine(svData);
 		if (pCurrentDayLine == nullptr) {
-			TRACE(_T("%s日线数据出错\n"), Utf8ToWstring(m_strStockCode).c_str());
+			TRACE(_T("%s日线数据出错\n"), Utf8ToW(m_strStockCode).c_str());
 			// 清除已暂存的日线数据
 			m_vTempDayLine.clear();
 			return false; // 数据出错，放弃载入

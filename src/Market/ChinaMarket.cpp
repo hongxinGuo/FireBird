@@ -66,7 +66,6 @@ void CChinaMarket::ResetMarket() {
 	string s = "重置中国股市于北京标准时间：" + GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(s);
 	gl_ProcessChinaMarketRTData.acquire();
-	while (gl_ThreadStatus.IsSavingThreadRunning()) { Sleep(1); }
 
 	Reset();
 
@@ -471,7 +470,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const string& str) con
 	string strStockCode = XferNeteaseToStandard(strNetease);
 	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
 		string strReport = "网易日线查询股票代码错误：";
-		TRACE(_T("网易日线查询股票代码错误：%s\n"), Utf8ToWstring(strStockCode).c_str());
+		TRACE(_T("网易日线查询股票代码错误：%s\n"), Utf8ToW(strStockCode).c_str());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
 		return false;
@@ -676,10 +675,8 @@ bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 	if (IsSystemReady()) {
 		gl_runtime.thread_executor()->post([this] {
-			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.SetChinaMarketSavingFunction("process today stock");
 			this->ProcessTodayStock();
-			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
 	}
@@ -862,10 +859,8 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		gl_runtime.thread_executor()->post([] {
-			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.SetChinaMarketSavingFunction("update stock profile");
 			gl_dataContainerChinaStock.UpdateProfileDB();
-			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
 	}
@@ -876,10 +871,8 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	gl_runtime.thread_executor()->post([this] {
-		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.SetChinaMarketSavingFunction("update option");
 		this->UpdateOptionDB();
-		gl_UpdateChinaMarketDB.release();
 	});
 
 	return true;
@@ -888,10 +881,8 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 bool CChinaMarket::TaskUpdateChosenStockDB() {
 	if (IsUpdateChosenStockDB()) {
 		gl_runtime.thread_executor()->post([this] {
-			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.SetChinaMarketSavingFunction("update chose stock");
 			this->AppendChosenStockDB();
-			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
 	}
@@ -901,10 +892,8 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
 		gl_runtime.thread_executor()->post([] {
-			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.SetChinaMarketSavingFunction("update stockSection");
 			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
-			gl_UpdateChinaMarketDB.release();
 		});
 		gl_dataContainerChinaStockSymbol.SetUpdateStockSection(false);
 		return true;

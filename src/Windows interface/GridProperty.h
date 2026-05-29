@@ -17,5 +17,5 @@ public:
 	~CGridProperty() override = default;
 
 public:
-	void SetValue(const string& strValue) { CMFCPropertyGridProperty::SetValue(Utf8ToWstring(strValue).c_str()); }
+	void SetValue(const string& strValue) { CMFCPropertyGridProperty::SetValue(Utf8ToW(strValue).c_str()); }
 };

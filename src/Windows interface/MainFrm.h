@@ -40,10 +40,10 @@ public:
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
 	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CMDIFrameWndEx::OnTimer(nIDEvent); }
 	virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndStatusBar.SetPaneText(iIndex, lpszNewText); }
-	virtual void SysCallSetPaneText(int iIndex, const string& str) { m_wndStatusBar.SetPaneText(iIndex, Utf8ToWstring(str).c_str()); }
+	virtual void SysCallSetPaneText(int iIndex, const string& str) { m_wndStatusBar.SetPaneText(iIndex, Utf8ToW(str).c_str()); }
 	//virtual void SysCallSetPaneText(int iIndex, CStringW sNewText) { m_wndStatusBar.SetPaneText(iIndex, sNewText); }
 	virtual void SysCallSetInnerSystemPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndInnerSystemBar.SetPaneText(iIndex, lpszNewText); }
-	virtual void SysCallSetInnerSystemPaneText(int iIndex, const string& sNewText) { m_wndInnerSystemBar.SetPaneText(iIndex, Utf8ToWstring(sNewText).c_str()); }
+	virtual void SysCallSetInnerSystemPaneText(int iIndex, const string& sNewText) { m_wndInnerSystemBar.SetPaneText(iIndex, Utf8ToW(sNewText).c_str()); }
 	virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CMDIFrameWndEx::OnSysCommand(nID, lParam); }
 	virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
 	virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }

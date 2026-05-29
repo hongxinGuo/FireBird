@@ -202,12 +202,10 @@ CMainFrame::~CMainFrame() {
 		gl_pChinaMarket->UpdateChosenStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
-	while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1); // 等待处理日线历史数据的线程结束。
 
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
-		ASSERT(!gl_ThreadStatus.IsSavingThreadRunning());
 		gl_dataContainerChinaStock.UpdateProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
@@ -517,21 +515,11 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(11, FormatToMK(gl_pSinaRTDataSource->GetTotalByteReadPerSecond()));
 
 	// 更新当前申请网络数据的工作线程数
-	if (gl_ThreadStatus.IsSavingChinaMarketThreadRunning()) {
-		SysCallSetPaneText(12, gl_systemMessage.GetChinaMarketSavingFunction());
-	}
-	else {
 		gl_systemMessage.SetChinaMarketSavingFunction("");
 		SysCallSetPaneText(12, "");
-	}
 
-	if (gl_ThreadStatus.IsSavingWorldMarketThreadRunning()) {
-		SysCallSetPaneText(13, gl_systemMessage.GetWorldMarketSavingFunction());
-	}
-	else {
 		gl_systemMessage.SetWorldMarketSavingFunction("");
 		SysCallSetPaneText(13, "");
-	}
 
 	// 更新当前后台工作线程数
 	//s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
@@ -654,12 +642,10 @@ void CMainFrame::OnProcessTodayStock() {
 
 void CMainFrame::ProcessChinaMarketStock() {
 	gl_runtime.thread_executor()->post([] {
-		gl_UpdateChinaMarketDB.acquire();
 		TRACE("China market Process today stock\n");
 		gl_systemMessage.SetChinaMarketSavingFunction("Process today stock");
 		gl_pChinaMarket->ProcessTodayStock();
 		TRACE("China market Processed today stock\n");
-		gl_UpdateChinaMarketDB.release();
 	});
 }
 
@@ -834,7 +820,6 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void BuildWeekLine(long lStartDate) {
-	gl_UpdateChinaMarketDB.acquire();
 	TRACE("build weekLine\n");
 	gl_systemMessage.SetChinaMarketSavingFunction("build weekLine");
 
@@ -866,7 +851,6 @@ void BuildWeekLine(long lStartDate) {
 	gl_pChinaMarket->BuildCurrentWeekWeekLineTable();
 	TRACE("build weekLine\n");
 
-	gl_UpdateChinaMarketDB.release();
 }
 
 void CMainFrame::OnBuildCreateWeekLine() {
@@ -881,10 +865,8 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.thread_executor()->post([] {
-		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.SetChinaMarketSavingFunction("build current weekLine");
 		gl_pChinaMarket->BuildCurrentWeekLine();
-		gl_UpdateChinaMarketDB.release();
 	});
 }
 
@@ -909,13 +891,11 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_runtime.thread_executor()->post([] {
-		gl_UpdateChinaMarketDB.acquire();
 		TRACE("build rebuild\n");
 		gl_systemMessage.SetChinaMarketSavingFunction("build rebuild");
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();// 清除当前周周线表
 		gl_pChinaMarket->BuildCurrentWeekWeekLineTable();// 生成新的当前周周线
 		TRACE("build rebuild\n");
-		gl_UpdateChinaMarketDB.release();
 	});
 }
 
@@ -929,10 +909,8 @@ void CMainFrame::OnUpdateStockSection() {
 
 void CMainFrame::OnUpdateStockCode() {
 	gl_runtime.thread_executor()->post([] {
-		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.SetChinaMarketSavingFunction("update stock code");
 		gl_dataContainerChinaStock.UpdateProfileDB();
-		gl_UpdateChinaMarketDB.release();
 	});
 }
 
@@ -1121,11 +1099,8 @@ void CMainFrame::OnResetTiingoDayLineDate() {
 
 void CMainFrame::OnCreateTiingoTradeDayDayLine() {
 	gl_runtime.thread_executor()->post([] {
-		gl_UpdateWorldMarketDB.acquire();
 		gl_systemMessage.SetWorldMarketSavingFunction("T create dayLine");
-
 		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-		gl_UpdateWorldMarketDB.release();
 	});
 }
 
@@ -1176,11 +1151,11 @@ void CMainFrame::OnTiingoRebuildStockSplit() {
 }
 
 void CMainFrame::OnTiingoDownloadAllDayline() {
-	gl_pWorldMarket->UpdateAllStockDayLine();
+	gl_pWorldMarket->UpdateTiingoAllStockDayLine();
 }
 
 void CMainFrame::OnTiingoDownloadOneYearDayline() {
-	gl_pWorldMarket->UpdateOneYearStockDayLine();
+	gl_pWorldMarket->UpdateTiingoOneYearStockDayLine();
 }
 
 void CMainFrame::OnBuildChinaStockOneYearDayline() {
