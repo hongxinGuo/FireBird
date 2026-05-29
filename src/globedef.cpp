@@ -27,7 +27,6 @@
 #include "ChinaMarket.h"
 #include "WorldMarket.h"
 
-#include"thread.h"
 #include"threadStatus.h"
 #include "AccessoryDataSource.h"
 

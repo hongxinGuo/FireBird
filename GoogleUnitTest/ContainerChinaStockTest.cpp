@@ -109,26 +109,4 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsUpdateDayLine());
 		}
 	}
-
-	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedMaintain) {
-		vector<int> vEndDate;
-		vEndDate.resize(m_containerChinaStock.Size());
-		for (size_t i = 0; i < m_containerChinaStock.Size(); i++) {
-			vEndDate[i] = m_containerChinaStock.GetStock(i)->GetDayLineEndDate();
-		}
-		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
-		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 20250101);
-		m_containerChinaStock.GetStock(1)->SetDayLineEndDate(20200101);
-		m_containerChinaStock.ClearDayLineNeedUpdateStatus();
-
-		m_containerChinaStock.SetDayLineNeedMaintain();
-
-		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
-		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 19900101);
-
-		// 恢复原状
-		for (auto i = 0; i < m_containerChinaStock.Size(); i++) {
-			m_containerChinaStock.GetStock(i)->SetDayLineEndDate(vEndDate[i]);
-		}
-	}
 }

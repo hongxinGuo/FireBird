@@ -74,54 +74,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>ReportJsonError</Function>
 								<Function>ReportWebError</Function>
 								<Function>to_byte_string</Function>
-			
-								<Function>CChinaStock::CalculateWeekLine</Function>
-								<Function>CChinaStock::ReportGuadan</Function>
-								<Function>CChinaStock::BuildWeekLine</Function>
-								<Function>CChinaStock::CalculatingWeekLine</Function>
-
-								<Function>CContainerChinaStock::UnloadDayLine</Function>
-
-								<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
-								<Function>CChinaMarket::BuildWeekLineOfCurrentWeek</Function>
-								<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
-								<Function>CChinaMarket::DeleteWeekLine</Function>
-								<Function>CChinaMarket::SaveRTData</Function>
-								<Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
-								<Function>CChinaMarket::TaskLoadCurrentStockHistoryData</Function>
-
-								<Function>CWorldMarket::StartFinnhubWebSocket</Function>
-								<Function>CWorldMarket::StartTiingoIEXWebSocket</Function>
-								<Function>CWorldMarket::StartTiingoCryptoWebSocket</Function>
-								<Function>CWorldMarket::StartTiingoForexWebSocket</Function>
-								<Function>CWorldMarket::StopFinnhubWebSocketIfTimeOut</Function>
-								<Function>CWorldMarket::StopTiingoIEXWebSocketIfTimeOut</Function>
-								<Function>CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut</Function>
-								<Function>CWorldMarket::StopTiingoForexWebSocketIfTimeOut</Function>
-								<Function>CWorldMarket::ProcessWebSocketData</Function>
-								<Function>CWorldMarket::ProcessFinnhubWebSocketData</Function>
-								<Function>CWorldMarket::ProcessTiingoIEXWebSocketData</Function>
-								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
-								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
-								<Function>CWorldMarket::TaskUpdateSicIndustry</Function>
-							   <Function>CWorldMarket::TaskUpdateNaicsIndustry</Function>
-								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
-								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
-
-								<Function>CContainerChinaStock::BuildDayLine</Function>
-								<Function>CContainerChinaStock::BuildWeekLine</Function>
-								<Function>CContainerChinaStock::DeleteDayLineBasicInfo</Function>
-								<Function>CContainerChinaStock::DeleteDayLineExtendInfo</Function>
-								<Function>CContainerChinaStock::DeleteTodayTempDB</Function>
-								<Function>CContainerChinaStock::UpdateTodayTempDB</Function>
-								<Function>CContainerChinaStock::TaskUpdateDayLineDB</Function>
-                                <Function>CContainerChinaStock::UpdateDayLineDB</Function>
-								
-								<Function>CContainerFinnhubStock::UpdateBasicFinancialAnnualDB</Function>
-								<Function>CContainerFinnhubStock::UpdateBasicFinancialDB</Function>
-								<Function>CContainerFinnhubStock::UpdateBasicFinancialMetricDB</Function>
-								<Function>CContainerFinnhubStock::UpdateBasicFinancialQuarterDB</Function>
-
+											
 								<Function>CMainFrame::ResetMarket</Function>
 								<Function>CMainFrame::OnCreate</Function>
 								<Function>CMainFrame::InitializeDataSourceAndWebInquiry</Function>
@@ -171,8 +124,6 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CVirtualMarket::RunDataSource</Function>
 								<Function>CVirtualMarket::ProcessTask</Function>
 								<Function>CVirtualMarket::ResetMarket</Function>
-
-								<Function>CTodayTempDB::DeleteCurrentContent</Function>
 
 								<Function>CVirtualDataSource::VerifyDataLength</Function>
 								<Function>CVirtualDataSource::QueryDataLength</Function>
@@ -232,10 +183,10 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Source>C:\\dev\\vcpkg\\*.*</Source>
 								<Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\concurrencpp\\source\\*.*</Source>
-                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
+                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*</Source>
-                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
+                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.h</Source>
@@ -247,10 +198,10 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.h</Source>
-                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.cpp</Source>
-                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.h</Source>
-                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertyRealTimeDataWnd.cpp</Source>
-                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertyRealTimeDataWnd.h</Source>
+                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.cpp</Source>
+                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.h</Source>
+                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertyRealTimeDataWnd.cpp</Source>
+                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertyRealTimeDataWnd.h</Source>
 							</Exclude>
 						</Sources>
 

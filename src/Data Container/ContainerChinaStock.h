@@ -42,7 +42,7 @@ public:
 	string CreateNeteaseDayLineInquiringStr();
 	string CreateTengxunDayLineInquiringStr();
 
-	bool TaskUpdateDayLineDB();
+	void TaskUpdateDayLineDB();
 
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 

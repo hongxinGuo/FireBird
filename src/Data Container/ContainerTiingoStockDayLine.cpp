@@ -52,7 +52,7 @@ bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 		const CTiingoCandleLine* pHistoryCandle = GetData(i);
 		insertCandle(pHistoryCandle);
 	}
-	db(multi_insert);
+	if (lSize > 0) db(multi_insert);
 	tx.commit();
 
 	return true;

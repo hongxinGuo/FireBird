@@ -15,8 +15,6 @@ public:
 	bool SaveDB(const string& strStockSymbol) final;
 	bool LoadDB(const string& strStockSymbol) final;
 
-	bool UpdateDB(const string& strStockSymbol);
-
 	CDayLine* GetData(const size_t lIndex) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
 	CDayLine* GetDayLine(long lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 

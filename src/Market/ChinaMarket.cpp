@@ -1116,7 +1116,7 @@ void CChinaMarket::UpdateOneYearStockDayLine() {
 		}
 	}
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
-	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0, 0, 100));
+	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0, 1, 0));
 }
 
 void CChinaMarket::UpdateAllStockDayLine() {
@@ -1126,7 +1126,7 @@ void CChinaMarket::UpdateAllStockDayLine() {
 		pStock->SetUpdateDayLine(true);
 	}
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
-	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0, 0, 100));
+	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0, 1, 0));
 }
 
 void CChinaMarket::DeleteDayLine(long lDate) const {
