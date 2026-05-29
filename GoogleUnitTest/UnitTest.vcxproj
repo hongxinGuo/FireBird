@@ -82,7 +82,6 @@
     <ClCompile Include="ContainerTiingoStockDayLineTest.cpp" />
     <ClCompile Include="ContainerTiingoStockTest.cpp" />
     <ClCompile Include="ContainerVirtualStockTest.cpp" />
-    <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="ContainerChinaStockTest.cpp" />
     <ClCompile Include="ContainerChoicedCryptoTest.cpp" />
     <ClCompile Include="ContainerChoicedForexTest.cpp" />

@@ -115,9 +115,11 @@ void CInquireEngine::OpenFile() {
 void CInquireEngine::GetFileHeaderInformation() {
 	SPDLOG_ASSERT(m_pFile != nullptr);
 	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode); // 获取HTTP状态码
-	CString strContentType;
-	if (m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, strContentType)) { // 获取内容类型
-		m_strContentType = W2Utf8(strContentType);
+	wchar_t buffer[100];
+	DWORD dw;
+	DWORD* p = &dw;
+	if (m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, buffer, p)) { // 获取内容类型
+		m_strContentType = W2Utf8(buffer);
 	}
 	QueryDataLength();
 }
@@ -131,9 +133,11 @@ void CInquireEngine::DeleteWebFile() {
 }
 
 void CInquireEngine::QueryDataLength() {
-	CString strLength;
-	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, strLength);
-	m_lContentLength = _wtol(strLength);
+	WCHAR buffer[100];
+	DWORD dw;
+	DWORD* p = &dw;
+	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, buffer, p);
+	m_lContentLength = _wtol(buffer);
 	SPDLOG_ASSERT(m_lContentLength >= 0);
 }
 

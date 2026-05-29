@@ -23,18 +23,19 @@ void ReportWebError(const DWORD dwErrorNo, const long long llTime, const string&
 
 void ReportInformationAndDeleteException(CException* e) {
 	if (e == nullptr) return;
-	WCHAR buffer[200];
+	wchar_t buffer[200];
 	e->GetErrorMessage(buffer, 200);
-	string s1 = T2Utf8(buffer);
-	gl_systemMessage.PushInnerSystemInformationMessage(s1);
+	wstring s1 = buffer;
+	gl_systemMessage.PushInnerSystemInformationMessage(W2Utf8(s1));
 	delete e;
 }
 
 void ReportInformation(CException& e) {
-	WCHAR buffer[200];
+	wchar_t buffer[200];
+	string s;
 	e.GetErrorMessage(buffer, 200);
-	const string str = T2Utf8(buffer);
-	gl_systemMessage.PushInnerSystemInformationMessage(str);
+	wstring str = buffer;
+	gl_systemMessage.PushInnerSystemInformationMessage(W2Utf8(str));
 }
 
 int ReportRunningToWatchdog() {

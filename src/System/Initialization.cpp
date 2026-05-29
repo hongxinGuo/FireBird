@@ -302,11 +302,11 @@ void TaskSchedulePer100ms() {
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	} catch (CException* e) {
 		WCHAR buffer[1000];
-		string str = "ScheduleMarketTask unhandled CException founded : ";
+		wstring str = L"ScheduleMarketTask unhandled CException founded : ";
 		e->GetErrorMessage(buffer, 1);
-		str += T2Utf8(buffer);
-		gl_systemMessage.PushInformationMessage(str);
-		gl_systemMessage.PushErrorMessage(str);
+		str += buffer;
+		gl_systemMessage.PushInformationMessage(W2Utf8(str));
+		gl_systemMessage.PushErrorMessage(W2Utf8(str));
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -337,11 +337,11 @@ void TaskSchedulePerSecond() {
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	} catch (CException* e) {	// 此处截获本体指针，以备处理完后删除之。
 		WCHAR buffer[1000];
-		string str = "TaskSchedulePerSecond unhandled CException founded : ";
+		wstring str = L"TaskSchedulePerSecond unhandled CException founded : ";
 		e->GetErrorMessage(buffer, 1);
-		str += T2Utf8(buffer);
-		gl_systemMessage.PushErrorMessage(str);
-		gl_errorLogger->error("{}", str);
+		str += buffer;
+		gl_systemMessage.PushErrorMessage(W2Utf8(str));
+		gl_errorLogger->error("{}", W2Utf8(str));
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 }

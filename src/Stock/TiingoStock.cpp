@@ -3,7 +3,6 @@
 #include"TiingoStock.h"
 
 #include "CharSetTransfer.h"
-#include "ConvertToString.h"
 #include "dataBaseConnector.h"
 
 #include "TiingoStockDailyMeta.h"

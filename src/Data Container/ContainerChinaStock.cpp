@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
 #include"ThreadStatus.h"
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
@@ -9,7 +8,6 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 
-#include "CharSetTransfer.h"
 #include "dataBaseConnector.h"
 #include"Thread.h"
 

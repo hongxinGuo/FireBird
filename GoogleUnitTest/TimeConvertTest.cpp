@@ -308,4 +308,17 @@ namespace FireBirdTest {
 		tm_.tm_min = 31;
 		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 239);
 	}
+
+	TEST(FormatToMKTest, TestFormatToMK) {
+		string str = FormatToMK(123);
+		EXPECT_EQ(str, " 123");
+		str = FormatToMK(12 * 1024);
+		EXPECT_EQ(str, "  12K");
+		str = FormatToMK(12 * 1024 * 1024);
+		EXPECT_EQ(str, "12M");
+		str = FormatToMK(static_cast<int64_t>(12) * 1024 * 1024);
+		EXPECT_EQ(str, "12M");
+		str = FormatToMK(static_cast<int64_t>(1234567) * 1024 * 1024);
+		EXPECT_EQ(str, "1234567M");
+	}
 }

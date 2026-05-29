@@ -156,9 +156,6 @@
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="ConvertToStringTest.cpp">
-      <Filter>Test源文件\accessory</Filter>
-    </ClCompile>
     <ClCompile Include="NeteaseWebRTDataTest.cpp">
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
     </ClCompile>

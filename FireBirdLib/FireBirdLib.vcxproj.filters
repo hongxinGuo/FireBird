@@ -204,9 +204,6 @@
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\ConvertToString.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\InfoReport.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -233,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
       <Filter>头文件\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualRecordset.h">
-      <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductDummy.h">
       <Filter>头文件\Factory-Product</Filter>
@@ -750,9 +744,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\ConvertToString.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\InfoReport.cpp">

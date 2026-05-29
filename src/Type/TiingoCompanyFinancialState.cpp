@@ -2,9 +2,6 @@
 
 #include"TiingoCompanyFinancialState.h"
 
-#include "CharSetTransfer.h"
-#include "ConvertToString.h"
-
 CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
 	m_symbol = "";
 	m_exchange = "";

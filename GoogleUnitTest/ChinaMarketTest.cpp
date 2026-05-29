@@ -117,8 +117,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库中的股票代码总数为5701";
 		pStock = gl_dataContainerChinaStock.GetStock(0);
 		EXPECT_EQ(pStock->GetSymbol(), "000001.SS");
-		//CString s = "上证指数";
-		//EXPECT_EQ(pStock->GetDisplaySymbol(), T2Utf8(s));
+		string s = "上证指数";
+		EXPECT_EQ(pStock->GetDisplaySymbol(), s);
 		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset("000001.SS"), 0);
 
 		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);

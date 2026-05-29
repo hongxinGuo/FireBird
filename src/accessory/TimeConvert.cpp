@@ -379,3 +379,18 @@ int XferChinaMarketTimeToIndex(const tm* ptm) {
 	if (i < 330) return i - 90;
 	return 239;
 }
+
+string FormatToMK(int64_t iNumber) {
+	string s;
+	if (iNumber > 1024 * 1024) { // 1M以上的流量？
+		s = fmt::format("{:L}M", iNumber / (1024 * 1024));
+	}
+	else if (iNumber > 1024) { // 1K以上的流量？
+		s = fmt::format("{:4L}K", iNumber / 1024);
+	}
+	else {
+		s = fmt::format("{:4L}", iNumber);
+	}
+
+	return s;
+}

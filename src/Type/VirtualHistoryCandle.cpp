@@ -1,9 +1,6 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
 #include"VirtualHistoryCandle.h"
-
-#include "CharSetTransfer.h"
 
 void CVirtualHistoryCandle::Reset() {
 	m_lDate = 0;

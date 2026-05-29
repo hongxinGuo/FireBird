@@ -95,6 +95,18 @@ std::string gl_sSystemConfiguration = R"(
 }
 })";
 
+namespace {
+	inline std::wstring LoadStringStd(UINT nID) {
+		PCWSTR pBuffer = nullptr;
+		// Note: 使用LoadString时，必须明确声明hInstance为nullptr，否则报错
+		int nLen = ::LoadStringW(GetModuleHandle(nullptr), nID, reinterpret_cast<LPWSTR>(&pBuffer), 0);
+		if (nLen > 0) {
+			return std::wstring(pBuffer, nLen);
+		}
+		return L"";
+	}
+}
+
 // 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
 CSystemConfiguration::CSystemConfiguration() {
 	ASSERT(!sm_bInitialized); // 只生成唯一实例
@@ -141,20 +153,20 @@ void CSystemConfiguration::UpdateDB() {
 
 void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 	string sTemp;
-	CString str1, str2, str3;
-	str1.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS); // Note 使用LoadString时，必须明确声明hInstance为nullptr，否则报错
-	str2.LoadString(nullptr, IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
-	str3.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES2);
+	wstring ws1, ws2, ws3;
+	ws1 = LoadStringStd(IDS_PROPERTYVIEW_SYSTEM_STATUS);
+	ws2 = LoadStringStd(IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
+	ws3 = LoadStringStd(IDS_PROPERTYVIEW_PROPERTIES2);
 	// 环境配置
 	try {
 		sTemp = jsonData.at("Environment").at("Display").at("PropertyPage");
-		if (sTemp.c_str() == str1) {
+		if (sTemp.c_str() == W2Utf8(ws1)) {
 			m_iDisplayPropertyPage = 0;
 		}
-		else if (sTemp.c_str() == str2) {
+		else if (sTemp.c_str() == W2Utf8(ws2)) {
 			m_iDisplayPropertyPage = 1;
 		}
-		else if (sTemp.c_str() == str3) {
+		else if (sTemp.c_str() == W2Utf8(ws3)) {
 			m_iDisplayPropertyPage = 2;
 		}
 		else m_iDisplayPropertyPage = 0; // 默认使用
@@ -466,25 +478,24 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 
 void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	jsonData.clear(); // 清除之前的数据。
-	CString str;
+	wstring ws;
 
 	// Environment
 	switch (m_iDisplayPropertyPage) {
 	case 0:
-		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
-		jsonData["Environment"]["Display"]["PropertyPage"] = T2Utf8(str);
+		ws = LoadStringStd(IDS_PROPERTYVIEW_SYSTEM_STATUS);
 		break;
 	case 1:
-		str.LoadString(nullptr, IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
+		ws = LoadStringStd(IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
 		break;
 	case 2:
-		str.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES2);
+		ws = LoadStringStd(IDS_PROPERTYVIEW_PROPERTIES2);
 		break;
 	default:
-		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
+		ws = LoadStringStd(IDS_PROPERTYVIEW_SYSTEM_STATUS);
 		break;
 	}
-	jsonData["Environment"]["Display"]["PropertyPage"] = T2Utf8(str);
+	jsonData["Environment"]["Display"]["PropertyPage"] = W2Utf8(ws);
 
 	// system
 	jsonData["SystemConfiguration"]["LogLevel"] = m_iLogLevel;

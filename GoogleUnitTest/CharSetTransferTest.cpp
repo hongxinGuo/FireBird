@@ -16,24 +16,14 @@ TEST(CharSetTransferTest, Utf8ToWstring_Roundtrip_ASCIIAndUnicode) {
 	// Convert UTF-8 -> wstring -> UTF-8 (via W2Utf8(wstring))
 	std::wstring wide = Utf8ToWstring(utf8);
 	EXPECT_FALSE(wide.empty());
-	std::string round = Wstring2Utf8(wide);
+	std::string round = W2Utf8(wide);
 	EXPECT_EQ(round, utf8);
 	EXPECT_EQ(round.size(), utf8.size());
 }
-
-TEST(CharSetTransferTest, ToUTF8_From_CString) {
-	// Construct CString from wide literal; T2Utf8 should produce UTF-8 bytes
-	const std::string utf8 = "Test ASCII and 中文";
-	CString cs = _T("Test ASCII and 中文");
-	std::string out = T2Utf8(cs);
-	EXPECT_EQ(out, utf8);
-	EXPECT_EQ(out.size(), utf8.size());
-}
-
 TEST(CharSetTransferTest, WtoUTF8_From_wstring) {
 	const std::wstring w = L"Sample 文本";
 	const std::string expected = "Sample 文本";
-	std::string out = Wstring2Utf8(w);
+	std::string out = W2Utf8(w);
 	EXPECT_EQ(out, expected);
 	EXPECT_EQ(out.size(), expected.size());
 }

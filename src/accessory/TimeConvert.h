@@ -39,3 +39,5 @@ string ConvertDateToChineseTimeStampString(long lDate);
 
 int XferChinaMarketTimeToIndex(long lTime); // lTime为HHMMSS制式
 int XferChinaMarketTimeToIndex(const tm* ptm); // lTime为HHMMSS制式
+
+[[nodiscard]] string FormatToMK(int64_t iNumber);
