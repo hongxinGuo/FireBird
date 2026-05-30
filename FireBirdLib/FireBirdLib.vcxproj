@@ -179,10 +179,11 @@
     <ClInclude Include="..\src\Type\SECFiling.h" />
     <ClInclude Include="..\src\Type\StockSplit.h" />
     <ClInclude Include="..\src\Type\StockSymbol.h" />
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.h" />
-    <ClInclude Include="..\src\Type\TechAnalysis\RelativeStrengthIndex.h" />
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorRSI.h" />
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandle.h" />
@@ -351,10 +352,11 @@
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\src\Type\SECFiling.cpp" />
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorBoll.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.cpp" />
-    <ClCompile Include="..\src\Type\TechAnalysis\RelativeStrengthIndex.cpp" />
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorRSI.cpp" />
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandle.cpp" />

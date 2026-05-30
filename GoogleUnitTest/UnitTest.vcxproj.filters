@@ -300,10 +300,10 @@
     <ClCompile Include="WeekLineTest.cpp">
       <Filter>Test源文件\Type\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualDataHistoryCandleExtendTest.cpp">
+    <ClCompile Include="VirtualDataHistoryCandleTest.cpp">
       <Filter>Test源文件\Type</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualHistoryCandleExtendTest.cpp">
+    <ClCompile Include="VirtualHistoryCandleTest.cpp">
       <Filter>Test源文件\Type</Filter>
     </ClCompile>
     <ClCompile Include="CompanyNewsTest.cpp">

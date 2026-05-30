@@ -735,11 +735,14 @@
     <ClInclude Include="..\src\dataBaseConnector.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TechAnalysis\RelativeStrengthIndex.h">
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorRSI.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\StockSymbol.h">
       <Filter>头文件\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.h">
+      <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1208,7 +1211,7 @@
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\TechAnalysis\RelativeStrengthIndex.cpp">
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorRSI.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp">
@@ -1216,6 +1219,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp">
       <Filter>源文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorBoll.cpp">
+      <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -44,6 +44,12 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 			m_weekLineMACD.Calculate();
 			m_monthLineMACD.SetCandle(pStock->MonthLine());
 			m_monthLineMACD.Calculate();
+			m_dayLineRSI.SetCandle(pStock->DayLine());
+			m_dayLineRSI.Calculate();
+			m_weekLineRSI.SetCandle(pStock->WeekLine());
+			m_weekLineRSI.Calculate();
+			m_monthLineRSI.SetCandle(pStock->MonthLine());
+			m_monthLineRSI.Calculate();
 			m_bDataReady = true;
 		});
 	} 

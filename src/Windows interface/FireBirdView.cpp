@@ -234,6 +234,7 @@ void CFireBirdView::ShowIndicator(CDC* pDC, CRect rectDrawArea) {
 		ShowIndicatorMACD(pDC, rectDrawArea);
 		break;
 	case SHOW_INDICATOR_BOLL_:
+		ShowIndicatorBoll(pDC, rectDrawArea);
 		break;
 	default:
 		break;
@@ -288,6 +289,23 @@ void CFireBirdView::ShowIndicatorRSI(CDC* pDC, CRect rectDrawArea) {
 		break;
 	case SHOW_MONTH_LINE_DATA_:
 		GetDocument()->ShowMonthLineRSI(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	default:
+		break;
+	}
+}
+void CFireBirdView::ShowIndicatorBoll(CDC* pDC, CRect rectDrawArea) {
+	if (GetDocument()->GetCurrentStock() == nullptr) return;
+	Show8020Line(pDC, rectDrawArea);
+	switch (m_iCurrentShowType) {
+	case SHOW_DAY_LINE_DATA_:
+		GetDocument()->ShowDayLineBoll(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	case SHOW_WEEK_LINE_DATA_:
+		GetDocument()->ShowWeekLineBoll(pDC, m_rectIndicator, m_iCandleWidth);
+		break;
+	case SHOW_MONTH_LINE_DATA_:
+		GetDocument()->ShowMonthLineBoll(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
 	default:
 		break;

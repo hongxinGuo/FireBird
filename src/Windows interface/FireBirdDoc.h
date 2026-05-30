@@ -6,7 +6,8 @@
 #include"MovingAverage.h"
 #include"IndicatorKDJ.h"
 #include "MovingAverageConvergenceDivergence.h"
-#include "RelativeStrengthIndex.h"
+#include "IndicatorRSI.h"
+#include"IndicatorBoll.h"
 
 class CFireBirdDoc : public CDocument {
 protected: // 仅从序列化创建
@@ -142,7 +143,18 @@ public:
 	}
 
 	void ShowMonthLineRSI(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
-		m_monthLineRSI.ToShow(pDC, rectDrawArea, iStepWidth);
+		m_monthLineBoll.ToShow(pDC, rectDrawArea, iStepWidth);
+	}
+	void ShowDayLineBoll(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
+		m_dayLineBoll.ToShow(pDC, rectDrawArea, iStepWidth);
+	}
+
+	void ShowWeekLineBoll(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
+		m_weekLineBoll.ToShow(pDC, rectDrawArea, iStepWidth);
+	}
+
+	void ShowMonthLineBoll(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
+		m_monthLineBoll.ToShow(pDC, rectDrawArea, iStepWidth);
 	}
 
 	// 重写
@@ -197,6 +209,10 @@ protected:
 	CIndicatorRSI m_dayLineRSI;
 	CIndicatorRSI m_weekLineRSI;
 	CIndicatorRSI m_monthLineRSI;
+
+	CIndicatorBoll m_dayLineBoll;
+	CIndicatorRSI m_weekLineBoll;
+	CIndicatorRSI m_monthLineBoll;
 
 	// 生成的消息映射函数
 protected:

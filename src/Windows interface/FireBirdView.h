@@ -35,6 +35,7 @@ public:
 	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorRSI(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicatorBoll(CDC* pDC, CRect rectDrawArea);
 	void Show8020Line(CDC* pDC, CRect rectDrawArea);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
