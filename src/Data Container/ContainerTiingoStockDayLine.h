@@ -13,8 +13,8 @@ public:
 	CContainerTiingoStockDayLine& operator=(CContainerTiingoStockDayLine&& other) noexcept = delete;
 	~CContainerTiingoStockDayLine() override = default;
 
-	bool SaveDB(const string& strStockSymbol) override;
-	bool LoadDB(const string& strStockSymbol) override;
+	void SaveDB(const string& strStockSymbol) override;
+	void LoadDB(const string& strStockSymbol) override;
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();

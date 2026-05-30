@@ -12,12 +12,6 @@ public:
 	CContainerChinaWeekLine& operator=(CContainerChinaWeekLine&& other) noexcept = delete;
 	~CContainerChinaWeekLine() override = default;
 
-	bool LoadDB(const string& strStockSymbol) final;
-	bool SaveDB(const string& strStockSymbol) final;
-
-	void SaveCurrentWeekLine() const;
-	bool LoadCurrentWeekLine();
-
 	void UpdateData(const vector<CWeekLine>& vTempWeekLine);
 	void UpdateData(const CVirtualHistoryCandle* pHistoryCandle);
 

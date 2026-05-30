@@ -58,14 +58,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
-	ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
-	ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
-	ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
-	ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
-	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
-	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
-	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable)
-	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
 	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
 	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
 	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
@@ -201,7 +193,6 @@ CMainFrame::~CMainFrame() {
 	if (gl_pChinaMarket->IsUpdateChosenStockDB()) {
 		gl_pChinaMarket->UpdateChosenStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
-
 
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
@@ -515,11 +506,11 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(11, FormatToMK(gl_pSinaRTDataSource->GetTotalByteReadPerSecond()));
 
 	// 更新当前申请网络数据的工作线程数
-		gl_systemMessage.SetChinaMarketSavingFunction("");
-		SysCallSetPaneText(12, "");
+	gl_systemMessage.SetChinaMarketSavingFunction("");
+	SysCallSetPaneText(12, "");
 
-		gl_systemMessage.SetWorldMarketSavingFunction("");
-		SysCallSetPaneText(13, "");
+	gl_systemMessage.SetWorldMarketSavingFunction("");
+	SysCallSetPaneText(13, "");
 
 	// 更新当前后台工作线程数
 	//s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
@@ -819,89 +810,6 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 	}
 }
 
-void BuildWeekLine(long lStartDate) {
-	TRACE("build weekLine\n");
-	gl_systemMessage.SetChinaMarketSavingFunction("build weekLine");
-
-	const long lStartMonday = GetCurrentMonday(lStartDate);
-	const long year = lStartMonday / 10000;
-	const long month = lStartMonday / 100 - (lStartMonday / 10000) * 100;
-	const long mDay = lStartMonday - (lStartMonday / 100) * 100;
-	CTime ctCurrent(year, month, mDay, 12, 0, 0);
-	const CTimeSpan ts7Day(7, 0, 0, 0);
-	long lCurrentMonday = lStartMonday;
-
-	if (lStartDate > CHINA_MARKET_BEGIN_DATE_) {// 目前此种情况只用于重新生成本周周线
-		ASSERT(lStartMonday == GetCurrentMonday(gl_pChinaMarket->GetMarketDate()));
-		do {
-			gl_pChinaMarket->DeleteWeekLine(lCurrentMonday);
-			ctCurrent += ts7Day;
-			lCurrentMonday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-		} while (lCurrentMonday <= gl_pChinaMarket->GetMarketDate());
-	}
-	else {
-		gl_pChinaMarket->DeleteWeekLine();
-	}
-
-	gl_dataContainerChinaStock.BuildWeekLine(lStartMonday);
-
-	// 清除当前周周线表
-	gl_pChinaMarket->DeleteCurrentWeekWeekLine();
-	// 生成新的当前周周线
-	gl_pChinaMarket->BuildCurrentWeekWeekLineTable();
-	TRACE("build weekLine\n");
-
-}
-
-void CMainFrame::OnBuildCreateWeekLine() {
-	auto lStartDate = CHINA_MARKET_BEGIN_DATE_;
-	gl_runtime.thread_executor()->post([lStartDate] {
-		BuildWeekLine(lStartDate);
-	});
-}
-
-void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
-}
-
-void CMainFrame::OnBuildCurrentWeekLine() {
-	gl_runtime.thread_executor()->post([] {
-		gl_systemMessage.SetChinaMarketSavingFunction("build current weekLine");
-		gl_pChinaMarket->BuildCurrentWeekLine();
-	});
-}
-
-void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
-	if ((gl_pChinaMarket->GetMarketTime() > 151000)) {
-		SysCallCmdUIEnable(pCmdUI, true);
-	}
-	else {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-}
-
-void CMainFrame::OnBuildRebuildCurrentWeekLine() {
-	auto lStartDate = gl_pChinaMarket->GetMarketDate();
-	gl_runtime.thread_executor()->post([lStartDate] {
-		BuildWeekLine(lStartDate);
-	});
-}
-
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
-}
-
-void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
-	gl_runtime.thread_executor()->post([] {
-		TRACE("build rebuild\n");
-		gl_systemMessage.SetChinaMarketSavingFunction("build rebuild");
-		gl_pChinaMarket->DeleteCurrentWeekWeekLine();// 清除当前周周线表
-		gl_pChinaMarket->BuildCurrentWeekWeekLineTable();// 生成新的当前周周线
-		TRACE("build rebuild\n");
-	});
-}
-
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
-}
-
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);
 	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, 1);
@@ -925,7 +833,6 @@ void CMainFrame::OnRebuildPeer() {
 void CMainFrame::OnRebuildDayLine() {
 	gl_pWorldMarket->RebuildStockDayLineDB();
 }
-
 
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {

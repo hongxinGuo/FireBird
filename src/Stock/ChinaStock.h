@@ -3,19 +3,6 @@
 #include "StockSymbol.h"
 #include "WebRTData.h"
 
-//成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
-//强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
-enum {
-	ATTACK_BUY_ = 1,
-	STRONG_BUY_ = 2,
-	ORDINARY_BUY_ = 3,
-	UNKNOWN_BUYSELL_ = 4,
-	ORDINARY_SELL_ = 5,
-	STRONG_SELL_ = 6,
-	ATTACK_SELL_ = 7,
-	NO_TRANSACTION_ = 8
-};
-
 #include"VirtualStock.h"
 
 #include"DayLine.h"
@@ -102,9 +89,10 @@ public:
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
-	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(m_strSymbol); }
+	void LoadDayLineDB() override { m_dataDayLine.LoadDB(m_strSymbol); }
+	void LoadDayLineDB(long lStartDate) { m_dataDayLine.LoadDB(m_strSymbol, lStartDate); }
 	void UpdateDayLineDB();
-	virtual bool SaveDayLineDB() { return m_dataDayLine.SaveDB(GetSymbol()); }
+	void SaveDayLineDB() { m_dataDayLine.SaveDB(GetSymbol()); }
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 
@@ -115,14 +103,12 @@ public:
 	void CheckIPOStatus();
 	bool CheckDayLineStatus();
 	//周线历史数据存取
-	bool LoadWeekLineDB() override { return m_dataWeekLine.LoadDB(GetSymbol()); }
-	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
-	virtual bool BuildWeekLine(long lStartDate = 19900101);
+	void LoadWeekLineDB() override { CreateWeekLine(); }
 
 	// 月线历史数据存取
-	bool LoadMonthLineDB() override { return CreateMonthLine(); }
-
-	bool CreateMonthLine();
+	void LoadMonthLineDB() override { CreateMonthLine(); }
+	void CreateWeekLine();
+	void CreateMonthLine();
 
 	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.enqueue(pData); }
 	CWebRTDataPtr PopRTData() {
@@ -136,7 +122,7 @@ public:
 
 	//日线相关函数
 	// 日线历史数据
-	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	size_t DayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	bool HaveNewDayLineData();
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
 	void StoreDayLine(const CDayLine& dayLine) { m_dataDayLine.Add(dayLine); }
@@ -164,8 +150,6 @@ public:
 	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }
 	CWeekLine* GetWeekLine(const long lIndex) { return m_dataWeekLine.GetData(lIndex); }
 	void UnloadWeekLine() noexcept { m_dataWeekLine.Unload(); }
-	bool CreateWeekLine(long lStartDate);
-	bool CreateWeekLine2(long lStartDate);
 	void StoreWeekLine(const CWeekLine& weekLine) { m_dataWeekLine.Add(weekLine); }
 	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(const bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
@@ -201,12 +185,9 @@ protected:
 
 	ConcurrentQueue<CWebRTDataPtr> m_qRTData{ 32 }; // 采用优先队列存储实时数据，这样可以保证多源。
 
-	// 日线容器
-	CContainerChinaDayLine m_dataDayLine;
-	// 周线容器
-	CContainerChinaWeekLine m_dataWeekLine;
-	// 月线容器
-	CContainerChinaStockMonthLine m_dataMonthLine;
+	CContainerChinaDayLine m_dataDayLine;	// 日线容器
+	CContainerChinaWeekLine m_dataWeekLine;	// 周线容器
+	CContainerChinaStockMonthLine m_dataMonthLine;	// 月线容器
 
 	bool m_fDayLineDBUpdated{ false }; // 日线历史数据库更新标识
 };

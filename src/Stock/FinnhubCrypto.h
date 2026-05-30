@@ -29,7 +29,7 @@ public:
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 
 	void UpdateDayLineDB();
-	virtual bool SaveDayLineDB() { return m_dataDayLine.SaveDB(GetSymbol()); }
+	virtual void SaveDayLineDB() { m_dataDayLine.SaveDB(GetSymbol()); }
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 

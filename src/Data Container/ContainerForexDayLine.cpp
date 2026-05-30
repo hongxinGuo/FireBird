@@ -12,7 +12,7 @@ CContainerForexDayLine::CContainerForexDayLine() {
 	m_ratio = s_stock.GetRatio();
 }
 
-bool CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
+void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 	vector<CTiingoCandleLine> vOldHistoryCandle;
 	auto ratio = GetRatio();
 
@@ -144,11 +144,9 @@ bool CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 	}
 	if (nValues > 0) db(multi_insert);
 	tx.commit();
-
-	return true;
 }
 
-bool CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
+void CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 	using namespace StockMarket;
 	const auto& t = FinnhubForexDayline{};
 
@@ -183,6 +181,4 @@ bool CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 	}
 	tx.commit();
 	m_fDataLoaded = true;
-
-	return true;
 }

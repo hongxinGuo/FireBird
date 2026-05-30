@@ -110,17 +110,9 @@ public:
 	void LoadChosenStockDB();
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
 
-	virtual bool DeleteWeekLine();
-	virtual void DeleteWeekLine(long lMonday);
-
 	void DeleteDayLine(long lDate) const;
 
-	virtual bool DeleteCurrentWeekWeekLine();
-	static bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
-
-	virtual bool BuildCurrentWeekLine();
 	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData);
-	virtual bool BuildCurrentWeekWeekLineTable(); // 使用周线表构建当前周周线表
 
 	// 股票历史数据处理
 

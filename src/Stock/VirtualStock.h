@@ -89,18 +89,9 @@ public:
 		LoadWeekLineDB();
 		LoadMonthLineDB();
 	}
-	virtual bool LoadDayLineDB() {
-		ASSERT(0);
-		return false;
-	}
-	virtual bool LoadWeekLineDB() {
-		ASSERT(0);
-		return false;
-	}
-	virtual bool LoadMonthLineDB() {
-		ASSERT(0);
-		return false;
-	}
+	virtual void LoadDayLineDB() { ASSERT(0); }
+	virtual void LoadWeekLineDB() { ASSERT(0); }
+	virtual void LoadMonthLineDB() { ASSERT(0); }
 
 	virtual bool IsDayLineDuplicated() noexcept {
 		ASSERT(0);

@@ -520,17 +520,17 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestHaveNewDayLineData) {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.HaveNewDayLineData());
-		EXPECT_EQ(stock.GetDayLineSize(), 0);
+		EXPECT_EQ(stock.DayLineSize(), 0);
 		CDayLine dayLine;
 		dayLine.SetDate(20200101);
 		stock.StoreDayLine(dayLine);
-		EXPECT_EQ(stock.GetDayLineSize(), 1);
+		EXPECT_EQ(stock.DayLineSize(), 1);
 		stock.SetDayLineEndDate(20200101);
 		EXPECT_FALSE(stock.HaveNewDayLineData());
 		stock.SetDayLineEndDate(20191231);
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 		stock.UnloadDayLine();
-		EXPECT_EQ(stock.GetDayLineSize(), 0);
+		EXPECT_EQ(stock.DayLineSize(), 0);
 	}
 
 	TEST_F(CChinaStockTest, TestTodayDataIsActive) {
@@ -864,7 +864,7 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineLoaded());
 		stock.UpdateDayLine(*pvDayLine);
-		EXPECT_EQ(stock.GetDayLineSize(), 10);
+		EXPECT_EQ(stock.DayLineSize(), 10);
 		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), 19900101 + i); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());
 	}
@@ -882,129 +882,9 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineLoaded());
 		stock.UpdateDayLine(data.GetProcessedDayLine()); // 测试CDownloadedNeteaseDayLine中的GetProcessedDayLine
-		EXPECT_EQ(stock.GetDayLineSize(), 10);
+		EXPECT_EQ(stock.DayLineSize(), 10);
 		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), 19900101 + i); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());
-	}
-
-	TEST_F(CChinaStockTest, TestSaveWeekLine) {
-		CWeekLine* pid;
-		CWeekLine stock;
-		pStock = gl_dataContainerChinaStock.GetStock("600016.SS");
-		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
-
-		for (int i = 0; i < 10; i++) {
-			CWeekLine dayLine;
-			dayLine.SetDate(21100501);
-			dayLine.SetStockSymbol("600016.SS");
-			dayLine.SetExchange("Test"); // 周线表中没有这个字段，用于删除遗留的测试数据。
-			dayLine.SetLastClose(34235345);
-			dayLine.SetOpen(1000000 + i);
-			dayLine.SetHigh(45234543);
-			dayLine.SetLow(3452345);
-			dayLine.SetClose(452435);
-			dayLine.SetVolume(34523454);
-			dayLine.SetAmount(3245235345);
-			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
-			dayLine.SetUpDownRate(123.45);
-			dayLine.SetTotalValue(234523452345);
-			dayLine.SetCurrentValue(234145345245);
-			dayLine.SetChangeHandRate(54.321);
-			pStock->StoreWeekLine(dayLine);
-		}
-		pStock->SetSymbol("600016.SS");
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		pStock->SaveWeekLine();
-
-		using namespace StockMarket;
-		const auto& t = ChinaStockWeekline{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-
-		auto result = db(select(all_of(t)).from(t).where(t.Date == 21100501));
-		int i = 0;
-		int ratio = pStock->GetRatio();
-		for (const auto& row : result) {
-			pid = pStock->GetWeekLine(i);
-			EXPECT_EQ(row.Date.value(), pid->GetDate());
-			EXPECT_EQ(row.Symbol, pid->GetStockSymbol());
-			EXPECT_DOUBLE_EQ(double(row.LastClose.value()) * ratio, pid->GetLastClose());
-			EXPECT_DOUBLE_EQ(double(row.Open.value()) * ratio, pid->GetOpen());
-			EXPECT_DOUBLE_EQ(double(row.High.value()) * ratio, pid->GetHigh());
-			EXPECT_DOUBLE_EQ(double(row.Low.value()) * ratio, pid->GetLow());
-			EXPECT_DOUBLE_EQ(double(row.Close.value()) * ratio, pid->GetClose());
-			EXPECT_EQ(row.Volume.value(), pid->GetVolume());
-			EXPECT_EQ(row.Amount.value(), pid->GetAmount());
-			EXPECT_DOUBLE_EQ(row.UpAndDown.value(), pid->GetUpDown());
-			EXPECT_DOUBLE_EQ(row.UpDownRate.value(), pid->GetUpDownRate());
-			EXPECT_EQ(row.TotalValue.value(), pid->GetTotalValue());
-			EXPECT_EQ(row.CurrentValue.value(), pid->GetCurrentValue());
-			EXPECT_DOUBLE_EQ(row.ChangeHandRate.value(), pid->GetChangeHandRate());
-			i++;
-			if (i >= 10) break;
-		}
-
-		db(sqlpp::remove_from(t).where(t.Date == 21100501));
-		tx.commit();
-	}
-
-	TEST_F(CChinaStockTest, TestLoadWeekLine) {
-		CWeekLine* pid;
-		CChinaStock stock;
-
-		pStock = gl_dataContainerChinaStock.GetStock("600010.SS");
-
-		for (int i = 0; i < 10; i++) {
-			CWeekLine dayLine;
-			dayLine.SetDate(21101201);
-			dayLine.SetStockSymbol("600010.SS");
-			dayLine.SetLastClose(34235345);
-			dayLine.SetOpen(1000000 + i);
-			dayLine.SetHigh(45234543);
-			dayLine.SetLow(3452342);
-			dayLine.SetClose(452435);
-			dayLine.SetVolume(34523454);
-			dayLine.SetAmount(3245235345);
-			dayLine.SetUpDown((static_cast<double>(dayLine.GetClose()) - dayLine.GetLastClose()) / dayLine.GetRatio());
-			dayLine.SetUpDownRate(123.45);
-			dayLine.SetTotalValue(234523452345);
-			dayLine.SetCurrentValue(234145345245);
-			dayLine.SetChangeHandRate(54.321);
-			pStock->StoreWeekLine(dayLine);
-		}
-		pStock->SetSymbol("600010.SS");
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		pStock->SaveWeekLine();
-
-		using namespace StockMarket;
-		const auto& t = ChinaStockWeekline{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-
-		auto result = db(select(all_of(t)).from(t).where(t.Date == 21101201));
-		int i = 0;
-		for (const auto& row : result) {
-			pid = pStock->GetWeekLine(i);
-			EXPECT_EQ(row.Date.value(), pid->GetDate());
-			EXPECT_EQ(row.Symbol, pid->GetStockSymbol());
-			EXPECT_EQ(row.LastClose * pid->GetRatio(), pid->GetLastClose());
-			EXPECT_EQ(row.Open * pid->GetRatio(), pid->GetOpen());
-			EXPECT_EQ(row.High * pid->GetRatio(), pid->GetHigh());
-			EXPECT_EQ(row.Low * pid->GetRatio(), pid->GetLow());
-			EXPECT_EQ(row.Close * pid->GetRatio(), pid->GetClose());
-			EXPECT_EQ(row.Volume.value(), pid->GetVolume());
-			EXPECT_EQ(row.Amount.value(), pid->GetAmount());
-			EXPECT_DOUBLE_EQ(row.UpAndDown.value(), pid->GetUpDown());
-			EXPECT_DOUBLE_EQ(row.UpDownRate.value(), pid->GetUpDownRate());
-			EXPECT_EQ(row.TotalValue.value(), pid->GetTotalValue());
-			EXPECT_EQ(row.CurrentValue.value(), pid->GetCurrentValue());
-			EXPECT_DOUBLE_EQ(row.ChangeHandRate.value(), pid->GetChangeHandRate());
-			i++;
-			if (i >= 10) break;
-		}
-
-		db(sqlpp::remove_from(t).where(t.Date == 21101201));
-		tx.commit();
 	}
 
 	TEST_F(CChinaStockTest, TestIsAStock) {

@@ -12,7 +12,7 @@ CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
 	m_ratio = s_stock.GetRatio();
 }
 
-bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
+void CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 	auto ratio = GetRatio();
 
 	using namespace StockMarket;
@@ -54,11 +54,9 @@ bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 	}
 	if (lSize > 0) db(multi_insert);
 	tx.commit();
-
-	return true;
 }
 
-bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
+void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	Unload(); // 卸载之前的日线
 
 	using namespace StockMarket;
@@ -94,8 +92,6 @@ bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	tx.commit();
 	m_fDataLoaded = true;
 	SplitAdjust();
-
-	return true;
 }
 
 void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine) {

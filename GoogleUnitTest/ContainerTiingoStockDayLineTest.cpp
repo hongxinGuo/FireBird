@@ -92,8 +92,7 @@ namespace FireBirdTest {
 
 		// Load via container
 		CContainerTiingoStockDayLine container;
-		const bool loaded = container.LoadDB(uniqueSymbol);
-		EXPECT_TRUE(loaded);
+		container.LoadDB(uniqueSymbol);
 		EXPECT_GT(container.Size(), 0u);
 
 		// verify first row matches inserted data

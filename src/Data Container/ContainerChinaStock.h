@@ -28,7 +28,7 @@ public:
 	void UpdateProfileDB();
 
 	void UnloadDayLine() noexcept;
-	bool BuildWeekLine(long lStartDate);
+	void BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
 
 	[[nodiscard]] bool IsDayLineDBUpdated() noexcept;

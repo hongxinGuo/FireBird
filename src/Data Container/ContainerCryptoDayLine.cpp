@@ -11,7 +11,7 @@ CContainerCryptoDayLine::CContainerCryptoDayLine() {
 	m_ratio = s_stock.GetRatio();
 }
 
-bool CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
+void CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 	using namespace StockMarket;
 	const auto& t = FinnhubCryptoDayline{};
 	auto db = gl_dbStockMarket.get();
@@ -50,11 +50,9 @@ bool CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 	}
 	if (nValues > 0) db(multi_insert);
 	tx.commit();
-
-	return true;
 }
 
-bool CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
+void CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 	using namespace StockMarket;
 	const auto& t = FinnhubCryptoDayline{};
 	auto db = gl_dbStockMarket.get();
@@ -83,6 +81,4 @@ bool CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 	}
 	tx.commit();
 	m_fDataLoaded = true;
-
-	return true;
 }

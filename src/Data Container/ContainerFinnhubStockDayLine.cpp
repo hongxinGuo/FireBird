@@ -12,7 +12,7 @@ CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {
 	m_ratio = s_stock.GetRatio();
 }
 
-bool CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
+void CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 	auto ratio = GetRatio();
 	using namespace StockMarket;
 	const auto& t = FinnhubStockDayline{};
@@ -52,11 +52,9 @@ bool CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 	}
 	if (lSize > 0) db(multi_insert);
 	tx.commit();
-
-	return true;
 }
 
-bool CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
+void CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
 	auto ratio = GetRatio();
 	using namespace StockMarket;
 	const auto& t = FinnhubStockDayline{};
@@ -91,5 +89,4 @@ bool CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
 	tx.commit();
 
 	m_fDataLoaded = true;
-	return true;
 }

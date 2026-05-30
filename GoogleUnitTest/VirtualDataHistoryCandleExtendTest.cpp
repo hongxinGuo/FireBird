@@ -29,16 +29,6 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CVirtualDataHistoryCandleTest, TestSaveDB) {
-		CVirtualDataHistoryCandle id;
-		EXPECT_FALSE(id.SaveDB("600000.SS"));
-	}
-
-	TEST_F(CVirtualDataHistoryCandleTest, TestLoadDB) {
-		CVirtualDataHistoryCandle id;
-		EXPECT_FALSE(id.LoadDB("600000.SS"));
-	}
-
 	TEST_F(CVirtualDataHistoryCandleTest, TestGetContainer) {
 		CVirtualDataHistoryCandle id;
 		CVirtualHistoryCandle data;

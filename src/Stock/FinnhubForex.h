@@ -18,7 +18,7 @@ public:
 	int GetRatio() const final { return 1000; }
 
 	void UpdateDayLineDB();
-	virtual bool SaveDayLineDB() { return m_dataDayLine.SaveDB(GetSymbol()); }
+	virtual void SaveDayLineDB() { m_dataDayLine.SaveDB(GetSymbol()); }
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 

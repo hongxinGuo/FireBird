@@ -12,8 +12,9 @@ public:
 	CContainerChinaDayLine& operator=(CContainerChinaDayLine&& other) noexcept = delete;
 	~CContainerChinaDayLine() override = default;
 
-	bool SaveDB(const string& strStockSymbol) final;
-	bool LoadDB(const string& strStockSymbol) final;
+	void SaveDB(const string& strStockSymbol) final;
+	void LoadDB(const string& strStockSymbol) final;
+	void LoadDB(const string& strStockSymbol, long lStartDate);
 
 	CDayLine* GetData(const size_t lIndex) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
 	CDayLine* GetDayLine(long lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }

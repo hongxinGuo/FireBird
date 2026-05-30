@@ -11,12 +11,6 @@ namespace testing {
 
 		MOCK_METHOD(void, UpdateOptionDB, (), (override));
 		MOCK_METHOD(void, AppendChosenStockDB, (), (override));
-		MOCK_METHOD(bool, BuildCurrentWeekLine, (), (override));
-		MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
-
-		MOCK_METHOD(bool, DeleteCurrentWeekWeekLine, (), (override));
-		MOCK_METHOD(bool, DeleteWeekLine, (), (override));
-		MOCK_METHOD(void, DeleteWeekLine, (long lMonday), (override));
 	};
 
 	using CMockChinaMarketPtr = shared_ptr<CMockChinaMarket>;

@@ -20,14 +20,8 @@ public:
 	void Reserve(size_t size) { m_vHistoryData.reserve(size); }
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
-	virtual bool SaveDB(const string&) {
-		TRACE(_T("调用了基类SaveDB\n"));
-		return false;
-	}
-	virtual bool LoadDB(const string&) {
-		TRACE(_T("调用了基类LoadDB\n"));
-		return false;
-	}
+	virtual void SaveDB(const string&) { ASSERT(0); }
+	virtual void LoadDB(const string&) { ASSERT(0); }
 
 	void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
 	void UpdateData(const vector<CDayLine>& vTempData);

@@ -248,14 +248,6 @@ void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除china weekline中的中间数据
-		const auto& t = ChinaStockWeekline{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
-		tx.commit();
-	}
-
 	{ // 删除china dayline中的中间数据
 		const auto& t = ChinaStockDayline{};
 		auto db = gl_dbStockMarket.get();

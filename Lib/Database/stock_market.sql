@@ -286,32 +286,6 @@ CREATE TABLE `naics_industry` (
 
 
 --
--- Table structure for table `china_stock_weekline`
---
-
-
-CREATE TABLE `china_stock_weekline` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Date` int DEFAULT '19900101',
-  `Exchange` varchar(45) DEFAULT '',
-  `Symbol` varchar(10) DEFAULT ' ',
-  `LastClose` decimal(10,3) DEFAULT '0.000',
-  `Open` decimal(10,3) DEFAULT '0.000',
-  `High` decimal(10,3) DEFAULT '0.000',
-  `Low` decimal(10,3) DEFAULT '0.000',
-  `Close` decimal(10,3) DEFAULT '0.000',
-  `Volume` decimal(18,0) DEFAULT '0',
-  `Amount` decimal(20,0) DEFAULT '0',
-  `Dividend` decimal(10,3) DEFAULT '0.000',
-  `SplitFactor` decimal(10,3) DEFAULT '1.000',
-  `UpAndDown` decimal(10,3) DEFAULT '0.000',
-  `UpDownRate` decimal(10,3) DEFAULT '0.000',
-  `ChangeHandRate` decimal(10,3) DEFAULT '0.000',
-  `TotalValue` decimal(20,0) DEFAULT '0',
-  `CurrentValue` decimal(20,0) DEFAULT '0'
-);
-
---
 -- Table structure for table `finnhub_insider_sentiment`
 --
 
@@ -674,33 +648,6 @@ CREATE TABLE `tiingo_stock_fundamental` (
   `SECFilingWebSite` varchar(150) DEFAULT '',
   `IPOStatus` int DEFAULT '128',
   `UpdateDate` varchar(10000) DEFAULT '{}'
-);
-
-
---
--- Table structure for table `china_current_weekline`
---
-
-
-CREATE TABLE `china_current_weekline` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Date` int DEFAULT '19900101',
-  `Exchange` varchar(45) DEFAULT '',
-  `Symbol` varchar(10) DEFAULT ' ',
-  `LastClose` decimal(10,3) DEFAULT '0.000',
-  `Open` decimal(10,3) DEFAULT '0.000',
-  `High` decimal(10,3) DEFAULT '0.000',
-  `Low` decimal(10,3) DEFAULT '0.000',
-  `Close` decimal(10,3) DEFAULT '0.000',
-  `Volume` decimal(18,0) DEFAULT '0',
-  `Amount` decimal(20,0) DEFAULT '0',
-  `Dividend` decimal(10,3) DEFAULT '0.000',
-  `SplitFactor` decimal(10,5) DEFAULT '1.00000',
-  `UpAndDown` decimal(10,3) DEFAULT '0.000',
-  `UpDownRate` decimal(10,3) DEFAULT '0.000',
-  `ChangeHandRate` decimal(10,3) DEFAULT '0.000',
-  `TotalValue` decimal(20,0) DEFAULT '0',
-  `CurrentValue` decimal(20,0) DEFAULT '0'
 );
 
 

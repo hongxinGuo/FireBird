@@ -300,26 +300,6 @@ void CContainerChinaStock::TaskUpdateDayLineDB() {
 	}
 }
 
-bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
-	gl_systemMessage.PushInformationMessage("重新生成周线历史数据");
-	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CChinaStockPtr pStock = GetStock(l);
-		//gl_BackgroundWorkingThread.acquire();
-		//gl_runtime.thread_executor()->post([pStock, lStartDate] {
-		gl_systemMessage.SetChinaMarketSavingFunction("rebuild week line");
-
-		if (!gl_systemConfiguration.IsExitingSystem()) {
-			pStock->BuildWeekLine(lStartDate);
-		}
-		//gl_BackgroundWorkingThread.release();
-		//});
-	}
-	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(100); }
-	gl_systemMessage.PushInformationMessage("周线历史数据生成完毕");
-
-	return true;
-}
-
 //////////////////////////////////////////////////////////////////////////////////
 ///
 /// 处理当前交易日的实时数据，生成日线各基本数据（相对强度、进攻性买卖盘）。

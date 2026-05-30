@@ -1,5 +1,4 @@
 ﻿#include"windows.h"
-#include"shellapi.h"
 
 #include <iostream>
 
@@ -17,7 +16,7 @@
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ClearTestDataBase() {
+static void ClearTestDataBase() {
 	using namespace StockMarket;
 
 	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
@@ -30,14 +29,6 @@ void ClearTestDataBase() {
 
 	{ // 删除china dayline中的中间数据
 		const auto& t = ChinaStockDayline{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
-		tx.commit();
-	}
-
-	{ // 删除china weekline中的中间数据
-		const auto& t = ChinaStockWeekline{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
@@ -134,8 +125,7 @@ void ClearTestDataBase() {
 
 int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd) {
 	std::cout << "ClearData: Clearing test database...\n";
-	//Note: 使用测试环境的数据库连接池，避免对正式环境的数据库造成影响。测试环境的数据库连接池在测试结束时会自动析构。
-	//InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 20, false); //Note:: 连接正式环境的数据库，谨慎使用
+
 	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false); // Note:: 连接测试环境的数据库
 
 	ClearTestDataBase();

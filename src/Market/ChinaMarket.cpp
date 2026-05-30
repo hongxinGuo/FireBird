@@ -689,8 +689,6 @@ void CChinaMarket::ProcessTodayStock() {
 	const long lDate = GetMarketDate(GetTransactionTime());
 	if (lDate == GetMarketDate()) {
 		gl_dataContainerChinaStock.BuildDayLine(lDate);
-		// 生成周线数据
-		BuildCurrentWeekLine();
 		gl_dataContainerChinaStock.UpdateProfileDB();
 		if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
 			SetUpdateOptionDB(true); // 更新状态
@@ -918,59 +916,6 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 使用当前日期的日线数据生成本周的周线数据。
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildCurrentWeekLine() {
-	CContainerChinaDayLine dataChinaDayLine;
-	CContainerChinaWeekLine dataChinaWeekLine;
-	set<string> setDayLineStockCode;
-	set<string> setWeekLineStockCode;
-	const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
-
-	if (!LoadDayLine(dataChinaDayLine, GetMarketDate())) {
-		return true; // 加载本日日线数据失败，周线数据无需处理。
-	}
-	const auto pDayLineData = dataChinaDayLine.GetContainer();
-
-	gl_systemMessage.PushInformationMessage("开始生成今日周线");
-
-	CreateStockCodeSet(setDayLineStockCode, dataChinaDayLine.GetContainer());
-
-	DeleteCurrentWeekWeekLineBeforeTheDate(lCurrentMonday); // 从当前周周线表中清除掉本星期一之前的数据
-	dataChinaWeekLine.LoadCurrentWeekLine();
-	CreateStockCodeSet(setWeekLineStockCode, dataChinaWeekLine.GetContainer());
-
-	for (const auto& data : *pDayLineData) {
-		if (!setWeekLineStockCode.contains(data.GetStockSymbol())) {
-			//周线数据容器中无此日线数据
-			// 存储此日线数据至周线数据容器
-			CWeekLine pWeekLine;
-			pWeekLine.UpdateWeekLine(&data);
-			dataChinaWeekLine.Add(pWeekLine);
-		}
-		else {
-			// 更新周线数据容器
-			dataChinaWeekLine.UpdateData(&data);
-		}
-	}
-
-	// 清除之前的周线数据
-	DeleteWeekLine(lCurrentMonday);
-	// 存储周线数据值周线数据表
-	dataChinaWeekLine.SaveDB("");
-	// 清除当前周的数据
-	DeleteCurrentWeekWeekLine();
-	// 存储当前周数据于当前周数据表
-	dataChinaWeekLine.SaveCurrentWeekLine();
-
-	gl_systemMessage.PushInformationMessage("生成今日周线任务完成");
-
-	return true;
-}
-
 bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData) {
 	vector<string> vectorStockCode;
 
@@ -979,16 +924,6 @@ bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtual
 		vectorStockCode.push_back(strStockSymbol);
 	}
 	setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
-
-	return true;
-}
-
-bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
-	CContainerChinaWeekLine dataChinaWeekLine;
-
-	DeleteCurrentWeekWeekLine();
-
-	dataChinaWeekLine.SaveCurrentWeekLine();
 
 	return true;
 }
@@ -1031,52 +966,6 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 		dayline.SetCurrentValue(row.CurrentValue);
 		dataChinaDayLine.Add(dayline);
 	}
-	tx.commit();
-
-	return true;
-}
-
-void CChinaMarket::DeleteWeekLine(long lMonday) {
-	using namespace StockMarket;
-	const auto& t = ChinaStockWeekline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-
-	db(sqlpp::remove_from(t).where(t.Date == lMonday));
-	tx.commit();
-}
-
-bool CChinaMarket::DeleteWeekLine() {
-	using namespace StockMarket;
-	const auto& t = ChinaStockWeekline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-
-	db(sqlpp::remove_from(t).unconditionally());
-	tx.commit();
-
-	return true;
-}
-
-bool CChinaMarket::DeleteCurrentWeekWeekLine() {
-	using namespace StockMarket;
-	const auto& t = ChinaCurrentWeekline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-
-	db(sqlpp::remove_from(t).unconditionally());
-	tx.commit();
-
-	return true;
-}
-
-bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate) {
-	using namespace StockMarket;
-	const auto& t = ChinaCurrentWeekline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-
-	db(sqlpp::remove_from(t).where(t.Date < lCutOffDate));
 	tx.commit();
 
 	return true;

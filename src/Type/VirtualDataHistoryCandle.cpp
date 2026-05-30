@@ -76,7 +76,6 @@ CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(long lDate) {
 
 void CVirtualDataHistoryCandle::Reset() {
 	m_vHistoryData.clear();
-
 	m_fDataLoaded = false;
 	m_fDatabaseTodayUpdated = false;
 }

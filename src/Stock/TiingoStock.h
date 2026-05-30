@@ -128,15 +128,9 @@ public:
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
-	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(m_strSymbol); }
-	bool LoadWeekLineDB() override {
-		CreateWeekLine();
-		return true;
-	}
-	bool LoadMonthLineDB() override {
-		CreateMonthLine();
-		return true;
-	}
+	void LoadDayLineDB() override { m_dataDayLine.LoadDB(m_strSymbol); }
+	void LoadWeekLineDB() override { CreateWeekLine(); }
+	void LoadMonthLineDB() override { CreateMonthLine(); }
 	void CreateWeekLine();
 	void CreateMonthLine();
 

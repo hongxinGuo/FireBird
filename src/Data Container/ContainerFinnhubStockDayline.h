@@ -11,8 +11,8 @@ public:
 	CContainerFinnhubStockDayLine& operator=(CContainerFinnhubStockDayLine&& other) noexcept = delete;
 	~CContainerFinnhubStockDayLine() override = default;
 
-	bool SaveDB(const string& strStockSymbol) override;
-	bool LoadDB(const string& strStockSymbol) override;
+	void SaveDB(const string& strStockSymbol) override;
+	void LoadDB(const string& strStockSymbol) override;
 
 	CDayLine* GetData(const size_t lIndex) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
 	CDayLine* GetDayLine(long lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }

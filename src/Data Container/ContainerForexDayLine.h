@@ -11,8 +11,8 @@ public:
 	CContainerForexDayLine& operator=(CContainerForexDayLine&& other) noexcept = delete;
 	~CContainerForexDayLine() override = default;
 
-	bool SaveDB(const string& strForexSymbol) override;
-	bool LoadDB(const string& strCryptoSymbol) override;
+	void SaveDB(const string& strForexSymbol) override;
+	void LoadDB(const string& strCryptoSymbol) override;
 
 	// 特有函数
 };

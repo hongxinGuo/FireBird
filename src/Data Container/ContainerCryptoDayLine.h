@@ -12,8 +12,8 @@ public:
 	CContainerCryptoDayLine& operator=(CContainerCryptoDayLine&& other) = delete;
 	~CContainerCryptoDayLine() override = default;
 
-	bool SaveDB(const string& strCryptoSymbol) override;
-	bool LoadDB(const string& strCryptoSymbol) override;
+	void SaveDB(const string& strCryptoSymbol) override;
+	void LoadDB(const string& strCryptoSymbol) override;
 
 	// 特有函数
 };

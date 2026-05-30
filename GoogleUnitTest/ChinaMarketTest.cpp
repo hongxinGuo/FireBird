@@ -1315,62 +1315,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), CHINA_MARKET_BEGIN_DATE_);
 	}
 
-	TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
-		const auto pWeekLine = make_shared<CWeekLine>();
-		auto ratio = pWeekLine->GetRatio();
-
-		using namespace StockMarket;
-		const auto& t = ChinaCurrentWeekline{};
-		{
-			auto db = gl_dbStockMarket.get();
-			auto tx = start_transaction(db);
-
-			db(sqlpp::insert_into(t).set(
-				t.Date = pWeekLine->GetDate(),
-				t.Exchange = pWeekLine->GetExchange(),
-				t.Symbol = pWeekLine->GetStockSymbol(),
-				t.LastClose = pWeekLine->GetLastClose() / ratio,
-				t.High = pWeekLine->GetHigh() / ratio,
-				t.Low = pWeekLine->GetLow() / ratio,
-				t.Open = pWeekLine->GetOpen() / ratio,
-				t.Close = pWeekLine->GetClose() / ratio,
-				t.Dividend = pWeekLine->GetDividend(),
-				t.SplitFactor = pWeekLine->GetSplitFactor(),
-				t.Volume = pWeekLine->GetVolume(),
-				t.Amount = pWeekLine->GetAmount(),
-				t.UpAndDown = pWeekLine->GetUpDown(),
-				t.UpDownRate = pWeekLine->GetUpDownRate(),
-				t.ChangeHandRate = pWeekLine->GetChangeHandRate(),
-				t.TotalValue = pWeekLine->GetTotalValue(),
-				t.CurrentValue = pWeekLine->GetCurrentValue()
-			));
-			tx.commit();
-		}
-		{
-			auto db = gl_dbStockMarket.get();
-			auto tx = start_transaction(db);
-
-			auto result = db(select(all_of(t)).from(t).unconditionally());
-			tx.commit();
-
-			size_t rows = result.size();
-			EXPECT_TRUE(rows > 0);
-		}
-
-		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
-
-		{
-			auto db = gl_dbStockMarket.get();
-			auto tx = start_transaction(db);
-
-			auto result = db(select(all_of(t)).from(t).unconditionally());
-			tx.commit();
-
-			size_t rows = result.size();
-			EXPECT_TRUE(rows == 0);
-		}
-	}
-
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
 		vector<CVirtualHistoryCandle> vData;
 		CVirtualHistoryCandle data;
