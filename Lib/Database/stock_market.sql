@@ -580,10 +580,10 @@ CREATE TABLE `world_market_option` (
 );
 
 --
--- Table structure for table `china_stock_code`
+-- Table structure for table `china_stock_profile`
 --
 
-CREATE TABLE `china_stock_code` (
+CREATE TABLE `china_stock_profile` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Exchange` varchar(100) DEFAULT ' ',
   `Description` varchar(100) DEFAULT ' ',
@@ -627,10 +627,10 @@ CREATE TABLE `finnhub_stock_exchange` (
 
 
 --
--- Table structure for table `tiingo_stock_fundamental`
+-- Table structure for table `tiingo_stock_profile`
 --
 
-CREATE TABLE `tiingo_stock_fundamental` (
+CREATE TABLE `tiingo_stock_profile` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `TiingoPermaTicker` varchar(45) DEFAULT '',
   `Ticker` varchar(45) DEFAULT '',

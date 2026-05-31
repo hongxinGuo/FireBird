@@ -1351,7 +1351,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.UpdateProfileDB();
 
 		using namespace StockMarket;
-		const auto& t = ChinaStockCode{};
+		const auto& t = ChinaStockProfile{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "000001.SS"));
@@ -1367,7 +1367,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701,增加了一个";
 
 		auto result1 = db(select(all_of(t)).from(t).where(t.Symbol == "SS.SS.SS"));
-		int rows1 = result.size<int>();
+		int rows1 = result.size();
 		EXPECT_EQ(rows1, 1);
 
 		db(remove_from(t).where(t.Symbol == "SS.SS.SS"));

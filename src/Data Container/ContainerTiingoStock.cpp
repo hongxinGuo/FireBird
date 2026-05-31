@@ -39,7 +39,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 	set<string> setExistingSymbols;
 
 	using namespace StockMarket;
-	const auto& t = TiingoStockFundamental{};
+	const auto& t = TiingoStockProfile{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
@@ -113,7 +113,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 	// Use sqlpp11 typed query API to load profile data
 	try {
 		using namespace StockMarket;
-		const auto& t = TiingoStockFundamental{};
+		const auto& t = TiingoStockProfile{};
 
 		Reset();
 		auto db = gl_dbStockMarket.get();

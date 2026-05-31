@@ -32,7 +32,7 @@ size_t CContainerChinaStock::GetActiveStockSize() const {
 long CContainerChinaStock::LoadProfileDB() {
 	long lDayLineNeedCheck = 0;
 	using namespace StockMarket;
-	const auto& t = ChinaStockCode{};
+	const auto& t = ChinaStockProfile{};
 
 	Reset();
 	auto db = gl_dbStockMarket.get();
@@ -80,7 +80,7 @@ void CContainerChinaStock::UpdateProfileDB() {
 	if (IsUpdateProfileDB()) {
 		try {
 			using namespace StockMarket;
-			const auto& t = ChinaStockCode{};
+			const auto& t = ChinaStockProfile{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
 

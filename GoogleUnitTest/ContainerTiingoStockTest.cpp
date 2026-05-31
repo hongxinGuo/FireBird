@@ -87,7 +87,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		using namespace StockMarket;
-		const auto& t = TiingoStockFundamental{};
+		const auto& t = TiingoStockProfile{};
 		auto db = GetStockMarketDB();
 		auto tx = start_transaction(db);
 		auto result = db(select(all_of(t)).from(t).where(t.SICSector == std::string("Test")).order_by(t.Ticker.asc()));
@@ -145,7 +145,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoStockTest, TestDeleteDuplicatedStockDB) {
 		using namespace StockMarket;
-		const auto& t = TiingoStockFundamental{};
+		const auto& t = TiingoStockProfile{};
 		// Ensure no leftover test symbols
 		auto db = GetStockMarketDB();
 		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));

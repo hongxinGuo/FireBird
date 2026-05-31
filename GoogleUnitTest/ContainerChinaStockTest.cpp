@@ -114,12 +114,12 @@ namespace FireBirdTest {
 	TEST_F(CContainerChinaStockTest, TestLoadProfileDB) {
 		m_containerChinaStock2.Reset();
 		using namespace StockMarket;
-		const auto& t = ChinaStockCode{};
+		const auto& t = ChinaStockProfile{};
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = start_transaction(db);
 
-			db(sqlpp::insert_into(t).set(t.Symbol = "000001.SS", t.Exchange = "Test")); // 重复代码，用于测试 
+			db(sqlpp::insert_into(t).set(t.Symbol = "000001.SS", t.Exchange = "Test")); // 重复代码，用于测试，此时代码总数是5702
 			tx.commit();
 		}
 		m_containerChinaStock2.LoadProfileDB();

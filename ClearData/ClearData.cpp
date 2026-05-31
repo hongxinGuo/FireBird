@@ -20,7 +20,7 @@ static void ClearTestDataBase() {
 	using namespace StockMarket;
 
 	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
-		const auto& t = ChinaStockCode{};
+		const auto& t = ChinaStockProfile{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));

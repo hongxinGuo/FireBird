@@ -577,7 +577,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		using namespace StockMarket;
-		const auto& t = TiingoStockFundamental{};
+		const auto& t = TiingoStockProfile{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		auto result = db(select(all_of(t)).from(t).order_by(t.Ticker.asc()).where(t.SICSector == std::string("Test")));

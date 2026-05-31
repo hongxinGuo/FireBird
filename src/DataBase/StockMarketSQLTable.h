@@ -6073,7 +6073,7 @@ namespace StockMarket
       };
     };
   };
-  namespace ChinaStockCode_
+  namespace ChinaStockProfile_
   {
     struct ID
     {
@@ -6187,27 +6187,27 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-  } // namespace ChinaStockCode_
+  } // namespace ChinaStockProfile_
 
-  struct ChinaStockCode: sqlpp::table_t<ChinaStockCode,
-               ChinaStockCode_::ID,
-               ChinaStockCode_::Exchange,
-               ChinaStockCode_::Description,
-               ChinaStockCode_::Symbol,
-               ChinaStockCode_::DisplaySymbol,
-               ChinaStockCode_::IPOStatus,
-               ChinaStockCode_::UpdateDate>
+  struct ChinaStockProfile: sqlpp::table_t<ChinaStockProfile,
+               ChinaStockProfile_::ID,
+               ChinaStockProfile_::Exchange,
+               ChinaStockProfile_::Description,
+               ChinaStockProfile_::Symbol,
+               ChinaStockProfile_::DisplaySymbol,
+               ChinaStockProfile_::IPOStatus,
+               ChinaStockProfile_::UpdateDate>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "china_stock_code";
+      static constexpr const char _literal[] =  "china_stock_profile";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T chinaStockCode;
-        T& operator()() { return chinaStockCode; }
-        const T& operator()() const { return chinaStockCode; }
+        T chinaStockProfile;
+        T& operator()() { return chinaStockProfile; }
+        const T& operator()() const { return chinaStockProfile; }
       };
     };
   };
@@ -6504,7 +6504,7 @@ namespace StockMarket
       };
     };
   };
-  namespace TiingoStockFundamental_
+  namespace TiingoStockProfile_
   {
     struct ID
     {
@@ -6778,37 +6778,37 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-  } // namespace TiingoStockFundamental_
+  } // namespace TiingoStockProfile_
 
-  struct TiingoStockFundamental: sqlpp::table_t<TiingoStockFundamental,
-               TiingoStockFundamental_::ID,
-               TiingoStockFundamental_::TiingoPermaTicker,
-               TiingoStockFundamental_::Ticker,
-               TiingoStockFundamental_::Name,
-               TiingoStockFundamental_::IsActive,
-               TiingoStockFundamental_::IsADR,
-               TiingoStockFundamental_::TiingoIndustry,
-               TiingoStockFundamental_::TiingoSector,
-               TiingoStockFundamental_::SICCode,
-               TiingoStockFundamental_::SICIndustry,
-               TiingoStockFundamental_::SICSector,
-               TiingoStockFundamental_::ReportingCurrency,
-               TiingoStockFundamental_::Location,
-               TiingoStockFundamental_::CompanyWebSite,
-               TiingoStockFundamental_::SECFilingWebSite,
-               TiingoStockFundamental_::IPOStatus,
-               TiingoStockFundamental_::UpdateDate>
+  struct TiingoStockProfile: sqlpp::table_t<TiingoStockProfile,
+               TiingoStockProfile_::ID,
+               TiingoStockProfile_::TiingoPermaTicker,
+               TiingoStockProfile_::Ticker,
+               TiingoStockProfile_::Name,
+               TiingoStockProfile_::IsActive,
+               TiingoStockProfile_::IsADR,
+               TiingoStockProfile_::TiingoIndustry,
+               TiingoStockProfile_::TiingoSector,
+               TiingoStockProfile_::SICCode,
+               TiingoStockProfile_::SICIndustry,
+               TiingoStockProfile_::SICSector,
+               TiingoStockProfile_::ReportingCurrency,
+               TiingoStockProfile_::Location,
+               TiingoStockProfile_::CompanyWebSite,
+               TiingoStockProfile_::SECFilingWebSite,
+               TiingoStockProfile_::IPOStatus,
+               TiingoStockProfile_::UpdateDate>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "tiingo_stock_fundamental";
+      static constexpr const char _literal[] =  "tiingo_stock_profile";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T tiingoStockFundamental;
-        T& operator()() { return tiingoStockFundamental; }
-        const T& operator()() const { return tiingoStockFundamental; }
+        T tiingoStockProfile;
+        T& operator()() { return tiingoStockProfile; }
+        const T& operator()() const { return tiingoStockProfile; }
       };
     };
   };
