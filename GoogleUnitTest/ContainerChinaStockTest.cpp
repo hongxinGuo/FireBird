@@ -136,6 +136,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(row.Symbol.value(), "000001.SS");
 			EXPECT_EQ(row.ID.value(), 1);
 		}
+
+		// clear up
 		m_containerChinaStock2.Reset();
+		while (gl_systemMessage.InformationSize() > 0) {
+			gl_systemMessage.PopInformationMessage();
+		}
 	}
 }

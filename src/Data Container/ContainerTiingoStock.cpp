@@ -169,7 +169,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 void CContainerTiingoStock::DeleteDuplicatedSymbolFromDB() {
 	auto db = gl_dbStockMarket.get();
 	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
-	db.execute("DELETE t1 FROM tiingo_stock_fundamental t1 INNER JOIN tiingo_stock_fundamental t2 ON t1.Ticker = t2.Ticker AND t1.ID > t2.ID");
+	db.execute("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Ticker = t2.Ticker AND t1.ID > t2.ID");
 	db.execute("COMMIT");
 }
 

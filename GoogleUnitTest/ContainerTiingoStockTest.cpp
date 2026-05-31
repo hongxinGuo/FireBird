@@ -29,6 +29,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			m_dataTiingoStock.Reset();
 			gl_systemConfiguration.SetUpdateDB(false);
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -266,5 +267,32 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.Delete(symbol);
 
 		gl_systemConfiguration.SetUpdateDB(false);
+	}
+
+	TEST_F(CContainerTiingoStockTest, TestLoadProfileDB) {
+		using namespace StockMarket;
+		const auto& t = TiingoStockProfile{};
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+
+			db(sqlpp::insert_into(t).set(t.Ticker = "A", t.Name = "Test")); // 重复代码，用于测试，此时代码总数是5702
+			tx.commit();
+		}
+		m_dataTiingoStock.LoadProfileDB();
+		EXPECT_EQ(m_dataTiingoStock.Size(), 7183); // 2024-06-01Tiingo股票总共有7183只股票。如果数据库中有重复的股票代码，则会被删除，所以最终装载的股票数应该是5701。
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+
+			auto result = db(sqlpp::select(all_of(t)).from(t).where(t.Ticker == "A"));
+			tx.commit();
+			size_t rows = result.size();
+			EXPECT_EQ(rows, 1) << "数据库中应该只有一条A的记录";
+			auto& row = result.front();
+			EXPECT_EQ(row.Ticker.value(), "A");
+			EXPECT_EQ(row.ID.value(), 1);
+		}
+		m_dataTiingoStock.Reset();
 	}
 }
