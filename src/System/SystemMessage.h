@@ -79,8 +79,8 @@ using std::atomic_long;
 
 class CSystemDeque {
 public:
-	CSystemDeque();
-	virtual ~CSystemDeque();
+	CSystemDeque() = default;
+	virtual ~CSystemDeque() = default;
 
 	void PushMessage(const string& str);
 	string PopMessage();
@@ -102,7 +102,7 @@ public:
 	CSystemMessage& operator=(const CSystemMessage&) = delete;
 	CSystemMessage(const CSystemMessage&&) noexcept = delete;
 	CSystemMessage& operator=(const CSystemMessage&&) noexcept = delete;
-	~CSystemMessage();
+	~CSystemMessage() = default;
 
 	void PushStockMarketInformationMessage(const string& str) { m_StockMarketInformation.PushMessage(str); }
 	string PopStockMarketInformationMessage() { return m_StockMarketInformation.PopMessage(); }

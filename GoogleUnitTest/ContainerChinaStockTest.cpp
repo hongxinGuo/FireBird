@@ -38,6 +38,7 @@ namespace FireBirdTest {
 
 	protected:
 		CContainerChinaStock m_containerChinaStock;
+		CContainerChinaStock m_containerChinaStock2;
 	};
 
 	TEST_F(CContainerChinaStockTest, TestGetUpDownRate) {
@@ -108,5 +109,33 @@ namespace FireBirdTest {
 		for (int i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
 			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsUpdateDayLine());
 		}
+	}
+
+	TEST_F(CContainerChinaStockTest, TestLoadProfileDB) {
+		m_containerChinaStock2.Reset();
+		using namespace StockMarket;
+		const auto& t = ChinaStockCode{};
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+
+			db(sqlpp::insert_into(t).set(t.Symbol = "000001.SS", t.Exchange = "Test")); // 重复代码，用于测试 
+			tx.commit();
+		}
+		m_containerChinaStock2.LoadProfileDB();
+		EXPECT_EQ(m_containerChinaStock2.Size(), 5701); // 2024-06-01中国A股总共有5701只股票（包括退市股票）。如果数据库中有重复的股票代码，则会被删除，所以最终装载的股票数应该是5701。
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
+
+			auto result = db(sqlpp::select(all_of(t)).from(t).where(t.Symbol == "000001.SS"));
+			tx.commit();
+			size_t rows = result.size();
+			EXPECT_EQ(rows, 1) << "数据库中应该只有一条000001.SS的记录";
+			auto& row = result.front();
+			EXPECT_EQ(row.Symbol.value(), "000001.SS");
+			EXPECT_EQ(row.ID.value(), 1);
+		}
+		m_containerChinaStock2.Reset();
 	}
 }

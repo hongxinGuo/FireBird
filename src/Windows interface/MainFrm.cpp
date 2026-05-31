@@ -161,9 +161,6 @@ CMainFrame::CMainFrame() {
 }
 
 CMainFrame::~CMainFrame() {
-	//if (m_hOutputBarIcon != nullptr) ::CloseHandle(m_hOutputBarIcon);
-	//if (m_hPropertiesBarIcon != nullptr) ::CloseHandle(m_hPropertiesBarIcon);
-
 	if (!gl_systemConfiguration.IsWorkingMode())
 		TRACE(_T("使用了Test驱动\n"));
 
@@ -1022,7 +1019,7 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnProcessTiingoDayLine() {
 	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskProcessDayLine();
+		gl_dataContainerTiingoStock.TaskProcessTodayDayLine();
 	});
 }
 

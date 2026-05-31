@@ -10,7 +10,7 @@ public:
 	CContainerFinnhubCrypto(CContainerFinnhubCrypto&& other) noexcept = delete;
 	CContainerFinnhubCrypto& operator=(const CContainerFinnhubCrypto& other) = delete;
 	CContainerFinnhubCrypto& operator=(CContainerFinnhubCrypto&& other) noexcept = delete;
-	~CContainerFinnhubCrypto() override;
+	~CContainerFinnhubCrypto() override = default;
 	void Reset() override;
 
 	bool LoadProfileDB();

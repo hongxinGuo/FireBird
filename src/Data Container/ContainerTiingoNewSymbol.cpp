@@ -5,9 +5,6 @@ CContainerTiingoSymbol::CContainerTiingoSymbol() {
 	CContainerTiingoSymbol::Reset();
 }
 
-CContainerTiingoSymbol::~CContainerTiingoSymbol() {
-}
-
 void CContainerTiingoSymbol::Reset() {
 	CContainerVirtualStock::Reset();
 }

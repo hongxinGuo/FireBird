@@ -15,9 +15,6 @@ CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
 }
 
-CContainerChinaStock::~CContainerChinaStock() {
-}
-
 void CContainerChinaStock::Reset() {
 	CContainerVirtualStock::Reset();
 
@@ -40,32 +37,33 @@ long CContainerChinaStock::LoadProfileDB() {
 	Reset();
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 	auto rowCount = result.size();
 	Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 	for (const auto& row : result) {
 		// 装入股票代码数据库
 		const auto pStock = make_shared<CChinaStock>();
-		string str;
-		str = row.Symbol;
-		if (!IsSymbol(str)) {
-			pStock->SetSymbol(str);
-			pStock->SetDisplaySymbol(row.DisplaySymbol);
-			pStock->SetDescription(row.Description);
-			pStock->SetExchangeCode(row.Exchange);
-			pStock->SetIPOStatus(row.IPOStatus);
-			pStock->LoadUpdateDate(row.UpdateDate);
+		string str = row.Symbol;
+		int ID = row.ID;
+		if (IsSymbol(str)) {
+			db(sqlpp::remove_from(t).where(t.ID == row.ID));
+		}
+		else {
+			pStock->SetSymbol(row.Symbol.value());
+			pStock->SetDisplaySymbol(row.DisplaySymbol.value());
+			pStock->SetDescription(row.Description.value());
+			pStock->SetExchangeCode(row.Exchange.value());
+			pStock->SetIPOStatus(row.IPOStatus.value());
+			pStock->LoadUpdateDate(row.UpdateDate.value());
 
 			pStock->CheckNeedProcessRTData();
 			pStock->CheckIPOStatus();
 			pStock->CheckDayLineStatus();
 			Add(pStock);
 		}
-		else {
-			db(sqlpp::remove_from(t).where(t.ID == row.ID));
-		}
 	}
 	tx.commit();
+	Sort();
 
 	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
@@ -74,7 +72,6 @@ long CContainerChinaStock::LoadProfileDB() {
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	m_lLoadedStock = m_vStock.size();
-	Sort();
 
 	return lDayLineNeedCheck;
 }

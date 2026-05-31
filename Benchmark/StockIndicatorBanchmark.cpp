@@ -5,7 +5,7 @@
 
 #include<benchmark/benchmark.h>
 
-#include"MovingAverageConvergenceDivergence.h"
+#include"IndicatorMACD.h"
 
 class CIndicatorMACDBenchmark : public benchmark::Fixture {
 public:

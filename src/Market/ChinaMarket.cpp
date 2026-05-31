@@ -4,8 +4,6 @@
 #include"ChinaStockCodeConverter.h"
 #include"Thread.h"
 
-#include"ThreadStatus.h"
-
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
@@ -924,49 +922,6 @@ bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtual
 		vectorStockCode.push_back(strStockSymbol);
 	}
 	setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
-
-	return true;
-}
-
-bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const {
-	using namespace StockMarket;
-	const auto& t = ChinaStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	auto result = db(select(all_of(t)).from(t).where(t.Date == lDate).order_by(t.Symbol.asc()));
-	size_t rows = result.size();
-	if (rows == 0) {
-		// 数据集为空，表明此日没有交易
-		string str = fmt::format("{:08Ld}", lDate);
-		str += "日数据集为空，无需处理周线数据";
-		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
-		return false;
-	}
-	for (const auto& row : result) {
-		CDayLine dayline;
-		int ratio = dayline.GetRatio();
-		dayline.SetRatio(ratio);
-		dayline.SetDate(row.Date);
-		dayline.SetExchange(row.Exchange);
-		dayline.SetStockSymbol(row.Symbol);
-		dayline.SetLastClose(row.LastClose * ratio);
-		dayline.SetOpen(row.Open * ratio);
-		dayline.SetHigh(row.High * ratio);
-		dayline.SetLow(row.Low * ratio);
-		dayline.SetClose(row.Close * ratio);
-		dayline.SetSplitFactor(row.SplitFactor);
-		dayline.SetDividend(row.Dividend);
-		dayline.SetUpDown(row.UpAndDown);
-		dayline.SetVolume(row.Volume);
-		dayline.SetAmount(row.Amount);
-		dayline.SetUpDownRate(row.UpDownRate);
-		dayline.SetChangeHandRate(row.ChangeHandRate);
-		dayline.SetTotalValue(row.TotalValue);
-		dayline.SetCurrentValue(row.CurrentValue);
-		dataChinaDayLine.Add(dayline);
-	}
-	tx.commit();
 
 	return true;
 }

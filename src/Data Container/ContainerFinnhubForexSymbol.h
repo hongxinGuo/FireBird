@@ -10,7 +10,7 @@ public:
 	CContainerFinnhubForexSymbol(CContainerFinnhubForexSymbol&& other) noexcept = delete;
 	CContainerFinnhubForexSymbol& operator=(const CContainerFinnhubForexSymbol& other) = delete;
 	CContainerFinnhubForexSymbol& operator=(CContainerFinnhubForexSymbol&& other) noexcept = delete;
-	~CContainerFinnhubForexSymbol() override;
+	~CContainerFinnhubForexSymbol() override = default;
 	void Reset() override;
 
 	bool LoadProfileDB();

@@ -726,7 +726,7 @@
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.h">
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorMACD.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h">
@@ -1208,7 +1208,7 @@
     <ClCompile Include="..\src\Type\China market\MonthLine.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.cpp">
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorMACD.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorRSI.cpp">

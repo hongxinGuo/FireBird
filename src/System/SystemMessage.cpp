@@ -157,12 +157,6 @@ namespace {
 	binary_semaphore s_sReadCurrentAlphaVantageFunction{ 1 };
 }
 
-CSystemDeque::CSystemDeque() = default;
-
-CSystemDeque::~CSystemDeque() = default;
-
-CSystemMessage::~CSystemMessage() = default;
-
 void CSystemMessage::SetStockCodeForInquiringRTData(const string& strStockCode) {
 	s_RTDataStockCode.acquire();
 	m_sStockCodeForInquiringRTData = strStockCode;

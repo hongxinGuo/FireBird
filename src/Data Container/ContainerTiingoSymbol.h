@@ -10,7 +10,7 @@ public:
 	CContainerTiingoSymbol(CContainerTiingoSymbol&& other) noexcept = delete;
 	CContainerTiingoSymbol& operator=(const CContainerTiingoSymbol& other) = delete;
 	CContainerTiingoSymbol& operator=(CContainerTiingoSymbol&& other) noexcept = delete;
-	~CContainerTiingoSymbol() override;
+	~CContainerTiingoSymbol() override = default;
 	void Reset() override;
 
 	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }

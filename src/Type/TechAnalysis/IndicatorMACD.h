@@ -3,16 +3,16 @@
 struct MACDResult {
 public:
 	void Reset() {
-		macd = std::numeric_limits<double>::quiet_NaN();
-		signal = std::numeric_limits<double>::quiet_NaN();
-		hist = std::numeric_limits<double>::quiet_NaN();
+		m_macd = std::numeric_limits<double>::quiet_NaN();
+		m_signal = std::numeric_limits<double>::quiet_NaN();
+		m_hist = std::numeric_limits<double>::quiet_NaN();
 	}
 
 	double Max() const;
 	double Min() const;
-	double macd;    // MACD line (fastEMA - slowEMA) 
-	double signal;  // signal line (EMA of MACD) 
-	double hist;    // histogram = macd - signal };
+	double m_macd;    // MACD line (fastEMA - slowEMA) 
+	double m_signal;  // signal line (EMA of MACD) 
+	double m_hist;    // histogram = macd - signal };
 };
 
 struct EMA {
@@ -63,7 +63,7 @@ public:
 private:
 	void CalculateCurrentHighLow(CRect rectDrawArea, int iStepWidth);
 
-private:
+protected:
 	int fastPeriod_;
 	int slowPeriod_;
 	int signalPeriod_;

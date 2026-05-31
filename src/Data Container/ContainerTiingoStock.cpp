@@ -2,7 +2,6 @@
 
 #include "ContainerTiingoStock.h"
 
-#include "CharSetTransfer.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TimeConvert.h"
@@ -12,9 +11,6 @@
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();
-}
-
-CContainerTiingoStock::~CContainerTiingoStock() {
 }
 
 void CContainerTiingoStock::Reset() {
@@ -122,7 +118,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		Reset();
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
-		auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Ticker.asc()));
+		auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 		auto rowCount = result.size();
 		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 		for (const auto& row : result) {
@@ -130,7 +126,6 @@ bool CContainerTiingoStock::LoadProfileDB() {
 			const std::string symbol = row.Ticker;
 			if (!IsSymbol(symbol)) {
 				const auto pTiingoStock = make_shared<CTiingoStock>();
-
 				pTiingoStock->SetTiingoPermaTicker(row.TiingoPermaTicker);
 				pTiingoStock->SetSymbol(row.Ticker);
 				pTiingoStock->SetName(row.Name);
@@ -155,6 +150,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 			}
 		}
 		tx.commit();
+		Sort();
 	} catch (const std::exception& ex) {
 		gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
 		return false;
@@ -325,7 +321,7 @@ void CContainerTiingoStock::UpdateFinancialStateDB() {
 
 void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week high");
-	Delete52WeekHighData();
+	Delete52WeekHighDB();
 	auto lSize = Size();
 
 	using namespace StockMarket;
@@ -355,7 +351,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 
 void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low");
-	Delete52WeekLowData();
+	Delete52WeekLowDB();
 	auto lSize = Size();
 
 	using namespace StockMarket;
@@ -421,7 +417,7 @@ void CContainerTiingoStock::TaskCalculate() {
 			t.SICCode = pStock->GetSicCode()
 		);
 	}
-	if (vPos.size() > 0) db(multi_insert);
+	if (!vPos.empty()) db(multi_insert);
 	tx.commit();
 
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
@@ -484,24 +480,23 @@ void CContainerTiingoStock::TaskCalculate2() {
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 }
 
-void CContainerTiingoStock::Delete52WeekHighData() {
-	CDatabase database;
+void CContainerTiingoStock::Delete52WeekHighDB() {
+	using namespace StockMarket;
+	const auto& t = TiingoStock52WeekHigh{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 
-	database.Open(_T("stock_market"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `stock_market`.`tiingo_stock_52week_high`;"));
-	database.CommitTrans();
-	database.Close();
+	db(sqlpp::remove_from(t).unconditionally());
+	tx.commit();
 }
 
-void CContainerTiingoStock::Delete52WeekLowData() {
-	CDatabase database;
-
-	database.Open(_T("stock_market"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
-	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `stock_market`.`tiingo_stock_52week_low`;"));
-	database.CommitTrans();
-	database.Close();
+void CContainerTiingoStock::Delete52WeekLowDB() {
+	using namespace StockMarket;
+	const auto& t = TiingoStock52WeekLow{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+	db(sqlpp::remove_from(t).unconditionally());
+	tx.commit();
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
@@ -525,7 +520,7 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 ///
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::TaskProcessDayLine() {
+void CContainerTiingoStock::TaskProcessTodayDayLine() {
 	gl_systemMessage.PushInnerSystemInformationMessage("开始处理Tiingo日线数据");
 	gl_pWorldMarket->ResetNewHighHigher();
 

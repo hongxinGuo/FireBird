@@ -10,13 +10,6 @@ CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();
 }
 
-CContainerFinnhubCrypto::~CContainerFinnhubCrypto() {
-	//for (const auto& pStock : m_vStock) {
-	//pStock->SetUpdateProfileDB(true);
-	//}
-	//UpdateDB();
-}
-
 void CContainerFinnhubCrypto::Reset() {
 	CContainerVirtualStock::Reset();
 
@@ -29,7 +22,7 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 	Reset();
 	size_t rows = result.size();
 	Reserve(rows + 10);
@@ -46,7 +39,12 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
 		}
+		else {
+			db(sqlpp::remove_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+		}
 	}
+	tx.commit();
+	Sort();
 	m_llLastTotalSymbol = m_vStock.size();
 
 	return true;

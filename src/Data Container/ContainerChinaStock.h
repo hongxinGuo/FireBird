@@ -12,7 +12,7 @@ public:
 	CContainerChinaStock& operator=(const CContainerChinaStock&) = delete;
 	CContainerChinaStock(const CContainerChinaStock&&) noexcept = delete;
 	CContainerChinaStock& operator=(const CContainerChinaStock&&) noexcept = delete;
-	~CContainerChinaStock() override;
+	~CContainerChinaStock() override = default;
 	void Reset() override;
 
 	[[nodiscard]] size_t GetActiveStockSize() const;

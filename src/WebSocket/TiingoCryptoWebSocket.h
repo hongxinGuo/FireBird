@@ -48,15 +48,16 @@ public:
 	CTiingoCryptoWebSocket& operator=(CTiingoCryptoWebSocket&& other) noexcept = delete;
 	~CTiingoCryptoWebSocket() override = default;
 
-	void Connect() override;
-	void Send(const vectorString& vSymbol) override;
-
 	bool ParseWebSocketData(const shared_ptr<string> pData) override { return ParseTiingoCryptoWebSocketData(pData); }
 
 	void MonitorWebSocket(const vectorString& vSymbol);
 
 	static string CreateMessage(const vectorString& vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
+
+protected:
+	void Connect() override;
+	void Send(const vectorString& vSymbol) override;
 };
 
 using CTiingoCryptoWebSocketPtr = shared_ptr<CTiingoCryptoWebSocket>;

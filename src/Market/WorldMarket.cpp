@@ -544,7 +544,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	ASSERT(!gl_pTiingoDataSource->IsUpdateDayLine());// 接收完日线数据后方可处理
 	ASSERT(!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()); // 接收完IEX日线数据后方可处理
 	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskProcessDayLine();
+		gl_dataContainerTiingoStock.TaskProcessTodayDayLine();
 	});
 }
 

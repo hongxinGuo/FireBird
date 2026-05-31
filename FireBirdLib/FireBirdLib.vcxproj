@@ -182,7 +182,7 @@
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h" />
-    <ClInclude Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.h" />
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorMACD.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorRSI.h" />
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.h" />
@@ -355,7 +355,7 @@
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorBoll.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.cpp" />
-    <ClCompile Include="..\src\Type\TechAnalysis\MovingAverageConvergenceDivergence.cpp" />
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorMACD.cpp" />
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorRSI.cpp" />
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.cpp" />

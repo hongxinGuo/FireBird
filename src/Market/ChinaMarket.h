@@ -108,7 +108,6 @@ public:
 	void UpdateChosenStockDB() const;
 	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
-	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
 
 	void DeleteDayLine(long lDate) const;
 

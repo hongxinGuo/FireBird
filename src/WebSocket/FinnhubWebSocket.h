@@ -32,9 +32,6 @@ public:
 	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&&) noexcept = delete;
 	~CFinnhubWebSocket() override = default;
 
-	void Connect() override;
-	void Send(const vectorString& vSymbol) override;
-
 	bool ParseWebSocketData(shared_ptr<string> pData) override { return ParseFinnhubWebSocketData(pData); }
 
 	static string CreateFinnhubWebSocketString(string sSymbol);
@@ -43,6 +40,10 @@ public:
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 	bool ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<string>& pData);
+
+protected:
+	void Connect() override;
+	void Send(const vectorString& vSymbol) override;
 };
 
 using CFinnhubWebSocketPtr = shared_ptr<CFinnhubWebSocket>;

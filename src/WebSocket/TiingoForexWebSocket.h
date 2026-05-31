@@ -45,15 +45,16 @@ public:
 	CTiingoForexWebSocket& operator=(CTiingoForexWebSocket&& other) noexcept = delete;
 	~CTiingoForexWebSocket() override = default;
 
-	void Connect() override;
-	void Send(const vectorString& vSymbol) override;
-
 	bool ParseWebSocketData(shared_ptr<string> pData) override { return ParseTiingoForexWebSocketData(pData); }
 
 	void MonitorWebSocket(const vectorString& vSymbol);
 
 	static string CreateMessage(const vectorString& vSymbol);
 	bool ParseTiingoForexWebSocketData(const shared_ptr<string>& pData);
+
+protected:
+	void Connect() override;
+	void Send(const vectorString& vSymbol) override;
 };
 
 using CTiingoForexWebSocketPtr = shared_ptr<CTiingoForexWebSocket>;

@@ -71,7 +71,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	Reset();
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Symbol.asc()));
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 	auto rowCount = result.size();
 	Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
 	CFinnhubStockPtr pFinnhubStock = nullptr;
@@ -129,7 +129,6 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 		}
 	}
 	tx.commit();
-
 	Sort();
 
 	return true;

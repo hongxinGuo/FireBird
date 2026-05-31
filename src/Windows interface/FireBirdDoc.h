@@ -5,7 +5,7 @@
 
 #include"MovingAverage.h"
 #include"IndicatorKDJ.h"
-#include "MovingAverageConvergenceDivergence.h"
+#include "IndicatorMACD.h"
 #include "IndicatorRSI.h"
 #include"IndicatorBoll.h"
 

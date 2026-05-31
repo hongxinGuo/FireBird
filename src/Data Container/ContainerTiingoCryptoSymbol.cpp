@@ -19,7 +19,7 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Ticker.asc()));
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 	Reserve(result.size() + 2);
 	for (const auto& row : result) {
 		if (!IsSymbol(row.Ticker)) {
@@ -32,11 +32,11 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 			Add(pSymbol);
 		}
 		else {
-			db(remove_from(t).where(t.Ticker == row.Ticker));
+			db(remove_from(t).where(t.ID == row.ID));
 		}
 	}
 	tx.commit();
-
+	Sort();
 	return true;
 }
 
@@ -91,7 +91,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 		auto multi_insert = insert_into(t).columns(t.Ticker, t.BaseCurrency, t.QuoteCurrency, t.Name, t.Description, t.UpdateDate);
 
 		// 1) 更新或删除数据库中已有但容器中不存在的记录
-		auto rows = db(select(all_of(t)).from(t).unconditionally().order_by(t.Ticker.asc()));
+		auto rows = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 		for (const auto& row : rows) {
 			if (IsSymbol(row.Ticker)) {
 				const CTiingoCryptoPtr pCrypto = GetCrypto(row.Ticker);
@@ -109,7 +109,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			}
 			else {
 				// 数据库中存在但容器没有，删除之
-				db(remove_from(t).where(t.Ticker == row.Ticker));
+				db(remove_from(t).where(t.ID == row.ID));
 			}
 		}
 

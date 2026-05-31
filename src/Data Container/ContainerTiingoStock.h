@@ -10,7 +10,7 @@ public:
 	CContainerTiingoStock(CContainerTiingoStock&& other) noexcept = delete;
 	CContainerTiingoStock& operator=(const CContainerTiingoStock& other) = delete;
 	CContainerTiingoStock& operator=(CContainerTiingoStock&& other) noexcept = delete;
-	~CContainerTiingoStock() override;
+	~CContainerTiingoStock() override = default;
 	void Reset() override;
 
 	CTiingoStockPtr GetItem(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
@@ -36,15 +36,15 @@ public:
 	void TaskCalculate();
 	void TaskCalculate2();
 
-	void Delete52WeekHighData();
+	void Delete52WeekHighDB();
 
-	void Delete52WeekLowData();
+	void Delete52WeekLowDB();
 
 	bool IsUpdateFinancialStateDB() noexcept;
 	bool IsUpdate52WeekHighLowDB() noexcept;
 
 	void SetUpdateFinancialState(bool fFlag);
 
-	void TaskProcessDayLine();
+	void TaskProcessTodayDayLine();
 	void ReportHighHigherRate();
 };
