@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		const auto& t = TiingoCryptoSymbol{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
-		db(remove_from(t).where(t.Ticker == "AA.BB"));
+		db(remove_from(t).where(t.Symbol == "AA.BB"));
 		tx.commit();
 	}
 }

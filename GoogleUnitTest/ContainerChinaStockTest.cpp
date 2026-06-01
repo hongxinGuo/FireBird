@@ -96,7 +96,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerChinaStockTest, TestSetUpdateAllDayLine) {
-		for (int i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
+		for (size_t i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
 			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsUpdateDayLine());
 		}
 		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
@@ -106,7 +106,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
 
-		for (int i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
+		for (size_t i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
 			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsUpdateDayLine());
 		}
 	}

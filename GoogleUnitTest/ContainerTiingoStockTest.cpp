@@ -91,23 +91,23 @@ namespace FireBirdTest {
 		const auto& t = TiingoStockProfile{};
 		auto db = GetStockMarketDB();
 		auto tx = start_transaction(db);
-		auto result = db(select(all_of(t)).from(t).where(t.SICSector == std::string("Test")).order_by(t.Ticker.asc()));
+		auto result = db(select(all_of(t)).from(t).where(t.SICSector == std::string("Test")).order_by(t.Symbol.asc()));
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 2) << "应该有两行数据";
 		auto& row = result.front();
-		string str = row.Ticker;
+		string str = row.Symbol;
 		EXPECT_STREQ(str.c_str(), "A") << "已存在代码";
 		int sicCode = row.SICCode;
 		EXPECT_EQ(sicCode, 1002);
 		result.pop_front();
 		auto& row2 = result.front();
-		str = row2.Ticker;
+		str = row2.Symbol;
 		EXPECT_STREQ(str.c_str(), "ABCDEF") << "新代码";
 		tx.commit();
 
 		auto tx1 = start_transaction(db);
-		db(update(t).set(t.SICSector = std::string("")).where(t.Ticker == std::string("A")));
-		db(remove_from(t).where(t.Ticker == std::string("ABCDEF")));
+		db(update(t).set(t.SICSector = std::string("")).where(t.Symbol == std::string("A")));
+		db(remove_from(t).where(t.Symbol == std::string("ABCDEF")));
 		tx1.commit();
 
 		gl_dataContainerTiingoStock.Delete(pTiingoStock);
@@ -149,31 +149,31 @@ namespace FireBirdTest {
 		const auto& t = TiingoStockProfile{};
 		// Ensure no leftover test symbols
 		auto db = GetStockMarketDB();
-		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));
+		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
 
 		// Insert duplicate rows for the same Symbol
-		db(insert_into(t).set(t.Ticker = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP1")));
-		db(insert_into(t).set(t.Ticker = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP2")));
-		db(insert_into(t).set(t.Ticker = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP3")));
+		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP1")));
+		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP2")));
+		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP3")));
 
 		// Ensure inserts are committed and visible to other connections
 		db.execute("COMMIT");
 
 		// Verify duplicates were inserted
 		db = GetStockMarketDB(); // 执行完插入后，重新获取数据库连接，以确保看到最新的数据
-		auto resBefore = db(select(all_of(t)).from(t).where(t.Ticker == std::string("DUPLICATE")));
+		auto resBefore = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
 		EXPECT_TRUE(resBefore.size() >= 3);
 		// Call the function under test
 		m_dataTiingoStock.DeleteDuplicatedSymbolFromDB();
 		// Verify only one row remains for that symbol
 		db = GetStockMarketDB();
-		auto resAfter = db(select(all_of(t)).from(t).where(t.Ticker == std::string("DUPLICATE")));
+		auto resAfter = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
 		EXPECT_EQ(resAfter.size(), 1);
 
 		// Clean up test data
 		db = GetStockMarketDB(); // 执行完删除重复代码任务后，重新获取数据库连接，以确保看到最新的数据
 		auto tx2 = start_transaction(db);
-		db(remove_from(t).where(t.Ticker == std::string("DUPLICATE")));
+		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
 		tx2.commit();
 	}
 
@@ -276,7 +276,7 @@ namespace FireBirdTest {
 			auto db = gl_dbStockMarket.get();
 			auto tx = start_transaction(db);
 
-			db(sqlpp::insert_into(t).set(t.Ticker = "A", t.Name = "Test")); // 重复代码，用于测试，此时代码总数是5702
+			db(sqlpp::insert_into(t).set(t.Symbol = "A", t.Name = "Test")); // 重复代码，用于测试，此时代码总数是5702
 			tx.commit();
 		}
 		m_dataTiingoStock.LoadProfileDB();
@@ -285,12 +285,12 @@ namespace FireBirdTest {
 			auto db = gl_dbStockMarket.get();
 			auto tx = start_transaction(db);
 
-			auto result = db(sqlpp::select(all_of(t)).from(t).where(t.Ticker == "A"));
+			auto result = db(sqlpp::select(all_of(t)).from(t).where(t.Symbol == "A"));
 			tx.commit();
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条A的记录";
 			auto& row = result.front();
-			EXPECT_EQ(row.Ticker.value(), "A");
+			EXPECT_EQ(row.Symbol.value(), "A");
 			EXPECT_EQ(row.ID.value(), 1);
 		}
 		m_dataTiingoStock.Reset();

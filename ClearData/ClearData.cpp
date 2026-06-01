@@ -114,6 +114,14 @@ static void ClearTestDataBase() {
 		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
 		tx.commit();
 	}
+
+	{ // 删除tiingo stock profile中的中间数据
+		const auto& t = TiingoStockProfile{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(sqlpp::remove_from(t).where(t.Symbol == "DUPLICATE"));
+		tx.commit();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

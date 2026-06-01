@@ -79,7 +79,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	for (const auto& row : result) {
 		pFinnhubStock = make_shared<CFinnhubStock>();
 		pFinnhubStock->SetSymbol(row.Symbol);
-		pFinnhubStock->SetExchangeCode(row.ExchangeCode);
+		pFinnhubStock->SetExchangeCode(row.Exchange);
 		pFinnhubStock->SetDescription(row.Description);
 		pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol);
 		pFinnhubStock->SetType(row.Type);
@@ -153,7 +153,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 			if (pStock->IsNewStock()) {// 新代码，插入。
 				db(insert_into(t).set(
 					t.Symbol = pStock->GetSymbol(),
-					t.ExchangeCode = pStock->GetExchangeCode(),
+					t.Exchange = pStock->GetExchangeCode(),
 					t.Description = pStock->GetDescription(),
 					t.DisplaySymbol = pStock->GetDisplaySymbol(),
 					t.Type = pStock->GetType(),
@@ -194,7 +194,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 			else { // 如果是原有的代码，则更新
 				db(update(t).set(
 					t.Symbol = pStock->GetSymbol(),
-					t.ExchangeCode = pStock->GetExchangeCode(),
+					t.Exchange = pStock->GetExchangeCode(),
 					t.Description = pStock->GetDescription(),
 					t.DisplaySymbol = pStock->GetDisplaySymbol(),
 					t.Type = pStock->GetType(),

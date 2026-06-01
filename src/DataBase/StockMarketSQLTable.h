@@ -6538,18 +6538,18 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-    struct Ticker
+    struct Symbol
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Ticker";
+        static constexpr const char _literal[] =  "Symbol";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Ticker;
-            T& operator()() { return Ticker; }
-            const T& operator()() const { return Ticker; }
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
@@ -6783,7 +6783,7 @@ namespace StockMarket
   struct TiingoStockProfile: sqlpp::table_t<TiingoStockProfile,
                TiingoStockProfile_::ID,
                TiingoStockProfile_::TiingoPermaTicker,
-               TiingoStockProfile_::Ticker,
+               TiingoStockProfile_::Symbol,
                TiingoStockProfile_::Name,
                TiingoStockProfile_::IsActive,
                TiingoStockProfile_::IsADR,
@@ -6846,18 +6846,18 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-    struct ExchangeCode
+    struct Exchange
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "ExchangeCode";
+        static constexpr const char _literal[] =  "Exchange";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T ExchangeCode;
-            T& operator()() { return ExchangeCode; }
-            const T& operator()() const { return ExchangeCode; }
+            T Exchange;
+            T& operator()() { return Exchange; }
+            const T& operator()() const { return Exchange; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
@@ -7411,7 +7411,7 @@ namespace StockMarket
   struct FinnhubStockProfile: sqlpp::table_t<FinnhubStockProfile,
                FinnhubStockProfile_::ID,
                FinnhubStockProfile_::Symbol,
-               FinnhubStockProfile_::ExchangeCode,
+               FinnhubStockProfile_::Exchange,
                FinnhubStockProfile_::Description,
                FinnhubStockProfile_::DisplaySymbol,
                FinnhubStockProfile_::Type,
@@ -7548,18 +7548,18 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::must_not_insert, sqlpp::tag::must_not_update>;
     };
-    struct Ticker
+    struct Symbol
     {
       struct _alias_t
       {
-        static constexpr const char _literal[] =  "Ticker";
+        static constexpr const char _literal[] =  "Symbol";
         using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
         template<typename T>
         struct _member_t
           {
-            T Ticker;
-            T& operator()() { return Ticker; }
-            const T& operator()() const { return Ticker; }
+            T Symbol;
+            T& operator()() { return Symbol; }
+            const T& operator()() const { return Symbol; }
           };
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
@@ -7648,7 +7648,7 @@ namespace StockMarket
 
   struct TiingoCryptoSymbol: sqlpp::table_t<TiingoCryptoSymbol,
                TiingoCryptoSymbol_::ID,
-               TiingoCryptoSymbol_::Ticker,
+               TiingoCryptoSymbol_::Symbol,
                TiingoCryptoSymbol_::BaseCurrency,
                TiingoCryptoSymbol_::QuoteCurrency,
                TiingoCryptoSymbol_::Name,
@@ -7789,7 +7789,7 @@ namespace StockMarket
       };
     };
   };
-  namespace ChinaStockCodeSection_
+  namespace ChinaStockSymbolSection_
   {
     struct ID
     {
@@ -7871,25 +7871,25 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
     };
-  } // namespace ChinaStockCodeSection_
+  } // namespace ChinaStockSymbolSection_
 
-  struct ChinaStockCodeSection: sqlpp::table_t<ChinaStockCodeSection,
-               ChinaStockCodeSection_::ID,
-               ChinaStockCodeSection_::Active,
-               ChinaStockCodeSection_::Market,
-               ChinaStockCodeSection_::IndexNumber,
-               ChinaStockCodeSection_::Comment>
+  struct ChinaStockSymbolSection: sqlpp::table_t<ChinaStockSymbolSection,
+               ChinaStockSymbolSection_::ID,
+               ChinaStockSymbolSection_::Active,
+               ChinaStockSymbolSection_::Market,
+               ChinaStockSymbolSection_::IndexNumber,
+               ChinaStockSymbolSection_::Comment>
   {
     struct _alias_t
     {
-      static constexpr const char _literal[] =  "china_stock_code_section";
+      static constexpr const char _literal[] =  "china_stock_symbol_section";
       using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
       template<typename T>
       struct _member_t
       {
-        T chinaStockCodeSection;
-        T& operator()() { return chinaStockCodeSection; }
-        const T& operator()() const { return chinaStockCodeSection; }
+        T chinaStockSymbolSection;
+        T& operator()() { return chinaStockSymbolSection; }
+        const T& operator()() const { return chinaStockSymbolSection; }
       };
     };
   };

@@ -44,7 +44,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 	auto tx = start_transaction(db);
 
 	for (const auto& row : db(select(all_of(t)).from(t).unconditionally())) {
-		setExistingSymbols.insert(row.Ticker);
+		setExistingSymbols.insert(row.Symbol);
 	}
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -72,13 +72,13 @@ void CContainerTiingoStock::UpdateProfileDB() {
 					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
 					t.IPOStatus = pStock->GetIPOStatus(),
 					t.UpdateDate = sUpdateDate
-				).where(t.Ticker == pStock->GetSymbol()));
+				).where(t.Symbol == pStock->GetSymbol()));
 			}
 			else { // 新代码，插入。
 				pStock->UpdateJsonUpdateDate();
 				string sUpdateDate = pStock->GetJsonUpdateDate().dump();
 				db(insert_into(t).set(
-					t.Ticker = pStock->GetSymbol(),
+					t.Symbol = pStock->GetSymbol(),
 					t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
 					t.Name = pStock->GetName(),
 					t.IsActive = IsActive,
@@ -123,11 +123,11 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 		for (const auto& row : result) {
 			//for (const auto& row : result) {
-			const std::string symbol = row.Ticker;
+			const std::string symbol = row.Symbol;
 			if (!IsSymbol(symbol)) {
 				const auto pTiingoStock = make_shared<CTiingoStock>();
 				pTiingoStock->SetTiingoPermaTicker(row.TiingoPermaTicker);
-				pTiingoStock->SetSymbol(row.Ticker);
+				pTiingoStock->SetSymbol(row.Symbol);
 				pTiingoStock->SetName(row.Name);
 				pTiingoStock->SetActive(row.IsActive);
 				pTiingoStock->SetIsADR(row.IsADR);
@@ -169,7 +169,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 void CContainerTiingoStock::DeleteDuplicatedSymbolFromDB() {
 	auto db = gl_dbStockMarket.get();
 	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
-	db.execute("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Ticker = t2.Ticker AND t1.ID > t2.ID");
+	db.execute("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
 	db.execute("COMMIT");
 }
 

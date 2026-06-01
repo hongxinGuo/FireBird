@@ -580,15 +580,15 @@ namespace FireBirdTest {
 		const auto& t = TiingoStockProfile{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
-		auto result = db(select(all_of(t)).from(t).order_by(t.Ticker.asc()).where(t.SICSector == std::string("Test")));
+		auto result = db(select(all_of(t)).from(t).order_by(t.Symbol.asc()).where(t.SICSector == std::string("Test")));
 		int rows = result.size();
 		EXPECT_EQ(rows, 2);
-		EXPECT_EQ(result.front().Ticker, "A");
+		EXPECT_EQ(result.front().Symbol, "A");
 		result.pop_front();
-		EXPECT_EQ(result.front().Ticker, "ABCDEF");
+		EXPECT_EQ(result.front().Symbol, "ABCDEF");
 
-		db(update(t).set(t.SICSector = std::string("")).where(t.Ticker == std::string("A")));
-		db(remove_from(t).where(t.Ticker == std::string("ABCDEF")));
+		db(update(t).set(t.SICSector = std::string("")).where(t.Symbol == std::string("A")));
+		db(remove_from(t).where(t.Symbol == std::string("ABCDEF")));
 		tx.commit();
 
 		gl_dataContainerTiingoStock.Delete(pTiingoStock);

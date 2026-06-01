@@ -633,7 +633,7 @@ CREATE TABLE `finnhub_stock_exchange` (
 CREATE TABLE `tiingo_stock_profile` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `TiingoPermaTicker` varchar(45) DEFAULT '',
-  `Ticker` varchar(45) DEFAULT '',
+  `Symbol` varchar(45) DEFAULT '',
   `Name` varchar(200) DEFAULT '',
   `IsActive` tinyint DEFAULT NULL,
   `IsADR` tinyint DEFAULT NULL,
@@ -659,7 +659,7 @@ CREATE TABLE `tiingo_stock_profile` (
 CREATE TABLE `finnhub_stock_profile` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(20) DEFAULT '',
-  `ExchangeCode` varchar(3) DEFAULT 'US',
+  `Exchange` varchar(20) DEFAULT 'US',
   `Description` varchar(200) DEFAULT '',
   `DisplaySymbol` varchar(20) DEFAULT '',
   `Type` varchar(25) DEFAULT '',
@@ -716,7 +716,7 @@ CREATE TABLE `tiingo_stock_delisted_symbol` (
 
 CREATE TABLE `tiingo_crypto_symbol` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Ticker` varchar(45) DEFAULT '',
+  `Symbol` varchar(45) DEFAULT '',
   `BaseCurrency` varchar(20) DEFAULT '',
   `QuoteCurrency` varchar(20) DEFAULT '',
   `Name` varchar(100) DEFAULT '',
@@ -740,11 +740,11 @@ CREATE TABLE `tiingo_fundamental_definitions` (
 ) ;
 
 --
--- Table structure for table `china_stock_code_section`
+-- Table structure for table `china_stock_symbol_section`
 --
 
 
-CREATE TABLE `china_stock_code_section` (
+CREATE TABLE `china_stock_symbol_section` (
   `ID` int NOT NULL,
   `Active` tinyint DEFAULT NULL,
   `Market` int DEFAULT NULL,

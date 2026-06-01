@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ContainerTiingoCryptoSymbol.h"
 
-#include "CharSetTransfer.h"
 #include "dataBaseConnector.h"
 #include "InfoReport.h"
 
@@ -22,9 +21,9 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 	Reserve(result.size() + 2);
 	for (const auto& row : result) {
-		if (!IsSymbol(row.Ticker)) {
+		if (!IsSymbol(row.Symbol)) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
-			pSymbol->SetSymbol(row.Ticker);
+			pSymbol->SetSymbol(row.Symbol);
 			pSymbol->m_strName = row.Name;
 			pSymbol->SetDescription(row.Description);
 			pSymbol->m_strBaseCurrency = row.BaseCurrency;
@@ -88,13 +87,13 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
-		auto multi_insert = insert_into(t).columns(t.Ticker, t.BaseCurrency, t.QuoteCurrency, t.Name, t.Description, t.UpdateDate);
+		auto multi_insert = insert_into(t).columns(t.Symbol, t.BaseCurrency, t.QuoteCurrency, t.Name, t.Description, t.UpdateDate);
 
 		// 1) 更新或删除数据库中已有但容器中不存在的记录
 		auto rows = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
 		for (const auto& row : rows) {
-			if (IsSymbol(row.Ticker)) {
-				const CTiingoCryptoPtr pCrypto = GetCrypto(row.Ticker);
+			if (IsSymbol(row.Symbol)) {
+				const CTiingoCryptoPtr pCrypto = GetCrypto(row.Symbol);
 				ASSERT(pCrypto != nullptr);
 				if (pCrypto->IsUpdateProfileDB()) {
 					// 更新已有记录
@@ -103,7 +102,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 						t.Description = pCrypto->GetDescription(),
 						t.BaseCurrency = pCrypto->m_strBaseCurrency,
 						t.QuoteCurrency = pCrypto->m_strQuoteCurrency
-					).where(t.Ticker == row.Ticker));
+					).where(t.Symbol == row.Symbol));
 					pCrypto->SetUpdateProfileDB(false);
 				}
 			}
@@ -120,7 +119,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			ASSERT(pCrypto != nullptr);
 			if (pCrypto->IsUpdateProfileDB()) {
 				multi_insert.values.add(
-					t.Ticker = pCrypto->GetSymbol(),
+					t.Symbol = pCrypto->GetSymbol(),
 					t.BaseCurrency = pCrypto->m_strBaseCurrency,
 					t.QuoteCurrency = pCrypto->m_strQuoteCurrency,
 					t.Name = pCrypto->m_strName,

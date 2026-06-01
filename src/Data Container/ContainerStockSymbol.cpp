@@ -110,7 +110,7 @@ size_t CContainerStockSymbol::Size() {
 
 void CContainerStockSymbol::LoadStockSectionDB() {
 	using namespace StockMarket;
-	const auto& t = ChinaStockCodeSection{};
+	const auto& t = ChinaStockSymbolSection{};
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
@@ -131,7 +131,7 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 
 void CContainerStockSymbol::UpdateStockSectionDB() {
 	using namespace StockMarket;
-	const auto& t = ChinaStockCodeSection{};
+	const auto& t = ChinaStockSymbolSection{};
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
