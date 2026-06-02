@@ -52,7 +52,7 @@ long CContainerChinaStock::LoadProfileDB() {
 			pStock->SetSymbol(row.Symbol.value());
 			pStock->SetDisplaySymbol(row.DisplaySymbol.value());
 			pStock->SetDescription(row.Description.value());
-			pStock->SetExchangeCode(row.Exchange.value());
+			pStock->SetExchange(row.Exchange.value());
 			pStock->SetIPOStatus(row.IPOStatus.value());
 			pStock->LoadUpdateDate(row.UpdateDate.value());
 
@@ -77,48 +77,46 @@ long CContainerChinaStock::LoadProfileDB() {
 }
 
 void CContainerChinaStock::UpdateProfileDB() {
-	if (IsUpdateProfileDB()) {
-		try {
-			using namespace StockMarket;
-			const auto& t = ChinaStockProfile{};
-			auto db = gl_dbStockMarket.get();
-			auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockProfile{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-			//auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange,t.DisplaySymbol, t.IPOStatus, t.UpdateDate);
+		//auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange,t.DisplaySymbol, t.IPOStatus, t.UpdateDate);
 
-			for (size_t i = 0; i < m_vStock.size(); ++i) {
-				const auto& pStock = m_vStock[i];
-				if (pStock->IsUpdateProfileDB()) {
-					pStock->UpdateJsonUpdateDate();
-					if (pStock->IsNewStock()) {	// 插入新股票代码
-						db(sqlpp::insert_into(t).set(
-							t.Symbol = pStock->GetSymbol(),
-							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchangeCode(),
-							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.IPOStatus = pStock->GetIPOStatus(),
-							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-						));
-						pStock->SetNewStock(false);
-					}
-					else {// 更新现有股票代码
-						db(sqlpp::update(t).set(
-							t.Symbol = pStock->GetSymbol(),
-							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchangeCode(),
-							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.IPOStatus = pStock->GetIPOStatus(),
-							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-						).where(t.Symbol == pStock->GetSymbol()));
-					}
-					pStock->SetUpdateProfileDB(false);
+		for (size_t i = 0; i < m_vStock.size(); ++i) {
+			const auto& pStock = m_vStock[i];
+			if (pStock->IsUpdateProfileDB()) {
+				pStock->UpdateJsonUpdateDate();
+				if (pStock->IsNewStock()) {	// 插入新股票代码
+					db(sqlpp::insert_into(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.Description = pStock->GetDescription(),
+						t.Exchange = pStock->GetExchange(),
+						t.DisplaySymbol = pStock->GetDisplaySymbol(),
+						t.IPOStatus = pStock->GetIPOStatus(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					));
+					pStock->SetNewStock(false);
 				}
+				else {// 更新现有股票代码
+					db(sqlpp::update(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.Description = pStock->GetDescription(),
+						t.Exchange = pStock->GetExchange(),
+						t.DisplaySymbol = pStock->GetDisplaySymbol(),
+						t.IPOStatus = pStock->GetIPOStatus(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					).where(t.Symbol == pStock->GetSymbol()));
+				}
+				pStock->SetUpdateProfileDB(false);
 			}
-			tx.commit();
-			m_lLoadedStock = m_vStock.size();
-		} catch (CException& e) {
-			ReportInformation(e);
 		}
+		tx.commit();
+		m_lLoadedStock = m_vStock.size();
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 
@@ -337,7 +335,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 
 			multi_insert.values.add(
 				t.Date = lCurrentTradeDay,
-				t.Exchange = pStock->GetExchangeCode(),
+				t.Exchange = pStock->GetExchange(),
 				t.Symbol = pStock->GetSymbol(),
 				t.LastClose = static_cast<double>(pStock->GetLastClose()) / ratio,
 				t.Open = static_cast<double>(pStock->GetOpen()) / ratio,

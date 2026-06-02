@@ -63,7 +63,7 @@ namespace FireBirdTest {
 		// 测试UpdateDB
 		pFinnhubCrypto = make_shared<CFinnhubCrypto>();
 		pFinnhubCrypto->SetSymbol("AA.BB"); // 新代码
-		pFinnhubCrypto->SetExchangeCode("Test");
+		pFinnhubCrypto->SetExchange("Test");
 
 		pFinnhubCrypto->SetUpdateProfileDB(true);
 		m_dataFinnhubCrypto.Add(pFinnhubCrypto);

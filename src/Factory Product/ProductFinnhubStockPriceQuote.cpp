@@ -17,7 +17,7 @@ string CProductFinnhubStockPriceQuote::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const auto strParam = pStock->GetSymbol();
 
-	m_strInquiringExchange = pStock->GetExchangeCode();
+	m_strInquiringExchange = pStock->GetExchange();
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
 }

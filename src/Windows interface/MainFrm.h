@@ -103,7 +103,7 @@ protected:
 	afx_msg void OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateStockSection();
-	afx_msg void OnUpdateStockCode();
+	afx_msg void OnUpdateStockProfile();
 	afx_msg void OnRebuildEpsSurprise();
 	afx_msg void OnRebuildPeer();
 	afx_msg void OnRebuildDayLine();

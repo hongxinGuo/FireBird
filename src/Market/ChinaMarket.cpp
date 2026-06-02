@@ -855,7 +855,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		gl_runtime.thread_executor()->post([] {
-			gl_systemMessage.SetChinaMarketSavingFunction("update stock profile");
+			gl_systemMessage.SetChinaMarketSavingFunction("update china stock profile");
 			gl_dataContainerChinaStock.UpdateProfileDB();
 		});
 		return true;

@@ -17,7 +17,7 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 string CProductFinnhubCryptoDayLine::CreateMessage() {
 	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex);
 
-	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();
+	m_strInquiringExchange = pCryptoSymbol->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pCryptoSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
 	return m_strInquiry;
 }
@@ -28,7 +28,7 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	pCryptoSymbol->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
 		for (auto& dayLine : *pvDayLine) {
-			dayLine.SetExchange(pCryptoSymbol->GetExchangeCode());
+			dayLine.SetExchange(pCryptoSymbol->GetExchange());
 			dayLine.SetStockSymbol(pCryptoSymbol->GetSymbol());
 			const long lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTime());
 			dayLine.SetDate(lTemp);

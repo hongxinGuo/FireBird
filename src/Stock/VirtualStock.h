@@ -25,8 +25,8 @@ public:
 
 	string GetDescription() const noexcept { return m_strDescription; }
 	void SetDescription(const string& strDescription) noexcept { m_strDescription = strDescription; }
-	string GetExchangeCode() const noexcept { return m_strExchangeCode; }
-	void SetExchangeCode(const string& strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
+	string GetExchange() const noexcept { return m_strExchange; }
+	void SetExchange(const string& strExchange) noexcept { m_strExchange = strExchange; }
 	string GetSymbol() const noexcept { return m_strSymbol; }
 	void SetSymbol(const string& str) noexcept { m_strSymbol = str; }
 	string GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }
@@ -114,8 +114,8 @@ public:
 
 	virtual void RebuildStockSplitDB() {} // 重建拆股数据库
 
-	long GetIPOStatus() const noexcept { return m_lIPOStatus; }
-	void SetIPOStatus(const long lValue) noexcept { m_lIPOStatus = lValue; }
+	int GetIPOStatus() const noexcept { return m_lIPOStatus; }
+	void SetIPOStatus(const int lValue) noexcept { m_lIPOStatus = lValue; }
 	bool IsDelisted() const noexcept { return (m_lIPOStatus == _STOCK_DELISTED_); }
 	bool IsNotYetList() const noexcept { return (m_lIPOStatus == _STOCK_NOT_YET_LIST_); }
 	bool IsNullStock() const noexcept { return (m_lIPOStatus == _STOCK_NULL_); }
@@ -161,7 +161,7 @@ public:
 
 protected:
 	string m_strDescription{ "" }; // 该证券的描述
-	string m_strExchangeCode{ "" }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
+	string m_strExchange{ "" }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
 	string m_strSymbol{ "" }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
 	string m_strDisplaySymbol{ "" };
 
@@ -188,7 +188,7 @@ protected:
 
 	bool m_fNewStock{ false }; // 本日新发现的股票
 	bool m_fActive{ false }; // 是否是活跃股票
-	long m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
+	int m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
 	bool m_bSelected{ false }; // 在股票列表中被选中

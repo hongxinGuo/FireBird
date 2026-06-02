@@ -31,7 +31,7 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 			const auto pSymbol = make_shared<CFinnhubForex>();
 			pSymbol->SetSymbol(row.Symbol);
 			pSymbol->SetDescription(row.Description);
-			pSymbol->SetExchangeCode(row.Exchange);
+			pSymbol->SetExchange(row.Exchange);
 			pSymbol->SetDisplaySymbol(row.DisplaySymbol);
 			pSymbol->SetIPOStatus(row.IPOStatus);
 			pSymbol->LoadUpdateDate(row.UpdateDate);
@@ -65,7 +65,7 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB() {
 						db(sqlpp::insert_into(t).set(
 							t.Symbol = pStock->GetSymbol(),
 							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchangeCode(),
+							t.Exchange = pStock->GetExchange(),
 							t.DisplaySymbol = pStock->GetDisplaySymbol(),
 							t.IPOStatus = pStock->GetIPOStatus(),
 							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
@@ -76,7 +76,7 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB() {
 						db(sqlpp::update(t).set(
 							t.Symbol = pStock->GetSymbol(),
 							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchangeCode(),
+							t.Exchange = pStock->GetExchange(),
 							t.DisplaySymbol = pStock->GetDisplaySymbol(),
 							t.IPOStatus = pStock->GetIPOStatus(),
 							t.UpdateDate = pStock->GetJsonUpdateDate().dump()

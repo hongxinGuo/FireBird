@@ -59,7 +59,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
 	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
-	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
+	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockProfile)
 	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
 	ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
 	ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayLine)
@@ -812,9 +812,9 @@ void CMainFrame::OnUpdateStockSection() {
 	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, 1);
 }
 
-void CMainFrame::OnUpdateStockCode() {
+void CMainFrame::OnUpdateStockProfile() {
 	gl_runtime.thread_executor()->post([] {
-		gl_systemMessage.SetChinaMarketSavingFunction("update stock code");
+		gl_systemMessage.SetChinaMarketSavingFunction("update china stock profile");
 		gl_dataContainerChinaStock.UpdateProfileDB();
 	});
 }

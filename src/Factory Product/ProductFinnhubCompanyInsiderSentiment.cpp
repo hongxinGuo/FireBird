@@ -20,7 +20,7 @@ string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 
 	const string sCurrentDate = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate;
-	m_strInquiringExchange = pStock->GetExchangeCode();
+	m_strInquiringExchange = pStock->GetExchange();
 
 	return m_strInquiry;
 }

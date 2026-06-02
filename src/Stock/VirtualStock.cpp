@@ -1,9 +1,7 @@
 #include"pch.h"
-#include<atlconv.h>
 
 #include "VirtualStock.h"
 
-#include "CharSetTransfer.h"
 #include "jsonParse.h"
 #include "nlohmannJsonGetValue.h"
 

@@ -173,7 +173,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol("New Symbol")) << "新添加的Forex代码";
 			pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("New Symbol");
-			EXPECT_EQ(pForexSymbol->GetExchangeCode(), "oanda") << "Index为零时的交易所";
+			EXPECT_EQ(pForexSymbol->GetExchange(), "oanda") << "Index为零时的交易所";
 
 			// 恢复原状
 			gl_dataFinnhubForexSymbol.Delete(pForexSymbol);

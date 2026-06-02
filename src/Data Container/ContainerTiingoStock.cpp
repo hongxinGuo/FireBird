@@ -55,7 +55,6 @@ void CContainerTiingoStock::UpdateProfileDB() {
 			int IsADR = pStock->IsADR() ? 1 : 0;
 			if (setExistingSymbols.contains(pStock->GetSymbol())) { // 如果是原有的代码，则更新；如果是新代码，则插入。
 				pStock->UpdateJsonUpdateDate();
-				string sUpdateDate = pStock->GetJsonUpdateDate().dump();
 				db(update(t).set(
 					t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
 					t.Name = pStock->GetName(),
@@ -71,7 +70,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 					t.CompanyWebSite = pStock->GetCompanyWebSite(),
 					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
 					t.IPOStatus = pStock->GetIPOStatus(),
-					t.UpdateDate = sUpdateDate
+					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				).where(t.Symbol == pStock->GetSymbol()));
 			}
 			else { // 新代码，插入。
@@ -93,7 +92,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 					t.CompanyWebSite = pStock->GetCompanyWebSite(),
 					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
 					t.IPOStatus = pStock->GetIPOStatus(),
-					t.UpdateDate = sUpdateDate
+					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				));
 				pStock->SetNewStock(false);
 			}
@@ -214,7 +213,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 				const double ratio = static_cast<double>(pTiingoStock->GetRatio());
 				multi_insert.values.add(
 					t.Date = lDate,
-					t.Exchange = pTiingoStock->GetExchangeCode(),
+					t.Exchange = pTiingoStock->GetExchange(),
 					t.Symbol = pTiingoStock->GetSymbol(),
 					t.LastClose = static_cast<double>(pTiingoStock->GetLastClose()) / ratio,
 					t.Open = static_cast<double>(pTiingoStock->GetOpen()) / ratio,
@@ -337,7 +336,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 			for (size_t index = 0; index < Size; index++) {
 				db(insert_into(t).set(
 					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchangeCode(),
+					t.Exchange = pStock->GetExchange(),
 					t.Date = pStock->Get52WeekHighDate(index)
 				));
 			}
@@ -369,7 +368,7 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 			for (size_t index = 0; index < Size; index++) {
 				multi_insert.values.add(
 					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchangeCode(),
+					t.Exchange = pStock->GetExchange(),
 					t.Date = pStock->Get52WeekLowDate(index)
 				);
 				Values++;

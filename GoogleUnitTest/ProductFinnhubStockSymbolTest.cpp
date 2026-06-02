@@ -123,7 +123,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(0)->GetIsin(), "not null") << "此时内容不为空，需要双引号";
 			EXPECT_EQ(m_pvStock->at(1)->GetSymbol(), "New Symbol");
 			EXPECT_EQ(m_pvStock->at(1)->GetIsin(), " ") << "当内容为空（null）时，使用默认值“ ”";
-			EXPECT_EQ(m_pvStock->at(0)->GetExchangeCode(), "US");
+			EXPECT_EQ(m_pvStock->at(0)->GetExchange(), "US");
 			EXPECT_EQ(m_pvStock->size(), 2);
 			break;
 		default:
@@ -177,7 +177,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("New Symbol")) << "新增加的代码";
 			pStock = gl_dataContainerFinnhubStock.GetItem("New Symbol");
-			EXPECT_EQ(pStock->GetExchangeCode(), "AD") << "测试数据库的第一个交易所";
+			EXPECT_EQ(pStock->GetExchange(), "AD") << "测试数据库的第一个交易所";
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 
 			// 恢复原状

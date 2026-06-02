@@ -143,4 +143,80 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInformationMessage();
 		}
 	}
+
+	TEST_F(CContainerChinaStockTest, UpdateProfileDB_InsertsAndUpdates) {
+		SCOPED_TRACE("");
+		// Ensure globals initialized
+		GeneralCheck();
+
+		// Prepare test stocks
+		const string newSymbol = "UT.TEST.STK";
+		const string existingSymbol = "000001.SS";
+
+		// Ensure no leftover from previous runs
+		{
+			using namespace StockMarket;
+			const auto& t = ChinaStockProfile{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+			db(sqlpp::remove_from(t).where(t.Symbol == newSymbol));
+			tx.commit();
+		}
+
+		// Create and add a new stock to container, mark as new and needing DB update
+		auto pNewStock = make_shared<CChinaStock>();
+		pNewStock->SetSymbol(newSymbol);
+		pNewStock->SetExchange("Test");
+		pNewStock->SetNewStock(true);
+		pNewStock->SetUpdateProfileDB(true);
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(newSymbol));
+		gl_dataContainerChinaStock.Add(pNewStock);
+		EXPECT_TRUE(gl_dataContainerChinaStock.IsSymbol(newSymbol));
+
+		// Modify an existing stock in-memory and mark it for update
+		auto pExistStock = gl_dataContainerChinaStock.GetStock(existingSymbol);
+		ASSERT_NE(pExistStock, nullptr);
+		const auto originalIPO = pExistStock->GetIPOStatus();
+		pExistStock->SetIPOStatus(_STOCK_DELISTED_);
+		pExistStock->SetUpdateProfileDB(true);
+
+		// Perform the DB update
+		gl_dataContainerChinaStock.UpdateProfileDB();
+
+		// Verify DB: existing stock updated
+		{
+			using namespace StockMarket;
+			const auto& t = ChinaStockProfile{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
+			auto resultExist = db(select(all_of(t)).from(t).where(t.Symbol == existingSymbol));
+			EXPECT_EQ(resultExist.size(), 1u);
+			if (!resultExist.empty()) {
+				auto& row = resultExist.front();
+				EXPECT_EQ(row.IPOStatus.value(), _STOCK_DELISTED_);
+			}
+
+			// Verify new stock inserted
+			auto resultNew = db(select(all_of(t)).from(t).where(t.Symbol == newSymbol));
+			EXPECT_EQ(resultNew.size(), 1u);
+
+			// Cleanup DB: remove test insertion and restore existing stock IPO status
+			db(update(t).set(t.IPOStatus = originalIPO).where(t.Symbol == existingSymbol));
+			db(remove_from(t).where(t.Symbol == newSymbol));
+			tx.commit();
+		}
+
+		// Cleanup in-memory container
+		auto pRetrievedNew = gl_dataContainerChinaStock.GetStock(newSymbol);
+		ASSERT_NE(pRetrievedNew, nullptr);
+		gl_dataContainerChinaStock.Delete(pRetrievedNew);
+
+		// Restore in-memory IPO status and flags
+		pExistStock->SetIPOStatus(originalIPO);
+		pExistStock->SetUpdateProfileDB(false);
+
+		// Final assertions: flags cleared
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB());
+	}
 }

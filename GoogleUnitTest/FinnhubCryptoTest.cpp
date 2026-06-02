@@ -38,7 +38,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetExchangeCode(), "");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetExchange(), "");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);

@@ -149,7 +149,7 @@ void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const {
 	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(GetTransactionTime()));
-	pBeUpdated->SetExchange(m_strExchangeCode);
+	pBeUpdated->SetExchange(m_strExchange);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
 	pBeUpdated->SetLastClose(m_lLastClose);
 	pBeUpdated->SetOpen(m_lOpen);
@@ -227,7 +227,7 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 bool CChinaStock::LoadStockCode(const CStockSymbol& stockSymbol) {
 	m_strDescription = stockSymbol.m_Description;
 	m_strDisplaySymbol = stockSymbol.m_DisplaySymbol;
-	m_strExchangeCode = stockSymbol.m_Exchange;
+	m_strExchange = stockSymbol.m_Exchange;
 	m_strSymbol = stockSymbol.m_Symbol;
 	m_lIPOStatus = stockSymbol.m_IPOStatus;
 	LoadUpdateDate(stockSymbol.m_UpdateDate);

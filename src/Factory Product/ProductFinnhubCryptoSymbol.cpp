@@ -23,7 +23,7 @@ void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
 		if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(gl_dataContainerFinnhubCryptoExchange.GetItem(m_lIndex));
+			pSymbol->SetExchange(gl_dataContainerFinnhubCryptoExchange.GetItem(m_lIndex));
 			gl_dataFinnhubCryptoSymbol.Add(pSymbol);
 		}
 	}

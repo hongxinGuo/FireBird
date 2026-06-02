@@ -135,9 +135,9 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestGetExchangeCode) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetExchangeCode(), "");
-		stock.SetExchangeCode("SS");
-		EXPECT_EQ(stock.GetExchangeCode(), "SS");
+		EXPECT_EQ(stock.GetExchange(), "");
+		stock.SetExchange("SS");
+		EXPECT_EQ(stock.GetExchange(), "SS");
 	}
 
 	TEST_F(CChinaStockTest, TestGetSymbol) {

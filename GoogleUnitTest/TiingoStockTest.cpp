@@ -88,9 +88,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetExchangeCode) {
-		EXPECT_EQ(stock.GetExchangeCode(), "US");
-		stock.SetExchangeCode("SS");
-		EXPECT_EQ(stock.GetExchangeCode(), "SS");
+		EXPECT_EQ(stock.GetExchange(), "US");
+		stock.SetExchange("SS");
+		EXPECT_EQ(stock.GetExchange(), "SS");
 	}
 
 	TEST_F(CTiingoStockTest, TestGetSymbol) {

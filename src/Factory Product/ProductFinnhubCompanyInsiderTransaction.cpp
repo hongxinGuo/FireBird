@@ -18,7 +18,7 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
-	m_strInquiringExchange = pStock->GetExchangeCode();
+	m_strInquiringExchange = pStock->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pStock->GetFinnhubInsiderTransactionInquiryParam(GetUTCTime());
 	return m_strInquiry;
 }

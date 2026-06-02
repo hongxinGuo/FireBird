@@ -11,7 +11,6 @@
 
 #include <sqlpp11/transaction.h>
 
-#include "CharSetTransfer.h"
 #include "dataBaseConnector.h"
 #include "jsonParse.h"
 
@@ -79,7 +78,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	for (const auto& row : result) {
 		pFinnhubStock = make_shared<CFinnhubStock>();
 		pFinnhubStock->SetSymbol(row.Symbol);
-		pFinnhubStock->SetExchangeCode(row.Exchange);
+		pFinnhubStock->SetExchange(row.Exchange);
 		pFinnhubStock->SetDescription(row.Description);
 		pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol);
 		pFinnhubStock->SetType(row.Type);
@@ -147,13 +146,10 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 		ASSERT(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
 			pStock->UpdateJsonUpdateDate();
-			nlohmannJson jsPeer = pStock->GetPeer();
-			string sPeer = pStock->GetJsonPeer().dump();
-			string sUpdateDate = pStock->GetJsonUpdateDate().dump();
 			if (pStock->IsNewStock()) {// 新代码，插入。
 				db(insert_into(t).set(
 					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchangeCode(),
+					t.Exchange = pStock->GetExchange(),
 					t.Description = pStock->GetDescription(),
 					t.DisplaySymbol = pStock->GetDisplaySymbol(),
 					t.Type = pStock->GetType(),
@@ -185,16 +181,16 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					t.WebURL = pStock->GetWebURL(),
 					t.Logo = pStock->GetLogo(),
 					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
-					t.Peer = sPeer,
+					t.Peer = pStock->GetJsonPeer().dump(),
 					t.IPOStatus = pStock->GetIPOStatus(),
-					t.UpdateDate = sUpdateDate
+					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				));
 				pStock->SetNewStock(false);
 			}
 			else { // 如果是原有的代码，则更新
 				db(update(t).set(
 					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchangeCode(),
+					t.Exchange = pStock->GetExchange(),
 					t.Description = pStock->GetDescription(),
 					t.DisplaySymbol = pStock->GetDisplaySymbol(),
 					t.Type = pStock->GetType(),
@@ -226,9 +222,9 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					t.WebURL = pStock->GetWebURL(),
 					t.Logo = pStock->GetLogo(),
 					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
-					t.Peer = sPeer,
+					t.Peer = pStock->GetJsonPeer().dump(),
 					t.IPOStatus = pStock->GetIPOStatus(),
-					t.UpdateDate = sUpdateDate
+					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				).where(t.Symbol == pStock->GetSymbol()));
 			}
 			pStock->SetUpdateProfileDB(false);
@@ -254,7 +250,7 @@ void CContainerFinnhubStock::UpdateInsiderTransactionDB() {
 
 bool CContainerFinnhubStock::ValidateStockSymbol(const CFinnhubStockPtr& pStock) {
 	const string strSymbol = pStock->GetSymbol();
-	const string strExchangeCode = pStock->GetExchangeCode();
+	const string strExchangeCode = pStock->GetExchange();
 
 	if (strExchangeCode == "US") return true;
 	const auto pos = strSymbol.find("." + strExchangeCode);

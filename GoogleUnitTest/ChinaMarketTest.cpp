@@ -1338,7 +1338,7 @@ namespace FireBirdTest {
 
 		auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol("SS.SS.SS");
-		pStock->SetExchangeCode("Test");
+		pStock->SetExchange("Test");
 		pStock->SetNewStock(true);
 		pStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(pStock->GetSymbol())); // 确保是一个新股票代码

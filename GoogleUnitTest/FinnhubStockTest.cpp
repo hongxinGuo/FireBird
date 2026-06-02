@@ -61,9 +61,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetExchangeCode) {
-		EXPECT_EQ(stock.GetExchangeCode(), "US");
-		stock.SetExchangeCode("SS");
-		EXPECT_EQ(stock.GetExchangeCode(), "SS");
+		EXPECT_EQ(stock.GetExchange(), "US");
+		stock.SetExchange("SS");
+		EXPECT_EQ(stock.GetExchange(), "SS");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetSymbol) {
@@ -550,9 +550,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUSMarket) {
-		stock.SetExchangeCode("SS");
+		stock.SetExchange("SS");
 		EXPECT_FALSE(stock.IsUSMarket());
-		stock.SetExchangeCode("US");
+		stock.SetExchange("US");
 		EXPECT_TRUE(stock.IsUSMarket());
 	}
 

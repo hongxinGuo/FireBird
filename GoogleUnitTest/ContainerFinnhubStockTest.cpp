@@ -4,6 +4,7 @@
 
 #include"ContainerFinnhubStock.h"
 #include "dataBaseConnector.h"
+#include "JsonParse.h"
 
 using namespace testing;
 
@@ -66,7 +67,7 @@ namespace FireBirdTest {
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol1) {
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("AAPL");
-		pStock->SetExchangeCode("US");
+		pStock->SetExchange("US");
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
@@ -74,7 +75,7 @@ namespace FireBirdTest {
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol2) {
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("600601.SS");
-		pStock->SetExchangeCode("SS");
+		pStock->SetExchange("SS");
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
@@ -82,7 +83,7 @@ namespace FireBirdTest {
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol3) {
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("600601SS");
-		pStock->SetExchangeCode("SS");
+		pStock->SetExchange("SS");
 
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
@@ -162,5 +163,89 @@ namespace FireBirdTest {
 			EXPECT_EQ(row.ID.value(), 32525);
 		}
 		m_containerFinnhubStock.Reset();
+	}
+
+	TEST_F(CContainerFinnhubStockTest, UpdateProfileDB_InsertsAndUpdates) {
+		// Prepare test stocks
+		const string newSymbol = "TEST.STK";
+		const string existingSymbol = "000001.SS";
+
+		// Ensure no leftover from previous runs
+		{
+			using namespace StockMarket;
+			const auto& t = FinnhubStockProfile{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+			db(sqlpp::remove_from(t).where(t.Symbol == newSymbol));
+			tx.commit();
+		}
+
+		// Create and add a new stock to container, mark as new and needing DB update
+		auto pNewStock = make_shared<CFinnhubStock>();
+		pNewStock->SetSymbol(newSymbol);
+		pNewStock->SetExchange("Test");
+		pNewStock->SetNewStock(true);
+		pNewStock->SetUpdateProfileDB(true);
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(newSymbol));
+		gl_dataContainerFinnhubStock.Add(pNewStock);
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(newSymbol));
+
+		// Modify an existing stock in-memory and mark it for update
+		auto pExistStock = gl_dataContainerFinnhubStock.GetItem(existingSymbol);
+		ASSERT_NE(pExistStock, nullptr);
+		const auto originalIPO = pExistStock->GetIPOStatus();
+		const auto originalUpdateDayLineEndDate = pExistStock->GetDayLineEndDate();
+		pExistStock->SetIPOStatus(_STOCK_IPOED_);
+		pExistStock->SetDayLineEndDate(20200220);
+		pExistStock->SetUpdateProfileDB(true);
+
+		// Perform the DB update
+		gl_dataContainerFinnhubStock.UpdateProfileDB();
+
+		// Verify DB: existing stock updated
+		{
+			using namespace StockMarket;
+			const auto& t = FinnhubStockProfile{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
+			auto resultExist = db(select(all_of(t)).from(t).where(t.Symbol == existingSymbol));
+			EXPECT_EQ(resultExist.size(), 1u);
+			if (!resultExist.empty()) {
+				auto& row = resultExist.front();
+				EXPECT_EQ(row.IPOStatus.value(), _STOCK_IPOED_);
+				string json = row.UpdateDate.value();
+				nlohmannJson js;
+				CreateJsonWithNlohmann(js, json);
+				long updateDate = js["DayLineEndDate"];
+				EXPECT_EQ(updateDate, 20200220);
+			}
+
+			// Verify new stock inserted
+			auto resultNew = db(select(all_of(t)).from(t).where(t.Symbol == newSymbol));
+			EXPECT_EQ(resultNew.size(), 1u);
+
+			// Cleanup DB: remove test insertion and restore existing stock IPO status
+			pExistStock->SetDayLineEndDate(19800101);
+			pExistStock->UpdateJsonUpdateDate();
+			string jsonUpdateDate = pExistStock->GetJsonUpdateDate().dump();
+			db(update(t).set(t.IPOStatus = originalIPO, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
+			db(remove_from(t).where(t.Symbol == newSymbol));
+			tx.commit();
+		}
+
+		// Cleanup in-memory container
+		auto pRetrievedNew = gl_dataContainerFinnhubStock.GetItem(newSymbol);
+		ASSERT_NE(pRetrievedNew, nullptr);
+		gl_dataContainerFinnhubStock.Delete(pRetrievedNew);
+
+		// Restore in-memory IPO status and flags
+		pExistStock->SetIPOStatus(originalIPO);
+		pExistStock->SetDayLineEndDate(19800101);
+		pExistStock->SetUpdateProfileDB(false);
+
+		//gl_dataContainerFinnhubStock.UpdateProfileDB();
+		// Final assertions: flags cleared
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 	}
 }

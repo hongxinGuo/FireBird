@@ -22,7 +22,7 @@ void CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (pvForexSymbol->empty()) return;
 	for (const auto& pSymbol : *pvForexSymbol) {
 		if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(gl_dataContainerFinnhubForexExchange.GetItem(m_lIndex));
+			pSymbol->SetExchange(gl_dataContainerFinnhubForexExchange.GetItem(m_lIndex));
 			gl_dataFinnhubForexSymbol.Add(pSymbol);
 		}
 	}

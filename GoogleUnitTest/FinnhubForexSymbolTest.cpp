@@ -38,7 +38,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), "");
 		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), "");
 		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), "");
-		EXPECT_EQ(FinnhubForexSymbol.GetExchangeCode(), "");
+		EXPECT_EQ(FinnhubForexSymbol.GetExchange(), "");
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);

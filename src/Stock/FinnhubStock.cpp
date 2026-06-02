@@ -14,7 +14,7 @@
 #include "InfoReport.h"
 
 CFinnhubStock::CFinnhubStock() {
-	SetExchangeCode("US");
+	SetExchange("US");
 	CFinnhubStock::ResetAllUpdateDate();
 }
 
@@ -736,6 +736,6 @@ string CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTi
 }
 
 bool CFinnhubStock::IsUSMarket() const {
-	if (m_strExchangeCode == "US") return true;
+	if (m_strExchange == "US") return true;
 	return false;
 }

@@ -14,7 +14,7 @@ CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 string CProductFinnhubCompanyPeer::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
-	m_strInquiringExchange = pStock->GetExchangeCode();
+	m_strInquiringExchange = pStock->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
 	return m_strInquiry;
 }

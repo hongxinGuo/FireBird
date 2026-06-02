@@ -33,7 +33,7 @@ string CProductFinnhubCompanyNews::CreateMessage() {
 	strMessage += sTemp;
 
 	m_strInquiry = strMessage;
-	m_strInquiringExchange = pStock->GetExchangeCode();
+	m_strInquiringExchange = pStock->GetExchange();
 	return m_strInquiry;
 }
 

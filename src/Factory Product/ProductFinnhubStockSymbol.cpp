@@ -87,7 +87,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pStock = make_shared<CFinnhubStock>();
-			pStock->SetExchangeCode(m_strInquiringExchange); // 数据中没有交易所代码，在此处加上。
+			pStock->SetExchange(m_strInquiringExchange); // 数据中没有交易所代码，在此处加上。
 			s = jsonGetString(it, "currency");
 			if (!s.empty()) pStock->SetCurrency(s);
 			s = jsonGetString(it, "description");
