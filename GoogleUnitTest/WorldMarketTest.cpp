@@ -381,7 +381,7 @@ namespace FireBirdTest {
 		auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("SS.SS.US");
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock)); // 确保是一个新股票代码
-		pStock->SetTodayNewStock(true);
+		pStock->SetNewStock(true);
 		pStock->SetCurrency("No Currency");
 		pStock->SetUpdateProfileDB(true);
 		gl_dataContainerFinnhubStock.Add(pStock);
@@ -453,7 +453,7 @@ namespace FireBirdTest {
 		auto pForexSymbol = make_shared<CFinnhubForex>();
 		pForexSymbol->SetSymbol("SS.SS.US"); // 新符号
 		pForexSymbol->SetUpdateProfileDB(true);
-		pForexSymbol->SetTodayNewStock(true);
+		pForexSymbol->SetNewStock(true);
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
 		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("OANDA:GBP_ZAR"); // 第二个现存的符号
@@ -493,7 +493,7 @@ namespace FireBirdTest {
 		auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
 		pCryptoSymbol->SetSymbol("SS.SS.US"); // 新符号
 		pCryptoSymbol->SetUpdateProfileDB(true);
-		pCryptoSymbol->SetTodayNewStock(true);
+		pCryptoSymbol->SetNewStock(true);
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
 		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("BINANCE:USDTUAH"); // 第二个现存的符号

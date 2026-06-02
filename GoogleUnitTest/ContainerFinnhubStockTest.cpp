@@ -33,10 +33,11 @@ namespace FireBirdTest {
 		}
 
 	protected:
+		CContainerFinnhubStock m_containerFinnhubStock;
 	};
 
 	TEST_F(CContainerFinnhubStockTest, TestResetBasicFinancial) {
-		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
+		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
 			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
@@ -49,7 +50,7 @@ namespace FireBirdTest {
 
 		gl_dataContainerFinnhubStock.ResetBasicFinancial();
 
-		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
+		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
 			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
@@ -137,20 +138,29 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestLoadProfileDB) {
-		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "测试数据库中的代码数量为4847";
-		gl_dataContainerFinnhubStock.Reset();
-		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 0) << "重置后代码数量应为0";
+		using namespace StockMarket;
+		const auto& t = FinnhubStockProfile{};
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
 
-		// Load from test database
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.LoadProfileDB());
+			db(sqlpp::insert_into(t).set(t.Symbol = "BVDRF", t.Exchange = "Test")); // 重复代码，用于测试，此时代码总数是5702
+			tx.commit();
+		}
+		m_containerFinnhubStock.LoadProfileDB();
+		EXPECT_EQ(m_containerFinnhubStock.Size(), 4847); // 2024-06-01Tiingo股票总共有7183只股票。如果数据库中有重复的股票代码，则会被删除，所以最终装载的股票数应该是5701。
+		{
+			auto db = gl_dbStockMarket.get();
+			auto tx = start_transaction(db);
 
-		// Basic expectations
-		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "测试数据库中的代码数量为4847";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("AAPL")) << "Test DB must contain AAPL";
-
-		// Verify a loaded item's symbol
-		auto p = gl_dataContainerFinnhubStock.GetItem("AAPL");
-		ASSERT_NE(p, nullptr);
-		EXPECT_EQ(p->GetSymbol(), "AAPL");
+			auto result = db(sqlpp::select(all_of(t)).from(t).where(t.Symbol == "BVDRF"));
+			tx.commit();
+			size_t rows = result.size();
+			EXPECT_EQ(rows, 1) << "数据库中应该只有一条BVDRF的记录";
+			auto& row = result.front();
+			EXPECT_EQ(row.Symbol.value(), "BVDRF");
+			EXPECT_EQ(row.ID.value(), 32525);
+		}
+		m_containerFinnhubStock.Reset();
 	}
 }

@@ -189,7 +189,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					t.IPOStatus = pStock->GetIPOStatus(),
 					t.UpdateDate = sUpdateDate
 				));
-				pStock->SetTodayNewStock(false);
+				pStock->SetNewStock(false);
 			}
 			else { // 如果是原有的代码，则更新
 				db(update(t).set(

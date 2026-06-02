@@ -45,7 +45,6 @@
 
 #include"Initialization.h"
 #include"InaccessibleSymbol.h"
-#include"ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include"TimeConvert.h"
 

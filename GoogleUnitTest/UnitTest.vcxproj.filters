@@ -139,9 +139,6 @@
     <Filter Include="Test源文件\Factory Product\ChinaMarket">
       <UniqueIdentifier>{0957aa20-c814-4c6e-a498-30e7397787d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\DataBase">
-      <UniqueIdentifier>{d6d8ef2e-9218-4538-a6d4-8797a72b801e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Factory Product\Accessory">
       <UniqueIdentifier>{a7806a7f-5b4a-4580-92ed-95fa51066bad}</UniqueIdentifier>
     </Filter>
@@ -602,6 +599,9 @@
     </ClCompile>
     <ClCompile Include="IndicatorKDJTest.cpp">
       <Filter>Test源文件\Type\Indicator</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerFinnhubCryptoTest.cpp">
+      <Filter>Test源文件\Data Container\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -95,7 +95,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 					t.IPOStatus = pStock->GetIPOStatus(),
 					t.UpdateDate = sUpdateDate
 				));
-				pStock->SetTodayNewStock(false);
+				pStock->SetNewStock(false);
 			}
 			pStock->SetUpdateProfileDB(false);
 		}

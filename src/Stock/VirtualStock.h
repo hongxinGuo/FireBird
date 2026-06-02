@@ -66,7 +66,7 @@ public:
 
 	//
 	bool IsNewStock() const noexcept { return m_fNewStock; }
-	void SetTodayNewStock(const bool fFlag) noexcept { m_fNewStock = fFlag; }
+	void SetNewStock(const bool fFlag) noexcept { m_fNewStock = fFlag; }
 
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }

@@ -71,7 +71,7 @@ void CContainerFinnhubCrypto::UpdateProfileDB() {
 							t.IPOStatus = pStock->GetIPOStatus(),
 							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 						));
-						pStock->SetTodayNewStock(false);
+						pStock->SetNewStock(false);
 					}
 					else {//更新现有股票代码
 						db(sqlpp::update(t).set(

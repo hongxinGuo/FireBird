@@ -325,7 +325,7 @@ size_t CChinaMarket::GetCurrentStockSetSize() const {
 
 void CChinaMarket::CreateStock(const string& strStockCode, const string& strStockName, const bool fProcessRTData) {
 	const auto pStock = make_shared<CChinaStock>();
-	pStock->SetTodayNewStock(true);
+	pStock->SetNewStock(true);
 	pStock->SetSymbol(strStockCode);
 	pStock->SetDisplaySymbol(strStockName);
 	pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);

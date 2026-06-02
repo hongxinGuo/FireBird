@@ -19,7 +19,7 @@
 static void ClearTestDataBase() {
 	using namespace StockMarket;
 
-	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
+	{ // 删除gl_dataChinaStock中的中间数据
 		const auto& t = ChinaStockProfile{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
@@ -51,7 +51,7 @@ static void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除china weekline中的中间数据
+	{ // 删除Finnhub Crypto Symbol中的中间数据
 		const auto& t = FinnhubCryptoSymbol{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
@@ -75,7 +75,7 @@ static void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除china weekline中的中间数据
+	{ // 删除finnhub forex symbol中的中间数据
 		const auto& t = FinnhubForexSymbol{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
@@ -83,7 +83,7 @@ static void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
+	{ // 删除finnhub stock dayLine中的中间数据
 		const auto& t = FinnhubStockDayline{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
@@ -91,7 +91,7 @@ static void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除china weekline中的中间数据
+	{ // 删除finnhub stock exchange中的中间数据
 		const auto& t = FinnhubStockExchange{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
@@ -99,7 +99,7 @@ static void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除china weekline中的中间数据
+	{ // 删除finnhub stock dayLine中的中间数据
 		const auto& t = FinnhubStockDayline{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
@@ -107,11 +107,11 @@ static void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除china weekline中的中间数据
-		const auto& t = TiingoStockDayline{};
+	{ // 删除tiingo crypto symbol中的中间数据
+		const auto& t = TiingoCryptoSymbol{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+		db(sqlpp::remove_from(t).where(t.Name == "Test"));
 		tx.commit();
 	}
 

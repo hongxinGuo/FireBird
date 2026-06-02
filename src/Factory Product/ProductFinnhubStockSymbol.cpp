@@ -36,7 +36,7 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 	for (const auto& pStock : *pvStock) {
 		if (!gl_dataContainerFinnhubStock.IsSymbol(pStock)) {
-			pStock->SetTodayNewStock(true);
+			pStock->SetNewStock(true);
 			pStock->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
 			gl_dataContainerFinnhubStock.Add(pStock);
 		}

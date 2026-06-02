@@ -16,9 +16,6 @@
     <Filter Include="源文件\System">
       <UniqueIdentifier>{a51191d0-6561-4ab5-9ee9-5d21d81d7d11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\database">
-      <UniqueIdentifier>{3a96a96a-835e-4bc9-b03d-9cd7401f3959}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Data container">
       <UniqueIdentifier>{4f7f2b4e-30c2-4807-88c0-d1eaa0e3e32d}</UniqueIdentifier>
     </Filter>
@@ -729,9 +726,6 @@
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorMACD.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\dataBaseConnector.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -743,6 +737,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\StockMarketSQLTable.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

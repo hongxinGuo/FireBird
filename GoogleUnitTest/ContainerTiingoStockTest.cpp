@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetTiingoPermaTicker("abcdefg");
 		pTiingoStock->SetTiingoSector("gfedcba");
 		pTiingoStock->SetUpdateProfileDB(true);
-		pTiingoStock->SetTodayNewStock(true);
+		pTiingoStock->SetNewStock(true);
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "添加了两个股票";

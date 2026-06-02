@@ -293,6 +293,41 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
 	//Note: 可以优化为二分法查找，找到第一个大于数据库中最新日期的新闻的索引位置，然后从该位置开始存储数据。
 	//Todo: 可以优化为批量存储数据，而不是一条一条地存储数据。
+
+	long long lCutoffDateTime = 0;
+	using namespace StockMarket;
+	const auto& t = FinnhubCompanyNews{};
+	auto db = gl_dbStockMarket.get();
+	db.start_transaction();
+	auto multi_insert = insert_into(t).columns(t.Symbol, t.Category, t.DateTime, t.Headline, t.NewsID,
+	                                           t.Image, t.RelatedSymbol, t.Source, t.Summary, t.URL);
+
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.DateTime.desc()));
+	size_t rows = result.size();
+	if (rows > 0) {
+		auto& row = result.front();
+		lCutoffDateTime = row.DateTime.value();
+	}
+
+	size_t iIndex = 0;
+	while (m_vCompanyNews.at(iIndex).m_llDateTime <= lCutoffDateTime) iIndex++;
+
+	for (size_t i = iIndex; i < m_vCompanyNews.size(); i++) {
+		auto& companyNews = m_vCompanyNews.at(i);
+		multi_insert.values.add(
+			t.Symbol = companyNews.m_strCompanySymbol,
+			t.Category = companyNews.m_strCategory,
+			t.DateTime = static_cast<double>(companyNews.m_llDateTime),
+			t.Headline = companyNews.m_strHeadLine,
+			t.NewsID = companyNews.m_iNewsID,
+			t.Image = companyNews.m_strImage,
+			t.RelatedSymbol = companyNews.m_strRelatedSymbol,
+			t.Source = companyNews.m_strSource,
+			t.Summary = companyNews.m_strSummary,
+			t.URL = companyNews.m_strURL
+		);
+	}
+	db.commit_transaction();
 	return true;
 }
 

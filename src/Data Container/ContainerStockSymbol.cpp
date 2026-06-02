@@ -117,11 +117,11 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 
 	auto result = db(sqlpp::select(all_of(t)).from(t).unconditionally());
 	for (const auto& row : result) {
-		if (!m_vStockSection.at(row.IndexNumber)->IsActive()) {
-			m_vStockSection.at(row.IndexNumber)->SetActive(row.Active);
-			m_vStockSection.at(row.IndexNumber)->SetMarket(row.Market);
-			m_vStockSection.at(row.IndexNumber)->SetIndexNumber(row.IndexNumber);
-			m_vStockSection.at(row.IndexNumber)->SetComment(row.Comment);
+		if (!m_vStockSection.at(row.IndexNumber.value())->IsActive()) {
+			m_vStockSection.at(row.IndexNumber.value())->SetActive(row.Active.value());
+			m_vStockSection.at(row.IndexNumber.value())->SetMarket(row.Market);
+			m_vStockSection.at(row.IndexNumber.value())->SetIndexNumber(row.IndexNumber.value());
+			m_vStockSection.at(row.IndexNumber.value())->SetComment(row.Comment.value());
 		}
 	}
 	tx.commit();
@@ -145,8 +145,8 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 			multi_insert.values.add(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.Market = (int)pStockSection->GetMarket(),
-				t.IndexNumber = (int)pStockSection->GetIndexNumber(),
+				t.Market = static_cast<int>(pStockSection->GetMarket()),
+				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
 				t.Comment = pStockSection->GetComment()
 			);
 		}

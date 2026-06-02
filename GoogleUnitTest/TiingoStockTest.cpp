@@ -193,9 +193,9 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoStockTest, TestIsTodayNewStock) {
 		EXPECT_FALSE(stock.IsNewStock());
-		stock.SetTodayNewStock(true);
+		stock.SetNewStock(true);
 		EXPECT_TRUE(stock.IsNewStock());
-		stock.SetTodayNewStock(false);
+		stock.SetNewStock(false);
 		EXPECT_FALSE(stock.IsNewStock());
 	}
 
