@@ -194,47 +194,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
 	}
 
-	TEST_F(CFinnhubStockTest, TestGetIPOStatus) {
-		EXPECT_TRUE(stock.IsNotChecked());
-		stock.SetIPOStatus(255);
-		EXPECT_EQ(stock.GetIPOStatus(), 255);
-	}
-
-	TEST_F(CFinnhubStockTest, TestIsNullStock) {
-		stock.SetIPOStatus(_STOCK_NULL_);
-		EXPECT_TRUE(stock.IsNullStock());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsNullStock());
-	}
-
-	TEST_F(CFinnhubStockTest, TestIsIPOed) {
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		EXPECT_TRUE(stock.IsIPOed());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsIPOed());
-	}
-
-	TEST_F(CFinnhubStockTest, TestIsNotChecked) {
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_TRUE(stock.IsNotChecked());
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		EXPECT_FALSE(stock.IsNotChecked());
-	}
-
-	TEST_F(CFinnhubStockTest, TestIsDelisted) {
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		EXPECT_TRUE(stock.IsDelisted());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsDelisted());
-	}
-
-	TEST_F(CFinnhubStockTest, TestIsNotYetList) {
-		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
-		EXPECT_TRUE(stock.IsNotYetList());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsNotYetList());
-	}
-
 	TEST_F(CFinnhubStockTest, TestIsUpdateDayLine) {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(false);
@@ -560,32 +519,13 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(false);
 		for (int i = 1; i < 6; i++) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "非活跃股票工作日不更新日线\n";
-			stock.SetUpdateDayLine(true);
-		}
-	}
-
-	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus2) {
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_NULL_);
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, 0)) << "无效股票不检查日线\n";
-	}
-
-	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus3) {
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		for (int i = 0; i < 7; i++) {
-			if (i == 4)
-				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
-			else
-				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << L"非活跃股票工作日不更新日线\n";
 			stock.SetUpdateDayLine(true);
 		}
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus4) {
 		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
 		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1));
@@ -598,7 +538,6 @@ namespace FireBirdTest {
 		const long lPrevDay = GetPrevDay(lCurrentDay);
 
 		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
 		for (int i = 1; i < 6; i++) {
@@ -614,7 +553,6 @@ namespace FireBirdTest {
 		const long lPrevDay = GetPrevDay(lCurrentDay);
 
 		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
 		for (int i = 1; i < 6; i++) {
@@ -630,7 +568,6 @@ namespace FireBirdTest {
 		const long lPrevMonday = GetPrevMonday(lCurrentDate);
 
 		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), 170000, 6)) << "周六，检查上一交易日日线";
@@ -638,51 +575,25 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), 170000, 0)) << "周日，检查上一交易日日线";
 	}
 
-	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus8) {
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
-		for (int i = 0; i < 7; i++) {
-			if (i == 4)
-				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
-			else
-				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
-			stock.SetUpdateDayLine(true);
-		}
-	}
-
 	TEST_F(CFinnhubStockTest, TestCheckEPSSurpriseStatus) {
 		constexpr long lCurrentDate = 20200101;
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetIPOStatus(_STOCK_NULL_);
-		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
-
-		stock.SetUpdateEPSSurprise(true);
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
-
-		stock.SetUpdateEPSSurprise(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(19700101);
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20191003); // 不早于90天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20191002); // 早于90天， 不早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsUpdateEPSSurprise());
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20160521); // 早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
@@ -692,23 +603,11 @@ namespace FireBirdTest {
 		constexpr long lCurrentDate = 20200101;
 
 		stock.SetUpdateSECFilings(true);
-		stock.SetIPOStatus(_STOCK_NULL_);
-		stock.CheckSECFilingsStatus(lCurrentDate);
-		EXPECT_FALSE(stock.IsUpdateSECFilings());
-
-		stock.SetUpdateSECFilings(true);
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		stock.CheckSECFilingsStatus(lCurrentDate);
-		EXPECT_FALSE(stock.IsUpdateSECFilings());
-
-		stock.SetUpdateSECFilings(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetSECFilingsUpdateDate(20191202); // 不早于30天
 		stock.CheckSECFilingsStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateSECFilings());
 
 		stock.SetUpdateSECFilings(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetSECFilingsUpdateDate(20191201); // 早于30天
 		stock.CheckSECFilingsStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsUpdateSECFilings());
@@ -1173,18 +1072,10 @@ namespace FireBirdTest {
 
 		stock.SetUpdatePeer(false);
 		stock.SetPeerUpdateDate(20200101);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckPeerStatus(20200401); // 91天
 		EXPECT_TRUE(stock.IsUpdatePeer()) << "九十一天需更新";
 		stock.CheckPeerStatus(20200331); // 90天
 		EXPECT_FALSE(stock.IsUpdatePeer());
-
-		stock.SetUpdatePeer(true);
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		stock.CheckPeerStatus(20200331); // 90天
-		EXPECT_FALSE(stock.IsUpdatePeer()) << "九十天内无需更新";
-		stock.CheckPeerStatus(20200401); // 91天
-		EXPECT_FALSE(stock.IsUpdatePeer()) << "摘牌股票无需更新Peer";
 	}
 
 	TEST_F(CFinnhubStockTest, TestHaveInsiderTransaction) {
@@ -1202,18 +1093,10 @@ namespace FireBirdTest {
 
 		stock.SetUpdateInsiderTransaction(false);
 		stock.SetInsiderTransactionUpdateDate(20200101);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckInsiderTransactionStatus(20200201); // 31天
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction()) << "三十一天需更新";
 		stock.CheckInsiderTransactionStatus(20200131); // 30天
 		EXPECT_FALSE(stock.IsUpdateInsiderTransaction());
-
-		stock.SetUpdateInsiderTransaction(true);
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		stock.CheckInsiderTransactionStatus(20200131); // 30天
-		EXPECT_FALSE(stock.IsUpdateInsiderTransaction()) << "三十天内无需更新";
-		stock.CheckInsiderTransactionStatus(20200201); // 31天
-		EXPECT_FALSE(stock.IsUpdateInsiderTransaction()) << "摘牌股票无需更新InsiderTransaction";
 	}
 
 	TEST_F(CFinnhubStockTest, TestHaveInsiderSentiment) {
@@ -1232,18 +1115,10 @@ namespace FireBirdTest {
 
 		stock.SetUpdateInsiderSentiment(false);
 		stock.SetInsiderSentimentUpdateDate(20200101);
-		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckInsiderSentimentStatus(20200201); // 31天
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment()) << "三十一天需更新";
 		stock.CheckInsiderSentimentStatus(20200131); // 30天
 		EXPECT_FALSE(stock.IsUpdateInsiderSentiment());
-
-		stock.SetUpdateInsiderSentiment(true);
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		stock.CheckInsiderSentimentStatus(20200131); // 30天
-		EXPECT_FALSE(stock.IsUpdateInsiderSentiment()) << "三十天内无需更新";
-		stock.CheckInsiderSentimentStatus(20200201); // 31天
-		EXPECT_FALSE(stock.IsUpdateInsiderSentiment()) << "摘牌股票无需更新InsiderSentiment";
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFinnhubDayLineInquiryParam) {

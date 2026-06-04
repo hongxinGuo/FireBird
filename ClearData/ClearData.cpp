@@ -99,8 +99,8 @@ static void ClearTestDataBase() {
 		tx.commit();
 	}
 
-	{ // 删除finnhub stock dayLine中的中间数据
-		const auto& t = FinnhubStockDayline{};
+	{ // 删除finnhub stock 中的中间数据
+		const auto& t = FinnhubStockProfile{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
@@ -119,7 +119,7 @@ static void ClearTestDataBase() {
 		const auto& t = TiingoStockProfile{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.Symbol == "DUPLICATE"));
+		db(sqlpp::remove_from(t).where(t.Symbol == "DUPLICATE" || t.Symbol == "Test"));
 		tx.commit();
 	}
 }

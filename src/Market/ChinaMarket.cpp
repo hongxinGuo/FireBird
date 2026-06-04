@@ -258,66 +258,6 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 	return IsSystemReady();
 }
 
-void CChinaMarket::ChangeToNextStock() {
-	ASSERT(gl_pCurrentStock != nullptr);
-	size_t lIndex = gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock);
-	CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
-
-	if (IsTotalStockSetSelected()) {
-		bool fFound = false;
-		while (!fFound) {
-			if (++lIndex == gl_dataContainerChinaStock.Size()) {
-				lIndex = 0;
-			}
-			pStock = gl_dataContainerChinaStock.GetStock(lIndex);
-			if (!pStock->IsNullStock()) fFound = true;
-		}
-	}
-	else {
-		ASSERT(!m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()); //
-		if (m_lCurrentSelectedPosition >= (m_avChosenStock.at(m_lCurrentSelectedStockSet).size() - 1)) {
-			m_lCurrentSelectedPosition = 0;
-			pStock = m_avChosenStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
-		}
-		else {
-			m_lCurrentSelectedPosition++;
-			pStock = m_avChosenStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
-		}
-	}
-	pStock->SetSelected(true);
-	gl_pCurrentStock = pStock;
-}
-
-void CChinaMarket::ChangeToPrevStock() {
-	ASSERT(gl_pCurrentStock != nullptr);
-	size_t lIndex = gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock);
-	CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
-
-	if (IsTotalStockSetSelected()) {
-		bool fFound = false;
-		while (!fFound) {
-			if (lIndex == 0) {
-				lIndex = gl_dataContainerChinaStock.Size() - 1;
-			}
-			else lIndex--;
-			pStock = gl_dataContainerChinaStock.GetStock(lIndex);
-			if (!pStock->IsNullStock()) fFound = true;
-		}
-	}
-	else {
-		ASSERT(!m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()); //
-		if (m_lCurrentSelectedPosition == 0) {
-			m_lCurrentSelectedPosition = m_avChosenStock.at(m_lCurrentSelectedStockSet).size() - 1;
-			pStock = m_avChosenStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
-		}
-		else {
-			m_lCurrentSelectedPosition--;
-			pStock = m_avChosenStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
-		}
-	}
-	gl_pCurrentStock = pStock;
-}
-
 size_t CChinaMarket::GetCurrentStockSetSize() const {
 	if (IsTotalStockSetSelected()) return gl_dataContainerChinaStock.Size();
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
@@ -328,7 +268,6 @@ void CChinaMarket::CreateStock(const string& strStockCode, const string& strStoc
 	pStock->SetNewStock(true);
 	pStock->SetSymbol(strStockCode);
 	pStock->SetDisplaySymbol(strStockName);
-	pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 	pStock->SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
 	pStock->SetDayLineStartDate(CHINA_MARKET_BEGIN_DATE_);
 	pStock->SetUpdateProfileDB(true);
@@ -940,7 +879,6 @@ bool CChinaMarket::ProcessDayLine() {
 		ASSERT(gl_dataContainerChinaStock.IsSymbol(pData->GetStockCode()));
 		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine()); // pData的日线数据是正序的，最新日期的在最后面。
-		pStock->UpdateStatusByDownloadedDayLine();
 
 		pStock->SetDayLineLoaded(true);
 		pStock->SetUpdateDayLineDB(true); // 设置存储日线标识

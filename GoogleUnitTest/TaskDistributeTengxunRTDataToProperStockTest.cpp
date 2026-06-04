@@ -49,7 +49,6 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
-			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
 			s_tCurrentMarketTime = GetUTCTime();
 		}
 
@@ -139,7 +138,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 5);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
 			EXPECT_TRUE(pStock->IsActive());
-			EXPECT_TRUE(pStock->IsIPOed());
 			break;
 		case 6:
 			EXPECT_EQ(lTotalStock + 1, gl_dataContainerChinaStock.Size()) << "发现新的股票，股票总数增加了一个";

@@ -167,7 +167,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerFinnhubStockTest, UpdateProfileDB_InsertsAndUpdates) {
 		// Prepare test stocks
-		const string newSymbol = "TEST.STK";
+		const string newSymbol = "Test";
 		const string existingSymbol = "000001.SS";
 
 		// Ensure no leftover from previous runs
@@ -193,9 +193,9 @@ namespace FireBirdTest {
 		// Modify an existing stock in-memory and mark it for update
 		auto pExistStock = gl_dataContainerFinnhubStock.GetItem(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
-		const auto originalIPO = pExistStock->GetIPOStatus();
+		auto exchange = pExistStock->GetExchange();
+		pExistStock->SetExchange("CN");
 		const auto originalUpdateDayLineEndDate = pExistStock->GetDayLineEndDate();
-		pExistStock->SetIPOStatus(_STOCK_IPOED_);
 		pExistStock->SetDayLineEndDate(20200220);
 		pExistStock->SetUpdateProfileDB(true);
 
@@ -213,7 +213,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultExist.size(), 1u);
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
-				EXPECT_EQ(row.IPOStatus.value(), _STOCK_IPOED_);
+				EXPECT_EQ(row.Exchange.value(), "CN");
 				string json = row.UpdateDate.value();
 				nlohmannJson js;
 				CreateJsonWithNlohmann(js, json);
@@ -229,7 +229,7 @@ namespace FireBirdTest {
 			pExistStock->SetDayLineEndDate(19800101);
 			pExistStock->UpdateJsonUpdateDate();
 			string jsonUpdateDate = pExistStock->GetJsonUpdateDate().dump();
-			db(update(t).set(t.IPOStatus = originalIPO, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
+			db(update(t).set(t.Exchange = exchange, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
 			db(remove_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
@@ -240,7 +240,6 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
-		pExistStock->SetIPOStatus(originalIPO);
 		pExistStock->SetDayLineEndDate(19800101);
 		pExistStock->SetUpdateProfileDB(false);
 

@@ -253,47 +253,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineProcessDate(), 19930101);
 	}
 
-	TEST_F(CTiingoStockTest, TestGetIPOStatus) {
-		EXPECT_TRUE(stock.IsNotChecked());
-		stock.SetIPOStatus(255);
-		EXPECT_EQ(stock.GetIPOStatus(), 255);
-	}
-
-	TEST_F(CTiingoStockTest, TestIsNullStock) {
-		stock.SetIPOStatus(_STOCK_NULL_);
-		EXPECT_TRUE(stock.IsNullStock());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsNullStock());
-	}
-
-	TEST_F(CTiingoStockTest, TestIsIPOed) {
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		EXPECT_TRUE(stock.IsIPOed());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsIPOed());
-	}
-
-	TEST_F(CTiingoStockTest, TestIsNotChecked) {
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_TRUE(stock.IsNotChecked());
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		EXPECT_FALSE(stock.IsNotChecked());
-	}
-
-	TEST_F(CTiingoStockTest, TestIsDelisted) {
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		EXPECT_TRUE(stock.IsDelisted());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsDelisted());
-	}
-
-	TEST_F(CTiingoStockTest, TestIsNotYetList) {
-		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
-		EXPECT_TRUE(stock.IsNotYetList());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsNotYetList());
-	}
-
 	TEST_F(CTiingoStockTest, TestIsUpdateDayLine) {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(false);

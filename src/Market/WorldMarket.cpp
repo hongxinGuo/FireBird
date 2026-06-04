@@ -212,7 +212,6 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__:
-			ASSERT(!gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 免费账户需要处理当日数据（付费账户下载所有股票的日线）
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
 			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
@@ -431,12 +430,6 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}
-			else { // 此种情况为有股票代码，但此代码尚未上市
-				pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-				string str1 = pSymbol->GetSymbol();
-				str1 += " 为未上市股票代码";
-				gl_systemMessage.PushDayLineInfoMessage(str1);
-			}
 		}
 	}
 
@@ -482,18 +475,6 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}
-			else {// 此种情况为有股票代码，但此代码尚未上市；或者是已退市股票
-				if (pSymbol->GetDayLineEndDate() > 19800101) {// 已退市
-					pSymbol->SetIPOStatus(_STOCK_DELISTED_);
-					pSymbol->SetUpdateProfileDB(true);
-				}
-				else {// 此种情况为有股票代码，但此代码尚未上市
-					pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-					string str1 = pSymbol->GetSymbol();
-					str1 += " 为未上市股票代码";
-					gl_systemMessage.PushDayLineInfoMessage(str1);
-				}
-			}
 		}
 	}
 	return fUpdated;
@@ -512,15 +493,13 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 		if (IsEndMarketIEXTopOfBookUpdated()) {// 已接收到了IEX TopOfBook数据？
 			gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
 			gl_runtime.thread_executor()->post([] {
-				TRACE("process IEX data\n");
 				gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
 				gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-				TRACE("process IEX data ended\n");
 			});
 			if (lCurrentTime < 233000) {
 				SetEndMarketIEXTopOfBookUpdate(false);
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 28, 0)); // 申请IEX数据
-				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 30, 0));
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(gl_pWorldMarket->GetMarketCloseTime(), 0, 10, 0)); // 申请IEX数据
+				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketCloseTime(), 0, 11, 0));
 			}
 		}
 		else { // 尚未接收IEX数据？这是初始状态

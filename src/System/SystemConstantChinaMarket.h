@@ -1,14 +1,6 @@
 #pragma once
 
 enum {
-	_STOCK_NOT_CHECKED_ = 128, // 尚未检查过的股票代码
-	_STOCK_IPOED_ = 255, // 正常股票标识
-	_STOCK_NULL_ = 127, // 无效代码（此代码的股票不存在）
-	_STOCK_DELISTED_ = 1, // 已退市（或停牌）的股票标识
-	_STOCK_NOT_YET_LIST_ = 2, // 已存在股票代码，但未上市（或未上市的股票）的股票标识
-};
-
-enum {
 	_SHANGHAI_MARKET_ = 1, // 上海市场
 	_SHENZHEN_MARKET_ = 2, // 深圳市场
 	_SHANGHAI_INDEX_ = 3, // 上海指数

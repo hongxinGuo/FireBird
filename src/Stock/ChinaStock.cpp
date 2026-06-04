@@ -104,16 +104,6 @@ void CChinaStock::ProcessRTData() {
 		}
 	}
 }
-void CChinaStock::UpdateStatusByDownloadedDayLine() {
-	if (m_dataDayLine.Empty()) return;
-	if (IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
-		// 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
-		SetIPOStatus(_STOCK_DELISTED_); // 已退市或暂停交易。
-	}
-	else {
-		SetIPOStatus(_STOCK_IPOED_); // 正常交易股票
-	}
-}
 
 void CChinaStock::ReportDayLineDownLoaded() {
 	//string strTemp = GetSymbol();
@@ -199,8 +189,9 @@ void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
 void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	SetActive(true);
 	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-	if (!pRTData->GetStockName().empty()) SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-	SetIPOStatus(_STOCK_IPOED_);
+	if (!pRTData->GetStockName().empty()) {
+		SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	}
 }
 
 void CChinaStock::UpdateDayLineStartEndDate() {
@@ -229,7 +220,6 @@ bool CChinaStock::LoadStockCode(const CStockSymbol& stockSymbol) {
 	m_strDisplaySymbol = stockSymbol.m_DisplaySymbol;
 	m_strExchange = stockSymbol.m_Exchange;
 	m_strSymbol = stockSymbol.m_Symbol;
-	m_lIPOStatus = stockSymbol.m_IPOStatus;
 	LoadUpdateDate(stockSymbol.m_UpdateDate);
 
 	return true;
@@ -247,24 +237,10 @@ void CChinaStock::CheckNeedProcessRTData() {
 	}
 }
 
-void CChinaStock::CheckIPOStatus() {
-	if (!IsDelisted()) {
-		if (IsEarlyThen(GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
-			SetIPOStatus(_STOCK_DELISTED_);
-			SetUpdateProfileDB(true);
-		}
-	}
-}
-
 bool CChinaStock::CheckDayLineStatus() {
 	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
 	if (gl_pChinaMarket->GetLastTradeDate() <= GetDayLineEndDate()) {// 最新日线数据为今日或者上一个交易日的数据。
 		SetUpdateDayLine(false); // 日线数据不需要更新
-	}
-	else if (IsDelisted()) {// 退市股票如果已下载过日线数据，则每星期一复查日线数据
-		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != CHINA_MARKET_BEGIN_DATE_)) {
-			SetUpdateDayLine(false);
-		}
 	}
 	return m_fUpdateDayLine;
 }

@@ -55,7 +55,6 @@ void CContainerFinnhubStock::ResetBasicFinancial() {
 void CContainerFinnhubStock::ResetDayLine() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CFinnhubStockPtr pStock = GetItem(l);
-		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 		pStock->SetDayLineStartDate(29900101);
 		pStock->SetDayLineEndDate(19800101);
 		pStock->SetUpdateDayLine(true);
@@ -116,7 +115,6 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 			CreateJsonWithNlohmann(js, row.Peer);
 			pFinnhubStock->SetPeer(js);
 		}
-		pFinnhubStock->SetIPOStatus(row.IPOStatus);
 		pFinnhubStock->LoadUpdateDate(row.UpdateDate);
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
@@ -182,7 +180,6 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					t.Logo = pStock->GetLogo(),
 					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
 					t.Peer = pStock->GetJsonPeer().dump(),
-					t.IPOStatus = pStock->GetIPOStatus(),
 					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				));
 				pStock->SetNewStock(false);
@@ -223,7 +220,6 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					t.Logo = pStock->GetLogo(),
 					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
 					t.Peer = pStock->GetJsonPeer().dump(),
-					t.IPOStatus = pStock->GetIPOStatus(),
 					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				).where(t.Symbol == pStock->GetSymbol()));
 			}

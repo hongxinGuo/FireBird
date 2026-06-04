@@ -53,11 +53,9 @@ long CContainerChinaStock::LoadProfileDB() {
 			pStock->SetDisplaySymbol(row.DisplaySymbol.value());
 			pStock->SetDescription(row.Description.value());
 			pStock->SetExchange(row.Exchange.value());
-			pStock->SetIPOStatus(row.IPOStatus.value());
 			pStock->LoadUpdateDate(row.UpdateDate.value());
 
 			pStock->CheckNeedProcessRTData();
-			pStock->CheckIPOStatus();
 			pStock->CheckDayLineStatus();
 			Add(pStock);
 		}
@@ -83,7 +81,7 @@ void CContainerChinaStock::UpdateProfileDB() {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		//auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange,t.DisplaySymbol, t.IPOStatus, t.UpdateDate);
+		auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange, t.DisplaySymbol, t.UpdateDate);
 
 		for (size_t i = 0; i < m_vStock.size(); ++i) {
 			const auto& pStock = m_vStock[i];
@@ -95,7 +93,6 @@ void CContainerChinaStock::UpdateProfileDB() {
 						t.Description = pStock->GetDescription(),
 						t.Exchange = pStock->GetExchange(),
 						t.DisplaySymbol = pStock->GetDisplaySymbol(),
-						t.IPOStatus = pStock->GetIPOStatus(),
 						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 					));
 					pStock->SetNewStock(false);
@@ -106,7 +103,6 @@ void CContainerChinaStock::UpdateProfileDB() {
 						t.Description = pStock->GetDescription(),
 						t.Exchange = pStock->GetExchange(),
 						t.DisplaySymbol = pStock->GetDisplaySymbol(),
-						t.IPOStatus = pStock->GetIPOStatus(),
 						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 					).where(t.Symbol == pStock->GetSymbol()));
 				}
@@ -328,9 +324,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
 			iCount++;
-			TRACE("sss \n");
 			pStock->SetDayLineEndDate(lCurrentTradeDay);
-			pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
 			pStock->SetUpdateProfileDB(true);
 
 			multi_insert.values.add(

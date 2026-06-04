@@ -42,11 +42,8 @@ namespace FireBirdTest {
 					pStock->SetUpdateProfileDB(true);
 				}
 				pStock->SetUpdateDayLine(true);
-				if (pStock->GetDayLineEndDate() == 20250101) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
-
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 					if (pStock->GetDayLineEndDate() == 20250101) {
-						EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
 						pStock->SetUpdateProfileDB(false);
 					}
 				}

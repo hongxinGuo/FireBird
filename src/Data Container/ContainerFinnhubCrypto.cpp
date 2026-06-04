@@ -34,7 +34,6 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 			pSymbol->SetDescription(row.Description);
 			pSymbol->SetExchange(row.Exchange);
 			pSymbol->SetDisplaySymbol(row.DisplaySymbol);
-			pSymbol->SetIPOStatus(row.IPOStatus);
 			pSymbol->LoadUpdateDate(row.UpdateDate);
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
@@ -68,7 +67,6 @@ void CContainerFinnhubCrypto::UpdateProfileDB() {
 							t.Description = pStock->GetDescription(),
 							t.Exchange = pStock->GetExchange(),
 							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.IPOStatus = pStock->GetIPOStatus(),
 							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 						));
 						pStock->SetNewStock(false);
@@ -79,7 +77,6 @@ void CContainerFinnhubCrypto::UpdateProfileDB() {
 							t.Description = pStock->GetDescription(),
 							t.Exchange = pStock->GetExchange(),
 							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.IPOStatus = pStock->GetIPOStatus(),
 							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 						).where(t.Symbol == pStock->GetSymbol()));
 					}

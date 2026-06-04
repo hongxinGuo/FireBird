@@ -100,7 +100,6 @@ public:
 	void UpdateDayLineStartEndDate();
 	bool LoadStockCode(const CStockSymbol& stockSymbol);
 	void CheckNeedProcessRTData();
-	void CheckIPOStatus();
 	bool CheckDayLineStatus();
 	//周线历史数据存取
 	void LoadWeekLineDB() override { CreateWeekLine(); }
@@ -135,9 +134,6 @@ public:
 	void SetDayLineDBUpdated(const bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
 	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
 	void SetDayLineLoaded(const bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
-
-	// 提取网易日线历史数据各函数
-	void UpdateStatusByDownloadedDayLine();
 
 	void UpdateDayLine(const vector<CDayLine>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 	static void ReportDayLineDownLoaded();

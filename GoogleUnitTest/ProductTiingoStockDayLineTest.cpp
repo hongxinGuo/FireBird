@@ -211,7 +211,6 @@ namespace FireBirdTest {
 			// clearUp
 			gl_systemConfiguration.SetUpdateDB(false);
 			gl_dataContainerTiingoStock.GetStock("AAPL")->SetUpdateProfileDB(false);
-			gl_dataContainerTiingoStock.GetStock(0)->SetIPOStatus(_STOCK_DELISTED_);
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateDayLine(true);
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateDayLineDB(false);
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateProfileDB(false);

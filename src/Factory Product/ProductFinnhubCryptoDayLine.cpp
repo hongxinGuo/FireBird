@@ -35,21 +35,11 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 		pCryptoSymbol->UpdateDayLine(pvDayLine);
 		pCryptoSymbol->UpdateDayLineStartEndDate();
-		if (gl_pWorldMarket->GetLastTradeDate() <= pCryptoSymbol->GetDayLineEndDate()) {
-			pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_);
-		}
-		else {
-			pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
-		}
 		pCryptoSymbol->SetUpdateDayLineDB(true);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 	}
 	else {
 		pCryptoSymbol->SetUpdateDayLineDB(false);
-		if (!pCryptoSymbol->IsDelisted()) {
-			pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
-			pCryptoSymbol->SetUpdateProfileDB(true);
-		}
 	}
 }
 

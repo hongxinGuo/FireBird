@@ -281,45 +281,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
 	}
 
-	TEST_F(CChinaStockTest, TestGetIPOStatus) {
-		CChinaStock stock;
-		EXPECT_TRUE(stock.IsNotChecked());
-		stock.SetIPOStatus(255);
-		EXPECT_EQ(stock.GetIPOStatus(), 255);
-	}
-
-	TEST_F(CChinaStockTest, TestIsNullStock) {
-		CChinaStock stock;
-		stock.SetIPOStatus(_STOCK_NULL_);
-		EXPECT_TRUE(stock.IsNullStock());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsNullStock());
-	}
-
-	TEST_F(CChinaStockTest, TestIsIPOed) {
-		CChinaStock stock;
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		EXPECT_TRUE(stock.IsIPOed());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsIPOed());
-	}
-
-	TEST_F(CChinaStockTest, TestIsNotChecked) {
-		CChinaStock stock;
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_TRUE(stock.IsNotChecked());
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		EXPECT_FALSE(stock.IsNotChecked());
-	}
-
-	TEST_F(CChinaStockTest, TestIsDelisted) {
-		CChinaStock stock;
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		EXPECT_TRUE(stock.IsDelisted());
-		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
-		EXPECT_FALSE(stock.IsDelisted());
-	}
-
 	TEST_F(CChinaStockTest, TestIsUpdateDayLine) {
 		CChinaStock stock;
 		EXPECT_TRUE(stock.IsUpdateDayLine());
@@ -345,7 +306,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDisplaySymbol(), "");
 		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		EXPECT_TRUE(stock.IsNotChecked());
 		EXPECT_EQ(stock.GetTransactionTime(), 0);
 		EXPECT_EQ(stock.GetLastClose(), 0);
 		EXPECT_EQ(stock.GetOpen(), 0);
@@ -368,7 +328,6 @@ namespace FireBirdTest {
 		stock.SetSymbol("abcde");
 		stock.SetDisplaySymbol("dcba");
 		stock.SetDayLineEndDate(20020202);
-		stock.SetIPOStatus(0);
 		EXPECT_EQ(stock.GetSymbol(), "abcde");
 		EXPECT_EQ(stock.GetDisplaySymbol(), "dcba");
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
@@ -595,34 +554,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsNeedProcessRTData());
 	}
 
-	TEST_F(CChinaStockTest, TestCheckIPOStatus) {
-		CChinaStock stock;
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-
-		stock.CheckIPOStatus();
-
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		stock.SetDayLineEndDate(19900101);
-
-		stock.CheckIPOStatus();
-
-		EXPECT_TRUE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsDelisted());
-
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
-
-		stock.CheckIPOStatus();
-
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsIPOed());
-	}
-
 	TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
 		CChinaStock stock;
 		EXPECT_TRUE(stock.IsUpdateDayLine());
@@ -634,17 +565,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.CheckDayLineStatus());
 		EXPECT_FALSE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
+
 		stock.SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.CheckDayLineStatus());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
-		stock.SetIPOStatus(_STOCK_DELISTED_);
-		stock.SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_ + 1);
-		stock.CheckDayLineStatus();
-		if (gl_pChinaMarket->GetDayOfWeek() == 1)
-			EXPECT_TRUE(stock.IsUpdateDayLine());
-		else
-			EXPECT_FALSE(stock.IsUpdateDayLine());
 	}
 
 	TEST_F(CChinaStockTest, TestRTDataDeque) {

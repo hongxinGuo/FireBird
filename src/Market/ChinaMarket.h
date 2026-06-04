@@ -188,9 +188,6 @@ public:
 	int GetRTDataCounter() const noexcept { return m_iCurrentDayRTDataCounter; }
 	void IncreaseRTDataCounter(const int iValue = 1) noexcept { m_iCurrentDayRTDataCounter += iValue; }
 
-	void ChangeToNextStock();
-	void ChangeToPrevStock();
-
 	bool IsTotalStockSetSelected() const noexcept {
 		if (m_lCurrentSelectedStockSet == -1) return true;
 		return false;

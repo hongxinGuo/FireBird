@@ -84,7 +84,6 @@ namespace FireBirdTest {
 			m_pStock->SetLastClose(0);
 			m_pStock->SetTransactionTime(0);
 			m_pStock->SetActive(false);
-			m_pStock->SetIPOStatus(_STOCK_NULL_);
 			m_pStock->SetUpdateProfileDB(false);
 			m_pWebData = pData->m_pData;
 			m_finnhubStockPriceQuote.Test_checkAccessRight_(m_pWebData);
@@ -153,8 +152,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
 
 			EXPECT_TRUE(m_pStock->IsActive());
-			EXPECT_TRUE(m_pStock->IsIPOed());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 
 			// 恢复原状
 			m_pStock->SetUpdateProfileDB(false);

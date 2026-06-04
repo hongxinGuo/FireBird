@@ -451,15 +451,16 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
 		auto pForexSymbol = make_shared<CFinnhubForex>();
-		pForexSymbol->SetSymbol("SS.SS.US"); // 新符号
+		pForexSymbol->SetSymbol("Test"); // 新符号
+		pForexSymbol->SetExchange("Test");
 		pForexSymbol->SetUpdateProfileDB(true);
 		pForexSymbol->SetNewStock(true);
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
 		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("OANDA:GBP_ZAR"); // 第二个现存的符号
-		EXPECT_EQ(pForexSymbol->GetIPOStatus(), _STOCK_IPOED_);
+		auto exchange = pForexSymbol->GetExchange();
+		pForexSymbol->SetExchange("CN");
 		pForexSymbol->SetUpdateProfileDB(true);
-		pForexSymbol->SetIPOStatus(_STOCK_DELISTED_);
 
 		gl_dataFinnhubForexSymbol.UpdateProfileDB();
 
@@ -472,34 +473,33 @@ namespace FireBirdTest {
 		size_t rows2 = result2.size();
 		EXPECT_EQ(rows2, 1);
 		auto& row2 = result2.front();
-		int iIPOStatus = row2.IPOStatus;
-		EXPECT_EQ(iIPOStatus, _STOCK_DELISTED_) << "状态已被修改为摘牌";
-		db(update(t).set(t.IPOStatus = (int)_STOCK_IPOED_).where(t.Symbol == std::string("OANDA:GBP_ZAR")));
+		EXPECT_EQ(row2.Exchange.value(), "CN");
+		db(update(t).set(t.Exchange = exchange).where(t.Symbol == std::string("OANDA:GBP_ZAR")));
 
-		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("SS.SS.US")));
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("Test")));
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1) << "存入了新符号";
-		db(sqlpp::remove_from(t).where(t.Symbol == std::string("SS.SS.US")));
+		db(sqlpp::remove_from(t).where(t.Symbol == std::string("Test")));
 		tx.commit();
 
 		// 恢复原状
-		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
-		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("SS.SS.US");
+		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("Test");
 		EXPECT_TRUE(pForexSymbol != nullptr);
 		gl_dataFinnhubForexSymbol.Delete(pForexSymbol);
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
 		auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
-		pCryptoSymbol->SetSymbol("SS.SS.US"); // 新符号
+		pCryptoSymbol->SetSymbol("Test"); // 新符号
+		pCryptoSymbol->SetExchange("Test");
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetNewStock(true);
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
 		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("BINANCE:USDTUAH"); // 第二个现存的符号
-		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), _STOCK_IPOED_);
+		auto exchange = pCryptoSymbol->GetExchange();
+		pCryptoSymbol->SetExchange("CN");
 		pCryptoSymbol->SetUpdateProfileDB(true);
-		pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
 
 		gl_dataFinnhubCryptoSymbol.UpdateProfileDB();
 
@@ -512,19 +512,17 @@ namespace FireBirdTest {
 		size_t rows2 = result2.size();
 		EXPECT_EQ(rows2, 1);
 		auto& row2 = result2.front();
-		int iIPOStatus = row2.IPOStatus;
-		EXPECT_EQ(iIPOStatus, _STOCK_DELISTED_) << "状态已被修改为摘牌";
-		db(update(t).set(t.IPOStatus = (int)_STOCK_IPOED_).where(t.Symbol == std::string("BINANCE:USDTUAH")));
+		EXPECT_EQ(row2.Exchange.value(), "CN");
+		db(update(t).set(t.Exchange = exchange).where(t.Symbol == std::string("BINANCE:USDTUAH")));
 
-		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("SS.SS.US")));
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("Test")));
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1) << "存入了新符号";
-		db(sqlpp::remove_from(t).where(t.Symbol == std::string("SS.SS.US")));
+		db(sqlpp::remove_from(t).where(t.Symbol == std::string("Test")));
 		tx.commit();
 
 		// 恢复原状
-		pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_);
-		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("SS.SS.US");
+		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("Test");
 		EXPECT_TRUE(pCryptoSymbol != nullptr);
 		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol);
 	}
@@ -742,7 +740,6 @@ namespace FireBirdTest {
 		CFinnhubStockPtr pStock;
 		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			pStock->SetIPOStatus(_STOCK_IPOED_);
 			pStock->SetDayLineStartDate(20200101);
 			pStock->SetDayLineEndDate(20200101);
 			pStock->SetUpdateDayLine(false);

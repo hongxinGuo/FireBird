@@ -164,8 +164,10 @@ namespace FireBirdTest {
 		db = GetStockMarketDB(); // 执行完插入后，重新获取数据库连接，以确保看到最新的数据
 		auto resBefore = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
 		EXPECT_TRUE(resBefore.size() >= 3);
+
 		// Call the function under test
 		m_dataTiingoStock.DeleteDuplicatedSymbolFromDB();
+
 		// Verify only one row remains for that symbol
 		db = GetStockMarketDB();
 		auto resAfter = db(select(all_of(t)).from(t).where(t.Symbol == std::string("DUPLICATE")));
@@ -219,8 +221,7 @@ namespace FireBirdTest {
 		// Run the function under test
 		gl_dataContainerTiingoStock.BuildDayLine(lDate);
 
-		EXPECT_TRUE(pStock->IsUpdateProfileDB());
-		pStock->SetUpdateProfileDB(false);
+		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), lDate) << "Expected TiingoIEXTopOfBookUpdateDate to be set to the date of the built dayline";
 		gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(19800101);
@@ -299,7 +300,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoStockTest, UpdateProfileDB_InsertsAndUpdates) {
 		// Prepare test stocks
-		const string newSymbol = "TEST.STK";
+		const string newSymbol = "Test";
 		const string existingSymbol = "A";
 
 		// Ensure no leftover from previous runs
@@ -324,10 +325,10 @@ namespace FireBirdTest {
 		// Modify an existing stock in-memory and mark it for update
 		auto pExistStock = gl_dataContainerTiingoStock.GetStock(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
-		const auto originalIPO = pExistStock->GetIPOStatus();
+		const auto originalCurrency = pExistStock->GetReportingCurrency();
 		const auto originalUpdateDayLineEndDate = pExistStock->GetDayLineEndDate();
-		pExistStock->SetIPOStatus(_STOCK_IPOED_);
 		pExistStock->SetDayLineEndDate(20200220);
+		pExistStock->SetReportingCurrency("CNY");
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
@@ -344,7 +345,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultExist.size(), 1u);
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
-				EXPECT_EQ(row.IPOStatus.value(), _STOCK_IPOED_);
+				EXPECT_EQ(row.ReportingCurrency.value(), "CNY");
 				string json = row.UpdateDate.value();
 				nlohmannJson js;
 				CreateJsonWithNlohmann(js, json);
@@ -360,7 +361,7 @@ namespace FireBirdTest {
 			pExistStock->SetDayLineEndDate(19800101);
 			pExistStock->UpdateJsonUpdateDate();
 			string jsonUpdateDate = pExistStock->GetJsonUpdateDate().dump();
-			db(update(t).set(t.IPOStatus = originalIPO, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
+			db(update(t).set(t.ReportingCurrency = originalCurrency, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
 			db(remove_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
@@ -371,7 +372,6 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
-		pExistStock->SetIPOStatus(originalIPO);
 		pExistStock->SetDayLineEndDate(19800101);
 		pExistStock->SetUpdateProfileDB(false);
 

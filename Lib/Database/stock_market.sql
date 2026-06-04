@@ -266,7 +266,6 @@ CREATE TABLE `finnhub_forex_symbol` (
   `DisplaySymbol` varchar(100) DEFAULT ' ',
   `Exchange` varchar(100) DEFAULT ' ',
   `Symbol` varchar(100) DEFAULT ' ',
-  `IPOStatus` int DEFAULT '128',
   `UpdateDate` varchar(10000) DEFAULT ''
 );
 /;
@@ -341,7 +340,6 @@ CREATE TABLE `finnhub_crypto_symbol` (
   `DisplaySymbol` varchar(100) DEFAULT ' ',
   `Exchange` varchar(100) DEFAULT ' ',
   `Symbol` varchar(100) DEFAULT ' ',
-  `IPOStatus` int DEFAULT '128',
   `UpdateDate` varchar(10000) DEFAULT ''
 );
 
@@ -589,7 +587,6 @@ CREATE TABLE `china_stock_profile` (
   `Description` varchar(100) DEFAULT ' ',
   `Symbol` varchar(12) DEFAULT ' ',
   `DisplaySymbol` varchar(12) DEFAULT ' ',
-  `IPOStatus` int DEFAULT '128',
   `UpdateDate` varchar(10000) DEFAULT ''
 );
 
@@ -646,7 +643,6 @@ CREATE TABLE `tiingo_stock_profile` (
   `Location` varchar(100) DEFAULT '',
   `CompanyWebSite` varchar(100) DEFAULT '',
   `SECFilingWebSite` varchar(150) DEFAULT '',
-  `IPOStatus` int DEFAULT '128',
   `UpdateDate` varchar(10000) DEFAULT '{}'
 );
 
@@ -692,7 +688,6 @@ CREATE TABLE `finnhub_stock_profile` (
   `Logo` varchar(110) DEFAULT '',
   `FinnhubIndustry` varchar(100) DEFAULT '',
   `Peer` varchar(2000) DEFAULT '{}',
-  `IPOStatus` int DEFAULT '128',
   `UpdateDate` varchar(10000) DEFAULT '{}' 
 );
 

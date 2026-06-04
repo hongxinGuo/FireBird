@@ -4,7 +4,7 @@
 // 由于需要预先设定全局初始化变量，故而不使用系统提供的main()函数，而是自己定义。
 // 主要增加一项AddGlobalTestEnvironment()函数调用，用于设定全局环境。此函数可以多次使用。
 //
-// 测试环境中使用了真实的gl_pChinaMarket、gl_pWorldMarket等变量，析构时需要将其状态恢复原状，以防止其更新相应的数据库。切记。
+//Note: 测试环境中使用了真实的gl_pChinaMarket、gl_pWorldMarket等变量，析构时需要将其状态恢复原状，以防止其更新相应的数据库。切记。
 //
 // 目前使用.runsettings文件来排除外部代码，不再使用ExcludeSourceFromCodeCoverage的模式。且ExcludeSourceFromCodeCoverage模式目前在C20标准下无法编译。
 //
@@ -75,9 +75,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace FireBirdTest {
-	// 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
-	//CMockMainFramePtr gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
-
 	// 测试环境中使用了真实的gl_pChinaMarket、gl_pWorldMarket等变量，析构时需要将其状态恢复原状，以防止其更新相应的数据库。切记。
 	class TestEnvironment : public Environment {
 		// 全局初始化，由main()函数调用。
@@ -116,8 +113,6 @@ namespace FireBirdTest {
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
 			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL); //
-			//gl_pMockMainFrame = make_shared<CMockMainFrame>();
-			//EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
 			//EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateProfileDB());
 			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
@@ -127,11 +122,9 @@ namespace FireBirdTest {
 					pStock->SetUpdateProfileDB(true);
 				}
 				pStock->SetUpdateDayLine(true);
-				if (pStock->GetDayLineEndDate() == 20250101) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 					if (pStock->GetDayLineEndDate() == 20250101) {
-						EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
 						pStock->SetUpdateProfileDB(false);
 					}
 				}
@@ -187,20 +180,15 @@ namespace FireBirdTest {
 
 			gl_systemConfiguration.SetExitingSystem(true);
 
-			if (CMFCVisualManager::GetInstance() != nullptr) {
-				delete CMFCVisualManager::GetInstance(); // 在生成gl_pMockMainFrame时，会生成一个视觉管理器。故而在此删除之。
-			}
-
 			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
-				pStock->SetUpdateProfileDB(false);	// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
+				EXPECT_FALSE(pStock->IsUpdateProfileDB());
+				pStock->SetUpdateProfileDB(false);	//此处重置此标识，防止更新数据库。
 			}
 			ASSERT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
 			gl_systemConfiguration.SetExitingSystem(false);
-			//gl_pMockMainFrame = nullptr;
-			//EXPECT_TRUE(gl_systemConfiguration.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
 			// 以下真实的数据指针需要主动赋值为nullptr
 			gl_pWorldMarket = nullptr;
@@ -212,48 +200,10 @@ namespace FireBirdTest {
 			gl_pTiingoCryptoWebSocket = nullptr;
 			gl_pTiingoForexWebSocket = nullptr;
 
-			// 不更新finnhubInaccessibleExchange文件
-			gl_finnhubInaccessibleExchange.SetUpdateDB(false);
-			// 不更新systemConfiguration文件
-			gl_systemConfiguration.SetUpdateDB(false);
-
-			TRACE("测试环境已清理完毕，退出测试系统");
+			ASSERT_THAT(gl_finnhubInaccessibleExchange.IsUpdateDB(), IsFalse());
+			ASSERT_THAT(gl_systemConfiguration.IsUpdateDB(), IsFalse());
 		}
 	};
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-///
-/// 测试数据库有时会由于测试没有顺利结束而导致遗留中间数据，本函数删除之
-///
-///
-///
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ClearTestDataBase() {
-	using namespace StockMarket;
-	{ // 删除gl_dataFinnhubCryptoExchange中的中间数据
-		const auto& t = FinnhubCryptoExchange{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.code == "Test"));
-		tx.commit();
-	}
-
-	{ // 删除gl_dataFinnhubForexExchange中的中间数据
-		const auto& t = FinnhubForexExchange{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.code == "Test"));
-		tx.commit();
-	}
-
-	{ // 删除china dayline中的中间数据
-		const auto& t = ChinaStockDayline{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
-		tx.commit();
-	}
 }
 
 using namespace FireBirdTest;
@@ -285,11 +235,7 @@ int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	::InitGoogleTest(&argc, argv);
 
 	//Note: 使用测试环境的数据库连接池，避免对正式环境的数据库造成影响。测试环境的数据库连接池在测试结束时会自动析构。
-	//InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 20, false); //Note:: 连接正式环境的数据库，谨慎使用
 	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false); // Note:: 连接测试环境的数据库
-
-	//Note:清理测试数据库的工作由ClearData项目负责，避免每次运行测试系统都要清理一次数据库，节省时间。
-	//ClearTestDataBase(); // 删除测试数据库中的中间数据
 
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);

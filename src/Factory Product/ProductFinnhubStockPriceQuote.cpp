@@ -28,10 +28,6 @@ void CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 		if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) {
 			// 交易时间不早于12小时，则设置此股票为活跃股票
 			pStock->SetActive(true);
-			if (!pStock->IsIPOed()) {
-				pStock->SetIPOStatus(_STOCK_IPOED_);
-				pStock->SetUpdateProfileDB(true);
-			}
 		}
 		return;
 	}

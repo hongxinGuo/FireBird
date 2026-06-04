@@ -440,7 +440,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	if (GenerateIEXTopOfBook()) return true; // Note 此项数据已经不包含所有股票的即时信息，中止此项任务。
+	if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
 	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateFinancialState()) return true;
@@ -476,24 +476,6 @@ bool CTiingoDataSource::GenerateFundamentalDefinition() {
 	);
 }
 
-/*
-bool CTiingoDataSource::GenerateCompanySymbol() {
-	SPDLOG_ASSERT(!IsInquiring());
-	if (IsUpdateStockSymbol()) {
-		if (gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() >= gl_pWorldMarket->GetMarketDate()) { // 已经更新过当日股票代码？
-			SetUpdateStockSymbol(false);
-			gl_systemMessage.PushInformationMessage("Tiingo stock symbol needn't update"));
-			return false; // 
-		}
-		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_);
-		StoreInquiry(p);
-		SetInquiring(true);
-		gl_systemMessage.SetCurrentTiingoFunction("Stock symbol"));
-		return true;
-	}
-	return false;
-}*/
-
 bool CTiingoDataSource::GenerateCompanySymbol() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockSymbol(); };
 	auto setUpdated = [this]() { return SetUpdateStockSymbol(false); };
@@ -513,24 +495,6 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 
 	);
 }
-
-/*
-bool CTiingoDataSource::GenerateCryptoSymbol() {
-	SPDLOG_ASSERT(!IsInquiring());
-	if (IsUpdateCryptoSymbol()) {
-		if (gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate() >= gl_pWorldMarket->GetMarketDate()) { // 已经更新过当日crypto代码？
-			SetUpdateCryptoSymbol(false);
-			gl_systemMessage.PushInformationMessage("Tiingo crypto symbol needn't update"));
-			return false; // 
-		}
-		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
-		StoreInquiry(p);
-		SetInquiring(true);
-		gl_systemMessage.SetCurrentTiingoFunction("Crypto symbol"));
-		return true;
-	}
-	return false;
-}*/
 
 bool CTiingoDataSource::GenerateCryptoSymbol() {
 	auto isUpdateNeeded = [this]() { return IsUpdateCryptoSymbol(); };
@@ -554,12 +518,11 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 此项数据已经不包含所有股票的即时信息，中止此项任务。
+/// 免费账户的此项数据已经不包含所有股票的即时信息，中止此项任务。
 /// 函数直接返回false
 ///
 ///////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::GenerateIEXTopOfBook() {
-	return false; // 
 	auto isUpdateNeeded = [this]() { return IsUpdateIEXTopOfBook(); };
 	auto createProduct = [this](int inquireType) {
 		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);

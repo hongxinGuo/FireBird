@@ -1046,12 +1046,10 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestLoadStockCodeDB) {
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
-		EXPECT_THAT(pStock->IsIPOed(), IsTrue());
 		EXPECT_EQ(pStock->GetSymbol(), "000001.SS");
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19901219);
 		EXPECT_FALSE(pStock->IsActive()) << "装载股票代码时永远设置为假";
 		pStock = gl_dataContainerChinaStock.GetStock("600002.SS");
-		EXPECT_TRUE(pStock->IsDelisted());
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19980408);
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20060406);
 		EXPECT_FALSE(pStock->IsActive());
@@ -1215,33 +1213,6 @@ namespace FireBirdTest {
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
-	TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock1) {
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pCurrentStock = gl_dataContainerChinaStock.GetStock(0);
-		gl_pChinaMarket->ChangeToNextStock();
-		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock), 1);
-
-		gl_pChinaMarket->SetCurrentSelectedPosition(0);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
-
-		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
-		gl_pCurrentStock = nullptr;
-	}
-
-	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock1) {
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pCurrentStock = gl_dataContainerChinaStock.GetStock(1); // 选取A股指数
-		gl_pChinaMarket->ChangeToPrevStock();
-		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock), gl_dataContainerChinaStock.Size() - 1) << "上证指数前的为空，然后就转到最后面的中证煤炭了";
-		gl_pChinaMarket->SetCurrentSelectedPosition(0);
-
-		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
-		gl_pCurrentStock = nullptr;
-	}
-
 	TEST_F(CChinaMarketTest, TestIsTotalStockSetSelected) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 		EXPECT_TRUE(gl_pChinaMarket->IsTotalStockSetSelected());
@@ -1337,7 +1308,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试代码库中的股票代码总数为5701";
 
 		auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol("SS.SS.SS");
+		pStock->SetSymbol("Test");
 		pStock->SetExchange("Test");
 		pStock->SetNewStock(true);
 		pStock->SetUpdateProfileDB(true);
@@ -1345,9 +1316,9 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.Add(pStock);
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701";
 		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
-		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
+		auto exchange = pStock->GetExchange();
+		pStock->SetExchange("CN");
 		pStock->SetUpdateProfileDB(true);
-		pStock->SetIPOStatus(_STOCK_DELISTED_);
 
 		gl_dataContainerChinaStock.UpdateProfileDB();
 
@@ -1359,26 +1330,22 @@ namespace FireBirdTest {
 		int rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
-		int value2 = row.IPOStatus;
-		EXPECT_EQ(value2, _STOCK_DELISTED_);
+		EXPECT_EQ(row.Exchange, "CN");
 
-		int value3 = _STOCK_IPOED_;
-		db(update(t).set(t.IPOStatus = value3).where(t.Symbol == "000001.SS"));
+		db(update(t).set(t.Exchange = exchange).where(t.Symbol == "000001.SS"));
 
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701,增加了一个";
 
-		auto result1 = db(select(all_of(t)).from(t).where(t.Symbol == "SS.SS.SS"));
+		auto result1 = db(select(all_of(t)).from(t).where(t.Symbol == "Test"));
 		int rows1 = result.size();
 		EXPECT_EQ(rows1, 1);
 
-		db(remove_from(t).where(t.Symbol == "SS.SS.SS"));
+		db(remove_from(t).where(t.Symbol == "Test"));
 		tx.commit();
 
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701，内存中的尚未删除";
 
-		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
-		pStock->SetIPOStatus(_STOCK_IPOED_); // 恢复原状
-		pStock = gl_dataContainerChinaStock.GetStock("SS.SS.SS");
+		pStock = gl_dataContainerChinaStock.GetStock("Test");
 		EXPECT_TRUE(pStock != nullptr);
 		gl_dataContainerChinaStock.Delete(pStock); // 恢复原状
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试代码库中的股票代码总数为5701";

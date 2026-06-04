@@ -3,7 +3,6 @@
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
-#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include "ProductTiingoStockDayLine.h"

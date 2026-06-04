@@ -255,9 +255,6 @@
     <ClInclude Include="..\src\System\SystemConfiguration.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\SystemData.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -740,6 +737,9 @@
     </ClInclude>
     <ClInclude Include="..\src\StockMarketSQLTable.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
+      <Filter>头文件\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

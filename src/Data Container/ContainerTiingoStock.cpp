@@ -69,7 +69,6 @@ void CContainerTiingoStock::UpdateProfileDB() {
 					t.Location = pStock->GetLocation(),
 					t.CompanyWebSite = pStock->GetCompanyWebSite(),
 					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
-					t.IPOStatus = pStock->GetIPOStatus(),
 					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				).where(t.Symbol == pStock->GetSymbol()));
 			}
@@ -91,7 +90,6 @@ void CContainerTiingoStock::UpdateProfileDB() {
 					t.Location = pStock->GetLocation(),
 					t.CompanyWebSite = pStock->GetCompanyWebSite(),
 					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
-					t.IPOStatus = pStock->GetIPOStatus(),
 					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 				));
 				pStock->SetNewStock(false);
@@ -139,7 +137,6 @@ bool CContainerTiingoStock::LoadProfileDB() {
 				pTiingoStock->SetLocation(row.Location);
 				pTiingoStock->SetCompanyWebSite(row.CompanyWebSite);
 				pTiingoStock->SetSECFilingWebSite(row.SECFilingWebSite);
-				pTiingoStock->SetIPOStatus(row.IPOStatus);
 				pTiingoStock->LoadUpdateDate(row.UpdateDate);
 				pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 				Add(pTiingoStock);
@@ -181,13 +178,12 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 存储该日的数据
-// 只有存储的股票才更新其日线结束日期。
-//
+///
+/// 存储该日的数据
+///Note：只存储该日日线数据，但不更新各种标识。
+///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::BuildDayLine(long lDate) {
-	// 使用 sqlpp11 批量插入日线数据
 	auto lSize = Size();
 	time_t tMarketCloseTime = gl_pWorldMarket->TransferToUTCTime(lDate, 0); // 使用当日数据，无论是否是闭市后的数据。
 
@@ -231,9 +227,6 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 					t.TotalValue = static_cast<double>(pTiingoStock->GetTotalValue())
 				);
 				nValues++;
-				// 保持原有对象状态更新
-				pTiingoStock->SetDayLineEndDate(lDate);
-				pTiingoStock->SetUpdateProfileDB(true);
 			}
 		}
 		if (nValues > 0) db(multi_insert);
@@ -515,6 +508,7 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///
+/// 计算52weekHigh、52weekLow
 /// 需要控制住线程数量，以利于其他后台线程能够顺利执行。
 ///
 ///

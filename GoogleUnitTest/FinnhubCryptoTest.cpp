@@ -41,7 +41,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(FinnhubCryptoSymbol.GetExchange(), "");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 19800101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);
 		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateDayLine());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateDayLineDB());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateProfileDB());
@@ -88,13 +87,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(symbol.GetDayLineEndDate(), 10101010);
 	}
 
-	TEST_F(CFinnhubCryptoSymbolTest, TestGetIPOStatus) {
-		CFinnhubCrypto symbol;
-
-		symbol.SetIPOStatus(_STOCK_IPOED_);
-		EXPECT_EQ(symbol.GetIPOStatus(), _STOCK_IPOED_);
-	}
-
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetUpdateDayLineDB) {
 		CFinnhubCrypto symbol;
 
@@ -106,13 +98,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestSetCheckDayLineStatus) {
 		CFinnhubCrypto symbol;
 
-		EXPECT_TRUE(symbol.IsUpdateDayLine());
-		symbol.SetIPOStatus(_STOCK_NULL_);
-		symbol.SetCheckingDayLineStatus();
-		EXPECT_FALSE(symbol.IsUpdateDayLine());
-
 		symbol.SetUpdateDayLine(true);
-		symbol.SetIPOStatus(_STOCK_IPOED_);
 		symbol.SetDayLineEndDate(gl_pWorldMarket->GetLastTradeDate());
 		symbol.SetCheckingDayLineStatus();
 		EXPECT_FALSE(symbol.IsUpdateDayLine());

@@ -84,7 +84,6 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
-			gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_pWebData);
 
@@ -94,7 +93,6 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -165,8 +163,6 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
-			lIPOStatus = gl_dataFinnhubCryptoSymbol.GetItem(0)->GetIPOStatus();
-			gl_dataFinnhubCryptoSymbol.GetItem(0)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_pWebData);
 
@@ -176,7 +172,6 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			gl_dataFinnhubCryptoSymbol.GetItem(0)->SetIPOStatus(lIPOStatus);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -186,7 +181,6 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCryptoDayLine m_finnhubCryptoDayLine;
-		long lIPOStatus = 0;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoCandle, ProcessFinnhubCryptoCandleTest,
@@ -200,26 +194,25 @@ namespace FireBirdTest {
 		case 1: // 格式不对
 			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
 			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetIPOStatus(), _STOCK_DELISTED_);
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 2: // s项报告not ok
 			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
 			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 3: // s项报告 no data
 			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
 			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 4: //数据缺乏t项
 			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
 			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 5: // 数据缺乏c项，非有效数据。
@@ -261,7 +254,7 @@ namespace FireBirdTest {
 		case 11: // 没有s项
 			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
 			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		default:

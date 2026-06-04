@@ -114,14 +114,6 @@ public:
 
 	virtual void RebuildStockSplitDB() {} // 重建拆股数据库
 
-	int GetIPOStatus() const noexcept { return m_lIPOStatus; }
-	void SetIPOStatus(const int lValue) noexcept { m_lIPOStatus = lValue; }
-	bool IsDelisted() const noexcept { return (m_lIPOStatus == _STOCK_DELISTED_); }
-	bool IsNotYetList() const noexcept { return (m_lIPOStatus == _STOCK_NOT_YET_LIST_); }
-	bool IsNullStock() const noexcept { return (m_lIPOStatus == _STOCK_NULL_); }
-	bool IsIPOed() const noexcept { return (m_lIPOStatus == _STOCK_IPOED_); }
-	bool IsNotChecked() const noexcept { return (m_lIPOStatus == _STOCK_NOT_CHECKED_); }
-
 	// 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(const bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
@@ -188,8 +180,6 @@ protected:
 
 	bool m_fNewStock{ false }; // 本日新发现的股票
 	bool m_fActive{ false }; // 是否是活跃股票
-	int m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
-	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
 	bool m_bSelected{ false }; // 在股票列表中被选中
 

@@ -121,45 +121,32 @@ bool CFinnhubStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 /// <returns></returns>
 bool CFinnhubStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
-	if (IsNullStock()) {
+
+	if (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100)) {
 		SetUpdateDayLine(false);
 		return m_fUpdateDayLine;
 	}
-	if (IsDelisted() || IsNotYetList()) {
-		// 摘牌股票?
-		if (lDayOfWeek != 4) {
-			// 每星期四检查一次
-			SetUpdateDayLine(false);
-			return m_fUpdateDayLine;
+	else if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
+		// 周一至周五
+		if (lTime > 170000) {
+			if (lTodayDate <= GetDayLineEndDate()) {
+				// 最新日线数据为今日的数据，而当前时间为下午五时之后
+				SetUpdateDayLine(false); // 日线数据不需要更新
+				return m_fUpdateDayLine;
+			}
+		}
+		else {
+			if (lLastTradeDate <= GetDayLineEndDate()) {
+				// 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
+				SetUpdateDayLine(false); // 日线数据不需要更新
+				return m_fUpdateDayLine;
+			}
 		}
 	}
-	else if ((!IsNotChecked()) && (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100))) {
-		SetUpdateDayLine(false);
+	else if (lLastTradeDate <= GetDayLineEndDate()) {
+		// 周六周日时， 最新日线数据为上一个交易日的数据
+		SetUpdateDayLine(false); // 日线数据不需要更新
 		return m_fUpdateDayLine;
-	}
-	else {
-		if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
-			// 周一至周五
-			if (lTime > 170000) {
-				if (lTodayDate <= GetDayLineEndDate()) {
-					// 最新日线数据为今日的数据，而当前时间为下午五时之后
-					SetUpdateDayLine(false); // 日线数据不需要更新
-					return m_fUpdateDayLine;
-				}
-			}
-			else {
-				if (lLastTradeDate <= GetDayLineEndDate()) {
-					// 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
-					SetUpdateDayLine(false); // 日线数据不需要更新
-					return m_fUpdateDayLine;
-				}
-			}
-		}
-		else if (lLastTradeDate <= GetDayLineEndDate()) {
-			// 周六周日时， 最新日线数据为上一个交易日的数据
-			SetUpdateDayLine(false); // 日线数据不需要更新
-			return m_fUpdateDayLine;
-		}
 	}
 	return m_fUpdateDayLine;
 }
@@ -487,10 +474,7 @@ bool CFinnhubStock::HaveNewDayLineData() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
-	if (IsNullStock() || IsDelisted()) {
-		m_fUpdateEPSSurprise = false;
-	}
-	else if ((lLastEPSSurpriseUpdateDate == 19700101) || (lLastEPSSurpriseUpdateDate == 19800101)) { // 没有数据？
+	if ((lLastEPSSurpriseUpdateDate == 19700101) || (lLastEPSSurpriseUpdateDate == 19800101)) { // 没有数据？
 		m_fUpdateEPSSurprise = false;
 	}
 	else if (IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate() * 10) && (lLastEPSSurpriseUpdateDate != 19800101)) {// 有早于900天的数据？即已经不更新了
@@ -512,10 +496,7 @@ bool CFinnhubStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::CheckSECFilingsStatus(long lCurrentDate) {
 	const long lSECFilingsUpdateDate = GetSECFilingsUpdateDate();
-	if (IsNullStock() || IsDelisted()) {
-		m_fUpdateSECFilings = false;
-	}
-	else if (!IsEarlyThen(lSECFilingsUpdateDate, lCurrentDate, gl_systemConfiguration.GetSECFilingsUpdateRate())) {	// 有不早于30天的数据？
+	if (!IsEarlyThen(lSECFilingsUpdateDate, lCurrentDate, gl_systemConfiguration.GetSECFilingsUpdateRate())) {	// 有不早于30天的数据？
 		m_fUpdateSECFilings = false;
 	}
 	else {
@@ -525,10 +506,7 @@ bool CFinnhubStock::CheckSECFilingsStatus(long lCurrentDate) {
 }
 
 bool CFinnhubStock::CheckPeerStatus(long lCurrentDate) {
-	if (IsNullStock() || IsDelisted()) {
-		m_fUpdateFinnhubPeer = false;
-	}
-	else if (!IsEarlyThen(GetPeerUpdateDate(), lCurrentDate, gl_systemConfiguration.GetStockPeerUpdateRate())) {// 有不早于90天的数据？
+	if (!IsEarlyThen(GetPeerUpdateDate(), lCurrentDate, gl_systemConfiguration.GetStockPeerUpdateRate())) {// 有不早于90天的数据？
 		m_fUpdateFinnhubPeer = false;
 	}
 	else {
@@ -550,9 +528,6 @@ bool CFinnhubStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	if (!IsUSMarket()) {
 		m_fUpdateFinnhubInsiderTransaction = false;
 	}
-	else if (IsNullStock() || IsDelisted()) {
-		m_fUpdateFinnhubInsiderTransaction = false;
-	}
 	else if (!IsEarlyThen(GetInsiderTransactionUpdateDate(), lCurrentDate, gl_systemConfiguration.GetInsideTransactionUpdateRate())) {// 有不早于30天的数据？
 		m_fUpdateFinnhubInsiderTransaction = false;
 	}
@@ -568,9 +543,6 @@ void CFinnhubStock::UpdateInsiderSentiment(const CInsiderSentimentsPtr& pvInside
 
 bool CFinnhubStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 	if (!IsUSMarket()) {
-		m_fUpdateFinnhubInsiderSentiment = false;
-	}
-	else if (IsNullStock() || IsDelisted()) {
 		m_fUpdateFinnhubInsiderSentiment = false;
 	}
 	else if (!IsEarlyThen(GetInsiderSentimentUpdateDate(), lCurrentDate, gl_systemConfiguration.GetInsideSentimentUpdateRate())) {// 有不早于30天的数据？

@@ -150,7 +150,7 @@ namespace FireBirdTest {
 		GeneralCheck();
 
 		// Prepare test stocks
-		const string newSymbol = "UT.TEST.STK";
+		const string newSymbol = "Test";
 		const string existingSymbol = "000001.SS";
 
 		// Ensure no leftover from previous runs
@@ -176,8 +176,7 @@ namespace FireBirdTest {
 		// Modify an existing stock in-memory and mark it for update
 		auto pExistStock = gl_dataContainerChinaStock.GetStock(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
-		const auto originalIPO = pExistStock->GetIPOStatus();
-		pExistStock->SetIPOStatus(_STOCK_DELISTED_);
+		pExistStock->SetExchange("china");
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
@@ -194,15 +193,15 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultExist.size(), 1u);
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
-				EXPECT_EQ(row.IPOStatus.value(), _STOCK_DELISTED_);
+				EXPECT_STREQ(row.Exchange.value().c_str(), "china");
 			}
 
 			// Verify new stock inserted
 			auto resultNew = db(select(all_of(t)).from(t).where(t.Symbol == newSymbol));
 			EXPECT_EQ(resultNew.size(), 1u);
 
-			// Cleanup DB: remove test insertion and restore existing stock IPO status
-			db(update(t).set(t.IPOStatus = originalIPO).where(t.Symbol == existingSymbol));
+			// Cleanup DB: remove test insertion and restore existing stock exchange
+			db(update(t).set(t.Exchange = "").where(t.Symbol == existingSymbol));
 			db(remove_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
@@ -213,7 +212,6 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
-		pExistStock->SetIPOStatus(originalIPO);
 		pExistStock->SetUpdateProfileDB(false);
 
 		// Final assertions: flags cleared
