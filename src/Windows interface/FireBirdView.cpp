@@ -199,9 +199,9 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
 		ASSERT(0);
 		break;
 	}
-	auto strDate = fmt::format("{}-{:02}-{:02},        ", date / 10000, (date % 10000) / 100, date % 100);
+	auto strDate = std::format("{}-{:02}-{:02},        ", date / 10000, (date % 10000) / 100, date % 100);
 	value /= GetDocument()->GetCurrentStock()->GetRatio();
-	string strValue = fmt::format("{:.2f}", value);
+	string strValue = std::format("{:.2f}", value);
 	CPen* pOldPen = pDC->SelectObject(&penWhiteDash);
 	auto oldTextColor = pDC->SetTextColor(RGB(255, 255, 255));
 	pDC->SetBkColor(RGB(0, 0, 0));

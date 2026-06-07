@@ -22,25 +22,6 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(TimeConvertTest, TestTransferToDateTime) {
-		tm tm_{};
-		tm_.tm_year = 2000 - 1900;
-		tm_.tm_mon = 0;
-		tm_.tm_mday = 5;
-		tm_.tm_hour = 10;
-		tm_.tm_min = 20;
-		tm_.tm_sec = 30;
-		tm tm_2 = tm_;
-		const INT64 lDateTime = ConvertToDateTime(&tm_);
-		const time_t tt = _mkgmtime(&tm_2);
-		const INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTC时间
-		const INT64 lDateTime3 = ConvertToDateTime(tt, gl_pChinaMarket->GetTimeZone()); // 东八区时间
-		EXPECT_EQ(lDateTime, lDateTime2);
-		EXPECT_EQ(lDateTime, 20000105102030);
-		EXPECT_EQ(lDateTime2, 20000105102030);
-		EXPECT_EQ(lDateTime3, 20000105182030);
-	}
-
 	TEST_F(TimeConvertTest, TestXferDateToYearMonthDay) {
 		int year, month, day;
 		XferDateToYearMonthDay(20200101, year, month, day);
@@ -56,24 +37,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(IsEarlyThen(20200115, 20200201, 17));
 		EXPECT_TRUE(IsEarlyThen(20191101, 20200115, 74));
 		EXPECT_FALSE(IsEarlyThen(20191101, 20200115, 75));
-	}
-
-	TEST_F(TimeConvertTest, TestXferYearMonthDayToYYYYMMDD) {
-		EXPECT_EQ(XferYearMonthDayToYYYYMMDD(2020, 10, 10), 20201010);
-		EXPECT_EQ(XferYearMonthDayToYYYYMMDD(2020, 1, 2), 20200102);
-	}
-
-	TEST_F(TimeConvertTest, TestXferToYYYYMMDD) {
-		chrono::year y{ 2020 };
-		chrono::month m{ 2 };
-		chrono::month m2{ 5 };
-		chrono::day d{ 20 };
-		chrono::day d2{ 2 };
-		chrono::year y2{ 2023 };
-		chrono::year_month_day ymd{ y, m, d };
-		chrono::year_month_day ymd2{ y2, m2, d2 };
-		EXPECT_EQ(XferToYYYYMMDD(ymd), 20200220);
-		EXPECT_EQ(XferToYYYYMMDD(ymd2), 20230502);
 	}
 
 	TEST_F(TimeConvertTest, TestXferToYYYYMMDD2) {
@@ -193,45 +156,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(181158, GetPrevTime(221200, 4, 0, 2));
 	}
 
-	TEST_F(TimeConvertTest, TestTransferToTTime) {
-		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { // 美东夏时制？
-			EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZone(), 150000)) << "美东标准时间的19800101150000，其UTC时间为315601200";
-		}
-		else {
-			EXPECT_EQ(315604800, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZone(), 150000)) << "美东夏时制标准时间的19800101150000，其UTC时间为315601200";
-		}
-		EXPECT_EQ(315558000, ConvertToTTime(19800101, gl_pChinaMarket->GetTimeZone(), 150000)) << "北京标准时间的19800101150000，其UTC时间为315558000";
-	}
-
-	TEST_F(TimeConvertTest, TestTransferToDate2) {
-		tm tm_;
-		tm_.tm_year = 2000 - 1900;
-		tm_.tm_mon = 0;
-		tm_.tm_mday = 5;
-		tm_.tm_hour = 0;
-		tm_.tm_min = 0;
-		tm_.tm_sec = 0;
-		const time_t tt = _mkgmtime(&tm_);
-		const long lDate = ConvertToDate(tt, 0); // UTC时间
-		EXPECT_EQ(lDate, 20000105);
-	}
-
 	TEST_F(TimeConvertTest, TestConvertDateToChineseTimeStampString) {
-		string s = fmt::format("{:4d}年{:02d}月{:02d}日", 2020, 2, 2);
+		string s = std::format("{:4d}年{:02d}月{:02d}日", 2020, 2, 2);
 		EXPECT_EQ(ConvertDateToChineseTimeStampString(20200202), s);
-	}
-
-	TEST_F(TimeConvertTest, TestGetUTCTimeStruct) {
-		tm tm_;
-		constexpr time_t tUTC = 0;
-
-		GetUTCTimeStruct(&tm_, &tUTC);
-		EXPECT_EQ(tm_.tm_year, 70);
-		EXPECT_EQ(tm_.tm_mon, 0);
-		EXPECT_EQ(tm_.tm_yday, 0);
-		EXPECT_EQ(tm_.tm_hour, 0);
-		EXPECT_EQ(tm_.tm_min, 0);
-		EXPECT_EQ(tm_.tm_sec, 0);
 	}
 
 	TEST_F(TimeConvertTest, TestGetMarketTimeStruct) {

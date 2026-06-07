@@ -185,7 +185,7 @@ void CContainerStockSymbol::CreateStockSection(const string& strFirstStockCode) 
 	// 生成上海股票代码
 	for (int i = iCode; i < (iCode + 1000); i++) {
 		const string strExchange = GetStockExchange(strFirstStockCode);
-		string sStockSymbol = fmt::format("{:06d}", i);
+		string sStockSymbol = std::format("{:06d}", i);
 		const string strStockCode = CreateStockCode(strExchange, sStockSymbol);
 		Add(strStockCode);
 	}

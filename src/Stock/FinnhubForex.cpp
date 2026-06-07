@@ -15,10 +15,10 @@ void CFinnhubForex::SetCheckingDayLineStatus() {
 }
 
 string CFinnhubForex::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
-	time_t tStartTime = gl_pWorldMarket->TransferToUTCTime(GetDayLineEndDate());
+	time_t tStartTime = gl_pWorldMarket->ConvertToUTCTime(GetDayLineEndDate(), 150000).time_since_epoch().count();
 	tStartTime = max(tStartTime, tCurrentTime - static_cast<time_t>(365) * 24 * 3600);// 免费账户只能读取一年以内的日线数据。
 
-	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
+	string sParam = std::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
 
 	return sParam;
 }

@@ -194,25 +194,21 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockWebRTDataTest1, TestIsDataTimeAtCurrentDate) {
-		const time_t time = GetUTCTime();
-		tm tm_;
-		tm_.tm_year = 2019 - 1900;
-		tm_.tm_mon = 10;
-		tm_.tm_mday = 7; // 2019年11月7日是星期四。
-		tm_.tm_hour = 12;
-		tm_.tm_min = 0;
-		tm_.tm_sec = 0;
-		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		TestSetUTCTime(tt);
+		auto time = gl_tpNow;
+		chrono::year_month_day ymd{ chrono::year{ 2019 }, chrono::month{ 11 }, chrono::day{ 7 } };// 2019年11月7日
+		chrono::sys_days day = ymd;
+		chrono::sys_seconds st = day + 12h;
+		TestSetUTCTime(st);
 		CWebRTData data;
-		data.SetTransactionTime(tt);
+		data.SetTransactionTime(st);
 		EXPECT_TRUE(data.IsValidTime(14));
-		data.SetTransactionTime(tt - 3600 * 24 * 14);
+		chrono::days day14{ 14 };
+		data.SetTransactionTime(st - day14);
 		EXPECT_TRUE(data.IsValidTime(14));
-		data.SetTransactionTime(tt - 3600 * 24 * 14 - 1);
+		data.SetTransactionTime(st - day14 - 1s);
 		EXPECT_FALSE(data.IsValidTime(14));
 
-		data.SetTransactionTime(tt + 1);
+		data.SetTransactionTime(st + 1s);
 		EXPECT_FALSE(data.IsValidTime(14)) << "数据有问题：成交时间晚于当前时间";
 
 		// 恢复原状
@@ -220,22 +216,19 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockWebRTDataTest1, TestCheckSinaRTDataMarket) {
-		const time_t tTime = GetUTCTime();
-		tm tm_;
-		tm_.tm_year = 2019 - 1900;
-		tm_.tm_mon = 10;
-		tm_.tm_mday = 7; // 2019年11月7日是星期四。
-		tm_.tm_hour = 12;
-		tm_.tm_min = 0;
-		tm_.tm_sec = 0;
-		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		TestSetUTCTime(tt);
+		auto tTime = gl_tpNow;
+		chrono::year_month_day ymd{ chrono::year{ 2019 }, chrono::month{ 11 }, chrono::day{ 7 } };// 2019年11月7日
+		chrono::sys_days day = ymd;
+		chrono::sys_seconds st = day + 12h;
+		chrono::days day14{ 14 };
+
+		TestSetUTCTime(st);
 		CWebRTData data;
-		data.SetTransactionTime(tt);
+		data.SetTransactionTime(st);
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
-		data.SetTransactionTime(tt - 3600 * 24 * 14);
+		data.SetTransactionTime(st - day14);
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
-		data.SetTransactionTime(tt - 3600 * 24 * 14 - 1);
+		data.SetTransactionTime(st - day14 - 1s);
 		EXPECT_FALSE(data.CheckSinaRTDataActive());
 
 		// 恢复原状
@@ -255,7 +248,7 @@ namespace FireBirdTest {
 		};
 
 		// 无错误数据。只有交易日期没有交易时间，使用默认闭市时间（15:00:00).
-		SinaRTData2 Data1(0, R"(var hq_str_sh600000="浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,,00,";)");
+		SinaRTData2 Data1(0, R"(var hq_str_sh600000="浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,";)");
 		// 所有的价格皆为0,交易时间为12:00:00
 		SinaRTData2 Data2(1, R"(var hq_str_sz002385="平安银行,0,0,0,0,0,0,0,21606007,248901949.000,19900,0,54700,0,561500,0,105600,0,172400,0,259981,0,206108,0,325641,0,215109,0,262900,0,2019-07-16,12:00:00,00,";)");
 		// 所有的数量皆为零
@@ -395,17 +388,12 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(CalculateSinaRTDataTest2, TestSinaRTData) {
-		time_t tTime, tUTCTime;
-		tm tm_; // 该日期为：2019-07-16 15:00:00，就是数据中的时间。
-		tm_.tm_year = 2019 - 1900;
-		tm_.tm_mon = 7 - 1;
-		tm_.tm_mday = 16;
-		tm_.tm_hour = 15;
-		tm_.tm_min = 0;
-		tm_.tm_sec = 0;
-		tTime = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		tUTCTime = GetUTCTime();
-		TestSetUTCTime(tTime);
+		chrono::year_month_day ymd{ chrono::year{ 2019 }, chrono::month{ 7 }, chrono::day{ 16 } };// 2019年11月7日
+		chrono::local_days day{ ymd };
+		chrono::sys_seconds st = gl_pChinaMarket->ToSysTime(day + 15h);
+
+		auto tUTCTime = gl_tpNow;
+		TestSetUTCTime(st);
 		switch (m_iCount) {
 		case 33: // 有错误，前缀出错
 		case 34: // 有错误，前缀出错
@@ -455,8 +443,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
-			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint(), st);
 			break;
 		case 1: // 所有价格皆为零
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -492,7 +479,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 0);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 0);
-			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime - 3 * 3600) << "交易时间不是默认的15:00:00,而是12:00:00";
+			EXPECT_EQ(m_RTData.GetTimePoint(), st - 3h) << "交易时间不是默认的15:00:00,而是12:00:00";
 			break;
 		case 2:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -528,7 +515,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 0);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint(), st);
 			break;
 		case 3:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -563,7 +550,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint(), st);
 			break;
 		case 4:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -598,7 +585,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint(), st);
 			break;
 		case 5:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -633,7 +620,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint(), st);
 			break;
 		case 6:
 			EXPECT_TRUE(m_RTData.IsActive());

@@ -145,7 +145,7 @@ namespace {
 			else break;
 		}
 		buffer[i] = 0x000;
-		const string s2 = fmt::format("Nlohmann JSon Reading Error {} {:Ld} {:Ld} {:d} {}", e.what(), s.size(), e.byte, i, buffer);
+		const string s2 = std::format("Nlohmann JSon Reading Error {} {:Ld} {:Ld} {:d} {}", e.what(), s.size(), e.byte, i, buffer);
 		gl_systemMessage.PushErrorMessage(s2);
 	}
 }
@@ -460,7 +460,7 @@ bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string& s, const long l
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ParseOneNeteaseRTData(const nlohmannJson::iterator& it, const CWebRTDataPtr& pWebRTData) {
 	string strSymbol4;
-	nlohmannJson js = it.value();
+	const nlohmannJson& js = it.value();
 	const string& symbolName = it.key();
 
 	try {
@@ -471,11 +471,11 @@ void ParseOneNeteaseRTData(const nlohmannJson::iterator& it, const CWebRTDataPtr
 		string strTime = jsonGetString(js, "time");
 		string strSymbol2 = jsonGetString(js, "code");
 		std::stringstream ss(strTime);
-		chrono::sys_seconds tpTime;
-		chrono::from_stream(ss, "%Y/%m/%d %T", tpTime);
-		tpTime -= gl_pChinaMarket->GetTimeZoneOffset();
-		pWebRTData->SetTimePoint(tpTime);
-		pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
+		chrono::local_seconds localTime;
+		chrono::from_stream(ss, "%Y/%m/%d %T", localTime); // 注意网易的时间是本地时间，需要转换成UTC时间
+		auto sysTime = gl_pChinaMarket->ToSysTime(localTime);
+		pWebRTData->SetTransactionTime(sysTime);
+		pWebRTData->SetTransactionTime(sysTime.time_since_epoch().count());
 	} catch (nlohmannJson::exception& e) {// 结构不完整
 		// do nothing
 		string strError2 = strSymbol4;
@@ -563,7 +563,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	try {
 		string strTime;
 		std::stringstream ss;
-		auto timeZoneOffset = gl_pChinaMarket->GetTimeZoneOffset();
+		//auto timeZoneOffset = gl_pChinaMarket->GetTimeZoneOffset();
 		ondemand::parser parser;
 		const padded_string jsonPadded(svJsonData);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
@@ -606,10 +606,9 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			strTime = simdjsonGetStringView(item, "time");
 			ss.clear();
 			ss.str(strTime);
-			chrono::sys_seconds tpTime;
+			chrono::local_seconds tpTime;
 			chrono::from_stream(ss, "%Y/%m/d %T", tpTime);
-			tpTime -= timeZoneOffset;
-			pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
+			pWebRTData->SetTransactionTime(gl_pChinaMarket->ToSysTime(tpTime).time_since_epoch().count());
 			pWebRTData->SetLastClose(Str2Long(simdjsonGetRawJsonToken(item, "yestclose"), 3));
 			pWebRTData->SetAmount(StrToDecimal(simdjsonGetRawJsonToken(item, "turnover"), 0));
 

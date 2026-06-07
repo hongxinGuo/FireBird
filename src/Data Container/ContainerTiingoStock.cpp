@@ -148,7 +148,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		tx.commit();
 		Sort();
 	} catch (const std::exception& ex) {
-		gl_systemMessage.PushErrorMessage(fmt::format("LoadDB(sqlpp11) failed: {}", ex.what()));
+		gl_systemMessage.PushErrorMessage(std::format("LoadDB(sqlpp11) failed: {}", ex.what()));
 		return false;
 	}
 	return true;
@@ -185,7 +185,7 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::BuildDayLine(long lDate) {
 	auto lSize = Size();
-	time_t tMarketCloseTime = gl_pWorldMarket->TransferToUTCTime(lDate, 0); // 使用当日数据，无论是否是闭市后的数据。
+	auto st = gl_pWorldMarket->ConvertToUTCTime(lDate, 0); // 使用当日数据，无论是否是闭市后的数据。
 
 	// 先载入并删除当天旧数据（与原逻辑保持一致）
 	LoadDayLine(lDate);
@@ -204,7 +204,8 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 		int nValues = 0;
 		for (size_t i = 0; i < lSize; i++) {
 			auto pTiingoStock = GetStock(i);
-			if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
+			//if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
+			if (pTiingoStock->GetTimePoint() >= st) {
 				// 将内部整数/单位值转换为数据库存储的浮点值（与 LoadDayLine 中的乘比率相反）
 				const double ratio = static_cast<double>(pTiingoStock->GetRatio());
 				multi_insert.values.add(
@@ -232,7 +233,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (const std::exception& ex) {
-		gl_systemMessage.PushErrorMessage(fmt::format("BuildDayLine(sqlpp11) failed: {}", ex.what()));
+		gl_systemMessage.PushErrorMessage(std::format("BuildDayLine(sqlpp11) failed: {}", ex.what()));
 		return;
 	}
 
@@ -244,7 +245,7 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
 
-		time_t ttTradeDay = ConvertToTTime(lDate, gl_pWorldMarket->GetTimeZone(), 170000); // 美股下午4点收市
+		auto st = gl_pWorldMarket->ConvertToUTCTime(lDate, 170000);
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
@@ -258,7 +259,7 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 				auto pStock = GetStock(symbol);
 				if (pStock == nullptr) continue;
 
-				pStock->SetTransactionTime(ttTradeDay);
+				pStock->SetTimePoint(st);
 
 				const double ratio = pStock->GetRatio();
 
@@ -276,7 +277,7 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 		}
 		tx.commit();
 	} catch (const std::exception& ex) {
-		gl_systemMessage.PushErrorMessage(fmt::format("LoadDayLine(sqlpp11) failed: {}", ex.what()));
+		gl_systemMessage.PushErrorMessage(std::format("LoadDayLine(sqlpp11) failed: {}", ex.what()));
 	}
 }
 
@@ -565,7 +566,7 @@ void CContainerTiingoStock::TaskProcessTodayDayLine() {
 }
 
 void CContainerTiingoStock::ReportHighHigherRate() {
-	auto s = fmt::format("3月内再创新高数:{:d}, 3月内未再次新高数:{:d}, 比率:{:.2f}", gl_pWorldMarket->GetNewHighHigher(), gl_pWorldMarket->GetNoNewHighHigher(),
+	auto s = std::format("3月内再创新高数:{:d}, 3月内未再次新高数:{:d}, 比率:{:.2f}", gl_pWorldMarket->GetNewHighHigher(), gl_pWorldMarket->GetNoNewHighHigher(),
 	                     static_cast<double>(gl_pWorldMarket->GetNewHighHigher()) / gl_pWorldMarket->GetNoNewHighHigher());
 	gl_systemMessage.PushStockMarketInformationMessage(s);
 }

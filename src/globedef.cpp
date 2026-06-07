@@ -58,6 +58,7 @@ CInaccessibleSymbol gl_finnhubInaccessibleExchange{ "FinnhubInaccessibleExchange
 CInaccessibleSymbol gl_tiingoInaccessibleStock{ "TiingoInaccessibleStock.json" }; // tiingo禁止访问股票名单（免费账户无法访问的股票数据）。唯一实例
 
 std::chrono::sys_seconds gl_tpNow; // 当前系统时钟的时间戳， 所有的市场使用同一个协调世界时（Coordinated Universal Time）
+const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地时区
 
 // 为了事先初始化，信号量必须声明为全局变量
 binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // 当处理中国市场的实时数据时，不允许同时存储之。

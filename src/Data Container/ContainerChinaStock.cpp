@@ -65,7 +65,7 @@ long CContainerChinaStock::LoadProfileDB() {
 
 	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
-		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
+		if (gl_pChinaMarket->GetDayOfWeek() == chrono::Monday) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
 		auto str = std::format("{:d}个股票需要检查日线数据", lDayLineNeedCheck);
 		gl_systemMessage.PushInformationMessage(str);
 	}
@@ -353,7 +353,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的日线数据已生成";
 	gl_systemMessage.PushInformationMessage(s);
 
-	s = fmt::format("今日处理了{:d}个股票", iCount);
+	s = std::format("今日处理了{:d}个股票", iCount);
 	gl_systemMessage.PushInformationMessage(s);
 
 	return iCount;

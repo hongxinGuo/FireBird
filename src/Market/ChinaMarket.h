@@ -33,8 +33,6 @@ public:
 	bool IsDummyTime() final { return !IsWorkingTime(); }
 	bool IsDummyTime(long lTime) final { return !IsWorkingTime(lTime); }
 
-	int XferMarketTimeToIndex() override;
-
 	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的ScheduleTask调度
 	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 
@@ -85,8 +83,6 @@ public:
 	bool CheckValidOfNeteaseDayLineInquiringStr(const string& str) const;
 
 	static size_t IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition);
-
-	long GetMinLineOffset(time_t tUTC) const;
 
 	auto GetCurrentSelectedPosition() const noexcept { return m_lCurrentSelectedPosition; }
 	void SetCurrentSelectedPosition(const long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }

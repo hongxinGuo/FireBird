@@ -179,7 +179,7 @@ CWebDataPtr CInquireEngine::CreateWebData() {
 void CInquireEngine::VerifyDataLength() const {
 	if (m_lContentLength > 0) {
 		if (m_lContentLength != m_lByteRead) {
-			string s = fmt::format("网络数据长度不符。预期长度：{:Ld}，实际长度：{:Ld} Status code : {:Ld}", m_lContentLength, m_lByteRead, m_dwErrorCode);
+			string s = std::format("网络数据长度不符。预期长度：{:Ld}，实际长度：{:Ld} Status code : {:Ld}", m_lContentLength, m_lByteRead, m_dwErrorCode);
 			s += m_strInquiry.substr(0, 100);
 			gl_systemMessage.PushErrorMessage(s);
 		}

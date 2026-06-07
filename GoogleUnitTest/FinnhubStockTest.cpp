@@ -518,9 +518,11 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus1) {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(false);
-		for (int i = 1; i < 6; i++) {
+		chrono::weekday i = chrono::Monday;
+		while (i != chrono::Saturday) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << L"非活跃股票工作日不更新日线\n";
 			stock.SetUpdateDayLine(true);
+			++i;
 		}
 	}
 
@@ -528,9 +530,9 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
-		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1));
+		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, chrono::Monday));
 		stock.SetDayLineEndDate(GetPrevDay(stock.GetDayLineEndDate()));
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1)) << "早于100天的股票不再更新日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, chrono::Monday)) << "早于100天的股票不再更新日线";
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus5) {
@@ -540,12 +542,18 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
-		for (int i = 1; i < 6; i++) {
+		chrono::weekday i = chrono::Monday;
+		while (i != chrono::Saturday) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
 			stock.SetUpdateDayLine(true); // 重置状态
+			++i;
 		}
 		stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
-		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线"; }
+		i = chrono::Monday;
+		while (i != chrono::Saturday) {
+			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
+			++i;
+		}
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus6) {
@@ -555,12 +563,18 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
-		for (int i = 1; i < 6; i++) {
+		chrono::weekday i = chrono::Monday;
+		while (i != chrono::Saturday) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线 " << i;
 			stock.SetUpdateDayLine(true); // 重置之
+			++i;
 		}
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
-		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线"; }
+		i = chrono::Monday;
+		while (i != chrono::Saturday) {
+			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
+			++i;
+		}
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus7) {
@@ -570,9 +584,9 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), 170000, 6)) << "周六，检查上一交易日日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), 170000, chrono::Saturday)) << "周六，检查上一交易日日线";
 		stock.SetUpdateDayLine(true); // 重置之
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), 170000, 0)) << "周日，检查上一交易日日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), 170000, chrono::Sunday)) << "周日，检查上一交易日日线";
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckEPSSurpriseStatus) {
@@ -1124,11 +1138,11 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockTest, TestGetFinnhubDayLineInquiryParam) {
 		constexpr long lDate = 20200101;
 
-		const time_t tt = gl_pWorldMarket->TransferToUTCTime(lDate);
+		const time_t tt = gl_pWorldMarket->ConvertToUTCTime(lDate, 150000).time_since_epoch().count();
 		time_t ttOld = tt - static_cast<time_t>(365) * 24 * 3600;
 
-		string sTime = fmt::format("{:Ld}", tt);
-		string sTimeOld = fmt::format("{:Ld}", ttOld);
+		string sTime = std::format("{:Ld}", tt);
+		string sTimeOld = std::format("{:Ld}", ttOld);
 
 		stock.SetSymbol("600601.SS");
 		stock.SetDayLineEndDate(20180101); // 早于20190102
@@ -1138,8 +1152,8 @@ namespace FireBirdTest {
 
 		stock.SetSymbol("600601.SS");
 		stock.SetDayLineEndDate(20190501); // 晚于20190102
-		ttOld = gl_pWorldMarket->TransferToUTCTime(20190501);
-		sTimeOld = fmt::format("{:Ld}", ttOld);
+		ttOld = gl_pWorldMarket->ConvertToUTCTime(20190501, 150000).time_since_epoch().count();
+		sTimeOld = std::format("{:Ld}", ttOld);
 		string sParam = "600601.SS&resolution=D&from=" + sTimeOld + "&to=" + sTime;
 		EXPECT_TRUE(stock.GetFinnhubDayLineInquiryParam(tt) == sMiddle2) << "检查一年的数据";
 	}

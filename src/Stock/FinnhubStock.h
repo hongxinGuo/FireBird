@@ -29,7 +29,7 @@ public:
 	void CheckProfileUpdateStatus(long lTodayDate);
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
-	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
+	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, chrono::weekday lDayOfWeek);
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();

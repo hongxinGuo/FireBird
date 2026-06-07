@@ -133,7 +133,7 @@ void WatchdogQT::Update() {
 	tm tmLocal;
 	const auto time = gl_tpNow.time_since_epoch().count();
 	localtime_s(&tmLocal, &time);
-	string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+	string s = std::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	labTime->setText(s.c_str());
 
 	for (const auto& s1 : m_listOutput) {

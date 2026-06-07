@@ -82,9 +82,12 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 		size_t lCurrentPos = 0;
 		// 日期
 		sv = GetNextField(svData, lCurrentPos, ',');
-		sscanf_s(sv.data(), "%04d-%02d-%02d", &year, &month, &day);
-		const long lMarketDate = XferYearMonthDayToYYYYMMDD(year, month, day);
-		pDayLine->SetTime(gl_pChinaMarket->TransferToUTCTime(lMarketDate));
+		string strTime = string(sv.data(), sv.length());
+		std::istringstream ss(strTime);
+		chrono::sys_seconds tp;
+		ss >> chrono::parse("%Y-%m-%d", tp);
+		pDayLine->SetUTCTime(tp);
+		const long lMarketDate = gl_pChinaMarket->ConvertToDate(tp);
 		pDayLine->SetDate(lMarketDate);
 		sv = GetNextField(svData, lCurrentPos, 0x027);
 		// 股票代码

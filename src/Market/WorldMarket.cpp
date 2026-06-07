@@ -200,11 +200,17 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__:
-			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && lCurrentTime < 180000) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, 180000);
+			}
+			else { // 当日18时之后或者第二日交易时间前
+				gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
+				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 2, 0)); // 两分钟后处理
+			}
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && lCurrentTime < 180000) {
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 180000);
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && lCurrentTime < 181000) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 181000);
 			}
 			else { // 当日18时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateStockDailyMeta(true);
@@ -239,10 +245,6 @@ int CWorldMarket::ProcessCurrentImmediateTask(long lMarketTime) {
 	return pTask->GetType();
 }
 
-int CWorldMarket::XferMarketTimeToIndex() {
-	return XferChinaMarketTimeToIndex(GetMarketTM());
-}
-
 void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
@@ -263,6 +265,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(lCurrentTime, 0, 0, 20)); // 开始下载日线历史数据
 
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lTimeMinute, 0, 1, 0)); // 
+
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute, 0, 2, 0)); // 两分钟后开始监测WebSocket
 
 	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lTimeMinute, 0, 3, 0)); // 三分钟计算Nasdaq100 200MA比率
@@ -309,7 +312,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry() {
 			this->UpdateTiingoIndustry();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				string s = fmt::format("Finnhub update Profile  Saving time: {:Ld}ms", (end - start).count());
+				string s = std::format("Finnhub update Profile  Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 		});
@@ -422,7 +425,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 						}
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if ((end - start).count() > 2000) {
-							string s = fmt::format("FFinnhub Update forex dayLine  Saving time: {:Ld}ms", (end - start).count());
+							string s = std::format("FFinnhub Update forex dayLine  Saving time: {:Ld}ms", (end - start).count());
 							gl_systemMessage.PushInnerSystemInformationMessage(s);
 						}
 					});
@@ -467,7 +470,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 						gl_systemMessage.PushDayLineInfoMessage(str2);
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if ((end - start).count() > 2000) {
-							string s = fmt::format("Finnhub update Crypto dayLine Saving time: {:Ld}ms", (end - start).count());
+							string s = std::format("Finnhub update Crypto dayLine Saving time: {:Ld}ms", (end - start).count());
 							gl_systemMessage.PushInnerSystemInformationMessage(s);
 						}
 					});
@@ -489,26 +492,15 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
-	if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 当前交易日已经接收到日线数据？
-		if (IsEndMarketIEXTopOfBookUpdated()) {// 已接收到了IEX TopOfBook数据？
-			gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
-			gl_runtime.thread_executor()->post([] {
-				gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
-				gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-			});
-			if (lCurrentTime < 233000) {
-				SetEndMarketIEXTopOfBookUpdate(false);
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(gl_pWorldMarket->GetMarketCloseTime(), 0, 10, 0)); // 申请IEX数据
-				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketCloseTime(), 0, 11, 0));
-			}
-		}
-		else { // 尚未接收IEX数据？这是初始状态
-			AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 0, 1)); // 申请IEX数据
-			AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 2, 0)); // 两分钟后处理
-		}
+	if (IsEndMarketIEXTopOfBookUpdated()) {// 已接收到了IEX TopOfBook数据？
+		gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
+		gl_runtime.thread_executor()->post([] {
+			gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
+			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
+		});
 	}
 	else {
-		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
+		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 2, 0));
 	}
 }
 
@@ -779,7 +771,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_pWorldMarket->UpdateInsiderTransactionDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				string s = fmt::format("Finnhub insider transaction Saving time: {:Ld}ms", (end - start).count());
+				string s = std::format("Finnhub insider transaction Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 		});
@@ -829,7 +821,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_dataContainerTiingoStock.UpdateProfileDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				string s = fmt::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
+				string s = std::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 		});
@@ -856,7 +848,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_dataContainerTiingoStock.UpdateFinancialStateDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				string s = fmt::format("Tiingo Financial statement Saving time: {:Ld}ms", (end - start).count());
+				string s = std::format("Tiingo Financial statement Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 		});
@@ -869,7 +861,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			auto iUpdatedCount = gl_pWorldMarket->TaskUpdateTiingoStockDayLineDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				string s = fmt::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
+				string s = std::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 		});
@@ -888,7 +880,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 				gl_dataContainerFinnhubStock.UpdateProfileDB();
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				if ((end - start).count() > 2000) {
-					string s = fmt::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
+					string s = std::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
 					gl_systemMessage.PushInnerSystemInformationMessage(s);
 				}
 				TRACE("Finnhub profile updated\n");

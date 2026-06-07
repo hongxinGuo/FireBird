@@ -119,14 +119,14 @@ bool CFinnhubStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 /// <param name="lTime"></param>
 /// <param name="lDayOfWeek"></param>
 /// <returns></returns>
-bool CFinnhubStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
+bool CFinnhubStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, chrono::weekday lDayOfWeek) {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 
 	if (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100)) {
 		SetUpdateDayLine(false);
 		return m_fUpdateDayLine;
 	}
-	else if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
+	else if (lDayOfWeek != chrono::Sunday && lDayOfWeek != chrono::Saturday) {
 		// 周一至周五
 		if (lTime > 170000) {
 			if (lTodayDate <= GetDayLineEndDate()) {
@@ -278,8 +278,6 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 bool CFinnhubStock::UpdateCompanyNewsDB() {
 	ASSERT(!m_vCompanyNews.empty());
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
-	//Note: 可以优化为二分法查找，找到第一个大于数据库中最新日期的新闻的索引位置，然后从该位置开始存储数据。
-	//Todo: 可以优化为批量存储数据，而不是一条一条地存储数据。
 
 	long long lCutoffDateTime = 0;
 	using namespace StockMarket;
@@ -683,7 +681,7 @@ void CFinnhubStock::SetSECFilingsUpdateDate(const long lDate) noexcept {
 string CFinnhubStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600); // 检查最近一年的数据
 
-	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
+	string sParam = std::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
 
 	return sParam;
 }
@@ -697,13 +695,13 @@ string CFinnhubStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurren
 	const long monthStart = lStartDate / 100 - yearStart * 100;
 	const long dateStart = lStartDate - yearStart * 10000 - monthStart * 100;
 
-	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", m_strSymbol, yearStart, monthStart, dateStart, year, month, date);
+	string sParam = std::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", m_strSymbol, yearStart, monthStart, dateStart, year, month, date);
 
 	return sParam;
 }
 
 string CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
-	string sParam = fmt::format("{}&from={:Ld}", m_strSymbol, GetInsiderTransactionUpdateDate());
+	string sParam = std::format("{}&from={:Ld}", m_strSymbol, GetInsiderTransactionUpdateDate());
 	return sParam;
 }
 

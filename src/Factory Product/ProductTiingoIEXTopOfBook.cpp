@@ -40,11 +40,11 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	int i = 0;
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	long lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
-	time_t ttNewestTradeDay = gl_pWorldMarket->TransferToUTCTime(lNewestTradeDay, 0); //使用当日数据
+	auto st = gl_pWorldMarket->ConvertToUTCTime(lNewestTradeDay, 0); // 使用当日数据，无论是否是闭市后的数据。
 	if (pvTiingoIEXTopOFBook->empty()) return;
 	TRACE(_T("Tiingo IEX TopOfBook number: %d\n"), pvTiingoIEXTopOFBook->size());
 	for (auto& IEXTopOFBook : *pvTiingoIEXTopOFBook) {
-		if (IEXTopOFBook.m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
+		if (IEXTopOFBook.m_timeStamp < st) continue; // 只使用不早于一天的实时数据
 		if (!gl_dataContainerTiingoStock.IsSymbol(IEXTopOFBook.m_strTicker)) continue; // 只更新已有代码
 		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(IEXTopOFBook.m_strTicker);
 		pTiingoStock->UpdateRTData(IEXTopOFBook);

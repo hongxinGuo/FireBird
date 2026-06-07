@@ -65,25 +65,20 @@ public:
 
 	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
 	auto GetTimeZoneOffset() const { return m_TimeZoneOffset; }
-	long GetTimeZone() const noexcept { return m_lTimeZone; }
+	long GetTimeZone() const noexcept { return m_TimeZoneOffset.count(); }
 	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
 	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
-	long GetDayOfWeek() const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
-	long GetMonthOfYear() const noexcept { return m_tmMarket.tm_mon + 1; }
-	long GetDateOfMonth() const noexcept { return m_tmMarket.tm_mday; }
-	long GetYear() const noexcept { return m_tmMarket.tm_year + 1900; }
-	auto GetMarketTM() { return &m_tmMarket; }
+	auto GetDayOfWeek() const noexcept { return m_marketWeekDay; } // days since Sunday - [0, 6]
 
 	bool IsWorkingDay() const noexcept;
-	static bool IsWorkingDay(CTime timeCurrent) noexcept;
 	static bool IsWorkingDay(long lDate) noexcept;
 
 	long GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
+	long GetLastTradeDate2();
 	long GetCurrentTradeDate();// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
+	long GetCurrentTradeDate2();
 	long GetNextTradeDate();// 下一个交易日（从次日开市时间至后日开市时间）
-
-	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
-	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
+	long GetNextTradeDate2();
 
 	string GetStringOfLocalTime() const; // 得到本地时间的字符串
 	string GetStringOfMarketTime() const; // 得到本市场时间的字符串
@@ -91,15 +86,18 @@ public:
 	string GetStringOfMarketDateTime() const;
 	string GetStringOfLocalDateTime() const;
 
+	chrono::local_seconds ToLocalTime(const chrono::sys_seconds& sysTime) const { return m_marketTimeZone->to_local(sysTime); } // 将UTC时间转化为本市场的当地时间
+	chrono::sys_seconds ToSysTime(const chrono::local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
+	chrono::sys_seconds ConvertToUTCTime(const chrono::hh_mm_ss<chrono::seconds>& hhMmSs); // 将市场时间转化为UTC时间
+	chrono::sys_seconds ConvertToUTCTime(long lMarketDate, long lMarketTime) const; // 将市场时间转化为UTC时间
 	long ConvertToDate(time_t tUTC) const noexcept;
+	long ConvertToDate(chrono::sys_seconds tp) const noexcept;
 	static long ConvertToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
-	static long ConvertToTime(const tm* ptm) noexcept { return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec); }
 
 	void GetMarketTimeStruct(tm* tm_, time_t tUTC) const;
 
 	// 测试用
 	void TEST_SetFormattedMarketTime(const long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
-	void TEST_SetMarketTM(const tm& tm_) noexcept { m_tmMarket = tm_; }
 	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }
 
 	/////
@@ -113,11 +111,6 @@ public:
 	virtual bool IsDummyTime(long) { return false; } // 参数为市场当前时间hhmmss
 
 	bool IsMarketClosed() const { return m_lMarketTime > GetMarketCloseTime(); }
-
-	virtual int XferMarketTimeToIndex() {// 将本市场的市场时间变成显示位置的偏移（各市场分别实现）
-		ASSERT(false);
-		return 0;
-	}
 
 	virtual bool IsReadyToInquireWebData(long /*lCurrentMarketTime*/) { return true; }
 
@@ -155,19 +148,18 @@ protected:
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 	// 系统时间区
-	string m_strLocalMarketTimeZone{}; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
-	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
-	chrono::sys_info m_marketSystemInformation{}; // 时区偏移等皆由此推出。
+	//string m_strLocalMarketTimeZone{ "Europe/London" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	string m_strLocalMarketTimeZone{ "America/New_York" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	const chrono::time_zone* m_marketTimeZone{ nullptr }; // 本市场当地时区
+	chrono::local_seconds m_marketTime; // 本市场的当地时间
+	chrono::year_month_day m_marketYearMonthDay; // 本市场的当地年、月、日
+	chrono::weekday m_marketWeekDay; // 本市场的当地星期几
+	chrono::hh_mm_ss<chrono::seconds> m_marketTimeOfDay; // 本市场的当地小时、分钟、秒
 	chrono::seconds m_TimeZoneOffset{ 0 };
-	long m_lTimeZone{ 0 };
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate{ 0 }; //本市场的日期
 	long m_lMarketTime{ 0 }; // 本市场的时间
-	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日
-	long m_lMarketCurrentTradeDate{ 0 }; // 本市场当前交易日
-	long m_lMarketNextTradeDate{ 0 }; // 本市场下一个交易日
-	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
 	long m_lMarketCloseTime{ 0 }; // 市场闭市时间。
 

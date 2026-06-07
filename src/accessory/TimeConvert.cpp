@@ -2,73 +2,11 @@
 
 #include "TimeConvert.h"
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 将逝去的时间转换成UTC时间。默认时区为东八区。
-//
-////////////////////////////////////////////////////////////////////////////////////////////
-time_t ConvertBufferToTime(const string& strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
-	tm tm_{ 0, 0, 0, 0, 0, 0 };
-	int year = 1970, month = 1, day = 0, hour = 15, minute = 0, second = 0;
-
-	sscanf_s(BufferMarketTime, strFormat.c_str(), &year, &month, &day, &hour, &minute, &second);
-	tm_.tm_year = year - 1900;
-	tm_.tm_mon = month - 1;
-	tm_.tm_mday = day;
-	tm_.tm_hour = hour;
-	tm_.tm_min = minute;
-	tm_.tm_sec = second;
-	tm_.tm_isdst = 0;
-	time_t tt = _mkgmtime(&tm_); // 先变成GMT时间
-	if (tt > -1) {
-		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
-	}
-	return tt;
-}
-time_t ConvertToTTime(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond, time_t tTimeZone) {
-	ASSERT(lYear > 1970);
-	ASSERT(lMonth > 0);
-	tm tmMarket{ lSecond, lMinute, lHour, lDay, lMonth - 1, lYear - 1900 };
-
-	return _mkgmtime(&tmMarket) + tTimeZone;
-}
-
-time_t ConvertToTTime(const long lDate, const time_t tTimeZone, const long lTime) {
-	tm tmMarket{ 0, 0, 0, 0, 0, 0 };
-
-	ASSERT(lDate >= 19700101);
-	tmMarket.tm_year = lDate / 10000 - 1900;
-	tmMarket.tm_mon = lDate / 100 - (lDate / 10000) * 100 - 1;
-	tmMarket.tm_mday = lDate - (lDate / 100) * 100;
-	tmMarket.tm_hour = lTime / 10000;
-	tmMarket.tm_min = lTime / 100 - (lTime / 10000) * 100;
-	tmMarket.tm_sec = lTime - (lTime / 100) * 100;
-
-	return _mkgmtime(&tmMarket) - tTimeZone;
-}
-
-long ConvertToDate(const time_t tUTC, const time_t tTimeZone) noexcept {
-	tm tm_;
-	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
-	return ((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
-}
-
-long ConvertToTime(const time_t tUTC, const time_t tTimeZone) noexcept {
-	tm tm_;
-	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
-	return (tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
-}
-
 INT64 ConvertToDateTime(const time_t tUTC, const time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return ((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 +
 		static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
-}
-
-INT64 ConvertToDateTime(const tm* ptm) noexcept {
-	return ((static_cast<INT64>(ptm->tm_year) + 1900) * 10000000000 + (static_cast<INT64>(ptm->tm_mon) + 1) * 100000000 +
-		static_cast<INT64>(ptm->tm_mday) * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
@@ -88,7 +26,7 @@ long XferToYYYYMMDD(const string& sDate) {
 	chrono::year_month_day ymd;
 	stringstream ss(sDate);
 	chrono::from_stream(ss, "%F", ymd);
-	return XferToYYYYMMDD(ymd);
+	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 }
 
 long TimeSpawn(long lLatelyDate, long lEarlyDate) {
@@ -332,10 +270,6 @@ long GetPrevTime(long lTime, long hh, long mm, long ss) {
 	return hEnd * 10000 + mEnd * 100 + sEnd;
 }
 
-void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) {
-	gmtime_s(tm_, tUTC);
-}
-
 void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	time_t tMarket;
 	tMarket = tUTC + tTimeZone;
@@ -346,7 +280,7 @@ string ConvertDateToTimeStamp(const long lDate) {
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
 	const long day = lDate - year * 10000 - month * 100;
-	return fmt::format("{:04Ld}-{:02Ld}-{:02Ld}", year, month, day);
+	return std::format("{:04Ld}-{:02Ld}-{:02Ld}", year, month, day);
 }
 
 string ConvertDateToChineseTimeStampString(const long lDate) {
@@ -354,7 +288,7 @@ string ConvertDateToChineseTimeStampString(const long lDate) {
 	const long month = lDate / 100 - year * 100;
 	const long day = lDate - year * 10000 - month * 100;
 
-	return fmt::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
+	return std::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
 }
 
 int XferChinaMarketTimeToIndex(long lTime) {
@@ -383,13 +317,13 @@ int XferChinaMarketTimeToIndex(const tm* ptm) {
 string FormatToMK(int64_t iNumber) {
 	string s;
 	if (iNumber > 1024 * 1024) { // 1M以上的流量？
-		s = fmt::format("{:L}M", iNumber / (1024 * 1024));
+		s = std::format("{:L}M", iNumber / (1024 * 1024));
 	}
 	else if (iNumber > 1024) { // 1K以上的流量？
-		s = fmt::format("{:4L}K", iNumber / 1024);
+		s = std::format("{:4L}K", iNumber / 1024);
 	}
 	else {
-		s = fmt::format("{:4L}", iNumber);
+		s = std::format("{:4L}", iNumber);
 	}
 
 	return s;

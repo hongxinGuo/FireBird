@@ -18,7 +18,7 @@ string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbo
 	const long monthStart = lStartDate / 100 - yearStart * 100;
 	const long dateStart = lStartDate - yearStart * 10000 - monthStart * 100;
 
-	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", strSymbol, yearStart, monthStart, dateStart, year, month, date);
+	string sParam = std::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", strSymbol, yearStart, monthStart, dateStart, year, month, date);
 	return sParam;
 }
 

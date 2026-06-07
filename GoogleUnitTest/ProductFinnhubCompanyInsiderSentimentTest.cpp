@@ -43,7 +43,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
 		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
-		string sCurrentDate = fmt::format("{:4Ld}-{:02Ld}-{:02Ld}", lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
+		string sCurrentDate = std::format("{:4Ld}-{:02Ld}-{:02Ld}", lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderSentiment(true);
 		companyInsiderSentiment.SetIndex(1);

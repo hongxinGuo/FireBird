@@ -409,32 +409,32 @@ void CPropertiesWnd::SetPropListFont() {
 }
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
-	string s = fmt::format("{:d}", gl_pChinaMarket->GetRTDataCounter());
+	string s = std::format("{:d}", gl_pChinaMarket->GetRTDataCounter());
 	m_pPropRealTimeDataReceived->SetValue(s);
 	int rmData = gl_qChinaMarketRTData.size_approx();
-	s = fmt::format("{:d}", rmData);
+	s = std::format("{:d}", rmData);
 	m_pPropChinaMarketRealTimeDataNumber->SetValue(s);
 
-	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	s = std::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	m_pPropCurrentWorkingThread->SetValue(s); // 后台工作线程数
 
 	// china market web status
 	if (gl_pChinaMarket->IsWebError()) {
-		s = fmt::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetHTTPStatus(), gl_pChinaMarket->GetWebErrorCode());
+		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetHTTPStatus(), gl_pChinaMarket->GetWebErrorCode());
 	}
 	else {
-		s = fmt::format("HTTP: {:d}", gl_pChinaMarket->GetHTTPStatus());
+		s = std::format("HTTP: {:d}", gl_pChinaMarket->GetHTTPStatus());
 	}
 	m_pPropChinaMarketWebStatus->SetValue(s);
 	// china market thread status
 
 	// finnhub web status
 	if (gl_pFinnhubDataSource->IsWebError()) {
-		string s3 = fmt::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pFinnhubDataSource->GetHTTPStatusCode(), gl_pFinnhubDataSource->GetWebErrorCode());
+		string s3 = std::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pFinnhubDataSource->GetHTTPStatusCode(), gl_pFinnhubDataSource->GetWebErrorCode());
 		m_pPropFinnhubDataSourceWebStatus->SetValue(s3);
 	}
 	else {
-		string s4 = fmt::format("HTTP:{:3Ld}", gl_pFinnhubDataSource->GetHTTPStatusCode());
+		string s4 = std::format("HTTP:{:3Ld}", gl_pFinnhubDataSource->GetHTTPStatusCode());
 		m_pPropFinnhubDataSourceWebStatus->SetValue(s4);
 	}
 
@@ -444,11 +444,11 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	// tiingo web status
 	if (gl_pTiingoDataSource->IsWebError()) {
-		string s5 = fmt::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pTiingoDataSource->GetHTTPStatusCode(), gl_pTiingoDataSource->GetWebErrorCode());
+		string s5 = std::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pTiingoDataSource->GetHTTPStatusCode(), gl_pTiingoDataSource->GetWebErrorCode());
 		m_pPropTiingoDataSourceWebStatus->SetValue(s5);
 	}
 	else {
-		string s6 = fmt::format("HTTP:{:3Ld}", gl_pTiingoDataSource->GetHTTPStatusCode());
+		string s6 = std::format("HTTP:{:3Ld}", gl_pTiingoDataSource->GetHTTPStatusCode());
 		m_pPropTiingoDataSourceWebStatus->SetValue(s6);
 	}
 

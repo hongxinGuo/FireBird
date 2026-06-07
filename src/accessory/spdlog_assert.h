@@ -14,12 +14,12 @@ inline void SpdlogAssertFail(const char* expr,
 			// Prefer the raw default logger for speed; fall back to spdlog API.
 			if (auto l = spdlog::default_logger(); l != nullptr) {
 				l->error("[ASSERT] {} at {}:{} ({}){}", expr ? expr : "<null>", file ? file : "<unknown>", line, func ? func : "<unknown>",
-				         (msg && msg[0] != '\0') ? fmt::format(" - {}", msg) : std::string());
+				         (msg && msg[0] != '\0') ? std::format(" - {}", msg) : std::string());
 				l->flush();
 			}
 			else {
 				spdlog::error("[ASSERT] {} at {}:{} ({}){}", expr ? expr : "<null>", file ? file : "<unknown>", line, func ? func : "<unknown>",
-				              (msg && msg[0] != '\0') ? fmt::format(" - {}", msg) : std::string());
+				              (msg && msg[0] != '\0') ? std::format(" - {}", msg) : std::string());
 				if (auto def = spdlog::default_logger()) def->flush();
 			}
 		} catch (...) {

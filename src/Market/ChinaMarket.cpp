@@ -154,10 +154,6 @@ bool CChinaMarket::IsWorkingTime(long lTime) {
 	return true;
 }
 
-int CChinaMarket::XferMarketTimeToIndex() {
-	return XferChinaMarketTimeToIndex(GetMarketTM());
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////
 //
 // 各任务调度处理函数
@@ -281,31 +277,6 @@ void CChinaMarket::CreateStock(const string& strStockCode, const string& strStoc
 
 size_t CChinaMarket::IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition) {
 	if (++lIndex >= lEndPosition) { lIndex = 0; }
-	return lIndex;
-}
-
-/////////////////////////////////////////////////////////////////////////
-//
-//	得到分时线偏移量。09:30为0，15:00为240,步长为1分钟
-//
-//
-////////////////////////////////////////////////////////////////////////
-long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
-	ASSERT(tUTC >= 0);
-	tm tmMarketTime;
-
-	GetMarketTimeStruct(&tmMarketTime, tUTC);
-	tmMarketTime.tm_hour = 9;
-	tmMarketTime.tm_min = 30;
-	tmMarketTime.tm_sec = 0;
-	const time_t tUTC2 = TransferToUTCTime(&tmMarketTime);
-	long lIndex = (tUTC - tUTC2) / 60;
-	lIndex = std::max<long>(lIndex, 0);
-	if ((lIndex >= 120) && (lIndex < 209)) lIndex = 119;
-	if (lIndex >= 210) lIndex -= 90;
-	if (lIndex >= 240) lIndex = 239;
-
-	ASSERT((lIndex >= 0) && (lIndex < 240));
 	return lIndex;
 }
 
@@ -530,7 +501,7 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	}
 
 	// 如果设定为周期性重启系统，则在星期天晚上9时重启。
-	if (gl_systemConfiguration.IsReloadSystem() && (GetDayOfWeek() == 0) && (lCurrentTime < 210000)) {
+	if (gl_systemConfiguration.IsReloadSystem() && (GetDayOfWeek() == chrono::Sunday) && (lCurrentTime < 210000)) {
 		AddTask(RELOAD_SYSTEM__, 210000);
 	}
 

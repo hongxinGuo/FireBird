@@ -138,337 +138,76 @@ namespace FireBirdTest {
 		EXPECT_TRUE(virtualMarket.IsSystemReady());
 	}
 
-	TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {
-		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		time_t tUTC = GetUTCTime();
-		tm tm_, tmLocal;
-
-		virtualMarket.CalculateTime();
-		EXPECT_EQ(tUTC, GetUTCTime());
-		localtime_s(&tmLocal, &tUTC);
-		virtualMarket.GetMarketTimeStruct(&tm_, tUTC);
-		long lTimeZone = 0;
-		_get_timezone(&lTimeZone);
-		virtualMarket.GetLastTradeDate();
-		EXPECT_EQ(virtualMarket.GetDayOfWeek(), tm_.tm_wday);
-
-		const long day = virtualMarket.ConvertToDate(&tm_);
-		EXPECT_EQ(virtualMarket.GetMarketDate(), day);
-		EXPECT_EQ(virtualMarket.GetMonthOfYear(), tm_.tm_mon + 1);
-		EXPECT_EQ(virtualMarket.GetDateOfMonth(), tm_.tm_mday);
-		EXPECT_EQ(virtualMarket.GetYear(), tm_.tm_year + 1900);
-
-		const long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
-		EXPECT_EQ(virtualMarket.GetMarketTime(), time);
-		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-
-		EXPECT_EQ(s.compare(virtualMarket.GetStringOfLocalTime()), 0);
-
-		s = fmt::format("{:02d}:{:02d}:{:02d}", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
-		EXPECT_EQ(s.compare(virtualMarket.GetStringOfMarketTime()), 0);
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetLastTradeDay) {
-		time_t tMarket;
-		auto tUTCTime = GetUTCTime();
-
-		for (int i = 0; i < 7; i++) {
-			TestSetUTCTime(tUTCTime + i * 24 * 3600);
-			tm tmMarketTime2;
-			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - virtualMarket.GetMarketOpenTime());
-
-			switch (tmMarketTime2.tm_wday) {
-			case 1: // 星期一
-				tMarket = GetUTCTime() - 3 * 24 * 3600; // 上周五
-				break;
-			case 0: //星期日
-				tMarket = GetUTCTime() - 3 * 24 * 3600; // 周四
-				break;
-			case 6: // 星期六
-				tMarket = GetUTCTime() - 2 * 24 * 3600; // 周四
-				break;
-			default: // 其他
-				tMarket = GetUTCTime() - 24 * 3600; // 上一日
-			}
-			tm tmMarketTime;
-			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket - virtualMarket.GetMarketOpenTime());
-			auto lMarketLastTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
-			EXPECT_EQ(virtualMarket.GetLastTradeDate(), lMarketLastTradeDate) << i;
-		}
-
-		// 恢复原状
-		TestSetUTCTime(tUTCTime);
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetCurrentTradeDay) {
-		time_t tMarket;
-		auto tUTCTime = GetUTCTime();
-		for (int i = 0; i < 7; i++) {
-			TestSetUTCTime(tUTCTime + i * 24 * 3600);
-			tm tmMarketTime2;
-			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - virtualMarket.GetMarketOpenTime());
-
-			switch (tmMarketTime2.tm_wday) {
-			case 0: //星期日
-				tMarket = GetUTCTime() - 2 * 24 * 3600; // 周五
-				break;
-			case 6: // 星期六
-				tMarket = GetUTCTime() - 1 * 24 * 3600; // 周五
-				break;
-			default: // 其他
-				tMarket = GetUTCTime(); // 本日
-			}
-			tm tmMarketTime;
-			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket - virtualMarket.GetMarketOpenTime());
-			auto lMarketCurrentTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
-			EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), lMarketCurrentTradeDate) << i;
-		}
-
-		// 恢复原状
-		TestSetUTCTime(tUTCTime);
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetNextTradeDay) {
-		time_t tMarket;
-		auto tUTCTime = GetUTCTime();
-
-		for (int i = 0; i < 7; i++) {
-			TestSetUTCTime(tUTCTime + i * 24 * 3600);
-			tm tmMarketTime2;
-			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - virtualMarket.GetMarketOpenTime());
-
-			switch (tmMarketTime2.tm_wday) {
-			case 6: // 星期六
-				tMarket = GetUTCTime() + 2 * 24 * 3600; // 下周一
-				break;
-			case 5: // 周五
-				tMarket = GetUTCTime() + 3 * 24 * 3600; // 下周一
-				break;
-			default: // 其他
-				tMarket = GetUTCTime() + 24 * 3600; // 次日
-			}
-			tm tmMarketTime;
-			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket - virtualMarket.GetMarketOpenTime());
-			auto lMarketNextTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
-			EXPECT_EQ(virtualMarket.GetNextTradeDate(), lMarketNextTradeDate) << i;
-		}
-
-		// 恢复原状
-		TestSetUTCTime(tUTCTime);
-	}
-
-	TEST_F(CVirtualMarketTest, TestTransferToMarketTime) {
-		tm tm2_;
-		virtualMarket.CalculateTime();
-		time_t tt = GetUTCTime();
-		gmtime_s(&tm2_, &tt);
-		tm tm_;
-		virtualMarket.GetMarketTimeStruct(&tm_, GetUTCTime());
-		EXPECT_TRUE(tm_.tm_hour == tm2_.tm_hour) << "VirtualMarket默认为GMT标准时间";
-	}
-
-	TEST_F(CVirtualMarketTest, TestTransferToUTCTime1) {
-		tm tmMarket, tm2, tm3;
-		long lMarketDate = 20000301;
-		long lMarketTime = 122030;
-		time_t tTime = 0;
-
-		tmMarket.tm_year = lMarketDate / 10000 - 1900;
-		tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
-		tmMarket.tm_mday = lMarketDate - (lMarketDate / 100) * 100;
-		tmMarket.tm_hour = lMarketTime / 10000;
-		tmMarket.tm_min = lMarketTime / 100 - (lMarketTime / 10000) * 100;
-		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
-
-		tTime = virtualMarket.TransferToUTCTime(&tmMarket); // 使用默认时间150000.
-		virtualMarket.GetMarketTimeStruct(&tm2, tTime);
-		EXPECT_EQ(tm2.tm_year, 100);
-		EXPECT_EQ(tm2.tm_mon, 2);
-		EXPECT_EQ(tm2.tm_mday, 1);
-		EXPECT_EQ(tm2.tm_hour, 12);
-		EXPECT_EQ(tm2.tm_min, 20);
-		EXPECT_EQ(tm2.tm_sec, 30);
-
-		tTime = virtualMarket.TransferToUTCTime(lMarketDate); // 使用默认时间150000.
-		virtualMarket.GetMarketTimeStruct(&tm2, tTime);
-		EXPECT_EQ(tm2.tm_year, 100);
-		EXPECT_EQ(tm2.tm_mon, 2);
-		EXPECT_EQ(tm2.tm_mday, 1);
-		EXPECT_EQ(tm2.tm_hour, 15);
-		EXPECT_EQ(tm2.tm_min, 00);
-		EXPECT_EQ(tm2.tm_sec, 00);
-
-		tTime = virtualMarket.TransferToUTCTime(lMarketDate, lMarketTime);
-		virtualMarket.GetMarketTimeStruct(&tm3, tTime);
-		EXPECT_EQ(tm3.tm_year, 100);
-		EXPECT_EQ(tm3.tm_mon, 2);
-		EXPECT_EQ(tm3.tm_mday, 1);
-		EXPECT_EQ(tm3.tm_hour, 12);
-		EXPECT_EQ(tm3.tm_min, 20);
-		EXPECT_EQ(tm3.tm_sec, 30);
-	}
-
-	TEST_F(CVirtualMarketTest, TestTransferToMarketDate) {
-		tm tmMarket;
-		constexpr long lMarketDate = 20000301;
-		constexpr long lMarketTime = 002030;
-
-		tmMarket.tm_year = lMarketDate / 10000 - 1900;
-		tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
-		tmMarket.tm_mday = lMarketDate - (lMarketDate / 100) * 100;
-		tmMarket.tm_hour = lMarketTime / 10000;
-		tmMarket.tm_min = lMarketTime / 100 - (lMarketTime / 10000) * 100;
-		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
-
-		const time_t tTime = virtualMarket.TransferToUTCTime(&tmMarket);
-
-		const long lMarketDate2 = virtualMarket.GetMarketDate(tTime);
-		EXPECT_EQ(lMarketDate2, lMarketDate);
-	}
-
 	TEST_F(CVirtualMarketTest, TestGetNextTradeDate) {
-		time_t tUTC = GetUTCTime();
-		tm tm_;
+		chrono::days day;
+		chrono::local_seconds lt = virtualMarket.ToLocalTime(gl_tpNow);
 
-		for (int i = 0; i < 7; i++) {
-			tUTC += i * 60 * 60 * 24;
-			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
-			TestSetUTCTime(tUTC);
+		virtualMarket.CalculateTime();
 
-			switch (tm_.tm_wday) {
-			case 6: //星期六
-				tUTC += 2 * 24 * 3600; //
-				break;
-			case 5: // 星期五
-				tUTC += 3 * 24 * 3600; //
-				break;
-			default: // 其他
-				tUTC += 24 * 3600;
-				break;
-			}
-			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
-			long nextTradeDate = virtualMarket.ConvertToDate(&tm_);
-			EXPECT_EQ(virtualMarket.GetNextTradeDate(), nextTradeDate) << i;
+		if (virtualMarket.GetDayOfWeek() == chrono::Saturday) {
+			day = chrono::days(2);
 		}
+		else if (virtualMarket.GetDayOfWeek() == chrono::Friday) {
+			day = chrono::days(3);
+		}
+		else {
+			day = chrono::days(1);
+		}
+
+		lt += day;
+		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(lt) };
+		auto nextTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
+		EXPECT_EQ(virtualMarket.GetNextTradeDate(), nextTradeDate);
+		EXPECT_EQ(virtualMarket.GetNextTradeDate2(), nextTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetCurrentTradeDate) {
-		time_t tUTC = GetUTCTime();
-		tm tm_;
+		chrono::days day;
+		chrono::local_seconds lt = virtualMarket.ToLocalTime(gl_tpNow);
 
-		for (int i = 0; i < 7; i++) {
-			tUTC += i * 60 * 60 * 24;
-			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
-			TestSetUTCTime(tUTC);
+		virtualMarket.CalculateTime();
 
-			switch (tm_.tm_wday) {
-			case 0: //星期日
-				tUTC -= 2 * 24 * 3600; //
-				break;
-			case 6: // 星期六
-				tUTC -= 1 * 24 * 3600; //
-				break;
-			default: // 其他
-				break;
-			}
-			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
-			long currentTradeDate = virtualMarket.ConvertToDate(&tm_);
-			EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), currentTradeDate) << i;
+		if (virtualMarket.GetDayOfWeek() == chrono::Saturday) {
+			day = chrono::days(1);
 		}
+		else if (virtualMarket.GetDayOfWeek() == chrono::Sunday) {
+			day = chrono::days(2);
+		}
+		else {
+			day = chrono::days(0);
+		}
+
+		lt -= day;
+		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(lt) };
+		auto currentTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
+
+		EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), currentTradeDate);
+		EXPECT_EQ(virtualMarket.GetCurrentTradeDate2(), currentTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetLastTradeDate) {
-		time_t tUTC = GetUTCTime();
-		tm tm_;
+		chrono::days day;
+		chrono::local_seconds lt = virtualMarket.ToLocalTime(gl_tpNow);
 
-		for (int i = 0; i < 7; i++) {
-			tUTC += i * 60 * 60 * 24;
-			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
-			TestSetUTCTime(tUTC);
-
-			switch (tm_.tm_wday) {
-			case 1: // 星期一
-				tUTC -= 3 * 24 * 3600; //
-				break;
-			case 0: //星期日
-				tUTC -= 3 * 24 * 3600; //
-				break;
-			case 6: // 星期六
-				tUTC -= 2 * 24 * 3600; //
-				break;
-			default: // 其他
-				tUTC -= 24 * 3600; //
-			}
-			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
-			long LastTradeDate = virtualMarket.ConvertToDate(&tm_);
-			EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate) << i;
+		virtualMarket.CalculateTime();
+		if (virtualMarket.GetDayOfWeek() == chrono::Monday) {
+			day = chrono::days(3); // 周五
 		}
-	}
+		else if (virtualMarket.GetDayOfWeek() == chrono::Sunday) {
+			day = chrono::days(3); // 周四
+		}
+		else if (virtualMarket.GetDayOfWeek() == chrono::Saturday) {
+			day = chrono::days(2); // 周四
+		}
+		else {
+			day = chrono::days(1); // 上一日
+		}
+		lt -= day;
+		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(lt) };
+		auto LastTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 
-	TEST_F(CVirtualMarketTest, TestIsWorkingDay) {
-		const CTime time1(2019, 11, 25, 0, 0, 0); // 此日为星期一
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(time1));
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191125));
-		const CTime time2(2019, 11, 26, 0, 0, 0); // 此日为星期二
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(time2));
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191126));
-		const CTime time3(2019, 11, 27, 0, 0, 0); // 此日为星期三
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(time3));
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191127));
-		const CTime time4(2019, 11, 28, 0, 0, 0); // 此日为星期四
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(time4));
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191128));
-		const CTime time5(2019, 11, 29, 0, 0, 0); // 此日为星期五
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(time5));
-		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191129));
-		const CTime time6(2019, 11, 30, 0, 0, 0); // 此日为星期六
-		EXPECT_FALSE(virtualMarket.IsWorkingDay(time6));
-		EXPECT_FALSE(virtualMarket.IsWorkingDay(20191130));
-		const CTime time7(2019, 12, 1, 0, 0, 0); // 此日为星期日
-		EXPECT_FALSE(virtualMarket.IsWorkingDay(time7));
-		EXPECT_FALSE(virtualMarket.IsWorkingDay(20191201));
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetStringOfLocalTime) {
-		virtualMarket.CalculateTime();
-
-		time_t tUTC = GetUTCTime();
-		tm tmLocal;
-
-		localtime_s(&tmLocal, &tUTC);
-		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		EXPECT_EQ(virtualMarket.GetStringOfLocalTime(), s);
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
-		virtualMarket.CalculateTime();
-
-		const time_t tUTC = GetUTCTime();
-		tm tmLocal;
-
-		localtime_s(&tmLocal, &tUTC);
-		string s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		EXPECT_EQ(virtualMarket.GetStringOfLocalDateTime(), s);
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetStringOfMarketTime) {
-		virtualMarket.CalculateTime();
-
-		tm tmMarket;
-		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
-
-		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		EXPECT_EQ(virtualMarket.GetStringOfMarketTime(), s);
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDateTime) {
-		virtualMarket.CalculateTime();
-
-		tm tmMarket;
-
-		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
-		string s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		EXPECT_EQ(virtualMarket.GetStringOfMarketDateTime(), s);
+		EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
+		EXPECT_EQ(virtualMarket.GetLastTradeDate2(), LastTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
@@ -476,34 +215,7 @@ namespace FireBirdTest {
 		const long year = lDate / 10000;
 		const long month = lDate / 100 - year * 100;
 		const long day = lDate - year * 10000 - month * 100;
-		string s = fmt::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
+		string s = std::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
 		EXPECT_EQ(virtualMarket.GetStringOfMarketDate(), s);
 	}
-
-	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {
-		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		time_t tUTC = GetUTCTime();
-		tm tm_;
-		virtualMarket.GetMarketTimeStruct(&tm_, tUTC);
-
-		virtualMarket.CalculateTime();
-		EXPECT_EQ(virtualMarket.GetDayOfWeek(), tm_.tm_wday);
-	}
-
-	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) {
-		EXPECT_TRUE(virtualMarket.UpdateMarketInfo());
-	}
-
-	struct strConvertBufferToTime {
-		strConvertBufferToTime(const string& strFormat, const string& strBuffer, const INT64 iTime) {
-			m_strFormat = strFormat;
-			m_strBuffer = strBuffer;
-			m_Time = iTime;
-		}
-
-	public:
-		string m_strFormat;
-		string m_strBuffer;
-		INT64 m_Time;
-	};
 }

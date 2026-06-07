@@ -61,7 +61,7 @@ namespace FireBirdTest {
 		const long year = lMarketDate / 10000;
 		const long month = lMarketDate / 100 - year * 100;
 		const long day = lMarketDate - year * 10000 - month * 100;
-		string sEndDate = fmt::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
+		string sEndDate = std::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		const string sTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=" + sEndDate;
 
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 		const long year = lMarketDate / 10000;
 		const long month = lMarketDate / 100 - year * 100;
 		const long day = lMarketDate - year * 10000 - month * 100;
-		string sEndDate = fmt::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
+		string sEndDate = std::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		string strTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=";
 		strTest += sEndDate;

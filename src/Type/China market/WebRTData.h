@@ -160,9 +160,9 @@ public:
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
 	long GetDataSource() const noexcept { return m_lDataSource; }
 	auto GetTimePoint() const noexcept { return m_tpTime; }
-	void SetTimePoint(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
-	time_t GetTransactionTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
+	void SetTransactionTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	void SetTransactionTime(const time_t time) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time)); }
+	time_t GetTransactionTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
 	string GetSymbol() { return m_strSymbol; }
 	void SetSymbol(const string& str) { m_strSymbol = str; }
 	string GetStockName() const { return m_strStockName; }

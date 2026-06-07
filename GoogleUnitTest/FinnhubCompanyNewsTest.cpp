@@ -54,12 +54,12 @@ namespace FireBirdTest {
 		int iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
 		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
-		string sTemp = fmt::format("{:4d}-{:02d}-{:02d}", year, month, day);
+		string sTemp = std::format("{:4d}-{:02d}-{:02d}", year, month, day);
 		strMessage += "&from=";
 		strMessage += sTemp;
 		const int iMarketDate = gl_pWorldMarket->GetMarketDate();
 		XferDateToYearMonthDay(iMarketDate, year, month, day);
-		sTemp = fmt::format("{:4d}-{:02d}-{:02d}", year, month, day);
+		sTemp = std::format("{:4d}-{:02d}-{:02d}", year, month, day);
 		strMessage += "&to=";
 		strMessage += sTemp;
 

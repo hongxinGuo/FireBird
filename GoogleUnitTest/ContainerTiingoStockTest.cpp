@@ -211,7 +211,7 @@ namespace FireBirdTest {
 		pStock->SetSplitFactor(1.0);
 
 		// ensure transaction time is at/after market close for the given date
-		time_t tt = gl_pWorldMarket->TransferToUTCTime(lDate, 160000);
+		time_t tt = gl_pWorldMarket->ConvertToUTCTime(lDate, 160000).time_since_epoch().count();
 		pStock->SetTransactionTime(tt);
 
 		// Add to global container
