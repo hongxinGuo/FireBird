@@ -53,7 +53,7 @@ CWorldMarket::CWorldMarket() {
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
 	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = "America/New_York";
-	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
+	SetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
 
 	// 无需（也无法）每日更新的变量放在这里
 	m_lCurrentUpdateEPSSurprisePos = 0;

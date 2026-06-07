@@ -5,7 +5,7 @@
 #include"VirtualDataSource.h"
 
 CVirtualMarket::CVirtualMarket() {
-	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);
+	SetMarketLocalTimeOffset(m_strLocalMarketTimeZone);
 	m_fResetMarket = true;
 
 	m_strMarketId = "Warning: CVirtualMarket Called.";
@@ -165,14 +165,6 @@ void CVirtualMarket::CalculateTime() noexcept {
 	m_lMarketTime = m_marketTimeOfDay.hours().count() * 10000 + m_marketTimeOfDay.minutes().count() * 100 + m_marketTimeOfDay.seconds().count();
 }
 
-long CVirtualMarket::GetMarketDate(time_t tUTC) const {
-	tm tm_{};
-
-	GetMarketTimeStruct(&tm_, tUTC);
-
-	return ConvertToDate(&tm_);
-}
-
 bool CVirtualMarket::IsWorkingDay() const noexcept {
 	if (m_marketWeekDay == chrono::weekday(0) || m_marketWeekDay == chrono::weekday(6)) { // Sunday or Saturday
 		return false;
@@ -193,27 +185,6 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 }
 
 long CVirtualMarket::GetNextTradeDate() {
-	time_t tMarket;
-	tm tmMarketTime2;
-	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_exchange->m_lMarketOpenTime);
-
-	switch (tmMarketTime2.tm_wday) {
-	case 6: // 星期六
-		tMarket = GetUTCTime() + 2 * 24 * 3600; // 下周一
-		break;
-	case 5: // 周五
-		tMarket = GetUTCTime() + 3 * 24 * 3600; // 下周一
-		break;
-	default: // 其他
-		tMarket = GetUTCTime() + 24 * 3600; // 次日
-	}
-	tMarket -= m_exchange->m_lMarketOpenTime; // 减去开市时间，具体值由各市场预先设定
-	tm tmMarketTime;
-	GetMarketTimeStruct(&tmMarketTime, tMarket);
-	return ConvertToDate(&tmMarketTime);
-}
-
-long CVirtualMarket::GetNextTradeDate2() {
 	chrono::days day{ 1 };
 	if (m_marketWeekDay == chrono::Saturday) {
 		++day; // 下周一
@@ -228,28 +199,6 @@ long CVirtualMarket::GetNextTradeDate2() {
 }
 
 long CVirtualMarket::GetCurrentTradeDate() {
-	time_t tMarket;
-
-	tm tmMarketTime2;
-	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_exchange->m_lMarketOpenTime);
-
-	switch (tmMarketTime2.tm_wday) {
-	case 0: //星期日
-		tMarket = GetUTCTime() - 2 * 24 * 3600; // 周五
-		break;
-	case 6: // 星期六
-		tMarket = GetUTCTime() - 1 * 24 * 3600; // 周五
-		break;
-	default: // 其他
-		tMarket = GetUTCTime(); // 本日
-	}
-	tMarket -= m_exchange->m_lMarketOpenTime; // 减去开市时间，具体值由各市场预先设定
-	tm tmMarketTime;
-	GetMarketTimeStruct(&tmMarketTime, tMarket);
-	return ConvertToDate(&tmMarketTime);
-}
-
-long CVirtualMarket::GetCurrentTradeDate2() {
 	chrono::days day;
 	if (m_marketWeekDay == chrono::Saturday) {
 		day = chrono::days(1); // 周五
@@ -266,30 +215,6 @@ long CVirtualMarket::GetCurrentTradeDate2() {
 }
 
 long CVirtualMarket::GetLastTradeDate() {
-	time_t tMarket;
-	tm tmMarketTime2;
-	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_exchange->m_lMarketOpenTime);
-
-	switch (tmMarketTime2.tm_wday) {
-	case 1: // 星期一
-		tMarket = GetUTCTime() - 3 * 24 * 3600; // 上周五
-		break;
-	case 0: //星期日
-		tMarket = GetUTCTime() - 3 * 24 * 3600; // 周四
-		break;
-	case 6: // 星期六
-		tMarket = GetUTCTime() - 2 * 24 * 3600; // 周四
-		break;
-	default: // 其他
-		tMarket = GetUTCTime() - 24 * 3600; // 上一日
-	}
-	tMarket -= m_exchange->m_lMarketOpenTime; // 减去开市时间，具体值由各市场预先设定
-	tm tmMarketTime;
-	GetMarketTimeStruct(&tmMarketTime, tMarket);
-	return ConvertToDate(&tmMarketTime);
-}
-
-long CVirtualMarket::GetLastTradeDate2() {
 	chrono::days day;
 	if (m_marketWeekDay == chrono::Monday) {
 		day = chrono::days(3); // 周五
@@ -309,7 +234,7 @@ long CVirtualMarket::GetLastTradeDate2() {
 }
 
 string CVirtualMarket::GetStringOfMarketDate() const {
-	return ConvertDateToChineseTimeStampString(m_lMarketDate);
+	return ConvertDateToChineseTimeStampString(GetMarketDate());
 }
 
 string CVirtualMarket::GetStringOfLocalTime() const {
@@ -373,7 +298,7 @@ void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
 ///Note:微软实现的chrono库中，time_zone静态变量保留至程序退出之后，导致调试系统误报内存泄露。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualMarket::GetMarketLocalTimeOffset(const string& strLocalNameOfMarket) {
+void CVirtualMarket::SetMarketLocalTimeOffset(const string& strLocalNameOfMarket) {
 	m_marketTimeZone = chrono::locate_zone(strLocalNameOfMarket);
 	m_TimeZoneOffset = m_marketTimeZone->get_info(chrono::sys_seconds()).offset;
 }

@@ -59,11 +59,10 @@ public:
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
 
-	void GetMarketLocalTimeOffset(const string& strLocalNameOfMarket);
+	void SetMarketLocalTimeOffset(const string& strLocalNameOfMarket);
 	long GetMarketOpenTime() const { return m_exchange->m_lMarketOpenTime; }
 	long GetMarketCloseTime() const { return m_exchange->m_lMarketCloseTime; }
 
-	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
 	auto GetTimeZoneOffset() const { return m_TimeZoneOffset; }
 	long GetTimeZone() const noexcept { return m_TimeZoneOffset.count(); }
 	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
@@ -74,11 +73,8 @@ public:
 	static bool IsWorkingDay(long lDate) noexcept;
 
 	long GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
-	long GetLastTradeDate2();
 	long GetCurrentTradeDate();// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
-	long GetCurrentTradeDate2();
 	long GetNextTradeDate();// 下一个交易日（从次日开市时间至后日开市时间）
-	long GetNextTradeDate2();
 
 	string GetStringOfLocalTime() const; // 得到本地时间的字符串
 	string GetStringOfMarketTime() const; // 得到本市场时间的字符串
@@ -92,7 +88,6 @@ public:
 	chrono::sys_seconds ConvertToUTCTime(long lMarketDate, long lMarketTime) const; // 将市场时间转化为UTC时间
 	long ConvertToDate(time_t tUTC) const noexcept;
 	long ConvertToDate(chrono::sys_seconds tp) const noexcept;
-	static long ConvertToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
 
 	void GetMarketTimeStruct(tm* tm_, time_t tUTC) const;
 
@@ -110,7 +105,7 @@ public:
 	virtual bool IsDummyTime() { return false; } // 空闲时间
 	virtual bool IsDummyTime(long) { return false; } // 参数为市场当前时间hhmmss
 
-	bool IsMarketClosed() const { return m_lMarketTime > GetMarketCloseTime(); }
+	bool IsMarketClosed() const { return GetMarketTime() > GetMarketCloseTime(); }
 
 	virtual bool IsReadyToInquireWebData(long /*lCurrentMarketTime*/) { return true; }
 

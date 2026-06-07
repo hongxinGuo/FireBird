@@ -158,7 +158,6 @@ namespace FireBirdTest {
 		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(lt) };
 		auto nextTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 		EXPECT_EQ(virtualMarket.GetNextTradeDate(), nextTradeDate);
-		EXPECT_EQ(virtualMarket.GetNextTradeDate2(), nextTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetCurrentTradeDate) {
@@ -182,7 +181,6 @@ namespace FireBirdTest {
 		auto currentTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 
 		EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), currentTradeDate);
-		EXPECT_EQ(virtualMarket.GetCurrentTradeDate2(), currentTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetLastTradeDate) {
@@ -207,7 +205,6 @@ namespace FireBirdTest {
 		auto LastTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 
 		EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
-		EXPECT_EQ(virtualMarket.GetLastTradeDate2(), LastTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {

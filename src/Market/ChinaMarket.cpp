@@ -25,7 +25,7 @@ CChinaMarket::CChinaMarket() {
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
 	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = "Asia/Shanghai";
-	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
+	SetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器
@@ -581,7 +581,7 @@ bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
-	if (IsSystemReady()) {
+	if (IsSystemReady() && GetMarketTime() > 150400) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_systemMessage.SetChinaMarketSavingFunction("process today stock");
 			this->ProcessTodayStock();
@@ -594,15 +594,12 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 void CChinaMarket::ProcessTodayStock() {
 	ASSERT(IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
-	const long lDate = GetMarketDate(GetTransactionTime());
-	if (lDate == GetMarketDate()) {
-		gl_dataContainerChinaStock.BuildDayLine(lDate);
-		gl_dataContainerChinaStock.UpdateProfileDB();
-		if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
-			SetUpdateOptionDB(true); // 更新状态
-		}
+	gl_dataContainerChinaStock.BuildDayLine(GetMarketDate());
+	gl_dataContainerChinaStock.UpdateProfileDB();
+	if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
+		SetUpdateOptionDB(true); // 更新状态
 	}
-	string s = ConvertDateToChineseTimeStampString(lDate) + "的实时数据处理完毕";
+	string s = ConvertDateToChineseTimeStampString(GetMarketDate()) + "的实时数据处理完毕";
 	gl_systemMessage.PushInformationMessage(s);
 }
 

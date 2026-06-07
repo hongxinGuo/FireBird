@@ -938,7 +938,7 @@ void CMainFrame::OnMaintainChinaMarketStockDayLine() {
 void CMainFrame::OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->IsDummyTime()) {
 #ifndef _DEBUG
-		if (gl_pChinaMarket->GetMarketTime() > 151000)
+		if (gl_pChinaMarket->GetLocalTime() > 151000)
 #endif
 			SysCallCmdUIEnable(pCmdUI, true);
 	}
