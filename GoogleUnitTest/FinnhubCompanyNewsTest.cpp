@@ -154,7 +154,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(m_pStock->GetTicker(), "AAPL");
 			EXPECT_EQ(m_pStock->GetCompanyNewsSize(), 2);
-			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), 19700101000001);
+			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), gl_pWorldMarket->ConvertSystemTimeToUTCTime(19700101,1));
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_TRUE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());

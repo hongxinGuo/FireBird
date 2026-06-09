@@ -9,7 +9,7 @@ CFinnhubCompanyNews::CFinnhubCompanyNews() {
 }
 
 void CFinnhubCompanyNews::Reset() {
-	m_llDateTime = 0;
+	m_DateTime = toSysTime(0);
 	m_iNewsID = 0;
 	m_strCategory.clear();
 	m_strCompanySymbol.clear();

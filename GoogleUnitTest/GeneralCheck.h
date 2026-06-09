@@ -7,4 +7,6 @@ namespace FireBirdTest {
 	void EnvironmentCheck();
 	void ChinaMarketCheck();
 	void WorldMarketCheck();
+
+	inline chrono::sys_seconds s_tCurrentSystemTime;
 }

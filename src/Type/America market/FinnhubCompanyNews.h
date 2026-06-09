@@ -39,7 +39,7 @@ public:
 public:
 	string m_strCompanySymbol;
 	string m_strCategory;
-	long long m_llDateTime;
+	chrono::sys_seconds m_DateTime;
 	string m_strHeadLine;
 	int m_iNewsID;
 	string m_strImage;

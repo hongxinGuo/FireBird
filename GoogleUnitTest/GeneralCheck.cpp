@@ -32,6 +32,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsExitingSystem());
 		time_t tt = GetUTCTime();
 		EXPECT_TRUE((GetUTCTime() + 3600) > tt) << GetUTCTime();
+		EXPECT_EQ(s_tCurrentSystemTime, gl_tpNow);
 	}
 
 	void SystemConfigurationCheck() {

@@ -73,7 +73,7 @@ namespace FireBirdTest {
 				pStock->ClearRTDataDeque();
 				pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
 			}
-			gl_pChinaMarket->SetTransactionTime(s_tCurrentMarketTime - 10);
+			gl_pChinaMarket->SetTransactionTime(toSysTime(s_tCurrentMarketTime - 10));
 			pRTData = make_shared<CWebRTData>();
 			pRTData->SetDataSource(pData->m_iSourceType);
 			pRTData->SetSymbol(pData->m_strSymbol);
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 				pRTData->SetStockName("abcde");// 需要设置股票名称，以保证能够创建新股票
 			}
 			pRTData->SetActive(pData->m_fActive);
-			pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);
+			pRTData->SetTime(toSysTime(s_tCurrentMarketTime + pData->m_tt));
 		}
 
 		void TearDown() override {

@@ -149,7 +149,7 @@ public:
 	void SetCountDownTengxunNumber(const int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
 	void SetTransactionTime(chrono::sys_seconds time) noexcept { m_tpNewTransactionTime = time; }
-	void SetTransactionTime(const time_t tt) noexcept { m_tpNewTransactionTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tt)); }
+	void SetTransactionTime(const time_t tt) noexcept { m_tpNewTransactionTime = ::toSysTime(tt); }
 	auto GetTransactionTimePoint() const noexcept { return m_tpNewTransactionTime; }
 	time_t GetTransactionTime() const noexcept { return m_tpNewTransactionTime.time_since_epoch().count(); }
 	bool IsMarketOpened() const noexcept { return m_fMarketOpened; }

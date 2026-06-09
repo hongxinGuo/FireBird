@@ -31,7 +31,7 @@ namespace FireBirdTest {
 
 	TEST_F(CCompanyNewsTest, TestInitialize) {
 		const CFinnhubCompanyNews companyNews;
-		EXPECT_EQ(companyNews.m_llDateTime, 0);
+		EXPECT_EQ(companyNews.m_DateTime.time_since_epoch().count(), 0);
 		EXPECT_EQ(companyNews.m_iNewsID, 0);
 
 		EXPECT_EQ(companyNews.m_strCompanySymbol, "");

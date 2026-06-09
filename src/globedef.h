@@ -41,6 +41,7 @@ extern shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger;
 extern std::chrono::sys_seconds gl_tpNow; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 extern const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地时区
 inline time_t GetUTCTime() noexcept { return gl_tpNow.time_since_epoch().count(); }
+inline chrono::sys_seconds toSysTime(time_t tt) { return chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tt)); }
 inline void TestSetUTCTime(time_t time) noexcept { gl_tpNow = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time)); }
 inline void TestSetUTCTime(chrono::sys_seconds st) noexcept { gl_tpNow = st; }
 

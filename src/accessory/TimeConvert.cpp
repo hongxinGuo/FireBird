@@ -2,13 +2,6 @@
 
 #include "TimeConvert.h"
 
-INT64 ConvertToDateTime(const time_t tUTC, const time_t tTimeZone) noexcept {
-	tm tm_;
-	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
-	return ((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 +
-		static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
-}
-
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
 	ASSERT(lEarlyDate >= 19700101);
 	ASSERT(lLatelyDate >= 19700101);
@@ -270,12 +263,6 @@ long GetPrevTime(long lTime, long hh, long mm, long ss) {
 	return hEnd * 10000 + mEnd * 100 + sEnd;
 }
 
-void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
-	time_t tMarket;
-	tMarket = tUTC + tTimeZone;
-	gmtime_s(tm_, &tMarket);
-}
-
 string ConvertDateToTimeStamp(const long lDate) {
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
@@ -289,29 +276,6 @@ string ConvertDateToChineseTimeStampString(const long lDate) {
 	const long day = lDate - year * 10000 - month * 100;
 
 	return std::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
-}
-
-int XferChinaMarketTimeToIndex(long lTime) {
-	const long hhmm = lTime / 100;
-	const long hh = lTime / 10000;
-	const long mm = hhmm - hh * 100;
-	if (hh < 9) return 0;
-	int i = (hh - 9) * 60 + mm - 30;
-	if (i < 0) return 0;
-	if (i < 120) return i;
-	if (i < 210) return 120;
-	if (i < 330) return i - 90;
-	return 239;
-}
-
-int XferChinaMarketTimeToIndex(const tm* ptm) {
-	if (ptm->tm_hour < 9) return 0;
-	int i = (ptm->tm_hour - 9) * 60 + ptm->tm_min - 30;
-	if (i < 0) return 0;
-	if (i < 120) return i;
-	if (i < 210) return 120;
-	if (i < 330) return i - 90;
-	return 239;
 }
 
 string FormatToMK(int64_t iNumber) {

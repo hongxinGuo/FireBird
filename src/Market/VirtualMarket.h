@@ -86,10 +86,8 @@ public:
 	chrono::sys_seconds ToSysTime(const chrono::local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
 	chrono::sys_seconds ConvertToUTCTime(const chrono::hh_mm_ss<chrono::seconds>& hhMmSs); // 将市场时间转化为UTC时间
 	chrono::sys_seconds ConvertToUTCTime(long lMarketDate, long lMarketTime) const; // 将市场时间转化为UTC时间
-	long ConvertToDate(time_t tUTC) const noexcept;
+	chrono::sys_seconds ConvertSystemTimeToUTCTime(long lSystemDate, long lSystemTime) const; // 将系统时间转化为UTC时间
 	long ConvertToDate(chrono::sys_seconds tp) const noexcept;
-
-	void GetMarketTimeStruct(tm* tm_, time_t tUTC) const;
 
 	// 测试用
 	void TEST_SetFormattedMarketTime(const long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试

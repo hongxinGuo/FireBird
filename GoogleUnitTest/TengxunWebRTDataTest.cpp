@@ -39,7 +39,7 @@ namespace FireBirdTest {
 	TEST_F(CWebRTDataTest1, TestTengxunInitialize) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
-		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
+		EXPECT_EQ(RTData.GetTime().time_since_epoch().count(), 0);
 		EXPECT_EQ(RTData.GetSymbol(), "");
 		EXPECT_EQ(RTData.GetStockName(), "");
 		EXPECT_EQ(RTData.GetOpen(), 0);
@@ -74,13 +74,13 @@ namespace FireBirdTest {
 		chrono::sys_seconds st2 = day2 + 12h;
 
 		TestSetUTCTime(st);
-		id.SetTransactionTime(st2);
+		id.SetTime(st2);
 		EXPECT_FALSE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零,且无效时间";
 		id.SetOpen(10);
 		EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "无效时间";
 		id.SetOpen(0);
-		id.SetTransactionTime(st);
+		id.SetTime(st);
 		EXPECT_TRUE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零";
 		id.SetOpen(10);
@@ -288,7 +288,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(4), 12490);
 			EXPECT_EQ(m_RTData.GetHighLimitFromTengxun(), 13160);
 			EXPECT_EQ(m_RTData.GetLowLimitFromTengxun(), 10760);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			break;
 		case 1:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
@@ -318,7 +318,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 3540);
 			EXPECT_EQ(m_RTData.GetVSell(4), 357700);
 			EXPECT_EQ(m_RTData.GetPSell(4), 3550);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			break;
 		case 2:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
@@ -355,7 +355,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetVSell(3), 202600);
 			EXPECT_EQ(m_RTData.GetPSell(3), 3540);
 			EXPECT_EQ(m_RTData.GetPSell(4), 3550);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			EXPECT_EQ(m_RTData.GetCurrentValue(), 7682000000);
 			EXPECT_EQ(m_RTData.GetTotalValue(), 7682000000);
 			EXPECT_EQ(m_RTData.GetHighLimitFromTengxun(), 3810);

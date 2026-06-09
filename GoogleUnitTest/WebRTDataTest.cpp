@@ -38,7 +38,7 @@ namespace FireBirdTest {
 	TEST_F(CStockWebRTDataTest1, TestInitialize) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
-		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
+		EXPECT_EQ(RTData.GetTime().time_since_epoch().count(), 0);
 		EXPECT_EQ(RTData.GetSymbol(), "");
 		EXPECT_EQ(RTData.GetStockName(), "");
 		EXPECT_EQ(RTData.GetOpen(), 0);
@@ -200,15 +200,15 @@ namespace FireBirdTest {
 		chrono::sys_seconds st = day + 12h;
 		TestSetUTCTime(st);
 		CWebRTData data;
-		data.SetTransactionTime(st);
+		data.SetTime(st);
 		EXPECT_TRUE(data.IsValidTime(14));
 		chrono::days day14{ 14 };
-		data.SetTransactionTime(st - day14);
+		data.SetTime(st - day14);
 		EXPECT_TRUE(data.IsValidTime(14));
-		data.SetTransactionTime(st - day14 - 1s);
+		data.SetTime(st - day14 - 1s);
 		EXPECT_FALSE(data.IsValidTime(14));
 
-		data.SetTransactionTime(st + 1s);
+		data.SetTime(st + 1s);
 		EXPECT_FALSE(data.IsValidTime(14)) << "数据有问题：成交时间晚于当前时间";
 
 		// 恢复原状
@@ -224,11 +224,11 @@ namespace FireBirdTest {
 
 		TestSetUTCTime(st);
 		CWebRTData data;
-		data.SetTransactionTime(st);
+		data.SetTime(st);
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
-		data.SetTransactionTime(st - day14);
+		data.SetTime(st - day14);
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
-		data.SetTransactionTime(st - day14 - 1s);
+		data.SetTime(st - day14 - 1s);
 		EXPECT_FALSE(data.CheckSinaRTDataActive());
 
 		// 恢复原状
@@ -443,7 +443,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			break;
 		case 1: // 所有价格皆为零
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -479,7 +479,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 0);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 0);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st - 3h) << "交易时间不是默认的15:00:00,而是12:00:00";
+			EXPECT_EQ(m_RTData.GetTime(), st - 3h) << "交易时间不是默认的15:00:00,而是12:00:00";
 			break;
 		case 2:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -515,7 +515,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 0);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			break;
 		case 3:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -550,7 +550,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			break;
 		case 4:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -585,7 +585,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			break;
 		case 5:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -620,7 +620,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTimePoint(), st);
+			EXPECT_EQ(m_RTData.GetTime(), st);
 			break;
 		case 6:
 			EXPECT_TRUE(m_RTData.IsActive());

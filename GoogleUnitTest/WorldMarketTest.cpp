@@ -53,22 +53,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsTimeToResetSystem(GetNextTime(gl_pWorldMarket->GetResetTime(), 0, 5, 1)));
 	}
 
-	TEST_F(CWorldMarketTest, TestTransferMarketTime) {
-		tm tm2_;
-		time_t tt = GetUTCTime();
-
-		gl_pWorldMarket->CalculateTime();
-		gmtime_s(&tm2_, &tt);
-		tm tm_;
-		gl_pWorldMarket->GetMarketTimeStruct(&tm_, GetUTCTime());
-		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { //美东夏时制？
-			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour == tm2_.tm_hour + 20))) << "WorldMarket默认为西四区(美东夏时制标准时间)";
-		}
-		else {
-			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 5) || (tm_.tm_hour == tm2_.tm_hour + 19))) << "WorldMarket默认为西四区(美东标准时间)";
-		}
-	}
-
 	TEST_F(CWorldMarketTest, TestGetTotalStock) {
 		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
 	}

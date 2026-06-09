@@ -395,7 +395,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
 		CTiingoIEXTopOfBook IEX;
-		IEX.m_timeStamp = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(123456));
+		IEX.m_timeStamp = toSysTime(123456);
 		IEX.m_lOpen = 12340;
 		IEX.m_lHigh = 23450;
 		IEX.m_lLow = 1230;

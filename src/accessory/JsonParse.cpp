@@ -474,8 +474,7 @@ void ParseOneNeteaseRTData(const nlohmannJson::iterator& it, const CWebRTDataPtr
 		chrono::local_seconds localTime;
 		chrono::from_stream(ss, "%Y/%m/%d %T", localTime); // 注意网易的时间是本地时间，需要转换成UTC时间
 		auto sysTime = gl_pChinaMarket->ToSysTime(localTime);
-		pWebRTData->SetTransactionTime(sysTime);
-		pWebRTData->SetTransactionTime(sysTime.time_since_epoch().count());
+		pWebRTData->SetTime(sysTime);
 	} catch (nlohmannJson::exception& e) {// 结构不完整
 		// do nothing
 		string strError2 = strSymbol4;
@@ -607,8 +606,9 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			ss.clear();
 			ss.str(strTime);
 			chrono::local_seconds tpTime;
+			ss >> chrono::parse("%Y/%m/d %T", tpTime);
 			chrono::from_stream(ss, "%Y/%m/d %T", tpTime);
-			pWebRTData->SetTransactionTime(gl_pChinaMarket->ToSysTime(tpTime).time_since_epoch().count());
+			pWebRTData->SetTime(gl_pChinaMarket->ToSysTime(tpTime));
 			pWebRTData->SetLastClose(Str2Long(simdjsonGetRawJsonToken(item, "yestclose"), 3));
 			pWebRTData->SetAmount(StrToDecimal(simdjsonGetRawJsonToken(item, "turnover"), 0));
 

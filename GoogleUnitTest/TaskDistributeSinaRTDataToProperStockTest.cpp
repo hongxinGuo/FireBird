@@ -80,7 +80,7 @@ namespace FireBirdTest {
 				pRTData->SetStockName("abcde");// 需要设置股票名称，以保证能够创建新股票
 			}
 			pRTData->SetActive(pData->m_fActive);
-			pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);
+			pRTData->SetTime(toSysTime(s_tCurrentMarketTime + pData->m_tt));
 		}
 
 		void TearDown() override {

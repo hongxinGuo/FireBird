@@ -138,7 +138,7 @@ void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const {
-	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(GetTransactionTime()));
+	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(GetTimePoint()));
 	pBeUpdated->SetExchange(m_strExchange);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
 	pBeUpdated->SetLastClose(m_lLastClose);
@@ -161,8 +161,7 @@ void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBe
 }
 
 void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
-	SetTimePoint(pRTData->GetTimePoint());
-	SetTransactionTime(pRTData->GetTransactionTime());
+	SetTimePoint(pRTData->GetTime());
 	SetLastClose(pRTData->GetLastClose());
 	SetNew(pRTData->GetNew());
 	SetHigh(pRTData->GetHigh());

@@ -272,11 +272,15 @@ chrono::sys_seconds CVirtualMarket::ConvertToUTCTime(long lMarketDate, long lMar
 	chrono::local_seconds local_time{ chrono::local_days{ chrono::year{ year } / month / day } + chrono::hours{ hour } + chrono::minutes{ minute } + chrono::seconds{ second } };
 	return m_marketTimeZone->to_sys(local_time);
 }
-
-long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {
-	tm tm_;
-	GetMarketTimeStruct(&tm_, tUTC);
-	return ((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
+chrono::sys_seconds CVirtualMarket::ConvertSystemTimeToUTCTime(long lSystemDate, long lSystemTime) const {
+	int year = lSystemDate / 10000;
+	int month = lSystemDate / 100 - year * 100;
+	int day = lSystemDate - year * 10000 - month * 100;
+	int hour = lSystemTime / 10000;
+	int minute = lSystemTime / 100 - hour * 100;
+	int second = lSystemTime - hour * 10000 - minute * 100;
+	chrono::sys_seconds system_time{ chrono::sys_days{ chrono::year{ year } / month / day } + chrono::hours{ hour } + chrono::minutes{ minute } + chrono::seconds{ second } };
+	return system_time;
 }
 
 long CVirtualMarket::ConvertToDate(const chrono::sys_seconds tp) const noexcept {
@@ -285,11 +289,6 @@ long CVirtualMarket::ConvertToDate(const chrono::sys_seconds tp) const noexcept 
 	return static_cast<int>(ymd.year()) * 10000
 	+ static_cast<unsigned>(ymd.month()) * 100
 	+ static_cast<unsigned>(ymd.day());
-}
-
-void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
-	time_t tMarket = tUTC + GetTimeZone();
-	gmtime_s(tm_, &tMarket);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

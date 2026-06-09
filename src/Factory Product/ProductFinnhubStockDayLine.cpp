@@ -32,7 +32,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	for (auto& dayLine : *pvDayLine) {
 		dayLine.SetExchange(pStock->GetExchange());
 		dayLine.SetStockSymbol(pStock->GetSymbol());
-		const auto lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTime());
+		const auto lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTimePoint());
 		dayLine.SetDate(lTemp);
 		if ((lastClose != 0) && (dayLine.GetLastClose() == 0)) dayLine.SetLastClose(lastClose);
 		lastClose = dayLine.GetClose();

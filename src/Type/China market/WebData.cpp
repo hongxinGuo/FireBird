@@ -4,7 +4,7 @@
 #include"JsonParse.h"
 
 CWebData::CWebData() {
-	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
+	m_tpTime = toSysTime(0);
 	m_strStockCode = "";
 	m_lCurrentPos = 0;
 	m_lCurrentParagraphStartPos = 0;

@@ -30,7 +30,7 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (auto& dayLine : *pvDayLine) {
 			dayLine.SetExchange(pCryptoSymbol->GetExchange());
 			dayLine.SetStockSymbol(pCryptoSymbol->GetSymbol());
-			const long lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTime());
+			const long lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTimePoint());
 			dayLine.SetDate(lTemp);
 		}
 		pCryptoSymbol->UpdateDayLine(pvDayLine);

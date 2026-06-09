@@ -44,11 +44,11 @@ void DeleteAllFinnhubInaccessibleUSExchange() {
 namespace {
 	void DeleteAllFinnhubInaccessibleUSExchangeAtFirstDay() {
 		// 每月第一天删除对US交易所的禁止访问
+		ASSERT(gl_pChinaMarket != nullptr);
+		ASSERT(gl_pWorldMarket != nullptr);
 		gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
-		tm tmLocal;
-		const auto time = gl_tpNow.time_since_epoch().count();
-		localtime_s(&tmLocal, &time);
-		if (tmLocal.tm_mday == 1) {
+		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(gl_tpNow) };
+		if (static_cast<unsigned>(ymd.day()) == 1) {
 			DeleteAllFinnhubInaccessibleUSExchange();
 		}
 	}

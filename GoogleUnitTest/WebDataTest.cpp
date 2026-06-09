@@ -10,7 +10,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			EXPECT_EQ(webData.GetCurrentPos(), 0);
-			EXPECT_EQ(webData.GetTime(), 0);
+			EXPECT_EQ(webData.GetTime().time_since_epoch().count(), 0);
 			EXPECT_EQ(webData.GetBufferLength(), 0) << "初始化时未操作此变量";
 			webData.Resize(1024 * 1024); // 设置1M存储空间
 			webData.ResetCurrentPos();
@@ -90,9 +90,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebDataTest, TestGetTime) {
-		EXPECT_EQ(webData.GetTime(), 0);
-		webData.SetTime(101010101010);
-		EXPECT_EQ(webData.GetTime(), 101010101010);
+		EXPECT_EQ(webData.GetTime().time_since_epoch().count(), 0);
+		chrono::sys_seconds tp = toSysTime(101010101010);
+		webData.SetTime(tp);
+		EXPECT_EQ(webData.GetTime().time_since_epoch().count(), 101010101010);
 	}
 
 	TEST_F(CWebDataTest, TestGetStockCode) {

@@ -387,7 +387,8 @@ bool CWebRTData::CheckNeteaseRTDataActive() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::IsValidTime(long lDays) const {
-	if (GetTransactionTime() < (GetUTCTime() - lDays * 24 * 3600)) {// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
+	chrono::days day{ lDays };
+	if (GetTime() < gl_tpNow - day) {// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}
 	if (m_tpTime > gl_tpNow) {

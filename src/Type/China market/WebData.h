@@ -34,9 +34,8 @@ public:
 
 	bool IsLastDataParagraph() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size() - 2; }// 已读至最后一段数据
 
-	time_t GetTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
+	chrono::sys_seconds GetTime() const noexcept { return m_tpTime; }
 	void SetTime(chrono::sys_seconds time) noexcept { m_tpTime = time; }
-	void SetTime(const time_t tTime) noexcept { m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tTime)); }
 	string GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const string& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
@@ -66,7 +65,7 @@ public:
 	void Test_SetBuffer_(const string& strBuffer);
 
 protected:
-	chrono::sys_seconds m_tpTime;// 此数据的提取时间。time point格式
+	chrono::sys_seconds m_tpTime;// 此数据的提取时间。UTC时间，单位为秒。
 	string m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
 	string_view m_svDataBuffer; // m_sDataBuffer的string_view

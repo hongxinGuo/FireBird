@@ -113,7 +113,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(s_pInquireEngine->GetByteRead(), 1024);
 
 		EXPECT_EQ(pWebData->GetBufferLength(), 1024) << "数据移至此处";
-		EXPECT_EQ(pWebData->GetTime(), GetUTCTime());
+		EXPECT_EQ(pWebData->GetTime(), gl_tpNow);
 
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "m_lContentLength != m_lByteRead, 系统报告数据长度不符错误";
 
@@ -144,7 +144,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(s_pInquireEngine->GetByteRead(), 1024 * 17);
 
 		EXPECT_EQ(pWebData->GetBufferLength(), 1024 * 17) << "数据移至此处";
-		EXPECT_EQ(pWebData->GetTime(), GetUTCTime());
+		EXPECT_EQ(pWebData->GetTime(), gl_tpNow);
 
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0) << "m_lContentLength == m_lByteRead";
 

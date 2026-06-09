@@ -279,7 +279,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 	ASSERT(!m_vCompanyNews.empty());
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
 
-	long long lCutoffDateTime = 0;
+	long long cutoffDateTime = 0;
 	using namespace StockMarket;
 	const auto& t = FinnhubCompanyNews{};
 	auto db = gl_dbStockMarket.get();
@@ -291,18 +291,18 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 	size_t rows = result.size();
 	if (rows > 0) {
 		auto& row = result.front();
-		lCutoffDateTime = row.DateTime.value();
+		cutoffDateTime = row.DateTime.value();
 	}
 
 	size_t iIndex = 0;
-	while (m_vCompanyNews.at(iIndex).m_llDateTime <= lCutoffDateTime) iIndex++;
+	while (m_vCompanyNews.at(iIndex).m_DateTime.time_since_epoch().count() <= cutoffDateTime) iIndex++;
 
 	for (size_t i = iIndex; i < m_vCompanyNews.size(); i++) {
 		auto& companyNews = m_vCompanyNews.at(i);
 		multi_insert.values.add(
 			t.Symbol = companyNews.m_strCompanySymbol,
 			t.Category = companyNews.m_strCategory,
-			t.DateTime = static_cast<double>(companyNews.m_llDateTime),
+			t.DateTime = companyNews.m_DateTime.time_since_epoch().count(),
 			t.Headline = companyNews.m_strHeadLine,
 			t.NewsID = companyNews.m_iNewsID,
 			t.Image = companyNews.m_strImage,
@@ -431,7 +431,7 @@ void CFinnhubStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
 	}
-	std::ranges::sort(m_vCompanyNews, [](const CFinnhubCompanyNews& p1, const CFinnhubCompanyNews& p2) { return (p1.m_llDateTime < p2.m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
+	std::ranges::sort(m_vCompanyNews, [](const CFinnhubCompanyNews& p1, const CFinnhubCompanyNews& p2) { return (p1.m_DateTime < p2.m_DateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
 void CFinnhubStock::UpdateEPSSurprise(const CEPSSurprisesPtr& pvEPSSurprise) {

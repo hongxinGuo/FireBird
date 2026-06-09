@@ -106,7 +106,7 @@ void CChinaMarket::Reset() {
 	m_fRTDataSetCleared = false;
 	m_fUpdateTempDataDB = true;
 
-	m_tpNewTransactionTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
+	m_tpNewTransactionTime = toSysTime(0);
 
 	m_iCountDownTengxunNumber = 10;
 
@@ -304,8 +304,8 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
 		IncreaseRTDataReceived();
-		if (m_tpNewTransactionTime < pRTData->GetTimePoint()) {
-			m_tpNewTransactionTime = pRTData->GetTimePoint();
+		if (m_tpNewTransactionTime < pRTData->GetTime()) {
+			m_tpNewTransactionTime = pRTData->GetTime();
 		}
 		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
@@ -313,11 +313,10 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 				pStock->UpdateStatus(pRTData);
 			}
 		}
-		if (pRTData->GetTimePoint() > pStock->GetTimePoint()) {// 新的数据？
+		if (pRTData->GetTime() > pStock->GetTimePoint()) {// 新的数据？
 			m_lNewRTDataReceivedInCurrentMinute++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
-			pStock->SetTransactionTime(pRTData->GetTransactionTime());
-			pStock->SetTimePoint(pRTData->GetTimePoint()); // 设置最新接受到实时数据的时间
+			pStock->SetTimePoint(pRTData->GetTime()); // 设置最新接受到实时数据的时间
 		}
 	}
 	return true;
@@ -490,14 +489,9 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	// 每五分钟存储一次股票简要数据库
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lTimeMinute, 0, 4, 10)); // 开始执行时间为启动之后的四分钟。
 
-	if (IsWorkingDay()) {
-		if (lCurrentTime < 150300) {
-			// 生成本日历史数据
-			AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150530); // 开始执行时间为：150530
-		}
-		else {
-			AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE__, 151000); // 检查今日数据完整性
-		}
+	if (IsWorkingDay() && lCurrentTime < 150300) {
+		// 生成本日历史数据
+		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150530); // 开始执行时间为：150530
 	}
 
 	// 如果设定为周期性重启系统，则在星期天晚上9时重启。

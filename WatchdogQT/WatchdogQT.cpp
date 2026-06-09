@@ -9,11 +9,13 @@
 #include<chrono>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/daily_file_sink.h>
+
 using namespace std;
 
 //#include"resource.h"
 
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
+const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地时区
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 
 namespace {
@@ -44,6 +46,7 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	InitializeLogSystem();
 
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now()); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
+	gl_pTimeZoneLocal = chrono::current_zone(); // 获取当地时区
 
 	// 设置每秒一次的计时器
 	auto* timer = new QChronoTimer(1s, this);
@@ -86,7 +89,7 @@ WatchdogQT::~WatchdogQT() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr* result) {
-	tm tmLocal;
+	chrono::local_seconds ls;
 	long long time;
 
 	if (eventType == "windows_generic_MSG") {
@@ -94,24 +97,24 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 		const MSG* msg = static_cast<MSG*>(message);
 		if (msg->message == m_MsgFireBirdSchedulingExit) { // 定时调度退出
 			time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
-			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告定时调度关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
+			s = std::format("{:%F %T} FireBird报告定时调度关闭", ls);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
 		}
 		if (msg->message == m_MsgFireBirdRunning) { // FireBird启动
 			time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
-			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
+			s = std::format("{:%F %T} FireBird报告启动", ls);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
 		}
 		if (msg->message == m_MsgFireBirdExit) { // FireBird退出
 			time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
-			s = std::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
+			s = std::format("{:%F %T} FireBird报告关闭", ls);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;
@@ -130,10 +133,8 @@ void WatchdogQT::BuildUI() {
 
 void WatchdogQT::Update() {
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
-	tm tmLocal;
-	const auto time = gl_tpNow.time_since_epoch().count();
-	localtime_s(&tmLocal, &time);
-	string s = std::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+	chrono::local_seconds ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
+	string s = std::format("{:%H:%M:%S}", ls);
 	labTime->setText(s.c_str());
 
 	for (const auto& s1 : m_listOutput) {
@@ -147,10 +148,9 @@ void WatchdogQT::UpdatePer10Second() {
 	if (--s_Counter < 1) {
 		if (!IsFireBirdAlreadyRunning(sFireBirdApp)) {
 			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
-			tm tmLocal;
-			const auto time = gl_tpNow.time_since_epoch().count();
-			localtime_s(&tmLocal, &time);
-			string s = std::format("启动FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+			chrono::local_seconds ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
+			string sTime = std::format("{:%F %T}", ls);
+			string s = std::format("启动FireBird于: {:%F %T}", ls);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			if (iReturnCode <= 31) { // error

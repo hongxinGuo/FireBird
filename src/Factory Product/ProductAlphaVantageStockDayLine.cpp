@@ -35,7 +35,7 @@ void CProductAlphaVantageStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData
 
 	auto pvDayLine = ParseAlphaVantageStockDayLine(pWebData);
 	if (!pvDayLine->empty()) {
-		long lastClose = 0;
+		long long lastClose = 0;
 		for (auto& dayLine2 : *pvDayLine) {
 			dayLine2.SetExchange(pTiingoStock->GetExchange());
 			dayLine2.SetStockSymbol(pTiingoStock->GetSymbol());

@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	TEST_F(CWebRTDataTest2, TestNeteaseInitialize) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
-		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
+		EXPECT_EQ(RTData.GetTime().time_since_epoch().count(), 0);
 		EXPECT_EQ(RTData.GetSymbol(), "");
 		EXPECT_EQ(RTData.GetStockName(), "");
 		EXPECT_EQ(RTData.GetOpen(), 0);
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 
 		auto st = gl_pChinaMarket->ConvertToUTCTime(20191007, 120000);
 		TestSetUTCTime(st);
-		id.SetTransactionTime(st);
+		id.SetTime(st);
 		EXPECT_TRUE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
 		id.SetOpen(10);
@@ -197,12 +197,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTimePoint(), tTime);
+			EXPECT_EQ(m_pRTData->GetTime(), tTime);
 			break;
 		case 1:
 			EXPECT_EQ(m_pRTData->GetSymbol(), "600601.SS");
 			EXPECT_FALSE(m_pRTData->IsActive());
-			EXPECT_EQ(m_pRTData->GetTimePoint(), tTime3);
+			EXPECT_EQ(m_pRTData->GetTime(), tTime3);
 			++it;
 			ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(m_pRTData->IsActive());
@@ -232,7 +232,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTimePoint(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_EQ(m_pRTData->GetTime(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
 			break;
 		case 2:
 			EXPECT_FALSE(m_pRTData->IsActive());
@@ -273,13 +273,13 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTimePoint(), tTime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
+			EXPECT_EQ(m_pRTData->GetTime(), tTime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 			break;
 		case 4: // 只有报头
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_EQ(m_pRTData->GetSymbol(), "600001.SS"); // 没有设置，仍是初始值
-			EXPECT_EQ(m_pRTData->GetTimePoint(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_EQ(m_pRTData->GetTime(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
 		default:
 			break;
 		}

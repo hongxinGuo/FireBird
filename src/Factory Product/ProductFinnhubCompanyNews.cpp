@@ -86,7 +86,7 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 			s = jsonGetString(it, "category");
 			if (!s.empty()) companyNews.m_strCategory = s;
 			const auto dateTime = jsonGetLongLong(it, "datetime");
-			companyNews.m_llDateTime = ConvertToDateTime(dateTime, 0);
+			companyNews.m_DateTime = toSysTime(dateTime);
 			s = jsonGetString(it, "headline");
 			if (!s.empty()) companyNews.m_strHeadLine = s;
 			companyNews.m_iNewsID = jsonGetInt(it, "id");

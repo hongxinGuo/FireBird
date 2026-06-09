@@ -37,6 +37,7 @@ public:
 	time_t GetMarketTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
 	void SetUTCTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	void SetTime(const time_t t) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(t)); }
+	void SetTime(const chrono::sys_seconds tp) noexcept { m_tpTime = tp; }
 	const string& GetExchange() const { return m_strExchange; }
 	void SetExchange(const string& strExchange) { m_strExchange = strExchange; }
 	const string& GetStockSymbol() const { return m_strStockSymbol; }

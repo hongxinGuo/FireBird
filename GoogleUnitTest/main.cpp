@@ -85,6 +85,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
+			s_tCurrentSystemTime = gl_tpNow;
 			gl_pTimeZoneLocal = chrono::current_zone(); // 获取软件运行所在的当地时区
 
 			CreateSimdjsonEmptyArray();

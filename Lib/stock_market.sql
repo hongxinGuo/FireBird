@@ -200,7 +200,7 @@ CREATE TABLE `finnhub_company_news` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(45)  DEFAULT NULL,
   `Category` varchar(100)  DEFAULT NULL,
-  `DateTime` int DEFAULT NULL,
+  `DateTime` decimal(30,0) DEFAULT NULL,
   `Headline` varchar(1000) DEFAULT NULL,
   `NewsID` int DEFAULT NULL,
   `Image` varchar(1000) DEFAULT NULL,
