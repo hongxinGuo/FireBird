@@ -10,3 +10,4 @@ void ReportInformation(CException& e);
 int ReportRunningToWatchdog();
 int ReportExitToWatchdog();
 int ReportSchedulingExitToWatchdog();
+int ReportCheckRunningExitToWatchdog();

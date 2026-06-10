@@ -107,12 +107,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 31));
 	}
 
-	TEST_F(TimeConvertTest, TestTimeSpawn) {
-		EXPECT_EQ(TimeSpawn(20200201, 20200101), 31);
-		EXPECT_EQ(TimeSpawn(20210101, 20200101), 366);
-		EXPECT_EQ(TimeSpawn(20220101, 20210101), 365);
-	}
-
 	TEST_F(TimeConvertTest, TestGetCurrentMonday) {
 		EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << "20200720为星期一";
 		EXPECT_EQ(20200720, GetCurrentMonday(20200721));

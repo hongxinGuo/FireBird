@@ -44,6 +44,7 @@ private slots:
 private:
 	UINT m_MsgFireBirdExit{ 0 };
 	UINT m_MsgFireBirdSchedulingExit{ 0 };
+	UINT m_MsgFireBirdCheckRunningExit{ 0 };
 	UINT m_MsgFireBirdRunning{ 0 };
 
 	Ui::WatchdogQTClass ui;

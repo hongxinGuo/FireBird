@@ -72,6 +72,7 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	m_MsgFireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
 	m_MsgFireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
 	m_MsgFireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
+	m_MsgFireBirdCheckRunningExit = RegisterWindowMessageW(gl_wsFireBirdCheckRunningExit.c_str());
 }
 
 WatchdogQT::~WatchdogQT() {
@@ -99,6 +100,14 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 			time = gl_tpNow.time_since_epoch().count();
 			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
 			s = std::format("{:%F %T} FireBird报告定时调度关闭", ls);
+			m_listOutput.push_back(s);
+			gl_dailyLogger->info("{}", s);
+			return true;
+		}
+		if (msg->message == m_MsgFireBirdCheckRunningExit) { // 定时调度退出
+			time = gl_tpNow.time_since_epoch().count();
+			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
+			s = std::format("{:%F %T} FireBird报告检查系统时关闭", ls);
 			m_listOutput.push_back(s);
 			gl_dailyLogger->info("{}", s);
 			return true;

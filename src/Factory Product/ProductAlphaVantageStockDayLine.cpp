@@ -115,7 +115,11 @@ CTiingoCandleLinesPtr CProductAlphaVantageStockDayLine::ParseAlphaVantageStockDa
 			CTiingoCandleLine dayLine;
 			//pDayLine->SetExchange("US"); // 所有的AlphaVantage证券皆为美国市场。
 			s = jsonGetString(it, "date");
-			long lTemp = XferToYYYYMMDD(s);
+			chrono::sys_seconds utc_tp;
+			istringstream ss(s);
+			ss >> chrono::parse("%FT%T%Z", utc_tp);
+			chrono::year_month_day ymd = chrono::year_month_day{ chrono::sys_days(chrono::floor<chrono::days>(utc_tp)) };
+			long lTemp = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 			dayLine.SetDate(lTemp);
 			double dTemp = jsonGetDouble(it, "close");
 			dayLine.SetClose(dTemp * stock.GetRatio());

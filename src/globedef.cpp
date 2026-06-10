@@ -78,6 +78,7 @@ vector<string> gl_vNasdaq100Stocks; // Nasdaq100指数股票代码
 
 UINT gl_MsgFireBirdExit{ 0 };
 UINT gl_MsgFireBirdSchedulingExit{ 0 };
+UINT gl_MsgFireBirdCheckRunningExit{ 0 };
 UINT gl_MsgFireBirdRunning{ 0 };
 
 // Data source, 皆为唯一实例

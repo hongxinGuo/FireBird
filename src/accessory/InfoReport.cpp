@@ -58,3 +58,10 @@ int ReportSchedulingExitToWatchdog() {
 	PostMessage(hWnd, gl_MsgFireBirdSchedulingExit, NULL, NULL);
 	return 0;
 }
+
+int ReportCheckRunningExitToWatchdog() {
+	HWND hWnd = ::FindWindow(nullptr, Utf8ToW(sWatchDogApp).c_str());
+	if (hWnd == nullptr) return 1; // Watchdog监控程序不在运行， 直接返回
+	PostMessage(hWnd, gl_MsgFireBirdCheckRunningExit, NULL, NULL);
+	return 0;
+}

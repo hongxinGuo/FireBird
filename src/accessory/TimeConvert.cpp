@@ -22,22 +22,6 @@ long XferToYYYYMMDD(const string& sDate) {
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 }
 
-long TimeSpawn(long lLatelyDate, long lEarlyDate) {
-	ASSERT(lEarlyDate >= 19700101);
-	ASSERT(lLatelyDate >= 19700101);
-	ASSERT(lLatelyDate >= lEarlyDate);
-	const long year = lEarlyDate / 10000;
-	const long month = lEarlyDate / 100 - year * 100;
-	const long day = lEarlyDate - year * 10000 - month * 100;
-	const CTime ctEarly(year, month, day, 12, 0, 0);
-	const long year2 = lLatelyDate / 10000;
-	const long month2 = lLatelyDate / 100 - year2 * 100;
-	const long day2 = lLatelyDate - year2 * 10000 - month2 * 100;
-	const CTime ctLately(year2, month2, day2, 12, 0, 0);
-	const CTimeSpan ts = ctLately - ctEarly;
-	return (ts.GetDays());
-}
-
 using namespace std::chrono;
 
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day) {
@@ -235,6 +219,11 @@ long GetNextTime(const long lTime, const long hh, const long mm, const long ss) 
 	const long hEnd = h + hh + hTemp;
 
 	return hEnd * 10000 + mEnd * 100 + sEnd;
+}
+
+chrono::hh_mm_ss<chrono::seconds> GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	auto newTime = time.to_duration() + hour + minute + second;
+	return chrono::hh_mm_ss<chrono::seconds>(newTime);
 }
 
 long GetPrevTime(long lTime, long hh, long mm, long ss) {

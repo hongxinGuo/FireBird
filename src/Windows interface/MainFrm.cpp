@@ -218,6 +218,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_MsgFireBirdRunning = RegisterWindowMessageW(gl_wsFireBirdRunning.c_str());
 	gl_MsgFireBirdExit = RegisterWindowMessageW(gl_wsFireBirdExit.c_str());
 	gl_MsgFireBirdSchedulingExit = RegisterWindowMessageW(gl_wsFireBirdSchedulingExit.c_str());
+	gl_MsgFireBirdCheckRunningExit = RegisterWindowMessageW(gl_wsFireBirdCheckRunningExit.c_str());
 
 	// 生成系统外观显示部件
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;
@@ -937,10 +938,7 @@ void CMainFrame::OnMaintainChinaMarketStockDayLine() {
 
 void CMainFrame::OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->IsDummyTime()) {
-#ifndef _DEBUG
-		if (gl_pChinaMarket->GetLocalTime() > 151000)
-#endif
-			SysCallCmdUIEnable(pCmdUI, true);
+		SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);

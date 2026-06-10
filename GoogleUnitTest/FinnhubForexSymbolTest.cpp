@@ -156,12 +156,7 @@ namespace FireBirdTest {
 
 		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(123456789);
-		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { // 
-			EXPECT_EQ(str, "ABCDE&resolution=D&from=315601200&to=123456789") << "当前时间小于19800101，315601200就是美东标准时间的19800101";
-		}
-		else {
-			EXPECT_EQ(str, "ABCDE&resolution=D&from=315604800&to=123456789") << "当前时间小于19800101，315601200就是美东标准时间的19800101";
-		}
+		EXPECT_EQ(str, "ABCDE&resolution=D&from=315604800&to=123456789") << "当前时间小于19800101，315604800就是美东标准时间的19800101";
 	}
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
 		CFinnhubForex symbol;

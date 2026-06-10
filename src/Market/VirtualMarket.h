@@ -58,14 +58,13 @@ public:
 
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
-
-	void SetMarketLocalTimeOffset(const string& strLocalNameOfMarket);
+	void CreateLocalTimeZone(const string& strLocalNameOfMarket); // 系统启动时执行一次。
 	long GetMarketOpenTime() const { return m_exchange->m_lMarketOpenTime; }
 	long GetMarketCloseTime() const { return m_exchange->m_lMarketCloseTime; }
 
-	auto GetTimeZoneOffset() const { return m_TimeZoneOffset; }
-	long GetTimeZone() const noexcept { return m_TimeZoneOffset.count(); }
 	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
+	chrono::local_seconds GetMarketTimeTP() const noexcept { return m_marketTime; }
+	chrono::hh_mm_ss<chrono::seconds> GetMarketTimeAsChrono() const noexcept { return m_marketTimeOfDay; }
 	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
 	auto GetDayOfWeek() const noexcept { return m_marketWeekDay; } // days since Sunday - [0, 6]
 
@@ -144,11 +143,12 @@ protected:
 	//string m_strLocalMarketTimeZone{ "Europe/London" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 	string m_strLocalMarketTimeZone{ "America/New_York" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 	const chrono::time_zone* m_marketTimeZone{ nullptr }; // 本市场当地时区
-	chrono::local_seconds m_marketTime; // 本市场的当地时间
-	chrono::year_month_day m_marketYearMonthDay; // 本市场的当地年、月、日
+	chrono::local_seconds m_marketClock; // 本市场的当地时钟
+	chrono::local_seconds m_marketTime; // 本市场的当日时间
+	chrono::local_days m_marketDate; // 本市场的当地日期
 	chrono::weekday m_marketWeekDay; // 本市场的当地星期几
+	chrono::year_month_day m_marketYearMonthDay; // 本市场的当地年、月、日
 	chrono::hh_mm_ss<chrono::seconds> m_marketTimeOfDay; // 本市场的当地小时、分钟、秒
-	chrono::seconds m_TimeZoneOffset{ 0 };
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate{ 0 }; //本市场的日期

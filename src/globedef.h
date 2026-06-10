@@ -53,6 +53,7 @@ extern vector<string> gl_vNasdaq100Stocks;
 
 extern UINT gl_MsgFireBirdExit;
 extern UINT gl_MsgFireBirdSchedulingExit;
+extern UINT gl_MsgFireBirdCheckRunningExit;
 extern UINT gl_MsgFireBirdRunning;
 
 #define TRACE_SCHEDULE_TASK_ // 跟踪任务调度
