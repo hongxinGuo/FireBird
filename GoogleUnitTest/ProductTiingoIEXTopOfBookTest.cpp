@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"FinnhubStock.h"
 #include"TiingoDataSource.h"
 
 #include"ProductTiingoIEXTopOfBook.h"

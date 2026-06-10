@@ -1,15 +1,12 @@
 #include"pch.h"
 
-#include "CharSetTransfer.h"
 #include"GeneralCheck.h"
-#include"TimeConvert.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include "dataBaseConnector.h"
 #include"WebRTData.h"
 #include"DayLineWebData.h"
-#include "jsonParse.h"
 
 using namespace testing;
 

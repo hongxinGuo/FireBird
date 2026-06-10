@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include "CharSetTransfer.h"
-#include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
 
 #include"ChinaMarket.h"
@@ -14,7 +12,7 @@
 #include "TengxunRTDataSource.h"
 
 using namespace testing;
-#include<fmt/core.h>
+//#include<fmt/core.h>
 using namespace fmt;
 
 #include<memory>

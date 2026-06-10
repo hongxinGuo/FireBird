@@ -1,8 +1,6 @@
 #include"pch.h"
 #include"SECFiling.h"
 
-#include "CharSetTransfer.h"
-
 CSECFiling::CSECFiling() {
 	Reset();
 }

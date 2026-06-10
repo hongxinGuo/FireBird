@@ -2,8 +2,6 @@
 
 #include"TiingoIndustry.h"
 
-#include "CharSetTransfer.h"
-
 CTiingoIndustry::CTiingoIndustry() {
 	m_strIndustry = " ";
 	m_strSector = " ";

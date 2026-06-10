@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include "CharSetTransfer.h"
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 

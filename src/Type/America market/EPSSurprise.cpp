@@ -2,8 +2,6 @@
 
 #include"EPSSurprise.h"
 
-#include "CharSetTransfer.h"
-
 CEPSSurprise::CEPSSurprise() {
 	m_strSymbol = " ";
 	m_lDate = 0;

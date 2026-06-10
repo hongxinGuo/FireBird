@@ -2,8 +2,6 @@
 
 #include"FinnhubCompanyNews.h"
 
-#include "CharSetTransfer.h"
-
 CFinnhubCompanyNews::CFinnhubCompanyNews() {
 	Reset();
 }

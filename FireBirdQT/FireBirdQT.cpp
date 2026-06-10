@@ -1,6 +1,6 @@
 #include "FireBirdQT.h"
 
-#include <QPainter>
+//#include <QPainter>
 #include <QPaintEvent>
 
 FireBirdQT::FireBirdQT(QWidget* parent) : QMainWindow(parent) {

@@ -20,7 +20,6 @@
 #include "ChinaMarket.h"
 #include "dataBaseConnector.h"
 #include "QuandlDataSource.h"
-#include "ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 

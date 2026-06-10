@@ -2,8 +2,6 @@
 
 #include"TiingoFundamentalDefinition.h"
 
-#include "CharSetTransfer.h"
-
 CTiingoFundamentalDefinition::CTiingoFundamentalDefinition() {
 	Reset();
 }
@@ -15,4 +13,3 @@ void CTiingoFundamentalDefinition::Reset() {
 	m_strStatementType = "";
 	m_strUnits = "";
 }
-

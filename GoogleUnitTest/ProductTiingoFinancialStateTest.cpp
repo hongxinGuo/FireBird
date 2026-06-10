@@ -2,8 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubStock.h"
-
 #include"ProductTiingoFinancialState.h"
 
 #include"TestWebData.h"

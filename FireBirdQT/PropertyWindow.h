@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QMainWindow>
 #include "ui_PropertyWindow.h"
 
 class PropertyWindow : public QMainWindow {
@@ -8,7 +7,7 @@ class PropertyWindow : public QMainWindow {
 
 public:
 	PropertyWindow(QWidget* parent = nullptr);
-	~PropertyWindow() override;
+	~PropertyWindow() override = default;
 
 private:
 	Ui::PropertyWindowClass ui;

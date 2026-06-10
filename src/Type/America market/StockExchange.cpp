@@ -2,8 +2,6 @@
 
 #include"StockExchange.h"
 
-#include "CharSetTransfer.h"
-
 CStockExchange::CStockExchange() {
 	m_strCode = " ";
 	m_strName = " ";

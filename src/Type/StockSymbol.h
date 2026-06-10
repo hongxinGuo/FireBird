@@ -10,17 +10,17 @@ public:
 	~CStockSymbol() = default;
 
 	string GetCode() const { return m_Symbol; }
-	void SetCode(string& val) { m_Symbol = val; }
+	void SetCode(const string& val) { m_Symbol = val; }
 	string GetName() const { return m_DisplaySymbol; }
-	void SetName(string& val) { m_DisplaySymbol = val; }
+	void SetName(const string& val) { m_DisplaySymbol = val; }
 	string GetDescription() const { return m_Description; }
-	void SetDescription(string& val) { m_Description = val; }
+	void SetDescription(const string& val) { m_Description = val; }
 	string GetExchangeCode() const { return m_Exchange; }
-	void SetExchangeCode(string& val) { m_Exchange = val; }
+	void SetExchangeCode(const string& val) { m_Exchange = val; }
 	long GetIPOStatus() const { return m_IPOStatus; }
 	void SetIPOStatus(long val) { m_IPOStatus = val; }
 	string GetUpdateDate() const { return m_UpdateDate; }
-	void SetUpdateDate(string& val) { m_UpdateDate = val; }
+	void SetUpdateDate(const string& val) { m_UpdateDate = val; }
 
 	string m_Description;
 	string m_Exchange;

@@ -2,7 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"ProductTiingoStockDailyMeta.h"

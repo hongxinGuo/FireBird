@@ -5,7 +5,6 @@
 
 #include "ChinaStock.h"
 
-#include "CharSetTransfer.h"
 #include"ChinaMarket.h"
 #include "dataBaseConnector.h"
 #include"MonthLine.h"

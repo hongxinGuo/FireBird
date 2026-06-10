@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include "CharSetTransfer.h"
 #include"NaicsIndustry.h"
 
 CNaicsIndustry::CNaicsIndustry() {

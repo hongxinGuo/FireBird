@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"FinnhubStock.h"
 #include"FinnhubInquiryType.h"
 
 #include"ProductFinnhubCompanyProfile.h"

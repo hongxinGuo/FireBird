@@ -4,10 +4,7 @@
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
-#include"FinnhubStock.h"
 #include"WorldMarket.h"
-
-//#include "ProductTiingoForexDayLine.h"
 
 #include "TimeConvert.h"
 #include "WebData.h"

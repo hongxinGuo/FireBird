@@ -2,8 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubStock.h"
-
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
 #include"TiingoCryptoWebSocket.h"

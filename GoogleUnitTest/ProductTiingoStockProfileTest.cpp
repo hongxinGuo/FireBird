@@ -2,11 +2,8 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubStock.h"
 #include"WorldMarket.h"
-
 #include"TiingoDataSource.h"
-
 #include"ProductTiingoStockProfile.h"
 #include"TestWebData.h"
 

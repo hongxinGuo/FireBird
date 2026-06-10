@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QMainWindow>
 #include "ui_RealTimeWindow.h"
 
 class RealTimeWindow : public QMainWindow {
@@ -8,7 +7,7 @@ class RealTimeWindow : public QMainWindow {
 
 public:
 	RealTimeWindow(QWidget* parent = nullptr);
-	~RealTimeWindow() override;
+	~RealTimeWindow() override = default;
 
 private:
 	Ui::RealTimeWindowClass ui;

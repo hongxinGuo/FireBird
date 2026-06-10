@@ -4,10 +4,6 @@
 #include"GeneralCheck.h"
 
 #include"FinnhubStock.h"
-
-#include"ProductFinnhubCompanyInsiderTransaction.h"
-#include"ProductFinnhubCompanyInsiderSentiment.h"
-
 #include"FinnhubDataSource.h"
 #include"FinnhubCrypto.h"
 #include "WorldMarket.h"
