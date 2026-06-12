@@ -165,50 +165,50 @@ void CWorldMarket::PrepareToCloseMarket() {
 // todo 采用concurrencpp::timer后，可以将此函数的各项任务分配为定时器所驱动的工作线程任务。
 //
 //////////////////////////////////////////////////////////////////////////////////////
-int CWorldMarket::ProcessTask(long lCurrentTime) {
+int CWorldMarket::ProcessTask() {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
-	if (lCurrentTime >= pTask->GetTime()) {
+	if (GetMarketTime() >= pTask->GetTime()) {
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
 		case WORLD_MARKET_CREATE_TASK__: // 生成其他任务
-			TaskCreateTask(lCurrentTime);
+			TaskCreateTask();
 			break;
 		case WORLD_MARKET_CHECK_SYSTEM_READY__: // 170000重启系统
-			TaskCheckMarketReady(lCurrentTime);
+			TaskCheckMarketReady();
 			break;
 		case WORLD_MARKET_RESET__: // 170000重启系统
-			TaskResetMarket(lCurrentTime);
+			TaskResetMarket();
 			break;
 		case WORLD_MARKET_UPDATE_DB__:
-			ASSERT(!IsTimeToResetSystem(lCurrentTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-			TaskUpdateWorldMarketDB(lCurrentTime);
+			ASSERT(!IsTimeToResetSystem(GetMarketTime()));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+			TaskUpdateWorldMarketDB();
 			break;
 		case WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__:
-			TaskMonitorWebSocket(lCurrentTime);
+			TaskMonitorWebSocket();
 			break;
 		case WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__:
-			TaskProcessWebSocketData(lCurrentTime);
-			TaskPerSecond(lCurrentTime);
+			TaskProcessWebSocketData();
+			TaskPerSecond();
 			break;
 		case WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE:
-			TaskCalculateNasdaq100MA200UpDownRate(lCurrentTime);
+			TaskCalculateNasdaq100MA200UpDownRate();
 			break;
 		case WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__:
 			ASSERT(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && lCurrentTime < 180000) {
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toTimeOfDay(180000)) {
 				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, 180000);
 			}
 			else { // 当日18时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
-				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 2, 0)); // 两分钟后处理
+				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(GetMarketTime(), 0h, 2min, 0s)); // 两分钟后处理
 			}
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && lCurrentTime < 181000) {
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toTimeOfDay(181000)) {
 				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 181000);
 			}
 			else { // 当日18时之后或者第二日交易时间前
@@ -217,10 +217,10 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__:
-			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
+			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine();
 			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
-			gl_pWorldMarket->TaskProcessTiingoDayLine(lCurrentTime);
+			gl_pWorldMarket->TaskProcessTiingoDayLine();
 			break;
 		default:
 			break;
@@ -230,7 +230,7 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 	return 0;
 }
 
-int CWorldMarket::ProcessCurrentImmediateTask(long lMarketTime) {
+int CWorldMarket::ProcessCurrentImmediateTask() {
 	ASSERT(!m_marketImmediateTask.Empty());
 
 	auto pTask = m_marketImmediateTask.GetTask();
@@ -244,8 +244,9 @@ int CWorldMarket::ProcessCurrentImmediateTask(long lMarketTime) {
 	return pTask->GetType();
 }
 
-void CWorldMarket::TaskCreateTask(long lCurrentTime) {
-	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
+void CWorldMarket::TaskCreateTask() {
+	chrono::hh_mm_ss<chrono::seconds> hms = toTodayClock(GetMarketTime());
+	chrono::seconds seconds = hms.seconds();
 
 	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
@@ -253,38 +254,38 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1);
 
 	// 市场重置
-	if (lCurrentTime < gl_systemConfiguration.GetWorldMarketResettingTime()) {
+	if (GetMarketTime() < toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime())) {
 		AddTask(WORLD_MARKET_RESET__, gl_systemConfiguration.GetWorldMarketResettingTime()); // 执行时间为170000之后
 	}
 
-	AddTask(WORLD_MARKET_UPDATE_DB__, lTimeMinute + 40);// 更新股票简介数据库的任务
+	AddTask(WORLD_MARKET_UPDATE_DB__, GetNextTime(GetMarketTime(), 0h, 0min, 40s - seconds));// 更新股票简介数据库的任务
 
-	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
+	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, GetMarketTime());
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(lCurrentTime, 0, 0, 20)); // 开始下载日线历史数据
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(GetMarketTime(), 0h, 0min, 20s)); // 开始下载日线历史数据
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lTimeMinute, 0, 1, 0)); // 
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // 
 
-	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute, 0, 2, 0)); // 两分钟后开始监测WebSocket
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
 
-	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lTimeMinute, 0, 3, 0)); // 三分钟计算Nasdaq100 200MA比率
+	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(GetMarketTime(), 0h, 3min, 0s - seconds)); // 三分钟计算Nasdaq100 200MA比率
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
 
-void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
-	ASSERT(!IsTimeToResetSystem(lCurrentTime));	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
+void CWorldMarket::TaskProcessWebSocketData() {
+	ASSERT(!IsTimeToResetSystem(GetMarketTime()));	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
 
 	ProcessWebSocketData();
 	UpdateFinnhubStockFromWebSocket();
 
-	long lNextTime = GetNextSecond(lCurrentTime);
-	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetNextTime(GetResetTime(), 0, 5, 1);
+	chrono::local_seconds lNextTime = GetNextSecond(GetMarketTime());
+	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetNextTime(GetResetTime(), 0h, 5min, 1s);
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lNextTime);
 }
 
-void CWorldMarket::TaskMonitorWebSocket(long lCurrentTime) {
-	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lCurrentTime, 0, 1, 0));
+void CWorldMarket::TaskMonitorWebSocket() {
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 	if (!IsSystemReady()) return;
 
 	gl_pFinnhubWebSocket->MonitorWebSocket(GetFinnhubWebSocketSymbols());
@@ -293,14 +294,14 @@ void CWorldMarket::TaskMonitorWebSocket(long lCurrentTime) {
 	gl_pTiingoForexWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldForex.GetSymbols());
 }
 
-void CWorldMarket::TaskResetMarket(long lCurrentTime) {
+void CWorldMarket::TaskResetMarket() {
 	// 市场时间十七时重启系统
 	ASSERT(!m_fResettingMarket);
 	ResetMarket();
 	SetSystemReady(false);
 	ASSERT(!m_fResettingMarket);
 
-	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, lCurrentTime); // 每次重置系统时，必须设置系统状态检查任务
+	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, GetMarketTime()); // 每次重置系统时，必须设置系统状态检查任务
 }
 
 bool CWorldMarket::TaskUpdateTiingoIndustry() {
@@ -490,7 +491,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
+void CWorldMarket::TaskCreateTiingoTradeDayDayLine() {
 	if (IsEndMarketIEXTopOfBookUpdated()) {// 已接收到了IEX TopOfBook数据？
 		gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
 		gl_runtime.thread_executor()->post([] {
@@ -499,7 +500,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 		});
 	}
 	else {
-		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 2, 0));
+		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(GetMarketTime(), 0h, 2min, 0s));
 	}
 }
 
@@ -509,7 +510,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
+void CWorldMarket::TaskProcessTiingoDayLine() {
 	if (gl_systemConfiguration.GetTiingoStockDayLineProcessedDate() >= GetCurrentTradeDate()) return; // 已更新完52WeekHighLow,不再自动更新。
 	ASSERT(!gl_pTiingoDataSource->IsUpdateDayLine());// 接收完日线数据后方可处理
 	ASSERT(!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()); // 接收完IEX日线数据后方可处理
@@ -524,7 +525,7 @@ void CWorldMarket::TaskDeleteDelistedStock() {
 	});
 }
 
-void CWorldMarket::TaskPerSecond(long lCurrentTime) {
+void CWorldMarket::TaskPerSecond() {
 	static int m_iCountDownPerMinute = 59;
 	static int m_iCountDownPerHour = 3599;
 	static int m_iCountDownPerDay = 3500 * 24 - 1;
@@ -573,9 +574,9 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	}
 }
 
-void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime) {
+void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate() {
 	if (!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks() || !gl_pTiingoDataSource->IsUpdateDayLine()) {
-		AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lCurrentTime, 0, 10, 0)); // 十分钟继续计算Nasdaq100 200MA比率
+		AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(GetMarketTime(), 0h, 10min, 0s)); // 十分钟继续计算Nasdaq100 200MA比率
 		return;
 	}
 	gl_runtime.thread_executor()->post([this] {
@@ -708,7 +709,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 void CWorldMarket::calculateStockYearHigherRate() {
 }
 
-bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
+bool CWorldMarket::TaskCheckMarketReady() {
 	if (!IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
 			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
@@ -717,7 +718,7 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 		}
 	}
 	if (!IsSystemReady()) {
-		AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, GetNextSecond(lCurrentTime));
+		AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, GetNextSecond(GetMarketTime()));
 	}
 	return IsSystemReady();
 }
@@ -732,7 +733,7 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
+void CWorldMarket::TaskUpdateWorldMarketDB() {
 	if (gl_dataContainerFinnhubCountry.GetLastTotalCountry() < gl_dataContainerFinnhubCountry.GetTotalCountry()) { // 国家名称
 		gl_runtime.background_executor()->post([] {
 			gl_systemMessage.SetWorldMarketSavingFunction("F Country");
@@ -903,8 +904,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
-	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 510;
+	chrono::local_seconds lNextTime = GetNextTime(GetMarketTime(), 0h, 1min, 0s);
+	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 5min + 10s;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
 }

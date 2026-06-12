@@ -125,17 +125,17 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestGetNextSecond) {
-		EXPECT_EQ(1, GetNextSecond(0));
-		EXPECT_EQ(59, GetNextSecond(58));
-		EXPECT_EQ(100, GetNextSecond(59));
-		EXPECT_EQ(159, GetNextSecond(158));
-		EXPECT_EQ(200, GetNextSecond(159));
-		EXPECT_EQ(10100, GetNextSecond(10059));
-		EXPECT_EQ(20000, GetNextSecond(15959));
-		EXPECT_EQ(20059, GetNextSecond(20058));
-		EXPECT_EQ(20200, GetNextSecond(20159));
-		EXPECT_EQ(235959, GetNextSecond(235958));
-		EXPECT_EQ(240000, GetNextSecond(235959));
+		EXPECT_EQ(toTimeOfDay(1), GetNextSecond(toTimeOfDay(0)));
+		EXPECT_EQ(toTimeOfDay(59), GetNextSecond(toTimeOfDay(58)));
+		EXPECT_EQ(toTimeOfDay(100), GetNextSecond(toTimeOfDay(59)));
+		EXPECT_EQ(toTimeOfDay(159), GetNextSecond(toTimeOfDay(158)));
+		EXPECT_EQ(toTimeOfDay(200), GetNextSecond(toTimeOfDay(159)));
+		EXPECT_EQ(toTimeOfDay(10100), GetNextSecond(toTimeOfDay(10059)));
+		EXPECT_EQ(toTimeOfDay(20000), GetNextSecond(toTimeOfDay(15959)));
+		EXPECT_EQ(toTimeOfDay(20059), GetNextSecond(toTimeOfDay(20058)));
+		EXPECT_EQ(toTimeOfDay(20200), GetNextSecond(toTimeOfDay(20159)));
+		EXPECT_EQ(toTimeOfDay(235959), GetNextSecond(toTimeOfDay(235958)));
+		EXPECT_EQ(toTimeOfDay(240000), GetNextSecond(toTimeOfDay(235959)));
 	}
 
 	TEST_F(TimeConvertTest, TestGetNextTime) {

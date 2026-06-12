@@ -22,7 +22,7 @@ public:
 	~CWorldMarket() override;
 
 	void ResetMarket() final;
-	long GetResetTime() override { return gl_systemConfiguration.GetWorldMarketResettingTime(); }
+	chrono::local_seconds GetResetTime() override { return toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime()); }
 
 	void PrepareToCloseMarket() final;
 
@@ -32,16 +32,16 @@ public:
 	void ResetTiingo();
 	void ResetDataContainer();
 
-	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > GetPrevTime(GetResetTime(), 0, 2, 1)) && (lCurrentTime < GetNextTime(GetResetTime(), 0, 5, 1)); }
-	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由ScheduleTask调度
-	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
+	bool IsTimeToResetSystem(chrono::local_seconds ls) final { return (ls > GetPrevTime(GetResetTime(), 0h, 2min, 1s)) && (ls < GetNextTime(GetResetTime(), 0h, 5min, 1s)); }
+	int ProcessTask() override; // 每日定时任务调度,由ScheduleTask调度
+	int ProcessCurrentImmediateTask() override; // 即时任务调度，由ScheduleTask调度
 
-	void TaskCreateTask(long lCurrentTime);
-	void TaskResetMarket(long lCurrentTime);
-	bool TaskCheckMarketReady(long lCurrentTime);
-	void TaskProcessWebSocketData(long lCurrentTime);
-	void TaskMonitorWebSocket(long lCurrentTime);
-	void TaskUpdateWorldMarketDB(long lCurrentTime);
+	void TaskCreateTask();
+	void TaskResetMarket();
+	bool TaskCheckMarketReady();
+	void TaskProcessWebSocketData();
+	void TaskMonitorWebSocket();
+	void TaskUpdateWorldMarketDB();
 
 	bool TaskUpdateTiingoIndustry();
 	bool TaskUpdateSicIndustry();
@@ -54,17 +54,17 @@ public:
 	bool TaskUpdateForexDayLineDB();
 	bool TaskUpdateCryptoDayLineDB();
 
-	void TaskCreateTiingoTradeDayDayLine(long lCurrentTime);
-	void TaskProcessTiingoDayLine(long lCurrentTime);
+	void TaskCreateTiingoTradeDayDayLine();
+	void TaskProcessTiingoDayLine();
 
 	static void TaskDeleteDelistedStock();
 
-	void TaskPerSecond(long lCurrentTime);
+	void TaskPerSecond();
 
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();
 
-	void TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
+	void TaskCalculateNasdaq100MA200UpDownRate(); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
 	concurrencpp::result<bool> LoadNasdaq100StocksDayLine();
 	void CalculateNasdaq100StocksMA(int length) const;
 	void calculateNasdaq100MA200UpDownRate();
@@ -127,7 +127,7 @@ public:
 	static void DeleteTiingoDayLine(const CTiingoStockPtr& pStock);
 	static void DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock);
 
-	bool IsReadyToInquireWebData(long lCurrentMarketTime) override { return !IsResetTime(lCurrentMarketTime); }
+	bool IsReadyToInquireWebData() override { return !IsResetTime(); }
 
 	void SetPermitUpdateTiingoFundamentalDefinitionDB(bool fFlag) noexcept { m_fPermitUpdateTiingoFundamentalDefinitionDB = fFlag; }
 	bool IsPermitUpdateTiingoFundamentalDefinitionDB() const noexcept { return m_fPermitUpdateTiingoFundamentalDefinitionDB; }

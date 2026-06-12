@@ -9,10 +9,17 @@ void CMarketTaskQueue::AddTask(const CMarketTaskPtr& pTask) {
 	m_vMarketTask.push(pTask);
 }
 
-void CMarketTaskQueue::AddTask(long lTaskType, long lExecuteTime) {
+void CMarketTaskQueue::AddTask(long lTaskType, chrono::hh_mm_ss<chrono::seconds> lExecuteTime) {
 	const auto pTask = make_shared<CMarketTask>();
 	pTask->SetType(lTaskType);
 	pTask->SetTime(lExecuteTime);
+	m_vMarketTask.push(pTask);
+}
+
+void CMarketTaskQueue::AddTask(const long lTaskType, const chrono::local_seconds executeTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(lTaskType);
+	pTask->SetTime(executeTime);
 	m_vMarketTask.push(pTask);
 }
 

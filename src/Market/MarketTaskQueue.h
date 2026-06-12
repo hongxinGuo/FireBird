@@ -12,7 +12,8 @@ public:
 	~CMarketTaskQueue() = default;
 
 	void AddTask(const CMarketTaskPtr& pTask);
-	void AddTask(long lTaskType, long lExecuteTime);
+	void AddTask(long lTaskType, chrono::hh_mm_ss<chrono::seconds> lExecuteTime);
+	void AddTask(long lTaskType, chrono::local_seconds executeTime);
 	CMarketTaskPtr GetTask() const { return m_vMarketTask.top(); }
 	void DiscardCurrentTask() { m_vMarketTask.pop(); }
 	size_t Size() const { return m_vMarketTask.size(); }

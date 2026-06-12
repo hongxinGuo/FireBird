@@ -10,7 +10,7 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateSicIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));
-		MOCK_METHOD(long, GetResetTime, (), (override));
+		MOCK_METHOD(chrono::local_seconds, GetResetTime, (), (override));
 	};
 
 	using CMockWorldMarketPtr = shared_ptr<CMockWorldMarket>;

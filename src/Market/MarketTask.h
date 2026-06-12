@@ -2,6 +2,8 @@
 #pragma once
 
 #include <concurrencpp/timers/timer.h>
+
+#include "TimeConvert.h"
 using concurrencpp::timer;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,20 +72,20 @@ extern map<long, string> gl_mapMarketMapIndex;
 class CMarketTask {
 public:
 	CMarketTask();
-	CMarketTask(long lTime, long lType);
+	CMarketTask(long lType, chrono::local_seconds lTime);
 	~CMarketTask() = default;
 
-	long GetTime() const { return m_lTime; }
-	chrono::sys_seconds GetTpTime() const { return m_tpTime; }
-	void SetTime(const long lTime) { m_lTime = lTime; }
+	chrono::local_seconds GetTime() const { return m_tpTime; }
+	void SetTime(const chrono::hh_mm_ss<chrono::seconds>& lTime) { m_tpTime = toTimeOfDay(lTime); }
+	void SetTime(long lTime) { m_tpTime = toTimeOfDay(lTime); }
+	void SetTime(chrono::local_seconds ls) { m_tpTime = ls; }
 
 	long GetType() const { return m_lType; }
 	void SetType(const long lType) { m_lType = lType; }
 
 protected:
 	long m_lType{ 0 }; // 枚举型任务号
-	chrono::sys_seconds m_tpTime; // Note 使用此变量取代HHMMSS制式的m_lTime。
-	long m_lTime{ 0 }; // HHMMSS制式
+	chrono::local_seconds m_tpTime; // Note 使用此变量取代HHMMSS制式的m_lTime。
 };
 
 using CMarketTaskPtr = shared_ptr<CMarketTask>;

@@ -190,6 +190,10 @@ namespace FireBirdTest {
 			}
 			ASSERT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
+			if (CMFCVisualManager::GetInstance() != nullptr) {
+				delete CMFCVisualManager::GetInstance(); // 在生成gl_pMockMainFrame时，会生成一个视觉管理器。故而在此删除之。
+			}
+
 			gl_systemConfiguration.SetExitingSystem(false);
 
 			// 以下真实的数据指针需要主动赋值为nullptr

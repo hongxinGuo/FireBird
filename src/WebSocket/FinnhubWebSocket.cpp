@@ -42,7 +42,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 			gl_dailyWebSocketLogger->error("{}", str);
 			// finnhub webSocket有时会出现EC429（too many connection attempt），由其他账户同时申请所致。此时需要暂停本账户的申请以维持其他账户的申请能够顺利执行
 			// 10分钟后自动重新连接。
-			gl_pWorldMarket->AddTask(WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 10, 0));
+			gl_pWorldMarket->AddTask(WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0h, 10min, 0s));
 		}
 		break;
 	case ix::WebSocketMessageType::Open:

@@ -5,12 +5,11 @@
 map<long, string> gl_mapMarketMapIndex;
 
 CMarketTask::CMarketTask() {
-	m_lTime = 0;
 	m_lType = 0;
+	m_tpTime = chrono::local_seconds{};
 }
 
-CMarketTask::CMarketTask(long lTime, long lType) {
-	m_lTime = lTime;
+CMarketTask::CMarketTask(long lType, chrono::local_seconds lTime) {
 	m_lType = lType;
+	m_tpTime = lTime;
 }
-

@@ -20,49 +20,49 @@ public:
 	~CChinaMarket() override;
 
 	void ResetMarket() final;
-	long GetResetTime() final { return 30000; } // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
+	chrono::local_seconds GetResetTime() final { return toTimeOfDay(30000); } // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
 	void Reset();
 
 	void PrepareToCloseMarket() final;
 
-	bool IsTimeToResetSystem(long lCurrentTime) final;
+	bool IsTimeToResetSystem(chrono::local_seconds ls) final;
 	bool IsOrdinaryTradeTime() final { return IsOrdinaryTradeTime(GetMarketTime()); } // 日常交易时间
-	bool IsOrdinaryTradeTime(long lTime) final;
+	bool IsOrdinaryTradeTime(chrono::local_seconds lTime) final;
 	bool IsWorkingTime() final { return IsWorkingTime(GetMarketTime()); }
-	bool IsWorkingTime(long lTime) final;
+	bool IsWorkingTime(chrono::local_seconds lTime) final;
 	bool IsDummyTime() final { return !IsWorkingTime(); }
-	bool IsDummyTime(long lTime) final { return !IsWorkingTime(lTime); }
+	bool IsDummyTime(chrono::local_seconds lTime) final { return !IsWorkingTime(lTime); }
 
-	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的ScheduleTask调度
-	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
+	int ProcessTask() override; // 每日定时任务调度,由基类的ScheduleTask调度
+	int ProcessCurrentImmediateTask() override; // 即时任务调度，由ScheduleTask调度
 
 	// 各种任务
-	virtual void TaskCreateTask(long lCurrentTime);
+	virtual void TaskCreateTask();
 	virtual void TaskExitSystem();
-	bool TaskCheckMarketReady(long lCurrentTime);
-	virtual bool TaskResetMarket(long lCurrentTime);
-	bool TaskCheckSystem(long lCurrentTime);
-	void TaskDistributeAndCalculateRTData(long lCurrentTime);
-	void TaskProcessAndSaveDayLine(long lCurrentTime);
-	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
-	void TaskAccessoryPerMinuteTask(long lCurrentTime); // 每分钟重复执行的辅助任务
-	void TaskPreparingMarketOpen(long lCurrentTime);
+	bool TaskCheckMarketReady();
+	virtual bool TaskResetMarket();
+	bool TaskCheckSystem();
+	void TaskDistributeAndCalculateRTData();
+	void TaskProcessAndSaveDayLine();
+	void TaskPerSecond(); // 每秒一次的辅助任务
+	void TaskAccessoryPerMinuteTask(); // 每分钟重复执行的辅助任务
+	void TaskPreparingMarketOpen();
 	void TaskSetCurrentStock();
 
-	bool SetCheckActiveStockFlag(long lCurrentTime);
-	bool TaskProcessTodayStock(long lCurrentTime);
+	bool SetCheckActiveStockFlag();
+	bool TaskProcessTodayStock();
 
 	void ProcessTodayStock();
 	bool IsSavingDayLineDBTaskFinished();
-	bool CheckFastReceivingData(long lCurrentTime);
+	bool CheckFastReceivingData();
 	static bool IsWebBusy();
 	long long GetHTTPStatus();
 	bool IsWebError();
 	long long GetWebErrorCode();
-	bool CheckMarketOpen(long lCurrentTime);
+	bool CheckMarketOpen();
 
-	bool TaskUpdateStockProfileDB(long lCurrentTime);
-	bool TaskUpdateOptionDB(long lCurrentTime);
+	bool TaskUpdateStockProfileDB();
+	bool TaskUpdateOptionDB();
 	bool TaskUpdateChosenStockDB();
 
 	bool TaskUpdateStockSection(); //

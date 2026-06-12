@@ -32,42 +32,41 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CVirtualMarketTest, TestAddTask) {
+		virtualMarket.DiscardAllMarketTask();
+
 		virtualMarket.AddTask(3, 10000);
 		virtualMarket.AddTask(3, 20000);
 		virtualMarket.AddTask(4, 10000);
 		virtualMarket.AddTask(1, 10000);
 		virtualMarket.AddTask(6, 1);
 		virtualMarket.AddTask(5, 1);
-		virtualMarket.AddTask(2, 10000);
 
 		auto pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 1) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(1)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 1) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(1)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10000)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10000)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
-		virtualMarket.DiscardCurrentMarketTask();
-
-		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10000)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), 3);
-		EXPECT_EQ(pTask->GetTime(), 20000);
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(20000));
 		virtualMarket.DiscardCurrentMarketTask();
+
+		EXPECT_TRUE(virtualMarket.IsMarketTaskEmpty()) << virtualMarket.GetMarketTask()->GetTime();
 	}
 
 	TEST_F(CVirtualMarketTest, TestRectifyTaskTime) {
@@ -84,13 +83,13 @@ namespace FireBirdTest {
 		virtualMarket.AdjustTaskTime();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 350) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(350)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 34010) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(34010)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 60000) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(60000)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 	}
 
@@ -99,8 +98,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime2) {
-		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(0));
-		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(100));
+		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toTimeOfDay(0)));
+		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toTimeOfDay(100)));
 		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(virtualMarket.GetMarketTime()));
 	}
 
@@ -109,8 +108,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsWorkingTime2) {
-		EXPECT_TRUE(virtualMarket.IsWorkingTime(0));
-		EXPECT_TRUE(virtualMarket.IsWorkingTime(100));
+		EXPECT_TRUE(virtualMarket.IsWorkingTime(toTimeOfDay(0)));
+		EXPECT_TRUE(virtualMarket.IsWorkingTime(toTimeOfDay(100)));
 		EXPECT_TRUE(virtualMarket.IsWorkingTime(virtualMarket.GetMarketTime()));
 	}
 
@@ -119,14 +118,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsDummyTime2) {
-		EXPECT_FALSE(virtualMarket.IsDummyTime(0));
-		EXPECT_FALSE(virtualMarket.IsDummyTime(100));
+		EXPECT_FALSE(virtualMarket.IsDummyTime(toTimeOfDay(0)));
+		EXPECT_FALSE(virtualMarket.IsDummyTime(toTimeOfDay(100)));
 		EXPECT_FALSE(virtualMarket.IsDummyTime(virtualMarket.GetMarketTime()));
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsTimeToResetSystem) {
-		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(0));
-		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(1000));
+		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toTimeOfDay(0)));
+		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toTimeOfDay(1000)));
 		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(virtualMarket.GetMarketTime()));
 	}
 

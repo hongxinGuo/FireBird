@@ -21,26 +21,24 @@ CVirtualMarket::CVirtualMarket() {
 void CVirtualMarket::ScheduleTask() {
 	CalculateTime();
 
-	const long lCurrentMarketTime = GetMarketTime();
-
-	if (lCurrentMarketTime < 100) { // 每日最初的一分钟内。保证每日执行一次
+	if (GetMarketTime() < toTimeOfDay(100)) { // 每日最初的一分钟内。保证每日执行一次
 		if (!m_marketTask.Empty()) {
-			if (m_marketTask.GetTask()->GetTime() >= 240000) { // 当任务队列中都是明日的时间时，将时间调减24小时
+			if (m_marketTask.GetTask()->GetTime() >= toTimeOfDay(240000)) { // 当任务队列中都是明日的时间时，将时间调减24小时
 				AdjustTaskTime();
 			}
 		}
 	}
 
 	// 调用本市场的各data source，进行网络数据的接收和处理。在市场重置时间内暂停
-	if (IsReadyToInquireWebData(lCurrentMarketTime)) {
-		RunDataSource(lCurrentMarketTime);
+	if (IsReadyToInquireWebData()) {
+		RunDataSource();
 	}
 
 	// 执行本市场各项定时任务。
 	if (IsResetting()) return; // 当市场正在重置时暂停
 
 	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-	int taskType = ProcessTask(lCurrentMarketTime); // 执行定时任务
+	int taskType = ProcessTask(); // 执行定时任务
 	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 #ifdef _TRACE_SCHEDULE_TASK___
 	if (taskType != 0) gl_traceLogger->trace("{} ms {}", gl_mapMarketMapIndex.at(taskType), (end - start).count());
@@ -50,7 +48,7 @@ void CVirtualMarket::ScheduleTask() {
 	vector<int> vTaskType;
 	for (size_t i = 0; i < immediateTaskSize; i++) {
 		auto pTask = m_marketImmediateTask.GetTask();
-		vTaskType.push_back(ProcessCurrentImmediateTask(lCurrentMarketTime));// 执行所有即时任务
+		vTaskType.push_back(ProcessCurrentImmediateTask());// 执行所有即时任务
 	}
 	ASSERT(vTaskType.size() == immediateTaskSize);
 #ifdef _TRACE_SCHEDULE_TASK___
@@ -63,11 +61,11 @@ void CVirtualMarket::ScheduleTask() {
 #endif
 }
 
-void CVirtualMarket::RunDataSource(long lMarketTime) const {
+void CVirtualMarket::RunDataSource() const {
 	for (const auto& pDataSource : m_vDataSource) {
 		if (pDataSource->IsEnable()) {
 			if (!pDataSource->IsInquiring()) {
-				pDataSource->Run(lMarketTime);
+				pDataSource->Run(toUnsignedTime(GetMarketTime()));
 			}
 		}
 	}
@@ -77,8 +75,8 @@ void CVirtualMarket::ResetMarket() {
 	ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }
 
-bool CVirtualMarket::IsResetTime(long lCurrentTime) {
-	return lCurrentTime > GetPrevTime(GetResetTime(), 0, 10, 0) && lCurrentTime < GetNextTime(GetResetTime(), 0, 5, 0);
+bool CVirtualMarket::IsResetTime() {
+	return GetMarketTime() > GetPrevTime(GetResetTime(), 0h, 10min, 0s) && GetMarketTime() < GetNextTime(GetResetTime(), 0h, 5min, 0s);
 }
 
 bool CVirtualMarket::UpdateMarketInfo() {
@@ -98,6 +96,13 @@ void CVirtualMarket::AddTask(const long lTaskType, const long lExecuteTime) {
 	AddTask(pTask);
 }
 
+void CVirtualMarket::AddTask(const long lTaskType, const chrono::local_seconds executeTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(lTaskType);
+	pTask->SetTime(executeTime);
+	AddTask(pTask);
+}
+
 ///////////////////////////////////////////////////////////////
 //
 // 如果任务队列中的时间皆超过240000，则将所有的时间减去240000.
@@ -111,8 +116,8 @@ void CVirtualMarket::AdjustTaskTime() {
 	}
 	ASSERT(m_marketTask.Empty());
 	for (const auto& pMarketTask : vTask) {
-		ASSERT(pMarketTask->GetTime() >= 240000);
-		pMarketTask->SetTime(pMarketTask->GetTime() - 240000);
+		ASSERT(pMarketTask->GetTime() >= toTimeOfDay(240000));
+		pMarketTask->SetTime(pMarketTask->GetTime() - 24h);
 		m_marketTask.AddTask(pMarketTask);
 	}
 }
@@ -132,12 +137,12 @@ bool CVirtualMarket::HaveNewTask() const {
 	return m_qMarketDisplayTask.size_approx() > m_lLastQueueLength;
 }
 
-vector<CMarketTaskPtr> CVirtualMarket::DiscardOutDatedTask(long m_lCurrentMarketTime) {
+vector<CMarketTaskPtr> CVirtualMarket::DiscardOutDatedTask(chrono::local_seconds lCurrentMarketTime) {
 	vector<CMarketTaskPtr> validTasks;
 	CMarketTaskPtr pTask = nullptr;
 
 	while (m_qMarketDisplayTask.try_dequeue(pTask)) {
-		if (pTask->GetTime() > m_lCurrentMarketTime) {
+		if (pTask->GetTime() > lCurrentMarketTime) {
 			validTasks.emplace_back(pTask);
 		}
 	}
@@ -165,7 +170,6 @@ void CVirtualMarket::CalculateTime() noexcept {
 	m_lMarketDate = static_cast<int>(m_marketYearMonthDay.year()) * 10000
 	+ static_cast<unsigned>(m_marketYearMonthDay.month()) * 100
 	+ static_cast<unsigned>(m_marketYearMonthDay.day());
-	m_lMarketTime = m_marketTimeOfDay.hours().count() * 10000 + m_marketTimeOfDay.minutes().count() * 100 + m_marketTimeOfDay.seconds().count();
 }
 
 bool CVirtualMarket::IsWorkingDay() const noexcept {
@@ -187,7 +191,7 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 	return true;
 }
 
-long CVirtualMarket::GetNextTradeDate() {
+unsigned CVirtualMarket::GetNextTradeDate() {
 	chrono::days day{ 1 };
 	if (m_marketWeekDay == chrono::Saturday) {
 		++day; // 下周一
@@ -201,7 +205,7 @@ long CVirtualMarket::GetNextTradeDate() {
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 }
 
-long CVirtualMarket::GetCurrentTradeDate() {
+unsigned CVirtualMarket::GetCurrentTradeDate() {
 	chrono::days day;
 	if (m_marketWeekDay == chrono::Saturday) {
 		day = chrono::days(1); // 周五
@@ -217,7 +221,7 @@ long CVirtualMarket::GetCurrentTradeDate() {
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 }
 
-long CVirtualMarket::GetLastTradeDate() {
+unsigned CVirtualMarket::GetLastTradeDate() {
 	chrono::days day;
 	if (m_marketWeekDay == chrono::Monday) {
 		day = chrono::days(3); // 周五

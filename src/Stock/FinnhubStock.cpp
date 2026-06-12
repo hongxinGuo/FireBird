@@ -45,7 +45,7 @@ void CFinnhubStock::CheckUpdateStatus(long lTodayDate) {
 	CheckProfileUpdateStatus(lTodayDate);
 	CheckBasicFinancialUpdateStatus(lTodayDate);
 	CheckCompanyNewsUpdateStatus(lTodayDate);
-	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
+	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), toUnsignedTime(gl_pWorldMarket->GetMarketTime()), gl_pWorldMarket->GetDayOfWeek());
 	CheckEPSSurpriseStatus(lTodayDate);
 	CheckSECFilingsStatus(lTodayDate);
 	CheckPeerStatus(lTodayDate);

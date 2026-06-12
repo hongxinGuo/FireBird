@@ -68,8 +68,8 @@ bool CContainerStockExchange::LoadDB() {
 
 			int openHour, openMinute, endHour, endMinute;
 			sscanf_s(pExchange->m_strHour.c_str(), "%2d:%2d-%2d:%2d", &openHour, &openMinute, &endHour, &endMinute);
-			pExchange->m_lMarketOpenTime = (openHour * 60 + openMinute) * 60;
-			pExchange->m_lMarketCloseTime = (endHour * 60 + endMinute) * 60;
+			pExchange->m_marketOpenTime = chrono::hh_mm_ss<chrono::seconds>(chrono::hours(openHour) + chrono::minutes(openMinute));
+			pExchange->m_marketCloseTime = chrono::hh_mm_ss<chrono::seconds>(chrono::hours(endHour) + chrono::minutes(endMinute));
 			m_vStockExchange.push_back(pExchange);
 			m_mapStockExchange[pExchange->GetExchangeCode()] = m_vStockExchange.size();
 		}

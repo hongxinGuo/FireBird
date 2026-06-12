@@ -30,8 +30,8 @@ public:
 	string m_strSource;
 	string m_strMyUnknownColumn;
 
-	long m_lMarketOpenTime{ 0 };
-	long m_lMarketCloseTime{ 0 };
+	chrono::hh_mm_ss<chrono::seconds> m_marketOpenTime{ 0h };
+	chrono::hh_mm_ss<chrono::seconds> m_marketCloseTime{ 0h };
 
 	bool m_fUpdateStockSymbol{ true };
 	bool m_fUpdateMarketStatus{ true };

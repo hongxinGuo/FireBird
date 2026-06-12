@@ -1041,7 +1041,7 @@ void CMainFrame::OnInquireIexTopOfBook() {
 }
 
 void CMainFrame::OnCalculateNasdaq100200maUpdownRate() {
-	gl_pWorldMarket->TaskCalculateNasdaq100MA200UpDownRate(gl_pWorldMarket->GetMarketTime());
+	gl_pWorldMarket->TaskCalculateNasdaq100MA200UpDownRate();
 }
 
 void CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI) {

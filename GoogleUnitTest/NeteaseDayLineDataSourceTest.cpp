@@ -66,7 +66,7 @@ namespace FireBirdTest {
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage2) {
 		//gl_pSinaRTDataSource->SetWebError(false);
-		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // 空闲时间
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(chrono::hh_mm_ss(12h + 00min + 00s)); // 空闲时间
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());

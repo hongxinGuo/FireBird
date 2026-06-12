@@ -85,7 +85,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());
-		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // dummy time and > 114500
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(toTodayClock(120000)); // dummy time and > 114500
 		s_pMockTengxunDayLineDataSource->SetInquiring(true);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, Inquire).Times(0);
 
@@ -98,7 +98,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());
-		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // dummy time and > 114500
+		chrono::hh_mm_ss<chrono::seconds> marketTime(12h + 00min + 00s);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(marketTime); // dummy time and > 114500
 		s_pMockTengxunDayLineDataSource->SetInquiring(false);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, Inquire).Times(1);
 

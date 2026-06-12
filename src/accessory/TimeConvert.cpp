@@ -180,19 +180,12 @@ long GetCurrentMonday(long lDate) {
 	return lCurrentMonday;
 }
 
-long GetNextSecond(const long lTime) {
-	const long hourMinute = lTime / 100;
-	const long hh = lTime / 10000;
-	const long ss = lTime - hourMinute * 100;
-	if (ss == 59) {
-		const long mm = hourMinute - hh * 100;
-		if (mm == 59) {
-			ASSERT(hh < 24);
-			return (hh + 1) * 10000;
-		}
-		return (hourMinute + 1) * 100;
-	}
-	return lTime + 1;
+chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time) {
+	return chrono::local_seconds(time.to_duration() + chrono::seconds(1));
+}
+
+chrono::local_seconds GetNextSecond(chrono::local_seconds time) {
+	return chrono::local_seconds(time + chrono::seconds(1));
 }
 
 long GetNextTime(const long lTime, const long hh, const long mm, const long ss) {
@@ -221,9 +214,14 @@ long GetNextTime(const long lTime, const long hh, const long mm, const long ss) 
 	return hEnd * 10000 + mEnd * 100 + sEnd;
 }
 
-chrono::hh_mm_ss<chrono::seconds> GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
-	auto newTime = time.to_duration() + hour + minute + second;
-	return chrono::hh_mm_ss<chrono::seconds>(newTime);
+chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	chrono::local_seconds newTime{ chrono::local_seconds(time.to_duration() + hour + minute + second) };
+	return newTime;
+}
+
+chrono::local_seconds GetNextTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	auto newTime = time.time_since_epoch() + hour + minute + second;
+	return chrono::local_seconds(newTime);
 }
 
 long GetPrevTime(long lTime, long hh, long mm, long ss) {
@@ -250,6 +248,16 @@ long GetPrevTime(long lTime, long hh, long mm, long ss) {
 	const long hEnd = h - hh - hTemp;
 
 	return hEnd * 10000 + mEnd * 100 + sEnd;
+}
+
+chrono::local_seconds GetPrevTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	chrono::local_seconds newTime{ chrono::local_seconds(time.to_duration() - hour - minute - second) };
+	return newTime;
+}
+
+chrono::local_seconds GetPrevTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	auto newTime = time.time_since_epoch() - hour - minute - second;
+	return chrono::local_seconds(newTime);
 }
 
 string ConvertDateToTimeStamp(const long lDate) {
