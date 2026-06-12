@@ -46,7 +46,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestInquire) {
-		EXPECT_TRUE(dataSource.GenerateInquiryMessage(10101010));
+		EXPECT_TRUE(dataSource.GenerateInquiryMessage(toTimeOfDay(10101010)));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestEnable) {

@@ -75,10 +75,10 @@ namespace FireBirdTest {
 			s_pTiingoDataSource->StoreInquiry(p);
 		}, Return(true)));
 
-		EXPECT_FALSE(s_pTiingoDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pTiingoDataSource->GenerateInquiryMessage(toTimeOfDay(120500))) << "时间未到，继续等待";
 		EXPECT_FALSE(s_pTiingoDataSource->IsInquiring());
 		EXPECT_FALSE(s_pTiingoDataSource->HaveInquiry());
-		EXPECT_TRUE(s_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+		EXPECT_TRUE(s_pTiingoDataSource->GenerateInquiryMessage(toTimeOfDay(120500))) << "已过五分钟，申请数据";
 
 		EXPECT_TRUE(s_pTiingoDataSource->IsInquiring());
 		EXPECT_TRUE(s_pTiingoDataSource->HaveInquiry());
@@ -116,10 +116,10 @@ namespace FireBirdTest {
 			s_pTiingoDataSource->StoreInquiry(p);
 		}, Return(true)));
 
-		EXPECT_FALSE(s_pTiingoDataSource->GenerateInquiryMessage(120000)) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pTiingoDataSource->GenerateInquiryMessage(toTimeOfDay(120000) )) << "时间未到，继续等待";
 		EXPECT_FALSE(s_pTiingoDataSource->IsInquiring());
 		EXPECT_FALSE(s_pTiingoDataSource->HaveInquiry());
-		EXPECT_TRUE(s_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+		EXPECT_TRUE(s_pTiingoDataSource->GenerateInquiryMessage(toTimeOfDay(120500))) << "已过五分钟，申请数据";
 
 		EXPECT_TRUE(s_pTiingoDataSource->IsInquiring());
 		EXPECT_TRUE(s_pTiingoDataSource->HaveInquiry());

@@ -29,7 +29,7 @@ bool CAlphaVantageDataSource::Reset() {
 	return true;
 }
 
-bool CAlphaVantageDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CAlphaVantageDataSource::GenerateInquiryMessage(const chrono::local_seconds& lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请Alpha Vantage各数据。

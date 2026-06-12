@@ -426,7 +426,7 @@ void CTiingoDataSource::CheckWebData2(const CWebDataPtr& pWebData) {
 	}
 }
 
-bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;
@@ -434,8 +434,8 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	m_PrevInquireTimePoint = llTickCount;
 	SPDLOG_ASSERT(!IsInquiring());
 	// Ensure we are not in the market reset window before proceeding
-	SPDLOG_ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
-		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
+	SPDLOG_ASSERT(currentTime <= GetPrevTime(toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
+		|| currentTime >= GetNextTime(toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;

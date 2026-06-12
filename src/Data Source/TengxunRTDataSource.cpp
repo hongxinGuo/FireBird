@@ -20,7 +20,7 @@ bool CTengxunRTDataSource::Reset() {
 	return true;
 }
 
-bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CTengxunRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (llTickCount > m_PrevInquireTimePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) {

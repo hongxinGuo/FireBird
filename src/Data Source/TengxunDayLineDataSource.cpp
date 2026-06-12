@@ -44,7 +44,7 @@ bool CTengxunDayLineDataSource::Reset() {
 // 腾讯日线数据每次最多提供2000个。当所需数据超过两千个时，需要分次提取。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CTengxunDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯日线数据。
 	//if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->GetMarketTimeAsChrono().to_duration() > 9h + 30min) {

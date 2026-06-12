@@ -71,10 +71,10 @@ namespace FireBirdTest {
 			s_pMockQuandlDataSource->StoreInquiry(p);
 		}, Return(true)));
 
-		EXPECT_FALSE(s_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pMockQuandlDataSource->GenerateInquiryMessage(toTimeOfDay(120500))) << "时间未到，继续等待";
 		EXPECT_FALSE(s_pMockQuandlDataSource->IsInquiring());
 		EXPECT_FALSE(s_pMockQuandlDataSource->HaveInquiry());
-		EXPECT_TRUE(s_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "申请数据";
+		EXPECT_TRUE(s_pMockQuandlDataSource->GenerateInquiryMessage(toTimeOfDay(120500))) << "申请数据";
 
 		EXPECT_TRUE(s_pMockQuandlDataSource->IsInquiring());
 		EXPECT_TRUE(s_pMockQuandlDataSource->HaveInquiry());

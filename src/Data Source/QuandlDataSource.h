@@ -14,7 +14,7 @@ public:
 
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
 
 	virtual bool Inquire();
 
@@ -23,7 +23,7 @@ public:
 protected:
 	CQuandlFactory m_QuandlFactory;
 
-	bool m_fQuandlDataInquiryFinished{false};
+	bool m_fQuandlDataInquiryFinished{ false };
 };
 
 using CQuandlDataSourcePtr = shared_ptr<CQuandlDataSource>;

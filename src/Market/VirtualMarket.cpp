@@ -65,7 +65,7 @@ void CVirtualMarket::RunDataSource() const {
 	for (const auto& pDataSource : m_vDataSource) {
 		if (pDataSource->IsEnable()) {
 			if (!pDataSource->IsInquiring()) {
-				pDataSource->Run(toUnsignedTime(GetMarketTime()));
+				pDataSource->Run(GetMarketTime());
 			}
 		}
 	}

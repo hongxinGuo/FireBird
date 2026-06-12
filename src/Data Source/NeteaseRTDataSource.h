@@ -14,12 +14,12 @@ public:
 
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
 
 	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
 	void CreateCurrentInquireString() override;
 
-	virtual void Inquire(long lCurrentTime);
+	virtual void Inquire(const chrono::local_seconds& currentTime);
 };
 
 using CNeteaseRTDataSourcePtr = shared_ptr<CNeteaseRTDataSource>;

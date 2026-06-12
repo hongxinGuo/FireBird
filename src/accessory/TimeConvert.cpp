@@ -107,6 +107,24 @@ long GetNextMonday(long lDate) {
 	return lNextDay;
 }
 
+chrono::local_days GetNextMonday(chrono::local_days ld) {
+	weekday wd{ ld }; // 0 = Sunday, 1 = Monday, ...
+	int wd_index = static_cast<int>(wd.c_encoding());
+	int offset = (1 - wd_index + 7) % 7;
+	if (offset == 0) offset = 7; // if already Monday, choose next week's Monday
+
+	return ld + days{ offset };
+}
+
+chrono::year_month_day GetNextMonday(chrono::year_month_day ymd) {
+	chrono::local_days ld{ ymd };
+	weekday wd{ ld }; // 0 = Sunday, 1 = Monday, ...
+	int wd_index = static_cast<int>(wd.c_encoding());
+	int offset = (1 - wd_index + 7) % 7;
+	if (offset == 0) offset = 7; // if already Monday, choose next week's Monday
+	return chrono::year_month_day{ ld + days{ offset } };
+}
+
 long GetPrevMonday(long lDate) {
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - (lDate / 10000) * 100;
@@ -188,32 +206,6 @@ chrono::local_seconds GetNextSecond(chrono::local_seconds time) {
 	return chrono::local_seconds(time + chrono::seconds(1));
 }
 
-long GetNextTime(const long lTime, const long hh, const long mm, const long ss) {
-	const long h = lTime / 10000;
-	const long m = (lTime - h * 10000) / 100;
-	const long s = lTime - h * 10000 - m * 100;
-	long mTemp = 0;
-	long hTemp = 0;
-	long mEnd, sEnd;
-	if (s + ss > 59) {
-		mTemp = 1;
-		sEnd = s + ss - 60;
-	}
-	else {
-		sEnd = s + ss;
-	}
-	if (m + mm + mTemp > 59) {
-		hTemp = 1;
-		mEnd = m + mm + mTemp - 60;
-	}
-	else {
-		mEnd = m + mm + mTemp;
-	}
-	const long hEnd = h + hh + hTemp;
-
-	return hEnd * 10000 + mEnd * 100 + sEnd;
-}
-
 chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
 	chrono::local_seconds newTime{ chrono::local_seconds(time.to_duration() + hour + minute + second) };
 	return newTime;
@@ -222,32 +214,6 @@ chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono
 chrono::local_seconds GetNextTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
 	auto newTime = time.time_since_epoch() + hour + minute + second;
 	return chrono::local_seconds(newTime);
-}
-
-long GetPrevTime(long lTime, long hh, long mm, long ss) {
-	const long h = lTime / 10000;
-	const long m = (lTime - h * 10000) / 100;
-	const long s = lTime - h * 10000 - m * 100;
-	long mTemp = 0;
-	long hTemp = 0;
-	long mEnd, sEnd;
-	if (s - ss < 0) {
-		mTemp = 1;
-		sEnd = s - ss + 60;
-	}
-	else {
-		sEnd = s - ss;
-	}
-	if (m - mm - mTemp < 0) {
-		hTemp = 1;
-		mEnd = m - mm - mTemp + 60;
-	}
-	else {
-		mEnd = m - mm - mTemp;
-	}
-	const long hEnd = h - hh - hTemp;
-
-	return hEnd * 10000 + mEnd * 100 + sEnd;
 }
 
 chrono::local_seconds GetPrevTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {

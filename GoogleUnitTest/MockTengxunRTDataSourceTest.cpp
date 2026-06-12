@@ -64,13 +64,13 @@ namespace FireBirdTest {
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
-		EXPECT_FALSE(s_pMockTengxunRTDataSource->GenerateInquiryMessage(120000));
+		EXPECT_FALSE(s_pMockTengxunRTDataSource->GenerateInquiryMessage(toTimeOfDay(120000)));
 
-		EXPECT_FALSE(s_pMockTengxunRTDataSource->GenerateInquiryMessage(120100)) << "继续等待";
+		EXPECT_FALSE(s_pMockTengxunRTDataSource->GenerateInquiryMessage(toTimeOfDay(120100))) << "继续等待";
 		EXPECT_FALSE(s_pMockTengxunRTDataSource->IsInquiring());
 		EXPECT_FALSE(s_pMockTengxunRTDataSource->HaveInquiry());
 
-		EXPECT_TRUE(s_pMockTengxunRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
+		EXPECT_TRUE(s_pMockTengxunRTDataSource->GenerateInquiryMessage(toTimeOfDay(120600))) << "申请数据";
 
 		EXPECT_TRUE(s_pMockTengxunRTDataSource->HaveInquiry());
 

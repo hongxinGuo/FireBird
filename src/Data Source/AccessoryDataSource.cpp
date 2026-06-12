@@ -26,7 +26,7 @@ bool CAccessoryDataSource::Reset() {
 	return true;
 }
 
-bool CAccessoryDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CAccessoryDataSource::GenerateInquiryMessage(const chrono::local_seconds& lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
 	m_PrevInquireTimePoint = llTickCount;

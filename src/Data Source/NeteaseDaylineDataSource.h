@@ -14,7 +14,7 @@ public:
 
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
 	void CreateProduct();
 
 	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置Netease DayLine的m_pSession状态。

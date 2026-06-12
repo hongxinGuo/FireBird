@@ -29,7 +29,7 @@ bool CNeteaseDayLineDataSource::Reset() {
 // 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请网易日线数据。
 	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->IsDummyTime()
 		&& gl_pChinaMarket->GetMarketTimeAsChrono().to_duration() > 11h + 45min) {

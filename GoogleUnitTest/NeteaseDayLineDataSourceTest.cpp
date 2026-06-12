@@ -59,7 +59,7 @@ namespace FireBirdTest {
 		gl_pSinaRTDataSource->SetWebError(true);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 
-		EXPECT_FALSE(NeteaseDayLineDataSource.GenerateInquiryMessage(120000)) << "Web Busy";
+		EXPECT_FALSE(NeteaseDayLineDataSource.GenerateInquiryMessage(toTimeOfDay(120000))) << "Web Busy";
 
 		gl_pSinaRTDataSource->SetWebError(false);
 	}
@@ -72,7 +72,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());
 		NeteaseDayLineDataSource.SetInquiring(false);
 
-		EXPECT_TRUE(NeteaseDayLineDataSource.GenerateInquiryMessage(120000));
+		EXPECT_TRUE(NeteaseDayLineDataSource.GenerateInquiryMessage(toTimeOfDay(120000)));
 		EXPECT_TRUE(NeteaseDayLineDataSource.HaveInquiry());
 
 		const auto pProduct = NeteaseDayLineDataSource.GetCurrentProduct();

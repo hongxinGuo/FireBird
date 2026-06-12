@@ -169,9 +169,9 @@ public:
 
 	virtual bool Reset() { return true; }
 
-	void Run(long lMarketTime);
+	void Run(const chrono::local_seconds& lMarketTime);
 	void InquireData();
-	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
+	virtual bool GenerateInquiryMessage(const chrono::local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const CWebDataPtr&) {} // 此WebData内容为错误信息？
 

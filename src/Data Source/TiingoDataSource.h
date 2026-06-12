@@ -19,7 +19,7 @@ public:
 	void CheckWebData(const CWebDataPtr& pWebData) override;
 	void CheckWebData2(const CWebDataPtr& pWebData);
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
 
 	// Tiingo.com可供申请的项目，目前共7项。
 	virtual bool GenerateMarketNews();

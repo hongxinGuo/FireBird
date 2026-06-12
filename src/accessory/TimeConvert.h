@@ -12,17 +12,18 @@ long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
 long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
 
 long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
+chrono::local_days GetNextMonday(chrono::local_days ld);
+chrono::year_month_day GetNextMonday(chrono::year_month_day ymd);
+
 long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值
 long GetCurrentMonday(long lDate); // 找到包含lDate的那个星期的星期一
 
 chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time);
 chrono::local_seconds GetNextSecond(chrono::local_seconds time);
 
-long GetNextTime(long lTime, long hh, long mm, long ss);
 chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
 chrono::local_seconds GetNextTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
 
-long GetPrevTime(long lTime, long hh, long mm, long ss);
 chrono::local_seconds GetPrevTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
 chrono::local_seconds GetPrevTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
 

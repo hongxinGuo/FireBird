@@ -107,6 +107,40 @@ namespace FireBirdTest {
 		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 31));
 	}
 
+	TEST_F(TimeConvertTest, TestGetNextMonday2) {
+		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200720))) << "20200720为星期一";
+		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200721)));
+		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200722)));
+		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200723)));
+		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200724)));
+		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200725)));
+		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200726)));
+		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200713)));
+		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200714)));
+		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200715)));
+		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200716)));
+		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200717)));
+		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200718)));
+		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200719)));
+	}
+
+	TEST_F(TimeConvertTest, TestGetNextMonday3) {
+		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200720))) << "20200720为星期一";
+		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200721)));
+		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200722)));
+		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200723)));
+		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200724)));
+		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200725)));
+		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200726)));
+		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200713)));
+		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200714)));
+		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200715)));
+		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200716)));
+		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200717)));
+		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200718)));
+		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200719)));
+	}
+
 	TEST_F(TimeConvertTest, TestGetCurrentMonday) {
 		EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << "20200720为星期一";
 		EXPECT_EQ(20200720, GetCurrentMonday(20200721));
@@ -139,15 +173,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestGetNextTime) {
-		EXPECT_EQ(122304, GetNextTime(112158, 1, 1, 6));
-		EXPECT_EQ(121212, GetNextTime(115800, 0, 14, 12));
-		EXPECT_EQ(261202, GetNextTime(221200, 4, 0, 2));
+		EXPECT_EQ(toTimeOfDay(122304), GetNextTime(toTimeOfDay(112158), 1h, 1min, 6s));
+		EXPECT_EQ(toTimeOfDay(121212), GetNextTime(toTimeOfDay(115800), 0h, 14min, 12s));
+		EXPECT_EQ(toTimeOfDay(261202), GetNextTime(toTimeOfDay(221200), 4h, 0min, 2s));
 	}
 
 	TEST_F(TimeConvertTest, TestGetPrevTime) {
-		EXPECT_EQ(102052, GetPrevTime(112158, 1, 1, 6));
-		EXPECT_EQ(105548, GetPrevTime(115000, 0, 54, 12));
-		EXPECT_EQ(181158, GetPrevTime(221200, 4, 0, 2));
+		EXPECT_EQ(toTimeOfDay(102052), GetPrevTime(toTimeOfDay(112158), 1h, 1min, 6s));
+		EXPECT_EQ(toTimeOfDay(105548), GetPrevTime(toTimeOfDay(115000), 0h, 54min, 12s));
+		EXPECT_EQ(toTimeOfDay(181158), GetPrevTime(toTimeOfDay(221200), 4h, 0min, 2s));
 	}
 
 	TEST_F(TimeConvertTest, TestConvertDateToChineseTimeStampString) {

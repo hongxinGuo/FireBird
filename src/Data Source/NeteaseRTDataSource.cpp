@@ -20,7 +20,7 @@ bool CNeteaseRTDataSource::Reset() {
 	return true;
 }
 
-bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CNeteaseRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 	if (llTickCount > m_PrevInquireTimePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) {
 		// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
@@ -33,14 +33,14 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		// 后申请网络数据
 		if (!IsInquiring()) {
 			ASSERT(!HaveInquiry());
-			Inquire(lCurrentTime);
+			Inquire(currentTime);
 			return true;
 		}
 	}
 	return false;
 }
 
-void CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
+void CNeteaseRTDataSource::Inquire(const chrono::local_seconds& currentTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
 		const string strMessage = "http://api.money.126.net/data/feed/";

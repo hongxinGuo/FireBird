@@ -19,7 +19,7 @@ bool CQuandlDataSource::Reset() {
 	return true;
 }
 
-bool CQuandlDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CQuandlDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (llTickCount > (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {

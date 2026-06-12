@@ -128,6 +128,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket()).Times(1);
 
+		s_pMockChinaMarket->TEST_SetFormattedMarketTime(toTimeOfDay(91300));
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask());
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
@@ -138,6 +139,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket()).Times(1);
 
+		s_pMockChinaMarket->TEST_SetFormattedMarketTime(toTimeOfDay(92700));
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask());
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());

@@ -148,7 +148,7 @@ void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
+bool CFinnhubDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
@@ -157,8 +157,8 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	m_PrevInquireTimePoint = llTickCount;
 	SPDLOG_ASSERT(!IsInquiring());
 	// Ensure we are not in the market reset window before proceeding
-	SPDLOG_ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
-		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
+	SPDLOG_ASSERT(currentTime <= GetPrevTime(toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
+		|| currentTime >= GetNextTime(toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateCompanySymbolChange()) return true; // 第一步申请股票代码更改。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	if (GenerateCountryList()) return true;
 	// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。

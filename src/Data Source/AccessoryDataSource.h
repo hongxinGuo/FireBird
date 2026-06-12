@@ -14,7 +14,7 @@ public:
 
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const chrono::local_seconds& lCurrentTime) override;
 
 	// Accessory factory 更新项目
 	virtual bool GenerateIndexNasdaq100Stocks();

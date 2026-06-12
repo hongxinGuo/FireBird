@@ -28,7 +28,7 @@ bool CSinaRTDataSource::Reset() {
 	return true;
 }
 
-bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CSinaRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 	if (llTickCount < m_PrevInquireTimePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) return false;
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。

@@ -35,7 +35,7 @@ CVirtualDataSource::CVirtualDataSource() {
 /// lMarketTime：当前市场时间
 ///
 ////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::Run(long lMarketTime) {
+void CVirtualDataSource::Run(const chrono::local_seconds& lMarketTime) {
 	SPDLOG_ASSERT(!IsInquiring());
 	gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
 			GenerateInquiryMessage(lMarketTime);

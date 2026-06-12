@@ -14,7 +14,7 @@ public:
 	~CFinnhubDataSource() override = default;
 
 	bool Reset() override;
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
 
 	void ConfigureInternetOption() override;
 	void CheckWebData(const CWebDataPtr& pWebData) override;
