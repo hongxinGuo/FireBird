@@ -30,8 +30,6 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (auto& dayLine : *pvDayLine) {
 			dayLine.SetExchange(pForexSymbol->GetExchange());
 			dayLine.SetStockSymbol(pForexSymbol->GetSymbol());
-			const long lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTimePoint());
-			dayLine.SetDate(lTemp);
 		}
 		pForexSymbol->UpdateDayLine(pvDayLine);
 		pForexSymbol->SetUpdateDayLineDB(true);
@@ -79,9 +77,8 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = jsonGetLongLong(it);
-			dayLine.SetTime(tTemp);
-			lTemp = gl_pWorldMarket->ConvertToDate(toSysTime(tTemp));
-			dayLine.SetDate(lTemp);
+			chrono::local_seconds tp{ chrono::seconds{ tTemp } };
+			dayLine.SetDate(tp);
 			pvDayLine->push_back(dayLine);
 			dayLine.Reset();
 		}

@@ -140,11 +140,10 @@ bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 	ASSERT(IsDataLoaded());
 	ASSERT(Size() > 0);
 	long lCurrentDayLinePos = 0;
-	CWeekLine pWeekLine;
 
 	vWeekLine.clear();
 	do {
-		pWeekLine = CreateNewWeekLine(lCurrentDayLinePos);
+		CWeekLine pWeekLine = CreateNewWeekLine(lCurrentDayLinePos);
 		vWeekLine.push_back(pWeekLine);
 	} while (lCurrentDayLinePos < Size());
 

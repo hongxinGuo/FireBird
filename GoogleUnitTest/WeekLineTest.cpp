@@ -40,13 +40,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetDate(), CHINA_MARKET_BEGIN_DATE_);
 	}
 
-	TEST_F(CWeekLineTest, TestGetTime) {
-		CWeekLine dl;
-		EXPECT_EQ(dl.GetDate(), 0);
-		dl.SetTime(100100100);
-		EXPECT_EQ(dl.GetMarketTime(), 100100100);
-	}
-
 	TEST_F(CWeekLineTest, TestGetStockSymbol) {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetStockSymbol(), "");
@@ -152,8 +145,7 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestUpdateWeekLine1) {
 		CWeekLine weekLine;
 		CDayLine dayLine;
-		dayLine.SetTime(100100100100);
-		dayLine.SetDate(20200202);
+		dayLine.SetDate(chrono::local_days{ 2020y / 2 / 2 });
 		dayLine.SetStockSymbol("600000.SS");
 
 		dayLine.SetOpen(1010);
@@ -170,7 +162,6 @@ namespace FireBirdTest {
 		weekLine.UpdateWeekLine(&dayLine);
 
 		EXPECT_EQ(weekLine.GetDate(), GetCurrentMonday(dayLine.GetDate())) << "周线日期总是当周的星期一";
-		EXPECT_EQ(weekLine.GetMarketTime(), dayLine.GetMarketTime());
 		EXPECT_TRUE(weekLine.GetStockSymbol() == dayLine.GetStockSymbol());
 		EXPECT_EQ(weekLine.GetOpen(), dayLine.GetOpen());
 		EXPECT_EQ(weekLine.GetClose(), dayLine.GetClose());
@@ -188,7 +179,6 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestUpdateWeekLine2) {
 		CWeekLine weekLine;
 		CDayLine dayLine1, dayLine2;
-		dayLine1.SetTime(100100100100);
 		dayLine1.SetDate(20200727);
 		dayLine1.SetStockSymbol("60000.SS");
 
@@ -204,7 +194,6 @@ namespace FireBirdTest {
 		dayLine1.SetCurrentValue(303030303030303);
 		dayLine1.SetTotalValue(4040404040404040);
 
-		dayLine2.SetTime(10010010010); // 与第一个数据pDayLine1时间不同。
 		dayLine2.SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
 		dayLine2.SetStockSymbol("600000.SS"); // 与第一个数据pDayLine1不同。
 		dayLine2.SetOpen(10100);
@@ -224,8 +213,8 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(weekLine.GetDate(), dayLine1.GetDate()) << "使用第一个数据的日期";
 		EXPECT_NE(weekLine.GetDate(), dayLine2.GetDate()) << "使用第一个数据的日期";
-		EXPECT_EQ(weekLine.GetMarketTime(), dayLine1.GetMarketTime()) << "使用第一个数据的时间";
-		EXPECT_NE(weekLine.GetMarketTime(), dayLine2.GetMarketTime()) << "使用第一个数据的时间";
+		EXPECT_EQ(weekLine.GetMarketDate(), dayLine1.GetMarketDate()) << "使用第一个数据的日期";
+		EXPECT_NE(weekLine.GetMarketDate(), dayLine2.GetMarketDate()) << "使用第一个数据的日期";
 		EXPECT_TRUE(weekLine.GetStockSymbol() == dayLine1.GetStockSymbol()) << "股票代码不为空时，不更改";
 		EXPECT_FALSE(weekLine.GetStockSymbol() == dayLine2.GetStockSymbol()) << "股票代码不为空时，不更改";
 

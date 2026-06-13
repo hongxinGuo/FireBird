@@ -30,8 +30,6 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (auto& dayLine : *pvDayLine) {
 			dayLine.SetExchange(pCryptoSymbol->GetExchange());
 			dayLine.SetStockSymbol(pCryptoSymbol->GetSymbol());
-			const long lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTimePoint());
-			dayLine.SetDate(lTemp);
 		}
 		pCryptoSymbol->UpdateDayLine(pvDayLine);
 		pCryptoSymbol->UpdateDayLineStartEndDate();
@@ -77,7 +75,8 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = it->get<INT64>();
-			dayLine.SetTime(tTemp);
+			chrono::local_seconds tp{ chrono::seconds{ tTemp } };
+			dayLine.SetDate(tp);
 			pvDayLine->push_back(dayLine);
 			dayLine.Reset();
 		}
@@ -126,7 +125,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
 	// 清除掉交易日期为零的无效数据
 	for (auto& pDayLine2 : *pvDayLine) {
-		if (pDayLine2.GetMarketTime() > 0) {
+		if (pDayLine2.GetMarketDate().time_since_epoch().count() > 0) {
 			pvDayLineReturn->push_back(pDayLine2);
 		}
 	}

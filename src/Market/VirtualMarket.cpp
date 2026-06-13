@@ -191,6 +191,14 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 	return true;
 }
 
+bool CVirtualMarket::IsWorkingDay(const chrono::local_days& date) noexcept {
+	chrono::weekday weekday{ date };
+	if (weekday == chrono::weekday(0) || weekday == chrono::weekday(6)) { // Sunday or Saturday
+		return false;
+	}
+	return true;
+}
+
 unsigned CVirtualMarket::GetNextTradeDate() {
 	chrono::days day{ 1 };
 	if (m_marketWeekDay == chrono::Saturday) {
@@ -203,6 +211,29 @@ unsigned CVirtualMarket::GetNextTradeDate() {
 	auto next_trade_date = chrono::floor<chrono::days>(m_marketClock) + day;
 	chrono::year_month_day ymd{ next_trade_date };
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
+}
+
+chrono::local_days CVirtualMarket::GetNextTradeDateTP() {
+	chrono::days day{ 1 };
+	if (m_marketWeekDay == chrono::Saturday) {
+		++day; // 下周一
+	}
+	else if (m_marketWeekDay == chrono::Friday) {
+		++day; // 下周一
+		++day;
+	}
+	return m_marketDate + day;
+}
+
+chrono::local_days CVirtualMarket::GetCurrentTradeDateTP() {
+	chrono::days day(0);
+	if (m_marketWeekDay == chrono::Saturday) {
+		day = chrono::days(1); // 周五
+	}
+	else if (m_marketWeekDay == chrono::Sunday) {
+		day = chrono::days(2); // 周五
+	}
+	return m_marketDate - day;
 }
 
 unsigned CVirtualMarket::GetCurrentTradeDate() {
@@ -238,6 +269,23 @@ unsigned CVirtualMarket::GetLastTradeDate() {
 	auto current_trade_date = chrono::floor<chrono::days>(m_marketClock) - day;
 	chrono::year_month_day ymd{ current_trade_date };
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
+}
+
+chrono::local_days CVirtualMarket::GetLastTradeDateTP() {
+	chrono::days day;
+	if (m_marketWeekDay == chrono::Monday) {
+		day = chrono::days(3); // 周五
+	}
+	else if (m_marketWeekDay == chrono::Sunday) {
+		day = chrono::days(3); // 周四
+	}
+	else if (m_marketWeekDay == chrono::Saturday) {
+		day = chrono::days(2); // 周四
+	}
+	else {
+		day = chrono::days(1); // 上一日
+	}
+	return m_marketDate - day;
 }
 
 string CVirtualMarket::GetStringOfMarketDate() const {

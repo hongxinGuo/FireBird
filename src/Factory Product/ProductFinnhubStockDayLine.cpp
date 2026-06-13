@@ -31,8 +31,6 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	for (auto& dayLine : *pvDayLine) {
 		dayLine.SetExchange(pStock->GetExchange());
 		dayLine.SetStockSymbol(pStock->GetSymbol());
-		const auto lTemp = gl_pWorldMarket->ConvertToDate(dayLine.GetMarketTimePoint());
-		dayLine.SetDate(lTemp);
 		if ((lastClose != 0) && (dayLine.GetLastClose() == 0)) dayLine.SetLastClose(lastClose);
 		lastClose = dayLine.GetClose();
 	}
@@ -81,7 +79,8 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebData
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = jsonGetLongLong(it);
-			pDayLine.SetTime(tTemp);
+			chrono::local_seconds localTime{ chrono::seconds{ tTemp } };
+			pDayLine.SetDate(localTime);
 			pvDayLine->push_back(pDayLine);
 		}
 	} catch (nlohmannJson::exception& e) {

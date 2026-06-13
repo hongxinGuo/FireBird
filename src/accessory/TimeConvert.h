@@ -7,9 +7,15 @@ long XferToYYYYMMDD(const string& sDate);
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);
 
 long GetNextMonth(long lDate) noexcept; // 得到下个月的第一天日期
+chrono::year_month_day GetNextMonth(chrono::year_month_day ymd) noexcept;
 
 long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
+inline chrono::local_days GetNextDay(chrono::local_days ld, long lTimeSpanDays) noexcept { return ld + chrono::days{ lTimeSpanDays }; }
+inline chrono::year_month_day GetNextDay(chrono::year_month_day ymd, long lTimeSpanDays) noexcept { return chrono::year_month_day{ chrono::local_days{ ymd } + chrono::days{ lTimeSpanDays } }; }
+
 long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
+inline chrono::local_days GetPrevDay(chrono::local_days ld, long lTimeSpanDays) noexcept { return ld - chrono::days{ lTimeSpanDays }; }
+inline chrono::year_month_day GetPrevDay(chrono::year_month_day ymd, long lTimeSpanDays) noexcept { return chrono::year_month_day{ chrono::local_days{ ymd } - chrono::days{ lTimeSpanDays } }; }
 
 long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 chrono::local_days GetNextMonday(chrono::local_days ld);

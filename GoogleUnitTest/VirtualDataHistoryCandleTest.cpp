@@ -33,11 +33,11 @@ namespace FireBirdTest {
 		CVirtualDataHistoryCandle id;
 		CVirtualHistoryCandle data;
 		data.SetStockSymbol("600008.SS");
-		data.SetDate(20202020);
+		data.SetDate(20200202);
 		id.Add(data);
 
 		const auto pContainer = id.GetContainer();
-		EXPECT_EQ((*pContainer)[0].GetDate(), 20202020);
+		EXPECT_EQ((*pContainer)[0].GetDate(), 20200202);
 	}
 
 	TEST_F(CVirtualDataHistoryCandleTest, TestUpdateData1) {

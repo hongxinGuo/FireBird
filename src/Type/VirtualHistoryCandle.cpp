@@ -3,7 +3,7 @@
 #include"VirtualHistoryCandle.h"
 
 void CVirtualHistoryCandle::Reset() {
-	m_lDate = 0;
+	m_tpDate = chrono::local_days{};
 	m_strExchange.clear();
 	m_strStockSymbol.clear();
 	m_lLastClose = 0;

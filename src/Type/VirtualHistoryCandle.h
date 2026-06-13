@@ -6,6 +6,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
+#include "TimeConvert.h"
 
 class CVirtualHistoryCandle {
 public:
@@ -31,13 +32,12 @@ public:
 	bool IsActive() const;
 
 public:
-	long GetDate() const noexcept { return m_lDate; }
-	void SetDate(const long lDate) noexcept { m_lDate = lDate; }
-	auto GetMarketTimePoint() const noexcept { return m_tpTime; }
-	time_t GetMarketTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
-	void SetUTCTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
-	void SetTime(const time_t t) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(t)); }
-	void SetTime(const chrono::sys_seconds tp) noexcept { m_tpTime = tp; }
+	long GetDate() const noexcept { return toUnsignedDate(m_tpDate); }
+	chrono::local_days GetMarketDate() const noexcept { return m_tpDate; }
+	void SetDate(const unsigned lDate) noexcept { m_tpDate = toLocalDays(lDate); }
+	void SetDate(chrono::local_seconds time) noexcept { m_tpDate = chrono::floor<chrono::days>(time); }
+	void SetDate(chrono::local_days time) noexcept { m_tpDate = time; }
+	void SetDate(const chrono::year_month_day& ymd) noexcept { m_tpDate = chrono::local_days{ ymd }; }
 	const string& GetExchange() const { return m_strExchange; }
 	void SetExchange(const string& strExchange) { m_strExchange = strExchange; }
 	const string& GetStockSymbol() const { return m_strStockSymbol; }
@@ -89,8 +89,8 @@ public:
 
 protected:
 	// need to save
-	long m_lDate{ 0 }; // 类型(YYYYMMDD)
-	std::chrono::sys_seconds m_tpTime{ std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(0)) };
+	//long m_lDate{ 0 }; // 类型(YYYYMMDD)
+	chrono::local_days m_tpDate{ chrono::days(0) };
 	string m_strExchange{};
 	string m_strStockSymbol{};
 

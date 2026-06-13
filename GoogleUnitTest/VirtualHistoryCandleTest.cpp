@@ -34,13 +34,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetDate(), 19900101);
 	}
 
-	TEST_F(CVirtualHistoryCandleTest, TestGetTime) {
-		CVirtualHistoryCandle dl;
-		EXPECT_EQ(dl.GetDate(), 0);
-		dl.SetTime(100100100);
-		EXPECT_EQ(dl.GetMarketTime(), 100100100);
-	}
-
 	TEST_F(CVirtualHistoryCandleTest, TestGetStockCode) {
 		CVirtualHistoryCandle dl;
 		EXPECT_EQ(dl.GetStockSymbol(), "");

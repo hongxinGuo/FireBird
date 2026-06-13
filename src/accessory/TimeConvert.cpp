@@ -40,6 +40,13 @@ long GetNextMonth(long lDate) noexcept {
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + 01;
 }
 
+chrono::year_month_day GetNextMonth(chrono::year_month_day ymd) noexcept {
+	using namespace std::chrono;
+	year_month ym{ ymd.year(), ymd.month() };
+	year_month nextYm = ym + months{ 1 };
+	return year_month_day{ nextYm / day{ 1 } };
+}
+
 long GetNextDay(long lDate, long lTimeSpanDays) noexcept {
 	const CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
 	const long year = lDate / 10000;

@@ -74,14 +74,18 @@ public:
 	chrono::local_days GetMarketDateTP() const noexcept { return m_marketDate; }
 	chrono::hh_mm_ss<chrono::seconds> GetMarketTimeAsChrono() const noexcept { return m_marketTimeOfDay; }
 	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
-	auto GetDayOfWeek() const noexcept { return m_marketWeekDay; } // days since Sunday - [0, 6]
+	chrono::weekday GetDayOfWeek() const noexcept { return m_marketWeekDay; } // days since Sunday - [0, 6]
 
 	bool IsWorkingDay() const noexcept;
 	static bool IsWorkingDay(long lDate) noexcept;
+	bool IsWorkingDay(const chrono::local_days& date) noexcept;
 
 	unsigned GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
+	chrono::local_days GetLastTradeDateTP();
 	unsigned GetCurrentTradeDate();// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
+	chrono::local_days GetCurrentTradeDateTP();
 	unsigned GetNextTradeDate();// 下一个交易日（从次日开市时间至后日开市时间）
+	chrono::local_days GetNextTradeDateTP();
 
 	string GetStringOfLocalTime() const; // 得到本地时间的字符串
 	string GetStringOfMarketTime() const; // 得到本市场时间的字符串
