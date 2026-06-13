@@ -187,8 +187,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 	auto lSize = Size();
 	auto st = gl_pWorldMarket->ConvertToUTCTime(lDate, 0); // 使用当日数据，无论是否是闭市后的数据。
 
-	// 先载入并删除当天旧数据（与原逻辑保持一致）
-	LoadDayLine(lDate);
+	// 删除当天旧数据（与原逻辑保持一致）
 	DeleteDayLine(lDate);
 
 	try {
@@ -208,6 +207,8 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 			if (pTiingoStock->GetTimePoint() >= st) {
 				// 将内部整数/单位值转换为数据库存储的浮点值（与 LoadDayLine 中的乘比率相反）
 				const double ratio = static_cast<double>(pTiingoStock->GetRatio());
+				//ASSERT(pTiingoStock->GetLastClose() != 0);
+				//ASSERT(pTiingoStock->GetNew() != 0);
 				multi_insert.values.add(
 					t.Date = lDate,
 					t.Exchange = pTiingoStock->GetExchange(),
@@ -237,6 +238,8 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 		return;
 	}
 
+	gl_systemMessage.PushDayLineInfoMessage("Tiingo IEX book of day saved");
+	gl_systemMessage.PushInnerSystemInformationMessage("Tiingo IEX book of day saved");
 	gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(lDate);
 }
 

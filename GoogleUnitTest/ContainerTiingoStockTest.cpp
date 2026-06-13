@@ -261,6 +261,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(date, lDate);
 		}
 
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+		gl_systemMessage.PopInnerSystemInformationMessage();
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
+		gl_systemMessage.PopDayLineInfoMessage();
+
 		// cleanup: remove inserted row for this symbol/date only
 		db(remove_from(t).where((t.Date == lDate) and (t.Symbol == symbol)));
 		tx.commit();

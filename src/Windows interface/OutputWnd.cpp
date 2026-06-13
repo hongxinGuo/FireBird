@@ -221,7 +221,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
 		int i = 0;
 		for (const auto& pTask : validChinaTasks) {
-			string s = std::format("{}: {:06Ld}: {}", sTime, pTask->GetTime().time_since_epoch().count(), gl_mapMarketMapIndex.at(pTask->GetType()));
+			string s = std::format("{}: {:06Ld}: {}", sTime, toUnsignedTime(pTask->GetTime()), gl_mapMarketMapIndex.at(pTask->GetType()));
 			m_wndChinaMarketTaskQueue.AppendString(s);
 			if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
 		}
@@ -230,7 +230,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
 		i = 0;
 		for (const auto& pTask : validWorldTasks) {
-			string s = std::format("{}: {:06Ld}: {}", sTime, pTask->GetTime().time_since_epoch().count(), gl_mapMarketMapIndex.at(pTask->GetType()));
+			string s = std::format("{}: {:06Ld}: {}", sTime, toUnsignedTime(pTask->GetTime()), gl_mapMarketMapIndex.at(pTask->GetType()));
 			m_wndWorldMarketTaskQueue.AppendString(s);
 			if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;
 		}

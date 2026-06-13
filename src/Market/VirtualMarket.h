@@ -51,7 +51,6 @@ public:
 			m_marketTask.DiscardCurrentTask();
 		}
 	}
-	vector<CMarketTaskPtr> GetMarketTasks() { return m_marketTask.GetTasks(); }
 	void AdjustTaskTime();
 
 	// MarketImmediateTask

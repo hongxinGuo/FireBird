@@ -53,6 +53,7 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	TRACE("Tiingo IEX active number: %d\n", i);
 	if (gl_pWorldMarket->IsMarketClosed()) {
 		gl_pWorldMarket->SetEndMarketIEXTopOfBookUpdate(true);
+		gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0h, 2min, 0s)); // 两分钟后处理
 	}
 }
 

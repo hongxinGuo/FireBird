@@ -184,6 +184,8 @@ namespace FireBirdTest {
 			dayLine = pvDayLine->at(1);
 			EXPECT_DOUBLE_EQ(dayLine.GetDividend(), 1.0);
 			EXPECT_DOUBLE_EQ(dayLine.GetSplitFactor(), 3.0);
+			EXPECT_EQ(dayLine.GetDate(), 20210312);
+			EXPECT_EQ(dayLine.GetClose(), 121030000);
 			break;
 		case 11: // 股票没有日线数据
 			EXPECT_EQ(pvDayLine->size(), 0);

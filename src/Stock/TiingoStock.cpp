@@ -291,6 +291,10 @@ bool CTiingoStock::UpdateDayLineDB() {
 		DeleteDuplicatedDayLine();
 	}
 	SaveDayLineDB();
+	string str = GetSymbol();
+	str += "日线资料存储完成";
+	gl_systemMessage.PushDayLineInfoMessage(str);
+
 	return true;
 }
 

@@ -23,6 +23,9 @@
 
 using namespace spdlog;
 
+#include "dataBaseConnector.h"
+#include"StockMarketSQLTable.h"
+
 #include "CharSetTransfer.h"
 
 #include "AccessoryDataSource.h"
@@ -119,11 +122,36 @@ void InitializeMarkets() {
 	CreateMarketContainer();	//生成市场容器
 }
 
+void LoadToken() {
+	using namespace StockMarket;
+	const auto& t = WorldMarketOption();
+	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
+
+	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+	size_t rows = result.size();
+	if (rows > 0) {
+		auto& row = result.front();
+		if (gl_systemConfiguration.GetFinnhubToken().size() < 10) {
+			string s = row.FinnhubToken;
+			gl_systemConfiguration.SetFinnhubToken(s);
+			gl_systemConfiguration.SetUpdateDB(true);
+		}
+		if (gl_systemConfiguration.GetTiingoToken().size() < 10) {
+			string s = row.TiingoToken;
+			gl_systemConfiguration.SetTiingoToken(s);
+			gl_systemConfiguration.SetUpdateDB(true);
+		}
+	}
+}
+
 void SystemInitialization() {
 	// 系统初始化开始
 	CreateSimdjsonEmptyArray();
 
 	SetMaxCurrencyLevel();
+
+	LoadToken();
 
 	// 初始化各market dataSource WebSocket
 	InitializeMarkets();

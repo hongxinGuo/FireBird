@@ -204,7 +204,6 @@ int CWorldMarket::ProcessTask() {
 			}
 			else { // 当日18时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
-				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(GetMarketTime(), 0h, 2min, 0s)); // 两分钟后处理
 			}
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__:
@@ -492,16 +491,12 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine() {
-	if (IsEndMarketIEXTopOfBookUpdated()) {// 已接收到了IEX TopOfBook数据？
-		gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
-		gl_runtime.thread_executor()->post([] {
-			gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
-			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-		});
-	}
-	else {
-		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(GetMarketTime(), 0h, 2min, 0s));
-	}
+	ASSERT(IsEndMarketIEXTopOfBookUpdated());// 已接收到了IEX TopOfBook数据
+	gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
+	gl_runtime.thread_executor()->post([] {
+		gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
+		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
+	});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

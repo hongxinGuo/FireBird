@@ -130,8 +130,11 @@ CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const 
 			CTiingoCandleLine dayLine;
 			//pDayLine->SetExchange("US"); // 所有的Tiingo证券皆为美国市场。
 			s = jsonGetString(it, "date");
-			long lTemp = XferToYYYYMMDD(s);
-			dayLine.SetDate(lTemp);
+			istringstream ss(s);
+			chrono::sys_time<chrono::milliseconds> tp;
+			ss >> chrono::parse("%FT%T%Z", tp);
+			chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(tp) };
+			dayLine.SetDate(ymd);
 			double dTemp = jsonGetDouble(it, "close");
 			dayLine.SetClose(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, "high");
@@ -140,7 +143,7 @@ CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const 
 			dayLine.SetLow(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, "open");
 			dayLine.SetOpen(dTemp * stock.GetRatio());
-			lTemp = jsonGetLong(it, "volume");
+			long lTemp = jsonGetLong(it, "volume");
 			dTemp = jsonGetDouble(it, "divCash");
 			dayLine.SetDividend(dTemp);
 			dTemp = jsonGetDouble(it, "splitFactor");
