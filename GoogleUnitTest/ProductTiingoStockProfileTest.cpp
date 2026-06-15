@@ -62,7 +62,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		gl_pTiingoDataSource->SetUpdateStockSymbol(true);
-		gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(19800101);
+		gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(toLocalDays(19800101));
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
@@ -136,7 +136,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(0)->GetLocation(), "location have data");
 			EXPECT_EQ(m_pvStock->at(0)->GetCompanyWebSite(), "companyWebsite have data");
 			EXPECT_EQ(m_pvStock->at(0)->GetSECFilingWebSite(), "secFilingWebsite have data");
-			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), 20210302);
+			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), toLocalDays(20210302));
+			EXPECT_EQ(m_pvStock->at(0)->GetDailyUpdateDate(), toLocalDays(20210312));
 			EXPECT_EQ(m_pvStock->at(0)->GetSicCode(), 1234);
 			EXPECT_EQ(m_pvStock->at(0)->GetDataProviderPermaTicker(), "123456");
 			break;
@@ -156,7 +157,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(0)->GetLocation(), "");
 			EXPECT_EQ(m_pvStock->at(0)->GetCompanyWebSite(), "free");
 			EXPECT_EQ(m_pvStock->at(0)->GetSECFilingWebSite(), "Field");
-			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), 20210305);
+			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), toLocalDays(20210305));
+			EXPECT_EQ(m_pvStock->at(0)->GetDailyUpdateDate(), toLocalDays(20210312));
 			EXPECT_EQ(m_pvStock->at(1)->GetTiingoPermaTicker(), "US000000000091");
 			EXPECT_EQ(m_pvStock->at(1)->GetSymbol(), "AA");
 			EXPECT_EQ(m_pvStock->at(1)->GetName(), "New Name");
@@ -171,7 +173,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(1)->GetLocation(), "");
 			EXPECT_EQ(m_pvStock->at(1)->GetCompanyWebSite(), "");
 			EXPECT_EQ(m_pvStock->at(1)->GetSECFilingWebSite(), "");
-			EXPECT_EQ(m_pvStock->at(1)->GetStatementLastUpdatedDate(), 20210302);
+			EXPECT_EQ(m_pvStock->at(1)->GetStatementLastUpdatedDate(), toLocalDays(20210302));
+			EXPECT_EQ(m_pvStock->at(1)->GetDailyUpdateDate(), toLocalDays(20210312));
 			EXPECT_EQ(m_pvStock->at(1)->GetDataProviderPermaTicker(), "123456");
 			break;
 		default:

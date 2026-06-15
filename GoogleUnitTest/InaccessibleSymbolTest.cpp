@@ -138,7 +138,7 @@ namespace FireBirdTest {
 		pInaccessible->AddSymbol("SS");
 		pInaccessible->AddSymbol("SZ");
 
-		gl_finnhubInaccessibleExchange.SetUpdateDate(20230101);
+		gl_finnhubInaccessibleExchange.SetUpdateDate(toLocalDays(20230101));
 		gl_finnhubInaccessibleExchange.SetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()), pInaccessible);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
@@ -146,7 +146,7 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.Clear();
 		gl_finnhubInaccessibleExchange.LoadDB();
 		gl_finnhubInaccessibleExchange.Update();
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), toLocalDays(20230101));
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetFunctionString(), "WebSocketTrades");
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->Size(), 2);
 		const string str = gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetSymbol(0);
@@ -166,7 +166,7 @@ namespace FireBirdTest {
 		pInaccessible->AddSymbol("SS");
 		pInaccessible->AddSymbol("SZ");
 
-		gl_finnhubInaccessibleExchange.SetUpdateDate(20230101);
+		gl_finnhubInaccessibleExchange.SetUpdateDate(toLocalDays(20230101));
 		gl_finnhubInaccessibleExchange.SetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()), pInaccessible);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
@@ -175,7 +175,7 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.Clear();
 		gl_finnhubInaccessibleExchange.LoadDB(strFileDirectory);
 		gl_finnhubInaccessibleExchange.Update();
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), toLocalDays(20230101));
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetFunctionString(), "WebSocketTrades");
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->Size(), 2);
 		const string str = gl_finnhubInaccessibleExchange.GetInaccessible(gl_finnhubInaccessibleExchange.GetInquiryIndex(pInaccessible->GetFunctionString()))->GetSymbol(0);

@@ -9,4 +9,6 @@ namespace FireBirdTest {
 	void WorldMarketCheck();
 
 	inline chrono::sys_seconds s_tCurrentSystemTime;
+	inline chrono::local_days s_currentChinaMarketDate;
+	inline chrono::local_days s_currentWorldMarketDate;
 }

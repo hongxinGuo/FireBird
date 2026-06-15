@@ -172,8 +172,8 @@ void CContainerTiingoStock::DeleteDuplicatedSymbolFromDB() {
 void CContainerTiingoStock::ResetDayLineStartEndDate() {
 	for (size_t i = 0; i < Size(); i++) {
 		auto pTiingoStock = GetStock(i);
-		pTiingoStock->SetDayLineStartDate(29900101);
-		pTiingoStock->SetDayLineEndDate(19800101);
+		pTiingoStock->SetDayLineStartDate(toLocalDays(29900101));
+		pTiingoStock->SetDayLineEndDate(toLocalDays(19800101));
 	}
 }
 
@@ -183,12 +183,12 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 ///Note：只存储该日日线数据，但不更新各种标识。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::BuildDayLine(long lDate) {
+void CContainerTiingoStock::BuildDayLine(chrono::local_days date) {
 	auto lSize = Size();
-	auto st = gl_pWorldMarket->ConvertToUTCTime(lDate, 0); // 使用当日数据，无论是否是闭市后的数据。
+	chrono::sys_seconds st = gl_pWorldMarket->ToSysTime(toLocalDateTime(date, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 
 	// 删除当天旧数据（与原逻辑保持一致）
-	DeleteDayLine(lDate);
+	DeleteDayLine(date);
 
 	try {
 		using namespace StockMarket;
@@ -210,7 +210,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 				//ASSERT(pTiingoStock->GetLastClose() != 0);
 				//ASSERT(pTiingoStock->GetNew() != 0);
 				multi_insert.values.add(
-					t.Date = lDate,
+					t.Date = (long)toUnsignedDate(date),
 					t.Exchange = pTiingoStock->GetExchange(),
 					t.Symbol = pTiingoStock->GetSymbol(),
 					t.LastClose = static_cast<double>(pTiingoStock->GetLastClose()) / ratio,
@@ -240,21 +240,21 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 
 	gl_systemMessage.PushDayLineInfoMessage("Tiingo IEX book of day saved");
 	gl_systemMessage.PushInnerSystemInformationMessage("Tiingo IEX book of day saved");
-	gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(lDate);
+	gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(date);
 }
 
-void CContainerTiingoStock::LoadDayLine(long lDate) {
+void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
 
-		auto st = gl_pWorldMarket->ConvertToUTCTime(lDate, 170000);
+		auto st = gl_pWorldMarket->ToSysTime(toLocalDateTime(date, toLocalTime(170000)));
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
 		// select rows for the given trade date
-		auto result = db(select(all_of(t)).from(t).where(t.Date == lDate).order_by(t.Symbol.asc()));
+		auto result = db(select(all_of(t)).from(t).where(t.Date == toUnsignedDate(date)).order_by(t.Symbol.asc()));
 
 		for (const auto& row : result) {
 			const std::string symbol = row.Symbol;
@@ -284,7 +284,7 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 	}
 }
 
-void CContainerTiingoStock::DeleteDayLine(long lDate) {
+void CContainerTiingoStock::DeleteDayLine(chrono::local_days date) {
 	using namespace StockMarket;
 	const auto& t = TiingoStockDayline{};
 
@@ -292,7 +292,7 @@ void CContainerTiingoStock::DeleteDayLine(long lDate) {
 	auto tx = start_transaction(db);
 
 	// Delete all rows for the given trade date in one statement
-	db(remove_from(t).where(t.Date == lDate));
+	db(remove_from(t).where(t.Date == toUnsignedDate(date)));
 	tx.commit();
 }
 
@@ -334,7 +334,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 				db(insert_into(t).set(
 					t.Symbol = pStock->GetSymbol(),
 					t.Exchange = pStock->GetExchange(),
-					t.Date = pStock->Get52WeekHighDate(index)
+					t.Date = toUnsignedDate(pStock->Get52WeekHighDate(index))
 				));
 			}
 		}
@@ -366,7 +366,7 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 				multi_insert.values.add(
 					t.Symbol = pStock->GetSymbol(),
 					t.Exchange = pStock->GetExchange(),
-					t.Date = pStock->Get52WeekLowDate(index)
+					t.Date = (long)toUnsignedDate(pStock->Get52WeekLowDate(index))
 				);
 				Values++;
 			}
@@ -403,12 +403,12 @@ void CContainerTiingoStock::TaskCalculate() {
 	auto tx = start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Date, t.Symbol, t.SICCode);
 
-	db(remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate())); // 先删除原有数据
+	db(remove_from(t).where(t.Date == (long)toUnsignedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
 		multi_insert.values.add(
-			t.Date = gl_pWorldMarket->GetMarketDate(),
+			t.Date = (long)toUnsignedDate(gl_pWorldMarket->GetMarketDate()),
 			t.Symbol = pStock->GetSymbol(),
 			t.SICCode = pStock->GetSicCode()
 		);
@@ -461,12 +461,12 @@ void CContainerTiingoStock::TaskCalculate2() {
 	const auto& t = TiingoStockCurrentTrace{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	db(remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate())); // 先删除原有数据
+	db(remove_from(t).where(t.Date == (long)toUnsignedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
 		db(sqlpp::insert_into(t).set(
-			t.Date = gl_pWorldMarket->GetMarketDate(),
+			t.Date = (long)toUnsignedDate(gl_pWorldMarket->GetMarketDate()),
 			t.Symbol = pStock->GetSymbol(),
 			t.SICCode = pStock->GetSicCode()
 		));
@@ -531,7 +531,7 @@ void CContainerTiingoStock::TaskProcessTodayDayLine() {
 			auto result = gl_runtime.thread_executor()->submit([pStock, lastCalculatedDate] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				if (!gl_systemConfiguration.IsExitingSystem()) {
-					pStock->ProcessDayLine(lastCalculatedDate);
+					pStock->ProcessDayLine();
 				}
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 				gl_BackgroundWorkingThread.release();

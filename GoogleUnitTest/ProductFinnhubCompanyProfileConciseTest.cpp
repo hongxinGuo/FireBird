@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetProfileUpdateDate(19800101);
+			m_pStock->SetProfileUpdateDate(toLocalDays(19800101));
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 

@@ -23,8 +23,8 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 string CProductFinnhubCompanyNews::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	string strMessage = m_strInquiryFunction + pStock->GetSymbol();
-	long limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
-	long limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();
+	auto limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
+	auto limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();
 	string sTemp = ConvertDateToTimeStamp(limitTime2);
 	strMessage += "&from=";
 	strMessage += sTemp;

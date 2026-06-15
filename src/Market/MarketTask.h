@@ -76,8 +76,8 @@ public:
 	~CMarketTask() = default;
 
 	chrono::local_seconds GetTime() const { return m_tpTime; }
-	void SetTime(const chrono::hh_mm_ss<chrono::seconds>& lTime) { m_tpTime = toTimeOfDay(lTime); }
-	void SetTime(long lTime) { m_tpTime = toTimeOfDay(lTime); }
+	void SetTime(const chrono::hh_mm_ss<chrono::seconds>& lTime) { m_tpTime = toLocalTime(lTime); }
+	void SetTime(long lTime) { m_tpTime = toLocalTime(lTime); }
 	void SetTime(chrono::local_seconds ls) { m_tpTime = ls; }
 
 	long GetType() const { return m_lType; }

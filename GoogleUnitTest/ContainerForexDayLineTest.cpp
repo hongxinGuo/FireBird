@@ -51,7 +51,7 @@ namespace FireBirdTest {
 		m_dataForexDayLine.SaveDB("OANDA:USD_DKK");
 
 		m_dataForexDayLine.LoadDB("OANDA:USD_DKK");
-		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), 20200411) << "新存储数据位于第六位";
+		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), toLocalDays(20200411)) << "新存储数据位于第六位";
 
 		// 恢复原状
 		using namespace StockMarket;

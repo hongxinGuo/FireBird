@@ -27,7 +27,7 @@ void CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 	// helper to insert one CTiingoCandleLine into DB via sqlpp11
 	auto insertCandle = [&](const CTiingoCandleLine* pC) {
 		multi_insert.values.add(
-			t.Date = pC->GetDate(),
+			t.Date = static_cast<long>(toUnsignedDate(pC->GetDate())),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
@@ -108,7 +108,7 @@ void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTem
 }
 
 struct CSplitFactor {
-	long date;
+	chrono::local_days date;
 	double factor;
 };
 
@@ -132,7 +132,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 
 	// 从后向前调整日线数据
 	long j = 0;
-	long prevDate;
+	chrono::local_days prevDate;
 	int i = m_vHistoryData.size() - 1;
 	double currentFactor = 1.0;
 	auto currentData = GetData(i);
@@ -143,7 +143,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 		currentSpiltDate = vpSplitFactor.at(j)->date;
 		currentFactor = vpSplitFactor.at(j)->factor;
 		if (j < vpSplitFactor.size() - 1) prevDate = vpSplitFactor.at(j + 1)->date;
-		else prevDate = 0;
+		else prevDate = chrono::local_days{ chrono::days(0) };
 
 		ASSERT(currentData->GetDate() == currentSpiltDate);
 		currentData->SetLastClose(currentData->GetLastClose() * prevFactor / currentFactor); // 拆分日只有前收盘价需要调整，其他价格不调整。

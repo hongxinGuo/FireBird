@@ -17,7 +17,7 @@ public:
 	void LoadDB(const string& strStockSymbol, long lStartDate);
 
 	CDayLine* GetData(const size_t lIndex) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CDayLine* GetDayLine(long lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CDayLine* GetDayLine(chrono::local_days lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
 	CWeekLine CreateNewWeekLine(long& lCurrentDayLinePos);
 

@@ -25,11 +25,11 @@ public:
 	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
-	void CheckUpdateStatus(long lTodayDate);
-	void CheckProfileUpdateStatus(long lTodayDate);
-	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
-	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
-	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, chrono::weekday lDayOfWeek);
+	void CheckUpdateStatus(chrono::local_days todayDate);
+	void CheckProfileUpdateStatus(chrono::local_days todayDate);
+	bool CheckCompanyNewsUpdateStatus(chrono::local_days todayDate);
+	bool CheckBasicFinancialUpdateStatus(chrono::local_days todayDate);
+	bool CheckDayLineUpdateStatus(chrono::local_days todayDate, chrono::local_days lLastTradeDate, chrono::local_seconds lTime, chrono::weekday lDayOfWeek);
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();
@@ -65,17 +65,17 @@ public:
 
 	bool IsUpdateEPSSurprise() const noexcept { return m_fUpdateEPSSurprise; }
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
-	bool CheckEPSSurpriseStatus(long lCurrentDate);
+	bool CheckEPSSurpriseStatus(chrono::local_days lCurrentDate);
 	bool IsUpdateEPSSurpriseDB() const noexcept { return m_fUpdateEPSSurpriseDB; }
 	void SetUpdateEPSSurpriseDB(const bool fFlag) noexcept { m_fUpdateEPSSurpriseDB = fFlag; }
 
 	bool IsUpdatePeer() const noexcept { return m_fUpdateFinnhubPeer; }
 	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
-	bool CheckPeerStatus(long lCurrentDate);
+	bool CheckPeerStatus(chrono::local_days lCurrentDate);
 
 	bool IsUpdateSECFilings() const noexcept { return m_fUpdateSECFilings; }
 	void SetUpdateSECFilings(bool fFlag) noexcept { m_fUpdateSECFilings = fFlag; }
-	bool CheckSECFilingsStatus(long lCurrentDate);
+	bool CheckSECFilingsStatus(chrono::local_days lCurrentDate);
 	bool IsUpdateSECFilingsDB() const noexcept { return m_fUpdateSECFilingsDB; }
 	void SetUpdateSECFilingsDB(const bool fFlag) noexcept { m_fUpdateSECFilingsDB = fFlag; }
 
@@ -84,7 +84,7 @@ public:
 	void UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvInsiderTransaction);
 	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
 	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransaction = fFlag; }
-	bool CheckInsiderTransactionStatus(long lCurrentDate);
+	bool CheckInsiderTransactionStatus(chrono::local_days lCurrentDate);
 	bool IsUpdateInsiderTransactionDB() const noexcept { return m_fUpdateFinnhubInsiderTransactionDB; }
 	void SetUpdateInsiderTransactionDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransactionDB = fFlag; }
 
@@ -93,7 +93,7 @@ public:
 	void ClearInsiderSentiment() { m_pvInsiderSentiment.reset(); }
 	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateFinnhubInsiderSentiment; }
 	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentiment = fFlag; }
-	bool CheckInsiderSentimentStatus(long lCurrentDate);
+	bool CheckInsiderSentimentStatus(chrono::local_days lCurrentDate);
 	bool IsUpdateInsiderSentimentDB() const noexcept { return m_fUpdateFinnhubInsiderSentimentDB; }
 	void SetUpdateInsiderSentimentDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentimentDB = fFlag; }
 
@@ -164,28 +164,28 @@ public:
 	void SetPeer(const nlohmannJson& jsonPeer) { m_jsonPeer = jsonPeer; }
 	void SetSECFilings(const CSECFilingsPtr& pv);
 	void ClearSECFilings() { m_vSECFilings.clear(); }
-	long GetProfileUpdateDate();
-	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
-	long GetCompanyNewsUpdateDate();
-	void SetCompanyNewsUpdateDate(long lCompanyNewsUpdateDate) noexcept;
-	long GetBasicFinancialUpdateDate();
-	void SetBasicFinancialUpdateDate(long lBasicFinancialUpdateDate) noexcept;
-	long GetLastRTDataUpdateDate();
-	void SetLastRTDataUpdateDate(long lDate) noexcept;
-	long GetPeerUpdateDate();
-	void SetPeerUpdateDate(long lDate) noexcept;
-	long GetInsiderTransactionUpdateDate();
-	void SetInsiderTransactionUpdateDate(long lDate) noexcept;
-	long GetInsiderSentimentUpdateDate();
-	void SetInsiderSentimentUpdateDate(long lDate) noexcept;
-	long GetLastEPSSurpriseUpdateDate();
-	void SetLastEPSSurpriseUpdateDate(long lDate) noexcept;
-	void SetSECFilingsUpdateDate(long lDate) noexcept;
-	long GetSECFilingsUpdateDate();
+	chrono::local_days GetProfileUpdateDate();
+	void SetProfileUpdateDate(chrono::local_days profileUpdateDate) noexcept;
+	chrono::local_days GetCompanyNewsUpdateDate();
+	void SetCompanyNewsUpdateDate(chrono::local_days companyNewsUpdateDate) noexcept;
+	chrono::local_days GetBasicFinancialUpdateDate();
+	void SetBasicFinancialUpdateDate(chrono::local_days basicFinancialUpdateDate) noexcept;
+	chrono::local_days GetLastRTDataUpdateDate();
+	void SetLastRTDataUpdateDate(chrono::local_days lastRTDataUpdateDate) noexcept;
+	chrono::local_days GetPeerUpdateDate();
+	void SetPeerUpdateDate(chrono::local_days peerUpdateDate) noexcept;
+	chrono::local_days GetInsiderTransactionUpdateDate();
+	void SetInsiderTransactionUpdateDate(chrono::local_days insiderTransactionUpdateDate) noexcept;
+	chrono::local_days GetInsiderSentimentUpdateDate();
+	void SetInsiderSentimentUpdateDate(chrono::local_days insiderSentimentUpdateDate) noexcept;
+	chrono::local_days GetLastEPSSurpriseUpdateDate();
+	void SetLastEPSSurpriseUpdateDate(chrono::local_days lastEPSSurpriseUpdateDate) noexcept;
+	void SetSECFilingsUpdateDate(chrono::local_days secFilingsUpdateDate) noexcept;
+	chrono::local_days GetSECFilingsUpdateDate();
 	nlohmannJson GetJsonPeer() const noexcept { return m_jsonPeer; }
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
-	string GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;
+	string GetTiingoDayLineInquiryParam(chrono::local_days lStartDate, chrono::local_days lCurrentDate) const;
 	string GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime);
 
 	bool IsUSMarket() const;

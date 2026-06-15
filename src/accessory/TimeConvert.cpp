@@ -22,6 +22,17 @@ long XferToYYYYMMDD(const string& sDate) {
 	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 }
 
+chrono::local_days XferToLocalDays(const string& sDate) {
+	chrono::year_month_day ymd;
+	stringstream ss(sDate);
+	chrono::from_stream(ss, "%F", ymd);
+	stringstream ss2(sDate);
+	chrono::local_days ls;
+	ss2 >> chrono::parse("%F", ls);
+	chrono::year_month_day ymd2{ ls };
+	return ls;
+}
+
 using namespace std::chrono;
 
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day) {
@@ -45,6 +56,12 @@ chrono::year_month_day GetNextMonth(chrono::year_month_day ymd) noexcept {
 	year_month ym{ ymd.year(), ymd.month() };
 	year_month nextYm = ym + months{ 1 };
 	return year_month_day{ nextYm / day{ 1 } };
+}
+
+chrono::local_days GetNextMonth(chrono::local_days ld) noexcept {
+	chrono::year_month_day ymd{ ld };
+	chrono::year_month_day ymd2 = GetNextMonth(ymd);
+	return chrono::local_days{ ymd2 };
 }
 
 long GetNextDay(long lDate, long lTimeSpanDays) noexcept {
@@ -169,6 +186,14 @@ long GetPrevMonday(long lDate) {
 	return lPrevMonday;
 }
 
+chrono::local_days GetPrevMonday(chrono::local_days ld) {
+	weekday wd{ ld };
+	int wd_index = static_cast<int>(wd.c_encoding());
+	int offset = (wd_index + 6) % 7 + 7;
+
+	return ld - days{ offset };
+}
+
 long GetCurrentMonday(long lDate) {
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - (lDate / 10000) * 100;
@@ -205,6 +230,12 @@ long GetCurrentMonday(long lDate) {
 	return lCurrentMonday;
 }
 
+chrono::local_days GetCurrentMonday(chrono::local_days ld) {
+	weekday wd{ ld };
+	int wd_index = static_cast<int>(wd.c_encoding());
+	return ld - days{ (wd_index + 6) % 7 };
+}
+
 chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time) {
 	return chrono::local_seconds(time.to_duration() + chrono::seconds(1));
 }
@@ -233,19 +264,13 @@ chrono::local_seconds GetPrevTime(chrono::local_seconds time, chrono::hours hour
 	return chrono::local_seconds(newTime);
 }
 
-string ConvertDateToTimeStamp(const long lDate) {
-	const long year = lDate / 10000;
-	const long month = lDate / 100 - year * 100;
-	const long day = lDate - year * 10000 - month * 100;
-	return std::format("{:04Ld}-{:02Ld}-{:02Ld}", year, month, day);
+string ConvertDateToTimeStamp(const chrono::local_days date) {
+	return std::format("{:%F}", date);
 }
 
-string ConvertDateToChineseTimeStampString(const long lDate) {
-	const long year = lDate / 10000;
-	const long month = lDate / 100 - year * 100;
-	const long day = lDate - year * 10000 - month * 100;
-
-	return std::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
+string ConvertDateToChineseTimeStampString(const chrono::local_days date) {
+	chrono::year_month_day ymd{ date };
+	return std::format("{:%F}", ymd);
 }
 
 string FormatToMK(int64_t iNumber) {

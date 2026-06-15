@@ -12,15 +12,16 @@ public:
 	// Getter and Setter for m_date
 	string GetSymbol() const { return m_sSymbol; }
 	void SetSymbol(const string& symbol) { m_sSymbol = symbol; }
-	long GetDate() const { return m_lDate; }
-	void SetDate(long date) { m_lDate = date; }
+	chrono::local_days GetDate() const { return m_date; }
+	void SetDate(chrono::local_days date) { m_date = date; }
 	// Getter and Setter for m_ratio
 	double GetRatio() const { return m_dRatio; }
 	void SetRatio(double ratio) { m_dRatio = ratio; }
 
 protected:
 	string m_sSymbol{ "" };
-	long m_lDate{ 0 };
+	chrono::local_days m_date{ chrono::local_days{ chrono::year_month_day{ chrono::year{ 1970 }, chrono::month{ 1 }, chrono::day{ 1 } } } };
+
 	double m_dRatio{ 1.0 }; // Split ratio
 };
 

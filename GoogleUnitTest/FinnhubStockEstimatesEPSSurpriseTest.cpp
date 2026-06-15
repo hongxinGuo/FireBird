@@ -117,25 +117,25 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvEPSSurprise->size(), 1) << "错误数据不存储";
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dActual, 1.68);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, 20201231);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, toLocalDays(20201231));
 			EXPECT_EQ(m_pvEPSSurprise->at(0).m_strSymbol, "AAPL");
 			break;
 		case 5: // 第三个数据缺CodeNo
 			EXPECT_EQ(m_pvEPSSurprise->size(), 2) << "第三个数据是错误的";
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dActual, 1.68);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, 20201231);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, toLocalDays(20201231));
 			EXPECT_EQ(m_pvEPSSurprise->at(0).m_strSymbol, "AAPL");
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dActual, 0.6375);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0).m_dEstimate, 0.5765856);
-			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, 20200331);
+			EXPECT_EQ(m_pvEPSSurprise->at(0).m_lDate, toLocalDays(20200331));
 			EXPECT_EQ(m_pvEPSSurprise->at(0).m_strSymbol, "AAPL");
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3).m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3).m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(3).m_lDate, 20201231);
+			EXPECT_EQ(m_pvEPSSurprise->at(3).m_lDate, toLocalDays(20201231));
 			EXPECT_EQ(m_pvEPSSurprise->at(3).m_strSymbol, "AAPL");
 			break;
 		default:
@@ -186,26 +186,26 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
 			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0)));
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
 			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0)));
 			break;
 		case 2: // 格式不对
 			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
 			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0)));
 			break;
 		case 3: //第一个数据缺actual
 			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
 			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 0);
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101) << "数据为空时，将日期设置为原点";
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0))) << "数据为空时，将日期设置为原点";
 			break;
 		case 4: // 第二个数据缺缺actual
 			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
@@ -230,6 +230,6 @@ namespace FireBirdTest {
 		pStock->m_fUpdateEPSSurpriseDB = false;
 		pStock->SetUpdateProfileDB(false);
 		pStock->m_vEPSSurprise.resize(0);
-		pStock->SetLastEPSSurpriseUpdateDate(19800101);
+		pStock->SetLastEPSSurpriseUpdateDate(toLocalDays(19800101));
 	}
 }

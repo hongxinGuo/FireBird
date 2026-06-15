@@ -113,10 +113,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime().count(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
 		EXPECT_TRUE(gl_systemConfiguration.GetTiingoToken() == "c897a00b7cfc2630d235316a4683156");
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), 19800101);
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), 19800101);
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoStockDayLineProcessedDate(), 19800101);
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoStock52WeekHighLowUpdateDate(), 19800101);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoStockDayLineProcessedDate(), toLocalDays(19800101));
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoStock52WeekHighLowUpdateDate(), toLocalDays(19800101));
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoHourLyRequestLimit(), 500);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoDailyRequestLimit(), 20000);
 

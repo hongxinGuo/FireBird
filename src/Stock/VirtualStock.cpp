@@ -12,8 +12,8 @@ CVirtualStock::CVirtualStock() {
 }
 
 void CVirtualStock::ResetAllUpdateDate() {
-	m_lDayLineStartDate = 29900101;
-	m_lDayLineEndDate = 19800101;
+	m_dayLineStartDate = chrono::local_days(2990y / 01 / 01);
+	m_dayLineEndDate = chrono::local_days(1980y / 01 / 01);
 	m_pvStockSplit = make_shared<vector<CStockSplit>>();
 	m_pvStockSplit->reserve(100);
 	UpdateJsonUpdateDate();
@@ -21,12 +21,12 @@ void CVirtualStock::ResetAllUpdateDate() {
 
 void CVirtualStock::UpdateJsonUpdateDate() {
 	m_jsonUpdateDate["ShareOutstanding"] = m_dShareCount;
-	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate;
-	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate;
+	m_jsonUpdateDate["DayLineStartDate"] = toUnsignedDate(m_dayLineStartDate);
+	m_jsonUpdateDate["DayLineEndDate"] = toUnsignedDate(m_dayLineEndDate);
 	nlohmannJson jsStockSplit = nlohmannJson::array();
 	for (auto StockSplit : *m_pvStockSplit) {
 		nlohmannJson js;
-		js["date"] = StockSplit.GetDate();
+		js["date"] = toUnsignedDate(StockSplit.GetDate());
 		js["ratio"] = StockSplit.GetRatio();
 		jsStockSplit.push_back(js);
 	}
@@ -35,14 +35,14 @@ void CVirtualStock::UpdateJsonUpdateDate() {
 
 void CVirtualStock::UpdateAllUpdateDate() {
 	m_dShareCount = m_jsonUpdateDate.value("ShareOutstanding", 0.0);
-	m_lDayLineStartDate = m_jsonUpdateDate["DayLineStartDate"];
-	m_lDayLineEndDate = m_jsonUpdateDate["DayLineEndDate"];
+	m_dayLineStartDate = toLocalDays(m_jsonUpdateDate["DayLineStartDate"]);
+	m_dayLineEndDate = toLocalDays(m_jsonUpdateDate["DayLineEndDate"]);
 
 	m_pvStockSplit->clear();
 	auto js = m_jsonUpdateDate["StockSplit"];
 	for (auto it = js.begin(); it != js.end(); ++it) {
 		CStockSplit StockSplit;
-		StockSplit.SetDate(jsonGetLong(it, "date"));
+		StockSplit.SetDate(XferToLocalDays(jsonGetString(it, "date")));
 		StockSplit.SetRatio(jsonGetDouble(it, "ratio"));
 		m_pvStockSplit->push_back(StockSplit);
 	}

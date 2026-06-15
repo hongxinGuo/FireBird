@@ -73,6 +73,8 @@ namespace FireBirdTest {
 
 	void ChinaMarketCheck() {
 		if (gl_pChinaMarket != nullptr) {
+			EXPECT_EQ(gl_pChinaMarket->GetMarketDate(), s_currentChinaMarketDate);
+
 			ASSERT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
 
 			EXPECT_FALSE(gl_pChinaMarket->IsUpdateChosenStockDB());
@@ -103,7 +105,7 @@ namespace FireBirdTest {
 
 			auto pStock = gl_dataContainerChinaStock.GetStock(0);
 			pStock->GetDayLineEndDate();
-			EXPECT_EQ(pStock->GetDayLineEndDate(), 20250101) << "第一个股票（上海指数）的结束日期为20251219";
+			EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(20250101)) << "第一个股票（上海指数）的结束日期为20251219";
 			pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 
 			EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 0);
@@ -116,6 +118,8 @@ namespace FireBirdTest {
 	}
 
 	void WorldMarketCheck() {
+		EXPECT_EQ(gl_pWorldMarket->GetMarketDate(), s_currentWorldMarketDate);
+
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsUpdateDB());
 		if (gl_pWorldMarket != nullptr) {
 			ASSERT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "不允许更新股票代码库";

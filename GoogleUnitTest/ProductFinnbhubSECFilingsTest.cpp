@@ -133,7 +133,7 @@ namespace FireBirdTest {
 			m_finnhubSECFilings.Test_checkAccessRight_(m_pWebData);
 
 			m_finnhubSECFilings.SetIndex(0); // 第一个股票
-			gl_dataContainerFinnhubStock.GetItem(0)->SetSECFilingsUpdateDate(19800101);
+			gl_dataContainerFinnhubStock.GetItem(0)->SetSECFilingsUpdateDate(toLocalDays(19800101));
 			gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateSECFilings(true);
 		}
 

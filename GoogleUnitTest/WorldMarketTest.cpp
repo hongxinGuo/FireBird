@@ -515,7 +515,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetActive(true);
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
-		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
+		pTiingoStock->SetCompanyFinancialStatementUpdateDate(toLocalDays(20210101));
 		pTiingoStock->SetCompanyWebSite("");
 		pTiingoStock->SetLocation("");
 		pTiingoStock->SetName(""); //
@@ -534,7 +534,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetActive(true);
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
-		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
+		pTiingoStock->SetCompanyFinancialStatementUpdateDate(toLocalDays(20210101));
 		pTiingoStock->SetCompanyWebSite("www.abc.com");
 		pTiingoStock->SetLocation("Irvine CA USA");
 		pTiingoStock->SetName("ABCDE"); // 新代码
@@ -674,7 +674,7 @@ namespace FireBirdTest {
 		CFinnhubStockPtr pStock;
 		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			pStock->SetLastEPSSurpriseUpdateDate(20200101);
+			pStock->SetLastEPSSurpriseUpdateDate(toLocalDays(20200101));
 			pStock->m_fUpdateEPSSurprise = false;
 		}
 		gl_pFinnhubDataSource->SetUpdateEPSSurprise(false);
@@ -683,7 +683,7 @@ namespace FireBirdTest {
 
 		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), toLocalDays(19800101));
 			EXPECT_TRUE(pStock->m_fUpdateEPSSurprise);
 		}
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEPSSurprise());
@@ -693,7 +693,7 @@ namespace FireBirdTest {
 		CFinnhubStockPtr pStock;
 		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			pStock->SetPeerUpdateDate(20200101);
+			pStock->SetPeerUpdateDate(toLocalDays(20200101));
 			pStock->SetUpdatePeer(false);
 			pStock->SetUpdateProfileDB(false);
 		}
@@ -703,7 +703,7 @@ namespace FireBirdTest {
 
 		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			EXPECT_EQ(pStock->GetPeerUpdateDate(), 19800101);
+			EXPECT_EQ(pStock->GetPeerUpdateDate(), toLocalDays(19800101));
 			EXPECT_TRUE(pStock->IsUpdatePeer());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
@@ -720,8 +720,8 @@ namespace FireBirdTest {
 		CFinnhubStockPtr pStock;
 		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			pStock->SetDayLineStartDate(20200101);
-			pStock->SetDayLineEndDate(20200101);
+			pStock->SetDayLineStartDate(toLocalDays(20200101));
+			pStock->SetDayLineEndDate(toLocalDays(20200101));
 			pStock->SetUpdateDayLine(false);
 			pStock->SetUpdateProfileDB(false);
 		}
@@ -731,8 +731,8 @@ namespace FireBirdTest {
 
 		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(i);
-			EXPECT_EQ(pStock->GetDayLineStartDate(), 29900101);
-			EXPECT_EQ(pStock->GetDayLineEndDate(), 19800101);
+			EXPECT_EQ(pStock->GetDayLineStartDate(), toLocalDays(29900101));
+			EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(19800101));
 			EXPECT_TRUE(pStock->IsUpdateDayLine());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
@@ -759,50 +759,50 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskCreateTask1) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TEST_SetFormattedMarketTime(toTimeOfDay(10010));
+		gl_pWorldMarket->TEST_SetMarketTime(toLocalTime(10010));
 		gl_pWorldMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
 		auto pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CHECK_SYSTEM_READY__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(1));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10010));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10010));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10030));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10030));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_DB__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10040));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10040));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10100));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10100));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10200));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10200));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10300));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10300));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 #ifndef _DEBUG
 		//Note 为了方便调试，测试版不再添加以下任务。发行版依然添加。
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10500));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10500));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 #endif
 
@@ -813,7 +813,7 @@ namespace FireBirdTest {
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CREATE_TASK__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(240000));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
@@ -822,13 +822,13 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskCreateTask2) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TEST_SetFormattedMarketTime(gl_pWorldMarket->GetResetTime() + 1min + 10s);
+		gl_pWorldMarket->TEST_SetMarketTime(gl_pWorldMarket->GetResetTime() + 1min + 10s);
 		gl_pWorldMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
 		auto pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CHECK_SYSTEM_READY__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(1));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
@@ -871,7 +871,7 @@ namespace FireBirdTest {
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CREATE_TASK__);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(240000));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
@@ -880,7 +880,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskProcessWebSocketData1) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TEST_SetFormattedMarketTime(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0h, 2min, 1s));
+		gl_pWorldMarket->TEST_SetMarketTime(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0h, 2min, 1s));
 		gl_pWorldMarket->TaskProcessWebSocketData();
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
@@ -895,7 +895,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskProcessWebSocketData2) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TEST_SetFormattedMarketTime(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0h, 2min, 1s));
+		gl_pWorldMarket->TEST_SetMarketTime(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0h, 2min, 1s));
 		gl_pWorldMarket->TaskProcessWebSocketData();
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());

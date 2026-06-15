@@ -39,8 +39,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetExchange(), "");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 29900101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 19800101);
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), toLocalDays(29900101));
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), toLocalDays(19800101));
 		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateDayLine());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateDayLineDB());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateProfileDB());
@@ -76,15 +76,15 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineStartDate) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetDayLineStartDate(20202020);
-		EXPECT_EQ(symbol.GetDayLineStartDate(), 20202020);
+		symbol.SetDayLineStartDate(toLocalDays(20202020));
+		EXPECT_EQ(symbol.GetDayLineStartDate(), toLocalDays(20202020));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineEndDate) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetDayLineEndDate(10101010);
-		EXPECT_EQ(symbol.GetDayLineEndDate(), 10101010);
+		symbol.SetDayLineEndDate(toLocalDays(10101010));
+		EXPECT_EQ(symbol.GetDayLineEndDate(), toLocalDays(10101010));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetUpdateDayLineDB) {
@@ -115,7 +115,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(symbol.HaveNewDayLineData());
 		symbol.UpdateDayLine(pvDayLine);
-		symbol.SetDayLineEndDate(20200101); // 比日线最新数据旧
+		symbol.SetDayLineEndDate(toLocalDays(20200101)); // 比日线最新数据旧
 		EXPECT_TRUE(symbol.HaveNewDayLineData());
 	}
 
@@ -123,11 +123,11 @@ namespace FireBirdTest {
 		CFinnhubCrypto symbol;
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
-		symbol.SetDayLineEndDate(19900101);
-		symbol.SetDayLineStartDate(19900101);
+		symbol.SetDayLineEndDate(toLocalDays(19900101));
+		symbol.SetDayLineStartDate(toLocalDays(19900101));
 		symbol.UpdateDayLineStartEndDate();
-		EXPECT_EQ(symbol.GetDayLineStartDate(), 29900101);
-		EXPECT_EQ(symbol.GetDayLineEndDate(), 19800101);
+		EXPECT_EQ(symbol.GetDayLineStartDate(), toLocalDays(29900101));
+		EXPECT_EQ(symbol.GetDayLineEndDate(), toLocalDays(19800101));
 
 		EXPECT_EQ(symbol.GetDayLineSize(), 0);
 		CDayLine dayLine;
@@ -142,8 +142,8 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(symbol.IsUpdateProfileDB());
 		symbol.UpdateDayLineStartEndDate();
-		EXPECT_EQ(symbol.GetDayLineStartDate(), 20200102);
-		EXPECT_EQ(symbol.GetDayLineEndDate(), 20200105);
+		EXPECT_EQ(symbol.GetDayLineStartDate(), toLocalDays(20200102));
+		EXPECT_EQ(symbol.GetDayLineEndDate(), toLocalDays(20200105));
 		EXPECT_TRUE(symbol.IsUpdateProfileDB());
 
 		symbol.UnloadDayLine();

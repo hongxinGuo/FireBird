@@ -58,7 +58,7 @@ void CInaccessibleSymbol::SaveDB() const {
 
 void CInaccessibleSymbol::Update() {
 	try {
-		m_lUpdateDate = m_jsonInaccessible.at("UpdateDate");
+		m_lUpdateDate = toLocalDays(m_jsonInaccessible.at("UpdateDate"));
 	} catch (nlohmannJson::exception&) {}
 	try {
 		for (size_t i = 0; i < m_jsonInaccessible.at("InaccessibleSymbol").size(); i++) {
@@ -82,7 +82,7 @@ void CInaccessibleSymbol::Update() {
 void CInaccessibleSymbol::UpdateJson() {
 	m_jsonInaccessible.clear();
 
-	m_jsonInaccessible["UpdateDate"] = m_lUpdateDate;
+	m_jsonInaccessible["UpdateDate"] = toUnsignedDate(m_lUpdateDate);
 	for (const auto& val : m_mapInaccessible | std::views::values) {
 		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集

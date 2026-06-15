@@ -37,7 +37,7 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWeekLine dl;
 		dl.SetDate(CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(dl.GetDate(), CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetDate(), toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 	}
 
 	TEST_F(CWeekLineTest, TestGetStockSymbol) {
@@ -213,8 +213,8 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(weekLine.GetDate(), dayLine1.GetDate()) << "使用第一个数据的日期";
 		EXPECT_NE(weekLine.GetDate(), dayLine2.GetDate()) << "使用第一个数据的日期";
-		EXPECT_EQ(weekLine.GetMarketDate(), dayLine1.GetMarketDate()) << "使用第一个数据的日期";
-		EXPECT_NE(weekLine.GetMarketDate(), dayLine2.GetMarketDate()) << "使用第一个数据的日期";
+		EXPECT_EQ(weekLine.GetDate(), dayLine1.GetDate()) << "使用第一个数据的日期";
+		EXPECT_NE(weekLine.GetDate(), dayLine2.GetDate()) << "使用第一个数据的日期";
 		EXPECT_TRUE(weekLine.GetStockSymbol() == dayLine1.GetStockSymbol()) << "股票代码不为空时，不更改";
 		EXPECT_FALSE(weekLine.GetStockSymbol() == dayLine2.GetStockSymbol()) << "股票代码不为空时，不更改";
 

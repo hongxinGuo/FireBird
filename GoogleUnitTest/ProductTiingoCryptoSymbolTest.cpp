@@ -49,7 +49,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoCryptoTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate(), 19800101);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate(), toLocalDays(19800101));
 		stockSymbol.UpdateSystemStatus();
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		gl_pTiingoDataSource->SetUpdateCryptoSymbol(true);
-		gl_systemConfiguration.SetTiingoCryptoSymbolUpdateDate(19800101);
+		gl_systemConfiguration.SetTiingoCryptoSymbolUpdateDate(toLocalDays(19800101));
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
 

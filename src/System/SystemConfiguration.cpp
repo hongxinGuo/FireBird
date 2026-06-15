@@ -350,27 +350,27 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_lTiingoFundamentalsMetaUpdateDate = jsonData.at("Tiingo").at("FundamentalsMetaUpdateDate"); // 
+		m_lTiingoFundamentalsMetaUpdateDate = toLocalDays(jsonData.at("Tiingo").at("FundamentalsMetaUpdateDate")); // 
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_lTiingoCryptoSymbolUpdateDate = jsonData.at("Tiingo").at("CryptoSymbolUpdateDate"); // 
+		m_lTiingoCryptoSymbolUpdateDate = toLocalDays(jsonData.at("Tiingo").at("CryptoSymbolUpdateDate")); // 
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_lTiingoIEXTopOfBookUpdateDate = jsonData.at("Tiingo").at("IEXTopOfBookUpdateDate"); // 
+		m_lTiingoIEXTopOfBookUpdateDate = toLocalDays(jsonData.at("Tiingo").at("IEXTopOfBookUpdateDate")); // 
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_lTiingoStockDayLineProcessedDate = jsonData.at("Tiingo").at("StockDayLineProcessedDate"); // 
+		m_lTiingoStockDayLineProcessedDate = toLocalDays(jsonData.at("Tiingo").at("StockDayLineProcessedDate")); // 
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_lTiingoStock52WeekHighLowUpdateDate = jsonData.at("Tiingo").at("Stock52WeekHighLowUpdateDate"); // 
+		m_lTiingoStock52WeekHighLowUpdateDate = toLocalDays(jsonData.at("Tiingo").at("Stock52WeekHighLowUpdateDate")); // 
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -552,11 +552,11 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	// Tiingo.com
 	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;
 	jsonData["Tiingo"]["Token"] = m_strTiingoToken;
-	jsonData["Tiingo"]["FundamentalsMetaUpdateDate"] = m_lTiingoFundamentalsMetaUpdateDate;
-	jsonData["Tiingo"]["CryptoSymbolUpdateDate"] = m_lTiingoCryptoSymbolUpdateDate;
-	jsonData["Tiingo"]["IEXTopOfBookUpdateDate"] = m_lTiingoIEXTopOfBookUpdateDate;
-	jsonData["Tiingo"]["StockDayLineProcessedDate"] = m_lTiingoStockDayLineProcessedDate;
-	jsonData["Tiingo"]["Stock52WeekHighLowUpdate"] = m_lTiingoStock52WeekHighLowUpdateDate;
+	jsonData["Tiingo"]["FundamentalsMetaUpdateDate"] = toUnsignedDate(m_lTiingoFundamentalsMetaUpdateDate);
+	jsonData["Tiingo"]["CryptoSymbolUpdateDate"] = toUnsignedDate(m_lTiingoCryptoSymbolUpdateDate);
+	jsonData["Tiingo"]["IEXTopOfBookUpdateDate"] = toUnsignedDate(m_lTiingoIEXTopOfBookUpdateDate);
+	jsonData["Tiingo"]["StockDayLineProcessedDate"] = toUnsignedDate(m_lTiingoStockDayLineProcessedDate);
+	jsonData["Tiingo"]["Stock52WeekHighLowUpdate"] = toUnsignedDate(m_lTiingoStock52WeekHighLowUpdateDate);
 	jsonData["Tiingo"]["HourlyRequestLimit"] = m_iTiingoHourLyRequestLimit;
 	jsonData["Tiingo"]["DailyRequestLimit"] = m_lTiingoDailyRequestLimit;
 	jsonData["Tiingo"]["BandWidth"] = m_llTiingoBandWidth;

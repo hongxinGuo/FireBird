@@ -32,7 +32,7 @@ namespace FireBirdTest {
 	TEST_F(CEPSSurpriseTest, TestInitialize) {
 		const CEPSSurprise EPSSurprise;
 		EXPECT_EQ(EPSSurprise.m_strSymbol, " ");
-		EXPECT_EQ(EPSSurprise.m_lDate, 0);
+		EXPECT_EQ(EPSSurprise.m_lDate, chrono::local_days(chrono::days(0)));
 		EXPECT_DOUBLE_EQ(EPSSurprise.m_dActual, 0.0);
 		EXPECT_DOUBLE_EQ(EPSSurprise.m_dEstimate, 0.0);
 	}

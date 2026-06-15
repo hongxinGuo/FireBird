@@ -67,8 +67,8 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			auto pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
-			pStock->SetHistoryDayLineStartDate(19000101);
-			pStock->SetHistoryDayLineEndDate(19000101);
+			pStock->SetHistoryDayLineStartDate(toLocalDays(19000101));
+			pStock->SetHistoryDayLineEndDate(toLocalDays(19000101));
 		}
 
 		static void TearDownTestSuite() {
@@ -92,8 +92,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			auto pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
-			pStock->SetHistoryDayLineStartDate(19000101);
-			pStock->SetHistoryDayLineEndDate(19000101);
+			pStock->SetHistoryDayLineStartDate(toLocalDays(19000101));
+			pStock->SetHistoryDayLineEndDate(toLocalDays(19000101));
 			pStock->SetUpdateStockDailyMeta(true);
 			pStock->SetUpdateProfileDB(false);
 
@@ -119,20 +119,20 @@ namespace FireBirdTest {
 		m_tiingoStockDailyMetaProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineStartDate(), 19801212);
-			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineEndDate(), 20190125);
+			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineStartDate(), toLocalDays(19801212));
+			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineEndDate(), toLocalDays(20190125));
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock("AAPL")->IsUpdateStockDailyMeta());
 			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock("AAPL")->IsUpdateProfileDB());
 			break;
 		case 2: // 格式不对
-			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineStartDate(), 19500101) << "当没有日期时，改为19500101";
-			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineEndDate(), 19500101) << "当没有日期时，改为19500101";
+			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineStartDate(), toLocalDays(19500101)) << "当没有日期时，改为19500101";
+			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineEndDate(), toLocalDays(19500101)) << "当没有日期时，改为19500101";
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock("AAPL")->IsUpdateStockDailyMeta());
 			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock("AAPL")->IsUpdateProfileDB());
 			break;
 		case 3: // 缺乏address项
-			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineStartDate(), 19801212);
-			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineEndDate(), 20190125);
+			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineStartDate(), toLocalDays(19801212));
+			EXPECT_EQ(gl_dataContainerTiingoStock.GetStock("AAPL")->GetHistoryDayLineEndDate(), toLocalDays(20190125));
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock("AAPL")->IsUpdateStockDailyMeta());
 			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock("AAPL")->IsUpdateProfileDB());
 			break;
@@ -151,8 +151,8 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			auto pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
-			pStock->SetHistoryDayLineStartDate(19000101);
-			pStock->SetHistoryDayLineEndDate(19000101);
+			pStock->SetHistoryDayLineStartDate(toLocalDays(19000101));
+			pStock->SetHistoryDayLineEndDate(toLocalDays(19000101));
 		}
 
 		static void TearDownTestSuite() {
@@ -193,15 +193,15 @@ namespace FireBirdTest {
 			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");
 			EXPECT_EQ(pDailyMeta->m_strName, "Apple Inc");
 			EXPECT_EQ(pDailyMeta->m_strExchange, "NASDAQ");
-			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19801212);
-			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 20190125);
+			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, toLocalDays(19801212));
+			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, toLocalDays(20190125));
 			break;
 		case 2: // 日期皆为空null
 			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");
 			EXPECT_EQ(pDailyMeta->m_strName, "Apple Inc");
 			EXPECT_EQ(pDailyMeta->m_strExchange, "NASDAQ");
-			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19000101);
-			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 19000101);
+			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, toLocalDays(19000101));
+			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, toLocalDays(19000101));
 			break;
 		case 3: // 第二个数据缺乏address项,返回一个成功
 			break;
@@ -211,8 +211,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");
 			EXPECT_EQ(pDailyMeta->m_strName, "Apple Inc");
 			EXPECT_EQ(pDailyMeta->m_strExchange, "NASDAQ");
-			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19801212);
-			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 20190125);
+			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, toLocalDays(19801212));
+			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, toLocalDays(20190125));
 			// 恢复原状
 			break;
 		default:

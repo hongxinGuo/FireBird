@@ -51,7 +51,7 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 		SetDownLoadingStockCode(strStockCode);
 		gl_systemMessage.SetStockCodeForInquiryDayLine(strStockCode);
 		strParam += "";
-		string s = std::format("&start=19900101&end={:8Ld}", gl_pChinaMarket->GetMarketDate());
+		string s = std::format("&start=19900101&end={:8Ld}", toUnsignedDate(gl_pChinaMarket->GetMarketDate()));
 		strParam += s;
 		m_strParam = strParam;
 		gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strParam);

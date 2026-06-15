@@ -66,21 +66,21 @@ namespace FireBirdTest {
 		EXPECT_EQ(tiingo.GetLocation(), "");
 		EXPECT_EQ(tiingo.GetCompanyWebSite(), "");
 		EXPECT_EQ(tiingo.GetSECFilingWebSite(), "");
-		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetDailyUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
-		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
+		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetDailyUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(29900101));
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), toLocalDays(19800101));
 	}
 
 	TEST_F(CTiingoStockTest, TestResetAllUpdateDate) {
 		stock.ResetAllUpdateDate();
-		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetDailyUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
-		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
-		EXPECT_EQ(stock.GetDayLineProcessDate(), 19800101);
+		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetDailyUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(29900101));
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetDayLineProcessDate(), toLocalDays(19800101));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetRatio) {
@@ -224,33 +224,33 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetDayLineEndDate) {
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		stock.SetDayLineEndDate(19980101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19800101));
+		stock.SetDayLineEndDate(toLocalDays(19980101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19980101));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetDayLineStartDate) {
-		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
-		stock.SetDayLineStartDate(19980101);
-		EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(29900101));
+		stock.SetDayLineStartDate(toLocalDays(19980101));
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(19980101));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetStatementLastUpdatedDate) {
-		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
-		stock.SetStatementLastUpdatedDate(19990101);
-		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 19990101);
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), toLocalDays(19800101));
+		stock.SetStatementLastUpdatedDate(toLocalDays(19990101));
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), toLocalDays(19990101));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetCompanyFinancialStatementUpdateDate) {
-		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
-		stock.SetCompanyFinancialStatementUpdateDate(19930101);
-		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19930101);
+		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), toLocalDays(19800101));
+		stock.SetCompanyFinancialStatementUpdateDate(toLocalDays(19930101));
+		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), toLocalDays(19930101));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetDayLineProcessDate) {
-		EXPECT_EQ(stock.GetDayLineProcessDate(), 19800101);
-		stock.SetDayLineProcessDate(19930101);
-		EXPECT_EQ(stock.GetDayLineProcessDate(), 19930101);
+		EXPECT_EQ(stock.GetDayLineProcessDate(), toLocalDays(19800101));
+		stock.SetDayLineProcessDate(toLocalDays(19930101));
+		EXPECT_EQ(stock.GetDayLineProcessDate(), toLocalDays(19930101));
 	}
 
 	TEST_F(CTiingoStockTest, TestIsUpdateDayLine) {
@@ -292,105 +292,105 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210107);
-		stock.SetDayLineEndDate(20210108);
+		stock.SetDayLineStartDate(toLocalDays(20210107));
+		stock.SetDayLineEndDate(toLocalDays(20210108));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210123));
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210110);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210110));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210123));
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210102);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210102));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210210));
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210210));
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
 	TEST_F(CTiingoStockTest, TestGetSetStockSplit) {
 		EXPECT_EQ(stock.GetStockSplitCount(), 0);
 		CStockSplit p;
-		p.SetDate(20200101);
+		p.SetDate(XferToLocalDays("2020-01-01"));
 		p.SetRatio(2.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 1);
-		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), 20200101);
+		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), toLocalDays(20200101));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 2.0);
-		p.SetDate(20210101);
+		p.SetDate(XferToLocalDays("2021-01-01"));
 		p.SetRatio(3.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 2);
-		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), 20210101);
+		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), toLocalDays(20210101));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 3.0);
-		p.SetDate(20190101);
+		p.SetDate(XferToLocalDays("2019-01-01"));
 		p.SetRatio(1.5);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 3);
-		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), 20190101);
+		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), toLocalDays(20190101));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 1.5);
-		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), 20200101);
+		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), toLocalDays(20200101));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 2.0);
-		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), 20210101);
+		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), toLocalDays(20210101));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2).GetRatio(), 3.0);
 	}
 
 	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {
-		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "初始时容器为空";
+		EXPECT_FALSE(stock.Have52WeekLowDate(toLocalDays(20000101))) << "初始时容器为空";
 
-		stock.Add52WeekLowDate(20000101);
-		stock.Add52WeekLowDate(20010101);
+		stock.Add52WeekLowDate(toLocalDays(20000101));
+		stock.Add52WeekLowDate(toLocalDays(20010101));
 
-		EXPECT_FALSE(stock.Have52WeekLowDate(19800101));
-		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
+		EXPECT_FALSE(stock.Have52WeekLowDate(toLocalDays(19800101)));
+		EXPECT_TRUE(stock.Have52WeekLowDate(toLocalDays(20000101)));
+		EXPECT_TRUE(stock.Have52WeekLowDate(toLocalDays(20010101)));
 
-		stock.Delete52WeekLowDate(19800101);
-		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
+		stock.Delete52WeekLowDate(toLocalDays(19800101));
+		EXPECT_TRUE(stock.Have52WeekLowDate(toLocalDays(20000101)));
+		EXPECT_TRUE(stock.Have52WeekLowDate(toLocalDays(20010101)));
 
-		stock.Delete52WeekLowDate(20000101);
-		EXPECT_FALSE(stock.Have52WeekLowDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
+		stock.Delete52WeekLowDate(toLocalDays(20000101));
+		EXPECT_FALSE(stock.Have52WeekLowDate(toLocalDays(20000101)));
+		EXPECT_TRUE(stock.Have52WeekLowDate(toLocalDays(20010101)));
 	}
 
 	TEST_F(CTiingoStockTest, TestAdd52WeekHigh) {
-		EXPECT_FALSE(stock.Have52WeekHighDate(20000101)) << "初始时容器为空";
+		EXPECT_FALSE(stock.Have52WeekHighDate(toLocalDays(20000101))) << "初始时容器为空";
 
-		stock.Add52WeekHighDate(20000101);
-		stock.Add52WeekHighDate(20010101);
+		stock.Add52WeekHighDate(toLocalDays(20000101));
+		stock.Add52WeekHighDate(toLocalDays(20010101));
 
-		EXPECT_FALSE(stock.Have52WeekHighDate(19800101));
-		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
+		EXPECT_FALSE(stock.Have52WeekHighDate(toLocalDays(19800101)));
+		EXPECT_TRUE(stock.Have52WeekHighDate(toLocalDays(20000101)));
+		EXPECT_TRUE(stock.Have52WeekHighDate(toLocalDays(20010101)));
 
-		stock.Delete52WeekHighDate(19800101);
-		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
+		stock.Delete52WeekHighDate(toLocalDays(19800101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(toLocalDays(20000101)));
+		EXPECT_TRUE(stock.Have52WeekHighDate(toLocalDays(20010101)));
 
-		stock.Delete52WeekHighDate(20000101);
-		EXPECT_FALSE(stock.Have52WeekHighDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
+		stock.Delete52WeekHighDate(toLocalDays(20000101));
+		EXPECT_FALSE(stock.Have52WeekHighDate(toLocalDays(20000101)));
+		EXPECT_TRUE(stock.Have52WeekHighDate(toLocalDays(20010101)));
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
@@ -450,7 +450,7 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
 		stock.SaveDayLineDB();
@@ -547,32 +547,32 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
 		auto pDayLine = stock.GetDayLine(1);
-		EXPECT_EQ(pDayLine->GetDate(), 20210102);
+		EXPECT_EQ(pDayLine->GetDate(), toLocalDays(20210102));
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210107);
-		stock.SetDayLineEndDate(20210108);
+		stock.SetDayLineStartDate(toLocalDays(20210107));
+		stock.SetDayLineEndDate(toLocalDays(20210108));
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210110);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210110));
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210102);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210102));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		EXPECT_FALSE(stock.HaveNewDayLineData());
 	}
 
@@ -659,11 +659,11 @@ namespace FireBirdTest {
 		stock.RebuildStockSplitDB();
 
 		EXPECT_EQ(stock.GetStockSplitCount(), 5);
-		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), 19870616);
-		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), 20000621);
-		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), 20050228);
-		EXPECT_EQ(stock.GetStockSplit(3).GetDate(), 20140609);
-		EXPECT_EQ(stock.GetStockSplit(4).GetDate(), 20200831);
+		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), toLocalDays(19870616));
+		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), toLocalDays(20000621));
+		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), toLocalDays(20050228));
+		EXPECT_EQ(stock.GetStockSplit(3).GetDate(), toLocalDays(20140609));
+		EXPECT_EQ(stock.GetStockSplit(4).GetDate(), toLocalDays(20200831));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 2.0);
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 2.0);
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2).GetRatio(), 2.0);
@@ -741,7 +741,7 @@ namespace FireBirdTest {
 
 		// Load into stock and mark for DB update
 		stock.SetSymbol("AAPL");
-		stock.SetDayLineEndDate(20241111);
+		stock.SetDayLineEndDate(toLocalDays(20241111));
 		stock.UpdateDayLine(pvDayLine);
 
 		// Pre-conditions

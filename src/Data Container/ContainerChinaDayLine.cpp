@@ -26,7 +26,7 @@ void CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	// Helper: insert a single candle into DB (ratio applied inside)
 	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
 		multi_insert.values.add(
-			t.Date = pCandle->GetDate(),
+			t.Date = static_cast<long>(toUnsignedDate(pCandle->GetDate())),
 			t.Exchange = pCandle->GetExchange(),
 			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
@@ -154,8 +154,8 @@ CWeekLine CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	ASSERT(Size() > 0);
 	ASSERT(lCurrentDayLinePos < Size());
 	auto data = GetData(lCurrentDayLinePos);
-	const long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetDate());
-	const long lNewestDay = GetData(Size() - 1)->GetDate();
+	const auto lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetDate());
+	const auto lNewestDay = GetData(Size() - 1)->GetDate();
 	CWeekLine weekLine;
 	if (lNextMonday < lNewestDay) {
 		// 中间数据

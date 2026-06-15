@@ -42,8 +42,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
-		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
-		string sCurrentDate = std::format("{:4Ld}-{:02Ld}-{:02Ld}", lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
+		const chrono::local_days lCurrentDate = gl_pWorldMarket->GetMarketDate();
+		string sCurrentDate = std::format("{:%F}", lCurrentDate);
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderSentiment(true);
 		companyInsiderSentiment.SetIndex(1);
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101);
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101));
 			m_pStock->SetUpdateInsiderSentimentDB(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetUpdateInsiderSentimentDB(false);
-			m_pStock->SetInsiderSentimentUpdateDate(19800101);
+			m_pStock->SetInsiderSentimentUpdateDate(toLocalDays(19800101));
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -112,23 +112,23 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			break;
 		case 3:
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			break;
@@ -136,13 +136,13 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
 			break;
 		case 5: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
 			break;
 		default:
 			break;
@@ -172,7 +172,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetUpdateInsiderSentimentDB(false);
-			m_pStock->SetInsiderSentimentUpdateDate(19800101);
+			m_pStock->SetInsiderSentimentUpdateDate(toLocalDays(19800101));
 
 			SCOPED_TRACE("");
 			GeneralCheck();

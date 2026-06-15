@@ -28,7 +28,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
 	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(pvEPSSurprise); }
 	else {
-		pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
+		pStock->SetLastEPSSurpriseUpdateDate(chrono::local_days(chrono::days(0))); // 将日期设置为更早。
 		pStock->SetUpdateProfileDB(true);
 	}
 	pStock->SetUpdateEPSSurprise(false);
@@ -49,7 +49,10 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 			string s = jsonGetString(it, "symbol");
 			pEPSSurprise.m_strSymbol = s;
 			s = jsonGetString(it, "period");
-			pEPSSurprise.m_lDate = XferToYYYYMMDD(s);
+			stringstream ss(s);
+			chrono::local_days ld;
+			ss >> chrono::parse("%F", ld);
+			pEPSSurprise.m_lDate = ld;
 			pEPSSurprise.m_dEstimate = jsonGetDouble(it, "estimate");
 			pEPSSurprise.m_dActual = jsonGetDouble(it, "actual");
 			pvEPSSurprise->push_back(pEPSSurprise);

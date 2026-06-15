@@ -13,6 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "dataBaseConnector.h"
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"FinnhubInquiryType.h"
 
@@ -40,8 +41,8 @@ public:
 	void SetFileName(const string& fileName) noexcept { m_strFileName = fileName; }
 	string GetFileName() { return m_strFileName; }
 
-	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
-	long GetUpdateDate() const { return m_lUpdateDate; }
+	void SetUpdateDate(const chrono::local_days date) noexcept { m_lUpdateDate = date; }
+	auto GetUpdateDate() const { return m_lUpdateDate; }
 
 	static int GetInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessiblePtr GetInaccessible(int iInquireType) { return m_mapInaccessible.at(iInquireType); }
@@ -57,7 +58,7 @@ public:
 protected:
 	string m_strFileName;// 配置文件名称
 
-	long m_lUpdateDate{ 19800101 }; // 本文件更新日期
+	chrono::local_days m_lUpdateDate{ 1980y / 01 / 01 }; // 本文件更新日期
 	map<int, CInaccessiblePtr> m_mapInaccessible; //
 
 	bool m_fInitialized{ false };

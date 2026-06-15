@@ -60,7 +60,7 @@ namespace FireBirdTest {
 		const auto vDayLine = pNeteaseDayLine->GetProcessedDayLine();
 		EXPECT_EQ(vDayLine.size(), 2);
 		EXPECT_EQ(vDayLine.at(0).GetStockSymbol(), "600000.SS") << "网易日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
-		EXPECT_EQ(vDayLine.at(0).GetDate(), 20190723) << "网易日线逆序发送，最新的日期在最前面。处理后的数据进行正序排序";
-		EXPECT_EQ(vDayLine.at(1).GetDate(), 20190724);
+		EXPECT_EQ(vDayLine.at(0).GetDate(), toLocalDays(20190723)) << "网易日线逆序发送，最新的日期在最前面。处理后的数据进行正序排序";
+		EXPECT_EQ(vDayLine.at(1).GetDate(), toLocalDays(20190724));
 	}
 }

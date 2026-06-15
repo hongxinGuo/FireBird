@@ -41,12 +41,12 @@ namespace FireBirdTest {
 		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
-			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
+			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), toLocalDays(19800101));
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
 			pStock->SetUpdateBasicFinancial(false);
 			pStock->SetUpdateProfileDB(false);
-			pStock->SetBasicFinancialUpdateDate(20000101);
+			pStock->SetBasicFinancialUpdateDate(toLocalDays(20000101));
 		}
 
 		gl_dataContainerFinnhubStock.ResetBasicFinancial();
@@ -54,13 +54,13 @@ namespace FireBirdTest {
 		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
-			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
+			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), toLocalDays(19800101));
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
 			// 恢复原状
 			//pStock->SetUpdateBasicFinancial(false);
 			pStock->SetUpdateProfileDB(false);
-			//pStock->SetBasicFinancialUpdateDate(20000101);
+			//pStock->SetBasicFinancialUpdateDate(toLocalDays(20000101));
 		}
 	}
 
@@ -196,7 +196,7 @@ namespace FireBirdTest {
 		auto exchange = pExistStock->GetExchange();
 		pExistStock->SetExchange("CN");
 		const auto originalUpdateDayLineEndDate = pExistStock->GetDayLineEndDate();
-		pExistStock->SetDayLineEndDate(20200220);
+		pExistStock->SetDayLineEndDate(toLocalDays(20200220));
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
@@ -226,7 +226,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultNew.size(), 1u);
 
 			// Cleanup DB: remove test insertion and restore existing stock IPO status
-			pExistStock->SetDayLineEndDate(19800101);
+			pExistStock->SetDayLineEndDate(toLocalDays(19800101));
 			pExistStock->UpdateJsonUpdateDate();
 			string jsonUpdateDate = pExistStock->GetJsonUpdateDate().dump();
 			db(update(t).set(t.Exchange = exchange, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
@@ -240,7 +240,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
-		pExistStock->SetDayLineEndDate(19800101);
+		pExistStock->SetDayLineEndDate(toLocalDays(19800101));
 		pExistStock->SetUpdateProfileDB(false);
 
 		//gl_dataContainerFinnhubStock.UpdateProfileDB();

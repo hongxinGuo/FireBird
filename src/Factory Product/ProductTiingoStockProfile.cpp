@@ -179,9 +179,15 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			}
 			else pStock->SetSECFilingWebSite(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "statementLastUpdated");
-			pStock->SetStatementLastUpdatedDate(XferToYYYYMMDD(s1));
+			stringstream ss1(s1);
+			chrono::local_seconds ls1;
+			ss1 >> parse("%FT%T%Z", ls1);
+			pStock->SetStatementLastUpdatedDate(chrono::floor<chrono::days>(ls1));
 			s1 = simdjsonGetStringView(itemValue, "dailyLastUpdated");
-			pStock->SetDailyUpdateDate(XferToYYYYMMDD(s1));
+			stringstream ss2(s1);
+			chrono::local_seconds ls2;
+			ss2 >> parse("%FT%T%Z", ls2);
+			pStock->SetDailyUpdateDate(chrono::floor<chrono::days>(ls2));
 			s1 = simdjsonGetStringView(itemValue, "dataProviderPermaTicker");
 			if (s1 != strNotAvailable) {
 				pStock->SetDataProviderPermaTicker(s1);
@@ -253,7 +259,7 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
 		multi_insert.values.add(
 			t.Symbol = pStock->GetSymbol(),
-			t.Date = (int)(gl_pWorldMarket->GetMarketDate())
+			t.Date = static_cast<long>(toUnsignedDate(gl_pWorldMarket->GetMarketDate()))
 		);
 		++nValues;
 	}
@@ -268,11 +274,11 @@ void CProductTiingoStockProfile::SaveDelistedSymbol() {
 	auto tx = sqlpp::start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
 
-	db(sqlpp::remove_from(t).where(t.Date == gl_pWorldMarket->GetMarketDate()));
+	db(sqlpp::remove_from(t).where(t.Date == static_cast<long>(toUnsignedDate(gl_pWorldMarket->GetMarketDate()))));
 	int nValues = 0;
 	for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
-		multi_insert.values.add(t.Symbol = pStock->GetSymbol(), t.Date = gl_pWorldMarket->GetMarketDate());
+		multi_insert.values.add(t.Symbol = pStock->GetSymbol(), t.Date = static_cast<long>(toUnsignedDate(gl_pWorldMarket->GetMarketDate())));
 		++nValues;
 	}
 	if (nValues > 0) db(multi_insert);

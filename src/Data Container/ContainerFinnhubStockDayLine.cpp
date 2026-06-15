@@ -25,7 +25,7 @@ void CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 	                                           t.Dividend, t.SplitFactor, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
 	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
 		multi_insert.values.add(
-			t.Date = pCandle->GetDate(),
+			t.Date = static_cast<long>(toUnsignedDate(pCandle->GetDate())),
 			t.Exchange = pCandle->GetExchange(),
 			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,

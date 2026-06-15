@@ -125,7 +125,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
 	// 清除掉交易日期为零的无效数据
 	for (auto& pDayLine2 : *pvDayLine) {
-		if (pDayLine2.GetMarketDate().time_since_epoch().count() > 0) {
+		if (pDayLine2.GetDate().time_since_epoch().count() > 0) {
 			pvDayLineReturn->push_back(pDayLine2);
 		}
 	}

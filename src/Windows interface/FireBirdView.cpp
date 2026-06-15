@@ -181,7 +181,7 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
 
 	// 显示鼠标位置的价格线
 	double value = 0;
-	long date = 19700101;
+	chrono::local_days date = chrono::local_days(1970y / 01 / 01);
 	switch (m_iCurrentShowType) {
 	case SHOW_DAY_LINE_DATA_:
 		value = static_cast<double>(m_rectCandle.Height() - (ptCurrent.y - m_rectCandle.top)) * (m_lDayLineHigh - m_lDayLineLow) / m_rectCandle.Height() + m_lDayLineLow;
@@ -199,7 +199,7 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
 		ASSERT(0);
 		break;
 	}
-	auto strDate = std::format("{}-{:02}-{:02},        ", date / 10000, (date % 10000) / 100, date % 100);
+	auto strDate = std::format("{:%F}, ", date);
 	value /= GetDocument()->GetCurrentStock()->GetRatio();
 	string strValue = std::format("{:.2f}", value);
 	CPen* pOldPen = pDC->SelectObject(&penWhiteDash);

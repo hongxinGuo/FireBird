@@ -33,13 +33,13 @@ namespace FireBirdTest {
 	TEST_F(CStockDayLineTest, TestGetDate) {
 		CDayLine dl;
 		dl.SetDate(CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(dl.GetDate(), (unsigned)CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetDate(), toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 	}
 
 	TEST_F(CStockDayLineTest, TestGetDate2) {
 		CDayLine dl;
 		dl.SetDate(20200101);
-		EXPECT_EQ(dl.GetMarketDate(), toLocalDays(20200101));
+		EXPECT_EQ(dl.GetDate(), toLocalDays(20200101));
 	}
 
 	TEST_F(CStockDayLineTest, TestGetStockCode) {

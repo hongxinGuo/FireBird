@@ -13,8 +13,8 @@ public:
 	string m_strName{ "" };
 	string m_strDescription{ "" };
 	string m_strExchange{ "" };
-	long m_lHistoryDayLineStartDate{ 19000101 };
-	long m_lHistoryDayLineEndDate{ 19000101 };
+	chrono::local_days m_lHistoryDayLineStartDate{ toLocalDays(19000101) };
+	chrono::local_days m_lHistoryDayLineEndDate{ toLocalDays(19000101) };
 };
 
 using CTiingoStockDailyMetaPtr = shared_ptr<CTiingoStockDailyMeta>;

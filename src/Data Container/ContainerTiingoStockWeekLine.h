@@ -16,7 +16,7 @@ public:
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 
 	CTiingoCandleLine* GetData(const size_t lIndex) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CTiingoCandleLine* GetWeekLine(long lDate) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CTiingoCandleLine* GetWeekLine(chrono::local_days lDate) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
 	void Add(CTiingoCandleLine& pData) {
 		pData.SetRatio(m_ratio);

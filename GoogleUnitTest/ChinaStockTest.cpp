@@ -266,16 +266,16 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestGetDayLineEndDate) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		stock.SetDayLineEndDate(19980101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19800101));
+		stock.SetDayLineEndDate(toLocalDays(19980101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19980101));
 	}
 
 	TEST_F(CChinaStockTest, TestGetDayLineStartDate) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
-		stock.SetDayLineStartDate(19980101);
-		EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(29900101));
+		stock.SetDayLineStartDate(toLocalDays(19980101));
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(19980101));
 	}
 
 	TEST_F(CChinaStockTest, TestIsUpdateDayLine) {
@@ -301,8 +301,8 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		EXPECT_EQ(stock.GetSymbol(), "");
 		EXPECT_EQ(stock.GetDisplaySymbol(), "");
-		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(29900101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19800101));
 		EXPECT_EQ(stock.GetTransactionTime(), 0);
 		EXPECT_EQ(stock.GetLastClose(), 0);
 		EXPECT_EQ(stock.GetOpen(), 0);
@@ -324,10 +324,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetCurrentValue(), 0);
 		stock.SetSymbol("abcde");
 		stock.SetDisplaySymbol("dcba");
-		stock.SetDayLineEndDate(20020202);
+		stock.SetDayLineEndDate(toLocalDays(20020202));
 		EXPECT_EQ(stock.GetSymbol(), "abcde");
 		EXPECT_EQ(stock.GetDisplaySymbol(), "dcba");
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20020202));
 	}
 
 	TEST_F(CChinaStockTest, TestGetDisplaySymbol) {
@@ -481,9 +481,9 @@ namespace FireBirdTest {
 		dayLine.SetDate(20200101);
 		stock.StoreDayLine(dayLine);
 		EXPECT_EQ(stock.DayLineSize(), 1);
-		stock.SetDayLineEndDate(20200101);
+		stock.SetDayLineEndDate(toLocalDays(20200101));
 		EXPECT_FALSE(stock.HaveNewDayLineData());
-		stock.SetDayLineEndDate(20191231);
+		stock.SetDayLineEndDate(toLocalDays(20191231));
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 		stock.UnloadDayLine();
 		EXPECT_EQ(stock.DayLineSize(), 0);
@@ -563,7 +563,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(true);
 
-		stock.SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
+		stock.SetDayLineEndDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 		EXPECT_TRUE(stock.CheckDayLineStatus());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 	}
@@ -621,7 +621,7 @@ namespace FireBirdTest {
 			pStock->StoreDayLine(dayLine);
 		}
 		pStock->SetSymbol("600010.SS");
-		pStock->SetDayLineEndDate(10190101);
+		pStock->SetDayLineEndDate(toLocalDays(10190101));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineDB();
 
@@ -680,12 +680,12 @@ namespace FireBirdTest {
 			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600004.SS");
-		pStock->SetDayLineStartDate(19920102);
-		pStock->SetDayLineEndDate(20800100);
+		pStock->SetDayLineStartDate(toLocalDays(19920102));
+		pStock->SetDayLineEndDate(toLocalDays(20800100));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
-		EXPECT_EQ(pStock->GetDayLineEndDate(), CHINA_MARKET_BEGIN_DATE_ + 9 * 100000 + 2) << "日线最新日期已更新";
-		EXPECT_EQ(pStock->GetDayLineStartDate(), CHINA_MARKET_BEGIN_DATE_ + 2) << "日线最初日期已更新";
+		EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(CHINA_MARKET_BEGIN_DATE_ + 9 * 100000 + 2)) << "日线最新日期已更新";
+		EXPECT_EQ(pStock->GetDayLineStartDate(), toLocalDays(CHINA_MARKET_BEGIN_DATE_ + 2)) << "日线最初日期已更新";
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "更新日线起止日期后，此标识也被设置";
 
@@ -716,12 +716,12 @@ namespace FireBirdTest {
 			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600008.SS");
-		pStock->SetDayLineStartDate(19900101);
-		pStock->SetDayLineEndDate(20800102);
+		pStock->SetDayLineStartDate(toLocalDays(19900101));
+		pStock->SetDayLineEndDate(toLocalDays(20800102));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
-		EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
-		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900101 + 100000) << "当起始日期为19900101时，需要更新之";
+		EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(20800102));
+		EXPECT_EQ(pStock->GetDayLineStartDate(), toLocalDays(19900101 + 100000)) << "当起始日期为19900101时，需要更新之";
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "此标识也被设置";
 
@@ -752,12 +752,12 @@ namespace FireBirdTest {
 			pStock->StoreDayLine(*pid);
 		}
 		pStock->SetSymbol("600008.SS");
-		pStock->SetDayLineStartDate(19900102);
-		pStock->SetDayLineEndDate(20800102);
+		pStock->SetDayLineStartDate(toLocalDays(19900102));
+		pStock->SetDayLineEndDate(toLocalDays(20800102));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
-		EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
-		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900102);
+		EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(20800102));
+		EXPECT_EQ(pStock->GetDayLineStartDate(), toLocalDays(19900102));
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_FALSE(pStock->IsUpdateProfileDB()) << "未更新日线起止日期的话，此标识也未被设置";
 	}
@@ -786,7 +786,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsDayLineLoaded());
 		stock.UpdateDayLine(*pvDayLine);
 		EXPECT_EQ(stock.DayLineSize(), 10);
-		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), 19900101 + i); }
+		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), toLocalDays(19900101 + i)); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());
 	}
 
@@ -804,7 +804,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsDayLineLoaded());
 		stock.UpdateDayLine(data.GetProcessedDayLine()); // 测试CDownloadedNeteaseDayLine中的GetProcessedDayLine
 		EXPECT_EQ(stock.DayLineSize(), 10);
-		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), 19900101 + i); }
+		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), toLocalDays(19900101 + i)); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());
 	}
 
@@ -826,7 +826,6 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		pStock = gl_dataContainerChinaStock.GetStock("000001.SZ");
-		gl_pChinaMarket->TEST_SetFormattedMarketDate(202100309);
 		for (int i = 0; i < 10; i++) {
 			CDayLine dayLine;
 			dayLine.SetDate(20210302 + i); // 数据库中已有20210301的数据，此处插入重复数据进行测试
@@ -846,7 +845,7 @@ namespace FireBirdTest {
 			pStock->StoreDayLine(dayLine);
 		}
 		pStock->SetSymbol("000001.SZ");
-		pStock->SetDayLineEndDate(20210301);
+		pStock->SetDayLineEndDate(toLocalDays(20210301));
 
 		db(sqlpp::insert_into(t).set(
 			t.Date = 20210302,

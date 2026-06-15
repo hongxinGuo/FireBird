@@ -58,12 +58,12 @@ namespace FireBirdTest {
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
-		EXPECT_FALSE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(toTimeOfDay(120000)));
+		EXPECT_FALSE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(toLocalTime(120000)));
 		EXPECT_FALSE(s_pMockNeteaseRTDataSource->IsInquiring());
 
-		EXPECT_FALSE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(toTimeOfDay(120100))) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(toLocalTime(120100))) << "时间未到，继续等待";
 		EXPECT_FALSE(s_pMockNeteaseRTDataSource->IsInquiring());
-		EXPECT_TRUE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(toTimeOfDay(120600))) << "申请数据";
+		EXPECT_TRUE(s_pMockNeteaseRTDataSource->GenerateInquiryMessage(toLocalTime(120600))) << "申请数据";
 
 		EXPECT_TRUE(s_pMockNeteaseRTDataSource->HaveInquiry());
 
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInquireRTData) {
 		s_pMockNeteaseRTDataSource->SetInquiring(false);
 
-		s_pMockNeteaseRTDataSource->Inquire(toTimeOfDay(1010));
+		s_pMockNeteaseRTDataSource->Inquire(toLocalTime(1010));
 
 		EXPECT_EQ(s_pMockNeteaseRTDataSource->InquiryQueueSize(), 1);
 		const auto pProduct = s_pMockNeteaseRTDataSource->GetCurrentProduct();

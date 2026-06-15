@@ -87,8 +87,8 @@ CStockSplitsPtr CProductAlphaVantageStockSplits::ParseAlphaVantageStockSplits(co
 		for (auto it = jsData.begin(); it != jsData.end(); ++it) {
 			CStockSplit Splits;
 			s = jsonGetString(it, "effective_date");
-			long lTemp = XferToYYYYMMDD(s);
-			Splits.SetDate(lTemp);
+			chrono::local_days ld = XferToLocalDays(s);
+			Splits.SetDate(ld);
 			double dTemp = jsonGetDouble(it, "close");
 			Splits.SetRatio(dTemp);
 

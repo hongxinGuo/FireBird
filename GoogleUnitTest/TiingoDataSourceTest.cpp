@@ -211,7 +211,7 @@ namespace FireBirdTest {
 	}
 	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoCompanySymbol) {
 		m_pTiingoDataSource->SetUpdateStockSymbol(false);
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), 19800101);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), toLocalDays(19800101));
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateCompanySymbol()) << "TiingoCompanySymbol Updated";
 
 		m_pTiingoDataSource->SetUpdateStockSymbol(true);

@@ -13,7 +13,7 @@ public:
 
 public:
 	string m_strSymbol;
-	long m_lDate;
+	chrono::local_days m_lDate;
 	double m_dActual;
 	double m_dEstimate;
 };

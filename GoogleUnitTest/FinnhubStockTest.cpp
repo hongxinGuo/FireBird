@@ -46,14 +46,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestResetAllUpdateDate) {
 		stock.ResetAllUpdateDate();
-		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetProfileUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetPeerUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), toLocalDays(19800101));
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), toLocalDays(19800101));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetRatio) {
@@ -183,15 +183,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetDayLineEndDate) {
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		stock.SetDayLineEndDate(19980102);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19980102);
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19800101));
+		stock.SetDayLineEndDate(toLocalDays(19980102));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19980102));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetDayLineStartDate) {
-		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
-		stock.SetDayLineStartDate(19980101);
-		EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(29900101));
+		stock.SetDayLineStartDate(toLocalDays(19980101));
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(19980101));
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUpdateDayLine) {
@@ -212,51 +212,51 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetProfileUpdateDate) {
-		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
-		stock.SetProfileUpdateDate(10101016);
-		EXPECT_EQ(stock.GetProfileUpdateDate(), 10101016);
+		EXPECT_EQ(stock.GetProfileUpdateDate(), toLocalDays(19800101));
+		stock.SetProfileUpdateDate(toLocalDays(10101016));
+		EXPECT_EQ(stock.GetProfileUpdateDate(), toLocalDays(10101016));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCompanyNewsUpdateDate) {
-		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800101);
-		stock.SetCompanyNewsUpdateDate(10101017);
-		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 10101017);
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), toLocalDays(19800101));
+		stock.SetCompanyNewsUpdateDate(toLocalDays(10101017));
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), toLocalDays(10101017));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetBasicFinancialUpdateDate) {
-		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800101);
-		stock.SetBasicFinancialUpdateDate(10101018);
-		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 10101018);
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), toLocalDays(19800101));
+		stock.SetBasicFinancialUpdateDate(toLocalDays(10101018));
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), toLocalDays(10101018));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetLastRTDataUpdateDate) {
-		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800101);
-		stock.SetLastRTDataUpdateDate(10101011);
-		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 10101011);
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), toLocalDays(19800101));
+		stock.SetLastRTDataUpdateDate(toLocalDays(10101011));
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), toLocalDays(10101011));
 	}
 
 	TEST_F(CFinnhubStockTest, TestPeerUpdateDate) {
-		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800101);
-		stock.SetPeerUpdateDate(10101012);
-		EXPECT_EQ(stock.GetPeerUpdateDate(), 10101012);
+		EXPECT_EQ(stock.GetPeerUpdateDate(), toLocalDays(19800101));
+		stock.SetPeerUpdateDate(toLocalDays(10101012));
+		EXPECT_EQ(stock.GetPeerUpdateDate(), toLocalDays(10101012));
 	}
 
 	TEST_F(CFinnhubStockTest, TestInsiderTransactionUpdateDate) {
-		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
-		stock.SetInsiderTransactionUpdateDate(10101013);
-		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 10101013);
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), toLocalDays(19800101));
+		stock.SetInsiderTransactionUpdateDate(toLocalDays(10101013));
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), toLocalDays(10101013));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetInsiderSentimentUpdateDate) {
-		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800101);
-		stock.SetInsiderSentimentUpdateDate(10101014);
-		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 10101014);
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), toLocalDays(19800101));
+		stock.SetInsiderSentimentUpdateDate(toLocalDays(10101014));
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), toLocalDays(10101014));
 	}
 
 	TEST_F(CFinnhubStockTest, TestLastEPSSurpriseUpdateDate) {
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
-		stock.SetLastEPSSurpriseUpdateDate(10101015);
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 10101015);
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), toLocalDays(19800101));
+		stock.SetLastEPSSurpriseUpdateDate(toLocalDays(10101015));
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), toLocalDays(10101015));
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUpdateCompanyProfile) {
@@ -520,7 +520,7 @@ namespace FireBirdTest {
 		stock.SetActive(false);
 		chrono::weekday i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << L"非活跃股票工作日不更新日线\n";
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(chrono::local_days(chrono::days(0)), chrono::local_days(chrono::days(0)), toLocalTime(0), i)) << L"非活跃股票工作日不更新日线\n";
 			stock.SetUpdateDayLine(true);
 			++i;
 		}
@@ -530,99 +530,99 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
-		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, chrono::Monday));
+		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), toLocalTime(0), chrono::Monday));
 		stock.SetDayLineEndDate(GetPrevDay(stock.GetDayLineEndDate()));
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, chrono::Monday)) << "早于100天的股票不再更新日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), toLocalTime(0), chrono::Monday)) << "早于100天的股票不再更新日线";
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus5) {
-		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
-		const long lPrevDay = GetPrevDay(lCurrentDay);
+		const chrono::local_days lCurrentDay = gl_pWorldMarket->GetMarketDate();
+		const chrono::local_days lPrevDay = GetPrevDay(lCurrentDay);
 
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
 		chrono::weekday i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, toLocalTime(170001), i)) << "时间晚于17时后，检查当天日线";
 			stock.SetUpdateDayLine(true); // 重置状态
 			++i;
 		}
 		stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
 		i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
+			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, toLocalTime(170001), i)) << "时间晚于17时后，检查当天日线";
 			++i;
 		}
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus6) {
-		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
-		const long lPrevDay = GetPrevDay(lCurrentDay);
+		const chrono::local_days lCurrentDay = gl_pWorldMarket->GetMarketDate();
+		const chrono::local_days lPrevDay = GetPrevDay(lCurrentDay);
 
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
 		chrono::weekday i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线 " << i;
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus((lCurrentDay), (lPrevDay), toLocalTime(170000), i)) << "时间不晚于17时，检查上一交易日日线 " << i;
 			stock.SetUpdateDayLine(true); // 重置之
 			++i;
 		}
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
 		i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
+			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, toLocalTime(170000), i)) << "时间不晚于17时，检查上一交易日日线";
 			++i;
 		}
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus7) {
-		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
-		const long lPrevMonday = GetPrevMonday(lCurrentDate);
+		const chrono::local_days lCurrentDate = gl_pWorldMarket->GetMarketDate();
+		const chrono::local_days lPrevMonday = GetPrevMonday(lCurrentDate);
 
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), 170000, chrono::Saturday)) << "周六，检查上一交易日日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), toLocalTime(170000), chrono::Saturday)) << "周六，检查上一交易日日线";
 		stock.SetUpdateDayLine(true); // 重置之
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), 170000, chrono::Sunday)) << "周日，检查上一交易日日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), toLocalTime(170000), chrono::Sunday)) << "周日，检查上一交易日日线";
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckEPSSurpriseStatus) {
-		constexpr long lCurrentDate = 20200101;
+		chrono::local_days lCurrentDate = toLocalDays(20200101);
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetLastEPSSurpriseUpdateDate(19700101);
+		stock.SetLastEPSSurpriseUpdateDate(chrono::local_days(chrono::days(0)));
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetLastEPSSurpriseUpdateDate(20191003); // 不早于90天
+		stock.SetLastEPSSurpriseUpdateDate(toLocalDays(20191003)); // 不早于90天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetLastEPSSurpriseUpdateDate(20191002); // 早于90天， 不早于900天
+		stock.SetLastEPSSurpriseUpdateDate(toLocalDays(20191002)); // 早于90天， 不早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsUpdateEPSSurprise());
 
 		stock.SetUpdateEPSSurprise(true);
-		stock.SetLastEPSSurpriseUpdateDate(20160521); // 早于900天
+		stock.SetLastEPSSurpriseUpdateDate(toLocalDays(20160521)); // 早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckSECFilingsStatus) {
-		constexpr long lCurrentDate = 20200101;
+		chrono::local_days lCurrentDate = toLocalDays(20200101);
 
 		stock.SetUpdateSECFilings(true);
-		stock.SetSECFilingsUpdateDate(20191202); // 不早于30天
+		stock.SetSECFilingsUpdateDate(toLocalDays(20191202)); // 不早于30天
 		stock.CheckSECFilingsStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsUpdateSECFilings());
 
 		stock.SetUpdateSECFilings(true);
-		stock.SetSECFilingsUpdateDate(20191201); // 早于30天
+		stock.SetSECFilingsUpdateDate(toLocalDays(20191201)); // 早于30天
 		stock.CheckSECFilingsStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsUpdateSECFilings());
 	}
@@ -647,7 +647,7 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
 		stock.SaveDayLineDB();
@@ -708,8 +708,8 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineStartDate(20200101); // 日线开始日期不晚于当前日线数据日期
-		stock.SetDayLineEndDate(20210123); // 日线结束日期不早于当前日线数据日期
+		stock.SetDayLineStartDate(toLocalDays(20200101)); // 日线开始日期不晚于当前日线数据日期
+		stock.SetDayLineEndDate(toLocalDays(20210123)); // 日线结束日期不早于当前日线数据日期
 		stock.UpdateDayLine(pvDayLine);
 
 		EXPECT_FALSE(stock.UpdateDayLineDB()) << "无需执行实际操作";
@@ -717,14 +717,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 0) << "已清除日线数据";
 
 		stock.SetUpdateDayLineDB(true); // 需要更新
-		stock.SetDayLineStartDate(20200102); // 日线开始日期晚于当前日线数据日期
-		stock.SetDayLineEndDate(20210123); // 日线结束日期不早于当前日线数据日期
+		stock.SetDayLineStartDate(toLocalDays(20200102)); // 日线开始日期晚于当前日线数据日期
+		stock.SetDayLineEndDate(toLocalDays(20210123)); // 日线结束日期不早于当前日线数据日期
 		stock.UpdateDayLine(pvDayLine);
 
 		EXPECT_TRUE(stock.UpdateDayLineDB()) << "执行实际操作";
 		EXPECT_FALSE(stock.IsUpdateDayLineDB()) << "更新标识已被重置为假";
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20200101) << "日线开始日期已更新为较早日期";
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20200101)) << "日线开始日期已更新为较早日期";
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 		ASSERT_GE(gl_systemMessage.DayLineInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopDayLineInfoMessage(), "A日线资料存储完成");
@@ -768,7 +768,7 @@ namespace FireBirdTest {
 		pvInsiderTransaction->push_back(insiderTransaction);
 
 		stock.SetSymbol("A");
-		stock.SetInsiderTransactionUpdateDate(20210123);
+		stock.SetInsiderTransactionUpdateDate(toLocalDays(20210123));
 		stock.UpdateInsiderTransaction(pvInsiderTransaction);
 
 		stock.UpdateInsiderTransactionDB();
@@ -834,20 +834,20 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
 		CDayLine* pDayLine = stock.GetDayLine(1);
-		EXPECT_EQ(pDayLine->GetDate(), 20210102);
+		EXPECT_EQ(pDayLine->GetDate(), toLocalDays(20210102));
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210107);
-		stock.SetDayLineEndDate(20210108);
+		stock.SetDayLineStartDate(toLocalDays(20210107));
+		stock.SetDayLineEndDate(toLocalDays(20210108));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210123));
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 
 		stock.UnloadDayLine();
@@ -879,39 +879,39 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210107);
-		stock.SetDayLineEndDate(20210108);
+		stock.SetDayLineStartDate(toLocalDays(20210107));
+		stock.SetDayLineEndDate(toLocalDays(20210108));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210123));
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210110);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210110));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210123));
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210102);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210102));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210210));
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		stock.UpdateDayLineStartEndDate();
-		EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
+		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(20210101));
+		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(20210210));
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
@@ -928,18 +928,18 @@ namespace FireBirdTest {
 		CEPSSurprise EPS;
 
 		EPS.m_strSymbol = "600601.SS";
-		EPS.m_lDate = 20200101;
+		EPS.m_lDate = toLocalDays(20200101);
 		EPS.m_dActual = 1.0;
 		EPS.m_dEstimate = 1.1;
 		pvEPS->push_back(EPS);
 		EPS.m_strSymbol = "600601.SS";
-		EPS.m_lDate = 20200401;
+		EPS.m_lDate = toLocalDays(20200401);
 		EPS.m_dActual = 2.0;
 		EPS.m_dEstimate = 2.1;
 		pvEPS->push_back(EPS);
 		stock.UpdateEPSSurprise(pvEPS);
 
-		stock.SetLastEPSSurpriseUpdateDate(20210101);
+		stock.SetLastEPSSurpriseUpdateDate(toLocalDays(20210101));
 		EXPECT_FALSE(stock.UpdateEPSSurpriseDB()) << "没有新数据，返回假";
 	}
 
@@ -949,22 +949,22 @@ namespace FireBirdTest {
 		CEPSSurprise EPS;
 
 		EPS.m_strSymbol = "600601.US";
-		EPS.m_lDate = 20200101;
+		EPS.m_lDate = toLocalDays(20200101);
 		EPS.m_dActual = 1.0;
 		EPS.m_dEstimate = 1.1;
 		pvEPS->push_back(EPS);
 		EPS.m_strSymbol = "600601.US";
-		EPS.m_lDate = 20200401;
+		EPS.m_lDate = toLocalDays(20200401);
 		EPS.m_dActual = 2.0;
 		EPS.m_dEstimate = 2.1;
 		pvEPS->push_back(EPS);
 		stock.UpdateEPSSurprise(pvEPS);
 
-		stock.SetLastEPSSurpriseUpdateDate(20200101);
+		stock.SetLastEPSSurpriseUpdateDate(toLocalDays(20200101));
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.UpdateEPSSurpriseDB()) << "将新数据存入数据库(存储了一个新的)";
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 20200401);
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), toLocalDays(20200401));
 
 		using namespace StockMarket;
 		const auto& t = FinnhubStockEstimatesEpsSurprise{};
@@ -1052,32 +1052,32 @@ namespace FireBirdTest {
 		pvDayLine->push_back(dayLine);
 
 		stock.SetSymbol("A");
-		stock.SetDayLineEndDate(20210107);
+		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
 		CDayLine* pDayLine = stock.GetDayLine(1);
-		EXPECT_EQ(pDayLine->GetDate(), 20210102);
+		EXPECT_EQ(pDayLine->GetDate(), toLocalDays(20210102));
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210107);
-		stock.SetDayLineEndDate(20210108);
+		stock.SetDayLineStartDate(toLocalDays(20210107));
+		stock.SetDayLineEndDate(toLocalDays(20210108));
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210110);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210110));
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210102);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210102));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 
 		stock.SetUpdateProfileDB(false);
-		stock.SetDayLineStartDate(20210101);
-		stock.SetDayLineEndDate(20210210);
+		stock.SetDayLineStartDate(toLocalDays(20210101));
+		stock.SetDayLineEndDate(toLocalDays(20210210));
 		EXPECT_FALSE(stock.HaveNewDayLineData());
 	}
 
@@ -1085,10 +1085,10 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdatePeer());
 
 		stock.SetUpdatePeer(false);
-		stock.SetPeerUpdateDate(20200101);
-		stock.CheckPeerStatus(20200401); // 91天
+		stock.SetPeerUpdateDate(toLocalDays(20200101));
+		stock.CheckPeerStatus(toLocalDays(20200401)); // 91天
 		EXPECT_TRUE(stock.IsUpdatePeer()) << "九十一天需更新";
-		stock.CheckPeerStatus(20200331); // 90天
+		stock.CheckPeerStatus(toLocalDays(20200331)); // 90天
 		EXPECT_FALSE(stock.IsUpdatePeer());
 	}
 
@@ -1106,10 +1106,10 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 
 		stock.SetUpdateInsiderTransaction(false);
-		stock.SetInsiderTransactionUpdateDate(20200101);
-		stock.CheckInsiderTransactionStatus(20200201); // 31天
+		stock.SetInsiderTransactionUpdateDate(toLocalDays(20200101));
+		stock.CheckInsiderTransactionStatus(toLocalDays(20200201)); // 31天
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction()) << "三十一天需更新";
-		stock.CheckInsiderTransactionStatus(20200131); // 30天
+		stock.CheckInsiderTransactionStatus(toLocalDays(20200131)); // 30天
 		EXPECT_FALSE(stock.IsUpdateInsiderTransaction());
 	}
 
@@ -1128,30 +1128,30 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 
 		stock.SetUpdateInsiderSentiment(false);
-		stock.SetInsiderSentimentUpdateDate(20200101);
-		stock.CheckInsiderSentimentStatus(20200201); // 31天
+		stock.SetInsiderSentimentUpdateDate(toLocalDays(20200101));
+		stock.CheckInsiderSentimentStatus(toLocalDays(20200201)); // 31天
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment()) << "三十一天需更新";
-		stock.CheckInsiderSentimentStatus(20200131); // 30天
+		stock.CheckInsiderSentimentStatus(toLocalDays(20200131)); // 30天
 		EXPECT_FALSE(stock.IsUpdateInsiderSentiment());
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFinnhubDayLineInquiryParam) {
-		constexpr long lDate = 20200101;
+		chrono::local_days lDate = toLocalDays(20200101);
 
-		const time_t tt = gl_pWorldMarket->ConvertToUTCTime(lDate, 150000).time_since_epoch().count();
+		const time_t tt = gl_pWorldMarket->ConvertToUTCTime(toUnsignedDate(lDate), 150000).time_since_epoch().count();
 		time_t ttOld = tt - static_cast<time_t>(365) * 24 * 3600;
 
 		string sTime = std::format("{:Ld}", tt);
 		string sTimeOld = std::format("{:Ld}", ttOld);
 
 		stock.SetSymbol("600601.SS");
-		stock.SetDayLineEndDate(20180101); // 早于20190102
+		stock.SetDayLineEndDate(toLocalDays(20180101)); // 早于20190102
 		string sMiddle2 = "600601.SS&resolution=D&from=" + sTimeOld + "&to=" + sTime;
 		EXPECT_TRUE(stock.GetFinnhubDayLineInquiryParam(tt) == sMiddle2) << "免费账户最多只能申请一年的日线数据";
 		EXPECT_EQ(stock.GetFinnhubDayLineInquiryParam(tt), sMiddle2) << "免费账户最多只能申请一年的日线数据";
 
 		stock.SetSymbol("600601.SS");
-		stock.SetDayLineEndDate(20190501); // 晚于20190102
+		stock.SetDayLineEndDate(toLocalDays(20190501)); // 晚于20190102
 		ttOld = gl_pWorldMarket->ConvertToUTCTime(20190501, 150000).time_since_epoch().count();
 		sTimeOld = std::format("{:Ld}", ttOld);
 		string sParam = "600601.SS&resolution=D&from=" + sTimeOld + "&to=" + sTime;
@@ -1160,41 +1160,41 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam) {
 		stock.SetSymbol("600601.SS");
-		const string strParam = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
+		const string strParam = "600601.SS/prices?&startDate=2018-01-01&endDate=2020-01-01";
 
-		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(20180101, 20200101) == strParam);
+		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(toLocalDays(20180101), toLocalDays(20200101)) == strParam);
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam2) {
 		stock.SetSymbol("600601.SS");
-		const string strParam = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
+		const string strParam = "600601.SS/prices?&startDate=1980-01-01&endDate=2020-01-01";
 
-		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(19800101, 20200101) == strParam);
+		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(toLocalDays(19800101), toLocalDays(20200101)) == strParam);
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCompanyNewsUpdated) {
 		stock.SetShareOutstanding(1);
 		stock.SetMarketCapitalization(2);
-		stock.SetCompanyNewsUpdateDate(20220101);
-		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220102));
+		stock.SetCompanyNewsUpdateDate(toLocalDays(20220101));
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220102)));
 		stock.SetUpdateCompanyNews(true);
-		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220107)) << "只有六天";
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220107))) << "只有六天";
 		stock.SetUpdateCompanyNews(true);
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220108)) << "每周检查一次公司新闻";
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220108))) << "每周检查一次公司新闻";
 		stock.SetUpdateCompanyNews(true);
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220110));
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220110)));
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCompanyNewsUpdated2) {
 		stock.SetShareOutstanding(0);
 		stock.SetMarketCapitalization(0);
-		stock.SetCompanyNewsUpdateDate(20220101);
-		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220102));
+		stock.SetCompanyNewsUpdateDate(toLocalDays(20220101));
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220102)));
 		stock.SetUpdateCompanyNews(true);
-		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220131)) << "只有六天";
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220131))) << "只有六天";
 		stock.SetUpdateCompanyNews(true);
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220201)) << "未上市或退市股票每月检查一次公司新闻";
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220201) )) << "未上市或退市股票每月检查一次公司新闻";
 		stock.SetUpdateCompanyNews(true);
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220202));
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220202)));
 	}
 }

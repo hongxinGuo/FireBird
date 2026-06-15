@@ -80,7 +80,7 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 	                                           t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
 	auto insertCandle = [&](const CVirtualHistoryCandle* pC) {
 		multi_insert.values.add(
-			t.Date = pC->GetDate(),
+			t.Date = static_cast<long>(toUnsignedDate(pC->GetDate())),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,

@@ -35,7 +35,7 @@ public:
 
 	vector<CVirtualHistoryCandle>* GetContainer() noexcept { return &m_vHistoryData; }
 
-	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
+	bool GetStartEndDate(chrono::local_days& lStartDate, chrono::local_days& lEndDate) const;
 
 	void Unload() noexcept {
 		m_vHistoryData.clear();
@@ -43,14 +43,14 @@ public:
 	}
 	CVirtualHistoryCandle* GetData(const size_t lIndex) { return &m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandle>& GetDataVector() { return m_vHistoryData; }
-	CVirtualHistoryCandle* GetCandle(long lDate);
+	CVirtualHistoryCandle* GetCandle(chrono::local_days lDate);
 
 	void Add(CVirtualHistoryCandle data) {
 		data.SetRatio(m_ratio);
 		m_vHistoryData.push_back(data);
 	}
 	void Add(const CDayLine& data) { Add(static_cast<CVirtualHistoryCandle>(data)); }
-	bool HaveDayLine(long lDate);
+	bool HaveDayLine(chrono::local_days lDate);
 
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }

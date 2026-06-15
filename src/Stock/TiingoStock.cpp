@@ -21,15 +21,15 @@ CTiingoStock::CTiingoStock() {
 }
 
 void CTiingoStock::ResetAllUpdateDate() {
-	SetStatementLastUpdatedDate(0);
-	SetCompanyFinancialStatementUpdateDate(19800101);
-	SetDailyUpdateDate(19800101);
-	SetDayLineStartDate(29900101);
-	SetDayLineEndDate(19800101);
-	SetDayLineProcessDate(19800101);
-	SetHistoryDayLineStartDate(19000101);
-	SetHistoryDayLineEndDate(19000101);
-	SetUpdateStockDailyMetaDate(19800101);
+	SetStatementLastUpdatedDate(toLocalDays(19800101));
+	SetCompanyFinancialStatementUpdateDate(toLocalDays(19800101));
+	SetDailyUpdateDate(toLocalDays(19800101));
+	SetDayLineStartDate(toLocalDays(29900101));
+	SetDayLineEndDate(toLocalDays(19800101));
+	SetDayLineProcessDate(toLocalDays(19800101));
+	SetHistoryDayLineStartDate(chrono::local_days(chrono::days(0)));
+	SetHistoryDayLineEndDate(chrono::local_days(chrono::days(0)));
+	SetUpdateStockDailyMetaDate(toLocalDays(19800101));
 }
 
 void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBook& IEXTopOfBook) {
@@ -182,8 +182,8 @@ void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta) {
-	if (pMeta->m_lHistoryDayLineStartDate == 19000101) {
-		SetHistoryDayLineStartDate(19500101);
+	if (pMeta->m_lHistoryDayLineStartDate == toLocalDays(19000101)) {
+		SetHistoryDayLineStartDate(toLocalDays(19500101));
 		SetUpdateProfileDB(true);
 	}
 	else {
@@ -192,8 +192,8 @@ void CTiingoStock::UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta) {
 			SetUpdateProfileDB(true);
 		}
 	}
-	if (pMeta->m_lHistoryDayLineEndDate == 19000101) {
-		SetHistoryDayLineEndDate(19500101);
+	if (pMeta->m_lHistoryDayLineEndDate == toLocalDays(19000101)) {
+		SetHistoryDayLineEndDate(toLocalDays(19500101));
 		SetUpdateProfileDB(true);
 	}
 	else {
@@ -205,7 +205,7 @@ void CTiingoStock::UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta) {
 }
 
 void CTiingoStock::UpdateDayLineStartEndDate() {
-	long lStartDate = 0, lEndDate = 0;
+	chrono::local_days lStartDate = toLocalDays(19000101), lEndDate = toLocalDays(19000101);
 	if (m_dataDayLine.GetStartEndDate(lStartDate, lEndDate)) {
 		if (lStartDate < GetDayLineStartDate()) {
 			SetDayLineStartDate(lStartDate);
@@ -227,7 +227,7 @@ void CTiingoStock::CreateWeekLine() {
 	while (index < dayLineSize) {
 		weekLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index);
-		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
+		auto lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
 		weekLine.SetDate(pDayLine->GetDate());
 		weekLine.SetLastClose(lastClose);
 		weekLine.SetOpen(pDayLine->GetOpen());
@@ -258,7 +258,7 @@ void CTiingoStock::CreateMonthLine() {
 	while (index < monthLineSize) {
 		monthLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index++);
-		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
+		chrono::local_days lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
 		monthLine.SetDate(pDayLine->GetDate());
 		monthLine.SetOpen(pDayLine->GetOpen());
 		monthLine.SetLow(pDayLine->GetLow());
@@ -311,7 +311,7 @@ void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= m_dataDayLine.GetData(0)->GetDate()));
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= toUnsignedDate(m_dataDayLine.GetData(0)->GetDate())));
 	tx.commit();
 }
 
@@ -338,13 +338,13 @@ bool CTiingoStock::HaveNewDayLineData() {
 	return false;
 }
 
-void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
+void CTiingoStock::CheckUpdateStatus(chrono::local_days lTodayDate) {
 	CheckFinancialStateUpdateStatus(lTodayDate);
 	CheckDayLineUpdateStatus(lTodayDate);
 	CheckStockDailyMetaStatus(lTodayDate);
 }
 
-void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
+void CTiingoStock::CheckFinancialStateUpdateStatus(chrono::local_days lTodayDate) {
 	if (IsEarlyThen(GetCompanyFinancialStatementUpdateDate(), lTodayDate, gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate())) {
 		m_fUpdateFinancialState = true;
 	}
@@ -353,7 +353,7 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 	}
 }
 
-void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
+void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days lTodayDate) {
 	if (GetDayLineEndDate() >= gl_pWorldMarket->GetCurrentTradeDate()) { // 已更新？
 		m_fUpdateDayLine = false;
 		return;
@@ -362,7 +362,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 	m_fUpdateDayLine = true;
 }
 
-void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
+void CTiingoStock::CheckStockDailyMetaStatus(chrono::local_days lCurrentDate) {
 	if (GetUpdateStockDailyMetaDate() >= gl_pWorldMarket->GetCurrentTradeDate()) {
 		SetUpdateStockDailyMeta(false);
 	}
@@ -371,7 +371,7 @@ void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
 	}
 }
 
-long CTiingoStock::GetDayLineProcessDate() {
+chrono::local_days CTiingoStock::GetDayLineProcessDate() {
 	long l;
 	try {
 		l = m_jsonUpdateDate["DayLineProcessDate"];
@@ -379,17 +379,17 @@ long CTiingoStock::GetDayLineProcessDate() {
 		m_jsonUpdateDate["DayLineProcessDate"] = 19800101;
 		l = 19800101;
 	}
-	return l;
+	return toLocalDays(l);
 }
 
-void CTiingoStock::Delete52WeekLowDate(long lDate) {
+void CTiingoStock::Delete52WeekLowDate(chrono::local_days lDate) {
 	auto it = std::ranges::find(m_v52WeekLowDate, lDate);
 	if (it != m_v52WeekLowDate.end()) {
 		m_v52WeekLowDate.erase(it);
 	}
 }
 
-void CTiingoStock::Delete52WeekHighDate(long lDate) {
+void CTiingoStock::Delete52WeekHighDate(chrono::local_days lDate) {
 	auto it = std::ranges::find(m_v52WeekHighDate, lDate);
 	if (it != m_v52WeekHighDate.end()) {
 		m_v52WeekHighDate.erase(it);
@@ -422,7 +422,7 @@ bool CTiingoStock::IsEnough52WeekLow() {
 	if (m_v52WeekLowDate.size() < 6) {
 		return false;
 	}
-	ranges::sort(m_v52WeekLowDate, [](const long l1, const long l2) { return l1 > l2; });
+	ranges::sort(m_v52WeekLowDate, [](const chrono::local_days l1, const chrono::local_days l2) { return l1 > l2; });
 	auto lDate = GetPrevDay(gl_pWorldMarket->GetCurrentTradeDate(), 365);
 	if (m_v52WeekLowDate.at(4) > lDate) {
 		return true;
@@ -442,7 +442,7 @@ void CTiingoStock::Load52WeekLowDB() {
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == GetSymbol()).order_by(t.Date.asc()));
 	m_v52WeekLowDate.reserve(result.size<>());
 	for (const auto& row : result) {
-		m_v52WeekLowDate.push_back(row.Date);
+		m_v52WeekLowDate.push_back(toLocalDays(row.Date));
 	}
 	tx.commit();
 }
@@ -458,7 +458,7 @@ void CTiingoStock::Load52WeekLowDB() {
 /// 
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoStock::ProcessDayLine(long lLastCalculatedDate) {
+void CTiingoStock::ProcessDayLine() {
 	if (gl_systemConfiguration.IsExitingSystem()) return;
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
@@ -747,8 +747,8 @@ void CTiingoStock::CalculateNewHighHigher(int period) {
 	auto currentDate = gl_pWorldMarket->GetCurrentTradeDate();
 	for (size_t index = 0; index < m_v52WeekHighDate.size(); index++) {
 		auto highDate = m_v52WeekHighDate.at(index);
-		auto nextHighDate = m_v52WeekHighDate.size() > index + 1 ? m_v52WeekHighDate.at(index + 1) : 0;
-		if (nextHighDate > 0 && nextHighDate <= GetNextDay(currentDate, period)) {
+		auto nextHighDate = m_v52WeekHighDate.size() > index + 1 ? m_v52WeekHighDate.at(index + 1) : toLocalDays(19000101);
+		if (nextHighDate > toLocalDays(19000101) && nextHighDate <= GetNextDay(currentDate, period)) {
 			m_lHighHigher++;
 		}
 		else {
@@ -764,8 +764,8 @@ void CTiingoStock::CalculateNewLowLower(int period) {
 	auto currentDate = gl_pWorldMarket->GetCurrentTradeDate();
 	for (size_t index = 0; index < m_v52WeekLowDate.size(); index++) {
 		auto LowDate = m_v52WeekLowDate.at(index);
-		auto nextLowDate = m_v52WeekLowDate.size() > index + 1 ? m_v52WeekLowDate.at(index + 1) : 0;
-		if (nextLowDate > 0 && nextLowDate <= GetNextDay(currentDate, period)) {
+		auto nextLowDate = m_v52WeekLowDate.size() > index + 1 ? m_v52WeekLowDate.at(index + 1) : toLocalDays(19000101);
+		if (nextLowDate > toLocalDays(19000101) && nextLowDate <= GetNextDay(currentDate, period)) {
 			m_lLowLower++;
 		}
 		else {

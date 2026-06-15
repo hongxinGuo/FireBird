@@ -99,10 +99,10 @@ public:
 	}
 	virtual void DeleteDuplicatedDayLine() noexcept { ASSERT(0); }
 
-	long GetDayLineStartDate() const noexcept { return m_lDayLineStartDate; }
-	void SetDayLineStartDate(const long lDate) noexcept { m_lDayLineStartDate = lDate; }
-	long GetDayLineEndDate() const noexcept { return m_lDayLineEndDate; }
-	void SetDayLineEndDate(const long lDate) noexcept { m_lDayLineEndDate = lDate; }
+	auto GetDayLineStartDate() const noexcept { return m_dayLineStartDate; }
+	void SetDayLineStartDate(const chrono::local_days& date) noexcept { m_dayLineStartDate = date; }
+	auto GetDayLineEndDate() const noexcept { return m_dayLineEndDate; }
+	void SetDayLineEndDate(const chrono::local_days& date) noexcept { m_dayLineEndDate = date; }
 	double GetShareCount() const { return m_dShareCount; }
 	void SetShareCount(double val) { m_dShareCount = val; }
 
@@ -158,8 +158,8 @@ protected:
 	string m_strDisplaySymbol{ "" };
 
 	nlohmannJson m_jsonUpdateDate{ nlohmannJson({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
-	long m_lDayLineStartDate{ 29900101 }; // 日线历史数据的起始日期。格式：YYYYMMDD
-	long m_lDayLineEndDate{ 19800101 }; // 日线历史数据的结束日期。格式：YYYYMMDD
+	chrono::local_days m_dayLineStartDate{ 2990y / 01 / 01 }; // 日线历史数据的起始日期
+	chrono::local_days m_dayLineEndDate{ 1980y / 01 / 01 }; // 日线历史数据的结束日期
 	CStockSplitsPtr m_pvStockSplit{ nullptr };
 	double m_dShareCount{ 0.0 }; // 股本数量, 单位：百万股。从Finnhub获取。
 

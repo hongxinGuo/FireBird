@@ -57,7 +57,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 		const auto pWeekLine2 = dataChinaWeekLine.GetData(0);
-		EXPECT_EQ(pWeekLine2->GetDate(), 20200101);
+		EXPECT_EQ(pWeekLine2->GetDate(), toLocalDays(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
 		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		dataChinaWeekLine.Add(static_cast<CVirtualHistoryCandle>(weekLine));
 		dataChinaWeekLine.UpdateData(&dayLine);
 		const CWeekLine* pWeekLine2 = dataChinaWeekLine.GetData(0);
-		EXPECT_EQ(pWeekLine2->GetDate(), GetCurrentMonday(20200101));
+		EXPECT_EQ(pWeekLine2->GetDate(), GetCurrentMonday(toLocalDays(20200101)));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
 	}
@@ -108,13 +108,13 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(dataChinaWeekLine.Size(), 2);
 		auto pWeekLine2 = dataChinaWeekLine.GetData(0);
-		EXPECT_EQ(pWeekLine2->GetDate(), 20200201);
+		EXPECT_EQ(pWeekLine2->GetDate(), toLocalDays(20200201));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 11000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 1200);
 		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
 
 		pWeekLine2 = dataChinaWeekLine.GetData(1);
-		EXPECT_EQ(pWeekLine2->GetDate(), 20200101);
+		EXPECT_EQ(pWeekLine2->GetDate(), toLocalDays(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
 		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());

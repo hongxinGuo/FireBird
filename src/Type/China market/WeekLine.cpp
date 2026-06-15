@@ -12,10 +12,9 @@ CWeekLine::CWeekLine() {
 }
 
 bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandle* pDayLine) {
-	if (GetMarketDate().time_since_epoch().count() == 0) {
+	if (GetDate() == chrono::local_days{ chrono::days(0) }) {
 		SetDate(GetCurrentMonday(pDayLine->GetDate()));
 	}
-	if (m_tpDate.time_since_epoch().count() == 0) m_tpDate = pDayLine->GetMarketDate();
 	if (m_strStockSymbol.empty()) m_strStockSymbol = pDayLine->GetStockSymbol();
 
 	if (m_lOpen == 0) m_lOpen = pDayLine->GetOpen();

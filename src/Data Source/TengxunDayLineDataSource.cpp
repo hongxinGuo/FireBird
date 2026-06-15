@@ -103,8 +103,8 @@ bool CTengxunDayLineDataSource::Inquire() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
 	//long lStartDate = 20100101; // 强迫生成多次申请（测试用）
-	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
-	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
+	long lStartDate = toUnsignedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	const long lCurrentDate = toUnsignedDate(gl_pChinaMarket->GetMarketDate());
 	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;
 	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
 	vector<CVirtualWebProductPtr> vProduct;
@@ -113,14 +113,14 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	const string strStockCode = XferStandardToTengxun(pStock->GetSymbol());
 	shared_ptr<CProductTengxunDayLine> product = nullptr;
 	do {
-		string sStartDate = ConvertDateToTimeStamp(lStartDate);
+		string sStartDate = ConvertDateToTimeStamp(toLocalDays(lStartDate));
 		string sEndDate;
 		const long year = lStartDate / 10000;
 		if ((l + 7) > yearDiffer) {
-			sEndDate = ConvertDateToTimeStamp(lCurrentDate);
+			sEndDate = ConvertDateToTimeStamp(toLocalDays(lCurrentDate));
 		}
 		else {
-			sEndDate = ConvertDateToTimeStamp((year + 6) * 10000 + 1231); // 第七年的最后一天
+			sEndDate = ConvertDateToTimeStamp(toLocalDays((year + 6) * 10000 + 1231)); // 第七年的最后一天
 		}
 		const string strTotalMessage = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=" + strStockCode + ",day," + sStartDate + "," + sEndDate + m_strSuffix;
 		product = make_shared<CProductTengxunDayLine>();

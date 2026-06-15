@@ -107,25 +107,25 @@ std::pair<long, long> CFireBirdDoc::GetMonthLineHighLow(int iCandleNumber) const
 	auto pairHighLow = m_pCurrentStock->MonthLine()->GetHighLow(iCandleNumber);
 	return pairHighLow;
 }
-long CFireBirdDoc::GetDayLineDate(size_t countDownIndex) const {
-	if (m_pCurrentStock == nullptr) return 0;
+chrono::local_days CFireBirdDoc::GetDayLineDate(size_t countDownIndex) const {
+	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
 	auto dayLine = m_pCurrentStock->DayLine();
 	if (dayLine->Size() < countDownIndex) return dayLine->GetData(0)->GetDate();
 	return dayLine->GetData(dayLine->Size() - countDownIndex)->GetDate();
 }
 
-long CFireBirdDoc::GetWeekLineDate(size_t countDownIndex){
-	if (m_pCurrentStock == nullptr) return 0;
+chrono::local_days CFireBirdDoc::GetWeekLineDate(size_t countDownIndex){
+	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
 	auto weekLine = m_pCurrentStock->WeekLine();
 	if (weekLine->Size() < countDownIndex) return weekLine->GetData(0)->GetDate();
 	return weekLine->GetData(weekLine->Size() - countDownIndex)->GetDate();
 }
 
-long CFireBirdDoc::GetMonthLineDate(size_t countDownIndex){
-	if (m_pCurrentStock == nullptr) return 0;
-	auto mouthLine = m_pCurrentStock->MonthLine();
-	if (mouthLine->Size() < countDownIndex) return mouthLine->GetData(0)->GetDate();
-	return mouthLine->GetData(mouthLine->Size() - countDownIndex)->GetDate();
+chrono::local_days CFireBirdDoc::GetMonthLineDate(size_t countDownIndex){
+	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
+	auto monthLine = m_pCurrentStock->MonthLine();
+	if (monthLine->Size() < countDownIndex) return monthLine->GetData(0)->GetDate();
+	return monthLine->GetData(monthLine->Size() - countDownIndex)->GetDate();
 }
 
 BOOL CFireBirdDoc::OnNewDocument() {

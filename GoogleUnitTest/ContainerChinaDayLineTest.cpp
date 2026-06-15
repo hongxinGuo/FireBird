@@ -65,11 +65,12 @@ namespace FireBirdTest {
 
 		dataChinaDayLine.SetDataLoaded(false);
 		dataChinaDayLine.UpdateData(pvDayLine);
-		long lStartDate = 0, lEndDate = 0;
+		chrono::local_days lStartDate = chrono::local_days(chrono::days(0));
+		chrono::local_days lEndDate = chrono::local_days(chrono::days(0));
 		dataChinaDayLine.GetStartEndDate(lStartDate, lEndDate);
 
-		EXPECT_EQ(lStartDate, 20200101);
-		EXPECT_EQ(lEndDate, 20200103);
+		EXPECT_EQ(lStartDate, toLocalDays(20200101));
+		EXPECT_EQ(lEndDate, toLocalDays(20200103));
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestHaveDayLine) {
@@ -105,13 +106,13 @@ namespace FireBirdTest {
 		dataChinaDayLine.SetDataLoaded(false);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
-		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(20200101));
-		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(20200102));
-		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(20200103));
+		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(toLocalDays(20200101)));
+		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(toLocalDays(20200102)));
+		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(toLocalDays(20200103)));
 
-		EXPECT_FALSE(dataChinaDayLine.HaveDayLine(20201105));
-		EXPECT_FALSE(dataChinaDayLine.HaveDayLine(20200106));
-		EXPECT_FALSE(dataChinaDayLine.HaveDayLine(20200104));
+		EXPECT_FALSE(dataChinaDayLine.HaveDayLine(toLocalDays(20201105)));
+		EXPECT_FALSE(dataChinaDayLine.HaveDayLine(toLocalDays(20200106)));
+		EXPECT_FALSE(dataChinaDayLine.HaveDayLine(toLocalDays(20200104)));
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestGetDayLine) {
@@ -149,10 +150,10 @@ namespace FireBirdTest {
 		dataChinaDayLine.SetDataLoaded(false);
 		dataChinaDayLine.UpdateData(pvDayLine);
 
-		auto pDayLine2 = dataChinaDayLine.GetCandle(20200101);
-		EXPECT_TRUE(pDayLine2->GetDate() == 20200101);
+		auto pDayLine2 = dataChinaDayLine.GetCandle(toLocalDays(20200101));
+		EXPECT_TRUE(pDayLine2->GetDate() == toLocalDays(20200101));
 
-		pDayLine2 = dataChinaDayLine.GetCandle(20200104);
+		pDayLine2 = dataChinaDayLine.GetCandle(toLocalDays(20200104));
 		EXPECT_TRUE(pDayLine2 == nullptr);
 	}
 
@@ -253,7 +254,7 @@ namespace FireBirdTest {
 		CWeekLine weekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
-		EXPECT_THAT(weekLine.GetDate(), 20191230) << "本周一";
+		EXPECT_THAT(weekLine.GetDate(), toLocalDays(20191230)) << "本周一";
 		EXPECT_THAT(weekLine.GetClose(), 10003);
 		EXPECT_THAT(weekLine.GetLastClose(), 10000);
 		EXPECT_THAT(weekLine.GetHigh(), 10030);
@@ -261,7 +262,7 @@ namespace FireBirdTest {
 		weekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 5);
-		EXPECT_THAT(weekLine.GetDate(), 20200106) << "本周一";
+		EXPECT_THAT(weekLine.GetDate(), toLocalDays(20200106)) << "本周一";
 		EXPECT_THAT(weekLine.GetClose(), 10005);
 		EXPECT_THAT(weekLine.GetLastClose(), 10003);
 		EXPECT_THAT(weekLine.GetHigh(), 10050);
@@ -322,12 +323,12 @@ namespace FireBirdTest {
 		dataChinaDayLine.BuildWeekLine(vWeekLine);
 
 		EXPECT_THAT(vWeekLine.size(), 2);
-		EXPECT_THAT(vWeekLine.at(0).GetDate(), 20191230) << "本周一";
+		EXPECT_THAT(vWeekLine.at(0).GetDate(), toLocalDays(20191230)) << "本周一";
 		EXPECT_THAT(vWeekLine.at(0).GetClose(), 10003);
 		EXPECT_THAT(vWeekLine.at(0).GetLastClose(), 10000);
 		EXPECT_THAT(vWeekLine.at(0).GetHigh(), 10030);
 		EXPECT_THAT(vWeekLine.at(0).GetLow(), 9910);
-		EXPECT_THAT(vWeekLine.at(1).GetDate(), 20200106) << "本周一";
+		EXPECT_THAT(vWeekLine.at(1).GetDate(), toLocalDays(20200106)) << "本周一";
 		EXPECT_THAT(vWeekLine.at(1).GetClose(), 10005);
 		EXPECT_THAT(vWeekLine.at(1).GetLastClose(), 10003);
 		EXPECT_THAT(vWeekLine.at(1).GetHigh(), 10050);
@@ -349,9 +350,9 @@ namespace FireBirdTest {
 		dataChinaDayLine.SaveDB("000001.SZ");
 
 		dataChinaDayLine.LoadDB("000001.SZ");
-		EXPECT_EQ(dataChinaDayLine.GetData(0)->GetDate(), 19910102) << "新存储数据的日期";
-		EXPECT_EQ(dataChinaDayLine.GetData(1)->GetDate(), 19910103) << "旧数据的起始日期";
-		EXPECT_EQ(dataChinaDayLine.GetData(2)->GetDate(), 19910104) << "旧数据的第二个日期，之前存储的另一个日期为19910103的数据已被删除";
+		EXPECT_EQ(dataChinaDayLine.GetData(0)->GetDate(), toLocalDays(19910102)) << "新存储数据的日期";
+		EXPECT_EQ(dataChinaDayLine.GetData(1)->GetDate(), toLocalDays(19910103)) << "旧数据的起始日期";
+		EXPECT_EQ(dataChinaDayLine.GetData(2)->GetDate(), toLocalDays(19910104)) << "旧数据的第二个日期，之前存储的另一个日期为19910103的数据已被删除";
 
 		// 恢复原状
 		using namespace StockMarket;

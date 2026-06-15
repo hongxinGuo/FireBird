@@ -23,11 +23,11 @@ string CFinnhubCrypto::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const 
 }
 
 void CFinnhubCrypto::UpdateDayLineStartEndDate() {
-	long lStartDate = 0, lEndDate = 0;
+	chrono::local_days lStartDate = chrono::local_days{ chrono::days(0) }, lEndDate = chrono::local_days{ chrono::days(0) };
 	const bool fSucceed = m_dataDayLine.GetStartEndDate(lStartDate, lEndDate);
 	if (!fSucceed) {
-		SetDayLineStartDate(29900101);
-		SetDayLineEndDate(19800101);
+		SetDayLineStartDate(toLocalDays(29900101));
+		SetDayLineEndDate(toLocalDays(19800101));
 	}
 	else {
 		if (lStartDate < GetDayLineStartDate()) {
@@ -69,6 +69,6 @@ void CFinnhubCrypto::DeleteDuplicatedDayLine() noexcept {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= m_dataDayLine.GetData(0)->GetDate()));
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= static_cast<long>(toUnsignedDate(m_dataDayLine.GetData(0)->GetDate()))));
 	tx.commit();
 }

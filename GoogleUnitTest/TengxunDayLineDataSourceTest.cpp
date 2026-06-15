@@ -25,19 +25,21 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			marketDate = gl_pChinaMarket->GetMarketDate();
+			marketDateTime = gl_pChinaMarket->GetMarketClock();
 		}
 
 		void TearDown() override {
 			// clearUp
+			gl_pChinaMarket->TEST_SetMarketDate(s_currentChinaMarketDate);
+
 			EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 			SCOPED_TRACE("");
-			gl_pChinaMarket->TEST_SetFormattedMarketDate(marketDate);
+			gl_pChinaMarket->TEST_SetMarketTime(marketDateTime);
 			GeneralCheck();
 		}
 
 	protected:
-		long marketDate{ 0 };
+		chrono::local_seconds marketDateTime{ toLocalTime(0) };
 		CTengxunDayLineDataSource TengxunDayLineDataSource;
 	};
 
@@ -88,7 +90,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.GetStock(10)->SetUpdateDayLine(true);
 
 		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
-		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << GetUTCTime();
+		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << gl_pChinaMarket->GetMarketClock();
 		EXPECT_GT(TengxunDayLineDataSource.InquiryQueueSize(), 0);
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000001.SS");
@@ -115,10 +117,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct1) {
-		gl_pChinaMarket->TEST_SetFormattedMarketDate(20230201);
+		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20230201));
 		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
-		const long lEndDate = pStock->GetDayLineEndDate();
-		pStock->SetDayLineEndDate(20200101); // 日期间隔小于八年
+		const chrono::local_days lEndDate = pStock->GetDayLineEndDate();
+		pStock->SetDayLineEndDate(toLocalDays(20200101)); // 日期间隔小于八年
 
 		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
@@ -134,10 +136,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct2) {
-		gl_pChinaMarket->TEST_SetFormattedMarketDate(20230201);
+		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20230201));
 		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
-		const long lEndDate = pStock->GetDayLineEndDate();
-		pStock->SetDayLineEndDate(20110101); // 日期间隔大于七年小于十四年
+		const chrono::local_days lEndDate = pStock->GetDayLineEndDate();
+		pStock->SetDayLineEndDate(toLocalDays(20110101)); // 日期间隔大于七年小于十四年
 
 		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
@@ -159,10 +161,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct3) {
-		gl_pChinaMarket->TEST_SetFormattedMarketDate(20230201);
+		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20230201));
 		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
-		const long lEndDate = pStock->GetDayLineEndDate();
-		pStock->SetDayLineEndDate(20000101); // 日期间隔大于十六年
+		const chrono::local_days lEndDate = pStock->GetDayLineEndDate();
+		pStock->SetDayLineEndDate(toLocalDays(20000101)); // 日期间隔大于十六年
 
 		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 

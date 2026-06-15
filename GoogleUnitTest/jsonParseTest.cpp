@@ -189,7 +189,7 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 
 		EXPECT_EQ(pvDayLine->size(), 2);
 		EXPECT_EQ(pvDayLine->at(0).GetStockSymbol(), "600601.SS") << "此时使用标准股票代码形式";
-		EXPECT_EQ(pvDayLine->at(0).GetDate(), 20230119);
+		EXPECT_EQ(pvDayLine->at(0).GetDate(), toLocalDays(20230119));
 		EXPECT_EQ(pvDayLine->at(0).GetOpen(), 2550);
 		EXPECT_EQ(pvDayLine->at(0).GetClose(), 2600);
 		EXPECT_EQ(pvDayLine->at(0).GetHigh(), 2610);
@@ -197,7 +197,7 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 		EXPECT_EQ(pvDayLine->at(0).GetLastClose(), 0) << "第一个数据没有昨收盘数据";
 		EXPECT_EQ(pvDayLine->at(0).GetVolume(), 8616200);
 		EXPECT_EQ(pvDayLine->at(1).GetStockSymbol(), "600601.SS") << "此时使用标准股票代码形式";
-		EXPECT_EQ(pvDayLine->at(1).GetDate(), 20230120);
+		EXPECT_EQ(pvDayLine->at(1).GetDate(), toLocalDays(20230120));
 		EXPECT_EQ(pvDayLine->at(1).GetOpen(), 2600);
 		EXPECT_EQ(pvDayLine->at(1).GetClose(), 2620);
 		EXPECT_EQ(pvDayLine->at(1).GetHigh(), 2620);

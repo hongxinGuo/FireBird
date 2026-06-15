@@ -1,6 +1,5 @@
 #pragma once
 
-#include"RSReference.h"
 #include"ChinaStock.h"
 #include"ContainerVirtualStock.h"
 
@@ -28,8 +27,8 @@ public:
 	void UpdateProfileDB();
 
 	void UnloadDayLine() noexcept;
-	void BuildWeekLine(long lStartDate);
-	long BuildDayLine(long lCurrentTradeDay);
+	void BuildWeekLine(chrono::local_days lStartDate);
+	long BuildDayLine(chrono::local_days currentTradeDay);
 
 	[[nodiscard]] bool IsDayLineDBUpdated() noexcept;
 
@@ -49,7 +48,7 @@ public:
 	[[nodiscard]] static double GetUpDownRate(const string& strClose, const string& strLastClose) noexcept;
 
 private:
-	static void DeleteDayLine(long lDate);
+	static void DeleteDayLine(chrono::local_days date);
 
 protected:
 	size_t m_lLoadedStock; // 本次装载的股票总数

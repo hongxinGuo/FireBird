@@ -119,14 +119,14 @@ namespace FireBirdTest {
 			//EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateProfileDB());
 			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
-				if (pStock->GetDayLineEndDate() > 20251101) {
-					pStock->SetDayLineEndDate(20250101);//Todo: 测试用，避免日线结束日期过晚,过一段时间后删除此行
+				if (pStock->GetDayLineEndDate() > toLocalDays(20251101)) {
+					pStock->SetDayLineEndDate(toLocalDays(20250101));//Todo: 测试用，避免日线结束日期过晚,过一段时间后删除此行
 					pStock->SetUpdateProfileDB(true);
 				}
 				pStock->SetUpdateDayLine(true);
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
-					if (pStock->GetDayLineEndDate() == 20250101) {
+					if (pStock->GetDayLineEndDate() == toLocalDays(20250101)) {
 						pStock->SetUpdateProfileDB(false);
 					}
 				}
@@ -163,6 +163,10 @@ namespace FireBirdTest {
 			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false); // 默认为付费账户
 
 			gl_systemConfiguration.SetUpdateDB(false);
+
+			s_currentChinaMarketDate = gl_pChinaMarket->GetMarketDate();
+			s_currentWorldMarketDate = gl_pWorldMarket->GetMarketDate();
+
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

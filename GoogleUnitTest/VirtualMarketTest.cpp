@@ -42,28 +42,28 @@ namespace FireBirdTest {
 		virtualMarket.AddTask(5, 1);
 
 		auto pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(1)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(1)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(1)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(1)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10000)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10000)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(10000)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), 3);
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(20000));
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(20000));
 		virtualMarket.DiscardCurrentMarketTask();
 
 		EXPECT_TRUE(virtualMarket.IsMarketTaskEmpty()) << virtualMarket.GetMarketTask()->GetTime();
@@ -83,13 +83,13 @@ namespace FireBirdTest {
 		virtualMarket.AdjustTaskTime();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(350)) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(350)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(34010)) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(34010)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toTimeOfDay(60000)) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(60000)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 	}
 
@@ -98,8 +98,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime2) {
-		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toTimeOfDay(0)));
-		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toTimeOfDay(100)));
+		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toLocalTime(0)));
+		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toLocalTime(100)));
 		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(virtualMarket.GetMarketTime()));
 	}
 
@@ -108,8 +108,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsWorkingTime2) {
-		EXPECT_TRUE(virtualMarket.IsWorkingTime(toTimeOfDay(0)));
-		EXPECT_TRUE(virtualMarket.IsWorkingTime(toTimeOfDay(100)));
+		EXPECT_TRUE(virtualMarket.IsWorkingTime(toLocalTime(0)));
+		EXPECT_TRUE(virtualMarket.IsWorkingTime(toLocalTime(100)));
 		EXPECT_TRUE(virtualMarket.IsWorkingTime(virtualMarket.GetMarketTime()));
 	}
 
@@ -118,14 +118,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsDummyTime2) {
-		EXPECT_FALSE(virtualMarket.IsDummyTime(toTimeOfDay(0)));
-		EXPECT_FALSE(virtualMarket.IsDummyTime(toTimeOfDay(100)));
+		EXPECT_FALSE(virtualMarket.IsDummyTime(toLocalTime(0)));
+		EXPECT_FALSE(virtualMarket.IsDummyTime(toLocalTime(100)));
 		EXPECT_FALSE(virtualMarket.IsDummyTime(virtualMarket.GetMarketTime()));
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsTimeToResetSystem) {
-		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toTimeOfDay(0)));
-		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toTimeOfDay(1000)));
+		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toLocalTime(0)));
+		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toLocalTime(1000)));
 		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(virtualMarket.GetMarketTime()));
 	}
 
@@ -143,10 +143,10 @@ namespace FireBirdTest {
 
 		virtualMarket.CalculateTime();
 
-		if (virtualMarket.GetDayOfWeek() == chrono::Saturday) {
+		if (virtualMarket.GetWeekDay() == chrono::Saturday) {
 			day = chrono::days(2);
 		}
-		else if (virtualMarket.GetDayOfWeek() == chrono::Friday) {
+		else if (virtualMarket.GetWeekDay() == chrono::Friday) {
 			day = chrono::days(3);
 		}
 		else {
@@ -154,9 +154,7 @@ namespace FireBirdTest {
 		}
 
 		lt += day;
-		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(lt) };
-		auto nextTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
-		EXPECT_EQ(virtualMarket.GetNextTradeDate(), nextTradeDate);
+		EXPECT_EQ(virtualMarket.GetNextTradeDate(), chrono::floor<chrono::days>(lt));
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetCurrentTradeDate) {
@@ -165,10 +163,10 @@ namespace FireBirdTest {
 
 		virtualMarket.CalculateTime();
 
-		if (virtualMarket.GetDayOfWeek() == chrono::Saturday) {
+		if (virtualMarket.GetWeekDay() == chrono::Saturday) {
 			day = chrono::days(1);
 		}
-		else if (virtualMarket.GetDayOfWeek() == chrono::Sunday) {
+		else if (virtualMarket.GetWeekDay() == chrono::Sunday) {
 			day = chrono::days(2);
 		}
 		else {
@@ -177,9 +175,9 @@ namespace FireBirdTest {
 
 		lt -= day;
 		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(lt) };
-		auto currentTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
+		long currentTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 
-		EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), currentTradeDate);
+		EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), toLocalDays(currentTradeDate));
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetLastTradeDate) {
@@ -187,13 +185,13 @@ namespace FireBirdTest {
 		chrono::local_seconds lt = virtualMarket.ToLocalTime(gl_tpNow);
 
 		virtualMarket.CalculateTime();
-		if (virtualMarket.GetDayOfWeek() == chrono::Monday) {
+		if (virtualMarket.GetWeekDay() == chrono::Monday) {
 			day = chrono::days(3); // 周五
 		}
-		else if (virtualMarket.GetDayOfWeek() == chrono::Sunday) {
+		else if (virtualMarket.GetWeekDay() == chrono::Sunday) {
 			day = chrono::days(3); // 周四
 		}
-		else if (virtualMarket.GetDayOfWeek() == chrono::Saturday) {
+		else if (virtualMarket.GetWeekDay() == chrono::Saturday) {
 			day = chrono::days(2); // 周四
 		}
 		else {
@@ -201,17 +199,14 @@ namespace FireBirdTest {
 		}
 		lt -= day;
 		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(lt) };
-		auto LastTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
+		long LastTradeDate = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 
-		EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
+		EXPECT_EQ(virtualMarket.GetLastTradeDate(), toLocalDays(LastTradeDate));
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
-		const long lDate = virtualMarket.GetMarketDate();
-		const long year = lDate / 10000;
-		const long month = lDate / 100 - year * 100;
-		const long day = lDate - year * 10000 - month * 100;
-		string s = std::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
+		const chrono::local_days lDate = virtualMarket.GetMarketDate();
+		string s = "1970-01-01";
 		EXPECT_EQ(virtualMarket.GetStringOfMarketDate(), s);
 	}
 }

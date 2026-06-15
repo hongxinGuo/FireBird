@@ -13,7 +13,7 @@ public:
 	CContainerChinaStockMonthLine& operator=(CContainerChinaStockMonthLine&& other) noexcept = delete;
 
 	CMonthLine* GetData(const size_t lIndex) { return static_cast<CMonthLine*>((CVirtualDataHistoryCandle::GetData(lIndex))); }
-	CMonthLine* GetDayLine(long lDate) { return static_cast<CMonthLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CMonthLine* GetDayLine(chrono::local_days lDate) { return static_cast<CMonthLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 
 	bool Add(CMonthLine& data) {
 		data.SetRatio(m_ratio);

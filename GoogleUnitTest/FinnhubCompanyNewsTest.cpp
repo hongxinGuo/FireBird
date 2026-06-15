@@ -45,21 +45,17 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
-		int year = 0, month = 0, day = 0;
-
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
 		companyNews.SetIndex(1);
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(1);
 		string strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
-		int iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
-		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
-		XferDateToYearMonthDay(iUpdateDate, year, month, day);
-		string sTemp = std::format("{:4d}-{:02d}-{:02d}", year, month, day);
+		chrono::local_days iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
+		const chrono::local_days iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
+		string sTemp = std::format("{:%F}", iUpdateDate);
 		strMessage += "&from=";
 		strMessage += sTemp;
-		const int iMarketDate = gl_pWorldMarket->GetMarketDate();
-		XferDateToYearMonthDay(iMarketDate, year, month, day);
-		sTemp = std::format("{:4d}-{:02d}-{:02d}", year, month, day);
+		const chrono::local_days iMarketDate = gl_pWorldMarket->GetMarketDate();
+		sTemp = std::format("{:%F}", iMarketDate);
 		strMessage += "&to=";
 		strMessage += sTemp;
 
@@ -102,7 +98,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetCompanyNewsUpdateDate(19800101);
+			m_pStock->SetCompanyNewsUpdateDate(toLocalDays(19800101));
 			m_pStock->SetUpdateCompanyNews(true);
 			m_pStock->SetUpdateCompanyNewsDB(false);
 			m_pStock->SetUpdateProfileDB(false);
@@ -154,7 +150,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(m_pStock->GetTicker(), "AAPL");
 			EXPECT_EQ(m_pStock->GetCompanyNewsSize(), 2);
-			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), gl_pWorldMarket->ConvertSystemTimeToUTCTime(19700101,1));
+			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), chrono::sys_seconds(chrono::seconds(1)));
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_TRUE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());

@@ -114,9 +114,9 @@ public:
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	bool HaveDayLine(const long lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
+	bool HaveDayLine(const chrono::local_days lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
 	CTiingoCandleLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
-	CTiingoCandleLine* GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
+	CTiingoCandleLine* GetDayLineAtDate(const chrono::local_days lDate) { return m_dataDayLine.GetDayLine(lDate); }
 
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
@@ -139,35 +139,35 @@ public:
 	void RebuildStockSplitDB() override;
 
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
-	void CheckUpdateStatus(long lTodayDate);
-	void CheckFinancialStateUpdateStatus(long lTodayDate);
-	void CheckDayLineUpdateStatus(long llTodayDate);
-	void CheckStockDailyMetaStatus(long lCurrentDate);
+	void CheckUpdateStatus(chrono::local_days lTodayDate);
+	void CheckFinancialStateUpdateStatus(chrono::local_days lTodayDate);
+	void CheckDayLineUpdateStatus(chrono::local_days lTodayDate);
+	void CheckStockDailyMetaStatus(chrono::local_days lCurrentDate);
 
-	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
-	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }
-	long GetDailyUpdateDate() { return m_jsonUpdateDate["DailyUpdate"]; }
-	void SetDailyUpdateDate(long lLDate) { m_jsonUpdateDate["DailyUpdate"] = lLDate; }
+	chrono::local_days GetStatementLastUpdatedDate() { return toLocalDays(m_jsonUpdateDate["StatementLastUpdated"]); }
+	void SetStatementLastUpdatedDate(chrono::local_days date) { m_jsonUpdateDate["StatementLastUpdated"] = toUnsignedDate(date); }
+	chrono::local_days GetDailyUpdateDate() { return toLocalDays(m_jsonUpdateDate["DailyUpdate"]); }
+	void SetDailyUpdateDate(chrono::local_days date) { m_jsonUpdateDate["DailyUpdate"] = toUnsignedDate(date); }
 
-	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
-	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
+	chrono::local_days GetCompanyFinancialStatementUpdateDate() { return toLocalDays(m_jsonUpdateDate["CompanyFinancialStatement"]); }
+	void SetCompanyFinancialStatementUpdateDate(chrono::local_days date) { m_jsonUpdateDate["CompanyFinancialStatement"] = toUnsignedDate(date); }
 
-	long GetHistoryDayLineStartDate() { return m_jsonUpdateDate["HistoryDayLineStartDate"]; }
-	void SetHistoryDayLineStartDate(long lDate) { m_jsonUpdateDate["HistoryDayLineStartDate"] = lDate; }
-	long GetHistoryDayLineEndDate() { return m_jsonUpdateDate["HistoryDayLineEndDate"]; }
-	void SetHistoryDayLineEndDate(long lDate) { m_jsonUpdateDate["HistoryDayLineEndDate"] = lDate; }
-	long GetUpdateStockDailyMetaDate() { return m_jsonUpdateDate["UpdateStockDailyMetaDate"]; }
-	void SetUpdateStockDailyMetaDate(long lDate) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = lDate; }
+	chrono::local_days GetHistoryDayLineStartDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineStartDate"]); }
+	void SetHistoryDayLineStartDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineStartDate"] = toUnsignedDate(date); }
+	chrono::local_days GetHistoryDayLineEndDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineEndDate"]); }
+	void SetHistoryDayLineEndDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineEndDate"] = toUnsignedDate(date); }
+	chrono::local_days GetUpdateStockDailyMetaDate() { return toLocalDays(m_jsonUpdateDate["UpdateStockDailyMetaDate"]); }
+	void SetUpdateStockDailyMetaDate(chrono::local_days date) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = toUnsignedDate(date); }
 
-	long GetDayLineProcessDate();
-	void SetDayLineProcessDate(long lDate) { m_jsonUpdateDate["DayLineProcessDate"] = lDate; }
+	chrono::local_days GetDayLineProcessDate();
+	void SetDayLineProcessDate(chrono::local_days date) { m_jsonUpdateDate["DayLineProcessDate"] = toUnsignedDate(date); }
 
-	bool Have52WeekLowDate(long lDate) { return std::ranges::find(m_v52WeekLowDate, lDate) != m_v52WeekLowDate.end(); }
-	bool Have52WeekHighDate(long lDate) { return std::ranges::find(m_v52WeekHighDate, lDate) != m_v52WeekHighDate.end(); }
-	void Add52WeekLowDate(long lDate) { m_v52WeekLowDate.push_back(lDate); }
-	void Delete52WeekLowDate(long lDate);
-	void Add52WeekHighDate(long lDate) { m_v52WeekHighDate.push_back(lDate); }
-	void Delete52WeekHighDate(long lDate);
+	bool Have52WeekLowDate(chrono::local_days lDate) { return std::ranges::find(m_v52WeekLowDate, lDate) != m_v52WeekLowDate.end(); }
+	bool Have52WeekHighDate(chrono::local_days lDate) { return std::ranges::find(m_v52WeekHighDate, lDate) != m_v52WeekHighDate.end(); }
+	void Add52WeekLowDate(chrono::local_days lDate) { m_v52WeekLowDate.push_back(lDate); }
+	void Delete52WeekLowDate(chrono::local_days lDate);
+	void Add52WeekHighDate(chrono::local_days lDate) { m_v52WeekHighDate.push_back(lDate); }
+	void Delete52WeekHighDate(chrono::local_days lDate);
 
 	void Delete52WeekHighDB() const;
 	void Delete52WeekLowDB() const;
@@ -179,7 +179,7 @@ public:
 	size_t Get52WeekHighSize() const { return m_v52WeekHighDate.size(); }
 	auto Get52WeekHighDate(size_t index) const { return m_v52WeekHighDate.at(index); }
 
-	void ProcessDayLine(long lLastCalculatedDate); // 系统调用这个函数
+	void ProcessDayLine(); // 系统调用这个函数
 	void FindHighLow3(size_t endPos);
 	void FindHighLow2(size_t endPos);
 	void FindAll52WeekLowDate(size_t beginPos, size_t endPos);
@@ -200,8 +200,8 @@ public:
 	void Clear52WeekHigh() { m_v52WeekHighDate.clear(); }
 
 public:
-	vector<long> m_v52WeekLowDate; // 年度最低价的日期
-	vector<long> m_v52WeekHighDate; // 年度最高价的日期
+	vector<chrono::local_days> m_v52WeekLowDate; // 年度最低价的日期
+	vector<chrono::local_days> m_v52WeekHighDate; // 年度最高价的日期
 	vector<double> m_vClose; // 收盘价
 
 	long m_lHighHigher{ 0 };

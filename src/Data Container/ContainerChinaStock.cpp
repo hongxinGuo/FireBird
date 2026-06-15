@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
 #include"InfoReport.h"
@@ -65,7 +64,7 @@ long CContainerChinaStock::LoadProfileDB() {
 
 	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
-		if (gl_pChinaMarket->GetDayOfWeek() == chrono::Monday) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
+		if (gl_pChinaMarket->GetWeekDay() == chrono::Monday) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
 		auto str = std::format("{:d}个股票需要检查日线数据", lDayLineNeedCheck);
 		gl_systemMessage.PushInformationMessage(str);
 	}
@@ -252,7 +251,7 @@ void CContainerChinaStock::UnloadDayLine() noexcept {
 void CContainerChinaStock::SetDayLineNeedMaintain() const {
 	SetUpdateDayLine();
 	for (auto& pStock : m_vStock) {
-		pStock->SetDayLineEndDate(CHINA_MARKET_BEGIN_DATE_);
+		pStock->SetDayLineEndDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 	}
 }
 
@@ -301,13 +300,13 @@ void CContainerChinaStock::TaskUpdateDayLineDB() {
 ///
 /// Note: 需要使用大宗插入模式，否则出错
 //////////////////////////////////////////////////////////////////////////////////
-long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
+long CContainerChinaStock::BuildDayLine(chrono::local_days currentTradeDay) {
 	long iCount = 0;
 	int ratio = 1000; // 由于日线历史数据是以整数形式存储的，故而这里要除以一个比例因子才能得到正确的价格数据。
-	string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的实时数据";
+	string s = std::format("开始处理{:%F}的实时数据", currentTradeDay);
 	gl_systemMessage.PushInformationMessage(s);
 
-	DeleteDayLine(lCurrentTradeDay);
+	DeleteDayLine(currentTradeDay);
 
 	// 存储当前交易日的数据
 	using namespace StockMarket;
@@ -324,11 +323,11 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
 			iCount++;
-			pStock->SetDayLineEndDate(lCurrentTradeDay);
+			pStock->SetDayLineEndDate(currentTradeDay);
 			pStock->SetUpdateProfileDB(true);
 
 			multi_insert.values.add(
-				t.Date = lCurrentTradeDay,
+				t.Date = static_cast<long>(toUnsignedDate(currentTradeDay)),
 				t.Exchange = pStock->GetExchange(),
 				t.Symbol = pStock->GetSymbol(),
 				t.LastClose = static_cast<double>(pStock->GetLastClose()) / ratio,
@@ -350,7 +349,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	if (nValue > 0) db(multi_insert);
 	tx.commit();
 
-	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + "的日线数据已生成";
+	s = std::format(":%F 的日线数据已生成", currentTradeDay);
 	gl_systemMessage.PushInformationMessage(s);
 
 	s = std::format("今日处理了{:d}个股票", iCount);
@@ -359,13 +358,13 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	return iCount;
 }
 
-void CContainerChinaStock::DeleteDayLine(long lDate) {
+void CContainerChinaStock::DeleteDayLine(chrono::local_days date) {
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Date == lDate));
+	db(sqlpp::remove_from(t).where(t.Date == toUnsignedDate(date)));
 	tx.commit();
 }
 

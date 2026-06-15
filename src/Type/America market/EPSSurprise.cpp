@@ -4,7 +4,7 @@
 
 CEPSSurprise::CEPSSurprise() {
 	m_strSymbol = " ";
-	m_lDate = 0;
+	m_lDate = chrono::local_days(chrono::days(0));
 	m_dActual = 0.0;
 	m_dEstimate = 0.0;
 }

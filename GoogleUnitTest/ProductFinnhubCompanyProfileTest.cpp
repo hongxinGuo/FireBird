@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetUpdateCompanyProfile(true);
-			m_pStock->SetProfileUpdateDate(19700101);
+			m_pStock->SetProfileUpdateDate(chrono::local_days(chrono::days(0)));
 			m_pStock->SetCity("");
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyProfile.Test_checkAccessRight_(m_pWebData);
@@ -84,7 +84,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetProfileUpdateDate(19800101);
+			m_pStock->SetProfileUpdateDate(toLocalDays(19800101));
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 

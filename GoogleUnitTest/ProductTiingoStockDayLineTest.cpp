@@ -41,29 +41,26 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam) {
-		const string strParam = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
+		const string strParam = "600601.SS/prices?&startDate=2018-01-01&endDate=2020-01-01";
 
-		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS", 20180101, 20200101) == strParam);
+		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS", toLocalDays(20180101), toLocalDays(20200101)) == strParam);
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam2) {
-		const string strParam = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
+		const string strParam = "600601.SS/prices?&startDate=1980-01-01&endDate=2020-01-01";
 
-		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS",19800101, 20200101) == strParam);
+		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS", toLocalDays(19800101), toLocalDays(20200101)) == strParam);
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
-		pStock->SetDayLineEndDate(19700101);
+		pStock->SetDayLineEndDate(chrono::local_days(chrono::days(0)));
 		const string strMessage = stockPriceCandle.CreateMessage();
-		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
-		const long year = lMarketDate / 10000;
-		const long month = lMarketDate / 100 - year * 100;
-		const long day = lMarketDate - year * 10000 - month * 100;
-		string sEndDate = std::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
+		const chrono::local_days lMarketDate = gl_pWorldMarket->GetMarketDate();
+		string sEndDate = std::format("{:%F}", lMarketDate);
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
-		const string sTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=" + sEndDate;
+		const string sTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-01-01&endDate=" + sEndDate;
 
 		EXPECT_TRUE(strMessage == sTest) << "使用之前的结束日期为申请数据的起始日期";
 	}
@@ -71,15 +68,12 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
-		pStock->SetDayLineEndDate(19700101); // 早于20180101
+		pStock->SetDayLineEndDate(chrono::local_days(chrono::days(0))); // 早于20180101
 		const string strMessage = stockPriceCandle.CreateMessage();
-		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
-		const long year = lMarketDate / 10000;
-		const long month = lMarketDate / 100 - year * 100;
-		const long day = lMarketDate - year * 10000 - month * 100;
-		string sEndDate = std::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
+		const chrono::local_days lMarketDate = gl_pWorldMarket->GetMarketDate();
+		string sEndDate = std::format("{:%F}", lMarketDate);
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
-		string strTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=";
+		string strTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-01-01&endDate=";
 		strTest += sEndDate;
 		EXPECT_TRUE(strMessage == strTest);
 	}
@@ -172,7 +166,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(pvDayLine->size(), 2);
 			dayLine = pvDayLine->at(0);
-			EXPECT_EQ(dayLine.GetDate(), 20210311);
+			EXPECT_EQ(dayLine.GetDate(), toLocalDays(20210311));
 			EXPECT_EQ(dayLine.GetClose(), 121960000);
 			EXPECT_EQ(dayLine.GetHigh(), 123210000);
 			EXPECT_EQ(dayLine.GetLow(), 121260000);
@@ -184,7 +178,7 @@ namespace FireBirdTest {
 			dayLine = pvDayLine->at(1);
 			EXPECT_DOUBLE_EQ(dayLine.GetDividend(), 1.0);
 			EXPECT_DOUBLE_EQ(dayLine.GetSplitFactor(), 3.0);
-			EXPECT_EQ(dayLine.GetDate(), 20210312);
+			EXPECT_EQ(dayLine.GetDate(), toLocalDays(20210312));
 			EXPECT_EQ(dayLine.GetClose(), 121030000);
 			break;
 		case 11: // 股票没有日线数据
@@ -298,6 +292,6 @@ namespace FireBirdTest {
 		}
 		// 恢复原状
 		pStock->UnloadDayLine();
-		pStock->SetDayLineEndDate(19800101);
+		pStock->SetDayLineEndDate(toLocalDays(19800101));
 	}
 }

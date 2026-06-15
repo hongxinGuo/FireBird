@@ -5,7 +5,7 @@
 class CVirtualHistoryCandle; // forward
 
 struct CBoll {
-	long Date{ 0 };        // candle date (YYYYMMDD)
+	chrono::local_days Date{ chrono::local_days(chrono::days(0)) };        // candle date
 	size_t Index{ 0 };     // index in the input sequence
 	double Mid{ 0.0 };     // moving average
 	double Upper{ 0.0 };   // upper band

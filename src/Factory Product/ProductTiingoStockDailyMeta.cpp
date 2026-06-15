@@ -67,8 +67,8 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData) {
-	string s1;
-	int year, month, day;
+	string s1, s2;
+	chrono::local_days ld, ld2;
 	if (!IsValidData(pWebData)) return nullptr;
 
 	auto pTiingoStockDailyMeta = make_shared<CTiingoStockDailyMeta>();
@@ -88,11 +88,13 @@ CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta
 		s1 = simdjsonGetStringView(doc, "description");
 		pTiingoStockDailyMeta->m_strDescription = s1;
 		s1 = simdjsonGetStringView(doc, "startDate", "1900-01-01"); // 如果没有日线开始日期（即没有日线数据），则设置为19000101
-		sscanf_s(s1.c_str(), "%04d-%02d-%02d", &year, &month, &day);
-		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = year * 10000 + month * 100 + day;
-		s1 = simdjsonGetStringView(doc, "endDate", "1900-01-01"); // 如果没有日线结束日期（即没有日线数据），则设置为19000101
-		sscanf_s(s1.c_str(), "%04d-%02d-%02d", &year, &month, &day);
-		pTiingoStockDailyMeta->m_lHistoryDayLineEndDate = year * 10000 + month * 100 + day;
+		stringstream ss(s1);
+		ss >> chrono::parse("%F", ld);
+		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = ld;
+		s2 = simdjsonGetStringView(doc, "endDate", "1900-01-01"); // 如果没有日线结束日期（即没有日线数据），则设置为19000101
+		stringstream ss2(s2);
+		ss2 >> chrono::parse("%F", ld2);
+		pTiingoStockDailyMeta->m_lHistoryDayLineEndDate = ld2;
 	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage("Tiingo ticker daily: ", error.what());
 		pTiingoStockDailyMeta = nullptr;

@@ -132,7 +132,7 @@ void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= m_dataDayLine.GetData(0)->GetDate()));
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= static_cast<long>(toUnsignedDate(m_dataDayLine.GetData(0)->GetDate()))));
 	tx.commit();
 }
 
@@ -196,7 +196,7 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 	bool fUpdated = false;
 
 	if (m_dataDayLine.Size() > 0) {
-		if ((GetDayLineStartDate() == CHINA_MARKET_BEGIN_DATE_) || (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate())) {
+		if ((GetDayLineStartDate() == toLocalDays(CHINA_MARKET_BEGIN_DATE_)) || (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate())) {
 			SetDayLineStartDate(m_dataDayLine.GetData(0)->GetDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
@@ -252,7 +252,7 @@ void CChinaStock::CreateWeekLine() {
 	while (index < dayLineSize) {
 		weekLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index);
-		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
+		auto lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
 		weekLine.SetDate(pDayLine->GetDate());
 		weekLine.SetLastClose(lastClose);
 		weekLine.SetOpen(pDayLine->GetOpen());
@@ -283,7 +283,7 @@ void CChinaStock::CreateMonthLine() {
 	while (index < monthLineSize) {
 		monthLine.Reset();
 		auto pDayLine = m_dataDayLine.GetData(index++);
-		long lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
+		chrono::local_days lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
 		monthLine.SetDate(pDayLine->GetDate());
 		monthLine.SetOpen(pDayLine->GetOpen());
 		monthLine.SetLow(pDayLine->GetLow());

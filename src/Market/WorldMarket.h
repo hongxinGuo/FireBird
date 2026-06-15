@@ -22,7 +22,7 @@ public:
 	~CWorldMarket() override;
 
 	void ResetMarket() final;
-	chrono::local_seconds GetResetTime() override { return toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime()); }
+	chrono::local_seconds GetResetTime() override { return toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()); }
 
 	void PrepareToCloseMarket() final;
 

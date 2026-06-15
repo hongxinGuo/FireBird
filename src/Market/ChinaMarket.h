@@ -20,7 +20,7 @@ public:
 	~CChinaMarket() override;
 
 	void ResetMarket() final;
-	chrono::local_seconds GetResetTime() final { return toTimeOfDay(30000); } // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
+	chrono::local_seconds GetResetTime() final { return toLocalTime(30000); } // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
 	void Reset();
 
 	void PrepareToCloseMarket() final;
@@ -105,7 +105,7 @@ public:
 	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
 
-	void DeleteDayLine(long lDate) const;
+	void DeleteDayLine(chrono::local_days lDate) const;
 
 	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData);
 
@@ -121,9 +121,9 @@ public:
 	bool IsTodayTempRTDataLoaded() const noexcept { return m_fTodayTempDataLoaded; }
 	void SetTodayTempRTDataLoaded(const bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-	long GetLastLoginDate() const noexcept { return m_lLastLoginDate; }
-	void SetLastLoginDate(const long lDate) noexcept { m_lLastLoginDate = lDate; }
-	void SetLastLoginTime(const long lTime) noexcept { m_lLastLoginTime = lTime; }
+	chrono::local_days GetLastLoginDate() const noexcept { return m_lLastLoginDate; }
+	void SetLastLoginDate(const chrono::local_days lDate) noexcept { m_lLastLoginDate = lDate; }
+	void SetLastLoginTime(const chrono::local_seconds lTime) noexcept { m_lLastLoginTime = lTime; }
 
 	//处理实时股票变化等
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
@@ -229,8 +229,8 @@ protected:
 	int m_iCountDownTengxunNumber;
 
 	// Option各选项
-	long m_lLastLoginDate; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
-	long m_lLastLoginTime;
+	chrono::local_days m_lLastLoginDate; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
+	chrono::local_seconds m_lLastLoginTime;
 
 	bool m_fSelectedStockLoaded;
 

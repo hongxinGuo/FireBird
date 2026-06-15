@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetActive(true);
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
-		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
+		pTiingoStock->SetCompanyFinancialStatementUpdateDate(toLocalDays(20210101));
 		pTiingoStock->SetCompanyWebSite("");
 		pTiingoStock->SetLocation("");
 		pTiingoStock->SetName(""); //
@@ -67,7 +67,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetActive(true);
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
-		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
+		pTiingoStock->SetCompanyFinancialStatementUpdateDate(toLocalDays(20210101));
 		pTiingoStock->SetCompanyWebSite("www.abc.com");
 		pTiingoStock->SetLocation("Irvine CA USA");
 		pTiingoStock->SetName("ABCDE"); // 新代码
@@ -183,7 +183,7 @@ namespace FireBirdTest {
 	TEST_F(CContainerTiingoStockTest, BuildDayLine_InsertsRow) {
 		// Choose a test symbol and date
 		const std::string symbol = "UTTEST";
-		const long lDate = gl_pWorldMarket->GetMarketDate(); //使用最新的日期，防止更新其他股票
+		const chrono::local_days lDate = gl_pWorldMarket->GetMarketDate(); //使用最新的日期，防止更新其他股票
 
 		// Ensure no pre-existing test symbol in container
 		if (gl_dataContainerTiingoStock.IsSymbol(symbol)) {
@@ -211,7 +211,7 @@ namespace FireBirdTest {
 		pStock->SetSplitFactor(1.0);
 
 		// ensure transaction time is at/after market close for the given date
-		time_t tt = gl_pWorldMarket->ConvertToUTCTime(lDate, 160000).time_since_epoch().count();
+		time_t tt = gl_pWorldMarket->ConvertToUTCTime(toUnsignedDate(lDate), 160000).time_since_epoch().count();
 		pStock->SetTransactionTime(tt);
 
 		// Add to global container
@@ -224,7 +224,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), lDate) << "Expected TiingoIEXTopOfBookUpdateDate to be set to the date of the built dayline";
-		gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(19800101);
+		gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(toLocalDays(19800101));
 
 		// Verify DB row inserted for our symbol and date using sqlpp11
 		using namespace StockMarket;
@@ -232,7 +232,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).where((t.Date == lDate) and (t.Symbol == symbol)));
+		auto result = db(select(all_of(t)).from(t).where((t.Date == toUnsignedDate(lDate)) and (t.Symbol == symbol)));
 		ASSERT_EQ(result.size(), 1u) << "Expected exactly one inserted row for symbol";
 
 		// inspect the row values (numeric DB values are unscaled)
@@ -257,7 +257,7 @@ namespace FireBirdTest {
 
 			string str = row.Symbol;
 			EXPECT_EQ(str, symbol);
-			long date = row.Date;
+			chrono::local_days date = toLocalDays(row.Date);
 			EXPECT_EQ(date, lDate);
 		}
 
@@ -267,7 +267,7 @@ namespace FireBirdTest {
 		gl_systemMessage.PopDayLineInfoMessage();
 
 		// cleanup: remove inserted row for this symbol/date only
-		db(remove_from(t).where((t.Date == lDate) and (t.Symbol == symbol)));
+		db(remove_from(t).where((t.Date == toUnsignedDate(lDate)) and (t.Symbol == symbol)));
 		tx.commit();
 
 		// remove from in-memory container
@@ -332,7 +332,7 @@ namespace FireBirdTest {
 		ASSERT_NE(pExistStock, nullptr);
 		const auto originalCurrency = pExistStock->GetReportingCurrency();
 		const auto originalUpdateDayLineEndDate = pExistStock->GetDayLineEndDate();
-		pExistStock->SetDayLineEndDate(20200220);
+		pExistStock->SetDayLineEndDate(toLocalDays(20200220));
 		pExistStock->SetReportingCurrency("CNY");
 		pExistStock->SetUpdateProfileDB(true);
 
@@ -363,7 +363,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultNew.size(), 1u);
 
 			// Cleanup DB: remove test insertion and restore existing stock IPO status
-			pExistStock->SetDayLineEndDate(19800101);
+			pExistStock->SetDayLineEndDate(toLocalDays(19800101));
 			pExistStock->UpdateJsonUpdateDate();
 			string jsonUpdateDate = pExistStock->GetJsonUpdateDate().dump();
 			db(update(t).set(t.ReportingCurrency = originalCurrency, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
@@ -377,7 +377,7 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
-		pExistStock->SetDayLineEndDate(19800101);
+		pExistStock->SetDayLineEndDate(toLocalDays(19800101));
 		pExistStock->SetUpdateProfileDB(false);
 
 		//gl_dataContainerTiingoStock.UpdateProfileDB();

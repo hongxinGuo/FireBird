@@ -199,7 +199,7 @@ int CWorldMarket::ProcessTask() {
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toTimeOfDay(180000)) {
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(180000)) {
 				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, 180000);
 			}
 			else { // 当日18时之后或者第二日交易时间前
@@ -207,7 +207,7 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toTimeOfDay(181000)) {
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(181000)) {
 				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 181000);
 			}
 			else { // 当日18时之后或者第二日交易时间前
@@ -253,7 +253,7 @@ void CWorldMarket::TaskCreateTask() {
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1);
 
 	// 市场重置
-	if (GetMarketTime() < toTimeOfDay(gl_systemConfiguration.GetWorldMarketResettingTime())) {
+	if (GetMarketTime() < toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime())) {
 		AddTask(WORLD_MARKET_RESET__, gl_systemConfiguration.GetWorldMarketResettingTime()); // 执行时间为170000之后
 	}
 
@@ -630,16 +630,16 @@ void CWorldMarket::CalculateNasdaq100StocksMA(int length) const {
 
 class upDownRate200MA {
 public:
-	long lDate;
+	chrono::local_days lDate;
 	int Rate;
 };
 
 void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	vector<upDownRate200MA> vUpDownRate;
 
-	long lBeginDate = GetPrevDay(GetMarketDate(), 365); // 最多计算一年内的数据
-	long lCurrentDate = lBeginDate;
-	long lEndDate = GetMarketDate();
+	auto lBeginDate = GetPrevDay(GetMarketDate(), 365); // 最多计算一年内的数据
+	auto lCurrentDate = lBeginDate;
+	auto lEndDate = GetMarketDate();
 	while (lCurrentDate < lEndDate) {
 		int iTotalStock = 0;
 		int iAbove200MA = 0;
@@ -685,13 +685,13 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 			result.pop_front();
 		}
 		auto& row = result.front();
-		lCurrentDate = row.Date;
+		lCurrentDate = toLocalDays(row.Date);
 	}
 
 	int nValues = 0;
 	for (auto upDownRate : vUpDownRate) {
 		if (upDownRate.lDate > lCurrentDate) {
-			multi_insert.values.add(t.Date = upDownRate.lDate, t.Rate = upDownRate.Rate);
+			multi_insert.values.add(t.Date = static_cast<long>(toUnsignedDate(upDownRate.lDate)), t.Rate = upDownRate.Rate);
 			nValues++;
 		}
 	}
@@ -1018,7 +1018,7 @@ void CWorldMarket::RebuildTiingoStockSplitDB() {
 }
 
 void CWorldMarket::UpdateTiingoOneYearStockDayLine() {
-	long lBeginDate = GetPrevDay(GetMarketDate(), 365);
+	chrono::local_days lBeginDate = GetPrevDay(GetMarketDate(), 365);
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
 		pStock->SetDayLineEndDate(lBeginDate);
@@ -1030,7 +1030,7 @@ void CWorldMarket::UpdateTiingoOneYearStockDayLine() {
 void CWorldMarket::UpdateTiingoAllStockDayLine() {
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
-		pStock->SetDayLineEndDate(19800101); // 从1980年开始更新日线数据
+		pStock->SetDayLineEndDate(chrono::local_days(1980y / 01 / 01)); // 从1980年开始更新日线数据
 		pStock->SetUpdateDayLine(true);
 	}
 	gl_pTiingoDataSource->SetUpdateDayLine(true);
@@ -1061,7 +1061,7 @@ void CWorldMarket::CalculateIndustryTotalValue() {
 }
 
 struct dayLineValue {
-	long lDate;
+	chrono::local_days lDate;
 	double dTotalValue;
 };
 

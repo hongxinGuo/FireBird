@@ -9,16 +9,11 @@
 
 #include "WebData.h"
 
-string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, long lStartDate, long lCurrentDate) {
-	const long year = lCurrentDate / 10000;
-	const long month = lCurrentDate / 100 - year * 100;
-	const long date = lCurrentDate - year * 10000 - month * 100;
+string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate) {
+	chrono::year_month_day ymd{ lCurrentDate };
+	chrono::year_month_day ymdStart{ lStartDate };
 
-	const long yearStart = lStartDate / 10000;
-	const long monthStart = lStartDate / 100 - yearStart * 100;
-	const long dateStart = lStartDate - yearStart * 10000 - monthStart * 100;
-
-	string sParam = std::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", strSymbol, yearStart, monthStart, dateStart, year, month, date);
+	string sParam = std::format("{}/prices?&startDate={:%F}&endDate={:%F}", strSymbol, ymdStart, ymd);
 	return sParam;
 }
 
@@ -34,8 +29,8 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 string CProductTiingoStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ASSERT(pStock->IsActive()); // 活跃股票
-	long lStartDate = 19800101;
-	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
+	chrono::local_days lStartDate{ 1980y / 01 / 01 };
+	if (pStock->GetDayLineEndDate() > toLocalDays(19800101)) lStartDate = pStock->GetDayLineEndDate();
 	string strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, gl_pWorldMarket->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 

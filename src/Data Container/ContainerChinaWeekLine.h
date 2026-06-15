@@ -18,7 +18,7 @@ public:
 	void StoreVectorData(const vector<CWeekLine>& vWeekLine);
 
 	CWeekLine* GetData(const size_t lIndex) { return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CWeekLine* GetWeekLine(long lDate) { return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CWeekLine* GetWeekLine(chrono::local_days lDate) { return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
 };
 
 using CContainerChinaWeekLinePtr = shared_ptr<CContainerChinaWeekLine>;

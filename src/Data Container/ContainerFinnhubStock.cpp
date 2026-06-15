@@ -25,7 +25,7 @@ void CContainerFinnhubStock::Reset() {
 void CContainerFinnhubStock::ResetEPSSurprise() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CFinnhubStockPtr pStock = GetItem(l);
-		pStock->SetLastEPSSurpriseUpdateDate(19800101);
+		pStock->SetLastEPSSurpriseUpdateDate(toLocalDays(19800101));
 		pStock->m_fUpdateEPSSurprise = true;
 	}
 }
@@ -33,8 +33,8 @@ void CContainerFinnhubStock::ResetEPSSurprise() {
 void CContainerFinnhubStock::ResetPeer() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CFinnhubStockPtr pStock = GetItem(l);
-		if (pStock->GetPeerUpdateDate() != 19800101) {
-			pStock->SetPeerUpdateDate(19800101);
+		if (pStock->GetPeerUpdateDate() != toLocalDays(19800101)) {
+			pStock->SetPeerUpdateDate(toLocalDays(19800101));
 			pStock->SetUpdatePeer(true);
 			pStock->SetUpdateProfileDB(true);
 		}
@@ -44,8 +44,8 @@ void CContainerFinnhubStock::ResetPeer() {
 void CContainerFinnhubStock::ResetBasicFinancial() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CFinnhubStockPtr pStock = GetItem(l);
-		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
-			pStock->SetBasicFinancialUpdateDate(19800101);
+		if (pStock->GetBasicFinancialUpdateDate() != toLocalDays(19800101)) {
+			pStock->SetBasicFinancialUpdateDate(toLocalDays(19800101));
 			pStock->SetUpdateBasicFinancial(true);
 			pStock->SetUpdateProfileDB(true);
 		}
@@ -55,8 +55,8 @@ void CContainerFinnhubStock::ResetBasicFinancial() {
 void CContainerFinnhubStock::ResetDayLine() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CFinnhubStockPtr pStock = GetItem(l);
-		pStock->SetDayLineStartDate(29900101);
-		pStock->SetDayLineEndDate(19800101);
+		pStock->SetDayLineStartDate(toLocalDays(29900101));
+		pStock->SetDayLineEndDate(toLocalDays(19800101));
 		pStock->SetUpdateDayLine(true);
 		pStock->SetUpdateProfileDB(true);
 	}

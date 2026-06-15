@@ -47,7 +47,7 @@ void CVirtualDataHistoryCandle::UpdateData(const CDayLinesPtr& pvTempDayLine) {
 	SetDataLoaded(true);
 }
 
-bool CVirtualDataHistoryCandle::GetStartEndDate(long& lStartDate, long& lEndDate) const {
+bool CVirtualDataHistoryCandle::GetStartEndDate(chrono::local_days& lStartDate, chrono::local_days& lEndDate) const {
 	if (m_vHistoryData.empty()) return false;
 
 	lStartDate = m_vHistoryData.at(0).GetDate();
@@ -56,7 +56,7 @@ bool CVirtualDataHistoryCandle::GetStartEndDate(long& lStartDate, long& lEndDate
 	return true;
 }
 
-bool CVirtualDataHistoryCandle::HaveDayLine(long lDate) {
+bool CVirtualDataHistoryCandle::HaveDayLine(chrono::local_days lDate) {
 	auto it = ranges::find_if(m_vHistoryData.begin(), m_vHistoryData.end(),
 	                          [lDate](const CVirtualHistoryCandle& p) { return p.GetDate() == lDate; });
 	if (it == m_vHistoryData.end()) {
@@ -65,7 +65,7 @@ bool CVirtualDataHistoryCandle::HaveDayLine(long lDate) {
 	return true;
 }
 
-CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(long lDate) {
+CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(chrono::local_days lDate) {
 	auto it = std::ranges::find_if(m_vHistoryData.begin(), m_vHistoryData.end(),
 	                               [lDate](const CVirtualHistoryCandle& p) { return p.GetDate() == lDate; });
 	if (it != m_vHistoryData.end()) {

@@ -31,7 +31,7 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CVirtualHistoryCandle dl;
 		dl.SetDate(19900101);
-		EXPECT_EQ(dl.GetDate(), 19900101);
+		EXPECT_EQ(dl.GetDate(), toLocalDays(19900101));
 	}
 
 	TEST_F(CVirtualHistoryCandleTest, TestGetStockCode) {

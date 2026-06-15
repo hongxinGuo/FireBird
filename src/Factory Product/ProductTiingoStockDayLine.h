@@ -17,7 +17,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoCandleLinesPtr ParseTiingoStockDayLine(const CWebDataPtr& pWebData);
 
-	string GetDayLineInquiryParam(const string& strSymbol, long lStartDate, long lCurrentDate);
+	string GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate);
 };
 
 using CTiingoStockDayLinePtr = shared_ptr<CProductTiingoStockDayLine>;

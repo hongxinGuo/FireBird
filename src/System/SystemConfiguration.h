@@ -12,6 +12,7 @@
 #pragma once
 
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+#include "TimeConvert.h"
 
 enum EChinaMarketDataSourceServer : int {
 	SinaRealTime_ = 0,
@@ -130,32 +131,32 @@ public:
 	[[nodiscard]] string GetTiingoToken() noexcept { return m_strTiingoToken; }
 	void SetTiingoToken(string s) noexcept { m_strTiingoToken = s; }
 
-	[[nodiscard]] int GetTiingoFundamentalsMetaUpdateDate() const noexcept { return m_lTiingoFundamentalsMetaUpdateDate; }
-	void SetTiingoFundamentalsMetaUpdateDate(const long lTiingoFundamentalsMetaUpdateDate) noexcept {
+	[[nodiscard]] chrono::local_days GetTiingoFundamentalsMetaUpdateDate() const noexcept { return m_lTiingoFundamentalsMetaUpdateDate; }
+	void SetTiingoFundamentalsMetaUpdateDate(const chrono::local_days lTiingoFundamentalsMetaUpdateDate) noexcept {
 		m_lTiingoFundamentalsMetaUpdateDate = lTiingoFundamentalsMetaUpdateDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] int GetTiingoCryptoSymbolUpdateDate() const noexcept { return m_lTiingoCryptoSymbolUpdateDate; }
-	void SetTiingoCryptoSymbolUpdateDate(const long lTiingoCryptoSymbolUpdateDate) noexcept {
+	[[nodiscard]] chrono::local_days GetTiingoCryptoSymbolUpdateDate() const noexcept { return m_lTiingoCryptoSymbolUpdateDate; }
+	void SetTiingoCryptoSymbolUpdateDate(const chrono::local_days lTiingoCryptoSymbolUpdateDate) noexcept {
 		m_lTiingoCryptoSymbolUpdateDate = lTiingoCryptoSymbolUpdateDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] int GetTiingoIEXTopOfBookUpdateDate() const noexcept { return m_lTiingoIEXTopOfBookUpdateDate; }
-	void SetTiingoIEXTopOfBookUpdateDate(const long lTiingoIEXTopOfBookUpdateDate) noexcept {
+	[[nodiscard]] chrono::local_days GetTiingoIEXTopOfBookUpdateDate() const noexcept { return m_lTiingoIEXTopOfBookUpdateDate; }
+	void SetTiingoIEXTopOfBookUpdateDate(const chrono::local_days lTiingoIEXTopOfBookUpdateDate) noexcept {
 		m_lTiingoIEXTopOfBookUpdateDate = lTiingoIEXTopOfBookUpdateDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] int GetTiingoStockDayLineProcessedDate() const noexcept { return m_lTiingoStockDayLineProcessedDate; }
-	void SetTiingoStockDayLineProcessedDate(const long lTiingoStockDayLineProcessedDate) noexcept {
+	[[nodiscard]] chrono::local_days GetTiingoStockDayLineProcessedDate() const noexcept { return m_lTiingoStockDayLineProcessedDate; }
+	void SetTiingoStockDayLineProcessedDate(const chrono::local_days lTiingoStockDayLineProcessedDate) noexcept {
 		m_lTiingoStockDayLineProcessedDate = lTiingoStockDayLineProcessedDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] int GetTiingoStock52WeekHighLowUpdateDate() const noexcept { return m_lTiingoStock52WeekHighLowUpdateDate; }
-	void SetTiingoStock52WeekHighLowUpdateDate(const long l52WeekHighLowUpdateDate) noexcept {
+	[[nodiscard]] chrono::local_days GetTiingoStock52WeekHighLowUpdateDate() const noexcept { return m_lTiingoStock52WeekHighLowUpdateDate; }
+	void SetTiingoStock52WeekHighLowUpdateDate(const chrono::local_days l52WeekHighLowUpdateDate) noexcept {
 		m_lTiingoStock52WeekHighLowUpdateDate = l52WeekHighLowUpdateDate;
 		m_fUpdateDB = true;
 	}
@@ -368,11 +369,11 @@ protected:
 	// Tiingo.com
 	bool m_bTiingoAccountFeePaid{ true };
 	string m_strTiingoToken{ "" };
-	long m_lTiingoFundamentalsMetaUpdateDate{ 19800101 };
-	long m_lTiingoCryptoSymbolUpdateDate{ 19800101 };
-	long m_lTiingoIEXTopOfBookUpdateDate{ 19800101 };
-	long m_lTiingoStockDayLineProcessedDate{ 19800101 };
-	long m_lTiingoStock52WeekHighLowUpdateDate{ 19800101 };
+	chrono::local_days m_lTiingoFundamentalsMetaUpdateDate{ toLocalDays(19800101) };
+	chrono::local_days m_lTiingoCryptoSymbolUpdateDate{ toLocalDays(19800101) };
+	chrono::local_days m_lTiingoIEXTopOfBookUpdateDate{ toLocalDays(19800101) };
+	chrono::local_days m_lTiingoStockDayLineProcessedDate{ toLocalDays(19800101) };
+	chrono::local_days m_lTiingoStock52WeekHighLowUpdateDate{ toLocalDays(19800101) };
 	int m_iTiingoHourLyRequestLimit{ 500 };
 	long m_lTiingoDailyRequestLimit{ 20000 };
 	long long m_llTiingoBandWidth{ 5368709120 };
