@@ -22,50 +22,6 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(TimeConvertTest, TestXferDateToYearMonthDay) {
-		int year, month, day;
-		XferDateToYearMonthDay(20200101, year, month, day);
-		EXPECT_TRUE((year == 2020) && (month == 01) && (day == 01));
-		XferDateToYearMonthDay(20201230, year, month, day);
-		EXPECT_TRUE((year == 2020) && (month == 12) && (day == 30));
-	}
-
-	TEST_F(TimeConvertTest, TestIsEarlyThen) {
-		EXPECT_TRUE(IsEarlyThen(20200101, 20200115, 13));
-		EXPECT_FALSE(IsEarlyThen(20200101, 20200115, 14));
-		EXPECT_TRUE(IsEarlyThen(20200115, 20200201, 16));
-		EXPECT_FALSE(IsEarlyThen(20200115, 20200201, 17));
-		EXPECT_TRUE(IsEarlyThen(20191101, 20200115, 74));
-		EXPECT_FALSE(IsEarlyThen(20191101, 20200115, 75));
-	}
-
-	TEST_F(TimeConvertTest, TestXferToYYYYMMDD2) {
-		EXPECT_EQ(XferToYYYYMMDD("2020-10-10"), 20201010);
-		EXPECT_EQ(XferToYYYYMMDD("2020-01-02"), 20200102);
-		EXPECT_EQ(XferToYYYYMMDD("2020-1-2"), 20200102);
-	}
-
-	TEST_F(TimeConvertTest, TestGetNextMonth) {
-		EXPECT_EQ(GetNextMonth(20200101), 20200201);
-		EXPECT_EQ(GetNextMonth(20201205), 20210101);
-		EXPECT_EQ(GetNextMonth(20201111), 20201201);
-		EXPECT_EQ(GetNextMonth(20200231), 20200301) << "不检查日期的合法性";
-	}
-
-	TEST_F(TimeConvertTest, TestGetNextDate) {
-		EXPECT_EQ(GetNextDay(20200101, 1), 20200102);
-		EXPECT_EQ(GetNextDay(20200101, 11), 20200112);
-		EXPECT_EQ(GetNextDay(20201231, 1), 20210101);
-		EXPECT_EQ(GetNextDay(20201221, 14), 20210104);
-	}
-
-	TEST_F(TimeConvertTest, TestGetPrevDay) {
-		EXPECT_EQ(GetPrevDay(20200102), 20200101);
-		EXPECT_EQ(GetPrevDay(20200112, 10), 20200102);
-		EXPECT_EQ(GetPrevDay(20200102, 11), 20191222);
-		EXPECT_EQ(GetPrevDay(20200202, 11), 20200122);
-	}
-
 	TEST_F(TimeConvertTest, TestGetNextMonday) {
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200720)));
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200721)));
@@ -97,13 +53,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200720), GetPrevMonday(toLocalDays(20200727)));
 	}
 
-	TEST_F(TimeConvertTest, TestIsEarlyThen2) {
-		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 32));
-		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 33));
-		EXPECT_TRUE(IsEarlyThen(20200101, 20200201, 30));
-		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 31));
-	}
-
 	TEST_F(TimeConvertTest, TestGetNextMonday2) {
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200720))) << "20200720为星期一";
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200721)));
@@ -119,23 +68,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200717)));
 		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200718)));
 		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200719)));
-	}
-
-	TEST_F(TimeConvertTest, TestGetNextMonday3) {
-		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200720))) << "20200720为星期一";
-		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200721)));
-		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200722)));
-		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200723)));
-		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200724)));
-		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200725)));
-		EXPECT_EQ(toYearMonthDay(20200727), GetNextMonday(toYearMonthDay(20200726)));
-		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200713)));
-		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200714)));
-		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200715)));
-		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200716)));
-		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200717)));
-		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200718)));
-		EXPECT_EQ(toYearMonthDay(20200720), GetNextMonday(toYearMonthDay(20200719)));
 	}
 
 	TEST_F(TimeConvertTest, TestGetCurrentMonday) {
@@ -199,5 +131,39 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200720), chrono::local_days{ ymd });
 		EXPECT_EQ(toLocalDays(20200720), chrono::local_days{ ymd });
 		EXPECT_EQ(chrono::local_days(chrono::days(0)), chrono::local_days{ chrono::days(0) });
+	}
+
+	TEST_F(TimeConvertTest, TestToLocalDays2) {
+		string s = "2020-01-02";
+		istringstream ss(s);
+		chrono::local_days ld;
+		ss >> chrono::parse("%F", ld);
+		chrono::year_month_day ymd(ld);
+		EXPECT_EQ(ymd.year(), 2020y);
+		EXPECT_EQ(ymd.month(), chrono::month(1));
+		EXPECT_EQ(ymd.day(), chrono::day(2));
+	}
+
+	TEST_F(TimeConvertTest, TestToLocalDays3) {
+		string s = "2020-01-02 12:22:33";
+		istringstream ss(s);
+		chrono::local_days ld;
+		ss >> chrono::parse("%F", ld);
+		chrono::year_month_day ymd(ld);
+		EXPECT_EQ(ymd.year(), 2020y);
+		EXPECT_EQ(ymd.month(), chrono::month(1));
+		EXPECT_EQ(ymd.day(), chrono::day(2));
+
+		chrono::local_seconds ls;
+		istringstream ss2(s);
+		ss2 >> chrono::parse("%F %T", ls);
+		chrono::year_month_day ymd2{ chrono::local_days(floor<chrono::days>(ls)) };
+		EXPECT_EQ(ymd2.year(), 2020y);
+		EXPECT_EQ(ymd2.month(), chrono::month(1));
+		EXPECT_EQ(ymd2.day(), chrono::day(2));
+		chrono::hh_mm_ss<chrono::seconds> hms = toTodayClock(ls);
+		EXPECT_EQ(hms.hours(), 12h);
+		EXPECT_EQ(hms.minutes(), 22min);
+		EXPECT_EQ(hms.seconds(), 33s);
 	}
 }

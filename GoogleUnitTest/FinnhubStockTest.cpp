@@ -1138,7 +1138,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockTest, TestGetFinnhubDayLineInquiryParam) {
 		chrono::local_days lDate = toLocalDays(20200101);
 
-		const time_t tt = gl_pWorldMarket->ConvertToUTCTime(toUnsignedDate(lDate), 150000).time_since_epoch().count();
+		const time_t tt = gl_pWorldMarket->ConvertToUTCTime(toFormattedDate(lDate), 150000).time_since_epoch().count();
 		time_t ttOld = tt - static_cast<time_t>(365) * 24 * 3600;
 
 		string sTime = std::format("{:Ld}", tt);

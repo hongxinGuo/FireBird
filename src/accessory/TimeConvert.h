@@ -1,7 +1,6 @@
 #pragma once
 
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
-bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
 inline bool IsEarlyThen(chrono::local_days earlyDate, chrono::local_days latelyDate, long lTimeSpawnOfDays) {
 	return (earlyDate + chrono::days{ lTimeSpawnOfDays } < latelyDate);
 }
@@ -9,28 +8,16 @@ inline bool IsEarlyThen(chrono::local_days earlyDate, chrono::local_days latelyD
 long XferToYYYYMMDD(const string& sDate);
 chrono::local_days XferToLocalDays(const string& sDate);
 
-void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);
-
-long GetNextMonth(long lDate) noexcept; // 得到下个月的第一天日期
 chrono::year_month_day GetNextMonth(chrono::year_month_day ymd) noexcept;
 chrono::local_days GetNextMonth(chrono::local_days ld) noexcept;
 
-long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
 inline chrono::local_days GetNextDay(chrono::local_days ld, long lTimeSpanDays = 1) noexcept { return ld + chrono::days{ lTimeSpanDays }; }
 inline chrono::year_month_day GetNextDay(chrono::year_month_day ymd, long lTimeSpanDays = 1) noexcept { return chrono::year_month_day{ chrono::local_days{ ymd } + chrono::days{ lTimeSpanDays } }; }
 
-long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
 inline chrono::local_days GetPrevDay(chrono::local_days ld, long lTimeSpanDays = 1) noexcept { return ld - chrono::days{ lTimeSpanDays }; }
-inline chrono::year_month_day GetPrevDay(chrono::year_month_day ymd, long lTimeSpanDays = 1) noexcept { return chrono::year_month_day{ chrono::local_days{ ymd } - chrono::days{ lTimeSpanDays } }; }
 
-//long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 chrono::local_days GetNextMonday(chrono::local_days ld);
-chrono::year_month_day GetNextMonday(chrono::year_month_day ymd);
-
-//long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值
 chrono::local_days GetPrevMonday(chrono::local_days ld);
-
-//long GetCurrentMonday(long lDate); // 找到包含lDate的那个星期的星期一
 chrono::local_days GetCurrentMonday(chrono::local_days ld);
 
 chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time);
@@ -47,19 +34,14 @@ string ConvertDateToTimeStamp(chrono::local_days date);
 
 [[nodiscard]] string FormatToMK(int64_t iNumber);
 
-inline chrono::local_days toLocalDays(unsigned date) {
-	if (date < 19700100) {
-		int a = 0;
-	}
-	return chrono::local_days{ chrono::year{ static_cast<int>(date) / 10000 } / chrono::month{ (date % 10000) / 100 } / chrono::day{ date % 100 } };
-}
+inline chrono::local_days toLocalDays(unsigned date) { return chrono::local_days{ chrono::year{ static_cast<int>(date) / 10000 } / chrono::month{ (date % 10000) / 100 } / chrono::day{ date % 100 } }; }
 inline chrono::local_days toLocalDays(chrono::year_month_day ymd) { return chrono::local_days{ ymd }; }
 
-inline unsigned toUnsignedDate(chrono::local_days ld) {
+inline long toFormattedDate(chrono::local_days ld) {
 	chrono::year_month_day ymd{ ld };
-	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
+	return static_cast<long>(static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day()));
 }
-inline unsigned toUnsignedDate(chrono::year_month_day ymd) { return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day()); }
+inline long toFormattedDate(chrono::year_month_day ymd) { return static_cast<long>(static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day())); }
 
 inline chrono::year_month_day toYearMonthDay(chrono::local_days ld) { return chrono::year_month_day{ ld }; }
 inline chrono::year_month_day toYearMonthDay(unsigned date) { return chrono::year_month_day{ chrono::year{ static_cast<int>(date) / 10000 } / chrono::month{ (date % 10000) / 100 } / chrono::day{ date % 100 } }; }

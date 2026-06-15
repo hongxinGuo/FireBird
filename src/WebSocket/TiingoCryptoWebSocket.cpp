@@ -133,7 +133,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			string sMessageType;
 			char chType;
 			string sType;
-			stringstream ss;
+			istringstream ss;
 			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
 			chrono::minutes Minutes;
 			string sString;

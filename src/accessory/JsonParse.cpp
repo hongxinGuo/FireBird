@@ -470,7 +470,7 @@ void ParseOneNeteaseRTData(const nlohmannJson::iterator& it, const CWebRTDataPtr
 		pWebRTData->SetStockName(sName);
 		string strTime = jsonGetString(js, "time");
 		string strSymbol2 = jsonGetString(js, "code");
-		std::stringstream ss(strTime);
+		std::istringstream ss(strTime);
 		chrono::local_seconds localTime;
 		chrono::from_stream(ss, "%Y/%m/%d %T", localTime); // 注意网易的时间是本地时间，需要转换成UTC时间
 		auto sysTime = gl_pChinaMarket->ToSysTime(localTime);
@@ -561,7 +561,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
 		string strTime;
-		std::stringstream ss;
+		std::istringstream ss;
 		//auto timeZoneOffset = gl_pChinaMarket->GetTimeZoneOffset();
 		ondemand::parser parser;
 		const padded_string jsonPadded(svJsonData);

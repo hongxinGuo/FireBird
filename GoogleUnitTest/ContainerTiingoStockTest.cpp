@@ -211,7 +211,7 @@ namespace FireBirdTest {
 		pStock->SetSplitFactor(1.0);
 
 		// ensure transaction time is at/after market close for the given date
-		time_t tt = gl_pWorldMarket->ConvertToUTCTime(toUnsignedDate(lDate), 160000).time_since_epoch().count();
+		time_t tt = gl_pWorldMarket->ConvertToUTCTime(toFormattedDate(lDate), 160000).time_since_epoch().count();
 		pStock->SetTransactionTime(tt);
 
 		// Add to global container
@@ -232,7 +232,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).where((t.Date == toUnsignedDate(lDate)) and (t.Symbol == symbol)));
+		auto result = db(select(all_of(t)).from(t).where((t.Date == toFormattedDate(lDate)) and (t.Symbol == symbol)));
 		ASSERT_EQ(result.size(), 1u) << "Expected exactly one inserted row for symbol";
 
 		// inspect the row values (numeric DB values are unscaled)
@@ -267,7 +267,7 @@ namespace FireBirdTest {
 		gl_systemMessage.PopDayLineInfoMessage();
 
 		// cleanup: remove inserted row for this symbol/date only
-		db(remove_from(t).where((t.Date == toUnsignedDate(lDate)) and (t.Symbol == symbol)));
+		db(remove_from(t).where((t.Date == toFormattedDate(lDate)) and (t.Symbol == symbol)));
 		tx.commit();
 
 		// remove from in-memory container

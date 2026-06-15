@@ -882,7 +882,7 @@ void CChinaMarket::DeleteDayLine(chrono::local_days lDate) const {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Date == toUnsignedDate(lDate)));
+	db(sqlpp::remove_from(t).where(t.Date == toFormattedDate(lDate)));
 	tx.commit();
 }
 
@@ -904,14 +904,14 @@ void CChinaMarket::UpdateOptionDB() {
 		auto result = db(select(all_of(t)).from(t).unconditionally());
 		if (result.size() == 0) {
 			db(sqlpp::insert_into(t).set(
-				t.LastLoginDate = static_cast<long>(toUnsignedDate(GetMarketDate())),
-				t.LastLoginTime = static_cast<long>(toUnsignedTime(GetMarketTime()))
+				t.LastLoginDate = toFormattedDate(GetMarketDate()),
+				t.LastLoginTime = toUnsignedTime(GetMarketTime())
 			));
 		}
 		else {
 			db(update(t).set(
-				t.LastLoginDate = static_cast<long>(toUnsignedDate(GetMarketDate())),
-				t.LastLoginTime = static_cast<long>(toUnsignedTime(GetMarketTime()))
+				t.LastLoginDate = toFormattedDate(GetMarketDate()),
+				t.LastLoginTime = toUnsignedTime(GetMarketTime())
 			).unconditionally());
 		}
 		tx.commit();

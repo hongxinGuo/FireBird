@@ -21,12 +21,12 @@ void CVirtualStock::ResetAllUpdateDate() {
 
 void CVirtualStock::UpdateJsonUpdateDate() {
 	m_jsonUpdateDate["ShareOutstanding"] = m_dShareCount;
-	m_jsonUpdateDate["DayLineStartDate"] = toUnsignedDate(m_dayLineStartDate);
-	m_jsonUpdateDate["DayLineEndDate"] = toUnsignedDate(m_dayLineEndDate);
+	m_jsonUpdateDate["DayLineStartDate"] = toFormattedDate(m_dayLineStartDate);
+	m_jsonUpdateDate["DayLineEndDate"] = toFormattedDate(m_dayLineEndDate);
 	nlohmannJson jsStockSplit = nlohmannJson::array();
 	for (auto StockSplit : *m_pvStockSplit) {
 		nlohmannJson js;
-		js["date"] = toUnsignedDate(StockSplit.GetDate());
+		js["date"] = toFormattedDate(StockSplit.GetDate());
 		js["ratio"] = StockSplit.GetRatio();
 		jsStockSplit.push_back(js);
 	}

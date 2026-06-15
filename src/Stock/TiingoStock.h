@@ -145,22 +145,22 @@ public:
 	void CheckStockDailyMetaStatus(chrono::local_days lCurrentDate);
 
 	chrono::local_days GetStatementLastUpdatedDate() { return toLocalDays(m_jsonUpdateDate["StatementLastUpdated"]); }
-	void SetStatementLastUpdatedDate(chrono::local_days date) { m_jsonUpdateDate["StatementLastUpdated"] = toUnsignedDate(date); }
+	void SetStatementLastUpdatedDate(chrono::local_days date) { m_jsonUpdateDate["StatementLastUpdated"] = toFormattedDate(date); }
 	chrono::local_days GetDailyUpdateDate() { return toLocalDays(m_jsonUpdateDate["DailyUpdate"]); }
-	void SetDailyUpdateDate(chrono::local_days date) { m_jsonUpdateDate["DailyUpdate"] = toUnsignedDate(date); }
+	void SetDailyUpdateDate(chrono::local_days date) { m_jsonUpdateDate["DailyUpdate"] = toFormattedDate(date); }
 
 	chrono::local_days GetCompanyFinancialStatementUpdateDate() { return toLocalDays(m_jsonUpdateDate["CompanyFinancialStatement"]); }
-	void SetCompanyFinancialStatementUpdateDate(chrono::local_days date) { m_jsonUpdateDate["CompanyFinancialStatement"] = toUnsignedDate(date); }
+	void SetCompanyFinancialStatementUpdateDate(chrono::local_days date) { m_jsonUpdateDate["CompanyFinancialStatement"] = toFormattedDate(date); }
 
 	chrono::local_days GetHistoryDayLineStartDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineStartDate"]); }
-	void SetHistoryDayLineStartDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineStartDate"] = toUnsignedDate(date); }
+	void SetHistoryDayLineStartDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineStartDate"] = toFormattedDate(date); }
 	chrono::local_days GetHistoryDayLineEndDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineEndDate"]); }
-	void SetHistoryDayLineEndDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineEndDate"] = toUnsignedDate(date); }
+	void SetHistoryDayLineEndDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineEndDate"] = toFormattedDate(date); }
 	chrono::local_days GetUpdateStockDailyMetaDate() { return toLocalDays(m_jsonUpdateDate["UpdateStockDailyMetaDate"]); }
-	void SetUpdateStockDailyMetaDate(chrono::local_days date) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = toUnsignedDate(date); }
+	void SetUpdateStockDailyMetaDate(chrono::local_days date) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = toFormattedDate(date); }
 
 	chrono::local_days GetDayLineProcessDate();
-	void SetDayLineProcessDate(chrono::local_days date) { m_jsonUpdateDate["DayLineProcessDate"] = toUnsignedDate(date); }
+	void SetDayLineProcessDate(chrono::local_days date) { m_jsonUpdateDate["DayLineProcessDate"] = toFormattedDate(date); }
 
 	bool Have52WeekLowDate(chrono::local_days lDate) { return std::ranges::find(m_v52WeekLowDate, lDate) != m_v52WeekLowDate.end(); }
 	bool Have52WeekHighDate(chrono::local_days lDate) { return std::ranges::find(m_v52WeekHighDate, lDate) != m_v52WeekHighDate.end(); }

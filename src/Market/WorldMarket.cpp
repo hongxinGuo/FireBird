@@ -691,7 +691,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	int nValues = 0;
 	for (auto upDownRate : vUpDownRate) {
 		if (upDownRate.lDate > lCurrentDate) {
-			multi_insert.values.add(t.Date = static_cast<long>(toUnsignedDate(upDownRate.lDate)), t.Rate = upDownRate.Rate);
+			multi_insert.values.add(t.Date = toFormattedDate(upDownRate.lDate), t.Rate = upDownRate.Rate);
 			nValues++;
 		}
 	}

@@ -552,11 +552,11 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	// Tiingo.com
 	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;
 	jsonData["Tiingo"]["Token"] = m_strTiingoToken;
-	jsonData["Tiingo"]["FundamentalsMetaUpdateDate"] = toUnsignedDate(m_lTiingoFundamentalsMetaUpdateDate);
-	jsonData["Tiingo"]["CryptoSymbolUpdateDate"] = toUnsignedDate(m_lTiingoCryptoSymbolUpdateDate);
-	jsonData["Tiingo"]["IEXTopOfBookUpdateDate"] = toUnsignedDate(m_lTiingoIEXTopOfBookUpdateDate);
-	jsonData["Tiingo"]["StockDayLineProcessedDate"] = toUnsignedDate(m_lTiingoStockDayLineProcessedDate);
-	jsonData["Tiingo"]["Stock52WeekHighLowUpdate"] = toUnsignedDate(m_lTiingoStock52WeekHighLowUpdateDate);
+	jsonData["Tiingo"]["FundamentalsMetaUpdateDate"] = toFormattedDate(m_lTiingoFundamentalsMetaUpdateDate);
+	jsonData["Tiingo"]["CryptoSymbolUpdateDate"] = toFormattedDate(m_lTiingoCryptoSymbolUpdateDate);
+	jsonData["Tiingo"]["IEXTopOfBookUpdateDate"] = toFormattedDate(m_lTiingoIEXTopOfBookUpdateDate);
+	jsonData["Tiingo"]["StockDayLineProcessedDate"] = toFormattedDate(m_lTiingoStockDayLineProcessedDate);
+	jsonData["Tiingo"]["Stock52WeekHighLowUpdate"] = toFormattedDate(m_lTiingoStock52WeekHighLowUpdateDate);
 	jsonData["Tiingo"]["HourlyRequestLimit"] = m_iTiingoHourLyRequestLimit;
 	jsonData["Tiingo"]["DailyRequestLimit"] = m_lTiingoDailyRequestLimit;
 	jsonData["Tiingo"]["BandWidth"] = m_llTiingoBandWidth;

@@ -69,6 +69,6 @@ void CFinnhubCrypto::DeleteDuplicatedDayLine() noexcept {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= static_cast<long>(toUnsignedDate(m_dataDayLine.GetData(0)->GetDate()))));
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
 	tx.commit();
 }

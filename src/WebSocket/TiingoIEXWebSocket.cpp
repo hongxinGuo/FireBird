@@ -125,7 +125,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	try {
 		if (nlohmannJson js; CreateJsonWithNlohmann(js, *pData)) {
 			chrono::time_point<chrono::system_clock, chrono::nanoseconds> tpTime;
-			stringstream ss;
+			istringstream ss;
 			string sMessageType;
 			string sService;
 			string sType;

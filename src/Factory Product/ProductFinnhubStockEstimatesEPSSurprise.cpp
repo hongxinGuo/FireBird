@@ -49,7 +49,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 			string s = jsonGetString(it, "symbol");
 			pEPSSurprise.m_strSymbol = s;
 			s = jsonGetString(it, "period");
-			stringstream ss(s);
+			istringstream ss(s);
 			chrono::local_days ld;
 			ss >> chrono::parse("%F", ld);
 			pEPSSurprise.m_lDate = ld;

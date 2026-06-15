@@ -82,7 +82,7 @@ void CInaccessibleSymbol::Update() {
 void CInaccessibleSymbol::UpdateJson() {
 	m_jsonInaccessible.clear();
 
-	m_jsonInaccessible["UpdateDate"] = toUnsignedDate(m_lUpdateDate);
+	m_jsonInaccessible["UpdateDate"] = toFormattedDate(m_lUpdateDate);
 	for (const auto& val : m_mapInaccessible | std::views::values) {
 		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集

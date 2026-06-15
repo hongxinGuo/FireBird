@@ -88,11 +88,11 @@ CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta
 		s1 = simdjsonGetStringView(doc, "description");
 		pTiingoStockDailyMeta->m_strDescription = s1;
 		s1 = simdjsonGetStringView(doc, "startDate", "1900-01-01"); // 如果没有日线开始日期（即没有日线数据），则设置为19000101
-		stringstream ss(s1);
+		istringstream ss(s1);
 		ss >> chrono::parse("%F", ld);
 		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = ld;
 		s2 = simdjsonGetStringView(doc, "endDate", "1900-01-01"); // 如果没有日线结束日期（即没有日线数据），则设置为19000101
-		stringstream ss2(s2);
+		istringstream ss2(s2);
 		ss2 >> chrono::parse("%F", ld2);
 		pTiingoStockDailyMeta->m_lHistoryDayLineEndDate = ld2;
 	} catch (simdjson_error& error) {

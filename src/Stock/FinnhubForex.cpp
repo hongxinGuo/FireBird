@@ -15,7 +15,7 @@ void CFinnhubForex::SetCheckingDayLineStatus() {
 }
 
 string CFinnhubForex::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
-	time_t tStartTime = gl_pWorldMarket->ConvertToUTCTime(toUnsignedDate(GetDayLineEndDate()), 150000).time_since_epoch().count();
+	time_t tStartTime = gl_pWorldMarket->ConvertToUTCTime(toFormattedDate(GetDayLineEndDate()), 150000).time_since_epoch().count();
 	tStartTime = max(tStartTime, tCurrentTime - static_cast<time_t>(365) * 24 * 3600);// 免费账户只能读取一年以内的日线数据。
 
 	string sParam = std::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
@@ -45,7 +45,7 @@ void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= static_cast<long>(toUnsignedDate(m_dataDayLine.GetData(0)->GetDate()))));
+	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
 	tx.commit();
 }
 

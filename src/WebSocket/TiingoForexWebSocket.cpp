@@ -131,7 +131,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 			char chType;
 			string sService;
 			string sType;
-			stringstream ss;
+			istringstream ss;
 			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
 			chrono::minutes Minutes;
 			string sString;

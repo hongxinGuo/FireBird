@@ -331,19 +331,19 @@ namespace FireBirdTest {
 	TEST_F(CTiingoStockTest, TestGetSetStockSplit) {
 		EXPECT_EQ(stock.GetStockSplitCount(), 0);
 		CStockSplit p;
-		p.SetDate(XferToLocalDays("2020-01-01"));
+		p.SetDate(chrono::local_days(2020y / 01 / 01));
 		p.SetRatio(2.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 1);
 		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), toLocalDays(20200101));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 2.0);
-		p.SetDate(XferToLocalDays("2021-01-01"));
+		p.SetDate(chrono::local_days(2021y / 01 / 01));
 		p.SetRatio(3.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 2);
 		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), toLocalDays(20210101));
 		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 3.0);
-		p.SetDate(XferToLocalDays("2019-01-01"));
+		p.SetDate(chrono::local_days(2019y / 01 / 01));
 		p.SetRatio(1.5);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 3);

@@ -32,7 +32,7 @@ public:
 	bool IsActive() const;
 
 public:
-	//long GetDate() const noexcept { return toUnsignedDate(m_tpDate); }
+	//long GetDate() const noexcept { return toFormattedDate(m_tpDate); }
 	chrono::local_days GetDate() const noexcept { return m_tpDate; }
 	void SetDate(const unsigned lDate) noexcept { m_tpDate = toLocalDays(lDate); }
 	void SetDate(chrono::local_seconds time) noexcept { m_tpDate = chrono::floor<chrono::days>(time); }

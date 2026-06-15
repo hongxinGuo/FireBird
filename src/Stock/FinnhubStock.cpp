@@ -334,7 +334,7 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 		if (EPSSurprise.m_lDate > sastEPSSurpriseUpdateDate) {
 			multi_insert.values.add(
 				t.Symbol = EPSSurprise.m_strSymbol,
-				t.Date = static_cast<long>(toUnsignedDate(EPSSurprise.m_lDate)),
+				t.Date = toFormattedDate(EPSSurprise.m_lDate),
 				t.Actual = EPSSurprise.m_dActual,
 				t.Estimate = EPSSurprise.m_dEstimate
 			);
@@ -573,7 +573,7 @@ chrono::local_days CFinnhubStock::GetProfileUpdateDate() {
 }
 
 void CFinnhubStock::SetProfileUpdateDate(const chrono::local_days profileUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = toUnsignedDate(profileUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = toFormattedDate(profileUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetCompanyNewsUpdateDate() {
@@ -586,7 +586,7 @@ chrono::local_days CFinnhubStock::GetCompanyNewsUpdateDate() {
 }
 
 void CFinnhubStock::SetCompanyNewsUpdateDate(const chrono::local_days companyNewsUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = toUnsignedDate(companyNewsUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = toFormattedDate(companyNewsUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetBasicFinancialUpdateDate() {
@@ -599,7 +599,7 @@ chrono::local_days CFinnhubStock::GetBasicFinancialUpdateDate() {
 }
 
 void CFinnhubStock::SetBasicFinancialUpdateDate(const chrono::local_days basicFinancialUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = toUnsignedDate(basicFinancialUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = toFormattedDate(basicFinancialUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetLastRTDataUpdateDate() {
@@ -612,7 +612,7 @@ chrono::local_days CFinnhubStock::GetLastRTDataUpdateDate() {
 }
 
 void CFinnhubStock::SetLastRTDataUpdateDate(const chrono::local_days lastRTDataUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = toUnsignedDate(lastRTDataUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = toFormattedDate(lastRTDataUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetPeerUpdateDate() {
@@ -625,7 +625,7 @@ chrono::local_days CFinnhubStock::GetPeerUpdateDate() {
 }
 
 void CFinnhubStock::SetPeerUpdateDate(const chrono::local_days peerUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = toUnsignedDate(peerUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = toFormattedDate(peerUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetInsiderTransactionUpdateDate() {
@@ -638,7 +638,7 @@ chrono::local_days CFinnhubStock::GetInsiderTransactionUpdateDate() {
 }
 
 void CFinnhubStock::SetInsiderTransactionUpdateDate(const chrono::local_days insiderTransactionUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = toUnsignedDate(insiderTransactionUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = toFormattedDate(insiderTransactionUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetInsiderSentimentUpdateDate() {
@@ -651,7 +651,7 @@ chrono::local_days CFinnhubStock::GetInsiderSentimentUpdateDate() {
 }
 
 void CFinnhubStock::SetInsiderSentimentUpdateDate(const chrono::local_days insiderSentimentUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = toUnsignedDate(insiderSentimentUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = toFormattedDate(insiderSentimentUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
@@ -664,7 +664,7 @@ chrono::local_days CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
 }
 
 void CFinnhubStock::SetLastEPSSurpriseUpdateDate(const chrono::local_days lastEPSSurpriseUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = toUnsignedDate(lastEPSSurpriseUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = toFormattedDate(lastEPSSurpriseUpdateDate);
 }
 
 chrono::local_days CFinnhubStock::GetSECFilingsUpdateDate() {
@@ -677,7 +677,7 @@ chrono::local_days CFinnhubStock::GetSECFilingsUpdateDate() {
 }
 
 void CFinnhubStock::SetSECFilingsUpdateDate(const chrono::local_days secFilingsUpdateDate) noexcept {
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = toUnsignedDate(secFilingsUpdateDate);
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = toFormattedDate(secFilingsUpdateDate);
 }
 
 string CFinnhubStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
@@ -698,7 +698,7 @@ string CFinnhubStock::GetTiingoDayLineInquiryParam(chrono::local_days lStartDate
 }
 
 string CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
-	string sParam = std::format("{}&from={:Ld}", m_strSymbol, toUnsignedDate(GetInsiderTransactionUpdateDate()));
+	string sParam = std::format("{}&from={:Ld}", m_strSymbol, toFormattedDate(GetInsiderTransactionUpdateDate()));
 	return sParam;
 }
 

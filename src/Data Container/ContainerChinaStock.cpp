@@ -327,7 +327,7 @@ long CContainerChinaStock::BuildDayLine(chrono::local_days currentTradeDay) {
 			pStock->SetUpdateProfileDB(true);
 
 			multi_insert.values.add(
-				t.Date = static_cast<long>(toUnsignedDate(currentTradeDay)),
+				t.Date = toFormattedDate(currentTradeDay),
 				t.Exchange = pStock->GetExchange(),
 				t.Symbol = pStock->GetSymbol(),
 				t.LastClose = static_cast<double>(pStock->GetLastClose()) / ratio,
@@ -364,7 +364,7 @@ void CContainerChinaStock::DeleteDayLine(chrono::local_days date) {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Date == toUnsignedDate(date)));
+	db(sqlpp::remove_from(t).where(t.Date == toFormattedDate(date)));
 	tx.commit();
 }
 
