@@ -13,7 +13,6 @@
 #include"FinnhubDataSource.h"
 #include"NeteaseDayLineDataSource.h"
 #include"NeteaseRTDataSource.h"
-#include"QuandlDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"TengxunDayLineDataSource.h"
@@ -89,7 +88,6 @@ CNeteaseDayLineDataSourcePtr gl_pNeteaseDayLineDataSource = nullptr;
 CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
-CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;
 CAlphaVantageDataSourcePtr gl_pAlphaVantageDataSource = nullptr;
 CAccessoryDataSourcePtr gl_pAccessoryDataSource = nullptr;
 

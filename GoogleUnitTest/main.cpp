@@ -235,6 +235,11 @@ using namespace FireBirdTest;
 #include"shellapi.h"
 
 int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd) {
+	// 运行测试前需要设置MFC resource handle
+	// HINSTANCE hInst = ::GetModuleHandle(NULL);
+	//AfxWinInit(hInst, hInst, ::GetCommandLineW()); // initializes MFC resource handle
+	AfxSetResourceHandle(::GetModuleHandle(NULL));
+
 	int argc = 0;
 	wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	if (argv == nullptr) {

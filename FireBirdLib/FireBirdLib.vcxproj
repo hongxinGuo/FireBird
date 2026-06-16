@@ -63,7 +63,6 @@
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseRTDataSource.h" />
-    <ClInclude Include="..\src\Data Source\QuandlDataSource.h" />
     <ClInclude Include="..\src\Data Source\SinaRTDataSource.h" />
     <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h" />
     <ClInclude Include="..\src\Data Source\TiingoDataSource.h" />
@@ -241,7 +240,6 @@
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\NeteaseDaylineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\NeteaseRTDataSource.cpp" />
-    <ClCompile Include="..\src\Data Source\QuandlDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\SinaRTDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp" />

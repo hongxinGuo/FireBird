@@ -47,7 +47,6 @@ inline chrono::year_month_day toYearMonthDay(chrono::local_days ld) { return chr
 inline chrono::year_month_day toYearMonthDay(unsigned date) { return chrono::year_month_day{ chrono::year{ static_cast<int>(date) / 10000 } / chrono::month{ (date % 10000) / 100 } / chrono::day{ date % 100 } }; }
 
 inline chrono::hh_mm_ss<chrono::seconds> toTodayClock(chrono::local_seconds ls) { return chrono::hh_mm_ss{ ls - chrono::floor<chrono::days>(ls) }; }
-inline chrono::hh_mm_ss<chrono::seconds> toTodayClock(unsigned time) { return chrono::hh_mm_ss{ chrono::seconds{ (time / 10000) * 3600 + ((time % 10000) / 100) * 60 + (time % 100) } }; }
 
 inline chrono::local_seconds toLocalTime(const chrono::hh_mm_ss<chrono::seconds>& time) { return chrono::local_seconds{ time.to_duration() }; }
 inline chrono::local_seconds toLocalTime(unsigned time) { return chrono::local_seconds{ chrono::seconds{ (time / 10000) * 3600 + ((time % 10000) / 100) * 60 + (time % 100) } }; }

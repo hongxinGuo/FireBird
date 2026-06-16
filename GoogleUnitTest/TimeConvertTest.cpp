@@ -8,7 +8,8 @@
 #include"TimeConvert.h"
 
 namespace FireBirdTest {
-	class TimeConvertTest : public ::testing::Test {
+	class CTimeConvertTest : public ::testing::Test {
+	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -22,7 +23,97 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(TimeConvertTest, TestGetNextMonday) {
+	TEST_F(CTimeConvertTest, XferToLocalDays_RoundTrip) {
+		auto ld = XferToLocalDays("2020-02-29");
+		EXPECT_EQ(toFormattedDate(ld), 20200229);
+
+		auto ld2 = XferToLocalDays("1999-12-31");
+		EXPECT_EQ(toFormattedDate(ld2), 19991231);
+	}
+
+	TEST_F(CTimeConvertTest, FormatToMK_Boundaries) {
+		// below 1K -> raw number, width 4 formatting with no suffix
+		EXPECT_EQ(FormatToMK(1023), "1023");
+		// exactly 1024 -> falls into else branch (not > 1024)
+		EXPECT_EQ(FormatToMK(1024), "1024");
+		// just above 1K -> K branch, 1025/1024 == 1 -> width 4 -> three spaces then 1, plus K
+		EXPECT_EQ(FormatToMK(1025), "   1K");
+		// 12 * 1024 -> "  12K" as in existing tests
+		EXPECT_EQ(FormatToMK(12 * 1024), "  12K");
+		// exactly 1M (1024*1024) -> not > 1M, so treated as K
+		EXPECT_EQ(FormatToMK(1024 * 1024), "1024K");
+		// just above 1M -> M branch
+		EXPECT_EQ(FormatToMK(static_cast<int64_t>(1024) * 1024 + 1), "1M");
+	}
+
+	TEST_F(CTimeConvertTest, GetNextSecond_Overloads) {
+		// hh_mm_ss overload: 23:59:58 -> next is 23:59:59
+		auto hms = chrono::hh_mm_ss{ chrono::seconds{ 23 * 3600 + 59 * 60 + 58 } };
+		auto next = GetNextSecond(hms);
+		EXPECT_EQ(toUnsignedTime(next), 235959u);
+
+		// hh_mm_ss overload: 23:59:59 -> next is 24:00:00 represented as 240000
+		auto hms2 = chrono::hh_mm_ss{ chrono::seconds{ 23 * 3600 + 59 * 60 + 59 } };
+		auto next2 = GetNextSecond(hms2);
+		EXPECT_EQ(toUnsignedTime(next2), 0u) << "自动减去了一天";
+
+		// local_seconds overload
+		auto ls = toLocalTime(235958u);
+		EXPECT_EQ(toUnsignedTime(GetNextSecond(ls)), 235959u);
+		EXPECT_EQ(toUnsignedTime(GetNextSecond(toLocalTime(235959u))), 0u) << "自动减去了一天";
+	}
+
+	TEST_F(CTimeConvertTest, GetNextTime_And_GetPrevTime_HHMMSSOverload) {
+		// Prepare hh_mm_ss from an unsigned time using helpers
+		auto h = toTodayClock(toLocalTime(112158)); // 11:21:58
+		auto next = GetNextTime(h, chrono::hours{ 1 }, chrono::minutes{ 1 }, chrono::seconds{ 6 });
+		EXPECT_EQ(toUnsignedTime(next), 122304u); // 12:23:04
+
+		auto h2 = toTodayClock(toLocalTime(115800)); // 11:58:00
+		auto next2 = GetNextTime(h2, chrono::hours{ 0 }, chrono::minutes{ 14 }, chrono::seconds{ 12 });
+		EXPECT_EQ(toUnsignedTime(next2), 121212u); // 12:12:12
+
+		// Prev time via hh_mm_ss
+		auto hp = toTodayClock(toLocalTime(112158));
+		auto prev = GetPrevTime(hp, chrono::hours{ 1 }, chrono::minutes{ 1 }, chrono::seconds{ 6 });
+		EXPECT_EQ(toUnsignedTime(prev), 102052u); // 10:20:52
+	}
+
+	TEST_F(CTimeConvertTest, GetNextTime_And_GetPrevTime_LocalSecondsOverload) {
+		// local_seconds overload (already covered in other tests, but ensure hh vs local_seconds parity)
+		auto t = toLocalTime(112158u);
+		auto next = GetNextTime(t, chrono::hours{ 1 }, chrono::minutes{ 1 }, chrono::seconds{ 6 });
+		EXPECT_EQ(toUnsignedTime(next), 122304u);
+
+		auto prev = GetPrevTime(t, chrono::hours{ 1 }, chrono::minutes{ 1 }, chrono::seconds{ 6 });
+		EXPECT_EQ(toUnsignedTime(prev), 102052u);
+	}
+
+	TEST_F(CTimeConvertTest, NextMonth_FromMiddleOfMonth) {
+		auto input = toLocalDays(20230115); // 2023-01-15
+		auto out = GetNextMonth(input);
+		EXPECT_EQ(toFormattedDate(out), 20230201);
+	}
+
+	TEST_F(CTimeConvertTest, NextMonth_FromEndOfMonth) {
+		auto input = toLocalDays(20230131); // 2023-01-31
+		auto out = GetNextMonth(input);
+		EXPECT_EQ(toFormattedDate(out), 20230201);
+	}
+
+	TEST_F(CTimeConvertTest, NextMonth_LeapYearFeb) {
+		auto input = toLocalDays(20200229); // 2020-02-29 (leap day)
+		auto out = GetNextMonth(input);
+		EXPECT_EQ(toFormattedDate(out), 20200301);
+	}
+
+	TEST_F(CTimeConvertTest, NextMonth_CrossYearDecember) {
+		auto input = toLocalDays(20231210); // 2023-12-10
+		auto out = GetNextMonth(input);
+		EXPECT_EQ(toFormattedDate(out), 20240101);
+	}
+
+	TEST_F(CTimeConvertTest, TestGetNextMonday) {
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200720)));
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200721)));
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200722)));
@@ -38,7 +129,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200718)));
 		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200719)));
 	}
-	TEST_F(TimeConvertTest, TestGetPrevMonday) {
+	TEST_F(CTimeConvertTest, TestGetPrevMonday) {
 		EXPECT_EQ(toLocalDays(20200713), GetPrevMonday(toLocalDays(20200720))) << "20200720为星期一";
 		EXPECT_EQ(toLocalDays(20200713), GetPrevMonday(toLocalDays(20200721)));
 		EXPECT_EQ(toLocalDays(20200713), GetPrevMonday(toLocalDays(20200722)));
@@ -53,7 +144,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200720), GetPrevMonday(toLocalDays(20200727)));
 	}
 
-	TEST_F(TimeConvertTest, TestGetNextMonday2) {
+	TEST_F(CTimeConvertTest, TestGetNextMonday2) {
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200720))) << "20200720为星期一";
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200721)));
 		EXPECT_EQ(toLocalDays(20200727), GetNextMonday(toLocalDays(20200722)));
@@ -70,7 +161,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200720), GetNextMonday(toLocalDays(20200719)));
 	}
 
-	TEST_F(TimeConvertTest, TestGetCurrentMonday) {
+	TEST_F(CTimeConvertTest, TestGetCurrentMonday) {
 		EXPECT_EQ(toLocalDays(20200720), GetCurrentMonday(toLocalDays(20200720))) << "20200720为星期一";
 		EXPECT_EQ(toLocalDays(20200720), GetCurrentMonday(toLocalDays(20200721)));
 		EXPECT_EQ(toLocalDays(20200720), GetCurrentMonday(toLocalDays(20200722)));
@@ -86,7 +177,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200713), GetCurrentMonday(toLocalDays(20200718)));
 		EXPECT_EQ(toLocalDays(20200713), GetCurrentMonday(toLocalDays(20200719)));
 	}
-	TEST_F(TimeConvertTest, TestGetNextSecond) {
+	TEST_F(CTimeConvertTest, TestGetNextSecond) {
 		EXPECT_EQ(toLocalTime(1), GetNextSecond(toLocalTime(0)));
 		EXPECT_EQ(toLocalTime(59), GetNextSecond(toLocalTime(58)));
 		EXPECT_EQ(toLocalTime(100), GetNextSecond(toLocalTime(59)));
@@ -100,13 +191,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalTime(240000), GetNextSecond(toLocalTime(235959)));
 	}
 
-	TEST_F(TimeConvertTest, TestGetNextTime) {
+	TEST_F(CTimeConvertTest, TestGetNextTime) {
 		EXPECT_EQ(toLocalTime(122304), GetNextTime(toLocalTime(112158), 1h, 1min, 6s));
 		EXPECT_EQ(toLocalTime(121212), GetNextTime(toLocalTime(115800), 0h, 14min, 12s));
 		EXPECT_EQ(toLocalTime(261202), GetNextTime(toLocalTime(221200), 4h, 0min, 2s));
 	}
 
-	TEST_F(TimeConvertTest, TestGetPrevTime) {
+	TEST_F(CTimeConvertTest, TestGetPrevTime) {
 		EXPECT_EQ(toLocalTime(102052), GetPrevTime(toLocalTime(112158), 1h, 1min, 6s));
 		EXPECT_EQ(toLocalTime(105548), GetPrevTime(toLocalTime(115000), 0h, 54min, 12s));
 		EXPECT_EQ(toLocalTime(181158), GetPrevTime(toLocalTime(221200), 4h, 0min, 2s));
@@ -125,7 +216,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(str, "1234567M");
 	}
 
-	TEST_F(TimeConvertTest, TestToLocalDays) {
+	TEST_F(CTimeConvertTest, TestToLocalDays) {
 		chrono::year_month_day ymd{ 2020y / 7 / 20 };
 		chrono::local_days days{ ymd };
 		EXPECT_EQ(toLocalDays(20200720), chrono::local_days{ ymd });
@@ -133,7 +224,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(chrono::local_days(chrono::days(0)), chrono::local_days{ chrono::days(0) });
 	}
 
-	TEST_F(TimeConvertTest, TestToLocalDays2) {
+	TEST_F(CTimeConvertTest, TestToLocalDays2) {
 		string s = "2020-01-02";
 		istringstream ss(s);
 		chrono::local_days ld;
@@ -144,7 +235,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(ymd.day(), chrono::day(2));
 	}
 
-	TEST_F(TimeConvertTest, TestToLocalDays3) {
+	TEST_F(CTimeConvertTest, TestToLocalDays3) {
 		string s = "2020-01-02 12:22:33";
 		istringstream ss(s);
 		chrono::local_days ld;

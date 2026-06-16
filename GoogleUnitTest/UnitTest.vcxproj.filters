@@ -22,9 +22,6 @@
     <Filter Include="Test源文件\Factory Product\Tiingo">
       <UniqueIdentifier>{607675d2-4127-4216-9ae8-3d527fcd2960}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Factory Product\Quandl">
-      <UniqueIdentifier>{01482b08-1aaf-4d80-aeb0-699ba08bccd1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Template">
       <UniqueIdentifier>{f40c7b2e-813d-495c-87fa-36becac40cb8}</UniqueIdentifier>
     </Filter>
@@ -420,9 +417,6 @@
     <ClCompile Include="MockTiingoDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="MockQuandlDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
@@ -636,9 +630,6 @@
       <Filter>Mock class\Data Source</Filter>
     </ClInclude>
     <ClInclude Include="MockTiingoDataSource.h">
-      <Filter>Mock class\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="MockQuandlDataSource.h">
       <Filter>Mock class\Data Source</Filter>
     </ClInclude>
     <ClInclude Include="MockNeteaseDayLineDataSource.h">

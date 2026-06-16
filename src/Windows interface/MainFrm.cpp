@@ -22,7 +22,6 @@
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
-#include"QuandlDataSource.h"
 
 #include <ixwebsocket/IXNetSystem.h>
 
@@ -560,9 +559,6 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	// 更新Tiingo数据读取时间
 	s = std::format("{:6Ld}", gl_pTiingoDataSource->GetCurrentInquiryTime());
 	SysCallSetInnerSystemPaneText(6, s);
-	// 更新Quandl数据读取时间
-	s = std::format("{:6Ld}", gl_pQuandlDataSource->GetCurrentInquiryTime());
-	//SysCallSetInnerSystemPaneText(7, buffer);
 
 	if (gl_systemMessage.GetProcessedFinnhubWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(8, gl_systemMessage.GetCurrentFinnhubWebSocketStake());

@@ -19,7 +19,6 @@
 
 #include "ChinaMarket.h"
 #include "dataBaseConnector.h"
-#include "QuandlDataSource.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 
@@ -919,12 +918,6 @@ bool CWorldMarket::UpdateToken() {
 	}
 	else {
 		gl_systemMessage.PushInformationMessage("Tiingo Token Needed");
-	}
-	if (gl_systemConfiguration.GetQuandlToken().length() > 5) {
-		gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken());
-	}
-	else {
-		gl_systemMessage.PushInformationMessage("Quandl Token Needed");
 	}
 
 	if (gl_systemConfiguration.GetAlphaVantageToken().length() > 5) {

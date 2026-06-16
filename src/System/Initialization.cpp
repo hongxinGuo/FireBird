@@ -11,7 +11,6 @@
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
-#include"QuandlDataSource.h"
 
 #include"ChinaMarket.h"
 #include "InaccessibleSymbol.h"
@@ -76,7 +75,6 @@ namespace {
 		ASSERT(gl_pWorldMarket == nullptr);
 		gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
-		gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
 		gl_pAlphaVantageDataSource = make_shared<CAlphaVantageDataSource>();
 		gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
 	}
@@ -95,7 +93,6 @@ namespace {
 		ASSERT(gl_pFinnhubDataSource != nullptr);
 		ASSERT(gl_pTiingoDataSource != nullptr);
 		ASSERT(gl_pAccessoryDataSource != nullptr);
-		ASSERT(gl_pQuandlDataSource != nullptr);
 
 		ASSERT(gl_pSinaRTDataSource != nullptr);
 		ASSERT(gl_pTengxunRTDataSource != nullptr);

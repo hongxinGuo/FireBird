@@ -142,6 +142,9 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			IEXLastTopOFBook.m_lLastClose = simdjsonGetDouble(itemValue, "prevClose") * stock.GetRatio();
 			IEXLastTopOFBook.m_lOpen = simdjsonGetDouble(itemValue, "open") * stock.GetRatio();
 			IEXLastTopOFBook.m_lNew = simdjsonGetDouble(itemValue, "last") * stock.GetRatio();
+			if (IEXLastTopOFBook.m_lNew == 0) { // 有时Last项为null，此时需要使用tngoLast项的数据
+				IEXLastTopOFBook.m_lNew = simdjsonGetDouble(itemValue, "tngoLast") * stock.GetRatio();
+			}
 			try {
 				IEXLastTopOFBook.m_llVolume = simdjsonGetDouble(itemValue, "volume");
 			} catch (simdjson_error& error) {

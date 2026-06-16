@@ -90,11 +90,6 @@ string ConvertDateToTimeStamp(const chrono::local_days date) {
 	return std::format("{:%F}", date);
 }
 
-string ConvertDateToChineseTimeStampString(const chrono::local_days date) {
-	chrono::year_month_day ymd{ date };
-	return std::format("{:%F}", ymd);
-}
-
 string FormatToMK(int64_t iNumber) {
 	string s;
 	if (iNumber > 1024 * 1024) { // 1M以上的流量？
