@@ -97,9 +97,15 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			insiderTransaction.m_lShare = jsonGetLongLong(it, "share");
 			insiderTransaction.m_lShareChange = jsonGetLongLong(it, "change");
 			s = jsonGetString(it, "filingDate");
-			insiderTransaction.m_lFilingDate = XferToYYYYMMDD(s);
+			istringstream ss1(s);
+			chrono::local_days ld1;
+			ss1 >> chrono::parse("%F", ld1);
+			insiderTransaction.m_lFilingDate = toFormattedDate(ld1);
 			s = jsonGetString(it, "transactionDate");
-			insiderTransaction.m_lTransactionDate = XferToYYYYMMDD(s);
+			istringstream ss2(s);
+			chrono::local_days ld2;
+			ss2 >> chrono::parse("%F", ld2);
+			insiderTransaction.m_lTransactionDate = toFormattedDate(ld2);
 			s = jsonGetString(it, "transactionCode");
 			insiderTransaction.m_strTransactionCode = s;
 			insiderTransaction.m_dTransactionPrice = jsonGetDouble(it, "transactionPrice");

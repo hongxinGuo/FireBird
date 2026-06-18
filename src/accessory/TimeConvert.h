@@ -5,7 +5,6 @@ inline bool IsEarlyThen(chrono::local_days earlyDate, chrono::local_days latelyD
 	return (earlyDate + chrono::days{ lTimeSpawnOfDays } < latelyDate);
 }
 
-long XferToYYYYMMDD(const string& sDate);
 chrono::local_days XferToLocalDays(const string& sDate);
 
 chrono::year_month_day GetNextMonth(chrono::year_month_day ymd) noexcept;

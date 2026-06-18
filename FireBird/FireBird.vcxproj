@@ -127,7 +127,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>bcrypt.lib;</AdditionalDependencies>
+      <AdditionalDependencies>bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>false</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -255,6 +255,9 @@
   <ItemGroup>
     <ProjectReference Include="..\FireBirdLib\FireBirdLib.vcxproj">
       <Project>{4dac4767-5d5b-4f93-9677-f27227996e69}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
+      <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

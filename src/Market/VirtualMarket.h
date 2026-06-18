@@ -65,18 +65,17 @@ public:
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CreateLocalTimeZone(const string& strLocalNameOfMarket); // 系统启动时执行一次。
-	chrono::hh_mm_ss<chrono::seconds> GetMarketOpenTime() const { return m_exchange->m_marketOpenTime; }
-	chrono::hh_mm_ss<chrono::seconds> GetMarketCloseTime() const { return m_exchange->m_marketCloseTime; }
+	chrono::local_seconds GetMarketOpenTime() const { return m_exchange->m_marketOpenTime; }
+	chrono::local_seconds GetMarketCloseTime() const { return m_exchange->m_marketCloseTime; }
 
-	chrono::local_seconds GetMarketClock() const noexcept { return m_marketClock; }
-	chrono::local_seconds GetMarketTime() const noexcept { return chrono::local_seconds(m_marketClock - chrono::floor<chrono::days>(m_marketClock)); }
-	chrono::year_month_day GetMarketYMD() const noexcept { return chrono::year_month_day{ GetMarketDate() }; }
-	chrono::local_days GetMarketDate() const noexcept { return chrono::local_days(chrono::floor<chrono::days>(m_marketClock)); }
+	chrono::local_seconds GetMarketClock() const noexcept { return m_marketClock; } // 这个是市场时间
+	chrono::local_days GetMarketDate() const noexcept { return chrono::local_days(chrono::floor<chrono::days>(m_marketClock)); }// 市场日期
+	chrono::local_seconds GetMarketTime() const noexcept { return chrono::local_seconds(m_marketClock - chrono::floor<chrono::days>(m_marketClock)); } // 市场时间的当天秒数
 	chrono::weekday GetWeekDay() const noexcept { return chrono::weekday{ GetMarketDate() }; }
-	chrono::hh_mm_ss<chrono::seconds> GetMarketTimeAsChrono() const noexcept { return chrono::hh_mm_ss{ m_marketClock - chrono::floor<chrono::days>(m_marketClock) }; }
+	chrono::year_month_day GetMarketYMD() const noexcept { return chrono::year_month_day{ GetMarketDate() }; }
+	chrono::hh_mm_ss<chrono::seconds> GetMarketTimeHMS() const noexcept { return chrono::hh_mm_ss{ m_marketClock - chrono::floor<chrono::days>(m_marketClock) }; }
 
 	bool IsWorkingDay() const noexcept;
-	static bool IsWorkingDay(long lDate) noexcept;
 	bool IsWorkingDay(const chrono::local_days& date) noexcept;
 
 	chrono::local_days GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
@@ -114,7 +113,7 @@ public:
 	virtual bool IsDummyTime() { return false; } // 空闲时间
 	virtual bool IsDummyTime(chrono::local_seconds) { return false; } // 参数为市场当前时间hhmmss
 
-	bool IsMarketClosed() const { return GetMarketTime() > toLocalTime(GetMarketCloseTime()); }
+	bool IsMarketClosed() const { return GetMarketTime() > GetMarketCloseTime(); }
 
 	virtual bool IsReadyToInquireWebData() { return true; }
 

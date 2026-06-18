@@ -187,8 +187,9 @@ void CContainerTiingoStock::BuildDayLine(chrono::local_days date) {
 	auto lSize = Size();
 	chrono::sys_seconds st = gl_pWorldMarket->ToSysTime(toLocalDateTime(date, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 
-	// 删除当天旧数据（与原逻辑保持一致）
-	DeleteDayLine(date);
+	if (gl_pWorldMarket->GetMarketTime() < chrono::local_seconds{ 18h + 5min + 00s }) {
+		DeleteDayLine(date);
+	}
 
 	try {
 		using namespace StockMarket;
@@ -206,9 +207,7 @@ void CContainerTiingoStock::BuildDayLine(chrono::local_days date) {
 			//if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
 			if (pTiingoStock->GetTimePoint() >= st) {
 				// 将内部整数/单位值转换为数据库存储的浮点值（与 LoadDayLine 中的乘比率相反）
-				const double ratio = static_cast<double>(pTiingoStock->GetRatio());
-				//ASSERT(pTiingoStock->GetLastClose() != 0);
-				//ASSERT(pTiingoStock->GetNew() != 0);
+				const double ratio = pTiingoStock->GetRatio();
 				multi_insert.values.add(
 					t.Date = toFormattedDate(date),
 					t.Exchange = pTiingoStock->GetExchange(),

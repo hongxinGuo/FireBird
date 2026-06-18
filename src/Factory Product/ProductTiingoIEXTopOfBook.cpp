@@ -42,7 +42,6 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
 	auto st = gl_pWorldMarket->ToSysTime(toLocalDateTime(lNewestTradeDay, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 	if (pvTiingoIEXTopOFBook->empty()) return;
-	TRACE(_T("Tiingo IEX TopOfBook number: %d\n"), pvTiingoIEXTopOFBook->size());
 	for (auto& IEXTopOFBook : *pvTiingoIEXTopOFBook) {
 		if (IEXTopOFBook.m_timeStamp < st) continue; // 只使用不早于一天的实时数据
 		if (!gl_dataContainerTiingoStock.IsSymbol(IEXTopOFBook.m_strTicker)) continue; // 只更新已有代码
@@ -50,11 +49,8 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pTiingoStock->UpdateRTData(IEXTopOFBook);
 		i++;
 	}
-	TRACE("Tiingo IEX active number: %d\n", i);
-	if (gl_pWorldMarket->IsMarketClosed()) {
-		gl_pWorldMarket->SetEndMarketIEXTopOfBookUpdate(true);
-		gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0h, 2min, 0s)); // 两分钟后处理
-	}
+	gl_pWorldMarket->SetEndMarketIEXTopOfBookUpdate(true);
+	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0h, 2min, 0s)); // 两分钟后处理
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +85,7 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //		 "low" : 9.27,
 //		 "mid" : null,
 //		 "tngoLast" : 9.72,
-//		 "last" : 9.72,
+//		 "last" : null,
 //		 "lastSize" : null,
 //		 "bidSize" : null,
 //		 "bidPrice" : null,

@@ -1,9 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 历史数据的基类,其对应的数据库类为CVirtualHistoryCandle
-// 纯虚类，不允许生成实例。
-// 为了保证测试成功，故而没有声明为纯虚类。
-//
+///
+/// 历史数据的基类,其对应的数据库类为CVirtualHistoryCandle
+/// 纯虚类，不允许生成实例。
+/// 为了保证测试成功，故而没有声明为纯虚类。
+///
+/// Note:历史数据的时间为对应市场的市场日期，即chrono::local_days
+/// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "TimeConvert.h"
@@ -32,7 +34,6 @@ public:
 	bool IsActive() const;
 
 public:
-	//long GetDate() const noexcept { return toFormattedDate(m_tpDate); }
 	chrono::local_days GetDate() const noexcept { return m_tpDate; }
 	void SetDate(const unsigned lDate) noexcept { m_tpDate = toLocalDays(lDate); }
 	void SetDate(chrono::local_seconds time) noexcept { m_tpDate = chrono::floor<chrono::days>(time); }

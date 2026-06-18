@@ -577,7 +577,7 @@ bool CChinaMarket::SetCheckActiveStockFlag() {
 }
 
 bool CChinaMarket::TaskProcessTodayStock() {
-	if (IsSystemReady() && GetMarketTimeAsChrono().to_duration() > 15h + 04min) {
+	if (IsSystemReady() && GetMarketTimeHMS().to_duration() > 15h + 04min) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_systemMessage.SetChinaMarketSavingFunction("process today stock");
 			this->ProcessTodayStock();
@@ -592,7 +592,7 @@ void CChinaMarket::ProcessTodayStock() {
 
 	gl_dataContainerChinaStock.BuildDayLine(GetMarketDate());
 	gl_dataContainerChinaStock.UpdateProfileDB();
-	if (GetMarketTimeAsChrono().to_duration() > 15h + 04min) {	// 如果中国股市闭市了
+	if (GetMarketTimeHMS().to_duration() > 15h + 04min) {	// 如果中国股市闭市了
 		SetUpdateOptionDB(true); // 更新状态
 	}
 	string s = std::format("{:%F}的实时数据处理完毕", GetMarketDate());

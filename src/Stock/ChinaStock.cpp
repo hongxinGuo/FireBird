@@ -137,7 +137,7 @@ void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const {
-	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(GetTimePoint()));
+	pBeUpdated->SetDate(floor<chrono::days>(gl_pChinaMarket->ToLocalTime(GetTimePoint())));
 	pBeUpdated->SetExchange(m_strExchange);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
 	pBeUpdated->SetLastClose(m_lLastClose);

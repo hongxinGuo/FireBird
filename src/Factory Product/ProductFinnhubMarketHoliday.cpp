@@ -73,7 +73,10 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 			s = jsonGetString(it, "eventName");
 			if (!s.empty()) holiday.m_strEventName = s;
 			s = jsonGetString(it, "atDate");
-			holiday.m_lDate = XferToYYYYMMDD(s);
+			istringstream ss1(s);
+			chrono::local_days ld1;
+			ss1 >> chrono::parse("%F", ld1);
+			holiday.m_lDate = toFormattedDate(ld1);
 			s = jsonGetString(it, "tradingHour");
 			holiday.m_strTradingHour = s;
 			holiday.m_strExchange = sExchange;

@@ -164,19 +164,7 @@ void CVirtualMarket::CalculateTime() noexcept {
 }
 
 bool CVirtualMarket::IsWorkingDay() const noexcept {
-	if (GetWeekDay() == chrono::weekday(0) || GetWeekDay() == chrono::weekday(6)) { // Sunday or Saturday
-		return false;
-	}
-	return true;
-}
-
-bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
-	const long year = lDate / 10000;
-	const long month = lDate / 100 - year * 100;
-	const long day = lDate - year * 10000 - month * 100;
-	const CTime ct(year, month, day, 12, 0, 0);
-
-	if ((ct.GetDayOfWeek() == 1) || (ct.GetDayOfWeek() == 7)) {
+	if (GetWeekDay() == chrono::Sunday || GetWeekDay() == chrono::Saturday) { // Sunday or Saturday
 		return false;
 	}
 	return true;
@@ -184,7 +172,7 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 
 bool CVirtualMarket::IsWorkingDay(const chrono::local_days& date) noexcept {
 	chrono::weekday weekday{ date };
-	if (weekday == chrono::weekday(0) || weekday == chrono::weekday(6)) { // Sunday or Saturday
+	if (weekday == chrono::Sunday || weekday == chrono::Saturday) { // Sunday or Saturday
 		return false;
 	}
 	return true;

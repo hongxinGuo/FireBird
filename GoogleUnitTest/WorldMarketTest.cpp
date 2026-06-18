@@ -865,7 +865,7 @@ namespace FireBirdTest {
 		//Note 为了方便调试，测试版不再添加以下任务。发行版依然添加。
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
-		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 600);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 6min + 00s);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 #endif
 

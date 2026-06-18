@@ -4,13 +4,6 @@
 
 using namespace std::chrono;
 
-long XferToYYYYMMDD(const string& sDate) {
-	chrono::year_month_day ymd;
-	istringstream ss(sDate);
-	chrono::from_stream(ss, "%F", ymd);
-	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
-}
-
 chrono::local_days XferToLocalDays(const string& sDate) {
 	chrono::year_month_day ymd;
 	istringstream ss(sDate);

@@ -123,7 +123,10 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			CDayLine dayLine;
 			s = jsonGetString(it, "date");
-			dayLine.SetDate(XferToYYYYMMDD(s));
+			istringstream ss(s);
+			chrono::local_time<chrono::milliseconds> lms;
+			ss >> chrono::parse("%FT%T%Z", lms);
+			dayLine.SetDate(chrono::floor<chrono::days>(lms));
 			double dTemp = jsonGetDouble(it, "close");
 			dayLine.SetClose(dTemp * 1000);
 			dTemp = jsonGetDouble(it, "high");

@@ -118,8 +118,10 @@ CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDat
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			CDayLine dayLine;
 			s = jsonGetString(it, "date");
-			long lTemp = XferToYYYYMMDD(s);
-			dayLine.SetDate(lTemp);
+			istringstream ss1(s);
+			chrono::local_time<chrono::milliseconds> lms;
+			ss1 >> chrono::parse("%FT%T%Z", lms);
+			dayLine.SetDate(floor<chrono::days>(lms));
 			double dTemp = jsonGetDouble(it, "close");
 			dayLine.SetClose(dTemp * 1000);
 			dTemp = jsonGetDouble(it, "high");
@@ -128,7 +130,7 @@ CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDat
 			dayLine.SetLow(dTemp * 1000);
 			dTemp = jsonGetDouble(it, "open");
 			dayLine.SetOpen(dTemp * 1000);
-			lTemp = jsonGetLong(it, "volume");
+			long lTemp = jsonGetLong(it, "volume");
 			dayLine.SetVolume(lTemp);
 			pvDayLine->push_back(dayLine);
 		}
