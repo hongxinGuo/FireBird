@@ -65,6 +65,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, ParsesAndStoresRTDataForExistingStocks) {
 		// Ensure expected symbols exist in the preloaded test data
+		EXPECT_FALSE(gl_pWorldMarket->IsBuildTodayTiingoDayLine());
 		ASSERT_TRUE(gl_dataContainerTiingoStock.IsSymbol("IBM")) << "Test requires 'IBM' present in Tiingo symbol container";
 		ASSERT_TRUE(gl_dataContainerTiingoStock.IsSymbol("MSFT")) << "Test requires 'MSFT' present in Tiingo symbol container";
 
@@ -100,13 +101,11 @@ namespace FireBirdTest {
 		EXPECT_EQ(pMSFT->GetVolume(), 579726570LL) << "MSFT volume";
 		EXPECT_EQ(pMSFT->GetTransactionTime(), 1727726400) << "MSFT timestamp (epoch seconds)";
 
-		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
-		EXPECT_EQ(gl_pWorldMarket->GetMarketTask()->GetType(), WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__);
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(gl_pWorldMarket->IsBuildTodayTiingoDayLine());
 
 		// 恢复原状
 		gl_pWorldMarket->TEST_SetMarketDate(s_currentWorldMarketDate);
+		gl_pWorldMarket->SetBuildTodayTiingoDayLine(false);
 	}
 
 	namespace {

@@ -122,7 +122,6 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h" />
-    <ClInclude Include="..\src\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h" />
@@ -297,7 +296,6 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDailyMeta.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockProfile.cpp" />
-    <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualWebProduct.cpp" />
@@ -504,7 +502,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;_LIB;_OPENSSL_USE_DLL;_ASAN;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>

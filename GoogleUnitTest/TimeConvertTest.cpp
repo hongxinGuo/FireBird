@@ -98,6 +98,30 @@ namespace FireBirdTest {
 		EXPECT_EQ(toFormattedDate(out), 20240101L);
 	}
 
+	TEST(GetPrevDay, LocalDays_DefaultSpan_DecrementsByOne) {
+		local_days d{ year{ 2026 } / month{ 6 } / day{ 15 } };
+		auto out = GetPrevDay(d);
+		EXPECT_EQ(toFormattedDate(out), 20260614L);
+	}
+
+	TEST(GetPrevDay, YearMonthDay_LeapYear_PreviousDayIsLeapDay) {
+		year_month_day ymd{ year{ 2020 } / month{ 3 } / day{ 1 } };
+		auto out = GetPrevDay(ymd); // default span 1
+		EXPECT_EQ(toFormattedDate(out), 20200229L);
+	}
+
+	TEST(GetPrevDay, LocalDays_ZeroSpan_ReturnsSameDay) {
+		local_days d{ year{ 2026 } / month{ 6 } / day{ 1 } };
+		auto out = GetPrevDay(d, 0);
+		EXPECT_EQ(toFormattedDate(out), 20260601L);
+	}
+
+	TEST(GetPrevDay, LocalDays_EndOfYear_RollsToPrevYear) {
+		local_days d{ year{ 2024 } / month{ 1 } / day{ 1 } };
+		auto out = GetPrevDay(d);
+		EXPECT_EQ(toFormattedDate(out), 20231231L);
+	}
+
 	TEST_F(CTimeConvertTest, FormatToMK_Boundaries) {
 		// below 1K -> raw number, width 4 formatting with no suffix
 		EXPECT_EQ(FormatToMK(1023), "1023");

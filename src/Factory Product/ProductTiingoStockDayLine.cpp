@@ -7,6 +7,7 @@
 
 #include "ProductTiingoStockDayLine.h"
 
+#include "dataBaseConnector.h"
 #include "WebData.h"
 
 string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate) {
@@ -15,6 +16,22 @@ string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbo
 
 	string sParam = std::format("{}/prices?&startDate={:%F}&endDate={:%F}", strSymbol, ymdStart, ymd);
 	return sParam;
+}
+
+long long CProductTiingoStockDayLine::GetLastCloseFromDB(CTiingoStockPtr pStock, chrono::local_days ld) {
+	long long lastClose = 0;
+	using namespace StockMarket;
+	const auto& t = TiingoStockDayline{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).where(t.Symbol == pStock->GetSymbol() && t.Date == toFormattedDate(ld)));
+	tx.commit();
+	auto rows = result.size();
+	if (rows > 0) {
+		auto& row = result.front();
+		lastClose = row.LastClose * pStock->GetRatio();
+	}
+	return lastClose;
 }
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
@@ -44,11 +61,21 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto pvDayLine = ParseTiingoStockDayLine(pWebData);
 	if (!pvDayLine->empty()) {
 		long lastClose = 0;
-		for (auto& dayLine2 : *pvDayLine) {
-			dayLine2.SetExchange(pTiingoStock->GetExchange());
-			dayLine2.SetStockSymbol(pTiingoStock->GetSymbol());
-			if (lastClose != 0 && dayLine2.GetLastClose() == 0) dayLine2.SetLastClose(lastClose);
-			lastClose = dayLine2.GetClose();
+		if (pvDayLine->at(0).GetLastClose() == 0) { // 第一个数据的昨收为零？
+			if (pvDayLine->at(0).GetDate() == floor<chrono::days>(gl_pWorldMarket->ToLocalTime(gl_tpNow))) {
+				if (pTiingoStock->GetLastClose() > 0) { // 已经接收到IEXTopOfBook了？
+					lastClose = pTiingoStock->GetLastClose(); // IEXTopOFBook有昨收这项数据。
+				}
+			}
+			else {
+				lastClose = GetLastCloseFromDB(pTiingoStock, pvDayLine->at(0).GetDate());
+			}
+		}
+		for (auto& dayLine : *pvDayLine) {
+			dayLine.SetExchange(pTiingoStock->GetExchange());
+			dayLine.SetStockSymbol(pTiingoStock->GetSymbol());
+			dayLine.SetLastClose(lastClose);
+			lastClose = dayLine.GetClose();
 		}
 		pTiingoStock->UpdateDayLine(pvDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);

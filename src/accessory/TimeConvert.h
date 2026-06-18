@@ -19,17 +19,25 @@ chrono::local_days GetNextMonday(chrono::local_days ld);
 chrono::local_days GetPrevMonday(chrono::local_days ld);
 chrono::local_days GetCurrentMonday(chrono::local_days ld);
 
-chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time);
-chrono::local_seconds GetNextSecond(chrono::local_seconds time);
+inline chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time) { return chrono::local_seconds(time.to_duration() + chrono::seconds(1)); }
+inline chrono::local_seconds GetNextSecond(chrono::local_seconds time) { return chrono::local_seconds(time + chrono::seconds(1)); }
 
-chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
-chrono::local_seconds GetNextTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
+inline chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	return { chrono::local_seconds(time.to_duration() + hour + minute + second) };
+}
+inline chrono::local_seconds GetNextTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	return chrono::local_seconds(time.time_since_epoch() + hour + minute + second);
+}
 
-chrono::local_seconds GetPrevTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
-chrono::local_seconds GetPrevTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second);
+inline chrono::local_seconds GetPrevTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	return chrono::local_seconds(time.to_duration() - hour - minute - second);
+}
+inline chrono::local_seconds GetPrevTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+	return chrono::local_seconds(time.time_since_epoch() - hour - minute - second);
+}
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间，采用UTC（GMT）标准时间
-string ConvertDateToTimeStamp(chrono::local_days date);
+inline string ConvertDateToTimeStamp(chrono::local_days date) { return std::format("{:%F}", date); }
 
 [[nodiscard]] string FormatToMK(int64_t iNumber);
 

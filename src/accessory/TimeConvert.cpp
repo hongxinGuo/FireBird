@@ -51,38 +51,6 @@ chrono::local_days GetCurrentMonday(chrono::local_days ld) {
 	return ld - days{ (wd_index + 6) % 7 };
 }
 
-chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time) {
-	return chrono::local_seconds(time.to_duration() + chrono::seconds(1));
-}
-
-chrono::local_seconds GetNextSecond(chrono::local_seconds time) {
-	return chrono::local_seconds(time + chrono::seconds(1));
-}
-
-chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
-	chrono::local_seconds newTime{ chrono::local_seconds(time.to_duration() + hour + minute + second) };
-	return newTime;
-}
-
-chrono::local_seconds GetNextTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
-	auto newTime = time.time_since_epoch() + hour + minute + second;
-	return chrono::local_seconds(newTime);
-}
-
-chrono::local_seconds GetPrevTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
-	chrono::local_seconds newTime{ chrono::local_seconds(time.to_duration() - hour - minute - second) };
-	return newTime;
-}
-
-chrono::local_seconds GetPrevTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
-	auto newTime = time.time_since_epoch() - hour - minute - second;
-	return chrono::local_seconds(newTime);
-}
-
-string ConvertDateToTimeStamp(const chrono::local_days date) {
-	return std::format("{:%F}", date);
-}
-
 string FormatToMK(int64_t iNumber) {
 	string s;
 	if (iNumber > 1024 * 1024) { // 1M以上的流量？

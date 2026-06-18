@@ -132,9 +132,8 @@ public:
 	void SetPermitUpdateTiingoFundamentalDefinitionDB(bool fFlag) noexcept { m_fPermitUpdateTiingoFundamentalDefinitionDB = fFlag; }
 	bool IsPermitUpdateTiingoFundamentalDefinitionDB() const noexcept { return m_fPermitUpdateTiingoFundamentalDefinitionDB; }
 
-	bool IsEndMarketIEXTopOfBookUpdated() const noexcept { return m_fEndMarketIEXTopOfBookUpdated; }
-	void SetEndMarketIEXTopOfBookUpdate(bool fFlag) noexcept { m_fEndMarketIEXTopOfBookUpdated = fFlag; }
-	bool IsTodayMarketEnded();
+	bool IsBuildTodayTiingoDayLine() const noexcept { return m_bBuildTodayTiingoDayLine; }
+	void SetBuildTodayTiingoDayLine(bool fFlag) noexcept { m_bBuildTodayTiingoDayLine = fFlag; }
 
 	void SetTiingoStockDayLineUpdated(long lNumber) noexcept { m_lTiingoStockDayLineUpdated = lNumber; }
 	long GetTiingoStockDayLineUpdated() const noexcept { return m_lTiingoStockDayLineUpdated; }
@@ -153,7 +152,7 @@ protected:
 
 	bool m_fPermitUpdateTiingoFundamentalDefinitionDB{ false };
 
-	bool m_fEndMarketIEXTopOfBookUpdated{ false }; // 最新交易日闭市IEXTopOfBook数据已更新。
+	bool m_bBuildTodayTiingoDayLine{ false };
 
 protected:
 	vector<CTiingoStockPtr> m_vNasdaq100TiingoStock;

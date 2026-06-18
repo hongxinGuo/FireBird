@@ -191,7 +191,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;_OPENSSL_USE_DLL;_ASAN;%(PreprocessorDefinitions);AUTO_DOWNLOAD;HAS_REMOTE_API</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -359,6 +359,9 @@
   <ItemGroup>
     <ProjectReference Include="..\FireBirdLib\FireBirdLib.vcxproj">
       <Project>{4dac4767-5d5b-4f93-9677-f27227996e69}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
+      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
     </ProjectReference>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>

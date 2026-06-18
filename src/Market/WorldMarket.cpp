@@ -215,9 +215,6 @@ int CWorldMarket::ProcessTask() {
 				gl_pTiingoDataSource->SetUpdateDayLine(true);
 			}
 			break;
-		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__:
-			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine();
-			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
 			gl_pWorldMarket->TaskProcessTiingoDayLine();
 			break;
@@ -491,11 +488,11 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine() {
-	ASSERT(IsEndMarketIEXTopOfBookUpdated());// 已接收到了IEX TopOfBook数据
 	gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
-	gl_runtime.thread_executor()->post([] {
+	gl_runtime.thread_executor()->post([this] {
 		gl_systemMessage.SetWorldMarketSavingFunction("T process IEX");
 		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
+		this->SetBuildTodayTiingoDayLine(false);
 	});
 }
 
@@ -860,6 +857,10 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 		});
+	}
+
+	if (IsBuildTodayTiingoDayLine()) {
+		gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine();
 	}
 
 	TaskUpdateForexDayLineDB(); // 这个函数内部继续生成工作线程
@@ -1346,8 +1347,4 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 
 	db(sqlpp::remove_from(t).where(t.Symbol == pStock->GetSymbol()));
 	tx.commit();
-}
-
-bool CWorldMarket::IsTodayMarketEnded() {
-	return false;
 }

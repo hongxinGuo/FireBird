@@ -49,8 +49,7 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pTiingoStock->UpdateRTData(IEXTopOFBook);
 		i++;
 	}
-	gl_pWorldMarket->SetEndMarketIEXTopOfBookUpdate(true);
-	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0h, 2min, 0s)); // 两分钟后处理
+	gl_pWorldMarket->SetBuildTodayTiingoDayLine(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

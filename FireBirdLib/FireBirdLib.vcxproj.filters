@@ -136,9 +136,6 @@
     <Filter Include="源文件\Factory-Product\Finnhub">
       <UniqueIdentifier>{92ad6536-d0d4-4019-b937-b2831ee5259e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Factory-Product\Quandl">
-      <UniqueIdentifier>{fc758a4f-75ea-45da-816e-27cecc5f6e07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Factory-Product\Tiingo">
       <UniqueIdentifier>{1a872a98-5840-425b-891d-e0da9f7d1f25}</UniqueIdentifier>
     </Filter>
@@ -153,9 +150,6 @@
     </Filter>
     <Filter Include="头文件\Factory-Product\Finnhub">
       <UniqueIdentifier>{8e8d6719-4621-4305-9712-0705ae636df8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Factory-Product\Quandl">
-      <UniqueIdentifier>{f0291397-6be9-424b-a441-4365188b0d4c}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\Factory-Product\ChinaMarket">
       <UniqueIdentifier>{73b57d64-57b0-46ab-9a1c-f0df258bad20}</UniqueIdentifier>
@@ -419,9 +413,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\QuandlFactory.h">
-      <Filter>头文件\Factory-Product\Quandl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
@@ -940,9 +931,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockProfile.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp">
-      <Filter>源文件\Factory-Product\Quandl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>

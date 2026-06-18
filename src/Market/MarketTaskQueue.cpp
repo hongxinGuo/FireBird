@@ -72,6 +72,5 @@ void CMarketTaskQueue::CreateIndexMap() {
 
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__] = "查询Tiingo IEX实时数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__] = "查询Tiingo股票日线历史数据";
-	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__] = "生成Tiingo今日日线数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_PROCESS_DAYLINE__] = "处理Tiingo日线数据";
 }

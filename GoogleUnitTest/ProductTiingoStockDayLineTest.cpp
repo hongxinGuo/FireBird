@@ -162,6 +162,7 @@ namespace FireBirdTest {
 			break;
 		case 9:
 			EXPECT_EQ(pvDayLine->size(), 1);
+			EXPECT_EQ(pvDayLine->at(0).GetLastClose(), 0) << "Tiingo日线数据没有此项";
 			break;
 		case 10:
 			EXPECT_EQ(pvDayLine->size(), 2);
@@ -174,12 +175,13 @@ namespace FireBirdTest {
 			EXPECT_EQ(dayLine.GetVolume(), 103026514);
 			EXPECT_DOUBLE_EQ(dayLine.GetDividend(), 0);
 			EXPECT_DOUBLE_EQ(dayLine.GetSplitFactor(), 1.0);
-
+			EXPECT_EQ(dayLine.GetLastClose(), 0) << "Tiingo日线数据没有此项";
 			dayLine = pvDayLine->at(1);
 			EXPECT_DOUBLE_EQ(dayLine.GetDividend(), 1.0);
 			EXPECT_DOUBLE_EQ(dayLine.GetSplitFactor(), 3.0);
 			EXPECT_EQ(dayLine.GetDate(), toLocalDays(20210312));
 			EXPECT_EQ(dayLine.GetClose(), 121030000);
+			EXPECT_EQ(dayLine.GetLastClose(), 0) << "Tiingo日线数据没有此项";
 			break;
 		case 11: // 股票没有日线数据
 			EXPECT_EQ(pvDayLine->size(), 0);
@@ -199,8 +201,14 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			if (m_lIndex == 9) {
+				tpCurrent = gl_tpNow;
+				CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
+				gl_tpNow = gl_pWorldMarket->ToSysTime(toLocalDays(20210311) + 12h);
+				pStock->SetLastClose(120890000);
+			}
 
-			m_tiingoStockPriceCandle.SetIndex(0); // Tiingo stock index
+			m_tiingoStockPriceCandle.SetIndex(gl_dataContainerTiingoStock.GetOffset(pData->m_strSymbol)); // Tiingo stock index
 		}
 
 		void TearDown() override {
@@ -211,6 +219,7 @@ namespace FireBirdTest {
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateDayLineDB(false);
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			if (m_lIndex == 9) gl_tpNow = tpCurrent;
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -219,6 +228,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
+		chrono::sys_seconds tpCurrent;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockDayLine, ProcessTiingoStockDayLineTest,
@@ -227,11 +237,11 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine) {
 		CDayLinesPtr pvDayLine;
-		CDayLinePtr pDayLine;
-		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // 这个是当前处理的股票
+		CTiingoCandleLine* pDayLine;
+		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock("AAPL"); // 这个是当前处理的股票
 
 		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
-		EXPECT_EQ(pStock->GetSymbol(), "A");
+		EXPECT_EQ(pStock->GetSymbol(), "AAPL");
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
@@ -280,9 +290,17 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_TRUE(pStock->IsUpdateDayLineDB());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			pDayLine = pStock->GetDayLine(0);
+			EXPECT_EQ(pDayLine->GetLastClose(), 120890000) << "Tiingo日线数据没有此项，从IEXTopOfBook的数据中得到";
 			break;
 		case 10:
 			EXPECT_EQ(pStock->GetDayLineSize(), 2);
+			pDayLine = pStock->GetDayLine(0);
+			EXPECT_EQ(pDayLine->GetLastClose(), 119980000) << "Tiingo日线数据没有此项，从数据库中得到， AAPL 20210311的lastClose";
+			EXPECT_EQ(pDayLine->GetClose(), 121960000);
+			pDayLine = pStock->GetDayLine(1);
+			EXPECT_EQ(pDayLine->GetLastClose(), 121960000) << "第一个数据的close";
+
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_TRUE(pStock->IsUpdateDayLineDB());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());

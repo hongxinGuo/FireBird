@@ -288,6 +288,9 @@
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
       <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
+      <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
@@ -369,7 +372,7 @@
       <LanguageStandard>stdcpp23</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <SupportJustMyCode>false</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
