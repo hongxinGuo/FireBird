@@ -12,4 +12,9 @@
 #pragma comment(lib, "r/benchmark_main.lib")
 #endif
 
+#ifdef _ASAN
+#include<stdlib.h>
+extern "C" const char* __asan_default_options() { return "detect_leaker"; }
+#endif
+
 BENCHMARK_MAIN();

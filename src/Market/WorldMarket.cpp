@@ -263,7 +263,7 @@ void CWorldMarket::TaskCreateTask() {
 
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(GetMarketTime(), 0h, 0min, 20s)); // 开始下载日线历史数据
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // 
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // Note:测试完后再允许
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
 

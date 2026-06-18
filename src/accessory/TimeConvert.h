@@ -1,6 +1,5 @@
 #pragma once
 
-// 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
 inline bool IsEarlyThen(chrono::local_days earlyDate, chrono::local_days latelyDate, long lTimeSpawnOfDays) {
 	return (earlyDate + chrono::days{ lTimeSpawnOfDays } < latelyDate);
 }
@@ -11,9 +10,10 @@ chrono::year_month_day GetNextMonth(chrono::year_month_day ymd) noexcept;
 chrono::local_days GetNextMonth(chrono::local_days ld) noexcept;
 
 inline chrono::local_days GetNextDay(chrono::local_days ld, long lTimeSpanDays = 1) noexcept { return ld + chrono::days{ lTimeSpanDays }; }
-inline chrono::year_month_day GetNextDay(chrono::year_month_day ymd, long lTimeSpanDays = 1) noexcept { return chrono::year_month_day{ chrono::local_days{ ymd } + chrono::days{ lTimeSpanDays } }; }
+inline chrono::local_days GetNextDay(chrono::year_month_day ymd, long lTimeSpanDays = 1) noexcept { return chrono::local_days{ ymd } + chrono::days{ lTimeSpanDays }; }
 
 inline chrono::local_days GetPrevDay(chrono::local_days ld, long lTimeSpanDays = 1) noexcept { return ld - chrono::days{ lTimeSpanDays }; }
+inline chrono::local_days GetPrevDay(chrono::year_month_day ymd, long lTimeSpanDays = 1) noexcept { return chrono::local_days{ ymd } - chrono::days{ lTimeSpanDays }; }
 
 chrono::local_days GetNextMonday(chrono::local_days ld);
 chrono::local_days GetPrevMonday(chrono::local_days ld);

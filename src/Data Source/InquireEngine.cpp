@@ -116,7 +116,7 @@ void CInquireEngine::GetFileHeaderInformation() {
 	SPDLOG_ASSERT(m_pFile != nullptr);
 	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode); // 获取HTTP状态码
 	wchar_t buffer[100];
-	DWORD dw;
+	DWORD dw = 100;
 	DWORD* p = &dw;
 	if (m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, buffer, p)) { // 获取内容类型
 		m_strContentType = W2Utf8(buffer);

@@ -66,6 +66,11 @@ using namespace testing;
 #error "fmt 使用unicode"
 #endif
 
+#ifdef _ASAN
+#include<stdlib.h>
+extern "C" const char* __asan_default_options() { return "detect_leaks=0"; }
+#endif
+
 // 目前使用.runsettings文件来排除外部代码，不再使用ExcludeSourceFromCodeCoverage的模式。且ExcludeSourceFromCodeCoverage模式目前在C20标准下无法编译。
 
 #ifdef _DEBUG

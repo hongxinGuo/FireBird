@@ -74,46 +74,12 @@ CFireBirdView::CFireBirdView() {
 	int iHeight = 100;
 	CRect rectArea{ 2, 0, 962, 100 };
 
-	m_rectOrdinaryBuyVolume.top = 0;
-	m_rectOrdinaryBuyVolume.left = rectArea.left;
-	m_rectOrdinaryBuyVolume.right = rectArea.right;
-	m_rectOrdinaryBuyVolume.bottom = iHeight;
-	m_rectOrdinarySellVolume.top = m_rectOrdinaryBuyVolume.bottom + 1;
-	m_rectOrdinarySellVolume.left = rectArea.left;
-	m_rectOrdinarySellVolume.right = rectArea.right;
-	m_rectOrdinarySellVolume.bottom = m_rectOrdinaryBuyVolume.bottom + iHeight;
-	m_rectAttackBuyVolume.top = m_rectOrdinarySellVolume.bottom;
-	m_rectAttackBuyVolume.left = rectArea.left;
-	m_rectAttackBuyVolume.right = rectArea.right;
-	m_rectAttackBuyVolume.bottom = m_rectOrdinarySellVolume.bottom + iHeight;
-	m_rectAttackSellVolume.top = m_rectAttackBuyVolume.bottom + 1;
-	m_rectAttackSellVolume.left = rectArea.left;
-	m_rectAttackSellVolume.right = rectArea.right;
-	m_rectAttackSellVolume.bottom = m_rectAttackBuyVolume.bottom + iHeight;
-	m_rectStrongBuyVolume.top = m_rectAttackSellVolume.bottom + 1;
-	m_rectStrongBuyVolume.left = rectArea.left;
-	m_rectStrongBuyVolume.right = rectArea.right;
-	m_rectStrongBuyVolume.bottom = m_rectAttackSellVolume.bottom + iHeight;
-	m_rectStrongSellVolume.top = m_rectStrongBuyVolume.bottom + 1;
-	m_rectStrongSellVolume.left = rectArea.left;
-	m_rectStrongSellVolume.right = rectArea.right;
-	m_rectStrongSellVolume.bottom = m_rectStrongBuyVolume.bottom + iHeight;
-	m_rectCancelBuyVolume.top = m_rectStrongSellVolume.bottom + 1;
-	m_rectCancelBuyVolume.left = rectArea.left;
-	m_rectCancelBuyVolume.right = rectArea.right;
-	m_rectCancelBuyVolume.bottom = m_rectStrongSellVolume.bottom + iHeight;
-	m_rectCancelSellVolume.top = m_rectCancelBuyVolume.bottom + 1;
-	m_rectCancelSellVolume.left = rectArea.left;
-	m_rectCancelSellVolume.right = rectArea.right;
-	m_rectCancelSellVolume.bottom = m_rectCancelBuyVolume.bottom + iHeight;
-
-	m_fShow5Days = false;
+	m_fShow5Days = true;
 	m_fShow10Days = true;
 	m_fShow30Days = true;
-	m_fShow60Days = false;
-	m_fShow120Days = false;
-	m_fShow250Days = false;
-	m_fShowTransactionGraph = false;
+	m_fShow60Days = true;
+	m_fShow120Days = true;
+	m_fShow250Days = true;
 
 	m_uIdTimer = 0;
 

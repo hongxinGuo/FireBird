@@ -23,12 +23,79 @@ namespace FireBirdTest {
 		}
 	};
 
+	using namespace std::chrono;
+
+	TEST(IsEarlyThen, EarlyPlusSpanLessThanLater_ReturnsTrue) {
+		local_days early{ year{ 2026 } / month{ 6 } / day{ 15 } };
+		local_days later{ year{ 2026 } / month{ 6 } / day{ 17 } };
+		EXPECT_TRUE(IsEarlyThen(early, later, 1)); // early + 1 day = 2026-06-16 < 2026-06-17
+	}
+
+	TEST(IsEarlyThen, EarlyPlusSpanEqualsLater_ReturnsFalse) {
+		local_days early{ year{ 2026 } / month{ 6 } / day{ 15 } };
+		local_days later{ year{ 2026 } / month{ 6 } / day{ 16 } };
+		EXPECT_FALSE(IsEarlyThen(early, later, 1)); // early + 1 day = 2026-06-16 == later -> not <
+	}
+
+	TEST(IsEarlyThen, SameDaySpanZero_ReturnsFalse) {
+		local_days d{ year{ 2026 } / month{ 6 } / day{ 15 } };
+		EXPECT_FALSE(IsEarlyThen(d, d, 0)); // equal dates, span 0 -> not <
+	}
+
 	TEST_F(CTimeConvertTest, XferToLocalDays_RoundTrip) {
 		auto ld = XferToLocalDays("2020-02-29");
 		EXPECT_EQ(toFormattedDate(ld), 20200229);
 
 		auto ld2 = XferToLocalDays("1999-12-31");
 		EXPECT_EQ(toFormattedDate(ld2), 19991231);
+	}
+
+	TEST(GetNextMonth, YearMonthDay_MiddleOfMonth_ReturnsFirstOfNextMonth) {
+		year_month_day ymd{ year{ 2026 } / month{ 6 } / day{ 15 } };
+		auto next = GetNextMonth(ymd);
+		EXPECT_EQ(toFormattedDate(next), 20260701L);
+	}
+
+	TEST(GetNextMonth, YearMonthDay_FirstDay_ReturnsFirstOfFollowingMonth) {
+		year_month_day ymd{ year{ 2026 } / month{ 7 } / day{ 1 } };
+		auto next = GetNextMonth(ymd);
+		EXPECT_EQ(toFormattedDate(next), 20260801L);
+	}
+
+	TEST(GetNextMonth, LocalDays_EndOfYear_RollsToNextYearJanuary) {
+		local_days ld{ year{ 2026 } / month{ 12 } / day{ 31 } };
+		auto nextLd = GetNextMonth(ld);
+		EXPECT_EQ(toFormattedDate(nextLd), 20270101L);
+	}
+
+	TEST(GetNextDay, LocalDays_DefaultSpan_IncrementsByOne) {
+		local_days d{ year{ 2026 } / month{ 6 } / day{ 15 } };
+		auto out = GetNextDay(d);
+		EXPECT_EQ(toFormattedDate(out), 20260616L);
+	}
+
+	TEST(GetNextDay, YearMonthDay_SpanThree_CrossesMonthBoundary) {
+		year_month_day ymd{ year{ 2026 } / month{ 6 } / day{ 29 } };
+		auto out = GetNextDay(ymd, 3);
+		EXPECT_EQ(toFormattedDate(out), 20260702L);
+	}
+
+	TEST(GetNextDay, ZeroSpan_ReturnsSameDay) {
+		local_days d{ year{ 2026 } / month{ 12 } / day{ 31 } };
+		auto out = GetNextDay(d, 0);
+		EXPECT_EQ(toFormattedDate(out), 20261231L);
+	}
+
+	TEST(GetNextDay, LeapYear_Feb28_ToFeb29) {
+		year_month_day ymd{ year{ 2020 } / month{ 2 } / day{ 28 } };
+		auto out = GetNextDay(ymd);
+		EXPECT_EQ(toFormattedDate(out), 20200229L);
+	}
+
+	TEST(GetNextDay, EndOfYear_RollsToNextYear) {
+		local_days d{ year{ 2023 } / month{ 12 } / day{ 31 } };
+		auto out = GetNextDay(d);
+		EXPECT_EQ(toFormattedDate(out), 20240101L);
 	}
 
 	TEST_F(CTimeConvertTest, FormatToMK_Boundaries) {

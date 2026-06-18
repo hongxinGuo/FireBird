@@ -27,6 +27,11 @@
 #error "fmt 使用unicode"
 #endif
 
+#ifdef _ASAN
+#include<stdlib.h>
+extern "C" const char* __asan_default_options() { return "detect_leaks=0"; }
+#endif
+
 #include "dataBaseConnector.h"
 
 // CFireBirdApp

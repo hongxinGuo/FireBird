@@ -112,14 +112,6 @@ protected:
 
 	int m_iCandleWidth{ 3 }; // 蜡烛宽度。
 
-	bool m_fShowTransactionGraph; // 显示交易具体情况的图
-	CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。
-
-	CRect m_rectOrdinaryBuyVolume, m_rectOrdinarySellVolume;
-	CRect m_rectAttackBuyVolume, m_rectAttackSellVolume;
-	CRect m_rectStrongBuyVolume, m_rectStrongSellVolume;
-	CRect m_rectCancelBuyVolume, m_rectCancelSellVolume;
-
 	long m_lCurrentPos;
 
 	bool m_fShow5Days;
