@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaStock.h"
-#include "dataBaseConnector.h"
 
 using namespace testing;
 

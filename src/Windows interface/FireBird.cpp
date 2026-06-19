@@ -27,12 +27,6 @@
 #error "fmt 使用unicode"
 #endif
 
-#ifdef _ASAN
-#include<stdlib.h>
-extern "C" const char* __asan_default_options() { return "detect_leaks=0"; } //Note： 微软VS的ASAN目前不支持detect_leak
-#endif
-
-#include "dataBaseConnector.h"
 
 // CFireBirdApp
 

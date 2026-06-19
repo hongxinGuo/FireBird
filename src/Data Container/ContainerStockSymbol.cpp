@@ -3,8 +3,6 @@
 #include"ChinaStockCodeConverter.h"
 #include "ContainerStockSymbol.h"
 
-#include "dataBaseConnector.h"
-
 CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSymbol.resize(0);
 	m_mapStockSymbol.clear();

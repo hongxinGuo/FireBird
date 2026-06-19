@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"ContainerFinnhubStock.h"
-#include "dataBaseConnector.h"
 #include "JsonParse.h"
 
 using namespace testing;

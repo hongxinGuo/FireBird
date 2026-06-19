@@ -3,8 +3,6 @@
 #include"WorldMarket.h"
 #include "FinnhubForex.h"
 
-#include "dataBaseConnector.h"
-
 void CFinnhubForex::SetCheckingDayLineStatus() {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。

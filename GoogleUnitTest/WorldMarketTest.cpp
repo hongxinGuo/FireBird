@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include "dataBaseConnector.h"
 #include"GeneralCheck.h"
 
 #include"FinnhubStock.h"

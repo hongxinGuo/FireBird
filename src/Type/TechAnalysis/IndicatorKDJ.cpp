@@ -2,6 +2,8 @@
 
 #include "IndicatorKDJ.h"
 
+using namespace std;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // n日RSV=（Cn－Ln）÷（Hn－Ln）×100
@@ -25,12 +27,12 @@ void CIndicatorKDJ::Calculate() {
 	}
 	for (size_t index = m_Period - 1; index < m_pvCandle->Size(); index++) {
 		auto data = m_pvCandle->GetData(index);
-		long lHigh = 0;
-		long lLow = data->GetLow();
+		long long lHigh = 0;
+		long long lLow = data->GetLow();
 		for (size_t i = index - m_Period + 1; i <= index; i++) {
 			auto data2 = m_pvCandle->GetData(i);
-			lHigh = max(lHigh, data2->GetHigh());
-			lLow = min(lLow, data2->GetLow());
+			lHigh = std::max(lHigh, data2->GetHigh());
+			lLow = std::min(lLow, data2->GetLow());
 		}
 		if (lHigh == 0 || lHigh == lLow) m_vKDJ[index].m_RSV = 50.0;
 		else m_vKDJ[index].m_RSV = (static_cast<double>(data->GetClose() - lLow)) * 100 / (lHigh - lLow);

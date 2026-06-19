@@ -49,7 +49,9 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pTiingoStock->UpdateRTData(IEXTopOFBook);
 		i++;
 	}
-	gl_pWorldMarket->SetBuildTodayTiingoDayLine(true);
+	if (gl_pWorldMarket->GetMarketTime() < toLocalTime(180500)) { // 18点5分前存储此数据，之后无需存储
+		gl_pWorldMarket->SetBuildTodayTiingoDayLine(true);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

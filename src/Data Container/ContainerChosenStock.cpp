@@ -2,8 +2,6 @@
 
 #include "ContainerChosenStock.h"
 
-#include "dataBaseConnector.h"
-
 CContainerChosenStock::CContainerChosenStock() {
 	CContainerChosenStock::Reset();
 }

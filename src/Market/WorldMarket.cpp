@@ -18,7 +18,6 @@
 #include"TiingoCryptoWebSocket.h"
 
 #include "ChinaMarket.h"
-#include "dataBaseConnector.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 

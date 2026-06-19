@@ -8,10 +8,6 @@
 
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
-
-#include <sqlpp11/transaction.h>
-
-#include "dataBaseConnector.h"
 #include "jsonParse.h"
 
 CContainerFinnhubStock::CContainerFinnhubStock() {

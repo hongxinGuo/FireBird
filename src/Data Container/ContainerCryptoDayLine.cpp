@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "ContainerCryptoDayLine.h"
 
-#include "dataBaseConnector.h"
-
 namespace {
 	CFinnhubCrypto s_stock;
 }

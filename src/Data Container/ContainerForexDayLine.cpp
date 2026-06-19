@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "ContainerForexDayLine.h"
 
-#include "dataBaseConnector.h"
+#include "ContainerForexDayLine.h"
 #include "InfoReport.h"
 
 namespace {

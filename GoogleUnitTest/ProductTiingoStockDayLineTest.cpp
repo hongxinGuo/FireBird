@@ -201,11 +201,10 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			if (m_lIndex == 9) {
-				tpCurrent = gl_tpNow;
+			if (m_lIndex == 10) {
 				CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
-				gl_tpNow = gl_pWorldMarket->ToSysTime(toLocalDays(20210311) + 12h);
-				pStock->SetLastClose(120890000);
+				endDate = pStock->GetDayLineEndDate();
+				pStock->SetDayLineEndDate(toLocalDays(20210311));
 			}
 
 			m_tiingoStockPriceCandle.SetIndex(gl_dataContainerTiingoStock.GetOffset(pData->m_strSymbol)); // Tiingo stock index
@@ -219,7 +218,11 @@ namespace FireBirdTest {
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateDayLineDB(false);
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			if (m_lIndex == 9) gl_tpNow = tpCurrent;
+			if (m_lIndex == 10) {
+				CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
+				pStock->SetDayLineEndDate(endDate);
+			}
+
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -228,7 +231,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
-		chrono::sys_seconds tpCurrent;
+		chrono::local_days endDate;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockDayLine, ProcessTiingoStockDayLineTest,
@@ -291,15 +294,13 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->IsUpdateDayLineDB());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			pDayLine = pStock->GetDayLine(0);
-			EXPECT_EQ(pDayLine->GetLastClose(), 120890000) << "Tiingo日线数据没有此项，从IEXTopOfBook的数据中得到";
+			EXPECT_EQ(pDayLine->GetLastClose(), 0) << "Tiingo日线数据没有此项";
 			break;
 		case 10:
-			EXPECT_EQ(pStock->GetDayLineSize(), 2);
+			EXPECT_EQ(pStock->GetDayLineSize(), 1) << "第一个数据的日期与DayLineEndDate相同，已删除";
 			pDayLine = pStock->GetDayLine(0);
-			EXPECT_EQ(pDayLine->GetLastClose(), 119980000) << "Tiingo日线数据没有此项，从数据库中得到， AAPL 20210311的lastClose";
-			EXPECT_EQ(pDayLine->GetClose(), 121960000);
-			pDayLine = pStock->GetDayLine(1);
-			EXPECT_EQ(pDayLine->GetLastClose(), 121960000) << "第一个数据的close";
+			EXPECT_EQ(pDayLine->GetLastClose(), 121960000) << "第二个数据的lastClose是第一个数据的Close";
+			EXPECT_EQ(pDayLine->GetClose(), 121030000);
 
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_TRUE(pStock->IsUpdateDayLineDB());

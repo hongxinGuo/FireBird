@@ -22,9 +22,6 @@
 
 using namespace spdlog;
 
-#include "dataBaseConnector.h"
-#include"StockMarketSQLTable.h"
-
 #include "CharSetTransfer.h"
 
 #include "AccessoryDataSource.h"

@@ -2,10 +2,6 @@
 
 #include "ContainerTiingoFundamentalDefinition.h"
 
-#include "CharSetTransfer.h"
-#include "dataBaseConnector.h"
-#include "InfoReport.h"
-
 CContainerTiingoFundamentalDefinition::CContainerTiingoFundamentalDefinition() {
 	m_vTiingoFundamentalDefinition.resize(0);
 	m_mapTiingoFundamentalDefinition.clear();

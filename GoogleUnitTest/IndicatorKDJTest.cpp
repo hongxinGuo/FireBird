@@ -38,8 +38,8 @@ namespace FireBirdTest {
 	// Utility to compute expected RSV over a sliding window (mirrors production logic)
 	static double ComputeRSV(CContainerChinaDayLine& container, size_t index, int period) {
 		auto data = container.GetData(index);
-		long lHigh = 0;
-		long lLow = data->GetLow();
+		long long lHigh = 0;
+		long long lLow = data->GetLow();
 		for (size_t i = index - period + 1; i <= index; ++i) {
 			auto d = container.GetData(i);
 			lHigh = max(lHigh, d->GetHigh());

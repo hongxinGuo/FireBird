@@ -4,7 +4,6 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaDayLine.h"
-#include "dataBaseConnector.h"
 
 using namespace testing;
 

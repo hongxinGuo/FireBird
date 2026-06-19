@@ -6,7 +6,6 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaWeekLine.h"
-#include "dataBaseConnector.h"
 
 namespace FireBirdTest {
 	class CStockDataChinaWeekLineTest : public ::testing::Test {

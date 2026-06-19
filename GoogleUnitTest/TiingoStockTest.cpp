@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"TiingoStock.h"
-#include "dataBaseConnector.h"
 
 namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {

@@ -20,7 +20,6 @@ public:
 	string GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate);
 
 private:
-	long long GetLastCloseFromDB(CTiingoStockPtr pStock, chrono::local_days ld);
 };
 
 using CTiingoStockDayLinePtr = shared_ptr<CProductTiingoStockDayLine>;

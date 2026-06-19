@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"ContainerTiingoCryptoSymbol.h"
-#include "dataBaseConnector.h"
 
 using namespace testing;
 

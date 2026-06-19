@@ -7,7 +7,6 @@
 
 #include "FinnhubStock.h"
 
-#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"

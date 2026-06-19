@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 

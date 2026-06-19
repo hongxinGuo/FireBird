@@ -4,8 +4,6 @@
 
 #include "ContainerChinaDayLine.h"
 
-#include "dataBaseConnector.h"
-
 namespace {
 	CChinaStock s_stock;
 }

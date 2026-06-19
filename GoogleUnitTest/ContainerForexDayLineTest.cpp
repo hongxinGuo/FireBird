@@ -5,7 +5,6 @@
 #include"DayLine.h"
 
 #include"ContainerForexDayLine.h"
-#include "dataBaseConnector.h"
 
 using namespace testing;
 

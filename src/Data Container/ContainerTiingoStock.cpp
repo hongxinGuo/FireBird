@@ -7,8 +7,6 @@
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
-#include "dataBaseConnector.h"
-
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();
 }

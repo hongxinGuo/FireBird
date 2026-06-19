@@ -4,7 +4,6 @@
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
-#include "dataBaseConnector.h"
 
 #include"GeneralCheck.h"
 #include "NeteaseRTDataSource.h"

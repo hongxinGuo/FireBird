@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include"containerFinnhubForexSymbol.h"
-#include "dataBaseConnector.h"
 #include"FinnhubForex.h"
 #include "InfoReport.h"
 

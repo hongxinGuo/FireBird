@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "ContainerFinnhubEconomicCalendar.h"
 
-#include "dataBaseConnector.h"
-
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();
 }

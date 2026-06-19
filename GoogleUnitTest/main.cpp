@@ -38,7 +38,6 @@
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
-#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 
 #include"simdjsonGetValue.h"

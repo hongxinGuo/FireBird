@@ -4,7 +4,6 @@
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
-#include "dataBaseConnector.h"
 #include"WebRTData.h"
 #include"DayLineWebData.h"
 

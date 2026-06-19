@@ -2,8 +2,6 @@
 
 #include "ContainerFinnhubStockDayLine.h"
 
-#include "dataBaseConnector.h"
-
 namespace {
 	CFinnhubStock s_stock;
 }

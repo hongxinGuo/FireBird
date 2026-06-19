@@ -7,7 +7,6 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 
-#include "dataBaseConnector.h"
 #include"Thread.h"
 
 CContainerChinaStock::CContainerChinaStock() {

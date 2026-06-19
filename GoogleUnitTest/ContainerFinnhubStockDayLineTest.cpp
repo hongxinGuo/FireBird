@@ -4,7 +4,6 @@
 
 #include"DayLine.h"
 #include"ContainerFinnhubStockDayLine.h"
-#include "dataBaseConnector.h"
 
 using namespace testing;
 

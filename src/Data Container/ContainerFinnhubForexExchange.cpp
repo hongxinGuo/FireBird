@@ -1,8 +1,6 @@
 #include "pch.h"
 
 #include "ContainerFinnhubForexExchange.h"
-
-#include "dataBaseConnector.h"
 #include "InfoReport.h"
 
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {

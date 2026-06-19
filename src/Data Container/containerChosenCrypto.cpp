@@ -2,7 +2,6 @@
 
 #include "containerChosenCrypto.h"
 
-#include "dataBaseConnector.h"
 #include"FinnhubCrypto.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {

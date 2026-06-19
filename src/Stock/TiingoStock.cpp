@@ -2,8 +2,6 @@
 
 #include"TiingoStock.h"
 
-#include "dataBaseConnector.h"
-
 #include "TiingoStockDailyMeta.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
@@ -287,9 +285,8 @@ void CTiingoStock::CreateMonthLine() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoStock::UpdateDayLineDB() {
-	if (IsDayLineDuplicated()) {
-		DeleteDuplicatedDayLine();
-	}
+	DeleteDuplicatedDayLine();
+
 	SaveDayLineDB();
 	string str = GetSymbol();
 	str += "日线资料存储完成";

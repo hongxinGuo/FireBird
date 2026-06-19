@@ -9,7 +9,6 @@
 #include "pch.h"
 #include "ContainerStockExchange.h"
 
-#include "dataBaseConnector.h"
 
 CContainerStockExchange::CContainerStockExchange() {
 	LoadDB(); // 生成时即装载数据库。

@@ -4,7 +4,6 @@
 
 #include"DayLine.h"
 #include"ContainerTiingoStockDayLine.h"
-#include "dataBaseConnector.h"
 #include "ProductTiingoStockDayLine.h"
 
 using namespace testing;

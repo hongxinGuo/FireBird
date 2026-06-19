@@ -3,7 +3,6 @@
 #include "ProductIndexNasdaq100Stocks.h"
 
 #include "AccessoryDataSource.h"
-#include "dataBaseConnector.h"
 #include "simdjsonGetValue.h"
 
 #include"WebData.h"

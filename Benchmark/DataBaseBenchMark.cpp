@@ -6,9 +6,7 @@
 #include<benchmark/benchmark.h>
 
 #include "ChinaMarket.h"
-#include "dataBaseConnector.h"
 
-#include"ContainerTiingoStock.h"
 #include "WorldMarket.h"
 
 class CDataBaseBenchmark : public benchmark::Fixture {

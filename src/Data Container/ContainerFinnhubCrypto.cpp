@@ -2,7 +2,6 @@
 
 #include "ContainerFinnhubCrypto.h"
 
-#include "dataBaseConnector.h"
 #include"FinnhubCrypto.h"
 #include "InfoReport.h"
 

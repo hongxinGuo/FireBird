@@ -10,7 +10,6 @@
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
 
-#include "dataBaseConnector.h"
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 #include "TengxunDayLineDataSource.h"
@@ -905,13 +904,13 @@ void CChinaMarket::UpdateOptionDB() {
 		if (result.size() == 0) {
 			db(sqlpp::insert_into(t).set(
 				t.LastLoginDate = toFormattedDate(GetMarketDate()),
-				t.LastLoginTime = toUnsignedTime(GetMarketTime())
+				t.LastLoginTime = toFormattedTime(GetMarketTime())
 			));
 		}
 		else {
 			db(update(t).set(
 				t.LastLoginDate = toFormattedDate(GetMarketDate()),
-				t.LastLoginTime = toUnsignedTime(GetMarketTime())
+				t.LastLoginTime = toFormattedTime(GetMarketTime())
 			).unconditionally());
 		}
 		tx.commit();

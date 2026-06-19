@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"ContainerTiingoFundamentalDefinition.h"
-#include "dataBaseConnector.h"
 
 using namespace testing;
 

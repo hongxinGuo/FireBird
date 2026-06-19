@@ -5,7 +5,6 @@
 #include"TiingoStock.h"
 #include "ProductTiingoStockProfile.h"
 
-#include "dataBaseConnector.h"
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"

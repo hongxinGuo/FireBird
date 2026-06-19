@@ -3,8 +3,6 @@
 #include<vector>
 #include "ContainerFinnhubCountry.h"
 
-#include "dataBaseConnector.h"
-
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 
 void CContainerFinnhubCountry::Reset() {

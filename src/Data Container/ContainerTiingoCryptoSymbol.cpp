@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ContainerTiingoCryptoSymbol.h"
 
-#include "dataBaseConnector.h"
 #include "InfoReport.h"
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {

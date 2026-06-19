@@ -2,7 +2,6 @@
 
 #include"FinnhubForex.h"
 #include "ContainerChosenForex.h"
-#include "dataBaseConnector.h"
 
 CContainerChosenForex::CContainerChosenForex() {
 	CContainerChosenForex::Reset();

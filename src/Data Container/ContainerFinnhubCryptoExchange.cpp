@@ -2,8 +2,6 @@
 
 #include "ContainerFinnhubCryptoExchange.h"
 
-#include "dataBaseConnector.h"
-
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();
 }

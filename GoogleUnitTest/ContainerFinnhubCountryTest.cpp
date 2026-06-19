@@ -2,9 +2,6 @@
 
 #include "GeneralCheck.h"
 #include "ContainerFinnhubCountry.h"
-#include "dataBaseConnector.h"
-
-#include <sqlpp11/transaction.h>
 
 using namespace testing;
 

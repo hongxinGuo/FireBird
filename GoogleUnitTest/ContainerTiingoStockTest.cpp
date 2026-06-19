@@ -5,7 +5,6 @@
 #include"WorldMarket.h"
 
 #include"ContainerTiingoStock.h"
-#include "dataBaseConnector.h"
 #include "jsonParse.h"
 
 using namespace testing;

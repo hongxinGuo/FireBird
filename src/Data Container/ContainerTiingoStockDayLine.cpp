@@ -2,7 +2,6 @@
 
 #include "ContainerTiingoStockDayLine.h"
 
-#include"dataBaseConnector.h"
 
 namespace {
 	CTiingoStock s_stock;
