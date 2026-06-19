@@ -180,6 +180,14 @@ void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta) {
+	if (!IsActive()) {
+		string s = std::format("Tiingo DailyMeta: {} is not active", GetSymbol());
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+	}
+	if (GetHistoryDayLineEndDate() > pMeta->m_lHistoryDayLineEndDate) {
+		string s = std::format("Tiingo Daily Meta: {} dayLine end date: {:8d}, current: {:8d}", GetSymbol(), toFormattedDate(GetHistoryDayLineEndDate()), toFormattedDate(pMeta->m_lHistoryDayLineEndDate));
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+	}
 	if (pMeta->m_lHistoryDayLineStartDate == toLocalDays(19000101)) {
 		SetHistoryDayLineStartDate(toLocalDays(19500101));
 		SetUpdateProfileDB(true);

@@ -101,7 +101,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pMSFT->GetVolume(), 579726570LL) << "MSFT volume";
 		EXPECT_EQ(pMSFT->GetTransactionTime(), 1727726400) << "MSFT timestamp (epoch seconds)";
 
-		EXPECT_TRUE(gl_pWorldMarket->IsBuildTodayTiingoDayLine());
+		EXPECT_FALSE(gl_pWorldMarket->IsBuildTodayTiingoDayLine()) << "IEX TopOfBook数据不在用于更新日线数据";
 
 		// 恢复原状
 		gl_pWorldMarket->TEST_SetMarketDate(s_currentWorldMarketDate);

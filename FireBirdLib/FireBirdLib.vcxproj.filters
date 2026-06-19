@@ -207,9 +207,6 @@
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\RSReference.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\SaveAndLoad.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>

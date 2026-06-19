@@ -441,8 +441,8 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
 	if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
-	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
+	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateFinancialState()) return true;
 
 	SPDLOG_ASSERT(!IsInquiring());
@@ -482,7 +482,7 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 	auto createProduct = [this](int inquireType) {
 		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
 	};
-	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo crypto symbol needn't update"); };
+	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo symbol needn't update"); };
 
 	return GenerateSimpleInquiryWithCheck(
 		STOCK_SYMBOLS_,

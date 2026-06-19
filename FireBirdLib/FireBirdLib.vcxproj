@@ -20,7 +20,6 @@
     <ClInclude Include="..\src\accessory\nlohmannJsonGetValue.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
-    <ClInclude Include="..\src\accessory\RSReference.h" />
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h" />
     <ClInclude Include="..\src\accessory\spdlog_assert.h" />

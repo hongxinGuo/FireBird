@@ -17,15 +17,12 @@
 #include "Thread.h"
 
 #include"simdjsonGetValue.h"
-//using namespace simdjson;
 
 #include"SystemMessage.h"
 
 #include"nlohmannJsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
 #include "ChinaMarket.h"
-
-#include"spdlog/spdlog.h"
 
 // 包含concurrencpp.h之前，需要注销max的定义
 #undef max
@@ -334,7 +331,6 @@ CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strSto
 
 	const string strStockSymbol = XferTengxunToStandard(strStockCode);
 	try {
-		long year, month, day;
 		string_view sv;
 		long lLastClose = 0;
 		ondemand::parser parser;
@@ -363,8 +359,10 @@ CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strSto
 			ondemand::value item = (*it).value();
 			sv = simdjsonGetStringView(item);
 			string str1(sv.data(), sv.length()); // 这里需要转换一下，直接使用string_view会导致内存溢出
-			sscanf_s(str1.data(), "%4d-%02d-%02d", &year, &month, &day);
-			dayLine2.SetDate(year * 10000 + month * 100 + day);
+			istringstream ss(str1);
+			chrono::local_days ld;
+			ss >> chrono::parse("%F", ld);
+			dayLine2.SetDate(ld);
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);
 			dayLine2.SetOpen(Str2Long(sv, 3));
