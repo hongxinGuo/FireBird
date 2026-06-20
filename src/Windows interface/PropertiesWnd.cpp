@@ -8,6 +8,7 @@
 #include "MainFrm.h"
 #include "FireBird.h"
 #include "SinaRTDataSource.h"
+#include "TengxunDayLineDataSource.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
@@ -328,9 +329,12 @@ void CPropertiesWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup2 = new CGridProperty(_T("China market"));
 	pGroup2->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pChinaMarket->IsRealTimeDataSourceEnable()), _T("Enable"), CHINA_MARKET_REALTIME_DATA_SOURCE_ENABLE_));
-	m_pPropChinaMarketWebStatus = new CGridProperty(_T("Web status:"), _T(""));
-	m_pPropChinaMarketWebStatus->Enable(false);
-	pGroup2->AddSubItem(m_pPropChinaMarketWebStatus);
+	m_pPropChinaMarketWebRealTimeStatus = new CGridProperty(_T("RealTime status:"), _T(""));
+	m_pPropChinaMarketWebRealTimeStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropChinaMarketWebRealTimeStatus);
+	m_pPropChinaMarketWebDayLineStatus = new CGridProperty(_T("DayLine status:"), _T(""));
+	m_pPropChinaMarketWebDayLineStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropChinaMarketWebDayLineStatus);
 	m_pPropChinaMarketThreadStatus = new CGridProperty(_T("Thread status:"), _T(""));
 	m_pPropChinaMarketThreadStatus->Enable(false);
 	pGroup2->AddSubItem(m_pPropChinaMarketThreadStatus);
@@ -419,13 +423,23 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	m_pPropCurrentWorkingThread->SetValue(s); // 后台工作线程数
 
 	// china market web status
-	if (gl_pChinaMarket->IsWebError()) {
-		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetHTTPStatus(), gl_pChinaMarket->GetWebErrorCode());
+	if (gl_pChinaMarket->IsWebReaTimeDataError()) {
+		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetHTTPStatus(), gl_pChinaMarket->GetWebRealTimeDataErrorCode());
 	}
 	else {
 		s = std::format("HTTP: {:d}", gl_pChinaMarket->GetHTTPStatus());
 	}
-	m_pPropChinaMarketWebStatus->SetValue(s);
+	m_pPropChinaMarketWebRealTimeStatus->SetValue(s);
+	if (!gl_pTengxunDayLineDataSource->IsEnable()) {
+		s = "DayLine Server disabled";
+	}
+	else if (gl_pChinaMarket->IsWebDayLineDataError()) {
+		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetDayLineHTTPStatus(), gl_pChinaMarket->GetWebDayLineDataErrorCode());
+	}
+	else {
+		s = std::format("HTTP: {:d}", gl_pChinaMarket->GetDayLineHTTPStatus());
+	}
+	m_pPropChinaMarketWebDayLineStatus->SetValue(s);
 	// china market thread status
 
 	// finnhub web status

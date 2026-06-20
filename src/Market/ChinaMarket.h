@@ -52,13 +52,18 @@ public:
 	bool SetCheckActiveStockFlag();
 	bool TaskProcessTodayStock();
 
-	void ProcessTodayStock();
 	bool IsSavingDayLineDBTaskFinished();
+	void EnableDayLineDataSource();
 	bool CheckFastReceivingData();
 	static bool IsWebBusy();
 	long long GetHTTPStatus();
-	bool IsWebError();
-	long long GetWebErrorCode();
+	long long GetDayLineHTTPStatus();
+	bool IsWebReaTimeDataError();
+	long long GetWebRealTimeDataErrorCode();
+	bool IsWebDayLineDataError();
+	long long GetWebDayLineDataErrorCode();
+
+	void ProcessTodayStock();
 	bool CheckMarketOpen();
 
 	bool TaskUpdateStockProfileDB();

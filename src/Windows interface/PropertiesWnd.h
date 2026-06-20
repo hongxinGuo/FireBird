@@ -90,7 +90,8 @@ protected:
 	CGridProperty* m_pPropSystemOption{ nullptr };
 
 	// china market
-	CGridProperty* m_pPropChinaMarketWebStatus{ nullptr };
+	CGridProperty* m_pPropChinaMarketWebRealTimeStatus{ nullptr };
+	CGridProperty* m_pPropChinaMarketWebDayLineStatus{ nullptr };
 	CGridProperty* m_pPropChinaMarketThreadStatus{ nullptr };
 
 	// world market

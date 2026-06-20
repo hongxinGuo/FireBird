@@ -59,6 +59,7 @@ namespace FireBirdTest {
 		pData2->SetStockCode("600601.SS");
 		pvWebData->push_back(pData2);
 		tengxunDayLine.SetInquiryNumber(2); // 测试版要确保此值大于等于数据量，否则会引发断言失败。
+		EXPECT_TRUE(gl_dataContainerChinaStock.GetStock("600601.SS")->IsUpdateDayLine()) << "此时标识尚未清除";
 
 		tengxunDayLine.ParseAndStoreWebData(pvWebData);
 
@@ -66,6 +67,7 @@ namespace FireBirdTest {
 		CDayLineWebDataPtr pTengxunDayLine;
 		gl_qDayLine.try_dequeue(pTengxunDayLine);
 		EXPECT_EQ(pTengxunDayLine->GetStockCode(), "600601.SS");
+		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock("600601.SS")->IsUpdateDayLine()) << "此时标识清除了";
 
 		const auto vDayLine = pTengxunDayLine->GetProcessedDayLine();
 		EXPECT_EQ(vDayLine.size(), 4) << "两个数据各有两个日期的日线数据";

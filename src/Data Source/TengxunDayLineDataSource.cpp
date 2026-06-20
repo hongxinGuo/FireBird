@@ -82,7 +82,6 @@ bool CTengxunDayLineDataSource::Inquire() {
 			}
 			SetDownLoadingStockCode(pStock->GetSymbol());
 			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());
-			pStock->SetUpdateDayLine(false);
 			return true;
 		}
 		else {
@@ -157,6 +156,24 @@ void CTengxunDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_data_receive_timeout = 5000;
 	m_internetOption.option_send_timeout = 500;
 	m_internetOption.option_connect_retries = 1;
+}
+void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
+	ASSERT(m_pCurrentProduct != nullptr);
+
+	string s2;
+	string str;
+	string_view strView;
+	long l;
+
+	m_eErrorMessageData = ERROR_NO_ERROR_;
+	// 第一次switch处理非json数据格式的错误
+	switch (m_dwHTTPStatusCode) {
+	case 501: //请求功能尚未实现，实际是服务器正处于维护状态
+		Enable(false); // 先暂停
+		break;
+	default:
+		break;
+	}
 }
 
 void CTengxunDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {

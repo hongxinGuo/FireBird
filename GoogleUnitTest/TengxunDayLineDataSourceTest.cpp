@@ -99,11 +99,15 @@ namespace FireBirdTest {
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		EXPECT_TRUE(TengxunDayLineDataSource.Inquire());
+
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000006.SS");
+		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000001.SS") << "设置标识在处理数据后才完成，此时没有设置，故而还是第一个需要处理的股票";
 		TengxunDayLineDataSource.SetInquiring(false);
 		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
+
+		gl_dataContainerChinaStock.GetStock(0)->SetUpdateDayLine(false);
+		gl_dataContainerChinaStock.GetStock(10)->SetUpdateDayLine(false);
 
 		EXPECT_FALSE(TengxunDayLineDataSource.Inquire()) << "查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);

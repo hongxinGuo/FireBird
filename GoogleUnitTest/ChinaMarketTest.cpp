@@ -1402,20 +1402,20 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_);
 		EXPECT_NE(gl_pSinaRTDataSource, nullptr);
 		EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pSinaRTDataSource->GetHTTPStatusCode());
-		EXPECT_EQ(gl_pChinaMarket->IsWebError(), gl_pSinaRTDataSource->IsWebError());
-		EXPECT_EQ(gl_pChinaMarket->GetWebErrorCode(), gl_pSinaRTDataSource->GetWebErrorCode());
+		EXPECT_EQ(gl_pChinaMarket->IsWebReaTimeDataError(), gl_pSinaRTDataSource->IsWebError());
+		EXPECT_EQ(gl_pChinaMarket->GetWebRealTimeDataErrorCode(), gl_pSinaRTDataSource->GetWebErrorCode());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
 		EXPECT_NE(gl_pNeteaseRTDataSource, nullptr);
 		EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pNeteaseRTDataSource->GetHTTPStatusCode());
-		EXPECT_EQ(gl_pChinaMarket->IsWebError(), gl_pNeteaseRTDataSource->IsWebError());
-		EXPECT_EQ(gl_pChinaMarket->GetWebErrorCode(), gl_pNeteaseRTDataSource->GetWebErrorCode());
+		EXPECT_EQ(gl_pChinaMarket->IsWebReaTimeDataError(), gl_pNeteaseRTDataSource->IsWebError());
+		EXPECT_EQ(gl_pChinaMarket->GetWebRealTimeDataErrorCode(), gl_pNeteaseRTDataSource->GetWebErrorCode());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(TengxunRealTime_);
 		EXPECT_NE(gl_pTengxunRTDataSource, nullptr);
 		EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pTengxunRTDataSource->GetHTTPStatusCode());
-		EXPECT_EQ(gl_pChinaMarket->IsWebError(), gl_pTengxunRTDataSource->IsWebError());
-		EXPECT_EQ(gl_pChinaMarket->GetWebErrorCode(), gl_pTengxunRTDataSource->GetWebErrorCode());
+		EXPECT_EQ(gl_pChinaMarket->IsWebReaTimeDataError(), gl_pTengxunRTDataSource->IsWebError());
+		EXPECT_EQ(gl_pChinaMarket->GetWebRealTimeDataErrorCode(), gl_pTengxunRTDataSource->GetWebErrorCode());
 
 		// Restore original server selection
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(oldServer);
@@ -1433,22 +1433,22 @@ namespace FireBirdTest {
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(true));
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(false));
 		EXPECT_NO_THROW(gl_pChinaMarket->GetHTTPStatus());
-		EXPECT_NO_THROW(gl_pChinaMarket->IsWebError());
-		EXPECT_NO_THROW(gl_pChinaMarket->GetWebErrorCode());
+		EXPECT_NO_THROW(gl_pChinaMarket->IsWebReaTimeDataError());
+		EXPECT_NO_THROW(gl_pChinaMarket->GetWebRealTimeDataErrorCode());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(true));
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(false));
 		EXPECT_NO_THROW(gl_pChinaMarket->GetHTTPStatus());
-		EXPECT_NO_THROW(gl_pChinaMarket->IsWebError());
-		EXPECT_NO_THROW(gl_pChinaMarket->GetWebErrorCode());
+		EXPECT_NO_THROW(gl_pChinaMarket->IsWebReaTimeDataError());
+		EXPECT_NO_THROW(gl_pChinaMarket->GetWebRealTimeDataErrorCode());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(TengxunRealTime_);
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(true));
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(false));
 		EXPECT_NO_THROW(gl_pChinaMarket->GetHTTPStatus());
-		EXPECT_NO_THROW(gl_pChinaMarket->IsWebError());
-		EXPECT_NO_THROW(gl_pChinaMarket->GetWebErrorCode());
+		EXPECT_NO_THROW(gl_pChinaMarket->IsWebReaTimeDataError());
+		EXPECT_NO_THROW(gl_pChinaMarket->GetWebRealTimeDataErrorCode());
 
 		// Restore original server selection
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(oldServer);

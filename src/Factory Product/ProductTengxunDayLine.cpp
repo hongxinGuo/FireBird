@@ -4,6 +4,7 @@
 #include"ChinaMarket.h"
 
 #include"JsonParse.h"
+#include "TengxunDayLineDataSource.h"
 
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;
@@ -38,6 +39,7 @@ string CProductTengxunDayLine::CreateMessage() {
 // 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {
+	if (gl_pTengxunDayLineDataSource->GetHTTPStatusCode() != 200) return; // 网络数据不正常时不处理。
 	ASSERT(pvWebData->size() <= m_iInquiryNumber);
 
 	vector<CDayLine> vDayLine;
@@ -59,6 +61,8 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 		p->AppendDayLine(pData);
 	}
 	gl_qDayLine.enqueue(p);
+
+	gl_dataContainerChinaStock.GetStock(strStockSymbol)->SetUpdateDayLine(false); // 只有申请到数据后才设置标识
 }
 
 void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLine>& vDayLine) {

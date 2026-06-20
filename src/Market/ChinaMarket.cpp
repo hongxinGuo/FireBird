@@ -9,6 +9,7 @@
 
 #include "CharSetTransfer.h"
 #include "InfoReport.h"
+#include "NeteaseDayLineDataSource.h"
 
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
@@ -205,6 +206,9 @@ int CChinaMarket::ProcessTask() {
 			TaskUpdateStockSection();
 			break;
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
+			if (gl_dataContainerChinaStock.IsUpdateDayLine()) {
+				EnableDayLineDataSource();
+			}
 			TaskProcessAndSaveDayLine();
 			break;
 		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__:
@@ -619,6 +623,20 @@ bool CChinaMarket::IsSavingDayLineDBTaskFinished() {
 	return false;
 }
 
+void CChinaMarket::EnableDayLineDataSource() {
+	switch (gl_systemConfiguration.GetChinaMarketDayLineServer()) {
+	case TengxunDayLine_:
+		gl_pTengxunDayLineDataSource->Enable(true);
+		break;
+	case NeteaseDayLine_:
+		gl_pNeteaseDayLineDataSource->Enable(true);
+		break;
+	default:
+		gl_pTengxunDayLineDataSource->Enable(true);
+		break;
+	}
+}
+
 bool CChinaMarket::CheckFastReceivingData() {
 	if (gl_systemConfiguration.IsFastInquiringRTData()) {
 		m_fFastReceivingRTData = true;
@@ -680,7 +698,11 @@ long long CChinaMarket::GetHTTPStatus() {
 	return httpStatus;
 }
 
-bool CChinaMarket::IsWebError() {
+long long CChinaMarket::GetDayLineHTTPStatus() {
+	return gl_pTengxunDayLineDataSource->GetHTTPStatusCode();
+}
+
+bool CChinaMarket::IsWebReaTimeDataError() {
 	bool webError = false;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_: // 新浪实时数据
@@ -699,7 +721,7 @@ bool CChinaMarket::IsWebError() {
 	return webError;
 }
 
-long long CChinaMarket::GetWebErrorCode() {
+long long CChinaMarket::GetWebRealTimeDataErrorCode() {
 	long long errorCode = 0;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_: // 新浪实时数据
@@ -716,6 +738,14 @@ long long CChinaMarket::GetWebErrorCode() {
 		break;
 	}
 	return errorCode;
+}
+
+bool CChinaMarket::IsWebDayLineDataError() {
+	return gl_pTengxunDayLineDataSource->IsWebError();
+}
+
+long long CChinaMarket::GetWebDayLineDataErrorCode() {
+	return gl_pTengxunDayLineDataSource->GetWebErrorCode();
 }
 
 bool CChinaMarket::CheckMarketOpen() {
