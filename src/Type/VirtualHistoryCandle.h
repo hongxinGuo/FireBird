@@ -90,7 +90,6 @@ public:
 
 protected:
 	// need to save
-	//long m_lDate{ 0 }; // 类型(YYYYMMDD)
 	chrono::local_days m_tpDate{ chrono::days(0) };
 	string m_strExchange{};
 	string m_strStockSymbol{};

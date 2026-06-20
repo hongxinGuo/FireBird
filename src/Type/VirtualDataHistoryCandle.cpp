@@ -56,19 +56,26 @@ bool CVirtualDataHistoryCandle::GetStartEndDate(chrono::local_days& lStartDate, 
 	return true;
 }
 
-bool CVirtualDataHistoryCandle::HaveDayLine(chrono::local_days lDate) {
-	auto it = ranges::find_if(m_vHistoryData.begin(), m_vHistoryData.end(),
-	                          [lDate](const CVirtualHistoryCandle& p) { return p.GetDate() == lDate; });
-	if (it == m_vHistoryData.end()) {
-		return false;
-	}
-	return true;
+bool CVirtualDataHistoryCandle::HaveDayLine(chrono::local_days date) {
+	return ranges::any_of(m_vHistoryData.begin(), m_vHistoryData.end(),
+	                      [date](const CVirtualHistoryCandle& p) { return p.GetDate() == date; });
 }
 
-CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(chrono::local_days lDate) {
-	auto it = std::ranges::find_if(m_vHistoryData.begin(), m_vHistoryData.end(),
-	                               [lDate](const CVirtualHistoryCandle& p) { return p.GetDate() == lDate; });
-	if (it != m_vHistoryData.end()) {
+CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(chrono::local_days date) {
+	auto it = std::ranges::lower_bound(m_vHistoryData, date,
+	                                   std::ranges::less{},
+	                                   [](const CVirtualHistoryCandle& c) { return c.GetDate(); });
+	if (it != m_vHistoryData.end() && it->GetDate() == date) {
+		return &*it;
+	}
+	return nullptr;
+}
+
+CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle2(chrono::local_days date) {
+	auto& localHistoryData = m_vHistoryData;
+	auto it = std::ranges::find_if(localHistoryData.begin(), localHistoryData.end(),
+	                               [date](const CVirtualHistoryCandle& p) { return p.GetDate() == date; });
+	if (it != localHistoryData.end()) {
 		return &*it;
 	}
 	return nullptr;

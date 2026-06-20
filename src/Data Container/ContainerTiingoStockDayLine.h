@@ -1,8 +1,7 @@
 #pragma once
 
-#include "TiingoCandleLine.h"
-
 #include "VirtualDataHistoryCandle.h"
+#include "TiingoCandleLine.h"
 
 class CContainerTiingoStockDayLine : public CVirtualDataHistoryCandle {
 public:
@@ -20,7 +19,7 @@ public:
 	void SplitAdjust();
 
 	CTiingoCandleLine* GetData(const size_t lIndex) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CTiingoCandleLine* GetDayLine(chrono::local_days lDate) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CTiingoCandleLine* GetDayLine(chrono::local_days date) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(date)); }
 
 	void Add(CTiingoCandleLine& data) {
 		data.SetRatio(m_ratio);

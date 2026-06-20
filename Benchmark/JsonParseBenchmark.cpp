@@ -431,13 +431,14 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool2)(benchmark::State& stat
 }
 
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool4)(benchmark::State& state) {
+	gl_concurrency_level = 4;
 	for (auto _ : state) {
 		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 }
 
-BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool6)(benchmark::State& state) {
-	gl_concurrency_level = 6;
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool8)(benchmark::State& state) {
+	gl_concurrency_level = 8;
 	for (auto _ : state) {
 		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}

@@ -43,14 +43,15 @@ public:
 	}
 	CVirtualHistoryCandle* GetData(const size_t lIndex) { return &m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandle>& GetDataVector() { return m_vHistoryData; }
-	CVirtualHistoryCandle* GetCandle(chrono::local_days lDate);
+	CVirtualHistoryCandle* GetCandle(chrono::local_days date);
+	CVirtualHistoryCandle* GetCandle2(chrono::local_days date);
 
 	void Add(CVirtualHistoryCandle data) {
 		data.SetRatio(m_ratio);
 		m_vHistoryData.push_back(data);
 	}
 	void Add(const CDayLine& data) { Add(static_cast<CVirtualHistoryCandle>(data)); }
-	bool HaveDayLine(chrono::local_days lDate);
+	bool HaveDayLine(chrono::local_days date);
 
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }

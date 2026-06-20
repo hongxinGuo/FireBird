@@ -36,5 +36,8 @@
     <ClCompile Include="DataBaseBenchMark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VirtualDataHistoryCandleBenchmark.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

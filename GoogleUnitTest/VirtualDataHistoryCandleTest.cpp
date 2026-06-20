@@ -70,4 +70,35 @@ namespace FireBirdTest {
 		EXPECT_EQ(pHistoryData2->GetClose(), 100);
 		EXPECT_TRUE(HistoryDataContainer.IsDataLoaded());
 	}
+
+	TEST_F(CVirtualDataHistoryCandleTest, GetCandle_ReturnsPointerWhenDateExists) {
+		CVirtualHistoryCandle c1, c2;
+		c1.SetDate(20210101);
+		c1.SetClose(1000);
+		c2.SetDate(20210102);
+		c2.SetClose(2000);
+
+		vector<CVirtualHistoryCandle> data{ c1, c2 };
+		CVirtualDataHistoryCandle container;
+		container.UpdateData(data);
+
+		auto ptr = container.GetCandle(toLocalDays(20210102));
+		EXPECT_NE(ptr, nullptr);
+		ASSERT_NE(ptr, nullptr);
+		EXPECT_EQ(ptr->GetDate(), toLocalDays(20210102));
+		EXPECT_EQ(ptr->GetClose(), 2000);
+	}
+
+	TEST_F(CVirtualDataHistoryCandleTest, GetCandle_ReturnsNullWhenDateMissing) {
+		CVirtualHistoryCandle c1;
+		c1.SetDate(20210101);
+		c1.SetClose(1000);
+
+		vector<CVirtualHistoryCandle> data{ c1 };
+		CVirtualDataHistoryCandle container;
+		container.UpdateData(data);
+
+		auto ptr = container.GetCandle(toLocalDays(20201231));
+		EXPECT_EQ(ptr, nullptr);
+	}
 }
