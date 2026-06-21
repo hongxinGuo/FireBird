@@ -157,6 +157,7 @@ void CTengxunDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_send_timeout = 500;
 	m_internetOption.option_connect_retries = 1;
 }
+
 void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
 
@@ -169,6 +170,7 @@ void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	// 第一次switch处理非json数据格式的错误
 	switch (m_dwHTTPStatusCode) {
 	case 501: //请求功能尚未实现，实际是服务器正处于维护状态
+		TRACE(_T("关闭腾讯日线服务\n"));
 		Enable(false); // 先暂停
 		break;
 	default:

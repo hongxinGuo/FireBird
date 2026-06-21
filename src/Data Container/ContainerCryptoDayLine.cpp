@@ -56,7 +56,6 @@ void CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	Reset();
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strCryptoSymbol).order_by(t.Date.asc()));
 	size_t rows = result.size();
 	Reserve(rows);

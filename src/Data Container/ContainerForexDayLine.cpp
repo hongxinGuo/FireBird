@@ -149,7 +149,6 @@ void CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 	using namespace StockMarket;
 	const auto& t = FinnhubForexDayline{};
 
-	Reset();
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strCryptoSymbol).order_by(t.Date.asc()));

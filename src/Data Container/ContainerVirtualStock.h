@@ -16,7 +16,9 @@ public:
 	size_t Size() override { return m_vStock.size(); }
 	void Reserve(size_t size) {
 		m_vStock.reserve(size);
+		m_vStock.clear();
 		m_mapSymbol.reserve(size);
+		m_mapSymbol.clear();
 	}
 
 	bool IsSymbol(const string& strSymbol) const { return m_mapSymbol.contains(strSymbol); }

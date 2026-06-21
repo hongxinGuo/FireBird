@@ -14,7 +14,9 @@ void CContainerFinnhubCryptoExchange::Reset() {
 
 void CContainerFinnhubCryptoExchange::Reserve(size_t size) {
 	m_vCryptoExchange.reserve(size);
+	m_vCryptoExchange.clear();
 	m_mapCryptoExchange.reserve(size);
+	m_mapCryptoExchange.clear();
 }
 
 bool CContainerFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
@@ -38,7 +40,6 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	Reset();
 	auto result = db(select(all_of(t)).from(t).unconditionally());
 	auto rows = result.size();
 	Reserve(rows);

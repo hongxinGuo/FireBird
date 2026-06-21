@@ -436,8 +436,7 @@ void CFinnhubStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 }
 
 void CFinnhubStock::UpdateEPSSurprise(const CEPSSurprisesPtr& pvEPSSurprise) {
-	m_vEPSSurprise.resize(0);
-	m_vEPSSurprise.reserve(500);
+	m_vEPSSurprise.reserve(pvEPSSurprise->size());
 
 	for (auto& p : *pvEPSSurprise) {
 		m_vEPSSurprise.push_back(p);
@@ -515,8 +514,7 @@ bool CFinnhubStock::CheckPeerStatus(chrono::local_days lCurrentDate) {
 }
 
 void CFinnhubStock::UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvInsiderTransaction) {
-	m_vInsiderTransaction.resize(0);
-	m_vInsiderTransaction.reserve(500);
+	m_vInsiderTransaction.reserve(pvInsiderTransaction->size());
 
 	for (const auto& insiderTransaction : *pvInsiderTransaction) {
 		m_vInsiderTransaction.push_back(insiderTransaction);
@@ -554,8 +552,7 @@ bool CFinnhubStock::CheckInsiderSentimentStatus(chrono::local_days lCurrentDate)
 }
 
 void CFinnhubStock::SetSECFilings(const CSECFilingsPtr& pv) {
-	m_vSECFilings.resize(0);
-	m_vSECFilings.reserve(100);
+	m_vSECFilings.reserve(pv->size());
 
 	for (const auto& secFiling : *pv) {
 		m_vSECFilings.push_back(secFiling);

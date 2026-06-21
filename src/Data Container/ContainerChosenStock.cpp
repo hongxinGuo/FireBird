@@ -8,8 +8,6 @@ CContainerChosenStock::CContainerChosenStock() {
 
 void CContainerChosenStock::Reset() {
 	CContainerVirtualStock::Reset();
-
-	m_lChosenStockPos = 0;
 }
 
 bool CContainerChosenStock::LoadDB() {
@@ -19,7 +17,6 @@ bool CContainerChosenStock::LoadDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).unconditionally());
-	Reset();
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {

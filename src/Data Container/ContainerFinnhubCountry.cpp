@@ -12,7 +12,9 @@ void CContainerFinnhubCountry::Reset() {
 }
 void CContainerFinnhubCountry::Reserve(size_t size) {
 	m_vCountry.reserve(size);
+	m_vCountry.clear();
 	m_mapCountry.reserve(size);
+	m_mapCountry.clear();
 }
 
 void CContainerFinnhubCountry::Add(const CCountry& pCountry) {
@@ -65,7 +67,6 @@ bool CContainerFinnhubCountry::LoadDB() {
 	using namespace StockMarket;
 	const auto& t = FinnhubCountryList{};
 
-	Reset();
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Country.asc()));

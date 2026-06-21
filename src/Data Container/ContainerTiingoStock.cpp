@@ -110,7 +110,6 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		using namespace StockMarket;
 		const auto& t = TiingoStockProfile{};
 
-		Reset();
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 		auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));

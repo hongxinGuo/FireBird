@@ -372,7 +372,6 @@
     <ClCompile Include="..\src\WebSocket\TiingoForexWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\TiingoIEXWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.cpp" />
-    <ClCompile Include="..\src\Working thread\ThreadLoadSelectedStockDayLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">

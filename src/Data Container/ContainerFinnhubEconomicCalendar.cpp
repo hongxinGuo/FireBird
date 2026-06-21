@@ -13,7 +13,9 @@ void CContainerFinnhubEconomicCalendar::Reset() {
 
 void CContainerFinnhubEconomicCalendar::Reserve(size_t lSize) {
 	m_vEconomicCalendar.reserve(lSize);
+	m_vEconomicCalendar.clear();
 	m_mapEconomicCalendar.reserve(lSize);
+	m_mapEconomicCalendar.clear();
 }
 
 bool CContainerFinnhubEconomicCalendar::LoadDB() {
@@ -22,7 +24,6 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	Reset();
 	auto result = db(select(all_of(t)).from(t).unconditionally());
 	auto rows = result.size();
 	Reserve(rows + 2);

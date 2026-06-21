@@ -9,7 +9,6 @@
 #include "pch.h"
 #include "ContainerStockExchange.h"
 
-
 CContainerStockExchange::CContainerStockExchange() {
 	LoadDB(); // 生成时即装载数据库。
 }
@@ -21,7 +20,9 @@ void CContainerStockExchange::Reset() {
 
 void CContainerStockExchange::Reserve(size_t size) {
 	m_vStockExchange.reserve(size);
+	m_vStockExchange.clear();
 	m_mapStockExchange.reserve(size);
+	m_mapStockExchange.clear();
 }
 
 CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymbol) const {

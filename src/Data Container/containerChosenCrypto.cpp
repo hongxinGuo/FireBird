@@ -10,8 +10,6 @@ CContainerChosenCrypto::CContainerChosenCrypto() {
 
 void CContainerChosenCrypto::Reset() {
 	CContainerVirtualStock::Reset();
-
-	m_lChosenCryptoPos = 0;
 }
 
 bool CContainerChosenCrypto::LoadDB() {
@@ -21,7 +19,6 @@ bool CContainerChosenCrypto::LoadDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).unconditionally());
-	Reset();
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {

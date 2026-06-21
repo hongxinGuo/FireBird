@@ -20,5 +20,4 @@ public:
 	CFinnhubCryptoPtr GetCryptoSymbol(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode)); }
 
 protected:
-	size_t m_lChosenCryptoPos;
 };

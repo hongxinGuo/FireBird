@@ -17,7 +17,10 @@ public:
 	void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	auto Size() const noexcept { return m_vHistoryData.size(); }
 	bool Empty() const noexcept { return m_vHistoryData.empty(); }
-	void Reserve(size_t size) { m_vHistoryData.reserve(size); }
+	void Reserve(size_t size) {
+		m_vHistoryData.reserve(size);
+		m_vHistoryData.clear();
+	}
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
 	virtual void SaveDB(const string&) { ASSERT(0); }
@@ -53,8 +56,6 @@ public:
 	void Add(const CDayLine& data) { Add(static_cast<CVirtualHistoryCandle>(data)); }
 	bool HaveDayLine(chrono::local_days date);
 
-	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
-	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
 	bool IsDataLoaded() const noexcept { return m_fDataLoaded.load(); }
 	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
@@ -70,7 +71,6 @@ protected:
 	int m_ratio{ 0 };
 	vector<CVirtualHistoryCandle> m_vHistoryData;
 	atomic_bool m_fDataLoaded{ false }; // 数据装载与否标识
-	bool m_fDatabaseTodayUpdated{ false }; // 数据库今日是否已更新标识
 };
 
 using CVirtualDataHistoryCandlePtr = shared_ptr<CVirtualDataHistoryCandle>;

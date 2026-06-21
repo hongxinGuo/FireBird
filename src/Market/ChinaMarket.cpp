@@ -627,6 +627,7 @@ void CChinaMarket::EnableDayLineDataSource() {
 	switch (gl_systemConfiguration.GetChinaMarketDayLineServer()) {
 	case TengxunDayLine_:
 		gl_pTengxunDayLineDataSource->Enable(true);
+		TRACE(_T("启动腾讯日线数据源\n"));
 		break;
 	case NeteaseDayLine_:
 		gl_pNeteaseDayLineDataSource->Enable(true);

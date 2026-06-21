@@ -20,5 +20,4 @@ public:
 	CForexSymbolPtr GetForexSymbol(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode)); }
 
 protected:
-	size_t m_lChosenForexPos;
 };

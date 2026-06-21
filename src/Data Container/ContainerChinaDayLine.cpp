@@ -59,7 +59,6 @@ void CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	Reset();
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol).order_by(t.Date.asc()));
 	size_t rows = result.size();
 	Reserve(rows);
@@ -100,7 +99,6 @@ void CContainerChinaDayLine::LoadDB(const string& strStockSymbol, long lStartDat
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	Reset();
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol && t.Date >= lStartDate).order_by(t.Date.asc()));
 	size_t rows = result.size();
 	Reserve(rows);

@@ -2,7 +2,6 @@
 
 #include "ContainerTiingoStockDayLine.h"
 
-
 namespace {
 	CTiingoStock s_stock;
 }
@@ -94,7 +93,6 @@ void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 }
 
 void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine) {
-	Unload(); // 清除已载入的日线数据（如果有的话）
 	Reserve(pvTempDayLine->size());
 	// 将日线数据以时间为正序存入
 	for (auto& dayLine : *pvTempDayLine) {

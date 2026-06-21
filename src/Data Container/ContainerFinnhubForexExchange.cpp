@@ -15,7 +15,9 @@ void CContainerFinnhubForexExchange::Reset() {
 
 void CContainerFinnhubForexExchange::Reserve(size_t size) {
 	m_vForexExchange.reserve(size);
+	m_vForexExchange.clear();
 	m_mapForexExchange.reserve(size);
+	m_mapForexExchange.clear();
 }
 
 bool CContainerFinnhubForexExchange::Delete(const string& strForexExchange) {
@@ -39,7 +41,6 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	Reset();
 	auto result = db(select(all_of(t)).from(t).unconditionally());
 	auto rows = result.size();
 	Reserve(rows);

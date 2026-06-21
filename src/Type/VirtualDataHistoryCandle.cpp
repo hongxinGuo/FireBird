@@ -13,7 +13,6 @@ CVirtualDataHistoryCandle::CVirtualDataHistoryCandle() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataHistoryCandle::UpdateData(const vector<CVirtualHistoryCandle>& vTempData) {
-	Unload(); // 清除已载入的数据（如果有的话）
 	Reserve(vTempData.size());
 	for (auto& p : vTempData) {
 		if (p.IsActive()) Add(p);
@@ -22,7 +21,6 @@ void CVirtualDataHistoryCandle::UpdateData(const vector<CVirtualHistoryCandle>& 
 }
 
 void CVirtualDataHistoryCandle::UpdateData(const vector<CDayLine>& vTempData) {
-	Unload(); // 清除已载入的数据（如果有的话）
 	Reserve(vTempData.size());
 	for (const auto& p : vTempData) {
 		if (p.IsActive()) Add(p);
@@ -36,7 +34,6 @@ void CVirtualDataHistoryCandle::UpdateData(const vector<CDayLine>& vTempData) {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataHistoryCandle::UpdateData(const CDayLinesPtr& pvTempDayLine) {
-	Unload(); // 清除已载入的日线数据（如果有的话）
 	Reserve(pvTempDayLine->size());
 	// 将日线数据以时间为正序存入
 	for (auto& dayLine : *pvTempDayLine) {
@@ -84,7 +81,6 @@ CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle2(chrono::local_days 
 void CVirtualDataHistoryCandle::Reset() {
 	m_vHistoryData.clear();
 	m_fDataLoaded = false;
-	m_fDatabaseTodayUpdated = false;
 }
 
 void CVirtualDataHistoryCandle::CalculateMA(size_t length) {

@@ -9,8 +9,6 @@ CContainerChosenForex::CContainerChosenForex() {
 
 void CContainerChosenForex::Reset() {
 	CContainerVirtualStock::Reset();
-
-	m_lChosenForexPos = 0;
 }
 
 bool CContainerChosenForex::LoadDB() {
@@ -20,7 +18,6 @@ bool CContainerChosenForex::LoadDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).unconditionally());
-	Reset();
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {

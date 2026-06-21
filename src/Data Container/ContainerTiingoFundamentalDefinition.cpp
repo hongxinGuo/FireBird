@@ -15,7 +15,9 @@ void CContainerTiingoFundamentalDefinition::Reset() {
 
 void CContainerTiingoFundamentalDefinition::Reserve(size_t size) {
 	m_vTiingoFundamentalDefinition.reserve(size);
+	m_vTiingoFundamentalDefinition.clear();
 	m_mapTiingoFundamentalDefinition.reserve(size);
+	m_mapTiingoFundamentalDefinition.clear();
 }
 
 void CContainerTiingoFundamentalDefinition::Add(CTiingoFundamentalDefinition tiingoFundamentalDefinition) {
@@ -87,7 +89,6 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	Reset();
 	auto result = db(select(all_of(t)).from(t).unconditionally());
 	size_t rows = result.size();
 	Reserve(rows);

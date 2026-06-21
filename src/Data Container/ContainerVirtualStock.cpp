@@ -9,7 +9,7 @@ CContainerVirtualStock::CContainerVirtualStock() {
 void CContainerVirtualStock::Reset() {
 	CVirtualContainer::Reset();
 
-	m_vStock.resize(0);
+	m_vStock.clear();
 	m_mapSymbol.clear();
 }
 

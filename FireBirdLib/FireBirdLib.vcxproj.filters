@@ -7,9 +7,6 @@
     <Filter Include="源文件">
       <UniqueIdentifier>{4663b185-3a9c-45e2-a0f2-aef45b8b19d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Template">
-      <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\System">
       <UniqueIdentifier>{ea741a88-b3c4-434f-ba47-7a69edbe7a7e}</UniqueIdentifier>
     </Filter>
@@ -45,12 +42,6 @@
     </Filter>
     <Filter Include="源文件\Type">
       <UniqueIdentifier>{b294b92d-0cb6-4f5b-8947-5d49ad7f6ab4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Working thread">
-      <UniqueIdentifier>{10b8cd5c-c7af-4a74-8cba-19c0853276d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Working thread\China market">
-      <UniqueIdentifier>{bd52023c-87e1-4db2-adb7-37c22efb81d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Type\China market">
       <UniqueIdentifier>{2452158e-07ba-4983-838a-2e482eb7aada}</UniqueIdentifier>
@@ -114,9 +105,6 @@
     </Filter>
     <Filter Include="头文件\Data Source\China market">
       <UniqueIdentifier>{d6ae6ebf-aa91-4881-a6ac-2fb919c6240f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Working thread\World market">
-      <UniqueIdentifier>{071c480a-42a0-46e0-b3ca-c318858ef8a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\Stock\Tiingo">
       <UniqueIdentifier>{e8392b50-66ef-4d71-9d23-921bd4858338}</UniqueIdentifier>
@@ -1111,9 +1099,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\AccessoryDataSource.cpp">
       <Filter>源文件\Data Source\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Working thread\ThreadLoadSelectedStockDayLine.cpp">
-      <Filter>源文件\Working thread</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockWeekLine.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>

@@ -22,7 +22,6 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
-	Reset();
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {
