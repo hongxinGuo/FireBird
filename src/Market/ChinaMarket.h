@@ -4,9 +4,6 @@
 
 #include"ContainerChinaStock.h"
 
-using std::set;
-using std::atomic_int64_t;
-
 constexpr int c_SelectedStockStartPosition = 0;
 
 class CChinaMarket : public CVirtualMarket {
@@ -112,7 +109,7 @@ public:
 
 	void DeleteDayLine(chrono::local_days lDate) const;
 
-	static bool CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData);
+	static bool CreateStockCodeSet(set<string>& setStockCode, const vector<CVirtualHistoryCandle>* pvData);
 
 	// 股票历史数据处理
 

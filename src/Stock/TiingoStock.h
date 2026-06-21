@@ -191,8 +191,8 @@ public:
 	int IsLowOrHigh(size_t index, double dClose) const;
 
 	// 测试用函数
-	void ProcessDayLine2(long lLastCalculatedDate); // 用于测试
-	void ProcessDayLine3(long lLastCalculatedDate); // 用于测试
+	void ProcessDayLine2(); // 用于测试
+	void ProcessDayLine3(); // 用于测试
 	void CalculateNewHighHigher(int period = 90);
 	void CalculateNewLowLower(int period = 90);
 

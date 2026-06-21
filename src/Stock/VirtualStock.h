@@ -136,17 +136,17 @@ public:
 		ASSERT(0);
 		return false;
 	}
-	virtual void SetDayLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
+	virtual void SetDayLineLoaded(const bool) noexcept { ASSERT(0); }
 	virtual bool IsWeekLineLoaded() const noexcept {
 		ASSERT(0);
 		return false;
 	}
-	virtual void SetWeekLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
+	virtual void SetWeekLineLoaded(const bool) noexcept { ASSERT(0); }
 	virtual bool IsMonthLineLoaded() const noexcept {
 		ASSERT(0);
 		return false;
 	}
-	virtual void SetMonthLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
+	virtual void SetMonthLineLoaded(const bool) noexcept { ASSERT(0); }
 
 	void SetSelected(bool flag) noexcept { m_bSelected = flag; }
 	bool IsSelected() const noexcept { return m_bSelected; }

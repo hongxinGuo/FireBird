@@ -123,6 +123,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		}
 		const string strTotalMessage = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=" + strStockCode + ",day," + sStartDate + "," + sEndDate + m_strSuffix;
 		product = make_shared<CProductTengxunDayLine>();
+		product->SetInquiringSymbol(pStock->GetSymbol());
 		product->SetIndex(lStockIndex);
 		product->SetInquiryFunction(strTotalMessage);
 		vProduct.push_back(product);
@@ -151,10 +152,10 @@ void CTengxunDayLineDataSource::CreateCurrentInquireString() {
 }
 
 void CTengxunDayLineDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 5000;
-	m_internetOption.option_receive_timeout = 5000;
-	m_internetOption.option_data_receive_timeout = 5000;
-	m_internetOption.option_send_timeout = 500;
+	m_internetOption.option_connect_timeout = 10000;
+	m_internetOption.option_receive_timeout = 30000;
+	m_internetOption.option_data_receive_timeout = 30000;
+	m_internetOption.option_send_timeout = 5000;
 	m_internetOption.option_connect_retries = 1;
 }
 

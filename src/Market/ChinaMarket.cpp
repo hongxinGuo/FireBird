@@ -207,7 +207,7 @@ int CChinaMarket::ProcessTask() {
 			break;
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
 			if (gl_dataContainerChinaStock.IsUpdateDayLine()) {
-				EnableDayLineDataSource();
+				if (!gl_pTengxunDayLineDataSource->IsEnable()) EnableDayLineDataSource();
 			}
 			TaskProcessAndSaveDayLine();
 			break;
@@ -844,16 +844,15 @@ void CChinaMarket::TaskProcessAndSaveDayLine() {
 	});
 
 	if (!IsSavingDayLineDBTaskFinished()) {// 当尚未更新完日线历史数据时
-		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 0min, 10s));
+		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 	}
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandle>* pvData) {
+bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, const vector<CVirtualHistoryCandle>* pvData) {
 	vector<string> vectorStockCode;
 
 	for (auto& pData : *pvData) {
-		string strStockSymbol = pData.GetStockSymbol();
-		vectorStockCode.push_back(strStockSymbol);
+		vectorStockCode.push_back(pData.GetStockSymbol());
 	}
 	setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
 

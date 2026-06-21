@@ -71,20 +71,20 @@ extern map<long, string> gl_mapMarketMapIndex;
 class CMarketTask {
 public:
 	CMarketTask();
-	CMarketTask(long lType, chrono::local_seconds lTime);
+	CMarketTask(long lType, chrono::local_seconds time);
 	~CMarketTask() = default;
 
-	chrono::local_seconds GetTime() const { return m_tpTime; }
-	void SetTime(const chrono::hh_mm_ss<chrono::seconds>& lTime) { m_tpTime = toLocalTime(lTime); }
-	void SetTime(long lTime) { m_tpTime = toLocalTime(lTime); }
-	void SetTime(chrono::local_seconds ls) { m_tpTime = ls; }
+	chrono::local_seconds GetTime() const { return m_time; }
+	void SetTime(const chrono::hh_mm_ss<chrono::seconds>& hhmmss) { m_time = toLocalTime(hhmmss); }
+	void SetTime(long lTime) { m_time = toLocalTime(lTime); }
+	void SetTime(chrono::local_seconds ls) { m_time = ls; }
 
 	long GetType() const { return m_lType; }
 	void SetType(const long lType) { m_lType = lType; }
 
 protected:
 	long m_lType{ 0 }; // 枚举型任务号
-	chrono::local_seconds m_tpTime; // Note 使用此变量取代HHMMSS制式的m_lTime。
+	chrono::local_seconds m_time;
 };
 
 using CMarketTaskPtr = shared_ptr<CMarketTask>;

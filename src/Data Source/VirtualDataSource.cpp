@@ -81,6 +81,7 @@ void CVirtualDataSource::InquireData() {
 	for (auto& pWebData : vResults) {
 		auto p = pWebData.get(); // 在这里等待所有的线程执行完毕
 		if (p != nullptr) { // 抛弃无效数据，空数据的话要保存
+			p->SetStockCode(m_pCurrentProduct->GetInquiringSymbol());
 			sm_lTotalByteRead += p->GetBufferLength();
 			pvWebData->push_back(p);
 		}

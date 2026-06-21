@@ -63,6 +63,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 			db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter));
 		}
 	}
+
 	for (auto& p : *m_pvFinancialState) {
 		db(sqlpp::insert_into(t).set(
 			t.Symbol = m_strSymbol,
@@ -489,7 +490,7 @@ void CTiingoStock::ProcessDayLine() {
 	CalculateNewHighHigher();
 }
 
-void CTiingoStock::ProcessDayLine2(long lLastCalculatedDate) {
+void CTiingoStock::ProcessDayLine2() {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 	}
@@ -511,7 +512,7 @@ void CTiingoStock::ProcessDayLine2(long lLastCalculatedDate) {
 	SetUpdate52WeekHighLowDB(true);
 }
 
-void CTiingoStock::ProcessDayLine3(long lLastCalculatedDate) {
+void CTiingoStock::ProcessDayLine3() {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 	}

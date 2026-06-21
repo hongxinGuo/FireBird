@@ -40,7 +40,7 @@ public:
 	bool ConnectAndSendMessage(const vectorString& vSymbol);
 	void Disconnect();
 
-	virtual bool ParseWebSocketData(shared_ptr<string> pData) { return true; }
+	virtual bool ParseWebSocketData(shared_ptr<string>) { return true; }
 
 protected:
 	virtual void Connect() { ASSERT(false); }

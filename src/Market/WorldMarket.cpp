@@ -28,11 +28,14 @@ namespace {
 		size_t iTotalDataSize = 0;
 		for (size_t i = 0; i < total; i++) {
 			const auto pString = pWebSocket->PopData();
-			std::string strMessage = prefix;
-			strMessage += *pString;
-			gl_systemMessage.PushWebSocketInfoMessage(strMessage);
-			iTotalDataSize += pString->size();
-			(pWebSocket->ParseWebSocketData)(pString);
+			if (!pString) break;
+			if (!pString->empty()) {
+				std::string strMessage = prefix;
+				strMessage += *pString;
+				gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+				iTotalDataSize += pString->size();
+				pWebSocket->ParseWebSocketData(pString);
+			}
 		}
 		setProcessedFunc(iTotalDataSize);
 	}

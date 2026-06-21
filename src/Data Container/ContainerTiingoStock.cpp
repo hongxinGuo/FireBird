@@ -283,7 +283,6 @@ void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 void CContainerTiingoStock::DeleteDayLine(chrono::local_days date) {
 	using namespace StockMarket;
 	const auto& t = TiingoStockDayline{};
-
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
@@ -389,7 +388,7 @@ void CContainerTiingoStock::TaskCalculate() {
 		if (pStock->IsEnough52WeekLow()) {
 			fFound = true;
 		}
-		pStock->m_v52WeekLowDate.clear(); //Note 直到这里才清空
+		pStock->m_v52WeekLowDate.clear(); // 直到这里才清空
 		if (fFound) vPos.push_back(index); // vPos中存储找到的位置。
 	}
 
@@ -437,7 +436,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 			if (pStock->IsEnough52WeekLow()) {
 				fFound = true;
 			}
-			pStock->m_v52WeekLowDate.clear(); //Note 直到这里才清空
+			pStock->m_v52WeekLowDate.clear(); //直到这里才清空
 			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 			gl_BackgroundWorkingThread.release();
 			if (fFound) return index;
@@ -518,13 +517,12 @@ void CContainerTiingoStock::TaskProcessTodayDayLine() {
 	gl_pWorldMarket->ResetNewHighHigher();
 
 	auto lSize = Size();
-	auto lastCalculatedDate = gl_systemConfiguration.GetTiingoStockDayLineProcessedDate();
 	vector<result<void>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
 			gl_BackgroundWorkingThread.acquire();
-			auto result = gl_runtime.thread_executor()->submit([pStock, lastCalculatedDate] {
+			auto result = gl_runtime.thread_executor()->submit([pStock] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				if (!gl_systemConfiguration.IsExitingSystem()) {
 					pStock->ProcessDayLine();
