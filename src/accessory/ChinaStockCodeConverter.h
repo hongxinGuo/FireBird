@@ -22,3 +22,5 @@ using std::string;
 [[nodiscard]] string XferStandardToSina(const string& strStandard);
 [[nodiscard]] string XferStandardToNetease(const string& strStandard);
 [[nodiscard]] inline string XferStandardToTengxun(const string& strStandardCode) { return XferStandardToSina(strStandardCode); }
+[[nodiscard]] string XferStandardToEastmoney(const string& strStandardCode);
+[[nodiscard]] string XferEastmoneyToStandard(const string& strEastmoneyCode);

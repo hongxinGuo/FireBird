@@ -506,4 +506,10 @@ namespace FireBirdTest {
 		// just above 1M -> M branch
 		EXPECT_EQ(FormatToMK(static_cast<int64_t>(1024) * 1024 + 1), "1M");
 	}
+
+	TEST_F(CTimeConvertTest, TestToFormattedDateString) {
+		EXPECT_EQ(toFormattedDateString(12345678), "12345678");
+		EXPECT_EQ(toFormattedDateString(20200101), "20200101");
+		EXPECT_EQ(toFormattedDateString(19990131), "19990131");
+	}
 }

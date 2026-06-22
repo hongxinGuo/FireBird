@@ -61,8 +61,6 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 		p->AppendDayLine(pData);
 	}
 	gl_qDayLine.enqueue(p);
-
-	gl_dataContainerChinaStock.GetStock(strStockSymbol)->SetUpdateDayLine(false); // 只有申请到数据后才设置标识
 }
 
 void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLine>& vDayLine) {

@@ -25,6 +25,7 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+#include "EastmoneyDayLineDataSource.h"
 #include "TimeConvert.h"
 
 #include"Initialization.h"
@@ -96,6 +97,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_TIINGO_DOWNLOAD_ONE_YEAR_DAYLINE, &CMainFrame::OnTiingoDownloadOneYearDayline)
 	ON_COMMAND(ID_BUILD_CHINA_STOCK_ONE_YEAR_DAYLINE, &CMainFrame::OnBuildChinaStockOneYearDayline)
 	ON_COMMAND(ID_BUILD_CHINA_MARKET_ALL_STOCK_DAYLINE, &CMainFrame::OnBuildChinaMarketAllStockDayline)
+	ON_COMMAND(ID_USING_EASTMONEY_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingEastmoneyDaylineDataServer)
+	ON_UPDATE_COMMAND_UI(ID_USING_EASTMONEY_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingEastmoneyDaylineDataServer)
 END_MESSAGE_MAP()
 
 namespace {
@@ -951,6 +954,7 @@ void CMainFrame::OnUsingNeteaseDayLineDataServer() {
 	gl_systemConfiguration.SetChinaMarketDayLineServer(NeteaseDayLine_);
 	gl_pTengxunDayLineDataSource->Enable(true);
 	gl_pNeteaseDayLineDataSource->Enable(false);
+	gl_pEastmoneyDayLineDataSource->Enable(false);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI) {
@@ -966,11 +970,28 @@ void CMainFrame::OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI) {
 void CMainFrame::OnUsingTengxunDayLineDataServer() {
 	gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
 	gl_pTengxunDayLineDataSource->Enable(false);
+	gl_pEastmoneyDayLineDataSource->Enable(false);
 	gl_pNeteaseDayLineDataSource->Enable(true);
 }
 
 void CMainFrame::OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI) {
 	if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
+}
+
+void CMainFrame::OnUsingEastmoneyDaylineDataServer() {
+	gl_systemConfiguration.SetChinaMarketDayLineServer(EastmoneyDayLine_);
+	gl_pTengxunDayLineDataSource->Enable(false);
+	gl_pEastmoneyDayLineDataSource->Enable(true);
+	gl_pNeteaseDayLineDataSource->Enable(false);
+}
+
+void CMainFrame::OnUpdateUsingEastmoneyDaylineDataServer(CCmdUI* pCmdUI) {
+	if (gl_systemConfiguration.IsUsingEastmoneyDayLineServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {

@@ -8,6 +8,7 @@
 #include"ChinaMarket.h"
 
 #include "CharSetTransfer.h"
+#include "EastmoneyDayLineDataSource.h"
 #include "InfoReport.h"
 #include "NeteaseDayLineDataSource.h"
 
@@ -206,9 +207,6 @@ int CChinaMarket::ProcessTask() {
 			TaskUpdateStockSection();
 			break;
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
-			if (gl_dataContainerChinaStock.IsUpdateDayLine()) {
-				if (!gl_pTengxunDayLineDataSource->IsEnable()) EnableDayLineDataSource();
-			}
 			TaskProcessAndSaveDayLine();
 			break;
 		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__:
@@ -739,6 +737,10 @@ long long CChinaMarket::GetWebRealTimeDataErrorCode() {
 		break;
 	}
 	return errorCode;
+}
+
+bool CChinaMarket::IsDayLineDataSourceEnable() {
+	return gl_pTengxunDayLineDataSource->IsEnable() || gl_pEastmoneyDayLineDataSource->IsEnable() || gl_pNeteaseDayLineDataSource->IsEnable();
 }
 
 bool CChinaMarket::IsWebDayLineDataError() {

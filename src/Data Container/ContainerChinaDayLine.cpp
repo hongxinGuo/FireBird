@@ -5,11 +5,11 @@
 #include "ContainerChinaDayLine.h"
 
 namespace {
-	CChinaStock s_stock;
+	CChinaStock s_stockContainerChinaDayLine;
 }
 
 CContainerChinaDayLine::CContainerChinaDayLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = s_stockContainerChinaDayLine.GetRatio();
 }
 
 void CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {

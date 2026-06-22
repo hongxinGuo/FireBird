@@ -57,6 +57,7 @@ public:
 	long long GetDayLineHTTPStatus();
 	bool IsWebReaTimeDataError();
 	long long GetWebRealTimeDataErrorCode();
+	bool IsDayLineDataSourceEnable();
 	bool IsWebDayLineDataError();
 	long long GetWebDayLineDataErrorCode();
 

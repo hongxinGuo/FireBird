@@ -3,11 +3,11 @@
 #include "ContainerChinaWeekLine.h"
 
 namespace {
-	CChinaStock s_stock;
+	CChinaStock s_stockContainerChinaWeekLine;
 }
 
 CContainerChinaWeekLine::CContainerChinaWeekLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = s_stockContainerChinaWeekLine.GetRatio();
 }
 
 void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLine>& vWeekLine) {

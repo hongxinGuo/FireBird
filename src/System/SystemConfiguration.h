@@ -19,7 +19,8 @@ enum EChinaMarketDataSourceServer : int {
 	NeteaseRealTime_ = 1,
 	TengxunRealTime_ = 2,
 	NeteaseDayLine_ = 3,
-	TengxunDayLine_ = 4
+	TengxunDayLine_ = 4,
+	EastmoneyDayLine_ = 5
 };
 
 class CSystemConfiguration final {
@@ -120,6 +121,7 @@ public:
 	[[nodiscard]] bool IsUsingTengxunRTServer() const noexcept { return m_iChinaMarketRealtimeServer == TengxunRealTime_; }
 	[[nodiscard]] bool IsUsingNeteaseDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == NeteaseDayLine_; }
 	[[nodiscard]] bool IsUsingTengxunDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == TengxunDayLine_; }
+	[[nodiscard]] bool IsUsingEastmoneyDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == EastmoneyDayLine_; }
 
 	void SetCurrentStock(const string& stock) noexcept { m_strCurrentStock = stock; }
 	string GetCurrentStock() const noexcept { return m_strCurrentStock; }

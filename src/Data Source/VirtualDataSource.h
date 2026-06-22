@@ -280,6 +280,7 @@ protected:
 	atomic_bool m_fInquiring{ false };
 	atomic_bool m_fEnable{ true }; // 允许执行标识
 	atomic_bool m_bWebBusy{ false };
+	bool m_bConcurrentForbid{ false }; // 禁止使用并行申请模式。
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;

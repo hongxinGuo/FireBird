@@ -66,3 +66,4 @@ inline unsigned toFormattedTime(chrono::local_seconds ls) { return toFormattedTi
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间，采用UTC（GMT）标准时间
 inline string ConvertDateToTimeStamp(chrono::local_days date) { return std::format("{:%F}", date); }
+string toFormattedDateString(long lDate);

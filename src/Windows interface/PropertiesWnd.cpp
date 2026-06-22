@@ -430,7 +430,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		s = std::format("HTTP: {:d}", gl_pChinaMarket->GetHTTPStatus());
 	}
 	m_pPropChinaMarketWebRealTimeStatus->SetValue(s);
-	if (!gl_pTengxunDayLineDataSource->IsEnable()) {
+	if (!gl_pChinaMarket->IsDayLineDataSourceEnable()) {
 		s = "DayLine Server disabled";
 	}
 	else if (gl_pChinaMarket->IsWebDayLineDataError()) {

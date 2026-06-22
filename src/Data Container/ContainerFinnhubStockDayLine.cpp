@@ -3,11 +3,11 @@
 #include "ContainerFinnhubStockDayLine.h"
 
 namespace {
-	CFinnhubStock s_stock;
+	CFinnhubStock s_stockContainerFinnhubStockDayLine;
 }
 
 CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = s_stockContainerFinnhubStockDayLine.GetRatio();
 }
 
 void CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {

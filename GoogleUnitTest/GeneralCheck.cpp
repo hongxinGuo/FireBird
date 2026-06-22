@@ -12,6 +12,7 @@
 #include "GeneralCheck.h"
 
 #include "AccessoryDataSource.h"
+#include "EastmoneyDayLineDataSource.h"
 #include "InaccessibleSymbol.h"
 #include "NeteaseDayLineDataSource.h"
 #include "NeteaseRTDataSource.h"
@@ -168,6 +169,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pNeteaseRTDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pTengxunRTDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pTengxunDayLineDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTengxunDayLineDataSource->InquiryQueueSize(), 0);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebError());
@@ -178,6 +180,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsWebError());
 		EXPECT_FALSE(gl_pTengxunRTDataSource->IsWebError());
 		EXPECT_FALSE(gl_pTengxunDayLineDataSource->IsWebError());
+		EXPECT_FALSE(gl_pEastmoneyDayLineDataSource->IsWebError());
 
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoDayLine());

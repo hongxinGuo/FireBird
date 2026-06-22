@@ -310,7 +310,7 @@ bool CTiingoStock::IsDayLineDuplicated() noexcept {
 }
 
 void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
-	ASSERT(!m_dataDayLine.Empty());
+	if (m_dataDayLine.Empty()) return;
 	using namespace StockMarket;
 	const auto& t = TiingoStockDayline{};
 	auto db = gl_dbStockMarket.get();

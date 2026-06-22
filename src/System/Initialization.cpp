@@ -13,6 +13,7 @@
 #include"TiingoDataSource.h"
 
 #include"ChinaMarket.h"
+#include "EastmoneyDayLineDataSource.h"
 #include "InaccessibleSymbol.h"
 #include "FinnhubInquiryType.h"
 #include"WorldMarket.h"
@@ -67,6 +68,7 @@ namespace {
 		gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
 		gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
 		gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
+		gl_pEastmoneyDayLineDataSource = make_shared<CEastmoneyDayLineDataSource>();
 
 		// 此四个要在gl_pWorldMarket前生成
 		ASSERT(gl_pWorldMarket == nullptr);
@@ -96,6 +98,7 @@ namespace {
 		ASSERT(gl_pNeteaseRTDataSource != nullptr);
 		ASSERT(gl_pNeteaseDayLineDataSource != nullptr);
 		ASSERT(gl_pTengxunDayLineDataSource != nullptr);
+		ASSERT(gl_pEastmoneyDayLineDataSource != nullptr);
 
 		ASSERT(gl_pFinnhubWebSocket != nullptr);
 		ASSERT(gl_pTiingoIEXWebSocket != nullptr);
@@ -190,6 +193,7 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pEastmoneyDayLineDataSource);
 
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_:	//使用新浪实时数据服务器
@@ -207,15 +211,29 @@ void AssignDataSourceAndWebInquiryToMarket() {
 		break;
 	}
 
-	if (gl_systemConfiguration.GetChinaMarketDayLineServer() == 0) {
+	switch (gl_systemConfiguration.GetChinaMarketDayLineServer()) {
+	case NeteaseDayLine_:
 		//使用网易日线数据服务器
 		gl_pNeteaseDayLineDataSource->Enable(true);
 		gl_pTengxunDayLineDataSource->Enable(false);
-	}
-	else {
+		gl_pEastmoneyDayLineDataSource->Enable(false);
+		break;
+	case TengxunDayLine_:
 		//使用腾讯日线数据服务器
 		gl_pNeteaseDayLineDataSource->Enable(false);
 		gl_pTengxunDayLineDataSource->Enable(true);
+		gl_pEastmoneyDayLineDataSource->Enable(false);
+		break;
+	case EastmoneyDayLine_:
+		gl_pEastmoneyDayLineDataSource->Enable(true);
+		gl_pTengxunDayLineDataSource->Enable(false);
+		gl_pNeteaseDayLineDataSource->Enable(false);
+		break;
+	default:
+		gl_pEastmoneyDayLineDataSource->Enable(true);
+		gl_pTengxunDayLineDataSource->Enable(false);
+		gl_pNeteaseDayLineDataSource->Enable(false);
+		break;
 	}
 
 	// world market's data source

@@ -3,11 +3,11 @@
 #include "ContainerTiingoStockWeekLine.h"
 
 namespace {
-	CTiingoStock s_stock;
+	CTiingoStock s_stockContainerTiingoStockWeekLine;
 }
 
 CContainerTiingoStockWeekLine::CContainerTiingoStockWeekLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = s_stockContainerTiingoStockWeekLine.GetRatio();
 }
 
 void CContainerTiingoStockWeekLine::UpdateData(const CTiingoCandleLinesPtr& pvTempWeekLine) {

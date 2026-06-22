@@ -31,6 +31,7 @@
 
 #undef max
 #include "AlphaVantageDataSource.h"
+#include "EastmoneyDayLineDataSource.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
@@ -86,6 +87,8 @@ CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
 CNeteaseRTDataSourcePtr gl_pNeteaseRTDataSource = nullptr;
 CNeteaseDayLineDataSourcePtr gl_pNeteaseDayLineDataSource = nullptr;
 CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;
+CEastmoneyDayLineDataSourcePtr gl_pEastmoneyDayLineDataSource = nullptr;
+
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
 CAlphaVantageDataSourcePtr gl_pAlphaVantageDataSource = nullptr;

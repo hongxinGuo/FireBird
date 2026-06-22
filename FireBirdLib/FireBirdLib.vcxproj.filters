@@ -714,6 +714,12 @@
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Source\EastMoneyDayLineDataSource.h">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductEastmoneyDayline.h">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1183,6 +1189,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorBoll.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\EastMoneyDayLineDataSource.cpp">
+      <Filter>源文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductEastmoneyDayline.cpp">
+      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -234,14 +234,17 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		if (sTemp == "netease") {
-			m_iChinaMarketDayLineServer = TengxunDayLine_; //Note 网易日线数据服务器目前不可用，使用腾讯服务器代替
+			m_iChinaMarketDayLineServer = EastmoneyDayLine_; //Note 网易日线数据服务器目前不可用，使用东方财富服务器代替
 			m_fUpdateDB = true;
 		}
 		else if (sTemp == "tengxun") {
 			m_iChinaMarketDayLineServer = TengxunDayLine_;
 		}
-		else {// 非法服务器名称，使用默认Tengxun服务器
-			m_iChinaMarketDayLineServer = TengxunDayLine_;
+		else if (sTemp == "eastmoney") {
+			m_iChinaMarketDayLineServer = EastmoneyDayLine_;
+		}
+		else {// 非法服务器名称，使用默认东方财富服务器
+			m_iChinaMarketDayLineServer = EastmoneyDayLine_;
 			m_fUpdateDB = true;
 		}
 	} catch (nlohmannJson::out_of_range&) {
@@ -507,13 +510,13 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 
 	// China market
 	switch (m_iChinaMarketRealtimeServer) {
-	case 0:
+	case SinaRealTime_:
 		jsonData["ChinaMarket"]["RealtimeServer"] = "sina";
 		break;
-	case 1:
+	case NeteaseRealTime_:
 		jsonData["ChinaMarket"]["RealtimeServer"] = "netease";
 		break;
-	case 2:
+	case TengxunRealTime_:
 		jsonData["ChinaMarket"]["RealtimeServer"] = "tengxun";
 		break;
 	default:
@@ -527,8 +530,10 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	case TengxunDayLine_:
 		jsonData["ChinaMarket"]["DayLineServer"] = "tengxun";
 		break;
+	case EastmoneyDayLine_:
+		jsonData["ChinaMarket"]["DayLineServer"] = "eastmoney";
 	default:
-		jsonData["ChinaMarket"]["DayLineServer"] = "tengxun";
+		jsonData["ChinaMarket"]["DayLineServer"] = "eastmoney";
 		break;
 	}
 	jsonData["ChinaMarket"]["NumberOfRTDataSource"] = m_iNumberOfRTDataSource;

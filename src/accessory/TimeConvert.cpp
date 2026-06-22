@@ -65,3 +65,6 @@ string FormatToMK(int64_t iNumber) {
 
 	return s;
 }
+string toFormattedDateString(long lDate) {
+	return std::format("{:8d}", lDate);
+}

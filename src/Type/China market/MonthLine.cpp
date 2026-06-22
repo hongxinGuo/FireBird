@@ -3,9 +3,9 @@
 #include"MonthLine.h"
 
 namespace {
-	CChinaStock s_stock;
+	CChinaStock s_stockMonthLine;
 }
 
 CMonthLine::CMonthLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = s_stockMonthLine.GetRatio();
 }

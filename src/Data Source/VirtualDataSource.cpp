@@ -46,6 +46,10 @@ void CVirtualDataSource::Run(const chrono::local_seconds& lMarketTime) {
 		});
 }
 
+namespace {
+	binary_semaphore s_InquiryWebData{ 1 };
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 数据的申请和处理皆位于此处。
@@ -62,17 +66,25 @@ void CVirtualDataSource::InquireData() {
 	SPDLOG_ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
 	SPDLOG_ASSERT(IsInquiring());
 	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-
+	int i = 0;
 	vector<result<CWebDataPtr>> vResults;
 	while (HaveInquiry()) { // 一次申请可以有多个数据
 		GetCurrentProduct();
 		CreateCurrentInquireString();
+		if (m_bConcurrentForbid) {
+			Sleep(1000);
+			s_InquiryWebData.acquire();
+			TRACE("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol().c_str(), ++i);
+		}
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
 			auto pWebData = pEngine->GetWebData();
 			SetWebErrorCode(pEngine->GetErrorCode());
 			SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
 			if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
+			if (m_bConcurrentForbid) {
+				s_InquiryWebData.release();
+			}
 			return pWebData;
 		});
 		vResults.emplace_back(std::move(result));

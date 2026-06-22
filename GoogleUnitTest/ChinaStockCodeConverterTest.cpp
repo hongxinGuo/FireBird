@@ -148,4 +148,22 @@ namespace FireBirdTest {
 		EXPECT_THROW(string str = XferStandardToTengxun("000001.SA"), exception);
 		EXPECT_THROW(string str = XferStandardToTengxun("000001.AS"), exception);
 	}
+
+	TEST_F(StockCodeConverterTest, TestXferStandardToEastmoney) {
+		EXPECT_EQ(XferStandardToEastmoney("600001.SS"), "1.600001");
+		EXPECT_EQ(XferStandardToEastmoney("000001.SZ"), "0.000001");
+		EXPECT_THROW(string str = XferStandardToEastmoney("00001.SZ"), exception);
+		EXPECT_THROW(string str = XferStandardToEastmoney("00001.SS"), exception);
+		EXPECT_THROW(string str = XferStandardToEastmoney("000001.SA"), exception);
+		EXPECT_THROW(string str = XferStandardToEastmoney("000001.AS"), exception);
+	}
+
+	TEST_F(StockCodeConverterTest, TestXferEastmoneyToStandard) {
+		EXPECT_EQ(XferEastmoneyToStandard("1.600001"), "600001.SS");
+		EXPECT_EQ(XferEastmoneyToStandard("0.000001"), "000001.SZ");
+		EXPECT_THROW(string str = XferEastmoneyToStandard("1.60001"), exception);
+		EXPECT_THROW(string str = XferEastmoneyToStandard("0.00001"), exception);
+		EXPECT_THROW(string str = XferEastmoneyToStandard("2.000001"), exception);
+		EXPECT_THROW(string str = XferEastmoneyToStandard("3.000001"), exception);
+	}
 }

@@ -67,7 +67,6 @@ namespace FireBirdTest {
 		CDayLineWebDataPtr pTengxunDayLine;
 		gl_qDayLine.try_dequeue(pTengxunDayLine);
 		EXPECT_EQ(pTengxunDayLine->GetStockCode(), "600601.SS");
-		EXPECT_FALSE(gl_dataContainerChinaStock.GetStock("600601.SS")->IsUpdateDayLine()) << "此时标识清除了";
 
 		const auto vDayLine = pTengxunDayLine->GetProcessedDayLine();
 		EXPECT_EQ(vDayLine.size(), 4) << "两个数据各有两个日期的日线数据";

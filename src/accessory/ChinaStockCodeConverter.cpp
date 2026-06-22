@@ -111,3 +111,30 @@ string XferStandardToNetease(const string& strStandard) {
 	}
 	throw exception("XferSinaToStandard bad header");
 }
+
+string XferStandardToEastmoney(const string& strStandardCode) {
+	if (strStandardCode.length() != 9) throw exception("XferStandardToEastmoney bad format");
+	const string strSymbol = strStandardCode.substr(0, 6);
+	if (strStandardCode.at(strStandardCode.length() - 2) == 'S') {
+		switch (strStandardCode.at(strStandardCode.length() - 1)) {
+		case 'S':
+			return "1." + strSymbol;
+		case 'Z':
+			return "0." + strSymbol;
+		default: ;
+		}
+	}
+	throw exception("XferStandardToEastmoney bad header");
+}
+
+string XferEastmoneyToStandard(const string& strEastmoneyCode) {
+	if (strEastmoneyCode.length() != 8) throw exception("XferEastmoneyToStandard bad format");
+	const string strSymbol = strEastmoneyCode.substr(2, 6);
+	if (strEastmoneyCode.at(0) == '1') {
+		return strSymbol + ".SS";
+	}
+	else if (strEastmoneyCode.at(0) == '0') {
+		return strSymbol + ".SZ";
+	}
+	throw exception("XferEastmoneyToStandard bad format");
+}

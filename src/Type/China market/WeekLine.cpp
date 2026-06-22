@@ -4,11 +4,11 @@
 #include "WeekLine.h"
 
 namespace {
-	CChinaStock s_stock;
+	CChinaStock s_stockWeekLine;
 }
 
 CWeekLine::CWeekLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = s_stockWeekLine.GetRatio();
 }
 
 bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandle* pDayLine) {

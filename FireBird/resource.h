@@ -195,6 +195,9 @@
 #define ID_SHOW_AV60                    32974
 #define ID_SHOW_AV120                   32975
 #define ID_SHOW_AV250                   32976
+#define ID_32977                        32977
+#define ID_USING_EASTMONEY_DAYLINE_SERVER 32978
+#define ID_USING_EASTMONEY_DAYLINE_DATA_SERVER 32979
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -238,7 +241,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32977
+#define _APS_NEXT_COMMAND_VALUE         32980
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

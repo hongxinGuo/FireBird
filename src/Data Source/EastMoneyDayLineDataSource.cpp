@@ -1,35 +1,38 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 腾讯日线历史数据。
+/// 东方财富日线历史数据。
 ///
-/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
+/// 东方财富日线服务器一次只能发送最多1000个数据，超过1000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
 /// product中存储的是处理后的完整申请字符串。
-/// 腾讯日线的申请格式为：https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sz000003,day,2002-12-01,2009-01-23,2000,,
-///
+/// 日线的申请格式为：https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.601872&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=20250101&lmt=1000
+/// 
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
 #include"ChinaStockCodeConverter.h"
-#include "TengxunDayLineDataSource.h"
-#include"ProductTengxunDayLine.h"
+#include "EastmoneyDayLineDataSource.h"
+#include"ProductEastmoneyDayLine.h"
 
 #include"ChinaMarket.h"
 #include "spdlog_assert.h"
 #include "TimeConvert.h"
 #include "WebData.h"
 
-CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
+CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
-	m_strInquiryFunction = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=";
-	m_strSuffix = ",2000,,";
+	m_strInquiryFunction = "";
+	m_strParam = "";
+	m_strSuffix = "";
 	m_iMaxNormalInquireTime = 500;
 
-	CTengxunDayLineDataSource::ConfigureInternetOption();
-	CTengxunDayLineDataSource::Reset();
+	CEastmoneyDayLineDataSource::ConfigureInternetOption();
+	CEastmoneyDayLineDataSource::Reset();
+
+	m_bConcurrentForbid = true; //Note:东方财富日线服务器对申请频率有限制，且不允许并发申请。
 }
 
-bool CTengxunDayLineDataSource::Reset() {
+bool CEastmoneyDayLineDataSource::Reset() {
 	m_fUpdateDayLine = true;
 	return true;
 }
@@ -41,12 +44,18 @@ bool CTengxunDayLineDataSource::Reset() {
 // 由于可能会抓取全部5000个左右日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
 // 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
 //
-// 腾讯日线数据每次最多提供2000个。当所需数据超过两千个时，需要分次提取。
+// 东方财富日线数据每次最多提供1000个。当所需数据超过一千个时，需要分次提取。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
-	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯日线数据。
-	//if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
+bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请日线数据。
+	const auto llTickCount = GetTickCount();
+	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(10000)) return false;
+	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
+	if (!IsInquiring()) {
+		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
+	}
+
 	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
 		if (!IsInquiring()) {
 			Inquire();
@@ -56,7 +65,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const chrono::local_secon
 	return false;
 }
 
-bool CTengxunDayLineDataSource::Inquire() {
+bool CEastmoneyDayLineDataSource::Inquire() {
 	const auto lStockSetSize = gl_dataContainerChinaStock.Size();
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
@@ -96,46 +105,48 @@ bool CTengxunDayLineDataSource::Inquire() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
+/// 东方财富日线服务器一次只能发送最多1000个数据，超过1000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
 /// product中存储的是处理后的完整申请字符串。
-/// 腾讯日线的申请格式为：https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sz000003,day,2002-12-01,2009-01-23,2000,,
-//
+/// 腾讯日线的申请格式为：https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.601872&fields1=f1,f2,f3,f4,f5,f6
+///     &fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=20250101&lmt=1000
+/// 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
+vector<CVirtualWebProductPtr> CEastmoneyDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
 	//long lStartDate = 20100101; // 强迫生成多次申请（测试用）
-	long lStartDate = toFormattedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	long lStartDate = toFormattedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 东方财富日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = toFormattedDate(gl_pChinaMarket->GetMarketDate());
 	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;
 	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
 	vector<CVirtualWebProductPtr> vProduct;
 	long l = 0;
 	int iCounter = 0;
-	const string strStockCode = XferStandardToTengxun(pStock->GetSymbol());
-	shared_ptr<CProductTengxunDayLine> product = nullptr;
+	int step = 3;
+	const string strStockCode = XferStandardToEastmoney(pStock->GetSymbol());
+	shared_ptr<CProductEastmoneyDayLine> product = nullptr;
 	do {
-		string sStartDate = ConvertDateToTimeStamp(toLocalDays(lStartDate));
 		string sEndDate;
 		const long year = lStartDate / 10000;
-		if ((l + 7) > yearDiffer) {
-			sEndDate = ConvertDateToTimeStamp(toLocalDays(lCurrentDate));
+		if (l + step > yearDiffer) {
+			sEndDate = toFormattedDateString(lCurrentDate);
 		}
 		else {
-			sEndDate = ConvertDateToTimeStamp(toLocalDays((year + 6) * 10000 + 1231)); // 第七年的最后一天
+			sEndDate = toFormattedDateString((year + step - 1) * 10000 + 1231); // 第三年的最后一天
 		}
-		const string strTotalMessage = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=" + strStockCode + ",day," + sStartDate + "," + sEndDate + m_strSuffix;
-		product = make_shared<CProductTengxunDayLine>();
+		const string strTotalMessage = "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=" + strStockCode
+		+ "&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=" + sEndDate + "&lmt=800";
+		product = make_shared<CProductEastmoneyDayLine>();
 		product->SetInquiringSymbol(pStock->GetSymbol());
 		product->SetIndex(lStockIndex);
 		product->SetInquiryFunction(strTotalMessage);
 		vProduct.push_back(product);
-		l += 7;
-		lStartDate = (year + 7) * 10000 + 101;
+		l += step;
+		lStartDate = (year + step) * 10000 + 101;
 		iCounter++;
 	} while (l <= yearDiffer);
 
 	if (iCounter > 0) {
 		for (auto& p : vProduct) {
-			dynamic_pointer_cast<CProductTengxunDayLine>(p)->SetInquiryNumber(iCounter);
+			dynamic_pointer_cast<CProductEastmoneyDayLine>(p)->SetInquiryNumber(iCounter);
 		}
 	}
 
@@ -148,11 +159,11 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CTengxunDayLineDataSource::CreateCurrentInquireString() {
+void CEastmoneyDayLineDataSource::CreateCurrentInquireString() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
 }
 
-void CTengxunDayLineDataSource::ConfigureInternetOption() {
+void CEastmoneyDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_timeout = 10000;
 	m_internetOption.option_receive_timeout = 30000;
 	m_internetOption.option_data_receive_timeout = 30000;
@@ -160,27 +171,27 @@ void CTengxunDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
+void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误
 	switch (m_dwHTTPStatusCode) {
 	case 501://请求功能尚未实现，实际是服务器正处于维护状态
-		TRACE(_T("关闭腾讯日线服务\n"));
+		TRACE(_T("关闭东方财富日线服务\n"));
 		Enable(false); // 先暂停
 		break;
 	case 200:
 		// everything is OK
 		break;
 	default: // something wrong,
-		TRACE(_T("关闭腾讯日线服务\n"));
+		TRACE(_T("关闭东方财富日线服务\n"));
 		Enable(false); // 先暂停
 		break;
 	}
 }
 
-void CTengxunDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
+void CEastmoneyDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 
@@ -188,6 +199,6 @@ void CTengxunDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
 /// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
 /// </summary>
 /// <param name="strStockCode"></param>
-void CTengxunDayLineDataSource::SetDownLoadingStockCode(const string& strStockCode) {
+void CEastmoneyDayLineDataSource::SetDownLoadingStockCode(const string& strStockCode) {
 	m_strDownLoadingStockCode = strStockCode;
 }
