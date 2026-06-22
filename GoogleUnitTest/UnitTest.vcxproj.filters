@@ -597,6 +597,9 @@
     <ClCompile Include="ContainerFinnhubCryptoTest.cpp">
       <Filter>Test源文件\Data Container\Finnhub</Filter>
     </ClCompile>
+    <ClCompile Include="ProductEastmoneyDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneralCheck.h">

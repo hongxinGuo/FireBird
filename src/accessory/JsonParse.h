@@ -13,8 +13,6 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
 CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strStockCode);
-CDayLineWebDataPtr ParseEastmoneyDayLine(const CWebDataPtr& pWebData);
-CDayLinesPtr ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode);
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived);
 
 //bool CreateJsonWithNlohmann(nlohmannJson& js, string& str, long lBeginPos = 0, long lEndPos = 0);

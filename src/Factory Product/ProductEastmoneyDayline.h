@@ -20,13 +20,11 @@ public:
 	~CProductEastmoneyDayLine() override = default;
 
 	string CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr) override { ASSERT(false); } // 腾讯日线不使用此函数
-	void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr) override; // 腾讯日线不使用此函数
+	CDayLinesPtr ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode);
 
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
 	int GetInquiryNumber() const { return m_iInquiryNumber; }
-
-	void CheckAndPrepareDayLine(vector<CDayLine>& vDayLine);
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

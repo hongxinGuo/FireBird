@@ -10,6 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
+#include <random>
+
 #include"ChinaStockCodeConverter.h"
 #include "EastmoneyDayLineDataSource.h"
 #include"ProductEastmoneyDayLine.h"
@@ -22,14 +24,13 @@
 CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = "";
+	m_strHeaders = "Referer:https://quote.eastmoney.com/\r\n";
 	m_strParam = "";
 	m_strSuffix = "";
 	m_iMaxNormalInquireTime = 500;
 
 	CEastmoneyDayLineDataSource::ConfigureInternetOption();
 	CEastmoneyDayLineDataSource::Reset();
-
-	m_bConcurrentForbid = true; //Note:东方财富日线服务器对申请频率有限制，且不允许并发申请。
 }
 
 bool CEastmoneyDayLineDataSource::Reset() {
@@ -44,20 +45,32 @@ bool CEastmoneyDayLineDataSource::Reset() {
 // 由于可能会抓取全部5000个左右日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
 // 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
 //
-// 东方财富日线数据每次最多提供1000个。当所需数据超过一千个时，需要分次提取。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+	static int s_iSleep = 0;
+	int startDuration = 3000;
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请日线数据。
+	std::random_device r;
+	// Choose a random mean between 1 and 6
+	std::default_random_engine e1(r());
+	std::uniform_int_distribution<int> uniform_dist(1, 4000);
+	int mean = uniform_dist(e1);
+	if (s_iSleep > 50) {
+		s_iSleep = 0;
+		m_PrevInquireTimePoint += chrono::milliseconds(200000 + mean * 500);
+	}
 	const auto llTickCount = GetTickCount();
-	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(10000)) return false;
+	int duration = startDuration + mean;
+	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(duration)) return false;
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {
 		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
 	}
 
-	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine()/* && gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min*/) {
 		if (!IsInquiring()) {
+			s_iSleep++;
 			Inquire();
 			return true;
 		}
@@ -84,11 +97,8 @@ bool CEastmoneyDayLineDataSource::Inquire() {
 			break;
 		}
 		if (fFound) {
-			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
-			SPDLOG_ASSERT(!vProduct.empty());
-			for (auto& product : vProduct) {
-				StoreInquiry(product);
-			}
+			const CVirtualProductWebDataPtr product = CreateProduct(pStock);
+			StoreInquiry(product);
 			SetDownLoadingStockCode(pStock->GetSymbol());
 			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());
 			pStock->SetUpdateDayLine(false);
@@ -105,52 +115,38 @@ bool CEastmoneyDayLineDataSource::Inquire() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-/// 东方财富日线服务器一次只能发送最多1000个数据，超过1000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
+/// 东方财富日线服务器申请信息的处理只能放在DataSource中处理，
 /// product中存储的是处理后的完整申请字符串。
-/// 腾讯日线的申请格式为：https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.601872&fields1=f1,f2,f3,f4,f5,f6
-///     &fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=20250101&lmt=1000
+/// 腾讯日线的申请格式为：https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=market.stockCode&fields1=f1,f2,f3,f4,f5,f6
+///     &fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=20250101&lmt=number
 /// 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-vector<CVirtualWebProductPtr> CEastmoneyDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
+CVirtualWebProductPtr CEastmoneyDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
 	//long lStartDate = 20100101; // 强迫生成多次申请（测试用）
-	long lStartDate = toFormattedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 东方财富日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
-	const long lCurrentDate = toFormattedDate(gl_pChinaMarket->GetMarketDate());
-	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;
+	chrono::local_days lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 东方财富日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	const chrono::local_days lCurrentDate = gl_pChinaMarket->GetMarketDate();
+	int differDays = (lCurrentDate - lStartDate).count();
 	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
-	vector<CVirtualWebProductPtr> vProduct;
-	long l = 0;
-	int iCounter = 0;
-	int step = 3;
 	const string strStockCode = XferStandardToEastmoney(pStock->GetSymbol());
 	shared_ptr<CProductEastmoneyDayLine> product = nullptr;
-	do {
-		string sEndDate;
-		const long year = lStartDate / 10000;
-		if (l + step > yearDiffer) {
-			sEndDate = toFormattedDateString(lCurrentDate);
-		}
-		else {
-			sEndDate = toFormattedDateString((year + step - 1) * 10000 + 1231); // 第三年的最后一天
-		}
-		const string strTotalMessage = "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=" + strStockCode
-		+ "&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=" + sEndDate + "&lmt=800";
-		product = make_shared<CProductEastmoneyDayLine>();
-		product->SetInquiringSymbol(pStock->GetSymbol());
-		product->SetIndex(lStockIndex);
-		product->SetInquiryFunction(strTotalMessage);
-		vProduct.push_back(product);
-		l += step;
-		lStartDate = (year + step) * 10000 + 101;
-		iCounter++;
-	} while (l <= yearDiffer);
-
-	if (iCounter > 0) {
-		for (auto& p : vProduct) {
-			dynamic_pointer_cast<CProductEastmoneyDayLine>(p)->SetInquiryNumber(iCounter);
-		}
+	string sLength;
+	if (differDays < 365) {
+		sLength = std::format("{:d}", differDays);
 	}
+	else {
+		sLength = "20000";
+	}
+	string sEndDate = toFormattedDateString(lCurrentDate);
+	const string strTotalMessage = "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=" + strStockCode
+	+ "&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=" + sEndDate + "&lmt=" + sLength;
+	product = make_shared<CProductEastmoneyDayLine>();
+	product->SetInquiringSymbol(pStock->GetSymbol());
+	product->SetIndex(lStockIndex);
+	product->SetInquiryFunction(strTotalMessage);
 
-	return vProduct;
+	dynamic_pointer_cast<CProductEastmoneyDayLine>(product)->SetInquiryNumber(1);
+
+	return product;
 }
 
 /////////////////////////////////////////////////////////////////////////////////

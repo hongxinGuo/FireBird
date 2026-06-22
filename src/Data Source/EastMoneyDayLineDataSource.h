@@ -23,7 +23,7 @@ public:
 	void UpdateStatus(const CWebDataPtr& pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
 	virtual bool Inquire();
-	vector<CVirtualWebProductPtr> CreateProduct(const CChinaStockPtr& pStock) const;
+	CVirtualWebProductPtr CreateProduct(const CChinaStockPtr& pStock) const;
 
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }

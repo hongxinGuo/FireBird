@@ -148,6 +148,7 @@
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="NeteaseRTDataParserTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
+    <ClCompile Include="ProductEastmoneyDayLineTest.cpp" />
     <ClCompile Include="ProductFinnbhubSECFilingsTest.cpp" />
     <ClCompile Include="ProductFinnhubMarketHolidayTest.cpp" />
     <ClCompile Include="ProductFinnhubMarketStatusTest.cpp" />

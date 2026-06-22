@@ -3,8 +3,56 @@
 #include "ProductEastmoneyDayLine.h"
 #include"ChinaMarket.h"
 
-#include"JsonParse.h"
 #include "EastmoneyDayLineDataSource.h"
+#include "JsonParse.h"
+#include"WebData.h"
+
+// Helper: parse one 东方财富 Kline line like:
+// "2024-12-31,6.29,6.18,6.32,6.17,483794,313479921.00,2.38,-1.75,-0.11,0.59"
+static bool ParseEastmoneyKlineLine(const std::string& line, CDayLine& outDayLine, long& lLastClose) {
+	// split by comma (fast, minimal dependencies)
+	std::vector<std::string_view> parts;
+	parts.reserve(12);
+	size_t start = 0;
+	while (start < line.size()) {
+		auto pos = line.find(',', start);
+		if (pos == std::string::npos) {
+			parts.emplace_back(line.data() + start, line.size() - start);
+			break;
+		}
+		parts.emplace_back(line.data() + start, pos - start);
+		start = pos + 1;
+	}
+	if (parts.size() < 7) return false; // minimal required fields
+
+	// 0: date (YYYY-MM-DD)
+	{
+		std::string tmp(parts[0]);
+		std::istringstream ss(tmp);
+		chrono::local_days ld;
+		ss >> chrono::parse("%F", ld);
+		outDayLine.SetDate(ld);
+	}
+
+	// Field mapping based on sample:
+	// 1: close, 2: open, 3: high, 4: low, 5: volume, 6: turnover/amount
+	// Prices in Eastmoney sample use 2 decimal digits -> use Str2Long(..., 2)
+	try {
+		outDayLine.SetOpen(Str2Long(parts[1], 3));
+		const long lClose = Str2Long(parts[2], 3);
+		outDayLine.SetClose(lClose);
+		lLastClose = lClose;
+		outDayLine.SetHigh(Str2Long(parts[3], 3));
+		outDayLine.SetLow(Str2Long(parts[4], 3));
+		// volume: use string form so existing SetVolume(string) (parsing) can handle formats
+		outDayLine.SetVolume(Str2Long(parts[5], 2));
+		// amount / turnover: keep as string -> SetAmount(string) will convert
+		outDayLine.SetAmount(Str2Long(parts[6], 2));
+	} catch (...) {
+		return false;
+	}
+	return true;
+}
 
 CProductEastmoneyDayLine::CProductEastmoneyDayLine() {
 	m_lCurrentStockPosition = 0;
@@ -47,66 +95,62 @@ string CProductEastmoneyDayLine::CreateMessage() {
 ///	 }
 /// }
 ///
-/// 东财富日线目前一次能够提供1000个数据。当日线总量超过1000个时，需要多次查询不同日期的数据方可。查询到的网络数据存储于pvWebData中。
 ///
-/// Note:东方财富的日线申请没有设置起始日期，无法准确确定申请的数据量。使用最大申请量1000，保证分别申请到的数据能够互相覆盖。
 ///
 /// 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductEastmoneyDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {
-	struct CVDate {
-		chrono::local_days ld;
-		int number;
-	};
-	vector<CVDate> vDate;
-	vector<CDayLineWebDataPtr> vpDayLineData;
+void CProductEastmoneyDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (gl_pEastmoneyDayLineDataSource->GetHTTPStatusCode() != 200) return; //网络数据不正常时不处理。
-	ASSERT(pvWebData->size() <= m_iInquiryNumber);
 
-	vector<CDayLine> vDayLine;
-	chrono::local_days ld{ chrono::days(0) };
-	string strStockSymbol;
-	for (auto& pWebData : *pvWebData) { // 小于1000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
-		const auto pDayLineWebData = ParseEastmoneyDayLine(pWebData);
-		vpDayLineData.push_back(pDayLineWebData);
-	}
-	for (size_t i = 0; i < vpDayLineData.size(); i++) {
-		CVDate vd;
-		vd.number = i;
-		vd.ld = vpDayLineData.at(i)->GetProcessedDayLine().at(0).GetDate();
-		vDate.push_back(vd);
-	}
-	ranges::sort(vDate, [](const CVDate& data1, const CVDate data2) { return data1.ld < data2.ld; });
+	auto pDayLineData = make_shared<CDayLineWebData>();
+	const string strSymbol = pWebData->GetStockCode();
+	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+	const string_view svData = pWebData->GetStringView();
 
-	for (size_t i = 0; i < vDate.size(); i++) {
-		strStockSymbol = vpDayLineData.at(i)->GetStockCode();
-		for (auto& pData : vpDayLineData.at(i)->GetProcessedDayLine()) {
-			if (pData.GetDate() > ld) { // 各申请到的日线数据会有重复的，清除掉
-				ld = pData.GetDate();
-				vDayLine.push_back(pData);
-			}
-		}
+	const shared_ptr<vector<CDayLine>> pvDayLine = ParseEastmoneyDayLine(svData, pWebData->GetStockCode());
+	if (pvDayLine->size() == 0) return; // 如果没有日线，则不处理
+	std::ranges::sort(*pvDayLine, [](const CDayLine& pData1, const CDayLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
+	for (auto& dayLine : *pvDayLine) {
+		dayLine.SetStockSymbol(strSymbol);
+		pDayLineData->AppendDayLine(dayLine);
 	}
-
-	const CDayLineWebDataPtr p = make_shared<CDayLineWebData>();
-	p->SetStockCode(strStockSymbol);
-	p->ClearDayLine();
-	CheckAndPrepareDayLine(vDayLine);
-	for (const auto& pData : vDayLine) {
-		p->AppendDayLine(pData);
-	}
-	gl_qDayLine.enqueue(p);
+	pDayLineData->SetStockCode(strSymbol);
+	gl_qDayLine.enqueue(pDayLineData);
 }
 
-void CProductEastmoneyDayLine::CheckAndPrepareDayLine(vector<CDayLine>& vDayLine) {
-	if (vDayLine.size() > 1) {
-		std::ranges::sort(vDayLine, [](const CDayLine& p1, const CDayLine& p2) { return p1.GetDate() < p2.GetDate(); });
+CDayLinesPtr CProductEastmoneyDayLine::ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode) {
+	auto pvDayLine = make_shared<vector<CDayLine>>();
+	pvDayLine->reserve(2000);
 
-		for (size_t i = 0; i < vDayLine.size() - 1; i++) {
-			const auto& p1 = vDayLine.at(i);
-			auto& p2 = vDayLine.at(i + 1);
-			ASSERT(p1.GetDate() < p2.GetDate()); // 没有重复数据
-			p2.SetLastClose(p1.GetClose());
+	const string strStockSymbol = strStockCode;
+	try {
+		string_view sv;
+		long lLastClose = 0;
+		ondemand::parser parser;
+		ondemand::document doc;
+
+		//const padded_string_view jsonPaddedView(svData, svData.length()); // Note 此时的svData带有长度为SIMDJSON_PADDING长度的后缀
+		//doc = parser.iterate(jsonPaddedView).value();
+		const padded_string jsonPadded(svData);
+		doc = parser.iterate(jsonPadded).value();
+		int rc = doc["rc"].get_int32().value();
+		if (rc != 0) return pvDayLine;
+		ondemand::array dayArray1 = doc["data"]["klines"].get_array().value();
+		auto a1 = doc["data"];
+		auto a3 = a1["klines"];
+		auto a4 = a3.get_array();
+		auto dayArray = a4.value();
+		for (auto dayLine : dayArray) {
+			CDayLine dayLine2;
+			dayLine2.SetStockSymbol(strStockSymbol);
+			dayLine2.SetLastClose(lLastClose);
+			string s = std::string(dayLine.get_string().value());
+			if (ParseEastmoneyKlineLine(s, dayLine2, lLastClose)) {
+				pvDayLine->push_back(dayLine2);
+			}
 		}
+	} catch (nlohmannJson::exception&) {
+		return pvDayLine;
 	}
+	return pvDayLine;
 }
