@@ -552,6 +552,7 @@ bool CFinnhubStock::CheckInsiderSentimentStatus(chrono::local_days lCurrentDate)
 }
 
 void CFinnhubStock::SetSECFilings(const CSECFilingsPtr& pv) {
+	m_vSECFilings.clear();
 	m_vSECFilings.reserve(pv->size());
 
 	for (const auto& secFiling : *pv) {

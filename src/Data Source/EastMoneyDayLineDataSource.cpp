@@ -2,8 +2,6 @@
 ///
 /// 东方财富日线历史数据。
 ///
-/// 东方财富日线服务器一次只能发送最多1000个数据，超过1000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
-/// product中存储的是处理后的完整申请字符串。
 /// 日线的申请格式为：https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.601872&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=20250101&lmt=1000
 /// 
 /// 
@@ -17,7 +15,6 @@
 #include"ProductEastmoneyDayLine.h"
 
 #include"ChinaMarket.h"
-#include "spdlog_assert.h"
 #include "TimeConvert.h"
 #include "WebData.h"
 
@@ -50,27 +47,28 @@ bool CEastmoneyDayLineDataSource::Reset() {
 bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	static int s_iSleep = 0;
 	static int s_number = 0;
-	int startDuration = 3000;
-	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请日线数据。
+
 	std::random_device r;
 	// Choose a random mean between 1 and 6
 	std::default_random_engine e1(r());
 	std::uniform_int_distribution<int> uniform_dist(1, 4000);
 	int mean = uniform_dist(e1);
-	if (s_iSleep > 10 + s_number) {
+	if (s_iSleep > 30 + s_number) {
 		s_iSleep = 0;
 		s_number = mean / 200;
-		m_PrevInquireTimePoint += chrono::milliseconds(300000 + mean * 1000);
+		int time = 120000 + mean * 50;
+		m_PrevInquireTimePoint += chrono::milliseconds(time);
+		TRACE("Eastmoney DayLine server suspended %d seconds\n", time / 1000);
 	}
 	const auto llTickCount = GetTickCount();
-	int duration = startDuration + mean;
-	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(duration)) return false;
+	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(8000 + mean)) return false;
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {
 		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
 	}
 
-	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine()/* && gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min*/) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine()
+		&& gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
 		if (!IsInquiring()) {
 			s_iSleep++;
 			Inquire();

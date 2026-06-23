@@ -312,5 +312,7 @@ namespace FireBirdTest {
 		// 恢复原状
 		pStock->UnloadDayLine();
 		pStock->SetDayLineEndDate(toLocalDays(19800101));
+		pStock->SetUpdateDayLineDB(false);
+		pStock->SetUpdateProfileDB(false);
 	}
 }

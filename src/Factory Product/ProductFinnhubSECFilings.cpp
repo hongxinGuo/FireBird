@@ -25,11 +25,11 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	auto pvSECFilings = ParseFinnhubStockSECFilings(pWebData);
 	auto size = pvSECFilings->size();
-	pStock->SetSECFilings(pvSECFilings);
 	pStock->SetUpdateSECFilings(false);
 	pStock->SetSECFilingsUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateProfileDB(true);
 	if (size > 0) {
+		pStock->SetSECFilings(pvSECFilings);
 		pStock->SetUpdateSECFilingsDB(true);
 	}
 	pvSECFilings = nullptr;

@@ -512,4 +512,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(toFormattedDateString(20200101), "20200101");
 		EXPECT_EQ(toFormattedDateString(19990131), "19990131");
 	}
+
+	TEST_F(CTimeConvertTest, TestToFormattedDateString2) {
+		EXPECT_EQ(toFormattedDateString(toLocalDays(20230112)), "20230112");
+		EXPECT_EQ(toFormattedDateString(toLocalDays(20200101)), "20200101");
+		EXPECT_EQ(toFormattedDateString(toLocalDays(19990131)), "19990131");
+	}
 }

@@ -196,6 +196,8 @@ namespace FireBirdTest {
 		}
 
 		//恢复原状
+		pStock->m_vSECFilings.clear();
+		pStock->SetSECFilingsUpdateDate(toLocalDays(19800101));
 		pStock->SetUpdateProfileDB(false);
 	}
 }

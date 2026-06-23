@@ -101,6 +101,7 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 		tiingoFundamentalDefinition.m_strUnits = row.units;
 		Add(tiingoFundamentalDefinition);
 	}
+	tx.commit();
 	m_fUpdated = false;
 
 	return true;

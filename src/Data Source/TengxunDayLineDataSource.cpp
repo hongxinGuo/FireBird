@@ -12,6 +12,9 @@
 
 #include"ChinaStockCodeConverter.h"
 #include "TengxunDayLineDataSource.h"
+
+#include <random>
+
 #include"ProductTengxunDayLine.h"
 
 #include"ChinaMarket.h"
@@ -21,6 +24,7 @@
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
+	m_strHeaders = "Referer:https://gu.qq.com/\r\n";
 	m_strInquiryFunction = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=";
 	m_strSuffix = ",2000,,";
 	m_iMaxNormalInquireTime = 500;
@@ -36,20 +40,44 @@ bool CTengxunDayLineDataSource::Reset() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-// 抓取日线数据.开始于11:45:01
-//
-// 由于可能会抓取全部5000个左右日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
-// 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
-//
-// 腾讯日线数据每次最多提供2000个。当所需数据超过两千个时，需要分次提取。
-//
+/// 抓取日线数据.开始于11:45:01
+///
+/// 由于可能会抓取全部5000个左右日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
+/// 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
+///
+/// 腾讯日线数据每次最多提供2000个。当所需数据超过两千个时，需要分次提取。
+///
+/// 采用随机方式申请数据，防止被腾讯日线服务器拒绝服务。
+///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
-	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯日线数据。
-	//if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
-	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
+	static int s_iSleep = 0;
+	static int s_number = 0;
+
+	std::random_device r;
+	// Choose a random mean between 1 and 6
+	std::default_random_engine e1(r());
+	uniform_int_distribution<int> uniform_dist(1, 4000);
+	int mean = uniform_dist(e1);
+	if (s_iSleep > 30 + s_number) {
+		s_iSleep = 0;
+		s_number = mean / 200;
+		int time = 100000 + mean * 50;
+		m_PrevInquireTimePoint += chrono::milliseconds(time);
+		TRACE("tengxunDayLine server suspended %d seconds\n", time / 1000);
+	}
+	const auto llTickCount = GetTickCount();
+	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(4000 + mean)) return false;
+	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
+	if (!IsInquiring()) {
+		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
+	}
+
+	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine()
+		&& gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
 		if (!IsInquiring()) {
 			Inquire();
+			s_iSleep++;
 			return true;
 		}
 	}
@@ -138,7 +166,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 			dynamic_pointer_cast<CProductTengxunDayLine>(p)->SetInquiryNumber(iCounter);
 		}
 	}
-
+	ASSERT(iCounter == vProduct.size());
 	return vProduct;
 }
 
@@ -168,14 +196,12 @@ void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	switch (m_dwHTTPStatusCode) {
 	case 501://请求功能尚未实现，实际是服务器正处于维护状态
 		TRACE(_T("关闭腾讯日线服务\n"));
-		Enable(false); // 先暂停
 		break;
 	case 200:
 		// everything is OK
 		break;
 	default: // something wrong,
 		TRACE(_T("关闭腾讯日线服务\n"));
-		Enable(false); // 先暂停
 		break;
 	}
 }

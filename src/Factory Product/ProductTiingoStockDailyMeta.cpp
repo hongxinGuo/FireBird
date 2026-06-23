@@ -42,6 +42,7 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		if (str == pStock2->GetSymbol()) {
 			pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
 			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
+			pStock->SetUpdateProfileDB(true);
 		}
 		else {
 			string str2 = "Tiingo stock daily meta not match: ";

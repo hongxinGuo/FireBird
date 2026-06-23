@@ -27,7 +27,7 @@ void ReportInformationAndDeleteException(CException* e) {
 	e->GetErrorMessage(buffer, 200);
 	wstring s1 = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(W2Utf8(s1));
-	delete e;
+	e->Delete();
 }
 
 void ReportInformation(CException& e) {

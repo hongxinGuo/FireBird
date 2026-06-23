@@ -567,6 +567,67 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 	}
 
+	TEST_F(CChinaStockTest, LastTradeDateNotAfterEndDate_ShouldDisableUpdate) {
+		pStock = make_shared<CChinaStock>();
+
+		// Set market date and compute last trade date
+		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20260623)); // Tuesday
+		auto lastTrade = gl_pChinaMarket->GetLastTradeDate();
+
+		// day line end date same as last trade -> no update required
+		pStock->SetDayLineEndDate(lastTrade);
+		pStock->SetUpdateDayLine(true);
+
+		EXPECT_FALSE(pStock->CheckDayLineStatus());
+		EXPECT_FALSE(pStock->IsUpdateDayLine());
+	}
+
+	TEST_F(CChinaStockTest, LastTradeDateFarAfterEndDate_NonMonday_ShouldDisableUpdate) {
+		pStock = make_shared<CChinaStock>();
+
+		// Set market date to a non-Monday (Tuesday)
+		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20260623)); // Tuesday
+		auto lastTrade = gl_pChinaMarket->GetLastTradeDate();
+
+		// Make end date > 60 days before lastTrade
+		pStock->SetDayLineEndDate(lastTrade - chrono::days(61));
+		pStock->SetUpdateDayLine(true);
+
+		// Because it's not Monday and end date != begin date, update should be disabled
+		EXPECT_FALSE(pStock->CheckDayLineStatus());
+		EXPECT_FALSE(pStock->IsUpdateDayLine());
+	}
+
+	TEST_F(CChinaStockTest, LastTradeDateFarAfterEndDate_Monday_ShouldKeepUpdate) {
+		pStock = make_shared<CChinaStock>();
+
+		// Set market date to a Monday
+		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20260622)); // Monday
+		auto lastTrade = gl_pChinaMarket->GetLastTradeDate();
+
+		// Make end date > 60 days before lastTrade
+		pStock->SetDayLineEndDate(lastTrade - chrono::days(61));
+		pStock->SetUpdateDayLine(true);
+
+		// Because it's Monday, the weekly re-check rule should allow update to remain true
+		EXPECT_TRUE(pStock->CheckDayLineStatus());
+		EXPECT_TRUE(pStock->IsUpdateDayLine());
+	}
+
+	TEST_F(CChinaStockTest, LastTradeDateAfterEndDateWithinSixtyDays_ShouldKeepUpdate) {
+		pStock = make_shared<CChinaStock>();
+
+		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20260623)); // Tuesday
+		auto lastTrade = gl_pChinaMarket->GetLastTradeDate();
+
+		// Make end date within 60 days of lastTrade
+		pStock->SetDayLineEndDate(lastTrade - chrono::days(30));
+		pStock->SetUpdateDayLine(true);
+
+		EXPECT_TRUE(pStock->CheckDayLineStatus());
+		EXPECT_TRUE(pStock->IsUpdateDayLine());
+	}
+
 	TEST_F(CChinaStockTest, TestRTDataDeque) {
 		const auto pData = make_shared<CWebRTData>();
 		pData->SetSymbol("600008.SS");
