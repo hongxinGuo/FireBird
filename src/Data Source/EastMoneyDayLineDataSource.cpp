@@ -49,6 +49,7 @@ bool CEastmoneyDayLineDataSource::Reset() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	static int s_iSleep = 0;
+	static int s_number = 0;
 	int startDuration = 3000;
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请日线数据。
 	std::random_device r;
@@ -56,9 +57,10 @@ bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const chrono::local_sec
 	std::default_random_engine e1(r());
 	std::uniform_int_distribution<int> uniform_dist(1, 4000);
 	int mean = uniform_dist(e1);
-	if (s_iSleep > 50) {
+	if (s_iSleep > 10 + s_number) {
 		s_iSleep = 0;
-		m_PrevInquireTimePoint += chrono::milliseconds(200000 + mean * 500);
+		s_number = mean / 200;
+		m_PrevInquireTimePoint += chrono::milliseconds(300000 + mean * 1000);
 	}
 	const auto llTickCount = GetTickCount();
 	int duration = startDuration + mean;
