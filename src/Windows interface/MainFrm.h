@@ -98,9 +98,7 @@ protected:
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnStopUpdateDayLine();
-	afx_msg void OnUsingNeteaseRealtimeDataServer();
 	afx_msg void OnUsingSinaRealtimeDataServer();
-	afx_msg void OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateStockSection();
 	afx_msg void OnUpdateStockProfile();
@@ -119,8 +117,6 @@ protected:
 	afx_msg void OnMaintainChinaMarketStockDayLine();
 	afx_msg void OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnUsingNeteaseDayLineDataServer();
-	afx_msg void OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUsingTengxunDayLineDataServer();
 	afx_msg void OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUsingTengxunRealtimeDataServer();

@@ -318,12 +318,6 @@
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\NeteaseRTDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\SinaRTDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
@@ -494,12 +488,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h">
       <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseDayline.h">
-      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseRT.h">
-      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductSinaRT.h">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
@@ -842,12 +830,6 @@
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp">
       <Filter>源文件\Data Source\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Source\NeteaseDaylineDataSource.cpp">
-      <Filter>源文件\Data Source\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Source\NeteaseRTDataSource.cpp">
-      <Filter>源文件\Data Source\China market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\SinaRTDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
@@ -997,12 +979,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp">
       <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.cpp">
-      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductNeteaseRT.cpp">
-      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductSinaRT.cpp">
       <Filter>源文件\Factory-Product\ChinaMarket</Filter>

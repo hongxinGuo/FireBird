@@ -13,22 +13,18 @@ public:
 	virtual size_t Size() = 0;
 	size_t GetNextIndex(size_t lIndex);
 
-	// todo 以下函数只用于申请Sina、Netease、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
-	void SetNeteaseRTDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseRTDataInquiringIndex = lIndex; }
-	[[nodiscard]] auto GetNeteaseRTDataInquiringIndex() const noexcept { return m_lNeteaseRTDataInquiringIndex; }
+	// todo 以下函数只用于申请Sina、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
 	void SetSinaRTDataInquiringIndex(const long lIndex) noexcept { m_lSinaRTDataInquiringIndex = lIndex; }
 	[[nodiscard]] auto GetSinaRTDataInquiringIndex() const noexcept { return m_lSinaRTDataInquiringIndex; }
 	void SetTengxunRTDataInquiringIndex(const long lIndex) noexcept { m_lTengxunRTDataInquiringIndex = lIndex; }
 	[[nodiscard]] auto GetTengxunRTDataInquiringIndex() const noexcept { return m_lTengxunRTDataInquiringIndex; }
 
-	// todo 以下函数只用于申请Sina、Netease、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
+	// todo 以下函数只用于申请Sina、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
 	string GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber, string (*StockCodeTransfer)(const string& str));
 	string GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina); }
 	string GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina); }
-	string GetNextNeteaseStockInquiringMiddleStr(size_t lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lNeteaseRTDataInquiringIndex, ",", lTotalNumber, XferStandardToNetease); }
 
 private:
-	size_t m_lNeteaseRTDataInquiringIndex;
 	size_t m_lSinaRTDataInquiringIndex;
 	size_t m_lTengxunRTDataInquiringIndex;
 };

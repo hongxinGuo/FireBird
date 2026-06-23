@@ -11,8 +11,6 @@
 #include"InaccessibleSymbol.h"
 
 #include"FinnhubDataSource.h"
-#include"NeteaseDayLineDataSource.h"
-#include"NeteaseRTDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"TengxunDayLineDataSource.h"
@@ -84,8 +82,6 @@ UINT gl_MsgFireBirdRunning{ 0 };
 // Data source, 皆为唯一实例
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
 CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
-CNeteaseRTDataSourcePtr gl_pNeteaseRTDataSource = nullptr;
-CNeteaseDayLineDataSourcePtr gl_pNeteaseDayLineDataSource = nullptr;
 CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;
 CEastmoneyDayLineDataSourcePtr gl_pEastmoneyDayLineDataSource = nullptr;
 

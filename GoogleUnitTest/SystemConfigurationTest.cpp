@@ -3,7 +3,6 @@
 #include"WorldMarket.h"
 
 #include"SinaRTDataSource.h"
-#include"NeteaseRTDataSource.h"
 #include"TengxunRTDataSource.h"
 
 #include"GeneralCheck.h"
@@ -49,7 +48,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 250);
 		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
 		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/ChinaMarket/SinaRTDataInquiryPerTime")), 850);
-		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/ChinaMarket/NeteaseRTDataInquiryPerTime")), 900);
 		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
 		sTemp = jsSystemConfiguration.at(nlohmannJson::json_pointer("/ChinaMarket/CurrentStock"));
 		EXPECT_TRUE(sTemp == "600026.SS");
@@ -105,7 +103,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
 		EXPECT_EQ(gl_systemConfiguration.GetNumberOfRTDataSource(), 4) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetSinaRTDataInquiryPerTime(), 850) << "测试文件中的数值";
-		EXPECT_EQ(gl_systemConfiguration.GetNeteaseRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetTengxunRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 1100) << "默认每次查询时间为1100毫秒";
@@ -137,15 +134,9 @@ namespace FireBirdTest {
 	TEST_F(CSystemConfigurationTest, TestIsUsingSinaRTServer) {
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_);
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
-		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
-		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
-		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
-		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(TengxunRealTime_);
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
-		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunRTServer());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_);
@@ -153,63 +144,28 @@ namespace FireBirdTest {
 
 	TEST_F(CSystemConfigurationTest, TestUsingSinaRealtimeServer) {
 		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
 		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
 		gl_pSinaRTDataSource->Enable(false);
 
 		gl_systemConfiguration.UsingSinaRealtimeServer();
 
 		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsEnable());
 		EXPECT_FALSE(gl_pTengxunRTDataSource->IsEnable());
 
-		gl_pNeteaseRTDataSource->Enable(true);
-		gl_pTengxunRTDataSource->Enable(true);
-	}
-
-	TEST_F(CSystemConfigurationTest, TestUsingNeteaseRealtimeServer) {
-		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
-		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
-		gl_pNeteaseRTDataSource->Enable(false);
-
-		gl_systemConfiguration.UsingNeteaseRealtimeServer();
-
-		EXPECT_FALSE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
-		EXPECT_FALSE(gl_pTengxunRTDataSource->IsEnable());
-
-		gl_pSinaRTDataSource->Enable(true);
 		gl_pTengxunRTDataSource->Enable(true);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestUsingTengxunRealtimeServer) {
 		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
 		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
 		gl_pTengxunRTDataSource->Enable(false);
 
 		gl_systemConfiguration.UsingTengxunRealtimeServer();
 
 		EXPECT_FALSE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsEnable());
 		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
 
 		gl_pSinaRTDataSource->Enable(true);
-		gl_pNeteaseRTDataSource->Enable(true);
-	}
-
-	TEST_F(CSystemConfigurationTest, TestUsingNeteaseDayLineServer) {
-		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
-
-		gl_systemConfiguration.SetChinaMarketDayLineServer(NeteaseDayLine_);
-		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
-		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
-		gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
-		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
-		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
-
-		gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountType) {

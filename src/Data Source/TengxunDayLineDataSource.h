@@ -16,7 +16,7 @@ public:
 
 	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
 
-	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置Netease DayLine的m_pSession状态。
+	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置Tengxun DayLine的m_pSession状态。
 	void CheckWebData(const CWebDataPtr& pWebData) override;
 
 	void CreateCurrentInquireString() override;

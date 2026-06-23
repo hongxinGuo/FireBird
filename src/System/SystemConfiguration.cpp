@@ -6,7 +6,6 @@
 
 #include"SystemConfiguration.h"
 
-#include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
 #include <fstream>
@@ -55,7 +54,6 @@ std::string gl_sSystemConfiguration = R"(
 	"FastInquiringRealtimeData" : false,
 	"NumberOfRTDataSource" : 4,
 	"SinaRTDataInquiryPerTime" : 850,
-	"NeteaseRTDataInquiryPerTime" : 900,
 	"TengxunRTDataInquiryPerTime" : 900,
 	"CurrentStock" : "600026.SS"
 },
@@ -277,11 +275,6 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 	}
 	try {
 		m_iSinaRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
-	} catch (nlohmannJson::out_of_range&) {
-		m_fUpdateDB = true;
-	}
-	try {
-		m_iNeteaseRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -513,9 +506,6 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	case SinaRealTime_:
 		jsonData["ChinaMarket"]["RealtimeServer"] = "sina";
 		break;
-	case NeteaseRealTime_:
-		jsonData["ChinaMarket"]["RealtimeServer"] = "netease";
-		break;
 	case TengxunRealTime_:
 		jsonData["ChinaMarket"]["RealtimeServer"] = "tengxun";
 		break;
@@ -524,9 +514,6 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 		break;
 	}
 	switch (m_iChinaMarketDayLineServer) {
-	case NeteaseDayLine_:
-		jsonData["ChinaMarket"]["DayLineServer"] = "netease";
-		break;
 	case TengxunDayLine_:
 		jsonData["ChinaMarket"]["DayLineServer"] = "tengxun";
 		break;
@@ -540,7 +527,6 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	jsonData["ChinaMarket"]["RealtimeInquiryTime"] = m_chinaMarketRTDataInquiryTime.count();
 	jsonData["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
 	jsonData["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
-	jsonData["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
 	jsonData["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
 	jsonData["ChinaMarket"]["CurrentStock"] = m_strCurrentStock;
 
@@ -615,25 +601,17 @@ void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
 }
 
 void CSystemConfiguration::UsingSinaRealtimeServer() {
-	gl_pNeteaseRTDataSource->Enable(false);
 	gl_pSinaRTDataSource->Enable(true);
-	gl_pTengxunRTDataSource->Enable(false);
-}
-
-void CSystemConfiguration::UsingNeteaseRealtimeServer() {
-	gl_pSinaRTDataSource->Enable(false);
-	gl_pNeteaseRTDataSource->Enable(true);
 	gl_pTengxunRTDataSource->Enable(false);
 }
 
 void CSystemConfiguration::UsingTengxunRealtimeServer() {
 	gl_pSinaRTDataSource->Enable(false);
-	gl_pNeteaseRTDataSource->Enable(false);
 	gl_pTengxunRTDataSource->Enable(true);
 }
 
 bool CSystemConfiguration::IsWebBusy() {
-	return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError();
+	return gl_pSinaRTDataSource->IsWebError();
 }
 
 bool CSystemConfiguration::LoadDB() {

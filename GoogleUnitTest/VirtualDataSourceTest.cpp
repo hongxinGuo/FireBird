@@ -1,11 +1,9 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include "ProductNeteaseRT.h"
 
 #include"VirtualDataSource.h"
-
-//#include"WorldMarket.h"
+#include"VirtualWebProduct.h"
 
 using namespace testing;
 
@@ -90,16 +88,6 @@ namespace FireBirdTest {
 		dataSource.SetCurrentInquiry(pProduct);
 		const auto p2 = dataSource.GetCurrentInquiry();
 		EXPECT_EQ(p2->GetIndex(), 10000);
-	}
-
-	TEST_F(CVirtualDataSourceTest, TestCreateInquiryMessageFromCurrentProduct) {
-		const auto pProduct = std::make_shared<CProductNeteaseRT>();
-		pProduct->SetInquiryFunction("TestGetInquiry"); // 这个product不生成自己的Inquiry，直接赋值而已。
-		dataSource.StoreInquiry(pProduct);
-		dataSource.GetCurrentProduct();
-
-		dataSource.CreateCurrentInquireString();
-		EXPECT_EQ(dataSource.GetInquiringString(), "TestGetInquiry");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetHeaders) {

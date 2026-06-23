@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- File name extension must be .runsettings -->
 <RunSettings>
+  <GoogleTest>
+      <TestSources>
+        <!-- include only the gtest binary (adjust name if different) -->
+        <Include>.*\\UnitTest\.exe$</Include>
+        <Exclude>.*\\Benchmark\.exe$</Exclude>
+		<Exclude>.*\\ClearData\.exe$</Exclude>
+		<Exclude>.*\\FireBirdQT\.exe$</Exclude>
+		<Exclude>.*\\WatchdogQT\.exe$</Exclude>
+    </TestSources>
+  </GoogleTest>
+	
 	<RunConfiguration>
 		<!-- don't use QtTest -->
 		<TestCaseFilter>TestCategory!=QtTest</TestCaseFilter>

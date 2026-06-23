@@ -92,6 +92,10 @@ protected:
 	// china market
 	CGridProperty* m_pPropChinaMarketWebRealTimeStatus{ nullptr };
 	CGridProperty* m_pPropChinaMarketWebDayLineStatus{ nullptr };
+	CGridProperty* m_pPropTengxunDayLineWebStatus{ nullptr };
+	CGridProperty* m_pPropEastmoneyDayLineWebStatus{ nullptr };
+	CGridProperty* m_pPropDayLineStatus{ nullptr };
+
 	CGridProperty* m_pPropChinaMarketThreadStatus{ nullptr };
 
 	// world market

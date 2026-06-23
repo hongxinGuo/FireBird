@@ -6,7 +6,6 @@
 #include"ChinaStock.h"
 
 #include"GeneralCheck.h"
-#include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 #include "TengxunRTDataSource.h"
 
@@ -121,7 +120,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
-		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 
 		EXPECT_EQ(gl_dataContainerChinaStock.GetSinaRTDataInquiringIndex(), 0);
 		EXPECT_EQ(gl_dataContainerChinaStock.GetTengxunRTDataInquiringIndex(), 0);
@@ -700,29 +698,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 	}
 
-	TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
-		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
-		EXPECT_TRUE(pStock->IsUpdateDayLine()) << "测试时使用testStock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线";
-
-		pStock->SetUpdateDayLine(false);
-		pStock = gl_dataContainerChinaStock.GetStock(1);
-		EXPECT_TRUE(pStock->IsUpdateDayLine());
-		EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetLastTradeDate()) << pStock->GetDayLineEndDate();
-		pStock = gl_dataContainerChinaStock.GetStock(2);
-		EXPECT_TRUE(pStock->IsUpdateDayLine());
-		EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetLastTradeDate());
-		const chrono::local_days lDate = pStock->GetDayLineEndDate();
-		pStock->SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
-		string str = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
-		EXPECT_EQ(str, "1000001");
-		pStock = gl_dataContainerChinaStock.GetStock(1);
-		EXPECT_FALSE(pStock->IsUpdateDayLine());
-		str = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
-		EXPECT_EQ(str, "1000002");
-
-		gl_dataContainerChinaStock.GetStock(2)->SetDayLineEndDate(lDate); // 恢复原状。
-	}
-
 	TEST_F(CChinaMarketTest, TestIsStock) {
 		EXPECT_GT(gl_dataContainerChinaStock.Size(), 1);
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsSymbol("600000.SS"));
@@ -899,20 +874,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 1);
 		gl_pChinaMarket->ClearChoiceStockContainer();
 		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 0);
-	}
-
-	TEST_F(CChinaMarketTest, TestIncreaseNeteaseDayLineInquiringIndex) {
-		size_t k = 0;
-		auto i = gl_pChinaMarket->IncreaseStockInquiringIndex(k, gl_dataContainerChinaStock.Size());
-		EXPECT_EQ(i, 1);
-		EXPECT_EQ(k, 1);
-		i = gl_pChinaMarket->IncreaseStockInquiringIndex(k, gl_dataContainerChinaStock.Size());
-		EXPECT_EQ(i, 2);
-		EXPECT_EQ(k, 2);
-		k = 11999;
-		i = gl_pChinaMarket->IncreaseStockInquiringIndex(k, gl_dataContainerChinaStock.Size());
-		EXPECT_EQ(k, 0);
-		EXPECT_EQ(i, 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestSetCheckActiveStockFlag1) {
@@ -1133,14 +1094,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsTotalStockSetSelected());
 
 		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
-	}
-
-	TEST_F(CChinaMarketTest, TestIsUsingNeteaseRTDataReceiver) {
-		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
-		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
-		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 	}
 
 	TEST_F(CChinaMarketTest, TestIsUsingTengxunRTDataReceiver) {
@@ -1405,12 +1358,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->IsWebReaTimeDataError(), gl_pSinaRTDataSource->IsWebError());
 		EXPECT_EQ(gl_pChinaMarket->GetWebRealTimeDataErrorCode(), gl_pSinaRTDataSource->GetWebErrorCode());
 
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
-		EXPECT_NE(gl_pNeteaseRTDataSource, nullptr);
-		EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pNeteaseRTDataSource->GetHTTPStatusCode());
-		EXPECT_EQ(gl_pChinaMarket->IsWebReaTimeDataError(), gl_pNeteaseRTDataSource->IsWebError());
-		EXPECT_EQ(gl_pChinaMarket->GetWebRealTimeDataErrorCode(), gl_pNeteaseRTDataSource->GetWebErrorCode());
-
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(TengxunRealTime_);
 		EXPECT_NE(gl_pTengxunRTDataSource, nullptr);
 		EXPECT_EQ(gl_pChinaMarket->GetHTTPStatus(), gl_pTengxunRTDataSource->GetHTTPStatusCode());
@@ -1425,18 +1372,10 @@ namespace FireBirdTest {
 		// Save and restore current server selection
 		const EChinaMarketDataSourceServer oldServer = gl_systemConfiguration.GetChinaMarketRealtimeServer();
 		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
 		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
 
 		// Test routing for each configured realtime server: enabling and disabling should not throw
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(SinaRealTime_);
-		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(true));
-		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(false));
-		EXPECT_NO_THROW(gl_pChinaMarket->GetHTTPStatus());
-		EXPECT_NO_THROW(gl_pChinaMarket->IsWebReaTimeDataError());
-		EXPECT_NO_THROW(gl_pChinaMarket->GetWebRealTimeDataErrorCode());
-
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(true));
 		EXPECT_NO_THROW(gl_pChinaMarket->EnableRealTimeDataSource(false));
 		EXPECT_NO_THROW(gl_pChinaMarket->GetHTTPStatus());
@@ -1453,7 +1392,6 @@ namespace FireBirdTest {
 		// Restore original server selection
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(oldServer);
 		gl_pSinaRTDataSource->Enable(true);
-		gl_pNeteaseRTDataSource->Enable(true);
 		gl_pTengxunRTDataSource->Enable(true);
 	}
 
@@ -1461,7 +1399,6 @@ namespace FireBirdTest {
 		// Save and restore current server selection and enable states
 		const EChinaMarketDataSourceServer oldServer = gl_systemConfiguration.GetChinaMarketRealtimeServer();
 		const bool origSinaEnabled = gl_pSinaRTDataSource->IsEnable();
-		const bool origNeteaseEnabled = gl_pNeteaseRTDataSource->IsEnable();
 		const bool origTengxunEnabled = gl_pTengxunRTDataSource->IsEnable();
 
 		// Sina
@@ -1470,14 +1407,6 @@ namespace FireBirdTest {
 		gl_pSinaRTDataSource->Enable(true);
 		EXPECT_TRUE(gl_pChinaMarket->IsRealTimeDataSourceEnable());
 		gl_pSinaRTDataSource->Enable(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsRealTimeDataSourceEnable());
-
-		// Netease
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
-		EXPECT_NE(gl_pNeteaseRTDataSource, nullptr);
-		gl_pNeteaseRTDataSource->Enable(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsRealTimeDataSourceEnable());
-		gl_pNeteaseRTDataSource->Enable(false);
 		EXPECT_FALSE(gl_pChinaMarket->IsRealTimeDataSourceEnable());
 
 		// Tengxun
@@ -1490,7 +1419,6 @@ namespace FireBirdTest {
 
 		// Restore original states
 		gl_pSinaRTDataSource->Enable(origSinaEnabled);
-		gl_pNeteaseRTDataSource->Enable(origNeteaseEnabled);
 		gl_pTengxunRTDataSource->Enable(origTengxunEnabled);
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(oldServer);
 	}

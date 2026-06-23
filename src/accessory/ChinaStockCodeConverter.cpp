@@ -31,59 +31,6 @@ string XferSinaToStandard(const string_view& svSina) {
 	throw exception("XferSinaToStandard bad header");
 }
 
-string XferSinaToNetease(const string& strSina) {
-	ASSERT(strSina.length() >= 6);
-	const string strSymbol = strSina.substr(strSina.length() - 6, 6);
-	if (strSina.at(0) == 's') {
-		switch (strSina.at(1)) {
-		case 'h':
-			return "0" + strSymbol;
-		case 'z':
-			return "1" + strSymbol;
-		default: ;
-		}
-	}
-	throw exception("XferSinaToNetease bad header");
-}
-
-string XferNeteaseToStandard(const string& strNetease) {
-	if (strNetease.length() != 7) throw exception("XferNeteaseToStandard bad format");
-	const string strSymbol = strNetease.substr(strNetease.length() - 6, 6);
-	switch (strNetease.at(0)) {
-	case '0':
-		return strSymbol + "." + "SS";
-	case '1':
-		return strSymbol + "." + "SZ";
-	default: ;
-	}
-	throw exception("XferNeteaseToStandard bad header");
-}
-
-string XferNeteaseToStandard(const string_view& svNetease) {
-	if (svNetease.length() != 7) throw exception("XferNeteaseToStandard bad format");
-	const string strSymbol(svNetease.data() + 1, 6);
-	switch (svNetease.at(0)) {
-	case '0':
-		return strSymbol + "." + "SS";
-	case '1':
-		return strSymbol + "." + "SZ";
-	default: ;
-	}
-	throw exception("XferNeteaseToStandard bad header");
-}
-
-string XferNeteaseToSina(const string& strNetease) {
-	const string strSymbol = strNetease.substr(strNetease.length() - 6, 6);
-	switch (strNetease.at(0)) {
-	case '0':
-		return "sh" + strSymbol;
-	case '1':
-		return "sz" + strSymbol;
-	default: ;
-	}
-	throw exception("XferNeteaseToSina bad header");
-}
-
 string XferStandardToSina(const string& strStandard) {
 	const string strSymbol = strStandard.substr(0, 6);
 	if (strStandard.at(strStandard.length() - 2) == 'S') {
@@ -92,20 +39,6 @@ string XferStandardToSina(const string& strStandard) {
 			return "sh" + strSymbol;
 		case 'Z':
 			return "sz" + strSymbol;
-		default: ;
-		}
-	}
-	throw exception("XferSinaToStandard bad header");
-}
-
-string XferStandardToNetease(const string& strStandard) {
-	const string strSymbol = strStandard.substr(0, 6);
-	if (strStandard.at(strStandard.length() - 2) == 'S') {
-		switch (strStandard.at(strStandard.length() - 1)) {
-		case 'S':
-			return "0" + strSymbol;
-		case 'Z':
-			return "1" + strSymbol;
 		default: ;
 		}
 	}

@@ -101,7 +101,7 @@ namespace FireBirdTest {
 		CWebRTDataPtr pRTData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
+	INSTANTIATE_TEST_SUITE_P(TestCheckSinaDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
 	                         testing::Values(&rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
 	                         ));
 

@@ -126,51 +126,6 @@ void CContainerChinaStock::ClearDayLineDBUpdatedFlag() noexcept {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 生成网易日线股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
-//
-//  此函数是检查m_vStock股票池
-//
-//
-//
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-string CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
-	bool fFoundStock = false;
-	string strTemp;
-	string strReturn;
-	size_t lIndex = 0;
-
-	while (!fFoundStock && (lIndex < Size())) {
-		const CChinaStockPtr pStock = GetStock(lIndex);
-		if (!pStock->IsUpdateDayLine()) { // 日线数据不需要更新。在系统初始时，设置此m_fUpdateDayLine标识
-			lIndex++;
-		}
-		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
-			pStock->SetUpdateDayLine(false); // 此股票日线资料不需要更新了。
-			lIndex++;
-		}
-		else {
-			fFoundStock = true;
-		}
-	}
-
-	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
-		TRACE(_T("未找到需更新日线历史数据的股票\n"));
-		return "";
-	}
-
-	// 找到了需申请日线历史数据的股票
-	const CChinaStockPtr pStock = GetStock(lIndex);
-	ASSERT(!pStock->IsUpdateDayLineDB());
-	ASSERT(pStock->IsUpdateDayLine());
-	pStock->SetUpdateDayLine(false);
-	strReturn += XferStandardToNetease(pStock->GetSymbol());
-	return strReturn;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 // 生成腾讯日线股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
 //
 //  此函数是检查m_vStock股票池

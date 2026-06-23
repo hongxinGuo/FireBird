@@ -49,12 +49,6 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("8.89", "10.0"), 0.0) << "小于-0.11时返回0";
 	}
 
-	TEST_F(CContainerChinaStockTest, TestGetNeteaseRTDataInquiringIndex) {
-		EXPECT_EQ(m_containerChinaStock.GetNeteaseRTDataInquiringIndex(), 0);
-		m_containerChinaStock.SetNeteaseRTDataInquiringIndex(100);
-		EXPECT_EQ(m_containerChinaStock.GetNeteaseRTDataInquiringIndex(), 100);
-	}
-
 	TEST_F(CContainerChinaStockTest, TestGetSinaRTDataInquiringIndex) {
 		EXPECT_EQ(m_containerChinaStock.GetSinaRTDataInquiringIndex(), 0);
 		m_containerChinaStock.SetSinaRTDataInquiringIndex(100);

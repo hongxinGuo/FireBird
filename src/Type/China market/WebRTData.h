@@ -203,7 +203,6 @@ public:
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 	bool HaveName() const noexcept { return !m_strStockName.empty(); }// 已经获得股票名称。当没有名称时，该股票并未上市。
-	bool CheckNeteaseRTDataActive();
 	bool CheckSinaRTDataActive();
 	bool CheckTengxunRTDataActive();
 	bool IsValidTime(long lDays) const;

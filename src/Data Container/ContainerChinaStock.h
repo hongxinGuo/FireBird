@@ -38,7 +38,6 @@ public:
 	void ClearDayLineDBUpdatedFlag() noexcept;
 	void ClearDayLineNeedUpdateStatus() const;
 
-	string CreateNeteaseDayLineInquiringStr();
 	string CreateTengxunDayLineInquiringStr();
 
 	void TaskUpdateDayLineDB();

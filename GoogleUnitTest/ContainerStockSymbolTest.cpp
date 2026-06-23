@@ -150,10 +150,6 @@ namespace FireBirdTest {
 		i = 2;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i, ".", 3, XferStandardToSina), "sh000002.sh000003.sh000004");
 		EXPECT_EQ(i, 5);
-
-		i = 5;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i,",", 3, XferStandardToNetease), "0000005,0000006,0000007");
-		EXPECT_EQ(i, 8);
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextSinaStockInquiringMiddleStr) {
@@ -170,13 +166,5 @@ namespace FireBirdTest {
 
 		i = 3;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000002,sh000003,sh000004") << "起始位置为2";
-	}
-
-	TEST_F(CDataStockSymbolTest, TestGetNextNeteaseStockInquiringMiddleStr) {
-		long i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000000,0000001") << "起始位置为零";
-
-		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000002,0000003,0000004") << "起始位置为2";
 	}
 }

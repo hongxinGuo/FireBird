@@ -14,8 +14,6 @@
 #include "AccessoryDataSource.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "InaccessibleSymbol.h"
-#include "NeteaseDayLineDataSource.h"
-#include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
 using namespace testing;
@@ -55,7 +53,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
 		EXPECT_EQ(gl_systemConfiguration.GetNumberOfRTDataSource(), 4) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetSinaRTDataInquiryPerTime(), 850) << "测试文件中的数值";
-		EXPECT_EQ(gl_systemConfiguration.GetNeteaseRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetTengxunRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 1100) << "默认每次查询时间为1100毫秒";
@@ -82,7 +79,6 @@ namespace FireBirdTest {
 
 			EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
 			EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
-			EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 
 			EXPECT_FALSE(gl_pChinaMarket->IsCalculateChosen10RS());
 			EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
@@ -159,14 +155,11 @@ namespace FireBirdTest {
 
 	void WebInquirerCheck() {
 		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
-		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
 		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
 
 		EXPECT_THAT(gl_pFinnhubDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pTiingoDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pSinaRTDataSource->InquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pNeteaseDayLineDataSource->InquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pNeteaseRTDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pTengxunRTDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pTengxunDayLineDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pTengxunDayLineDataSource->InquiryQueueSize(), 0);
@@ -175,9 +168,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebError());
 		EXPECT_FALSE(gl_pAccessoryDataSource->IsWebError());
 		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
-		EXPECT_FALSE(gl_pNeteaseDayLineDataSource->IsWebError());
 		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
-		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsWebError());
 		EXPECT_FALSE(gl_pTengxunRTDataSource->IsWebError());
 		EXPECT_FALSE(gl_pTengxunDayLineDataSource->IsWebError());
 		EXPECT_FALSE(gl_pEastmoneyDayLineDataSource->IsWebError());

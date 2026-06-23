@@ -4,7 +4,6 @@
 #include"GeneralCheck.h"
 
 #include"MockTengxunDayLineDataSource.h"
-#include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
 using namespace testing;
@@ -59,7 +58,6 @@ namespace FireBirdTest {
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage1) {
 		gl_pSinaRTDataSource->SetWebError(true);
-		gl_pNeteaseRTDataSource->SetWebError(false);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, Inquire).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
@@ -71,19 +69,14 @@ namespace FireBirdTest {
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage2) {
 		gl_pSinaRTDataSource->SetWebError(false);
-		gl_pNeteaseRTDataSource->SetWebError(true);
-		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, Inquire).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
 
 		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(toLocalTime(120000))) << "WebBusy时，不申请数据";
-
-		gl_pNeteaseRTDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage3) {
 		gl_pSinaRTDataSource->SetWebError(false);
-		gl_pNeteaseRTDataSource->SetWebError(false);
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());

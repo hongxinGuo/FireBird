@@ -10,9 +10,7 @@
 #include "CharSetTransfer.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "InfoReport.h"
-#include "NeteaseDayLineDataSource.h"
 
-#include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
@@ -30,7 +28,6 @@ CChinaMarket::CChinaMarket() {
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器
-	m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
 
 	m_avChosenStock.resize(30);
 
@@ -329,8 +326,6 @@ bool CChinaMarket::IsRealTimeDataSourceEnable() noexcept {
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_:
 		return gl_pSinaRTDataSource->IsEnable();
-	case NeteaseRealTime_:
-		return gl_pNeteaseRTDataSource->IsEnable();
 	case TengxunRealTime_:
 		return gl_pTengxunRTDataSource->IsEnable();
 	default:
@@ -343,9 +338,6 @@ void CChinaMarket::EnableRealTimeDataSource(bool fEnable) noexcept {
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_:
 		gl_pSinaRTDataSource->Enable(fEnable);
-		break;
-	case NeteaseRealTime_:
-		gl_pNeteaseRTDataSource->Enable(fEnable);
 		break;
 	case TengxunRealTime_:
 		gl_pTengxunRTDataSource->Enable(fEnable);
@@ -366,27 +358,6 @@ string CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTota
 		return gl_dataContainerChinaStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 	}
 	return gl_dataContainerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
-}
-
-string CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
-	if (fUsingTotalStockSet) {
-		return gl_dataContainerChinaStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
-	}
-	return gl_dataContainerChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
-}
-
-bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const string& str) const {
-	const string strNetease = str.substr(0, 7);
-	string strStockCode = XferNeteaseToStandard(strNetease);
-	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
-		string strReport = "网易日线查询股票代码错误：";
-		TRACE(_T("网易日线查询股票代码错误：%s\n"), Utf8ToW(strStockCode).c_str());
-		strReport += strStockCode;
-		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
-		return false;
-	}
-
-	return true;
 }
 
 void CChinaMarket::TaskSetCurrentStock() {
@@ -627,9 +598,6 @@ void CChinaMarket::EnableDayLineDataSource() {
 		gl_pTengxunDayLineDataSource->Enable(true);
 		TRACE(_T("启动腾讯日线数据源\n"));
 		break;
-	case NeteaseDayLine_:
-		gl_pNeteaseDayLineDataSource->Enable(true);
-		break;
 	default:
 		gl_pTengxunDayLineDataSource->Enable(true);
 		break;
@@ -653,9 +621,6 @@ bool CChinaMarket::IsWebBusy() {
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_: // 新浪实时数据
 		bWebBusy = gl_pSinaRTDataSource->IsWebBusy();
-		break;
-	case NeteaseRealTime_: // 更新网易实时数据读取时间
-		bWebBusy = gl_pNeteaseRTDataSource->IsWebBusy();
 		break;
 	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		bWebBusy = gl_pTengxunRTDataSource->IsWebBusy();
@@ -684,9 +649,6 @@ long long CChinaMarket::GetHTTPStatus() {
 	case SinaRealTime_: // 新浪实时数据
 		httpStatus = gl_pSinaRTDataSource->GetHTTPStatusCode();
 		break;
-	case NeteaseRealTime_: // 更新网易实时数据读取时间
-		httpStatus = gl_pNeteaseRTDataSource->GetHTTPStatusCode();
-		break;
 	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		httpStatus = gl_pTengxunRTDataSource->GetHTTPStatusCode();
 		break;
@@ -707,9 +669,6 @@ bool CChinaMarket::IsWebReaTimeDataError() {
 	case SinaRealTime_: // 新浪实时数据
 		webError = gl_pSinaRTDataSource->IsWebError();
 		break;
-	case NeteaseRealTime_: // 更新网易实时数据读取时间
-		webError = gl_pNeteaseRTDataSource->IsWebError();
-		break;
 	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		webError = gl_pTengxunRTDataSource->IsWebError();
 		break;
@@ -726,9 +685,6 @@ long long CChinaMarket::GetWebRealTimeDataErrorCode() {
 	case SinaRealTime_: // 新浪实时数据
 		errorCode = gl_pSinaRTDataSource->GetWebErrorCode();
 		break;
-	case NeteaseRealTime_: // 更新网易实时数据读取时间
-		errorCode = gl_pNeteaseRTDataSource->GetWebErrorCode();
-		break;
 	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		errorCode = gl_pTengxunRTDataSource->GetWebErrorCode();
 		break;
@@ -740,7 +696,7 @@ long long CChinaMarket::GetWebRealTimeDataErrorCode() {
 }
 
 bool CChinaMarket::IsDayLineDataSourceEnable() {
-	return gl_pTengxunDayLineDataSource->IsEnable() || gl_pEastmoneyDayLineDataSource->IsEnable() || gl_pNeteaseDayLineDataSource->IsEnable();
+	return gl_pTengxunDayLineDataSource->IsEnable() || gl_pEastmoneyDayLineDataSource->IsEnable();
 }
 
 bool CChinaMarket::IsWebDayLineDataError() {

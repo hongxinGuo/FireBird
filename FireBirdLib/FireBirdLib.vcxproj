@@ -65,8 +65,6 @@
     <ClInclude Include="..\src\Data Source\InternetOption.h" />
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />
-    <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h" />
-    <ClInclude Include="..\src\Data Source\NeteaseRTDataSource.h" />
     <ClInclude Include="..\src\Data Source\SinaRTDataSource.h" />
     <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h" />
     <ClInclude Include="..\src\Data Source\TiingoDataSource.h" />
@@ -115,8 +113,6 @@
     <ClInclude Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubStockSymbol.h" />
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseDayline.h" />
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseRT.h" />
     <ClInclude Include="..\src\Factory Product\ProductSinaRT.h" />
     <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingo.h" />
@@ -244,8 +240,6 @@
     <ClCompile Include="..\src\Data Source\EastMoneyDayLineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp" />
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp" />
-    <ClCompile Include="..\src\Data Source\NeteaseDaylineDataSource.cpp" />
-    <ClCompile Include="..\src\Data Source\NeteaseRTDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\SinaRTDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp" />
@@ -284,8 +278,6 @@
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockSymbol.cpp" />
-    <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.cpp" />
-    <ClCompile Include="..\src\Factory Product\ProductNeteaseRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductSinaRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingo.cpp" />

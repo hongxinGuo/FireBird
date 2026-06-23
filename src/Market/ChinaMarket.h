@@ -82,8 +82,6 @@ public:
 
 	// 实时数据读取
 	string GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
-	string GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
-	bool CheckValidOfNeteaseDayLineInquiringStr(const string& str) const;
 
 	static size_t IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition);
 
@@ -144,8 +142,6 @@ public:
 	bool IsRealTimeDataSourceEnable() noexcept;
 	void EnableRealTimeDataSource(bool fEnable) noexcept;
 	bool IsUsingSinaRTDataReceiver() const noexcept { return m_fUsingSinaRTDataReceiver; }
-	bool IsUsingNeteaseRTDataReceiver() const noexcept { return m_fUsingNeteaseRTDataReceiver; }
-	void SetUsingNeteaseRTDataReceiver(const bool fFlag) noexcept { m_fUsingNeteaseRTDataReceiver = fFlag; }
 	bool IsUsingTengxunRTDataReceiver() const noexcept { return m_fUsingTengxunRTDataReceiver; }
 	void SetUsingTengxunRTDataReceiver(const bool fFlag) noexcept { m_fUsingTengxunRTDataReceiver = fFlag; }
 	int GetCountDownTengxunNumber() const noexcept { return m_iCountDownTengxunNumber; }
@@ -227,7 +223,6 @@ protected:
 	chrono::sys_seconds m_tpNewTransactionTime{ chrono::duration<long long>(0) };
 
 	bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
-	bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
 	bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
 	int m_iCountDownTengxunNumber;
 

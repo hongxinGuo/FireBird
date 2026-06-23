@@ -366,19 +366,6 @@ bool CWebRTData::CheckTengxunRTDataActive() {
 	return m_fActive;
 }
 
-bool CWebRTData::CheckNeteaseRTDataActive() {
-	m_fActive = false;
-	if (!IsValidTime(14)) {	// 非活跃股票的update时间为0，转换为time_t时为-1.
-		return m_fActive;
-	}
-	if ((m_lOpen == 0) || (m_lNew == 0)) {// 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
-		return m_fActive;
-	}
-	m_fActive = true;
-
-	return m_fActive;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 实时数据的有效时间范围为最近两周内。当股市放假时，其最新数据是放假前的最后一天数据。春节放假时间最长，有十一天时间，加上三天富裕，

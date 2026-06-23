@@ -7,7 +7,6 @@ CVirtualContainer::CVirtualContainer() {
 }
 
 void CVirtualContainer::Reset() {
-	m_lNeteaseRTDataInquiringIndex = 0;
 	m_lSinaRTDataInquiringIndex = 0;
 	m_lTengxunRTDataInquiringIndex = 0;
 }

@@ -13,7 +13,6 @@
 #include"MockChinaMarket.h"
 
 #include"GeneralCheck.h"
-#include "NeteaseDayLineDataSource.h"
 
 using namespace testing;
 #include<memory>
@@ -57,8 +56,6 @@ namespace FireBirdTest {
 			EXPECT_TRUE(s_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
 			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateDayLineDB());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
-
-			ASSERT_THAT(gl_pNeteaseDayLineDataSource, NotNull());
 
 			EXPECT_FALSE(s_pMockChinaMarket->IsSystemReady());
 			s_pMockChinaMarket->SetSystemReady(true);// 测试系统默认为准备好了

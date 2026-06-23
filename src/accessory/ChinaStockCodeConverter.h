@@ -14,13 +14,8 @@ using std::string;
 // 股票代码转
 [[nodiscard]] string XferSinaToStandard(const string& strSina);
 [[nodiscard]] string XferSinaToStandard(const string_view& svSina);
-[[nodiscard]] string XferSinaToNetease(const string& strSina);
-[[nodiscard]] string XferNeteaseToStandard(const string& strNetease);
-[[nodiscard]] string XferNeteaseToStandard(const string_view& svNetease);
-[[nodiscard]] string XferNeteaseToSina(const string& strNetease);
 [[nodiscard]] inline string XferTengxunToStandard(const string& strTengxun) { return XferSinaToStandard(strTengxun); }
 [[nodiscard]] string XferStandardToSina(const string& strStandard);
-[[nodiscard]] string XferStandardToNetease(const string& strStandard);
 [[nodiscard]] inline string XferStandardToTengxun(const string& strStandardCode) { return XferStandardToSina(strStandardCode); }
 [[nodiscard]] string XferStandardToEastmoney(const string& strStandardCode);
 [[nodiscard]] string XferEastmoneyToStandard(const string& strEastmoneyCode);

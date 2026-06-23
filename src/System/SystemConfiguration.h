@@ -16,11 +16,9 @@
 
 enum EChinaMarketDataSourceServer : int {
 	SinaRealTime_ = 0,
-	NeteaseRealTime_ = 1,
-	TengxunRealTime_ = 2,
-	NeteaseDayLine_ = 3,
-	TengxunDayLine_ = 4,
-	EastmoneyDayLine_ = 5
+	TengxunRealTime_ = 1,
+	TengxunDayLine_ = 2,
+	EastmoneyDayLine_ = 3
 };
 
 class CSystemConfiguration final {
@@ -70,7 +68,6 @@ public:
 	// 全局参数
 	[[nodiscard]] EChinaMarketDataSourceServer GetChinaMarketRealtimeServer() const noexcept { return m_iChinaMarketRealtimeServer; }
 	void UsingSinaRealtimeServer();
-	void UsingNeteaseRealtimeServer();
 	void UsingTengxunRealtimeServer();
 
 	void SetChinaMarketRealtimeServer(const EChinaMarketDataSourceServer iChinaMarketRealtimeServer) noexcept {
@@ -117,9 +114,7 @@ public:
 
 	[[nodiscard]] EChinaMarketDataSourceServer GetRTServer() const { return m_iChinaMarketRealtimeServer; }
 	[[nodiscard]] bool IsUsingSinaRTServer() const noexcept { return m_iChinaMarketRealtimeServer == SinaRealTime_; }
-	[[nodiscard]] bool IsUsingNeteaseRTServer() const noexcept { return m_iChinaMarketRealtimeServer == NeteaseRealTime_; }
 	[[nodiscard]] bool IsUsingTengxunRTServer() const noexcept { return m_iChinaMarketRealtimeServer == TengxunRealTime_; }
-	[[nodiscard]] bool IsUsingNeteaseDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == NeteaseDayLine_; }
 	[[nodiscard]] bool IsUsingTengxunDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == TengxunDayLine_; }
 	[[nodiscard]] bool IsUsingEastmoneyDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == EastmoneyDayLine_; }
 
@@ -222,8 +217,6 @@ public:
 	void SetNumberOfRTDataSource(const int iNumber) noexcept { m_iNumberOfRTDataSource = iNumber; }
 	[[nodiscard]] int GetSinaRTDataInquiryPerTime() const noexcept { return m_iSinaRTDataInquiryPerTime; }
 	void SetSinaRTDataInquiryPerTime(const int iNumber) noexcept { m_iSinaRTDataInquiryPerTime = iNumber; }
-	[[nodiscard]] int GetNeteaseRTDataInquiryPerTime() const noexcept { return m_iNeteaseRTDataInquiryPerTime; }
-	void SetNeteaseRTDataInquiryPerTime(const int iNumber) noexcept { m_iNeteaseRTDataInquiryPerTime = iNumber; }
 	[[nodiscard]] int GetTengxunRTDataInquiryPerTime() const noexcept { return m_iTengxunRTDataInquiryPerTime; }
 	void SetTengxunRTDataInquiryPerTime(const int iNumber) noexcept { m_iTengxunRTDataInquiryPerTime = iNumber; }
 
@@ -353,7 +346,7 @@ protected:
 
 	// 系统参数
 	EChinaMarketDataSourceServer m_iChinaMarketRealtimeServer{ SinaRealTime_ }; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
-	EChinaMarketDataSourceServer m_iChinaMarketDayLineServer{ NeteaseDayLine_ }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
+	EChinaMarketDataSourceServer m_iChinaMarketDayLineServer{ TengxunDayLine_ }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
 	chrono::milliseconds m_chinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market
@@ -397,7 +390,6 @@ protected:
 	bool m_bFastInquiringRTData{ false };
 	int m_iNumberOfRTDataSource{ 4 }; // 实时数据申请引擎数， 默认为4
 	int m_iSinaRTDataInquiryPerTime{ 850 }; // 新浪实时数据每次查询股票数
-	int m_iNeteaseRTDataInquiryPerTime{ 900 }; // 网易实时数据每次查询股票数
 	int m_iTengxunRTDataInquiryPerTime{ 900 }; // 腾讯实时数据每次查询股票数
 
 	// 网络数据更新频率（以天数记）

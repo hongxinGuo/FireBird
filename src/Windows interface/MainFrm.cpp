@@ -16,8 +16,6 @@
 
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"NeteaseDayLineDataSource.h"
 #include"TengxunDayLineDataSource.h"
 
 #include"FinnhubDataSource.h"
@@ -54,9 +52,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_CHAR()
 	ON_WM_KEYUP()
 	ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
-	ON_COMMAND(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUsingNeteaseRealtimeDataServer)
 	ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
-	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
 	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
 	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockProfile)
@@ -75,8 +71,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainChinaMarketStockDayLine)
 	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainChinaMarketStockDayLine)
 	ON_WM_SIZE()
-	ON_COMMAND(ID_USING_NETEASE_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingNeteaseDayLineDataServer)
-	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseDayLineDataServer)
 	ON_COMMAND(ID_USING_TENGXUN_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingTengxunDayLineDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunDayLineDataServer)
 	ON_COMMAND(ID_USING_TENGXUN_REALTIME_DATA_SERVER, &CMainFrame::OnUsingTengxunRealtimeDataServer)
@@ -527,9 +521,6 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	case SinaRealTime_: // 新浪实时数据
 		s = std::format("{:5Ld}", gl_pSinaRTDataSource->GetCurrentInquiryTime());
 		break;
-	case NeteaseRealTime_: // 更新网易实时数据读取时间
-		s = std::format("{:5Ld}", gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
-		break;
 	case TengxunRealTime_: // 更新腾讯实时数据读取时间
 		s = std::format("{:5Ld}", gl_pTengxunRTDataSource->GetCurrentInquiryTime());
 		break;
@@ -548,8 +539,8 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(3, s);
 
 	// 更新日线数据读取时间
-	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
-		s = std::format("{:5Ld}", gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
+	if (gl_systemConfiguration.IsUsingEastmoneyDayLineServer()) { // 网易日线服务器
+		s = std::format("{:5Ld}", gl_pEastmoneyDayLineDataSource->GetCurrentInquiryTime());
 	}
 	else if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { // 腾讯日线服务器
 		s = std::format("{:5Ld}", gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
@@ -776,22 +767,6 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
-	gl_systemConfiguration.SetChinaMarketRealtimeServer(NeteaseRealTime_);
-	gl_systemConfiguration.UsingNeteaseRealtimeServer();
-	gl_SystemData.ClearChinaMarketRTDataQueue();
-}
-
-void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
-	SysCallCmdUIEnable(pCmdUI, false); // 网易不再提供实时数据服务
-	if (gl_systemConfiguration.IsUsingNeteaseRTServer()) {
-		SysCallCmdUISetCheck(pCmdUI, true);
-	}
-	else {
-		SysCallCmdUISetCheck(pCmdUI, false);
-	}
-}
-
 void CMainFrame::OnUsingTengxunRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(TengxunRealTime_);
 	gl_systemConfiguration.UsingTengxunRealtimeServer();
@@ -950,28 +925,10 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy) {
 	gl_systemConfiguration.SetCurrentWindowRect(cx, cy);
 }
 
-void CMainFrame::OnUsingNeteaseDayLineDataServer() {
-	gl_systemConfiguration.SetChinaMarketDayLineServer(NeteaseDayLine_);
-	gl_pTengxunDayLineDataSource->Enable(true);
-	gl_pNeteaseDayLineDataSource->Enable(false);
-	gl_pEastmoneyDayLineDataSource->Enable(false);
-}
-
-void CMainFrame::OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI) {
-	SysCallCmdUIEnable(pCmdUI, false); // 网易不再提供日线服务
-	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) {
-		SysCallCmdUISetCheck(pCmdUI, true);
-	}
-	else {
-		SysCallCmdUISetCheck(pCmdUI, false);
-	}
-}
-
 void CMainFrame::OnUsingTengxunDayLineDataServer() {
 	gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
 	gl_pTengxunDayLineDataSource->Enable(false);
 	gl_pEastmoneyDayLineDataSource->Enable(false);
-	gl_pNeteaseDayLineDataSource->Enable(true);
 }
 
 void CMainFrame::OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI) {
@@ -987,7 +944,6 @@ void CMainFrame::OnUsingEastmoneyDaylineDataServer() {
 	gl_systemConfiguration.SetChinaMarketDayLineServer(EastmoneyDayLine_);
 	gl_pTengxunDayLineDataSource->Enable(false);
 	gl_pEastmoneyDayLineDataSource->Enable(true);
-	gl_pNeteaseDayLineDataSource->Enable(false);
 }
 
 void CMainFrame::OnUpdateUsingEastmoneyDaylineDataServer(CCmdUI* pCmdUI) {

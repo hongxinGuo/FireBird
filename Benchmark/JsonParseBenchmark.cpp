@@ -244,16 +244,8 @@ public:
 		LoadFromFile(strFileName, sUSExchangeStockCode);
 		auto bError2 = USExchangedStockCode.load(sFileName);
 
-		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "NeteaseRTData.json";
-		LoadFromFile(strFileName, sNeteaseRTData);
-		sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
-
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "TengxunDayLine.json";
 		LoadFromFile(strFileName, sTengxunDayLine);
-
-		sNeteaseRTDataForPTree = sNeteaseRTData;
-		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
-		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 
 		sFinnhubStockUpdateParameter = R"({"Finnhub":{"StockFundamentalsCompanyProfileConcise":20230110,"StockFundamentalsCompanyNews":20230205,"StockFundamentalsBasicFinancials":20230112,"StockPriceQuote":19800104,"StockFundamentalsPeer":20230115,"StockFundamentalsInsiderTransaction":20230116,"StockFundamentalsInsiderSentiment":20230117,"StockEstimatesEPSSurprise":19800108},"Tiingo":{"StockFundamentalsCompanyProfile":20221222,"StockPriceCandles":20230210}})";
 
@@ -267,9 +259,7 @@ public:
 	}
 
 	string sUSExchangeStockCode;
-	string sNeteaseRTData;
 	string sv;
-	string sNeteaseRTDataForPTree;
 	string sTengxunDayLine;
 	string sFinnhubStockUpdateParameter;
 	string sTiingoSymbol;
@@ -330,21 +320,6 @@ BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) 
 	}
 }
 
-BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingSimdjson)(benchmark::State& state) {
-	const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "NeteaseRTData.json";
-	const auto j = padded_string::load(strFileName);
-	ondemand::parser parser;
-	for (auto _ : state) {
-		parser.iterate(j);
-	}
-}
-
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson)(benchmark::State& state) {
-	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
-	}
-}
-
 // 解析并处理tengxun日线数据。
 BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& state) {
 	const string_view svData = sTengxunDayLine;
@@ -357,40 +332,6 @@ BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& 
 	CProductTiingoStockProfile p;
 	for (auto _ : state) {
 		auto vData = p.ParseTiingoStockSymbol(pWebData); // 默认测试文件中的股票代码为sh000001.
-	}
-}
-
-class CWithNlohmannJson : public benchmark::Fixture {
-public:
-	void SetUp(const benchmark::State& state) override {
-		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "NeteaseRTData.json";
-		LoadFromFile(strFileName, s);
-		sv = s;
-		sv = sv.substr(21, sv.length() - 21 - 2);
-		try {
-			js = nlohmannJson::parse(s.begin() + 21, s.end() - 2);
-		} catch (nlohmannJson::parse_error&) {
-			fDone = false;
-		}
-		pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(s);
-	}
-
-	void TearDown(const benchmark::State& state) override {
-	}
-
-	CWebDataPtr pWebData;
-	string s;
-	string_view sv;
-	nlohmannJson js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
-	vector<CWebRTDataPtr> vWebRTDataReceived;
-	bool fDone;
-};
-
-//simdjson解析并读取NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson)(benchmark::State& state) {
-	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(pWebData);
 	}
 }
 

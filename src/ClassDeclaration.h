@@ -44,10 +44,8 @@ class CWebRTDataContainer;
 
 // Web Inquiry
 class CVirtualWebInquiry;
-class CNeteaseRTWebInquiry;
 class CSinaRTWebInquiry;
 class CTengxunRTWebInquiry;
-class CNeteaseDayLineWebInquiry;
 
 // Web data source
 class CInquireEngine;

@@ -862,7 +862,7 @@ namespace FireBirdTest {
 		}
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineLoaded());
-		stock.UpdateDayLine(data.GetProcessedDayLine()); // 测试CDownloadedNeteaseDayLine中的GetProcessedDayLine
+		stock.UpdateDayLine(data.GetProcessedDayLine());
 		EXPECT_EQ(stock.DayLineSize(), 10);
 		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), toLocalDays(19900101 + i)); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());

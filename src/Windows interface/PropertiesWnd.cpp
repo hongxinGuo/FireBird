@@ -8,7 +8,6 @@
 #include "MainFrm.h"
 #include "FireBird.h"
 #include "SinaRTDataSource.h"
-#include "TengxunDayLineDataSource.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"

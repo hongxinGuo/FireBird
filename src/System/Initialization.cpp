@@ -5,8 +5,6 @@
 #include "AlphaVantageDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"NeteaseDayLineDataSource.h"
 #include"TengxunDayLineDataSource.h"
 
 #include"FinnhubDataSource.h"
@@ -65,8 +63,6 @@ namespace {
 		ASSERT(gl_pChinaMarket == nullptr);
 		gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 		gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
-		gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
-		gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
 		gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
 		gl_pEastmoneyDayLineDataSource = make_shared<CEastmoneyDayLineDataSource>();
 
@@ -95,8 +91,6 @@ namespace {
 
 		ASSERT(gl_pSinaRTDataSource != nullptr);
 		ASSERT(gl_pTengxunRTDataSource != nullptr);
-		ASSERT(gl_pNeteaseRTDataSource != nullptr);
-		ASSERT(gl_pNeteaseDayLineDataSource != nullptr);
 		ASSERT(gl_pTengxunDayLineDataSource != nullptr);
 		ASSERT(gl_pEastmoneyDayLineDataSource != nullptr);
 
@@ -190,17 +184,12 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	// china market's data source 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pEastmoneyDayLineDataSource);
 
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_:	//使用新浪实时数据服务器
 		gl_systemConfiguration.UsingSinaRealtimeServer();
-		break;
-	case NeteaseRealTime_: //使用网易实时服务器 
-		gl_systemConfiguration.UsingNeteaseRealtimeServer();
 		break;
 	case TengxunRealTime_: //使用腾讯实时数据服务器
 		gl_systemConfiguration.UsingTengxunRealtimeServer();
@@ -212,27 +201,18 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	}
 
 	switch (gl_systemConfiguration.GetChinaMarketDayLineServer()) {
-	case NeteaseDayLine_:
-		//使用网易日线数据服务器
-		gl_pNeteaseDayLineDataSource->Enable(true);
-		gl_pTengxunDayLineDataSource->Enable(false);
-		gl_pEastmoneyDayLineDataSource->Enable(false);
-		break;
 	case TengxunDayLine_:
 		//使用腾讯日线数据服务器
-		gl_pNeteaseDayLineDataSource->Enable(false);
 		gl_pTengxunDayLineDataSource->Enable(true);
 		gl_pEastmoneyDayLineDataSource->Enable(false);
 		break;
 	case EastmoneyDayLine_:
 		gl_pEastmoneyDayLineDataSource->Enable(true);
 		gl_pTengxunDayLineDataSource->Enable(false);
-		gl_pNeteaseDayLineDataSource->Enable(false);
 		break;
 	default:
 		gl_pEastmoneyDayLineDataSource->Enable(true);
 		gl_pTengxunDayLineDataSource->Enable(false);
-		gl_pNeteaseDayLineDataSource->Enable(false);
 		break;
 	}
 

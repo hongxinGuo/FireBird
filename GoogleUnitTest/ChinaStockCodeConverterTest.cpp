@@ -80,48 +80,6 @@ namespace FireBirdTest {
 		EXPECT_THROW(str2 = XferSinaToStandard(sv), std::exception);
 	}
 
-	TEST_F(StockCodeConverterTest, TestXferSinaToNetease) {
-		EXPECT_EQ(XferSinaToNetease("sh600001"), "0600001");
-		EXPECT_EQ(XferSinaToNetease("sz000001"), "1000001");
-		EXPECT_EQ(XferSinaToNetease("sh60001"), "0h60001");
-		EXPECT_EQ(XferSinaToNetease("sz00001"), "1z00001");
-		EXPECT_THROW(string str = XferSinaToNetease("ss600001"), exception);
-	}
-
-	TEST_F(StockCodeConverterTest, TestXferNeteaseToStandard) {
-		string str = "0600001";
-		EXPECT_EQ(XferNeteaseToStandard(str), "600001.SS");
-		str = "1000001";
-		EXPECT_EQ(XferNeteaseToStandard(str), "000001.SZ");
-		str = "060001";
-		EXPECT_THROW(string str1 = XferNeteaseToStandard(str), exception);
-		str = "100001";
-		EXPECT_THROW(string str1 = XferNeteaseToStandard(str), exception);
-		str = "200001";
-		EXPECT_THROW(string str1 = XferNeteaseToStandard(str), exception);
-	}
-
-	TEST_F(StockCodeConverterTest, TestXferNeteaseToStandard2) {
-		string str = "0600001";
-		EXPECT_EQ(XferNeteaseToStandard(string_view(str)), "600001.SS");
-		str = "1000001";
-		EXPECT_EQ(XferNeteaseToStandard(string_view(str)), "000001.SZ");
-		str = "060001";
-		EXPECT_THROW(string str1 = XferNeteaseToStandard(str), exception);
-		str = "100001";
-		EXPECT_THROW(string str1 = XferNeteaseToStandard(str), exception);
-		str = "200001";
-		EXPECT_THROW(string str1 = XferNeteaseToStandard(str), exception);
-	}
-
-	TEST_F(StockCodeConverterTest, TestXferNeteaseToSina) {
-		EXPECT_EQ(XferNeteaseToSina("0600001"), "sh600001");
-		EXPECT_EQ(XferNeteaseToSina("1000001"), "sz000001");
-		EXPECT_EQ(XferNeteaseToSina("060001"), "sh060001");
-		EXPECT_EQ(XferNeteaseToSina("100001"), "sz100001");
-		EXPECT_THROW(string str = XferNeteaseToSina("300001"), exception);
-	}
-
 	TEST_F(StockCodeConverterTest, TestXferStandardToSina) {
 		EXPECT_EQ(XferStandardToSina("600001.SS"), "sh600001");
 		EXPECT_EQ(XferStandardToSina("000001.SZ"), "sz000001");
@@ -129,15 +87,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(XferStandardToSina("00001.SZ"), "sz00001.");
 		EXPECT_THROW(string str = XferStandardToSina("000001.SA"), exception);
 		EXPECT_THROW(string str = XferStandardToSina("000001.AS"), exception);
-	}
-
-	TEST_F(StockCodeConverterTest, TestXferStandardToNetease) {
-		EXPECT_EQ(XferStandardToNetease("600001.SS"), "0600001");
-		EXPECT_EQ(XferStandardToNetease("000001.SZ"), "1000001");
-		EXPECT_EQ(XferStandardToNetease("60001.SS"), "060001.");
-		EXPECT_EQ(XferStandardToNetease("00001.SZ"), "100001.");
-		EXPECT_THROW(string str = XferStandardToNetease("000001.SA"), exception);
-		EXPECT_THROW(string str = XferStandardToNetease("000001.AS"), exception);
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferStandardToTengxun) {

@@ -49,9 +49,6 @@
     <Filter Include="Test源文件\Type\China Market\WebRTData">
       <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Type\China Market\NeteaseDayLineWebData">
-      <UniqueIdentifier>{1362f335-5cd6-45f2-90d7-9701ae2fadef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Type\World market">
       <UniqueIdentifier>{aa57c808-d631-4864-8035-44d3b5244a05}</UniqueIdentifier>
     </Filter>
@@ -150,9 +147,6 @@
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="NeteaseWebRTDataTest.cpp">
-      <Filter>Test源文件\Type\China Market\WebRTData</Filter>
-    </ClCompile>
     <ClCompile Include="WebRTDataTest.cpp">
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
     </ClCompile>
@@ -164,15 +158,6 @@
     </ClCompile>
     <ClCompile Include="GeneralCheck.cpp">
       <Filter>Test源文件\辅助检查函数</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
-      <Filter>Test源文件\Type\China Market\NeteaseDayLineWebData</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseDayLineDataTest.cpp">
-      <Filter>Test源文件\Type\China Market\NeteaseDayLineWebData</Filter>
-    </ClCompile>
-    <ClCompile Include="ProcessDayLineDataTest.cpp">
-      <Filter>Test源文件\Type\China Market\NeteaseDayLineWebData</Filter>
     </ClCompile>
     <ClCompile Include="SystemDataTest.cpp">
       <Filter>Test源文件\System</Filter>
@@ -336,9 +321,6 @@
     <ClCompile Include="TiingoIndustryTest.cpp">
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
-    <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp">
-      <Filter>Test源文件\Market\China market</Filter>
-    </ClCompile>
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp">
       <Filter>Test源文件\Market\China market</Filter>
     </ClCompile>
@@ -346,9 +328,6 @@
       <Filter>Test源文件\Market\China market</Filter>
     </ClCompile>
     <ClCompile Include="MockChinaMarketTest.cpp">
-      <Filter>Test源文件\Market\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp">
       <Filter>Test源文件\Market\China market</Filter>
     </ClCompile>
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp">
@@ -408,19 +387,10 @@
     <ClCompile Include="ContainerVirtualStockTest.cpp">
       <Filter>Test源文件\Data Container</Filter>
     </ClCompile>
-    <ClCompile Include="NeteaseRTDataParserTest.cpp">
-      <Filter>Test源文件\accessory</Filter>
-    </ClCompile>
     <ClCompile Include="VirtualDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="MockTiingoDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseDayLineDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MockNeteaseRTDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="MockTengxunRTDataSourceTest.cpp">
@@ -479,12 +449,6 @@
     </ClCompile>
     <ClCompile Include="ProductFinnhubMarketHolidayTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="ProductNeteaseDayLineTest.cpp">
-      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="ProductNeteaseRTTest.cpp">
-      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="ProductSinaRTTest.cpp">
       <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
@@ -633,12 +597,6 @@
       <Filter>Mock class\Data Source</Filter>
     </ClInclude>
     <ClInclude Include="MockTiingoDataSource.h">
-      <Filter>Mock class\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="MockNeteaseDayLineDataSource.h">
-      <Filter>Mock class\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="MockNeteaseRTDataSource.h">
       <Filter>Mock class\Data Source</Filter>
     </ClInclude>
     <ClInclude Include="MockTengxunRTDataSource.h">
