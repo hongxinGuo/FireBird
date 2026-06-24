@@ -330,8 +330,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-	// 设置500毫秒每次的软调度，只用于更新状态任务。
-	m_uIdTimer = SetTimer(1, 500, nullptr);
+	// 设置1000毫秒每次的软调度，只用于更新状态任务。
+	m_uIdTimer = SetTimer(1, 1000, nullptr);
 	if (m_uIdTimer == 0) {
 		TRACE(_T("生成500ms时钟时失败\n"));
 	}
@@ -703,6 +703,11 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		}
 		SetCurrentEditStockChanged(true);
 		break;
+	}
+	if (IsCurrentEditStockChanged()) {
+		CStringW strW = m_aStockCodeTemp;
+		SysCallSetPaneText(1, strW);
+		SetCurrentEditStockChanged(false);
 	}
 
 	SysCallOnChar(nChar, nRepCnt, nFlags);

@@ -4,10 +4,13 @@
 #include "PropertiesWnd.h"
 
 #include "ChinaMarket.h"
+#include "EastmoneyDayLineDataSource.h"
 #include "FinnhubDataSource.h"
 #include "MainFrm.h"
 #include "FireBird.h"
 #include "SinaRTDataSource.h"
+#include "TengxunDayLineDataSource.h"
+#include "TengxunRTDataSource.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
@@ -328,12 +331,18 @@ void CPropertiesWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup2 = new CGridProperty(_T("China market"));
 	pGroup2->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pChinaMarket->IsRealTimeDataSourceEnable()), _T("Enable"), CHINA_MARKET_REALTIME_DATA_SOURCE_ENABLE_));
-	m_pPropChinaMarketWebRealTimeStatus = new CGridProperty(_T("RealTime status:"), _T(""));
-	m_pPropChinaMarketWebRealTimeStatus->Enable(false);
-	pGroup2->AddSubItem(m_pPropChinaMarketWebRealTimeStatus);
-	m_pPropChinaMarketWebDayLineStatus = new CGridProperty(_T("DayLine status:"), _T(""));
-	m_pPropChinaMarketWebDayLineStatus->Enable(false);
-	pGroup2->AddSubItem(m_pPropChinaMarketWebDayLineStatus);
+	m_pPropSinaRealTimeWebStatus = new CGridProperty(_T("Sina RealTime:"), _T(""));
+	m_pPropSinaRealTimeWebStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropSinaRealTimeWebStatus);
+	m_pPropTengxunRealTimeWebStatus = new CGridProperty(_T("Tengxun RealTime:"), _T(""));
+	m_pPropTengxunRealTimeWebStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropTengxunRealTimeWebStatus);
+	m_pPropTengxunDayLineWebStatus = new CGridProperty(_T("Tengxun DayLine:"), _T(""));
+	m_pPropTengxunDayLineWebStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropTengxunDayLineWebStatus);
+	m_pPropEastmoneyDayLineWebStatus = new CGridProperty(_T("Eastmoney DayLine:"), _T(""));
+	m_pPropEastmoneyDayLineWebStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropEastmoneyDayLineWebStatus);
 	m_pPropChinaMarketThreadStatus = new CGridProperty(_T("Thread status:"), _T(""));
 	m_pPropChinaMarketThreadStatus->Enable(false);
 	pGroup2->AddSubItem(m_pPropChinaMarketThreadStatus);
@@ -422,24 +431,48 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	m_pPropCurrentWorkingThread->SetValue(s); // 后台工作线程数
 
 	// china market web status
-	if (gl_pChinaMarket->IsWebReaTimeDataError()) {
-		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetHTTPStatus(), gl_pChinaMarket->GetWebRealTimeDataErrorCode());
+	if (!gl_pSinaRTDataSource->IsEnable()) {
+		s = "disabled";
+	}
+	if (gl_pSinaRTDataSource->IsWebError()) {
+		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pSinaRTDataSource->GetHTTPStatusCode(), gl_pSinaRTDataSource->GetWebErrorCode());
 	}
 	else {
-		s = std::format("HTTP: {:d}", gl_pChinaMarket->GetHTTPStatus());
+		s = std::format("HTTP: {:d}", gl_pSinaRTDataSource->GetHTTPStatusCode());
 	}
-	m_pPropChinaMarketWebRealTimeStatus->SetValue(s);
-	if (!gl_pChinaMarket->IsDayLineDataSourceEnable()) {
-		s = "DayLine Server disabled";
+	m_pPropSinaRealTimeWebStatus->SetValue(s);
+	if (!gl_pTengxunRTDataSource->IsEnable()) {
+		s = "disabled";
 	}
-	else if (gl_pChinaMarket->IsWebDayLineDataError()) {
-		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pChinaMarket->GetDayLineHTTPStatus(), gl_pChinaMarket->GetWebDayLineDataErrorCode());
+	else if (gl_pTengxunRTDataSource->IsWebError()) {
+		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pTengxunRTDataSource->GetHTTPStatusCode(), gl_pTengxunRTDataSource->GetWebErrorCode());
 	}
 	else {
-		s = std::format("HTTP: {:d}", gl_pChinaMarket->GetDayLineHTTPStatus());
+		s = std::format("HTTP: {:d}", gl_pTengxunRTDataSource->GetHTTPStatusCode());
 	}
-	m_pPropChinaMarketWebDayLineStatus->SetValue(s);
-	// china market thread status
+	m_pPropTengxunRealTimeWebStatus->SetValue(s);
+
+	if (!gl_pTengxunDayLineDataSource->IsEnable()) {
+		s = "disabled";
+	}
+	else if (gl_pTengxunDayLineDataSource->IsWebError()) {
+		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pTengxunDayLineDataSource->GetHTTPStatusCode(), gl_pTengxunDayLineDataSource->GetWebErrorCode());
+	}
+	else {
+		s = std::format("HTTP: {:d}", gl_pTengxunDayLineDataSource->GetHTTPStatusCode());
+	}
+	m_pPropTengxunDayLineWebStatus->SetValue(s);
+
+	if (!gl_pEastmoneyDayLineDataSource->IsEnable()) {
+		s = "disabled";
+	}
+	else if (gl_pTengxunDayLineDataSource->IsWebError()) {
+		s = std::format("HTTP: {:d}   (EC:{:5Ld})", gl_pEastmoneyDayLineDataSource->GetHTTPStatusCode(), gl_pEastmoneyDayLineDataSource->GetWebErrorCode());
+	}
+	else {
+		s = std::format("HTTP: {:d}", gl_pEastmoneyDayLineDataSource->GetHTTPStatusCode());
+	}
+	m_pPropEastmoneyDayLineWebStatus->SetValue(s);
 
 	// finnhub web status
 	if (gl_pFinnhubDataSource->IsWebError()) {

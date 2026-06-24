@@ -85,16 +85,16 @@ protected:
 	// system status group
 	CGridProperty* m_pPropRealTimeDataReceived{ nullptr };
 	CGridProperty* m_pPropChinaMarketRealTimeDataNumber{ nullptr };
+
 	CGridProperty* m_pPropCurrentWorkingThread{ nullptr };
 
 	CGridProperty* m_pPropSystemOption{ nullptr };
 
 	// china market
-	CGridProperty* m_pPropChinaMarketWebRealTimeStatus{ nullptr };
-	CGridProperty* m_pPropChinaMarketWebDayLineStatus{ nullptr };
+	CGridProperty* m_pPropSinaRealTimeWebStatus{ nullptr };
+	CGridProperty* m_pPropTengxunRealTimeWebStatus{ nullptr };
 	CGridProperty* m_pPropTengxunDayLineWebStatus{ nullptr };
 	CGridProperty* m_pPropEastmoneyDayLineWebStatus{ nullptr };
-	CGridProperty* m_pPropDayLineStatus{ nullptr };
 
 	CGridProperty* m_pPropChinaMarketThreadStatus{ nullptr };
 

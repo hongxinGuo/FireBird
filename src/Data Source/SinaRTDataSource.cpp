@@ -93,9 +93,9 @@ void CSinaRTDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 ///
 /// </summary>
 void CSinaRTDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 1000;
-	m_internetOption.option_receive_timeout = 1000;
-	m_internetOption.option_data_receive_timeout = 1000;
-	m_internetOption.option_send_timeout = 1000;
+	m_internetOption.option_connect_timeout = 2000;
+	m_internetOption.option_receive_timeout = 2000;
+	m_internetOption.option_data_receive_timeout = 2000;
+	m_internetOption.option_send_timeout = 2000;
 	m_internetOption.option_connect_retries = 1;
 }
