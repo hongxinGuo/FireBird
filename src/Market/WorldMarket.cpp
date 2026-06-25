@@ -642,9 +642,9 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 		int iTotalStock = 0;
 		int iAbove200MA = 0;
 		for (auto& pStock : m_vNasdaq100TiingoStock) {
-			if (pStock->HaveDayLine(lCurrentDate)) {
+			auto pDayLine = pStock->GetDayLineAtDate(lCurrentDate);
+			if (pDayLine != nullptr) {
 				iTotalStock++;
-				auto pDayLine = pStock->GetDayLineAtDate(lCurrentDate);
 				if (pDayLine->GetClose() > pDayLine->GetAverage(200)) iAbove200MA++;
 			}
 		}
