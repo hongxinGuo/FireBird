@@ -57,7 +57,6 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 1100) << "默认每次查询时间为1100毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count(), 500) << "默认每每次查询时间为500毫秒";
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime().count(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
 

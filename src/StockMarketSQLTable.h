@@ -5983,38 +5983,6 @@ namespace StockMarket
       };
       using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
     };
-    struct QuandlToken
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "QuandlToken";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T QuandlToken;
-            T& operator()() { return QuandlToken; }
-            const T& operator()() const { return QuandlToken; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::text, sqlpp::tag::can_be_null>;
-    };
-    struct QuandlMaxPerHour
-    {
-      struct _alias_t
-      {
-        static constexpr const char _literal[] =  "QuandlMaxPerHour";
-        using _name_t = sqlpp::make_char_sequence<sizeof(_literal), _literal>;
-        template<typename T>
-        struct _member_t
-          {
-            T QuandlMaxPerHour;
-            T& operator()() { return QuandlMaxPerHour; }
-            const T& operator()() const { return QuandlMaxPerHour; }
-          };
-      };
-      using _traits = sqlpp::make_traits<sqlpp::integer, sqlpp::tag::can_be_null>;
-    };
   } // namespace WorldMarketOption_
 
   struct WorldMarketOption: sqlpp::table_t<WorldMarketOption,
@@ -6022,9 +5990,7 @@ namespace StockMarket
                WorldMarketOption_::FinnhubToken,
                WorldMarketOption_::FinnhubMaxPerHour,
                WorldMarketOption_::TiingoToken,
-               WorldMarketOption_::TiingoMaxPerHour,
-               WorldMarketOption_::QuandlToken,
-               WorldMarketOption_::QuandlMaxPerHour>
+               WorldMarketOption_::TiingoMaxPerHour>
   {
     struct _alias_t
     {

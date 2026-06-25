@@ -1,16 +1,16 @@
 #include "pch.h"
 
-#include "ContainerChosenStock.h"
+#include "ContainerTiingoChosenStock.h"
 
-CContainerChosenStock::CContainerChosenStock() {
-	CContainerChosenStock::Reset();
+CContainerTiingoChosenStock::CContainerTiingoChosenStock() {
+	CContainerTiingoChosenStock::Reset();
 }
 
-void CContainerChosenStock::Reset() {
+void CContainerTiingoChosenStock::Reset() {
 	CContainerVirtualStock::Reset();
 }
 
-bool CContainerChosenStock::LoadDB() {
+bool CContainerTiingoChosenStock::LoadDB() {
 	using namespace StockMarket;
 	const auto& t = WorldChoiceStock{};
 	auto db = gl_dbStockMarket.get();
@@ -20,8 +20,8 @@ bool CContainerChosenStock::LoadDB() {
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {
-		if (gl_dataContainerFinnhubStock.IsSymbol(row.Symbol)) {
-			auto pStock = gl_dataContainerFinnhubStock.GetItem(row.Symbol);
+		if (gl_dataContainerTiingoStock.IsSymbol(row.Symbol)) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(row.Symbol);
 			m_mapSymbol[row.Symbol] = m_mapSymbol.size();
 			m_vStock.push_back(pStock);
 		}

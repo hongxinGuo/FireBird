@@ -7,6 +7,8 @@
 #include "JsonParse.h"
 #include"WebData.h"
 
+using namespace simdjson;
+
 // Helper: parse one 东方财富 Kline line like:
 // "2024-12-31,6.29,6.18,6.32,6.17,483794,313479921.00,2.38,-1.75,-0.11,0.59"
 static bool ParseEastmoneyKlineLine(const std::string& line, CDayLine& outDayLine, long& lLastClose) {

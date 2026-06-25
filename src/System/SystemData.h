@@ -14,7 +14,7 @@ using namespace moodycamel;
 #include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
-#include "ContainerChosenStock.h"
+#include "ContainerTiingoChosenStock.h"
 #include "ContainerFinnhubCountry.h"
 #include "ContainerFinnhubCryptoExchange.h"
 #include "containerFinnhubCrypto.h"
@@ -61,7 +61,7 @@ extern CContainerTiingoSymbol gl_dataContainerTiingoDelistedSymbol;
 extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
 extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;
 
-extern CContainerChosenStock gl_dataContainerChosenFinnhubStock;
+extern CContainerTiingoChosenStock gl_dataContainerTiingoChosenStock;
 extern CContainerChosenForex gl_dataContainerChosenWorldForex;
 extern CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
 

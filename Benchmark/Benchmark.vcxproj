@@ -70,16 +70,19 @@
     <IncludePath>$(GoogleBenchmark);$(GoogletestInclude);$(AnalysisInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <LibraryPath>$(LibInclude);$(GoogleBenchmark);$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
     <IncludePath>$(GoogleBenchmark);$(GoogletestInclude);$(AnalysisInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <LibraryPath>$(LibInclude);$(GoogleBenchmark);$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(GoogleBenchmark);$(GoogletestInclude);$(AnalysisInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <LibraryPath>$(LibInclude);$(GoogleBenchmark);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

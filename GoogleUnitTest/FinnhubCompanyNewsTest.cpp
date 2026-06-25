@@ -97,6 +97,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			m_pStock->ClearCompanyNews();
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyNewsUpdateDate(toLocalDays(19800101));
 			m_pStock->SetUpdateCompanyNews(true);

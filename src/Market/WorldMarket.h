@@ -28,7 +28,6 @@ public:
 
 	void Reset();
 	void ResetFinnhub();
-	void ResetQuandl();
 	void ResetTiingo();
 	void ResetDataContainer();
 

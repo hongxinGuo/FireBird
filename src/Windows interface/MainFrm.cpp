@@ -333,7 +333,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置1000毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(1, 1000, nullptr);
 	if (m_uIdTimer == 0) {
-		TRACE(_T("生成500ms时钟时失败\n"));
+		TRACE(_T("生成1000ms时钟时失败\n"));
 	}
 
 	// 更新系统显示高度和宽度
@@ -885,7 +885,7 @@ void CMainFrame::OnRecordTiingoIEXWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenFinnhubStock.GetSymbols());
+			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerTiingoChosenStock.GetSymbols());
 		}
 	}
 }

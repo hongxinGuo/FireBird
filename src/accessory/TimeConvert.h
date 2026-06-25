@@ -1,5 +1,7 @@
 #pragma once
 
+using namespace std;
+
 inline bool IsEarlyThen(chrono::local_days earlyDate, chrono::local_days latelyDate, long lTimeSpawnOfDays) {
 	return (earlyDate + chrono::days{ lTimeSpawnOfDays } < latelyDate);
 }

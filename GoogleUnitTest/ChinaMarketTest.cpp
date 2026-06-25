@@ -10,8 +10,6 @@
 #include "TengxunRTDataSource.h"
 
 using namespace testing;
-//#include<fmt/core.h>
-using namespace fmt;
 
 #include<memory>
 

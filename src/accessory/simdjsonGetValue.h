@@ -1,5 +1,7 @@
 #pragma once
 
+using namespace simdjson;
+
 inline ondemand::array gl_simdjsonEmptyArray;
 
 void CreateSimdjsonEmptyArray();

@@ -411,7 +411,7 @@
     <ClInclude Include="..\src\Data Container\containerChosenForex.h">
       <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\containerChosenStock.h">
+    <ClInclude Include="..\src\Data Container\containerTiingoChosenStock.h">
       <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.h">
@@ -926,7 +926,7 @@
     <ClCompile Include="..\src\Data Container\containerChosenForex.cpp">
       <Filter>源文件\Data container\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerChosenStock.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerTiingoChosenStock.cpp">
       <Filter>源文件\Data container\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCountry.cpp">

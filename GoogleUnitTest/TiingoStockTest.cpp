@@ -633,7 +633,7 @@ namespace FireBirdTest {
 		for (size_t i = 0; i < pStock3->m_v52WeekLowDate.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekLowDate.at(i) == pStock2->m_v52WeekLowDate.at(i)) << i;
 		}
-		for (size_t i = 0; i < pStock3->m_v52WeekLowDate.size(); i++) {
+		for (size_t i = 0; i < pStock3->m_v52WeekHighDate.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekHighDate.at(i) == pStock2->m_v52WeekHighDate.at(i)) << i;
 		}
 		/*

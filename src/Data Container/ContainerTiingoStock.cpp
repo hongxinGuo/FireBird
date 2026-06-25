@@ -116,12 +116,11 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		auto rowCount = result.size();
 		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 		for (const auto& row : result) {
-			//for (const auto& row : result) {
 			const std::string symbol = row.Symbol;
 			if (!IsSymbol(symbol)) {
 				const auto pTiingoStock = make_shared<CTiingoStock>();
 				pTiingoStock->SetTiingoPermaTicker(row.TiingoPermaTicker);
-				pTiingoStock->SetSymbol(row.Symbol);
+				pTiingoStock->SetSymbol(symbol);
 				pTiingoStock->SetName(row.Name);
 				pTiingoStock->SetActive(row.IsActive);
 				pTiingoStock->SetIsADR(row.IsADR);

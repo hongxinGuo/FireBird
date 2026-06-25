@@ -77,6 +77,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <SourcePath>$(SourcePath)</SourcePath>
     <LibraryWPath>$(LibraryWPath)</LibraryWPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
     <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
@@ -91,6 +92,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <SourcePath>$(SourcePath)</SourcePath>
     <LibraryWPath>$(LibraryWPath)</LibraryWPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
@@ -100,6 +102,7 @@
     <LibraryPath>$(LibInclude);$(IncludePath);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\src\pch.cpp">
@@ -119,7 +122,7 @@
     <ClCompile Include="ContainerChinaStockTest.cpp" />
     <ClCompile Include="ContainerChoicedCryptoTest.cpp" />
     <ClCompile Include="ContainerChoicedForexTest.cpp" />
-    <ClCompile Include="ContainerChoicedIEXTest.cpp" />
+    <ClCompile Include="ContainerTiingoChosenStockTest.cpp" />
     <ClCompile Include="ContainerCryptoDayLineTest.cpp" />
     <ClCompile Include="ContainerForexDayLineTest.cpp" />
     <ClCompile Include="ContainerFinnhubStockTest.cpp" />

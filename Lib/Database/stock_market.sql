@@ -572,9 +572,7 @@ CREATE TABLE `world_market_option` (
   `FinnhubToken` varchar(100) DEFAULT '',
   `FinnhubMaxPerHour` int DEFAULT '3000',
   `TiingoToken` varchar(100) DEFAULT '',
-  `TiingoMaxPerHour` int DEFAULT '450',
-  `QuandlToken` varchar(100) DEFAULT '',
-  `QuandlMaxPerHour` int DEFAULT '100'
+  `TiingoMaxPerHour` int DEFAULT '450'
 );
 
 --

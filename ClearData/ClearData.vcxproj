@@ -72,14 +72,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(AnalysisInclude);$(LibInclude);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibInclude);$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
     <IncludePath>$(AnalysisInclude);$(LibInclude);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibInclude);$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(AnalysisInclude);$(LibInclude);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibInclude);$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

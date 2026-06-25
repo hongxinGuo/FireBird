@@ -348,12 +348,15 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), lTotal + 1);
 		gl_dataContainerFinnhubCountry.UpdateDB(); // 此测试函数执行完后，新增了一个Country没有删除（数据库中的删除了）。
 
+		// 恢复原状
 		using namespace StockMarket;
 		const auto& t = FinnhubCountryList{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		db(remove_from(t).where(t.Code2 == std::string("AB")));
 		tx.commit();
+
+		gl_dataContainerFinnhubCountry.Delete(country);
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
@@ -797,14 +800,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), toLocalTime(10300));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
-#ifndef _DEBUG
-		//Note 为了方便调试，测试版不再添加以下任务。发行版依然添加。
-		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10500));
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-#endif
-
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_RESET__);
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime());
@@ -859,14 +854,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE);
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 4min + 00s);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
-
-#ifndef _DEBUG
-		//Note 为了方便调试，测试版不再添加以下任务。发行版依然添加。
-		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
-		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 6min + 00s);
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-#endif
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CREATE_TASK__);

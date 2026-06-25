@@ -39,7 +39,7 @@
     <ClInclude Include="..\src\Data Container\ContainerChinaWeekLine.h" />
     <ClInclude Include="..\src\Data Container\containerChosenCrypto.h" />
     <ClInclude Include="..\src\Data Container\containerChosenForex.h" />
-    <ClInclude Include="..\src\Data Container\containerChosenStock.h" />
+    <ClInclude Include="..\src\Data Container\containerTiingoChosenStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.h" />
@@ -219,7 +219,7 @@
     <ClCompile Include="..\src\Data Container\ContainerChinaWeekLine.cpp" />
     <ClCompile Include="..\src\Data Container\containerChosenCrypto.cpp" />
     <ClCompile Include="..\src\Data Container\containerChosenForex.cpp" />
-    <ClCompile Include="..\src\Data Container\ContainerChosenStock.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerTiingoChosenStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerCryptoDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCountry.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoExchange.cpp" />

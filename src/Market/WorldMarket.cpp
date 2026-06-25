@@ -92,9 +92,6 @@ void CWorldMarket::ResetFinnhub() {
 	m_lFinnhubDayLineUpdated = 0;
 }
 
-void CWorldMarket::ResetQuandl() {
-}
-
 void CWorldMarket::ResetTiingo() {
 	if (IsEarlyThen(gl_tiingoInaccessibleStock.GetUpdateDate(), GetMarketDate(), 7)) {
 		gl_tiingoInaccessibleStock.Clear(); // 不使用更新时间早于一周的数据。清除之，让系统自动查验新的状态。
@@ -117,7 +114,7 @@ void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerTiingoNewSymbol.Reset();
 	gl_dataContainerTiingoCryptoSymbol.Reset();
 
-	gl_dataContainerChosenFinnhubStock.Reset();
+	gl_dataContainerTiingoChosenStock.Reset();
 	gl_dataContainerChosenWorldForex.Reset();
 	gl_dataContainerChosenWorldCrypto.Reset();
 }
@@ -131,18 +128,20 @@ void CWorldMarket::ResetMarket() {
 
 	gl_dataContainerFinnhubCountry.LoadDB();
 	gl_dataContainerFinnhubStock.LoadProfileDB();
-	gl_dataContainerChosenFinnhubStock.LoadDB();
 	gl_dataContainerFinnhubForexExchange.LoadDB();
 	gl_dataFinnhubForexSymbol.LoadProfileDB();
-	gl_dataContainerChosenWorldForex.LoadDB();
 	gl_dataContainerFinnhubCryptoExchange.LoadDB();
 	gl_dataFinnhubCryptoSymbol.LoadProfileDB();
-	gl_dataContainerChosenWorldCrypto.LoadDB();
 	gl_dataContainerFinnhubEconomicCalendar.LoadDB();
 
 	gl_dataContainerTiingoStock.LoadProfileDB();
 	gl_dataContainerTiingoCryptoSymbol.LoadDB();
 	gl_dataContainerTiingoFundamentalDefinition.LoadDB();
+
+	// 各chosenContainer要在装载Finnhub和Tiingo股票之后再加载
+	gl_dataContainerTiingoChosenStock.LoadDB();
+	gl_dataContainerChosenWorldCrypto.LoadDB();
+	gl_dataContainerChosenWorldForex.LoadDB();
 
 	for (const auto& pDataSource : m_vDataSource) {
 		pDataSource->Reset();
@@ -288,7 +287,7 @@ void CWorldMarket::TaskMonitorWebSocket() {
 
 	gl_pFinnhubWebSocket->MonitorWebSocket(GetFinnhubWebSocketSymbols());
 	gl_pTiingoCryptoWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldCrypto.GetSymbols());
-	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerChosenFinnhubStock.GetSymbols());
+	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerTiingoChosenStock.GetSymbols());
 	gl_pTiingoForexWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldForex.GetSymbols());
 }
 
@@ -1130,7 +1129,7 @@ void CWorldMarket::RebuildStockDayLineDB() {
 vectorString CWorldMarket::GetFinnhubWebSocketSymbols() {
 	vectorString vSymbol;
 
-	vectorString vSymbolTemp = gl_dataContainerChosenFinnhubStock.GetSymbols();
+	vectorString vSymbolTemp = gl_dataContainerTiingoChosenStock.GetSymbols();
 	for (const auto& symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}

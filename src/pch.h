@@ -11,16 +11,10 @@
 #include"StockMarketSQLTable.h" // 包含数据库表定义，确保sqlpp11的相关定义被包含
 
 #include"stdafx.h"
-using namespace std;
 
 #define UNICODE_LITERALS_FOR_TEST_NAMES
 #include"gtest/gtest.h"
 #include"gmock/gmock.h"
-using namespace testing;
-
-// fmt库
-#define FMT_HEADER_ONLY
-#define FMT_UNICODE 1
 
 // 使用spdlog作为日志库
 #include <spdlog/spdlog.h>
@@ -33,7 +27,6 @@ using namespace testing;
 
 // simdjson库
 #include"simdjson.h"
-using namespace simdjson;
 
 #include"globedef.h"
 

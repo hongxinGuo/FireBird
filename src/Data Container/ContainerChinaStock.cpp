@@ -302,7 +302,7 @@ long CContainerChinaStock::BuildDayLine(chrono::local_days currentTradeDay) {
 	if (nValue > 0) db(multi_insert);
 	tx.commit();
 
-	s = std::format(":%F 的日线数据已生成", currentTradeDay);
+	s = std::format("{:%F} 的日线数据已生成", currentTradeDay);
 	gl_systemMessage.PushInformationMessage(s);
 
 	s = std::format("今日处理了{:d}个股票", iCount);

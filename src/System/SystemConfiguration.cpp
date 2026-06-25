@@ -62,11 +62,8 @@ std::string gl_sSystemConfiguration = R"(
 	"MarketResettingTime" : 170000,
 	"FinnhubToken" : "bv985d748v6u0",
 	"FinnhubAccountFeePaid" : true,
-	"QuandlToken" : "aBMXMyo_N3pMb3ex",
-	"QuandlAccountFeePaid" : false,
 	"FinnhubInquiryTime" : 1100,
-	"TiingoInquiryTime" : 9000,
-	"QuandlInquiryTime" : 36000
+	"TiingoInquiryTime" : 9000
 },
 
 "Tiingo" : {
@@ -304,17 +301,6 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 		m_fUpdateDB = true;
 	}
 	try {
-		sTemp = jsonData.at("WorldMarket").at("QuandlToken"); // Quandl token
-		m_strQuandlToken = sTemp;
-	} catch (nlohmannJson::out_of_range&) {
-		m_fUpdateDB = true;
-	}
-	try {
-		m_bQuandlAccountFeePaid = jsonData.at("WorldMarket").at("QuandlAccountFeePaid");
-	} catch (nlohmannJson::out_of_range&) {
-		m_fUpdateDB = true;
-	}
-	try {
 		int duration = jsonData.at("WorldMarket").at("FinnhubInquiryTime");
 		m_worldMarketFinnhubInquiryTime = chrono::milliseconds(duration); // 默认每小时最多查询3000次
 	} catch (nlohmannJson::out_of_range&) {
@@ -323,12 +309,6 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 	try {
 		int duration = jsonData.at("WorldMarket").at("TiingoInquiryTime");
 		m_worldMarketTiingoInquiryTime = chrono::milliseconds(duration); // 默认每小时最多查询400次
-	} catch (nlohmannJson::out_of_range&) {
-		m_fUpdateDB = true;
-	}
-	try {
-		int duration = jsonData.at("WorldMarket").at("QuandlInquiryTime");
-		m_worldMarketQuandlInquiryTime = chrono::milliseconds(duration); // 默认每小时最多查询100次
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -534,11 +514,8 @@ void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	jsonData["WorldMarket"]["MarketResettingTime"] = m_lMarketResettingTime;
 	jsonData["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
 	jsonData["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
-	jsonData["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
-	jsonData["WorldMarket"]["QuandlAccountFeePaid"] = m_bQuandlAccountFeePaid;
 	jsonData["WorldMarket"]["FinnhubInquiryTime"] = m_worldMarketFinnhubInquiryTime.count();
 	jsonData["WorldMarket"]["TiingoInquiryTime"] = m_worldMarketTiingoInquiryTime.count();
-	jsonData["WorldMarket"]["QuandlInquiryTime"] = m_worldMarketQuandlInquiryTime.count();
 
 	// Tiingo.com
 	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;

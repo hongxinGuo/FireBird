@@ -54,15 +54,11 @@ namespace FireBirdTest {
 
 		sTemp = jsSystemConfiguration.at(nlohmannJson::json_pointer("/WorldMarket/FinnhubToken"));
 		EXPECT_TRUE(sTemp == "bv985d748v6u0");
-		sTemp = jsSystemConfiguration.at(nlohmannJson::json_pointer("/WorldMarket/QuandlToken"));
-		EXPECT_TRUE(sTemp == "aBMXMyo_N3pMb3ex");
 
 		EXPECT_TRUE(jsSystemConfiguration.at(nlohmannJson::json_pointer("/WorldMarket/FinnhubAccountFeePaid")));
-		EXPECT_FALSE(jsSystemConfiguration.at(nlohmannJson::json_pointer("/WorldMarket/QuandlAccountFeePaid")));
 
 		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/WorldMarket/FinnhubInquiryTime")), 1100);
 		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/WorldMarket/TiingoInquiryTime")), 9000);
-		EXPECT_EQ(jsSystemConfiguration.at(nlohmannJson::json_pointer("/WorldMarket/QuandlInquiryTime")), 36000);
 
 		//Tiingo.com
 		sTemp = jsSystemConfiguration.at(nlohmannJson::json_pointer("/Tiingo/Token"));
@@ -107,7 +103,6 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 1100) << "默认每次查询时间为1100毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count(), 500) << "默认每小时查询最大数量为20000";
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime().count(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
 		EXPECT_TRUE(gl_systemConfiguration.GetTiingoToken() == "c897a00b7cfc2630d235316a4683156");
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), toLocalDays(19800101));

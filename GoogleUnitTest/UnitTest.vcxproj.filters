@@ -363,7 +363,7 @@
     <ClCompile Include="ContainerChoicedForexTest.cpp">
       <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="ContainerChoicedIEXTest.cpp">
+    <ClCompile Include="ContainerTiingoChosenStockTest.cpp">
       <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="XferFinnhubInquiryTest.cpp">

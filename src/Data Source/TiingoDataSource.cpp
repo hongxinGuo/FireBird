@@ -441,7 +441,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
 	if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
-	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
+	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。Note:免费账户只更新自选股的日线
 	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateFinancialState()) return true;
 
@@ -543,27 +543,27 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
-		size_t lCurrentUpdatePos;
+		size_t currentUpdatePos;
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
-		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
-			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateStockDailyMeta() && !gl_tiingoInaccessibleStock.IsInaccessible(TIINGO_STOCK_DAILY_META_, pTiingoStock->GetSymbol())) {
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 如果是付费账户的话，更新所有股票
 					fFound = true;
 					break;
 				}
-				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新本日新出现的新股票，保证每月新代码不超过500个。
+				if (gl_dataContainerTiingoChosenStock.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新自选股，保证每月新代码不超过500个。
 					fFound = true;
 					break;
 				}
-				pTiingoStock->SetUpdateStockDailyMeta(false); // 免费账户不更新旧股票
+				pTiingoStock->SetUpdateStockDailyMeta(false);
 			}
 		}
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(lCurrentUpdatePos);
+			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
@@ -586,11 +586,11 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
-		size_t lCurrentUpdatePos;
+		size_t currentUpdatePos;
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
-		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
-			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateStockDailyMeta() && !gl_tiingoInaccessibleStock.IsInaccessible(TIINGO_STOCK_DAILY_META_, pTiingoStock->GetSymbol())) {
 				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新本日新出现的新股票，保证每月新代码不超过500个。
 					fFound = true;
@@ -602,7 +602,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(lCurrentUpdatePos);
+			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
@@ -625,11 +625,11 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
-		size_t lCurrentUpdatePos;
+		size_t currentUpdatePos;
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
-		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
-			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateStockDailyMeta() && !gl_tiingoInaccessibleStock.IsInaccessible(TIINGO_STOCK_DAILY_META_, pTiingoStock->GetSymbol())) {
 				fFound = true;
 			}
@@ -637,7 +637,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(lCurrentUpdatePos);
+			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
 			s += pTiingoStock->GetSymbol();
@@ -668,28 +668,28 @@ bool CTiingoDataSource::GenerateDayLine() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateDayLine()) {
-		size_t lCurrentUpdatePos;
+		size_t currentUpdatePos;
 		CTiingoStockPtr pTiingoStock;
 		bool fFound = false;
-		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
-			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
 				SPDLOG_ASSERT(pTiingoStock->IsActive()); // 活跃股票？
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户下载所有股票的日线
 					fFound = true;
 					break;
 				}
-				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新新股票的日线
+				if (gl_dataContainerTiingoChosenStock.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新自选股的日线
 					fFound = true;
 					break;
 				}
-				pTiingoStock->SetUpdateDayLine(false); // 免费账户时，不更新旧股票的日线
+				pTiingoStock->SetUpdateDayLine(false);
 			}
 		}
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(lCurrentUpdatePos);
+			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "Day line: ";
 			s += pTiingoStock->GetSymbol();
@@ -700,10 +700,6 @@ bool CTiingoDataSource::GenerateDayLine() {
 			SetUpdateDayLine(false);
 			string str = std::format("{:Ld} Tiingo stock dayLine Updated", gl_pWorldMarket->GetTiingoStockDayLineUpdated());
 			gl_systemMessage.PushInformationMessage(str);
-			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
-				// Note 暂不自动处理日线数据
-				//gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 2, 0));
-			}
 		}
 	}
 	return fHaveInquiry;
@@ -716,11 +712,11 @@ bool CTiingoDataSource::GenerateFinancialState() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateFinancialState()) {
-		long lCurrentUpdatePos;
+		size_t currentUpdatePos;
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
-		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
-			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateFinancialState()) {
 				if (gl_systemConfiguration.IsTiingoAccountAddOnPaid()) {
 					fFound = true;
@@ -732,7 +728,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(lCurrentUpdatePos);
+			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "Financial statement: ";
 			s += pTiingoStock->GetSymbol();

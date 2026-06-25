@@ -90,7 +90,6 @@ public:
 	unsigned GetWorldMarketResettingTime() const noexcept { return m_lMarketResettingTime; }
 	[[nodiscard]] string GetFinnhubToken() noexcept { return m_strFinnhubToken; }
 	void SetFinnhubToken(string s) noexcept { m_strFinnhubToken = s; }
-	[[nodiscard]] string GetQuandlToken() noexcept { return m_strQuandlToken; }
 	[[nodiscard]] auto GetWorldMarketFinnhubInquiryTime() const noexcept { return m_worldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
 		m_worldMarketFinnhubInquiryTime = chrono::milliseconds(iWorldMarketFinnhubInquiryTime);
@@ -101,12 +100,7 @@ public:
 		m_worldMarketTiingoInquiryTime = chrono::milliseconds(iWorldMarketTiingoInquiryTime);
 		m_fUpdateDB = true;
 	}
-	[[nodiscard]] auto GetWorldMarketQuandlInquiryTime() const noexcept { return m_worldMarketQuandlInquiryTime; }
-	void SetWorldMarketQuandlInquiryTime(const int iWorldMarketQuandlInquiryTime) noexcept {
-		m_worldMarketQuandlInquiryTime = chrono::milliseconds(iWorldMarketQuandlInquiryTime);
-		m_fUpdateDB = true;
-	}
-	[[nodiscard]] auto GetWorldMarketAlphaVantageInquiryTime() const noexcept { return m_worldMarketQuandlInquiryTime; }
+	[[nodiscard]] auto GetWorldMarketAlphaVantageInquiryTime() const noexcept { return m_worldMarketAlphaVantageInquiryTime; }
 	void SetWorldMarketAlphaVantageInquiryTime(const int iWorldMarketAlphaVantageInquiryTime) noexcept {
 		m_worldMarketAlphaVantageInquiryTime = chrono::milliseconds(iWorldMarketAlphaVantageInquiryTime);
 		m_fUpdateDB = true;
@@ -192,12 +186,6 @@ public:
 	void SetUsingTiingoForexWebSocket(const bool bUsingTiingoForexWebSocket) noexcept {
 		m_fUpdateDB = true;
 		m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket;
-	}
-
-	[[nodiscard]] bool IsUsingQuandlWebSocket() const noexcept { return m_bUsingQuandlWebSocket; }
-	void SetUsingQuandlWebSocket(const bool bUsingQuandlWebSocket) noexcept {
-		m_fUpdateDB = true;
-		m_bUsingQuandlWebSocket = bUsingQuandlWebSocket;
 	}
 
 	// ChinaMarket
@@ -352,12 +340,9 @@ protected:
 	// World Market
 	unsigned m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
 	string m_strFinnhubToken{ "" }; // 令牌
-	string m_strQuandlToken{ "" }; // 令牌
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
-	bool m_bQuandlAccountFeePaid{ true };
 	chrono::milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
 	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 400 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
-	chrono::milliseconds m_worldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
 	chrono::milliseconds m_worldMarketAlphaVantageInquiryTime{ 3600000 / 1000 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询1000次
 	string m_strCurrentStock{ "" }; // 当前所选股票
 
@@ -383,7 +368,6 @@ protected:
 	bool m_bUsingTiingoIEXWebSocket{ true };
 	bool m_bUsingTiingoCryptoWebSocket{ true };
 	bool m_bUsingTiingoForexWebSocket{ true };
-	bool m_bUsingQuandlWebSocket{ true };
 
 	// ChinaMarket
 	int m_iSavingChinaMarketStockDayLineThread{ 4 }; // 存储日线历史数据时的并发线程数。
