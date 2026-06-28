@@ -80,6 +80,13 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine());
 	}
 
+	TEST_F(CTiingoDataSourceTest, TestIsUpdateChosenStockDayLine2) {
+		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateChosenStockDayLine());
+		m_pTiingoDataSource->SetUpdateChosenStockDayLine(true);
+		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateChosenStockDayLine());
+		m_pTiingoDataSource->SetUpdateChosenStockDayLine(false);
+		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateChosenStockDayLine());
+	}
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData1) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		pWebData->Test_SetBuffer_("abcde"); // 无关紧要
@@ -257,7 +264,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 			pStock = gl_dataContainerTiingoStock.GetStock(i);
 			pStock->SetUpdateDayLine(false);
 		}
@@ -290,17 +297,16 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine()) << "股票都查询完了";
-		EXPECT_EQ(gl_pWorldMarket->GetTiingoStockDayLineUpdated(), 0);
 		const string str = gl_systemMessage.PopInformationMessage();
-		EXPECT_EQ(str, "0 Tiingo stock dayLine Updated");
+		EXPECT_EQ(str, "2 Tiingo stock dayLine Updated");
 
 		// 恢复原状
-		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 			pStock = gl_dataContainerTiingoStock.GetStock(i);
 			pStock->SetUpdateDayLine(true);
 		}
 
-		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			auto pStock2 = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock2->SetUpdateDayLine(true);
 		}
@@ -316,7 +322,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 			pStock = gl_dataContainerTiingoStock.GetStock(i);
 			pStock->SetUpdateFinancialState(false);
 		}
@@ -353,7 +359,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(str, "Tiingo financial statements Updated");
 
 		// 恢复原状
-		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 			pStock = gl_dataContainerTiingoStock.GetStock(i);
 			pStock->SetUpdateFinancialState(true);
 		}

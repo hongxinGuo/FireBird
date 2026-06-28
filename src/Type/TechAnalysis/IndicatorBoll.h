@@ -1,6 +1,4 @@
 #pragma once
-#include <vector>
-#include <memory>
 
 class CVirtualHistoryCandle; // forward
 
@@ -23,6 +21,7 @@ namespace FireBird::Indicators {
 		// - k: multiplier for standard deviation (commonly 2.0)
 	};
 } // namespace FireBird::Indicators
+
 class CIndicatorBoll {
 public:
 	CIndicatorBoll() = default;
@@ -38,6 +37,8 @@ public:
 
 	// Convenience overload for shared pointer to vector (existing codebase uses shared vectors)
 	static std::vector<CBoll> Compute(const std::shared_ptr<std::vector<CVirtualHistoryCandle>>& candlesPtr, int period = 20, double k = 2.0);
+
+	void Calculate();
 
 	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
 

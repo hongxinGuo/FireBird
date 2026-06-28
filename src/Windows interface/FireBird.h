@@ -19,6 +19,7 @@
 class CFireBirdApp final : public CWinAppEx {
 public:
 	CFireBirdApp();
+	~CFireBirdApp();
 
 	// 重写
 public:

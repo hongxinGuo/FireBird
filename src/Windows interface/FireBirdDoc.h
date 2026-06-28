@@ -211,8 +211,8 @@ protected:
 	CIndicatorRSI m_monthLineRSI;
 
 	CIndicatorBoll m_dayLineBoll;
-	CIndicatorRSI m_weekLineBoll;
-	CIndicatorRSI m_monthLineBoll;
+	CIndicatorBoll m_weekLineBoll;
+	CIndicatorBoll m_monthLineBoll;
 
 	// 生成的消息映射函数
 protected:

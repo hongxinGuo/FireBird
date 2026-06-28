@@ -12,6 +12,7 @@ namespace testing {
 		MOCK_METHOD(bool, GenerateCryptoSymbol, (), (override));
 		MOCK_METHOD(bool, GenerateStockDailyMeta, (), (override));
 		MOCK_METHOD(bool, GenerateIEXTopOfBook, (), (override));
+		MOCK_METHOD(bool, GenerateChosenStockDayLine, (), (override));
 		MOCK_METHOD(bool, GenerateDayLine, (), (override));
 		MOCK_METHOD(bool, GenerateFinancialState, (), (override));
 	};

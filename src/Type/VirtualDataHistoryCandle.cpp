@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"VirtualDataHistoryCandle.h"
+
+#include <algorithm>
 #include"DayLine.h"
 
 CVirtualDataHistoryCandle::CVirtualDataHistoryCandle() {
@@ -58,6 +60,12 @@ bool CVirtualDataHistoryCandle::HaveDayLine(chrono::local_days date) {
 	                      [date](const CVirtualHistoryCandle& p) { return p.GetDate() == date; });
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 历史数据是按照日期顺序存储的，所以可以使用二分法来查找元素，比顺序查找要快得多。
+///
+///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(chrono::local_days date) {
 	auto it = std::ranges::lower_bound(m_vHistoryData, date,
 	                                   std::ranges::less{},
@@ -176,15 +184,15 @@ std::pair<long, long> CVirtualDataHistoryCandle::GetHighLow(int iCandleNumber) {
 	long lHigh = 0;
 	auto it = m_vHistoryData.end();
 	--it;
-	int i = 0;
+	size_t i = 0;
 	auto value = *it;
 
 	long lLow = value.GetLow();
 	for (; it != m_vHistoryData.begin(); --it) {
 		value = *it;
-		if (lHigh < value.GetHigh()) lHigh = value.GetHigh();
+		lHigh = std::max<long long>(lHigh, value.GetHigh());
 		if (value.GetLow() > 0) {
-			if (lLow > value.GetLow()) lLow = value.GetLow();
+			lLow = std::min<long long>(lLow, value.GetLow());
 		}
 		if (i > m_vHistoryData.size()) break;
 		if (i >= iCandleNumber) break;

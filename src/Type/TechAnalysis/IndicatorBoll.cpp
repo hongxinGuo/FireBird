@@ -2,7 +2,6 @@
 
 #include "IndicatorBoll.h"
 #include "VirtualHistoryCandle.h" // CVirtualHistoryCandle
-#include <deque>
 
 using namespace FireBird::Indicators;
 
@@ -70,5 +69,86 @@ std::vector<CBoll> CIndicatorBoll::Compute(const std::shared_ptr<std::vector<CVi
 	if (!candlesPtr) return {};
 	return Compute(*candlesPtr, period, k);
 }
+
+void CIndicatorBoll::Calculate() {
+	vector<CBoll> vBoll = Compute(m_pvCandle->GetDataVector());
+	m_vBoll.reserve(vBoll.size());
+	for (size_t i = 0; i < vBoll.size(); i++) {
+		m_vBoll.push_back(vBoll.at(i));
+	}
+}
+
 void CIndicatorBoll::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
+	if (!m_pvCandle) return;
+	//auto& data = m_pvCandle->GetDataVector();
+	//if (data.empty() || rectDrawArea.IsRectEmpty() || iStepWidth <= 0) return;
+
+	// Recompute Boll values for current candle data
+	//m_vBoll = Compute(data, m_Period, 2.0);
+	if (m_vBoll.empty()) return;
+
+	// How many candles fit in the drawing area
+	const int maxPoints = rectDrawArea.Width() / iStepWidth;
+	if (maxPoints <= 0) return;
+	const size_t pointsToDraw = static_cast<size_t>(min((int)m_vBoll.size(), maxPoints));
+	if (pointsToDraw == 0) return;
+
+	// Determine vertical range from last `pointsToDraw` boll values
+	double dHigh = std::numeric_limits<double>::lowest();
+	double dLow = std::numeric_limits<double>::max();
+	const size_t startIndex = m_vBoll.size() - pointsToDraw;
+	for (size_t i = startIndex; i < m_vBoll.size(); ++i) {
+		const auto& b = m_vBoll[i];
+		// Skip zero/invalid entries when computing bounds
+		if (b.Upper != 0.0) dHigh = std::max(dHigh, b.Upper);
+		if (b.Lower != 0.0) dLow = std::min(dLow, b.Lower);
+		if (b.Mid != 0.0) {
+			dHigh = std::max(dHigh, b.Mid);
+			dLow = std::min(dLow, b.Mid);
+		}
+	}
+	if (dHigh <= dLow) {
+		// avoid division by zero; provide a small range
+		dHigh = dLow + 1.0;
+	}
+
+	const int offset = iStepWidth / 2;
+	auto toY = [&](double value) -> int {
+		// clamp and map value to pixel Y (top..bottom)
+		const double ratio = (value - dLow) / (dHigh - dLow);
+		const double clamped = std::clamp(ratio, 0.0, 1.0);
+		return rectDrawArea.top + static_cast<int>((1.0 - clamped) * rectDrawArea.Height());
+	};
+
+	// Helper to draw a series (Upper / Mid / Lower). Draw from newest (right) to oldest (left).
+	auto drawSeries = [&](COLORREF color, auto accessor) {
+		CPen pen(PS_SOLID, 1, color);
+		CPen* pOldPen = (CPen*)pDC->SelectObject(&pen);
+		bool started = false;
+		for (int j = 0; j < static_cast<int>(pointsToDraw); ++j) {
+			const size_t idx = m_vBoll.size() - 1 - j;
+			const double v = accessor(m_vBoll[idx]);
+			if (v == 0.0) {
+				started = false;
+				continue;
+			}
+			const int x = rectDrawArea.right - offset - j * iStepWidth;
+			const int y = toY(v);
+			if (!started) {
+				pDC->MoveTo(x, y);
+				started = true;
+			}
+			else {
+				pDC->LineTo(x, y);
+			}
+			// stop if we've reached left edge
+			if (rectDrawArea.right <= (j + 1) * iStepWidth) break;
+		}
+		pDC->SelectObject(pOldPen);
+	};
+
+	// Draw Upper (blue), Mid (yellow), Lower (green)
+	drawSeries(RGB(0, 0, 255), [](const CBoll& b) { return b.Upper; });
+	drawSeries(RGB(255, 255, 0), [](const CBoll& b) { return b.Mid; });
+	drawSeries(RGB(0, 255, 0), [](const CBoll& b) { return b.Lower; });
 }

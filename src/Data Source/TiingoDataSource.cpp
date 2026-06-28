@@ -441,6 +441,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
 	if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
+	if (GenerateChosenStockDayLine()) return true;
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。Note:免费账户只更新自选股的日线
 	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateFinancialState()) return true;
@@ -653,15 +654,52 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 	return fHaveInquiry;
 }
 
+bool CTiingoDataSource::GenerateChosenStockDayLine() {
+	bool fHaveInquiry = false;
+	size_t lStockSetSize = gl_dataContainerTiingoChosenStock.Size();
+	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
+
+	SPDLOG_ASSERT(!IsInquiring());
+	if (IsUpdateChosenStockDayLine()) {
+		size_t currentUpdatePos;
+		CTiingoStockPtr pTiingoStock;
+		bool fFound = false;
+		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoChosenStock.GetStock(currentUpdatePos);
+			if (pTiingoStock->IsUpdateDayLine()) {
+				SPDLOG_ASSERT(pTiingoStock->IsActive()); // 活跃股票？
+				fFound = true;
+				break;
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			p->SetIndex(currentUpdatePos);
+			StoreInquiry(p);
+			string s = "Day line: ";
+			s += pTiingoStock->GetSymbol();
+			gl_systemMessage.SetCurrentTiingoFunction(s);
+		}
+		else {
+			gl_systemMessage.SetCurrentTiingoFunction("");
+			SetUpdateChosenStockDayLine(false);
+			string str = std::format("Tiingo chosen stock dayLine Updated");
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Tiingo的下载日线数据与Finnhub的日线下载函数，只允许同时运行其中之一。
 // 
 // 付费账户下载所有日线，免费账户仅下载自选股票的日线。
-// Note 当接收市场新闻时，同时决定本账户是否是付费的。如果是免费账户，则同时关闭除自选股票外的其他日线查询申请
+// Note 当接收市场新闻时，同时决定本账户是否是付费的。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::GenerateDayLine() {
+	static int s_dayLineInquired = 0;
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
@@ -691,6 +729,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
+			s_dayLineInquired++;
 			string s = "Day line: ";
 			s += pTiingoStock->GetSymbol();
 			gl_systemMessage.SetCurrentTiingoFunction(s);
@@ -698,8 +737,9 @@ bool CTiingoDataSource::GenerateDayLine() {
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction("");
 			SetUpdateDayLine(false);
-			string str = std::format("{:Ld} Tiingo stock dayLine Updated", gl_pWorldMarket->GetTiingoStockDayLineUpdated());
+			string str = std::format("{:d} Tiingo stock dayLine Updated", s_dayLineInquired);
 			gl_systemMessage.PushInformationMessage(str);
+			s_dayLineInquired = 0;
 		}
 	}
 	return fHaveInquiry;

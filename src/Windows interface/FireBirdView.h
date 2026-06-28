@@ -14,7 +14,6 @@ enum Indicators {
 	SHOW_INDICATOR_KDJ_,
 	SHOW_INDICATOR_MACD_,
 	SHOW_INDICATOR_RSI_,
-	SHOW_INDICATOR_BOLL_,
 };
 
 class CFireBirdView : public CView {
@@ -35,7 +34,7 @@ public:
 	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorRSI(CDC* pDC, CRect rectDrawArea);
-	void ShowIndicatorBoll(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicatorBollingLine(CDC* pDC, CRect rectDrawArea);
 	void Show8020Line(CDC* pDC, CRect rectDrawArea);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
@@ -45,6 +44,7 @@ public:
 	bool IsShow60Days() const noexcept { return m_fShow60Days; }
 	bool IsShow120Days() const noexcept { return m_fShow120Days; }
 	bool IsShow250Days() const noexcept { return m_fShow250Days; }
+	bool IsShowBollingLine() const noexcept { return m_bShowBollingLine; }
 
 	// 操作
 public:
@@ -98,8 +98,6 @@ protected:
 	bool m_bNeedErase{ false };
 	bool m_bDrawAll{ false };
 
-	int m_iShowIndicator{ SHOW_INDICATOR_KDJ_ }; // 显示的技术指标
-
 	long m_lDayLineHigh{ 0 };
 	long m_lDayLineLow{ 0 };
 	long m_lWeekLineHigh{ 0 };
@@ -114,6 +112,8 @@ protected:
 
 	long m_lCurrentPos;
 
+	int m_iShowIndicator{ SHOW_INDICATOR_KDJ_ }; // 显示的技术指标
+	bool m_bShowBollingLine{ false }; // 布林线显示在日线上，单独设置。
 	bool m_fShow5Days;
 	bool m_fShow10Days;
 	bool m_fShow30Days;
@@ -132,7 +132,7 @@ protected:
 	afx_msg void OnShowAV10();
 	afx_msg void OnShowAV30();
 	afx_msg void OnShowAV60();
-	void OnShowAV120();
+	afx_msg void OnShowAV120();
 	afx_msg void OnShowAV250();
 	afx_msg void OnUpdateShowAV10(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateShowAV250(CCmdUI* pCmdUI);
@@ -170,6 +170,8 @@ public:
 	afx_msg void OnUpdateShowAv120(CCmdUI* pCmdUI);
 	afx_msg void OnShowAv250();
 	afx_msg void OnUpdateShowAv250(CCmdUI* pCmdUI);
+	afx_msg void OnShowIndicatorBolling();
+	afx_msg void OnUpdateShowIndicatorBolling(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

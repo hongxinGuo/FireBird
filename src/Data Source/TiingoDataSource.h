@@ -30,6 +30,7 @@ public:
 	virtual bool GenerateStockDailyMeta();
 	virtual bool GenerateStockDailyMetaFreeAccount();
 	virtual bool GenerateStockDailyMetaPaidAccount();
+	virtual bool GenerateChosenStockDayLine();
 	virtual bool GenerateDayLine();
 	virtual bool GenerateFinancialState();
 
@@ -45,6 +46,8 @@ public:
 	void SetUpdateStockDailyMeta(bool fFlag) noexcept { m_fUpdateStockDailyMeta = fFlag; }
 	bool IsUpdateFinancialState() const noexcept { return m_fUpdateFinancialState; }
 	void SetUpdateFinancialState(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
+	bool IsUpdateChosenStockDayLine() const noexcept { return m_fUpdateChosenStockDayLine; }
+	void SetUpdateChosenStockDayLine(bool fFlag) noexcept { m_fUpdateChosenStockDayLine = fFlag; }
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 	bool IsUpdateIEXTopOfBook() const noexcept { return m_fUpdateIEXTopOFBook; }
@@ -65,6 +68,7 @@ protected:
 	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
 	bool m_fUpdateStockDailyMeta{ false }; // 每日更新公司状态
+	bool m_fUpdateChosenStockDayLine{ false }; // 每日更新公司日线数据
 	bool m_fUpdateDayLine{ false }; // 每日更新公司日线数据
 	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
 	bool m_fUpdateIEXTopOFBook{ true }; // 定时更新IEX last top of book.

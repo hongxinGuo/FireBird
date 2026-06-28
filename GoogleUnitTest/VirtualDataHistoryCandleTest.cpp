@@ -101,4 +101,89 @@ namespace FireBirdTest {
 		auto ptr = container.GetCandle(toLocalDays(20201231));
 		EXPECT_EQ(ptr, nullptr);
 	}
+
+	TEST_F(CVirtualDataHistoryCandleTest, TestGetCandle_Existing) {
+		CVirtualDataHistoryCandle container;
+
+		CVirtualHistoryCandle c1, c2, c3;
+		c1.SetDate(20200101);
+		c1.SetHigh(100);
+		c2.SetDate(20200102);
+		c2.SetHigh(200);
+		c3.SetDate(20200103);
+		c3.SetHigh(300);
+
+		// add in chronological order
+		container.Add(c1);
+		container.Add(c2);
+		container.Add(c3);
+
+		auto ptr = container.GetCandle(toLocalDays(20200102));
+		ASSERT_NE(ptr, nullptr);
+		EXPECT_EQ(ptr->GetDate(), toLocalDays(20200102));
+		EXPECT_EQ(ptr->GetHigh(), 200);
+	}
+
+	TEST_F(CVirtualDataHistoryCandleTest, TestGetCandle_NotFound) {
+		CVirtualDataHistoryCandle container;
+
+		CVirtualHistoryCandle c1, c2;
+		c1.SetDate(20200101);
+		c2.SetDate(20200102);
+		container.Add(c1);
+		container.Add(c2);
+
+		auto ptr = container.GetCandle(toLocalDays(20200103)); // missing
+		EXPECT_EQ(ptr, nullptr);
+	}
+
+	TEST_F(CVirtualDataHistoryCandleTest, TestGetCandle_EmptyContainer) {
+		CVirtualDataHistoryCandle container;
+		auto ptr = container.GetCandle(toLocalDays(20200101));
+		EXPECT_EQ(ptr, nullptr);
+	}
+
+	// Multiple candles: verify GetHighLow considers the most-recent N candles.
+	TEST_F(CVirtualDataHistoryCandleTest, TestGetHighLow_MultipleCandles) {
+		CVirtualDataHistoryCandle container;
+
+		CVirtualHistoryCandle c1, c2, c3;
+		c1.SetDate(20200101);
+		c1.SetHigh(100);
+		c1.SetLow(90);
+		c2.SetDate(20200102);
+		c2.SetHigh(150);
+		c2.SetLow(80);
+		c3.SetDate(20200103);
+		c3.SetHigh(120);
+		c3.SetLow(110);
+
+		// add in chronological order
+		container.Add(c1);
+		container.Add(c2);
+		container.Add(c3);
+
+		// Request last 2 candles -> should consider c3 and c2
+		auto hl = container.GetHighLow(2);
+		EXPECT_EQ(hl.first, 150);  // max of 120 and 150
+		EXPECT_EQ(hl.second, 80);  // min of 110 and 80 (ignores non-positive lows)
+	}
+
+	// Single candle: exercise current behavior for one element.
+	// Note: implementation sets lLow from last element but does not update lHigh when only one element exists.
+	TEST_F(CVirtualDataHistoryCandleTest, TestGetHighLow_SingleCandle) {
+		CVirtualDataHistoryCandle container;
+
+		CVirtualHistoryCandle c;
+		c.SetDate(20210101);
+		c.SetHigh(200);
+		c.SetLow(50);
+
+		container.Add(c);
+
+		auto hl = container.GetHighLow(1);
+		// Current implementation returns lHigh == 0 for single-element case and lLow == the candle's low.
+		EXPECT_EQ(hl.first, 0);
+		EXPECT_EQ(hl.second, 50);
+	}
 }

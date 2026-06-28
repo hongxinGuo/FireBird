@@ -88,8 +88,6 @@ void CWorldMarket::ResetFinnhub() {
 	}
 	m_pvMarketStatus->clear();
 	m_pvMarketHoliday->clear();
-
-	m_lFinnhubDayLineUpdated = 0;
 }
 
 void CWorldMarket::ResetTiingo() {
@@ -97,7 +95,6 @@ void CWorldMarket::ResetTiingo() {
 		gl_tiingoInaccessibleStock.Clear(); // 不使用更新时间早于一周的数据。清除之，让系统自动查验新的状态。
 		gl_tiingoInaccessibleStock.SetUpdateDate(GetMarketDate());
 	}
-	m_lTiingoStockDayLineUpdated = 0;
 }
 
 void CWorldMarket::ResetDataContainer() {
@@ -213,6 +210,7 @@ int CWorldMarket::ProcessTask() {
 			}
 			else { // 当日18时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateStockDailyMeta(true);
+				gl_pTiingoDataSource->SetUpdateChosenStockDayLine(true);
 				gl_pTiingoDataSource->SetUpdateDayLine(true);
 			}
 			break;
@@ -375,7 +373,6 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
 			pTiingoStock->UpdateDayLineDB();
-			SetTiingoStockDayLineUpdated(GetTiingoStockDayLineUpdated() + 1);
 			pTiingoStock->UpdateDayLineStartEndDate();
 			pTiingoStock->UnloadDayLine();
 			pTiingoStock->SetUpdateDayLineDB(false);
@@ -447,7 +444,6 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	bool fUpdated = false;
-	int iUpdated = 0;
 	CFinnhubCryptoPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
 
@@ -1020,6 +1016,7 @@ void CWorldMarket::UpdateTiingoOneYearStockDayLine() {
 		pStock->SetDayLineEndDate(lBeginDate);
 		pStock->SetUpdateDayLine(true);
 	}
+	gl_pTiingoDataSource->SetUpdateChosenStockDayLine(true);
 	gl_pTiingoDataSource->SetUpdateDayLine(true);
 }
 
@@ -1029,6 +1026,7 @@ void CWorldMarket::UpdateTiingoAllStockDayLine() {
 		pStock->SetDayLineEndDate(chrono::local_days(1980y / 01 / 01)); // 从1980年开始更新日线数据
 		pStock->SetUpdateDayLine(true);
 	}
+	gl_pTiingoDataSource->SetUpdateChosenStockDayLine(true);
 	gl_pTiingoDataSource->SetUpdateDayLine(true);
 }
 

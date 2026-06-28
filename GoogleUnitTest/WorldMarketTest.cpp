@@ -909,12 +909,4 @@ namespace FireBirdTest {
 		EXPECT_EQ(vString.at(8), "BINANCE:MDAETH");
 		EXPECT_EQ(vString.at(9), "BINANCE:OCEANBTC");
 	}
-
-	TEST_F(CWorldMarketTest, TestSetTiingoStockDayLineUpdated) {
-		EXPECT_EQ(gl_pWorldMarket->GetTiingoStockDayLineUpdated(), 0);
-		gl_pWorldMarket->SetTiingoStockDayLineUpdated(100);
-		EXPECT_EQ(gl_pWorldMarket->GetTiingoStockDayLineUpdated(), 100);
-		gl_pWorldMarket->SetTiingoStockDayLineUpdated(0);
-		EXPECT_EQ(gl_pWorldMarket->GetTiingoStockDayLineUpdated(), 0);
-	}
 }

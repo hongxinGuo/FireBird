@@ -736,8 +736,11 @@ bool CChinaMarket::TaskResetMarket() {
 bool CChinaMarket::TaskCheckSystem() {
 	if ((gl_systemConfiguration.IsUsingSinaRTServer() && gl_pSinaRTDataSource->GetCurrentInquiryTime() > 300)
 		|| (gl_systemConfiguration.IsUsingTengxunRTServer() && gl_pTengxunRTDataSource->GetCurrentInquiryTime() > 300)) { // 如果接受网络数据时间超过300毫秒
+		gl_systemMessage.PushInnerSystemInformationMessage("china stock RT data web busy\n");
+#ifndef _DEBUG
 		ReportCheckRunningExitToWatchdog();
 		TaskExitSystem();
+#endif
 	}
 	return true;
 }

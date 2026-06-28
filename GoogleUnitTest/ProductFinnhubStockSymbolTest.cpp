@@ -122,7 +122,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(0)->GetSymbol(), "A");
 			EXPECT_EQ(m_pvStock->at(0)->GetIsin(), "not null") << "此时内容不为空，需要双引号";
 			EXPECT_EQ(m_pvStock->at(1)->GetSymbol(), "New Symbol");
-			EXPECT_EQ(m_pvStock->at(1)->GetIsin(), " ") << "当内容为空（null）时，使用默认值“ ”";
+			EXPECT_EQ(m_pvStock->at(1)->GetIsin(), "") << "当内容为空（null）时，使用默认值“ ”";
 			EXPECT_EQ(m_pvStock->at(0)->GetExchange(), "US");
 			EXPECT_EQ(m_pvStock->size(), 2);
 			break;

@@ -65,6 +65,8 @@ namespace FireBirdTest {
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
 		.WillOnce(Return(false));
+		EXPECT_CALL(*s_pTiingoDataSource, GenerateChosenStockDayLine()).Times(1)
+		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pTiingoDataSource, GenerateDayLine()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pTiingoDataSource, GenerateStockDailyMeta()).Times(1)

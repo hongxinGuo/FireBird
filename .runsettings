@@ -60,6 +60,18 @@ Included items must then not match any entries in the exclude list to remain inc
 							</IncludeDirectories>
 						</ModulePaths>
 
+						<SourceFiles>
+							<Exclude>
+								<RegularExpression>.*\\src\\StockMarketSQLTable.h</RegularExpression>
+							</Exclude>
+						</SourceFiles>
+
+						<Namespace>
+							<Exclude>
+								<RegularExpression>^StockMarket(\..*)?$</RegularExpression>
+							</Exclude>
+						</Namespace>
+
 						<!-- Match fully qualified names of functions: -->
 						<!-- (Use "\." to delimit namespaces in C# or Visual Basic, "::" in C++.)  -->
 						<Functions>
@@ -81,6 +93,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>.*::__GetTestMethodInfo.*</Function>
 								<Function>^Microsoft::VisualStudio::CppCodeCoverageFramework::.*</Function>
 								<Function>^Microsoft::VisualStudio::CppUnitTestFramework::.*</Function>
+								<Function>^StockMarket::.*</Function>
 
 								<Function>ReportJsonError</Function>
 								<Function>ReportWebError</Function>

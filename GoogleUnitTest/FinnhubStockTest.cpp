@@ -325,55 +325,55 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetType) {
-		EXPECT_EQ(stock.GetType(), " ");
+		EXPECT_EQ(stock.GetType(), "");
 		stock.SetType("abcdef");
 		EXPECT_EQ(stock.GetType(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetMic) {
-		EXPECT_EQ(stock.GetMic(), " ");
+		EXPECT_EQ(stock.GetMic(), "");
 		stock.SetMic("abcdef");
 		EXPECT_EQ(stock.GetMic(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFigi) {
-		EXPECT_EQ(stock.GetFigi(), " ");
+		EXPECT_EQ(stock.GetFigi(), "");
 		stock.SetFigi("abcdef");
 		EXPECT_EQ(stock.GetFigi(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCurrency) {
-		EXPECT_EQ(stock.GetCurrency(), " ");
+		EXPECT_EQ(stock.GetCurrency(), "");
 		stock.SetCurrency("abcdef");
 		EXPECT_EQ(stock.GetCurrency(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetAddress) {
-		EXPECT_EQ(stock.GetAddress(), " ");
+		EXPECT_EQ(stock.GetAddress(), "");
 		stock.SetAddress("abcdef");
 		EXPECT_EQ(stock.GetAddress(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCity) {
-		EXPECT_EQ(stock.GetCity(), " ");
+		EXPECT_EQ(stock.GetCity(), "");
 		stock.SetCity("abcdef");
 		EXPECT_EQ(stock.GetCity(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCountry) {
-		EXPECT_EQ(stock.GetCountry(), " ");
+		EXPECT_EQ(stock.GetCountry(), "");
 		stock.SetCountry("abcdef");
 		EXPECT_EQ(stock.GetCountry(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCusip) {
-		EXPECT_EQ(stock.GetCusip(), " ");
+		EXPECT_EQ(stock.GetCusip(), "");
 		stock.SetCusip("abcdef");
 		EXPECT_EQ(stock.GetCusip(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetSedol) {
-		EXPECT_EQ(stock.GetSedol(), " ");
+		EXPECT_EQ(stock.GetSedol(), "");
 		stock.SetSedol("abcdef");
 		EXPECT_EQ(stock.GetSedol(), "abcdef");
 	}
@@ -385,37 +385,37 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGgroup) {
-		EXPECT_EQ(stock.GetGgroup(), " ");
+		EXPECT_EQ(stock.GetGgroup(), "");
 		stock.SetGgroup("abcdef");
 		EXPECT_EQ(stock.GetGgroup(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGind) {
-		EXPECT_EQ(stock.GetGind(), " ");
+		EXPECT_EQ(stock.GetGind(), "");
 		stock.SetGind("abcdef");
 		EXPECT_EQ(stock.GetGind(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGsector) {
-		EXPECT_EQ(stock.GetGsector(), " ");
+		EXPECT_EQ(stock.GetGsector(), "");
 		stock.SetGsector("abcdef");
 		EXPECT_EQ(stock.GetGsector(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGsubind) {
-		EXPECT_EQ(stock.GetGsubind(), " ");
+		EXPECT_EQ(stock.GetGsubind(), "");
 		stock.SetGsubind("abcdef");
 		EXPECT_EQ(stock.GetGsubind(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetIPODate) {
-		EXPECT_EQ(stock.GetIPODate(), " ");
+		EXPECT_EQ(stock.GetIPODate(), "");
 		stock.SetIPODate("abcdef");
 		EXPECT_EQ(stock.GetIPODate(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetIsin) {
-		EXPECT_EQ(stock.GetIsin(), " ");
+		EXPECT_EQ(stock.GetIsin(), "");
 		stock.SetIsin("abcdef");
 		EXPECT_EQ(stock.GetIsin(), "abcdef");
 	}
@@ -427,37 +427,37 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaics) {
-		EXPECT_EQ(stock.GetNaics(), " ");
+		EXPECT_EQ(stock.GetNaics(), "");
 		stock.SetNaics("abcdef");
 		EXPECT_EQ(stock.GetNaics(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsNationalIndustry) {
-		EXPECT_EQ(stock.GetNaicsNationalIndustry(), " ");
+		EXPECT_EQ(stock.GetNaicsNationalIndustry(), "");
 		stock.SetNaicsNationalIndustry("abcdef");
 		EXPECT_EQ(stock.GetNaicsNationalIndustry(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsSector) {
-		EXPECT_EQ(stock.GetNaicsSector(), " ");
+		EXPECT_EQ(stock.GetNaicsSector(), "");
 		stock.SetNaicsSector("abcdef");
 		EXPECT_EQ(stock.GetNaicsSector(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsSubsector) {
-		EXPECT_EQ(stock.GetNaicsSubsector(), " ");
+		EXPECT_EQ(stock.GetNaicsSubsector(), "");
 		stock.SetNaicsSubsector("abcdef");
 		EXPECT_EQ(stock.GetNaicsSubsector(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetName) {
-		EXPECT_EQ(stock.GetName(), " ");
+		EXPECT_EQ(stock.GetName(), "");
 		stock.SetName("abcdef");
 		EXPECT_EQ(stock.GetName(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetPhone) {
-		EXPECT_EQ(stock.GetPhone(), " ");
+		EXPECT_EQ(stock.GetPhone(), "");
 		stock.SetPhone("abcdef");
 		EXPECT_EQ(stock.GetPhone(), "abcdef");
 	}
@@ -469,31 +469,31 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetState) {
-		EXPECT_EQ(stock.GetState(), " ");
+		EXPECT_EQ(stock.GetState(), "");
 		stock.SetState("abcdef");
 		EXPECT_EQ(stock.GetState(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetWebURL) {
-		EXPECT_EQ(stock.GetWebURL(), " ");
+		EXPECT_EQ(stock.GetWebURL(), "");
 		stock.SetWebURL("abcdef");
 		EXPECT_EQ(stock.GetWebURL(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetLogo) {
-		EXPECT_EQ(stock.GetLogo(), " ");
+		EXPECT_EQ(stock.GetLogo(), "");
 		stock.SetLogo("abcdef");
 		EXPECT_EQ(stock.GetLogo(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTicker) {
-		EXPECT_EQ(stock.GetTicker(), " ");
+		EXPECT_EQ(stock.GetTicker(), "");
 		stock.SetTicker("abcdef");
 		EXPECT_EQ(stock.GetTicker(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFinnhubIndustry) {
-		EXPECT_EQ(stock.GetFinnhubIndustry(), " ");
+		EXPECT_EQ(stock.GetFinnhubIndustry(), "");
 		stock.SetFinnhubIndustry("abcdef");
 		EXPECT_EQ(stock.GetFinnhubIndustry(), "abcdef");
 	}

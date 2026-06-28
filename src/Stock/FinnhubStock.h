@@ -207,40 +207,40 @@ public:
 
 protected:
 	// Finnhub symbol信息
-	string m_strType{ " " };
-	string m_strSymbol2{ " " }; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
-	string m_strMic{ " " };
-	string m_strFigi{ " " }; // FIGI identifier
-	string m_strShareClassFIGI{ " " }; // Global Share Class FIGI
-	string m_strCurrency{ " " };
+	string m_strType{};
+	string m_strSymbol2{}; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
+	string m_strMic{};
+	string m_strFigi{}; // FIGI identifier
+	string m_strShareClassFIGI{}; // Global Share Class FIGI
+	string m_strCurrency{};
 
 	// Finnhub profile信息
-	string m_strAddress{ " " };
-	string m_strCity{ " " };
-	string m_strCountry{ " " };
-	string m_strCusip{ " " };
-	string m_strSedol{ " " };
+	string m_strAddress{};
+	string m_strCity{};
+	string m_strCountry{};
+	string m_strCusip{};
+	string m_strSedol{};
 	long m_lEmployeeTotal{ 0 };
 	//string m_strListedExchange{ "US") }; // 使用virtualStock中的ExchangeCode
-	string m_strGgroup{ " " };
-	string m_strGind{ " " };
-	string m_strGsector{ " " };
-	string m_strGsubind{ " " };
-	string m_strIPODate{ " " };
-	string m_strIsin{ " " };
+	string m_strGgroup{};
+	string m_strGind{};
+	string m_strGsector{};
+	string m_strGsubind{};
+	string m_strIPODate{};
+	string m_strIsin{};
 	double m_dMarketCapitalization{ 0 };
-	string m_strNaics{ " " };
-	string m_strNaicsNationalIndustry{ " " };
-	string m_strNaicsSector{ " " };
-	string m_strNaicsSubsector{ " " };
-	string m_strName{ " " };
-	string m_strPhone{ " " };
+	string m_strNaics{};
+	string m_strNaicsNationalIndustry{};
+	string m_strNaicsSector{};
+	string m_strNaicsSubsector{};
+	string m_strName{};
+	string m_strPhone{};
 	double m_dShareOutstanding{ 0 };
-	string m_strState{ " " };
-	string m_strTicker{ " " };
-	string m_strWebURL{ " " };
-	string m_strLogo{ " " };
-	string m_strFinnhubIndustry{ " " };
+	string m_strState{};
+	string m_strTicker{};
+	string m_strWebURL{};
+	string m_strLogo{};
+	string m_strFinnhubIndustry{};
 	nlohmannJson m_jsonPeer{ nlohmannJson({}) }; // 读取到的Peer数据为json制式
 
 	// 系统生成信息

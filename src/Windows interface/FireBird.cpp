@@ -27,7 +27,6 @@
 #error "fmt 使用unicode"
 #endif
 
-
 // CFireBirdApp
 
 BEGIN_MESSAGE_MAP(CFireBirdApp, CWinAppEx)
@@ -61,6 +60,10 @@ CFireBirdApp::CFireBirdApp() {
 	SetAppID(_T("FireBird.AppID.0.32"));
 
 	// 将所有重要的初始化放置在 InitInstance 中
+}
+
+CFireBirdApp::~CFireBirdApp() {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 }
 
 // 唯一的 CFireBirdApp 对象
