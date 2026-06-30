@@ -2,11 +2,7 @@
 
 #include"ChinaMarket.h"
 #include"DayLineWebData.h"
-
-#include "CharSetTransfer.h"
 #include"WebData.h"
-
-#include "JsonParse.h"
 
 CDayLineWebData::CDayLineWebData() {
 	Reset();
@@ -26,10 +22,4 @@ bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 	m_lCurrentPos = 0;
 
 	return true;
-}
-
-void CDayLineWebData::ReportDayLineDownLoaded() {
-	//string strTemp = GetSymbol();
-	//strTemp += "日线下载完成.");
-	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }

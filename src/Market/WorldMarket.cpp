@@ -178,8 +178,9 @@ int CWorldMarket::ProcessTask() {
 			TaskResetMarket();
 			break;
 		case WORLD_MARKET_UPDATE_DB__:
-			ASSERT(!IsTimeToResetSystem(GetMarketTime()));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-			TaskUpdateWorldMarketDB();
+			if (!IsTimeToResetSystem(GetMarketTime())) {// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+				TaskUpdateWorldMarketDB();
+			}
 			break;
 		case WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__:
 			TaskMonitorWebSocket();
@@ -254,25 +255,19 @@ void CWorldMarket::TaskCreateTask() {
 	}
 
 	AddTask(WORLD_MARKET_UPDATE_DB__, GetNextTime(GetMarketTime(), 0h, 0min, 40s - seconds));// 更新股票简介数据库的任务
-
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, GetMarketTime());
-
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(GetMarketTime(), 0h, 0min, 20s)); // 开始下载日线历史数据
-
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // Note:测试完后再允许
-
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
-
 	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(GetMarketTime(), 0h, 3min, 0s - seconds)); // 三分钟计算Nasdaq100 200MA比率
-
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
 
 void CWorldMarket::TaskProcessWebSocketData() {
-	ASSERT(!IsTimeToResetSystem(GetMarketTime()));	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
-
-	ProcessWebSocketData();
-	UpdateFinnhubStockFromWebSocket();
+	if (!IsTimeToResetSystem(GetMarketTime())) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
+		ProcessWebSocketData();
+		UpdateFinnhubStockFromWebSocket();
+	}
 
 	chrono::local_seconds lNextTime = GetNextSecond(GetMarketTime());
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetNextTime(GetResetTime(), 0h, 5min, 1s);
@@ -1346,4 +1341,30 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 
 	db(sqlpp::remove_from(t).where(t.Symbol == pStock->GetSymbol()));
 	tx.commit();
+}
+
+void CWorldMarket::ChangeToPrevStock() {
+	ASSERT(gl_pCurrentStock != nullptr);
+	size_t lIndex = 0;
+	if (gl_dataContainerTiingoChosenStock.IsSymbol(gl_pCurrentStock)) {
+		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(gl_pCurrentStock);
+	}
+
+	if (lIndex-- == 0) {
+		lIndex = gl_dataContainerTiingoChosenStock.Size() - 1;
+	}
+	gl_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
+}
+
+void CWorldMarket::ChangeToNextStock() {
+	ASSERT(gl_pCurrentStock != nullptr);
+	size_t lIndex = 0;
+	if (gl_dataContainerTiingoChosenStock.IsSymbol(gl_pCurrentStock)) {
+		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(gl_pCurrentStock);
+	}
+
+	if (lIndex++ == gl_dataContainerTiingoChosenStock.Size() - 1) {
+		lIndex = 0;
+	}
+	gl_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
 }

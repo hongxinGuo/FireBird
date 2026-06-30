@@ -21,13 +21,11 @@ public:
 	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 
-	void ReportDayLineDownLoaded();
-
 private:
-	string m_strStockCode;
-	string m_sDataBuffer; // 日线读取缓冲区
-	vector<CDayLine> m_vTempDayLine; // 日线数据缓冲区
-	INT64 m_lCurrentPos;
+	string m_strStockCode{};
+	string m_sDataBuffer{}; // 日线读取缓冲区
+	vector<CDayLine> m_vTempDayLine{}; // 日线数据缓冲区
+	INT64 m_lCurrentPos{ 0 };
 };
 
 using CDayLineWebDataPtr = shared_ptr<CDayLineWebData>;

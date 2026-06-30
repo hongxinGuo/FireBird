@@ -1,13 +1,11 @@
 #include"pch.h"
 
 #include"TimeConvert.h"
-#include"ChinaStockCodeConverter.h"
 #include"Thread.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include "CharSetTransfer.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "InfoReport.h"
 

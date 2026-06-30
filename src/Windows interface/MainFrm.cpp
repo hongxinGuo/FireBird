@@ -578,6 +578,7 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(17, FormatToMK(gl_FinnhubTotalData));
 	SysCallSetInnerSystemPaneText(18, FormatToMK(gl_ChinaMarketTotalData));
 }
+
 void CMainFrame::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) {
 		gl_pCurrentStock = nullptr;
@@ -726,17 +727,31 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		switch (nChar) {
 		case 33: // PAGE UP
 			// last stock
-			//gl_pChinaMarket->ChangeToPrevStock();
+			if (gl_pCurrentStock != nullptr) {
+				if (IsTiingoStock(gl_pCurrentStock)) {
+					gl_pWorldMarket->ChangeToPrevStock();
+					GetCurrentDoc()->SetCurrentStock(gl_pCurrentStock);
+				}
+			}
 			break;
 		case 34: // PAGE DOWN
 			// next stock
-			//gl_pChinaMarket->ChangeToNextStock();
+			if (gl_pCurrentStock != nullptr) {
+				if (IsTiingoStock(gl_pCurrentStock)) {
+					gl_pWorldMarket->ChangeToNextStock();
+					GetCurrentDoc()->SetCurrentStock(gl_pCurrentStock);
+				}
+			}
 			break;
 		case 45: // Ins, 加入自选股票
-			//gl_pCurrentStock->SetChosen(true);
-			//if (gl_pChinaMarket->AddChosenStock(gl_pCurrentStock)) {
-			//	gl_pChinaMarket->SetUpdateChosenStockDB(true);
-			//}
+			if (gl_pCurrentStock != nullptr) {
+				gl_pCurrentStock->SetSelected(true);
+				if (IsTiingoStock(gl_pCurrentStock)) {
+					gl_dataContainerTiingoChosenStock.Add(gl_pCurrentStock);
+
+					gl_pChinaMarket->SetUpdateChosenStockDB(true);
+				}
+			}
 			break;
 		case 46: // delete,从自选股票池中删除
 			//gl_pCurrentStock->SetChosen(false);
@@ -749,7 +764,6 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			break;
 		}
 	}
-	//gl_pChinaMarket->AddImmediateTask(CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__); // 立即更新自选股数据库
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 

@@ -134,6 +134,9 @@ public:
 	bool IsBuildTodayTiingoDayLine() const noexcept { return m_bBuildTodayTiingoDayLine; }
 	void SetBuildTodayTiingoDayLine(bool fFlag) noexcept { m_bBuildTodayTiingoDayLine = fFlag; }
 
+	void ChangeToPrevStock();
+	void ChangeToNextStock();
+
 protected:
 	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新

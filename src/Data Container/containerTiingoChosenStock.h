@@ -14,7 +14,7 @@ public:
 	void Reset() override;
 
 	bool LoadDB();
-	//bool UpdateDB();
+	void UpdateDB();
 
 	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); };
 	CTiingoStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode)); };

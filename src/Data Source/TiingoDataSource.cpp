@@ -441,7 +441,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
 	if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
-	if (GenerateChosenStockDayLine()) return true;
+	if (GenerateChosenStockDayLine()) return true; // 无论免费还是付费，都先申请自选股的日线数据。
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。Note:免费账户只更新自选股的日线
 	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 	if (GenerateFinancialState()) return true;
@@ -661,10 +661,9 @@ bool CTiingoDataSource::GenerateChosenStockDayLine() {
 
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateChosenStockDayLine()) {
-		size_t currentUpdatePos;
 		CTiingoStockPtr pTiingoStock;
 		bool fFound = false;
-		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
+		for (size_t currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoChosenStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
 				SPDLOG_ASSERT(pTiingoStock->IsActive()); // 活跃股票？
@@ -675,7 +674,7 @@ bool CTiingoDataSource::GenerateChosenStockDayLine() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(currentUpdatePos);
+			p->SetIndex(gl_dataContainerTiingoStock.GetOffset(pTiingoStock));// 设置的是在总股票集中的位置，因处理日线数据时是用的总股票集
 			StoreInquiry(p);
 			string s = "Day line: ";
 			s += pTiingoStock->GetSymbol();

@@ -33,3 +33,30 @@ bool CContainerTiingoChosenStock::LoadDB() {
 
 	return true;
 }
+
+void CContainerTiingoChosenStock::UpdateDB() {
+	vector<string> vSymbol;
+	using namespace StockMarket;
+	const auto& t = WorldChoiceStock{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+
+	auto result = db(select(all_of(t)).from(t).unconditionally());
+	size_t rows = result.size();
+	vSymbol.reserve(rows);
+	for (const auto& row : result) {
+		if (gl_dataContainerTiingoStock.IsSymbol(row.Symbol)) {
+			vSymbol.push_back(row.Symbol);
+		}
+	}
+
+	for (size_t i = 0; i < m_vStock.size(); i++) {
+		string symbol = m_vStock.at(i)->GetSymbol();
+		if (ranges::find(vSymbol, symbol) == vSymbol.end()) {
+			db(sqlpp::insert_into(t).set(
+				t.Symbol = symbol
+			));
+		}
+	}
+	tx.commit();
+}
