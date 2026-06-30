@@ -21,6 +21,7 @@ public:
 		m_vHistoryData.reserve(size);
 		m_vHistoryData.clear();
 	}
+	void Unload() noexcept { Reset(); }
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
 	virtual void SaveDB(const string&) { ASSERT(0); }
@@ -40,10 +41,6 @@ public:
 
 	bool GetStartEndDate(chrono::local_days& lStartDate, chrono::local_days& lEndDate) const;
 
-	void Unload() noexcept {
-		m_vHistoryData.clear();
-		m_fDataLoaded = false;
-	}
 	CVirtualHistoryCandle* GetData(const size_t lIndex) { return &m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandle>& GetDataVector() { return m_vHistoryData; }
 	CVirtualHistoryCandle* GetCandle(chrono::local_days date);

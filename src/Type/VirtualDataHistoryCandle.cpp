@@ -88,6 +88,7 @@ CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle2(chrono::local_days 
 
 void CVirtualDataHistoryCandle::Reset() {
 	m_vHistoryData.clear();
+	m_vHistoryData.shrink_to_fit();
 	m_fDataLoaded = false;
 }
 
