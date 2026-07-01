@@ -206,10 +206,10 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(181000)) {
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 181000);
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(190000)) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 190000);
 			}
-			else { // 当日18时之后或者第二日交易时间前
+			else { // 当日19时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateStockDailyMeta(true);
 				gl_pTiingoDataSource->SetUpdateChosenStockDayLine(true);
 				gl_pTiingoDataSource->SetUpdateDayLine(true);
@@ -845,7 +845,9 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 		});
 	}
 
-	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) {
+	static bool s_bUpdatingTiingoStockDayLine = false;
+	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB() && !s_bUpdatingTiingoStockDayLine) {
+		s_bUpdatingTiingoStockDayLine = true;
 		gl_runtime.thread_executor()->post([this] {
 			gl_systemMessage.SetWorldMarketSavingFunction("T stock dayline");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -855,6 +857,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 				string s = std::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
+			s_bUpdatingTiingoStockDayLine = false;
 		});
 	}
 
