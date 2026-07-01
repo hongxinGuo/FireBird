@@ -779,8 +779,7 @@ namespace FireBirdTest {
 				EXPECT_DOUBLE_EQ(row.Close.value(), 0.111135);
 			}
 
-			EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-			gl_systemMessage.PopDayLineInfoMessage();
+			EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 			// cleanup
 			db(remove_from(t).where(t.Exchange == "Test"));

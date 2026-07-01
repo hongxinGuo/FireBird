@@ -124,8 +124,8 @@ public:
 	CVirtualDataHistoryCandle* MonthLine() noexcept final { return &m_dataMonthLine; }
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
-	bool UpdateDayLineDB();
-	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
+	void UpdateDayLineDB() { m_dataDayLine.UpdateDB(m_strSymbol); } // 先删除数据库中重复数据，再存储
+	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); } // 直接存储，
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 	void LoadDayLineDB() override { m_dataDayLine.LoadDB(m_strSymbol); }

@@ -286,23 +286,6 @@ void CTiingoStock::CreateMonthLine() {
 	m_dataMonthLine.SetDataLoaded(true);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 由于tiingo更新完日线数据后需要再次处理日线，故而此处默认为不卸载日线。这样能够加速后面的处理过程。
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoStock::UpdateDayLineDB() {
-	DeleteDuplicatedDayLine();
-
-	SaveDayLineDB();
-	string str = GetSymbol();
-	str += "日线资料存储完成";
-	gl_systemMessage.PushDayLineInfoMessage(str);
-
-	return true;
-}
-
 bool CTiingoStock::IsDayLineDuplicated() noexcept {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;

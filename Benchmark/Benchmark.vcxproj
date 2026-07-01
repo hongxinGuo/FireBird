@@ -175,6 +175,7 @@
     <ClCompile Include="JsonParseBenchmark.cpp" />
     <ClCompile Include="ChinaMarketBenchmark.cpp" />
     <ClCompile Include="StockIndicatorBanchmark.cpp" />
+    <ClCompile Include="TiingoStockDayLineBenchmark.cpp" />
     <ClCompile Include="VirtualDataHistoryCandleBenchmark.cpp" />
     <ClCompile Include="WebRTDataBenchmark.cpp" />
   </ItemGroup>

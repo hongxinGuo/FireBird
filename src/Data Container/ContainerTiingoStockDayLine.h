@@ -15,6 +15,9 @@ public:
 	void SaveDB(const string& strStockSymbol) override;
 	void LoadDB(const string& strStockSymbol) override;
 
+	void DeleteDuplicatedDayLine(const string& strStockSymbol) const noexcept;
+	void UpdateDB(const string& strStockSymbol);
+
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void SplitAdjust();
 

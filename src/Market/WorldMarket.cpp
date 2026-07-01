@@ -367,13 +367,16 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 		if (gl_systemConfiguration.IsExitingSystem()) break;// 如果程序正在退出，则停止存储。
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
-			pTiingoStock->UpdateDayLineStartEndDate();
-			pTiingoStock->SetUpdateDayLineDB(false); // 先设置标识，防止重入时重复更新。
-			pTiingoStock->SetUpdateProfileDB(true);
 			gl_BackgroundWorkingThread.acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
 			gl_runtime.thread_executor()->post([pTiingoStock] {
+				pTiingoStock->UpdateDayLineStartEndDate();
+				pTiingoStock->SetUpdateDayLineDB(false); // 先设置标识，防止重入时重复更新。
+				pTiingoStock->SetUpdateProfileDB(true);
 				pTiingoStock->UpdateDayLineDB();
 				pTiingoStock->UnloadDayLine();
+				string str = pTiingoStock->GetSymbol();
+				str += "日线资料存储完成";
+				gl_systemMessage.PushDayLineInfoMessage(str);
 				gl_BackgroundWorkingThread.release();
 			});
 			iUpdatedCount++;
@@ -843,7 +846,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 	}
 
 	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) {
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_systemMessage.SetWorldMarketSavingFunction("T stock dayline");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			auto iUpdatedCount = TaskUpdateTiingoStockDayLineDB();
