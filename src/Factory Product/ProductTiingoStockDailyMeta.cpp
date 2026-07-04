@@ -68,13 +68,15 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData) {
-	string s1, s2;
-	chrono::local_days ld, ld2;
 	if (!IsValidData(pWebData)) return nullptr;
 
 	auto pTiingoStockDailyMeta = make_shared<CTiingoStockDailyMeta>();
 
 	try {
+		chrono::local_days ld2;
+		chrono::local_days ld;
+		string s2;
+		string s1;
 		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);

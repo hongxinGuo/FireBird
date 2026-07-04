@@ -6,8 +6,6 @@
 #include"WorldMarket.h"
 
 #include "ProductTiingoCryptoDayLine.h"
-
-#include "TimeConvert.h"
 #include "WebData.h"
 
 CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {

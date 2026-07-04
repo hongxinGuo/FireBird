@@ -89,6 +89,7 @@ void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	}
 	tx.commit();
 	m_fDataLoaded = true;
+	//AddLastClose();
 	SplitAdjust();
 }
 
@@ -161,6 +162,17 @@ void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTem
 		}
 	}
 	m_fDataLoaded = true;
+}
+
+void CContainerTiingoStockDayLine::AddLastClose() {
+	if (m_vHistoryData.empty()) return;
+	auto lastClose = m_vHistoryData.at(0).GetLastClose();
+	for (size_t i = 1; i < m_vHistoryData.size(); ++i) {
+		if (m_vHistoryData.at(i).GetLastClose() == 0) {
+			m_vHistoryData.at(i).SetLastClose(lastClose);
+		}
+		lastClose = m_vHistoryData.at(i).GetLastClose();
+	}
 }
 
 struct CSplitFactor {

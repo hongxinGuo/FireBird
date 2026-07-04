@@ -14,8 +14,11 @@ using namespace std;
 
 //#include"resource.h"
 
+namespace {
+	const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地时区
+}
+
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
-const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地时区
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 
 namespace {
@@ -90,14 +93,11 @@ WatchdogQT::~WatchdogQT() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr* result) {
-	chrono::local_seconds ls;
-	long long time;
-
 	if (eventType == "windows_generic_MSG") {
+		chrono::local_seconds ls;
 		string s;
 		const MSG* msg = static_cast<MSG*>(message);
 		if (msg->message == m_MsgFireBirdSchedulingExit) { // 定时调度退出
-			time = gl_tpNow.time_since_epoch().count();
 			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
 			s = std::format("{:%F %T} FireBird报告定时调度关闭", ls);
 			m_listOutput.push_back(s);
@@ -105,7 +105,6 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 			return true;
 		}
 		if (msg->message == m_MsgFireBirdCheckRunningExit) { // 定时调度退出
-			time = gl_tpNow.time_since_epoch().count();
 			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
 			s = std::format("{:%F %T} FireBird报告检查系统时关闭", ls);
 			m_listOutput.push_back(s);
@@ -113,7 +112,6 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 			return true;
 		}
 		if (msg->message == m_MsgFireBirdRunning) { // FireBird启动
-			time = gl_tpNow.time_since_epoch().count();
 			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
 			s = std::format("{:%F %T} FireBird报告启动", ls);
 			m_listOutput.push_back(s);
@@ -121,7 +119,6 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 			return true;
 		}
 		if (msg->message == m_MsgFireBirdExit) { // FireBird退出
-			time = gl_tpNow.time_since_epoch().count();
 			ls = gl_pTimeZoneLocal->to_local(gl_tpNow);
 			s = std::format("{:%F %T} FireBird报告关闭", ls);
 			m_listOutput.push_back(s);

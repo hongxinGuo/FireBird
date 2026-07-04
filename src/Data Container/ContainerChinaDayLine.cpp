@@ -149,7 +149,6 @@ bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 CWeekLine CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	ASSERT(Size() > 0);
 	ASSERT(lCurrentDayLinePos < Size());
-	auto data = GetData(lCurrentDayLinePos);
 	const auto lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetDate());
 	const auto lNewestDay = GetData(Size() - 1)->GetDate();
 	CWeekLine weekLine;

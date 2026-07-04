@@ -126,7 +126,6 @@ CDayLinesPtr CProductEastmoneyDayLine::ParseEastmoneyDayLine(const string_view& 
 
 	const string strStockSymbol = strStockCode;
 	try {
-		string_view sv;
 		long lLastClose = 0;
 		ondemand::parser parser;
 		ondemand::document doc;
@@ -137,7 +136,6 @@ CDayLinesPtr CProductEastmoneyDayLine::ParseEastmoneyDayLine(const string_view& 
 		doc = parser.iterate(jsonPadded).value();
 		int rc = doc["rc"].get_int32().value();
 		if (rc != 0) return pvDayLine;
-		ondemand::array dayArray1 = doc["data"]["klines"].get_array().value();
 		auto a1 = doc["data"];
 		auto a3 = a1["klines"];
 		auto a4 = a3.get_array();

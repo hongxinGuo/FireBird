@@ -11,7 +11,6 @@ chrono::local_days XferToLocalDays(const string& sDate) {
 	istringstream ss2(sDate);
 	chrono::local_days ls;
 	ss2 >> chrono::parse("%F", ls);
-	chrono::year_month_day ymd2{ ls };
 	return ls;
 }
 

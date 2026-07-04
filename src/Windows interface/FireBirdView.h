@@ -29,13 +29,13 @@ public:
 	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
 
 	void ShowCandleData(CDC* pDC, CRect rectDrawArea);
-	void ShowCross(CDC* pDC, CPoint ptCurrent);
+	void ShowCross(CDC* pDC, CPoint ptCurrent) const;
 	void ShowIndicator(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
-	void ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea) const;
 	void ShowIndicatorRSI(CDC* pDC, CRect rectDrawArea);
-	void ShowIndicatorBollingLine(CDC* pDC, CRect rectDrawArea);
-	void Show8020Line(CDC* pDC, CRect rectDrawArea);
+	void ShowIndicatorBollingLine(CDC* pDC, CRect rectDrawArea) const;
+	static void Show8020Line(CDC* pDC, CRect rectDrawArea);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
 	bool IsShow5Days() const noexcept { return m_fShow5Days; }
@@ -56,6 +56,9 @@ public:
 
 	int GetCandleWidth() const noexcept { return m_iCandleWidth; }
 	void SetCandleWidth(const int width) noexcept { m_iCandleWidth = width; }
+
+	void Enlarge();
+	void Shrink();
 
 	//系统包裹函数
 public:
@@ -122,7 +125,8 @@ protected:
 	bool m_fShow250Days;
 
 	// 生成的消息映射函数
-protected:
+public:
+	DECLARE_MESSAGE_MAP()
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -150,10 +154,6 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnShowIndicatorKdj();
 	afx_msg void OnUpdateShowIndicatorKdj(CCmdUI* pCmdUI);
-
-	DECLARE_MESSAGE_MAP()
-
-public:
 	afx_msg void OnShowIndicatorMacd();
 	afx_msg void OnUpdateShowIndicatorMacd(CCmdUI* pCmdUI);
 	afx_msg void OnShowIndicatorRsi();

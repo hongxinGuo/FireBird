@@ -73,7 +73,6 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 	try {
 		CDayLine dayLine;
 		time_t tTemp;
-		long lTemp;
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = jsonGetLongLong(it);

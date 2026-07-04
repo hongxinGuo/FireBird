@@ -89,7 +89,7 @@ public:
 	// World market
 	unsigned GetWorldMarketResettingTime() const noexcept { return m_lMarketResettingTime; }
 	[[nodiscard]] string GetFinnhubToken() noexcept { return m_strFinnhubToken; }
-	void SetFinnhubToken(string s) noexcept { m_strFinnhubToken = s; }
+	void SetFinnhubToken(const string& s) noexcept { m_strFinnhubToken = s; }
 	[[nodiscard]] auto GetWorldMarketFinnhubInquiryTime() const noexcept { return m_worldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
 		m_worldMarketFinnhubInquiryTime = chrono::milliseconds(iWorldMarketFinnhubInquiryTime);
@@ -120,7 +120,7 @@ public:
 	void ChangeTiingoAccountTypeToPaid();
 	bool IsPaidTypeTiingoAccount() const noexcept { return m_bTiingoAccountFeePaid; }
 	[[nodiscard]] string GetTiingoToken() noexcept { return m_strTiingoToken; }
-	void SetTiingoToken(string s) noexcept { m_strTiingoToken = s; }
+	void SetTiingoToken(const string& s) noexcept { m_strTiingoToken = s; }
 
 	[[nodiscard]] chrono::local_days GetTiingoFundamentalsMetaUpdateDate() const noexcept { return m_lTiingoFundamentalsMetaUpdateDate; }
 	void SetTiingoFundamentalsMetaUpdateDate(const chrono::local_days lTiingoFundamentalsMetaUpdateDate) noexcept {

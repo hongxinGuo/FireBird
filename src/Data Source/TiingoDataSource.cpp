@@ -440,11 +440,13 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
+	//if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
 	if (GenerateChosenStockDayLine()) return true; // 无论免费还是付费，都先申请自选股的日线数据。
-	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。Note:免费账户只更新自选股的日线
-	if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
-	if (GenerateFinancialState()) return true;
+	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 免费账户不申请所有股票的日线数据，付费账户才申请所有股票的日线数据。
+		if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。Note:免费账户只更新自选股的日线
+		if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
+		if (GenerateFinancialState()) return true;
+	}
 
 	SPDLOG_ASSERT(!IsInquiring());
 	gl_systemMessage.SetCurrentTiingoFunction("idling");

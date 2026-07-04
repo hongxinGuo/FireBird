@@ -3,6 +3,8 @@
 #include"ProductTiingo.h"
 #include"TiingoCandleLine.h"
 
+#define needMoreDayLineData_ 10 // 申请日线数据时，总是多申请一天的数据，以便使用前日收盘价作为昨收。
+
 class CProductTiingoStockDayLine final : public CProductTiingo {
 public:
 	CProductTiingoStockDayLine();

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QMessageBox>
-#include <QtWidgets/QMainWindow>
+//#include <QMessageBox>
+//#include <QtWidgets/QMainWindow>
 #include <spdlog/logger.h>
 
 #include "ui_WatchdogQT.h"

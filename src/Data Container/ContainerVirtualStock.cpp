@@ -19,7 +19,7 @@ string CContainerVirtualStock::GetItemSymbol(size_t lIndex) {
 
 vectorString CContainerVirtualStock::GetSymbols() {
 	vectorString vSymbol;
-	for (long l = 0; l < Size(); l++) {
+	for (size_t l = 0; l < Size(); l++) {
 		vSymbol.push_back(GetItemSymbol(l));
 	}
 

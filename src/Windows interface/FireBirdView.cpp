@@ -3,8 +3,6 @@
 
 #include"pch.h"
 
-#include"ChinaStock.h"
-
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDayLineERS
@@ -73,8 +71,6 @@ CFireBirdView::CFireBirdView() {
 	m_iCurrentShowType = SHOW_DAY_LINE_DATA_; // 显示日线数据
 	m_lCurrentPos = 0;
 	m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
-	int iHeight = 100;
-	CRect rectArea{ 2, 0, 962, 100 };
 
 	m_fShow5Days = true;
 	m_fShow10Days = true;
@@ -143,7 +139,7 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 	}
 }
 
-void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) {
+void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) const {
 	constexpr COLORREF crWhite(RGB(255, 255, 255));
 	CPen penWhiteDash(PS_SOLID, 1, crWhite);
 
@@ -224,7 +220,7 @@ void CFireBirdView::ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea) {
 		break;
 	}
 }
-void CFireBirdView::ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea) {
+void CFireBirdView::ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea) const {
 	if (GetDocument()->GetCurrentStock() == nullptr) return;
 
 	switch (m_iCurrentShowType) {
@@ -259,7 +255,7 @@ void CFireBirdView::ShowIndicatorRSI(CDC* pDC, CRect rectDrawArea) {
 		break;
 	}
 }
-void CFireBirdView::ShowIndicatorBollingLine(CDC* pDC, CRect rectDrawArea) {
+void CFireBirdView::ShowIndicatorBollingLine(CDC* pDC, CRect rectDrawArea) const {
 	if (GetDocument()->GetCurrentStock() == nullptr) return;
 	switch (m_iCurrentShowType) {
 	case SHOW_DAY_LINE_DATA_:
@@ -299,6 +295,19 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	ShowIndicator(pDC, m_rectIndicator);
 }
 
+void CFireBirdView::Enlarge() {
+	if (m_iCandleWidth < 40) {
+		m_iCandleWidth += 1;
+		m_bDrawAll = true;
+	}
+}
+void CFireBirdView::Shrink() {
+	if (m_iCandleWidth > 1) {
+		m_iCandleWidth -= 1;
+		m_bDrawAll = true;
+	}
+}
+
 BOOL CFireBirdView::PreCreateWindow(CREATESTRUCT& cs) {
 	//  CREATESTRUCT cs 来修改窗口类或样式
 
@@ -312,9 +321,9 @@ void CFireBirdView::OnDraw(CDC* pDC) {
 	ASSERT_VALID(pDoc);
 	if (!pDoc) return;
 
-	pDC = GetDC();
+	//pDC = GetDC();
 	Show(pDC);
-	ReleaseDC(pDC);
+	//ReleaseDC(pDC);
 }
 
 void CFireBirdView::Show(CDC* pdc) {
@@ -566,16 +575,10 @@ void CFireBirdView::OnUpdateShowMonthLine(CCmdUI* pCmdUI) {
 
 BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
 	if (zDelta < 0) { // 向下滚动，缩小K线图
-		if (m_iCandleWidth > 1) {
-			m_iCandleWidth -= 1;
-			m_bDrawAll = true;
-		}
+		Shrink();
 	}
 	else { // 向上滚动，放大K线图
-		if (m_iCandleWidth < 40) {
-			m_iCandleWidth += 1;
-			m_bDrawAll = true;
-		}
+		Enlarge();
 	}
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);

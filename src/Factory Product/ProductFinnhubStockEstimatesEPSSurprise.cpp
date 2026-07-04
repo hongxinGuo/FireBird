@@ -7,7 +7,6 @@
 #include"ChinaMarket.h"
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 
-#include "TimeConvert.h"
 #include "WebData.h"
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
@@ -37,7 +36,6 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 
 CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
 	auto pvEPSSurprise = make_shared<vector<CEPSSurprise>>();
-	CEPSSurprise pEPSSurprise;
 	string sError;
 	nlohmannJson js;
 
@@ -45,6 +43,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 	if (!IsValidData(pWebData)) return pvEPSSurprise;
 
 	try {
+		CEPSSurprise pEPSSurprise;
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			string s = jsonGetString(it, "symbol");
 			pEPSSurprise.m_strSymbol = s;

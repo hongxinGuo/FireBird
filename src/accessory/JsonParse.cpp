@@ -20,7 +20,6 @@
 
 #include"SystemMessage.h"
 
-#include"nlohmannJsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
 #include "ChinaMarket.h"
 
@@ -128,22 +127,6 @@ string_view GetNextField(const string_view& svData, size_t& lCurrentPos, const c
 	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
 	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
 	return string_view{ sv.data(), lEnd };
-}
-
-namespace {
-	void ReportJsonError(const nlohmannJson::parse_error& e, const std::string& s) {
-		char buffer[180]{};
-		size_t i;
-		for (i = 0; i < 180; i++) {
-			if ((e.byte - 90 + i) < s.size()) {
-				buffer[i] = s.at(e.byte - 90 + i);
-			}
-			else break;
-		}
-		buffer[i] = 0x000;
-		const string s2 = std::format("Nlohmann JSon Reading Error {} {:Ld} {:Ld} {:d} {}", e.what(), s.size(), e.byte, i, buffer);
-		gl_systemMessage.PushErrorMessage(s2);
-	}
 }
 
 void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWhat) {

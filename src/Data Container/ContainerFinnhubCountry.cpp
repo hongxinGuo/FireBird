@@ -37,7 +37,7 @@ bool CContainerFinnhubCountry::Delete(const CCountry& country) {
 // 此种更新方法，是默认新的国家代码附加在最后。
 //
 //////////////////////////////////////////////////////////////////////////
-void CContainerFinnhubCountry::UpdateDB() {
+void CContainerFinnhubCountry::UpdateDB() const {
 	if (m_llLastTotalCountry < m_vCountry.size()) {
 		using namespace StockMarket;
 		const auto& t = FinnhubCountryList{};

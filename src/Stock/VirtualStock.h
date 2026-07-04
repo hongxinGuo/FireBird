@@ -108,7 +108,7 @@ public:
 
 	size_t GetStockSplitCount() const noexcept { return m_pvStockSplit->size(); }
 	CStockSplit GetStockSplit(size_t index) const noexcept { return m_pvStockSplit->at(index); }
-	void AddStockSplit(const CStockSplit& pStockSplit) noexcept; // 按日期顺序添加拆股信息
+	void AddStockSplit(const CStockSplit& pStockSplit) const noexcept; // 按日期顺序添加拆股信息
 	void AddStockSplits(const CStockSplitsPtr& pStockSplit) noexcept; // 按日期顺序添加拆股信息
 	void ClearStockSplit() const noexcept { m_pvStockSplit->clear(); }
 

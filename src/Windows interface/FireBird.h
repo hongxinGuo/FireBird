@@ -19,7 +19,7 @@
 class CFireBirdApp final : public CWinAppEx {
 public:
 	CFireBirdApp();
-	~CFireBirdApp();
+	~CFireBirdApp() override;
 
 	// 重写
 public:
@@ -29,6 +29,7 @@ public:
 	// 实现
 	BOOL m_bHiColorIcons;
 
+protected:
 	void PreLoadState() override;
 	void LoadCustomState() override;
 	void SaveCustomState() override;

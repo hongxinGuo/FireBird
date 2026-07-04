@@ -40,8 +40,6 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateDayLineDB(true);
 			pStock->SetUpdateProfileDB(true);
 			const auto lSize = pStock->GetDayLineSize() - 1;
-			const auto pDayLine = pStock->GetDayLine(lSize);
-			return;
 		}
 	}
 }

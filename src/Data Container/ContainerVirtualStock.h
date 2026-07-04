@@ -28,6 +28,9 @@ public:
 	size_t GetDayLineNeedUpdateNumber() const;
 	bool IsUpdateDayLineDB() noexcept;
 
+	bool IsUpdateDB() const noexcept { return m_bUpdateDB; }
+	void SetUpdateDB(const bool fFlag) noexcept { m_bUpdateDB = fFlag; }
+
 	CVirtualStockPtr Get(const size_t lIndex) { return m_vStock.at(lIndex); }
 	CVirtualStockPtr Get(const string& strSymbol) { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
 
@@ -45,4 +48,6 @@ public:
 protected:
 	vector<CVirtualStockPtr> m_vStock; //Note 此容器中真实存储的，为CVirtualStock类的各继承类，使用时需要使用dynamic_pointer_cast<>转换成对应的继承类。
 	unordered_map<string, size_t> m_mapSymbol; // m_vStock在容器中的具体偏移量。使用unordered_map是为了提高查询效率。注意：当删除股票时，需要更新此map中所有股票的偏移量。
+
+	bool m_bUpdateDB{ false };
 };

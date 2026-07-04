@@ -19,6 +19,7 @@ public:
 	void UpdateDB(const string& strStockSymbol);
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
+	void AddLastClose();
 	void SplitAdjust();
 
 	CTiingoCandleLine* GetData(const size_t lIndex) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }

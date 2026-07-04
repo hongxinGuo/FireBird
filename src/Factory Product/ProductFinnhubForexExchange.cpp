@@ -38,8 +38,7 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchan
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			string s = jsonGetString(it);
-			string str = s;
+			string str = jsonGetString(it);
 			pvExchange->push_back(str);
 		}
 	} catch (nlohmannJson::exception& e) {

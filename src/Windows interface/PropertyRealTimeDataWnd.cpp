@@ -3,7 +3,6 @@
 
 #include "PropertyRealTimeDataWnd.h"
 
-#include "ChinaMarket.h"
 #include "MainFrm.h"
 
 #ifdef _DEBUG

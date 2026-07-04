@@ -93,6 +93,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BUILD_CHINA_MARKET_ALL_STOCK_DAYLINE, &CMainFrame::OnBuildChinaMarketAllStockDayline)
 	ON_COMMAND(ID_USING_EASTMONEY_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingEastmoneyDaylineDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_EASTMONEY_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingEastmoneyDaylineDataServer)
+	ON_COMMAND(ID_TIINGO_MAINTAIN_DAYLINE_DB, &CMainFrame::OnTiingoMaintainDaylineDb)
+	ON_UPDATE_COMMAND_UI(ID_TIINGO_MAINTAIN_DAYLINE_DB, &CMainFrame::OnUpdateTiingoMaintainDaylineDb)
 END_MESSAGE_MAP()
 
 namespace {
@@ -722,6 +724,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	CChinaStockPtr pStock;
+	CFireBirdView* pView = nullptr;
 
 	if (gl_pCurrentStock != nullptr) {
 		switch (nChar) {
@@ -743,21 +746,36 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 				}
 			}
 			break;
+
+		case 38: // 向上箭头，放大细节
+			pView = GetCurrentView();
+			if (pView != nullptr) {
+				pView->Enlarge();
+			}
+			break;
+		case 40: // 向下箭头，缩小
+			pView = GetCurrentView();
+			if (pView != nullptr) {
+				pView->Shrink();
+			}
+			break;
 		case 45: // Ins, 加入自选股票
 			if (gl_pCurrentStock != nullptr) {
 				gl_pCurrentStock->SetSelected(true);
 				if (IsTiingoStock(gl_pCurrentStock)) {
 					gl_dataContainerTiingoChosenStock.Add(gl_pCurrentStock);
-
-					gl_pChinaMarket->SetUpdateChosenStockDB(true);
+					gl_dataContainerTiingoChosenStock.SetUpdateDB(true);
 				}
 			}
 			break;
 		case 46: // delete,从自选股票池中删除
-			//gl_pCurrentStock->SetChosen(false);
-			//if (gl_pChinaMarket->DeleteChosenStock(gl_pCurrentStock)) {
-			//	gl_pChinaMarket->SetUpdateChosenStockDB(true);
-			//}
+			if (gl_pCurrentStock != nullptr) {
+				gl_pCurrentStock->SetSelected(true);
+				if (IsTiingoStock(gl_pCurrentStock)) {
+					gl_dataContainerTiingoChosenStock.Delete(gl_pCurrentStock);
+					gl_dataContainerTiingoChosenStock.SetUpdateDB(true);
+				}
+			}
 			break;
 		default:
 			// 无需处理字符，略过
@@ -1058,4 +1076,12 @@ void CMainFrame::OnBuildChinaStockOneYearDayline() {
 
 void CMainFrame::OnBuildChinaMarketAllStockDayline() {
 	gl_pChinaMarket->UpdateAllStockDayLine();
+}
+
+void CMainFrame::OnTiingoMaintainDaylineDb() {
+	gl_pWorldMarket->TaskMainTainTiingoDayLineDB();
+}
+
+void CMainFrame::OnUpdateTiingoMaintainDaylineDb(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
 }

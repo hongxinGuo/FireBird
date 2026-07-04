@@ -58,7 +58,7 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 	}
 }
 
-void CVirtualStock::AddStockSplit(const CStockSplit& StockSplit) noexcept {
+void CVirtualStock::AddStockSplit(const CStockSplit& StockSplit) const noexcept {
 	for (auto& p : *m_pvStockSplit) {
 		if (p.GetDate() == StockSplit.GetDate()) return; // 已经有了，不添加了。
 	}

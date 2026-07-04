@@ -2,11 +2,8 @@
 
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
-
 #include"WorldMarket.h"
-
 #include "ProductTiingoStockDayLine.h"
-
 #include "WebData.h"
 
 string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate) {
@@ -27,7 +24,7 @@ string CProductTiingoStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ASSERT(pStock->IsActive()); // 活跃股票
 	chrono::local_days lStartDate{ 1980y / 01 / 01 };
-	if (pStock->GetDayLineEndDate() > toLocalDays(19800101)) lStartDate = pStock->GetDayLineEndDate() - chrono::days(3);
+	if (pStock->GetDayLineEndDate() > toLocalDays(19800101)) lStartDate = pStock->GetDayLineEndDate() - chrono::days(needMoreDayLineData_);
 	string strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, gl_pWorldMarket->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 
@@ -47,7 +44,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			dayLine.SetLastClose(lastClose);
 			lastClose = dayLine.GetClose();
 		}
-		if ((pvDayLine->size() > 1) && pvDayLine->at(0).GetDate() == pTiingoStock->GetDayLineEndDate()) {
+		if ((pvDayLine->size() > 1) && pTiingoStock->GetDayLineEndDate() != chrono::local_days{ 1980y / 01 / 01 }) {
 			pvDayLine->erase(pvDayLine->begin()); // 删除重复日线数据
 		}
 		pTiingoStock->UpdateDayLine(pvDayLine);

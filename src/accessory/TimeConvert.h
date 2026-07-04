@@ -21,17 +21,17 @@ chrono::local_days GetNextMonday(chrono::local_days ld);
 chrono::local_days GetPrevMonday(chrono::local_days ld);
 chrono::local_days GetCurrentMonday(chrono::local_days ld);
 
-inline chrono::local_seconds GetNextSecond(chrono::hh_mm_ss<chrono::seconds> time) { return chrono::local_seconds(time.to_duration() + chrono::seconds(1)); }
+inline chrono::local_seconds GetNextSecond(const chrono::hh_mm_ss<chrono::seconds>& time) { return chrono::local_seconds(time.to_duration() + chrono::seconds(1)); }
 inline chrono::local_seconds GetNextSecond(chrono::local_seconds time) { return chrono::local_seconds(time + chrono::seconds(1)); }
 
-inline chrono::local_seconds GetNextTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+inline chrono::local_seconds GetNextTime(const chrono::hh_mm_ss<chrono::seconds>& time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
 	return { chrono::local_seconds(time.to_duration() + hour + minute + second) };
 }
 inline chrono::local_seconds GetNextTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
 	return chrono::local_seconds(time.time_since_epoch() + hour + minute + second);
 }
 
-inline chrono::local_seconds GetPrevTime(chrono::hh_mm_ss<chrono::seconds> time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
+inline chrono::local_seconds GetPrevTime(const chrono::hh_mm_ss<chrono::seconds>& time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {
 	return chrono::local_seconds(time.to_duration() - hour - minute - second);
 }
 inline chrono::local_seconds GetPrevTime(chrono::local_seconds time, chrono::hours hour, chrono::minutes minute, chrono::seconds second) {

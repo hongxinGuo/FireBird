@@ -11,7 +11,6 @@ CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {
 }
 
 void CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
-	auto ratio = GetRatio();
 	using namespace StockMarket;
 	const auto& t = FinnhubStockDayline{};
 	auto db = gl_dbStockMarket.get();

@@ -5,8 +5,6 @@
 #include"nlohmannJsonGetValue.h"
 
 #include"WorldMarket.h"
-
-#include "TimeConvert.h"
 #include "WebData.h"
 
 CProductTiingoForexDayLine::CProductTiingoForexDayLine() {

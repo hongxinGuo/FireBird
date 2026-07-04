@@ -34,7 +34,7 @@ bool CContainerTiingoChosenStock::LoadDB() {
 	return true;
 }
 
-void CContainerTiingoChosenStock::UpdateDB() {
+void CContainerTiingoChosenStock::UpdateDB() const {
 	vector<string> vSymbol;
 	using namespace StockMarket;
 	const auto& t = WorldChoiceStock{};

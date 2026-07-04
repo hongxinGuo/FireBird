@@ -120,14 +120,14 @@ chrono::local_days CFireBirdDoc::GetDayLineDate(size_t countDownIndex) const {
 	return dayLine->GetData(dayLine->Size() - countDownIndex)->GetDate();
 }
 
-chrono::local_days CFireBirdDoc::GetWeekLineDate(size_t countDownIndex){
+chrono::local_days CFireBirdDoc::GetWeekLineDate(size_t countDownIndex) const {
 	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
 	auto weekLine = m_pCurrentStock->WeekLine();
 	if (weekLine->Size() < countDownIndex) return weekLine->GetData(0)->GetDate();
 	return weekLine->GetData(weekLine->Size() - countDownIndex)->GetDate();
 }
 
-chrono::local_days CFireBirdDoc::GetMonthLineDate(size_t countDownIndex){
+chrono::local_days CFireBirdDoc::GetMonthLineDate(size_t countDownIndex) const {
 	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
 	auto monthLine = m_pCurrentStock->MonthLine();
 	if (monthLine->Size() < countDownIndex) return monthLine->GetData(0)->GetDate();

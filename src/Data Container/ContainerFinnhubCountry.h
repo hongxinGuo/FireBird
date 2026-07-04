@@ -22,7 +22,7 @@ public:
 	bool Delete(const CCountry& country);
 	CCountry GetCountry(const string& strCountry) { return m_vCountry.at(m_mapCountry.at(strCountry)); }
 
-	void UpdateDB();
+	void UpdateDB() const;
 	bool LoadDB();
 
 protected:

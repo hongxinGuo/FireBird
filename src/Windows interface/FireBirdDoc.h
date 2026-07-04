@@ -38,8 +38,8 @@ public:
 	std::pair<long, long> GetMonthLineHighLow(int iCandleNumber) const;
 
 	chrono::local_days GetDayLineDate(size_t countDownIndex) const;
-	chrono::local_days GetWeekLineDate(size_t countDownIndex);
-	chrono::local_days GetMonthLineDate(size_t countDownIndex);
+	chrono::local_days GetWeekLineDate(size_t countDownIndex) const;
+	chrono::local_days GetMonthLineDate(size_t countDownIndex) const;
 
 	void ShowDayLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
 		m_pCurrentStock->DayLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);

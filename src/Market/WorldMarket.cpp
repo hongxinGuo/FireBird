@@ -861,6 +861,13 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 		});
 	}
 
+	if (gl_dataContainerTiingoChosenStock.IsUpdateDB()) {
+		gl_runtime.thread_executor()->post([] {
+			gl_dataContainerTiingoChosenStock.UpdateDB();
+			gl_dataContainerTiingoChosenStock.SetUpdateDB(false);
+		});
+	}
+
 	if (IsBuildTodayTiingoDayLine()) {
 		gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine();
 	}
@@ -1119,6 +1126,12 @@ void CWorldMarket::CalculateStockTotalValue(const vector<CTiingoStockPtr>& vStoc
 		} while (index < vDayLineValue.size() - 1 && vDayLineValue[index + 1]->lDate == date);
 		pValue2->dTotalValue = value;
 	}
+}
+
+void CWorldMarket::TaskMainTainTiingoDayLineDB() {
+	gl_runtime.background_executor()->post([this] {
+		//Todo: do nothing now, just to keep the Tiingo dayLine DB alive
+	});
 }
 
 void CWorldMarket::RebuildStockDayLineDB() {

@@ -41,7 +41,6 @@ long CContainerChinaStock::LoadProfileDB() {
 		// 装入股票代码数据库
 		const auto pStock = make_shared<CChinaStock>();
 		string str = row.Symbol;
-		int ID = row.ID;
 		if (IsSymbol(str)) {
 			db(sqlpp::remove_from(t).where(t.ID == row.ID));
 		}
@@ -118,7 +117,7 @@ bool CContainerChinaStock::IsDayLineDBUpdated() noexcept {
 }
 
 void CContainerChinaStock::ClearDayLineDBUpdatedFlag() noexcept {
-	for (long l = 0; l < m_vStock.size(); l++) {
+	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		pStock->SetDayLineDBUpdated(false);
 	}

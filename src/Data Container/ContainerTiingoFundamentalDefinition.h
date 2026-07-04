@@ -16,8 +16,8 @@ public:
 	void Reset();
 	void Reserve(size_t size);
 
-	void Add(CTiingoFundamentalDefinition tiingoFundamentalDefinition);
-	bool Delete(CTiingoFundamentalDefinition tiingoFundamentalDefinition);
+	void Add(const CTiingoFundamentalDefinition& tiingoFundamentalDefinition);
+	bool Delete(const CTiingoFundamentalDefinition& tiingoFundamentalDefinition);
 	bool Delete(const string& strDataCode);
 	size_t GetTotalDefinition() const noexcept { return m_vTiingoFundamentalDefinition.size(); }
 

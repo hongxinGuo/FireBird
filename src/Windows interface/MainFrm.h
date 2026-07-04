@@ -143,4 +143,6 @@ public:
 	afx_msg void OnBuildChinaMarketAllStockDayline();
 	afx_msg void OnUsingEastmoneyDaylineDataServer();
 	afx_msg void OnUpdateUsingEastmoneyDaylineDataServer(CCmdUI* pCmdUI);
+	afx_msg void OnTiingoMaintainDaylineDb();
+	afx_msg void OnUpdateTiingoMaintainDaylineDb(CCmdUI* pCmdUI);
 };

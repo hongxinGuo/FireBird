@@ -10,8 +10,6 @@
 
 #include <fstream>
 
-#include "CharSetTransfer.h"
-#include "resource.h"
 #include "TengxunRTDataSource.h"
 
 bool CSystemConfiguration::sm_bInitialized = false;
@@ -90,18 +88,6 @@ std::string gl_sSystemConfiguration = R"(
 }
 })";
 
-namespace {
-	inline std::wstring LoadStringStd(UINT nID) {
-		PCWSTR pBuffer = nullptr;
-		// Note: 使用LoadString时，必须明确声明hInstance为nullptr，否则报错
-		int nLen = ::LoadStringW(GetModuleHandle(nullptr), nID, reinterpret_cast<LPWSTR>(&pBuffer), 0);
-		if (nLen > 0) {
-			return std::wstring(pBuffer, nLen);
-		}
-		return L"";
-	}
-}
-
 // 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
 CSystemConfiguration::CSystemConfiguration() {
 	ASSERT(!sm_bInitialized); // 只生成唯一实例
@@ -148,26 +134,6 @@ void CSystemConfiguration::UpdateDB() {
 
 void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 	string sTemp;
-	wstring ws1, ws2, ws3;
-	ws1 = LoadStringStd(IDS_PROPERTYVIEW_SYSTEM_STATUS);
-	ws2 = LoadStringStd(IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
-	ws3 = LoadStringStd(IDS_PROPERTYVIEW_PROPERTIES2);
-	// 环境配置
-	try {
-		sTemp = jsonData.at("Environment").at("Display").at("PropertyPage");
-		if (sTemp.c_str() == W2Utf8(ws1)) {
-			m_iDisplayPropertyPage = 0;
-		}
-		else if (sTemp.c_str() == W2Utf8(ws2)) {
-			m_iDisplayPropertyPage = 1;
-		}
-		else if (sTemp.c_str() == W2Utf8(ws3)) {
-			m_iDisplayPropertyPage = 2;
-		}
-		else m_iDisplayPropertyPage = 0; // 默认使用
-	} catch (nlohmannJson::out_of_range&) {
-		m_fUpdateDB = true;
-	}
 
 	// 系统配置
 	try {
@@ -455,23 +421,6 @@ void CSystemConfiguration::Update(nlohmannJson& jsonData) {
 void CSystemConfiguration::UpdateJsonData(nlohmannJson& jsonData) {
 	jsonData.clear(); // 清除之前的数据。
 	wstring ws;
-
-	// Environment
-	switch (m_iDisplayPropertyPage) {
-	case 0:
-		ws = LoadStringStd(IDS_PROPERTYVIEW_SYSTEM_STATUS);
-		break;
-	case 1:
-		ws = LoadStringStd(IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
-		break;
-	case 2:
-		ws = LoadStringStd(IDS_PROPERTYVIEW_PROPERTIES2);
-		break;
-	default:
-		ws = LoadStringStd(IDS_PROPERTYVIEW_SYSTEM_STATUS);
-		break;
-	}
-	jsonData["Environment"]["Display"]["PropertyPage"] = W2Utf8(ws);
 
 	// system
 	jsonData["SystemConfiguration"]["LogLevel"] = m_iLogLevel;

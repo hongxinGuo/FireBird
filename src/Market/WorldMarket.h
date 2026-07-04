@@ -35,6 +35,7 @@ public:
 	int ProcessTask() override; // 每日定时任务调度,由ScheduleTask调度
 	int ProcessCurrentImmediateTask() override; // 即时任务调度，由ScheduleTask调度
 
+	// 各项任务
 	void TaskCreateTask();
 	void TaskResetMarket();
 	bool TaskCheckMarketReady();
@@ -59,6 +60,8 @@ public:
 	static void TaskDeleteDelistedStock();
 
 	void TaskPerSecond();
+
+	void TaskMainTainTiingoDayLineDB();
 
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();

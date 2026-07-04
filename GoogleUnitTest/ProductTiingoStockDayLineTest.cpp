@@ -41,13 +41,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam) {
-		const string strParam = "600601.SS/prices?&startDate=2018-01-01&endDate=2020-01-01";
+		constexpr string_view strParam = "600601.SS/prices?&startDate=2018-01-01&endDate=2020-01-01";
 
 		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS", toLocalDays(20180101), toLocalDays(20200101)) == strParam);
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam2) {
-		const string strParam = "600601.SS/prices?&startDate=1980-01-01&endDate=2020-01-01";
+		constexpr string_view strParam = "600601.SS/prices?&startDate=1980-01-01&endDate=2020-01-01";
 
 		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS", toLocalDays(19800101), toLocalDays(20200101)) == strParam);
 	}
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 		pStock->SetDayLineEndDate(gl_pWorldMarket->GetMarketDate() - chrono::days(5));
 		const string strMessage = stockPriceCandle.CreateMessage();
-		const chrono::local_days lStartMarketDate = gl_pWorldMarket->GetMarketDate() - chrono::days(5 + 3); // 再减去3天
+		const chrono::local_days lStartMarketDate = gl_pWorldMarket->GetMarketDate() - chrono::days(5 + needMoreDayLineData_); // 再减去10天
 		const chrono::local_days lMarketDate = gl_pWorldMarket->GetMarketDate();
 		string sStartDate = std::format("{:%F}", lStartMarketDate);
 		string sEndDate = std::format("{:%F}", lMarketDate);

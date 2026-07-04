@@ -20,7 +20,7 @@ void CContainerTiingoFundamentalDefinition::Reserve(size_t size) {
 	m_mapTiingoFundamentalDefinition.clear();
 }
 
-void CContainerTiingoFundamentalDefinition::Add(CTiingoFundamentalDefinition tiingoFundamentalDefinition) {
+void CContainerTiingoFundamentalDefinition::Add(const CTiingoFundamentalDefinition& tiingoFundamentalDefinition) {
 	if (!HaveDefinition(tiingoFundamentalDefinition)) {
 		m_mapTiingoFundamentalDefinition[tiingoFundamentalDefinition.m_strDataCode] = m_vTiingoFundamentalDefinition.size();
 		m_vTiingoFundamentalDefinition.push_back(tiingoFundamentalDefinition);
@@ -28,7 +28,7 @@ void CContainerTiingoFundamentalDefinition::Add(CTiingoFundamentalDefinition tii
 	}
 }
 
-bool CContainerTiingoFundamentalDefinition::Delete(CTiingoFundamentalDefinition tiingoFundamentalDefinition) {
+bool CContainerTiingoFundamentalDefinition::Delete(const CTiingoFundamentalDefinition& tiingoFundamentalDefinition) {
 	if (!HaveDefinition(tiingoFundamentalDefinition)) return false;
 
 	auto it = std::ranges::find(m_vTiingoFundamentalDefinition, tiingoFundamentalDefinition.m_strDataCode, &CTiingoFundamentalDefinition::m_strDataCode);
