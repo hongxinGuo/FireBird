@@ -22,9 +22,9 @@ CFireBirdDoc::CFireBirdDoc() = default;
 
 void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	if (m_pCurrentStock == nullptr || !m_pCurrentStock->IsSameStock(pStock)) m_bRefreshView = true;
-
 	m_pCurrentStock = pStock;
-	if (pStock != nullptr) {
+	if (pStock == nullptr) return;
+
 		m_bDataReady = false;
 		gl_runtime.background_executor()->post([this, pStock] {
 			if (IsTiingoStock(pStock)) {
@@ -33,8 +33,10 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 				m_pDataDayLine->SplitAdjust();
 				m_pDataWeekLine = make_shared<CContainerTiingoStockWeekLine>();
 				m_pDataWeekLine->CreateWeekLine(*m_pDataDayLine);
+				m_pDataWeekLine->SetSplitAdjusted(true);
 				m_pDataMonthLine = make_shared<CContainerTiingoStockMonthLine>();
 				m_pDataMonthLine->CreateMonthLine(*m_pDataDayLine);
+				m_pDataMonthLine->SetSplitAdjusted(true);
 			}
 			else { // 中国市场股票
 				ASSERT(IsChinaStock(pStock));
@@ -43,10 +45,11 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 				m_pDataDayLine->SplitAdjust();
 				m_pDataWeekLine = make_shared<CContainerChinaStockWeekLine>();
 				m_pDataWeekLine->CreateWeekLine(*m_pDataDayLine);
+				m_pDataWeekLine->SetSplitAdjusted(true);
 				m_pDataMonthLine = make_shared<CContainerChinaStockMonthLine>();
 				m_pDataMonthLine->CreateMonthLine(*m_pDataDayLine);
+				m_pDataMonthLine->SetSplitAdjusted(true);
 			}
-
 
 			CalculateDayLineMovingAverage(*m_pDataDayLine);
 			CalculateWeekLineMovingAverage(*m_pDataWeekLine);
@@ -77,10 +80,10 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 			m_monthLineBoll.Calculate();
 			m_bDataReady = true;
 		});
-	} 
 }
 
 void CFireBirdDoc::CalculateDayLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
+	ASSERT(historyCandle.IsSplitAdjusted());
 	m_dayLine5MovingAverage.Calculate(historyCandle);
 	m_dayLine10MovingAverage.Calculate(historyCandle);
 	m_dayLine30MovingAverage.Calculate(historyCandle);
@@ -91,6 +94,7 @@ void CFireBirdDoc::CalculateDayLineMovingAverage(CVirtualDataHistoryCandle& hist
 }
 
 void CFireBirdDoc::CalculateWeekLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
+	ASSERT(historyCandle.IsSplitAdjusted());
 	m_weekLine5MovingAverage.Calculate(historyCandle);
 	m_weekLine10MovingAverage.Calculate(historyCandle);
 	m_weekLine30MovingAverage.Calculate(historyCandle);
@@ -101,6 +105,7 @@ void CFireBirdDoc::CalculateWeekLineMovingAverage(CVirtualDataHistoryCandle& his
 }
 
 void CFireBirdDoc::CalculateMonthLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
+	ASSERT(historyCandle.IsSplitAdjusted());
 	m_monthLine5MovingAverage.Calculate(historyCandle);
 	m_monthLine10MovingAverage.Calculate(historyCandle);
 	m_monthLine30MovingAverage.Calculate(historyCandle);
