@@ -39,7 +39,7 @@ public:
 	CIndicatorRSI& operator=(CIndicatorRSI&&) noexcept = delete;
 	~CIndicatorRSI() = default;
 
-	void SetCandle(CVirtualDataHistoryCandle* pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
 	void Calculate();
 	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
 
@@ -54,6 +54,6 @@ protected:
 	int m_PeriodMiddle{ 12 };
 	int m_PeriodSlow{ 24 };
 
-	CVirtualDataHistoryCandle* m_pvCandle{ nullptr };
+	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
 	vector<CRSI> m_vRSI;
 };

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GeneralCheck.h"
 #include "IndicatorKDJ.h"
-#include "ContainerChinaDayLine.h"
+#include "ContainerChinaStockDayLine.h"
 #include "DayLine.h"
 
 namespace FireBirdTest {
@@ -36,12 +36,12 @@ namespace FireBirdTest {
 	};
 
 	// Utility to compute expected RSV over a sliding window (mirrors production logic)
-	static double ComputeRSV(CContainerChinaDayLine& container, size_t index, int period) {
-		auto data = container.GetData(index);
+	static double ComputeRSV(CContainerChinaStockDayLinePtr pContainer, size_t index, int period) {
+		auto data = pContainer->GetData(index);
 		long long lHigh = 0;
 		long long lLow = data->GetLow();
 		for (size_t i = index - period + 1; i <= index; ++i) {
-			auto d = container.GetData(i);
+			auto d = pContainer->GetData(i);
 			lHigh = max(lHigh, d->GetHigh());
 			lLow = min(lLow, d->GetLow());
 		}
@@ -50,7 +50,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CIndicatorKDJTest, Calculate_SimpleSeries) {
-		CContainerChinaDayLine container;
+		CContainerChinaStockDayLinePtr pContainer = make_shared<CContainerChinaStockDayLine>();
 
 		// Build a short series of daily candles
 		std::vector<CDayLine> days;
@@ -73,15 +73,15 @@ namespace FireBirdTest {
 			days.push_back(d);
 		}
 		// Feed the container
-		container.UpdateData(days);
+		pContainer->UpdateData(days);
 
 		// Use period = 3 to make hand-calculation manageable
 		TestableIndicatorKDJ indicator(3);
-		indicator.SetCandle(&container);
+		indicator.SetCandle(pContainer);
 		indicator.Calculate();
 
 		auto& res = indicator.Results();
-		ASSERT_EQ(res.size(), container.Size());
+		ASSERT_EQ(res.size(), pContainer->Size());
 
 		// Entries before period-1 should remain the initialized 50
 		EXPECT_DOUBLE_EQ(res[0].m_K, 50.0);
@@ -92,7 +92,7 @@ namespace FireBirdTest {
 		// Compute expected RSV/K/D/J for index = period-1 (2) and index 3 and compare
 		const double eps = 1e-6;
 		for (size_t idx = 2; idx <= 3; ++idx) {
-			double expectedRSV = ComputeRSV(container, idx, 3);
+			double expectedRSV = ComputeRSV(pContainer, idx, 3);
 
 			// previous K/D values used by algorithm:
 			double prevK = res[idx - 1].m_K;
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CIndicatorKDJTest, HandleFlatRange_RSVBecomes50) {
-		CContainerChinaDayLine container;
+		CContainerChinaStockDayLinePtr pContainer = make_shared<CContainerChinaStockDayLine>();
 		std::vector<CDayLine> days;
 
 		// Create a series where high == low over the window -> RSV should be 50
@@ -123,14 +123,14 @@ namespace FireBirdTest {
 			d.SetRatio(1);
 			days.push_back(d);
 		}
-		container.UpdateData(days);
+		pContainer->UpdateData(days);
 
 		TestableIndicatorKDJ indicator(3);
-		indicator.SetCandle(&container);
+		indicator.SetCandle(pContainer);
 		indicator.Calculate();
 
 		auto& res = indicator.Results();
-		ASSERT_EQ(res.size(), container.Size());
+		ASSERT_EQ(res.size(), pContainer->Size());
 
 		// For any computed index RSV must be 50 and K/D/J compute accordingly
 		for (size_t idx = 2; idx < res.size(); ++idx) {

@@ -32,7 +32,7 @@ public:
 	CIndicatorBoll& operator=(CIndicatorBoll&&) noexcept = delete;
 	~CIndicatorBoll() = default;
 
-	void SetCandle(CVirtualDataHistoryCandle* pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
 	static std::vector<CBoll> Compute(const std::vector<CVirtualHistoryCandle>& candles, int period = 20, double k = 2.0);
 
 	// Convenience overload for shared pointer to vector (existing codebase uses shared vectors)
@@ -45,6 +45,6 @@ public:
 protected:
 	int m_Period{ 6 }; // 默认九天为一个周期
 
-	CVirtualDataHistoryCandle* m_pvCandle{ nullptr };
+	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
 	vector<CBoll> m_vBoll;
 };

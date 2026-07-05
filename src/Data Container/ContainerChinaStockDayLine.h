@@ -3,14 +3,14 @@
 #include"WeekLine.h"
 #include "VirtualDataHistoryCandle.h"
 
-class CContainerChinaDayLine : public CVirtualDataHistoryCandle {
+class CContainerChinaStockDayLine : public CVirtualDataHistoryCandle {
 public:
-	CContainerChinaDayLine();
-	CContainerChinaDayLine(const CContainerChinaDayLine& other) = delete;
-	CContainerChinaDayLine(CContainerChinaDayLine&& other) noexcept = delete;
-	CContainerChinaDayLine& operator=(const CContainerChinaDayLine& other) = delete;
-	CContainerChinaDayLine& operator=(CContainerChinaDayLine&& other) noexcept = delete;
-	~CContainerChinaDayLine() override = default;
+	CContainerChinaStockDayLine();
+	CContainerChinaStockDayLine(const CContainerChinaStockDayLine& other) = delete;
+	CContainerChinaStockDayLine(CContainerChinaStockDayLine&& other) noexcept = delete;
+	CContainerChinaStockDayLine& operator=(const CContainerChinaStockDayLine& other) = delete;
+	CContainerChinaStockDayLine& operator=(CContainerChinaStockDayLine&& other) noexcept = delete;
+	~CContainerChinaStockDayLine() override = default;
 
 	void SaveDB(const string& strStockSymbol) final;
 	void LoadDB(const string& strStockSymbol) final;
@@ -25,4 +25,4 @@ public:
 	bool BuildWeekLine(vector<CWeekLine>& vWeekLine);
 };
 
-using CContainerChinaDayLinePtr = shared_ptr<CContainerChinaDayLine>;
+using CContainerChinaStockDayLinePtr = shared_ptr<CContainerChinaStockDayLine>;

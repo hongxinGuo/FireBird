@@ -3,7 +3,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"ContainerChinaDayLine.h"
+#include"ContainerChinaStockDayLine.h"
 
 using namespace testing;
 
@@ -33,7 +33,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CDataChinaDayLineTest, TestGetStartEndDate) {
-		CContainerChinaDayLine dataChinaDayLine;
+		CContainerChinaStockDayLine dataChinaDayLine;
 
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestHaveDayLine) {
-		CContainerChinaDayLine dataChinaDayLine;
+		CContainerChinaStockDayLine dataChinaDayLine;
 
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
@@ -115,7 +115,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestGetDayLine) {
-		CContainerChinaDayLine dataChinaDayLine;
+		CContainerChinaStockDayLine dataChinaDayLine;
 
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
@@ -157,7 +157,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestUpdateData1) {
-		CContainerChinaDayLine dataChinaDayLine;
+		CContainerChinaStockDayLine dataChinaDayLine;
 
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
@@ -199,7 +199,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
-		CContainerChinaDayLine dataChinaDayLine;
+		CContainerChinaStockDayLine dataChinaDayLine;
 
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 		long lCurrentDayLinePos = 0;
@@ -270,7 +270,7 @@ namespace FireBirdTest {
 
 	TEST_F(CDataChinaDayLineTest, TestBuildWeekLine) {
 		vector<CWeekLine> vWeekLine;
-		CContainerChinaDayLine dataChinaDayLine;
+		CContainerChinaStockDayLine dataChinaDayLine;
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		CDayLine dayLine;
@@ -336,7 +336,7 @@ namespace FireBirdTest {
 
 	TEST_F(CDataChinaDayLineTest, TestSaveDB) {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
-		CContainerChinaDayLine dataChinaDayLine;
+		CContainerChinaStockDayLine dataChinaDayLine;
 
 		CDayLine dayLine;
 		dayLine.SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面

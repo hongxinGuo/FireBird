@@ -84,14 +84,7 @@ public:
 		return nullptr;
 	}
 
-	void LoadHistoryCandleDB() {
-		LoadDayLineDB();
-		LoadWeekLineDB();
-		LoadMonthLineDB();
-	}
 	virtual void LoadDayLineDB() { ASSERT(0); }
-	virtual void LoadWeekLineDB() { ASSERT(0); }
-	virtual void LoadMonthLineDB() { ASSERT(0); }
 
 	virtual bool IsDayLineDuplicated() noexcept {
 		ASSERT(0);

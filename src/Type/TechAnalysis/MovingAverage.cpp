@@ -17,16 +17,16 @@ void CMovingAverage::Calculate(const vector<long>& vValue) {
 	}
 }
 
-void CMovingAverage::Calculate(CVirtualDataHistoryCandle* pData) {
-	if (m_period >= pData->Size()) {
+void CMovingAverage::Calculate(CVirtualDataHistoryCandle& data) {
+	if (m_period >= data.Size()) {
 		m_vMovingAverage.clear();
 		return;
 	}
-	m_vMovingAverage.resize(pData->Size() - m_period);
-	for (size_t index = 0; index < pData->Size() - m_period; index++) {
+	m_vMovingAverage.resize(data.Size() - m_period);
+	for (size_t index = 0; index < data.Size() - m_period; index++) {
 		long long total = 0;
 		for (int i = 0; i < m_period; i++) {
-			total += pData->GetData(index + i)->GetClose();
+			total += data.GetData(index + i)->GetClose();
 		}
 		m_vMovingAverage[index] = total / m_period;
 	}

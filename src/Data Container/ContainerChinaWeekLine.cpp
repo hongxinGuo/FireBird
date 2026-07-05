@@ -1,16 +1,16 @@
 #include"pch.h"
 
-#include "ContainerChinaWeekLine.h"
+#include "ContainerChinaStockWeekLine.h"
 
 namespace {
 	CChinaStock s_stockContainerChinaWeekLine;
 }
 
-CContainerChinaWeekLine::CContainerChinaWeekLine() {
+CContainerChinaStockWeekLine::CContainerChinaStockWeekLine() {
 	m_ratio = s_stockContainerChinaWeekLine.GetRatio();
 }
 
-void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLine>& vWeekLine) {
+void CContainerChinaStockWeekLine::StoreVectorData(const vector<CWeekLine>& vWeekLine) {
 	for (const auto& weekLine : vWeekLine) {
 		Add(weekLine);
 	}
@@ -22,7 +22,7 @@ void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLine>& vWeekLine
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CContainerChinaWeekLine::UpdateData(const vector<CWeekLine>& vTempWeekLine) {
+void CContainerChinaStockWeekLine::UpdateData(const vector<CWeekLine>& vTempWeekLine) {
 	Unload(); // 清除已载入的周线数据（如果有的话）
 	// 将日线数据以时间为正序存入
 	for (const auto& pWeekLine : vTempWeekLine) {
@@ -31,7 +31,7 @@ void CContainerChinaWeekLine::UpdateData(const vector<CWeekLine>& vTempWeekLine)
 	SetDataLoaded(true);
 }
 
-void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandle* pHistoryCandle) {
+void CContainerChinaStockWeekLine::UpdateData(const CVirtualHistoryCandle* pHistoryCandle) {
 	for (size_t index = 0; index < m_vHistoryData.size(); ++index) {
 		auto pWeekLine = GetData(index);
 		auto str = pWeekLine->GetStockSymbol();

@@ -34,9 +34,9 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h" />
-    <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h" />
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h" />
-    <ClInclude Include="..\src\Data Container\ContainerChinaWeekLine.h" />
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockWeekLine.h" />
     <ClInclude Include="..\src\Data Container\containerChosenCrypto.h" />
     <ClInclude Include="..\src\Data Container\containerChosenForex.h" />
     <ClInclude Include="..\src\Data Container\containerTiingoChosenStock.h" />
@@ -214,7 +214,7 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockMonthLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockWeekLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />
-    <ClCompile Include="..\src\Data Container\ContainerChinaDayLine.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerChinaStockDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaWeekLine.cpp" />
     <ClCompile Include="..\src\Data Container\containerChosenCrypto.cpp" />

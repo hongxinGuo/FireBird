@@ -18,7 +18,7 @@ public:
 	CIndicatorKDJ& operator=(CIndicatorKDJ&&) noexcept = delete;
 	~CIndicatorKDJ() = default;
 
-	void SetCandle(CVirtualDataHistoryCandle* pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
 	void Calculate(); //计算KDJ指标
 
 	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
@@ -26,6 +26,6 @@ public:
 protected:
 	int m_Period{ 9 }; // 默认九天为一个周期
 
-	CVirtualDataHistoryCandle* m_pvCandle{ nullptr };
+	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
 	vector<Kdj> m_vKDJ;
 };

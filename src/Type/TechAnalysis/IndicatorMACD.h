@@ -52,7 +52,7 @@ public:
 	}
 
 	void reset();
-	void SetCandle(CVirtualDataHistoryCandle* pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
 
 	// Batch compute: returns vector of Result aligned with input prices; entries before availability are NaN.
 	void Calculate(int fastPeriod = 12, int slowPeriod = 26, int signalPeriod = 9);
@@ -76,7 +76,7 @@ protected:
 	double currentLow_;
 	double currentDif_;
 
-	CVirtualDataHistoryCandle* m_pvCandle{ nullptr };
+	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
 	vector<double> m_vClose;
 	vector<MACDResult> m_vMACD;
 };

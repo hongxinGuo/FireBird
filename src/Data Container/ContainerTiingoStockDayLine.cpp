@@ -11,6 +11,7 @@ CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
 }
 
 void CContainerTiingoStockDayLine::SaveDB(const string& strSymbol) {
+	ASSERT(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
 
 	using namespace StockMarket;
@@ -90,7 +91,7 @@ void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	tx.commit();
 	m_fDataLoaded = true;
 	//AddLastClose();
-	SplitAdjust();
+	//SplitAdjust();
 }
 
 void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStockSymbol) const noexcept {
@@ -105,6 +106,7 @@ void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStoc
 }
 
 void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
+	//	ASSERT(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
 
 	using namespace StockMarket;
@@ -182,6 +184,8 @@ struct CSplitFactor {
 
 void CContainerTiingoStockDayLine::SplitAdjust() {
 	ASSERT(IsDataLoaded());
+
+	SetSplitAdjusted(true);
 	// 按拆分因子调整日线数据
 	vector<shared_ptr<CSplitFactor>> vpSplitFactor;
 	double dTotalFactor = 1.0;

@@ -20,7 +20,7 @@ public:
 
 	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
 	void AddLastClose();
-	void SplitAdjust();
+	void SplitAdjust() override;
 
 	CTiingoCandleLine* GetData(const size_t lIndex) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
 	CTiingoCandleLine* GetDayLine(chrono::local_days date) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(date)); }

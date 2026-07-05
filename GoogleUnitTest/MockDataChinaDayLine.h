@@ -3,7 +3,7 @@
 #include"ContainerChinaDayLine.h"
 
 namespace testing {
-	class CMockDataChinaDayLine final : public CContainerChinaDayLine {
+	class CMockDataChinaDayLine final : public CContainerChinaStockDayLine {
 	public:
 	};
 

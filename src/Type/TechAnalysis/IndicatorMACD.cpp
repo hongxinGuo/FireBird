@@ -130,7 +130,7 @@ void CIndicatorMACD::Calculate2(int fastPeriod, int slowPeriod, int signalPeriod
 	auto candleSize = m_pvCandle->Size();
 	if (m_pvCandle->Empty()) return;
 
-	auto sma = [](CVirtualDataHistoryCandle* p, std::size_t start, std::size_t len) {
+	auto sma = [](CVirtualDataHistoryCandlePtr p, std::size_t start, std::size_t len) {
 		double s = 0.0;
 		for (std::size_t i = start; i < start + len; ++i) s += static_cast<double>(p->GetData(i)->GetClose()) / p->GetRatio();
 		return s / static_cast<double>(len);

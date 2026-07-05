@@ -29,9 +29,9 @@ public:
 	CVirtualStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
 	void SetCurrentStock(const CVirtualStockPtr& pStock);
 
-	void CalculateDayLineMovingAverage(const CVirtualStockPtr& pStock);
-	void CalculateWeekLineMovingAverage(const CVirtualStockPtr& pStock);
-	void CalculateMonthLineMovingAverage(const CVirtualStockPtr& pStock);
+	void CalculateDayLineMovingAverage(CVirtualDataHistoryCandle& historyCandle);
+	void CalculateWeekLineMovingAverage(CVirtualDataHistoryCandle& historyCandle);
+	void CalculateMonthLineMovingAverage(CVirtualDataHistoryCandle& historyCandle);
 
 	std::pair<long, long> GetDayLineHighLow(int iCandleNumber) const;
 	std::pair<long, long> GetWeekLineHighLow(int iCandleNumber) const;
@@ -42,7 +42,8 @@ public:
 	chrono::local_days GetMonthLineDate(size_t countDownIndex) const;
 
 	void ShowDayLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
-		m_pCurrentStock->DayLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
+		ASSERT(m_pDataDayLine->IsSplitAdjusted());
+		m_pDataDayLine->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 
 	void ShowDayLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -65,7 +66,7 @@ public:
 	}
 
 	void ShowWeekLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
-		m_pCurrentStock->WeekLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
+		m_pDataWeekLine->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 
 	void ShowWeekLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -88,7 +89,7 @@ public:
 	}
 
 	void ShowMonthLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
-		m_pCurrentStock->MonthLine()->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
+		m_pDataMonthLine->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 
 	void ShowMonthLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -173,6 +174,11 @@ protected:
 	atomic_bool m_bDataReady{ false }; // 各种指标最好使用工作线程来异步计算，计算完成时设置此标识为真；当重新设置股票时设置此标识为假。
 	bool m_bRefreshView{ false }; // 是否需要刷新数据
 	CVirtualStockPtr m_pCurrentStock{ nullptr }; // 当前股票
+
+	// 当前股票的日线、周线和月线
+	CVirtualDataHistoryCandlePtr m_pDataDayLine; // 日线数据容器
+	CVirtualDataHistoryCandlePtr m_pDataWeekLine; // 周线数据容器 
+	CVirtualDataHistoryCandlePtr m_pDataMonthLine; // 月线数据容器
 
 	//日线移动平均线
 	CMovingAverage m_dayLine5MovingAverage{ 5 };

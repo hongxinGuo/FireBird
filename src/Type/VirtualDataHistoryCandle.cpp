@@ -107,6 +107,68 @@ void CVirtualDataHistoryCandle::CalculateMA(size_t length) {
 	}
 }
 
+void CVirtualDataHistoryCandle::CreateWeekLine(CVirtualDataHistoryCandle& dataDayLine) {
+	ASSERT(dataDayLine.IsDataLoaded());
+	size_t index = 0;
+	CVirtualHistoryCandle weekLine;
+	size_t dayLineSize = dataDayLine.Size();
+	long lastClose = 0;
+	while (index < dayLineSize) {
+		weekLine.Reset();
+		auto pDayLine = dataDayLine.GetData(index);
+		auto lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
+		weekLine.SetDate(pDayLine->GetDate());
+		weekLine.SetLastClose(lastClose);
+		weekLine.SetOpen(pDayLine->GetOpen());
+		weekLine.SetLow(pDayLine->GetLow());
+		do {
+			if (pDayLine->GetHigh() > weekLine.GetHigh()) weekLine.SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < weekLine.GetLow()) weekLine.SetLow(pDayLine->GetLow());
+			weekLine.SetVolume(weekLine.GetVolume() + pDayLine->GetVolume());
+			weekLine.SetAmount(weekLine.GetAmount() + pDayLine->GetAmount());
+			weekLine.SetClose(pDayLine->GetClose());
+			index++;
+			if (index < dayLineSize) pDayLine = dataDayLine.GetData(index);
+			else break;
+			if (pDayLine->GetDate() >= lCurrentEndDate) break;
+		} while (true);
+		lastClose = weekLine.GetClose();
+		if (weekLine.GetClose() > 0) Add(weekLine); // 有数据才存储
+	}
+
+	SetDataLoaded(true);
+}
+
+void CVirtualDataHistoryCandle::CreateMonthLine(CVirtualDataHistoryCandle& dataDayLine) {
+	ASSERT(dataDayLine.IsDataLoaded());
+	size_t index = 0;
+	CVirtualHistoryCandle monthLine;
+	size_t monthLineSize = dataDayLine.Size();
+	while (index < monthLineSize) {
+		monthLine.Reset();
+		auto pDayLine = dataDayLine.GetData(index++);
+		chrono::local_days lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
+		monthLine.SetDate(pDayLine->GetDate());
+		monthLine.SetOpen(pDayLine->GetOpen());
+		monthLine.SetLow(pDayLine->GetLow());
+		do {
+			if (pDayLine->GetHigh() > monthLine.GetHigh()) monthLine.SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < monthLine.GetLow()) monthLine.SetLow(pDayLine->GetLow());
+			monthLine.SetVolume(monthLine.GetVolume() + pDayLine->GetVolume());
+			monthLine.SetAmount(monthLine.GetAmount() + pDayLine->GetAmount());
+			monthLine.SetClose(pDayLine->GetClose());
+			if (index < monthLineSize) pDayLine = dataDayLine.GetData(index);
+			else break;
+			if (pDayLine->GetDate() < lCurrentEndDate) index++;
+			else break;
+		} while (true);
+
+		if (monthLine.GetClose() > 0) Add(monthLine); // 有数据才存储
+	}
+
+	SetDataLoaded(true);
+}
+
 void CVirtualDataHistoryCandle::ToShow(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
 	LOGBRUSH logBrushWhite, logBrushRed;
 	logBrushWhite.lbStyle = BS_SOLID;

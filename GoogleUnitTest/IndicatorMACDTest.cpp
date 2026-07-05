@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GeneralCheck.h"
 #include "IndicatorMACD.h"
-#include "ContainerChinaDayLine.h"
+#include "ContainerChinaStockDayLine.h"
 #include "DayLine.h"
 
 namespace FireBirdTest {
@@ -60,7 +60,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CIndicatorMACDTest, Calculate_SimpleSeries) {
-		CContainerChinaDayLine container;
+		CContainerChinaStockDayLinePtr pContainer = make_shared<CContainerChinaStockDayLine>();
 
 		// Build a simple increasing close series
 		std::vector<CDayLine> days;
@@ -71,22 +71,22 @@ namespace FireBirdTest {
 			d.SetHigh(c + 1);
 			d.SetLow(c - 1);
 			d.SetClose(c);
-			d.SetRatio(container.GetRatio());
+			d.SetRatio(pContainer->GetRatio());
 			days.push_back(d);
-			closes.push_back(static_cast<double>(c) / container.GetRatio());
+			closes.push_back(static_cast<double>(c) / pContainer->GetRatio());
 		}
-		container.UpdateData(days);
+		pContainer->UpdateData(days);
 
 		int fastPeriod = 3;
 		int slowPeriod = 6;
 		int signalPeriod = 4;
 
 		TestableIndicatorMACD indicator(fastPeriod, slowPeriod, signalPeriod);
-		indicator.SetCandle(&container);
+		indicator.SetCandle(pContainer);
 		indicator.Calculate(fastPeriod, slowPeriod, signalPeriod);
 
 		auto& res = indicator.Results();
-		ASSERT_EQ(res.size(), container.Size());
+		ASSERT_EQ(res.size(), pContainer->Size());
 
 		// Compute expected fast/slow EMAs with production initialization rules
 		auto emaFast = ComputeEMAMatchingImpl(closes, fastPeriod);
@@ -182,7 +182,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CIndicatorMACDTest, HandleFlatClose_MACDZero) {
-		CContainerChinaDayLine container;
+		CContainerChinaStockDayLinePtr pContainer = make_shared<CContainerChinaStockDayLine>();
 		std::vector<CDayLine> days;
 		std::vector<double> closes;
 
@@ -195,15 +195,15 @@ namespace FireBirdTest {
 			days.push_back(d);
 			closes.push_back(100.0);
 		}
-		container.UpdateData(days);
+		pContainer->UpdateData(days);
 
 		int fastPeriod = 3, slowPeriod = 6, signalPeriod = 4;
 		TestableIndicatorMACD indicator(fastPeriod, slowPeriod, signalPeriod);
-		indicator.SetCandle(&container);
+		indicator.SetCandle(pContainer);
 		indicator.Calculate(fastPeriod, slowPeriod, signalPeriod);
 
 		auto& res = indicator.Results();
-		ASSERT_EQ(res.size(), container.Size());
+		ASSERT_EQ(res.size(), pContainer->Size());
 
 		// Compute expected fast/slow EMAs and macdLine
 		auto emaFast = ComputeEMAMatchingImpl(closes, fastPeriod);

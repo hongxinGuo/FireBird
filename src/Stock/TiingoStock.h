@@ -2,7 +2,6 @@
 
 #include "ContainerTiingoStockDayLine.h"
 #include "ContainerTiingoStockWeekLine.h"
-#include "ContainerTiingoStockMonthLine.h"
 
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
@@ -98,10 +97,6 @@ public:
 
 	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
 	void SetDayLineLoaded(bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
-	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
-	void SetWeekLineLoaded(bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
-	bool IsMonthLineLoaded() const noexcept override { return m_dataMonthLine.IsDataLoaded(); }
-	void SetMonthLineLoaded(bool fFlag) noexcept override { m_dataMonthLine.SetDataLoaded(fFlag); }
 
 	void UpdateRTData(const CTiingoIEXTopOfBook& IEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
@@ -120,8 +115,6 @@ public:
 
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
-	CVirtualDataHistoryCandle* WeekLine() noexcept final { return &m_dataWeekLine; }
-	CVirtualDataHistoryCandle* MonthLine() noexcept final { return &m_dataMonthLine; }
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void UpdateDayLineDB() { m_dataDayLine.UpdateDB(m_strSymbol); } // 先删除数据库中重复数据，再存储
@@ -129,10 +122,6 @@ public:
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 	void LoadDayLineDB() override { m_dataDayLine.LoadDB(m_strSymbol); }
-	void LoadWeekLineDB() override { CreateWeekLine(); }
-	void LoadMonthLineDB() override { CreateMonthLine(); }
-	void CreateWeekLine();
-	void CreateMonthLine();
 
 	void CalculateDayLineMA(const int length) { m_dataDayLine.CalculateMA(length); }
 
@@ -231,8 +220,6 @@ protected:
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
 
 	CContainerTiingoStockDayLine m_dataDayLine; // 日线数据容器
-	CContainerTiingoStockWeekLine m_dataWeekLine; // 周线数据容器 
-	CContainerTiingoStockMonthLine m_dataMonthLine; // 月线数据容器
 
 	// 无需存储数据区
 	bool m_fUpdateStockDailyMeta{ true };

@@ -9,6 +9,7 @@
 
 #include "FireBirdDoc.h"
 
+#include "ContainerTiingoStockMonthLine.h"
 #include "Thread.h"
 
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
@@ -26,112 +27,120 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	if (pStock != nullptr) {
 		m_bDataReady = false;
 		gl_runtime.background_executor()->post([this, pStock] {
-			if (!pStock->IsDayLineLoaded() || !pStock->IsWeekLineLoaded()) {
-				pStock->LoadHistoryCandleDB();
+			if (IsTiingoStock(pStock)) {
+				m_pDataDayLine = make_shared<CContainerTiingoStockDayLine>();
+				m_pDataDayLine->LoadDB(pStock->GetSymbol());
+				m_pDataDayLine->SplitAdjust();
+				m_pDataWeekLine = make_shared<CContainerTiingoStockWeekLine>();
+				m_pDataWeekLine->CreateWeekLine(*m_pDataDayLine);
+				m_pDataMonthLine = make_shared<CContainerTiingoStockMonthLine>();
+				m_pDataMonthLine->CreateMonthLine(*m_pDataDayLine);
 			}
-			CalculateDayLineMovingAverage(pStock);
-			CalculateWeekLineMovingAverage(pStock);
-			CalculateMonthLineMovingAverage(pStock);
-			m_dayLineKDJ.SetCandle(pStock->DayLine());
+			else { // 中国市场股票
+				ASSERT(IsChinaStock(pStock));
+				m_pDataDayLine = make_shared<CContainerChinaStockDayLine>();
+				m_pDataDayLine->LoadDB(pStock->GetSymbol());
+				m_pDataDayLine->SplitAdjust();
+				m_pDataWeekLine = make_shared<CContainerChinaStockWeekLine>();
+				m_pDataWeekLine->CreateWeekLine(*m_pDataDayLine);
+				m_pDataMonthLine = make_shared<CContainerChinaStockMonthLine>();
+				m_pDataMonthLine->CreateMonthLine(*m_pDataDayLine);
+			}
+
+
+			CalculateDayLineMovingAverage(*m_pDataDayLine);
+			CalculateWeekLineMovingAverage(*m_pDataWeekLine);
+			CalculateMonthLineMovingAverage(*m_pDataMonthLine);
+			m_dayLineKDJ.SetCandle(m_pDataDayLine);
 			m_dayLineKDJ.Calculate();
-			m_weekLineKDJ.SetCandle(pStock->WeekLine());
+			m_weekLineKDJ.SetCandle(m_pDataWeekLine);
 			m_weekLineKDJ.Calculate();
-			m_monthLineKDJ.SetCandle(pStock->MonthLine());
+			m_monthLineKDJ.SetCandle(m_pDataMonthLine);
 			m_monthLineKDJ.Calculate();
-			m_dayLineMACD.SetCandle(pStock->DayLine());
+			m_dayLineMACD.SetCandle(m_pDataDayLine);
 			m_dayLineMACD.Calculate();
-			m_weekLineMACD.SetCandle(pStock->WeekLine());
+			m_weekLineMACD.SetCandle(m_pDataWeekLine);
 			m_weekLineMACD.Calculate();
-			m_monthLineMACD.SetCandle(pStock->MonthLine());
+			m_monthLineMACD.SetCandle(m_pDataMonthLine);
 			m_monthLineMACD.Calculate();
-			m_dayLineRSI.SetCandle(pStock->DayLine());
+			m_dayLineRSI.SetCandle(m_pDataDayLine);
 			m_dayLineRSI.Calculate();
-			m_weekLineRSI.SetCandle(pStock->WeekLine());
+			m_weekLineRSI.SetCandle(m_pDataWeekLine);
 			m_weekLineRSI.Calculate();
-			m_monthLineRSI.SetCandle(pStock->MonthLine());
+			m_monthLineRSI.SetCandle(m_pDataMonthLine);
 			m_monthLineRSI.Calculate();
-			m_dayLineBoll.SetCandle(pStock->DayLine());
+			m_dayLineBoll.SetCandle(m_pDataDayLine);
 			m_dayLineBoll.Calculate();
-			m_weekLineBoll.SetCandle(pStock->WeekLine());
+			m_weekLineBoll.SetCandle(m_pDataWeekLine);
 			m_weekLineBoll.Calculate();
-			m_monthLineBoll.SetCandle(pStock->MonthLine());
+			m_monthLineBoll.SetCandle(m_pDataMonthLine);
 			m_monthLineBoll.Calculate();
 			m_bDataReady = true;
 		});
 	} 
 }
-void CFireBirdDoc::CalculateDayLineMovingAverage(const CVirtualStockPtr& pStock) {
-	auto pvDayLine = pStock->DayLine();
 
-	ASSERT(m_pCurrentStock->GetSymbol() == pStock->GetSymbol());
-	m_dayLine5MovingAverage.Calculate(pvDayLine);
-	m_dayLine10MovingAverage.Calculate(pvDayLine);
-	m_dayLine30MovingAverage.Calculate(pvDayLine);
-	m_dayLine50MovingAverage.Calculate(pvDayLine);
-	m_dayLine120MovingAverage.Calculate(pvDayLine);
-	m_dayLine250MovingAverage.Calculate(pvDayLine);
-	ASSERT(m_dayLine50MovingAverage.Size() == pvDayLine->Size() - 50);
+void CFireBirdDoc::CalculateDayLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
+	m_dayLine5MovingAverage.Calculate(historyCandle);
+	m_dayLine10MovingAverage.Calculate(historyCandle);
+	m_dayLine30MovingAverage.Calculate(historyCandle);
+	m_dayLine50MovingAverage.Calculate(historyCandle);
+	m_dayLine120MovingAverage.Calculate(historyCandle);
+	m_dayLine250MovingAverage.Calculate(historyCandle);
+	ASSERT(m_dayLine50MovingAverage.Size() == m_pDataDayLine->Size() - 50);
 }
 
-void CFireBirdDoc::CalculateWeekLineMovingAverage(const CVirtualStockPtr& pStock) {
-	auto pvWeekLine = pStock->WeekLine();
-
-	ASSERT(m_pCurrentStock->GetSymbol() == pStock->GetSymbol());
-	m_weekLine5MovingAverage.Calculate(pvWeekLine);
-	m_weekLine10MovingAverage.Calculate(pvWeekLine);
-	m_weekLine30MovingAverage.Calculate(pvWeekLine);
-	m_weekLine50MovingAverage.Calculate(pvWeekLine);
-	m_weekLine120MovingAverage.Calculate(pvWeekLine);
-	m_weekLine250MovingAverage.Calculate(pvWeekLine);
-	ASSERT(m_weekLine50MovingAverage.Size() == pvWeekLine->Size() - 50);
+void CFireBirdDoc::CalculateWeekLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
+	m_weekLine5MovingAverage.Calculate(historyCandle);
+	m_weekLine10MovingAverage.Calculate(historyCandle);
+	m_weekLine30MovingAverage.Calculate(historyCandle);
+	m_weekLine50MovingAverage.Calculate(historyCandle);
+	m_weekLine120MovingAverage.Calculate(historyCandle);
+	m_weekLine250MovingAverage.Calculate(historyCandle);
+	ASSERT(m_weekLine50MovingAverage.Size() == m_pDataWeekLine->Size() - 50);
 }
 
-void CFireBirdDoc::CalculateMonthLineMovingAverage(const CVirtualStockPtr& pStock) {
-	auto pvMonthLine = pStock->MonthLine();
-
-	ASSERT(m_pCurrentStock->GetSymbol() == pStock->GetSymbol());
-	m_monthLine5MovingAverage.Calculate(pvMonthLine);
-	m_monthLine10MovingAverage.Calculate(pvMonthLine);
-	m_monthLine30MovingAverage.Calculate(pvMonthLine);
-	m_monthLine50MovingAverage.Calculate(pvMonthLine);
-	m_monthLine120MovingAverage.Calculate(pvMonthLine);
-	m_monthLine250MovingAverage.Calculate(pvMonthLine);
-	ASSERT(m_monthLine50MovingAverage.Size() == pvMonthLine->Size() - 50);
+void CFireBirdDoc::CalculateMonthLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
+	m_monthLine5MovingAverage.Calculate(historyCandle);
+	m_monthLine10MovingAverage.Calculate(historyCandle);
+	m_monthLine30MovingAverage.Calculate(historyCandle);
+	m_monthLine50MovingAverage.Calculate(historyCandle);
+	m_monthLine120MovingAverage.Calculate(historyCandle);
+	m_monthLine250MovingAverage.Calculate(historyCandle);
+	ASSERT(m_monthLine50MovingAverage.Size() == m_pDataMonthLine->Size() - 50);
 }
 
 std::pair<long, long> CFireBirdDoc::GetDayLineHighLow(int iCandleNumber) const {
-	auto pairHighLow = m_pCurrentStock->DayLine()->GetHighLow(iCandleNumber);
+	auto pairHighLow = m_pDataDayLine->GetHighLow(iCandleNumber);
 	return pairHighLow;
 }
 
 std::pair<long, long> CFireBirdDoc::GetWeekLineHighLow(int iCandleNumber) const {
-	auto pairHighLow = m_pCurrentStock->WeekLine()->GetHighLow(iCandleNumber);
+	auto pairHighLow = m_pDataWeekLine->GetHighLow(iCandleNumber);
 	return pairHighLow;
 }
 
 std::pair<long, long> CFireBirdDoc::GetMonthLineHighLow(int iCandleNumber) const {
-	auto pairHighLow = m_pCurrentStock->MonthLine()->GetHighLow(iCandleNumber);
+	auto pairHighLow = m_pDataMonthLine->GetHighLow(iCandleNumber);
 	return pairHighLow;
 }
+
 chrono::local_days CFireBirdDoc::GetDayLineDate(size_t countDownIndex) const {
 	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
-	auto dayLine = m_pCurrentStock->DayLine();
-	if (dayLine->Size() < countDownIndex) return dayLine->GetData(0)->GetDate();
-	return dayLine->GetData(dayLine->Size() - countDownIndex)->GetDate();
+	if (m_pDataDayLine->Size() < countDownIndex) return m_pDataDayLine->GetData(0)->GetDate();
+	return m_pDataDayLine->GetData(m_pDataDayLine->Size() - countDownIndex)->GetDate();
 }
 
 chrono::local_days CFireBirdDoc::GetWeekLineDate(size_t countDownIndex) const {
 	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
-	auto weekLine = m_pCurrentStock->WeekLine();
-	if (weekLine->Size() < countDownIndex) return weekLine->GetData(0)->GetDate();
-	return weekLine->GetData(weekLine->Size() - countDownIndex)->GetDate();
+	if (m_pDataWeekLine->Size() < countDownIndex) return m_pDataWeekLine->GetData(0)->GetDate();
+	return m_pDataWeekLine->GetData(m_pDataWeekLine->Size() - countDownIndex)->GetDate();
 }
 
 chrono::local_days CFireBirdDoc::GetMonthLineDate(size_t countDownIndex) const {
 	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
-	auto monthLine = m_pCurrentStock->MonthLine();
-	if (monthLine->Size() < countDownIndex) return monthLine->GetData(0)->GetDate();
-	return monthLine->GetData(monthLine->Size() - countDownIndex)->GetDate();
+	if (m_pDataMonthLine->Size() < countDownIndex) return m_pDataMonthLine->GetData(0)->GetDate();
+	return m_pDataMonthLine->GetData(m_pDataMonthLine->Size() - countDownIndex)->GetDate();
 }
 
 BOOL CFireBirdDoc::OnNewDocument() {

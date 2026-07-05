@@ -2,17 +2,17 @@
 
 #include"TimeConvert.h"
 
-#include "ContainerChinaDayLine.h"
+#include "ContainerChinaStockDayLine.h"
 
 namespace {
 	CChinaStock s_stockContainerChinaDayLine;
 }
 
-CContainerChinaDayLine::CContainerChinaDayLine() {
+CContainerChinaStockDayLine::CContainerChinaStockDayLine() {
 	m_ratio = s_stockContainerChinaDayLine.GetRatio();
 }
 
-void CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
+void CContainerChinaStockDayLine::SaveDB(const string& strStockSymbol) {
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();
@@ -53,7 +53,7 @@ void CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	tx.commit();
 }
 
-void CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
+void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol) {
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();
@@ -93,7 +93,7 @@ void CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	m_fDataLoaded = true;
 }
 
-void CContainerChinaDayLine::LoadDB(const string& strStockSymbol, long lStartDate) {
+void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lStartDate) {
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();
@@ -132,7 +132,7 @@ void CContainerChinaDayLine::LoadDB(const string& strStockSymbol, long lStartDat
 	m_fDataLoaded = true;
 }
 
-bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
+bool CContainerChinaStockDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 	ASSERT(IsDataLoaded());
 	ASSERT(Size() > 0);
 	long lCurrentDayLinePos = 0;
@@ -146,7 +146,7 @@ bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 	return true;
 }
 
-CWeekLine CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
+CWeekLine CContainerChinaStockDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	ASSERT(Size() > 0);
 	ASSERT(lCurrentDayLinePos < Size());
 	const auto lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetDate());

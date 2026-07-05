@@ -224,68 +224,6 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-void CTiingoStock::CreateWeekLine() {
-	ASSERT(m_dataDayLine.IsDataLoaded());
-	size_t index = 0;
-	CTiingoCandleLine weekLine;
-	size_t dayLineSize = m_dataDayLine.Size();
-	long lastClose = 0;
-	while (index < dayLineSize) {
-		weekLine.Reset();
-		auto pDayLine = m_dataDayLine.GetData(index);
-		auto lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
-		weekLine.SetDate(pDayLine->GetDate());
-		weekLine.SetLastClose(lastClose);
-		weekLine.SetOpen(pDayLine->GetOpen());
-		weekLine.SetLow(pDayLine->GetLow());
-		do {
-			if (pDayLine->GetHigh() > weekLine.GetHigh()) weekLine.SetHigh(pDayLine->GetHigh());
-			if (pDayLine->GetLow() < weekLine.GetLow()) weekLine.SetLow(pDayLine->GetLow());
-			weekLine.SetVolume(weekLine.GetVolume() + pDayLine->GetVolume());
-			weekLine.SetAmount(weekLine.GetAmount() + pDayLine->GetAmount());
-			weekLine.SetClose(pDayLine->GetClose());
-			index++;
-			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
-			else break;
-			if (pDayLine->GetDate() >= lCurrentEndDate) break;
-		} while (true);
-		lastClose = weekLine.GetClose();
-		if (weekLine.GetClose() > 0) m_dataWeekLine.Add(weekLine); // 有数据才存储
-	}
-
-	m_dataWeekLine.SetDataLoaded(true);
-}
-
-void CTiingoStock::CreateMonthLine() {
-	ASSERT(m_dataDayLine.IsDataLoaded());
-	size_t index = 0;
-	CTiingoCandleLine monthLine;
-	size_t monthLineSize = m_dataDayLine.Size();
-	while (index < monthLineSize) {
-		monthLine.Reset();
-		auto pDayLine = m_dataDayLine.GetData(index++);
-		chrono::local_days lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
-		monthLine.SetDate(pDayLine->GetDate());
-		monthLine.SetOpen(pDayLine->GetOpen());
-		monthLine.SetLow(pDayLine->GetLow());
-		do {
-			if (pDayLine->GetHigh() > monthLine.GetHigh()) monthLine.SetHigh(pDayLine->GetHigh());
-			if (pDayLine->GetLow() < monthLine.GetLow()) monthLine.SetLow(pDayLine->GetLow());
-			monthLine.SetVolume(monthLine.GetVolume() + pDayLine->GetVolume());
-			monthLine.SetAmount(monthLine.GetAmount() + pDayLine->GetAmount());
-			monthLine.SetClose(pDayLine->GetClose());
-			if (index < monthLineSize) pDayLine = m_dataDayLine.GetData(index);
-			else break;
-			if (pDayLine->GetDate() < lCurrentEndDate) index++;
-			else break;
-		} while (true);
-
-		if (monthLine.GetClose() > 0) m_dataMonthLine.Add(monthLine); // 有数据才存储
-	}
-
-	m_dataMonthLine.SetDataLoaded(true);
-}
-
 bool CTiingoStock::IsDayLineDuplicated() noexcept {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
@@ -450,6 +388,7 @@ void CTiingoStock::ProcessDayLine() {
 	if (gl_systemConfiguration.IsExitingSystem()) return;
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
+		m_dataDayLine.SplitAdjust();
 	}
 
 	auto endPos = m_dataDayLine.Size();
@@ -476,6 +415,7 @@ void CTiingoStock::ProcessDayLine() {
 void CTiingoStock::ProcessDayLine2() {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
+		m_dataDayLine.SplitAdjust();
 	}
 
 	auto endPos = m_dataDayLine.Size();
@@ -498,6 +438,7 @@ void CTiingoStock::ProcessDayLine2() {
 void CTiingoStock::ProcessDayLine3() {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
+		m_dataDayLine.SplitAdjust();
 	}
 	auto endPos = m_dataDayLine.Size();
 

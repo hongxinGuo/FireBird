@@ -10,15 +10,16 @@
 class CIndicatorMACDBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		stock.SetSymbol("AAPL");
-		stock.LoadDayLineDB();
-		macd.SetCandle(stock.DayLine());
+		pContainer = make_shared<CContainerTiingoStockDayLine>();
+		pContainer->LoadDB("AAPL");
+		pContainer->SplitAdjust();
+		macd.SetCandle(pContainer);
 	}
 
 	void TearDown(const ::benchmark::State& state) override {
 	}
 
-	CTiingoStock stock;
+	CContainerTiingoStockDayLinePtr pContainer;
 	CIndicatorMACD macd;
 };
 

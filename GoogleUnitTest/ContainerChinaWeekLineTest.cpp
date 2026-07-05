@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"ContainerChinaWeekLine.h"
+#include"ContainerChinaStockWeekLine.h"
 
 namespace FireBirdTest {
 	class CStockDataChinaWeekLineTest : public ::testing::Test {
@@ -43,7 +43,7 @@ namespace FireBirdTest {
 		weekLine2.SetHigh(11000);
 		weekLine2.SetLow(1200);
 
-		CContainerChinaWeekLine dataChinaWeekLine;
+		CContainerChinaStockWeekLine dataChinaWeekLine;
 		vector<CWeekLine> vWeekLine;
 
 		vWeekLine.push_back(weekLine);
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 		weekLine.SetHigh(1000);
 		weekLine.SetLow(200);
 
-		CContainerChinaWeekLine dataChinaWeekLine;
+		CContainerChinaStockWeekLine dataChinaWeekLine;
 
 		dataChinaWeekLine.Add(static_cast<CVirtualHistoryCandle>(weekLine));
 		dataChinaWeekLine.UpdateData(&dayLine);
@@ -94,7 +94,7 @@ namespace FireBirdTest {
 		weekLine2.SetDate(20200201);
 		weekLine2.SetHigh(11000);
 		weekLine2.SetLow(1200);
-		CContainerChinaWeekLine dataChinaWeekLine;
+		CContainerChinaStockWeekLine dataChinaWeekLine;
 		vector<CWeekLine> vWeekLine;
 
 		vWeekLine.push_back(weekLine);

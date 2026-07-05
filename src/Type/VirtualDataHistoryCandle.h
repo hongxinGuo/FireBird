@@ -27,6 +27,8 @@ public:
 	virtual void SaveDB(const string&) { ASSERT(0); }
 	virtual void LoadDB(const string&) { ASSERT(0); }
 
+	virtual void SplitAdjust() { ASSERT(0); } // 拆分调整
+
 	void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
 	void UpdateData(const vector<CDayLine>& vTempData);
 	void UpdateData(const CDayLinesPtr& pvTempDayLine);
@@ -56,7 +58,13 @@ public:
 	bool IsDataLoaded() const noexcept { return m_fDataLoaded.load(); }
 	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
+	bool IsSplitAdjusted() const noexcept { return m_bSplitAdjusted; }
+	void SetSplitAdjusted(const bool fFlag) noexcept { m_bSplitAdjusted = fFlag; }
+
 	void CalculateMA(size_t length);
+
+	void CreateWeekLine(CVirtualDataHistoryCandle& dataDayLine);
+	void CreateMonthLine(CVirtualDataHistoryCandle& dataDayLine);
 
 	// 显示此容器
 	std::pair<long, long> GetHighLow(int iCandleNumber);
@@ -68,6 +76,7 @@ protected:
 	int m_ratio{ 0 };
 	vector<CVirtualHistoryCandle> m_vHistoryData;
 	atomic_bool m_fDataLoaded{ false }; // 数据装载与否标识
+	bool m_bSplitAdjusted{ false }; // 是否进行了拆分调整
 };
 
 using CVirtualDataHistoryCandlePtr = shared_ptr<CVirtualDataHistoryCandle>;

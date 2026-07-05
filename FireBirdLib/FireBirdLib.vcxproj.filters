@@ -396,13 +396,13 @@
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockDayLine.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerChinaWeekLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockWeekLine.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\containerChosenCrypto.h">
@@ -911,7 +911,7 @@
     <ClCompile Include="..\src\FinnhubInquiryType.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerChinaDayLine.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerChinaStockDayLine.cpp">
       <Filter>源文件\Data container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerChinaStock.cpp">

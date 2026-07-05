@@ -6,8 +6,8 @@
 #include"VirtualStock.h"
 
 #include"DayLine.h"
-#include"ContainerChinaDayLine.h"
-#include"ContainerChinaWeekLine.h"
+#include"ContainerChinaStockDayLine.h"
+#include"ContainerChinaStockWeekLine.h"
 #include"ContainerChinaStockMonthLine.h"
 
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
@@ -101,13 +101,6 @@ public:
 	bool LoadStockCode(const CStockSymbol& stockSymbol);
 	void CheckNeedProcessRTData();
 	bool CheckDayLineStatus();
-	//周线历史数据存取
-	void LoadWeekLineDB() override { CreateWeekLine(); }
-
-	// 月线历史数据存取
-	void LoadMonthLineDB() override { CreateMonthLine(); }
-	void CreateWeekLine();
-	void CreateMonthLine();
 
 	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.enqueue(pData); }
 	CWebRTDataPtr PopRTData() {
@@ -139,16 +132,6 @@ public:
 	static void ReportDayLineDownLoaded();
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
-	CVirtualDataHistoryCandle* WeekLine() noexcept final { return &m_dataWeekLine; }
-	CVirtualDataHistoryCandle* MonthLine() noexcept final { return &m_dataMonthLine; }
-
-	// 周线相关函数
-	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }
-	CWeekLine* GetWeekLine(const long lIndex) { return m_dataWeekLine.GetData(lIndex); }
-	void UnloadWeekLine() noexcept { m_dataWeekLine.Unload(); }
-	void StoreWeekLine(const CWeekLine& weekLine) { m_dataWeekLine.Add(weekLine); }
-	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
-	void SetWeekLineLoaded(const bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
 
 	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
 
@@ -181,9 +164,7 @@ protected:
 
 	ConcurrentQueue<CWebRTDataPtr> m_qRTData{ 32 }; // 采用优先队列存储实时数据，这样可以保证多源。
 
-	CContainerChinaDayLine m_dataDayLine;	// 日线容器
-	CContainerChinaWeekLine m_dataWeekLine;	// 周线容器
-	CContainerChinaStockMonthLine m_dataMonthLine;	// 月线容器
+	CContainerChinaStockDayLine m_dataDayLine;	// 日线容器
 
 	bool m_fDayLineDBUpdated{ false }; // 日线历史数据库更新标识
 };

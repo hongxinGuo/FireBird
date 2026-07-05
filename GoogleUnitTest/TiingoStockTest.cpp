@@ -482,6 +482,8 @@ namespace FireBirdTest {
 		}
 	}
 
+	/*
+	//todo: 移至CTiingoStockDayLineTest.cpp中
 	TEST_F(CTiingoStockTest, TestCreateWeekLine) {
 		stock.SetSymbol("AAPL");
 		stock.LoadDayLineDB();
@@ -519,6 +521,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(volume, pvWeekLine->GetData(2290)->GetVolume()) << "成交量相等";
 		EXPECT_EQ(amount, pvWeekLine->GetData(2290)->GetAmount()) << "成交金额相等";
 	}
+	*/
 
 	TEST_F(CTiingoStockTest, TestHaveNewDayLineData) {
 		auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();

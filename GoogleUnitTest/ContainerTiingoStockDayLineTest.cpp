@@ -162,6 +162,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoStockDayLineTest, TestSplitAdjust) {
 		m_dataTiingoStockDayLine.LoadDB("AAPL");
+		m_dataTiingoStockDayLine.SplitAdjust();
 
 		auto data = m_dataTiingoStockDayLine.GetDayLine(toLocalDays(20250102));
 		auto data2 = m_dataTiingoStockDayLine.GetDayLine(toLocalDays(20200831)); // 最近一次4拆股
@@ -205,6 +206,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoStockDayLineTest, TestSplitAdjust2) {
 		m_dataTiingoStockDayLine.LoadDB("AYRO");
+		m_dataTiingoStockDayLine.SplitAdjust();
 
 		auto data = m_dataTiingoStockDayLine.GetDayLine(toLocalDays(20250102));
 		auto data2 = m_dataTiingoStockDayLine.GetDayLine(toLocalDays(20250626)); // 1/16
@@ -240,6 +242,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoStockDayLineTest, TestSplitAdjust3) {
 		m_dataTiingoStockDayLine.LoadDB("BEEM");
+		m_dataTiingoStockDayLine.SplitAdjust();
 
 		auto data = m_dataTiingoStockDayLine.GetDayLine(toLocalDays(20250102));
 		auto data2 = m_dataTiingoStockDayLine.GetDayLine(toLocalDays(20190416)); // 1/50

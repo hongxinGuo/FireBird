@@ -249,68 +249,6 @@ bool CChinaStock::CheckDayLineStatus() {
 	return m_fUpdateDayLine;
 }
 
-void CChinaStock::CreateWeekLine() {
-	ASSERT(m_dataDayLine.IsDataLoaded());
-	size_t index = 0;
-	CTiingoCandleLine weekLine;
-	size_t dayLineSize = m_dataDayLine.Size();
-	long lastClose = 0;
-	while (index < dayLineSize) {
-		weekLine.Reset();
-		auto pDayLine = m_dataDayLine.GetData(index);
-		auto lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
-		weekLine.SetDate(pDayLine->GetDate());
-		weekLine.SetLastClose(lastClose);
-		weekLine.SetOpen(pDayLine->GetOpen());
-		weekLine.SetLow(pDayLine->GetLow());
-		do {
-			if (pDayLine->GetHigh() > weekLine.GetHigh()) weekLine.SetHigh(pDayLine->GetHigh());
-			if (pDayLine->GetLow() < weekLine.GetLow()) weekLine.SetLow(pDayLine->GetLow());
-			weekLine.SetVolume(weekLine.GetVolume() + pDayLine->GetVolume());
-			weekLine.SetAmount(weekLine.GetAmount() + pDayLine->GetAmount());
-			weekLine.SetClose(pDayLine->GetClose());
-			index++;
-			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
-			else break;
-			if (pDayLine->GetDate() >= lCurrentEndDate) break;
-		} while (true);
-		lastClose = weekLine.GetClose();
-		if (weekLine.GetClose() > 0) m_dataWeekLine.Add(weekLine); // 有数据才存储
-	}
-
-	m_dataWeekLine.SetDataLoaded(true);
-}
-
-void CChinaStock::CreateMonthLine() {
-	ASSERT(m_dataDayLine.IsDataLoaded());
-	size_t index = 0;
-	CMonthLine monthLine;
-	size_t monthLineSize = m_dataDayLine.Size();
-	while (index < monthLineSize) {
-		monthLine.Reset();
-		auto pDayLine = m_dataDayLine.GetData(index++);
-		chrono::local_days lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
-		monthLine.SetDate(pDayLine->GetDate());
-		monthLine.SetOpen(pDayLine->GetOpen());
-		monthLine.SetLow(pDayLine->GetLow());
-		do {
-			if (pDayLine->GetHigh() > monthLine.GetHigh()) monthLine.SetHigh(pDayLine->GetHigh());
-			if (pDayLine->GetLow() < monthLine.GetLow()) monthLine.SetLow(pDayLine->GetLow());
-			monthLine.SetVolume(monthLine.GetVolume() + pDayLine->GetVolume());
-			monthLine.SetAmount(monthLine.GetAmount() + pDayLine->GetAmount());
-			monthLine.SetClose(pDayLine->GetClose());
-			if (index < monthLineSize) pDayLine = m_dataDayLine.GetData(index);
-			else break;
-			if (pDayLine->GetDate() < lCurrentEndDate) index++;
-			else break;
-		} while (true);
-
-		if (monthLine.GetClose() > 0) m_dataMonthLine.Add(monthLine); // 有数据才存储
-	}
-
-	m_dataMonthLine.SetDataLoaded(true);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 // 判断股票数据是否有效。采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据
