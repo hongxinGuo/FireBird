@@ -13,7 +13,6 @@
 #include<benchmark/benchmark.h>
 
 #include "ChinaMarket.h"
-#include"nlohmannJSonDeclaration.h"
 
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
@@ -22,6 +21,7 @@
 
 #include "Thread.h"
 
+#include"simdjson.h"
 using namespace simdjson;
 
 namespace {

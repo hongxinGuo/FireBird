@@ -5,6 +5,8 @@
 #include"DayLine.h"
 #include"ContainerTiingoStockDayLine.h"
 #include "ProductTiingoStockDayLine.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 using namespace testing;
 

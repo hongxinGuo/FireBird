@@ -13,6 +13,7 @@
 #include "FireBirdView.h"
 
 #include "MainFrm.h"
+#include "SystemConfiguration.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

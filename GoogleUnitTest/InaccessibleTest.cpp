@@ -2,6 +2,7 @@
 
 #include"GeneralCheck.h"
 #include"Inaccessible.h"
+#include "SystemConfiguration.h"
 
 namespace FireBirdTest {
 	class CInaccessibleTest : public testing::Test {

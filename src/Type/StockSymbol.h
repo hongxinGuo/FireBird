@@ -1,5 +1,8 @@
 #pragma once
 
+using std::string;
+using std::shared_ptr;
+
 class CStockSymbol {
 public:
 	CStockSymbol() = default;

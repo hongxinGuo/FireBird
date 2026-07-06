@@ -5,6 +5,7 @@
 
 #include "TiingoIEXWebSocket.h"
 
+#include "SystemConfiguration.h"
 #include "TiingoDataSource.h"
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {

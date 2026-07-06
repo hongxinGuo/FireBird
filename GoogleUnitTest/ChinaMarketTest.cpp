@@ -9,6 +9,9 @@
 #include "SinaRTDataSource.h"
 #include "TengxunRTDataSource.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 using namespace testing;
 
 #include<memory>

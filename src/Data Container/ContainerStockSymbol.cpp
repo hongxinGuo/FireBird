@@ -3,6 +3,10 @@
 #include"ChinaStockCodeConverter.h"
 #include "ContainerStockSymbol.h"
 
+#include "SystemConstantChinaMarket.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSymbol.resize(0);
 	m_mapStockSymbol.clear();

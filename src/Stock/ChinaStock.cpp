@@ -6,7 +6,8 @@
 #include "ChinaStock.h"
 
 #include"ChinaMarket.h"
-#include"MonthLine.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //

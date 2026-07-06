@@ -2,6 +2,8 @@
 
 #include"FinnhubInquiryType.h"
 
+#include "SystemConfiguration.h"
+
 CFinnhubInquiryType::CFinnhubInquiryType() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {

@@ -4,6 +4,7 @@
 
 #include"InfoReport.h"
 #include "CharSetTransfer.h"
+#include "SystemConfiguration.h"
 #include "SystempublicDeclaration.h"
 
 namespace FireBirdTest {

@@ -6,11 +6,6 @@
 #undef max
 #include <sqlpp11/transaction.h>
 
-#ifdef _ASAN
-#include<stdlib.h>
-extern "C" const char* __asan_default_options() { return "detect_leaks=0"; }
-#endif
-
 #include "dataBaseConnector.h"
 #include "StockMarketSQLTable.h"
 

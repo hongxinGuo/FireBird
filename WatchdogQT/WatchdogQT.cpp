@@ -186,7 +186,7 @@ void WatchdogQT::UpdatePer10Second() {
 void WatchdogQT::onActionAboutTriggered() {
 	QString text = tr("FireBird Watchdog\n"
 		"Version 0.01\n"
-		"2023-2025 Copyright FireBird Inc.\n"
+		"2023-2026 Copyright FireBird Inc.\n"
 		"All right reserved\n\n");
 
 	QMessageBox::about(this, tr("Watchdog"), text);

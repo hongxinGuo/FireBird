@@ -10,6 +10,9 @@
 #include "ContainerFinnhubStock.h"
 #include "jsonParse.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();
 }

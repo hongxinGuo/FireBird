@@ -9,6 +9,9 @@
 
 #include"Thread.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
 }

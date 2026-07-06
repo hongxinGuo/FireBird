@@ -4,6 +4,8 @@
 
 #include"ContainerChinaStock.h"
 
+#include <set>
+
 constexpr int c_SelectedStockStartPosition = 0;
 
 class CChinaMarket : public CVirtualMarket {

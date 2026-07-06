@@ -2,6 +2,8 @@
 
 #include"FinnhubForex.h"
 #include "ContainerChosenForex.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 CContainerChosenForex::CContainerChosenForex() {
 	CContainerChosenForex::Reset();

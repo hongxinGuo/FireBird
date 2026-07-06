@@ -5,6 +5,7 @@
 
 #include "TiingoCryptoWebSocket.h"
 
+#include "SystemConfiguration.h"
 #include "TiingoDataSource.h"
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {

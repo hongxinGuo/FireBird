@@ -6,6 +6,8 @@
 
 #include"ContainerTiingoStock.h"
 #include "jsonParse.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 using namespace testing;
 

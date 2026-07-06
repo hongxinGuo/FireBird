@@ -1,6 +1,7 @@
 #pragma once
 
 #include"MarketTaskQueue.h"
+#include "SystemConfiguration.h"
 #include"TimeConvert.h"
 
 class CVirtualMarket {
@@ -30,11 +31,9 @@ public:
 
 	virtual void ResetMarket();
 	bool IsResetTime();
-	virtual chrono::local_seconds GetResetTime() {
-		if (gl_systemConfiguration.IsWorkingMode()) // 不允许在运行状态时调用此函数
-			ASSERT(0);
-		return chrono::local_seconds{};
-	}
+
+	virtual chrono::local_seconds GetResetTime();
+
 	bool IsResetting() const noexcept { return m_fResettingMarket; }
 
 	virtual bool UpdateMarketInfo(); // 更新本市场信息。

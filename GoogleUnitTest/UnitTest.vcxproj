@@ -28,7 +28,8 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CLRSupport>false</CLRSupport>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <PreferredToolArchitecture>
+    </PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
     <VCToolsVersion>
     </VCToolsVersion>
@@ -38,7 +39,8 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CLRSupport>false</CLRSupport>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <PreferredToolArchitecture>
+    </PreferredToolArchitecture>
     <EnableASAN>true</EnableASAN>
     <VCToolsVersion />
     <EnableUnitySupport>false</EnableUnitySupport>
@@ -46,7 +48,8 @@
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>Dynamic</UseOfMfc>
     <EnableASAN>false</EnableASAN>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <PreferredToolArchitecture>
+    </PreferredToolArchitecture>
     <VCToolsVersion>
     </VCToolsVersion>
     <EnableUnitySupport>false</EnableUnitySupport>

@@ -14,6 +14,7 @@
 #include "ProductFinnhubCompanySymbolChange.h"
 
 #include "FinnhubDataSource.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {

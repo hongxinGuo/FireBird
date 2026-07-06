@@ -12,6 +12,9 @@
 #include"FinnhubCompanyNews.h"
 #include "InfoReport.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CFinnhubStock::CFinnhubStock() {
 	SetExchange("US");
 	CFinnhubStock::ResetAllUpdateDate();

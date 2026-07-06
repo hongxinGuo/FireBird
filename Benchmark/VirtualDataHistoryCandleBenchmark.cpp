@@ -8,6 +8,7 @@
 #include "VirtualDataHistoryCandle.h"
 #include "VirtualHistoryCandle.h"
 #include "TimeConvert.h"
+#include"StockMarketSQLTable.h"
 
 using namespace std;
 

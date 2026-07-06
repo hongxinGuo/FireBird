@@ -7,6 +7,7 @@
 #include "JsonParse.h"
 #include"WebData.h"
 
+#include"simdjson.h"
 using namespace simdjson;
 
 // Helper: parse one 东方财富 Kline line like:

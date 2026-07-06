@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
 #include "WebRTData.h"
 

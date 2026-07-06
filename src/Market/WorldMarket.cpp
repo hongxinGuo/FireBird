@@ -21,6 +21,9 @@
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 namespace {
 	template <typename TWebSocket>
 	void ProcessWebSocketDataGeneric(const TWebSocket& pWebSocket, const std::string& prefix, const std::function<void(size_t)>& setProcessedFunc) {

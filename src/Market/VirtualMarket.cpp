@@ -79,6 +79,12 @@ bool CVirtualMarket::IsResetTime() {
 	return GetMarketTime() > GetPrevTime(GetResetTime(), 0h, 10min, 0s) && GetMarketTime() < GetNextTime(GetResetTime(), 0h, 5min, 0s);
 }
 
+chrono::local_seconds CVirtualMarket::GetResetTime() {
+	if (gl_systemConfiguration.IsWorkingMode()) // 不允许在运行状态时调用此函数
+		ASSERT(0);
+	return chrono::local_seconds{};
+}
+
 bool CVirtualMarket::UpdateMarketInfo() {
 	// do nothing
 	return true;

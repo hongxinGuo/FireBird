@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "ContainerCryptoDayLine.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 namespace {
 	CFinnhubCrypto s_stock;
 }

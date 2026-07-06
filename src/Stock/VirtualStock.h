@@ -3,6 +3,9 @@
 #include "VirtualDataHistoryCandle.h"
 #include "StockSplit.h"
 
+#include"nlohmann/json.hpp"
+#include "nlohmannJsonDeclaration.h"
+
 class CVirtualStock;
 using CVirtualStockPtr = shared_ptr<CVirtualStock>;
 

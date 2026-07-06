@@ -5,6 +5,9 @@
 
 #include"FinnhubCrypto.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 using namespace testing;
 
 namespace FireBirdTest {

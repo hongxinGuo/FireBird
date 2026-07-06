@@ -2,6 +2,7 @@
 
 #include "SystemMessage.h"
 #include"OutputWnd.h"
+#include "SystemConfiguration.h"
 
 map<long, string> gl_mapHTTPStatusCode{
 	// Informational

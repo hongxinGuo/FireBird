@@ -14,6 +14,7 @@
 #include "ProductFinnhubEconomicCalendar.h"
 
 #include "FinnhubDataSource.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {

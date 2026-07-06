@@ -19,11 +19,14 @@
 #include "simdjsonGetValue.h"
 #include "Thread.h"
 
+#include <spdlog/sinks/basic_file_sink.h>
 using namespace spdlog;
 
 #include "CharSetTransfer.h"
 
 #include "AccessoryDataSource.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 void DeleteAllFinnhubInaccessibleUSExchange() {
 	for (int i = 0; i < END_OF_ALL_INQUIRY_TYPE_; i++) {

@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
+#include "SystemConfiguration.h"
 
 namespace FireBirdTest {
 	class CVirtualHistoryCandleTest : public ::testing::Test {

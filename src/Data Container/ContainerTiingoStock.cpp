@@ -2,10 +2,14 @@
 
 #include "ContainerTiingoStock.h"
 
+#include <set>
+
 #include "Thread.h"
 #include "ThreadStatus.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();

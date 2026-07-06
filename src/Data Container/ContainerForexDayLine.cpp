@@ -2,6 +2,9 @@
 
 #include "ContainerForexDayLine.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 namespace {
 	CFinnhubForex s_stock;
 }

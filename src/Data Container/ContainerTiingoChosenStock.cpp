@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "ContainerTiingoChosenStock.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 CContainerTiingoChosenStock::CContainerTiingoChosenStock() {
 	CContainerTiingoChosenStock::Reset();

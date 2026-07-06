@@ -11,6 +11,8 @@
 
 #include "ThreadStatus.h"
 
+#include "SystemConfiguration.h"
+
 CThreadStatus::CThreadStatus() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; siInstance++ > 0) {

@@ -11,6 +11,7 @@
 #include "VirtualDataSource.h"
 #include"VirtualWebProduct.h"
 #include "InquireEngine.h"
+#include "SystemConfiguration.h"
 
 #include"Thread.h"
 #include "WebData.h"

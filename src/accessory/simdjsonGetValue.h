@@ -1,5 +1,6 @@
 #pragma once
 
+#include"simdjson.h"
 using namespace simdjson;
 
 inline ondemand::array gl_simdjsonEmptyArray;

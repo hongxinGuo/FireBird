@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "ContainerTiingoStockDayLine.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 namespace {
 	CTiingoStock s_stock;

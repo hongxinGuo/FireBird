@@ -6,6 +6,8 @@
 
 #include <fstream>
 
+#include "SystemConfiguration.h"
+
 CInaccessibleSymbol::CInaccessibleSymbol(const string& strFileName) {
 	m_strFileName = strFileName;
 	if (LoadDB()) {

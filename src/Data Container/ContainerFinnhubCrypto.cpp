@@ -5,6 +5,9 @@
 #include"FinnhubCrypto.h"
 #include "InfoReport.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();
 }

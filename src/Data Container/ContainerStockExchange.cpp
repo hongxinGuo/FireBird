@@ -9,6 +9,9 @@
 #include "pch.h"
 #include "ContainerStockExchange.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CContainerStockExchange::CContainerStockExchange() {
 	LoadDB(); // 生成时即装载数据库。
 }

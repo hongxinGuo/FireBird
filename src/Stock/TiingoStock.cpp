@@ -5,6 +5,8 @@
 #include "TiingoStockDailyMeta.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;

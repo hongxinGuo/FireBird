@@ -2,7 +2,8 @@
 
 #include "containerChosenCrypto.h"
 
-#include"FinnhubCrypto.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();

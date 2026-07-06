@@ -1,7 +1,5 @@
 #pragma once
 
-#include"nlohmannJsonDeclaration.h"
-
 #include"VirtualStock.h"
 
 #include"DayLine.h"

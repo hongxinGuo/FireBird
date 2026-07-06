@@ -10,8 +10,12 @@
 #include "InfoReport.h"
 
 #include "SinaRTDataSource.h"
+#include "SystemConfiguration.h"
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
+
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

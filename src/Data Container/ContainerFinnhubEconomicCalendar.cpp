@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "ContainerFinnhubEconomicCalendar.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();
 }

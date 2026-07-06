@@ -1,7 +1,9 @@
 #include "pch.h"
-#include <algorithm>
-#include<vector>
+
 #include "ContainerFinnhubCountry.h"
+
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 

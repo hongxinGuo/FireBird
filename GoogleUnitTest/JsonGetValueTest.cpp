@@ -4,6 +4,7 @@
 
 #include"JsonParse.h"
 #include"nlohmannJsonGetValue.h"
+#include "SystemConfiguration.h"
 
 namespace FireBirdTest {
 	class jsonGetValueTest : public ::testing::Test {

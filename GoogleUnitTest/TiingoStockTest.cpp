@@ -3,6 +3,8 @@
 #include"GeneralCheck.h"
 
 #include"TiingoStock.h"
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
 
 namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {

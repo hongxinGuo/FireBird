@@ -7,6 +7,9 @@
 
 #include"WebData.h"
 
+#include <sqlpp11/sqlpp11.h>
+#include"StockMarketSQLTable.h"
+
 CProductIndexNasdaq100Stocks::CProductIndexNasdaq100Stocks() {
 	m_strInquiryFunction = "https://www.slickcharts.com/nasdaq100";
 }
