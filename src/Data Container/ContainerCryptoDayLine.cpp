@@ -2,6 +2,9 @@
 #include "ContainerCryptoDayLine.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
+#include "FinnhubCrypto.h"
 #include"StockMarketSQLTable.h"
 
 namespace {

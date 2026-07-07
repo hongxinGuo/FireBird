@@ -7,6 +7,8 @@
 
 #include "ProductAlphaVantageStockSplits.h"
 
+#include "ContainerTiingoStock.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 CProductAlphaVantageStockSplits::CProductAlphaVantageStockSplits() {

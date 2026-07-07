@@ -22,3 +22,5 @@ public:
 protected:
 	size_t m_llLastTotalSymbol;
 };
+
+extern CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;

@@ -1,10 +1,14 @@
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+
 #include"GeneralCheck.h"
 
 #include"WebData.h"
+#include"SystemData.h"
 
 #include"FinnhubWebSocket.h"
+#include "SystemMessage.h"
 
 using namespace testing;
 
@@ -13,7 +17,7 @@ namespace FireBirdTest {
 		Test_FinnhubWebData(long lIndex, const string& strSymbol, const string& strData) {
 			m_lIndex = lIndex;
 			m_strSymbol = strSymbol;
-			m_pData = make_shared<CWebData>();
+			m_pData = std::make_shared<CWebData>();
 			m_pData->Test_SetBuffer_(strData);
 		}
 

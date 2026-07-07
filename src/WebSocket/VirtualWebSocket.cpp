@@ -2,6 +2,7 @@
 
 #include"VirtualWebSocket.h"
 
+#include "SystemMessage.h"
 #include "Thread.h"
 #include "WorldMarket.h"
 

@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "ChinaStock.h"
 #include "ContainerChinaStockWeekLine.h"
 
 namespace {

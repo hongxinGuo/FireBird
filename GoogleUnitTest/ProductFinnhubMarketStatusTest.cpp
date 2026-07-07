@@ -1,8 +1,12 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
+#include "ContainerStockExchange.h"
 #include"GeneralCheck.h"
 
 #include"ProductFinnhubMarketStatus.h"
+#include "SystemMessage.h"
 #include "WorldMarket.h"
 #include"TestWebData.h"
 

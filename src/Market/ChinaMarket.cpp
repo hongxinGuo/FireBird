@@ -2,6 +2,7 @@
 
 #include"TimeConvert.h"
 #include"Thread.h"
+#include"SystemData.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -14,7 +15,13 @@
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
 
+#include"DayLineWebData.h"
+
 #include <sqlpp11/sqlpp11.h>
+
+#include "ContainerStockExchange.h"
+#include "ContainerStockSymbol.h"
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 CChinaMarket::CChinaMarket() {

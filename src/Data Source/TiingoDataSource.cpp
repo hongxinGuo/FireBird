@@ -1,8 +1,13 @@
 #include"pch.h"
 
+#include"dataBaseConnector.h"
+
 #include"FinnhubInquiryType.h"
 #include "TiingoDataSource.h"
 
+#include "ContainerTiingoChosenStock.h"
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
 #include"VirtualWebProduct.h"
 
 #include "spdlog_assert.h"

@@ -2,6 +2,8 @@
 
 #include"MonthLine.h"
 
+#include "ChinaStock.h"
+
 namespace {
 	CChinaStock s_stockMonthLine;
 }

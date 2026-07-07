@@ -1,9 +1,8 @@
-﻿#include"windows.h"
+﻿#define NOMINMAX
+#include"windows.h"
 
 #include <iostream>
 
-#undef min
-#undef max
 #include <sqlpp11/transaction.h>
 
 #include "dataBaseConnector.h"

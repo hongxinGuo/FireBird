@@ -2,6 +2,8 @@
 
 #include"TimeConvert.h"
 #include "VirtualMarket.h"
+
+#include "ContainerStockExchange.h"
 #include"VirtualDataSource.h"
 
 CVirtualMarket::CVirtualMarket() {

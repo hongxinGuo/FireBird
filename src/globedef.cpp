@@ -7,6 +7,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include"log.h"
+#include"SystemData.h"
+
 #include"FinnhubInquiryType.h"
 #include"InaccessibleSymbol.h"
 
@@ -27,8 +30,23 @@
 #include"threadStatus.h"
 #include "AccessoryDataSource.h"
 
-#undef max
+#include "containerChosenCrypto.h"
+
 #include "AlphaVantageDataSource.h"
+#include "ContainerChosenForex.h"
+#include "ContainerFinnhubCountry.h"
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubEconomicCalendar.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
+#include "ContainerStockExchange.h"
+#include "ContainerStockSymbol.h"
+#include "ContainerTiingoChosenStock.h"
+#include "ContainerTiingoCryptoSymbol.h"
+#include "ContainerTiingoFundamentalDefinition.h"
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
 #include "EastmoneyDayLineDataSource.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;

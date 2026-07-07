@@ -5,6 +5,7 @@
 
 #include "ProductFinnhubForexExchange.h"
 
+#include "ContainerFinnhubForexExchange.h"
 #include "FinnhubDataSource.h"
 #include "WebData.h"
 

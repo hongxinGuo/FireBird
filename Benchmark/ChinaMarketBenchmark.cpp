@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#undef max
-
 #include<benchmark/benchmark.h>
 
 #include"ChinaStockCodeConverter.h"

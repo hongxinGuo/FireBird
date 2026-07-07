@@ -23,5 +23,7 @@ public:
 
 protected:
 	vector<CStockExchangePtr> m_vStockExchange;
-	unordered_map<string, size_t> m_mapStockExchange;
+	std::unordered_map<string, size_t> m_mapStockExchange;
 };
+
+extern CContainerStockExchange gl_dataContainerStockExchange;

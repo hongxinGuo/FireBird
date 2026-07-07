@@ -1,5 +1,8 @@
 #pragma once
 
+using std::chrono::sys_seconds;
+using std::chrono::local_days;
+
 namespace FireBirdTest {
 	void GeneralCheck();
 
@@ -8,7 +11,7 @@ namespace FireBirdTest {
 	void ChinaMarketCheck();
 	void WorldMarketCheck();
 
-	inline chrono::sys_seconds s_tCurrentSystemTime;
-	inline chrono::local_days s_currentChinaMarketDate;
-	inline chrono::local_days s_currentWorldMarketDate;
+	inline sys_seconds s_tCurrentSystemTime;
+	inline local_days s_currentChinaMarketDate;
+	inline local_days s_currentWorldMarketDate;
 }

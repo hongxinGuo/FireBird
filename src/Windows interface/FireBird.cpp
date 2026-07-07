@@ -15,6 +15,10 @@
 #include "SystemPublicDeclaration.h"
 #include "WorldMarket.h"
 
+#include <spdlog/spdlog.h>
+
+#include"dataBaseConnector.h"
+
 #ifdef _MBCS
 #error "本系统使用UNI_CODE字符集"
 #endif

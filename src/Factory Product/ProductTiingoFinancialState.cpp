@@ -3,6 +3,7 @@
 #include"TiingoStock.h"
 #include "ProductTiingoFinancialState.h"
 
+#include "ContainerTiingoStock.h"
 #include"simdjsonGetValue.h"
 #include "WebData.h"
 #include "WorldMarket.h"

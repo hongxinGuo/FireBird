@@ -8,6 +8,8 @@
 
 #include "ProductFinnhubCryptoDayLine.h"
 
+#include "ContainerFinnhubCrypto.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {

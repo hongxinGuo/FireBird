@@ -1,4 +1,5 @@
 #pragma once
+#include "VirtualDataHistoryCandle.h"
 
 struct Kdj {
 public:

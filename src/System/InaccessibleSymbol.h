@@ -14,9 +14,12 @@
 #pragma once
 
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+
 #include"FinnhubInquiryType.h"
 
 #include "Inaccessible.h"
+
+using namespace std::chrono;
 
 class CInaccessibleSymbol {
 public:
@@ -40,7 +43,7 @@ public:
 	void SetFileName(const string& fileName) noexcept { m_strFileName = fileName; }
 	string GetFileName() { return m_strFileName; }
 
-	void SetUpdateDate(const chrono::local_days date) noexcept { m_lUpdateDate = date; }
+	void SetUpdateDate(const std::chrono::local_days date) noexcept { m_lUpdateDate = date; }
 	auto GetUpdateDate() const { return m_lUpdateDate; }
 
 	static int GetInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
@@ -56,8 +59,7 @@ public:
 
 protected:
 	string m_strFileName;// 配置文件名称
-
-	chrono::local_days m_lUpdateDate{ 1980y / 01 / 01 }; // 本文件更新日期
+	std::chrono::local_days m_lUpdateDate{ 1980y / 01 / 01 }; // 本文件更新日期
 	map<int, CInaccessiblePtr> m_mapInaccessible; //
 
 	bool m_fInitialized{ false };

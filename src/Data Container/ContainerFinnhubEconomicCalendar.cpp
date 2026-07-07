@@ -1,7 +1,10 @@
 #include "pch.h"
-#include "ContainerFinnhubEconomicCalendar.h"
 
 #include <sqlpp11/sqlpp11.h>
+#include "dataBaseConnector.h"
+
+#include "ContainerFinnhubEconomicCalendar.h"
+
 #include"StockMarketSQLTable.h"
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
@@ -40,7 +43,7 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 		economicCalendar.m_dEstimate = row.Estimate;
 		economicCalendar.m_dPrev = row.Prev;
 		economicCalendar.m_strUnit = row.Unit;
-		string strSymbol = economicCalendar.m_strCountry + economicCalendar.m_strEvent + economicCalendar.m_strTime;
+		std::string strSymbol = economicCalendar.m_strCountry + economicCalendar.m_strEvent + economicCalendar.m_strTime;
 		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
 		m_vEconomicCalendar.push_back(economicCalendar);
 	}

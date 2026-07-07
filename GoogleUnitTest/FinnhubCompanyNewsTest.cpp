@@ -1,11 +1,14 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"TimeConvert.h"
 #include"WorldMarket.h"
 
 #include"ProductFinnhubCompanyNews.h"
+#include "SystemMessage.h"
 
 #include"TestWebData.h"
 

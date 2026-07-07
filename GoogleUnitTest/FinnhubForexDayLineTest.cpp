@@ -1,9 +1,13 @@
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+
+#include "containerFinnhubForexSymbol.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 
 #include"ProductFinnhubForexDayLine.h"
+#include "SystemMessage.h"
 #include"TestWebData.h"
 
 using namespace testing;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <gmock/gmock-function-mocker.h>
+
 #include"InquireEngine.h"
 
 namespace FireBirdTest {

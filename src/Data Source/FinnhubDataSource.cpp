@@ -13,6 +13,13 @@
 #include"InaccessibleSymbol.h"
 
 #include "FinnhubDataSource.h"
+
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
+#include "ContainerFinnhubStock.h"
+#include "ContainerStockExchange.h"
 #include"VirtualWebProduct.h"
 
 #include "spdlog_assert.h"

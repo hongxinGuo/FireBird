@@ -12,6 +12,7 @@
 #include "ThreadStatus.h"
 
 #include "SystemConfiguration.h"
+#include "SystemMessage.h"
 
 CThreadStatus::CThreadStatus() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

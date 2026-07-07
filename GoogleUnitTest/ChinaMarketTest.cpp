@@ -1,5 +1,8 @@
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+#include <gmock/gmock-more-matchers.h>
+
 #include"ChinaStockCodeConverter.h"
 
 #include"ChinaMarket.h"
@@ -10,7 +13,10 @@
 #include "TengxunRTDataSource.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include"DayLineWebData.h"
 
 using namespace testing;
 

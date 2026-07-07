@@ -1,7 +1,12 @@
 #include"pch.h"
 
 #include "IndicatorBoll.h"
+
+#include <deque>
+
 #include "VirtualHistoryCandle.h" // CVirtualHistoryCandle
+
+#include"dataBaseConnector.h"
 
 using namespace FireBird::Indicators;
 
@@ -10,7 +15,7 @@ std::vector<CBoll> CIndicatorBoll::Compute(const std::vector<CVirtualHistoryCand
 	if (period <= 0 || candles.empty()) return results;
 
 	results.reserve(candles.size());
-	std::deque<double> window;
+	deque<double> window;
 	window.clear();
 
 	double sum = 0.0;

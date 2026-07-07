@@ -1,4 +1,9 @@
 #pragma once
+#include "DayLineWebData.h"
+#include "WebData.h"
+
+using std::string;
+using std::string_view;
 
 long long StrToDecimal(const string_view& svData, size_t power);
 long long StrToDecimal2(const string_view& svData, size_t power);

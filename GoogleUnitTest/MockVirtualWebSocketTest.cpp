@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"MockVirtualWebSocket.h"
+#include "SystemMessage.h"
 #include "WorldMarket.h"
 
 using namespace testing;

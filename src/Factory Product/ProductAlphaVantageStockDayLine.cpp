@@ -7,6 +7,9 @@
 
 #include "ProductAlphaVantageStockDayLine.h"
 
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 CProductAlphaVantageStockDayLine::CProductAlphaVantageStockDayLine() {

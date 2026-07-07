@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ClassDeclaration.h"
 #include"VirtualDataFactory.h"
 
 class CAccessoryFactory final : public CVirtualDataFactory {

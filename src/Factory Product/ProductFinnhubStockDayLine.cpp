@@ -8,6 +8,7 @@
 
 #include "ProductFinnhubStockDayLine.h"
 
+#include "SystemMessage.h"
 #include "WebData.h"
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {

@@ -1,5 +1,7 @@
 #pragma once
 
+using std::string;
+
 class CTiingoCompanyFinancialState final {
 public:
 	CTiingoCompanyFinancialState();
@@ -105,5 +107,5 @@ public:
 	// 无需存储数据区
 };
 
-using CTiingoCompanyFinancialStatePtr = shared_ptr<CTiingoCompanyFinancialState>;
-using CTiingoCompanyFinancialStatesPtr = shared_ptr<vector<CTiingoCompanyFinancialStatePtr>>;
+using CTiingoCompanyFinancialStatePtr = std::shared_ptr<CTiingoCompanyFinancialState>;
+using CTiingoCompanyFinancialStatesPtr = std::shared_ptr<std::vector<CTiingoCompanyFinancialStatePtr>>;

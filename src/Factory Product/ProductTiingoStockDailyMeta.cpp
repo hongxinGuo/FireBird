@@ -12,7 +12,9 @@
 
 #include "ProductTiingoStockDailyMeta.h"
 
+#include "ContainerTiingoStock.h"
 #include"simdjsonGetValue.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 #include "WorldMarket.h"
 

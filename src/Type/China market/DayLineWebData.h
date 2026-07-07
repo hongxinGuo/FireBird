@@ -1,6 +1,7 @@
 #pragma once
 
 #include"DayLine.h"
+#include"WebData.h"
 
 class CDayLineWebData final {
 public:
@@ -12,8 +13,8 @@ public:
 	std::vector<CDayLine>& GetProcessedDayLine() { return m_vTempDayLine; }
 	void AppendDayLine(const CDayLine& data) { m_vTempDayLine.push_back(data); }
 
-	void SetStockCode(const string& strSymbol) noexcept { m_strStockCode = strSymbol; }
-	string GetStockCode() { return m_strStockCode; }
+	void SetStockCode(const std::string& strSymbol) noexcept { m_strStockCode = strSymbol; }
+	std::string GetStockCode() { return m_strStockCode; }
 
 	bool TransferWebDataToBuffer(const CWebDataPtr& pWebData);
 	string GetBuffer() { return m_sDataBuffer; }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <gmock/gmock-function-mocker.h>
+
 #include"TiingoIEXWebSocket.h"
 
 namespace testing {

@@ -7,11 +7,15 @@
 #ifndef PCH_H_INCLUDE_
 #define PCH_H_INCLUDE_
 
+#define NOMINMAX // 禁止windows.h中定义min和max宏，避免与std::min和std::max冲突
+
 #include"stdafx.h"
 
-#define UNICODE_LITERALS_FOR_TEST_NAMES
-#include"gtest/gtest.h"
-#include"gmock/gmock.h"
+#include"nlohmann/json.hpp"
+
+#include"StockMarketSQLTable.h"
+
+#include"spdlog_assert.h"
 
 #include"globedef.h"
 

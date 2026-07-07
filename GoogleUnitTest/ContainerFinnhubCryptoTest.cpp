@@ -1,10 +1,15 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"ContainerFinnhubCrypto.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "TiingoCrypto.h"
 
 using namespace testing;
 

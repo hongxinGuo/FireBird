@@ -1,14 +1,12 @@
 #include "pch.h"
 
-// Note 需要预先消除max的定义
-#undef max
-
 #include <benchmark/benchmark.h>
 
 #include "VirtualDataHistoryCandle.h"
 #include "VirtualHistoryCandle.h"
 #include "TimeConvert.h"
 #include"StockMarketSQLTable.h"
+#include "TiingoStock.h"
 
 using namespace std;
 

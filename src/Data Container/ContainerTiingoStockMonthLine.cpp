@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "ContainerTiingoStockMonthLine.h"
+#include "TiingoStock.h"
 
 namespace {
 	CTiingoStock s_stockContainerTiingoStockMonthLine;

@@ -1,10 +1,13 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"InfoReport.h"
 #include "CharSetTransfer.h"
 #include "SystemConfiguration.h"
+#include "SystemMessage.h"
 #include "SystempublicDeclaration.h"
 
 namespace FireBirdTest {

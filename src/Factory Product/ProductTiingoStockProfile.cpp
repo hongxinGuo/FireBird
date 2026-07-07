@@ -13,7 +13,12 @@
 #include "WorldMarket.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
 #include"StockMarketSQLTable.h"
+
+#include"dataBaseConnector.h"
 
 CProductTiingoStockProfile::CProductTiingoStockProfile() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/meta?";

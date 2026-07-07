@@ -23,8 +23,6 @@
 #include"NlohmannJsonDeclaration.h"
 #include "ChinaMarket.h"
 
-// 包含concurrencpp.h之前，需要注销max的定义
-#undef max
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 

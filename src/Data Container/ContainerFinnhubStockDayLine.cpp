@@ -2,6 +2,9 @@
 
 #include "ContainerFinnhubStockDayLine.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
+#include "FinnhubStock.h"
 #include"StockMarketSQLTable.h"
 
 namespace {

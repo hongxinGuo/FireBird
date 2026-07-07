@@ -52,3 +52,5 @@ private:
 protected:
 	size_t m_lLoadedStock; // 本次装载的股票总数
 };
+
+extern CContainerChinaStock gl_dataContainerChinaStock;

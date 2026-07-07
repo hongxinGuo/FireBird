@@ -1,6 +1,6 @@
 #pragma once
 
-class CVirtualHistoryCandle; // forward
+#include"VirtualDataHistoryCandle.h"
 
 struct CBoll {
 	chrono::local_days Date{ chrono::local_days(chrono::days(0)) };        // candle date

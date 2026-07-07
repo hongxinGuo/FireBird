@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"ContainerStockSymbol.h"
@@ -17,7 +19,7 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			s_pDataStockSymbol = make_shared<CContainerStockSymbol>();
+			s_pDataStockSymbol = std::make_shared<CContainerStockSymbol>();
 			s_pDataStockSymbol->Reset(); // 在此装入预设数据库
 
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());

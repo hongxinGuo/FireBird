@@ -3,6 +3,9 @@
 #include"EconomicCalendar.h"
 
 using std::map;
+using std::vector;
+using std::unordered_map;
+using std::string;
 
 class CContainerFinnhubEconomicCalendar final {
 public:
@@ -26,3 +29,5 @@ protected:
 	unordered_map<string, size_t> m_mapEconomicCalendar;
 	size_t m_lLastTotalEconomicCalendar;
 };
+
+extern CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;

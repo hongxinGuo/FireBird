@@ -114,7 +114,7 @@ public:
 
 	// 股票历史数据处理
 
-	static bool IsDayLineNeedProcess() { return gl_qDayLine.size_approx() > 0; }
+	static bool IsDayLineNeedProcess() { return gl_SystemData.GetDayLineQueueSize() > 0; }
 	bool IsSelectedStockLoaded() const noexcept { return m_fSelectedStockLoaded; }
 	void SetSelectedStockLoaded(const bool fLoad) noexcept { m_fSelectedStockLoaded = fLoad; }
 
@@ -253,3 +253,4 @@ private:
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;
 
 extern CChinaMarketPtr gl_pChinaMarket; // 中国股票市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
+extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。

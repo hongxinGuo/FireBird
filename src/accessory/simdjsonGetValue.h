@@ -3,6 +3,8 @@
 #include"simdjson.h"
 using namespace simdjson;
 
+using std::string_view;
+
 inline ondemand::array gl_simdjsonEmptyArray;
 
 void CreateSimdjsonEmptyArray();

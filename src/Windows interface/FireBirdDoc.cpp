@@ -12,6 +12,13 @@
 #include "ContainerTiingoStockMonthLine.h"
 #include "Thread.h"
 
+#include"ChinaStock.h"
+#include "ContainerChinaStockMonthLine.h"
+#include "ContainerChinaStockWeekLine.h"
+#include "ContainerTiingoStockDayLine.h"
+#include "ContainerTiingoStockWeekLine.h"
+#include "TiingoStock.h"
+
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CFireBirdDoc, CDocument)

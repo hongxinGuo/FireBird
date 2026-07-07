@@ -10,7 +10,10 @@
 #include"Thread.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "SystemMessage.h"
 
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();

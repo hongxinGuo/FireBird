@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FinnhubStock.h"
 #include"ProductFinnhub.h"
 
 class CProductFinnhubStockSymbol final : public CProductFinnhub {

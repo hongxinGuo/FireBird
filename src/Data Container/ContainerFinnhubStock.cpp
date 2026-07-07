@@ -11,6 +11,8 @@
 #include "jsonParse.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 CContainerFinnhubStock::CContainerFinnhubStock() {

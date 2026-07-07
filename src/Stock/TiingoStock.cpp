@@ -7,6 +7,9 @@
 #include "WorldMarket.h"
 #include <sqlpp11/sqlpp11.h>
 #include"StockMarketSQLTable.h"
+#include "SystemMessage.h"
+
+#include"dataBaseConnector.h"
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;

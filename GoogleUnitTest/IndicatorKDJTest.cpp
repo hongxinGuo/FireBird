@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <gtest/gtest.h>
+
 #include "GeneralCheck.h"
 #include "IndicatorKDJ.h"
 #include "ContainerChinaStockDayLine.h"

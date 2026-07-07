@@ -3,6 +3,8 @@
 #include<memory>
 #include<vector>
 
+using std::chrono::sys_seconds;
+
 class CTiingoIEXTopOfBook final {
 public:
 	CTiingoIEXTopOfBook();
@@ -28,9 +30,9 @@ public:
 
 public:
 	string m_strTicker{ "" };
-	chrono::sys_seconds m_timeStamp;
-	chrono::sys_seconds m_lastSale;
-	chrono::sys_seconds m_quote;
+	sys_seconds m_timeStamp;
+	sys_seconds m_lastSale;
+	sys_seconds m_quote;
 	long m_lLastClose{ 0 }; // 前收盘。单位：0.001元
 	long m_lOpen{ 0 }; // 开盘价
 	long m_lHigh{ 0 }; // 最高价

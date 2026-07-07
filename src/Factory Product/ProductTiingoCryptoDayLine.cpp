@@ -6,6 +6,10 @@
 #include"WorldMarket.h"
 
 #include "ProductTiingoCryptoDayLine.h"
+
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerTiingoCryptoSymbol.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {

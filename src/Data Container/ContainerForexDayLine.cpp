@@ -3,7 +3,11 @@
 #include "ContainerForexDayLine.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
+#include "FinnhubForex.h"
 #include"StockMarketSQLTable.h"
+#include "TiingoCandleLine.h"
 
 namespace {
 	CFinnhubForex s_stock;

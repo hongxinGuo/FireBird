@@ -1,5 +1,7 @@
 #pragma once
 
+#include <gmock/gmock-function-mocker.h>
+
 #include"FinnhubDataSource.h"
 
 namespace testing {

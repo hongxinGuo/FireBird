@@ -3,6 +3,8 @@
 #include"VirtualDataSource.h"
 #include"FinnhubFactory.h"
 
+using std::chrono::local_seconds;
+
 class CFinnhubDataSource : public CVirtualDataSource {
 public:
 	CFinnhubDataSource();
@@ -14,7 +16,7 @@ public:
 	~CFinnhubDataSource() override = default;
 
 	bool Reset() override;
-	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
+	bool GenerateInquiryMessage(const local_seconds& currentTime) override;
 
 	void ConfigureInternetOption() override;
 	void CheckWebData(const CWebDataPtr& pWebData) override;

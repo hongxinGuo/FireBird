@@ -1,11 +1,15 @@
 #include"pch.h"
 
+#include"gmock/gmock.h"
+
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
 #include"ContainerChinaStockDayLine.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 using namespace testing;

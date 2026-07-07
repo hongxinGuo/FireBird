@@ -2,6 +2,8 @@
 
 #include "Initialization.h"
 
+#include <spdlog/spdlog-inl.h>
+
 #include "AlphaVantageDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
@@ -27,6 +29,8 @@ using namespace spdlog;
 #include "AccessoryDataSource.h"
 #include <sqlpp11/sqlpp11.h>
 #include"StockMarketSQLTable.h"
+
+#include"dataBaseConnector.h"
 
 void DeleteAllFinnhubInaccessibleUSExchange() {
 	for (int i = 0; i < END_OF_ALL_INQUIRY_TYPE_; i++) {

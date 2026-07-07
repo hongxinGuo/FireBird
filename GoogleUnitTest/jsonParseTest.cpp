@@ -1,11 +1,15 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
 #include "SystemConfiguration.h"
+#include "SystemMessage.h"
 #include "WebData.h"
-#include "WebRTData.h"
+
+#include"nlohmannJsonDeclaration.h"
 
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {

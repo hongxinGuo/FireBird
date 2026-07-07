@@ -1,8 +1,11 @@
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+
 #include"GeneralCheck.h"
 
 #include"FinnhubWebSocket.h"
+#include "SystemMessage.h"
 #include"TiingoIEXWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"

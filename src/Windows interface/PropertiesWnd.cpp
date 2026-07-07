@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include"log.h"
+
 #include "framework.h"
 
 #include "PropertiesWnd.h"

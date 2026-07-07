@@ -1,7 +1,14 @@
 #pragma once
 
+#include "ClassDeclaration.h"
+#include"SystemMessage.h"
+
 #include "InternetOption.h"
 #include "spdlog_assert.h"
+
+using namespace std::chrono;
+
+#include<atomic>
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR_ = 0,
@@ -169,9 +176,9 @@ public:
 
 	virtual bool Reset() { return true; }
 
-	void Run(const chrono::local_seconds& lMarketTime);
+	void Run(const local_seconds& lMarketTime);
 	void InquireData();
-	virtual bool GenerateInquiryMessage(const chrono::local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
+	virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const CWebDataPtr&) {} // 此WebData内容为错误信息？
 
@@ -187,7 +194,7 @@ public:
 	void SetInquiringString(const string& str) noexcept { m_strInquiry = str; }
 	void AppendInquiringString(const string& str) noexcept { m_strInquiry += str; }
 
-	virtual chrono::time_point<chrono::steady_clock> GetTickCount() { return chrono::steady_clock::now(); } // 为了测试方便，将GetTickCount64包裹上一层。
+	virtual time_point<steady_clock> GetTickCount() { return steady_clock::now(); } // 为了测试方便，将GetTickCount64包裹上一层。
 
 	// 各状态
 	CVirtualProductWebDataPtr GetCurrentInquiry() const noexcept { return m_pCurrentProduct; }
@@ -256,8 +263,8 @@ protected:
 	queue<CVirtualProductWebDataPtr> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct{ nullptr };
 
-	atomic_int64_t m_dwHTTPStatusCode{ 200 }; // 网络状态码， 默认为200，表示正常。
-	atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码，默认为0，无错误。
+	std::atomic_int64_t m_dwHTTPStatusCode{ 200 }; // 网络状态码， 默认为200，表示正常。
+	std::atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码，默认为0，无错误。
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR_ };
 
 	InternetOption m_internetOption;
@@ -270,16 +277,16 @@ protected:
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
 	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）
-	atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
+	std::atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
 
-	static atomic<int64_t> sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
-	static atomic<int64_t> sm_lTotalByteReadPerSecond; // 
+	static std::atomic<int64_t> sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+	static std::atomic<int64_t> sm_lTotalByteReadPerSecond; // 
 
-	chrono::time_point<chrono::steady_clock> m_PrevInquireTimePoint{};
+	time_point<steady_clock> m_PrevInquireTimePoint{};
 
-	atomic_bool m_fInquiring{ false };
-	atomic_bool m_fEnable{ true }; // 允许执行标识
-	atomic_bool m_bWebBusy{ false };
+	std::atomic_bool m_fInquiring{ false };
+	std::atomic_bool m_fEnable{ true }; // 允许执行标识
+	std::atomic_bool m_bWebBusy{ false };
 	bool m_bConcurrentForbid{ false }; // 禁止使用并行申请模式。
 };
 

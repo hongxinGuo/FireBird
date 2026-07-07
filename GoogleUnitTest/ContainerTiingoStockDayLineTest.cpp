@@ -1,12 +1,17 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"DayLine.h"
 #include"ContainerTiingoStockDayLine.h"
 #include "ProductTiingoStockDayLine.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "TiingoStock.h"
 
 using namespace testing;
 

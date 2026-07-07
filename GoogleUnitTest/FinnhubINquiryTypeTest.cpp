@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"gtest/gtest.h"
+
 #include"FinnhubInquiryType.h"
 
 using namespace testing;

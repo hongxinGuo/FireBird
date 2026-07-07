@@ -8,6 +8,7 @@
 #include "IndicatorMACD.h"
 #include "IndicatorRSI.h"
 #include"IndicatorBoll.h"
+#include "VirtualStock.h"
 
 class CFireBirdDoc : public CDocument {
 protected: // 仅从序列化创建

@@ -48,3 +48,5 @@ public:
 	void TaskProcessTodayDayLine();
 	void ReportHighHigherRate();
 };
+
+extern CContainerTiingoStock gl_dataContainerTiingoStock;

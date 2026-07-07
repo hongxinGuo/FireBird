@@ -2,6 +2,8 @@
 
 #include "ChinaStockCodeConverter.h"
 
+using std::exception;
+
 string XferSinaToStandard(const string& strSina) {
 	ASSERT(strSina.length() >= 6);
 	const string strSymbol = strSina.substr(strSina.length() - 6, 6);
@@ -28,7 +30,7 @@ string XferSinaToStandard(const string_view& svSina) {
 		default: ;
 		}
 	}
-	throw exception("XferSinaToStandard bad header");
+	throw std::exception("XferSinaToStandard bad header");
 }
 
 string XferStandardToSina(const string& strStandard) {

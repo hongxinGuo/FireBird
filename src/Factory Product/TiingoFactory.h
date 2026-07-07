@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ClassDeclaration.h"
 #include"VirtualDataFactory.h"
 
 class CTiingoFactory final : public CVirtualDataFactory {

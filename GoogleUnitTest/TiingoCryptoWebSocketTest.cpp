@@ -1,6 +1,9 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
+#include "nlohmannJsonDeclaration.h"
 
 #include"TiingoCryptoWebSocket.h"
 

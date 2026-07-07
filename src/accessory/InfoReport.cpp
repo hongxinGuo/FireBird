@@ -3,7 +3,11 @@
 #include "InfoReport.h"
 
 #include "CharSetTransfer.h"
+#include "SystemMessage.h"
 #include "SystempublicDeclaration.h"
+
+using std::exception;
+using std::wstring;
 
 void ReportErrorToSystemMessage(const string& strPrefix, const exception& e) {
 	string strError = strPrefix;

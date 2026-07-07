@@ -10,6 +10,10 @@
 #include"ClassDeclaration.h"
 #include"nlohmannJsonDeclaration.h"
 
+using std::string;
+using std::string_view;
+using std::chrono::sys_seconds;
+
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
 class CWebData {
@@ -35,13 +39,13 @@ public:
 
 	bool IsLastDataParagraph() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size() - 2; }// 已读至最后一段数据
 
-	chrono::sys_seconds GetTime() const noexcept { return m_tpTime; }
-	void SetTime(chrono::sys_seconds time) noexcept { m_tpTime = time; }
-	string GetStockCode() const noexcept { return m_strStockCode; }
-	void SetStockCode(const string& strStockCode) noexcept { m_strStockCode = strStockCode; }
+	std::chrono::sys_seconds GetTime() const noexcept { return m_tpTime; }
+	void SetTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
+	std::string GetStockCode() const noexcept { return m_strStockCode; }
+	void SetStockCode(const std::string& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
 
-	string GetDataBuffer() noexcept { return m_sDataBuffer; }
+	std::string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	auto GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const size_t lValue) noexcept { m_lCurrentPos = lValue; }
 	string_view GetStringView(const size_t iDataPos, const size_t iDataLength) const { return m_svDataBuffer.substr(iDataPos, iDataLength); }
@@ -66,7 +70,7 @@ public:
 	void Test_SetBuffer_(const string& strBuffer);
 
 protected:
-	chrono::sys_seconds m_tpTime;// 此数据的提取时间。UTC时间，单位为秒。
+	sys_seconds m_tpTime;// 此数据的提取时间。UTC时间，单位为秒。
 	string m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
 	string_view m_svDataBuffer; // m_sDataBuffer的string_view

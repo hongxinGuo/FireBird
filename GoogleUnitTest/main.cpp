@@ -35,9 +35,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+#include <gmock/gmock-more-matchers.h>
+
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
+#include "ContainerTiingoStock.h"
+#include "dataBaseConnector.h"
 #include"WorldMarket.h"
 
 #include"simdjsonGetValue.h"

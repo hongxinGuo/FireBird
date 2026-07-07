@@ -7,6 +7,7 @@
 
 #include "ProductFinnhubCompanyProfileConcise.h"
 
+#include "ContainerTiingoStock.h"
 #include "WebData.h"
 
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {

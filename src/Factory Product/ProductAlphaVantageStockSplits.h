@@ -1,6 +1,8 @@
 #pragma once
 
+#include"WebData.h"
 #include"ProductAlphaVantage.h"
+#include"StockSplit.h"
 
 class CProductAlphaVantageStockSplits final : public CProductAlphaVantage {
 public:

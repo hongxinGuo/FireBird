@@ -23,6 +23,12 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+#include "containerChosenCrypto.h"
+#include "ContainerChosenForex.h"
+#include "ContainerStockSymbol.h"
+#include "ContainerTiingoChosenStock.h"
+#include "ContainerTiingoFundamentalDefinition.h"
+#include "ContainerTiingoStock.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "TimeConvert.h"
 

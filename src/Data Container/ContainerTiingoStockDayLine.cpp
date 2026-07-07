@@ -2,7 +2,10 @@
 
 #include "ContainerTiingoStockDayLine.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "TiingoStock.h"
 
 namespace {
 	CTiingoStock s_stock;

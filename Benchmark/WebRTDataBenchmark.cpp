@@ -1,8 +1,5 @@
 #include"pch.h"
 
-// Note 需要预先消除max的定义
-#undef max
-
 #include<benchmark/benchmark.h>
 
 #include"WebData.h"
@@ -16,12 +13,12 @@ namespace {
 class CWebRTDataBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		m_pSinaWebData = make_shared<CWebData>();
+		m_pSinaWebData = std::make_shared<CWebData>();
 		long lStringLength = sSinaWebData.length();
 		m_pSinaWebData->Resize(lStringLength);
 		m_pSinaWebData->SetData(sSinaWebData.c_str(), lStringLength);
 
-		m_pTengxunWebData = make_shared<CWebData>();
+		m_pTengxunWebData = std::make_shared<CWebData>();
 		lStringLength = sTengxunWebData.length();
 		m_pTengxunWebData->Resize(lStringLength);
 		m_pTengxunWebData->SetData(sTengxunWebData.c_str(), lStringLength);

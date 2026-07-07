@@ -7,8 +7,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 #include "SystemConfiguration.h"
+#include "SystemMessage.h"
 
 namespace FireBirdTest {
 	class SystemMessageTest : public ::testing::Test {

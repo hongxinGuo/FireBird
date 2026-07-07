@@ -2,6 +2,7 @@
 
 #include "AccessoryDataSource.h"
 
+#include "ClassDeclaration.h"
 #include "FinnhubInquiryType.h"
 #include "spdlog_assert.h"
 #include "WorldMarket.h"

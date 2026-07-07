@@ -21,3 +21,5 @@ public:
 
 protected:
 };
+
+extern CContainerTiingoChosenStock gl_dataContainerTiingoChosenStock;

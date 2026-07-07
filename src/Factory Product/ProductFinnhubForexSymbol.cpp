@@ -5,6 +5,8 @@
 
 #include "ProductFinnhubForexSymbol.h"
 
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
 #include "WebData.h"
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {

@@ -1,10 +1,18 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"TiingoStock.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "ChinaStock.h"
 #include"StockMarketSQLTable.h"
+#include "SystemMessage.h"
+
+#include"dataBaseConnector.h"
+#include "FinnhubStock.h"
 
 namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {

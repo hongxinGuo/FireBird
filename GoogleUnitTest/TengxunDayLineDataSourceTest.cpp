@@ -4,6 +4,8 @@
 
 #include"TengxunDayLineDataSource.h"
 //#include"WorldMarket.h"
+#include <gtest/gtest.h>
+
 #include"ChinaMarket.h"
 #include "ProductTengxunDayLine.h"
 

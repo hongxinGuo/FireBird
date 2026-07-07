@@ -708,6 +708,9 @@
     <ClInclude Include="..\src\Factory Product\ProductEastmoneyDayline.h">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">

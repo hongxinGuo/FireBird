@@ -1,8 +1,12 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
+#include "ContainerTiingoStock.h"
 #include"GeneralCheck.h"
 
 #include"ProductTiingoFinancialState.h"
+#include "SystemMessage.h"
 
 #include"TestWebData.h"
 #include "TimeConvert.h"

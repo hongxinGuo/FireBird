@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#undef min
-#undef max
 #include <sqlpp11/mysql/connection_pool.h>
 
 // Inline global connection pool. Using an inline variable so the header can be

@@ -1,5 +1,7 @@
 #pragma once
 
+using std::unordered_map;
+
 class CContainerFinnhubForexExchange final {
 public:
 	CContainerFinnhubForexExchange();
@@ -30,3 +32,5 @@ protected:
 	unordered_map<string, size_t> m_mapForexExchange;
 	size_t m_llLastTotalForexExchange{ 0 };
 };
+
+extern CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;

@@ -1,11 +1,14 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
 
 #include"ProductTengxunDayLine.h"
 #include "WebData.h"
+#include"DayLineWebData.h"
 
 using namespace testing;
 

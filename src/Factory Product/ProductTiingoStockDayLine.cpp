@@ -4,6 +4,10 @@
 #include"nlohmannJsonGetValue.h"
 #include"WorldMarket.h"
 #include "ProductTiingoStockDayLine.h"
+
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate) {

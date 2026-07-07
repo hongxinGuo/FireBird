@@ -11,7 +11,12 @@
 
 #include "GeneralCheck.h"
 
+#include <gmock/gmock-matchers.h>
+
 #include "AccessoryDataSource.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "ContainerTiingoStock.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "InaccessibleSymbol.h"
 #include "SinaRTDataSource.h"

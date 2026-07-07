@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include "ChinaMarket.h"
 #include "InaccessibleSymbol.h"
 #include "FinnhubInquiryType.h"

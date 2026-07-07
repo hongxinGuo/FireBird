@@ -4,8 +4,10 @@
 
 #include "AccessoryFactory.h"
 
+#include "ClassDeclaration.h"
 #include "ProductDummy.h"
 #include "ProductIndexNasdaq100Stocks.h"
+#include "SystemMessage.h"
 
 CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

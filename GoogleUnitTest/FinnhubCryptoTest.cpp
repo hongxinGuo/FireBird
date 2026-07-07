@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
@@ -7,6 +9,8 @@
 
 #include <sqlpp11/sqlpp11.h>
 #include"StockMarketSQLTable.h"
+
+#include"dataBaseConnector.h"
 
 using namespace testing;
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ContainerVirtualStock.h"
 #include "TiingoCrypto.h"
 
 class CContainerTiingoCryptoSymbol : public CContainerVirtualStock {
@@ -18,3 +19,5 @@ public:
 	void UpdateDB();
 	bool LoadDB();
 };
+
+extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;

@@ -3,6 +3,7 @@
 #include"afxinet.h"
 
 #include"InternetOption.h"
+#include "VirtualWebProduct.h"
 
 constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
 

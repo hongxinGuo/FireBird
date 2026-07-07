@@ -6,6 +6,7 @@
 #include"TiingoCrypto.h"
 #include "ProductTiingoCryptoSymbol.h"
 
+#include "ContainerTiingoCryptoSymbol.h"
 #include "TiingoDataSource.h"
 #include "WebData.h"
 #include "WorldMarket.h"

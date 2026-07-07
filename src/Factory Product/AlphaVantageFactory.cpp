@@ -1,11 +1,12 @@
 #include "pch.h"
 
-#include "AlphaVantageFactory.h"
+#include "SystemMessage.h"
 
 #include "FinnhubInquiryType.h"
 #include "ProductAlphaVantageStockDayLine.h"
 #include "ProductAlphaVantageStockSplits.h"
 #include "ProductDummy.h"
+#include "AlphaVantageFactory.h"
 
 CVirtualProductWebDataPtr CAlphaVantageFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

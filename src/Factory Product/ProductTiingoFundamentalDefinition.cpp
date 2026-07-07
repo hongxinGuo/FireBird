@@ -5,6 +5,7 @@
 #include"TiingoFundamentalDefinition.h"
 #include "ProductTiingoFundamentalDefinition.h"
 
+#include "ContainerTiingoFundamentalDefinition.h"
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"

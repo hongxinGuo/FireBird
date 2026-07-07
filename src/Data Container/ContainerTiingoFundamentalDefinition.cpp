@@ -2,6 +2,8 @@
 
 #include "ContainerTiingoFundamentalDefinition.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 CContainerTiingoFundamentalDefinition::CContainerTiingoFundamentalDefinition() {

@@ -125,6 +125,7 @@
     <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h" />
     <ClInclude Include="..\src\FinnhubInquiryType.h" />
     <ClInclude Include="..\src\globedef.h" />
+    <ClInclude Include="..\src\log.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
     <ClInclude Include="..\src\Market\MarketTask.h" />
     <ClInclude Include="..\src\Market\MarketTaskQueue.h" />

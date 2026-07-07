@@ -9,7 +9,10 @@
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "SystemMessage.h"
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();

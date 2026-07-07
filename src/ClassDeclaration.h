@@ -62,6 +62,7 @@ class CWebData;
 typedef shared_ptr<CWebData> CWebDataPtr;
 
 class CDayLineWebData;
+typedef shared_ptr<CDayLineWebData> CDayLineWebDataPtr;
 
 // Web RT Data
 class CWebRTData;

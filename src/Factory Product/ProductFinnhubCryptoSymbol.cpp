@@ -5,6 +5,8 @@
 
 #include "ProductFinnhubCryptoSymbol.h"
 
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
 #include "WebData.h"
 
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {

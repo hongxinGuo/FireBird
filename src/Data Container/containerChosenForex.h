@@ -21,3 +21,5 @@ public:
 
 protected:
 };
+
+extern CContainerChosenForex gl_dataContainerChosenWorldForex;

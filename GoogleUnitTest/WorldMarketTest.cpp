@@ -1,5 +1,8 @@
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+#include <gmock/gmock-more-matchers.h>
+
 #include"GeneralCheck.h"
 
 #include"FinnhubStock.h"
@@ -8,6 +11,16 @@
 #include "WorldMarket.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "ContainerFinnhubCountry.h"
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubEconomicCalendar.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
+#include "ContainerTiingoStock.h"
+#include "dataBaseConnector.h"
+#include "EconomicCalendar.h"
 #include"StockMarketSQLTable.h"
 
 using namespace testing;

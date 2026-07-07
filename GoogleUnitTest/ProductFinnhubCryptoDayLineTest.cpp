@@ -1,8 +1,12 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
+#include "ContainerFinnhubCrypto.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include"ProductFinnhubCryptoDayLine.h"
+#include "SystemMessage.h"
 
 #include"TestWebData.h"
 

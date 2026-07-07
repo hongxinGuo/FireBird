@@ -5,6 +5,9 @@
 
 #include "ProductFinnhubStockSymbol.h"
 
+#include "ContainerFinnhubStock.h"
+#include "ContainerStockExchange.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {

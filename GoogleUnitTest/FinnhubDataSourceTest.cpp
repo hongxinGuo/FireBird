@@ -1,5 +1,13 @@
 #include"pch.h"
 
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
+#include "ContainerFinnhubStock.h"
+#include "ContainerStockExchange.h"
+#include "FinnhubCrypto.h"
+#include "FinnhubForex.h"
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"

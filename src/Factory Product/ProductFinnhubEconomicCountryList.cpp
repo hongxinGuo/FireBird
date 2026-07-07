@@ -7,6 +7,7 @@
 
 #include "ProductFinnhubEconomicCountryList.h"
 
+#include "ContainerFinnhubCountry.h"
 #include "FinnhubDataSource.h"
 #include "WebData.h"
 

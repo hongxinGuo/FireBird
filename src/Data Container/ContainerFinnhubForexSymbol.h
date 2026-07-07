@@ -22,3 +22,5 @@ public:
 protected:
 	size_t m_lastTotalSymbol;
 };
+
+extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;

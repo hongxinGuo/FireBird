@@ -22,6 +22,22 @@
 #include "TimeConvert.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "containerChosenCrypto.h"
+#include "ContainerChosenForex.h"
+#include "ContainerFinnhubCountry.h"
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubEconomicCalendar.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
+#include "ContainerStockExchange.h"
+#include "ContainerTiingoChosenStock.h"
+#include "ContainerTiingoCryptoSymbol.h"
+#include "ContainerTiingoFundamentalDefinition.h"
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 namespace {

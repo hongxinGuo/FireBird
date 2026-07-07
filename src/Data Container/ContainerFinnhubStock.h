@@ -36,3 +36,5 @@ public:
 	bool IsUpdateEPSSurpriseDB();
 	bool IsUpdateSECFilingsDB();
 };
+
+extern CContainerFinnhubStock gl_dataContainerFinnhubStock;

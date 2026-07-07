@@ -7,6 +7,7 @@
 #pragma once
 
 #include"DayLine.h"
+#include "WebData.h"
 
 enum {
 	GOOD_DATA_ = 1,

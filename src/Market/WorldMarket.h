@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ContainerFinnhubStock.h"
 #include"VirtualMarket.h"
 
 #include "TiingoIEXWebSocket.h"

@@ -1,9 +1,12 @@
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+
 #include"GeneralCheck.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+#include "SystemMessage.h"
 
 using namespace testing;
 

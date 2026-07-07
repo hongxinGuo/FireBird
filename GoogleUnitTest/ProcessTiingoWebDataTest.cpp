@@ -1,10 +1,14 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"WebData.h"
 
 #include"FinnhubStock.h"
+#include "SystemData.h"
+#include "SystemMessage.h"
 
 using namespace testing;
 

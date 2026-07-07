@@ -3,6 +3,9 @@
 #include "containerChosenCrypto.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "ContainerFinnhubCrypto.h"
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {

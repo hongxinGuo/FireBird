@@ -15,6 +15,7 @@
 #include "ProductTiingoIEXTopOFBook.h"
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
+#include "SystemMessage.h"
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

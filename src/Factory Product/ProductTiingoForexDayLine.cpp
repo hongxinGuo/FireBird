@@ -3,6 +3,7 @@
 
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
+#include "SystemMessage.h"
 
 #include"WorldMarket.h"
 #include "WebData.h"

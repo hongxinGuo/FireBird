@@ -1,10 +1,13 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
 
 #include"ProductFinnhubCompanyPeer.h"
+#include "SystemMessage.h"
 
 #include"TestWebData.h"
 

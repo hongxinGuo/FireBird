@@ -13,6 +13,7 @@
 
 #include "ProductFinnhubEconomicCalendar.h"
 
+#include "ContainerFinnhubEconomicCalendar.h"
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
 #include "WebData.h"

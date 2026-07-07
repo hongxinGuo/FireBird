@@ -1,5 +1,8 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
+#include "ContainerTiingoStock.h"
 #include"GeneralCheck.h"
 #include"TiingoDataSource.h"
 

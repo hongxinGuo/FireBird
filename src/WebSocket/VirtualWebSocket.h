@@ -17,6 +17,7 @@ using namespace moodycamel;
 using std::string;
 using std::map;
 using std::vector;
+using std::shared_ptr;
 
 using vectorString = vector<string>;
 class CVirtualWebSocket;
@@ -40,7 +41,7 @@ public:
 	bool ConnectAndSendMessage(const vectorString& vSymbol);
 	void Disconnect();
 
-	virtual bool ParseWebSocketData(shared_ptr<string>) { return true; }
+	virtual bool ParseWebSocketData(std::shared_ptr<string>) { return true; }
 
 protected:
 	virtual void Connect() { ASSERT(false); }

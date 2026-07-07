@@ -8,6 +8,8 @@
 
 #include "ProductFinnhubForexDayLine.h"
 
+#include "containerFinnhubForexSymbol.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {

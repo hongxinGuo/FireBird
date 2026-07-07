@@ -6,6 +6,7 @@
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
 #include "TiingoStockDailyMeta.h"
+#include "VirtualStock.h"
 
 class CTiingoStock;
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;

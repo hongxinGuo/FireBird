@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"gmock/gmock.h"
+
 #include"GeneralCheck.h"
 
 #include"VirtualWebProduct.h"

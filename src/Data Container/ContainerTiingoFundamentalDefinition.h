@@ -1,6 +1,7 @@
 #pragma once
 
 using std::map;
+using std::unordered_map;
 
 #include"TiingoFundamentalDefinition.h"
 
@@ -39,3 +40,5 @@ protected:
 
 	bool m_fUpdated{ false };
 };
+
+extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;

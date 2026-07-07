@@ -2,6 +2,9 @@
 
 #include "ContainerTiingoChosenStock.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "ContainerTiingoStock.h"
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 CContainerTiingoChosenStock::CContainerTiingoChosenStock() {

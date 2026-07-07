@@ -1,5 +1,8 @@
 #pragma once
 
+using std::chrono::local_seconds;
+using std::chrono::local_days;
+
 class CStockExchange final {
 public:
 	CStockExchange();
@@ -30,8 +33,8 @@ public:
 	string m_strSource;
 	string m_strMyUnknownColumn;
 
-	chrono::local_seconds m_marketOpenTime{ 0h };
-	chrono::local_seconds m_marketCloseTime{ 0h };
+	local_seconds m_marketOpenTime{ std::chrono::hours(0) };
+	local_seconds m_marketCloseTime{ std::chrono::hours(0) };
 
 	bool m_fUpdateStockSymbol{ true };
 	bool m_fUpdateMarketStatus{ true };

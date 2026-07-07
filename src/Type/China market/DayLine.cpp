@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include "DayLine.h"
+#include "ChinaStock.h"
 
 namespace {
 	CChinaStock s_stock;

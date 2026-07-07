@@ -3,6 +3,8 @@
 #include"StockSection.h"
 #include "VirtualContainer.h"
 
+using std::unordered_map;
+
 class CContainerStockSymbol : public CVirtualContainer {
 public:
 	CContainerStockSymbol();
@@ -54,3 +56,5 @@ private:
 };
 
 using CContainerStockSymbolPtr = shared_ptr<CContainerStockSymbol>;
+
+extern CContainerStockSymbol gl_dataContainerChinaStockSymbol;

@@ -7,6 +7,7 @@
 
 #include "ProductFinnhubStockPriceQuote.h"
 
+#include "ContainerFinnhubStock.h"
 #include "WebData.h"
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {

@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
 
 #include"NaicsIndustry.h"
@@ -45,5 +47,4 @@ namespace FireBirdTest {
 		finnhubExchange.SetUpdated(true);
 		EXPECT_TRUE(finnhubExchange.IsUpdated());
 	}
-
 }

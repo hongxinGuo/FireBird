@@ -7,6 +7,7 @@
 #include"ChinaMarket.h"
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 
+#include "ContainerFinnhubStock.h"
 #include "WebData.h"
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {

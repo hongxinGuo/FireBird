@@ -7,6 +7,7 @@
 
 #include "ProductFinnhubMarketStatus.h"
 
+#include "ContainerStockExchange.h"
 #include "WebData.h"
 
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {

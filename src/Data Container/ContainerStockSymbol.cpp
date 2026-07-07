@@ -5,6 +5,8 @@
 
 #include "SystemConstantChinaMarket.h"
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 CContainerStockSymbol::CContainerStockSymbol() {
@@ -32,7 +34,7 @@ CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSection.resize(0);
 	m_vStockSection.resize(2000); // 沪深各1000个段。
 	for (int i = 0; i < 2000; i++) {
-		const auto pStockSection = make_shared<CStockSection>();
+		const auto pStockSection = std::make_shared<CStockSection>();
 		pStockSection->SetIndexNumber(i);
 		if (i < 1000) pStockSection->SetMarket(_SHANGHAI_MARKET_);
 		else pStockSection->SetMarket(_SHENZHEN_MARKET_);
@@ -71,7 +73,7 @@ void CContainerStockSymbol::Reset() {
 	m_vStockSection.resize(0);
 	m_vStockSection.resize(2000); // 沪深各1000个段。
 	for (int i = 0; i < 2000; i++) {
-		const auto pStockSection = make_shared<CStockSection>();
+		const auto pStockSection = std::make_shared<CStockSection>();
 		pStockSection->SetIndexNumber(i);
 		if (i < 1000) pStockSection->SetMarket(_SHANGHAI_MARKET_);
 		else pStockSection->SetMarket(_SHENZHEN_MARKET_);

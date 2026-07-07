@@ -14,6 +14,9 @@
 
 #include <sqlpp11/sqlpp11.h>
 #include"StockMarketSQLTable.h"
+#include "SystemMessage.h"
+
+#include"dataBaseConnector.h"
 
 CFinnhubStock::CFinnhubStock() {
 	SetExchange("US");

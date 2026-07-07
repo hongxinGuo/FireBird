@@ -1,5 +1,8 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
+#include "ContainerFinnhubCountry.h"
 #include"GeneralCheck.h"
 #include"Country.h"
 #include "FinnhubDataSource.h"

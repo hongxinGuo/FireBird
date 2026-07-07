@@ -2,6 +2,8 @@
 
 #include<memory>
 
+using std::chrono::local_days;
+
 class CEPSSurprise final {
 public:
 	CEPSSurprise();
@@ -13,7 +15,7 @@ public:
 
 public:
 	string m_strSymbol;
-	chrono::local_days m_lDate;
+	local_days m_lDate;
 	double m_dActual;
 	double m_dEstimate;
 };

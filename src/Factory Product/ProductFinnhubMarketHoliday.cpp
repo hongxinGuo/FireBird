@@ -5,6 +5,7 @@
 
 #include "ProductFinnhubMarketHoliday.h"
 
+#include "ContainerStockExchange.h"
 #include "TimeConvert.h"
 #include "WebData.h"
 #include "WorldMarket.h"

@@ -54,7 +54,7 @@ void CInaccessible::AddSymbol(const string& sSymbolName) {
 void CInaccessible::DeleteSymbol(const string& sSymbolName) {
 	if (m_setSymbol.contains(sSymbolName)) { // 集合中存在此元素？
 		m_setSymbol.erase(sSymbolName);
-		auto it = ranges::find(m_vSymbol, sSymbolName);
+		auto it = std::ranges::find(m_vSymbol, sSymbolName);
 		if (it != m_vSymbol.end()) {
 			m_vSymbol.erase(it);
 		}

@@ -1,4 +1,5 @@
 #include"pch.h"
+#include "SystemMessage.h"
 
 #include"afxinet.h"
 

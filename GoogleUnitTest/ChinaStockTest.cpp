@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include <gmock/gmock-matchers.h>
+
 #include"GeneralCheck.h"
 
 #include"ChinaStock.h"
@@ -9,6 +11,10 @@
 
 #include <sqlpp11/sqlpp11.h>
 #include"StockMarketSQLTable.h"
+
+#include"dataBaseConnector.h"
+#include "TiingoStock.h"
+#include"FinnhubStock.h"
 
 using namespace testing;
 

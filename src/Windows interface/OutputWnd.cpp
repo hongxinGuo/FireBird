@@ -5,6 +5,7 @@
 #include "MainFrm.h"
 
 #include"ChinaMarket.h"
+#include "SystemMessage.h"
 #include "WorldMarket.h"
 
 /////////////////////////////////////////////////////////////////////////////

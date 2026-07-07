@@ -10,7 +10,11 @@
 #include "ContainerStockExchange.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+
+using namespace std;
 
 CContainerStockExchange::CContainerStockExchange() {
 	LoadDB(); // 生成时即装载数据库。

@@ -3,7 +3,6 @@
 #include "VirtualDataHistoryCandle.h"
 #include "StockSplit.h"
 
-#include"nlohmann/json.hpp"
 #include "nlohmannJsonDeclaration.h"
 
 class CVirtualStock;

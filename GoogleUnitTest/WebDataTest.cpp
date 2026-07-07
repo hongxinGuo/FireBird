@@ -1,6 +1,9 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
+#include "SystemMessage.h"
 
 #include"WebData.h"
 
@@ -91,7 +94,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWebDataTest, TestGetTime) {
 		EXPECT_EQ(webData.GetTime().time_since_epoch().count(), 0);
-		chrono::sys_seconds tp = toSysTime(101010101010);
+		sys_seconds tp = toSysTime(101010101010);
 		webData.SetTime(tp);
 		EXPECT_EQ(webData.GetTime().time_since_epoch().count(), 101010101010);
 	}

@@ -1,5 +1,7 @@
 #pragma once
 
+using std::atomic_int;
+
 class CThreadStatus final {
 	//各线程状态
 public:

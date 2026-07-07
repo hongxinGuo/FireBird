@@ -5,7 +5,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include"GeneralCheck.h"
+#include"SystemData.h"
+
+using namespace std;
 
 namespace FireBirdTest {
 	class CSystemDataTest : public testing::Test {

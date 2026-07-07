@@ -1,9 +1,12 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include "CharSetTransfer.h"
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
+#include "SystemMessage.h"
 #include"WebRTData.h"
 #include"WebData.h"
 

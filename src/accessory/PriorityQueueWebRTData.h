@@ -40,6 +40,6 @@ protected:
 	//     return(p1->GetMarketTime() > p2->GetMarketTime());
 	//   }
 	// };
-	priority_queue<CWebRTDataPtr, vector<CWebRTDataPtr>, cmpRTData> m_priorityQueueWebRTData;
-	mutex m_MutexAccessData; // 互斥。
+	std::priority_queue<CWebRTDataPtr, vector<CWebRTDataPtr>, cmpRTData> m_priorityQueueWebRTData;
+	std::mutex m_MutexAccessData; // 互斥。
 };

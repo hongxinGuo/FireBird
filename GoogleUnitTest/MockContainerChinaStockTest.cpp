@@ -5,6 +5,9 @@
 #include"MockContainerChinaStock.h"
 
 #include<memory>
+#include <gtest/gtest.h>
+
+#include "SystemMessage.h"
 
 using namespace testing;
 

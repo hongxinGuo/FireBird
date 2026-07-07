@@ -34,6 +34,7 @@
 
 #include "ProductFinnhubCompanySymbolChange.h"
 #include "ProductFinnhubSECFilings.h"
+#include "SystemMessage.h"
 
 CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

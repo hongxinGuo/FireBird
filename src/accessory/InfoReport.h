@@ -1,5 +1,7 @@
 #pragma once
 
+using std::exception;
+
 void ReportErrorToSystemMessage(const string& strPrefix, const exception& e);
 
 void ReportWebError(DWORD dwErrorNo, long long llTime, const string& strInputMessage);
@@ -11,3 +13,8 @@ int ReportRunningToWatchdog();
 int ReportExitToWatchdog();
 int ReportSchedulingExitToWatchdog();
 int ReportCheckRunningExitToWatchdog();
+
+extern UINT gl_MsgFireBirdExit;
+extern UINT gl_MsgFireBirdSchedulingExit;
+extern UINT gl_MsgFireBirdCheckRunningExit;
+extern UINT gl_MsgFireBirdRunning;

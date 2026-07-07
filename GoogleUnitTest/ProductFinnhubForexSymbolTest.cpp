@@ -1,7 +1,12 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
 #include"GeneralCheck.h"
 #include"ProductFinnhubForexSymbol.h"
+#include "SystemMessage.h"
 #include "WorldMarket.h"
 #include"TestWebData.h"
 

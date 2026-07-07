@@ -21,3 +21,5 @@ public:
 
 protected:
 };
+
+extern CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;

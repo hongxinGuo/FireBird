@@ -1,6 +1,7 @@
 #pragma once
 
 using std::string;
+using std::string_view;
 
 //import std;
 

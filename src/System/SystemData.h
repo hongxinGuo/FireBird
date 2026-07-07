@@ -8,62 +8,21 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <queue>
+using std::queue;
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
-
-#include "ContainerChinaStock.h"
-#include "containerChosenCrypto.h"
-#include "ContainerChosenForex.h"
-#include "ContainerTiingoChosenStock.h"
-#include "ContainerFinnhubCountry.h"
-#include "ContainerFinnhubCryptoExchange.h"
-#include "containerFinnhubCrypto.h"
-#include "ContainerFinnhubEconomicCalendar.h"
-#include "ContainerFinnhubForexExchange.h"
-#include "containerFinnhubForexSymbol.h"
-#include "ContainerStockExchange.h"
-#include "ContainerStockSymbol.h"
-#include "ContainerTiingoCryptoSymbol.h"
-#include "ContainerTiingoStock.h"
-#include "ContainerFinnhubStock.h"
-#include "ContainerTiingoFundamentalDefinition.h"
-#include "ContainerTiingoSymbol.h"
 
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-#include "DayLineWebData.h"
+#include"ClassDeclaration.h"
 
 // 处理后的各种数据
 extern ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
 extern ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine; // 日线数据
-
-// ChinaMarket处理的数据
-extern CContainerChinaStock gl_dataContainerChinaStock;
-extern CContainerStockSymbol gl_dataContainerChinaStockSymbol;
-
-// WorldMarket处理的数据
-extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
-extern CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;
-extern CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
-extern CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
-
-extern CContainerStockExchange gl_dataContainerStockExchange;
-extern CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;
-extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
-
-extern CContainerFinnhubStock gl_dataContainerFinnhubStock;
-extern CContainerTiingoStock gl_dataContainerTiingoStock;
-extern CContainerTiingoSymbol gl_dataContainerTiingoNewSymbol;
-extern CContainerTiingoSymbol gl_dataContainerTiingoDelistedSymbol;
-extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
-extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;
-
-extern CContainerTiingoChosenStock gl_dataContainerTiingoChosenStock;
-extern CContainerChosenForex gl_dataContainerChosenWorldForex;
-extern CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
 
 class CSystemData final {
 public:
@@ -115,18 +74,21 @@ public:
 		return p;
 	}
 
-	static void ClearChinaMarketRTDataQueue() {
+	void ClearChinaMarketRTDataQueue() {
 		bool succeed = true;
 		CWebRTDataPtr pRTData;
 		while (succeed) succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	}
 
-	static void ClearDataQueue() {
+	void ClearDataQueue() {
 		ClearChinaMarketRTDataQueue();
 		bool succeed = true;
 		CDayLineWebDataPtr pData;
 		while (succeed) succeed = gl_qDayLine.try_dequeue(pData);
 	}
+
+	size_t GetChinaMarketRTDataQueueSize() const { return gl_qChinaMarketRTData.size_approx(); }
+	size_t GetDayLineQueueSize() const { return gl_qDayLine.size_approx(); }
 
 private:
 	queue<CFinnhubSocketPtr> m_qFinnhubSocket;

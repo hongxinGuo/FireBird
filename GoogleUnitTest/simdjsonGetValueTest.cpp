@@ -1,7 +1,10 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
+
 #include "GeneralCheck.h"
 #include"simdjsonGetValue.h"
+#include "SystemMessage.h"
 using namespace simdjson;
 
 using namespace testing;

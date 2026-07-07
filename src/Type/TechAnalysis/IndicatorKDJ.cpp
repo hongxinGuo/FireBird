@@ -31,8 +31,8 @@ void CIndicatorKDJ::Calculate() {
 		long long lLow = data->GetLow();
 		for (size_t i = index - m_Period + 1; i <= index; i++) {
 			auto data2 = m_pvCandle->GetData(i);
-			lHigh = std::max(lHigh, data2->GetHigh());
-			lLow = std::min(lLow, data2->GetLow());
+			lHigh = max(lHigh, data2->GetHigh());
+			lLow = min(lLow, data2->GetLow());
 		}
 		if (lHigh == 0 || lHigh == lLow) m_vKDJ[index].m_RSV = 50.0;
 		else m_vKDJ[index].m_RSV = (static_cast<double>(data->GetClose() - lLow)) * 100 / (lHigh - lLow);

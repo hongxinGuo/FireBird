@@ -2,6 +2,8 @@
 
 #include"Country.h"
 
+using std::unordered_map;
+
 class CContainerFinnhubCountry final {
 public:
 	CContainerFinnhubCountry();
@@ -30,3 +32,5 @@ protected:
 	unordered_map<string, size_t> m_mapCountry;
 	size_t m_llLastTotalCountry;
 };
+
+extern CContainerFinnhubCountry gl_dataContainerFinnhubCountry;

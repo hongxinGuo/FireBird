@@ -13,6 +13,7 @@
 #include"MockChinaMarket.h"
 
 #include"GeneralCheck.h"
+#include "SystemMessage.h"
 
 using namespace testing;
 #include<memory>

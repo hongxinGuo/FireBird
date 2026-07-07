@@ -4,6 +4,9 @@
 #include "InfoReport.h"
 
 #include <sqlpp11/sqlpp11.h>
+
+#include "ContainerVirtualStock.h"
+#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {

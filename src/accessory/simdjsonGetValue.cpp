@@ -11,6 +11,8 @@
 #include "pch.h"
 #include "simdjsonGetValue.h"
 
+using std::string_view;
+
 void CreateSimdjsonEmptyArray() {
 	static ondemand::parser s_parserEmptyArray;
 	static auto s_jsonEmptyArray = "[]"_padded; // The _padded suffix creates a simdjson::padded_string instance
@@ -32,7 +34,7 @@ namespace {
 	}
 
 	template <typename T, typename Container, typename Getter>
-	T simdjsonGetHelper(Getter getter, Container& value, const string_view& key, const T& defaultValue) {
+	T simdjsonGetHelper(Getter getter, Container& value, const std::string_view& key, const T& defaultValue) {
 		ondemand::value valueInner = value[key].value();
 		try {
 			return getter(valueInner);
