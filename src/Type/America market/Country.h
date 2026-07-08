@@ -2,6 +2,7 @@
 
 using std::vector;
 using std::shared_ptr;
+using std::string;
 
 class CCountry final {
 public:

@@ -3,6 +3,7 @@
 #include"Country.h"
 
 using std::unordered_map;
+using std::string;
 
 class CContainerFinnhubCountry final {
 public:

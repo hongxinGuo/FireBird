@@ -1,6 +1,8 @@
 #pragma once
 
-#include<memory>
+using std::string;
+using std::shared_ptr;
+using std::vector;
 
 class CFinnhubRecommendationTrends final {
 public:

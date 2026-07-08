@@ -1,5 +1,9 @@
 #pragma once
 
+using std::string;
+using std::vector;
+using std::shared_ptr;
+
 class CInsiderSentiment final {
 public:
 	CInsiderSentiment();

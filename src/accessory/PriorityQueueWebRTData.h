@@ -1,5 +1,7 @@
 #pragma once
 
+#include <queue>
+
 #include"WebRTData.h"
 
 class CPriorityQueueWebRTData final {
@@ -40,6 +42,6 @@ protected:
 	//     return(p1->GetMarketTime() > p2->GetMarketTime());
 	//   }
 	// };
-	std::priority_queue<CWebRTDataPtr, vector<CWebRTDataPtr>, cmpRTData> m_priorityQueueWebRTData;
+	std::priority_queue<CWebRTDataPtr, std::vector<CWebRTDataPtr>, cmpRTData> m_priorityQueueWebRTData;
 	std::mutex m_MutexAccessData; // 互斥。
 };

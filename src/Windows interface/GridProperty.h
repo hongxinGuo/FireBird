@@ -3,6 +3,8 @@
 #include <afxpropertygridctrl.h>
 #include "CharSetTransfer.h"
 
+using std::string;
+
 class CGridProperty : public CMFCPropertyGridProperty {
 public:
 	CGridProperty(const CString& strGroupName, DWORD_PTR dwData = 0, BOOL bIsValueList = FALSE) : CMFCPropertyGridProperty(strGroupName, dwData, bIsValueList) {}

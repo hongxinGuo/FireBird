@@ -1,6 +1,8 @@
 #pragma once
 
 using std::unordered_map;
+using std::string;
+using std::vector;
 
 class CContainerFinnhubCryptoExchange final {
 public:

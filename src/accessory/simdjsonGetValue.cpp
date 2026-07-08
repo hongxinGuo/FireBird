@@ -12,6 +12,7 @@
 #include "simdjsonGetValue.h"
 
 using std::string_view;
+using std::string;
 
 void CreateSimdjsonEmptyArray() {
 	static ondemand::parser s_parserEmptyArray;

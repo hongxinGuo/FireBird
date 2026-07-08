@@ -2,6 +2,8 @@
 
 #include "nlohmannJsonGetValue.h"
 
+using std::string;
+
 namespace {
 	template <typename T>
 	T jsonGetValue(const nlohmannJson& js, const char* szKey, T defaultValue) {

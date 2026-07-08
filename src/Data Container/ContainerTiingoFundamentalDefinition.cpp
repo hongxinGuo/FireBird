@@ -6,6 +6,8 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
+using std::map;
+
 CContainerTiingoFundamentalDefinition::CContainerTiingoFundamentalDefinition() {
 	m_vTiingoFundamentalDefinition.resize(0);
 	m_mapTiingoFundamentalDefinition.clear();

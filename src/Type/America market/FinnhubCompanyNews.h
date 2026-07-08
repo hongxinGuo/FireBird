@@ -25,6 +25,11 @@
 //}
 //]
 
+using std::string;
+using std::chrono::sys_seconds;
+using std::shared_ptr;
+using std::vector;
+
 class CFinnhubCompanyNews final {
 public:
 	CFinnhubCompanyNews();

@@ -4,6 +4,8 @@
 #include "VirtualContainer.h"
 
 using std::unordered_map;
+using std::string;
+using std::vector;
 
 class CContainerStockSymbol : public CVirtualContainer {
 public:

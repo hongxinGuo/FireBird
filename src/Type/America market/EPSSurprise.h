@@ -1,6 +1,8 @@
 #pragma once
 
-#include<memory>
+using std::string;
+using std::vector;
+using std::shared_ptr;
 
 using std::chrono::local_days;
 

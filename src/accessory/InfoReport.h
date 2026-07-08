@@ -1,6 +1,7 @@
 #pragma once
 
 using std::exception;
+using std::string;
 
 void ReportErrorToSystemMessage(const string& strPrefix, const exception& e);
 

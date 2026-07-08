@@ -128,7 +128,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;_DEBUG;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);AUTO_DOWNLOAD;HAS_REMOTE_API</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SIMDJSON_USING_LIBRARY;_WINDOWS;_DEBUG;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);AUTO_DOWNLOAD;HAS_REMOTE_API</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
@@ -198,7 +198,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;_DEBUG;_OPENSSL_USE_DLL;_ASAN;%(PreprocessorDefinitions);AUTO_DOWNLOAD;HAS_REMOTE_API</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SIMDJSON_USING_LIBRARY;_WINDOWS;_DEBUG;_OPENSSL_USE_DLL;_ASAN;%(PreprocessorDefinitions);AUTO_DOWNLOAD;HAS_REMOTE_API</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
@@ -271,7 +271,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SIMDJSON_USING_LIBRARY;_WINDOWS;NDEBUG;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <LanguageStandard>stdcpp23</LanguageStandard>

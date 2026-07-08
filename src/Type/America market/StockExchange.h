@@ -3,6 +3,10 @@
 using std::chrono::local_seconds;
 using std::chrono::local_days;
 
+using std::string;
+using std::vector;
+using std::shared_ptr;
+
 class CStockExchange final {
 public:
 	CStockExchange();

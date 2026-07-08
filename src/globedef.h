@@ -1,5 +1,6 @@
 #pragma once
 #include <chrono>
+#include <semaphore>
 #include <string>
 #include <vector>
 
@@ -13,10 +14,7 @@
 
 extern std::vector<std::string> gl_vNasdaq100Stocks;
 
-#include <semaphore>
-//using std::binary_semaphore;
-
-#include"SystemData.h"
+#include"ClassDeclaration.h"
 
 #define UNICODE_LITERALS_FOR_TEST_NAMES
 

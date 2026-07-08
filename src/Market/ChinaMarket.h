@@ -3,8 +3,10 @@
 #include"VirtualMarket.h"
 
 #include"ContainerChinaStock.h"
+#include"SystemData.h"
 
 #include <set>
+using std::set;
 
 constexpr int c_SelectedStockStartPosition = 0;
 

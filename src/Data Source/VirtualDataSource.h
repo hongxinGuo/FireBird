@@ -1,14 +1,21 @@
 #pragma once
 
+#include <queue>
+
 #include "ClassDeclaration.h"
 #include"SystemMessage.h"
 
 #include "InternetOption.h"
 #include "spdlog_assert.h"
 
-using namespace std::chrono;
+using std::chrono::milliseconds;
+using std::chrono::local_seconds;
+using std::chrono::duration;
+using std::chrono::time_point;
+using std::chrono::system_clock;
+using std::chrono::steady_clock;
 
-#include<atomic>
+using std::queue;
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR_ = 0,

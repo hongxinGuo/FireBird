@@ -1118,9 +1118,6 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockMonthLine.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\System\Initialization.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
@@ -1174,6 +1171,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductEastmoneyDayline.cpp">
       <Filter>源文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

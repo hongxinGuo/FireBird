@@ -135,6 +135,9 @@ enum {
 	END_OF_ALL_INQUIRY_TYPE_
 };
 
+using std::string;
+using std::map;
+
 class CFinnhubInquiryType {
 public:
 	CFinnhubInquiryType();

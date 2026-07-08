@@ -1,6 +1,8 @@
 #pragma once
 
 using std::vector;
+using std::string;
+using std::shared_ptr;
 
 class CTiingoFundamentalDefinition final {
 public:

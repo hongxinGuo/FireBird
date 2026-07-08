@@ -6,6 +6,7 @@
 #include "TiingoForexWebSocket.h"
 
 #include "SystemConfiguration.h"
+#include "SystemData.h"
 #include "TiingoDataSource.h"
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {

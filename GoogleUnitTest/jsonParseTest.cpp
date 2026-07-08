@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
+#include "MockChinaMarket.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include "WebData.h"

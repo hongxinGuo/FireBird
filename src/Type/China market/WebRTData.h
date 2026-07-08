@@ -136,6 +136,7 @@ enum {
 using std::array;
 using std::shared_ptr;
 using std::string_view;
+using std::string;
 
 class CWebData;
 using CWebDataPtr = std::shared_ptr<CWebData>;

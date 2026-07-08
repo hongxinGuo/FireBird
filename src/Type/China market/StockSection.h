@@ -1,6 +1,7 @@
 #pragma once
 
-#include<memory>
+using std::string;
+using std::shared_ptr;
 
 class CStockSection {
 public:

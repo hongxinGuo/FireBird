@@ -1,8 +1,7 @@
 #pragma once
 #include "CharSetTransfer.h"
 
-/////////////////////////////////////////////////////////////////////////////
-// COutputList 窗口
+using std::string;
 
 class COutputList : public CListBox {
 	// 构造

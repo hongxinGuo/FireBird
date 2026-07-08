@@ -8,6 +8,7 @@
 using namespace simdjson;
 
 using namespace testing;
+using namespace std;
 
 namespace {
 	auto s_simdjson1 = R"({

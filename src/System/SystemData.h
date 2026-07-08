@@ -18,8 +18,6 @@ using namespace moodycamel;
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-#include"ClassDeclaration.h"
-
 // 处理后的各种数据
 extern ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
 extern ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine; // 日线数据

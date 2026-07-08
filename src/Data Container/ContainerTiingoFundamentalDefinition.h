@@ -1,7 +1,8 @@
 #pragma once
 
-using std::map;
 using std::unordered_map;
+using std::string;
+using std::vector;
 
 #include"TiingoFundamentalDefinition.h"
 

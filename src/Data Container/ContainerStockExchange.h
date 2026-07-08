@@ -2,6 +2,9 @@
 
 #include"StockExchange.h"
 
+using std::string;
+using std::vector;
+
 class CContainerStockExchange final {
 public:
 	CContainerStockExchange();
