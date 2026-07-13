@@ -12,7 +12,7 @@
 #include"FinnhubCompanyNews.h"
 #include "InfoReport.h"
 
-#include <sqlpp11/sqlpp11.h>
+#include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 

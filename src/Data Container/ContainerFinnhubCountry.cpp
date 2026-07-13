@@ -2,7 +2,7 @@
 
 #include "ContainerFinnhubCountry.h"
 
-#include <sqlpp11/sqlpp11.h>
+#include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
@@ -52,7 +52,7 @@ void CContainerFinnhubCountry::UpdateDB() const {
 		int nValues = 0;
 		for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
 			const CCountry& country = m_vCountry.at(l);
-			multi_insert.values.add(
+			multi_insert.add_values(
 				t.Code2 = country.m_strCode2,
 				t.Code3 = country.m_strCode3,
 				t.CodeNo = country.m_strCodeNo,
@@ -73,18 +73,24 @@ bool CContainerFinnhubCountry::LoadDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.Country.asc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.Country.asc()));
 	Reserve(result.size());
 
 	int counter = 0;
 	for (const auto& row : result) {
 		CCountry country;
-		country.m_strCode2 = row.Code2;
-		country.m_strCode3 = row.Code3;
-		country.m_strCodeNo = row.CodeNo;
-		country.m_strCountry = row.Country;
-		country.m_strCurrency = row.Currency;
-		country.m_strCurrencyCode = row.CurrencyCode;
+		std::string_view sTemp = row.Code2.value();
+		country.m_strCode2 = sTemp;
+		sTemp = row.Code3.value();
+		country.m_strCode3 = sTemp;
+		sTemp = row.CodeNo.value();
+		country.m_strCodeNo = sTemp;
+		sTemp = row.Country.value();
+		country.m_strCountry = sTemp;
+		sTemp = row.Currency.value();
+		country.m_strCurrency = sTemp;
+		sTemp = row.CurrencyCode.value();
+		country.m_strCurrencyCode = sTemp;
 		m_mapCountry[country.m_strCountry] = counter;
 		counter++;
 		m_vCountry.push_back(country);

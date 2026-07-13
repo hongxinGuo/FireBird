@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <sqlpp11/mysql/connection_pool.h>
+#include <sqlpp23/mysql/mysql.h>
 
 // Inline global connection pool. Using an inline variable so the header can be
 // included from multiple translation units without violating the one-definition rule.
