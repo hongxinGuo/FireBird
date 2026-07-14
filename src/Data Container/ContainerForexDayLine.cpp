@@ -33,31 +33,31 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 	vOldHistoryCandle.reserve(result.size());
 	for (const auto& row : result) {
 		if (row.Date > lLastDate) {
-			lLastDate = row.Date;
+			lLastDate = row.Date.value();
 			CTiingoCandleLine candle;
 			candle.Reset();
-			candle.SetDate(row.Date);
-			candle.SetExchange(row.Exchange);
-			candle.SetStockSymbol(row.Symbol);
-			candle.SetLastClose(row.LastClose * ratio);
-			candle.SetOpen(row.Open * ratio);
-			candle.SetHigh(row.High * ratio);
-			candle.SetLow(row.Low * ratio);
-			candle.SetClose(row.Close * ratio);
-			candle.SetSplitFactor(row.SplitFactor);
-			candle.SetDividend(row.Dividend);
-			candle.SetUpDown(row.UpAndDown);
-			candle.SetVolume(row.Volume);
-			candle.SetAmount(row.Amount);
-			candle.SetUpDownRate(row.UpDownRate);
-			candle.SetChangeHandRate(row.ChangeHandRate);
-			candle.SetTotalValue(row.TotalValue);
-			candle.SetCurrentValue(row.CurrentValue);
+			candle.SetDate(row.Date.value());
+			candle.SetExchange(std::string{ row.Exchange.value() });
+			candle.SetStockSymbol(std::string{ row.Symbol.value() });
+			candle.SetLastClose(row.LastClose.value() * ratio);
+			candle.SetOpen(row.Open.value() * ratio);
+			candle.SetHigh(row.High.value() * ratio);
+			candle.SetLow(row.Low.value() * ratio);
+			candle.SetClose(row.Close.value() * ratio);
+			candle.SetSplitFactor(row.SplitFactor.value());
+			candle.SetDividend(row.Dividend.value());
+			candle.SetUpDown(row.UpAndDown.value());
+			candle.SetVolume(row.Volume.value());
+			candle.SetAmount(row.Amount.value());
+			candle.SetUpDownRate(row.UpDownRate.value());
+			candle.SetChangeHandRate(row.ChangeHandRate.value());
+			candle.SetTotalValue(row.TotalValue.value());
+			candle.SetCurrentValue(row.CurrentValue.value());
 			vOldHistoryCandle.push_back(candle);
 		}
 		else {
 			// 删除与该重复行完全匹配的那一条记录（尽量精确匹配以保证只删除重复项）
-			db(remove_from(t).where(
+			db(delete_from(t).where(
 				t.Symbol == row.Symbol &&
 				t.Date == row.Date &&
 				t.Exchange == row.Exchange &&
@@ -84,8 +84,8 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 	                                           t.High, t.Low, t.Close, t.Volume, t.Amount, t.Dividend, t.SplitFactor,
 	                                           t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
 	auto insertCandle = [&](const CVirtualHistoryCandle* pC) {
-		multi_insert.values.add(
-			t.Date = toFormattedDate(pC->GetDate()),
+		multi_insert.add_values(
+			t.Date = static_cast<int>(toFormattedDate(pC->GetDate())),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
@@ -164,23 +164,23 @@ void CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 		auto ratio = GetRatio();
 
 		candle.SetRatio(ratio);
-		candle.SetDate(row.Date);
-		candle.SetExchange(row.Exchange);
-		candle.SetStockSymbol(row.Symbol);
-		candle.SetLastClose(row.LastClose * ratio);
-		candle.SetOpen(row.Open * ratio);
-		candle.SetHigh(row.High * ratio);
-		candle.SetLow(row.Low * ratio);
-		candle.SetClose(row.Close * ratio);
-		candle.SetSplitFactor(row.SplitFactor);
-		candle.SetDividend(row.Dividend);
-		candle.SetUpDown(row.UpAndDown);
-		candle.SetVolume(row.Volume);
-		candle.SetAmount(row.Amount);
-		candle.SetUpDownRate(row.UpDownRate);
-		candle.SetChangeHandRate(row.ChangeHandRate);
-		candle.SetTotalValue(row.TotalValue);
-		candle.SetCurrentValue(row.CurrentValue);
+		candle.SetDate(row.Date.value());
+		candle.SetExchange(std::string{ row.Exchange.value() });
+		candle.SetStockSymbol(std::string{ row.Symbol.value() });
+		candle.SetLastClose(row.LastClose.value() * ratio);
+		candle.SetOpen(row.Open.value() * ratio);
+		candle.SetHigh(row.High.value() * ratio);
+		candle.SetLow(row.Low.value() * ratio);
+		candle.SetClose(row.Close.value() * ratio);
+		candle.SetSplitFactor(row.SplitFactor.value());
+		candle.SetDividend(row.Dividend.value());
+		candle.SetUpDown(row.UpAndDown.value());
+		candle.SetVolume(row.Volume.value());
+		candle.SetAmount(row.Amount.value());
+		candle.SetUpDownRate(row.UpDownRate.value());
+		candle.SetChangeHandRate(row.ChangeHandRate.value());
+		candle.SetTotalValue(row.TotalValue.value());
+		candle.SetCurrentValue(row.CurrentValue.value());
 		Add(candle);
 	}
 	tx.commit();

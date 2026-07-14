@@ -113,7 +113,7 @@ namespace FireBirdTest {
 		auto result = db(select(all_of(t)).from(t).where(t.name == "Test"));
 		EXPECT_EQ(result.size(), 2) << "数据库中应该有2条测试数据";
 		auto tx = start_transaction(db);
-		db(sqlpp::remove_from(t).where(t.name == "Test")); // 先删除测试数据
+		db(sqlpp::delete_from(t).where(t.name == "Test")); // 先删除测试数据
 		tx.commit();
 
 		m_dataTiingoFundamentalDefinition.LoadDB();

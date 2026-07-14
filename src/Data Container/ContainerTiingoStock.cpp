@@ -48,8 +48,8 @@ void CContainerTiingoStock::UpdateProfileDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	for (const auto& row : db(select(all_of(t)).from(t).unconditionally())) {
-		setExistingSymbols.insert(row.Symbol);
+	for (const auto& row : db(select(all_of(t)).from(t))) {
+		setExistingSymbols.insert(string{ row.Symbol.value() });
 	}
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -119,33 +119,33 @@ bool CContainerTiingoStock::LoadProfileDB() {
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
-		auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+		auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 		auto rowCount = result.size();
 		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 		for (const auto& row : result) {
-			const std::string symbol = row.Symbol;
+			const std::string symbol = string{ row.Symbol.value() };
 			if (!IsSymbol(symbol)) {
 				const auto pTiingoStock = make_shared<CTiingoStock>();
-				pTiingoStock->SetTiingoPermaTicker(row.TiingoPermaTicker);
+				pTiingoStock->SetTiingoPermaTicker(string{ row.TiingoPermaTicker.value() });
 				pTiingoStock->SetSymbol(symbol);
-				pTiingoStock->SetName(row.Name);
-				pTiingoStock->SetActive(row.IsActive);
-				pTiingoStock->SetIsADR(row.IsADR);
-				pTiingoStock->SetSicCode(row.SICCode);
-				pTiingoStock->SetSicIndustry(row.SICIndustry);
-				pTiingoStock->SetSicSector(row.SICSector);
-				pTiingoStock->SetTiingoIndustry(row.TiingoIndustry);
-				pTiingoStock->SetTiingoSector(row.TiingoSector);
-				pTiingoStock->SetReportingCurrency(row.ReportingCurrency);
-				pTiingoStock->SetLocation(row.Location);
-				pTiingoStock->SetCompanyWebSite(row.CompanyWebSite);
-				pTiingoStock->SetSECFilingWebSite(row.SECFilingWebSite);
-				pTiingoStock->LoadUpdateDate(row.UpdateDate);
+				pTiingoStock->SetName(string{ row.Name.value() });
+				pTiingoStock->SetActive(row.IsActive.value());
+				pTiingoStock->SetIsADR(row.IsADR.value());
+				pTiingoStock->SetSicCode(row.SICCode.value());
+				pTiingoStock->SetSicIndustry(string{ row.SICIndustry.value() });
+				pTiingoStock->SetSicSector(string{ row.SICSector.value() });
+				pTiingoStock->SetTiingoIndustry(string{ row.TiingoIndustry.value() });
+				pTiingoStock->SetTiingoSector(string{ row.TiingoSector.value() });
+				pTiingoStock->SetReportingCurrency(string{ row.ReportingCurrency.value() });
+				pTiingoStock->SetLocation(string{ row.Location.value() });
+				pTiingoStock->SetCompanyWebSite(string{ row.CompanyWebSite.value() });
+				pTiingoStock->SetSECFilingWebSite(string{ row.SECFilingWebSite.value() });
+				pTiingoStock->LoadUpdateDate(string{ row.UpdateDate.value() });
 				pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 				Add(pTiingoStock);
 			}
 			else {
-				db(sqlpp::remove_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 			}
 		}
 		tx.commit();
@@ -167,9 +167,10 @@ bool CContainerTiingoStock::LoadProfileDB() {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::DeleteDuplicatedSymbolFromDB() {
 	auto db = gl_dbStockMarket.get();
+	auto tx = start_transaction(db);
 	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
-	db.execute("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
-	db.execute("COMMIT");
+	db("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
+	tx.commit();
 }
 
 void CContainerTiingoStock::ResetDayLineStartEndDate() {
@@ -211,8 +212,8 @@ void CContainerTiingoStock::BuildDayLine(chrono::local_days date) {
 			if (pTiingoStock->GetTimePoint() >= st) {
 				// 将内部整数/单位值转换为数据库存储的浮点值（与 LoadDayLine 中的乘比率相反）
 				const double ratio = pTiingoStock->GetRatio();
-				multi_insert.values.add(
-					t.Date = toFormattedDate(date),
+				multi_insert.add_values(
+					t.Date = static_cast<int>(toFormattedDate(date)),
 					t.Exchange = pTiingoStock->GetExchange(),
 					t.Symbol = pTiingoStock->GetSymbol(),
 					t.LastClose = static_cast<double>(pTiingoStock->GetLastClose()) / ratio,
@@ -256,10 +257,10 @@ void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 		auto tx = start_transaction(db);
 
 		// select rows for the given trade date
-		auto result = db(select(all_of(t)).from(t).where(t.Date == toFormattedDate(date)).order_by(t.Symbol.asc()));
+		auto result = db(select(all_of(t)).from(t).where(t.Date == static_cast<int>(toFormattedDate(date))).order_by(t.Symbol.asc()));
 
 		for (const auto& row : result) {
-			const std::string symbol = row.Symbol;
+			const std::string symbol = string{ row.Symbol.value() };
 			if (IsSymbol(symbol)) {
 				auto pStock = GetStock(symbol);
 				if (pStock == nullptr) continue;
@@ -269,15 +270,15 @@ void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 				const double ratio = pStock->GetRatio();
 
 				// numeric fields from sqlpp11 are used directly
-				pStock->SetHigh(row.High * ratio);
-				pStock->SetLow(row.Low * ratio);
-				pStock->SetOpen(row.Open * ratio);
-				pStock->SetNew(row.Close * ratio);
-				pStock->SetLastClose(row.LastClose * ratio);
+				pStock->SetHigh(row.High.value() * ratio);
+				pStock->SetLow(row.Low.value() * ratio);
+				pStock->SetOpen(row.Open.value() * ratio);
+				pStock->SetNew(row.Close.value() * ratio);
+				pStock->SetLastClose(row.LastClose.value() * ratio);
 
-				pStock->SetVolume(row.Volume);
-				pStock->SetDividend(row.Dividend);
-				pStock->SetSplitFactor(row.SplitFactor);
+				pStock->SetVolume(row.Volume.value());
+				pStock->SetDividend(row.Dividend.value());
+				pStock->SetSplitFactor(row.SplitFactor.value());
 			}
 		}
 		tx.commit();
@@ -293,7 +294,7 @@ void CContainerTiingoStock::DeleteDayLine(chrono::local_days date) {
 	auto tx = start_transaction(db);
 
 	// Delete all rows for the given trade date in one statement
-	db(remove_from(t).where(t.Date == toFormattedDate(date)));
+	db(delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(date))));
 	tx.commit();
 }
 
@@ -335,7 +336,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 				db(insert_into(t).set(
 					t.Symbol = pStock->GetSymbol(),
 					t.Exchange = pStock->GetExchange(),
-					t.Date = toFormattedDate(pStock->Get52WeekHighDate(index))
+					t.Date = static_cast<int>(toFormattedDate(pStock->Get52WeekHighDate(index)))
 				));
 			}
 		}
@@ -364,10 +365,10 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 		if (pStock->IsUpdate52WeekHighLowDB()) {
 			auto Size = pStock->Get52WeekLowSize();
 			for (size_t index = 0; index < Size; index++) {
-				multi_insert.values.add(
+				multi_insert.add_values(
 					t.Symbol = pStock->GetSymbol(),
 					t.Exchange = pStock->GetExchange(),
-					t.Date = toFormattedDate(pStock->Get52WeekLowDate(index))
+					t.Date = static_cast<int>(toFormattedDate(pStock->Get52WeekLowDate(index)))
 				);
 				Values++;
 			}
@@ -404,12 +405,12 @@ void CContainerTiingoStock::TaskCalculate() {
 	auto tx = start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Date, t.Symbol, t.SICCode);
 
-	db(remove_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
+	db(delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
-		multi_insert.values.add(
-			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
+		multi_insert.add_values(
+			t.Date = static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())),
 			t.Symbol = pStock->GetSymbol(),
 			t.SICCode = pStock->GetSicCode()
 		);
@@ -462,12 +463,12 @@ void CContainerTiingoStock::TaskCalculate2() {
 	const auto& t = TiingoStockCurrentTrace{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	db(remove_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
+	db(delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
 		db(sqlpp::insert_into(t).set(
-			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
+			t.Date = static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())),
 			t.Symbol = pStock->GetSymbol(),
 			t.SICCode = pStock->GetSicCode()
 		));
@@ -483,7 +484,7 @@ void CContainerTiingoStock::Delete52WeekHighDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	db(sqlpp::remove_from(t).unconditionally());
+	db(sqlpp::delete_from(t));
 	tx.commit();
 }
 
@@ -492,7 +493,7 @@ void CContainerTiingoStock::Delete52WeekLowDB() {
 	const auto& t = TiingoStock52WeekLow{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	db(sqlpp::remove_from(t).unconditionally());
+	db(sqlpp::delete_from(t));
 	tx.commit();
 }
 

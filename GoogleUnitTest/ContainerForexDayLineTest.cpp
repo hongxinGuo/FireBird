@@ -67,7 +67,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1) << "刚存储的数据";
 
-		db(sqlpp::remove_from(t).where(t.Date == 20200411));
+		db(sqlpp::delete_from(t).where(t.Date == 20200411));
 		tx.commit();
 	}
 }

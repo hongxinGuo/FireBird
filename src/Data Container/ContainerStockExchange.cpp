@@ -54,24 +54,24 @@ bool CContainerStockExchange::LoadDB() {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.code.asc()));
+		auto result = db(select(all_of(t)).from(t).order_by(t.code.asc()));
 		auto rows = result.size();
 		Reserve(rows);
 
 		for (const auto& row : result) {
 			CStockExchangePtr pExchange;
 			pExchange = make_shared<CStockExchange>();
-			pExchange->SetExchangeCode(row.code);
-			pExchange->m_strName = row.name;
-			pExchange->m_strMic = row.mic;
-			pExchange->m_strTimeZone = row.timezone;
-			pExchange->m_strPreMarket = row.preMarket;
-			pExchange->m_strHour = row.hour;
-			pExchange->m_strPostMarket = row.postMarket;
-			pExchange->m_strCloseDate = row.closeDate;
-			pExchange->m_strCountry = row.country;
-			pExchange->m_strCountryName = row.countryName;
-			pExchange->m_strSource = row.source;
+			pExchange->SetExchangeCode(string{ row.code.value() });
+			pExchange->m_strName = string{ row.name.value() };
+			pExchange->m_strMic = string{ row.mic.value() };
+			pExchange->m_strTimeZone = string{ row.timezone.value() };
+			pExchange->m_strPreMarket = string{ row.preMarket.value() };
+			pExchange->m_strHour = string{ row.hour.value() };
+			pExchange->m_strPostMarket = string{ row.postMarket.value() };
+			pExchange->m_strCloseDate = string{ row.closeDate.value() };
+			pExchange->m_strCountry = string{ row.country.value() };
+			pExchange->m_strCountryName = string{ row.countryName.value() };
+			pExchange->m_strSource = string{ row.source.value() };
 
 			int openHour, openMinute, endHour, endMinute;
 			sscanf_s(pExchange->m_strHour.c_str(), "%2d:%2d-%2d:%2d", &openHour, &openMinute, &endHour, &endMinute);

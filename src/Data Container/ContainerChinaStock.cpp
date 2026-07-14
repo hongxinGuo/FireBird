@@ -40,22 +40,24 @@ long CContainerChinaStock::LoadProfileDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 	auto rowCount = result.size();
 	Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 	for (const auto& row : result) {
 		// 装入股票代码数据库
 		const auto pStock = make_shared<CChinaStock>();
-		string str = row.Symbol;
+		string str = string{ row.Symbol.value() };
 		if (IsSymbol(str)) {
-			db(sqlpp::remove_from(t).where(t.ID == row.ID));
+			db(sqlpp::delete_from(t).where(t.ID == row.ID));
 		}
 		else {
-			pStock->SetSymbol(row.Symbol.value());
-			pStock->SetDisplaySymbol(row.DisplaySymbol.value());
-			pStock->SetDescription(row.Description.value());
-			pStock->SetExchange(row.Exchange.value());
-			pStock->LoadUpdateDate(row.UpdateDate.value());
+			ASSERT(row.Symbol.has_value());
+			pStock->SetSymbol(row.Symbol.has_value() ? string{ row.Symbol.value() } : "");
+			pStock->SetDisplaySymbol(row.DisplaySymbol.has_value() ? string{ row.DisplaySymbol.value() } : "");
+			pStock->SetDescription(row.Description.has_value() ? string{ row.Description.value() } : "");
+			pStock->SetExchange(row.Exchange.has_value() ? string{ row.Exchange.value() } : "");
+			ASSERT(row.UpdateDate.has_value());
+			pStock->LoadUpdateDate(string{ row.UpdateDate.value() });
 
 			pStock->CheckNeedProcessRTData();
 			pStock->CheckDayLineStatus();
@@ -284,10 +286,10 @@ long CContainerChinaStock::BuildDayLine(chrono::local_days currentTradeDay) {
 			pStock->SetDayLineEndDate(currentTradeDay);
 			pStock->SetUpdateProfileDB(true);
 
-			multi_insert.values.add(
-				t.Date = toFormattedDate(currentTradeDay),
-				t.Exchange = pStock->GetExchange(),
-				t.Symbol = pStock->GetSymbol(),
+			multi_insert.add_values(
+				t.Date = static_cast<int>(toFormattedDate(currentTradeDay)),
+				t.Exchange = string{ pStock->GetExchange() },
+				t.Symbol = string{ pStock->GetSymbol() },
 				t.LastClose = static_cast<double>(pStock->GetLastClose()) / ratio,
 				t.Open = static_cast<double>(pStock->GetOpen()) / ratio,
 				t.High = static_cast<double>(pStock->GetHigh()) / ratio,
@@ -322,7 +324,7 @@ void CContainerChinaStock::DeleteDayLine(chrono::local_days date) {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Date == toFormattedDate(date)));
+	db(sqlpp::delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(date))));
 	tx.commit();
 }
 

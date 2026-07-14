@@ -69,7 +69,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1);
 
-		db(remove_from(t).where(t.Date == 20220101));
+		db(delete_from(t).where(t.Date == 20220101));
 		tx.commit();
 	}
 }

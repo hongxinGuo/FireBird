@@ -75,8 +75,8 @@ namespace FireBirdTest {
 		// Cleanup inserted test rows
 		db = GetStockMarketDB(); // Ensure we have a fresh connection for cleanup
 		auto tx = sqlpp::start_transaction(db);
-		db(remove_from(t).where(t.Code2 == codeA));
-		db(remove_from(t).where(t.Code2 == codeB));
+		db(delete_from(t).where(t.Code2 == codeA));
+		db(delete_from(t).where(t.Code2 == codeB));
 		tx.commit();
 	}
 
@@ -109,7 +109,7 @@ namespace FireBirdTest {
 		// Cleanup: remove inserted test rows
 		try {
 			auto tx = sqlpp::start_transaction(db);
-			db(remove_from(t).where(t.Code2 == code2));
+			db(delete_from(t).where(t.Code2 == code2));
 			tx.commit();
 		} catch (...) {
 			// best-effort cleanup; do not mask original expectation failure

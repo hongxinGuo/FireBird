@@ -46,12 +46,12 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	auto rows = result.size();
 	Reserve(rows);
 	int i = 0;
 	for (const auto& row : result) {
-		string str = row.code;
+		string str = string{ row.code.value() };
 		m_vForexExchange.push_back(str);
 		m_mapForexExchange[str] = i++;
 	}
@@ -71,7 +71,7 @@ bool CContainerFinnhubForexExchange::UpdateDB() {
 			auto multi_insert = insert_into(t).columns(t.code);
 			int nValues = 0;
 			for (auto l = m_llLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
-				multi_insert.values.add(
+				multi_insert.add_values(
 					t.code = m_vForexExchange.at(l)
 				);
 				nValues++;

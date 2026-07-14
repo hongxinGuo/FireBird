@@ -23,20 +23,20 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 	Reserve(result.size() + 2);
 	for (const auto& row : result) {
-		if (!IsSymbol(row.Symbol)) {
+		if (!IsSymbol(string{ row.Symbol.value() })) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
-			pSymbol->SetSymbol(row.Symbol);
-			pSymbol->m_strName = row.Name;
-			pSymbol->SetDescription(row.Description);
-			pSymbol->m_strBaseCurrency = row.BaseCurrency;
-			pSymbol->m_strQuoteCurrency = row.QuoteCurrency;
+			pSymbol->SetSymbol(string{ row.Symbol.value() });
+			pSymbol->m_strName = row.Name.has_value() ? string{ row.Name.value() } : "";
+			pSymbol->SetDescription(row.Description.has_value() ? string{ row.Description.value() } : "");
+			pSymbol->m_strBaseCurrency = row.BaseCurrency.has_value() ? string{ row.BaseCurrency.value() } : "";
+			pSymbol->m_strQuoteCurrency = row.QuoteCurrency.has_value() ? string{ row.QuoteCurrency.value() } : "";
 			Add(pSymbol);
 		}
 		else {
-			db(remove_from(t).where(t.ID == row.ID));
+			db(delete_from(t).where(t.ID == row.ID));
 		}
 	}
 	tx.commit();
@@ -95,10 +95,10 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 		auto multi_insert = insert_into(t).columns(t.Symbol, t.BaseCurrency, t.QuoteCurrency, t.Name, t.Description, t.UpdateDate);
 
 		// 1) 更新或删除数据库中已有但容器中不存在的记录
-		auto rows = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+		auto rows = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 		for (const auto& row : rows) {
-			if (IsSymbol(row.Symbol)) {
-				const CTiingoCryptoPtr pCrypto = GetCrypto(row.Symbol);
+			if (IsSymbol(string{ row.Symbol.value() })) {
+				const CTiingoCryptoPtr pCrypto = GetCrypto(string{ row.Symbol.value() });
 				ASSERT(pCrypto != nullptr);
 				if (pCrypto->IsUpdateProfileDB()) {
 					// 更新已有记录
@@ -113,7 +113,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			}
 			else {
 				// 数据库中存在但容器没有，删除之
-				db(remove_from(t).where(t.ID == row.ID));
+				db(delete_from(t).where(t.ID == row.ID));
 			}
 		}
 
@@ -123,7 +123,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			const CTiingoCryptoPtr pCrypto = GetCrypto(l);
 			ASSERT(pCrypto != nullptr);
 			if (pCrypto->IsUpdateProfileDB()) {
-				multi_insert.values.add(
+				multi_insert.add_values(
 					t.Symbol = pCrypto->GetSymbol(),
 					t.BaseCurrency = pCrypto->m_strBaseCurrency,
 					t.QuoteCurrency = pCrypto->m_strQuoteCurrency,

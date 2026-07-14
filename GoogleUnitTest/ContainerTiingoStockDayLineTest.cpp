@@ -76,7 +76,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		db(insert_into(t).set(
-			t.Date = toFormattedDate(date),
+			t.Date = static_cast<int>(toFormattedDate(date)),
 			t.Exchange = exchange,
 			t.Symbol = uniqueSymbol,
 			t.LastClose = lastClose,
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 		// Cleanup: delete test rows
 		auto db2 = gl_dbStockMarket.get();
 		auto tx2 = sqlpp::start_transaction(db2);
-		db2(remove_from(t).where(t.Symbol == uniqueSymbol));
+		db2(delete_from(t).where(t.Symbol == uniqueSymbol));
 		tx2.commit();
 	}
 
@@ -161,8 +161,8 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
-		db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241103));
-		db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+		db(delete_from(t).where(t.Symbol == "A" && t.Date == 20241103));
+		db(delete_from(t).where(t.Symbol == "A" && t.Date == 20241111));
 
 		tx.commit();
 	}

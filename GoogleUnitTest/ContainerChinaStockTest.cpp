@@ -133,8 +133,8 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条000001.SS的记录";
 			auto& row = result.front();
-			EXPECT_EQ(row.Symbol.value(), "000001.SS");
-			EXPECT_EQ(row.ID.value(), 1);
+			EXPECT_EQ(string{ row.Symbol.value() }, "000001.SS");
+			EXPECT_EQ(row.ID, 1);
 		}
 
 		// clear up
@@ -159,7 +159,7 @@ namespace FireBirdTest {
 			const auto& t = ChinaStockProfile{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Symbol == newSymbol));
+			db(sqlpp::delete_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
 
@@ -193,7 +193,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultExist.size(), 1u);
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
-				EXPECT_STREQ(row.Exchange.value().c_str(), "china");
+				EXPECT_STREQ(string{ row.Exchange.value() }.c_str(), "china");
 			}
 
 			// Verify new stock inserted
@@ -202,7 +202,7 @@ namespace FireBirdTest {
 
 			// Cleanup DB: remove test insertion and restore existing stock exchange
 			db(update(t).set(t.Exchange = "").where(t.Symbol == existingSymbol));
-			db(remove_from(t).where(t.Symbol == newSymbol));
+			db(delete_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
 

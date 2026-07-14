@@ -23,7 +23,7 @@ namespace {
 			const auto& t = ChinaStockProfile{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -31,7 +31,7 @@ namespace {
 			const auto& t = ChinaStockDayline{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -39,7 +39,7 @@ namespace {
 			const auto& t = FinnhubCryptoDayline{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -47,7 +47,7 @@ namespace {
 			const auto& t = FinnhubCryptoExchange{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.code == "Test"));
+			db(sqlpp::delete_from(t).where(t.code == "Test"));
 			tx.commit();
 		}
 
@@ -55,7 +55,7 @@ namespace {
 			const auto& t = FinnhubCryptoSymbol{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -63,7 +63,7 @@ namespace {
 			const auto& t = FinnhubForexDayline{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -71,7 +71,7 @@ namespace {
 			const auto& t = FinnhubForexExchange{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.code == "Test"));
+			db(sqlpp::delete_from(t).where(t.code == "Test"));
 			tx.commit();
 		}
 
@@ -79,7 +79,7 @@ namespace {
 			const auto& t = FinnhubForexSymbol{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -87,7 +87,7 @@ namespace {
 			const auto& t = FinnhubStockDayline{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -95,7 +95,7 @@ namespace {
 			const auto& t = FinnhubStockExchange{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.code == "Test"));
+			db(sqlpp::delete_from(t).where(t.code == "Test"));
 			tx.commit();
 		}
 
@@ -103,7 +103,7 @@ namespace {
 			const auto& t = FinnhubStockProfile{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Exchange == "Test"));
+			db(sqlpp::delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 
@@ -111,7 +111,7 @@ namespace {
 			const auto& t = TiingoCryptoSymbol{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Name == "Test"));
+			db(sqlpp::delete_from(t).where(t.Name == "Test"));
 			tx.commit();
 		}
 
@@ -119,7 +119,7 @@ namespace {
 			const auto& t = TiingoStockProfile{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Symbol == "DUPLICATE" || t.Symbol == "Test"));
+			db(sqlpp::delete_from(t).where(t.Symbol == "DUPLICATE" || t.Symbol == "Test"));
 			tx.commit();
 		}
 	}

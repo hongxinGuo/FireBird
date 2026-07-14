@@ -603,10 +603,10 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 	const auto& t = IndexNasdaq100{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
-	auto rows = db(select(all_of(t)).from(t).unconditionally());
+	auto rows = db(select(all_of(t)).from(t));
 	for (const auto& row : rows) {
-		if (gl_dataContainerTiingoStock.IsSymbol(row.Symbol)) {
-			auto pStock = gl_dataContainerTiingoStock.GetStock(row.Symbol);
+		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol.value() })) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol.value() });
 			m_vNasdaq100TiingoStock.push_back(pStock);
 		}
 	}
@@ -693,7 +693,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	auto tx = sqlpp::start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Date, t.Rate);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	int rows = result.size();
 	if (rows > 0) {
 		for (int i = 0; i < rows - 1; i++) {
@@ -706,7 +706,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	int nValues = 0;
 	for (auto upDownRate : vUpDownRate) {
 		if (upDownRate.lDate > lCurrentDate) {
-			multi_insert.values.add(t.Date = toFormattedDate(upDownRate.lDate), t.Rate = upDownRate.Rate);
+			multi_insert.add_values(t.Date = static_cast<int>(toFormattedDate(upDownRate.lDate)), t.Rate = upDownRate.Rate);
 			nValues++;
 		}
 	}
@@ -1371,7 +1371,7 @@ void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	db(remove_from(t).where(t.Symbol == pStock->GetSymbol()));
+	db(delete_from(t).where(t.Symbol == pStock->GetSymbol()));
 	tx.commit();
 }
 
@@ -1381,7 +1381,7 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == pStock->GetSymbol()));
+	db(sqlpp::delete_from(t).where(t.Symbol == pStock->GetSymbol()));
 	tx.commit();
 }
 

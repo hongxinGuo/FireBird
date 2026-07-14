@@ -69,60 +69,61 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 	auto rowCount = result.size();
 	Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
 	CFinnhubStockPtr pFinnhubStock = nullptr;
 
 	for (const auto& row : result) {
 		pFinnhubStock = make_shared<CFinnhubStock>();
-		pFinnhubStock->SetSymbol(row.Symbol);
-		pFinnhubStock->SetExchange(row.Exchange);
-		pFinnhubStock->SetDescription(row.Description);
-		pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol);
-		pFinnhubStock->SetType(row.Type);
-		pFinnhubStock->SetMic(row.Mic);
-		pFinnhubStock->SetFigi(row.Figi);
-		pFinnhubStock->SetCurrency(row.Currency);
-		pFinnhubStock->SetAddress(row.Address);
-		pFinnhubStock->SetCity(row.City);
-		pFinnhubStock->SetCountry(row.Country);
-		pFinnhubStock->SetCusip(row.cusip);
-		pFinnhubStock->SetSedol(row.sedol);
-		pFinnhubStock->SetEmployeeTotal(row.EmployeeTotal);
-		pFinnhubStock->SetGgroup(row.ggroup);
-		pFinnhubStock->SetGind(row.gind);
-		pFinnhubStock->SetGsector(row.gsector);
-		pFinnhubStock->SetGsubind(row.gsubind);
-		pFinnhubStock->SetIPODate(row.IPODate);
-		pFinnhubStock->SetIsin((row.isin));
-		pFinnhubStock->SetMarketCapitalization(row.MarketCapitalization);
-		pFinnhubStock->SetNaics(row.naics);
-		pFinnhubStock->SetNaicsNationalIndustry(row.naicsNationalIndustry);
-		pFinnhubStock->SetNaicsSector(row.naicsSector);
-		pFinnhubStock->SetNaicsSubsector(row.naicsSubsector);
-		pFinnhubStock->SetName(row.Name);
-		pFinnhubStock->SetPhone(row.Phone);
-		pFinnhubStock->SetShareOutstanding(row.ShareOutstanding);
-		pFinnhubStock->SetState(row.state);
-		pFinnhubStock->SetTicker(row.Ticker);
-		pFinnhubStock->SetWebURL(row.WebURL);
-		pFinnhubStock->SetLogo(row.Logo);
-		pFinnhubStock->SetFinnhubIndustry(row.FinnhubIndustry);
-		string str = row.Peer;
+		ASSERT(row.Symbol.has_value());
+		pFinnhubStock->SetSymbol(string{ row.Symbol.value() });
+		pFinnhubStock->SetExchange(row.Exchange.has_value() ? string{ row.Exchange.value() } : "");
+		pFinnhubStock->SetDescription(row.Description.has_value() ? string{ row.Description.value() } : "");
+		pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol.has_value() ? string{ row.DisplaySymbol.value() } : "");
+		pFinnhubStock->SetType(row.Type.has_value() ? string{ row.Type.value() } : "");
+		pFinnhubStock->SetMic(row.Mic.has_value() ? string{ row.Mic.value() } : "");
+		pFinnhubStock->SetFigi(row.Figi.has_value() ? string{ row.Figi.value() } : "");
+		pFinnhubStock->SetCurrency(row.Currency.has_value() ? string{ row.Currency.value() } : "");
+		pFinnhubStock->SetAddress(row.Address.has_value() ? string{ row.Address.value() } : "");
+		pFinnhubStock->SetCity(row.City.has_value() ? string{ row.City.value() } : "");
+		pFinnhubStock->SetCountry(row.Country.has_value() ? string{ row.Country.value() } : "");
+		pFinnhubStock->SetCusip(row.cusip.has_value() ? string{ row.cusip.value() } : "");
+		pFinnhubStock->SetSedol(row.sedol.has_value() ? string{ row.sedol.value() } : "");
+		pFinnhubStock->SetEmployeeTotal(row.EmployeeTotal.has_value() ? row.EmployeeTotal.value() : 0);
+		pFinnhubStock->SetGgroup(row.ggroup.has_value() ? string{ row.ggroup.value() } : "");
+		pFinnhubStock->SetGind(row.gind.has_value() ? string{ row.gind.value() } : "");
+		pFinnhubStock->SetGsector(row.gsector.has_value() ? string{ row.gsector.value() } : "");
+		pFinnhubStock->SetGsubind(row.gsubind.has_value() ? string{ row.gsubind.value() } : "");
+		pFinnhubStock->SetIPODate(row.IPODate.has_value() ? string{ row.IPODate.value() } : "");
+		pFinnhubStock->SetIsin(row.isin.has_value() ? string{ row.isin.value() } : "");
+		pFinnhubStock->SetMarketCapitalization(row.MarketCapitalization.has_value() ? row.MarketCapitalization.value() : 0);
+		pFinnhubStock->SetNaics(row.naics.has_value() ? string{ row.naics.value() } : "");
+		pFinnhubStock->SetNaicsNationalIndustry(row.naicsNationalIndustry.has_value() ? string{ row.naicsNationalIndustry.value() } : "");
+		pFinnhubStock->SetNaicsSector(row.naicsSector.has_value() ? string{ row.naicsSector.value() } : "");
+		pFinnhubStock->SetNaicsSubsector(row.naicsSubsector.has_value() ? string{ row.naicsSubsector.value() } : "");
+		pFinnhubStock->SetName(row.Name.has_value() ? string{ row.Name.value() } : "");
+		pFinnhubStock->SetPhone(row.Phone.has_value() ? string{ row.Phone.value() } : "");
+		pFinnhubStock->SetShareOutstanding(row.ShareOutstanding.has_value() ? row.ShareOutstanding.value() : 0);
+		pFinnhubStock->SetState(row.state.has_value() ? string{ row.state.value() } : "");
+		pFinnhubStock->SetTicker(row.Ticker.has_value() ? string{ row.Ticker.value() } : "");
+		pFinnhubStock->SetWebURL(row.WebURL.has_value() ? string{ row.WebURL.value() } : "");
+		pFinnhubStock->SetLogo(row.Logo.has_value() ? string{ row.Logo.value() } : "");
+		pFinnhubStock->SetFinnhubIndustry(row.FinnhubIndustry.has_value() ? string{ row.FinnhubIndustry.value() } : "");
+		string str = string{ row.Peer.value() };
 		if (str.length() > 2) {
 			nlohmannJson js;
-			CreateJsonWithNlohmann(js, row.Peer);
+			CreateJsonWithNlohmann(js, str);
 			pFinnhubStock->SetPeer(js);
 		}
-		pFinnhubStock->LoadUpdateDate(row.UpdateDate);
+		pFinnhubStock->LoadUpdateDate(string{ row.UpdateDate.value() });
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pFinnhubStock);
 			ASSERT(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
 		}
 		else {
-			db(sqlpp::remove_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 		}
 	}
 	tx.commit();
@@ -159,7 +160,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					t.Country = pStock->GetCountry(),
 					t.cusip = pStock->GetCusip(),
 					t.sedol = pStock->GetSedol(),
-					t.EmployeeTotal = pStock->GetEmployeeTotal(),
+					t.EmployeeTotal = static_cast<int>(pStock->GetEmployeeTotal()),
 					t.ggroup = pStock->GetGgroup(),
 					t.gind = pStock->GetGind(),
 					t.gsector = pStock->GetGsector(),
@@ -199,7 +200,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					t.Country = pStock->GetCountry(),
 					t.cusip = pStock->GetCusip(),
 					t.sedol = pStock->GetSedol(),
-					t.EmployeeTotal = pStock->GetEmployeeTotal(),
+					t.EmployeeTotal = static_cast<int>(pStock->GetEmployeeTotal()),
 					t.ggroup = pStock->GetGgroup(),
 					t.gind = pStock->GetGind(),
 					t.gsector = pStock->GetGsector(),

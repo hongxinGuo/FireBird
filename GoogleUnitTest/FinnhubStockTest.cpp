@@ -668,7 +668,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 3);
 
-		db(remove_from(t).where(t.Symbol == "A" && t.Date.in(19990101, 20210101, 20210123)));
+		db(delete_from(t).where(t.Symbol == "A" && t.Date.in(19990101, 20210101, 20210123)));
 		tx.commit();
 	}
 
@@ -746,7 +746,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 3);
 
-		db(remove_from(t).where(t.Symbol == "A" && t.Date.in(20200101, 20210101, 20210123)));
+		db(delete_from(t).where(t.Symbol == "A" && t.Date.in(20200101, 20210101, 20210123)));
 		tx.commit();
 	}
 
@@ -789,7 +789,7 @@ namespace FireBirdTest {
 			auto result = db(select(all_of(t)).from(t).where(t.PersonName == "a b c d"));
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1);
-			db(sqlpp::remove_from(t).where(t.PersonName == "a b c d"));
+			db(sqlpp::delete_from(t).where(t.PersonName == "a b c d"));
 			tx.commit();
 		}
 
@@ -800,7 +800,7 @@ namespace FireBirdTest {
 			auto result = db(select(all_of(t)).from(t).where(t.TransactionDate == 20210124));
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1);
-			db(sqlpp::remove_from(t).where(t.TransactionDate == 20210124));
+			db(sqlpp::delete_from(t).where(t.TransactionDate == 20210124));
 			tx.commit();
 		}
 
@@ -811,7 +811,7 @@ namespace FireBirdTest {
 			auto result = db(select(all_of(t)).from(t).where(t.TransactionCode == "S"));
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1);
-			db(sqlpp::remove_from(t).where(t.TransactionCode == "S"));
+			db(sqlpp::delete_from(t).where(t.TransactionCode == "S"));
 			tx.commit();
 		}
 	}
@@ -981,13 +981,13 @@ namespace FireBirdTest {
 		int rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
-		EXPECT_DOUBLE_EQ(row.Actual, 2.0);
-		EXPECT_DOUBLE_EQ(row.Estimate, 2.1);
-		int date = row.Date;
+		EXPECT_DOUBLE_EQ(row.Actual.value(), 2.0);
+		EXPECT_DOUBLE_EQ(row.Estimate.value(), 2.1);
+		int date = row.Date.value();
 		EXPECT_EQ(date, 20200401);
-		EXPECT_EQ(row.Symbol, "600601.US");
+		EXPECT_EQ(row.Symbol.value(), "600601.US");
 
-		db(sqlpp::remove_from(t).where(t.Symbol == "600601.US"));
+		db(sqlpp::delete_from(t).where(t.Symbol == "600601.US"));
 		tx.commit();
 	}
 
@@ -1026,8 +1026,8 @@ namespace FireBirdTest {
 		}
 		auto& row2 = result.front();
 		EXPECT_EQ(row2.accessNumber, "1000950135-08-002549");
-		db(remove_from(t).where(t.symbol == "MFI" && t.accessNumber == "0"));
-		db(remove_from(t).where(t.symbol == "MFI" && t.accessNumber == "1000950135-08-002549"));
+		db(delete_from(t).where(t.symbol == "MFI" && t.accessNumber == "0"));
+		db(delete_from(t).where(t.symbol == "MFI" && t.accessNumber == "1000950135-08-002549"));
 		tx.commit();
 	}
 

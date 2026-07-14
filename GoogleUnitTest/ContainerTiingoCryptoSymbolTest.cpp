@@ -96,7 +96,7 @@ namespace FireBirdTest {
 		const auto& t = TiingoCryptoSymbol{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
-		db(remove_from(t).where(t.Symbol == "AA.BB"));
+		db(delete_from(t).where(t.Symbol == "AA.BB"));
 		tx.commit();
 	}
 
@@ -122,7 +122,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条DKAETH的记录";
 			auto& row = result.front();
 			EXPECT_EQ(row.Symbol.value(), "DKAETH");
-			EXPECT_EQ(row.ID.value(), 1);
+			EXPECT_EQ(row.ID, 1);
 		}
 		m_dataTiingoCryptoSymbol.Reset();
 	}

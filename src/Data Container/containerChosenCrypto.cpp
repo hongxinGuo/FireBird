@@ -22,17 +22,17 @@ bool CContainerChosenCrypto::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {
-		if (gl_dataFinnhubCryptoSymbol.IsSymbol(row.Symbol)) {
-			auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(row.Symbol);
-			m_mapSymbol[row.Symbol] = m_mapSymbol.size();
+		if (gl_dataFinnhubCryptoSymbol.IsSymbol(string{ row.Symbol.value() })) {
+			auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(string{ row.Symbol.value() });
+			m_mapSymbol[string{ row.Symbol.value() }] = m_mapSymbol.size();
 			m_vStock.push_back(pStock);
 		}
 		else {
-			db(sqlpp::remove_from(t).where(t.ID == row.ID));
+			db(sqlpp::delete_from(t).where(t.ID == row.ID));
 		}
 	}
 	tx.commit();

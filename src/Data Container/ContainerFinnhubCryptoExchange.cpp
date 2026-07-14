@@ -45,12 +45,12 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	auto rows = result.size();
 	Reserve(rows);
 	int i = 0;
 	for (const auto& row : result) {
-		string str = row.code;
+		string str = string{ row.code.value() };
 		m_vCryptoExchange.push_back(str);
 		m_mapCryptoExchange[str] = i++;
 	}

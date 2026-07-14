@@ -102,19 +102,19 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 2) << "应该有两行数据";
 		auto& row = result.front();
-		string str = row.Symbol;
+		string str = string{ row.Symbol.value() };
 		EXPECT_STREQ(str.c_str(), "A") << "已存在代码";
-		int sicCode = row.SICCode;
+		int sicCode = row.SICCode.value();
 		EXPECT_EQ(sicCode, 1002);
 		result.pop_front();
 		auto& row2 = result.front();
-		str = row2.Symbol;
+		str = string{ row2.Symbol.value() };
 		EXPECT_STREQ(str.c_str(), "ABCDEF") << "新代码";
 		tx.commit();
 
 		auto tx1 = start_transaction(db);
 		db(update(t).set(t.SICSector = std::string("")).where(t.Symbol == std::string("A")));
-		db(remove_from(t).where(t.Symbol == std::string("ABCDEF")));
+		db(delete_from(t).where(t.Symbol == std::string("ABCDEF")));
 		tx1.commit();
 
 		gl_dataContainerTiingoStock.Delete(pTiingoStock);
@@ -156,7 +156,8 @@ namespace FireBirdTest {
 		const auto& t = TiingoStockProfile{};
 		// Ensure no leftover test symbols
 		auto db = GetStockMarketDB();
-		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
+		auto tx = start_transaction(db);
+		db(delete_from(t).where(t.Symbol == std::string("DUPLICATE")));
 
 		// Insert duplicate rows for the same Symbol
 		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP1")));
@@ -164,7 +165,7 @@ namespace FireBirdTest {
 		db(insert_into(t).set(t.Symbol = std::string("DUPLICATE"), t.Name = std::string("TEST_DUP3")));
 
 		// Ensure inserts are committed and visible to other connections
-		db.execute("COMMIT");
+		tx.commit();
 
 		// Verify duplicates were inserted
 		db = GetStockMarketDB(); // 执行完插入后，重新获取数据库连接，以确保看到最新的数据
@@ -182,7 +183,7 @@ namespace FireBirdTest {
 		// Clean up test data
 		db = GetStockMarketDB(); // 执行完删除重复代码任务后，重新获取数据库连接，以确保看到最新的数据
 		auto tx2 = start_transaction(db);
-		db(remove_from(t).where(t.Symbol == std::string("DUPLICATE")));
+		db(delete_from(t).where(t.Symbol == std::string("DUPLICATE")));
 		tx2.commit();
 	}
 
@@ -238,32 +239,32 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).where((t.Date == toFormattedDate(lDate)) and (t.Symbol == symbol)));
+		auto result = db(select(all_of(t)).from(t).where((t.Date == static_cast<int>(toFormattedDate(lDate))) and (t.Symbol == symbol)));
 		ASSERT_EQ(result.size(), 1u) << "Expected exactly one inserted row for symbol";
 
 		// inspect the row values (numeric DB values are unscaled)
 		for (const auto& row : result) {
 			// Close in DB should equal pStock->GetNew() / ratio
 			const double expectedClose = static_cast<double>(pStock->GetNew()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.Close, expectedClose, 1e-9);
+			EXPECT_NEAR(row.Close.value(), expectedClose, 1e-9);
 
 			const double expectedOpen = static_cast<double>(pStock->GetOpen()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.Open, expectedOpen, 1e-9);
+			EXPECT_NEAR(row.Open.value(), expectedOpen, 1e-9);
 
 			const double expectedHigh = static_cast<double>(pStock->GetHigh()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.High, expectedHigh, 1e-9);
+			EXPECT_NEAR(row.High.value(), expectedHigh, 1e-9);
 
 			const double expectedLow = static_cast<double>(pStock->GetLow()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.Low, expectedLow, 1e-9);
+			EXPECT_NEAR(row.Low.value(), expectedLow, 1e-9);
 
-			INT64 value = row.Volume;
+			INT64 value = row.Volume.value();
 			EXPECT_EQ(value, pStock->GetVolume());
-			value = row.Amount;
+			value = row.Amount.value();
 			EXPECT_EQ(value, pStock->GetAmount());
 
-			string str = row.Symbol;
+			string str = string{ row.Symbol.value() };
 			EXPECT_EQ(str, symbol);
-			chrono::local_days date = toLocalDays(row.Date);
+			chrono::local_days date = toLocalDays(row.Date.value());
 			EXPECT_EQ(date, lDate);
 		}
 
@@ -273,7 +274,7 @@ namespace FireBirdTest {
 		gl_systemMessage.PopDayLineInfoMessage();
 
 		// cleanup: remove inserted row for this symbol/date only
-		db(remove_from(t).where((t.Date == toFormattedDate(lDate)) and (t.Symbol == symbol)));
+		db(delete_from(t).where((t.Date == static_cast<int>(toFormattedDate(lDate))) and (t.Symbol == symbol)));
 		tx.commit();
 
 		// remove from in-memory container
@@ -304,7 +305,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条A的记录";
 			auto& row = result.front();
 			EXPECT_EQ(row.Symbol.value(), "A");
-			EXPECT_EQ(row.ID.value(), 1);
+			EXPECT_EQ(row.ID, 1);
 		}
 		m_dataTiingoStock.Reset();
 	}
@@ -320,7 +321,7 @@ namespace FireBirdTest {
 			const auto& t = TiingoStockProfile{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Symbol == newSymbol));
+			db(sqlpp::delete_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
 
@@ -357,7 +358,7 @@ namespace FireBirdTest {
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
 				EXPECT_EQ(row.ReportingCurrency.value(), "CNY");
-				string json = row.UpdateDate.value();
+				string json = string{ row.UpdateDate.value() };
 				nlohmannJson js;
 				CreateJsonWithNlohmann(js, json);
 				long updateDate = js["DayLineEndDate"];
@@ -373,7 +374,7 @@ namespace FireBirdTest {
 			pExistStock->UpdateJsonUpdateDate();
 			string jsonUpdateDate = pExistStock->GetJsonUpdateDate().dump();
 			db(update(t).set(t.ReportingCurrency = originalCurrency, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
-			db(remove_from(t).where(t.Symbol == newSymbol));
+			db(delete_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
 

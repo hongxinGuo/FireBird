@@ -65,7 +65,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	if (rows > 0) {
 		auto& row = result.front();
 		if (row.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter) {
-			db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter));
+			db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter));
 		}
 	}
 
@@ -242,7 +242,7 @@ void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
+	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= static_cast<int>(toFormattedDate(m_dataDayLine.GetData(0)->GetDate()))));
 	tx.commit();
 }
 
@@ -334,7 +334,7 @@ void CTiingoStock::Delete52WeekHighDB() const {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol()));
+	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
 	tx.commit();
 }
 
@@ -345,7 +345,7 @@ void CTiingoStock::Delete52WeekLowDB() const {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Symbol == GetSymbol()));
+	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
 	tx.commit();
 }
 
@@ -373,7 +373,7 @@ void CTiingoStock::Load52WeekLowDB() {
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == GetSymbol()).order_by(t.Date.asc()));
 	m_v52WeekLowDate.reserve(result.size<>());
 	for (const auto& row : result) {
-		m_v52WeekLowDate.push_back(toLocalDays(row.Date));
+		m_v52WeekLowDate.push_back(toLocalDays(row.Date.value()));
 	}
 	tx.commit();
 }

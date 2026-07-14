@@ -26,23 +26,23 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {
-		const std::string symbol = row.Symbol;
+		const std::string symbol = string{ row.Symbol.value() };
 		if (!IsSymbol(symbol)) {
 			const auto pSymbol = make_shared<CFinnhubCrypto>();
-			pSymbol->SetSymbol(row.Symbol);
-			pSymbol->SetDescription(row.Description);
-			pSymbol->SetExchange(row.Exchange);
-			pSymbol->SetDisplaySymbol(row.DisplaySymbol);
-			pSymbol->LoadUpdateDate(row.UpdateDate);
+			pSymbol->SetSymbol(string{ row.Symbol.value() });
+			pSymbol->SetDescription(string{ row.Description.value() });
+			pSymbol->SetExchange(string{ row.Exchange.value() });
+			pSymbol->SetDisplaySymbol(string{ row.DisplaySymbol.value() });
+			pSymbol->LoadUpdateDate(string{ row.UpdateDate.value() });
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
 		}
 		else {
-			db(sqlpp::remove_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 		}
 	}
 	tx.commit();

@@ -721,7 +721,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		db(sqlpp::remove_from(t).where(t.Symbol == "600010.SS" && t.Date == 21121201));
+		db(sqlpp::delete_from(t).where(t.Symbol == "600010.SS" && t.Date == 21121201));
 		tx.commit();
 	}
 

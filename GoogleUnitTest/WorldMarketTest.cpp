@@ -369,7 +369,7 @@ namespace FireBirdTest {
 		const auto& t = FinnhubCountryList{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
-		db(remove_from(t).where(t.Code2 == std::string("AB")));
+		db(delete_from(t).where(t.Code2 == std::string("AB")));
 		tx.commit();
 
 		gl_dataContainerFinnhubCountry.Delete(country);
@@ -409,7 +409,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
-		string str = row.Currency;
+		string str = string{ row.Currency.value() };
 		EXPECT_STREQ(str.c_str(), "Currency") << "此条目已更新";
 
 		db(update(t).set(t.Currency = std::string("CNY")).where(t.Symbol == std::string("000001.SS")));
@@ -418,10 +418,10 @@ namespace FireBirdTest {
 		size_t rows2 = result2.size();
 		EXPECT_EQ(rows2, 1);
 		auto& row2 = result2.front();
-		string str2 = row2.Currency;
+		string str2 = string{ row2.Currency.value() };
 		EXPECT_STREQ(str2.c_str(), "No Currency") << "此条目已更新";
 
-		db(sqlpp::remove_from(t).where(t.Symbol == std::string("SS.SS.US")));
+		db(sqlpp::delete_from(t).where(t.Symbol == std::string("SS.SS.US")));
 		tx.commit();
 
 		// 恢复原状
@@ -477,7 +477,7 @@ namespace FireBirdTest {
 		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("Test")));
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1) << "存入了新符号";
-		db(sqlpp::remove_from(t).where(t.Symbol == std::string("Test")));
+		db(sqlpp::delete_from(t).where(t.Symbol == std::string("Test")));
 		tx.commit();
 
 		// 恢复原状
@@ -516,7 +516,7 @@ namespace FireBirdTest {
 		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("Test")));
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1) << "存入了新符号";
-		db(sqlpp::remove_from(t).where(t.Symbol == std::string("Test")));
+		db(sqlpp::delete_from(t).where(t.Symbol == std::string("Test")));
 		tx.commit();
 
 		// 恢复原状
@@ -584,7 +584,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(result.front().Symbol, "ABCDEF");
 
 		db(update(t).set(t.SICSector = std::string("")).where(t.Symbol == std::string("A")));
-		db(remove_from(t).where(t.Symbol == std::string("ABCDEF")));
+		db(delete_from(t).where(t.Symbol == std::string("ABCDEF")));
 		tx.commit();
 
 		gl_dataContainerTiingoStock.Delete(pTiingoStock);
@@ -609,7 +609,7 @@ namespace FireBirdTest {
 		auto result = db(select(all_of(t)).from(t).where(t.code == "Test"));
 		auto rows = result.size();
 		EXPECT_EQ(rows, 1);
-		db(sqlpp::remove_from(t).where(t.code == "Test"));
+		db(sqlpp::delete_from(t).where(t.code == "Test"));
 		tx.commit();
 
 		// 恢复原状
@@ -637,7 +637,7 @@ namespace FireBirdTest {
 		auto result = db(select(all_of(t)).from(t).where(t.code == "Test"));
 		auto rows = result.size();
 		EXPECT_EQ(rows, 1);
-		db(sqlpp::remove_from(t).where(t.code == "Test"));
+		db(sqlpp::delete_from(t).where(t.code == "Test"));
 		tx.commit();
 
 		// 恢复原状
@@ -678,13 +678,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(row.Country, "USA");
 		EXPECT_EQ(row.Time, "20200101");
 		EXPECT_EQ(row.Event, "abc");
-		EXPECT_DOUBLE_EQ(row.Actual, 1.0);
-		EXPECT_DOUBLE_EQ(row.Estimate, 2.0);
-		EXPECT_DOUBLE_EQ(row.Prev, 3.0);
+		EXPECT_DOUBLE_EQ(row.Actual.value(), 1.0);
+		EXPECT_DOUBLE_EQ(row.Estimate.value(), 2.0);
+		EXPECT_DOUBLE_EQ(row.Prev.value(), 3.0);
 		EXPECT_EQ(row.Impact, "s");
 		EXPECT_EQ(row.Unit, "USD");
 
-		db(remove_from(t).unconditionally());
+		db(delete_from(t));
 		tx.commit();
 	}
 

@@ -29,10 +29,10 @@ void CContainerChinaStockDayLine::SaveDB(const string& strStockSymbol) {
 
 	// Helper: insert a single candle into DB (ratio applied inside)
 	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
-		multi_insert.values.add(
-			t.Date = toFormattedDate(pCandle->GetDate()),
-			t.Exchange = pCandle->GetExchange(),
-			t.Symbol = pCandle->GetStockSymbol(),
+		multi_insert.add_values(
+			t.Date = static_cast<int>(toFormattedDate(pCandle->GetDate())),
+			t.Exchange = string{ pCandle->GetExchange() },
+			t.Symbol = string{ pCandle->GetStockSymbol() },
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
 			t.Open = static_cast<double>(pCandle->GetOpen()) / m_ratio,
 			t.High = static_cast<double>(pCandle->GetHigh()) / m_ratio,
@@ -74,23 +74,23 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol) {
 		int ratio = GetRatio();
 		historyCandle.Reset();
 		historyCandle.SetRatio(ratio);
-		historyCandle.SetDate(row.Date);
-		historyCandle.SetExchange(row.Exchange);
-		historyCandle.SetStockSymbol(row.Symbol);
-		historyCandle.SetLastClose(row.LastClose * ratio);
-		historyCandle.SetOpen(row.Open * ratio);
-		historyCandle.SetHigh(row.High * ratio);
-		historyCandle.SetLow(row.Low * ratio);
-		historyCandle.SetClose(row.Close * ratio);
-		historyCandle.SetSplitFactor(row.SplitFactor);
-		historyCandle.SetDividend(row.Dividend);
-		historyCandle.SetUpDown(row.UpAndDown);
-		historyCandle.SetVolume(row.Volume);
-		historyCandle.SetAmount(row.Amount);
-		historyCandle.SetUpDownRate(row.UpDownRate);
-		historyCandle.SetChangeHandRate(row.ChangeHandRate);
-		historyCandle.SetTotalValue(row.TotalValue);
-		historyCandle.SetCurrentValue(row.CurrentValue);
+		historyCandle.SetDate(row.Date.value());
+		historyCandle.SetExchange(string{ row.Exchange.value() });
+		historyCandle.SetStockSymbol(string{ row.Symbol.value() });
+		historyCandle.SetLastClose(row.LastClose.value() * ratio);
+		historyCandle.SetOpen(row.Open.value() * ratio);
+		historyCandle.SetHigh(row.High.value() * ratio);
+		historyCandle.SetLow(row.Low.value() * ratio);
+		historyCandle.SetClose(row.Close.value() * ratio);
+		historyCandle.SetSplitFactor(row.SplitFactor.value());
+		historyCandle.SetDividend(row.Dividend.value());
+		historyCandle.SetUpDown(row.UpAndDown.value());
+		historyCandle.SetVolume(row.Volume.value());
+		historyCandle.SetAmount(row.Amount.value());
+		historyCandle.SetUpDownRate(row.UpDownRate.value());
+		historyCandle.SetChangeHandRate(row.ChangeHandRate.value());
+		historyCandle.SetTotalValue(row.TotalValue.value());
+		historyCandle.SetCurrentValue(row.CurrentValue.value());
 		historyCandle.SetRatio(ratio);
 		Add(historyCandle);
 	}
@@ -105,7 +105,7 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol && t.Date >= lStartDate).order_by(t.Date.asc()));
+	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol && t.Date >= static_cast<int>(lStartDate)).order_by(t.Date.asc()));
 	size_t rows = result.size();
 	Reserve(rows);
 
@@ -114,23 +114,23 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 		int ratio = GetRatio();
 		historyCandle.Reset();
 		historyCandle.SetRatio(ratio);
-		historyCandle.SetDate(row.Date);
-		historyCandle.SetExchange(row.Exchange);
-		historyCandle.SetStockSymbol(row.Symbol);
-		historyCandle.SetLastClose(row.LastClose * ratio);
-		historyCandle.SetOpen(row.Open * ratio);
-		historyCandle.SetHigh(row.High * ratio);
-		historyCandle.SetLow(row.Low * ratio);
-		historyCandle.SetClose(row.Close * ratio);
-		historyCandle.SetSplitFactor(row.SplitFactor);
-		historyCandle.SetDividend(row.Dividend);
-		historyCandle.SetUpDown(row.UpAndDown);
-		historyCandle.SetVolume(row.Volume);
-		historyCandle.SetAmount(row.Amount);
-		historyCandle.SetUpDownRate(row.UpDownRate);
-		historyCandle.SetChangeHandRate(row.ChangeHandRate);
-		historyCandle.SetTotalValue(row.TotalValue);
-		historyCandle.SetCurrentValue(row.CurrentValue);
+		historyCandle.SetDate(row.Date.value());
+		historyCandle.SetExchange(string{ row.Exchange.value() });
+		historyCandle.SetStockSymbol(string{ row.Symbol.value() });
+		historyCandle.SetLastClose(row.LastClose.value() * ratio);
+		historyCandle.SetOpen(row.Open.value() * ratio);
+		historyCandle.SetHigh(row.High.value() * ratio);
+		historyCandle.SetLow(row.Low.value() * ratio);
+		historyCandle.SetClose(row.Close.value() * ratio);
+		historyCandle.SetSplitFactor(row.SplitFactor.value());
+		historyCandle.SetDividend(row.Dividend.value());
+		historyCandle.SetUpDown(row.UpAndDown.value());
+		historyCandle.SetVolume(row.Volume.value());
+		historyCandle.SetAmount(row.Amount.value());
+		historyCandle.SetUpDownRate(row.UpDownRate.value());
+		historyCandle.SetChangeHandRate(row.ChangeHandRate.value());
+		historyCandle.SetTotalValue(row.TotalValue.value());
+		historyCandle.SetCurrentValue(row.CurrentValue.value());
 		historyCandle.SetRatio(ratio);
 		Add(historyCandle);
 	}

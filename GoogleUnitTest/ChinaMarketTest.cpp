@@ -1125,7 +1125,7 @@ namespace FireBirdTest {
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(remove_from(t).unconditionally());
+			db(delete_from(t) );
 			tx.commit();
 		}
 
@@ -1150,7 +1150,7 @@ namespace FireBirdTest {
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(remove_from(t).unconditionally());
+			db(delete_from(t) );
 			tx.commit();
 		}
 
@@ -1213,7 +1213,7 @@ namespace FireBirdTest {
 		int rows1 = result.size();
 		EXPECT_EQ(rows1, 1);
 
-		db(remove_from(t).where(t.Symbol == "Test"));
+		db(delete_from(t).where(t.Symbol == "Test"));
 		tx.commit();
 
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701，内存中的尚未删除";
@@ -1343,7 +1343,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		db(remove_from(t).where(t.Symbol == "600000.SS" || t.Symbol == "000002.SZ"));
+		db(delete_from(t).where(t.Symbol == "600000.SS" || t.Symbol == "000002.SZ"));
 		tx.commit();
 	}
 

@@ -119,13 +119,13 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(sqlpp::select(all_of(t)).from(t).unconditionally());
+	auto result = db(sqlpp::select(all_of(t)).from(t));
 	for (const auto& row : result) {
 		if (!m_vStockSection.at(row.IndexNumber.value())->IsActive()) {
 			m_vStockSection.at(row.IndexNumber.value())->SetActive(row.Active.value());
-			m_vStockSection.at(row.IndexNumber.value())->SetMarket(row.Market);
+			m_vStockSection.at(row.IndexNumber.value())->SetMarket(row.Market.value());
 			m_vStockSection.at(row.IndexNumber.value())->SetIndexNumber(row.IndexNumber.value());
-			m_vStockSection.at(row.IndexNumber.value())->SetComment(row.Comment.value());
+			m_vStockSection.at(row.IndexNumber.value())->SetComment(string{ row.Comment.value() });
 		}
 	}
 	tx.commit();
@@ -140,13 +140,13 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(sqlpp::select(all_of(t)).from(t).unconditionally());
+	auto result = db(sqlpp::select(all_of(t)).from(t));
 	auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.Market, t.IndexNumber, t.Comment);
 	int rows = result.size();
 	if (rows == 0) {
 		for (int i = 0; i < 2000; i++) {
 			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
-			multi_insert.values.add(
+			multi_insert.add_values(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
 				t.Market = static_cast<int>(pStockSection->GetMarket()),
@@ -162,8 +162,8 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 			db(update(t).set(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.Market = pStockSection->GetMarket(),
-				t.IndexNumber = pStockSection->GetIndexNumber(),
+				t.Market = static_cast<int>(pStockSection->GetMarket()),
+				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
 				t.Comment = pStockSection->GetComment()
 			).where(t.ID == i));
 		}

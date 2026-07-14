@@ -166,7 +166,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条BVDRF的记录";
 			auto& row = result.front();
 			EXPECT_EQ(row.Symbol.value(), "BVDRF");
-			EXPECT_EQ(row.ID.value(), 32525);
+			EXPECT_EQ(row.ID, 32525);
 		}
 		m_containerFinnhubStock.Reset();
 	}
@@ -182,7 +182,7 @@ namespace FireBirdTest {
 			const auto& t = FinnhubStockProfile{};
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Symbol == newSymbol));
+			db(sqlpp::delete_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
 
@@ -220,7 +220,7 @@ namespace FireBirdTest {
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
 				EXPECT_EQ(row.Exchange.value(), "CN");
-				string json = row.UpdateDate.value();
+				string json = string{ row.UpdateDate.value() };
 				nlohmannJson js;
 				CreateJsonWithNlohmann(js, json);
 				long updateDate = js["DayLineEndDate"];
@@ -236,7 +236,7 @@ namespace FireBirdTest {
 			pExistStock->UpdateJsonUpdateDate();
 			string jsonUpdateDate = pExistStock->GetJsonUpdateDate().dump();
 			db(update(t).set(t.Exchange = exchange, t.UpdateDate = jsonUpdateDate).where(t.Symbol == existingSymbol));
-			db(remove_from(t).where(t.Symbol == newSymbol));
+			db(delete_from(t).where(t.Symbol == newSymbol));
 			tx.commit();
 		}
 

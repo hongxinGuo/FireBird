@@ -63,16 +63,16 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	auto multi_insert = insert_into(t).columns(t.dataCode, t.name, t.description, t.statementType, t.units);
 	for (const auto& row : result) {
-		mapDefinition[row.dataCode] = mapDefinition.size();
+		mapDefinition[string{ row.dataCode.value() }] = mapDefinition.size();
 	}
 
 	int nValues = 0;
 	for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
 		if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
-			multi_insert.values.add(
+			multi_insert.add_values(
 				t.dataCode = tiingoFundamentalDefinition.m_strDataCode,
 				t.name = tiingoFundamentalDefinition.m_strName.c_str(),
 				t.description = tiingoFundamentalDefinition.m_strDescription.c_str(),
@@ -95,16 +95,16 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	size_t rows = result.size();
 	Reserve(rows);
 	for (const auto& row : result) {
 		CTiingoFundamentalDefinition tiingoFundamentalDefinition;
-		tiingoFundamentalDefinition.m_strDataCode = row.dataCode;
-		tiingoFundamentalDefinition.m_strName = row.name;
-		tiingoFundamentalDefinition.m_strDescription = row.description;
-		tiingoFundamentalDefinition.m_strStatementType = row.statementType;
-		tiingoFundamentalDefinition.m_strUnits = row.units;
+		tiingoFundamentalDefinition.m_strDataCode = string{ row.dataCode.value() };
+		tiingoFundamentalDefinition.m_strName = string{ row.name.value() };
+		tiingoFundamentalDefinition.m_strDescription = string{ row.description.value() };
+		tiingoFundamentalDefinition.m_strStatementType = string{ row.statementType.value() };
+		tiingoFundamentalDefinition.m_strUnits = string{ row.units.value() };
 		Add(tiingoFundamentalDefinition);
 	}
 	tx.commit();

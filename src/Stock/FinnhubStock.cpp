@@ -174,7 +174,7 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 				}
 				else {
 					auto& row = result.front();
-					m_lInsiderTransactionEndDate = row.TransactionDate; // 倒序排序，最新的日期位于第一个。
+					m_lInsiderTransactionEndDate = row.TransactionDate.value(); // 倒序排序，最新的日期位于第一个。
 				}
 			}
 			tx.commit();
@@ -189,12 +189,12 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		for (size_t i = 0; i < m_vInsiderTransaction.size(); i++) {
 			insiderTransaction = m_vInsiderTransaction.at(i);
 			if (insiderTransaction.m_lTransactionDate > m_lInsiderTransactionEndDate) {
-				multi_insert.values.add(
+				multi_insert.add_values(
 					t.Symbol = insiderTransaction.m_strSymbol,
 					t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
 					t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用INT64。
-					t.FilingDate = insiderTransaction.m_lFilingDate,
-					t.TransactionDate = insiderTransaction.m_lTransactionDate,
+					t.FilingDate = static_cast<int>(insiderTransaction.m_lFilingDate),
+					t.TransactionDate = static_cast<int>(insiderTransaction.m_lTransactionDate),
 					t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
 					t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用INT64。
 					t.TransactionPrice = insiderTransaction.m_dTransactionPrice
@@ -204,17 +204,17 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 			else {
 				auto result2 = db(select(all_of(t)).from(t).where(
 					t.Symbol == insiderTransaction.m_strSymbol.c_str() // 股票代码
-					&& t.TransactionDate == insiderTransaction.m_lTransactionDate // 交易时间
+					&& t.TransactionDate == static_cast<int>(insiderTransaction.m_lTransactionDate) // 交易时间
 					&& t.PersonName == insiderTransaction.m_strPersonName.c_str() // 内部交易人员
 					&& t.TransactionCode == insiderTransaction.m_strTransactionCode.c_str()));
 				auto rows2 = result2.size();
 				if (rows2 == 0) {
-					multi_insert.values.add(
+					multi_insert.add_values(
 						t.Symbol = insiderTransaction.m_strSymbol,
 						t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
 						t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用INT64。
-						t.FilingDate = insiderTransaction.m_lFilingDate,
-						t.TransactionDate = insiderTransaction.m_lTransactionDate,
+						t.FilingDate = static_cast<int>(insiderTransaction.m_lFilingDate),
+						t.TransactionDate = static_cast<int>(insiderTransaction.m_lTransactionDate),
 						t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
 						t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用INT64。
 						t.TransactionPrice = insiderTransaction.m_dTransactionPrice
@@ -294,7 +294,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 	auto multi_insert = insert_into(t).columns(t.Symbol, t.Category, t.DateTime, t.Headline, t.NewsID,
 	                                           t.Image, t.RelatedSymbol, t.Source, t.Summary, t.URL);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.DateTime.desc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.DateTime.desc()));
 	size_t rows = result.size();
 	if (rows > 0) {
 		auto& row = result.front();
@@ -306,7 +306,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 
 	for (size_t i = iIndex; i < m_vCompanyNews.size(); i++) {
 		auto& companyNews = m_vCompanyNews.at(i);
-		multi_insert.values.add(
+		multi_insert.add_values(
 			t.Symbol = companyNews.m_strCompanySymbol,
 			t.Category = companyNews.m_strCategory,
 			t.DateTime = companyNews.m_DateTime.time_since_epoch().count(),
@@ -337,9 +337,9 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date, t.Actual, t.Estimate);
 	for (const auto& EPSSurprise : m_vEPSSurprise) {
 		if (EPSSurprise.m_lDate > sastEPSSurpriseUpdateDate) {
-			multi_insert.values.add(
+			multi_insert.add_values(
 				t.Symbol = EPSSurprise.m_strSymbol,
-				t.Date = toFormattedDate(EPSSurprise.m_lDate),
+				t.Date = static_cast<int>(toFormattedDate(EPSSurprise.m_lDate)),
 				t.Actual = EPSSurprise.m_dActual,
 				t.Estimate = EPSSurprise.m_dEstimate
 			);
@@ -378,12 +378,12 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 			SECFilings = m_vSECFilings.at(lCurrentPos);
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) > 0) continue;
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) < 0) {	// 没有这个AccessNumber的SEC Filings？
-				multi_insert.values.add(
+				multi_insert.add_values(
 					t.symbol = m_strSymbol,
 					t.accessNumber = SECFilings.m_strAccessNumber,
 					t.cik = SECFilings.m_iCIK,
-					t.filedDate = SECFilings.m_iFiledDate,
-					t.acceptedDate = SECFilings.m_iAcceptedDate,
+					t.filedDate = static_cast<int>(SECFilings.m_iFiledDate),
+					t.acceptedDate = static_cast<int>(SECFilings.m_iAcceptedDate),
 					t.filingURL = SECFilings.m_strFilingURL,
 					t.reportURL = SECFilings.m_strReportURL,
 					t.form = SECFilings.m_strForm
@@ -393,12 +393,12 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
 			SECFilings = m_vSECFilings.at(i);
-			multi_insert.values.add(
+			multi_insert.add_values(
 				t.symbol = m_strSymbol,
 				t.accessNumber = SECFilings.m_strAccessNumber,
 				t.cik = SECFilings.m_iCIK,
-				t.filedDate = SECFilings.m_iFiledDate,
-				t.acceptedDate = SECFilings.m_iAcceptedDate,
+				t.filedDate = static_cast<int>(SECFilings.m_iFiledDate),
+				t.acceptedDate = static_cast<int>(SECFilings.m_iAcceptedDate),
 				t.filingURL = SECFilings.m_strFilingURL,
 				t.reportURL = SECFilings.m_strReportURL,
 				t.form = SECFilings.m_strForm

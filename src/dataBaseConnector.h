@@ -33,7 +33,7 @@ inline void InitSqlppMySQLConnectionPool(const std::string& user,
 	config->host = host;
 	config->port = port;
 #ifdef _DEBUG
-	config->debug = debug;
+	//config->debug = debug;
 #endif
 	gl_dbStockMarket = sqlpp::mysql::connection_pool(config, static_cast<int>(poolSize));
 }

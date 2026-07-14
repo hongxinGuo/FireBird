@@ -79,18 +79,12 @@ bool CContainerFinnhubCountry::LoadDB() {
 	int counter = 0;
 	for (const auto& row : result) {
 		CCountry country;
-		std::string_view sTemp = row.Code2.value();
-		country.m_strCode2 = sTemp;
-		sTemp = row.Code3.value();
-		country.m_strCode3 = sTemp;
-		sTemp = row.CodeNo.value();
-		country.m_strCodeNo = sTemp;
-		sTemp = row.Country.value();
-		country.m_strCountry = sTemp;
-		sTemp = row.Currency.value();
-		country.m_strCurrency = sTemp;
-		sTemp = row.CurrencyCode.value();
-		country.m_strCurrencyCode = sTemp;
+		country.m_strCode2 = row.Code2.value();
+		country.m_strCode3 = row.Code3.value();
+		country.m_strCodeNo = row.CodeNo.value();
+		country.m_strCountry = row.Country.value();
+		country.m_strCurrency = row.Currency.value();
+		country.m_strCurrencyCode = row.CurrencyCode.value();
 		m_mapCountry[country.m_strCountry] = counter;
 		counter++;
 		m_vCountry.push_back(country);

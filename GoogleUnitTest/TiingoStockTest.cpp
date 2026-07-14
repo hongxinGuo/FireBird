@@ -429,9 +429,9 @@ namespace FireBirdTest {
 			auto tx = sqlpp::start_transaction(db);
 
 			// 清除可能的测试遗留数据（如果有的话），以保证后续操作的正确性。
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			db(delete_from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			db(delete_from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			db(delete_from(t).where(t.Symbol == "A" && t.Date == 20241111));
 			tx.commit();
 		}
 		auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
@@ -472,22 +472,22 @@ namespace FireBirdTest {
 			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 19800101));
 			EXPECT_TRUE(result.size() == 1);
 			auto& row = result.front();
-			double value = row.Close;
+			double value = row.Close.value();
 			EXPECT_DOUBLE_EQ(value, 0.000115);
 			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20210101));
 			EXPECT_TRUE(result.size() == 1);
 			auto& row2 = result.front();
-			value = row2.Close;
+			value = row2.Close.value();
 			EXPECT_DOUBLE_EQ(value, 0.012340);
 			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20241111));
 			EXPECT_TRUE(result.size() == 1);
 			auto& row3 = result.front();
-			value = row3.Close;
+			value = row3.Close.value();
 			EXPECT_DOUBLE_EQ(value, 0.000135);
 
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 19800101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20210101));
-			db(remove_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+			db(delete_from(t).where(t.Symbol == "A" && t.Date == 19800101));
+			db(delete_from(t).where(t.Symbol == "A" && t.Date == 20210101));
+			db(delete_from(t).where(t.Symbol == "A" && t.Date == 20241111));
 			tx.commit();
 		}
 	}
@@ -710,7 +710,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(rows == 1);
 			auto& row3 = result.front();
 			EXPECT_EQ(row3.YearQuarter.value(), 202404);
-			db(remove_from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test"));
+			db(delete_from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test"));
 			tx.commit();
 		}
 	}
@@ -795,7 +795,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 			// cleanup
-			db(remove_from(t).where(t.Exchange == "Test"));
+			db(delete_from(t).where(t.Exchange == "Test"));
 			tx.commit();
 		}
 	}

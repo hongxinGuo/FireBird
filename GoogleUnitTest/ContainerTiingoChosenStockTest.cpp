@@ -90,10 +90,10 @@ namespace FireBirdTest {
 		// Verify DB only contains the valid symbol (invalid should be removed)
 		{
 			auto db = gl_dbStockMarket.get();
-			auto result = db(select(all_of(t)).from(t).unconditionally());
+			auto result = db(select(all_of(t)).from(t));
 			std::vector<std::string> dbSymbols;
 			for (const auto& row : result) {
-				if (row.Symbol != "") dbSymbols.push_back(row.Symbol);
+				if (row.Symbol != "") dbSymbols.push_back(string{ row.Symbol.value() });
 			}
 			std::vector<std::string> expected = { "A", "AA", "AAL", "AAPL", validSymbol };
 			EXPECT_THAT(dbSymbols, UnorderedElementsAreArray(expected));
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where(t.Symbol == "RIG"));
+			db(sqlpp::delete_from(t).where(t.Symbol == "RIG"));
 			tx.commit();
 		}
 	}
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			auto result = db(select(all_of(t)).from(t).unconditionally());
+			auto result = db(select(all_of(t)).from(t));
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 4) << "初始时有四个代码"; // A, AA, AAL, AAPL
 			tx.commit();
@@ -140,10 +140,10 @@ namespace FireBirdTest {
 		// Read back rows from DB and verify symbols were inserted
 		{
 			auto db = gl_dbStockMarket.get();
-			auto result = db(select(all_of(t)).from(t).unconditionally());
+			auto result = db(select(all_of(t)).from(t));
 			std::vector<std::string> dbSymbols;
 			for (const auto& row : result) {
-				if (row.Symbol != "") dbSymbols.push_back(static_cast<std::string>(row.Symbol));
+				if (row.Symbol != "") dbSymbols.push_back(string{ row.Symbol.value() });
 			}
 			std::vector<std::string> expected = { "A", "AA", "AAL", "AAPL", pStock1->GetSymbol(), pStock2->GetSymbol() };
 			EXPECT_THAT(dbSymbols, UnorderedElementsAreArray(expected));
@@ -153,7 +153,7 @@ namespace FireBirdTest {
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(sqlpp::remove_from(t).where((t.Symbol == "RIG") || (t.Symbol == "BAX")));
+			db(sqlpp::delete_from(t).where((t.Symbol == "RIG") || (t.Symbol == "BAX")));
 			tx.commit();
 		}
 	}

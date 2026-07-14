@@ -81,7 +81,7 @@ namespace FireBirdTest {
 		const auto& t = FinnhubCryptoSymbol{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
-		db(remove_from(t).where(t.Symbol == "AA.BB" && t.Exchange == "Test"));
+		db(delete_from(t).where(t.Symbol == "AA.BB" && t.Exchange == "Test"));
 		tx.commit();
 	}
 
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条BINANCE:USDTUAH的记录";
 			auto& row = result.front();
 			EXPECT_EQ(row.Symbol.value(), "BINANCE:USDTUAH");
-			EXPECT_EQ(row.ID.value(), 1);
+			EXPECT_EQ(row.ID, 1);
 		}
 		m_dataFinnhubCrypto.Reset();
 	}

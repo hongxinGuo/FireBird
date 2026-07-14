@@ -126,17 +126,17 @@ void LoadToken() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally().order_by(t.ID.asc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 	size_t rows = result.size();
 	if (rows > 0) {
 		auto& row = result.front();
 		if (gl_systemConfiguration.GetFinnhubToken().size() < 10) {
-			string s = row.FinnhubToken;
+			string s = string{ row.FinnhubToken.value() };
 			gl_systemConfiguration.SetFinnhubToken(s);
 			gl_systemConfiguration.SetUpdateDB(true);
 		}
 		if (gl_systemConfiguration.GetTiingoToken().size() < 10) {
-			string s = row.TiingoToken;
+			string s = string{ row.TiingoToken.value() };
 			gl_systemConfiguration.SetTiingoToken(s);
 			gl_systemConfiguration.SetUpdateDB(true);
 		}

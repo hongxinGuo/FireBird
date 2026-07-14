@@ -881,7 +881,7 @@ void CChinaMarket::DeleteDayLine(chrono::local_days lDate) const {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::remove_from(t).where(t.Date == toFormattedDate(lDate)));
+	db(sqlpp::delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(lDate))));
 	tx.commit();
 }
 
@@ -900,18 +900,18 @@ void CChinaMarket::UpdateOptionDB() {
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).unconditionally());
+		auto result = db(select(all_of(t)).from(t));
 		if (result.size() == 0) {
 			db(sqlpp::insert_into(t).set(
-				t.LastLoginDate = toFormattedDate(GetMarketDate()),
+				t.LastLoginDate = static_cast<int>(toFormattedDate(GetMarketDate())),
 				t.LastLoginTime = toFormattedTime(GetMarketTime())
 			));
 		}
 		else {
 			db(update(t).set(
-				t.LastLoginDate = toFormattedDate(GetMarketDate()),
+				t.LastLoginDate = static_cast<int>(toFormattedDate(GetMarketDate())),
 				t.LastLoginTime = toFormattedTime(GetMarketTime())
-			).unconditionally());
+			));
 		}
 		tx.commit();
 	} catch (CException& e) {
@@ -925,19 +925,19 @@ void CChinaMarket::LoadOptionDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	if (result.begin() == result.end()) {
 		SetLastLoginDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 	}
 	else {
 		const auto& row = result.front();
-		if (static_cast<int>(row.LastLoginDate) == 0) {
+		if (static_cast<int>(row.LastLoginDate.value()) == 0) {
 			SetLastLoginDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 		}
 		else {
-			SetLastLoginDate(toLocalDays(row.LastLoginDate));
+			SetLastLoginDate(toLocalDays(row.LastLoginDate.value()));
 		}
-		SetLastLoginTime(toLocalTime(row.LastLoginTime));
+		SetLastLoginTime(toLocalTime(row.LastLoginTime.value()));
 	}
 	tx.commit();
 }
@@ -949,7 +949,7 @@ void CChinaMarket::UpdateChosenStockDB() const {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		db(remove_from(t).unconditionally());
+		db(delete_from(t));
 
 		for (const auto& pStock : m_avChosenStock.at(0)) {
 			db(sqlpp::insert_into(t).set(
@@ -988,13 +988,13 @@ void CChinaMarket::LoadChosenStockDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).unconditionally());
+	auto result = db(select(all_of(t)).from(t));
 	auto rows = result.size();
 
 	for (const auto& row : result) {
 		CChinaStockPtr pStock = nullptr;
-		if (gl_dataContainerChinaStock.IsSymbol(row.Symbol)) {
-			pStock = gl_dataContainerChinaStock.GetStock(row.Symbol);
+		if (gl_dataContainerChinaStock.IsSymbol(string{ row.Symbol.value() })) {
+			pStock = gl_dataContainerChinaStock.GetStock(string{ row.Symbol.value() });
 			if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 				m_avChosenStock.at(0).push_back(pStock);
 			}

@@ -31,8 +31,8 @@ void CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 	// no old data: bulk insert all
 	for (size_t i = 0; i < lSize; ++i) {
 		auto pCandle = GetData(i);
-		multi_insert.values.add(
-			t.Date = toFormattedDate(pCandle->GetDate()),
+		multi_insert.add_values(
+			t.Date = static_cast<int>(toFormattedDate(pCandle->GetDate())),
 			t.Exchange = pCandle->GetExchange(),
 			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
@@ -71,15 +71,15 @@ void CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 		CVirtualHistoryCandle historyCandle;
 		historyCandle.Reset();
 		historyCandle.SetRatio(m_ratio);
-		historyCandle.SetDate(row.Date);
-		historyCandle.SetStockSymbol(row.Symbol);
-		historyCandle.SetLastClose(row.LastClose * m_ratio);
-		historyCandle.SetOpen(row.Open * m_ratio);
-		historyCandle.SetHigh(row.High * m_ratio);
-		historyCandle.SetLow(row.Low * m_ratio);
-		historyCandle.SetClose(row.Close * m_ratio);
-		historyCandle.SetVolume(row.Volume);
-		historyCandle.SetAmount(row.Amount);
+		historyCandle.SetDate(row.Date.value());
+		historyCandle.SetStockSymbol(string{ row.Symbol.value() });
+		historyCandle.SetLastClose(row.LastClose.value() * m_ratio);
+		historyCandle.SetOpen(row.Open.value() * m_ratio);
+		historyCandle.SetHigh(row.High.value() * m_ratio);
+		historyCandle.SetLow(row.Low.value() * m_ratio);
+		historyCandle.SetClose(row.Close.value() * m_ratio);
+		historyCandle.SetVolume(row.Volume.value());
+		historyCandle.SetAmount(row.Amount.value());
 		Add(historyCandle);
 	}
 	tx.commit();

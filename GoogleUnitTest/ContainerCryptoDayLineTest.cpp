@@ -70,7 +70,7 @@ namespace FireBirdTest {
 		auto& row = result.front();
 		EXPECT_EQ(row.Date.value(), 20200101) << "新存储数据的日期";
 
-		db(sqlpp::remove_from(t).where(t.Symbol == "BINANCE:USDTUAH"));
+		db(sqlpp::delete_from(t).where(t.Symbol == "BINANCE:USDTUAH"));
 		tx.commit();
 	}
 }
