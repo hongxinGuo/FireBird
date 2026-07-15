@@ -28,9 +28,9 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	for (const auto& row : result) {
 		if (!IsSymbol(string{ row.Symbol.value() })) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
-			pSymbol->SetSymbol(string{ row.Symbol.value() });
+			pSymbol->SetSymbol(row.Symbol.value());
 			pSymbol->m_strName = row.Name.has_value() ? string{ row.Name.value() } : "";
-			pSymbol->SetDescription(row.Description.has_value() ? string{ row.Description.value() } : "");
+			pSymbol->SetDescription(row.Description.has_value() ? row.Description.value() : "");
 			pSymbol->m_strBaseCurrency = row.BaseCurrency.has_value() ? string{ row.BaseCurrency.value() } : "";
 			pSymbol->m_strQuoteCurrency = row.QuoteCurrency.has_value() ? string{ row.QuoteCurrency.value() } : "";
 			Add(pSymbol);

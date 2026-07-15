@@ -57,9 +57,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0);
 
 		auto pTiingoCrypto = make_shared<CTiingoCrypto>();
-		pTiingoCrypto->SetSymbol("SS.SS");
+		pTiingoCrypto->SetSymbol(string_view("SS.SS"));
 		auto pTiingoCrypto2 = make_shared<CTiingoCrypto>();
-		pTiingoCrypto2->SetSymbol("SS.SS.SS");
+		pTiingoCrypto2->SetSymbol(string_view("SS.SS.SS"));
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1);
 
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 
 		// 测试UpdateDB
 		pTiingoCrypto = make_shared<CTiingoCrypto>();
-		pTiingoCrypto->SetSymbol("AA.BB"); // 新代码
+		pTiingoCrypto->SetSymbol(string_view("AA.BB")); // 新代码
 		pTiingoCrypto->SetUpdateProfileDB(true);
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1279);

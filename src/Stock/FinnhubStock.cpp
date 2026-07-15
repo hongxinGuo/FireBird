@@ -19,7 +19,7 @@
 #include"dataBaseConnector.h"
 
 CFinnhubStock::CFinnhubStock() {
-	SetExchange("US");
+	SetExchange(string_view("US"));
 	CFinnhubStock::ResetAllUpdateDate();
 }
 

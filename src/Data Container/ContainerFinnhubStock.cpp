@@ -77,8 +77,8 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	for (const auto& row : result) {
 		pFinnhubStock = make_shared<CFinnhubStock>();
 		ASSERT(row.Symbol.has_value());
-		pFinnhubStock->SetSymbol(string{ row.Symbol.value() });
-		pFinnhubStock->SetExchange(row.Exchange.has_value() ? string{ row.Exchange.value() } : "");
+		pFinnhubStock->SetSymbol(row.Symbol.value());
+		pFinnhubStock->SetExchange(row.Exchange.has_value() ? row.Exchange.value() : "");
 		pFinnhubStock->SetDescription(row.Description.has_value() ? string{ row.Description.value() } : "");
 		pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol.has_value() ? string{ row.DisplaySymbol.value() } : "");
 		pFinnhubStock->SetType(row.Type.has_value() ? string{ row.Type.value() } : "");

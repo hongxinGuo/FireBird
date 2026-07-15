@@ -200,23 +200,23 @@ public:
 	long m_lNoLowLower{ 0 };
 
 protected:
-	string m_strTiingoPermaTicker{ "" }; // Tiingo永久代码标识
+	string m_strTiingoPermaTicker{ " " }; // Tiingo永久代码标识
 	//string m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
-	string m_strName{ "" };
+	string m_strName{ " " };
 	// bool m_fIsActive{ false }; // 这个使用VirtualStock中的m_fActive来代替
 	double m_fDividend{ 0 };
 	double m_fSplitFactor{ 1 };
 	bool m_fIsADR{ false };
-	string m_strTiingoSector{ "" };
-	string m_strTiingoIndustry{ "" };
+	string m_strTiingoSector{ " " };
+	string m_strTiingoIndustry{ " " };
 	INT32 m_iSicCode{ 0 };
-	string m_strSicSector{ "" };
-	string m_strSicIndustry{ "" };
-	string m_strReportingCurrency{ "" };
-	string m_strLocation{ "" };
-	string m_strCompanyWebSite{ "" };
-	string m_strSECFilingWebSite{ "" };
-	string m_strDataProviderPermaTicker{ "" };
+	string m_strSicSector{ " " };
+	string m_strSicIndustry{ " " };
+	string m_strReportingCurrency{ " " };
+	string m_strLocation{ " " };
+	string m_strCompanyWebSite{ " " };
+	string m_strSECFilingWebSite{ " " };
+	string m_strDataProviderPermaTicker{ " " };
 
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
 

@@ -46,8 +46,8 @@ namespace FireBirdTest {
 
 		CDayLine dayLine;
 		dayLine.SetDate(20200411); // 此日为星期六，新数据
-		dayLine.SetStockSymbol("OANDA:USD_DKK");
-		dayLine.SetExchange("Test"); // 外汇日线表中没有这个字段，用于删除遗留的测试数据。
+		dayLine.SetStockSymbol(string_view("OANDA:USD_DKK"));
+		dayLine.SetExchange(string_view("Test")); // 外汇日线表中没有这个字段，用于删除遗留的测试数据。
 		dayLine.SetClose(100);
 		pvDayLine->push_back(dayLine);
 		m_dataForexDayLine.UpdateData(pvDayLine);

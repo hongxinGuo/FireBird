@@ -72,24 +72,24 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol1) {
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("AAPL");
-		pStock->SetExchange("US");
+		pStock->SetSymbol(string_view("AAPL"));
+		pStock->SetExchange(string_view("US"));
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol2) {
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("600601.SS");
-		pStock->SetExchange("SS");
+		pStock->SetSymbol(string_view("600601.SS"));
+		pStock->SetExchange(string_view("SS"));
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol3) {
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("600601SS");
-		pStock->SetExchange("SS");
+		pStock->SetSymbol(string_view("600601SS"));
+		pStock->SetExchange(string_view("SS"));
 
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
@@ -188,8 +188,8 @@ namespace FireBirdTest {
 
 		// Create and add a new stock to container, mark as new and needing DB update
 		auto pNewStock = make_shared<CFinnhubStock>();
-		pNewStock->SetSymbol(newSymbol);
-		pNewStock->SetExchange("Test");
+		pNewStock->SetSymbol(string_view(newSymbol));
+		pNewStock->SetExchange(string_view("Test"));
 		pNewStock->SetNewStock(true);
 		pNewStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(newSymbol));
@@ -200,7 +200,7 @@ namespace FireBirdTest {
 		auto pExistStock = gl_dataContainerFinnhubStock.GetItem(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
 		auto exchange = pExistStock->GetExchange();
-		pExistStock->SetExchange("CN");
+		pExistStock->SetExchange(string_view("CN"));
 		const auto originalUpdateDayLineEndDate = pExistStock->GetDayLineEndDate();
 		pExistStock->SetDayLineEndDate(toLocalDays(20200220));
 		pExistStock->SetUpdateProfileDB(true);

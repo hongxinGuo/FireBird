@@ -40,10 +40,10 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestInitialize) {
 		CFinnhubForex FinnhubForexSymbol;
-		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), "");
-		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), "");
-		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), "");
-		EXPECT_EQ(FinnhubForexSymbol.GetExchange(), "");
+		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), " ");
+		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), " ");
+		EXPECT_EQ(FinnhubForexSymbol.GetSymbol(), " ");
+		EXPECT_EQ(FinnhubForexSymbol.GetExchange(), " ");
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), toLocalDays(29900101));
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), toLocalDays(19800101));
 		EXPECT_TRUE(FinnhubForexSymbol.IsUpdateDayLine());
@@ -60,21 +60,21 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexSymbolTest, TestGetDescription) {
 		CFinnhubForex symbol;
 
-		symbol.SetDescription("abcdefg");
+		symbol.SetDescription(string_view("abcdefg"));
 		EXPECT_EQ(symbol.GetDescription(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDisplaySymbol) {
 		CFinnhubForex symbol;
 
-		symbol.SetDisplaySymbol("abcdefg");
+		symbol.SetDisplaySymbol(string_view("abcdefg"));
 		EXPECT_EQ(symbol.GetDisplaySymbol(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetSymbol) {
 		CFinnhubForex symbol;
 
-		symbol.SetSymbol("abcdefg");
+		symbol.SetSymbol(string_view("abcdefg"));
 		EXPECT_EQ(symbol.GetSymbol(), "abcdefg");
 	}
 
@@ -159,14 +159,14 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString1) {
 		CFinnhubForex symbol;
 
-		symbol.SetSymbol("ABCDE");
+		symbol.SetSymbol(string_view("ABCDE"));
 		const string str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		EXPECT_EQ(str, "ABCDE&resolution=D&from=315604800&to=123456789") << "当前时间小于19800101，315604800就是美东标准时间的19800101";
 	}
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
 		CFinnhubForex symbol;
 
-		symbol.SetSymbol("ABCDE");
+		symbol.SetSymbol(string_view("ABCDE"));
 		const string str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
 		EXPECT_EQ(str, "ABCDE&resolution=D&from=1100000000&to=1131536000") << "365 * 24 * 3600 = 31536000";
 	}
@@ -178,10 +178,10 @@ namespace FireBirdTest {
 
 		dayLine.SetDate(19800101);
 		dayLine.SetClose(100);
-		dayLine.SetStockSymbol("OANDA:AUD_SGD");
-		dayLine.SetExchange("Test"); // 用于删除遗留的测试数据
+		dayLine.SetStockSymbol(string_view("OANDA:AUD_SGD"));
+		dayLine.SetExchange(string_view("Test"));	 // 用于删除遗留的测试数据
 		pvDayLine->push_back(dayLine);
-		FinnhubForexSymbol.SetSymbol("OANDA:AUD_SGD");
+		FinnhubForexSymbol.SetSymbol(string_view("OANDA:AUD_SGD"));
 		FinnhubForexSymbol.UpdateDayLine(pvDayLine);
 
 		EXPECT_THAT(FinnhubForexSymbol.GetDayLineStartDate(), Eq(toLocalDays(29900101)));

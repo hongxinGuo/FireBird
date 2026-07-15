@@ -72,7 +72,7 @@ void CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 		historyCandle.Reset();
 		historyCandle.SetRatio(m_ratio);
 		historyCandle.SetDate(row.Date.value());
-		historyCandle.SetStockSymbol(string{ row.Symbol.value() });
+		historyCandle.SetStockSymbol(row.Symbol.value());
 		historyCandle.SetLastClose(row.LastClose.value() * m_ratio);
 		historyCandle.SetOpen(row.Open.value() * m_ratio);
 		historyCandle.SetHigh(row.High.value() * m_ratio);

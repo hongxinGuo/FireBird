@@ -75,8 +75,8 @@ void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 		auto ratio = GetRatio();
 
 		candle.SetDate(row.Date.value());
-		candle.SetExchange(string{ row.Exchange.value() });
-		candle.SetStockSymbol(string{ row.Symbol.value() });
+		candle.SetExchange(row.Exchange.value());
+		candle.SetStockSymbol(row.Symbol.value());
 		candle.SetLastClose(row.LastClose.value() * ratio);
 		candle.SetOpen(row.Open.value() * ratio);
 		candle.SetHigh(row.High.value() * ratio);
@@ -127,8 +127,8 @@ void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 	auto insertCandle = [&](const CTiingoCandleLine* pC) {
 		multi_insert.add_values(
 			t.Date = static_cast<int>(toFormattedDate(pC->GetDate())),
-			t.Exchange = string{ pC->GetExchange() },
-			t.Symbol = string{ pC->GetStockSymbol() },
+			t.Exchange = pC->GetExchange(),
+			t.Symbol = pC->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
 			t.Open = static_cast<double>(pC->GetOpen()) / ratio,
 			t.High = static_cast<double>(pC->GetHigh()) / ratio,

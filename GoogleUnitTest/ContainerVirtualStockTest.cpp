@@ -163,7 +163,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerVirtualStockTest, TestSort) {
 		const auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol("0.A"); // 
+		pStock->SetSymbol(string_view("0.A")); // 
 		m_containerVirtualStock.Add(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Get(m_containerVirtualStock.Size() - 1)->GetSymbol(), "0.A");
 		EXPECT_EQ(m_containerVirtualStock.Size(), 101);

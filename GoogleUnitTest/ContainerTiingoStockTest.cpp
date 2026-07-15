@@ -62,7 +62,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetSECFilingWebSite("");
 		pTiingoStock->SetSicIndustry("");
 		pTiingoStock->SetSicSector("Test"); // 用于删除
-		pTiingoStock->SetSymbol("A"); // 已存在代码
+		pTiingoStock->SetSymbol(string_view("A")); // 已存在代码
 		pTiingoStock->SetTiingoIndustry("");
 		pTiingoStock->SetTiingoPermaTicker("");
 		pTiingoStock->SetTiingoSector("");
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetSECFilingWebSite("abc");
 		pTiingoStock->SetSicIndustry("Computer Science");
 		pTiingoStock->SetSicSector("Test");
-		pTiingoStock->SetSymbol("ABCDEF"); // 新代码
+		pTiingoStock->SetSymbol(string_view("ABCDEF")); // 新代码
 		pTiingoStock->SetTiingoIndustry("Computer");
 		pTiingoStock->SetTiingoPermaTicker("abcdefg");
 		pTiingoStock->SetTiingoSector("gfedcba");
@@ -199,8 +199,8 @@ namespace FireBirdTest {
 
 		// Create a test stock and set fields (values are scaled by GetRatio())
 		auto pStock = std::make_shared<CTiingoStock>();
-		pStock->SetSymbol(symbol);
-		pStock->SetExchange("US");
+		pStock->SetSymbol(string_view(symbol));
+		pStock->SetExchange(string_view("US"));
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
 		const int ratio = pStock->GetRatio(); // typically 1000000

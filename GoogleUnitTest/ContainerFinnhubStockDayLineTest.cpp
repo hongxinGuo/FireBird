@@ -47,8 +47,8 @@ namespace FireBirdTest {
 
 		CDayLine dayLine;
 		dayLine.SetDate(20220101); // 测试库中的数据最新日期为20210330，此日期位于其后
-		dayLine.SetStockSymbol("A");
-		dayLine.SetExchange("Test"); // 日线表中没有这个字段，用于删除遗留的测试数据。
+		dayLine.SetStockSymbol(string_view("A"));
+		dayLine.SetExchange(string_view("Test")); // 日线表中没有这个字段，用于删除遗留的测试数据。
 		dayLine.SetClose(100);
 		vDayLine->push_back(dayLine);
 		m_dataFinnhubStockDayLine.UpdateData(vDayLine);

@@ -17,7 +17,7 @@ bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandle* pDayLine) {
 	if (GetDate() == chrono::local_days{ chrono::days(0) }) {
 		SetDate(GetCurrentMonday(pDayLine->GetDate()));
 	}
-	if (m_strStockSymbol.empty()) m_strStockSymbol = pDayLine->GetStockSymbol();
+	m_strStockSymbol = pDayLine->GetStockSymbol();
 
 	if (m_lOpen == 0) m_lOpen = pDayLine->GetOpen();
 	if (m_lLastClose == 0) m_lLastClose = pDayLine->GetLastClose();

@@ -133,22 +133,22 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestGetDescription) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetDescription(), "");
-		stock.SetDescription("SSabcdefg");
+		EXPECT_EQ(stock.GetDescription(), " ");
+		stock.SetDescription(string_view("SSabcdefg"));
 		EXPECT_EQ(stock.GetDescription(), "SSabcdefg");
 	}
 
 	TEST_F(CChinaStockTest, TestGetExchangeCode) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetExchange(), "");
-		stock.SetExchange("SS");
+		EXPECT_EQ(stock.GetExchange(), " ");
+		stock.SetExchange(string_view("SS"));
 		EXPECT_EQ(stock.GetExchange(), "SS");
 	}
 
 	TEST_F(CChinaStockTest, TestGetSymbol) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetSymbol(), "");
-		stock.SetSymbol("600000.SS");
+		EXPECT_EQ(stock.GetSymbol(), " ");
+		stock.SetSymbol(string_view("600000.SS"));
 		EXPECT_EQ(stock.GetSymbol(), "600000.SS");
 	}
 
@@ -307,8 +307,8 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestInitialize) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetSymbol(), "");
-		EXPECT_EQ(stock.GetDisplaySymbol(), "");
+		EXPECT_EQ(stock.GetSymbol(), " ");
+		EXPECT_EQ(stock.GetDisplaySymbol(), " ");
 		EXPECT_EQ(stock.GetDayLineStartDate(), toLocalDays(29900101));
 		EXPECT_EQ(stock.GetDayLineEndDate(), toLocalDays(19800101));
 		EXPECT_EQ(stock.GetTransactionTime(), 0);
@@ -330,8 +330,8 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0);
 		EXPECT_EQ(stock.GetTotalValue(), 0);
 		EXPECT_EQ(stock.GetCurrentValue(), 0);
-		stock.SetSymbol("abcde");
-		stock.SetDisplaySymbol("dcba");
+		stock.SetSymbol(string_view("abcde"));
+		stock.SetDisplaySymbol(string_view("dcba"));
 		stock.SetDayLineEndDate(toLocalDays(20020202));
 		EXPECT_EQ(stock.GetSymbol(), "abcde");
 		EXPECT_EQ(stock.GetDisplaySymbol(), "dcba");
@@ -340,8 +340,8 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestGetDisplaySymbol) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetDisplaySymbol(), "");
-		stock.SetDisplaySymbol("浦发银行");
+		EXPECT_EQ(stock.GetDisplaySymbol(), " ");
+		stock.SetDisplaySymbol(string_view("浦发银行"));
 		EXPECT_EQ(stock.GetDisplaySymbol(), "浦发银行");
 	}
 
@@ -545,16 +545,16 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestCheckNeedProcessRTData) {
 		CChinaStock stock;
-		stock.SetSymbol("000001.SS");
+		stock.SetSymbol(string_view("000001.SS"));
 		stock.CheckNeedProcessRTData();
 		EXPECT_FALSE(stock.IsNeedProcessRTData());
-		stock.SetSymbol("001000.SS");
+		stock.SetSymbol(string_view("001000.SS"));
 		stock.CheckNeedProcessRTData();
 		EXPECT_TRUE(stock.IsNeedProcessRTData());
-		stock.SetSymbol("000001.SZ");
+		stock.SetSymbol(string_view("000001.SZ"));
 		stock.CheckNeedProcessRTData();
 		EXPECT_TRUE(stock.IsNeedProcessRTData());
-		stock.SetSymbol("999000.SZ");
+		stock.SetSymbol(string_view("999000.SZ"));
 		stock.CheckNeedProcessRTData();
 		EXPECT_FALSE(stock.IsNeedProcessRTData());
 	}
@@ -674,7 +674,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < 8; i++) {
 			CDayLine dayLine;
 			dayLine.SetDate(21121201);
-			dayLine.SetStockSymbol("600010.SS");
+			dayLine.SetStockSymbol(string_view("600010.SS"));
 			dayLine.SetLastClose(34235345);
 			dayLine.SetOpen(100000 + i);
 			dayLine.SetHigh(45234543);
@@ -689,12 +689,12 @@ namespace FireBirdTest {
 			dayLine.SetChangeHandRate(54.321);
 			pStock->StoreDayLine(dayLine);
 		}
-		pStock->SetSymbol("600010.SS");
+		pStock->SetSymbol(string_view("600010.SS"));
 		pStock->SetDayLineEndDate(toLocalDays(10190101));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineDB();
 
-		stock.SetSymbol("600010.SS");
+		stock.SetSymbol(string_view("600010.SS"));
 		stock.LoadDayLineDB();
 
 		for (int i = 0; i < 8; i++) {
@@ -733,7 +733,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(CHINA_MARKET_BEGIN_DATE_ + i * 100000 + 2);
-			pid->SetStockSymbol("600004.SS");
+			pid->SetStockSymbol(string_view("600004.SS"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -748,7 +748,7 @@ namespace FireBirdTest {
 			pid->SetChangeHandRate(54.321);
 			pStock->StoreDayLine(*pid);
 		}
-		pStock->SetSymbol("600004.SS");
+		pStock->SetSymbol(string_view("600004.SS"));
 		pStock->SetDayLineStartDate(toLocalDays(19920102));
 		pStock->SetDayLineEndDate(toLocalDays(20800100));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -769,7 +769,7 @@ namespace FireBirdTest {
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(CHINA_MARKET_BEGIN_DATE_ + i * 100000);
-			pid->SetStockSymbol("600008.SS");
+			pid->SetStockSymbol(string_view("600008.SS"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -784,7 +784,7 @@ namespace FireBirdTest {
 			pid->SetChangeHandRate(54.321);
 			pStock->StoreDayLine(*pid);
 		}
-		pStock->SetSymbol("600008.SS");
+		pStock->SetSymbol(string_view("600008.SS"));
 		pStock->SetDayLineStartDate(toLocalDays(19900101));
 		pStock->SetDayLineEndDate(toLocalDays(20800102));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -805,7 +805,7 @@ namespace FireBirdTest {
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
 			pid->SetDate(CHINA_MARKET_BEGIN_DATE_ + i * 100000);
-			pid->SetStockSymbol("600008.SS");
+			pid->SetStockSymbol(string_view("600008.SS"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -820,7 +820,7 @@ namespace FireBirdTest {
 			pid->SetChangeHandRate(54.321);
 			pStock->StoreDayLine(*pid);
 		}
-		pStock->SetSymbol("600008.SS");
+		pStock->SetSymbol(string_view("600008.SS"));
 		pStock->SetDayLineStartDate(toLocalDays(19900102));
 		pStock->SetDayLineEndDate(toLocalDays(20800102));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
@@ -833,7 +833,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestReportDayLineDownLoaded) {
 		CChinaStock stock;
-		stock.SetSymbol("600008.SS");
+		stock.SetSymbol(string_view("600008.SS"));
 		stock.ReportDayLineDownLoaded();
 		//EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		//string str = gl_systemMessage.PopDayLineInfoMessage();
@@ -879,13 +879,13 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestIsAStock) {
 		const auto pStock2 = make_shared<CChinaStock>();
-		pStock2->SetSymbol("600000.SS");
+		pStock2->SetSymbol(string_view("600000.SS"));
 		EXPECT_TRUE(pStock2->IsShareA());
-		pStock2->SetSymbol("600000.SA");
+		pStock2->SetSymbol(string_view("600000.SA"));
 		EXPECT_FALSE(pStock2->IsShareA());
-		pStock2->SetSymbol("000001.SZ");
+		pStock2->SetSymbol(string_view("000001.SZ"));
 		EXPECT_TRUE(pStock2->IsShareA());
-		pStock2->SetSymbol("10001.SZ");
+		pStock2->SetSymbol(string_view("10001.SZ"));
 		EXPECT_FALSE(pStock2->IsShareA());
 	}
 
@@ -898,7 +898,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < 10; i++) {
 			CDayLine dayLine;
 			dayLine.SetDate(20210302 + i); // 数据库中已有20210301的数据，此处插入重复数据进行测试
-			dayLine.SetStockSymbol("000001.SZ");
+			dayLine.SetStockSymbol(string_view("000001.SZ"));
 			dayLine.SetLastClose(34235345);
 			dayLine.SetOpen(1000000 + i);
 			dayLine.SetHigh(45234543);
@@ -913,7 +913,7 @@ namespace FireBirdTest {
 			dayLine.SetChangeHandRate(54.321);
 			pStock->StoreDayLine(dayLine);
 		}
-		pStock->SetSymbol("000001.SZ");
+		pStock->SetSymbol(string_view("000001.SZ"));
 		pStock->SetDayLineEndDate(toLocalDays(20210301));
 
 		db(sqlpp::insert_into(t).set(

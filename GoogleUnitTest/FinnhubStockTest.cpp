@@ -69,13 +69,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestGetExchangeCode) {
 		EXPECT_EQ(stock.GetExchange(), "US");
-		stock.SetExchange("SS");
+		stock.SetExchange(string_view("SS"));
 		EXPECT_EQ(stock.GetExchange(), "SS");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetSymbol) {
-		EXPECT_EQ(stock.GetSymbol(), "");
-		stock.SetSymbol("600000.SS");
+		EXPECT_EQ(stock.GetSymbol(), " ");
+		stock.SetSymbol(string_view("600000.SS"));
 		EXPECT_EQ(stock.GetSymbol(), "600000.SS");
 	}
 
@@ -321,14 +321,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetDescription) {
-		EXPECT_EQ(stock.GetDescription(), "");
-		stock.SetDescription("abcdef");
+		EXPECT_EQ(stock.GetDescription(), " ");
+		stock.SetDescription(string_view("abcdef"));
 		EXPECT_EQ(stock.GetDescription(), "abcdef");
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetDisplaySymbol) {
-		EXPECT_EQ(stock.GetDisplaySymbol(), "");
-		stock.SetDisplaySymbol("abcdef");
+		EXPECT_EQ(stock.GetDisplaySymbol(), " ");
+		stock.SetDisplaySymbol(string_view("abcdef"));
 		EXPECT_EQ(stock.GetDisplaySymbol(), "abcdef");
 	}
 
@@ -516,9 +516,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUSMarket) {
-		stock.SetExchange("SS");
+		stock.SetExchange(string_view("SS"));
 		EXPECT_FALSE(stock.IsUSMarket());
-		stock.SetExchange("US");
+		stock.SetExchange(string_view("US"));
 		EXPECT_TRUE(stock.IsUSMarket());
 	}
 
@@ -638,22 +638,22 @@ namespace FireBirdTest {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		CDayLine dayLine;
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(19990101); // 这个日期早于数据库中的最早日期，需要添加进数据库
 		dayLine.SetClose(10010);
 		pvDayLine->push_back(dayLine);
 		dayLine.Reset();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210101); // 这个日期为新日期，需要添加进数据库
 		dayLine.SetClose(12345);
 		pvDayLine->push_back(dayLine);
 		dayLine.Reset();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210123); // 这个日期为新日期，需要添加进数据库
 		dayLine.SetClose(10030);
 		pvDayLine->push_back(dayLine);
 
-		stock.SetSymbol("A");
+		stock.SetSymbol(string_view("A"));
 		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
@@ -694,27 +694,27 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 
 		CDayLine dayLine;
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20200101); // 这个需要添加进数据库
 		dayLine.SetClose(10010);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210101); // 这个需要添加进数据库
 		dayLine.SetClose(12345);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
 		dayLine.SetClose(10020);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210123); // 这个需要添加进数据库
 		dayLine.SetClose(10030);
 		pvDayLine->push_back(dayLine);
 
-		stock.SetSymbol("A");
+		stock.SetSymbol(string_view("A"));
 		stock.SetDayLineStartDate(toLocalDays(20200101)); // 日线开始日期不晚于当前日线数据日期
 		stock.SetDayLineEndDate(toLocalDays(20210123)); // 日线结束日期不早于当前日线数据日期
 		stock.UpdateDayLine(pvDayLine);
@@ -774,7 +774,7 @@ namespace FireBirdTest {
 		insiderTransaction.m_strTransactionCode = "S"; // 这个交易类型不符，需要添加进数据库
 		pvInsiderTransaction->push_back(insiderTransaction);
 
-		stock.SetSymbol("A");
+		stock.SetSymbol(string_view("A"));
 		stock.SetInsiderTransactionUpdateDate(toLocalDays(20210123));
 		stock.UpdateInsiderTransaction(pvInsiderTransaction);
 
@@ -820,27 +820,27 @@ namespace FireBirdTest {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		CDayLine dayLine;
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210101); // 这个需要添加进数据库
 		dayLine.SetClose(10010);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210102); // 这个需要添加进数据库
 		dayLine.SetClose(12345);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
 		dayLine.SetClose(10020);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210123); // 这个需要添加进数据库
 		dayLine.SetClose(10030);
 		pvDayLine->push_back(dayLine);
 
-		stock.SetSymbol("A");
+		stock.SetSymbol(string_view("A"));
 		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
@@ -865,27 +865,27 @@ namespace FireBirdTest {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
 
 		CDayLine dayLine;
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210101); // 这个需要添加进数据库
 		dayLine.SetClose(10010);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210102); // 这个需要添加进数据库
 		dayLine.SetClose(12345);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
 		dayLine.SetClose(10020);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210123); // 这个需要添加进数据库
 		dayLine.SetClose(10030);
 		pvDayLine->push_back(dayLine);
 
-		stock.SetSymbol("A");
+		stock.SetSymbol(string_view("A"));
 		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
@@ -1004,7 +1004,7 @@ namespace FireBirdTest {
 		SECFiling.m_strAccessNumber = "1000950135-08-002549"; // 新存取号，比原有的都大
 		pvSECFilings->push_back(SECFiling);
 
-		stock.SetSymbol("MFI");
+		stock.SetSymbol(string_view("MFI"));
 		stock.SetSECFilings(pvSECFilings);
 		stock.SetUpdateSECFilingsDB(true);
 		stock.SetUpdateSECFilings(false);
@@ -1038,27 +1038,27 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";
 
 		CDayLine dayLine;
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210101); // 这个需要添加进数据库
 		dayLine.SetClose(10010);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210102); // 这个需要添加进数据库
 		dayLine.SetClose(12345);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210107); // 这个数据库中有，无需添加
 		dayLine.SetClose(10020);
 		pvDayLine->push_back(dayLine);
 		dayLine = CDayLine();
-		dayLine.SetStockSymbol("A");
+		dayLine.SetStockSymbol(string_view("A"));
 		dayLine.SetDate(20210123); // 这个需要添加进数据库
 		dayLine.SetClose(10030);
 		pvDayLine->push_back(dayLine);
 
-		stock.SetSymbol("A");
+		stock.SetSymbol(string_view("A"));
 		stock.SetDayLineEndDate(toLocalDays(20210107));
 		stock.UpdateDayLine(pvDayLine);
 
@@ -1151,13 +1151,13 @@ namespace FireBirdTest {
 		string sTime = std::format("{:Ld}", tt);
 		string sTimeOld = std::format("{:Ld}", ttOld);
 
-		stock.SetSymbol("600601.SS");
+		stock.SetSymbol(string_view("600601.SS"));
 		stock.SetDayLineEndDate(toLocalDays(20180101)); // 早于20190102
 		string sMiddle2 = "600601.SS&resolution=D&from=" + sTimeOld + "&to=" + sTime;
 		EXPECT_TRUE(stock.GetFinnhubDayLineInquiryParam(tt) == sMiddle2) << "免费账户最多只能申请一年的日线数据";
 		EXPECT_EQ(stock.GetFinnhubDayLineInquiryParam(tt), sMiddle2) << "免费账户最多只能申请一年的日线数据";
 
-		stock.SetSymbol("600601.SS");
+		stock.SetSymbol(string_view("600601.SS"));
 		stock.SetDayLineEndDate(toLocalDays(20190501)); // 晚于20190102
 		ttOld = gl_pWorldMarket->ConvertToUTCTime(20190501, 150000).time_since_epoch().count();
 		sTimeOld = std::format("{:Ld}", ttOld);
@@ -1166,14 +1166,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam) {
-		stock.SetSymbol("600601.SS");
+		stock.SetSymbol(string_view("600601.SS"));
 		const string strParam = "600601.SS/prices?&startDate=2018-01-01&endDate=2020-01-01";
 
 		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(toLocalDays(20180101), toLocalDays(20200101)) == strParam);
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam2) {
-		stock.SetSymbol("600601.SS");
+		stock.SetSymbol(string_view("600601.SS"));
 		const string strParam = "600601.SS/prices?&startDate=1980-01-01&endDate=2020-01-01";
 
 		EXPECT_TRUE(stock.GetTiingoDayLineInquiryParam(toLocalDays(19800101), toLocalDays(20200101)) == strParam);

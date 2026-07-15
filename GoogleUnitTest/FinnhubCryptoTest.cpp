@@ -41,10 +41,10 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestInitialize) {
 		CFinnhubCrypto FinnhubCryptoSymbol;
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), "");
-		EXPECT_EQ(FinnhubCryptoSymbol.GetExchange(), "");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), " ");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), " ");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetSymbol(), " ");
+		EXPECT_EQ(FinnhubCryptoSymbol.GetExchange(), " ");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), toLocalDays(29900101));
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), toLocalDays(19800101));
 		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateDayLine());
@@ -61,21 +61,21 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDescription) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetDescription("abcdefg");
+		symbol.SetDescription(string_view("abcdefg"));
 		EXPECT_EQ(symbol.GetDescription(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDisplaySymbol) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetDisplaySymbol("abcdefg");
+		symbol.SetDisplaySymbol(string_view("abcdefg"));
 		EXPECT_EQ(symbol.GetDisplaySymbol(), "abcdefg");
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetSymbol) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetSymbol("abcdefg");
+		symbol.SetSymbol(string_view("abcdefg"));
 		EXPECT_EQ(symbol.GetSymbol(), "abcdefg");
 	}
 
@@ -159,7 +159,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString1) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetSymbol("ABCDE");
+		symbol.SetSymbol(string_view("ABCDE"));
 		const string str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		EXPECT_EQ(str, "ABCDE&resolution=D&from=91920789&to=123456789") << "91920789比123456789早一年（365天）";
 	}
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString2) {
 		CFinnhubCrypto symbol;
 
-		symbol.SetSymbol("ABCDE");
+		symbol.SetSymbol(string_view("ABCDE"));
 		const string str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
 		EXPECT_EQ(str, "ABCDE&resolution=D&from=1100000000&to=1131536000") << "365 * 24 * 3600 = 31536000";
 	}
@@ -179,10 +179,10 @@ namespace FireBirdTest {
 
 		dayLine.SetDate(19800101);
 		dayLine.SetClose(100);
-		dayLine.SetStockSymbol("NewSymbol");
-		dayLine.SetExchange("Test"); // 用于删除测试数据
+		dayLine.SetStockSymbol(string_view("NewSymbol"));
+		dayLine.SetExchange(string_view("Test")); // 用于删除测试数据
 		pvDayLine->push_back(dayLine);
-		FinnhubCryptoSymbol.SetSymbol("NewSymbol"); // 新代码
+		FinnhubCryptoSymbol.SetSymbol(string_view("NewSymbol")); // 新代码
 		FinnhubCryptoSymbol.UpdateDayLine(pvDayLine);
 
 		FinnhubCryptoSymbol.UpdateDayLineDB();

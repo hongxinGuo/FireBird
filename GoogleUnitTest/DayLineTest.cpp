@@ -47,7 +47,7 @@ namespace FireBirdTest {
 	TEST_F(CStockDayLineTest, TestGetStockCode) {
 		CDayLine dl;
 		EXPECT_EQ(dl.GetStockSymbol(), "");
-		dl.SetStockSymbol("600000.SS");
+		dl.SetStockSymbol(string_view("600000.SS"));
 		EXPECT_EQ(dl.GetStockSymbol(), "600000.SS");
 	}
 

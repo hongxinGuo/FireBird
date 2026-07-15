@@ -85,7 +85,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerChinaStockTest, TestSortStock) {
 		const auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol("0.A"); // 
+		pStock->SetSymbol(string_view("0.A")); // 
 		m_containerChinaStock.Add(pStock);
 		EXPECT_EQ(m_containerChinaStock.GetStock(m_containerChinaStock.Size() - 1)->GetSymbol(), "0.A");
 
@@ -165,8 +165,8 @@ namespace FireBirdTest {
 
 		// Create and add a new stock to container, mark as new and needing DB update
 		auto pNewStock = make_shared<CChinaStock>();
-		pNewStock->SetSymbol(newSymbol);
-		pNewStock->SetExchange("Test");
+		pNewStock->SetSymbol(string_view(newSymbol));
+		pNewStock->SetExchange(string_view("Test"));
 		pNewStock->SetNewStock(true);
 		pNewStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(newSymbol));
@@ -176,7 +176,7 @@ namespace FireBirdTest {
 		// Modify an existing stock in-memory and mark it for update
 		auto pExistStock = gl_dataContainerChinaStock.GetStock(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
-		pExistStock->SetExchange("china");
+		pExistStock->SetExchange(string_view("china"));
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update

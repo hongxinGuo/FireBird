@@ -117,7 +117,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== "cure");
 			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== "New Symbol");
 			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName == "CureCoin(CURE/BTC)");
-			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== "") << "此项已废弃。为了兼容才没有删除";
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== " ") << "此项已废弃。为了兼容才没有删除";
 			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency=="btc");
 			break;
 		default:
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== "cure");
 			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== "New Symbol");
 			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName== "CureCoin(CURE/BTC)");
-			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== "") << "此项已废弃。为了兼容才没有删除";
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== " ") << "此项已废弃。为了兼容才没有删除";
 			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency== "btc");
 			break;
 		default:

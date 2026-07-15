@@ -40,9 +40,11 @@ public:
 	void SetDate(chrono::local_days time) noexcept { m_tpDate = time; }
 	void SetDate(const chrono::year_month_day& ymd) noexcept { m_tpDate = chrono::local_days{ ymd }; }
 	const string& GetExchange() const { return m_strExchange; }
-	void SetExchange(string strExchange) { m_strExchange = strExchange; }
+	void SetExchange(const string& strExchange) noexcept { m_strExchange = strExchange; }
+	void SetExchange(string_view svExchange) noexcept { m_strExchange = svExchange; }
 	const string& GetStockSymbol() const { return m_strStockSymbol; }
-	void SetStockSymbol(string str) { m_strStockSymbol = str; }
+	void SetStockSymbol(const string& str) noexcept { m_strStockSymbol = str; }
+	void SetStockSymbol(string_view sv) noexcept { m_strStockSymbol = sv; }
 
 	auto GetLastClose() const noexcept { return m_lLastClose; }
 	void SetLastClose(const long long lValue) noexcept { m_lLastClose = lValue; }

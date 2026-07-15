@@ -31,8 +31,8 @@ void CContainerChinaStockDayLine::SaveDB(const string& strStockSymbol) {
 	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
 		multi_insert.add_values(
 			t.Date = static_cast<int>(toFormattedDate(pCandle->GetDate())),
-			t.Exchange = string{ pCandle->GetExchange() },
-			t.Symbol = string{ pCandle->GetStockSymbol() },
+			t.Exchange = pCandle->GetExchange(),
+			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
 			t.Open = static_cast<double>(pCandle->GetOpen()) / m_ratio,
 			t.High = static_cast<double>(pCandle->GetHigh()) / m_ratio,
@@ -75,8 +75,8 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol) {
 		historyCandle.Reset();
 		historyCandle.SetRatio(ratio);
 		historyCandle.SetDate(row.Date.value());
-		historyCandle.SetExchange(string{ row.Exchange.value() });
-		historyCandle.SetStockSymbol(string{ row.Symbol.value() });
+		historyCandle.SetExchange(row.Exchange.value());
+		historyCandle.SetStockSymbol(row.Symbol.value());
 		historyCandle.SetLastClose(row.LastClose.value() * ratio);
 		historyCandle.SetOpen(row.Open.value() * ratio);
 		historyCandle.SetHigh(row.High.value() * ratio);
@@ -115,8 +115,8 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 		historyCandle.Reset();
 		historyCandle.SetRatio(ratio);
 		historyCandle.SetDate(row.Date.value());
-		historyCandle.SetExchange(string{ row.Exchange.value() });
-		historyCandle.SetStockSymbol(string{ row.Symbol.value() });
+		historyCandle.SetExchange(row.Exchange.value());
+		historyCandle.SetStockSymbol(row.Symbol.value());
 		historyCandle.SetLastClose(row.LastClose.value() * ratio);
 		historyCandle.SetOpen(row.Open.value() * ratio);
 		historyCandle.SetHigh(row.High.value() * ratio);

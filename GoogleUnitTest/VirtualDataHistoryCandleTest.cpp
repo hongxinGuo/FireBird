@@ -34,7 +34,7 @@ namespace FireBirdTest {
 	TEST_F(CVirtualDataHistoryCandleTest, TestGetContainer) {
 		CVirtualDataHistoryCandle id;
 		CVirtualHistoryCandle data;
-		data.SetStockSymbol("600008.SS");
+		data.SetStockSymbol(string_view("600008.SS"));
 		data.SetDate(20200202);
 		id.Add(data);
 
@@ -44,13 +44,13 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualDataHistoryCandleTest, TestUpdateData1) {
 		CVirtualHistoryCandle data;
-		data.SetStockSymbol("600000.SS");
+		data.SetStockSymbol(string_view("600000.SS"));
 		data.SetDate(20200101);
 		data.SetHigh(1000);
 		data.SetLow(200);
 		data.SetClose(100); // 确保此数据有效
 		CVirtualHistoryCandle data2;
-		data2.SetStockSymbol("600001.SS");
+		data2.SetStockSymbol(string_view("600001.SS"));
 		data2.SetDate(20200201);
 		data2.SetHigh(11000);
 		data2.SetLow(1200);

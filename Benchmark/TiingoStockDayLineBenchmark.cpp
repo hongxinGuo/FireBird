@@ -7,7 +7,7 @@
 class CTiingoStockDayLineBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		stock.SetSymbol("AAPL");
+		stock.SetSymbol(string_view("AAPL"));
 		stock.LoadDayLineDB();
 		stock.SetDayLineEndDate(chrono::local_days(1980y / 01 / 01));
 		stock.SetUpdateDayLineDB(true);

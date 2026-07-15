@@ -347,8 +347,8 @@ namespace FireBirdTest {
 
 		CDayLine dayLine;
 		dayLine.SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面
-		dayLine.SetStockSymbol("000001.SZ");
-		dayLine.SetExchange("Test"); // 用这个作为删除此数据的标志。
+		dayLine.SetStockSymbol(string_view("000001.SZ"));
+		dayLine.SetExchange(string_view("Test")); // 用这个作为删除此数据的标志。
 		dayLine.SetClose(100);
 		pvDayLine->push_back(dayLine);
 		dataChinaDayLine.UpdateData(pvDayLine);

@@ -76,15 +76,15 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol("000001.SZ")) << "目前测试数据库中只有上海和美国股票集";
 
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("000000.SS");
+		pStock->SetSymbol(string_view("000000.SS"));
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock));
-		pStock->SetSymbol("000001.SS");
+		pStock->SetSymbol(string_view("000001.SS"));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(pStock));
-		pStock->SetSymbol("600601.SS");
+		pStock->SetSymbol(string_view("600601.SS"));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(pStock));
-		pStock->SetSymbol("A");
+		pStock->SetSymbol(string_view("A"));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(pStock));
-		pStock->SetSymbol("000001.SZ");
+		pStock->SetSymbol(string_view("000001.SZ"));
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock));
 	}
 
@@ -96,27 +96,27 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol("000001.SZ")) << "目前测试数据库中只有上海和美国股票集";
 
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("000000.SS");
+		pStock->SetSymbol(string_view("000000.SS"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(pStock));
-		pStock->SetSymbol("AA");
+		pStock->SetSymbol(string_view("AA"));
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(pStock));
-		pStock->SetSymbol("600601.SS");
+		pStock->SetSymbol(string_view("600601.SS"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(pStock));
-		pStock->SetSymbol("A");
+		pStock->SetSymbol(string_view("A"));
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(pStock));
-		pStock->SetSymbol("000001.SZ");
+		pStock->SetSymbol(string_view("000001.SZ"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(pStock));
 
 		const auto pTiingoStock = make_shared<CTiingoStock>();
-		pTiingoStock->SetSymbol("000000.SS");
+		pTiingoStock->SetSymbol(string_view("000000.SS"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(pTiingoStock));
-		pTiingoStock->SetSymbol("AA");
+		pTiingoStock->SetSymbol(string_view("AA"));
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(pTiingoStock));
-		pTiingoStock->SetSymbol("600601.SS");
+		pTiingoStock->SetSymbol(string_view("600601.SS"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(pTiingoStock));
-		pTiingoStock->SetSymbol("A");
+		pTiingoStock->SetSymbol(string_view("A"));
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(pTiingoStock));
-		pTiingoStock->SetSymbol("000001.SZ");
+		pTiingoStock->SetSymbol(string_view("000001.SZ"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(pTiingoStock));
 	}
 
@@ -144,7 +144,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestAddStock) {
 		const auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("000001.SZ");
+		pStock->SetSymbol(string_view("000001.SZ"));
 
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock));
 		gl_dataContainerFinnhubStock.Add(pStock);
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.Delete(pStock);
 
 		pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("000001.SZ");
+		pStock->SetSymbol(string_view("000001.SZ"));
 		gl_dataContainerFinnhubStock.Delete(pStock); // "此股票代码不存在于代码集中";
 	}
 
@@ -177,7 +177,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
 		const auto pStock = make_shared<CTiingoStock>();
 		const auto lTotalStock = gl_dataContainerTiingoStock.Size();
-		pStock->SetSymbol("ABCDEF");
+		pStock->SetSymbol(string_view("ABCDEF"));
 
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(pStock));
 		gl_dataContainerTiingoStock.Add(pStock);
@@ -195,7 +195,7 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.Delete(pStock);
 
 		pStock = make_shared<CTiingoStock>();
-		pStock->SetSymbol("ABCDEF");
+		pStock->SetSymbol(string_view("ABCDEF"));
 		gl_dataContainerTiingoStock.Delete(pStock);
 	}
 
@@ -229,18 +229,18 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol("FXCM:EUR/CHF"));
 
 		const auto pForexSymbol = make_shared<CFinnhubForex>();
-		pForexSymbol->SetSymbol("ABC");
+		pForexSymbol->SetSymbol(string_view("ABC"));
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
-		pForexSymbol->SetSymbol("OANDA:XAU_SGD");
+		pForexSymbol->SetSymbol(string_view("OANDA:XAU_SGD"));
 		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
-		pForexSymbol->SetSymbol("FXCM:EUR/CHF");
+		pForexSymbol->SetSymbol(string_view("FXCM:EUR/CHF"));
 		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexSymbol) {
 		const auto pForexSymbol = make_shared<CFinnhubForex>();
 		const auto lTotalForexSymbol = gl_dataFinnhubForexSymbol.Size();
-		pForexSymbol->SetSymbol("000001.SZ");
+		pForexSymbol->SetSymbol(string_view("000001.SZ"));
 
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
@@ -258,7 +258,7 @@ namespace FireBirdTest {
 		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "空指针";
 
 		pForexSymbol = make_shared<CFinnhubForex>();
-		pForexSymbol->SetSymbol("000001.SZ");
+		pForexSymbol->SetSymbol(string_view("000001.SZ"));
 		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "此符号在符号集中不存在";
 	}
 
@@ -293,18 +293,18 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol("COINBASE:TRIBE-USD"));
 
 		const auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
-		pCryptoSymbol->SetSymbol("ABC");
+		pCryptoSymbol->SetSymbol(string_view("ABC"));
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
-		pCryptoSymbol->SetSymbol("BINANCE:USDTUAH");
+		pCryptoSymbol->SetSymbol(string_view("BINANCE:USDTUAH"));
 		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
-		pCryptoSymbol->SetSymbol("COINBASE:TRIBE-USD");
+		pCryptoSymbol->SetSymbol(string_view("COINBASE:TRIBE-USD"));
 		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
 		const auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
 		const auto lTotalCryptoSymbol = gl_dataFinnhubCryptoSymbol.Size();
-		pCryptoSymbol->SetSymbol("000001.SZ");
+		pCryptoSymbol->SetSymbol(string_view("000001.SZ"));
 
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
@@ -323,7 +323,7 @@ namespace FireBirdTest {
 		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "空指针";
 
 		pCryptoSymbol = make_shared<CFinnhubCrypto>();
-		pCryptoSymbol->SetSymbol("000001.SZ");
+		pCryptoSymbol->SetSymbol(string_view("000001.SZ"));
 		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "此符号在符号集中不存在";
 	}
 
@@ -377,7 +377,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
 		auto pStock = make_shared<CFinnhubStock>();
-		pStock->SetSymbol("SS.SS.US");
+		pStock->SetSymbol(string_view("SS.SS.US"));
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock)); // 确保是一个新股票代码
 		pStock->SetNewStock(true);
 		pStock->SetCurrency("No Currency");
@@ -449,15 +449,15 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
 		auto pForexSymbol = make_shared<CFinnhubForex>();
-		pForexSymbol->SetSymbol("Test"); // 新符号
-		pForexSymbol->SetExchange("Test");
+		pForexSymbol->SetSymbol(string_view("Test")); // 新符号
+		pForexSymbol->SetExchange(string_view("Test"));
 		pForexSymbol->SetUpdateProfileDB(true);
 		pForexSymbol->SetNewStock(true);
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
 		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("OANDA:GBP_ZAR"); // 第二个现存的符号
 		auto exchange = pForexSymbol->GetExchange();
-		pForexSymbol->SetExchange("CN");
+		pForexSymbol->SetExchange(string_view("CN"));
 		pForexSymbol->SetUpdateProfileDB(true);
 
 		gl_dataFinnhubForexSymbol.UpdateProfileDB();
@@ -488,15 +488,15 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
 		auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
-		pCryptoSymbol->SetSymbol("Test"); // 新符号
-		pCryptoSymbol->SetExchange("Test");
+		pCryptoSymbol->SetSymbol(string_view("Test")); // 新符号
+		pCryptoSymbol->SetExchange(string_view("Test"));
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetNewStock(true);
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
 		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("BINANCE:USDTUAH"); // 第二个现存的符号
 		auto exchange = pCryptoSymbol->GetExchange();
-		pCryptoSymbol->SetExchange("CN");
+		pCryptoSymbol->SetExchange(string_view("CN"));
 		pCryptoSymbol->SetUpdateProfileDB(true);
 
 		gl_dataFinnhubCryptoSymbol.UpdateProfileDB();
@@ -541,7 +541,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetSECFilingWebSite("");
 		pTiingoStock->SetSicIndustry("");
 		pTiingoStock->SetSicSector("Test"); // 用于删除
-		pTiingoStock->SetSymbol("A"); // 已存在代码
+		pTiingoStock->SetSymbol(string_view("A")); // 已存在代码
 		pTiingoStock->SetTiingoIndustry("");
 		pTiingoStock->SetTiingoPermaTicker("");
 		pTiingoStock->SetTiingoSector("");
@@ -560,7 +560,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetSECFilingWebSite("abc");
 		pTiingoStock->SetSicIndustry("Computer Science");
 		pTiingoStock->SetSicSector("Test");
-		pTiingoStock->SetSymbol("ABCDEF"); // 新代码
+		pTiingoStock->SetSymbol(string_view("ABCDEF")); // 新代码
 		pTiingoStock->SetTiingoIndustry("Computer");
 		pTiingoStock->SetTiingoPermaTicker("abcdefg");
 		pTiingoStock->SetTiingoSector("gfedcba");

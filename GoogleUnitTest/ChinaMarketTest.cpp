@@ -1125,7 +1125,7 @@ namespace FireBirdTest {
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(delete_from(t) );
+			db(delete_from(t));
 			tx.commit();
 		}
 
@@ -1150,7 +1150,7 @@ namespace FireBirdTest {
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
-			db(delete_from(t) );
+			db(delete_from(t));
 			tx.commit();
 		}
 
@@ -1162,10 +1162,10 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
 		vector<CVirtualHistoryCandle> vData;
 		CVirtualHistoryCandle data;
-		data.SetStockSymbol("600000.SS");
+		data.SetStockSymbol(string_view("600000.SS"));
 		vData.resize(2);
 		vData[0] = data;
-		data.SetStockSymbol("600004.SS");
+		data.SetStockSymbol(string_view("600004.SS"));
 		vData[1] = data;
 
 		set<string> setStockCode;
@@ -1181,8 +1181,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试代码库中的股票代码总数为5701";
 
 		auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol("Test");
-		pStock->SetExchange("Test");
+		pStock->SetSymbol(string_view("Test"));
+		pStock->SetExchange(string_view("Test"));
 		pStock->SetNewStock(true);
 		pStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(pStock->GetSymbol())); // 确保是一个新股票代码
@@ -1190,7 +1190,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701";
 		pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
 		auto exchange = pStock->GetExchange();
-		pStock->SetExchange("CN");
+		pStock->SetExchange(string_view("CN"));
 		pStock->SetUpdateProfileDB(true);
 
 		gl_dataContainerChinaStock.UpdateProfileDB();
@@ -1239,7 +1239,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.Add(pStock);
 
 		pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol("SS.SS.SS");
+		pStock->SetSymbol(string_view("SS.SS.SS"));
 		const auto lTotal = gl_dataContainerChinaStock.Size();
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(pStock->GetSymbol()));
 		gl_dataContainerChinaStock.Add(pStock);
@@ -1253,7 +1253,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.Delete(pStock);
 
 		pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol("SS.SS.SS");
+		pStock->SetSymbol(string_view("SS.SS.SS"));
 		gl_dataContainerChinaStock.Delete(pStock);
 
 		gl_dataContainerChinaStock.Add(pStock);

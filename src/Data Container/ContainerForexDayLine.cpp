@@ -37,8 +37,8 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 			CTiingoCandleLine candle;
 			candle.Reset();
 			candle.SetDate(row.Date.value());
-			candle.SetExchange(std::string{ row.Exchange.value() });
-			candle.SetStockSymbol(std::string{ row.Symbol.value() });
+			candle.SetExchange(row.Exchange.value());
+			candle.SetStockSymbol(row.Symbol.value());
 			candle.SetLastClose(row.LastClose.value() * ratio);
 			candle.SetOpen(row.Open.value() * ratio);
 			candle.SetHigh(row.High.value() * ratio);
@@ -165,8 +165,8 @@ void CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 
 		candle.SetRatio(ratio);
 		candle.SetDate(row.Date.value());
-		candle.SetExchange(std::string{ row.Exchange.value() });
-		candle.SetStockSymbol(std::string{ row.Symbol.value() });
+		candle.SetExchange(row.Exchange.value());
+		candle.SetStockSymbol(row.Symbol.value());
 		candle.SetLastClose(row.LastClose.value() * ratio);
 		candle.SetOpen(row.Open.value() * ratio);
 		candle.SetHigh(row.High.value() * ratio);

@@ -17,7 +17,7 @@ public:
 		const auto& t = TiingoStockDayline{};
 
 		pStock = make_shared<CTiingoStock>();
-		pStock->SetSymbol("AAPL");
+		pStock->SetSymbol(string_view("AAPL"));
 		pStock->LoadDayLineDB();
 		m_pContainer = pStock->DayLine();
 

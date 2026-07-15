@@ -36,11 +36,11 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData1) {
 		CWeekLine weekLine, weekLine2;
-		weekLine.SetStockSymbol("600000.SS");
+		weekLine.SetStockSymbol(string_view("600000.SS"));
 		weekLine.SetDate(20200101);
 		weekLine.SetHigh(1000);
 		weekLine.SetLow(200);
-		weekLine2.SetStockSymbol("600001.SS");
+		weekLine2.SetStockSymbol(string_view("600001.SS"));
 		weekLine2.SetDate(20200201);
 		weekLine2.SetHigh(11000);
 		weekLine2.SetLow(1200);
@@ -66,12 +66,12 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData2) {
 		CDayLine dayLine;
-		dayLine.SetStockSymbol("600000.SS");
+		dayLine.SetStockSymbol(string_view("600000.SS"));
 		dayLine.SetDate(20200101);
 		dayLine.SetHigh(10000);
 		dayLine.SetLow(100);
 		CWeekLine weekLine;
-		weekLine.SetStockSymbol("600000.SS");
+		weekLine.SetStockSymbol(string_view("600000.SS"));
 		weekLine.SetHigh(1000);
 		weekLine.SetLow(200);
 
@@ -87,12 +87,12 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestStoreData1) {
 		CWeekLine weekLine;
-		weekLine.SetStockSymbol("600000.SS");
+		weekLine.SetStockSymbol(string_view("600000.SS"));
 		weekLine.SetDate(20200101);
 		weekLine.SetHigh(1000);
 		weekLine.SetLow(200);
 		CWeekLine weekLine2;
-		weekLine2.SetStockSymbol("600001.SS");
+		weekLine2.SetStockSymbol(string_view("600001.SS"));
 		weekLine2.SetDate(20200201);
 		weekLine2.SetHigh(11000);
 		weekLine2.SetLow(1200);

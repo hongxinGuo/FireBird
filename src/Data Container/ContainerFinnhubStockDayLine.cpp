@@ -69,8 +69,8 @@ void CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
 	for (const auto& row : result) {
 		CVirtualHistoryCandle candle;
 		candle.SetDate(row.Date.value());
-		candle.SetExchange(string{ row.Exchange.value() });
-		candle.SetStockSymbol(string{ row.Symbol.value() });
+		candle.SetExchange(row.Exchange.value());
+		candle.SetStockSymbol(row.Symbol.value());
 		candle.SetLastClose(row.LastClose.value() * ratio);
 		candle.SetOpen(row.Open.value() * ratio);
 		candle.SetHigh(row.High.value() * ratio);

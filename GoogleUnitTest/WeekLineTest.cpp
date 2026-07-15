@@ -45,7 +45,7 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestGetStockSymbol) {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetStockSymbol(), "");
-		dl.SetStockSymbol("600000.SS");
+		dl.SetStockSymbol(string_view("600000.SS"));
 		EXPECT_EQ(dl.GetStockSymbol(), "600000.SS");
 	}
 	TEST_F(CWeekLineTest, TestGetLastClose) {
@@ -148,7 +148,7 @@ namespace FireBirdTest {
 		CWeekLine weekLine;
 		CDayLine dayLine;
 		dayLine.SetDate(chrono::local_days{ 2020y / 2 / 2 });
-		dayLine.SetStockSymbol("600000.SS");
+		dayLine.SetStockSymbol(string_view("600000.SS"));
 
 		dayLine.SetOpen(1010);
 		dayLine.SetClose(2020);
@@ -182,7 +182,7 @@ namespace FireBirdTest {
 		CWeekLine weekLine;
 		CDayLine dayLine1, dayLine2;
 		dayLine1.SetDate(20200727);
-		dayLine1.SetStockSymbol("60000.SS");
+		dayLine1.SetStockSymbol(string_view("600001.SS"));
 
 		dayLine1.SetOpen(1010);
 		dayLine1.SetClose(2020);
@@ -197,7 +197,7 @@ namespace FireBirdTest {
 		dayLine1.SetTotalValue(4040404040404040);
 
 		dayLine2.SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
-		dayLine2.SetStockSymbol("600000.SS"); // 与第一个数据pDayLine1不同。
+		dayLine2.SetStockSymbol(string_view("600000.SS")); // 与第一个数据pDayLine1不同。
 		dayLine2.SetOpen(10100);
 		dayLine2.SetClose(20200);
 		dayLine2.SetHigh(30300);
@@ -217,8 +217,8 @@ namespace FireBirdTest {
 		EXPECT_NE(weekLine.GetDate(), dayLine2.GetDate()) << "使用第一个数据的日期";
 		EXPECT_EQ(weekLine.GetDate(), dayLine1.GetDate()) << "使用第一个数据的日期";
 		EXPECT_NE(weekLine.GetDate(), dayLine2.GetDate()) << "使用第一个数据的日期";
-		EXPECT_TRUE(weekLine.GetStockSymbol() == dayLine1.GetStockSymbol()) << "股票代码不为空时，不更改";
-		EXPECT_FALSE(weekLine.GetStockSymbol() == dayLine2.GetStockSymbol()) << "股票代码不为空时，不更改";
+		EXPECT_FALSE(weekLine.GetStockSymbol() == dayLine1.GetStockSymbol()) << "已改为第二个数据的股票代码";
+		EXPECT_TRUE(weekLine.GetStockSymbol() == dayLine2.GetStockSymbol()) << weekLine.GetStockSymbol();
 
 		EXPECT_EQ(weekLine.GetOpen(), dayLine1.GetOpen());
 		EXPECT_NE(weekLine.GetOpen(), dayLine2.GetOpen());

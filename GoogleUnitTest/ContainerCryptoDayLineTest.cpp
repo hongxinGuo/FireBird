@@ -47,8 +47,8 @@ namespace FireBirdTest {
 
 		CDayLine dayLine;
 		dayLine.SetDate(20200101); // 测试数据库中最早的日期为20200817，故此数据位于最前面
-		dayLine.SetExchange("Test"); // 用于删除测试数据
-		dayLine.SetStockSymbol("BINANCE:USDTUAH");
+		dayLine.SetExchange(string_view("Test")); // 用于删除测试数据
+		dayLine.SetStockSymbol(string_view("BINANCE:USDTUAH"));
 		dayLine.SetClose(100);
 		pvDayLine->push_back(dayLine);
 		m_dataCryptoDayLine.UpdateData(pvDayLine);

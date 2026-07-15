@@ -19,7 +19,7 @@ bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 CTiingoStock::CTiingoStock() {
 	m_v52WeekHighDate.clear();
 	m_v52WeekLowDate.clear();
-	SetExchange("US");
+	SetExchange(string_view("US"));
 	CTiingoStock::ResetAllUpdateDate();
 }
 
