@@ -36,7 +36,7 @@ string CProductTiingoForexDayLine::CreateMessage() {
 }
 
 void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_lIndex >= 0);
+	ASSERT(m_index >= 0);
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetForex(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoForexDayLine(pWebData);
@@ -111,7 +111,7 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 
 	try {
 		s = js.at("detail"); // 是否有报错信息
-		string strMessage = "Tiingo stock dayLine ";
+		string strMessage = "Tiingo forex dayLine ";
 		strMessage += s;
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;

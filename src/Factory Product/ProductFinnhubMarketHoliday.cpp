@@ -15,7 +15,7 @@ CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 }
 
 string CProductFinnhubMarketHoliday::CreateMessage() {
-	const auto strParam = gl_dataContainerStockExchange.GetItemExchangeCode(m_lIndex);
+	const auto strParam = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -24,7 +24,7 @@ string CProductFinnhubMarketHoliday::CreateMessage() {
 
 void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvHoliday = ParseFinnhubMarketHoliday(pWebData);
-	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_lIndex);
+	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
 	pExchange->SetUpdateMarketHoliday(false);
 
 	gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);
@@ -77,7 +77,7 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 			istringstream ss1(s);
 			chrono::local_days ld1;
 			ss1 >> chrono::parse("%F", ld1);
-			holiday.m_lDate = toFormattedDate(ld1);
+			holiday.m_date = toFormattedDate(ld1);
 			s = jsonGetString(it, "tradingHour");
 			holiday.m_strTradingHour = s;
 			holiday.m_strExchange = sExchange;

@@ -50,8 +50,8 @@ public:
 	string GetInquiryFunction() const noexcept { return m_strInquiryFunction; }
 	void SetInquiryFunction(const string& strMessage) noexcept { m_strInquiryFunction = strMessage; }
 
-	auto GetIndex() const noexcept { return m_lIndex; }
-	void SetIndex(const size_t lIndex) noexcept { m_lIndex = lIndex; }
+	auto GetIndex() const noexcept { return m_index; }
+	void SetIndex(const size_t lIndex) noexcept { m_index = lIndex; }
 
 	void SetInquiringExchange(const string& exchange) noexcept { m_strInquiringExchange = exchange; }
 	string GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
@@ -71,7 +71,7 @@ protected:
 	string m_strInquiry{};
 	string m_strInquiringExchange{ "ALL" }; // 默认是申请所有的交易所数据。
 	string m_strInquiringSymbol{}; // 目前查询的证券名称
-	size_t m_lIndex{ 0 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界
+	size_t m_index{ 0 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界
 	int m_iInquireType{ -1 }; // product索引，Finnhub申请的索引，如SYMBOL_LOOKUP_等。 预先设置为越界
 	int m_iReceivedDataStatus{ GOOD_DATA_ }; // 1:有效数据；2:void data(只有{}或[]两个数据); 3:没有权利申请
 };

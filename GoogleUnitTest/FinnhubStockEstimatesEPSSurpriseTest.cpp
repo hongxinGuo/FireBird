@@ -71,7 +71,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
@@ -90,7 +90,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CEPSSurprisesPtr m_pvEPSSurprise;
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
 			break;
@@ -152,7 +152,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
@@ -171,7 +171,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
@@ -184,7 +184,7 @@ namespace FireBirdTest {
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0);
 		m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
 			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);

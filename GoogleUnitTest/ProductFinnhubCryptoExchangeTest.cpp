@@ -82,7 +82,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoExchange.Test_checkAccessRight_(m_pWebData);
 
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		shared_ptr<vector<string>> m_pvExchange;
 		CProductFinnhubCryptoExchange m_finnhubCryptoExchange;
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
 		m_pvExchange = m_finnhubCryptoExchange.ParseFinnhubCryptoExchange(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
@@ -136,7 +136,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoExchange.Test_checkAccessRight_(m_pWebData);
 
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCryptoExchange m_finnhubCryptoExchange;
 	};
@@ -164,7 +164,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
 		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15);
 			break;

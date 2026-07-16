@@ -14,14 +14,14 @@ class CWebRTDataBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
 		m_pSinaWebData = std::make_shared<CWebData>();
-		long lStringLength = sSinaWebData.length();
-		m_pSinaWebData->Resize(lStringLength);
-		m_pSinaWebData->SetData(sSinaWebData.c_str(), lStringLength);
+		size_t stringLength = sSinaWebData.length();
+		m_pSinaWebData->Resize(stringLength);
+		m_pSinaWebData->SetData(sSinaWebData.c_str(), stringLength);
 
 		m_pTengxunWebData = std::make_shared<CWebData>();
-		lStringLength = sTengxunWebData.length();
-		m_pTengxunWebData->Resize(lStringLength);
-		m_pTengxunWebData->SetData(sTengxunWebData.c_str(), lStringLength);
+		stringLength = sTengxunWebData.length();
+		m_pTengxunWebData->Resize(stringLength);
+		m_pTengxunWebData->SetData(sTengxunWebData.c_str(), stringLength);
 	}
 
 	void TearDown(const ::benchmark::State& state) override {

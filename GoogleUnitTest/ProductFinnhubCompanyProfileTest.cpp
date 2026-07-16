@@ -72,7 +72,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetUpdateCompanyProfile(true);
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyProfile m_finnhubCompanyProfile;
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubStockProfileTest, TestProcessStockProfile0) {
 		m_finnhubCompanyProfile.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0:
 			EXPECT_EQ(m_pStock->GetExchange(), "US") << "交易所代码不使用读取的数据";
 			EXPECT_EQ(m_pStock->GetTicker(), "AAPL");

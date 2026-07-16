@@ -34,8 +34,8 @@ string CProductTiingoCryptoDayLine::CreateMessage() {
 }
 
 void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_lIndex >= 0);
-	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex);
+	ASSERT(m_index >= 0);
+	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
 	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
 	pCrypto->SetUpdateDayLine(false);
 	/*
@@ -109,7 +109,7 @@ CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDat
 
 	try {
 		s = js.at("detail"); // 是否有报错信息
-		string strMessage = "Tiingo stock dayLine ";
+		string strMessage = "Tiingo crypto dayLine ";
 		strMessage += s;
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;

@@ -31,7 +31,7 @@ void CContainerTiingoStockDayLine::SaveDB(const string& strSymbol) {
 	// helper to insert one CTiingoCandleLine into DB via sqlpp11
 	auto insertCandle = [&](const CTiingoCandleLine* pC) {
 		multi_insert.add_values(
-			t.Date = static_cast<int>(toFormattedDate(pC->GetDate())),
+			t.Date = toFormattedDate(pC->GetDate()),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
@@ -106,7 +106,7 @@ void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStoc
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= static_cast<int>(toFormattedDate(m_vHistoryData.at(0).GetDate()))));
+	db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(m_vHistoryData.at(0).GetDate())));
 	tx.commit();
 }
 
@@ -126,7 +126,7 @@ void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 	// helper to insert one CTiingoCandleLine into DB via sqlpp11
 	auto insertCandle = [&](const CTiingoCandleLine* pC) {
 		multi_insert.add_values(
-			t.Date = static_cast<int>(toFormattedDate(pC->GetDate())),
+			t.Date = toFormattedDate(pC->GetDate()),
 			t.Exchange = pC->GetExchange(),
 			t.Symbol = pC->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
@@ -148,7 +148,7 @@ void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 
 	auto lSize = Size();
 	if (Size() > 0) {
-		db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= static_cast<int>(toFormattedDate(GetData(0)->GetDate()))));
+		db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(GetData(0)->GetDate())));
 	}
 
 	for (size_t i = 0; i < lSize; ++i) {

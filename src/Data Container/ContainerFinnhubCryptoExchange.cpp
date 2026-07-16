@@ -14,7 +14,7 @@ CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 void CContainerFinnhubCryptoExchange::Reset() {
 	m_vCryptoExchange.resize(0);
 	m_mapCryptoExchange.clear();
-	m_lLastTotalCryptoExchange = 0;
+	m_lastTotalCryptoExchange = 0;
 }
 
 void CContainerFinnhubCryptoExchange::Reserve(size_t size) {
@@ -55,25 +55,25 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 		m_mapCryptoExchange[str] = i++;
 	}
 	tx.commit();
-	m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
+	m_lastTotalCryptoExchange = m_vCryptoExchange.size();
 
 	return true;
 }
 
 bool CContainerFinnhubCryptoExchange::UpdateDB() {
-	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
+	if (m_lastTotalCryptoExchange < m_vCryptoExchange.size()) {
 		using namespace StockMarket;
 		const auto& t = FinnhubCryptoExchange{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		for (auto l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
+		for (auto l = m_lastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
 			db(sqlpp::insert_into(t).set(
 				t.code = m_vCryptoExchange.at(l)
 			));
 		}
 		tx.commit();
-		m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
+		m_lastTotalCryptoExchange = m_vCryptoExchange.size();
 		return true;
 	}
 	return false;

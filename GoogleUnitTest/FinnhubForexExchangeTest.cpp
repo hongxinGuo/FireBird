@@ -84,7 +84,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubForexExchange.Test_checkAccessRight_(m_pWebData);
 
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		shared_ptr<vector<string>> m_pvExchange;
 		CProductFinnhubForexExchange m_finnhubForexExchange;
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
 		m_pvExchange = m_finnhubForexExchange.ParseFinnhubForexExchange(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
@@ -139,7 +139,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubForexExchange.Test_checkAccessRight_(m_pWebData);
 
@@ -157,7 +157,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubForexExchange m_finnhubForexExchange;
 	};
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
 		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载的11个";
 			break;

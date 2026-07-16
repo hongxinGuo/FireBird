@@ -15,7 +15,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 }
 
 string CProductFinnhubStockSymbol::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerStockExchange.GetItemExchangeCode(m_lIndex);
+	m_strInquiringExchange = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
 
 	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 	return m_strInquiry;
@@ -23,7 +23,7 @@ string CProductFinnhubStockSymbol::CreateMessage() {
 
 void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
-	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_lIndex);
+	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
 	pExchange->SetUpdateStockSymbol(false);
 
 	//检查合法性：只有美国股票代码无须加上交易所后缀。

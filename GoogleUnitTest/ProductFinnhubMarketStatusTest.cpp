@@ -61,7 +61,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_lIndex = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubMarketStatusProduct.Test_checkAccessRight_(m_pWebData);
 
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_lIndex = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubMarketStatusProduct.Test_checkAccessRight_(m_pWebData);
 

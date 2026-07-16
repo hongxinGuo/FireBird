@@ -17,7 +17,7 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 }
 
 string CProductFinnhubForexDayLine::CreateMessage() {
-	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_lIndex);
+	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_index);
 
 	m_strInquiringExchange = pForexSymbol->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pForexSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
@@ -25,7 +25,7 @@ string CProductFinnhubForexDayLine::CreateMessage() {
 }
 
 void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_lIndex);
+	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_index);
 	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
 	pForexSymbol->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {

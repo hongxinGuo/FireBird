@@ -213,7 +213,7 @@ void CContainerTiingoStock::BuildDayLine(chrono::local_days date) {
 				// 将内部整数/单位值转换为数据库存储的浮点值（与 LoadDayLine 中的乘比率相反）
 				const double ratio = pTiingoStock->GetRatio();
 				multi_insert.add_values(
-					t.Date = static_cast<int>(toFormattedDate(date)),
+					t.Date = toFormattedDate(date),
 					t.Exchange = pTiingoStock->GetExchange(),
 					t.Symbol = pTiingoStock->GetSymbol(),
 					t.LastClose = static_cast<double>(pTiingoStock->GetLastClose()) / ratio,
@@ -257,7 +257,7 @@ void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 		auto tx = start_transaction(db);
 
 		// select rows for the given trade date
-		auto result = db(select(all_of(t)).from(t).where(t.Date == static_cast<int>(toFormattedDate(date))).order_by(t.Symbol.asc()));
+		auto result = db(select(all_of(t)).from(t).where(t.Date == toFormattedDate(date)).order_by(t.Symbol.asc()));
 
 		for (const auto& row : result) {
 			const std::string symbol = string{ row.Symbol.value() };
@@ -294,7 +294,7 @@ void CContainerTiingoStock::DeleteDayLine(chrono::local_days date) {
 	auto tx = start_transaction(db);
 
 	// Delete all rows for the given trade date in one statement
-	db(delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(date))));
+	db(delete_from(t).where(t.Date == toFormattedDate(date)));
 	tx.commit();
 }
 
@@ -336,7 +336,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 				db(insert_into(t).set(
 					t.Symbol = pStock->GetSymbol(),
 					t.Exchange = pStock->GetExchange(),
-					t.Date = static_cast<int>(toFormattedDate(pStock->Get52WeekHighDate(index)))
+					t.Date = toFormattedDate(pStock->Get52WeekHighDate(index))
 				));
 			}
 		}
@@ -368,7 +368,7 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 				multi_insert.add_values(
 					t.Symbol = pStock->GetSymbol(),
 					t.Exchange = pStock->GetExchange(),
-					t.Date = static_cast<int>(toFormattedDate(pStock->Get52WeekLowDate(index)))
+					t.Date = toFormattedDate(pStock->Get52WeekLowDate(index))
 				);
 				Values++;
 			}
@@ -405,12 +405,12 @@ void CContainerTiingoStock::TaskCalculate() {
 	auto tx = start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Date, t.Symbol, t.SICCode);
 
-	db(delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())))); // 先删除原有数据
+	db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
 		multi_insert.add_values(
-			t.Date = static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())),
+			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
 			t.Symbol = pStock->GetSymbol(),
 			t.SICCode = pStock->GetSicCode()
 		);
@@ -463,12 +463,12 @@ void CContainerTiingoStock::TaskCalculate2() {
 	const auto& t = TiingoStockCurrentTrace{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	db(delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())))); // 先删除原有数据
+	db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
 		auto pStock = GetStock(vPos.at(index));
 		db(sqlpp::insert_into(t).set(
-			t.Date = static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())),
+			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
 			t.Symbol = pStock->GetSymbol(),
 			t.SICCode = pStock->GetSicCode()
 		));

@@ -16,7 +16,7 @@ CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 }
 
 string CProductFinnhubStockDayLine::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchange();
@@ -25,7 +25,7 @@ string CProductFinnhubStockDayLine::CreateMessage() {
 }
 
 void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
 	pStock->SetUpdateDayLine(false);
 	long lastClose = 0;

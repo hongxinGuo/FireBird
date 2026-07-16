@@ -14,8 +14,8 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct Test_TiingoWebData {
-		Test_TiingoWebData(const long lIndex, const string& strSymbol, const string& strData) {
-			m_lIndex = lIndex;
+		Test_TiingoWebData(const int index, const string& strSymbol, const string& strData) {
+			m_index = index;
 			m_strSymbol = strSymbol;
 			m_pData = make_shared<CWebData>();
 			m_pData->Test_SetBuffer_(strData);
@@ -24,14 +24,14 @@ namespace FireBirdTest {
 		~Test_TiingoWebData() = default;
 
 	public:
-		long m_lIndex;
+		int m_index;
 		string m_strSymbol;
 		CWebDataPtr m_pData;
 	};
 
 	struct TiingoWebSocketData {
-		TiingoWebSocketData(const long lIndex, const string& strSymbol, const string& strData) {
-			m_lIndex = lIndex;
+		TiingoWebSocketData(const int index, const string& strSymbol, const string& strData) {
+			m_index = index;
 			m_strSymbol = strSymbol;
 			m_pData = strData;
 		}
@@ -39,7 +39,7 @@ namespace FireBirdTest {
 		~TiingoWebSocketData() = default;
 
 	public:
-		long m_lIndex;
+		int m_index;
 		string m_strSymbol;
 		string m_pData;
 	};
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			TiingoWebSocketData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 		bool fSucceed = false;
 		CTiingoForexSocketPtr pForex;
 		fSucceed = tiingoForexWebSocket.ParseTiingoForexWebSocketData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
 			pForex = gl_SystemData.PopTiingoForexSocket();
@@ -184,7 +184,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			TiingoWebSocketData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
@@ -198,7 +198,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
@@ -213,7 +213,7 @@ namespace FireBirdTest {
 		bool fSucceed = false;
 		CTiingoCryptoSocketPtr pCrypto;
 		fSucceed = tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
@@ -309,7 +309,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			TiingoWebSocketData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
 			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentInquireSymbol.size(), 0);
@@ -324,7 +324,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		shared_ptr<string> m_pWebData;
 
 		CTiingoIEXWebSocket tiingoIEXWebSocket;
@@ -338,7 +338,7 @@ namespace FireBirdTest {
 		CTiingoIEXSocketPtr pTiingoIEX;
 		bool fSucceed = false;
 		fSucceed = tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();

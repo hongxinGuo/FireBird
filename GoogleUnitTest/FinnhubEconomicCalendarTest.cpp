@@ -122,7 +122,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubEconomicCalendar.Test_checkAccessRight_(m_pWebData);
 
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CEconomicCalendarsPtr m_pvEconomicCalendar;
 		CProductFinnhubEconomicCalendar m_finnhubEconomicCalendar;
@@ -149,7 +149,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
 		m_pvEconomicCalendar = m_finnhubEconomicCalendar.ParseFinnhubEconomicCalendar(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
 			break;
@@ -193,7 +193,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubEconomicCalendar.Test_checkAccessRight_(m_pWebData);
 
@@ -208,7 +208,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubEconomicCalendar m_finnhubEconomicCalendar;
 	};
@@ -220,7 +220,7 @@ namespace FireBirdTest {
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			break;
 		case 1: // 无权利访问的数据

@@ -14,8 +14,8 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct WebSocketMessageData {
-		WebSocketMessageData(long type, const string& strMessage, const string& strError) {
-			m_lType = type;
+		WebSocketMessageData(int type, const string& strMessage, const string& strError) {
+			m_type = type;
 			m_strMessage = strMessage;
 			m_strError = strError;
 		}
@@ -23,7 +23,7 @@ namespace FireBirdTest {
 		~WebSocketMessageData() = default;
 
 	public:
-		long m_lType;
+		int m_type;
 		string m_strMessage;
 		string m_strError;
 	};
@@ -31,13 +31,13 @@ namespace FireBirdTest {
 	namespace {
 		const string s("abcdefg"); // 此字符串用于初始化const pointer m_Msg中的const string，故而在测试期间需要一直保持存续状态。
 
-		WebSocketMessageData finnhubWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
-		WebSocketMessageData finnhubWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
-		WebSocketMessageData finnhubWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
-		WebSocketMessageData finnhubWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
-		WebSocketMessageData finnhubWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
-		WebSocketMessageData finnhubWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
-		WebSocketMessageData finnhubWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
+		WebSocketMessageData finnhubWebSocketMessage1(static_cast<int>(ix::WebSocketMessageType::Message), "abcdefg", "");
+		WebSocketMessageData finnhubWebSocketMessage2(static_cast<int>(ix::WebSocketMessageType::Open), "abcdefg", "");
+		WebSocketMessageData finnhubWebSocketMessage3(static_cast<int>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+		WebSocketMessageData finnhubWebSocketMessage4(static_cast<int>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+		WebSocketMessageData finnhubWebSocketMessage5(static_cast<int>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+		WebSocketMessageData finnhubWebSocketMessage6(static_cast<int>(ix::WebSocketMessageType::Close), "abcdefg", "");
+		WebSocketMessageData finnhubWebSocketMessage7(static_cast<int>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 	}
 
 	class ProcessFinnhubWebSocketTest : public TestWithParam<WebSocketMessageData*> {
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 			ix::WebSocketCloseInfo c;
 			ix::WebSocketOpenInfo o;
 			m_pMsg = make_unique<ix::WebSocketMessage>(static_cast<ix::WebSocketMessageType>(0), s, s.size(), e, o, c);
-			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_lType);
+			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_type);
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
@@ -115,13 +115,13 @@ namespace FireBirdTest {
 		}
 	}
 
-	WebSocketMessageData tiingoIEXWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
-	WebSocketMessageData tiingoIEXWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
-	WebSocketMessageData tiingoIEXWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
-	WebSocketMessageData tiingoIEXWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
-	WebSocketMessageData tiingoIEXWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
-	WebSocketMessageData tiingoIEXWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
-	WebSocketMessageData tiingoIEXWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage1(static_cast<int>(ix::WebSocketMessageType::Message), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage2(static_cast<int>(ix::WebSocketMessageType::Open), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage3(static_cast<int>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage4(static_cast<int>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage5(static_cast<int>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+	WebSocketMessageData tiingoIEXWebSocketMessage6(static_cast<int>(ix::WebSocketMessageType::Close), "abcdefg", "");
+	WebSocketMessageData tiingoIEXWebSocketMessage7(static_cast<int>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 
 	class ProcessTiingoIEXWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
@@ -135,7 +135,7 @@ namespace FireBirdTest {
 			ix::WebSocketCloseInfo c;
 			ix::WebSocketOpenInfo o;
 			m_pMsg = make_unique<ix::WebSocketMessage>(static_cast<ix::WebSocketMessageType>(0), s, s.size(), e, o, c);
-			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_lType);
+			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_type);
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
@@ -206,13 +206,13 @@ namespace FireBirdTest {
 	}
 
 	namespace {
-		WebSocketMessageData tiingoCryptoWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
-		WebSocketMessageData tiingoCryptoWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
-		WebSocketMessageData tiingoCryptoWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
-		WebSocketMessageData tiingoCryptoWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
-		WebSocketMessageData tiingoCryptoWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
-		WebSocketMessageData tiingoCryptoWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
-		WebSocketMessageData tiingoCryptoWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
+		WebSocketMessageData tiingoCryptoWebSocketMessage1(static_cast<int>(ix::WebSocketMessageType::Message), "abcdefg", "");
+		WebSocketMessageData tiingoCryptoWebSocketMessage2(static_cast<int>(ix::WebSocketMessageType::Open), "abcdefg", "");
+		WebSocketMessageData tiingoCryptoWebSocketMessage3(static_cast<int>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+		WebSocketMessageData tiingoCryptoWebSocketMessage4(static_cast<int>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+		WebSocketMessageData tiingoCryptoWebSocketMessage5(static_cast<int>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+		WebSocketMessageData tiingoCryptoWebSocketMessage6(static_cast<int>(ix::WebSocketMessageType::Close), "abcdefg", "");
+		WebSocketMessageData tiingoCryptoWebSocketMessage7(static_cast<int>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 	}
 
 	class ProcessTiingoCryptoWebSocketTest : public TestWithParam<WebSocketMessageData*> {
@@ -227,7 +227,7 @@ namespace FireBirdTest {
 			ix::WebSocketCloseInfo c;
 			ix::WebSocketOpenInfo o;
 			m_pMsg = make_unique<ix::WebSocketMessage>(static_cast<ix::WebSocketMessageType>(0), s, s.size(), e, o, c);
-			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_lType);
+			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_type);
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
@@ -299,13 +299,13 @@ namespace FireBirdTest {
 	}
 
 	namespace {
-		WebSocketMessageData tiingoForexWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
-		WebSocketMessageData tiingoForexWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
-		WebSocketMessageData tiingoForexWebSocketMessage3(static_cast<long>(ix::WebSocketMessageType::Pong), "abcdefg", "");
-		WebSocketMessageData tiingoForexWebSocketMessage4(static_cast<long>(ix::WebSocketMessageType::Ping), "abcdefg", "");
-		WebSocketMessageData tiingoForexWebSocketMessage5(static_cast<long>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
-		WebSocketMessageData tiingoForexWebSocketMessage6(static_cast<long>(ix::WebSocketMessageType::Close), "abcdefg", "");
-		WebSocketMessageData tiingoForexWebSocketMessage7(static_cast<long>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
+		WebSocketMessageData tiingoForexWebSocketMessage1(static_cast<int>(ix::WebSocketMessageType::Message), "abcdefg", "");
+		WebSocketMessageData tiingoForexWebSocketMessage2(static_cast<int>(ix::WebSocketMessageType::Open), "abcdefg", "");
+		WebSocketMessageData tiingoForexWebSocketMessage3(static_cast<int>(ix::WebSocketMessageType::Pong), "abcdefg", "");
+		WebSocketMessageData tiingoForexWebSocketMessage4(static_cast<int>(ix::WebSocketMessageType::Ping), "abcdefg", "");
+		WebSocketMessageData tiingoForexWebSocketMessage5(static_cast<int>(ix::WebSocketMessageType::Error), "abcdefg", "Error");
+		WebSocketMessageData tiingoForexWebSocketMessage6(static_cast<int>(ix::WebSocketMessageType::Close), "abcdefg", "");
+		WebSocketMessageData tiingoForexWebSocketMessage7(static_cast<int>(ix::WebSocketMessageType::Fragment), "abcdefg", "");
 	}
 
 	class ProcessTiingoForexWebSocketTest : public TestWithParam<WebSocketMessageData*> {
@@ -320,7 +320,7 @@ namespace FireBirdTest {
 			ix::WebSocketCloseInfo c;
 			ix::WebSocketOpenInfo o;
 			m_pMsg = make_unique<ix::WebSocketMessage>(static_cast<ix::WebSocketMessageType>(0), s, s.size(), e, o, c);
-			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_lType);
+			m_pMsg->type = static_cast<ix::WebSocketMessageType>(pMsg->m_type);
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 

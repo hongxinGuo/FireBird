@@ -148,7 +148,7 @@ namespace FireBirdTest {
 
 			//EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem("A"))->IsUpdateInsiderTransaction());
 
-			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
+			//	for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			//		const auto p_stock = gl_dataContainerFinnhubStock.GetItem(l);
 			//		EXPECT_TRUE(p_stock->IsUpdateBasicFinancial());
 			//		EXPECT_EQ(p_stock->GetBasicFinancialUpdateDate(), 19800101);

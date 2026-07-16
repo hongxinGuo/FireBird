@@ -48,7 +48,7 @@ void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= static_cast<int>(toFormattedDate(m_dataDayLine.GetData(0)->GetDate()))));
+	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
 	tx.commit();
 }
 

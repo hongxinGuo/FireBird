@@ -88,7 +88,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry("");
@@ -112,7 +112,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyNews m_FinnhubCompanyNews;
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubStockCompanyNewsTest, TestProcessStockCompanyNews0) {
 		m_FinnhubCompanyNews.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());

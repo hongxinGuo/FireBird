@@ -33,7 +33,7 @@ string CProductAlphaVantageStockDayLine::CreateMessage() {
 }
 
 void CProductAlphaVantageStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
 
 	auto pvDayLine = ParseAlphaVantageStockDayLine(pWebData);
 	if (!pvDayLine->empty()) {

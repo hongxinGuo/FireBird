@@ -44,23 +44,23 @@ public:
 	virtual void SetTimePoint(const std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	time_t GetTransactionTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
 	virtual void SetTransactionTime(const time_t time) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time)); }
-	long GetLastClose() const noexcept { return m_lLastClose; }
-	virtual void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
-	long GetOpen() const noexcept { return m_lOpen; }
-	virtual void SetOpen(const long lValue) noexcept { m_lOpen = lValue; }
-	long GetHigh() const noexcept { return m_lHigh; }
-	virtual void SetHigh(const long lValue) noexcept { m_lHigh = lValue; }
-	long GetLow() const noexcept { return m_lLow; }
-	virtual void SetLow(const long lValue) noexcept { m_lLow = lValue; }
-	long GetNew() const noexcept { return m_lNew; }
-	virtual void SetNew(const long lValue) noexcept { m_lNew = lValue; }
+	int GetLastClose() const noexcept { return m_lLastClose; }
+	virtual void SetLastClose(const int lValue) noexcept { m_lLastClose = lValue; }
+	int GetOpen() const noexcept { return m_lOpen; }
+	virtual void SetOpen(const int lValue) noexcept { m_lOpen = lValue; }
+	int GetHigh() const noexcept { return m_lHigh; }
+	virtual void SetHigh(const int lValue) noexcept { m_lHigh = lValue; }
+	int GetLow() const noexcept { return m_lLow; }
+	virtual void SetLow(const int lValue) noexcept { m_lLow = lValue; }
+	int GetNew() const noexcept { return m_lNew; }
+	virtual void SetNew(const int lValue) noexcept { m_lNew = lValue; }
 	INT64 GetAmount() const noexcept { return m_llAmount; }
 	virtual void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
 	INT64 GetVolume() const noexcept { return m_llVolume; }
 	virtual void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
 
-	long GetUpDown() const noexcept { return m_lUpDown; }
-	virtual void SetUpDown(const long lValue) noexcept { m_lUpDown = lValue; }
+	int GetUpDown() const noexcept { return m_lUpDown; }
+	virtual void SetUpDown(const int lValue) noexcept { m_lUpDown = lValue; }
 	double GetUpDownRate() const noexcept { return m_dUpDownRate; }
 	virtual void SetUpDownRate(const double dValue) noexcept { m_dUpDownRate = dValue; }
 	double GetChangeHandRate() const noexcept { return m_dChangeHandRate; }
@@ -164,12 +164,12 @@ protected:
 
 	// 实时数据区
 	std::chrono::sys_seconds m_tpTime{};// 实时数据交易时间
-	long m_lLastClose{ 0 }; // 以0.001元计的收盘价
-	long m_lOpen{ 0 }; // 以0.001元计的开盘价
-	long m_lHigh{ 0 }; // 以0.001元计的最高价
-	long m_lLow{ 0 }; // 以0.001元计的最低价
-	long m_lNew{ 0 }; // 以0.001元计的最新价
-	long m_lUpDown{ 0 }; // 涨跌值
+	int m_lLastClose{ 0 }; // 以0.001元计的收盘价
+	int m_lOpen{ 0 }; // 以0.001元计的开盘价
+	int m_lHigh{ 0 }; // 以0.001元计的最高价
+	int m_lLow{ 0 }; // 以0.001元计的最低价
+	int m_lNew{ 0 }; // 以0.001元计的最新价
+	int m_lUpDown{ 0 }; // 涨跌值
 	double m_dUpDownRate{ 0 }; // 涨跌率
 	INT64 m_llVolume{ 0 }; // 以1股计的成交量
 	INT64 m_llAmount{ 0 }; // 以元计的成交金额

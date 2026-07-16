@@ -30,7 +30,7 @@ void CContainerChinaStockDayLine::SaveDB(const string& strStockSymbol) {
 	// Helper: insert a single candle into DB (ratio applied inside)
 	auto insertCandle = [&](const CVirtualHistoryCandle* pCandle) {
 		multi_insert.add_values(
-			t.Date = static_cast<int>(toFormattedDate(pCandle->GetDate())),
+			t.Date = toFormattedDate(pCandle->GetDate()),
 			t.Exchange = pCandle->GetExchange(),
 			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,
@@ -141,33 +141,33 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 bool CContainerChinaStockDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 	ASSERT(IsDataLoaded());
 	ASSERT(Size() > 0);
-	long lCurrentDayLinePos = 0;
+	size_t currentDayLinePos = 0;
 
 	vWeekLine.clear();
 	do {
-		CWeekLine pWeekLine = CreateNewWeekLine(lCurrentDayLinePos);
+		CWeekLine pWeekLine = CreateNewWeekLine(currentDayLinePos);
 		vWeekLine.push_back(pWeekLine);
-	} while (lCurrentDayLinePos < Size());
+	} while (currentDayLinePos < Size());
 
 	return true;
 }
 
-CWeekLine CContainerChinaStockDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
+CWeekLine CContainerChinaStockDayLine::CreateNewWeekLine(size_t& currentDayLinePos) {
 	ASSERT(Size() > 0);
-	ASSERT(lCurrentDayLinePos < Size());
-	const auto lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetDate());
+	ASSERT(currentDayLinePos < Size());
+	const auto lNextMonday = GetNextMonday(GetData(currentDayLinePos)->GetDate());
 	const auto lNewestDay = GetData(Size() - 1)->GetDate();
 	CWeekLine weekLine;
 	if (lNextMonday < lNewestDay) {
 		// 中间数据
-		while (GetData(lCurrentDayLinePos)->GetDate() < lNextMonday) {
-			weekLine.UpdateWeekLine(GetData(lCurrentDayLinePos++));
+		while (GetData(currentDayLinePos)->GetDate() < lNextMonday) {
+			weekLine.UpdateWeekLine(GetData(currentDayLinePos++));
 		}
 	}
 	else {
 		// 最后一组数据
-		while (lCurrentDayLinePos <= (Size() - 1)) {
-			weekLine.UpdateWeekLine(GetData(lCurrentDayLinePos++));
+		while (currentDayLinePos <= (Size() - 1)) {
+			weekLine.UpdateWeekLine(GetData(currentDayLinePos++));
 		}
 	}
 

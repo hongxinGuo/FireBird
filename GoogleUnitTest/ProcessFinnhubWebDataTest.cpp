@@ -14,8 +14,8 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct Test_FinnhubWebData {
-		Test_FinnhubWebData(long lIndex, const string& strSymbol, const string& strData) {
-			m_lIndex = lIndex;
+		Test_FinnhubWebData(int index, const string& strSymbol, const string& strData) {
+			m_index = index;
 			m_strSymbol = strSymbol;
 			m_pData = std::make_shared<CWebData>();
 			m_pData->Test_SetBuffer_(strData);
@@ -24,20 +24,20 @@ namespace FireBirdTest {
 		~Test_FinnhubWebData() = default;
 
 	public:
-		long m_lIndex;
+		int m_index;
 		string m_strSymbol;
 		CWebDataPtr m_pData;
 	};
 
 	struct FinnhubWebSocketData {
-		FinnhubWebSocketData(long lIndex, const string& strData) {
-			m_lIndex = lIndex;
+		FinnhubWebSocketData(int index, const string& strData) {
+			m_index = index;
 			m_pData = strData;
 		}
 		~FinnhubWebSocketData() = default;
 
 	public:
-		long m_lIndex;
+		int m_index;
 		string m_pData;
 	};
 
@@ -65,7 +65,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			FinnhubWebSocketData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		shared_ptr<string> m_pWebData;
 		CFinnhubWebSocket m_finnhubWebSocket;
 	};
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		bool fSucceed = false;
 		CFinnhubSocketPtr pFinnhubWebSocket;
 		fSucceed = m_finnhubWebSocket.ParseFinnhubWebSocketData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
@@ -156,7 +156,7 @@ namespace FireBirdTest {
 		bool fSucceed = false;
 		CFinnhubSocketPtr pFinnhubWebSocket;
 		fSucceed = m_finnhubWebSocket.ParseFinnhubWebSocketDataWithSidmjson(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();

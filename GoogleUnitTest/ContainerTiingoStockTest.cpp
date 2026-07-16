@@ -206,11 +206,11 @@ namespace FireBirdTest {
 		const int ratio = pStock->GetRatio(); // typically 1000000
 
 		// set prices as integer internal representation
-		pStock->SetLastClose(static_cast<long>(1.00 * ratio));
-		pStock->SetOpen(static_cast<long>(1.10 * ratio));
-		pStock->SetHigh(static_cast<long>(1.20 * ratio));
-		pStock->SetLow(static_cast<long>(0.95 * ratio));
-		pStock->SetNew(static_cast<long>(1.15 * ratio));
+		pStock->SetLastClose(static_cast<int>(1.00 * ratio));
+		pStock->SetOpen(static_cast<int>(1.10 * ratio));
+		pStock->SetHigh(static_cast<int>(1.20 * ratio));
+		pStock->SetLow(static_cast<int>(0.95 * ratio));
+		pStock->SetNew(static_cast<int>(1.15 * ratio));
 
 		pStock->SetVolume(1234);
 		pStock->SetAmount(123400); // in cents/units expected by code
@@ -239,7 +239,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).where((t.Date == static_cast<int>(toFormattedDate(lDate))) and (t.Symbol == symbol)));
+		auto result = db(select(all_of(t)).from(t).where((t.Date == toFormattedDate(lDate)) and (t.Symbol == symbol)));
 		ASSERT_EQ(result.size(), 1u) << "Expected exactly one inserted row for symbol";
 
 		// inspect the row values (numeric DB values are unscaled)
@@ -274,7 +274,7 @@ namespace FireBirdTest {
 		gl_systemMessage.PopDayLineInfoMessage();
 
 		// cleanup: remove inserted row for this symbol/date only
-		db(delete_from(t).where((t.Date == static_cast<int>(toFormattedDate(lDate))) and (t.Symbol == symbol)));
+		db(delete_from(t).where((t.Date == toFormattedDate(lDate)) and (t.Symbol == symbol)));
 		tx.commit();
 
 		// remove from in-memory container
@@ -361,7 +361,7 @@ namespace FireBirdTest {
 				string json = string{ row.UpdateDate.value() };
 				nlohmannJson js;
 				CreateJsonWithNlohmann(js, json);
-				long updateDate = js["DayLineEndDate"];
+				int updateDate = js["DayLineEndDate"];
 				EXPECT_EQ(updateDate, 20200220);
 			}
 

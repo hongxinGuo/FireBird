@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry("");
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyProfileConcise m_FinnhubCompanyProfileConcise;
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetShareCount(0);
 		pTiingoStock->SetUpdateProfileDB(false);
 		m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());

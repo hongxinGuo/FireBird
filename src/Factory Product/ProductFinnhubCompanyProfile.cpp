@@ -14,7 +14,7 @@ CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 }
 
 string CProductFinnhubCompanyProfile::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
@@ -22,7 +22,7 @@ string CProductFinnhubCompanyProfile::CreateMessage() {
 }
 
 void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfile(pWebData, pStock);
 	if (fSucceed || pWebData->IsVoidJson() || IsNoRightToAccess()) {

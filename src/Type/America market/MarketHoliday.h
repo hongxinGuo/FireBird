@@ -7,7 +7,7 @@ public:
 	CMarketHoliday() {
 		m_strExchange = "";
 		m_strEventName = "";
-		m_lDate = 0;
+		m_date = 0;
 		m_strTradingHour = "";
 		m_strTimeZone = "";
 	}
@@ -20,7 +20,7 @@ public:
 public:
 	string m_strExchange;
 	string m_strEventName;
-	long m_lDate;
+	int m_date;
 	string m_strTradingHour;
 	string m_strTimeZone;
 };

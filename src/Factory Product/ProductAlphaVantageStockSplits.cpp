@@ -30,7 +30,7 @@ string CProductAlphaVantageStockSplits::CreateMessage() {
 }
 
 void CProductAlphaVantageStockSplits::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
 
 	auto pvSplits = ParseAlphaVantageStockSplits(pWebData);
 	if (!pvSplits->empty()) {

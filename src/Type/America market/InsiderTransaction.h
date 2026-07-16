@@ -18,8 +18,8 @@ public:
 	string m_strPersonName;
 	long long m_lShare;
 	long long m_lShareChange;
-	long m_lFilingDate;
-	long m_lTransactionDate;
+	int m_lFilingDate;
+	int m_lTransactionDate;
 	string m_strTransactionCode;
 	double m_dTransactionPrice;
 };

@@ -86,7 +86,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_pWebData);
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CDayLinesPtr m_pvDayLine;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCryptoDayLine m_finnhubCryptoDayLine;
@@ -118,7 +118,7 @@ namespace FireBirdTest {
 		string strMessage;
 
 		m_pvDayLine = m_finnhubCryptoDayLine.ParseFinnhubCryptoCandle(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
@@ -165,7 +165,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_pWebData);
@@ -182,7 +182,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCryptoDayLine m_finnhubCryptoDayLine;
 	};
@@ -194,7 +194,7 @@ namespace FireBirdTest {
 	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
 		CFinnhubCryptoPtr pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(0);
 		m_finnhubCryptoDayLine.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
 			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());

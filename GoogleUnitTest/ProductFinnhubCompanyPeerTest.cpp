@@ -74,7 +74,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_lIndex = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyPeer.Test_checkAccessRight_(m_pWebData);
 
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyPeer.Test_checkAccessRight_(m_pWebData);
 
@@ -152,7 +152,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex{ 0 };
+		int m_index{ 0 };
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
 		EXPECT_FALSE(pStock->IsUpdatePeer());
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());

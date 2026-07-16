@@ -12,7 +12,7 @@ CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 }
 
 string CProductFinnhubCompanyPeer::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
@@ -20,7 +20,7 @@ string CProductFinnhubCompanyPeer::CreateMessage() {
 }
 
 void CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	const nlohmannJson jsonPeer = ParseFinnhubStockPeer(pWebData);
 	pStock->SetPeer(jsonPeer);
 	pStock->SetPeerUpdateDate(gl_pWorldMarket->GetMarketDate());

@@ -117,7 +117,7 @@ string CProductTiingoFinancialState::CreateMessage() {
 }
 
 void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
 	const auto pvTiingoFinancialState = ParseTiingoFinancialState(pWebData);
 
 	pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
@@ -164,7 +164,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
-	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_index);
 	string symbol = pStock->GetSymbol();
 	string exchange = "US";
 	string s1;

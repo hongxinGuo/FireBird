@@ -21,7 +21,7 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 string CProductFinnhubCompanyNews::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	string strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	auto limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
 	auto limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();
@@ -39,7 +39,7 @@ string CProductFinnhubCompanyNews::CreateMessage() {
 
 void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	if (!pvFinnhubCompanyNews->empty()) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.

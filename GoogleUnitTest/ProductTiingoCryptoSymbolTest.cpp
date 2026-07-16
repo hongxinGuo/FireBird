@@ -81,7 +81,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 		}
 
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CTiingoCryptosPtr m_pvCrypto;
 		CProductTiingoCryptoSymbol m_tiingoCryptoSymbolProduct;
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseTiingoCryptoTest, TestParseCryptoSymbol) {
 		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 11: // 格式不对
 			EXPECT_EQ(m_pvCrypto->size(), 0);
 			break;
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_lIndex = pData->m_index;
 			m_pWebData = pData->m_pData;
 		}
 
@@ -181,7 +181,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 		}
 
@@ -194,7 +194,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductTiingoCryptoSymbol m_tiingoCryptoSymbolProduct;
 	};
@@ -207,7 +207,7 @@ namespace FireBirdTest {
 		CTiingoCryptoPtr pCrypto;
 		const auto l = gl_dataContainerTiingoCryptoSymbol.Size();
 		m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 11: // 格式不对
 			break;
 		case 12: // 格式不对

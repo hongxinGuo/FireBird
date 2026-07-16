@@ -79,19 +79,19 @@ namespace FireBirdTest {
 	TEST_F(CDataStockSymbolTest, TestUpdateStockSection2) {
 		const string strShanghaiStock = "600601.SS";
 		const string strShenzhenStock = "000001.SZ";
-		constexpr long lIndex = 600;
-		constexpr long lIndex2 = 1000;
+		constexpr size_t index = 600;
+		constexpr size_t index2 = 1000;
 
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex)) << "装载预设数据库后如此";
-		s_pDataStockSymbol->SetStockSectionActiveFlag(lIndex, false);
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(index)) << "装载预设数据库后如此";
+		s_pDataStockSymbol->SetStockSectionActiveFlag(index, false);
 		EXPECT_TRUE(s_pDataStockSymbol->UpdateStockSection(strShanghaiStock));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(index));
 		EXPECT_FALSE(s_pDataStockSymbol->UpdateStockSection(strShanghaiStock));
 
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex2)) << "装载预设数据库后如此";
-		s_pDataStockSymbol->SetStockSectionActiveFlag(lIndex2, false);
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(index2)) << "装载预设数据库后如此";
+		s_pDataStockSymbol->SetStockSectionActiveFlag(index2, false);
 		EXPECT_TRUE(s_pDataStockSymbol->UpdateStockSection(strShenzhenStock));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex2));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(index2));
 		EXPECT_FALSE(s_pDataStockSymbol->UpdateStockSection(strShenzhenStock));
 	}
 
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextIndex) {
-		long l = 0;
+		size_t l = 0;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 1);
 		EXPECT_EQ(l, 0);
 		l++;
@@ -155,7 +155,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextSinaStockInquiringMiddleStr) {
-		long i = 2;
+		size_t i = 2;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), "sh000000,sh000001") << "起始位置为零";
 
 		i = 3;
@@ -163,7 +163,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextTengxunStockInquiringMiddleStr) {
-		long i = 2;
+		size_t i = 2;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000000,sh000001") << "起始位置为零";
 
 		i = 3;

@@ -16,7 +16,7 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 }
 
 string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pStock->GetFinnhubInsiderTransactionInquiryParam(GetUTCTime());
@@ -24,7 +24,7 @@ string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 }
 
 void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	CInsiderTransactionsPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
 	pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateInsiderTransaction(false);
@@ -37,7 +37,7 @@ void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 }
 
 void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateInsiderTransaction(false);
 	pStock->SetUpdateProfileDB(true);

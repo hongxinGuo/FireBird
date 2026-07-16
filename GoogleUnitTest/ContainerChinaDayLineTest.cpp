@@ -209,7 +209,7 @@ namespace FireBirdTest {
 		CContainerChinaStockDayLine dataChinaDayLine;
 
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLine>>();
-		long lCurrentDayLinePos = 0;
+		size_t lCurrentDayLinePos = 0;
 
 		CDayLine dayLine;
 		dayLine.SetDate(20200101); // 星期三

@@ -37,7 +37,7 @@ string CProductTiingoStockDayLine::CreateMessage() {
 }
 
 void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
 
 	auto pvDayLine = ParseTiingoStockDayLine(pWebData);
 	if (!pvDayLine->empty()) {

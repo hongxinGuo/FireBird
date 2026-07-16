@@ -90,7 +90,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pvDayLine = nullptr;
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CDayLinesPtr m_pvDayLine;
 		CProductFinnhubForexDayLine m_finnhubForexDayLine;
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		string strMessage;
 
 		m_pvDayLine = m_finnhubForexDayLine.ParseFinnhubForexCandle(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
@@ -172,7 +172,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol )) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_finnhubForexDayLine.Test_checkAccessRight_(m_pWebData);
@@ -188,7 +188,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubForexDayLine m_finnhubForexDayLine;
 	};
@@ -201,7 +201,7 @@ namespace FireBirdTest {
 		CForexSymbolPtr pForex = gl_dataFinnhubForexSymbol.GetItem(0);
 
 		m_finnhubForexDayLine.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
 			EXPECT_FALSE(pForex->IsUpdateDayLine());

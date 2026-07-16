@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoSymbolProduct.Test_checkAccessRight_(m_pWebData);
 
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CFinnhubCryptosPtr m_pvCryptoSymbol;
 		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
@@ -100,7 +100,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
 		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.ParseFinnhubCryptoSymbol(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
@@ -135,7 +135,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoSymbolProduct.Test_checkAccessRight_(m_pWebData);
 
@@ -150,7 +150,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
 	};
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
 		CFinnhubCryptoPtr pCrypto;
 		m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			break;
 		case 1: // 无权利访问的数据

@@ -32,10 +32,10 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 		const std::string symbol = string{ row.Symbol.value() };
 		if (!IsSymbol(symbol)) {
 			const auto pSymbol = make_shared<CFinnhubForex>();
-			pSymbol->SetSymbol(string{ row.Symbol.value() });
-			pSymbol->SetDescription(string{ row.Description.value() });
-			pSymbol->SetExchange(string{ row.Exchange.value() });
-			pSymbol->SetDisplaySymbol(string{ row.DisplaySymbol.value() });
+			pSymbol->SetSymbol(row.Symbol.value());
+			pSymbol->SetDescription(row.Description.value());
+			pSymbol->SetExchange(row.Exchange.value());
+			pSymbol->SetDisplaySymbol(row.DisplaySymbol.value());
 			pSymbol->LoadUpdateDate(string{ row.UpdateDate.value() });
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);

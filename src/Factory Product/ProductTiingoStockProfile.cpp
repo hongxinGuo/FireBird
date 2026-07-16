@@ -266,7 +266,7 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
 		multi_insert.add_values(
 			t.Symbol = pStock->GetSymbol(),
-			t.Date = static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate()))
+			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate())
 		);
 		++nValues;
 	}
@@ -281,11 +281,11 @@ void CProductTiingoStockProfile::SaveDelistedSymbol() {
 	auto tx = sqlpp::start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
 
-	db(sqlpp::delete_from(t).where(t.Date == static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate()))));
+	db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate())));
 	int nValues = 0;
 	for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
-		multi_insert.add_values(t.Symbol = pStock->GetSymbol(), t.Date = static_cast<int>(toFormattedDate(gl_pWorldMarket->GetMarketDate())));
+		multi_insert.add_values(t.Symbol = pStock->GetSymbol(), t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()));
 		++nValues;
 	}
 	if (nValues > 0) db(multi_insert);

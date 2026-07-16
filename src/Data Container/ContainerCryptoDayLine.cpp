@@ -32,7 +32,7 @@ void CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 	for (size_t i = 0; i < lSize; ++i) {
 		auto pCandle = GetData(i);
 		multi_insert.add_values(
-			t.Date = static_cast<int>(toFormattedDate(pCandle->GetDate())),
+			t.Date = toFormattedDate(pCandle->GetDate()),
 			t.Exchange = pCandle->GetExchange(),
 			t.Symbol = pCandle->GetStockSymbol(),
 			t.LastClose = static_cast<double>(pCandle->GetLastClose()) / m_ratio,

@@ -26,13 +26,13 @@ public:
 	bool LoadDB();
 	bool UpdateDB();
 
-	bool IsNeedUpdate() const noexcept { return m_lLastTotalCryptoExchange < m_vCryptoExchange.size(); }
-	void SetLastSize(size_t lSize) noexcept { m_lLastTotalCryptoExchange = lSize; }
+	bool IsNeedUpdate() const noexcept { return m_lastTotalCryptoExchange < m_vCryptoExchange.size(); }
+	void SetLastSize(size_t lSize) noexcept { m_lastTotalCryptoExchange = lSize; }
 
 protected:
 	vector<string> m_vCryptoExchange;
 	unordered_map<string, size_t> m_mapCryptoExchange;
-	size_t m_lLastTotalCryptoExchange{ 0 };
+	size_t m_lastTotalCryptoExchange{ 0 };
 };
 
 extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;

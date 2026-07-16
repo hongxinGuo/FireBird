@@ -69,7 +69,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerChinaStockTest, TestGetNextIndex) {
-		long l = 0;
+		size_t l = 0;
 		EXPECT_EQ(m_containerChinaStock.GetNextIndex(l), 1);
 		EXPECT_EQ(l, 0);
 		l++;
@@ -133,7 +133,7 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条000001.SS的记录";
 			auto& row = result.front();
-			EXPECT_EQ(string{ row.Symbol.value() }, "000001.SS");
+			EXPECT_EQ(row.Symbol.value(), "000001.SS");
 			EXPECT_EQ(row.ID, 1);
 		}
 
@@ -193,7 +193,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultExist.size(), 1u);
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
-				EXPECT_STREQ(string{ row.Exchange.value() }.c_str(), "china");
+				EXPECT_EQ(row.Exchange.value(), "china");
 			}
 
 			// Verify new stock inserted

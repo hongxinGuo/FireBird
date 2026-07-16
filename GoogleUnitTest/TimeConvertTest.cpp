@@ -55,19 +55,19 @@ namespace FireBirdTest {
 	TEST(GetNextMonth, YearMonthDay_MiddleOfMonth_ReturnsFirstOfNextMonth) {
 		year_month_day ymd{ year{ 2026 } / month{ 6 } / day{ 15 } };
 		auto next = GetNextMonth(ymd);
-		EXPECT_EQ(toFormattedDate(next), 20260701L);
+		EXPECT_EQ(toFormattedDate(next), 20260701);
 	}
 
 	TEST(GetNextMonth, YearMonthDay_FirstDay_ReturnsFirstOfFollowingMonth) {
 		year_month_day ymd{ year{ 2026 } / month{ 7 } / day{ 1 } };
 		auto next = GetNextMonth(ymd);
-		EXPECT_EQ(toFormattedDate(next), 20260801L);
+		EXPECT_EQ(toFormattedDate(next), 20260801);
 	}
 
 	TEST(GetNextMonth, LocalDays_EndOfYear_RollsToNextYearJanuary) {
 		local_days ld{ year{ 2026 } / month{ 12 } / day{ 31 } };
 		auto nextLd = GetNextMonth(ld);
-		EXPECT_EQ(toFormattedDate(nextLd), 20270101L);
+		EXPECT_EQ(toFormattedDate(nextLd), 20270101);
 	}
 
 	TEST(GetNextDay, LocalDays_DefaultSpan_IncrementsByOne) {
@@ -79,49 +79,49 @@ namespace FireBirdTest {
 	TEST(GetNextDay, YearMonthDay_SpanThree_CrossesMonthBoundary) {
 		year_month_day ymd{ year{ 2026 } / month{ 6 } / day{ 29 } };
 		auto out = GetNextDay(ymd, 3);
-		EXPECT_EQ(toFormattedDate(out), 20260702L);
+		EXPECT_EQ(toFormattedDate(out), 20260702);
 	}
 
 	TEST(GetNextDay, ZeroSpan_ReturnsSameDay) {
 		local_days d{ year{ 2026 } / month{ 12 } / day{ 31 } };
 		auto out = GetNextDay(d, 0);
-		EXPECT_EQ(toFormattedDate(out), 20261231L);
+		EXPECT_EQ(toFormattedDate(out), 20261231);
 	}
 
 	TEST(GetNextDay, LeapYear_Feb28_ToFeb29) {
 		year_month_day ymd{ year{ 2020 } / month{ 2 } / day{ 28 } };
 		auto out = GetNextDay(ymd);
-		EXPECT_EQ(toFormattedDate(out), 20200229L);
+		EXPECT_EQ(toFormattedDate(out), 20200229);
 	}
 
 	TEST(GetNextDay, EndOfYear_RollsToNextYear) {
 		local_days d{ year{ 2023 } / month{ 12 } / day{ 31 } };
 		auto out = GetNextDay(d);
-		EXPECT_EQ(toFormattedDate(out), 20240101L);
+		EXPECT_EQ(toFormattedDate(out), 20240101);
 	}
 
 	TEST(GetPrevDay, LocalDays_DefaultSpan_DecrementsByOne) {
 		local_days d{ year{ 2026 } / month{ 6 } / day{ 15 } };
 		auto out = GetPrevDay(d);
-		EXPECT_EQ(toFormattedDate(out), 20260614L);
+		EXPECT_EQ(toFormattedDate(out), 20260614);
 	}
 
 	TEST(GetPrevDay, YearMonthDay_LeapYear_PreviousDayIsLeapDay) {
 		year_month_day ymd{ year{ 2020 } / month{ 3 } / day{ 1 } };
 		auto out = GetPrevDay(ymd); // default span 1
-		EXPECT_EQ(toFormattedDate(out), 20200229L);
+		EXPECT_EQ(toFormattedDate(out), 20200229);
 	}
 
 	TEST(GetPrevDay, LocalDays_ZeroSpan_ReturnsSameDay) {
 		local_days d{ year{ 2026 } / month{ 6 } / day{ 1 } };
 		auto out = GetPrevDay(d, 0);
-		EXPECT_EQ(toFormattedDate(out), 20260601L);
+		EXPECT_EQ(toFormattedDate(out), 20260601);
 	}
 
 	TEST(GetPrevDay, LocalDays_EndOfYear_RollsToPrevYear) {
 		local_days d{ year{ 2024 } / month{ 1 } / day{ 1 } };
 		auto out = GetPrevDay(d);
-		EXPECT_EQ(toFormattedDate(out), 20231231L);
+		EXPECT_EQ(toFormattedDate(out), 20231231);
 	}
 
 	TEST_F(CTimeConvertTest, GetNextSecond_Overloads) {
@@ -415,7 +415,7 @@ namespace FireBirdTest {
 
 		// Date part
 		local_days date_only = chrono::floor<chrono::days>(dt);
-		EXPECT_EQ(toFormattedDate(date_only), 20260618L);
+		EXPECT_EQ(toFormattedDate(date_only), 20260618);
 
 		// Time part
 		EXPECT_EQ(toFormattedTime(dt), 80203u);
@@ -429,7 +429,7 @@ namespace FireBirdTest {
 		local_seconds dt = toLocalDateTime(ld, toLocalTime(t));
 
 		local_days date_only = chrono::floor<chrono::days>(dt);
-		EXPECT_EQ(toFormattedDate(date_only), 20240229L);
+		EXPECT_EQ(toFormattedDate(date_only), 20240229);
 		EXPECT_EQ(toFormattedTime(dt), 235959u);
 	}
 
@@ -446,9 +446,9 @@ namespace FireBirdTest {
 		using namespace std::chrono;
 
 		year_month_day ymd{ year{ 2020 } / month{ 2 } / day{ 29 } }; // leap day
-		long formatted = toFormattedDate(ymd);
+		int formatted = toFormattedDate(ymd);
 
-		EXPECT_EQ(formatted, 20200229L);
+		EXPECT_EQ(formatted, 20200229);
 	}
 
 	TEST(TimeConvert_ToFormattedDate, ConsistentOverloads) {

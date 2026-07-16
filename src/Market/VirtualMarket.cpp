@@ -249,10 +249,10 @@ string CVirtualMarket::GetStringOfMarketDateTime() const {
 	return std::format("{:%F %T}", m_marketClock);
 }
 
-chrono::sys_seconds CVirtualMarket::ConvertToUTCTime(long lMarketDate, long lMarketTime) const {
-	int year = lMarketDate / 10000;
-	int month = lMarketDate / 100 - year * 100;
-	int day = lMarketDate - year * 10000 - month * 100;
+chrono::sys_seconds CVirtualMarket::ConvertToUTCTime(int marketDate, long lMarketTime) const {
+	int year = marketDate / 10000;
+	int month = marketDate / 100 - year * 100;
+	int day = marketDate - year * 10000 - month * 100;
 	int hour = lMarketTime / 10000;
 	int minute = lMarketTime / 100 - hour * 100;
 	int second = lMarketTime - hour * 10000 - minute * 100;

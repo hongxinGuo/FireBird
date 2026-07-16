@@ -14,7 +14,7 @@ CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 }
 
 string CProductFinnhubSECFilings::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
@@ -22,7 +22,7 @@ string CProductFinnhubSECFilings::CreateMessage() {
 }
 
 void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	auto pvSECFilings = ParseFinnhubStockSECFilings(pWebData);
 	auto size = pvSECFilings->size();
 	pStock->SetUpdateSECFilings(false);

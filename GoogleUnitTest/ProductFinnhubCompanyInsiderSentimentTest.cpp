@@ -74,7 +74,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101));
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
@@ -158,7 +158,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
@@ -182,7 +182,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CInsiderSentimentsPtr m_pvInsiderSentiment;
@@ -194,7 +194,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubInsiderSentimentTest, TestParseFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
@@ -236,7 +236,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
@@ -257,7 +257,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CInsiderSentimentsPtr m_pvInsiderSentiment;
@@ -269,7 +269,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubInsiderSentimentTest2, TestParseFinnhubInsiderSentiment0) {
 		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;

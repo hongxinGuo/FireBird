@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_productFinnhubForexSymbol.Test_checkAccessRight_(m_pWebData);
 
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CForexSymbolsPtr m_pvForexSymbol;
 		CProductFinnhubForexSymbol m_productFinnhubForexSymbol;
@@ -100,7 +100,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		m_pvForexSymbol = m_productFinnhubForexSymbol.ParseFinnhubForexSymbol(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
@@ -135,7 +135,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_productFinnhubForexSymbol.Test_checkAccessRight_(m_pWebData);
 
@@ -150,7 +150,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubForexSymbol m_productFinnhubForexSymbol;
 	};
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		CForexSymbolPtr pForexSymbol;
 		m_productFinnhubForexSymbol.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			break;
 		case 1: // 无权利访问的数据

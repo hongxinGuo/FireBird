@@ -69,7 +69,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubSECFilings.Test_checkAccessRight_(m_pWebData);
 		}
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex{ 0 };
+		int m_index{ 0 };
 		CSECFilingsPtr pvSECFilings;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubSECFilings m_finnhubSECFilings;
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubSECFilingsTest, TestParseFinnhubSECFilings2) {
 		pvSECFilings = m_finnhubSECFilings.ParseFinnhubStockSECFilings(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_TRUE(pvSECFilings->empty());
 			break;
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 			m_finnhubSECFilings.Test_checkAccessRight_(m_pWebData);
 
@@ -148,7 +148,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex{ 0 };
+		int m_index{ 0 };
 		CWebDataPtr m_pWebData;
 		CProductFinnhubSECFilings m_finnhubSECFilings;
 	};
@@ -163,7 +163,7 @@ namespace FireBirdTest {
 		m_finnhubSECFilings.ParseAndStoreWebData(m_pWebData);
 		EXPECT_FALSE(pStock->IsUpdateSECFilings());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB());
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_TRUE(pStock->m_vSECFilings.empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());

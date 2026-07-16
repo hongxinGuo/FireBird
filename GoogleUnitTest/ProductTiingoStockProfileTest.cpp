@@ -89,7 +89,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 		}
 
@@ -101,7 +101,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CTiingoStocksPtr m_pvStock;
 		CProductTiingoStockProfile m_tiingoStockSymbolProduct;
@@ -114,7 +114,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseTiingoStockTest, TestParseStockProfile) {
 		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvStock->size(), 0);
 			break;
@@ -191,7 +191,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 
 			m_tiingoStockProduct.SetIndex(0);
@@ -209,7 +209,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductTiingoStockProfile m_tiingoStockProduct;
 		long long m_llTiingoBandWidthLeft;
@@ -224,7 +224,7 @@ namespace FireBirdTest {
 	TEST_P(ProcessTiingoStockProfileTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
 		m_tiingoStockProduct.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			break;
 		case 2: // 格式不对

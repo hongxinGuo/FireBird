@@ -130,7 +130,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 		}
 
@@ -142,7 +142,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CTiingoIEXTopOfBooksPtr m_pvIEXTopOfBook;
 		CProductTiingoIEXTopOfBook m_tiingoIEXTopOfBookProduct;
@@ -155,7 +155,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseTiingoIEXTopOfBookTest, TestParseTiingoIEXTopOfBook) {
 		m_pvIEXTopOfBook = m_tiingoIEXTopOfBookProduct.ParseTiingoIEXTopOfBook(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_strTicker, "000001");

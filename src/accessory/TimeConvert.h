@@ -56,11 +56,11 @@ inline chrono::local_seconds toLocalDateTime(chrono::local_days ld, chrono::loca
 	return chrono::local_seconds{ ld + tod };
 }
 
-inline long toFormattedDate(chrono::local_days ld) {
+inline int toFormattedDate(chrono::local_days ld) {
 	chrono::year_month_day ymd{ ld };
-	return static_cast<long>(static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day()));
+	return static_cast<int>(static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day()));
 }
-inline long toFormattedDate(chrono::year_month_day ymd) { return static_cast<long>(static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day())); }
+inline int toFormattedDate(chrono::year_month_day ymd) { return static_cast<int>(static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day())); }
 
 inline unsigned toFormattedTime(const chrono::hh_mm_ss<chrono::seconds>& time) { return (time.hours().count() * 10000) + (time.minutes().count() * 100) + time.seconds().count(); }
 inline unsigned toFormattedTime(chrono::local_seconds ls) { return toFormattedTime(toTodayClock(ls)); }
@@ -69,5 +69,5 @@ inline unsigned toFormattedTime(chrono::local_seconds ls) { return toFormattedTi
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间，采用UTC（GMT）标准时间
 inline string ConvertDateToTimeStamp(chrono::local_days date) { return std::format("{:%F}", date); }
-inline string toFormattedDateString(long lDate) { return std::format("{:8d}", lDate); }
+inline string toFormattedDateString(int date) { return std::format("{:8d}", date); }
 inline string toFormattedDateString(chrono::local_days ld) { return toFormattedDateString(toFormattedDate(ld)); }

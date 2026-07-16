@@ -77,7 +77,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetNew(0);
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubStockPriceQuote m_finnhubStockPriceQuote;
@@ -123,11 +123,11 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		auto tt = GetUTCTime();
-		if (m_lIndex == 10) {
+		if (m_index == 10) {
 			TestSetUTCTime(1615507200);
 		}
 		m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 0: // 空数据
 			break;
 		case 1: // 无权利访问的数据

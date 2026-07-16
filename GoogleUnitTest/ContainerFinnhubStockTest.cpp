@@ -223,7 +223,7 @@ namespace FireBirdTest {
 				string json = string{ row.UpdateDate.value() };
 				nlohmannJson js;
 				CreateJsonWithNlohmann(js, json);
-				long updateDate = js["DayLineEndDate"];
+				int updateDate = js["DayLineEndDate"];
 				EXPECT_EQ(updateDate, 20200220);
 			}
 

@@ -116,7 +116,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
 		}
 
@@ -128,7 +128,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
 	};
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 		CTiingoCandleLine dayLine;
 
 		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
@@ -204,9 +204,9 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			m_pWebData = pData->m_pData;
-			if (m_lIndex == 10) {
+			if (m_index == 10) {
 				CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
 				endDate = pStock->GetDayLineEndDate();
 				pStock->SetDayLineEndDate(toLocalDays(20210311));
@@ -223,7 +223,7 @@ namespace FireBirdTest {
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateDayLineDB(false);
 			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			if (m_lIndex == 10) {
+			if (m_index == 10) {
 				CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
 				pStock->SetDayLineEndDate(endDate);
 			}
@@ -233,7 +233,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CWebDataPtr m_pWebData;
 		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
 		chrono::local_days endDate;
@@ -250,7 +250,7 @@ namespace FireBirdTest {
 
 		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
 		EXPECT_EQ(pStock->GetSymbol(), "AAPL");
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());

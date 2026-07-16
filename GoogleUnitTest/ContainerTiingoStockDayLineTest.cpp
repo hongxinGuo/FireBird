@@ -76,7 +76,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		db(insert_into(t).set(
-			t.Date = static_cast<int>(toFormattedDate(date)),
+			t.Date = toFormattedDate(date),
 			t.Exchange = exchange,
 			t.Symbol = uniqueSymbol,
 			t.LastClose = lastClose,

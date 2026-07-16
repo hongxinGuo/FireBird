@@ -14,7 +14,7 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 }
 
 string CProductFinnhubCryptoSymbol::CreateMessage() {
-	const string strParam = gl_dataContainerFinnhubCryptoExchange.GetItem(m_lIndex);
+	const string strParam = gl_dataContainerFinnhubCryptoExchange.GetItem(m_index);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -25,7 +25,7 @@ void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
 		if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchange(gl_dataContainerFinnhubCryptoExchange.GetItem(m_lIndex));
+			pSymbol->SetExchange(gl_dataContainerFinnhubCryptoExchange.GetItem(m_index));
 			gl_dataFinnhubCryptoSymbol.Add(pSymbol);
 		}
 	}

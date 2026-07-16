@@ -84,7 +84,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
+			m_index = pData->m_index;
 			pvDayLine = nullptr;
 			m_pWebData = pData->m_pData;
 			m_finnhubStockDayLine.Test_checkAccessRight_(m_pWebData);
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		int m_index;
 		CFinnhubStockPtr m_pStock;
 		CDayLinesPtr pvDayLine;
 		CWebDataPtr m_pWebData;
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 		string strMessage;
 
 		m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
+		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());

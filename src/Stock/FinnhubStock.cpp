@@ -284,7 +284,7 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::UpdateCompanyNewsDB() {
 	ASSERT(!m_vCompanyNews.empty());
-	const long lSize = static_cast<long>(m_vCompanyNews.size());
+	const size_t size = m_vCompanyNews.size();
 
 	long long cutoffDateTime = 0;
 	using namespace StockMarket;
@@ -324,10 +324,10 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 }
 
 bool CFinnhubStock::UpdateEPSSurpriseDB() {
-	const chrono::local_days sastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
+	const chrono::local_days lastEpsSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 
 	if (m_vEPSSurprise.empty()) return true;
-	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate > sastEPSSurpriseUpdateDate) { SetUpdateProfileDB(true); }
+	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate > lastEpsSurpriseUpdateDate) { SetUpdateProfileDB(true); }
 	else return false; // 没有新数据则返回
 
 	using namespace StockMarket;
@@ -336,16 +336,16 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	auto tx = sqlpp::start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date, t.Actual, t.Estimate);
 	for (const auto& EPSSurprise : m_vEPSSurprise) {
-		if (EPSSurprise.m_lDate > sastEPSSurpriseUpdateDate) {
+		if (EPSSurprise.m_lDate > lastEpsSurpriseUpdateDate) {
 			multi_insert.add_values(
 				t.Symbol = EPSSurprise.m_strSymbol,
-				t.Date = static_cast<int>(toFormattedDate(EPSSurprise.m_lDate)),
+				t.Date = toFormattedDate(EPSSurprise.m_lDate),
 				t.Actual = EPSSurprise.m_dActual,
 				t.Estimate = EPSSurprise.m_dEstimate
 			);
 		}
 	}
-	if (m_vEPSSurprise.size() > 0) {
+	if (!m_vEPSSurprise.empty()) {
 		db(multi_insert);
 	}
 	tx.commit();
@@ -361,9 +361,9 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::UpdateSECFilingsDB() const {
-	const long lSize = static_cast<long>(m_vSECFilings.size());
+	const size_t size = m_vSECFilings.size();
 	if (!m_strSymbol.empty()) {
-		long lCurrentPos = 0;
+		size_t currentPos = 0;
 		CSECFiling SECFilings;
 		using namespace StockMarket;
 		const auto& t = FinnhubStockSecFilings{};
@@ -375,7 +375,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
 
 		for (const auto& row : result) {
-			SECFilings = m_vSECFilings.at(lCurrentPos);
+			SECFilings = m_vSECFilings.at(currentPos);
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) > 0) continue;
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) < 0) {	// 没有这个AccessNumber的SEC Filings？
 				multi_insert.add_values(
@@ -389,9 +389,9 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 					t.form = SECFilings.m_strForm
 				);
 			}
-			if (++lCurrentPos == lSize) break;
+			if (++currentPos == size) break;
 		}
-		for (long i = lCurrentPos; i < lSize; i++) {
+		for (size_t i = currentPos; i < size; i++) {
 			SECFilings = m_vSECFilings.at(i);
 			multi_insert.add_values(
 				t.symbol = m_strSymbol,
@@ -404,7 +404,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 				t.form = SECFilings.m_strForm
 			);
 		}
-		if (m_vSECFilings.size() > 0) {
+		if (!m_vSECFilings.empty()) {
 			db(multi_insert);
 		}
 		tx.commit();

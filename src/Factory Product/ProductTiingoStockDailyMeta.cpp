@@ -33,11 +33,11 @@ string CProductTiingoStockDailyMeta::CreateMessage() {
 void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pTiingoStockDailyMeta = ParseTiingoStockDailyMeta(pWebData);
 	if (pTiingoStockDailyMeta == nullptr) {
-		auto pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+		auto pStock = gl_dataContainerTiingoStock.GetStock(m_index);
 		pStock->SetUpdateStockDailyMeta(false);
 		return;
 	}
-	auto pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	auto pStock = gl_dataContainerTiingoStock.GetStock(m_index);
 	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
 		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
 		auto str = pStock->GetSymbol();
