@@ -208,10 +208,12 @@ void CContainerChinaStock::UnloadDayLine() noexcept {
 	}
 }
 
-void CContainerChinaStock::SetDayLineNeedMaintain() const {
-	SetUpdateDayLine();
-	for (auto& pStock : m_vStock) {
+// todo: 修改为重新设置日线截止日为数据库中的实际日期
+void CContainerChinaStock::SetDayLineNeedMaintain(int startDate) {
+	for (const auto& pStock : m_vStock) {
 		pStock->SetDayLineEndDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
+		pStock->SetUpdateDayLine(true);
+		pStock->SetUpdateProfileDB(true);
 	}
 }
 

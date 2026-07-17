@@ -82,11 +82,12 @@ namespace FireBirdTest {
 			pStock->SetDayLineEndDate(toLocalDays(20200101));
 		}
 
-		s_pMockContainerChinaStock->SetDayLineNeedMaintain();
+		s_pMockContainerChinaStock->SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
 
 		for (size_t l = 0; l < s_pMockContainerChinaStock->GetLoadedStockSize(); l++) {
 			const auto pStock = s_pMockContainerChinaStock->GetStock(l);
 			EXPECT_TRUE(pStock->IsUpdateDayLine());
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(19900101));
 		}
 	}

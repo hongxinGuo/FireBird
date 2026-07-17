@@ -942,7 +942,7 @@ void CMainFrame::OnRebuildBasicFinancial() {
 }
 
 void CMainFrame::OnMaintainChinaMarketStockDayLine() {
-	gl_dataContainerChinaStock.SetDayLineNeedMaintain();
+	gl_dataContainerChinaStock.SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -969,13 +969,17 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy) {
 }
 
 void CMainFrame::OnUsingTengxunDayLineDataServer() {
-	gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
-	gl_pTengxunDayLineDataSource->Enable(false);
-	gl_pEastmoneyDayLineDataSource->Enable(false);
+	if (gl_pTengxunDayLineDataSource->IsEnable()) {
+		gl_pTengxunDayLineDataSource->Enable(false);
+	}
+	else {
+		gl_systemConfiguration.SetChinaMarketDayLineServer(TengxunDayLine_);
+		gl_pTengxunDayLineDataSource->Enable(true);
+	}
 }
 
 void CMainFrame::OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) {
+	if (gl_pTengxunDayLineDataSource->IsEnable()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {
@@ -984,13 +988,17 @@ void CMainFrame::OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUsingEastmoneyDaylineDataServer() {
-	gl_systemConfiguration.SetChinaMarketDayLineServer(EastmoneyDayLine_);
-	gl_pTengxunDayLineDataSource->Enable(false);
-	gl_pEastmoneyDayLineDataSource->Enable(true);
+	if (gl_pEastmoneyDayLineDataSource->IsEnable()) {
+		gl_pEastmoneyDayLineDataSource->Enable(false);
+	}
+	else {
+		gl_systemConfiguration.SetChinaMarketDayLineServer(EastmoneyDayLine_);
+		gl_pEastmoneyDayLineDataSource->Enable(true);
+	}
 }
 
 void CMainFrame::OnUpdateUsingEastmoneyDaylineDataServer(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingEastmoneyDayLineServer()) {
+	if (gl_pEastmoneyDayLineDataSource->IsEnable()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {

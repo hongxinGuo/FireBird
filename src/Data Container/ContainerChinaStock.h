@@ -32,7 +32,7 @@ public:
 
 	[[nodiscard]] bool IsDayLineDBUpdated() noexcept;
 
-	void SetDayLineNeedMaintain() const;
+	void SetDayLineNeedMaintain(int startDate);
 	void SetUpdateDayLine() const;
 
 	void ClearDayLineDBUpdatedFlag() noexcept;

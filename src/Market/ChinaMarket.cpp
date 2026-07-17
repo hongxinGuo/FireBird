@@ -856,21 +856,19 @@ void CChinaMarket::UpdateOneYearStockDayLine() {
 	chrono::local_days lOneYearAgoDate = GetPrevDay(GetMarketDate(), 365);
 	for (size_t index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
 		auto pStock = gl_dataContainerChinaStock.GetStock(index);
+		auto d = pStock->GetDayLineEndDate();
 		if (pStock->GetDayLineEndDate() > lOneYearAgoDate) {
 			pStock->SetDayLineEndDate(lOneYearAgoDate);
-			pStock->SetUpdateDayLine(true);
 		}
+		pStock->SetUpdateDayLine(true);
+		pStock->SetUpdateProfileDB(true);
 	}
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 }
 
 void CChinaMarket::UpdateAllStockDayLine() {
-	for (size_t index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
-		auto pStock = gl_dataContainerChinaStock.GetStock(index);
-		pStock->SetDayLineEndDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
-		pStock->SetUpdateDayLine(true);
-	}
+	gl_dataContainerChinaStock.SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 }

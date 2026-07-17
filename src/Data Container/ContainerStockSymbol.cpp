@@ -125,7 +125,7 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 			m_vStockSection.at(row.IndexNumber.value())->SetActive(row.Active.value());
 			m_vStockSection.at(row.IndexNumber.value())->SetMarket(row.Market.value());
 			m_vStockSection.at(row.IndexNumber.value())->SetIndexNumber(row.IndexNumber.value());
-			m_vStockSection.at(row.IndexNumber.value())->SetComment(string{ row.Comment.value() });
+			if (row.Comment.has_value()) m_vStockSection.at(row.IndexNumber.value())->SetComment(string{ row.Comment.value() });
 		}
 	}
 	tx.commit();

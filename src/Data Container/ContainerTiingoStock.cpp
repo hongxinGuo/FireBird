@@ -151,7 +151,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		tx.commit();
 		Sort();
 	} catch (const std::exception& ex) {
-		gl_systemMessage.PushErrorMessage(std::format("LoadDB(sqlpp11) failed: {}", ex.what()));
+		gl_systemMessage.PushErrorMessage(std::format("LoadDB(sqlpp23) failed: {}", ex.what()));
 		return false;
 	}
 	return true;
