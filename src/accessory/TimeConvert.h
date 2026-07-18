@@ -62,7 +62,7 @@ inline int toFormattedDate(chrono::local_days ld) {
 }
 inline int toFormattedDate(chrono::year_month_day ymd) { return static_cast<int>(static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day())); }
 
-inline unsigned toFormattedTime(const chrono::hh_mm_ss<chrono::seconds>& time) { return (time.hours().count() * 10000) + (time.minutes().count() * 100) + time.seconds().count(); }
+inline unsigned toFormattedTime(const chrono::hh_mm_ss<chrono::seconds>& time) { return static_cast<unsigned>(time.hours().count() * 10000 + time.minutes().count() * 100 + time.seconds().count()); }
 inline unsigned toFormattedTime(chrono::local_seconds ls) { return toFormattedTime(toTodayClock(ls)); }
 
 [[nodiscard]] string FormatToMK(int64_t iNumber);
