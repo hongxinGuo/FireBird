@@ -409,7 +409,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
-		string str = string{ row.Currency.value() };
+		string str = string{ row.Currency };
 		EXPECT_STREQ(str.c_str(), "Currency") << "此条目已更新";
 
 		db(update(t).set(t.Currency = std::string("CNY")).where(t.Symbol == std::string("000001.SS")));
@@ -418,7 +418,7 @@ namespace FireBirdTest {
 		size_t rows2 = result2.size();
 		EXPECT_EQ(rows2, 1);
 		auto& row2 = result2.front();
-		string str2 = string{ row2.Currency.value() };
+		string str2 = string{ row2.Currency };
 		EXPECT_STREQ(str2.c_str(), "No Currency") << "此条目已更新";
 
 		db(sqlpp::delete_from(t).where(t.Symbol == std::string("SS.SS.US")));

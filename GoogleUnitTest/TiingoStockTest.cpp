@@ -709,7 +709,7 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_TRUE(rows == 1);
 			auto& row3 = result.front();
-			EXPECT_EQ(row3.YearQuarter.value(), 202404);
+			EXPECT_EQ(row3.YearQuarter, 202404);
 			db(delete_from(t).where(t.Symbol == "AAPL" && t.Exchange == "Test"));
 			tx.commit();
 		}

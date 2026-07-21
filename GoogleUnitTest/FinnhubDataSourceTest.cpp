@@ -164,14 +164,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCompanyPriceMetrics());
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestIsUpdateStockBasicFinancial) {
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockBasicFinancial());
-		m_FinnhubDataSource.SetUpdateStockBasicFinancial(false);
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockBasicFinancial());
-		m_FinnhubDataSource.SetUpdateStockBasicFinancial(true);
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockBasicFinancial());
-	}
-
 	TEST_F(CFinnhubDataSourceTest, TestIsUpdateStockDayLine) {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockDayLine());
 		m_FinnhubDataSource.SetUpdateStockDayLine(false);

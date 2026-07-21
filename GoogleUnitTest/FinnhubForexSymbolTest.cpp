@@ -197,8 +197,8 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1) << "刚存储的数据";
 		auto& row = result.front();
-		string exchange = string{ row.Exchange.value() };
-		double value = row.Close.value() * FinnhubForexSymbol.GetRatio();
+		string exchange = string{ row.Exchange };
+		double value = row.Close * FinnhubForexSymbol.GetRatio();
 		EXPECT_DOUBLE_EQ(value, 100);
 
 		db(sqlpp::delete_from(t).where(t.Symbol == "OANDA:AUD_SGD" && t.Date == 19800101));

@@ -165,7 +165,7 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条BVDRF的记录";
 			auto& row = result.front();
-			EXPECT_EQ(row.Symbol.value(), "BVDRF");
+			EXPECT_EQ(row.Symbol, "BVDRF");
 			EXPECT_EQ(row.ID, 32525);
 		}
 		m_containerFinnhubStock.Reset();
@@ -219,8 +219,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultExist.size(), 1u);
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
-				EXPECT_EQ(row.Exchange.value(), "CN");
-				string json = string{ row.UpdateDate.value() };
+				EXPECT_EQ(row.Exchange, "CN");
+				string json = string{ row.UpdateDate };
 				nlohmannJson js;
 				CreateJsonWithNlohmann(js, json);
 				int updateDate = js["DayLineEndDate"];

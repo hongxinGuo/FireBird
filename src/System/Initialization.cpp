@@ -131,12 +131,12 @@ void LoadToken() {
 	if (rows > 0) {
 		auto& row = result.front();
 		if (gl_systemConfiguration.GetFinnhubToken().size() < 10) {
-			string s = string{ row.FinnhubToken.value() };
+			string s = string{ row.FinnhubToken };
 			gl_systemConfiguration.SetFinnhubToken(s);
 			gl_systemConfiguration.SetUpdateDB(true);
 		}
 		if (gl_systemConfiguration.GetTiingoToken().size() < 10) {
-			string s = string{ row.TiingoToken.value() };
+			string s = string{ row.TiingoToken };
 			gl_systemConfiguration.SetTiingoToken(s);
 			gl_systemConfiguration.SetUpdateDB(true);
 		}

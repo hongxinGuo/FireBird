@@ -33,26 +33,26 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 	vOldHistoryCandle.reserve(result.size());
 	for (const auto& row : result) {
 		if (row.Date > lLastDate) {
-			lLastDate = row.Date.value();
+			lLastDate = row.Date;
 			CTiingoCandleLine candle;
 			candle.Reset();
-			candle.SetDate(row.Date.value());
-			candle.SetExchange(row.Exchange.value());
-			candle.SetStockSymbol(row.Symbol.value());
-			candle.SetLastClose(row.LastClose.value() * ratio);
-			candle.SetOpen(row.Open.value() * ratio);
-			candle.SetHigh(row.High.value() * ratio);
-			candle.SetLow(row.Low.value() * ratio);
-			candle.SetClose(row.Close.value() * ratio);
-			candle.SetSplitFactor(row.SplitFactor.value());
-			candle.SetDividend(row.Dividend.value());
-			candle.SetUpDown(row.UpAndDown.value());
-			candle.SetVolume(row.Volume.value());
-			candle.SetAmount(row.Amount.value());
-			candle.SetUpDownRate(row.UpDownRate.value());
-			candle.SetChangeHandRate(row.ChangeHandRate.value());
-			candle.SetTotalValue(row.TotalValue.value());
-			candle.SetCurrentValue(row.CurrentValue.value());
+			candle.SetDate(row.Date);
+			candle.SetExchange(row.Exchange);
+			candle.SetStockSymbol(row.Symbol);
+			candle.SetLastClose(row.LastClose * ratio);
+			candle.SetOpen(row.Open * ratio);
+			candle.SetHigh(row.High * ratio);
+			candle.SetLow(row.Low * ratio);
+			candle.SetClose(row.Close * ratio);
+			candle.SetSplitFactor(row.SplitFactor);
+			candle.SetDividend(row.Dividend);
+			candle.SetUpDown(row.UpAndDown);
+			candle.SetVolume(row.Volume);
+			candle.SetAmount(row.Amount);
+			candle.SetUpDownRate(row.UpDownRate);
+			candle.SetChangeHandRate(row.ChangeHandRate);
+			candle.SetTotalValue(row.TotalValue);
+			candle.SetCurrentValue(row.CurrentValue);
 			vOldHistoryCandle.push_back(candle);
 		}
 		else {
@@ -164,23 +164,23 @@ void CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 		auto ratio = GetRatio();
 
 		candle.SetRatio(ratio);
-		candle.SetDate(row.Date.value());
-		candle.SetExchange(row.Exchange.value());
-		candle.SetStockSymbol(row.Symbol.value());
-		candle.SetLastClose(row.LastClose.value() * ratio);
-		candle.SetOpen(row.Open.value() * ratio);
-		candle.SetHigh(row.High.value() * ratio);
-		candle.SetLow(row.Low.value() * ratio);
-		candle.SetClose(row.Close.value() * ratio);
-		candle.SetSplitFactor(row.SplitFactor.value());
-		candle.SetDividend(row.Dividend.value());
-		candle.SetUpDown(row.UpAndDown.value());
-		candle.SetVolume(row.Volume.value());
-		candle.SetAmount(row.Amount.value());
-		candle.SetUpDownRate(row.UpDownRate.value());
-		candle.SetChangeHandRate(row.ChangeHandRate.value());
-		candle.SetTotalValue(row.TotalValue.value());
-		candle.SetCurrentValue(row.CurrentValue.value());
+		candle.SetDate(row.Date);
+		candle.SetExchange(row.Exchange);
+		candle.SetStockSymbol(row.Symbol);
+		candle.SetLastClose(row.LastClose * ratio);
+		candle.SetOpen(row.Open * ratio);
+		candle.SetHigh(row.High * ratio);
+		candle.SetLow(row.Low * ratio);
+		candle.SetClose(row.Close * ratio);
+		candle.SetSplitFactor(row.SplitFactor);
+		candle.SetDividend(row.Dividend);
+		candle.SetUpDown(row.UpAndDown);
+		candle.SetVolume(row.Volume);
+		candle.SetAmount(row.Amount);
+		candle.SetUpDownRate(row.UpDownRate);
+		candle.SetChangeHandRate(row.ChangeHandRate);
+		candle.SetTotalValue(row.TotalValue);
+		candle.SetCurrentValue(row.CurrentValue);
 		Add(candle);
 	}
 	tx.commit();

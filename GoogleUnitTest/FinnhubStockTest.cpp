@@ -981,11 +981,11 @@ namespace FireBirdTest {
 		int rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
-		EXPECT_DOUBLE_EQ(row.Actual.value(), 2.0);
-		EXPECT_DOUBLE_EQ(row.Estimate.value(), 2.1);
-		int date = row.Date.value();
+		EXPECT_DOUBLE_EQ(row.Actual, 2.0);
+		EXPECT_DOUBLE_EQ(row.Estimate, 2.1);
+		int date = row.Date;
 		EXPECT_EQ(date, 20200401);
-		EXPECT_EQ(row.Symbol.value(), "600601.US");
+		EXPECT_EQ(row.Symbol, "600601.US");
 
 		db(sqlpp::delete_from(t).where(t.Symbol == "600601.US"));
 		tx.commit();
@@ -1020,7 +1020,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_GT(rows, 10);
 		auto& row = result.front();
-		EXPECT_EQ(row.accessNumber.value(), "0");
+		EXPECT_EQ(row.accessNumber, "0");
 		for (int i = 0; i < 11; i++) {
 			result.pop_front();
 		}

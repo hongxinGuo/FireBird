@@ -174,7 +174,7 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 				}
 				else {
 					auto& row = result.front();
-					m_lInsiderTransactionEndDate = row.TransactionDate.value(); // 倒序排序，最新的日期位于第一个。
+					m_lInsiderTransactionEndDate = row.TransactionDate; // 倒序排序，最新的日期位于第一个。
 				}
 			}
 			tx.commit();
@@ -376,8 +376,8 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 
 		for (const auto& row : result) {
 			SECFilings = m_vSECFilings.at(currentPos);
-			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) > 0) continue;
-			if (SECFilings.m_strAccessNumber.compare(row.accessNumber.value()) < 0) {	// 没有这个AccessNumber的SEC Filings？
+			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) > 0) continue;
+			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) < 0) {	// 没有这个AccessNumber的SEC Filings？
 				multi_insert.add_values(
 					t.symbol = m_strSymbol,
 					t.accessNumber = SECFilings.m_strAccessNumber,

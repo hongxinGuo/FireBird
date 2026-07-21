@@ -605,8 +605,8 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 	auto tx = sqlpp::start_transaction(db);
 	auto rows = db(select(all_of(t)).from(t));
 	for (const auto& row : rows) {
-		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol.value() })) {
-			auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol.value() });
+		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol });
 			m_vNasdaq100TiingoStock.push_back(pStock);
 		}
 	}

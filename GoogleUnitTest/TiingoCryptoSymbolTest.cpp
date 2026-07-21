@@ -38,7 +38,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(tiingo.GetSymbol(), " ");
 		EXPECT_EQ(tiingo.GetDescription(), " ");
 		EXPECT_EQ(tiingo.m_strQuoteCurrency, " ");
-		EXPECT_EQ(tiingo.m_strName, "");
+		EXPECT_EQ(tiingo.m_strName, " ");
 
 		EXPECT_EQ(tiingo.GetRatio(), 100000);
 	}

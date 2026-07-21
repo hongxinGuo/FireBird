@@ -749,87 +749,87 @@ namespace StockMarket {
     };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Exchange {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Exchange, Exchange);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct LastClose {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(LastClose, LastClose);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Open {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Open, Open);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct High {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(High, High);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Low {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Low, Low);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Close {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Close, Close);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Volume {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Volume, Volume);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Amount {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Amount, Amount);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Dividend {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Dividend, Dividend);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct SplitFactor {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(SplitFactor, SplitFactor);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct UpAndDown {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(UpAndDown, UpAndDown);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct UpDownRate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(UpDownRate, UpDownRate);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct ChangeHandRate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ChangeHandRate, ChangeHandRate);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct TotalValue {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(TotalValue, TotalValue);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct CurrentValue {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(CurrentValue, CurrentValue);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(finnhub_forex_dayline, finnhubForexDayline);
@@ -989,22 +989,22 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Change {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Change, Change);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Mspr {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(mspr, mspr);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(finnhub_insider_sentiment, finnhubInsiderSentiment);
@@ -1027,42 +1027,42 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct PersonName {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(PersonName, PersonName);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Share {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Share, Share);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct ShareChange {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ShareChange, ShareChange);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct FilingDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(FilingDate, FilingDate);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct TransactionDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(TransactionDate, TransactionDate);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct TransactionCode {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(TransactionCode, TransactionCode);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct TransactionPrice {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(TransactionPrice, TransactionPrice);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(finnhub_insider_transaction, finnhubInsiderTransaction);
@@ -1205,22 +1205,22 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Actual {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Actual, Actual);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Estimate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Estimate, Estimate);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(finnhub_stock_estimates_eps_surprise, finnhubStockEstimatesEpsSurprise);
@@ -1323,177 +1323,177 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Exchange {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Exchange, Exchange);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Description {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Description, Description);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct DisplaySymbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(DisplaySymbol, DisplaySymbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Type {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Type, Type);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Mic {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Mic, Mic);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Figi {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Figi, Figi);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Currency {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Currency, Currency);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Address {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Address, Address);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct City {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(City, City);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Country {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Country, Country);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Cusip {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(cusip, cusip);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Sedol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(sedol, sedol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct EmployeeTotal {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(EmployeeTotal, EmployeeTotal);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Ggroup {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ggroup, ggroup);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Gind {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(gind, gind);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Gsector {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(gsector, gsector);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Gsubind {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(gsubind, gsubind);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct IPODate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(IPODate, IPODate);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Isin {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(isin, isin);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct MarketCapitalization {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(MarketCapitalization, MarketCapitalization);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Naics {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(naics, naics);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct NaicsNationalIndustry {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(naicsNationalIndustry, naicsNationalIndustry);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct NaicsSector {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(naicsSector, naicsSector);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct NaicsSubsector {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(naicsSubsector, naicsSubsector);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Name {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Name, Name);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Phone {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Phone, Phone);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct ShareOutstanding {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ShareOutstanding, ShareOutstanding);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct State {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(state, state);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Ticker {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Ticker, Ticker);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct WebURL {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(WebURL, WebURL);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Logo {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Logo, Logo);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct FinnhubIndustry {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(FinnhubIndustry, FinnhubIndustry);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Peer {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Peer, Peer);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct UpdateDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(UpdateDate, UpdateDate);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(finnhub_stock_profile, finnhubStockProfile);
@@ -1547,42 +1547,42 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(symbol, symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct AccessNumber {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(accessNumber, accessNumber);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Cik {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(cik, cik);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Form {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(form, form);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct AcceptedDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(acceptedDate, acceptedDate);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct FiledDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(filedDate, filedDate);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct FilingURL {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(filingURL, filingURL);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct ReportURL {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(reportURL, reportURL);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(finnhub_stock_sec_filings, finnhubStockSecFilings);
@@ -1609,12 +1609,12 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct ExpiredDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ExpiredDate, ExpiredDate);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(index_nasdaq100, indexNasdaq100);
@@ -1635,7 +1635,7 @@ namespace StockMarket {
     };
     struct Rate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Rate, Rate);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(index_nasdaq100_200ma_updown_rate, indexNasdaq100_200MaUpdownRate);
@@ -1656,22 +1656,22 @@ namespace StockMarket {
     };
     struct Naics {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Naics, Naics);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct NationalIndustry {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(NationalIndustry, NationalIndustry);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Sector {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Sector, Sector);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct SubSector {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(SubSector, SubSector);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(naics_industry, naicsIndustry);
@@ -1694,17 +1694,17 @@ namespace StockMarket {
     };
     struct Code {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Code, Code);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Industry {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Industry, Industry);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Sector {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Sector, Sector);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(sic_industry, sicIndustry);
@@ -1726,17 +1726,17 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct SplitFactor {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(SplitFactor, SplitFactor);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(stock_splits, stockSplits);
@@ -1758,442 +1758,442 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Exchange {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Exchange, Exchange);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct YearQuarter {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(YearQuarter, YearQuarter);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Accoci {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(accoci, accoci);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct AcctPay {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(acctPay, acctPay);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct AcctRec {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(acctRec, acctRec);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct AssetsCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(assetsCurrent, assetsCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct AssetsNonCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(assetsNonCurrent, assetsNonCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct AssetTurnover {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(assetTurnover, assetTurnover);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct BookVal {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(bookVal, bookVal);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct BusinessAcqDisposals {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(businessAcqDisposals, businessAcqDisposals);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Bvps {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(bvps, bvps);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Capex {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(capex, capex);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct CashAndEq {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(cashAndEq, cashAndEq);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct ConsolidatedIncome {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(consolidatedIncome, consolidatedIncome);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct CostRev {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(costRev, costRev);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct CurrentRatio {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(currentRatio, currentRatio);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Debt {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(debt, debt);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct DebtCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(debtCurrent, debtCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct DebtEquity {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(debtEquity, debtEquity);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct DebtNonCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(debtNonCurrent, debtNonCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct DeferredRev {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(deferredRev, deferredRev);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Depamor {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(depamor, depamor);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Deposits {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(deposits, deposits);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ebit {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ebit, ebit);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ebitda {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ebitda, ebitda);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ebt {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ebt, ebt);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct EnterpriseVal {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(enterpriseVal, enterpriseVal);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Eps {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(eps, eps);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct EpsDil {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(epsDil, epsDil);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct EpsQoQ {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(epsQoQ, epsQoQ);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Equity {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(equity, equity);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct FreeCashFlow {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(freeCashFlow, freeCashFlow);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct FxRate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(fxRate, fxRate);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct GrossMargin {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(grossMargin, grossMargin);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct GrossProfit {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(grossProfit, grossProfit);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Intangibles {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(intangibles, intangibles);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Intexp {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(intexp, intexp);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Inventory {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(inventory, inventory);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Investments {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(investments, investments);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct InvestmentsAcqDisposals {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(investmentsAcqDisposals, investmentsAcqDisposals);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct InvestmentsCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(investmentsCurrent, investmentsCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct InvestmentsNonCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(investmentsNonCurrent, investmentsNonCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct IssrepayDebt {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(issrepayDebt, issrepayDebt);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct IssrepayEquity {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(issrepayEquity, issrepayEquity);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct LiabilitiesCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(liabilitiesCurrent, liabilitiesCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct LiabilitiesNonCurrent {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(liabilitiesNonCurrent, liabilitiesNonCurrent);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct LongTermDebtEquity {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(longTermDebtEquity, longTermDebtEquity);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct MarketCap {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(marketCap, marketCap);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ncf {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ncf, ncf);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ncff {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ncff, ncff);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ncfi {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ncfi, ncfi);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ncfo {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ncfo, ncfo);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ncfx {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ncfx, ncfx);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Netinc {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(netinc, netinc);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct NetIncComStock {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(netIncComStock, netIncComStock);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct NetIncDiscOps {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(netIncDiscOps, netIncDiscOps);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct NetMargin {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(netMargin, netMargin);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct NonControllingInterests {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(nonControllingInterests, nonControllingInterests);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Opex {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(opex, opex);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Opinc {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(opinc, opinc);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct OpMargin {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(opMargin, opMargin);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct PayDiv {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(payDiv, payDiv);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct PbRatio {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(pbRatio, pbRatio);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct PeRatio {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(peRatio, peRatio);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct PiotroskiFScore {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(piotroskiFScore, piotroskiFScore);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Ppeq {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ppeq, ppeq);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct PrefDVDs {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(prefDVDs, prefDVDs);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct ProfitMargin {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(profitMargin, profitMargin);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct RetainedEarnings {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(retainedEarnings, retainedEarnings);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Revenue {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(revenue, revenue);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct RevenueQoQ {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(revenueQoQ, revenueQoQ);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Rnd {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(rnd, rnd);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Roa {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(roa, roa);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Roe {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(roe, roe);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Rps {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(rps, rps);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Sbcomp {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(sbcomp, sbcomp);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Sga {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(sga, sga);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct ShareFactor {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(shareFactor, shareFactor);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct SharesBasic {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(sharesBasic, sharesBasic);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct Shareswa {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(shareswa, shareswa);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct ShareswaDil {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(shareswaDil, shareswaDil);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct TaxAssets {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(taxAssets, taxAssets);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct TaxExp {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(taxExp, taxExp);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct TaxLiabilities {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(taxLiabilities, taxLiabilities);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct TotalAssets {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(totalAssets, totalAssets);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct TotalLiabilities {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(totalLiabilities, totalLiabilities);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     struct TrailingPEG1Y {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(trailingPEG1Y, trailingPEG1Y);
-      using data_type = std::optional<::sqlpp::floating_point>;
+      using data_type = ::sqlpp::floating_point;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_company_financial_state, tiingoCompanyFinancialState);
@@ -2856,7 +2856,7 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(world_choice_crypto, worldChoiceCrypto);
@@ -2876,7 +2876,7 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(world_choice_forex, worldChoiceForex);
@@ -2896,7 +2896,7 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(world_choice_stock, worldChoiceStock);
@@ -2916,22 +2916,22 @@ namespace StockMarket {
     };
     struct FinnhubToken {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(FinnhubToken, FinnhubToken);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct FinnhubMaxPerHour {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(FinnhubMaxPerHour, FinnhubMaxPerHour);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct TiingoToken {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(TiingoToken, TiingoToken);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct TiingoMaxPerHour {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(TiingoMaxPerHour, TiingoMaxPerHour);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(world_market_option, worldMarketOption);

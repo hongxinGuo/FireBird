@@ -15,7 +15,7 @@ public:
 	int GetRatio() const override { return 100000; };
 
 	//string m_strTicker; //由VirtualStock中的m_strSymbol代替
-	string m_strName{ "" };
+	string m_strName{ " " };
 	//string m_strDescription; // 已废弃。由CVirtualStock中的m_strDescription代替
 	string m_strBaseCurrency{ " " };
 	string m_strQuoteCurrency{ " " };

@@ -147,23 +147,23 @@ CREATE TABLE `finnhub_economic_calendar` (
 
 CREATE TABLE `finnhub_forex_dayline` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Date` int DEFAULT '19800101',
-  `Exchange` varchar(50) DEFAULT ' ',
-  `Symbol` varchar(50) DEFAULT ' ',
-  `LastClose` decimal(10,3) DEFAULT '0.000',
-  `Open` decimal(10,3) DEFAULT '0.000',
-  `High` decimal(10,3) DEFAULT '0.000',
-  `Low` decimal(10,3) DEFAULT '0.000',
-  `Close` decimal(10,3) DEFAULT '0.000',
-  `Volume` decimal(18,0) DEFAULT '0',
-  `Amount` decimal(20,0) DEFAULT '0',
-  `Dividend` decimal(10,3) DEFAULT '0.000',
-  `SplitFactor` decimal(10,3) DEFAULT '1.000',
-  `UpAndDown` decimal(10,3) DEFAULT '0.000',
-  `UpDownRate` decimal(10,3) DEFAULT '0.000',
-  `ChangeHandRate` decimal(10,3) DEFAULT '0.000',
-  `TotalValue` decimal(20,0) DEFAULT '0',
-  `CurrentValue` decimal(20,0) DEFAULT '0'
+  `Date` int NOT NULL DEFAULT '19800101',
+  `Exchange` varchar(50)  NOT NULL DEFAULT ' ',
+  `Symbol` varchar(50)  NOT NULL DEFAULT ' ',
+  `LastClose` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `Open` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `High` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `Low` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `Close` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `Volume` decimal(18,0) NOT NULL DEFAULT '0',
+  `Amount` decimal(20,0) NOT NULL DEFAULT '0',
+  `Dividend` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `SplitFactor` decimal(10,3) NOT NULL DEFAULT '1.000',
+  `UpAndDown` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `UpDownRate` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `ChangeHandRate` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `TotalValue` decimal(20,0) NOT NULL DEFAULT '0',
+  `CurrentValue` decimal(20,0) NOT NULL DEFAULT '0'
 );
 
 CREATE TABLE `finnhub_forex_exchange` (
@@ -192,29 +192,29 @@ CREATE TABLE `finnhub_forex_symbol` (
 
 CREATE TABLE `finnhub_insider_sentiment` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT NULL,
-  `Date` int DEFAULT NULL,
-  `Change` int DEFAULT NULL,
-  `mspr` double DEFAULT NULL
+  `Symbol` varchar(45)  NOT NULL DEFAULT ' ',
+  `Date` int NOT NULL DEFAULT '0',
+  `Change` int NOT NULL DEFAULT '0',
+  `mspr` double NOT NULL DEFAULT '0'
 );
 
 CREATE TABLE `finnhub_insider_transaction` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT NULL,
-  `PersonName` varchar(200) DEFAULT NULL,
-  `Share` decimal(20,0) DEFAULT NULL,
-  `ShareChange` decimal(20,0) DEFAULT NULL,
-  `FilingDate` int DEFAULT NULL,
-  `TransactionDate` int DEFAULT NULL,
-  `TransactionCode` varchar(5) DEFAULT NULL,
-  `TransactionPrice` double DEFAULT NULL
+  `Symbol` varchar(45)  NOT NULL DEFAULT '‘ ’',
+  `PersonName` varchar(200)  NOT NULL DEFAULT '‘ ’',
+  `Share` decimal(20,0) NOT NULL DEFAULT '0',
+  `ShareChange` decimal(20,0) NOT NULL DEFAULT '0',
+  `FilingDate` int NOT NULL DEFAULT '0',
+  `TransactionDate` int NOT NULL DEFAULT '0',
+  `TransactionCode` varchar(5)  NOT NULL DEFAULT '‘ ’',
+  `TransactionPrice` double NOT NULL DEFAULT '0'
 );
 
 CREATE TABLE `finnhub_stock_dayline` (
-  `ID` int NOT NULL AUTO_INCREMENT,
+   `ID` int NOT NULL AUTO_INCREMENT,
   `Date` int NOT NULL DEFAULT '19800101',
-  `Exchange` varchar(50)  NOT NULL DEFAULT ' ',
-  `Symbol` varchar(50)  NOT NULL DEFAULT ' ',
+  `Exchange` varchar(100)  NOT NULL DEFAULT ' ',
+  `Symbol` varchar(45)  NOT NULL DEFAULT ' ',
   `LastClose` decimal(10,3) NOT NULL DEFAULT '0.000',
   `Open` decimal(10,3) NOT NULL DEFAULT '0.000',
   `High` decimal(10,3) NOT NULL DEFAULT '0.000',
@@ -232,254 +232,254 @@ CREATE TABLE `finnhub_stock_dayline` (
 );
 
 CREATE TABLE `finnhub_stock_estimates_eps_surprise` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT ' ',
-  `Date` int DEFAULT '0',
-  `Actual` double DEFAULT '0',
-  `Estimate` double DEFAULT '0'
+   `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45)  NOT NULL DEFAULT ' ',
+  `Date` int NOT NULL DEFAULT '0',
+  `Actual` double NOT NULL DEFAULT '0',
+  `Estimate` double NOT NULL DEFAULT '0'
 );
 
 CREATE TABLE `finnhub_stock_exchange` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(45)  NOT NULL DEFAULT ' ',
-  `name` varchar(100)  NOT NULL DEFAULT ' ',
-  `mic` varchar(45)  NOT NULL DEFAULT ' ',
-  `timezone` varchar(45)  NOT NULL DEFAULT ' ',
-  `pre_market` varchar(45)  NOT NULL DEFAULT ' ',
-  `hour` varchar(45)  NOT NULL DEFAULT ' ',
-  `post_market` varchar(45)  NOT NULL DEFAULT ' ',
-  `close_date` varchar(45)  NOT NULL DEFAULT ' ',
-  `country` varchar(45)  NOT NULL DEFAULT ' ',
-  `country_name` varchar(100)  NOT NULL DEFAULT ' ',
-  `source` varchar(100)  NOT NULL DEFAULT ' '
+  `code` varchar(45)  NOT NULL DEFAULT '‘ ’',
+  `name` varchar(100)  NOT NULL DEFAULT '‘ ’',
+  `mic` varchar(45)  NOT NULL DEFAULT '‘ ’',
+  `timezone` varchar(45)  NOT NULL DEFAULT '‘ ’',
+  `pre_market` varchar(45)  NOT NULL DEFAULT '‘ ‘',
+  `hour` varchar(45)  NOT NULL DEFAULT '’ ‘',
+  `post_market` varchar(45)  NOT NULL DEFAULT '’ ‘',
+  `close_date` varchar(45)  NOT NULL DEFAULT '’ ‘',
+  `country` varchar(45)  NOT NULL DEFAULT '’ ‘',
+  `country_name` varchar(100)  NOT NULL DEFAULT '’ ‘',
+  `source` varchar(100)  NOT NULL DEFAULT '’ ‘'
 );
 
 CREATE TABLE `finnhub_stock_profile` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(20) DEFAULT '',
-  `Exchange` varchar(20) DEFAULT 'US',
-  `Description` varchar(200) DEFAULT '',
-  `DisplaySymbol` varchar(20) DEFAULT '',
-  `Type` varchar(25) DEFAULT '',
-  `Mic` varchar(20) DEFAULT '',
-  `Figi` varchar(20) DEFAULT '',
-  `Currency` varchar(20) DEFAULT '',
-  `Address` varchar(100) DEFAULT '',
-  `City` varchar(20) DEFAULT '',
-  `Country` varchar(20) DEFAULT '',
-  `cusip` varchar(20) DEFAULT '',
-  `sedol` varchar(20) DEFAULT '',
-  `EmployeeTotal` int DEFAULT '0',
-  `ggroup` varchar(45) DEFAULT '',
-  `gind` varchar(45) DEFAULT '',
-  `gsector` varchar(45) DEFAULT '',
-  `gsubind` varchar(45) DEFAULT '',
-  `IPODate` varchar(20) DEFAULT '',
-  `isin` varchar(45) DEFAULT '',
-  `MarketCapitalization` decimal(25,6) DEFAULT '0.000000',
-  `naics` varchar(45) DEFAULT '',
-  `naicsNationalIndustry` varchar(100) DEFAULT '',
-  `naicsSector` varchar(100) DEFAULT '',
-  `naicsSubsector` varchar(100) DEFAULT '',
-  `Name` varchar(200) DEFAULT '',
-  `Phone` varchar(100) DEFAULT '',
-  `ShareOutstanding` decimal(20,6) DEFAULT '0.000000',
-  `state` varchar(45) DEFAULT '',
-  `Ticker` varchar(45) DEFAULT '',
-  `WebURL` varchar(150) DEFAULT '',
-  `Logo` varchar(110) DEFAULT '',
-  `FinnhubIndustry` varchar(100) DEFAULT '',
-  `Peer` varchar(2000) DEFAULT '{}',
-  `UpdateDate` varchar(8000) DEFAULT '{}'
+  `Symbol` varchar(20)  NOT NULL DEFAULT ' ',
+  `Exchange` varchar(20)  NOT NULL DEFAULT 'US',
+  `Description` varchar(200)  NOT NULL DEFAULT ' ',
+  `DisplaySymbol` varchar(20)  NOT NULL DEFAULT ' ',
+  `Type` varchar(25)  NOT NULL DEFAULT ' ',
+  `Mic` varchar(20)  NOT NULL DEFAULT ' ',
+  `Figi` varchar(20)  NOT NULL DEFAULT ' ',
+  `Currency` varchar(20)  NOT NULL DEFAULT ' ',
+  `Address` varchar(100)  NOT NULL DEFAULT ' ',
+  `City` varchar(20)  NOT NULL DEFAULT ' ',
+  `Country` varchar(20)  NOT NULL DEFAULT ' ',
+  `cusip` varchar(20)  NOT NULL DEFAULT ' ',
+  `sedol` varchar(20)  NOT NULL DEFAULT ' ',
+  `EmployeeTotal` int NOT NULL DEFAULT '0',
+  `ggroup` varchar(45)  NOT NULL DEFAULT ' ',
+  `gind` varchar(45)  NOT NULL DEFAULT ' ',
+  `gsector` varchar(45)  NOT NULL DEFAULT ' ',
+  `gsubind` varchar(45)  NOT NULL DEFAULT ' ',
+  `IPODate` varchar(20)  NOT NULL DEFAULT ' ',
+  `isin` varchar(45)  NOT NULL DEFAULT ' ',
+  `MarketCapitalization` decimal(25,6) NOT NULL DEFAULT '0.000000',
+  `naics` varchar(45)  NOT NULL DEFAULT ' ',
+  `naicsNationalIndustry` varchar(100)  NOT NULL DEFAULT ' ',
+  `naicsSector` varchar(100)  NOT NULL DEFAULT ' ',
+  `naicsSubsector` varchar(100)  NOT NULL DEFAULT ' ',
+  `Name` varchar(200)  NOT NULL DEFAULT ' ',
+  `Phone` varchar(100)  NOT NULL DEFAULT ' ',
+  `ShareOutstanding` decimal(20,6) NOT NULL DEFAULT '0.000000',
+  `state` varchar(45)  NOT NULL DEFAULT ' ',
+  `Ticker` varchar(45)  NOT NULL DEFAULT ' ',
+  `WebURL` varchar(150)  NOT NULL DEFAULT ' ',
+  `Logo` varchar(110)  NOT NULL DEFAULT ' ',
+  `FinnhubIndustry` varchar(100)  NOT NULL DEFAULT ' ',
+  `Peer` varchar(1000)  NOT NULL DEFAULT '{}',
+  `UpdateDate` varchar(4000)  NOT NULL DEFAULT '{}'
 );
 
 CREATE TABLE `finnhub_stock_sec_filings` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `symbol` varchar(45) DEFAULT NULL,
-  `accessNumber` varchar(100) DEFAULT NULL,
-  `cik` int DEFAULT NULL,
-  `form` varchar(100) DEFAULT NULL,
-  `acceptedDate` int DEFAULT NULL,
-  `filedDate` int DEFAULT NULL,
-  `filingURL` varchar(200) DEFAULT NULL,
-  `reportURL` varchar(200) DEFAULT NULL
+  `symbol` varchar(45)  NOT NULL DEFAULT '‘ ’',
+  `accessNumber` varchar(100)  NOT NULL DEFAULT '‘ ’',
+  `cik` int NOT NULL DEFAULT '0',
+  `form` varchar(100)  NOT NULL DEFAULT '‘ ’',
+  `acceptedDate` int NOT NULL DEFAULT '0',
+  `filedDate` int NOT NULL DEFAULT '0',
+  `filingURL` varchar(200)  NOT NULL DEFAULT '‘ ’',
+  `reportURL` varchar(200)  NOT NULL DEFAULT '‘ ’'
 );
 
 CREATE TABLE `index_nasdaq100` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT NULL,
-  `ExpiredDate` int DEFAULT '20990101'
+  `Symbol` varchar(45)  NOT NULL DEFAULT '‘ ’',
+  `ExpiredDate` int NOT NULL DEFAULT '20990101'
 );
 
 CREATE TABLE `index_nasdaq100_200ma_updown_rate` (
   `Date` int NOT NULL,
-  `Rate` int DEFAULT NULL
+  `Rate` int NOT NULL DEFAULT '0'
 );
 
 CREATE TABLE `naics_industry` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Naics` varchar(45) DEFAULT ' ',
-  `NationalIndustry` varchar(45) DEFAULT ' ',
-  `Sector` varchar(45) DEFAULT ' ',
-  `SubSector` varchar(45) DEFAULT ' '
+  `Naics` varchar(45)  NOT NULL DEFAULT ' ',
+  `NationalIndustry` varchar(45)  NOT NULL DEFAULT ' ',
+  `Sector` varchar(45)  NOT NULL DEFAULT ' ',
+  `SubSector` varchar(45)  NOT NULL DEFAULT ' '
 );
 
 CREATE TABLE `sic_industry` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Code` int DEFAULT '0',
-  `Industry` varchar(45) DEFAULT ' ',
-  `Sector` varchar(45) DEFAULT ' '
+  `Code` int NOT NULL DEFAULT '0',
+  `Industry` varchar(45)  NOT NULL DEFAULT ' ',
+  `Sector` varchar(45)  NOT NULL DEFAULT ' '
 );
 
 CREATE TABLE `stock_splits` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT '',
-  `Date` int DEFAULT '19800101',
-  `SplitFactor` decimal(10,5) DEFAULT '1.00000'
+  `Symbol` varchar(45)  NOT NULL DEFAULT ' ',
+  `Date` int NOT NULL DEFAULT '19800101',
+  `SplitFactor` decimal(10,5) NOT NULL DEFAULT '1.00000'
 );
 
 CREATE TABLE `tiingo_company_financial_state` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT NULL,
-  `Exchange` varchar(45) DEFAULT NULL,
-  `YearQuarter` int DEFAULT NULL,
-  `accoci` decimal(30,5) DEFAULT NULL,
-  `acctPay` decimal(30,5) DEFAULT NULL,
-  `acctRec` decimal(30,5) DEFAULT NULL,
-  `assetsCurrent` decimal(30,5) DEFAULT NULL,
-  `assetsNonCurrent` decimal(30,5) DEFAULT NULL,
-  `assetTurnover` decimal(30,5) DEFAULT NULL,
-  `bookVal` decimal(30,5) DEFAULT NULL,
-  `businessAcqDisposals` decimal(30,5) DEFAULT NULL,
-  `bvps` decimal(30,5) DEFAULT NULL,
-  `capex` decimal(30,5) DEFAULT NULL,
-  `cashAndEq` decimal(30,5) DEFAULT NULL,
-  `consolidatedIncome` decimal(30,5) DEFAULT NULL,
-  `costRev` decimal(30,5) DEFAULT NULL,
-  `currentRatio` decimal(30,5) DEFAULT NULL,
-  `debt` decimal(30,5) DEFAULT NULL,
-  `debtCurrent` decimal(30,5) DEFAULT NULL,
-  `debtEquity` decimal(30,5) DEFAULT NULL,
-  `debtNonCurrent` decimal(30,5) DEFAULT NULL,
-  `deferredRev` decimal(30,5) DEFAULT NULL,
-  `depamor` decimal(30,5) DEFAULT NULL,
-  `deposits` decimal(30,5) DEFAULT NULL,
-  `ebit` decimal(30,5) DEFAULT NULL,
-  `ebitda` decimal(30,5) DEFAULT NULL,
-  `ebt` decimal(30,5) DEFAULT NULL,
-  `enterpriseVal` decimal(30,5) DEFAULT NULL,
-  `eps` decimal(30,5) DEFAULT NULL,
-  `epsDil` decimal(30,5) DEFAULT NULL,
-  `epsQoQ` decimal(30,5) DEFAULT NULL,
-  `equity` decimal(30,5) DEFAULT NULL,
-  `freeCashFlow` decimal(30,5) DEFAULT NULL,
-  `fxRate` decimal(30,5) DEFAULT NULL,
-  `grossMargin` decimal(30,5) DEFAULT NULL,
-  `grossProfit` decimal(30,5) DEFAULT NULL,
-  `intangibles` decimal(30,5) DEFAULT NULL,
-  `intexp` decimal(30,5) DEFAULT NULL,
-  `inventory` decimal(30,5) DEFAULT NULL,
-  `investments` decimal(30,5) DEFAULT NULL,
-  `investmentsAcqDisposals` decimal(30,5) DEFAULT NULL,
-  `investmentsCurrent` decimal(30,5) DEFAULT NULL,
-  `investmentsNonCurrent` decimal(30,5) DEFAULT NULL,
-  `issrepayDebt` decimal(30,5) DEFAULT NULL,
-  `issrepayEquity` decimal(30,5) DEFAULT NULL,
-  `liabilitiesCurrent` decimal(30,5) DEFAULT NULL,
-  `liabilitiesNonCurrent` decimal(30,5) DEFAULT NULL,
-  `longTermDebtEquity` decimal(30,5) DEFAULT NULL,
-  `marketCap` decimal(30,5) DEFAULT NULL,
-  `ncf` decimal(30,5) DEFAULT NULL,
-  `ncff` decimal(30,5) DEFAULT NULL,
-  `ncfi` decimal(30,5) DEFAULT NULL,
-  `ncfo` decimal(30,5) DEFAULT NULL,
-  `ncfx` decimal(30,5) DEFAULT NULL,
-  `netinc` decimal(30,5) DEFAULT NULL,
-  `netIncComStock` decimal(30,5) DEFAULT NULL,
-  `netIncDiscOps` decimal(30,5) DEFAULT NULL,
-  `netMargin` decimal(30,5) DEFAULT NULL,
-  `nonControllingInterests` decimal(30,5) DEFAULT NULL,
-  `opex` decimal(30,5) DEFAULT NULL,
-  `opinc` decimal(30,5) DEFAULT NULL,
-  `opMargin` decimal(30,5) DEFAULT NULL,
-  `payDiv` decimal(30,5) DEFAULT NULL,
-  `pbRatio` decimal(30,5) DEFAULT NULL,
-  `peRatio` decimal(30,5) DEFAULT NULL,
-  `piotroskiFScore` decimal(30,5) DEFAULT NULL,
-  `ppeq` decimal(30,5) DEFAULT NULL,
-  `prefDVDs` decimal(30,5) DEFAULT NULL,
-  `profitMargin` decimal(30,5) DEFAULT NULL,
-  `retainedEarnings` decimal(30,5) DEFAULT NULL,
-  `revenue` decimal(30,5) DEFAULT NULL,
-  `revenueQoQ` decimal(30,5) DEFAULT NULL,
-  `rnd` decimal(30,5) DEFAULT NULL,
-  `roa` decimal(30,5) DEFAULT NULL,
-  `roe` decimal(30,5) DEFAULT NULL,
-  `rps` decimal(30,5) DEFAULT NULL,
-  `sbcomp` decimal(30,5) DEFAULT NULL,
-  `sga` decimal(30,5) DEFAULT NULL,
-  `shareFactor` decimal(30,5) DEFAULT NULL,
-  `sharesBasic` decimal(30,5) DEFAULT NULL,
-  `shareswa` decimal(30,5) DEFAULT NULL,
-  `shareswaDil` decimal(30,5) DEFAULT NULL,
-  `taxAssets` decimal(30,5) DEFAULT NULL,
-  `taxExp` decimal(30,5) DEFAULT NULL,
-  `taxLiabilities` decimal(30,5) DEFAULT NULL,
-  `totalAssets` decimal(30,5) DEFAULT NULL,
-  `totalLiabilities` decimal(30,5) DEFAULT NULL,
-  `trailingPEG1Y` decimal(30,5) DEFAULT NULL
+  `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `Exchange` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `YearQuarter` int NOT NULL DEFAULT '0',
+  `accoci` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `acctPay` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `acctRec` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `assetsCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `assetsNonCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `assetTurnover` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `bookVal` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `businessAcqDisposals` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `bvps` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `capex` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `cashAndEq` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `consolidatedIncome` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `costRev` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `currentRatio` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `debt` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `debtCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `debtEquity` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `debtNonCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `deferredRev` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `depamor` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `deposits` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ebit` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ebitda` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ebt` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `enterpriseVal` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `eps` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `epsDil` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `epsQoQ` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `equity` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `freeCashFlow` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `fxRate` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `grossMargin` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `grossProfit` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `intangibles` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `intexp` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `inventory` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `investments` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `investmentsAcqDisposals` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `investmentsCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `investmentsNonCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `issrepayDebt` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `issrepayEquity` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `liabilitiesCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `liabilitiesNonCurrent` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `longTermDebtEquity` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `marketCap` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ncf` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ncff` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ncfi` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ncfo` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ncfx` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `netinc` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `netIncComStock` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `netIncDiscOps` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `netMargin` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `nonControllingInterests` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `opex` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `opinc` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `opMargin` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `payDiv` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `pbRatio` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `peRatio` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `piotroskiFScore` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `ppeq` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `prefDVDs` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `profitMargin` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `retainedEarnings` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `revenue` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `revenueQoQ` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `rnd` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `roa` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `roe` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `rps` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `sbcomp` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `sga` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `shareFactor` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `sharesBasic` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `shareswa` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `shareswaDil` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `taxAssets` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `taxExp` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `taxLiabilities` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `totalAssets` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `totalLiabilities` decimal(30,5) NOT NULL DEFAULT '0.00000',
+  `trailingPEG1Y` decimal(30,5) NOT NULL DEFAULT '0.00000'
 );
 
 CREATE TABLE `tiingo_crypto_symbol` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT '' COMMENT 'Ticker = BaseCurrency + QuoteCurrency',
-  `BaseCurrency` varchar(20) DEFAULT '',
-  `QuoteCurrency` varchar(20) DEFAULT '',
-  `Name` varchar(100) DEFAULT '',
-  `Description` varchar(100) DEFAULT '',
-  `UpdateDate` varchar(5000) DEFAULT ''
+ `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) NOT NULL DEFAULT ' ',
+  `BaseCurrency` varchar(20) NOT NULL DEFAULT ' ',
+  `QuoteCurrency` varchar(20) NOT NULL DEFAULT ' ',
+  `Name` varchar(100) NOT NULL DEFAULT ' ',
+  `Description` varchar(100) NOT NULL DEFAULT ' ',
+  `UpdateDate` varchar(5000) NOT NULL DEFAULT ' '
 );
 
 CREATE TABLE `tiingo_fundamental_definitions` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `dataCode` varchar(45) DEFAULT '',
-  `name` varchar(100) DEFAULT '',
-  `description` varchar(4000) DEFAULT '‘’',
-  `statementType` varchar(45) DEFAULT '',
-  `units` varchar(45) DEFAULT ''
+  `dataCode` varchar(45) NOT NULL DEFAULT ' ',
+  `name` varchar(100) NOT NULL DEFAULT ' ',
+  `description` varchar(4000) NOT NULL DEFAULT ' ',
+  `statementType` varchar(45) NOT NULL DEFAULT ' ',
+  `units` varchar(45) NOT NULL DEFAULT ' '
 );
 
 CREATE TABLE `tiingo_industry` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Industry` varchar(100) DEFAULT NULL,
-  `Sector` varchar(100) DEFAULT NULL
+   `ID` int NOT NULL AUTO_INCREMENT,
+  `Industry` varchar(100) NOT NULL DEFAULT '‘ ’',
+  `Sector` varchar(100) NOT NULL DEFAULT '‘ ’'
 );
 
 CREATE TABLE `tiingo_market_news` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `ids` int DEFAULT NULL,
-  `source` varchar(100) DEFAULT NULL,
-  `description` varchar(500) DEFAULT NULL,
-  `url` varchar(100) DEFAULT NULL,
-  `tags` varchar(400) DEFAULT NULL,
-  `tickers` varchar(200) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
-  `crawlDate` varchar(100) DEFAULT NULL,
-  `publishedDate` varchar(100) DEFAULT NULL
+  `ids` int NOT NULL DEFAULT '0',
+  `source` varchar(100) NOT NULL DEFAULT '‘ ’',
+  `description` varchar(500) NOT NULL DEFAULT '‘ ’',
+  `url` varchar(100) NOT NULL DEFAULT '‘ ’',
+  `tags` varchar(400) NOT NULL DEFAULT '‘ ’',
+  `tickers` varchar(200) NOT NULL DEFAULT '‘ ’',
+  `title` varchar(100) NOT NULL DEFAULT '‘ ’',
+  `crawlDate` varchar(100) NOT NULL DEFAULT '‘ ’',
+  `publishedDate` varchar(100) NOT NULL DEFAULT '‘ ’'
 );
 
 CREATE TABLE `tiingo_stock_52week_high` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT NULL,
-  `Exchange` varchar(50) DEFAULT NULL,
-  `Date` int DEFAULT NULL
+  `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `Exchange` varchar(50) NOT NULL DEFAULT '‘ ’',
+  `Date` int NOT NULL DEFAULT '0'
 );
 
 CREATE TABLE `tiingo_stock_52week_low` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT NULL,
-  `Exchange` varchar(50) DEFAULT NULL,
-  `Date` int DEFAULT NULL
+ `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `Exchange` varchar(50) NOT NULL DEFAULT '‘ ’',
+  `Date` int NOT NULL DEFAULT '0'
 );
 
 CREATE TABLE `tiingo_stock_current_trace` (
@@ -543,25 +543,25 @@ CREATE TABLE `tiingo_stock_profile` (
 
 CREATE TABLE `world_choice_crypto` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT ''
+  `Symbol` varchar(45)  NOT NULL DEFAULT ' '
 );
 
 CREATE TABLE `world_choice_forex` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT ''
+ `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45)  NOT NULL DEFAULT ' '
 );
 
 CREATE TABLE `world_choice_stock` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT ''
+  `Symbol` varchar(45)  NOT NULL DEFAULT ' '
 );
 
 CREATE TABLE `world_market_option` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `FinnhubToken` varchar(100) DEFAULT '',
-  `FinnhubMaxPerHour` int DEFAULT '3000',
-  `TiingoToken` varchar(100) DEFAULT '',
-  `TiingoMaxPerHour` int DEFAULT '450'
+  `FinnhubToken` varchar(100)  NOT NULL DEFAULT ' ',
+  `FinnhubMaxPerHour` int NOT NULL DEFAULT '3000',
+  `TiingoToken` varchar(100)  NOT NULL DEFAULT ' ',
+  `TiingoMaxPerHour` int NOT NULL DEFAULT '450'
 );
 
 -- Dump completed on 2026-07-20 19:26:55

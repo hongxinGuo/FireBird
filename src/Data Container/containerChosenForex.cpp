@@ -26,9 +26,9 @@ bool CContainerChosenForex::LoadDB() {
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {
-		if (gl_dataFinnhubForexSymbol.IsSymbol(string{ row.Symbol.value() })) {
-			auto pStock = gl_dataFinnhubForexSymbol.GetItem(string{ row.Symbol.value() });
-			m_mapSymbol[string{ row.Symbol.value() }] = m_mapSymbol.size();
+		if (gl_dataFinnhubForexSymbol.IsSymbol(string{ row.Symbol })) {
+			auto pStock = gl_dataFinnhubForexSymbol.GetItem(string{ row.Symbol });
+			m_mapSymbol[string{ row.Symbol }] = m_mapSymbol.size();
 			m_vStock.push_back(pStock);
 		}
 		else {
