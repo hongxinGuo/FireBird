@@ -121,11 +121,11 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 
 	auto result = db(sqlpp::select(all_of(t)).from(t));
 	for (const auto& row : result) {
-		if (!m_vStockSection.at(row.IndexNumber.value())->IsActive()) {
-			m_vStockSection.at(row.IndexNumber.value())->SetActive(row.Active.value());
-			m_vStockSection.at(row.IndexNumber.value())->SetMarket(row.Market.value());
-			m_vStockSection.at(row.IndexNumber.value())->SetIndexNumber(row.IndexNumber.value());
-			if (row.Comment.has_value()) m_vStockSection.at(row.IndexNumber.value())->SetComment(string{ row.Comment.value() });
+		if (!m_vStockSection.at(row.IndexNumber)->IsActive()) {
+			m_vStockSection.at(row.IndexNumber)->SetActive(row.Active);
+			m_vStockSection.at(row.IndexNumber)->SetMarket(row.Market);
+			m_vStockSection.at(row.IndexNumber)->SetIndexNumber(row.IndexNumber);
+			m_vStockSection.at(row.IndexNumber)->SetComment(string{ row.Comment });
 		}
 	}
 	tx.commit();

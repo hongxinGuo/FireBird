@@ -51,7 +51,7 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 	Reserve(rows);
 	int i = 0;
 	for (const auto& row : result) {
-		string str = string{ row.code.value() };
+		string str = string{ row.code };
 		m_vForexExchange.push_back(str);
 		m_mapForexExchange[str] = i++;
 	}

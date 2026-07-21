@@ -71,15 +71,15 @@ void CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 		CVirtualHistoryCandle historyCandle;
 		historyCandle.Reset();
 		historyCandle.SetRatio(m_ratio);
-		historyCandle.SetDate(row.Date.value());
-		historyCandle.SetStockSymbol(row.Symbol.value());
-		historyCandle.SetLastClose(row.LastClose.value() * m_ratio);
-		historyCandle.SetOpen(row.Open.value() * m_ratio);
-		historyCandle.SetHigh(row.High.value() * m_ratio);
-		historyCandle.SetLow(row.Low.value() * m_ratio);
-		historyCandle.SetClose(row.Close.value() * m_ratio);
-		historyCandle.SetVolume(row.Volume.value());
-		historyCandle.SetAmount(row.Amount.value());
+		historyCandle.SetDate(row.Date);
+		historyCandle.SetStockSymbol(row.Symbol);
+		historyCandle.SetLastClose(row.LastClose * m_ratio);
+		historyCandle.SetOpen(row.Open * m_ratio);
+		historyCandle.SetHigh(row.High * m_ratio);
+		historyCandle.SetLow(row.Low * m_ratio);
+		historyCandle.SetClose(row.Close * m_ratio);
+		historyCandle.SetVolume(row.Volume);
+		historyCandle.SetAmount(row.Amount);
 		Add(historyCandle);
 	}
 	tx.commit();

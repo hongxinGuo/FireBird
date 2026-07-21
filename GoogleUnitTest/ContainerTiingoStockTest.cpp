@@ -246,25 +246,25 @@ namespace FireBirdTest {
 		for (const auto& row : result) {
 			// Close in DB should equal pStock->GetNew() / ratio
 			const double expectedClose = static_cast<double>(pStock->GetNew()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.Close.value(), expectedClose, 1e-9);
+			EXPECT_NEAR(row.Close, expectedClose, 1e-9);
 
 			const double expectedOpen = static_cast<double>(pStock->GetOpen()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.Open.value(), expectedOpen, 1e-9);
+			EXPECT_NEAR(row.Open, expectedOpen, 1e-9);
 
 			const double expectedHigh = static_cast<double>(pStock->GetHigh()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.High.value(), expectedHigh, 1e-9);
+			EXPECT_NEAR(row.High, expectedHigh, 1e-9);
 
 			const double expectedLow = static_cast<double>(pStock->GetLow()) / static_cast<double>(ratio);
-			EXPECT_NEAR(row.Low.value(), expectedLow, 1e-9);
+			EXPECT_NEAR(row.Low, expectedLow, 1e-9);
 
-			INT64 value = row.Volume.value();
+			INT64 value = row.Volume;
 			EXPECT_EQ(value, pStock->GetVolume());
-			value = row.Amount.value();
+			value = row.Amount;
 			EXPECT_EQ(value, pStock->GetAmount());
 
-			string str = string{ row.Symbol.value() };
+			string str = string{ row.Symbol };
 			EXPECT_EQ(str, symbol);
-			chrono::local_days date = toLocalDays(row.Date.value());
+			chrono::local_days date = toLocalDays(row.Date);
 			EXPECT_EQ(date, lDate);
 		}
 

@@ -50,7 +50,7 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 	Reserve(rows);
 	int i = 0;
 	for (const auto& row : result) {
-		string str = string{ row.code.value() };
+		string str = string{ row.code };
 		m_vCryptoExchange.push_back(str);
 		m_mapCryptoExchange[str] = i++;
 	}

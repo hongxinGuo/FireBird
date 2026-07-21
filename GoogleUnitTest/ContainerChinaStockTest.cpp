@@ -133,7 +133,7 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条000001.SS的记录";
 			auto& row = result.front();
-			EXPECT_EQ(row.Symbol.value(), "000001.SS");
+			EXPECT_EQ(row.Symbol, "000001.SS");
 			EXPECT_EQ(row.ID, 1);
 		}
 
@@ -193,7 +193,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(resultExist.size(), 1u);
 			if (!resultExist.empty()) {
 				auto& row = resultExist.front();
-				EXPECT_EQ(row.Exchange.value(), "china");
+				EXPECT_EQ(row.Exchange, "china");
 			}
 
 			// Verify new stock inserted

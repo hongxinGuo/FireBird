@@ -472,17 +472,17 @@ namespace FireBirdTest {
 			auto result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 19800101));
 			EXPECT_TRUE(result.size() == 1);
 			auto& row = result.front();
-			double value = row.Close.value();
+			double value = row.Close;
 			EXPECT_DOUBLE_EQ(value, 0.000115);
 			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20210101));
 			EXPECT_TRUE(result.size() == 1);
 			auto& row2 = result.front();
-			value = row2.Close.value();
+			value = row2.Close;
 			EXPECT_DOUBLE_EQ(value, 0.012340);
 			result = db(select(all_of(t)).from(t).where(t.Symbol == "A" && t.Date == 20241111));
 			EXPECT_TRUE(result.size() == 1);
 			auto& row3 = result.front();
-			value = row3.Close.value();
+			value = row3.Close;
 			EXPECT_DOUBLE_EQ(value, 0.000135);
 
 			db(delete_from(t).where(t.Symbol == "A" && t.Date == 19800101));
@@ -771,7 +771,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(result.size(), 1);
 			if (!result.empty()) {
 				auto& row = result.front();
-				EXPECT_DOUBLE_EQ(row.Close.value(), 0.000115);
+				EXPECT_DOUBLE_EQ(row.Close, 0.000115);
 			}
 
 			result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Date == 20241111));
@@ -782,14 +782,14 @@ namespace FireBirdTest {
 			EXPECT_EQ(result.size(), 1u);
 			if (!result.empty()) {
 				auto& row = result.front();
-				EXPECT_DOUBLE_EQ(row.Close.value(), 0.01002);
+				EXPECT_DOUBLE_EQ(row.Close, 0.01002);
 			}
 
 			result = db(select(all_of(t)).from(t).where(t.Symbol == "AAPL" && t.Date == 20241114));
 			EXPECT_EQ(result.size(), 1u);
 			if (!result.empty()) {
 				auto& row = result.front();
-				EXPECT_DOUBLE_EQ(row.Close.value(), 0.111135);
+				EXPECT_DOUBLE_EQ(row.Close, 0.111135);
 			}
 
 			EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);

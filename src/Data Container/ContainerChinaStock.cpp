@@ -46,18 +46,16 @@ long CContainerChinaStock::LoadProfileDB() {
 	for (const auto& row : result) {
 		// 装入股票代码数据库
 		const auto pStock = make_shared<CChinaStock>();
-		ASSERT(row.Symbol.has_value());
-		string str = string{ row.Symbol.value() };
+		string str = string{ row.Symbol };
 		if (IsSymbol(str)) {
 			db(sqlpp::delete_from(t).where(t.ID == row.ID));
 		}
 		else {
-			pStock->SetSymbol(row.Symbol.has_value() ? row.Symbol.value() : " ");
-			pStock->SetDisplaySymbol(row.DisplaySymbol.has_value() ? row.DisplaySymbol.value() : " ");
-			pStock->SetDescription(row.Description.has_value() ? row.Description.value() : " ");
-			pStock->SetExchange(row.Exchange.has_value() ? row.Exchange.value() : " ");
-			ASSERT(row.UpdateDate.has_value());
-			pStock->LoadUpdateDate(string{ row.UpdateDate.value() });
+			pStock->SetSymbol(row.Symbol);
+			pStock->SetDisplaySymbol(row.DisplaySymbol);
+			pStock->SetDescription(row.Description);
+			pStock->SetExchange(row.Exchange);
+			pStock->LoadUpdateDate(string{ row.UpdateDate });
 
 			pStock->CheckNeedProcessRTData();
 			pStock->CheckDayLineStatus();

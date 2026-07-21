@@ -370,7 +370,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
-		EXPECT_EQ(row.Date.value(), 19910102) << "新存储数据的日期";
+		EXPECT_EQ(row.Date, 19910102) << "新存储数据的日期";
 
 		db(sqlpp::delete_from(t).where(t.Date == 19910102 && t.Symbol == "000001.SZ" && t.Exchange == "Test"));
 		tx.commit();

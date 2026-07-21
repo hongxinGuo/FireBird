@@ -1052,15 +1052,6 @@ void CWorldMarket::UpdateTiingoOneYearStockDayLine() {
 }
 
 void CWorldMarket::UpdateTiingoAllStockDayLine() {
-	{
-		using namespace StockMarket;
-		const auto& t = TiingoStockProfile{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		db(sqlpp::truncate(t));
-		tx.commit();
-	}
-
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
 		pStock->SetDayLineEndDate(chrono::local_days(1980y / 01 / 01)); // 从1980年开始更新日线数据

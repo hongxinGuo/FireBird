@@ -35,14 +35,14 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 	Reserve(rows + 2);
 	for (const auto& row : result) {
 		CEconomicCalendar economicCalendar;
-		economicCalendar.m_strTime = row.Time.value();
-		economicCalendar.m_strCountry = row.Country.value();
-		economicCalendar.m_strEvent = row.Event.value();
-		economicCalendar.m_strImpact = row.Impact.value();
-		economicCalendar.m_dActual = row.Actual.value();
-		economicCalendar.m_dEstimate = row.Estimate.value();
-		economicCalendar.m_dPrev = row.Prev.value();
-		economicCalendar.m_strUnit = row.Unit.value();
+		economicCalendar.m_strTime = row.Time;
+		economicCalendar.m_strCountry = row.Country;
+		economicCalendar.m_strEvent = row.Event;
+		economicCalendar.m_strImpact = row.Impact;
+		economicCalendar.m_dActual = row.Actual;
+		economicCalendar.m_dEstimate = row.Estimate;
+		economicCalendar.m_dPrev = row.Prev;
+		economicCalendar.m_strUnit = row.Unit;
 		std::string strSymbol = economicCalendar.m_strCountry + economicCalendar.m_strEvent + economicCalendar.m_strTime;
 		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
 		m_vEconomicCalendar.push_back(economicCalendar);

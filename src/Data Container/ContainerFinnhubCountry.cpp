@@ -79,12 +79,12 @@ bool CContainerFinnhubCountry::LoadDB() {
 	int counter = 0;
 	for (const auto& row : result) {
 		CCountry country;
-		country.m_strCode2 = row.Code2.value();
-		country.m_strCode3 = row.Code3.value();
-		country.m_strCodeNo = row.CodeNo.value();
-		country.m_strCountry = row.Country.value();
-		country.m_strCurrency = row.Currency.value();
-		country.m_strCurrencyCode = row.CurrencyCode.value();
+		country.m_strCode2 = row.Code2;
+		country.m_strCode3 = row.Code3;
+		country.m_strCodeNo = row.CodeNo;
+		country.m_strCountry = row.Country;
+		country.m_strCurrency = row.Currency;
+		country.m_strCurrencyCode = row.CurrencyCode;
 		m_mapCountry[country.m_strCountry] = counter;
 		counter++;
 		m_vCountry.push_back(country);

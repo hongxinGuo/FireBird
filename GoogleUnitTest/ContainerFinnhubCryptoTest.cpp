@@ -106,7 +106,7 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条BINANCE:USDTUAH的记录";
 			auto& row = result.front();
-			EXPECT_EQ(row.Symbol.value(), "BINANCE:USDTUAH");
+			EXPECT_EQ(row.Symbol, "BINANCE:USDTUAH");
 			EXPECT_EQ(row.ID, 1);
 		}
 		m_dataFinnhubCrypto.Reset();

@@ -260,7 +260,7 @@ void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 		auto result = db(select(all_of(t)).from(t).where(t.Date == toFormattedDate(date)).order_by(t.Symbol.asc()));
 
 		for (const auto& row : result) {
-			const std::string symbol = string{ row.Symbol.value() };
+			const std::string symbol = string{ row.Symbol };
 			if (IsSymbol(symbol)) {
 				auto pStock = GetStock(symbol);
 				if (pStock == nullptr) continue;
@@ -270,15 +270,15 @@ void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 				const double ratio = pStock->GetRatio();
 
 				// numeric fields from sqlpp11 are used directly
-				pStock->SetHigh(row.High.value() * ratio);
-				pStock->SetLow(row.Low.value() * ratio);
-				pStock->SetOpen(row.Open.value() * ratio);
-				pStock->SetNew(row.Close.value() * ratio);
-				pStock->SetLastClose(row.LastClose.value() * ratio);
+				pStock->SetHigh(row.High * ratio);
+				pStock->SetLow(row.Low * ratio);
+				pStock->SetOpen(row.Open * ratio);
+				pStock->SetNew(row.Close * ratio);
+				pStock->SetLastClose(row.LastClose * ratio);
 
-				pStock->SetVolume(row.Volume.value());
-				pStock->SetDividend(row.Dividend.value());
-				pStock->SetSplitFactor(row.SplitFactor.value());
+				pStock->SetVolume(row.Volume);
+				pStock->SetDividend(row.Dividend);
+				pStock->SetSplitFactor(row.SplitFactor);
 			}
 		}
 		tx.commit();

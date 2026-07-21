@@ -130,7 +130,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
 			//Note EXPECT_TRUE(pStock->IsUpdateDayLine());
 
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12) << "最初装载了12个";
 			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());

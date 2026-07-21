@@ -471,7 +471,7 @@ namespace FireBirdTest {
 		size_t rows2 = result2.size();
 		EXPECT_EQ(rows2, 1);
 		auto& row2 = result2.front();
-		EXPECT_EQ(row2.Exchange.value(), "CN");
+		EXPECT_EQ(row2.Exchange, "CN");
 		db(update(t).set(t.Exchange = exchange).where(t.Symbol == std::string("OANDA:GBP_ZAR")));
 
 		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("Test")));
@@ -510,7 +510,7 @@ namespace FireBirdTest {
 		size_t rows2 = result2.size();
 		EXPECT_EQ(rows2, 1);
 		auto& row2 = result2.front();
-		EXPECT_EQ(row2.Exchange.value(), "CN");
+		EXPECT_EQ(row2.Exchange, "CN");
 		db(update(t).set(t.Exchange = exchange).where(t.Symbol == std::string("BINANCE:USDTUAH")));
 
 		auto result = db(select(all_of(t)).from(t).where(t.Symbol == std::string("Test")));
@@ -670,7 +670,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).where(t.Country == std::string("USA") && t.Time == std::string("20200101") && t.Event == std::string("abc")));
+		auto result = db(select(all_of(t)).from(t).where(t.Country == std::string("USA") && t.Time == "20200101" && t.Event == std::string("abc")));
 		auto rows = result.size();
 		auto& row = result.front();
 		EXPECT_FALSE(rows == 0);
@@ -678,9 +678,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(row.Country, "USA");
 		EXPECT_EQ(row.Time, "20200101");
 		EXPECT_EQ(row.Event, "abc");
-		EXPECT_DOUBLE_EQ(row.Actual.value(), 1.0);
-		EXPECT_DOUBLE_EQ(row.Estimate.value(), 2.0);
-		EXPECT_DOUBLE_EQ(row.Prev.value(), 3.0);
+		EXPECT_DOUBLE_EQ(row.Actual, 1.0);
+		EXPECT_DOUBLE_EQ(row.Estimate, 2.0);
+		EXPECT_DOUBLE_EQ(row.Prev, 3.0);
 		EXPECT_EQ(row.Impact, "s");
 		EXPECT_EQ(row.Unit, "USD");
 

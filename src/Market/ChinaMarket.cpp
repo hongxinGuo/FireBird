@@ -929,13 +929,13 @@ void CChinaMarket::LoadOptionDB() {
 	}
 	else {
 		const auto& row = result.front();
-		if (static_cast<int>(row.LastLoginDate.value()) == 0) {
+		if (static_cast<int>(row.LastLoginDate) == 0) {
 			SetLastLoginDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 		}
 		else {
-			SetLastLoginDate(toLocalDays(row.LastLoginDate.value()));
+			SetLastLoginDate(toLocalDays(row.LastLoginDate));
 		}
-		SetLastLoginTime(toLocalTime(row.LastLoginTime.value()));
+		SetLastLoginTime(toLocalTime(row.LastLoginTime));
 	}
 	tx.commit();
 }
@@ -991,8 +991,8 @@ void CChinaMarket::LoadChosenStockDB() {
 
 	for (const auto& row : result) {
 		CChinaStockPtr pStock = nullptr;
-		if (gl_dataContainerChinaStock.IsSymbol(string{ row.Symbol.value() })) {
-			pStock = gl_dataContainerChinaStock.GetStock(string{ row.Symbol.value() });
+		if (gl_dataContainerChinaStock.IsSymbol(string{ row.Symbol })) {
+			pStock = gl_dataContainerChinaStock.GetStock(string{ row.Symbol });
 			if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 				m_avChosenStock.at(0).push_back(pStock);
 			}

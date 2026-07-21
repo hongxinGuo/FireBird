@@ -68,7 +68,7 @@ namespace FireBirdTest {
 		size_t rows = result.size();
 		EXPECT_EQ(rows, 1) << "新存储数据的行数";
 		auto& row = result.front();
-		EXPECT_EQ(row.Date.value(), 20200101) << "新存储数据的日期";
+		EXPECT_EQ(row.Date, 20200101) << "新存储数据的日期";
 
 		db(sqlpp::delete_from(t).where(t.Symbol == "BINANCE:USDTUAH"));
 		tx.commit();

@@ -29,14 +29,14 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 	size_t rows = result.size();
 	Reserve(rows + 10);
 	for (const auto& row : result) {
-		const std::string symbol = string{ row.Symbol.value() };
+		const std::string symbol = string{ row.Symbol };
 		if (!IsSymbol(symbol)) {
 			const auto pSymbol = make_shared<CFinnhubForex>();
-			pSymbol->SetSymbol(row.Symbol.value());
-			pSymbol->SetDescription(row.Description.value());
-			pSymbol->SetExchange(row.Exchange.value());
-			pSymbol->SetDisplaySymbol(row.DisplaySymbol.value());
-			pSymbol->LoadUpdateDate(string{ row.UpdateDate.value() });
+			pSymbol->SetSymbol(row.Symbol);
+			pSymbol->SetDescription(row.Description);
+			pSymbol->SetExchange(row.Exchange);
+			pSymbol->SetDisplaySymbol(row.DisplaySymbol);
+			pSymbol->LoadUpdateDate(string{ row.UpdateDate });
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
 		}

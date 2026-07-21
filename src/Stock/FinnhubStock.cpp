@@ -298,7 +298,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 	size_t rows = result.size();
 	if (rows > 0) {
 		auto& row = result.front();
-		cutoffDateTime = row.DateTime.value();
+		cutoffDateTime = row.DateTime;
 	}
 
 	size_t iIndex = 0;
