@@ -5,6 +5,7 @@
 // Inline global connection pool. Using an inline variable so the header can be
 // included from multiple translation units without violating the one-definition rule.
 inline sqlpp::mysql::connection_pool gl_dbStockMarket(std::make_shared<sqlpp::mysql::connection_config>(), 20);
+inline auto GetStockMarketDB() { return gl_dbStockMarket.get(); }
 
 // Initialize the global sqlpp11 MySQL connection pool. This will call
 // sqlpp::mysql::global_library_init() once and construct the pool.
@@ -36,8 +37,4 @@ inline void InitSqlppMySQLConnectionPool(const std::string& user,
 	//config->debug = debug;
 #endif
 	gl_dbStockMarket = sqlpp::mysql::connection_pool(config, static_cast<int>(poolSize));
-}
-
-inline auto GetStockMarketDB() {
-	return gl_dbStockMarket.get();
 }

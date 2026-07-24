@@ -1,10 +1,11 @@
 #pragma once
 
+#include <concurrentqueue/moodycamel/concurrentqueue.h>
+
 #include"MarketTaskQueue.h"
-#include "StockExchange.h"
-#include "SystemConfiguration.h"
 #include"TimeConvert.h"
-#include "VirtualDataSource.h"
+
+class CStockExchange;
 
 class CVirtualMarket {
 public:
@@ -42,10 +43,10 @@ public:
 
 	// MarketTask
 	bool IsMarketTaskEmpty() const { return m_marketTask.Empty(); }
-	void AddTask(const CMarketTaskPtr& pTask);
+	void AddTask(const shared_ptr<CMarketTask>& pTask);
 	void AddTask(long lTaskType, long lExecuteTime);
 	void AddTask(long lTaskType, chrono::local_seconds executeTime);
-	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
+	shared_ptr<CMarketTask> GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	void DiscardAllMarketTask() {
 		while (!m_marketTask.Empty()) {
@@ -55,19 +56,19 @@ public:
 	void AdjustTaskTime();
 
 	// MarketImmediateTask
-	void AddImmediateTask(const CMarketTaskPtr& pTask);
+	void AddImmediateTask(const shared_ptr<CMarketTask>& pTask);
 	void AddImmediateTask(long lTaskType);
 
 	// MarketDisplayTask
 	bool HaveNewTask() const;
-	vector<CMarketTaskPtr> DiscardOutDatedTask(chrono::local_seconds lCurrentMarketTime);
-	vector<CMarketTaskPtr> GetDisplayMarketTask();
+	vector<shared_ptr<CMarketTask>> DiscardOutDatedTask(chrono::local_seconds lCurrentMarketTime);
+	vector<shared_ptr<CMarketTask>> GetDisplayMarketTask();
 
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CreateLocalTimeZone(const string& strLocalNameOfMarket); // 系统启动时执行一次。
-	chrono::local_seconds GetMarketOpenTime() const { return m_exchange->m_marketOpenTime; }
-	chrono::local_seconds GetMarketCloseTime() const { return m_exchange->m_marketCloseTime; }
+	chrono::local_seconds GetMarketOpenTime() const;
+	chrono::local_seconds GetMarketCloseTime() const;
 
 	chrono::local_seconds GetMarketClock() const noexcept { return m_marketClock; } // 这个是市场时间
 	chrono::local_days GetMarketDate() const noexcept { return chrono::local_days(chrono::floor<chrono::days>(m_marketClock)); }// 市场日期
@@ -129,7 +130,7 @@ public:
 
 protected:
 	string m_strMarketId{ "Warning: CVirtualMarket Called." }; // 该市场标识字符串,即交易所的代码。中国为SS,美国为US....
-	CStockExchangePtr m_exchange{ nullptr };
+	shared_ptr<CStockExchange> m_exchange{ nullptr };
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
 	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
 	moodycamel::ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask{ 32 * 4 }; // 当前任务显示队列

@@ -9,6 +9,8 @@
 #include "FinnhubDataSource.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/exchange?";
 }

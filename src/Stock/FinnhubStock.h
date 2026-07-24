@@ -10,6 +10,8 @@
 #include "InsiderTransaction.h"
 #include "SECFiling.h"
 
+using std::chrono::weekday;
+
 class CFinnhubStock : public CVirtualStock {
 public:
 	CFinnhubStock();
@@ -23,11 +25,11 @@ public:
 	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
-	void CheckUpdateStatus(chrono::local_days todayDate);
-	void CheckProfileUpdateStatus(chrono::local_days todayDate);
-	bool CheckCompanyNewsUpdateStatus(chrono::local_days todayDate);
-	bool CheckBasicFinancialUpdateStatus(chrono::local_days todayDate);
-	bool CheckDayLineUpdateStatus(chrono::local_days todayDate, chrono::local_days lLastTradeDate, chrono::local_seconds lTime, chrono::weekday lDayOfWeek);
+	void CheckUpdateStatus(local_days todayDate);
+	void CheckProfileUpdateStatus(local_days todayDate);
+	bool CheckCompanyNewsUpdateStatus(local_days todayDate);
+	bool CheckBasicFinancialUpdateStatus(local_days todayDate);
+	bool CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday lDayOfWeek);
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();
@@ -53,7 +55,7 @@ public:
 	bool IsUpdateCompanyNews() const noexcept { return m_fUpdateCompanyNews; }
 	void SetUpdateCompanyNews(const bool fFlag) noexcept { m_fUpdateCompanyNews = fFlag; }
 	size_t GetCompanyNewsSize() const noexcept { return m_vCompanyNews.size(); }
-	chrono::sys_seconds GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex).m_DateTime; }
+	sys_seconds GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex).m_DateTime; }
 	void ClearCompanyNews() { m_vCompanyNews.clear(); }
 
 	bool IsUpdateBasicFinancial() const noexcept { return m_fUpdateBasicFinancial; }
@@ -63,17 +65,17 @@ public:
 
 	bool IsUpdateEPSSurprise() const noexcept { return m_fUpdateEPSSurprise; }
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
-	bool CheckEPSSurpriseStatus(chrono::local_days lCurrentDate);
+	bool CheckEPSSurpriseStatus(local_days lCurrentDate);
 	bool IsUpdateEPSSurpriseDB() const noexcept { return m_fUpdateEPSSurpriseDB; }
 	void SetUpdateEPSSurpriseDB(const bool fFlag) noexcept { m_fUpdateEPSSurpriseDB = fFlag; }
 
 	bool IsUpdatePeer() const noexcept { return m_fUpdateFinnhubPeer; }
 	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
-	bool CheckPeerStatus(chrono::local_days lCurrentDate);
+	bool CheckPeerStatus(local_days lCurrentDate);
 
 	bool IsUpdateSECFilings() const noexcept { return m_fUpdateSECFilings; }
 	void SetUpdateSECFilings(bool fFlag) noexcept { m_fUpdateSECFilings = fFlag; }
-	bool CheckSECFilingsStatus(chrono::local_days lCurrentDate);
+	bool CheckSECFilingsStatus(local_days lCurrentDate);
 	bool IsUpdateSECFilingsDB() const noexcept { return m_fUpdateSECFilingsDB; }
 	void SetUpdateSECFilingsDB(const bool fFlag) noexcept { m_fUpdateSECFilingsDB = fFlag; }
 
@@ -82,7 +84,7 @@ public:
 	void UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvInsiderTransaction);
 	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
 	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransaction = fFlag; }
-	bool CheckInsiderTransactionStatus(chrono::local_days lCurrentDate);
+	bool CheckInsiderTransactionStatus(local_days lCurrentDate);
 	bool IsUpdateInsiderTransactionDB() const noexcept { return m_fUpdateFinnhubInsiderTransactionDB; }
 	void SetUpdateInsiderTransactionDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransactionDB = fFlag; }
 
@@ -91,7 +93,7 @@ public:
 	void ClearInsiderSentiment() { m_pvInsiderSentiment.reset(); }
 	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateFinnhubInsiderSentiment; }
 	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentiment = fFlag; }
-	bool CheckInsiderSentimentStatus(chrono::local_days lCurrentDate);
+	bool CheckInsiderSentimentStatus(local_days lCurrentDate);
 	bool IsUpdateInsiderSentimentDB() const noexcept { return m_fUpdateFinnhubInsiderSentimentDB; }
 	void SetUpdateInsiderSentimentDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentimentDB = fFlag; }
 
@@ -162,28 +164,28 @@ public:
 	void SetPeer(const nlohmannJson& jsonPeer) { m_jsonPeer = jsonPeer; }
 	void SetSECFilings(const CSECFilingsPtr& pv);
 	void ClearSECFilings() { m_vSECFilings.clear(); }
-	chrono::local_days GetProfileUpdateDate();
-	void SetProfileUpdateDate(chrono::local_days profileUpdateDate) noexcept;
-	chrono::local_days GetCompanyNewsUpdateDate();
-	void SetCompanyNewsUpdateDate(chrono::local_days companyNewsUpdateDate) noexcept;
-	chrono::local_days GetBasicFinancialUpdateDate();
-	void SetBasicFinancialUpdateDate(chrono::local_days basicFinancialUpdateDate) noexcept;
-	chrono::local_days GetLastRTDataUpdateDate();
-	void SetLastRTDataUpdateDate(chrono::local_days lastRTDataUpdateDate) noexcept;
-	chrono::local_days GetPeerUpdateDate();
-	void SetPeerUpdateDate(chrono::local_days peerUpdateDate) noexcept;
-	chrono::local_days GetInsiderTransactionUpdateDate();
-	void SetInsiderTransactionUpdateDate(chrono::local_days insiderTransactionUpdateDate) noexcept;
-	chrono::local_days GetInsiderSentimentUpdateDate();
-	void SetInsiderSentimentUpdateDate(chrono::local_days insiderSentimentUpdateDate) noexcept;
-	chrono::local_days GetLastEPSSurpriseUpdateDate();
-	void SetLastEPSSurpriseUpdateDate(chrono::local_days lastEPSSurpriseUpdateDate) noexcept;
-	void SetSECFilingsUpdateDate(chrono::local_days secFilingsUpdateDate) noexcept;
-	chrono::local_days GetSECFilingsUpdateDate();
+	local_days GetProfileUpdateDate();
+	void SetProfileUpdateDate(local_days profileUpdateDate) noexcept;
+	local_days GetCompanyNewsUpdateDate();
+	void SetCompanyNewsUpdateDate(local_days companyNewsUpdateDate) noexcept;
+	local_days GetBasicFinancialUpdateDate();
+	void SetBasicFinancialUpdateDate(local_days basicFinancialUpdateDate) noexcept;
+	local_days GetLastRTDataUpdateDate();
+	void SetLastRTDataUpdateDate(local_days lastRTDataUpdateDate) noexcept;
+	local_days GetPeerUpdateDate();
+	void SetPeerUpdateDate(local_days peerUpdateDate) noexcept;
+	local_days GetInsiderTransactionUpdateDate();
+	void SetInsiderTransactionUpdateDate(local_days insiderTransactionUpdateDate) noexcept;
+	local_days GetInsiderSentimentUpdateDate();
+	void SetInsiderSentimentUpdateDate(local_days insiderSentimentUpdateDate) noexcept;
+	local_days GetLastEPSSurpriseUpdateDate();
+	void SetLastEPSSurpriseUpdateDate(local_days lastEPSSurpriseUpdateDate) noexcept;
+	void SetSECFilingsUpdateDate(local_days secFilingsUpdateDate) noexcept;
+	local_days GetSECFilingsUpdateDate();
 	nlohmannJson GetJsonPeer() const noexcept { return m_jsonPeer; }
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
-	string GetTiingoDayLineInquiryParam(chrono::local_days lStartDate, chrono::local_days lCurrentDate) const;
+	string GetTiingoDayLineInquiryParam(local_days lStartDate, local_days lCurrentDate) const;
 	string GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime);
 
 	bool IsUSMarket() const;

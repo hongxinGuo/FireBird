@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"VirtualDataHistoryCandle.h"
+#include"TimeConvert.h"
 
 namespace FireBirdTest {
 	class CVirtualDataHistoryCandleTest : public ::testing::Test {

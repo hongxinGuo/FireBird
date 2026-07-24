@@ -89,10 +89,10 @@ public:
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
-	void LoadDayLineDB() override { m_dataDayLine.LoadDB(m_strSymbol); }
-	void LoadDayLineDB(long lStartDate) { m_dataDayLine.LoadDB(m_strSymbol, lStartDate); }
+	void LoadDayLineDB() override;
+	void LoadDayLineDB(long lStartDate);
 	void UpdateDayLineDB();
-	void SaveDayLineDB() { m_dataDayLine.SaveDB(GetSymbol()); }
+	void SaveDayLineDB();
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 
@@ -114,21 +114,21 @@ public:
 
 	//日线相关函数
 	// 日线历史数据
-	size_t DayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	size_t DayLineSize() const noexcept;
 	bool HaveNewDayLineData();
-	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
-	void StoreDayLine(const CDayLine& dayLine) { m_dataDayLine.Add(dayLine); }
-	CDayLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
+	void UnloadDayLine() noexcept;
+	void StoreDayLine(const CDayLine& dayLine);
+	CDayLine* GetDayLine(const size_t lIndex);
 
 	void ProcessRTData();
 	// 日线相对强度计算
 
 	bool IsDayLineDBUpdated() const noexcept { return (m_fDayLineDBUpdated); }
 	void SetDayLineDBUpdated(const bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
-	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
-	void SetDayLineLoaded(const bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
+	bool IsDayLineLoaded() const noexcept override;
+	void SetDayLineLoaded(const bool fFlag) noexcept override;
 
-	void UpdateDayLine(const vector<CDayLine>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
+	void UpdateDayLine(const vector<CDayLine>& vTempDayLine);
 	static void ReportDayLineDownLoaded();
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }

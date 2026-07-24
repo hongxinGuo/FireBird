@@ -4,6 +4,7 @@
 
 //#include "HighPerformanceCounter.h"
 #include "ChinaMarket.h"
+#include "ContainerChinaStock.h"
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
 

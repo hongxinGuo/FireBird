@@ -1,16 +1,16 @@
 #pragma once
 
-#include "ContainerFinnhubStock.h"
 #include"VirtualMarket.h"
 
-#include "TiingoIEXWebSocket.h"
-#include "FinnhubWebSocket.h"
-
-#include "MarketStatus.h"
-#include"MarketHoliday.h"
 #include "SystemConfiguration.h"
-#include "TiingoStock.h"
-#include "TimeConvert.h"
+
+class CTiingoIEXSocket;
+class CFinnhubSocket;
+
+class CMarketStatus;
+class CMarketHoliday;
+
+class CTiingoStock;
 
 class CWorldMarket : public CVirtualMarket {
 public:
@@ -89,7 +89,7 @@ public:
 	// 数据库操作
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateFinnhubStockDayLineDB();
-	static void UpdateInsiderTransactionDB() { gl_dataContainerFinnhubStock.UpdateInsiderTransactionDB(); }
+	static void UpdateInsiderTransactionDB();
 	virtual bool UpdateInsiderSentimentDB();
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSicIndustry();
@@ -107,9 +107,9 @@ public:
 	void RebuildIndustryRS();
 	void BuildIndustry();
 	void CalculateIndustryTotalValue();
-	void CalculateStockTotalValue(const vector<CTiingoStockPtr>& vStocks);
+	void CalculateStockTotalValue(const vector<shared_ptr<CTiingoStock>>& vStocks);
 
-	vectorString GetFinnhubWebSocketSymbols();
+	vector<string> GetFinnhubWebSocketSymbols();
 
 	static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
 
@@ -120,15 +120,15 @@ public:
 	static void ProcessTiingoForexWebSocketData();
 
 	void UpdateFinnhubStockFromWebSocket();
-	void UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
-	void UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
+	void UpdateFinnhubStockFromTiingoIEXSocket(const shared_ptr<CTiingoIEXSocket>& pTiingoIEXbData);
+	void UpdateFinnhubStockFromFinnhubSocket(const shared_ptr<CFinnhubSocket>& pFinnhub);
 
-	void UpdateMarketStatus(const CMarketStatusesPtr& pv) const;
-	void UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const;
+	void UpdateMarketStatus(const shared_ptr<vector<CMarketStatus>>& pv) const;
+	void UpdateMarketHoliday(const shared_ptr<vector<CMarketHoliday>>& pv) const;
 
 	static void DeleteTiingoDelistedStock();
-	static void DeleteTiingoDayLine(const CTiingoStockPtr& pStock);
-	static void DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock);
+	static void DeleteTiingoDayLine(const shared_ptr<CTiingoStock>& pStock);
+	static void DeleteTiingoFinancialStatement(const shared_ptr<CTiingoStock>& pStock);
 
 	bool IsReadyToInquireWebData() override { return !IsResetTime(); }
 
@@ -145,8 +145,8 @@ protected:
 	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
 
-	CMarketStatusesPtr m_pvMarketStatus;
-	CMarketHolidaysPtr m_pvMarketHoliday;
+	shared_ptr<vector<CMarketStatus>> m_pvMarketStatus;
+	shared_ptr<vector<CMarketHoliday>> m_pvMarketHoliday;
 
 	bool m_bFinnhubWebSiteAccessible{ true }; // 由于finnhub.io不时被墙，故而需要此标识。
 
@@ -155,11 +155,11 @@ protected:
 	bool m_bBuildTodayTiingoDayLine{ false };
 
 protected:
-	vector<CTiingoStockPtr> m_vNasdaq100TiingoStock;
+	vector<shared_ptr<CTiingoStock>> m_vNasdaq100TiingoStock;
 	atomic_int m_iNewHighHigher{ 0 };
 	atomic_int m_iNoNewHighHigher{ 0 };
 
-	array<vector<CTiingoStockPtr>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
+	array<vector<shared_ptr<CTiingoStock>>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

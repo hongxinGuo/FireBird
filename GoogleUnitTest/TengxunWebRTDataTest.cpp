@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
 #include"WebRTData.h"

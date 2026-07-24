@@ -7,6 +7,10 @@
 #include "ContainerChinaStockDayLine.h"
 #include "DayLine.h"
 
+using std::make_shared;
+using std::max;
+using std::min;
+
 namespace FireBirdTest {
 	class CIndicatorKDJTest : public ::testing::Test {
 	protected:

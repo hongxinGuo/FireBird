@@ -6,6 +6,7 @@
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
+#include"ChinaStock.h"
 
 #include"Thread.h"
 
@@ -14,6 +15,8 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
+
+using std::chrono::Monday;
 
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
@@ -67,7 +70,7 @@ long CContainerChinaStock::LoadProfileDB() {
 
 	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
-		if (gl_pChinaMarket->GetWeekDay() == chrono::Monday) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
+		if (gl_pChinaMarket->GetWeekDay() == Monday) gl_systemMessage.PushInformationMessage("每星期一复查退市股票日线");
 		auto str = std::format("{:d}个股票需要检查日线数据", lDayLineNeedCheck);
 		gl_systemMessage.PushInformationMessage(str);
 	}
@@ -240,11 +243,11 @@ void CContainerChinaStock::TaskUpdateDayLineDB() {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateDayLineDB()) {
 			pStock->SetUpdateDayLineDB(false);
-			gl_BackgroundWorkingThread.acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
+			gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
 			gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
 			gl_runtime.thread_executor()->post([pStock] {
 				pStock->UpdateDayLineDB();
-				gl_BackgroundWorkingThread.release();
+				gl_BackgroundWorkingThread.Release();
 			});
 		}
 	}
@@ -260,7 +263,7 @@ void CContainerChinaStock::TaskUpdateDayLineDB() {
 ///
 /// Note: 需要使用大宗插入模式，否则出错
 //////////////////////////////////////////////////////////////////////////////////
-long CContainerChinaStock::BuildDayLine(chrono::local_days currentTradeDay) {
+long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 	long iCount = 0;
 	int ratio = 1000; // 由于日线历史数据是以整数形式存储的，故而这里要除以一个比例因子才能得到正确的价格数据。
 	string s = std::format("开始处理{:%F}的实时数据", currentTradeDay);
@@ -318,7 +321,7 @@ long CContainerChinaStock::BuildDayLine(chrono::local_days currentTradeDay) {
 	return iCount;
 }
 
-void CContainerChinaStock::DeleteDayLine(chrono::local_days date) {
+void CContainerChinaStock::DeleteDayLine(local_days date) {
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();

@@ -5,6 +5,7 @@
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
+#include "ContainerFinnhubStock.h"
 
 #include "ProductFinnhubStockDayLine.h"
 

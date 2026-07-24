@@ -9,6 +9,8 @@
 #include "containerFinnhubForexSymbol.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/symbol?exchange=";
 }

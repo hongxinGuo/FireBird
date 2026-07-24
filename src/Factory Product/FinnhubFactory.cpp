@@ -36,6 +36,8 @@
 #include "ProductFinnhubSECFilings.h"
 #include "SystemMessage.h"
 
+using std::make_shared;
+
 CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
 

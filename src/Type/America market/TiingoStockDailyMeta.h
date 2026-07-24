@@ -1,5 +1,7 @@
 #pragma once
 
+#include"TimeConvert.h"
+
 using std::vector;
 using std::shared_ptr;
 
@@ -13,8 +15,8 @@ public:
 	string m_strName{ "" };
 	string m_strDescription{ "" };
 	string m_strExchange{ "" };
-	chrono::local_days m_lHistoryDayLineStartDate{ toLocalDays(19000101) };
-	chrono::local_days m_lHistoryDayLineEndDate{ toLocalDays(19000101) };
+	local_days m_lHistoryDayLineStartDate{ toLocalDays(19000101) };
+	local_days m_lHistoryDayLineEndDate{ toLocalDays(19000101) };
 };
 
 using CTiingoStockDailyMetaPtr = shared_ptr<CTiingoStockDailyMeta>;

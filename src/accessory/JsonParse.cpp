@@ -22,6 +22,8 @@
 
 #include"NlohmannJsonDeclaration.h"
 #include "ChinaMarket.h"
+#include "ContainerChinaStock.h"
+#include "SystemData.h"
 
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;

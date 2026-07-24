@@ -5,7 +5,6 @@
 #include <set>
 
 #include "Thread.h"
-#include "ThreadStatus.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 #include<sqlpp23/sqlpp23.h>
@@ -433,10 +432,9 @@ void CContainerTiingoStock::TaskCalculate2() {
 	gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
 	auto lSize = Size();
 	for (auto index = 0; index < lSize; index++) {
-		gl_BackgroundWorkingThread.acquire();
+		gl_BackgroundWorkingThread.Acquire();
 		auto result = gl_runtime.thread_executor()->submit([this, index] {
 			if (gl_systemConfiguration.IsExitingSystem()) return -1;
-			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			bool fFound = false;
 			auto pStock = this->GetStock(index);
 			pStock->Load52WeekLowDB();
@@ -444,8 +442,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 				fFound = true;
 			}
 			pStock->m_v52WeekLowDate.clear(); //直到这里才清空
-			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-			gl_BackgroundWorkingThread.release();
+			gl_BackgroundWorkingThread.Release();
 			if (fFound) return index;
 			return -1;
 		});
@@ -528,14 +525,12 @@ void CContainerTiingoStock::TaskProcessTodayDayLine() {
 	for (size_t index = 0; index < lSize; index++) {
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
-			gl_BackgroundWorkingThread.acquire();
+			gl_BackgroundWorkingThread.Acquire();
 			auto result = gl_runtime.thread_executor()->submit([pStock] {
-				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				if (!gl_systemConfiguration.IsExitingSystem()) {
 					pStock->ProcessDayLine();
 				}
-				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-				gl_BackgroundWorkingThread.release();
+				gl_BackgroundWorkingThread.Release();
 			});
 			vResults.emplace_back(std::move(result));
 		}

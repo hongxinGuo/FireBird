@@ -6,6 +6,8 @@
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
+#include "SystemData.h"
 #include "SystemMessage.h"
 
 using namespace testing;

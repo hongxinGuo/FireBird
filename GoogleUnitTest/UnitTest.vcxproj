@@ -254,7 +254,6 @@
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
-    <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="TengxunWebRTDataTest.cpp" />
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="ContainerChinaWeekLineTest.cpp" />

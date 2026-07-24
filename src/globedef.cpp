@@ -27,12 +27,12 @@
 #include "ChinaMarket.h"
 #include "WorldMarket.h"
 
-#include"threadStatus.h"
 #include "AccessoryDataSource.h"
 
 #include "containerChosenCrypto.h"
 
 #include "AlphaVantageDataSource.h"
+#include "ContainerChinaStock.h"
 #include "ContainerChosenForex.h"
 #include "ContainerFinnhubCountry.h"
 #include "ContainerFinnhubCrypto.h"
@@ -41,6 +41,7 @@
 #include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
 #include "ContainerStockExchange.h"
+#include "ContainerFinnhubStock.h"
 #include "ContainerStockSymbol.h"
 #include "ContainerTiingoChosenStock.h"
 #include "ContainerTiingoCryptoSymbol.h"
@@ -62,7 +63,6 @@ shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger = nullptr;
 // 以下变量皆为唯一实例
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。
-CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
 CSystemData gl_SystemData;
 
 CFinnhubInquiryType gl_FinnhubInquiryType;
@@ -74,7 +74,7 @@ const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地�
 
 // 为了事先初始化，信号量必须声明为全局变量
 binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // 当处理中国市场的实时数据时，不允许同时存储之。
-counting_semaphore<MAX_BACKGROUND_WORKING_THREAD_> gl_BackgroundWorkingThread{ MAX_BACKGROUND_WORKING_THREAD_ }; // 最多后台工作线程允许数量，使用系统配置设定为实际大小
+CCountableSemaphore gl_BackgroundWorkingThread; // 最多后台工作线程允许数量，使用系统配置设定为实际大小
 
 concurrencpp::runtime gl_runtime; // 工作线程运行调度器
 concurrencpp::thread_pool_executor gl_webInquiryExecutor{ "WebInquiry", 4, 100ms }; // 线程池工作线程运行调度器

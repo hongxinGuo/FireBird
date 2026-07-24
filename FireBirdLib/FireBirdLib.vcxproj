@@ -23,7 +23,6 @@
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h" />
     <ClInclude Include="..\src\accessory\spdlog_assert.h" />
-    <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\CharSetTransfer.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
@@ -206,7 +205,6 @@
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
-    <ClCompile Include="..\src\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaMonthLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp" />

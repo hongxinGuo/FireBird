@@ -18,6 +18,10 @@
 
 #include"dataBaseConnector.h"
 
+using std::chrono::year_month_day;
+using std::chrono::Sunday;
+using std::chrono::Saturday;
+
 CFinnhubStock::CFinnhubStock() {
 	SetExchange(string_view("US"));
 	CFinnhubStock::ResetAllUpdateDate();
@@ -48,7 +52,7 @@ void CFinnhubStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
 }
 
-void CFinnhubStock::CheckUpdateStatus(chrono::local_days todayDate) {
+void CFinnhubStock::CheckUpdateStatus(local_days todayDate) {
 	CheckProfileUpdateStatus(todayDate);
 	CheckBasicFinancialUpdateStatus(todayDate);
 	CheckCompanyNewsUpdateStatus(todayDate);
@@ -60,7 +64,7 @@ void CFinnhubStock::CheckUpdateStatus(chrono::local_days todayDate) {
 	CheckInsiderSentimentStatus(todayDate);
 }
 
-void CFinnhubStock::CheckProfileUpdateStatus(chrono::local_days todayDate) {
+void CFinnhubStock::CheckProfileUpdateStatus(local_days todayDate) {
 	if (IsEarlyThen(GetProfileUpdateDate(), todayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) {
 		m_fUpdateCompanyProfile = true;
 	}
@@ -72,7 +76,7 @@ void CFinnhubStock::CheckProfileUpdateStatus(chrono::local_days todayDate) {
 ///
 /// 默认状态为每周更新一次
 ///
-bool CFinnhubStock::CheckCompanyNewsUpdateStatus(chrono::local_days lTodayDate) {
+bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
 	ASSERT(m_fUpdateCompanyNews);
 	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
 		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
@@ -97,7 +101,7 @@ bool CFinnhubStock::CheckCompanyNewsUpdateStatus(chrono::local_days lTodayDate) 
 /// </summary>
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
-bool CFinnhubStock::CheckBasicFinancialUpdateStatus(chrono::local_days lTodayDate) {
+bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
 	ASSERT(m_fUpdateBasicFinancial);
 	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
 		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
@@ -126,14 +130,14 @@ bool CFinnhubStock::CheckBasicFinancialUpdateStatus(chrono::local_days lTodayDat
 /// <param name="lTime"></param>
 /// <param name="lDayOfWeek"></param>
 /// <returns></returns>
-bool CFinnhubStock::CheckDayLineUpdateStatus(chrono::local_days todayDate, chrono::local_days lLastTradeDate, chrono::local_seconds lTime, chrono::weekday lDayOfWeek) {
+bool CFinnhubStock::CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday lDayOfWeek) {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 
 	if (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100)) {
 		SetUpdateDayLine(false);
 		return m_fUpdateDayLine;
 	}
-	else if (lDayOfWeek != chrono::Sunday && lDayOfWeek != chrono::Saturday) {
+	else if (lDayOfWeek != Sunday && lDayOfWeek != Saturday) {
 		// 周一至周五
 		if (lTime > toLocalTime(170000)) {
 			if (todayDate <= GetDayLineEndDate()) {
@@ -324,7 +328,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 }
 
 bool CFinnhubStock::UpdateEPSSurpriseDB() {
-	const chrono::local_days lastEpsSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
+	const local_days lastEpsSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 
 	if (m_vEPSSurprise.empty()) return true;
 	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate > lastEpsSurpriseUpdateDate) { SetUpdateProfileDB(true); }
@@ -450,7 +454,7 @@ void CFinnhubStock::UpdateEPSSurprise(const CEPSSurprisesPtr& pvEPSSurprise) {
 }
 
 void CFinnhubStock::UpdateDayLineStartEndDate() {
-	chrono::local_days lStartDate = chrono::local_days(1970y / 01 / 01), lEndDate = chrono::local_days(1970y / 01 / 01);
+	local_days lStartDate = local_days(1970y / 01 / 01), lEndDate = local_days(1970y / 01 / 01);
 	if (m_dataDayLine.GetStartEndDate(lStartDate, lEndDate)) {
 		if (lStartDate < GetDayLineStartDate()) {
 			SetDayLineStartDate(lStartDate);
@@ -476,12 +480,12 @@ bool CFinnhubStock::HaveNewDayLineData() {
 // 默认每90天更新一次，已经900天没更新的即不再更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubStock::CheckEPSSurpriseStatus(chrono::local_days lCurrentDate) {
-	const chrono::local_days lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
-	if ((lLastEPSSurpriseUpdateDate == chrono::local_days(1970y / 01 / 01)) || (lLastEPSSurpriseUpdateDate == chrono::local_days(1980y / 01 / 01))) { // 没有数据？
+bool CFinnhubStock::CheckEPSSurpriseStatus(local_days lCurrentDate) {
+	const local_days lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
+	if ((lLastEPSSurpriseUpdateDate == local_days(1970y / 01 / 01)) || (lLastEPSSurpriseUpdateDate == local_days(1980y / 01 / 01))) { // 没有数据？
 		m_fUpdateEPSSurprise = false;
 	}
-	else if (IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate() * 10) && (lLastEPSSurpriseUpdateDate != chrono::local_days(1980y / 01 / 01))) {// 有早于900天的数据？即已经不更新了
+	else if (IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate() * 10) && (lLastEPSSurpriseUpdateDate != local_days(1980y / 01 / 01))) {// 有早于900天的数据？即已经不更新了
 		m_fUpdateEPSSurprise = false;
 	}
 	else if (!IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate())) {	// 有不早于90天的数据？
@@ -498,8 +502,8 @@ bool CFinnhubStock::CheckEPSSurpriseStatus(chrono::local_days lCurrentDate) {
 // 默认每30天更新一次.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubStock::CheckSECFilingsStatus(chrono::local_days lCurrentDate) {
-	const chrono::local_days lSECFilingsUpdateDate = GetSECFilingsUpdateDate();
+bool CFinnhubStock::CheckSECFilingsStatus(local_days lCurrentDate) {
+	const local_days lSECFilingsUpdateDate = GetSECFilingsUpdateDate();
 	if (!IsEarlyThen(lSECFilingsUpdateDate, lCurrentDate, gl_systemConfiguration.GetSECFilingsUpdateRate())) {	// 有不早于30天的数据？
 		m_fUpdateSECFilings = false;
 	}
@@ -509,7 +513,7 @@ bool CFinnhubStock::CheckSECFilingsStatus(chrono::local_days lCurrentDate) {
 	return m_fUpdateSECFilings;
 }
 
-bool CFinnhubStock::CheckPeerStatus(chrono::local_days lCurrentDate) {
+bool CFinnhubStock::CheckPeerStatus(local_days lCurrentDate) {
 	if (!IsEarlyThen(GetPeerUpdateDate(), lCurrentDate, gl_systemConfiguration.GetStockPeerUpdateRate())) {// 有不早于90天的数据？
 		m_fUpdateFinnhubPeer = false;
 	}
@@ -527,7 +531,7 @@ void CFinnhubStock::UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvIn
 	}
 }
 
-bool CFinnhubStock::CheckInsiderTransactionStatus(chrono::local_days lCurrentDate) {
+bool CFinnhubStock::CheckInsiderTransactionStatus(local_days lCurrentDate) {
 	if (!IsUSMarket()) {
 		m_fUpdateFinnhubInsiderTransaction = false;
 	}
@@ -544,7 +548,7 @@ void CFinnhubStock::UpdateInsiderSentiment(const CInsiderSentimentsPtr& pvInside
 	m_pvInsiderSentiment = pvInsiderSentiment;
 }
 
-bool CFinnhubStock::CheckInsiderSentimentStatus(chrono::local_days lCurrentDate) {
+bool CFinnhubStock::CheckInsiderSentimentStatus(local_days lCurrentDate) {
 	if (!IsUSMarket()) {
 		m_fUpdateFinnhubInsiderSentiment = false;
 	}
@@ -566,7 +570,7 @@ void CFinnhubStock::SetSECFilings(const CSECFilingsPtr& pv) {
 	}
 }
 
-chrono::local_days CFinnhubStock::GetProfileUpdateDate() {
+local_days CFinnhubStock::GetProfileUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsCompanyProfileConcise");
 		return toLocalDays(lDate);
@@ -575,11 +579,11 @@ chrono::local_days CFinnhubStock::GetProfileUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetProfileUpdateDate(const chrono::local_days profileUpdateDate) noexcept {
+void CFinnhubStock::SetProfileUpdateDate(const local_days profileUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = toFormattedDate(profileUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetCompanyNewsUpdateDate() {
+local_days CFinnhubStock::GetCompanyNewsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsCompanyNews");
 		return toLocalDays(lDate);
@@ -588,11 +592,11 @@ chrono::local_days CFinnhubStock::GetCompanyNewsUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetCompanyNewsUpdateDate(const chrono::local_days companyNewsUpdateDate) noexcept {
+void CFinnhubStock::SetCompanyNewsUpdateDate(const local_days companyNewsUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = toFormattedDate(companyNewsUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetBasicFinancialUpdateDate() {
+local_days CFinnhubStock::GetBasicFinancialUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsBasicFinancials");
 		return toLocalDays(lDate);
@@ -601,11 +605,11 @@ chrono::local_days CFinnhubStock::GetBasicFinancialUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetBasicFinancialUpdateDate(const chrono::local_days basicFinancialUpdateDate) noexcept {
+void CFinnhubStock::SetBasicFinancialUpdateDate(const local_days basicFinancialUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = toFormattedDate(basicFinancialUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetLastRTDataUpdateDate() {
+local_days CFinnhubStock::GetLastRTDataUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockPriceQuote");
 		return toLocalDays(lDate);
@@ -614,11 +618,11 @@ chrono::local_days CFinnhubStock::GetLastRTDataUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetLastRTDataUpdateDate(const chrono::local_days lastRTDataUpdateDate) noexcept {
+void CFinnhubStock::SetLastRTDataUpdateDate(const local_days lastRTDataUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = toFormattedDate(lastRTDataUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetPeerUpdateDate() {
+local_days CFinnhubStock::GetPeerUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsPeer");
 		return toLocalDays(lDate);
@@ -627,11 +631,11 @@ chrono::local_days CFinnhubStock::GetPeerUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetPeerUpdateDate(const chrono::local_days peerUpdateDate) noexcept {
+void CFinnhubStock::SetPeerUpdateDate(const local_days peerUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = toFormattedDate(peerUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetInsiderTransactionUpdateDate() {
+local_days CFinnhubStock::GetInsiderTransactionUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsInsiderTransaction");
 		return toLocalDays(lDate);
@@ -640,11 +644,11 @@ chrono::local_days CFinnhubStock::GetInsiderTransactionUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetInsiderTransactionUpdateDate(const chrono::local_days insiderTransactionUpdateDate) noexcept {
+void CFinnhubStock::SetInsiderTransactionUpdateDate(const local_days insiderTransactionUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = toFormattedDate(insiderTransactionUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetInsiderSentimentUpdateDate() {
+local_days CFinnhubStock::GetInsiderSentimentUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsInsiderSentiment");
 		return toLocalDays(lDate);
@@ -653,11 +657,11 @@ chrono::local_days CFinnhubStock::GetInsiderSentimentUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetInsiderSentimentUpdateDate(const chrono::local_days insiderSentimentUpdateDate) noexcept {
+void CFinnhubStock::SetInsiderSentimentUpdateDate(const local_days insiderSentimentUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = toFormattedDate(insiderSentimentUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
+local_days CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockEstimatesEPSSurprise");
 		return toLocalDays(lDate);
@@ -666,11 +670,11 @@ chrono::local_days CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetLastEPSSurpriseUpdateDate(const chrono::local_days lastEPSSurpriseUpdateDate) noexcept {
+void CFinnhubStock::SetLastEPSSurpriseUpdateDate(const local_days lastEPSSurpriseUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = toFormattedDate(lastEPSSurpriseUpdateDate);
 }
 
-chrono::local_days CFinnhubStock::GetSECFilingsUpdateDate() {
+local_days CFinnhubStock::GetSECFilingsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at("Finnhub").at("StockFundamentalsSECFilings");
 		return toLocalDays(lDate);
@@ -679,7 +683,7 @@ chrono::local_days CFinnhubStock::GetSECFilingsUpdateDate() {
 	}
 }
 
-void CFinnhubStock::SetSECFilingsUpdateDate(const chrono::local_days secFilingsUpdateDate) noexcept {
+void CFinnhubStock::SetSECFilingsUpdateDate(const local_days secFilingsUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = toFormattedDate(secFilingsUpdateDate);
 }
 
@@ -691,9 +695,9 @@ string CFinnhubStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	return sParam;
 }
 
-string CFinnhubStock::GetTiingoDayLineInquiryParam(chrono::local_days lStartDate, chrono::local_days lCurrentDate) const {
-	chrono::year_month_day ymdStart{ lStartDate };
-	chrono::year_month_day ymdCurrent{ lCurrentDate };
+string CFinnhubStock::GetTiingoDayLineInquiryParam(local_days lStartDate, local_days lCurrentDate) const {
+	year_month_day ymdStart{ lStartDate };
+	year_month_day ymdCurrent{ lCurrentDate };
 
 	string sParam = std::format("{}/prices?&startDate={:%F}&endDate={:%F}", m_strSymbol, ymdStart, ymdCurrent);
 

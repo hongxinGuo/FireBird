@@ -10,11 +10,14 @@
 #include"DayLineWebData.h"
 
 #include<sqlpp23/sqlpp23.h>
+
+#include "ContainerChinaStock.h"
 #include"StockMarketSQLTable.h"
 
 #include"dataBaseConnector.h"
 #include "TiingoStock.h"
 #include"FinnhubStock.h"
+#include "SystemConfiguration.h"
 
 using namespace testing;
 

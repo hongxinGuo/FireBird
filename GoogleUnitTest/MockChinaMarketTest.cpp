@@ -9,10 +9,12 @@
 #include"TimeConvert.h"
 
 #include"ChinaStock.h"
+#include "ContainerChinaStock.h"
 
 #include"MockChinaMarket.h"
 
 #include"GeneralCheck.h"
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
 using namespace testing;

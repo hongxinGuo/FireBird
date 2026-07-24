@@ -8,7 +8,9 @@
 #include "ChinaMarket.h"
 
 #include"ProductSinaRT.h"
+#include "SystemData.h"
 #include "WebData.h"
+#include"WebRTData.h"
 
 using namespace testing;
 

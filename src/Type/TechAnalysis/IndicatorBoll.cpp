@@ -3,6 +3,9 @@
 #include "IndicatorBoll.h"
 
 #include <deque>
+using std::deque;
+using std::max;
+using std::min;
 
 #include "VirtualHistoryCandle.h" // CVirtualHistoryCandle
 

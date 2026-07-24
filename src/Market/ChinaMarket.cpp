@@ -19,6 +19,7 @@
 
 #include<sqlpp23/sqlpp23.h>
 
+#include "ContainerChinaStock.h"
 #include "ContainerStockExchange.h"
 #include "ContainerStockSymbol.h"
 #include "dataBaseConnector.h"
@@ -827,6 +828,10 @@ bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, const vector<CV
 	setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
 
 	return true;
+}
+
+bool CChinaMarket::IsDayLineNeedProcess() {
+	return gl_SystemData.GetDayLineQueueSize() > 0;
 }
 
 CChinaStockPtr CChinaMarket::GetCurrentSelectedStock() {

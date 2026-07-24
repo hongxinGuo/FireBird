@@ -2,6 +2,8 @@
 
 #include"VirtualDataHistoryCandle.h"
 
+#include"TimeConvert.h"
+
 #include <algorithm>
 #include"DayLine.h"
 
@@ -46,7 +48,7 @@ void CVirtualDataHistoryCandle::UpdateData(const CDayLinesPtr& pvTempDayLine) {
 	SetDataLoaded(true);
 }
 
-bool CVirtualDataHistoryCandle::GetStartEndDate(chrono::local_days& lStartDate, chrono::local_days& lEndDate) const {
+bool CVirtualDataHistoryCandle::GetStartEndDate(local_days& lStartDate, local_days& lEndDate) const {
 	if (m_vHistoryData.empty()) return false;
 
 	lStartDate = m_vHistoryData.at(0).GetDate();
@@ -55,7 +57,7 @@ bool CVirtualDataHistoryCandle::GetStartEndDate(chrono::local_days& lStartDate, 
 	return true;
 }
 
-bool CVirtualDataHistoryCandle::HaveDayLine(chrono::local_days date) {
+bool CVirtualDataHistoryCandle::HaveDayLine(local_days date) {
 	return ranges::any_of(m_vHistoryData.begin(), m_vHistoryData.end(),
 	                      [date](const CVirtualHistoryCandle& p) { return p.GetDate() == date; });
 }
@@ -66,7 +68,7 @@ bool CVirtualDataHistoryCandle::HaveDayLine(chrono::local_days date) {
 ///
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(chrono::local_days date) {
+CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(local_days date) {
 	auto it = std::ranges::lower_bound(m_vHistoryData, date,
 	                                   std::ranges::less{},
 	                                   [](const CVirtualHistoryCandle& c) { return c.GetDate(); });
@@ -76,7 +78,7 @@ CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle(chrono::local_days d
 	return nullptr;
 }
 
-CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle2(chrono::local_days date) {
+CVirtualHistoryCandle* CVirtualDataHistoryCandle::GetCandle2(local_days date) {
 	auto& localHistoryData = m_vHistoryData;
 	auto it = std::ranges::find_if(localHistoryData.begin(), localHistoryData.end(),
 	                               [date](const CVirtualHistoryCandle& p) { return p.GetDate() == date; });

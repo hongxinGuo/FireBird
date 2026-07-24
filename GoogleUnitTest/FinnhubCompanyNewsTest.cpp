@@ -6,6 +6,7 @@
 
 #include"TimeConvert.h"
 #include"WorldMarket.h"
+#include "ContainerFinnhubStock.h"
 
 #include"ProductFinnhubCompanyNews.h"
 #include "SystemMessage.h"

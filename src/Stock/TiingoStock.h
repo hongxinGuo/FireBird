@@ -1,15 +1,14 @@
 #pragma once
 
 #include "ContainerTiingoStockDayLine.h"
-#include "ContainerTiingoStockWeekLine.h"
 
-#include "TiingoCompanyFinancialState.h"
-#include "TiingoIEXTopOFBook.h"
-#include "TiingoStockDailyMeta.h"
 #include "VirtualStock.h"
 
-class CTiingoStock;
-using CTiingoStockPtr = shared_ptr<CTiingoStock>;
+#include"TimeConvert.h"
+
+class CTiingoCompanyFinancialState;
+class CTiingoStockDailyMeta;
+class CTiingoIEXTopOfBook;
 
 class CTiingoStock : public CVirtualStock {
 public:
@@ -99,20 +98,20 @@ public:
 	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
 	void SetDayLineLoaded(bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
 
-	void UpdateRTData(const CTiingoIEXTopOfBook& IEXTopOfBook);
-	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
+	void UpdateRTData(const shared_ptr<CTiingoIEXTopOfBook>& pIEXTopOfBook);
+	void UpdateFinancialState(const shared_ptr<vector<shared_ptr<CTiingoCompanyFinancialState>>>& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine);
 	void UpdateFinancialStateDB();
 	void ClearFinancialState() { m_pvFinancialState.reset(); }
 
-	void UpdateProfile(const CTiingoStockPtr& pStock);
-	void UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta);
+	void UpdateProfile(const shared_ptr<CTiingoStock>& pStock);
+	void UpdateDailyMeta(const shared_ptr<CTiingoStockDailyMeta>& pMeta);
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	bool HaveDayLine(const chrono::local_days lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
+	bool HaveDayLine(const local_days lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
 	CTiingoCandleLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
-	CTiingoCandleLine* GetDayLineAtDate(const chrono::local_days lDate) { return m_dataDayLine.GetDayLine(lDate); }
+	CTiingoCandleLine* GetDayLineAtDate(const local_days lDate) { return m_dataDayLine.GetDayLine(lDate); }
 
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
@@ -129,35 +128,35 @@ public:
 	void RebuildStockSplitDB() override;
 
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
-	void CheckUpdateStatus(chrono::local_days lTodayDate);
-	void CheckFinancialStateUpdateStatus(chrono::local_days lTodayDate);
-	void CheckDayLineUpdateStatus(chrono::local_days lTodayDate);
-	void CheckStockDailyMetaStatus(chrono::local_days lCurrentDate);
+	void CheckUpdateStatus(local_days lTodayDate);
+	void CheckFinancialStateUpdateStatus(local_days lTodayDate);
+	void CheckDayLineUpdateStatus(local_days lTodayDate);
+	void CheckStockDailyMetaStatus(local_days lCurrentDate);
 
-	chrono::local_days GetStatementLastUpdatedDate() { return toLocalDays(m_jsonUpdateDate["StatementLastUpdated"]); }
-	void SetStatementLastUpdatedDate(chrono::local_days date) { m_jsonUpdateDate["StatementLastUpdated"] = toFormattedDate(date); }
-	chrono::local_days GetDailyUpdateDate() { return toLocalDays(m_jsonUpdateDate["DailyUpdate"]); }
-	void SetDailyUpdateDate(chrono::local_days date) { m_jsonUpdateDate["DailyUpdate"] = toFormattedDate(date); }
+	local_days GetStatementLastUpdatedDate() { return toLocalDays(m_jsonUpdateDate["StatementLastUpdated"]); }
+	void SetStatementLastUpdatedDate(local_days date) { m_jsonUpdateDate["StatementLastUpdated"] = toFormattedDate(date); }
+	local_days GetDailyUpdateDate() { return toLocalDays(m_jsonUpdateDate["DailyUpdate"]); }
+	void SetDailyUpdateDate(local_days date) { m_jsonUpdateDate["DailyUpdate"] = toFormattedDate(date); }
 
-	chrono::local_days GetCompanyFinancialStatementUpdateDate() { return toLocalDays(m_jsonUpdateDate["CompanyFinancialStatement"]); }
-	void SetCompanyFinancialStatementUpdateDate(chrono::local_days date) { m_jsonUpdateDate["CompanyFinancialStatement"] = toFormattedDate(date); }
+	local_days GetCompanyFinancialStatementUpdateDate() { return toLocalDays(m_jsonUpdateDate["CompanyFinancialStatement"]); }
+	void SetCompanyFinancialStatementUpdateDate(local_days date) { m_jsonUpdateDate["CompanyFinancialStatement"] = toFormattedDate(date); }
 
-	chrono::local_days GetHistoryDayLineStartDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineStartDate"]); }
-	void SetHistoryDayLineStartDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineStartDate"] = toFormattedDate(date); }
-	chrono::local_days GetHistoryDayLineEndDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineEndDate"]); }
-	void SetHistoryDayLineEndDate(chrono::local_days date) { m_jsonUpdateDate["HistoryDayLineEndDate"] = toFormattedDate(date); }
-	chrono::local_days GetUpdateStockDailyMetaDate() { return toLocalDays(m_jsonUpdateDate["UpdateStockDailyMetaDate"]); }
-	void SetUpdateStockDailyMetaDate(chrono::local_days date) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = toFormattedDate(date); }
+	local_days GetHistoryDayLineStartDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineStartDate"]); }
+	void SetHistoryDayLineStartDate(local_days date) { m_jsonUpdateDate["HistoryDayLineStartDate"] = toFormattedDate(date); }
+	local_days GetHistoryDayLineEndDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineEndDate"]); }
+	void SetHistoryDayLineEndDate(local_days date) { m_jsonUpdateDate["HistoryDayLineEndDate"] = toFormattedDate(date); }
+	local_days GetUpdateStockDailyMetaDate() { return toLocalDays(m_jsonUpdateDate["UpdateStockDailyMetaDate"]); }
+	void SetUpdateStockDailyMetaDate(local_days date) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = toFormattedDate(date); }
 
-	chrono::local_days GetDayLineProcessDate();
-	void SetDayLineProcessDate(chrono::local_days date) { m_jsonUpdateDate["DayLineProcessDate"] = toFormattedDate(date); }
+	local_days GetDayLineProcessDate();
+	void SetDayLineProcessDate(local_days date) { m_jsonUpdateDate["DayLineProcessDate"] = toFormattedDate(date); }
 
-	bool Have52WeekLowDate(chrono::local_days lDate) { return std::ranges::find(m_v52WeekLowDate, lDate) != m_v52WeekLowDate.end(); }
-	bool Have52WeekHighDate(chrono::local_days lDate) { return std::ranges::find(m_v52WeekHighDate, lDate) != m_v52WeekHighDate.end(); }
-	void Add52WeekLowDate(chrono::local_days lDate) { m_v52WeekLowDate.push_back(lDate); }
-	void Delete52WeekLowDate(chrono::local_days lDate);
-	void Add52WeekHighDate(chrono::local_days lDate) { m_v52WeekHighDate.push_back(lDate); }
-	void Delete52WeekHighDate(chrono::local_days lDate);
+	bool Have52WeekLowDate(local_days lDate) { return std::ranges::find(m_v52WeekLowDate, lDate) != m_v52WeekLowDate.end(); }
+	bool Have52WeekHighDate(local_days lDate) { return std::ranges::find(m_v52WeekHighDate, lDate) != m_v52WeekHighDate.end(); }
+	void Add52WeekLowDate(local_days lDate) { m_v52WeekLowDate.push_back(lDate); }
+	void Delete52WeekLowDate(local_days lDate);
+	void Add52WeekHighDate(local_days lDate) { m_v52WeekHighDate.push_back(lDate); }
+	void Delete52WeekHighDate(local_days lDate);
 
 	void Delete52WeekHighDB() const;
 	void Delete52WeekLowDB() const;
@@ -190,8 +189,8 @@ public:
 	void Clear52WeekHigh() { m_v52WeekHighDate.clear(); }
 
 public:
-	vector<chrono::local_days> m_v52WeekLowDate; // 年度最低价的日期
-	vector<chrono::local_days> m_v52WeekHighDate; // 年度最高价的日期
+	vector<local_days> m_v52WeekLowDate; // 年度最低价的日期
+	vector<local_days> m_v52WeekHighDate; // 年度最高价的日期
 	vector<double> m_vClose; // 收盘价
 
 	long m_lHighHigher{ 0 };
@@ -218,7 +217,7 @@ protected:
 	string m_strSECFilingWebSite{ " " };
 	string m_strDataProviderPermaTicker{ " " };
 
-	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
+	shared_ptr<vector<shared_ptr<CTiingoCompanyFinancialState>>> m_pvFinancialState{ nullptr };
 
 	CContainerTiingoStockDayLine m_dataDayLine; // 日线数据容器
 

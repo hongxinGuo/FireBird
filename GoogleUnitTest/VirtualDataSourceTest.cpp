@@ -6,6 +6,9 @@
 
 #include"VirtualDataSource.h"
 #include"VirtualWebProduct.h"
+#include"TimeConvert.h"
+
+using std::make_shared;
 
 using namespace testing;
 

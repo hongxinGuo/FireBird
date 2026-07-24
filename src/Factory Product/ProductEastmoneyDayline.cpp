@@ -1,14 +1,17 @@
 #include "pch.h"
 
 #include "ProductEastmoneyDayLine.h"
-#include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
 
 #include "EastmoneyDayLineDataSource.h"
 #include "JsonParse.h"
 #include"WebData.h"
 
 #include"simdjson.h"
+#include "SystemData.h"
 using namespace simdjson;
+
+using std::make_shared;
 
 // Helper: parse one 东方财富 Kline line like:
 // "2024-12-31,6.29,6.18,6.32,6.17,483794,313479921.00,2.38,-1.75,-0.11,0.59"
@@ -32,8 +35,8 @@ static bool ParseEastmoneyKlineLine(const std::string& line, CDayLine& outDayLin
 	{
 		std::string tmp(parts[0]);
 		std::istringstream ss(tmp);
-		chrono::local_days ld;
-		ss >> chrono::parse("%F", ld);
+		local_days ld;
+		ss >> parse("%F", ld);
 		outDayLine.SetDate(ld);
 	}
 

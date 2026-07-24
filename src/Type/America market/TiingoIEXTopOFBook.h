@@ -43,4 +43,4 @@ public:
 };
 
 using CTiingoIEXTopOfBookPtr = shared_ptr<CTiingoIEXTopOfBook>;
-using CTiingoIEXTopOfBooksPtr = shared_ptr<vector<CTiingoIEXTopOfBook>>;
+using CTiingoIEXTopOfBooksPtr = shared_ptr<vector<CTiingoIEXTopOfBookPtr>>;

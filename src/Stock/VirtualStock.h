@@ -1,12 +1,16 @@
 #pragma once
 
 #include "VirtualDataHistoryCandle.h"
-#include "StockSplit.h"
 
 #include "nlohmannJsonDeclaration.h"
 
-class CVirtualStock;
-using CVirtualStockPtr = shared_ptr<CVirtualStock>;
+using std::string;
+using std::string_view;
+using std::atomic_bool;
+
+using std::literals::chrono_literals::operator ""y;
+
+class CStockSplit;
 
 class CVirtualStock {
 public:
@@ -99,16 +103,16 @@ public:
 	virtual void DeleteDuplicatedDayLine() noexcept { ASSERT(0); }
 
 	auto GetDayLineStartDate() const noexcept { return m_dayLineStartDate; }
-	void SetDayLineStartDate(const chrono::local_days& date) noexcept { m_dayLineStartDate = date; }
+	void SetDayLineStartDate(const local_days& date) noexcept { m_dayLineStartDate = date; }
 	auto GetDayLineEndDate() const noexcept { return m_dayLineEndDate; }
-	void SetDayLineEndDate(const chrono::local_days& date) noexcept { m_dayLineEndDate = date; }
+	void SetDayLineEndDate(const local_days& date) noexcept { m_dayLineEndDate = date; }
 	double GetShareCount() const { return m_dShareCount; }
 	void SetShareCount(double val) { m_dShareCount = val; }
 
 	size_t GetStockSplitCount() const noexcept { return m_pvStockSplit->size(); }
-	CStockSplit GetStockSplit(size_t index) const noexcept { return m_pvStockSplit->at(index); }
-	void AddStockSplit(const CStockSplit& pStockSplit) const noexcept; // 按日期顺序添加拆股信息
-	void AddStockSplits(const CStockSplitsPtr& pStockSplit) noexcept; // 按日期顺序添加拆股信息
+	shared_ptr<CStockSplit> GetStockSplit(size_t index) const noexcept { return m_pvStockSplit->at(index); }
+	void AddStockSplit(const shared_ptr<CStockSplit>& pStockSplit) const noexcept; // 按日期顺序添加拆股信息
+	void AddStockSplits(const shared_ptr<vector<shared_ptr<CStockSplit>>>& pvStockSplit) noexcept; // 按日期顺序添加拆股信息
 	void ClearStockSplit() const noexcept { m_pvStockSplit->clear(); }
 
 	virtual void RebuildStockSplitDB() {} // 重建拆股数据库
@@ -129,7 +133,7 @@ public:
 	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
 	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
 
-	bool IsSameStock(const CVirtualStockPtr& pStock) const;
+	bool IsSameStock(const shared_ptr<CVirtualStock>& pStock) const;
 
 	virtual bool IsDayLineLoaded() const noexcept {
 		ASSERT(0);
@@ -157,9 +161,9 @@ protected:
 	string m_strDisplaySymbol{ " " };
 
 	nlohmannJson m_jsonUpdateDate{ nlohmannJson({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
-	chrono::local_days m_dayLineStartDate{ 2990y / 01 / 01 }; // 日线历史数据的起始日期
-	chrono::local_days m_dayLineEndDate{ 1980y / 01 / 01 }; // 日线历史数据的结束日期
-	CStockSplitsPtr m_pvStockSplit{ nullptr };
+	local_days m_dayLineStartDate{ 2990y / 01 / 01 }; // 日线历史数据的起始日期
+	local_days m_dayLineEndDate{ 1980y / 01 / 01 }; // 日线历史数据的结束日期
+	shared_ptr<vector<shared_ptr<CStockSplit>>> m_pvStockSplit{ nullptr };
 	double m_dShareCount{ 0.0 }; // 股本数量, 单位：百万股。从Finnhub获取。
 
 	// 实时数据区
@@ -191,4 +195,6 @@ protected:
 	atomic_bool m_fUpdateSplitDB{ false }; // 拆股信息已处理，等待存储。
 };
 
-extern CVirtualStockPtr gl_pCurrentStock;
+using CVirtualStockPtr = shared_ptr<CVirtualStock>;
+
+extern shared_ptr<CVirtualStock> gl_pCurrentStock;

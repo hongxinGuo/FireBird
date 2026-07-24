@@ -2,6 +2,8 @@
 
 #include"VirtualHistoryCandle.h"
 
+#include"TimeConvert.h"
+
 void CVirtualHistoryCandle::Reset() {
 	m_tpDate = chrono::local_days{};
 	m_strExchange.clear();
@@ -35,6 +37,9 @@ bool CVirtualHistoryCandle::IsActive() const {
 		return true;
 	}
 	return false;
+}
+void CVirtualHistoryCandle::SetDate(const unsigned lDate) noexcept {
+	m_tpDate = toLocalDays(lDate);
 }
 
 void CVirtualHistoryCandle::SetAverage(size_t length, long lValue) noexcept {

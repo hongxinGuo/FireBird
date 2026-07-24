@@ -4,6 +4,7 @@
 #include"ProductSinaRT.h"
 
 #include"ChinaMarket.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
 
 /// <summary>

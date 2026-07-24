@@ -7,6 +7,8 @@
 #include"InaccessibleSymbol.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 void CProductTiingo::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
 	for (const auto& pWebData : *pvWebData) {
 		if (pWebData != nullptr) {
@@ -27,7 +29,7 @@ void CProductTiingo::AddInaccessibleSymbol() {
 		if (!pStock->HaveSymbol(m_strInquiringSymbol)) {	// 新的证券代码？
 			pStock->AddSymbol(m_strInquiringSymbol);
 		}
-	} catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该证券名称
+	} catch (std::out_of_range&) {	// 不存在此申请类型？则存储此新类型和该证券名称
 		const auto pNewInaccessibleSymbol = make_shared<CInaccessible>();
 		pNewInaccessibleSymbol->SetFunction(m_iInquireType);
 		pNewInaccessibleSymbol->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));

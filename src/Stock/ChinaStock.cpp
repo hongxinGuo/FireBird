@@ -81,10 +81,24 @@ void CChinaStock::ClearRTDataDeque() {
 	}
 }
 
+size_t CChinaStock::DayLineSize() const noexcept {
+	return m_dataDayLine.Size();
+}
+
 bool CChinaStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Size() <= 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;
+}
+
+void CChinaStock::UnloadDayLine() noexcept {
+	m_dataDayLine.Unload();
+}
+void CChinaStock::StoreDayLine(const CDayLine& dayLine) {
+	m_dataDayLine.Add(dayLine);
+}
+CDayLine* CChinaStock::GetDayLine(const size_t lIndex) {
+	return m_dataDayLine.GetData(lIndex);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -107,10 +121,29 @@ void CChinaStock::ProcessRTData() {
 	}
 }
 
+bool CChinaStock::IsDayLineLoaded() const noexcept {
+	return m_dataDayLine.IsDataLoaded();
+}
+
+void CChinaStock::SetDayLineLoaded(const bool fFlag) noexcept {
+	m_dataDayLine.SetDataLoaded(fFlag);
+}
+void CChinaStock::UpdateDayLine(const vector<CDayLine>& vTempDayLine) {
+	m_dataDayLine.UpdateData(vTempDayLine);
+}
+
 void CChinaStock::ReportDayLineDownLoaded() {
 	//string strTemp = GetSymbol();
 	//strTemp += "日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
+}
+
+void CChinaStock::LoadDayLineDB() {
+	m_dataDayLine.LoadDB(m_strSymbol);
+}
+
+void CChinaStock::LoadDayLineDB(long lStartDate) {
+	m_dataDayLine.LoadDB(m_strSymbol, lStartDate);
 }
 
 void CChinaStock::UpdateDayLineDB() {
@@ -123,6 +156,10 @@ void CChinaStock::UpdateDayLineDB() {
 
 	UpdateDayLineStartEndDate();
 	UnloadDayLine();
+}
+
+void CChinaStock::SaveDayLineDB() {
+	m_dataDayLine.SaveDB(GetSymbol());
 }
 
 bool CChinaStock::IsDayLineDuplicated() noexcept {

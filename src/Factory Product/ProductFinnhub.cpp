@@ -5,6 +5,9 @@
 #include"InaccessibleSymbol.h"
 #include "WebData.h"
 
+using std::make_shared;
+using std::exception;
+
 void CProductFinnhub::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
 	for (const auto& pWebData : *pvWebData) {
 		if (pWebData != nullptr) {
@@ -26,7 +29,7 @@ void CProductFinnhub::AddInaccessibleSymbol() {
 		if (!pExchange->HaveSymbol(m_strInquiringExchange)) {	// 新的交易所代码？
 			pExchange->AddSymbol(m_strInquiringExchange);
 		}
-	} catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该交易所名称
+	} catch (std::out_of_range&) {	// 不存在此申请类型？则存储此新类型和该交易所名称
 		const auto pNewExchange = make_shared<CInaccessible>();
 		pNewExchange->SetFunction(m_iInquireType);
 		pNewExchange->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));

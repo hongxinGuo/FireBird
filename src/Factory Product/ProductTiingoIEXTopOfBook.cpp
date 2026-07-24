@@ -43,11 +43,11 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
 	auto st = gl_pWorldMarket->ToSysTime(toLocalDateTime(lNewestTradeDay, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 	if (pvTiingoIEXTopOFBook->empty()) return;
-	for (auto& IEXTopOFBook : *pvTiingoIEXTopOFBook) {
-		if (IEXTopOFBook.m_timeStamp < st) continue; // 只使用不早于一天的实时数据
-		if (!gl_dataContainerTiingoStock.IsSymbol(IEXTopOFBook.m_strTicker)) continue; // 只更新已有代码
-		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(IEXTopOFBook.m_strTicker);
-		pTiingoStock->UpdateRTData(IEXTopOFBook);
+	for (auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
+		if (pIEXTopOFBook->m_timeStamp < st) continue; // 只使用不早于一天的实时数据
+		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
+		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
+		pTiingoStock->UpdateRTData(pIEXTopOFBook);
 		i++;
 	}
 	if (gl_pWorldMarket->GetMarketTime() < toLocalTime(180500)) { // 18点5分前存储此数据，之后无需存储
@@ -100,7 +100,7 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData) {
-	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBook>>();
+	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
 	if (!IsValidData(pWebData)) return pvTiingoIEXLastTopOFBook;
 
 	try {
@@ -113,44 +113,43 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 
 		int iCount = 0;
 		for (auto item : doc) {
-			CTiingoIEXTopOfBook IEXLastTopOFBook;
+			auto IEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
 			CTiingoStock stock;
 			auto itemValue = item.value();
 			try {
 				s1 = simdjsonGetStringView(itemValue, "ticker");
-				IEXLastTopOFBook.m_strTicker = s1;
+				IEXLastTopOFBook->m_strTicker = s1;
 				s1 = simdjsonGetStringView(itemValue, "timestamp");
 				ss.clear();
 				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%Ez", IEXLastTopOFBook.m_timeStamp);
+				chrono::from_stream(ss, "%FT%T%Ez", IEXLastTopOFBook->m_timeStamp);
 				s1 = simdjsonGetStringView(itemValue, "lastSaleTimestamp");
 				ss.clear();
 				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook.m_lastSale);
+				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook->m_lastSale);
 				s1 = simdjsonGetStringView(itemValue, "quoteTimestamp");
 				ss.clear();
 				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook.m_quote);
+				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook->m_quote);
 			} catch (simdjson_error& error) {
 				ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
 			}
 
-			IEXLastTopOFBook.m_lHigh = simdjsonGetDouble(itemValue, "high") * stock.GetRatio();
-			IEXLastTopOFBook.m_lLow = simdjsonGetDouble(itemValue, "low") * stock.GetRatio();
-			IEXLastTopOFBook.m_lLastClose = simdjsonGetDouble(itemValue, "prevClose") * stock.GetRatio();
-			IEXLastTopOFBook.m_lOpen = simdjsonGetDouble(itemValue, "open") * stock.GetRatio();
-			IEXLastTopOFBook.m_lNew = simdjsonGetDouble(itemValue, "last") * stock.GetRatio();
-			if (IEXLastTopOFBook.m_lNew == 0) { // 有时Last项为null，此时需要使用tngoLast项的数据
-				IEXLastTopOFBook.m_lNew = simdjsonGetDouble(itemValue, "tngoLast") * stock.GetRatio();
+			IEXLastTopOFBook->m_lHigh = simdjsonGetDouble(itemValue, "high") * stock.GetRatio();
+			IEXLastTopOFBook->m_lLow = simdjsonGetDouble(itemValue, "low") * stock.GetRatio();
+			IEXLastTopOFBook->m_lLastClose = simdjsonGetDouble(itemValue, "prevClose") * stock.GetRatio();
+			IEXLastTopOFBook->m_lOpen = simdjsonGetDouble(itemValue, "open") * stock.GetRatio();
+			IEXLastTopOFBook->m_lNew = simdjsonGetDouble(itemValue, "last") * stock.GetRatio();
+			if (IEXLastTopOFBook->m_lNew == 0) { // 有时Last项为null，此时需要使用tngoLast项的数据
+				IEXLastTopOFBook->m_lNew = simdjsonGetDouble(itemValue, "tngoLast") * stock.GetRatio();
 			}
 			try {
-				IEXLastTopOFBook.m_llVolume = simdjsonGetDouble(itemValue, "volume");
+				IEXLastTopOFBook->m_llVolume = simdjsonGetDouble(itemValue, "volume");
 			} catch (simdjson_error& error) {
 				ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
 			}
 
 			pvTiingoIEXLastTopOFBook->push_back(IEXLastTopOFBook);
-			IEXLastTopOFBook.Reset();
 			iCount++;
 		}
 	} catch (simdjson_error& error) {

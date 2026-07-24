@@ -66,7 +66,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 	auto result = db(select(all_of(t)).from(t));
 	auto multi_insert = insert_into(t).columns(t.dataCode, t.name, t.description, t.statementType, t.units);
 	for (const auto& row : result) {
-		mapDefinition[string{ row.dataCode.value() }] = mapDefinition.size();
+		mapDefinition[string{ row.dataCode }] = mapDefinition.size();
 	}
 
 	int nValues = 0;
@@ -100,11 +100,11 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	Reserve(rows);
 	for (const auto& row : result) {
 		CTiingoFundamentalDefinition tiingoFundamentalDefinition;
-		tiingoFundamentalDefinition.m_strDataCode = string{ row.dataCode.value() };
-		tiingoFundamentalDefinition.m_strName = string{ row.name.value() };
-		tiingoFundamentalDefinition.m_strDescription = string{ row.description.value() };
-		tiingoFundamentalDefinition.m_strStatementType = string{ row.statementType.value() };
-		tiingoFundamentalDefinition.m_strUnits = string{ row.units.value() };
+		tiingoFundamentalDefinition.m_strDataCode = string{ row.dataCode };
+		tiingoFundamentalDefinition.m_strName = string{ row.name };
+		tiingoFundamentalDefinition.m_strDescription = string{ row.description };
+		tiingoFundamentalDefinition.m_strStatementType = string{ row.statementType };
+		tiingoFundamentalDefinition.m_strUnits = string{ row.units };
 		Add(tiingoFundamentalDefinition);
 	}
 	tx.commit();

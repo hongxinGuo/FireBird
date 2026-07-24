@@ -4,6 +4,7 @@
 
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
+#include "ContainerFinnhubStock.h"
 #include"ProductFinnhubStockDayLine.h"
 #include "SystemMessage.h"
 #include"TestWebData.h"

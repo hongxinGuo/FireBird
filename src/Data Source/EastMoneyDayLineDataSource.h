@@ -14,7 +14,7 @@ public:
 	~CEastmoneyDayLineDataSource() override = default;
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(const chrono::local_seconds& currentTime) override;
+	bool GenerateInquiryMessage(const local_seconds& currentTime) override;
 
 	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置Eastmoney DayLine的m_pSession状态。
 	void CheckWebData(const CWebDataPtr& pWebData) override;
@@ -36,7 +36,7 @@ protected:
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
 	string m_strDownLoadingStockCode{};
 
-	chrono::time_point<chrono::steady_clock> m_PrevInquireTimePoint{};
+	time_point<steady_clock> m_PrevInquireTimePoint{};
 	int m_InqueringTime{ 10000 }; // 每次查询间隔，单位ms。
 };
 

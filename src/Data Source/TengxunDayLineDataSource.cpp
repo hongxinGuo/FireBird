@@ -18,8 +18,10 @@
 #include"ProductTengxunDayLine.h"
 
 #include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "spdlog_assert.h"
+#include "SystemConfiguration.h"
 #include "TimeConvert.h"
 #include "WebData.h"
 

@@ -11,6 +11,8 @@
 #include "FinnhubDataSource.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/country?";
 }

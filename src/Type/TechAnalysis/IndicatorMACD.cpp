@@ -2,6 +2,9 @@
 
 #include "IndicatorMACD.h"
 
+using std::max;
+using std::min;
+
 double MACDResult::Max() const {
 	if (m_macd >= m_hist) {
 		if (m_macd >= m_signal) return m_macd;

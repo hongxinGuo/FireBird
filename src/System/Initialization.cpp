@@ -2,7 +2,7 @@
 
 #include "Initialization.h"
 
-#include <spdlog/spdlog-inl.h>
+#include "spdlog/sinks/daily_file_sink.h"
 
 #include "AlphaVantageDataSource.h"
 #include"SinaRTDataSource.h"
@@ -22,6 +22,11 @@
 #include "Thread.h"
 
 #include <spdlog/sinks/basic_file_sink.h>
+
+#include "FinnhubWebSocket.h"
+#include "TiingoCryptoWebSocket.h"
+#include "TiingoForexWebSocket.h"
+#include "TiingoIEXWebSocket.h"
 using namespace spdlog;
 
 #include "CharSetTransfer.h"

@@ -4,7 +4,7 @@
 #include"nlohmannJsonGetValue.h"
 
 #include"WorldMarket.h"
-#include"FinnhubStock.h"
+#include "ContainerFinnhubStock.h"
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 

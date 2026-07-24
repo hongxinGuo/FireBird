@@ -6,6 +6,7 @@
 #include"ChinaMarket.h"
 
 #include"ContainerVirtualStock.h"
+#include"ContainerChinaStock.h"
 
 using namespace testing;
 
@@ -62,7 +63,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGetSymbols) {
-		const vectorString vString = m_containerVirtualStock.GetSymbols();
+		const vector<string> vString = m_containerVirtualStock.GetSymbols();
 
 		EXPECT_EQ(vString.at(0), "000001.SS");
 		EXPECT_EQ(vString.at(1), "000001.SZ");

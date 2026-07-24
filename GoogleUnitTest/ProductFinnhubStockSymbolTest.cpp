@@ -2,9 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include "ContainerStockExchange.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
+#include "ContainerFinnhubStock.h"
+#include "ContainerStockExchange.h"
 
 #include"ProductFinnhubStockSymbol.h"
 #include "SystemMessage.h"

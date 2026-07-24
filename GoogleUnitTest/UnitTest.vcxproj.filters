@@ -144,9 +144,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadStatusTest.cpp">
-      <Filter>Test源文件\accessory</Filter>
-    </ClCompile>
     <ClCompile Include="WebRTDataTest.cpp">
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
     </ClCompile>

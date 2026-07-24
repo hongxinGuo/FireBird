@@ -14,12 +14,19 @@
 #include <gmock/gmock-matchers.h>
 
 #include "AccessoryDataSource.h"
+#include "ContainerChinaStock.h"
+#include "ContainerFinnhubStock.h"
 #include "ContainerFinnhubCryptoExchange.h"
 #include "ContainerFinnhubForexExchange.h"
 #include "ContainerTiingoStock.h"
 #include "EastmoneyDayLineDataSource.h"
+#include "FinnhubWebSocket.h"
 #include "InaccessibleSymbol.h"
 #include "SinaRTDataSource.h"
+#include "SystemData.h"
+#include "TiingoCryptoWebSocket.h"
+#include "TiingoForexWebSocket.h"
+#include "TiingoIEXWebSocket.h"
 
 using namespace testing;
 

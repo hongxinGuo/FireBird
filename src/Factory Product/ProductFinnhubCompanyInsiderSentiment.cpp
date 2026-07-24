@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
+#include "ContainerFinnhubStock.h"
+
 #include "WebData.h"
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {

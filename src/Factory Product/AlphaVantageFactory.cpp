@@ -8,6 +8,8 @@
 #include "ProductDummy.h"
 #include "AlphaVantageFactory.h"
 
+using std::make_shared;
+
 CVirtualProductWebDataPtr CAlphaVantageFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
 

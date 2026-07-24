@@ -3,7 +3,6 @@
 
 #include"SystemPublicDeclaration.h"
 
-#include"ThreadStatus.h"
 #include"Thread.h"
 
 #include "FireBird.h"
@@ -23,6 +22,7 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+#include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
 #include "ContainerStockSymbol.h"
@@ -30,10 +30,15 @@
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoStock.h"
 #include "EastmoneyDayLineDataSource.h"
+#include "FinnhubWebSocket.h"
 #include "TimeConvert.h"
 
 #include"Initialization.h"
 #include "InfoReport.h"
+#include "SystemData.h"
+#include "TiingoCryptoWebSocket.h"
+#include "TiingoForexWebSocket.h"
+#include "TiingoIEXWebSocket.h"
 
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
@@ -160,7 +165,7 @@ CMainFrame::CMainFrame() {
 
 	// 默认下后台工作线程数为32，使用系统配置降低至实际数量。
 	for (int i = 0; i < MAX_BACKGROUND_WORKING_THREAD_ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
-		gl_BackgroundWorkingThread.acquire();
+		gl_BackgroundWorkingThread.AcquireWithoutCount();
 	}
 }
 
@@ -171,7 +176,7 @@ CMainFrame::~CMainFrame() {
 	gl_systemConfiguration.SetExitingSystem(true);
 
 	for (int i = 0; i < MAX_BACKGROUND_WORKING_THREAD_ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
-		gl_BackgroundWorkingThread.release();
+		gl_BackgroundWorkingThread.ReleaseWithoutCount();
 	}
 
 	if (gl_hFireBirdMutex != nullptr) {
@@ -201,7 +206,7 @@ CMainFrame::~CMainFrame() {
 		gl_dataContainerChinaStock.UpdateProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
-	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(1); // 等待后台工作线程运行结束
+	while (gl_BackgroundWorkingThread.GetCount() > 0) Sleep(1); // 等待后台工作线程运行结束
 
 	TRACE("exit finally \n");
 }

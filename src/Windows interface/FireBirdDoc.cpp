@@ -31,7 +31,6 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	if (m_pCurrentStock == nullptr || !m_pCurrentStock->IsSameStock(pStock)) m_bRefreshView = true;
 	m_pCurrentStock = pStock;
 	if (pStock == nullptr) return;
-
 		m_bDataReady = false;
 		gl_runtime.background_executor()->post([this, pStock] {
 			if (IsTiingoStock(pStock)) {

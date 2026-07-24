@@ -1,9 +1,11 @@
 #include"pch.h"
 
 #include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
 #include"GeneralCheck.h"
 
 #include"MockSinaRTDataSource.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
 
 using namespace testing;

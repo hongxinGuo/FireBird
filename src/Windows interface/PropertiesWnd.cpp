@@ -9,14 +9,18 @@
 #include "ChinaMarket.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "FinnhubDataSource.h"
+#include "FinnhubWebSocket.h"
 #include "MainFrm.h"
 #include "FireBird.h"
 #include "SinaRTDataSource.h"
+#include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
 #include "Thread.h"
-#include "ThreadStatus.h"
+#include "TiingoCryptoWebSocket.h"
 #include "TiingoDataSource.h"
+#include "TiingoForexWebSocket.h"
+#include "TiingoIEXWebSocket.h"
 #include "WorldMarket.h"
 
 #ifdef _DEBUG
@@ -430,7 +434,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	s = std::format("{:d}", rmData);
 	m_pPropChinaMarketRealTimeDataNumber->SetValue(s);
 
-	s = std::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	s = std::format("{:d}", gl_BackgroundWorkingThread.GetCount());
 	m_pPropCurrentWorkingThread->SetValue(s); // 后台工作线程数
 
 	// china market web status

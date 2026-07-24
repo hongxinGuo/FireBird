@@ -9,6 +9,7 @@
 #include"FinnhubDataSource.h"
 #include"FinnhubCrypto.h"
 #include "WorldMarket.h"
+#include "ContainerFinnhubStock.h"
 
 #include<sqlpp23/sqlpp23.h>
 
@@ -910,7 +911,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetFinnhubWebSocketSymbols) {
-		const vectorString vString = gl_pWorldMarket->GetFinnhubWebSocketSymbols();
+		const vector<string> vString = gl_pWorldMarket->GetFinnhubWebSocketSymbols();
 
 		EXPECT_EQ(vString.at(0), "A");
 		EXPECT_EQ(vString.at(1), "AA");

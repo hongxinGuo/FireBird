@@ -2300,32 +2300,32 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct BaseCurrency {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(BaseCurrency, BaseCurrency);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct QuoteCurrency {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(QuoteCurrency, QuoteCurrency);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Name {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Name, Name);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Description {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Description, Description);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct UpdateDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(UpdateDate, UpdateDate);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_crypto_symbol, tiingoCryptoSymbol);
@@ -2350,27 +2350,27 @@ namespace StockMarket {
     };
     struct DataCode {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(dataCode, dataCode);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Name {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(name, name);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Description {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(description, description);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct StatementType {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(statementType, statementType);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Units {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(units, units);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_fundamental_definitions, tiingoFundamentalDefinitions);
@@ -2394,12 +2394,12 @@ namespace StockMarket {
     };
     struct Industry {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Industry, Industry);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Sector {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Sector, Sector);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_industry, tiingoIndustry);
@@ -2420,47 +2420,47 @@ namespace StockMarket {
     };
     struct Ids {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ids, ids);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     struct Source {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(source, source);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Description {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(description, description);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Url {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(url, url);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Tags {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tags, tags);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Tickers {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tickers, tickers);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Title {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(title, title);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct CrawlDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(crawlDate, crawlDate);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct PublishedDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(publishedDate, publishedDate);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_market_news, tiingoMarketNews);
@@ -2488,17 +2488,17 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Exchange {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Exchange, Exchange);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_52week_high, tiingoStock52WeekHigh);
@@ -2520,17 +2520,17 @@ namespace StockMarket {
     };
     struct Symbol {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Symbol, Symbol);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Exchange {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Exchange, Exchange);
-      using data_type = std::optional<::sqlpp::text>;
+      using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
-      using data_type = std::optional<::sqlpp::integral>;
+      using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_52week_low, tiingoStock52WeekLow);

@@ -38,9 +38,9 @@ public:
 	std::pair<long, long> GetWeekLineHighLow(int iCandleNumber) const;
 	std::pair<long, long> GetMonthLineHighLow(int iCandleNumber) const;
 
-	chrono::local_days GetDayLineDate(size_t countDownIndex) const;
-	chrono::local_days GetWeekLineDate(size_t countDownIndex) const;
-	chrono::local_days GetMonthLineDate(size_t countDownIndex) const;
+	local_days GetDayLineDate(size_t countDownIndex) const;
+	local_days GetWeekLineDate(size_t countDownIndex) const;
+	local_days GetMonthLineDate(size_t countDownIndex) const;
 
 	void ShowDayLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
 		ASSERT(m_pDataDayLine->IsSplitAdjusted());

@@ -11,6 +11,8 @@
 #include"simdjsonGetValue.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/definitions?";
 }

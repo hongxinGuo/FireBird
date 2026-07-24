@@ -6,8 +6,10 @@
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
+#include "SystemConfiguration.h"
 
 #include"WeekLine.h"
+#include"ContainerChinaStock.h"
 
 namespace FireBirdTest {
 	class CWeekLineTest : public ::testing::Test {

@@ -11,6 +11,8 @@
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
+using std::make_shared;
+
 using namespace testing;
 
 namespace FireBirdTest {

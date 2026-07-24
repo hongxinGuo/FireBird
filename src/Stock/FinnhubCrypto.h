@@ -2,14 +2,11 @@
 
 #include"VirtualStock.h"
 
-#include"ContainerCryptoDayLine.h"
-
-#include<memory>
-#include<vector>
+class CContainerCryptoDayLine;
 
 class CFinnhubCrypto : public CVirtualStock {
 public:
-	CFinnhubCrypto() = default;
+	CFinnhubCrypto();
 	// 不允许赋值。
 	CFinnhubCrypto(const CFinnhubCrypto&) = delete;
 	CFinnhubCrypto& operator=(const CFinnhubCrypto&) = delete;
@@ -22,19 +19,19 @@ public:
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
 
-	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UnloadDayLine() { m_dataDayLine.Unload(); }
-	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	void UpdateDayLine(const CDayLinesPtr& vDayLine);
+	void UnloadDayLine();
+	size_t GetDayLineSize() const noexcept;
 	void UpdateDayLineStartEndDate();
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 
 	void UpdateDayLineDB();
-	virtual void SaveDayLineDB() { m_dataDayLine.SaveDB(GetSymbol()); }
+	virtual void SaveDayLineDB();
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 
 public:
-	CContainerCryptoDayLine m_dataDayLine;
+	shared_ptr<CContainerCryptoDayLine> m_pDayLines;
 };
 
 typedef shared_ptr<CFinnhubCrypto> CFinnhubCryptoPtr;

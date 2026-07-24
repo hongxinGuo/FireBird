@@ -15,6 +15,8 @@
 #include"ProductEastmoneyDayLine.h"
 
 #include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
+#include "SystemConfiguration.h"
 #include "TengxunDayLineDataSource.h"
 #include "TimeConvert.h"
 #include "WebData.h"

@@ -3,6 +3,8 @@
 #include "VirtualContainer.h"
 #include"VirtualStock.h"
 
+using std::unordered_map;
+
 class CContainerVirtualStock : public CVirtualContainer {
 public:
 	CContainerVirtualStock();

@@ -9,7 +9,11 @@
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
+#include "TiingoCompanyFinancialState.h"
+#include "TiingoIEXTopOFBook.h"
+
 #include"dataBaseConnector.h"
+#include "StockSplit.h"
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
@@ -35,14 +39,14 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetUpdateStockDailyMetaDate(toLocalDays(19800101));
 }
 
-void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBook& IEXTopOfBook) {
-	m_tpTime = IEXTopOfBook.m_timeStamp;
-	m_lOpen = IEXTopOfBook.m_lOpen;
-	m_lHigh = IEXTopOfBook.m_lHigh;
-	m_lLow = IEXTopOfBook.m_lLow;
-	m_lLastClose = IEXTopOfBook.m_lLastClose;
-	m_lNew = IEXTopOfBook.m_lNew;
-	m_llVolume = IEXTopOfBook.m_llVolume;
+void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
+	m_tpTime = pIEXTopOfBook->m_timeStamp;
+	m_lOpen = pIEXTopOfBook->m_lOpen;
+	m_lHigh = pIEXTopOfBook->m_lHigh;
+	m_lLow = pIEXTopOfBook->m_lLow;
+	m_lLastClose = pIEXTopOfBook->m_lLastClose;
+	m_lNew = pIEXTopOfBook->m_lNew;
+	m_llVolume = pIEXTopOfBook->m_llVolume;
 }
 
 void CTiingoStock::UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine) {
@@ -253,10 +257,10 @@ void CTiingoStock::RebuildStockSplitDB() {
 	m_pvStockSplit->clear();
 	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
 		if (std::abs(m_dataDayLine.GetData(index)->GetSplitFactor() - 1.0) > EPSILON) {
-			CStockSplit stockSplit;
-			stockSplit.SetDate(m_dataDayLine.GetData(index)->GetDate());
-			stockSplit.SetRatio(m_dataDayLine.GetData(index)->GetSplitFactor());
-			m_pvStockSplit->push_back(stockSplit);
+			CStockSplitPtr pStockSplit = make_shared<CStockSplit>();
+			pStockSplit->SetDate(m_dataDayLine.GetData(index)->GetDate());
+			pStockSplit->SetRatio(m_dataDayLine.GetData(index)->GetSplitFactor());
+			m_pvStockSplit->push_back(pStockSplit);
 		}
 	}
 }
@@ -373,7 +377,7 @@ void CTiingoStock::Load52WeekLowDB() {
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == GetSymbol()).order_by(t.Date.asc()));
 	m_v52WeekLowDate.reserve(result.size<>());
 	for (const auto& row : result) {
-		m_v52WeekLowDate.push_back(toLocalDays(row.Date.value()));
+		m_v52WeekLowDate.push_back(toLocalDays(row.Date));
 	}
 	tx.commit();
 }

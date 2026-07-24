@@ -5,6 +5,8 @@
 #include "ContainerTiingoStockDayLine.h"
 #include"IndicatorMACD.h"
 
+using std::make_shared;
+
 class CIndicatorMACDBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {

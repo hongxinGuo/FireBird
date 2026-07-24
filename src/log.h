@@ -1,7 +1,6 @@
 #pragma once
 
 #include "spdlog/spdlog.h"
-#include "spdlog/sinks/daily_file_sink.h"
 
 using std::shared_ptr;
 

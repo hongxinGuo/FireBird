@@ -9,6 +9,8 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
+using std::make_shared;
+
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();
 }

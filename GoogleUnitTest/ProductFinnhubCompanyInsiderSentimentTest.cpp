@@ -4,6 +4,7 @@
 
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
+#include "ContainerFinnhubStock.h"
 
 #include"ProductFinnhubCompanyInsiderSentiment.h"
 #include "SystemMessage.h"

@@ -3,7 +3,7 @@
 #include"VirtualDataHistoryCandle.h"
 
 struct CBoll {
-	chrono::local_days Date{ chrono::local_days(chrono::days(0)) };        // candle date
+	local_days Date{ local_days(days(0)) };        // candle date
 	size_t Index{ 0 };     // index in the input sequence
 	double Mid{ 0.0 };     // moving average
 	double Upper{ 0.0 };   // upper band

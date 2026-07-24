@@ -61,17 +61,17 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.11.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;printsupport</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'" Label="QtSettings">
     <QtInstall>6.11.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;printsupport</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.11.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;printsupport</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -181,6 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="PropertyWindow.cpp" />
+    <ClCompile Include="qcustomplot.cpp" />
     <ClCompile Include="RealTimeWindow.cpp" />
     <QtRcc Include="FireBirdQT.qrc" />
     <QtUic Include="FireBirdQT.ui" />
@@ -195,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PropertyWindow.h" />
+    <QtMoc Include="qcustomplot.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

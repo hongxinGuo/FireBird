@@ -8,6 +8,9 @@
 #include <gtest/gtest.h>
 
 #include "SystemMessage.h"
+#include"TimeConvert.h"
+
+using std::make_shared;
 
 using namespace testing;
 

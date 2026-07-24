@@ -20,6 +20,7 @@
 #include "Thread.h"
 
 #include"simdjson.h"
+#include "SystemConfiguration.h"
 using namespace simdjson;
 
 namespace {

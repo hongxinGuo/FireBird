@@ -7,6 +7,7 @@
 #include <gtest/gtest.h>
 
 #include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
 #include "ProductTengxunDayLine.h"
 
 using namespace testing;

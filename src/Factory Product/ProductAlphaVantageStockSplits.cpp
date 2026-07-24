@@ -35,7 +35,7 @@ void CProductAlphaVantageStockSplits::ParseAndStoreWebData(CWebDataPtr pWebData)
 	auto pvSplits = ParseAlphaVantageStockSplits(pWebData);
 	if (!pvSplits->empty()) {
 		for (auto& pSplits2 : *pvSplits) {
-			pSplits2.SetSymbol(pTiingoStock->GetSymbol());
+			pSplits2->SetSymbol(pTiingoStock->GetSymbol());
 		}
 		pTiingoStock->AddStockSplits(pvSplits);
 		pTiingoStock->SetUpdateSplitDB(true);
@@ -65,7 +65,7 @@ void CProductAlphaVantageStockSplits::ParseAndStoreWebData(CWebDataPtr pWebData)
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CStockSplitsPtr CProductAlphaVantageStockSplits::ParseAlphaVantageStockSplits(const CWebDataPtr& pWebData) {
-	auto pvSplits = make_shared<vector<CStockSplit>>();
+	auto pvSplits = make_shared<vector<shared_ptr<CStockSplit>>>();
 	pvSplits->reserve(100);
 
 	string s;
@@ -87,16 +87,16 @@ CStockSplitsPtr CProductAlphaVantageStockSplits::ParseAlphaVantageStockSplits(co
 		string strSymbol = js.at("symbol"); // 股票代码
 		auto jsData = js.at("data"); // 股票分割数据
 		for (auto it = jsData.begin(); it != jsData.end(); ++it) {
-			CStockSplit Splits;
+			CStockSplitPtr pSplits = make_shared<CStockSplit>();
 			s = jsonGetString(it, "effective_date");
 			istringstream ss(s);
 			chrono::local_days ld;
 			ss >> chrono::parse("%F", ld);
-			Splits.SetDate(ld);
+			pSplits->SetDate(ld);
 			double dTemp = jsonGetDouble(it, "close");
-			Splits.SetRatio(dTemp);
+			pSplits->SetRatio(dTemp);
 
-			pvSplits->push_back(Splits);
+			pvSplits->push_back(pSplits);
 		}
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
@@ -104,7 +104,7 @@ CStockSplitsPtr CProductAlphaVantageStockSplits::ParseAlphaVantageStockSplits(co
 		ReportJSonErrorToSystemMessage("AlphaVantage Stock Splits " + str3, e.what());
 		return pvSplits; // 数据解析出错的话，则放弃。
 	}
-	std::ranges::sort(*pvSplits, [](const CStockSplit& pData1, const CStockSplit& pData2) { return pData1.GetDate() < pData2.GetDate(); }); // 以日期早晚顺序排列。
+	std::ranges::sort(*pvSplits, [](const CStockSplitPtr& pSplits1, const CStockSplitPtr& pSplits2) { return pSplits1->GetDate() < pSplits2->GetDate(); }); // 以日期早晚顺序排列。
 
 	return pvSplits;
 }

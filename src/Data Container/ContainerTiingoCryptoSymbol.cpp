@@ -9,6 +9,8 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
+using std::make_shared;
+
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
 	CContainerTiingoCryptoSymbol::Reset();
 }
@@ -26,13 +28,13 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 	Reserve(result.size() + 2);
 	for (const auto& row : result) {
-		if (!IsSymbol(string{ row.Symbol.value() })) {
+		if (!IsSymbol(string{ row.Symbol })) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
-			pSymbol->SetSymbol(row.Symbol.value());
-			pSymbol->m_strName = row.Name.has_value() ? string{ row.Name.value() } : "";
-			pSymbol->SetDescription(row.Description.has_value() ? row.Description.value() : "");
-			pSymbol->m_strBaseCurrency = row.BaseCurrency.has_value() ? string{ row.BaseCurrency.value() } : "";
-			pSymbol->m_strQuoteCurrency = row.QuoteCurrency.has_value() ? string{ row.QuoteCurrency.value() } : "";
+			pSymbol->SetSymbol(row.Symbol);
+			pSymbol->m_strName = string{ row.Name };
+			pSymbol->SetDescription(row.Description);
+			pSymbol->m_strBaseCurrency = string{ row.BaseCurrency };
+			pSymbol->m_strQuoteCurrency = string{ row.QuoteCurrency };
 			Add(pSymbol);
 		}
 		else {
@@ -97,8 +99,8 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 		// 1) 更新或删除数据库中已有但容器中不存在的记录
 		auto rows = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 		for (const auto& row : rows) {
-			if (IsSymbol(string{ row.Symbol.value() })) {
-				const CTiingoCryptoPtr pCrypto = GetCrypto(string{ row.Symbol.value() });
+			if (IsSymbol(string{ row.Symbol })) {
+				const CTiingoCryptoPtr pCrypto = GetCrypto(string{ row.Symbol });
 				ASSERT(pCrypto != nullptr);
 				if (pCrypto->IsUpdateProfileDB()) {
 					// 更新已有记录

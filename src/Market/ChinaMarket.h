@@ -2,8 +2,7 @@
 
 #include"VirtualMarket.h"
 
-#include"ContainerChinaStock.h"
-#include"SystemData.h"
+class CVirtualHistoryCandle;
 
 #include <set>
 using std::set;
@@ -116,7 +115,7 @@ public:
 
 	// 股票历史数据处理
 
-	static bool IsDayLineNeedProcess() { return gl_SystemData.GetDayLineQueueSize() > 0; }
+	static bool IsDayLineNeedProcess();
 	bool IsSelectedStockLoaded() const noexcept { return m_fSelectedStockLoaded; }
 	void SetSelectedStockLoaded(const bool fLoad) noexcept { m_fSelectedStockLoaded = fLoad; }
 

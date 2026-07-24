@@ -4,7 +4,10 @@
 #include "VirtualMarket.h"
 
 #include "ContainerStockExchange.h"
+#include "SystemConfiguration.h"
 #include"VirtualDataSource.h"
+
+#include "StockExchange.h"
 
 CVirtualMarket::CVirtualMarket() {
 	CreateLocalTimeZone(m_strLocalMarketTimeZone);
@@ -276,4 +279,12 @@ long CVirtualMarket::ConvertToDate(const chrono::sys_seconds tp) const noexcept 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualMarket::CreateLocalTimeZone(const string& strLocalNameOfMarket) {
 	m_marketTimeZone = chrono::locate_zone(strLocalNameOfMarket);
+}
+
+chrono::local_seconds CVirtualMarket::GetMarketOpenTime() const {
+	return m_exchange->m_marketOpenTime;
+}
+
+chrono::local_seconds CVirtualMarket::GetMarketCloseTime() const {
+	return m_exchange->m_marketCloseTime;
 }

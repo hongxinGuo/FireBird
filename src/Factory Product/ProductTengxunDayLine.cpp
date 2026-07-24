@@ -4,6 +4,7 @@
 #include"ChinaMarket.h"
 
 #include"JsonParse.h"
+#include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
 
 CProductTengxunDayLine::CProductTengxunDayLine() {

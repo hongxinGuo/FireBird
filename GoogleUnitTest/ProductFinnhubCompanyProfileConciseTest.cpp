@@ -6,6 +6,7 @@
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
+#include "ContainerFinnhubStock.h"
 
 #include"ProductFinnhubCompanyProfileConcise.h"
 #include "SystemMessage.h"

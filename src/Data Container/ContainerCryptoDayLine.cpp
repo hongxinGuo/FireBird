@@ -7,6 +7,8 @@
 #include "FinnhubCrypto.h"
 #include"StockMarketSQLTable.h"
 
+#include"TimeConvert.h"
+
 namespace {
 	CFinnhubCrypto s_stock;
 }

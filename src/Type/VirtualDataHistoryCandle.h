@@ -9,6 +9,8 @@
 #include "DayLine.h"
 #include "VirtualHistoryCandle.h"
 
+using std::atomic_bool;
+
 class CVirtualDataHistoryCandle {
 public:
 	CVirtualDataHistoryCandle();
@@ -41,19 +43,19 @@ public:
 
 	vector<CVirtualHistoryCandle>* GetContainer() noexcept { return &m_vHistoryData; }
 
-	bool GetStartEndDate(chrono::local_days& lStartDate, chrono::local_days& lEndDate) const;
+	bool GetStartEndDate(local_days& lStartDate, local_days& lEndDate) const;
 
 	CVirtualHistoryCandle* GetData(const size_t lIndex) { return &m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandle>& GetDataVector() { return m_vHistoryData; }
-	CVirtualHistoryCandle* GetCandle(chrono::local_days date);
-	CVirtualHistoryCandle* GetCandle2(chrono::local_days date);
+	CVirtualHistoryCandle* GetCandle(local_days date);
+	CVirtualHistoryCandle* GetCandle2(local_days date);
 
 	void Add(CVirtualHistoryCandle data) {
 		data.SetRatio(m_ratio);
 		m_vHistoryData.push_back(data);
 	}
 	void Add(const CDayLine& data) { Add(static_cast<CVirtualHistoryCandle>(data)); }
-	bool HaveDayLine(chrono::local_days date);
+	bool HaveDayLine(local_days date);
 
 	bool IsDataLoaded() const noexcept { return m_fDataLoaded.load(); }
 	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }

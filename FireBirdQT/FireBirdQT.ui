@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>756</height>
+    <width>1233</width>
+    <height>858</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FireBirdQT</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QCustomPlot" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>701</width>
-     <height>33</height>
+     <width>1233</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -172,6 +172,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="FireBirdQT.qrc"/>
  </resources>

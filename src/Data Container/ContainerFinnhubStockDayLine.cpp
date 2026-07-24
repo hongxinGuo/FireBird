@@ -6,6 +6,7 @@
 #include "dataBaseConnector.h"
 #include "FinnhubStock.h"
 #include"StockMarketSQLTable.h"
+#include"TimeConvert.h"
 
 namespace {
 	CFinnhubStock s_stockContainerFinnhubStockDayLine;

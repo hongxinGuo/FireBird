@@ -5,10 +5,12 @@
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
 
 #include"ProductTengxunDayLine.h"
 #include "WebData.h"
 #include"DayLineWebData.h"
+#include "SystemData.h"
 
 using namespace testing;
 

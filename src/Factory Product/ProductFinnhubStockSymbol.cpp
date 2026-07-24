@@ -10,6 +10,8 @@
 #include "SystemMessage.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/symbol?exchange=";
 }

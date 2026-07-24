@@ -46,6 +46,9 @@
     <ClCompile Include="PropertyWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="qcustomplot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="RealTimeWindow.ui">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qcustomplot.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

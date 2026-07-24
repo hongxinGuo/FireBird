@@ -158,18 +158,18 @@ namespace FireBirdTest {
 		switch (m_index) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_strTicker, "000001");
-			EXPECT_EQ(m_pvIEXTopOfBook->at(1).m_strTicker, "000002");
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_timeStamp.time_since_epoch().count(), 1727726400);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_lLastClose, 11420000);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_lOpen, 11621300);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_lHigh, 12300000);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_lLow, 11560000);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_lNew, 12210000);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0).m_llVolume, 543028360);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(1).m_timeStamp.time_since_epoch().count(), 1711828800);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(1).m_lNew, 9720000) << "Last项为null，使用tngoLast项的值";
-			EXPECT_EQ(m_pvIEXTopOfBook->at(1).m_lLow, 9270000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_strTicker, "000001");
+			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_strTicker, "000002");
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_timeStamp.time_since_epoch().count(), 1727726400);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11621300);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lHigh, 12300000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLow, 11560000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lNew, 12210000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llVolume, 543028360);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_timeStamp.time_since_epoch().count(), 1711828800);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_lNew, 9720000) << "Last项为null，使用tngoLast项的值";
+			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_lLow, 9270000);
 			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);

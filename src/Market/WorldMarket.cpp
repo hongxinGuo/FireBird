@@ -21,8 +21,12 @@
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 
+#include "MarketStatus.h"
+#include"MarketHoliday.h"
+
 #include<sqlpp23/sqlpp23.h>
 
+#include "ContainerFinnhubStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
 #include "ContainerFinnhubCountry.h"
@@ -386,7 +390,7 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 		if (gl_systemConfiguration.IsExitingSystem()) break;// 如果程序正在退出，则停止存储。
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
-			gl_BackgroundWorkingThread.acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
+			gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
 			gl_runtime.thread_executor()->post([pTiingoStock] {
 				pTiingoStock->UpdateDayLineStartEndDate();
 				pTiingoStock->SetUpdateDayLineDB(false); // 先设置标识，防止重入时重复更新。
@@ -396,7 +400,7 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 				string str = pTiingoStock->GetSymbol();
 				str += "日线资料存储完成";
 				gl_systemMessage.PushDayLineInfoMessage(str);
-				gl_BackgroundWorkingThread.release();
+				gl_BackgroundWorkingThread.Release();
 			});
 			iUpdatedCount++;
 		}
@@ -617,12 +621,12 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 	bool succeed = true;
 
 	for (auto& pStock : m_vNasdaq100TiingoStock) {
-		gl_BackgroundWorkingThread.acquire();
+		gl_BackgroundWorkingThread.Acquire();
 		auto result = gl_runtime.thread_executor()->submit([pStock] {
 			if (!pStock->IsDayLineLoaded()) {
 				pStock->LoadDayLineDB();
 			}
-			gl_BackgroundWorkingThread.release();
+			gl_BackgroundWorkingThread.Release();
 			return true;
 		});
 		results.emplace_back(std::move(result));
@@ -968,6 +972,9 @@ bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
 	}
 	return true;
 }
+void CWorldMarket::UpdateInsiderTransactionDB() {
+	gl_dataContainerFinnhubStock.UpdateInsiderTransactionDB();
+}
 
 bool CWorldMarket::UpdateCompanyNewsDB() {
 	for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
@@ -1031,11 +1038,11 @@ void CWorldMarket::RebuildBasicFinancial() {
 void CWorldMarket::RebuildTiingoStockSplitDB() {
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
-		gl_BackgroundWorkingThread.acquire();
+		gl_BackgroundWorkingThread.Acquire();
 		gl_runtime.background_executor()->post([pStock] {
 			pStock->RebuildStockSplitDB();
 			pStock->SetUpdateProfileDB(true);
-			gl_BackgroundWorkingThread.release();
+			gl_BackgroundWorkingThread.Release();
 		});
 	}
 }

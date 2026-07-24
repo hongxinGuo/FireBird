@@ -7,6 +7,8 @@
 #include "ContainerChinaStockDayLine.h"
 #include "DayLine.h"
 
+using std::make_shared;
+
 namespace FireBirdTest {
 	class CIndicatorMACDTest : public ::testing::Test {
 	protected:

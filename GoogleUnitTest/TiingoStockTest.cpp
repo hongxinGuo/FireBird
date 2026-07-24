@@ -5,9 +5,14 @@
 #include"GeneralCheck.h"
 
 #include"TiingoStock.h"
+#include "TiingoCompanyFinancialState.h"
+#include "TiingoIEXTopOFBook.h"
+
 #include<sqlpp23/sqlpp23.h>
 
 #include "ChinaStock.h"
+#include"StockSplit.h"
+
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
@@ -339,29 +344,31 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoStockTest, TestGetSetStockSplit) {
 		EXPECT_EQ(stock.GetStockSplitCount(), 0);
-		CStockSplit p;
-		p.SetDate(chrono::local_days(2020y / 01 / 01));
-		p.SetRatio(2.0);
+		CStockSplitPtr p = make_shared<CStockSplit>();
+		p->SetDate(chrono::local_days(2020y / 01 / 01));
+		p->SetRatio(2.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 1);
-		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), toLocalDays(20200101));
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 2.0);
-		p.SetDate(chrono::local_days(2021y / 01 / 01));
-		p.SetRatio(3.0);
+		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), toLocalDays(20200101));
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 2.0);
+		p = make_shared<CStockSplit>();
+		p->SetDate(chrono::local_days(2021y / 01 / 01));
+		p->SetRatio(3.0);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 2);
-		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), toLocalDays(20210101));
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 3.0);
-		p.SetDate(chrono::local_days(2019y / 01 / 01));
-		p.SetRatio(1.5);
+		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), toLocalDays(20210101));
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 3.0);
+		p = make_shared<CStockSplit>();
+		p->SetDate(chrono::local_days(2019y / 01 / 01));
+		p->SetRatio(1.5);
 		stock.AddStockSplit(p);
 		EXPECT_EQ(stock.GetStockSplitCount(), 3);
-		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), toLocalDays(20190101));
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 1.5);
-		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), toLocalDays(20200101));
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 2.0);
-		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), toLocalDays(20210101));
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2).GetRatio(), 3.0);
+		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), toLocalDays(20190101));
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 1.5);
+		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), toLocalDays(20200101));
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 2.0);
+		EXPECT_EQ(stock.GetStockSplit(2)->GetDate(), toLocalDays(20210101));
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2)->GetRatio(), 3.0);
 	}
 
 	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {
@@ -403,22 +410,22 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
-		CTiingoIEXTopOfBook IEX;
-		IEX.m_timeStamp = toSysTime(123456);
-		IEX.m_lOpen = 12340;
-		IEX.m_lHigh = 23450;
-		IEX.m_lLow = 1230;
-		IEX.m_lLastClose = 234560;
-		IEX.m_lNew = 230;
-		IEX.m_llVolume = 100000;
-		stock.UpdateRTData(IEX);
-		EXPECT_EQ(stock.GetTransactionTime(), IEX.m_timeStamp.time_since_epoch().count());
-		EXPECT_EQ(stock.GetOpen(), IEX.m_lOpen);
-		EXPECT_EQ(stock.GetHigh(), IEX.m_lHigh);
-		EXPECT_EQ(stock.GetLow(), IEX.m_lLow);
-		EXPECT_EQ(stock.GetLastClose(), IEX.m_lLastClose);
-		EXPECT_EQ(stock.GetNew(), IEX.m_lNew);
-		EXPECT_EQ(stock.GetVolume(), IEX.m_llVolume);
+		CTiingoIEXTopOfBookPtr pIEX = make_shared<CTiingoIEXTopOfBook>();
+		pIEX->m_timeStamp = toSysTime(123456);
+		pIEX->m_lOpen = 12340;
+		pIEX->m_lHigh = 23450;
+		pIEX->m_lLow = 1230;
+		pIEX->m_lLastClose = 234560;
+		pIEX->m_lNew = 230;
+		pIEX->m_llVolume = 100000;
+		stock.UpdateRTData(pIEX);
+		EXPECT_EQ(stock.GetTransactionTime(), pIEX->m_timeStamp.time_since_epoch().count());
+		EXPECT_EQ(stock.GetOpen(), pIEX->m_lOpen);
+		EXPECT_EQ(stock.GetHigh(), pIEX->m_lHigh);
+		EXPECT_EQ(stock.GetLow(), pIEX->m_lLow);
+		EXPECT_EQ(stock.GetLastClose(), pIEX->m_lLastClose);
+		EXPECT_EQ(stock.GetNew(), pIEX->m_lNew);
+		EXPECT_EQ(stock.GetVolume(), pIEX->m_llVolume);
 	}
 
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {
@@ -671,16 +678,16 @@ namespace FireBirdTest {
 		stock.RebuildStockSplitDB();
 
 		EXPECT_EQ(stock.GetStockSplitCount(), 5);
-		EXPECT_EQ(stock.GetStockSplit(0).GetDate(), toLocalDays(19870616));
-		EXPECT_EQ(stock.GetStockSplit(1).GetDate(), toLocalDays(20000621));
-		EXPECT_EQ(stock.GetStockSplit(2).GetDate(), toLocalDays(20050228));
-		EXPECT_EQ(stock.GetStockSplit(3).GetDate(), toLocalDays(20140609));
-		EXPECT_EQ(stock.GetStockSplit(4).GetDate(), toLocalDays(20200831));
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0).GetRatio(), 2.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1).GetRatio(), 2.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2).GetRatio(), 2.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(3).GetRatio(), 7.0);
-		EXPECT_DOUBLE_EQ(stock.GetStockSplit(4).GetRatio(), 4.0);
+		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), toLocalDays(19870616));
+		EXPECT_EQ(stock.GetStockSplit(1)->GetDate(), toLocalDays(20000621));
+		EXPECT_EQ(stock.GetStockSplit(2)->GetDate(), toLocalDays(20050228));
+		EXPECT_EQ(stock.GetStockSplit(3)->GetDate(), toLocalDays(20140609));
+		EXPECT_EQ(stock.GetStockSplit(4)->GetDate(), toLocalDays(20200831));
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(0)->GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(1)->GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(2)->GetRatio(), 2.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(3)->GetRatio(), 7.0);
+		EXPECT_DOUBLE_EQ(stock.GetStockSplit(4)->GetRatio(), 4.0);
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateFinancialStateDB) {

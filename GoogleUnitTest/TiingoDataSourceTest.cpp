@@ -7,6 +7,7 @@
 #include"GeneralCheck.h"
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
+#include "ContainerFinnhubStock.h"
 
 #include"ProductDummy.h"
 #include "ProductTiingoCryptoSymbol.h"

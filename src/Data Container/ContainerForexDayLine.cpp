@@ -8,6 +8,7 @@
 #include "FinnhubForex.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoCandleLine.h"
+#include"TimeConvert.h"
 
 namespace {
 	CFinnhubForex s_stock;

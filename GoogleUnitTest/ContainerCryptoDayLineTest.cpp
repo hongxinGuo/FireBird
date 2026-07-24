@@ -11,6 +11,9 @@
 
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include"TimeConvert.h"
+
+using std::make_shared;
 
 using namespace testing;
 

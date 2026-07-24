@@ -7,6 +7,8 @@
 #include "WorldMarket.h"
 #include"VirtualWebProduct.h"
 
+#include "ContainerFinnhubStock.h"
+
 #include "spdlog_assert.h"
 #include "SystemMessage.h"
 

@@ -10,6 +10,8 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
+using std::make_shared;
+
 using namespace testing;
 
 namespace FireBirdTest {
@@ -76,11 +78,11 @@ namespace FireBirdTest {
 
 		m_dataTiingoCryptoSymbol.LoadDB();
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1278) << "默认状态下装载1278个Crypto代码";
-		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("DKAETH"));
-		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("KSMUSDT"));
+		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("dkaeth"));
+		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("ksmusdt"));
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol("500008.SS"));
-		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetCrypto("DKAETH");
-		EXPECT_EQ(pTiingoCrypto->GetSymbol(), "DKAETH");
+		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetCrypto("dkaeth");
+		EXPECT_EQ(pTiingoCrypto->GetSymbol(), "dkaeth");
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto));
 
 		// 测试UpdateDB
@@ -120,7 +122,7 @@ namespace FireBirdTest {
 			size_t rows = result.size();
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条Test的记录";
 			auto& row = result.front();
-			EXPECT_EQ(row.Symbol.value(), "Test");
+			EXPECT_EQ(row.Symbol, "Test");
 		}
 		{
 			auto db = gl_dbStockMarket.get();

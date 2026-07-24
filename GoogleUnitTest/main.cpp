@@ -41,15 +41,21 @@
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
+#include "ContainerChinaStock.h"
 #include "ContainerTiingoStock.h"
 #include "dataBaseConnector.h"
 #include"WorldMarket.h"
+#include "ContainerFinnhubStock.h"
+#include "FinnhubWebSocket.h"
 
 #include"simdjsonGetValue.h"
 
 #include"Initialization.h"
 #include"InaccessibleSymbol.h"
+#include "TiingoCryptoWebSocket.h"
 #include "TiingoDataSource.h"
+#include "TiingoForexWebSocket.h"
+#include "TiingoIEXWebSocket.h"
 #include"TimeConvert.h"
 
 using namespace testing;

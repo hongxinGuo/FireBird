@@ -9,6 +9,8 @@
 #include "ContainerFinnhubCryptoExchange.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/symbol?exchange=";
 }

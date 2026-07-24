@@ -24,9 +24,9 @@ public:
 	static void DeleteDuplicatedSymbolFromDB();
 
 	void ResetDayLineStartEndDate();
-	void BuildDayLine(chrono::local_days date);
-	void LoadDayLine(chrono::local_days date);
-	void DeleteDayLine(chrono::local_days lDate);
+	void BuildDayLine(local_days date);
+	void LoadDayLine(local_days date);
+	void DeleteDayLine(local_days lDate);
 
 	long GetTotalActiveStocks();
 

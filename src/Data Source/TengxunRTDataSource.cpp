@@ -4,6 +4,7 @@
 #include"ProductTengxunRT.h"
 
 #include "ChinaMarket.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
 
 CTengxunRTDataSource::CTengxunRTDataSource() {

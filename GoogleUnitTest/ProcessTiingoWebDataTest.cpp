@@ -6,9 +6,10 @@
 
 #include"WebData.h"
 
-#include"FinnhubStock.h"
 #include "SystemData.h"
 #include "SystemMessage.h"
+
+using std::make_shared;
 
 using namespace testing;
 

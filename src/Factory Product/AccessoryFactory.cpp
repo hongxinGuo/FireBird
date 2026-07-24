@@ -9,6 +9,8 @@
 #include "ProductIndexNasdaq100Stocks.h"
 #include "SystemMessage.h"
 
+using std::make_shared;
+
 CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
 

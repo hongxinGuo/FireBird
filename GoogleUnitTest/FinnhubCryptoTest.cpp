@@ -6,6 +6,7 @@
 #include"GeneralCheck.h"
 
 #include"FinnhubCrypto.h"
+#include"ContainerCryptoDayLine.h"
 
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"

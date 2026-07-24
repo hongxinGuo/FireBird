@@ -11,6 +11,7 @@
 #include "WebData.h"
 
 #include"nlohmannJsonDeclaration.h"
+#include "SystemData.h"
 
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {

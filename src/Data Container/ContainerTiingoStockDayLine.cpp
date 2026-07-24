@@ -7,6 +7,10 @@
 #include"StockMarketSQLTable.h"
 #include "TiingoStock.h"
 
+#include"TimeConvert.h"
+
+using std::make_shared;
+
 namespace {
 	CTiingoStock s_stock;
 }
@@ -183,7 +187,7 @@ void CContainerTiingoStockDayLine::AddLastClose() {
 }
 
 struct CSplitFactor {
-	chrono::local_days date;
+	local_days date;
 	double factor;
 };
 
