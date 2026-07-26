@@ -8,6 +8,7 @@
 #include"ProductFinnhubCryptoSymbol.h"
 #include "SystemMessage.h"
 #include "WorldMarket.h"
+#include "FinnhubCrypto.h"
 #include"TestWebData.h"
 
 using namespace testing;

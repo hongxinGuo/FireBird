@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoFundamentalDefinition.h"
+
+class CTiingoFundamentalDefinition;
 
 class CProductTiingoFundamentalDefinition final : public CProductTiingo {
 public:
@@ -15,7 +16,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoFundamentalDefinitionsPtr ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CTiingoFundamentalDefinition>> ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
 };

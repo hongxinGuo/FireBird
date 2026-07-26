@@ -3,7 +3,9 @@
 #include"afxinet.h"
 
 #include"InternetOption.h"
-#include "VirtualWebProduct.h"
+
+using std::string;
+using std::shared_ptr;
 
 constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
 

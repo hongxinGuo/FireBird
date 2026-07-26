@@ -2,7 +2,8 @@
 
 #include"VirtualWorldMarketWebProduct.h"
 
-using std::dynamic_pointer_cast;
+using std::vector;
+using std::shared_ptr;
 
 class CProductIndexNasdaq100Stocks : public CVirtualWorldMarketWebProduct {
 public:

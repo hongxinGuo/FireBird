@@ -6,8 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"FinnhubCompanyNews.h"
 #include"ProductFinnhub.h"
+
+class CFinnhubCompanyNews;
 
 class CProductFinnhubCompanyNews final : public CProductFinnhub {
 public:
@@ -16,7 +17,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CCompanyNewssPtr ParseFinnhubCompanyNews(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CFinnhubCompanyNews>> ParseFinnhubCompanyNews(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubCompanyNewsPtr = shared_ptr<CProductFinnhubCompanyNews>;

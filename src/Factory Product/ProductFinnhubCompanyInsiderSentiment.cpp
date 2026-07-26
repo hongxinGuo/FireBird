@@ -6,6 +6,7 @@
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
+#include"InsiderSentiment.h"
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 

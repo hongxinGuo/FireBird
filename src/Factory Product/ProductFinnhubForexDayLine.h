@@ -1,7 +1,8 @@
 #pragma once
 
-#include "DayLine.h"
 #include"ProductFinnhub.h"
+
+class CDayLine;
 
 class CProductFinnhubForexDayLine final : public CProductFinnhub {
 public:
@@ -10,7 +11,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CDayLinesPtr ParseFinnhubForexCandle(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CDayLine>> ParseFinnhubForexCandle(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubForexDayLinePtr = shared_ptr<CProductFinnhubForexDayLine>;

@@ -5,11 +5,13 @@
 #include"WorldMarket.h"
 
 #include"MockFinnhubDataSource.h"
+#include"TimeConvert.h"
 
 #include"ProductFinnhubStockSymbol.h"
 #include "SinaRTDataSource.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
+#include "FinnhubFactory.h"
 
 using namespace testing;
 using namespace std;

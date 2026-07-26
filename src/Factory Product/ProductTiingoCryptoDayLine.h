@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"DayLine.h"
+
+class CDayLine;
 
 class CProductTiingoCryptoDayLine final : public CProductTiingo {
 public:
@@ -15,7 +16,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CDayLinesPtr ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CDayLine>> ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData);
 };
 
 using CTiingoCryptoDayLinePtr = shared_ptr<CProductTiingoCryptoDayLine>;

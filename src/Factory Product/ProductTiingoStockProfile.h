@@ -1,7 +1,12 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoStock.h"
+
+class CTiingoStock;
+
+using std::shared_ptr;
+using std::vector;
+using std::string;
 
 class CProductTiingoStockProfile final : public CProductTiingo {
 public:
@@ -15,10 +20,10 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoStocksPtr ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
+	shared_ptr<vector<shared_ptr<CTiingoStock>>> ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
-	static CTiingoStocksPtr DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock);
+	static shared_ptr<vector<shared_ptr<CTiingoStock>>> DeleteDuplicatedSymbol(const shared_ptr<vector<shared_ptr<CTiingoStock>>>& pvTiingoStock);
 	static void SaveNewSymbol();
 	void SaveDelistedSymbol();
 };

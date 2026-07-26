@@ -8,6 +8,7 @@
 #include"ProductFinnhubCryptoDayLine.h"
 #include "SystemMessage.h"
 #include "FinnhubCrypto.h"
+#include"DayLine.h"
 
 #include"TestWebData.h"
 

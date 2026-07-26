@@ -1,7 +1,11 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"TiingoFactory.h"
+//#include"TiingoFactory.h"
+
+class CTiingoFactory;
+
+using std::unique_ptr;
 
 class CTiingoDataSource : public CVirtualDataSource {
 public:
@@ -60,7 +64,7 @@ public:
 	void SetBandWidthLeft(long long llLeft) noexcept { m_llBandWidthLeft = llLeft; }
 
 protected:
-	CTiingoFactory m_TiingoFactory;
+	unique_ptr<CTiingoFactory> m_pTiingoFactory;
 
 	// 每日所需更新项目。目前共七项。
 	bool m_fUpdateMarketNews{ true }; // 每日更新市场新闻

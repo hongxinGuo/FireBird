@@ -3,13 +3,13 @@
 #include <gtest/gtest.h>
 
 #include "ContainerFinnhubForexExchange.h"
-#include"ContainerForexDayLine.h"
 #include "containerFinnhubForexSymbol.h"
 #include"GeneralCheck.h"
 #include"ProductFinnhubForexSymbol.h"
 #include "SystemMessage.h"
 #include "WorldMarket.h"
 #include"TestWebData.h"
+#include "FinnhubForex.h"
 
 using namespace testing;
 

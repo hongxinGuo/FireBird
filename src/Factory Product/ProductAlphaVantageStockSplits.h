@@ -1,8 +1,12 @@
 #pragma once
 
-#include"WebData.h"
 #include"ProductAlphaVantage.h"
-#include"StockSplit.h"
+
+class CWebData;
+class CStockSplit;
+
+using std::shared_ptr;
+using std::vector;
 
 class CProductAlphaVantageStockSplits final : public CProductAlphaVantage {
 public:
@@ -15,8 +19,8 @@ public:
 	~CProductAlphaVantageStockSplits() override = default;
 
 	string CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CStockSplitsPtr ParseAlphaVantageStockSplits(const CWebDataPtr& pWebData);
+	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
+	shared_ptr<vector<shared_ptr<CStockSplit>>> ParseAlphaVantageStockSplits(const shared_ptr<CWebData>& pWebData);
 };
 
 using CAlphaVantageStockSplitsPtr = shared_ptr<CProductAlphaVantageStockSplits>;

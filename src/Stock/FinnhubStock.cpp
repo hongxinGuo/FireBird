@@ -540,6 +540,14 @@ bool CFinnhubStock::CheckPeerStatus(local_days lCurrentDate) {
 	return m_fUpdateFinnhubPeer;
 }
 
+bool CFinnhubStock::HaveInsiderTransaction() const noexcept {
+	return !m_vInsiderTransaction.empty();
+}
+
+void CFinnhubStock::UnloadInsiderTransaction() {
+	m_vInsiderTransaction.resize(0);
+}
+
 void CFinnhubStock::UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvInsiderTransaction) {
 	m_vInsiderTransaction.reserve(pvInsiderTransaction->size());
 
@@ -561,8 +569,14 @@ bool CFinnhubStock::CheckInsiderTransactionStatus(local_days lCurrentDate) {
 	return m_fUpdateFinnhubInsiderTransaction;
 }
 
+bool CFinnhubStock::HaveInsiderSentiment() const noexcept {
+	return !(m_pvInsiderSentiment == nullptr || m_pvInsiderSentiment->empty());
+}
 void CFinnhubStock::UpdateInsiderSentiment(const CInsiderSentimentsPtr& pvInsiderSentiment) {
 	m_pvInsiderSentiment = pvInsiderSentiment;
+}
+void CFinnhubStock::ClearInsiderSentiment() {
+	m_pvInsiderSentiment.reset();
 }
 
 bool CFinnhubStock::CheckInsiderSentimentStatus(local_days lCurrentDate) {

@@ -6,6 +6,7 @@
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
+#include"TimeConvert.h"
 
 #include"ProductTengxunDayLine.h"
 #include "WebData.h"

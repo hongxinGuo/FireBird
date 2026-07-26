@@ -7,6 +7,7 @@
 
 #include"WorldMarket.h"
 #include "WebData.h"
+#include"DayLine.h"
 
 using namespace std;
 

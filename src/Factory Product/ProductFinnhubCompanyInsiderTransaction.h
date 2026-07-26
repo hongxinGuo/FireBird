@@ -1,7 +1,11 @@
 #pragma once
 
 #include"ProductFinnhub.h"
-#include"InsiderTransaction.h"
+
+class CInsiderTransaction;
+
+using std::shared_ptr;
+using std::vector;
 
 class CProductFinnhubCompanyInsiderTransaction final : public CProductFinnhub {
 public:
@@ -11,7 +15,7 @@ public:
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	void UpdateSystemStatus() override;
-	CInsiderTransactionsPtr ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CInsiderTransaction>> ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubCompanyInsiderTransactionPtr = shared_ptr<CProductFinnhubCompanyInsiderTransaction>;

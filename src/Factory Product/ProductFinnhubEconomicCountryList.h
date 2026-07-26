@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductFinnhub.h"
-#include"Country.h"
+
+class CCountry;
 
 class CProductFinnhubEconomicCountryList final : public CProductFinnhub {
 public:
@@ -10,7 +11,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CCountriesPtr ParseFinnhubCountryList(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CCountry>> ParseFinnhubCountryList(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
 };

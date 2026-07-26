@@ -4,6 +4,7 @@
 #include"nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubMarketHoliday.h"
+#include "MarketHoliday.h"
 
 #include "ContainerStockExchange.h"
 #include "TimeConvert.h"

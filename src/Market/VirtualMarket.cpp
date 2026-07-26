@@ -273,6 +273,16 @@ long CVirtualMarket::ConvertToDate(const chrono::sys_seconds tp) const noexcept 
 	+ static_cast<unsigned>(ymd.day());
 }
 
+void CVirtualMarket::TEST_SetMarketTime(local_seconds ls) noexcept {
+	local_days day = floor<days>(m_marketClock);
+	m_marketClock = toLocalDateTime(day, ls);
+}
+
+void CVirtualMarket::TEST_SetMarketDate(local_days ld) noexcept {
+	local_seconds second{ m_marketClock - floor<days>(m_marketClock) };
+	m_marketClock = toLocalDateTime(ld, second);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 这个函数导致内存泄漏，估计是调用的时区数据库函数locate_zone()初始化后，程序退出时没有卸载。

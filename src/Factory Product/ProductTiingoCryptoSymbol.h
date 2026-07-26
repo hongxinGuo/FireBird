@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoCrypto.h"
+
+class CTiingoCrypto;
 
 class CProductTiingoCryptoSymbol final : public CProductTiingo {
 public:
@@ -15,7 +16,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoCryptosPtr ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData);
+	shared_ptr<vector<shared_ptr<CTiingoCrypto>>> ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
 

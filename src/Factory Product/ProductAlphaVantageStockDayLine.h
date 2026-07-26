@@ -1,7 +1,12 @@
 #pragma once
 
 #include"ProductAlphaVantage.h"
-#include"TiingoCandleLine.h"
+
+class CTiingoCandleLine;
+class CWebData;
+
+using std::shared_ptr;
+using std::vector;
 
 class CProductAlphaVantageStockDayLine final : public CProductAlphaVantage {
 public:
@@ -14,8 +19,8 @@ public:
 	~CProductAlphaVantageStockDayLine() override = default;
 
 	string CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoCandleLinesPtr ParseAlphaVantageStockDayLine(const CWebDataPtr& pWebData);
+	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
+	shared_ptr<vector<CTiingoCandleLine>> ParseAlphaVantageStockDayLine(const shared_ptr<CWebData>& pWebData);
 };
 
 using CAlphaVantageStockDayLinePtr = shared_ptr<CProductAlphaVantageStockDayLine>;

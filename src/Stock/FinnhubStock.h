@@ -2,10 +2,7 @@
 
 #include"VirtualStock.h"
 
-#include"DayLine.h"
 #include"ContainerFinnhubStockDayLine.h"
-#include "InsiderSentiment.h"
-#include "InsiderTransaction.h"
 
 using std::chrono::weekday;
 using std::chrono::sys_seconds;
@@ -14,6 +11,8 @@ using std::shared_ptr;
 class CFinnhubCompanyNews;
 class CEPSSurprise;
 class CSECFiling;
+class CInsiderTransaction;
+class CInsiderSentiment;
 
 class CFinnhubStock : public CVirtualStock {
 public:
@@ -82,18 +81,18 @@ public:
 	bool IsUpdateSECFilingsDB() const noexcept { return m_fUpdateSECFilingsDB; }
 	void SetUpdateSECFilingsDB(const bool fFlag) noexcept { m_fUpdateSECFilingsDB = fFlag; }
 
-	bool HaveInsiderTransaction() const noexcept { return !m_vInsiderTransaction.empty(); }
-	void UnloadInsiderTransaction() { m_vInsiderTransaction.resize(0); }
-	void UpdateInsiderTransaction(const CInsiderTransactionsPtr& pvInsiderTransaction);
+	bool HaveInsiderTransaction() const noexcept;
+	void UnloadInsiderTransaction();
+	void UpdateInsiderTransaction(const shared_ptr<vector<CInsiderTransaction>>& pvInsiderTransaction);
 	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
 	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransaction = fFlag; }
 	bool CheckInsiderTransactionStatus(local_days lCurrentDate);
 	bool IsUpdateInsiderTransactionDB() const noexcept { return m_fUpdateFinnhubInsiderTransactionDB; }
 	void SetUpdateInsiderTransactionDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransactionDB = fFlag; }
 
-	bool HaveInsiderSentiment() const noexcept { return !(m_pvInsiderSentiment == nullptr || m_pvInsiderSentiment->empty()); }
-	void UpdateInsiderSentiment(const CInsiderSentimentsPtr& pvInsiderSentiment);
-	void ClearInsiderSentiment() { m_pvInsiderSentiment.reset(); }
+	bool HaveInsiderSentiment() const noexcept;
+	void UpdateInsiderSentiment(const shared_ptr<vector<CInsiderSentiment>>& pvInsiderSentiment);
+	void ClearInsiderSentiment();
 	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateFinnhubInsiderSentiment; }
 	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentiment = fFlag; }
 	bool CheckInsiderSentimentStatus(local_days lCurrentDate);
@@ -201,7 +200,7 @@ public:
 	vector<CInsiderTransaction> m_vInsiderTransaction;
 	long m_lInsiderTransactionEndDate{ 19800101 };
 
-	CInsiderSentimentsPtr m_pvInsiderSentiment{ nullptr };
+	shared_ptr<vector<CInsiderSentiment>> m_pvInsiderSentiment{ nullptr };
 	long m_lInsiderSentimentStartDate{ 19800101 };
 
 	shared_ptr<vector<CSECFiling>> m_pvSECFilings;

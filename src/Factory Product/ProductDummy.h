@@ -2,6 +2,8 @@
 
 #include"VirtualWebProduct.h"
 
+using std::shared_ptr;
+
 class CProductDummy final : public CVirtualWebProduct {
 public:
 	CProductDummy();

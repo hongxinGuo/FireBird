@@ -1,9 +1,10 @@
 #include"pch.h"
 
 #include <gtest/gtest.h>
-
 #include"GeneralCheck.h"
+
 #include"SystemMessage.h"
+#include "TiingoMarketNews.h"
 
 #include"WorldMarket.h"
 #include"TiingoDataSource.h"

@@ -7,6 +7,8 @@
 
 #include"WorldMarket.h"
 #include"TiingoDataSource.h"
+#include"TiingoCrypto.h"
+#include"TimeConvert.h"
 
 #include"ProductTiingoCryptoSymbol.h"
 #include "SystemConfiguration.h"

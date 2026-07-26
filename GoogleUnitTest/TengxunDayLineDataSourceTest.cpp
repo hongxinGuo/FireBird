@@ -6,6 +6,7 @@
 #include"SystemMessage.h"
 
 #include"TengxunDayLineDataSource.h"
+#include"TimeConvert.h"
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"

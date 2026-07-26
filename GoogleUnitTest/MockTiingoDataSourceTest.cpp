@@ -7,6 +7,8 @@
 #include"VirtualWebProduct.h"
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
+#include "TiingoFactory.h"
+#include"TimeConvert.h"
 
 #include"MockTiingoDataSource.h"
 #include "SystemConfiguration.h"

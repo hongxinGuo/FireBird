@@ -10,6 +10,7 @@
 #include "ContainerTiingoSymbol.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+#include"TiingoCandleLine.h"
 
 using namespace std;
 

@@ -5,6 +5,7 @@
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
+#include"TimeConvert.h"
 
 #include"MockSinaRTDataSource.h"
 #include "SystemConfiguration.h"

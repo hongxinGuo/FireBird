@@ -5,6 +5,7 @@
 
 #include"FinnhubStock.h"
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
+#include"EPSSurprise.h"
 
 #include "ContainerFinnhubStock.h"
 #include "WebData.h"

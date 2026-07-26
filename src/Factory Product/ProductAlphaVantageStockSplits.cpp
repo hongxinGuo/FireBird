@@ -7,6 +7,7 @@
 
 #include "ContainerTiingoStock.h"
 #include "TiingoStock.h"
+#include"StockSplit.h"
 #include "SystemMessage.h"
 #include "WebData.h"
 

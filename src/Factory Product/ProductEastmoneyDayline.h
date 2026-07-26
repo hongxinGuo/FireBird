@@ -12,6 +12,11 @@
 using std::string_view;
 class CDayLine;
 
+using std::vector;
+using std::shared_ptr;
+using std::string_view;
+using std::string;
+
 class CProductEastmoneyDayLine final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductEastmoneyDayLine();

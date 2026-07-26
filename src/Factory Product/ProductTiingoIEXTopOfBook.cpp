@@ -12,6 +12,7 @@
 #include"jsonParse.h"
 
 #include "ProductTiingoIEXTopOFBook.h"
+#include "TiingoIEXTopOFBook.h"
 
 #include "TiingoDataSource.h"
 

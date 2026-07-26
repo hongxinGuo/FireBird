@@ -8,6 +8,7 @@
 #include "ContainerFinnhubCrypto.h"
 #include "ContainerFinnhubCryptoExchange.h"
 #include "WebData.h"
+#include "FinnhubCrypto.h"
 
 using std::make_shared;
 

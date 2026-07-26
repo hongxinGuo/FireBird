@@ -7,6 +7,7 @@
 #include"ChinaMarket.h"
 #include "SystemMessage.h"
 #include "WorldMarket.h"
+#include"TimeConvert.h"
 
 using std::max;
 

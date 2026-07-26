@@ -1,12 +1,12 @@
 #include"pch.h"
 
 #include <gtest/gtest.h>
-
-#include "ContainerTiingoStock.h"
 #include"GeneralCheck.h"
 
+#include "ContainerTiingoStock.h"
 #include"WorldMarket.h"
 #include"TiingoDataSource.h"
+#include"TiingoStock.h"
 #include"ProductTiingoStockProfile.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"

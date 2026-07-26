@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include "TiingoIEXTopOFBook.h"
+
+class CTiingoIEXTopOfBook;
 
 class CProductTiingoIEXTopOfBook final : public CProductTiingo {
 public:
@@ -15,7 +16,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoIEXTopOfBooksPtr ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData);
+	shared_ptr<vector<shared_ptr<CTiingoIEXTopOfBook>>> ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
 };

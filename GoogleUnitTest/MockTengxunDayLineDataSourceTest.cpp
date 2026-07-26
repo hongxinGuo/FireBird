@@ -8,6 +8,7 @@
 #include "SinaRTDataSource.h"
 #include "SystemConfiguration.h"
 #include"ChinaStock.h"
+#include"TimeConvert.h"
 
 using namespace testing;
 using std::make_shared;

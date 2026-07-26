@@ -6,8 +6,8 @@
 
 #include"DayLine.h"
 #include"ContainerTiingoStockDayLine.h"
-#include "ProductTiingoStockDayLine.h"
 #include<sqlpp23/sqlpp23.h>
+#include"TiingoCandleLine.h"
 
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"

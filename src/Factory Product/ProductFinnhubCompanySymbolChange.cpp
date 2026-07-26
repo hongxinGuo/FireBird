@@ -14,6 +14,7 @@
 #include"nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubCompanySymbolChange.h"
+#include"FinnhubCompanySymbolChange.h"
 
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"

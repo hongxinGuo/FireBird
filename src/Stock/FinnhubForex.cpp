@@ -6,6 +6,7 @@
 
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
+#include"TimeConvert.h"
 
 #include"dataBaseConnector.h"
 

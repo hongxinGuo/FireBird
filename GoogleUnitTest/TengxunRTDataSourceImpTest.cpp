@@ -7,6 +7,7 @@
 #include"VirtualWebProduct.h"
 #include"tengxunRTDataSource.h"
 #include"ChinaMarket.h"
+#include"TimeConvert.h"
 
 #include"TestWebData.h"
 

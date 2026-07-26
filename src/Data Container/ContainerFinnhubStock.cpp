@@ -16,6 +16,7 @@
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 #include"FinnhubStock.h"
+#include"TimeConvert.h"
 
 using std::make_shared;
 

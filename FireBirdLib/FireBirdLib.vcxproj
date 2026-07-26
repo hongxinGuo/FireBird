@@ -78,7 +78,6 @@
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
     <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h" />

@@ -10,6 +10,7 @@
 #include "WebData.h"
 #include "FinnhubCrypto.h"
 #include "TiingoCrypto.h"
+#include"DayLine.h"
 
 using namespace std;
 

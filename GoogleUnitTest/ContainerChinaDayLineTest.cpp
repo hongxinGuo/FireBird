@@ -7,6 +7,7 @@
 
 #include"ContainerChinaStockDayLine.h"
 #include"WeekLine.h"
+#include"TimeConvert.h"
 
 #include<sqlpp23/sqlpp23.h>
 

@@ -4,7 +4,7 @@
 #include"nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubStockSymbol.h"
-#include"SECFiling.h"
+#include "FinnhubStock.h"
 
 #include "ContainerFinnhubStock.h"
 #include "ContainerStockExchange.h"

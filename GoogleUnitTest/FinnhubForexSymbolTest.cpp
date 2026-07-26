@@ -5,6 +5,7 @@
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 #include"ContainerForexDayLine.h"
+#include"TimeConvert.h"
 
 #include"FinnhubForex.h"
 #include<sqlpp23/sqlpp23.h>

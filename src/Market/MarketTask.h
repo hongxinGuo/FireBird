@@ -3,8 +3,9 @@
 
 #include <concurrencpp/timers/timer.h>
 
-#include "TimeConvert.h"
-using concurrencpp::timer;
+using std::chrono::local_seconds;
+using std::chrono::hh_mm_ss;
+using std::chrono::seconds;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -68,7 +69,7 @@ using std::array;
 using std::map;
 using std::string;
 
-extern array<timer, TASK_END> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
+extern array<concurrencpp::timer, TASK_END> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
 
 extern map<long, string> gl_mapMarketMapIndex;
 
@@ -79,8 +80,8 @@ public:
 	~CMarketTask() = default;
 
 	local_seconds GetTime() const { return m_time; }
-	void SetTime(const hh_mm_ss<seconds>& hhmmss) { m_time = toLocalTime(hhmmss); }
-	void SetTime(long lTime) { m_time = toLocalTime(lTime); }
+	void SetTime(const hh_mm_ss<seconds>& hhmmss);
+	void SetTime(long lTime);
 	void SetTime(local_seconds ls) { m_time = ls; }
 
 	long GetType() const { return m_lType; }

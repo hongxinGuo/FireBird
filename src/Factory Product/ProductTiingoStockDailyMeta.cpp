@@ -11,6 +11,7 @@
 #include"jsonParse.h"
 
 #include "ProductTiingoStockDailyMeta.h"
+#include "TiingoStockDailyMeta.h"
 
 #include "ContainerTiingoStock.h"
 #include"simdjsonGetValue.h"

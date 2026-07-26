@@ -6,6 +6,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+class CWebData;
+
 using std::string;
 using std::vector;
 
@@ -28,10 +30,10 @@ public:
 	virtual ~CVirtualWebProduct() = default;
 
 	virtual string CreateMessage() { return ""; }
-	virtual void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>>) {}
+	virtual void CalculateTotalDataLength(shared_ptr<vector<shared_ptr<CWebData>>>) {}
 
-	virtual void ParseAndStoreWebData(CWebDataPtr) {} // default do nothing
-	virtual void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
+	virtual void ParseAndStoreWebData(shared_ptr<CWebData>) {} // default do nothing
+	virtual void ParseAndStoreWebData(shared_ptr<vector<shared_ptr<CWebData>>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
 		ASSERT(pvWebData->size() == 1);
 		ParseAndStoreWebData(pvWebData->at(0)); // 默认只有一个数据，
 	}
@@ -39,7 +41,7 @@ public:
 	virtual void UpdateSystemStatus() {} // default do nothing
 
 	bool CheckInaccessible();
-	bool IsVoidJson(const CWebDataPtr& pWebData);
+	bool IsVoidJson(const shared_ptr<CWebData>& pWebData);
 
 	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
 	bool IsNoRightToAccess() const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
@@ -64,7 +66,7 @@ public:
 	int GetInquireType() const noexcept { return m_iInquireType; }
 
 	// 测试用
-	virtual bool Test_checkAccessRight_(CWebDataPtr) { return true; }  // todo 不再使用，准备删除之
+	virtual bool Test_checkAccessRight_(shared_ptr<CWebData>) { return true; }  // todo 不再使用，准备删除之
 
 protected:
 	string m_strInquiryFunction{};

@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include "TiingoMarketNews.h"
+
+class CTiingoMarketNews;
 
 class CProductTiingoMarketNews final : public CProductTiingo {
 public:
@@ -14,7 +15,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoMarketNewssPtr ParseTiingoMarketNews(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CTiingoMarketNews>> ParseTiingoMarketNews(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
 };

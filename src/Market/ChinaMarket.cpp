@@ -20,7 +20,6 @@
 
 #include"DayLineWebData.h"
 
-
 #include "ContainerChinaStock.h"
 #include "ContainerStockExchange.h"
 #include "ContainerStockSymbol.h"
@@ -94,6 +93,10 @@ void CChinaMarket::ResetMarket() {
 
 	gl_ProcessChinaMarketRTData.release();
 	m_fResettingMarket = false;
+}
+
+local_seconds CChinaMarket::GetResetTime() {
+	return toLocalTime(30000);
 }
 
 void CChinaMarket::Reset() {

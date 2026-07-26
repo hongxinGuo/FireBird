@@ -9,6 +9,7 @@
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
+#include"TimeConvert.h"
 
 #include"GeneralCheck.h"
 #include "SinaRTDataSource.h"

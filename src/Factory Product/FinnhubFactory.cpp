@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"FinnhubInquiryType.h"
+#include"FinnhubStock.h"
 
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"
@@ -29,7 +30,6 @@
 #include"ProductFinnhubEconomicCalendar.h"
 
 #include"ProductDummy.h"
-
 #include "FinnhubFactory.h"
 
 #include "ProductFinnhubCompanySymbolChange.h"

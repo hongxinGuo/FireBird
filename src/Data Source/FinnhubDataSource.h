@@ -1,9 +1,12 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"FinnhubFactory.h"
+
+class CFinnhubFactory;
 
 using std::chrono::local_seconds;
+using std::unique_ptr;
+using std::shared_ptr;
 
 class CFinnhubDataSource : public CVirtualDataSource {
 public:
@@ -114,7 +117,7 @@ protected:
 	bool m_fUpdateSECFilings{ true };
 	bool m_fUpdateCompanySymbolChange{ true };
 
-	CFinnhubFactory m_FinnhubFactory;
+	unique_ptr<CFinnhubFactory> m_pFinnhubFactory;
 
 private:
 	bool m_fFinnhubDataInquiryFinished{ false };

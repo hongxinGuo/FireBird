@@ -4,6 +4,7 @@
 #include"nlohmannJsonGetValue.h"
 #include"WorldMarket.h"
 #include "ProductTiingoStockDayLine.h"
+#include"TiingoCandleLine.h"
 
 #include "ContainerTiingoStock.h"
 #include"TiingoStock.h"

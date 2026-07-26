@@ -7,6 +7,7 @@
 #include "TiingoStock.h"
 
 #include"WorldMarket.h"
+#include "TiingoStockDailyMeta.h"
 
 #include"ProductTiingoStockDailyMeta.h"
 #include "SystemConfiguration.h"

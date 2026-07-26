@@ -2,6 +2,10 @@
 
 #include"VirtualChinaMarketWebProduct.h"
 
+class CWebData;
+
+using std::string;
+
 class CProductSinaRT final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductSinaRT();
@@ -13,7 +17,7 @@ public:
 	~CProductSinaRT() override = default;
 
 	string CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

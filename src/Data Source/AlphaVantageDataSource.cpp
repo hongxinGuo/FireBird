@@ -7,6 +7,7 @@
 #include "WorldMarket.h"
 #include"VirtualWebProduct.h"
 #include"FinnhubStock.h"
+#include"AlphaVantageFactory.h"
 
 #include "ContainerFinnhubStock.h"
 #include "TiingoStock.h"
@@ -20,6 +21,8 @@ namespace {
 }
 
 CAlphaVantageDataSource::CAlphaVantageDataSource() {
+	m_pAlphaVantageFactory = std::make_unique<CAlphaVantageFactory>();
+
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // AlphaVantage有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
@@ -58,7 +61,7 @@ bool CAlphaVantageDataSource::GenerateInquiryMessage(const local_seconds& lCurre
 bool CAlphaVantageDataSource::GenerateStockSplit() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockSplit(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateSplit(); };
-	auto createProduct = [this](int inquireType) { return m_AlphaVantageFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto createProduct = [this](int inquireType) { return m_pAlphaVantageFactory->CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setMessage = [](const auto& item) {
 		std::string str = "Split :";
 		str += item->GetSymbol();
@@ -83,7 +86,7 @@ bool CAlphaVantageDataSource::GenerateStockSplit() {
 bool CAlphaVantageDataSource::GenerateStockDayLine() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockDayLine(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
-	auto createProduct = [this](int inquireType) { return m_AlphaVantageFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto createProduct = [this](int inquireType) { return m_pAlphaVantageFactory->CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setMessage = [](const auto& item) {
 		std::string str = "DayLine:";
 		str += item->GetSymbol();

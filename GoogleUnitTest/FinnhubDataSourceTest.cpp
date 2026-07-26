@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"GeneralCheck.h"
+
 #include"SystemMessage.h"
 
 #include "ContainerFinnhubCrypto.h"
@@ -10,11 +12,13 @@
 #include "ContainerStockExchange.h"
 #include "FinnhubCrypto.h"
 #include "FinnhubForex.h"
-#include"GeneralCheck.h"
+#include "FinnhubStock.h"
 
 #include"WorldMarket.h"
 
 #include"MockFinnhubDataSource.h"
+#include "FinnhubFactory.h" //Note: FinnhubDataSource需要使用FinnhubFactory.h
+
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 #include "ProductFinnhubCompanyNews.h"

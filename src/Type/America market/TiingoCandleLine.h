@@ -2,7 +2,6 @@
 
 #include"VirtualHistoryCandle.h"
 
-#include<memory>
 using std::vector;
 
 class CTiingoCandleLine : public CVirtualHistoryCandle {

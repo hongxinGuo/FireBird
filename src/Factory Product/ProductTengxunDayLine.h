@@ -9,6 +9,10 @@
 
 #include"VirtualChinaMarketWebProduct.h"
 
+class CDayLine;
+
+using std::vector;
+
 class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductTengxunDayLine();

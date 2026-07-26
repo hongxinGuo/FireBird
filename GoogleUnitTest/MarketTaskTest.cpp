@@ -4,6 +4,7 @@
 
 #include"GeneralCheck.h"
 #include"MarketTask.h"
+#include"TimeConvert.h"
 
 namespace FireBirdTest {
 	class CMarketTaskTest : public testing::Test {

@@ -7,6 +7,7 @@
 #include"simdjsonGetValue.h"
 #include "WebData.h"
 #include "WorldMarket.h"
+#include"TiingoCompanyFinancialState.h"
 
 using namespace std;
 

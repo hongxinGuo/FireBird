@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include "TiingoStockDailyMeta.h"
+
+class CTiingoStockDailyMeta;
 
 class CProductTiingoStockDailyMeta final : public CProductTiingo {
 public:
@@ -15,7 +16,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoStockDailyMetaPtr ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData);
+	shared_ptr<CTiingoStockDailyMeta> ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData);
 };
 
 using CProductTiingoStockDailyMetaPtr = shared_ptr<CProductTiingoStockDailyMeta>;

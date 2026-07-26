@@ -1429,3 +1429,7 @@ void CWorldMarket::ChangeToNextStock() {
 	}
 	gl_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
 }
+
+bool CWorldMarket::IsTimeToResetSystem(local_seconds ls) {
+	return (ls > GetPrevTime(GetResetTime(), 0h, 2min, 1s)) && (ls < GetNextTime(GetResetTime(), 0h, 5min, 1s));
+}

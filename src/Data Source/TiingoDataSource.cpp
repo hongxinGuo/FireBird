@@ -16,6 +16,7 @@
 #include "spdlog_assert.h"
 #include "InaccessibleSymbol.h"
 #include "SystemConfiguration.h"
+#include "TiingoFactory.h"
 #include "WebData.h"
 #include"WorldMarket.h"
 
@@ -37,6 +38,8 @@ namespace {
 }
 
 CTiingoDataSource::CTiingoDataSource() {
+	m_pTiingoFactory = make_unique<CTiingoFactory>();
+
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
@@ -467,7 +470,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 bool CTiingoDataSource::GenerateMarketNews() {
 	auto isUpdateNeeded = [this]() { return IsUpdateMarketNews(); };
 	auto createProduct = [this](int inquireType) {
-		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+		return m_pTiingoFactory->CreateProduct(gl_pWorldMarket, inquireType);
 	};
 	return GenerateSimpleInquiry(
 		MARKET_NEWS_,
@@ -480,7 +483,7 @@ bool CTiingoDataSource::GenerateMarketNews() {
 bool CTiingoDataSource::GenerateFundamentalDefinition() {
 	auto isUpdateNeeded = [this]() { return IsUpdateFundamentalDefinition(); };
 	auto createProduct = [this](int inquireType) {
-		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+		return m_pTiingoFactory->CreateProduct(gl_pWorldMarket, inquireType);
 	};
 	return GenerateSimpleInquiry(
 		TIINGO_FUNDAMENTAL_DEFINITION_,
@@ -494,7 +497,7 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockSymbol(); };
 	auto setUpdated = [this]() { return SetUpdateStockSymbol(false); };
 	auto createProduct = [this](int inquireType) {
-		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+		return m_pTiingoFactory->CreateProduct(gl_pWorldMarket, inquireType);
 	};
 	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo symbol needn't update"); };
 
@@ -514,7 +517,7 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 	auto isUpdateNeeded = [this]() { return IsUpdateCryptoSymbol(); };
 	auto setUpdated = [this]() { return SetUpdateCryptoSymbol(false); };
 	auto createProduct = [this](int inquireType) {
-		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+		return m_pTiingoFactory->CreateProduct(gl_pWorldMarket, inquireType);
 	};
 	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo crypto symbol needn't update"); };
 
@@ -539,7 +542,7 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 bool CTiingoDataSource::GenerateIEXTopOfBook() {
 	auto isUpdateNeeded = [this]() { return IsUpdateIEXTopOfBook(); };
 	auto createProduct = [this](int inquireType) {
-		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+		return m_pTiingoFactory->CreateProduct(gl_pWorldMarket, inquireType);
 	};
 
 	return GenerateSimpleInquiry(
@@ -576,7 +579,7 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
@@ -615,7 +618,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
@@ -650,7 +653,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
@@ -686,7 +689,7 @@ bool CTiingoDataSource::GenerateChosenStockDayLine() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(gl_dataContainerTiingoStock.GetOffset(pTiingoStock));// 设置的是在总股票集中的位置，因处理日线数据时是用的总股票集
 			StoreInquiry(p);
 			string s = "Day line: ";
@@ -738,7 +741,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			s_dayLineInquired++;
@@ -779,7 +782,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "Financial statement: ";

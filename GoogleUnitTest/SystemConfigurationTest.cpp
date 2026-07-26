@@ -2,10 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include"WorldMarket.h"
-
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
+#include"TimeConvert.h"
 
 #include"GeneralCheck.h"
 #include "SystemConfiguration.h"

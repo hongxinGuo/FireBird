@@ -1,7 +1,8 @@
 #pragma once
 
-#include "MarketStatus.h"
 #include"ProductFinnhub.h"
+
+class CMarketStatus;
 
 class CProductFinnhubMarketStatus final : public CProductFinnhub {
 public:
@@ -10,7 +11,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CMarketStatusesPtr ParseFinnhubMarketStatus(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CMarketStatus>> ParseFinnhubMarketStatus(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubMarketStatusPtr = shared_ptr<CProductFinnhubMarketStatus>;

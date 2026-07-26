@@ -1,7 +1,10 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"AlphaVantageFactory.h"
+
+class CAlphaVantageFactory;
+
+using std::unique_ptr;
 
 class CAlphaVantageDataSource : public CVirtualDataSource {
 public:
@@ -28,7 +31,7 @@ public:
 	void SetUpdateStockDayLine(const bool fFlag) noexcept { m_fUpdateStockDayLine = fFlag; }
 
 protected:
-	CAlphaVantageFactory m_AlphaVantageFactory;
+	unique_ptr<CAlphaVantageFactory> m_pAlphaVantageFactory;
 
 	bool m_fUpdateStockSplit{ true }; //每日更新公司股票分割数据 
 	bool m_fUpdateStockDayLine{ true }; //每日更新公司日线数据

@@ -7,6 +7,7 @@
 #include "ContainerFinnhubStock.h"
 #include"ProductFinnhubStockPriceQuote.h"
 #include "SystemMessage.h"
+#include "FinnhubStock.h"
 #include"TestWebData.h"
 
 using namespace testing;

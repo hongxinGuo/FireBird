@@ -8,6 +8,7 @@
 #include "ContainerTiingoStock.h"
 #include "TiingoStock.h"
 #include"TiingoDataSource.h"
+#include "TiingoIEXTopOFBook.h"
 
 #include"ProductTiingoIEXTopOfBook.h"
 #include"TestWebData.h"

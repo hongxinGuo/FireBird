@@ -3,13 +3,18 @@
 #include <concurrentqueue/moodycamel/concurrentqueue.h>
 
 #include"MarketTaskQueue.h"
-#include"TimeConvert.h"
 
 class CStockExchange;
 
 using std::chrono::sys_seconds;
 using std::chrono::weekday;
 using std::chrono::time_zone;
+using std::chrono::local_days;
+using std::chrono::local_seconds;
+using std::chrono::year_month_day;
+using std::chrono::hh_mm_ss;
+using std::chrono::days;
+using std::chrono::floor;
 
 class CVirtualMarket {
 public:
@@ -100,14 +105,8 @@ public:
 	long ConvertToDate(sys_seconds tp) const noexcept;
 
 	// 测试用
-	void TEST_SetMarketTime(local_seconds ls) noexcept {
-		local_days day = floor<days>(m_marketClock);
-		m_marketClock = toLocalDateTime(day, ls);
-	} // 此函数只用于测试
-	void TEST_SetMarketDate(local_days ld) noexcept {
-		local_seconds second{ m_marketClock - floor<days>(m_marketClock) };
-		m_marketClock = toLocalDateTime(ld, second);
-	} // 此函数只用于测试
+	void TEST_SetMarketTime(local_seconds ls) noexcept;// 此函数只用于测试
+	void TEST_SetMarketDate(local_days ld) noexcept;// 此函数只用于测试
 
 	/////
 	string GetMarketID() const noexcept { return m_strMarketId; }

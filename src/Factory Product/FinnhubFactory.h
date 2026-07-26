@@ -1,7 +1,6 @@
 #pragma once
 
 #include"virtualDataFactory.h"
-#include "ClassDeclaration.h"
 
 class CFinnhubFactory final : public CVirtualDataFactory {
 public:

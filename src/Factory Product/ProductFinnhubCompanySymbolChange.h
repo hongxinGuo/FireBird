@@ -2,7 +2,8 @@
 #pragma once
 
 #include"ProductFinnhub.h"
-#include"FinnhubCompanySymbolChange.h"
+
+class CCompanySymbolChange;
 
 class CProductFinnhubCompanySymbolChange final : public CProductFinnhub {
 public:
@@ -11,7 +12,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CCompanySymbolChangesPtr ParseFinnhubCompanySymbolChange(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CCompanySymbolChange>> ParseFinnhubCompanySymbolChange(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
 };

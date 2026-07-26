@@ -2,6 +2,10 @@
 
 #include"ProductFinnhub.h"
 
+using std::string;
+using std::shared_ptr;
+using std::vector;
+
 class CProductFinnhubForexExchange final : public CProductFinnhub {
 public:
 	CProductFinnhubForexExchange();

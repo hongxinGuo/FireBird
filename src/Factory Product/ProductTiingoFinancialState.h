@@ -1,7 +1,8 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoCompanyFinancialState.h"
+
+class CTiingoCompanyFinancialState;
 
 class CProductTiingoFinancialState final : public CProductTiingo {
 public:
@@ -15,7 +16,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoCompanyFinancialStatesPtr ParseTiingoFinancialState(const CWebDataPtr& pWebData);
+	shared_ptr<std::vector<shared_ptr<CTiingoCompanyFinancialState>>> ParseTiingoFinancialState(const CWebDataPtr& pWebData);
 };
 
 using CProductTiingoFinancialStatePtr = shared_ptr<CProductTiingoFinancialState>;

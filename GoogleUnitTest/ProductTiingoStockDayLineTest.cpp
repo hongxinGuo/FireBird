@@ -10,6 +10,7 @@
 #include "SystemMessage.h"
 #include"TestWebData.h"
 #include "TiingoStock.h"
+#include"TiingoCandleLine.h"
 
 using namespace testing;
 using namespace std;

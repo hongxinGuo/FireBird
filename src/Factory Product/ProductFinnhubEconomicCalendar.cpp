@@ -18,6 +18,7 @@
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
 #include "WebData.h"
+#include"EconomicCalendar.h"
 
 using std::make_shared;
 

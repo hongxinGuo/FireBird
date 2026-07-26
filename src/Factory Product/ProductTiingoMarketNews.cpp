@@ -15,6 +15,7 @@
 #include "ProductTiingoMarketNews.h"
 
 #include "TiingoDataSource.h"
+#include "TiingoMarketNews.h"
 
 #include"simdjsonGetValue.h"
 #include "SystemConfiguration.h"

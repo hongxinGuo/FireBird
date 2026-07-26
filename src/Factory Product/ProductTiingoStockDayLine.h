@@ -1,7 +1,13 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoCandleLine.h"
+
+class CTiingoCandleLine;
+
+using std::string;
+using std::chrono::local_days;
+using std::vector;
+using std::shared_ptr;
 
 #define needMoreDayLineData_ 10 // 申请日线数据时，总是多申请一天的数据，以便使用前日收盘价作为昨收。
 
@@ -17,7 +23,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoCandleLinesPtr ParseTiingoStockDayLine(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CTiingoCandleLine>> ParseTiingoStockDayLine(const CWebDataPtr& pWebData);
 
 	string GetDayLineInquiryParam(const string& strSymbol, local_days lStartDate, local_days lCurrentDate);
 

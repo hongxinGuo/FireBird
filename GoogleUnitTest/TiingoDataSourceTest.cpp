@@ -10,6 +10,8 @@
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
+#include "TiingoFactory.h"
+#include"TiingoStock.h"
 
 #include"ProductDummy.h"
 #include "ProductTiingoCryptoSymbol.h"

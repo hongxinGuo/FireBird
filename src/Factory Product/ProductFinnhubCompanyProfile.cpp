@@ -7,6 +7,7 @@
 #include "ContainerFinnhubStock.h"
 
 #include "ProductFinnhubCompanyProfile.h"
+#include"FinnhubStock.h"
 
 #include "WebData.h"
 

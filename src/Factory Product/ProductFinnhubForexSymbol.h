@@ -1,7 +1,8 @@
 #pragma once
 
-#include "FinnhubForex.h"
 #include"ProductFinnhub.h"
+
+class CFinnhubForex;
 
 class CProductFinnhubForexSymbol final : public CProductFinnhub {
 public:
@@ -10,7 +11,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CForexSymbolsPtr ParseFinnhubForexSymbol(const CWebDataPtr& pWebData);
+	shared_ptr<vector<shared_ptr<CFinnhubForex>>> ParseFinnhubForexSymbol(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubForexSymbolPtr = shared_ptr<CProductFinnhubForexSymbol>;

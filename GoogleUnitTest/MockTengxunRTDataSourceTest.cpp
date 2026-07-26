@@ -6,6 +6,7 @@
 
 #include"MockTengxunRTDataSource.h"
 #include "SystemConfiguration.h"
+#include"TimeConvert.h"
 
 using namespace testing;
 using namespace std;

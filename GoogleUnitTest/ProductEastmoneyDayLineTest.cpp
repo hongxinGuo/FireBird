@@ -7,7 +7,7 @@
 #include"ChinaMarket.h"
 #include "ProductEastmoneyDayLine.h"
 #include"DayLine.h"
-#include "WebData.h"
+#include"TimeConvert.h"
 
 using namespace testing;
 

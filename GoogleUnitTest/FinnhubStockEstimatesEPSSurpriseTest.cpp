@@ -1,13 +1,15 @@
 #include"pch.h"
 
 #include <gtest/gtest.h>
-
 #include"GeneralCheck.h"
+
 #include"WorldMarket.h"
+#include"TimeConvert.h"
 #include "ContainerFinnhubStock.h"
 #include"FinnhubStock.h"
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
 #include "SystemMessage.h"
+#include"EPSSurprise.h"
 #include"TestWebData.h"
 
 using namespace testing;

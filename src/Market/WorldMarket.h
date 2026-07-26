@@ -36,7 +36,7 @@ public:
 	void ResetTiingo();
 	void ResetDataContainer();
 
-	bool IsTimeToResetSystem(local_seconds ls) final { return (ls > GetPrevTime(GetResetTime(), 0h, 2min, 1s)) && (ls < GetNextTime(GetResetTime(), 0h, 5min, 1s)); }
+	bool IsTimeToResetSystem(local_seconds ls) final;
 	int ProcessTask() override; // 每日定时任务调度,由ScheduleTask调度
 	int ProcessCurrentImmediateTask() override; // 即时任务调度，由ScheduleTask调度
 
