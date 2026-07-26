@@ -5,7 +5,10 @@
 
 #include"GeneralCheck.h"
 
+#include"SystemMessage.h"
+
 #include"FinnhubStock.h"
+#include"FinnhubForex.h"
 #include"FinnhubDataSource.h"
 #include"FinnhubCrypto.h"
 #include "WorldMarket.h"
@@ -23,8 +26,11 @@
 #include "dataBaseConnector.h"
 #include "EconomicCalendar.h"
 #include"StockMarketSQLTable.h"
+#include "SystemConfiguration.h"
+#include "TiingoStock.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CWorldMarketTest : public Test {

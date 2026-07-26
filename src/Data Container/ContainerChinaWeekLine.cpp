@@ -2,6 +2,7 @@
 
 #include "ChinaStock.h"
 #include "ContainerChinaStockWeekLine.h"
+#include"WeekLine.h"
 
 namespace {
 	CChinaStock s_stockContainerChinaWeekLine;
@@ -16,6 +17,14 @@ void CContainerChinaStockWeekLine::StoreVectorData(const vector<CWeekLine>& vWee
 		Add(weekLine);
 	}
 	SetDataLoaded(true);
+}
+
+CWeekLine* CContainerChinaStockWeekLine::GetData(size_t lIndex) {
+	return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetData(lIndex));
+}
+
+CWeekLine* CContainerChinaStockWeekLine::GetWeekLine(local_days lDate) {
+	return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetCandle(lDate));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

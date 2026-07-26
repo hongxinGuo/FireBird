@@ -17,6 +17,8 @@
 #include "ProductTiingoStockDailyMeta.h"
 #include "SystemMessage.h"
 
+using namespace std;
+
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
 

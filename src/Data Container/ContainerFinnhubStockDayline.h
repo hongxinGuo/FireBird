@@ -2,6 +2,8 @@
 
 #include "VirtualDataHistoryCandle.h"
 
+class CDayLine;
+
 class CContainerFinnhubStockDayLine final : public CVirtualDataHistoryCandle {
 public:
 	CContainerFinnhubStockDayLine();
@@ -14,8 +16,8 @@ public:
 	void SaveDB(const string& strStockSymbol) override;
 	void LoadDB(const string& strStockSymbol) override;
 
-	CDayLine* GetData(const size_t lIndex) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CDayLine* GetDayLine(std::chrono::local_days lDate) { return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CDayLine* GetData(size_t lIndex);
+	CDayLine* GetDayLine(std::chrono::local_days lDate);
 
 	// 特有函数
 };

@@ -1,7 +1,8 @@
 #pragma once
 
-#include"TiingoStock.h"
 #include"ContainerVirtualStock.h"
+
+class CTiingoStock;
 
 class CContainerTiingoSymbol : public CContainerVirtualStock {
 public:
@@ -13,8 +14,8 @@ public:
 	~CContainerTiingoSymbol() override = default;
 	void Reset() override;
 
-	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
-	CTiingoStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode)); }
+	shared_ptr<CTiingoStock> GetStock(size_t lIndex);
+	shared_ptr<CTiingoStock> GetStock(const string& strStockCode);
 };
 
 extern CContainerTiingoSymbol gl_dataContainerTiingoNewSymbol;

@@ -2,12 +2,15 @@
 
 #include <gmock/gmock-matchers.h>
 
+#include"SystemMessage.h"
+
 #include "ContainerFinnhubEconomicCalendar.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include"FinnhubDataSource.h"
 
 #include"ProductFinnhubEconomicCalendar.h"
+#include "SystemConfiguration.h"
 #include"TestWebData.h"
 
 using namespace testing;

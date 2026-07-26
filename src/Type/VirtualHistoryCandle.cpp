@@ -4,6 +4,8 @@
 
 #include"TimeConvert.h"
 
+using namespace std;
+
 void CVirtualHistoryCandle::Reset() {
 	m_tpDate = chrono::local_days{};
 	m_strExchange.clear();

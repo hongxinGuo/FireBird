@@ -9,11 +9,16 @@
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
+#include "TiingoCandleLine.h"
+
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
 
 #include"dataBaseConnector.h"
 #include "StockSplit.h"
+#include "SystemConfiguration.h"
+
+using namespace std;
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;

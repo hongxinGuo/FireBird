@@ -2,9 +2,11 @@
 
 #include"VirtualWebSocket.h"
 
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include "Thread.h"
-#include "WorldMarket.h"
+
+using namespace std;
 
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;

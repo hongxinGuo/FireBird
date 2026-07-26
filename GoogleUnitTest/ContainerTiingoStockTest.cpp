@@ -1,20 +1,22 @@
 #include"pch.h"
 
 #include <gtest/gtest.h>
-
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
 
 #include"ContainerTiingoStock.h"
+#include "TiingoStock.h"
 #include "jsonParse.h"
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CContainerTiingoStockTest : public ::testing::Test {

@@ -9,6 +9,7 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 using std::make_shared;

@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"systemData.h"
+#include"SystemMessage.h"
 
 #include "WorldMarket.h"
 
@@ -20,9 +21,14 @@
 #include "ChinaMarket.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
+#include"FinnhubForex.h"
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
+#include "FinnhubCrypto.h"
+#include"FinnhubStock.h"
+#include "TiingoCandleLine.h"
+#include"TiingoStock.h"
 
 #include<sqlpp23/sqlpp23.h>
 
@@ -43,6 +49,9 @@
 #include "ContainerTiingoSymbol.h"
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "SystemConfiguration.h"
+
+using namespace std;
 
 namespace {
 	template <typename TWebSocket>
@@ -171,6 +180,9 @@ void CWorldMarket::ResetMarket() {
 	gl_systemMessage.PushInformationMessage(s);
 
 	m_fResettingMarket = false;
+}
+chrono::local_seconds CWorldMarket::GetResetTime() {
+	return toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime());
 }
 
 void CWorldMarket::PrepareToCloseMarket() {

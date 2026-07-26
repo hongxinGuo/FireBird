@@ -11,6 +11,7 @@
 #include "SystemMessage.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	struct TengxunRTData {

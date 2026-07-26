@@ -2,6 +2,7 @@
 #include"pch.h"
 
 #include"SystemPublicDeclaration.h"
+#include"SystemMessage.h"
 
 #include"Thread.h"
 
@@ -35,10 +36,12 @@
 
 #include"Initialization.h"
 #include "InfoReport.h"
+#include "SystemConfiguration.h"
 #include "SystemData.h"
 #include "TiingoCryptoWebSocket.h"
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
+#include "TiingoStock.h"
 
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;

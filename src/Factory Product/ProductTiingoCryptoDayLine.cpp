@@ -2,15 +2,16 @@
 
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
-
-#include"WorldMarket.h"
-
 #include "ProductTiingoCryptoDayLine.h"
 
 #include "ContainerFinnhubCrypto.h"
 #include "ContainerTiingoCryptoSymbol.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+#include "FinnhubCrypto.h"
+#include "TiingoCrypto.h"
+
+using namespace std;
 
 CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/crypto/price?";

@@ -8,6 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
+#include"SystemMessage.h"
+
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
@@ -16,6 +18,8 @@
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
 #include "WebData.h"
+
+using std::make_shared;
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?from=2020-01-01&to=2026-12-31&";

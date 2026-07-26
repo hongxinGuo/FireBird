@@ -1,9 +1,11 @@
 #include"pch.h"
 
 #include <gtest/gtest.h>
+#include"GeneralCheck.h"
+
+#include"SystemMessage.h"
 
 #include "ContainerTiingoFundamentalDefinition.h"
-#include"GeneralCheck.h"
 #include"TiingoDataSource.h"
 #include"ProductTiingoFundamentalDefinition.h"
 #include"TestWebData.h"

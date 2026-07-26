@@ -1,9 +1,11 @@
 #pragma once
-#include "DayLineWebData.h"
-#include "WebData.h"
+
+#include "nlohmannJsonDeclaration.h"
 
 using std::string;
 using std::string_view;
+
+class CDayLine;
 
 long long StrToDecimal(const string_view& svData, size_t power);
 long long StrToDecimal2(const string_view& svData, size_t power);
@@ -16,7 +18,7 @@ void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWh
 void ParseSinaRTData(const CWebDataPtr& pWebData);
 void ParseTengxunRTData(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
-CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strStockCode);
+shared_ptr<std::vector<CDayLine>> ParseTengxunDayLine(const string_view& svData, const string& strStockCode);
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived);
 
 //bool CreateJsonWithNlohmann(nlohmannJson& js, string& str, long lBeginPos = 0, long lEndPos = 0);

@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include"nlohmannJsonDeclaration.h"
+
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"

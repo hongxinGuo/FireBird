@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"FinnhubForex.h"
+
 #include "ContainerChosenForex.h"
 #include<sqlpp23/sqlpp23.h>
 
@@ -38,4 +39,12 @@ bool CContainerChosenForex::LoadDB() {
 	tx.commit();
 
 	return true;
+}
+
+CForexSymbolPtr CContainerChosenForex::GetForexSymbol(const size_t lIndex) {
+	return dynamic_pointer_cast<CFinnhubForex>(Get(lIndex));
+}
+
+CForexSymbolPtr CContainerChosenForex::GetForexSymbol(const string& strStockCode) {
+	return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode));
 }

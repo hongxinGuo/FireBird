@@ -4,6 +4,7 @@
 
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
+#include"ContainerForexDayLine.h"
 
 #include"FinnhubForex.h"
 #include<sqlpp23/sqlpp23.h>
@@ -12,6 +13,7 @@
 #include"dataBaseConnector.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CFinnhubForexSymbolTest : public ::testing::Test {

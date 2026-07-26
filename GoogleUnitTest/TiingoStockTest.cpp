@@ -18,6 +18,9 @@
 
 #include"dataBaseConnector.h"
 #include "FinnhubStock.h"
+#include "TiingoCandleLine.h"
+
+using namespace std;
 
 namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {

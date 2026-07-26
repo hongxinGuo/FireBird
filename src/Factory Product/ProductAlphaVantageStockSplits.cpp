@@ -3,13 +3,15 @@
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
-#include"WorldMarket.h"
-
 #include "ProductAlphaVantageStockSplits.h"
 
 #include "ContainerTiingoStock.h"
+#include "TiingoStock.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+
+using std::make_shared;
+using std::istringstream;
 
 CProductAlphaVantageStockSplits::CProductAlphaVantageStockSplits() {
 	m_strInquiryFunction = "https://www.alphavantage.co/query?function=SPLITS&symbol=";
@@ -90,8 +92,8 @@ CStockSplitsPtr CProductAlphaVantageStockSplits::ParseAlphaVantageStockSplits(co
 			CStockSplitPtr pSplits = make_shared<CStockSplit>();
 			s = jsonGetString(it, "effective_date");
 			istringstream ss(s);
-			chrono::local_days ld;
-			ss >> chrono::parse("%F", ld);
+			local_days ld;
+			ss >> parse("%F", ld);
 			pSplits->SetDate(ld);
 			double dTemp = jsonGetDouble(it, "close");
 			pSplits->SetRatio(dTemp);

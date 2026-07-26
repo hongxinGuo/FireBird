@@ -1,16 +1,17 @@
 #pragma once
 
-#include "VirtualDataHistoryCandle.h"
-
 #include "nlohmannJsonDeclaration.h"
 
 using std::string;
 using std::string_view;
 using std::atomic_bool;
+using std::vector;
+using std::chrono::local_days;
 
 using std::literals::chrono_literals::operator ""y;
 
 class CStockSplit;
+class CVirtualDataHistoryCandle;
 
 class CVirtualStock {
 public:

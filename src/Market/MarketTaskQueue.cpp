@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "MarketTaskQueue.h"
 
+using std::make_shared;
+
 CMarketTaskQueue::CMarketTaskQueue() {
 	CreateIndexMap();
 }
@@ -9,14 +11,14 @@ void CMarketTaskQueue::AddTask(const CMarketTaskPtr& pTask) {
 	m_vMarketTask.push(pTask);
 }
 
-void CMarketTaskQueue::AddTask(long lTaskType, const chrono::hh_mm_ss<chrono::seconds>& lExecuteTime) {
+void CMarketTaskQueue::AddTask(long lTaskType, const hh_mm_ss<seconds>& lExecuteTime) {
 	const auto pTask = make_shared<CMarketTask>();
 	pTask->SetType(lTaskType);
 	pTask->SetTime(lExecuteTime);
 	m_vMarketTask.push(pTask);
 }
 
-void CMarketTaskQueue::AddTask(const long lTaskType, const chrono::local_seconds executeTime) {
+void CMarketTaskQueue::AddTask(const long lTaskType, const local_seconds executeTime) {
 	const auto pTask = make_shared<CMarketTask>();
 	pTask->SetType(lTaskType);
 	pTask->SetTime(executeTime);

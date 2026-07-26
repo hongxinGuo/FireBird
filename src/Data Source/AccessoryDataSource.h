@@ -1,7 +1,10 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"AccessoryFactory.h"
+
+class CAccessoryFactory;
+
+using std::unique_ptr;
 
 class CAccessoryDataSource : public CVirtualDataSource {
 public:
@@ -25,7 +28,7 @@ public:
 	virtual void SetUpdateIndexNasdaq100Stocks(bool fFlag) noexcept { m_fUpdateIndexNasdaq100Stocks = fFlag; }
 
 protected:
-	CAccessoryFactory m_AccessoryFactory;
+	unique_ptr<CAccessoryFactory> m_pAccessoryFactory;
 
 	// 每日更新项目
 	bool m_fUpdateIndexNasdaq100Stocks{ true };

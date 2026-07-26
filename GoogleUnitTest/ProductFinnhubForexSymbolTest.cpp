@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 #include "ContainerFinnhubForexExchange.h"
+#include"ContainerForexDayLine.h"
 #include "containerFinnhubForexSymbol.h"
 #include"GeneralCheck.h"
 #include"ProductFinnhubForexSymbol.h"

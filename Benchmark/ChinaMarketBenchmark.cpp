@@ -7,6 +7,8 @@
 
 #include"TiingoStock.h"
 
+using namespace std;
+
 class CChinaMarketBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {

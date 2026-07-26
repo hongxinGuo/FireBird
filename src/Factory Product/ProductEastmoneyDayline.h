@@ -9,6 +9,9 @@
 
 #include"VirtualChinaMarketWebProduct.h"
 
+using std::string_view;
+class CDayLine;
+
 class CProductEastmoneyDayLine final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductEastmoneyDayLine();
@@ -21,7 +24,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr) override; // 腾讯日线不使用此函数
-	CDayLinesPtr ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode);
+	shared_ptr<vector<CDayLine>> ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode);
 
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
 	int GetInquiryNumber() const { return m_iInquiryNumber; }

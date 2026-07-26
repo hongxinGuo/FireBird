@@ -6,11 +6,14 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaStockDayLine.h"
+#include"WeekLine.h"
 
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+
+using namespace std;
 
 using namespace testing;
 

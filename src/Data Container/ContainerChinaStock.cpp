@@ -17,6 +17,7 @@
 #include "SystemMessage.h"
 
 using std::chrono::Monday;
+using std::make_shared;
 
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
@@ -34,6 +35,14 @@ size_t CContainerChinaStock::GetActiveStockSize() const {
 		if (pStock->IsActive()) lTotalActiveStock++;
 	}
 	return lTotalActiveStock;
+}
+
+CChinaStockPtr CContainerChinaStock::GetStock(const string& strStockCode) {
+	return dynamic_pointer_cast<CChinaStock>(Get(strStockCode));
+}
+
+CChinaStockPtr CContainerChinaStock::GetStock(size_t lIndex) {
+	return dynamic_pointer_cast<CChinaStock>(Get(lIndex));
 }
 
 long CContainerChinaStock::LoadProfileDB() {

@@ -1,14 +1,17 @@
 #include"pch.h"
+#include"GeneralCheck.h"
+
+#include"SystemMessage.h"
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
-#include"GeneralCheck.h"
 
 #include"MockSinaRTDataSource.h"
 #include "SystemConfiguration.h"
 #include "WebData.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest { namespace {
 		CMockSinaRTDataSourcePtr m_pMockSinaRTDataSource; // 新浪实时数据采集

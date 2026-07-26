@@ -1,7 +1,10 @@
 #pragma once
 
 #include"ContainerVirtualStock.h"
-#include "TiingoStock.h"
+
+class CTiingoStock;
+
+using std::string;
 
 class CContainerTiingoChosenStock : public CContainerVirtualStock {
 public:
@@ -16,8 +19,8 @@ public:
 	bool LoadDB();
 	void UpdateDB() const;
 
-	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); };
-	CTiingoStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode)); };
+	shared_ptr<CTiingoStock> GetStock(size_t lIndex);
+	shared_ptr<CTiingoStock> GetStock(const string& strStockCode);
 
 protected:
 };

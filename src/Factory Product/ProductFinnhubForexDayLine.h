@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DayLine.h"
 #include"ProductFinnhub.h"
 
 class CProductFinnhubForexDayLine final : public CProductFinnhub {

@@ -11,6 +11,7 @@
 #include"StockMarketSQLTable.h"
 
 #include"dataBaseConnector.h"
+#include "SystemMessage.h"
 
 CProductIndexNasdaq100Stocks::CProductIndexNasdaq100Stocks() {
 	m_strInquiryFunction = "https://www.slickcharts.com/nasdaq100";

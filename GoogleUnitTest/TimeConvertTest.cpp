@@ -6,8 +6,11 @@
 #include"ChinaMarket.h"
 
 #include"GeneralCheck.h"
+#include "SystemConfiguration.h"
 
 #include"TimeConvert.h"
+
+using namespace std;
 
 namespace FireBirdTest {
 	class CTimeConvertTest : public ::testing::Test {
@@ -24,8 +27,6 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 	};
-
-	using namespace std::chrono;
 
 	TEST(IsEarlyThen, EarlyPlusSpanLessThanLater_ReturnsTrue) {
 		local_days early{ year{ 2026 } / month{ 6 } / day{ 15 } };

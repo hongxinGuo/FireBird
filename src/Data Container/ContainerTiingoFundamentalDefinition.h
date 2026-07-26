@@ -1,10 +1,10 @@
 #pragma once
 
+#include"TiingoFundamentalDefinition.h"
+
 using std::unordered_map;
 using std::string;
 using std::vector;
-
-#include"TiingoFundamentalDefinition.h"
 
 class CContainerTiingoFundamentalDefinition final {
 public:

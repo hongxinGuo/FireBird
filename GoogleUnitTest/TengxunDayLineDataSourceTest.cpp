@@ -1,16 +1,19 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
 #include"GeneralCheck.h"
 
+#include"SystemMessage.h"
+
 #include"TengxunDayLineDataSource.h"
-//#include"WorldMarket.h"
-#include <gtest/gtest.h>
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include "ProductTengxunDayLine.h"
+#include"ChinaStock.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CTengxunDayLineDataSourceTest : public Test {

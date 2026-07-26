@@ -13,13 +13,18 @@
 #include"ChinaStockCodeConverter.h"
 #include "EastmoneyDayLineDataSource.h"
 #include"ProductEastmoneyDayLine.h"
+#include"SystemMessage.h"
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include "SystemConfiguration.h"
-#include "TengxunDayLineDataSource.h"
+#include"VirtualWebProduct.h"
 #include "TimeConvert.h"
 #include "WebData.h"
+#include"ChinaStock.h"
+
+using std::make_shared;
+using namespace std;
 
 CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
@@ -46,7 +51,7 @@ bool CEastmoneyDayLineDataSource::Reset() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	static int s_iSleep = 0;
 	static int s_number = 0;
 
@@ -59,11 +64,11 @@ bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const chrono::local_sec
 		s_iSleep = 0;
 		s_number = mean / 200;
 		int time = 180000 + mean * 50;
-		m_PrevInquireTimePoint += chrono::milliseconds(time);
+		m_PrevInquireTimePoint += milliseconds(time);
 		TRACE("Eastmoney DayLine server suspended %d seconds\n", time / 1000);
 	}
 	const auto llTickCount = GetTickCount();
-	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(m_InqueringTime + mean)) return false;
+	if (llTickCount < m_PrevInquireTimePoint + milliseconds(m_InqueringTime + mean)) return false;
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {
 		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
@@ -124,8 +129,8 @@ bool CEastmoneyDayLineDataSource::Inquire() {
 /// 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CVirtualWebProductPtr CEastmoneyDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
-	chrono::local_days lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 东方财富日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
-	const chrono::local_days lCurrentDate = gl_pChinaMarket->GetMarketDate();
+	local_days lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 东方财富日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	const local_days lCurrentDate = gl_pChinaMarket->GetMarketDate();
 	int differDays = (lCurrentDate - lStartDate).count();
 	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
 	const string strStockCode = XferStandardToEastmoney(pStock->GetSymbol());
@@ -175,7 +180,7 @@ void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	// 第一次switch处理非json数据格式的错误
 	switch (m_dwHTTPStatusCode) {
 	case 501://请求功能尚未实现，实际是服务器正处于维护状态
-		m_PrevInquireTimePoint += chrono::seconds(1800); // 半小时后再查。
+		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		m_InqueringTime += 2000; // 每次出现拒绝访问时都将查询间隔时间延长2秒。
 		break;
 	case 200:
@@ -183,7 +188,7 @@ void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 		break;
 	default: // something wrong,
 		TRACE(_T("关闭东方财富日线服务\n"));
-		m_PrevInquireTimePoint += chrono::seconds(1800); // 半小时后再查。
+		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		break;
 	}
 }

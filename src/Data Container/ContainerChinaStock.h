@@ -1,7 +1,10 @@
 #pragma once
 
-#include"ChinaStock.h"
 #include"ContainerVirtualStock.h"
+
+class CChinaStock;
+
+using std::chrono::local_days;
 
 class CContainerChinaStock : public CContainerVirtualStock {
 public:
@@ -17,8 +20,8 @@ public:
 	[[nodiscard]] size_t GetActiveStockSize() const;
 	[[nodiscard]] auto GetLoadedStockSize() const noexcept { return m_lLoadedStock; }
 
-	CChinaStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CChinaStock>(Get(strStockCode)); }
-	CChinaStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
+	CChinaStockPtr GetStock(const string& strStockCode);
+	CChinaStockPtr GetStock(size_t lIndex);
 	string GetStockName(const string& strStockCode);
 
 	void ProcessRTData();
@@ -27,7 +30,6 @@ public:
 	void UpdateProfileDB();
 
 	void UnloadDayLine() noexcept;
-	void BuildWeekLine(local_days lStartDate);
 	long BuildDayLine(local_days currentTradeDay);
 
 	[[nodiscard]] bool IsDayLineDBUpdated() noexcept;

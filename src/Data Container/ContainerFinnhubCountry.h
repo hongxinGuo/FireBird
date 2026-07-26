@@ -2,6 +2,8 @@
 
 #include"Country.h"
 
+//class CCountry;
+
 using std::unordered_map;
 using std::string;
 

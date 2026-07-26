@@ -11,10 +11,13 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"log.h"
-
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
-#include "TimeConvert.h"
+
+using std::string;
+using std::chrono::microseconds;
+using std::chrono::milliseconds;
+using std::chrono::local_days;
+using std::literals::chrono_literals::operator ""y;
 
 enum EChinaMarketDataSourceServer : int {
 	SinaRealTime_ = 0,
@@ -36,8 +39,8 @@ public:
 	void UpdateDB();
 	bool LoadDB();
 	void SaveDB();
-	void Update(nlohmannJson& jsonData);
-	void UpdateJsonData(nlohmannJson& jsonData);
+	void Update(shared_ptr<nlohmannJson> pJsonData);
+	void UpdateJsonData(shared_ptr<nlohmannJson> pJsonData);
 
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();
@@ -84,7 +87,7 @@ public:
 	}
 	[[nodiscard]] auto GetChinaMarketRTDataInquiryTime() const noexcept { return m_chinaMarketRTDataInquiryTime; }
 	void SetChinaMarketRTDataInquiryTime(const int iChinaMarketRTDataInquiryTime) noexcept {
-		m_chinaMarketRTDataInquiryTime = chrono::milliseconds(iChinaMarketRTDataInquiryTime);
+		m_chinaMarketRTDataInquiryTime = milliseconds(iChinaMarketRTDataInquiryTime);
 		m_fUpdateDB = true;
 	}
 
@@ -94,17 +97,17 @@ public:
 	void SetFinnhubToken(const string& s) noexcept { m_strFinnhubToken = s; }
 	[[nodiscard]] auto GetWorldMarketFinnhubInquiryTime() const noexcept { return m_worldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
-		m_worldMarketFinnhubInquiryTime = chrono::milliseconds(iWorldMarketFinnhubInquiryTime);
+		m_worldMarketFinnhubInquiryTime = milliseconds(iWorldMarketFinnhubInquiryTime);
 		m_fUpdateDB = true;
 	}
 	[[nodiscard]] auto GetWorldMarketTiingoInquiryTime() const noexcept { return m_worldMarketTiingoInquiryTime; }
 	void SetWorldMarketTiingoInquiryTime(const int iWorldMarketTiingoInquiryTime) noexcept {
-		m_worldMarketTiingoInquiryTime = chrono::milliseconds(iWorldMarketTiingoInquiryTime);
+		m_worldMarketTiingoInquiryTime = milliseconds(iWorldMarketTiingoInquiryTime);
 		m_fUpdateDB = true;
 	}
 	[[nodiscard]] auto GetWorldMarketAlphaVantageInquiryTime() const noexcept { return m_worldMarketAlphaVantageInquiryTime; }
 	void SetWorldMarketAlphaVantageInquiryTime(const int iWorldMarketAlphaVantageInquiryTime) noexcept {
-		m_worldMarketAlphaVantageInquiryTime = chrono::milliseconds(iWorldMarketAlphaVantageInquiryTime);
+		m_worldMarketAlphaVantageInquiryTime = milliseconds(iWorldMarketAlphaVantageInquiryTime);
 		m_fUpdateDB = true;
 	}
 
@@ -124,32 +127,32 @@ public:
 	[[nodiscard]] string GetTiingoToken() noexcept { return m_strTiingoToken; }
 	void SetTiingoToken(const string& s) noexcept { m_strTiingoToken = s; }
 
-	[[nodiscard]] chrono::local_days GetTiingoFundamentalsMetaUpdateDate() const noexcept { return m_lTiingoFundamentalsMetaUpdateDate; }
-	void SetTiingoFundamentalsMetaUpdateDate(const chrono::local_days lTiingoFundamentalsMetaUpdateDate) noexcept {
+	[[nodiscard]] local_days GetTiingoFundamentalsMetaUpdateDate() const noexcept { return m_lTiingoFundamentalsMetaUpdateDate; }
+	void SetTiingoFundamentalsMetaUpdateDate(const local_days lTiingoFundamentalsMetaUpdateDate) noexcept {
 		m_lTiingoFundamentalsMetaUpdateDate = lTiingoFundamentalsMetaUpdateDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] chrono::local_days GetTiingoCryptoSymbolUpdateDate() const noexcept { return m_lTiingoCryptoSymbolUpdateDate; }
-	void SetTiingoCryptoSymbolUpdateDate(const chrono::local_days lTiingoCryptoSymbolUpdateDate) noexcept {
+	[[nodiscard]] local_days GetTiingoCryptoSymbolUpdateDate() const noexcept { return m_lTiingoCryptoSymbolUpdateDate; }
+	void SetTiingoCryptoSymbolUpdateDate(const local_days lTiingoCryptoSymbolUpdateDate) noexcept {
 		m_lTiingoCryptoSymbolUpdateDate = lTiingoCryptoSymbolUpdateDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] chrono::local_days GetTiingoIEXTopOfBookUpdateDate() const noexcept { return m_lTiingoIEXTopOfBookUpdateDate; }
-	void SetTiingoIEXTopOfBookUpdateDate(const chrono::local_days lTiingoIEXTopOfBookUpdateDate) noexcept {
+	[[nodiscard]] local_days GetTiingoIEXTopOfBookUpdateDate() const noexcept { return m_lTiingoIEXTopOfBookUpdateDate; }
+	void SetTiingoIEXTopOfBookUpdateDate(const local_days lTiingoIEXTopOfBookUpdateDate) noexcept {
 		m_lTiingoIEXTopOfBookUpdateDate = lTiingoIEXTopOfBookUpdateDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] chrono::local_days GetTiingoStockDayLineProcessedDate() const noexcept { return m_lTiingoStockDayLineProcessedDate; }
-	void SetTiingoStockDayLineProcessedDate(const chrono::local_days lTiingoStockDayLineProcessedDate) noexcept {
+	[[nodiscard]] local_days GetTiingoStockDayLineProcessedDate() const noexcept { return m_lTiingoStockDayLineProcessedDate; }
+	void SetTiingoStockDayLineProcessedDate(const local_days lTiingoStockDayLineProcessedDate) noexcept {
 		m_lTiingoStockDayLineProcessedDate = lTiingoStockDayLineProcessedDate;
 		m_fUpdateDB = true;
 	}
 
-	[[nodiscard]] chrono::local_days GetTiingoStock52WeekHighLowUpdateDate() const noexcept { return m_lTiingoStock52WeekHighLowUpdateDate; }
-	void SetTiingoStock52WeekHighLowUpdateDate(const chrono::local_days l52WeekHighLowUpdateDate) noexcept {
+	[[nodiscard]] local_days GetTiingoStock52WeekHighLowUpdateDate() const noexcept { return m_lTiingoStock52WeekHighLowUpdateDate; }
+	void SetTiingoStock52WeekHighLowUpdateDate(const local_days l52WeekHighLowUpdateDate) noexcept {
 		m_lTiingoStock52WeekHighLowUpdateDate = l52WeekHighLowUpdateDate;
 		m_fUpdateDB = true;
 	}
@@ -337,25 +340,25 @@ protected:
 	// 系统参数
 	EChinaMarketDataSourceServer m_iChinaMarketRealtimeServer{ SinaRealTime_ }; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
 	EChinaMarketDataSourceServer m_iChinaMarketDayLineServer{ TengxunDayLine_ }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
-	chrono::milliseconds m_chinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
+	milliseconds m_chinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market
 	unsigned m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
 	string m_strFinnhubToken{ "" }; // 令牌
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
-	chrono::milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
-	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 400 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
-	chrono::milliseconds m_worldMarketAlphaVantageInquiryTime{ 3600000 / 1000 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询1000次
+	milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
+	milliseconds m_worldMarketTiingoInquiryTime{ 400 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
+	milliseconds m_worldMarketAlphaVantageInquiryTime{ 3600000 / 1000 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询1000次
 	string m_strCurrentStock{ "" }; // 当前所选股票
 
 	// Tiingo.com
 	bool m_bTiingoAccountFeePaid{ true };
 	string m_strTiingoToken{ "" };
-	chrono::local_days m_lTiingoFundamentalsMetaUpdateDate{ toLocalDays(19800101) };
-	chrono::local_days m_lTiingoCryptoSymbolUpdateDate{ toLocalDays(19800101) };
-	chrono::local_days m_lTiingoIEXTopOfBookUpdateDate{ toLocalDays(19800101) };
-	chrono::local_days m_lTiingoStockDayLineProcessedDate{ toLocalDays(19800101) };
-	chrono::local_days m_lTiingoStock52WeekHighLowUpdateDate{ toLocalDays(19800101) };
+	local_days m_lTiingoFundamentalsMetaUpdateDate{ 1980y / 01 / 01 };
+	local_days m_lTiingoCryptoSymbolUpdateDate{ 1980y / 01 / 01 };
+	local_days m_lTiingoIEXTopOfBookUpdateDate{ 1980y / 01 / 01 };
+	local_days m_lTiingoStockDayLineProcessedDate{ 1980y / 01 / 01 };
+	local_days m_lTiingoStock52WeekHighLowUpdateDate{ 1980y / 01 / 01 };
 	int m_iTiingoHourLyRequestLimit{ 500 };
 	long m_lTiingoDailyRequestLimit{ 20000 };
 	long long m_llTiingoBandWidth{ 5368709120 };

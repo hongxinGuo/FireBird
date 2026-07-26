@@ -2,11 +2,7 @@
 
 #include <queue>
 
-#include "ClassDeclaration.h"
-#include"SystemMessage.h"
-
 #include "InternetOption.h"
-#include "spdlog_assert.h"
 
 using std::chrono::milliseconds;
 using std::chrono::local_seconds;
@@ -16,6 +12,7 @@ using std::chrono::system_clock;
 using std::chrono::steady_clock;
 
 using std::queue;
+using std::string;
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR_ = 0,
@@ -69,6 +66,8 @@ public:
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
 	virtual ~CVirtualDataSource() = default;
+
+	static void ReportFinishedMsg(const std::string& msg);
 
 	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiry(int inquireType, UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
@@ -133,7 +132,7 @@ public:
 			}
 			else {
 				setUpdateFlag(false);
-				gl_systemMessage.PushInformationMessage(finishedMsg);
+				ReportFinishedMsg(finishedMsg);
 				haveInquiry = false;
 			}
 		}
@@ -174,7 +173,7 @@ public:
 			}
 			else {
 				setUpdateFlag(false);
-				gl_systemMessage.PushInformationMessage(finishedMsg);
+				ReportFinishedMsg(finishedMsg);
 				haveInquiry = false;
 			}
 		}

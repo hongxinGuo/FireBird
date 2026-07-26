@@ -4,6 +4,8 @@
 
 #include"GeneralCheck.h"
 
+#include"SystemMessage.h"
+
 #include"AccessoryDataSource.h"
 #include"ProductIndexNasdaq100Stocks.h"
 

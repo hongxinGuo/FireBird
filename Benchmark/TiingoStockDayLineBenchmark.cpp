@@ -4,6 +4,8 @@
 
 #include "TiingoStock.h"
 
+using namespace std;
+
 class CTiingoStockDayLineBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {

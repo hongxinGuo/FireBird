@@ -1,8 +1,8 @@
 #pragma once
 
-#include "TiingoCandleLine.h"
-
 #include "VirtualDataHistoryCandle.h"
+
+class CTiingoCandleLine;
 
 class CContainerTiingoStockWeekLine : public CVirtualDataHistoryCandle {
 public:
@@ -13,15 +13,12 @@ public:
 	CContainerTiingoStockWeekLine& operator=(CContainerTiingoStockWeekLine&& other) noexcept = delete;
 	~CContainerTiingoStockWeekLine() override = default;
 
-	void UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine);
+	void UpdateData(const shared_ptr<vector<CTiingoCandleLine>>& pvTempDayLine);
 
-	CTiingoCandleLine* GetData(const size_t lIndex) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CTiingoCandleLine* GetWeekLine(local_days lDate) { return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CTiingoCandleLine* GetData(size_t lIndex);
+	CTiingoCandleLine* GetWeekLine(local_days lDate);
 
-	void Add(CTiingoCandleLine& pData) {
-		pData.SetRatio(m_ratio);
-		m_vHistoryData.push_back(pData);
-	}
+	void Add(CTiingoCandleLine& pData);
 
 	// 特有函数
 };

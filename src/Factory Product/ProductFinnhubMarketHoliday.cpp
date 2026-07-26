@@ -10,6 +10,8 @@
 #include "WebData.h"
 #include "WorldMarket.h"
 
+using namespace std;
+
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-holiday?exchange=";
 }

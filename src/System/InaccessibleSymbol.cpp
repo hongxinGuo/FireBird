@@ -3,8 +3,13 @@
 #include"FinnhubInquiryType.h"
 
 #include "InaccessibleSymbol.h"
+#include"TimeConvert.h"
 
-#include <fstream>
+#include<fstream>
+using std::fstream;
+using std::ios;
+using std::make_shared;
+using namespace std;
 
 #include "SystemConfiguration.h"
 

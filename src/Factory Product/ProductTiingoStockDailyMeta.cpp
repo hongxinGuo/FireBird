@@ -17,6 +17,9 @@
 #include "SystemMessage.h"
 #include "WebData.h"
 #include "WorldMarket.h"
+#include "TiingoStock.h"
+
+using namespace std;
 
 CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "StockSymbol.h"
 #include "WebRTData.h"
 
 #include"VirtualStock.h"
@@ -12,11 +11,6 @@ constexpr auto CHINA_MARKET_BEGIN_DATE_ = 19900101;// 中国股票市场起始�
 
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
-
-class CChinaStock;
-using CChinaStockPtr = shared_ptr<CChinaStock>;
-
-#include <queue>
 
 bool IsShareA(const string& strStockCode);
 bool IsChinaStock(const CVirtualStockPtr& pStock);
@@ -98,7 +92,6 @@ public:
 
 	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
-	bool LoadStockCode(const CStockSymbol& stockSymbol);
 	void CheckNeedProcessRTData();
 	bool CheckDayLineStatus();
 
@@ -168,3 +161,5 @@ protected:
 
 	bool m_fDayLineDBUpdated{ false }; // 日线历史数据库更新标识
 };
+
+using CChinaStockPtr = shared_ptr<CChinaStock>;

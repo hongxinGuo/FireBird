@@ -8,6 +8,7 @@
 #include "SystemConfiguration.h"
 
 using namespace testing;
+using namespace std;
 
 namespace {
 	CMockTengxunRTDataSourcePtr s_pMockTengxunRTDataSource; // 腾讯实时数据采集

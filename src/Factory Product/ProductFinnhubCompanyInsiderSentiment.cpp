@@ -13,6 +13,8 @@
 
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-sentiment?symbol=";
 }

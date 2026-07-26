@@ -2,8 +2,6 @@
 
 #include"VirtualMarket.h"
 
-#include "SystemConfiguration.h"
-
 class CTiingoIEXSocket;
 class CFinnhubSocket;
 
@@ -11,6 +9,12 @@ class CMarketStatus;
 class CMarketHoliday;
 
 class CTiingoStock;
+
+using std::literals::chrono_literals::operator ""h;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""s;
+
+using std::atomic_int;
 
 class CWorldMarket : public CVirtualMarket {
 public:
@@ -23,7 +27,7 @@ public:
 	~CWorldMarket() override;
 
 	void ResetMarket() final;
-	chrono::local_seconds GetResetTime() override { return toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()); }
+	local_seconds GetResetTime() override;
 
 	void PrepareToCloseMarket() final;
 
@@ -32,7 +36,7 @@ public:
 	void ResetTiingo();
 	void ResetDataContainer();
 
-	bool IsTimeToResetSystem(chrono::local_seconds ls) final { return (ls > GetPrevTime(GetResetTime(), 0h, 2min, 1s)) && (ls < GetNextTime(GetResetTime(), 0h, 5min, 1s)); }
+	bool IsTimeToResetSystem(local_seconds ls) final { return (ls > GetPrevTime(GetResetTime(), 0h, 2min, 1s)) && (ls < GetNextTime(GetResetTime(), 0h, 5min, 1s)); }
 	int ProcessTask() override; // 每日定时任务调度,由ScheduleTask调度
 	int ProcessCurrentImmediateTask() override; // 即时任务调度，由ScheduleTask调度
 

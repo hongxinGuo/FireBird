@@ -4,13 +4,16 @@
 
 #include"DayLine.h"
 #include"ContainerFinnhubStockDayLine.h"
-#include "EPSSurprise.h"
-#include"FinnhubCompanyNews.h"
 #include "InsiderSentiment.h"
 #include "InsiderTransaction.h"
-#include "SECFiling.h"
 
 using std::chrono::weekday;
+using std::chrono::sys_seconds;
+using std::shared_ptr;
+
+class CFinnhubCompanyNews;
+class CEPSSurprise;
+class CSECFiling;
 
 class CFinnhubStock : public CVirtualStock {
 public:
@@ -39,8 +42,8 @@ public:
 	virtual bool UpdateDayLineDB();
 
 	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews);
-	void UpdateEPSSurprise(const CEPSSurprisesPtr& vEPSSurprise);
+	void UpdateCompanyNews(const shared_ptr<vector<CFinnhubCompanyNews>>& pvCompanyNews);
+	void UpdateEPSSurprise(const shared_ptr<vector<CEPSSurprise>>& vEPSSurprise);
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
@@ -54,9 +57,9 @@ public:
 
 	bool IsUpdateCompanyNews() const noexcept { return m_fUpdateCompanyNews; }
 	void SetUpdateCompanyNews(const bool fFlag) noexcept { m_fUpdateCompanyNews = fFlag; }
-	size_t GetCompanyNewsSize() const noexcept { return m_vCompanyNews.size(); }
-	sys_seconds GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex).m_DateTime; }
-	void ClearCompanyNews() { m_vCompanyNews.clear(); }
+	size_t GetCompanyNewsSize() const noexcept;
+	sys_seconds GetCompanyNewsDateTime(const int iIndex) const;
+	void ClearCompanyNews();
 
 	bool IsUpdateBasicFinancial() const noexcept { return m_fUpdateBasicFinancial; }
 	void SetUpdateBasicFinancial(const bool fFlag) noexcept { m_fUpdateBasicFinancial = fFlag; }
@@ -162,8 +165,8 @@ public:
 	void SetFinnhubIndustry(const string& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	nlohmannJson GetPeer() { return m_jsonPeer; }
 	void SetPeer(const nlohmannJson& jsonPeer) { m_jsonPeer = jsonPeer; }
-	void SetSECFilings(const CSECFilingsPtr& pv);
-	void ClearSECFilings() { m_vSECFilings.clear(); }
+	void SetSECFilings(const shared_ptr<vector<CSECFiling>>& pv);
+	void ClearSECFilings() const;
 	local_days GetProfileUpdateDate();
 	void SetProfileUpdateDate(local_days profileUpdateDate) noexcept;
 	local_days GetCompanyNewsUpdateDate();
@@ -201,7 +204,7 @@ public:
 	CInsiderSentimentsPtr m_pvInsiderSentiment{ nullptr };
 	long m_lInsiderSentimentStartDate{ 19800101 };
 
-	vector<CSECFiling> m_vSECFilings;
+	shared_ptr<vector<CSECFiling>> m_pvSECFilings;
 	bool m_fUpdateSECFilings{ true };
 	atomic_bool m_fUpdateSECFilingsDB{ false };
 

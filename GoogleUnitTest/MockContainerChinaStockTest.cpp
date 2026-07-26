@@ -1,14 +1,15 @@
 #include"pch.h"
 
+#include <gtest/gtest.h>
 #include"GeneralCheck.h"
 
 #include"MockContainerChinaStock.h"
 
 #include<memory>
-#include <gtest/gtest.h>
 
 #include "SystemMessage.h"
 #include"TimeConvert.h"
+#include"ChinaStock.h"
 
 using std::make_shared;
 

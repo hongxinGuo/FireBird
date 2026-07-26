@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"SystemData.h"
+#include"SystemMessage.h"
 
 #include"JsonParse.h"
 #include"nlohmannJsonGetValue.h"
@@ -9,6 +10,12 @@
 
 #include "SystemConfiguration.h"
 #include "TiingoDataSource.h"
+
+using std::istringstream;
+using std::chrono::minutes;
+using std::chrono::nanoseconds;
+using std::chrono::seconds;
+using std::make_shared;
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoIEXWebSocket->SetError(false);
@@ -123,11 +130,11 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	CTiingoIEXSocketPtr pIEXData = nullptr;
-	chrono::minutes Minutes;
+	minutes Minutes;
 	string sString;
 	try {
 		if (nlohmannJson js; CreateJsonWithNlohmann(js, *pData)) {
-			chrono::time_point<chrono::system_clock, chrono::nanoseconds> tpTime;
+			time_point<system_clock, nanoseconds> tpTime;
 			istringstream ss;
 			string sMessageType;
 			string sService;
@@ -146,8 +153,8 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				pIEXData->m_sDateTime = jsonGetString(it);
 				ss.clear();
 				ss.str(pIEXData->m_sDateTime);
-				chrono::from_stream(ss, "%FT%H:%M:%12S%Ez", tpTime, &sString, &Minutes);
-				pIEXData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
+				from_stream(ss, "%FT%H:%M:%12S%Ez", tpTime, &sString, &Minutes);
+				pIEXData->m_tpTime = time_point_cast<seconds>(tpTime);
 				pIEXData->m_sSymbol = jsonGetString(++it);
 				pIEXData->m_dLastPrice = jsonGetDouble(++it);
 				gl_SystemData.PushTiingoIEXSocket(pIEXData);

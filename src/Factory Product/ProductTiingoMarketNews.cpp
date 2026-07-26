@@ -8,6 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
+#include"SystemMessage.h"
+
 #include"jsonParse.h"
 
 #include "ProductTiingoMarketNews.h"
@@ -15,8 +17,10 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
-#include "WorldMarket.h"
+
+using std::make_shared;
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/news?";

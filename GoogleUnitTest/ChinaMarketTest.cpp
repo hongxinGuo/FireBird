@@ -3,6 +3,8 @@
 #include <gmock/gmock-matchers.h>
 #include <gmock/gmock-more-matchers.h>
 
+#include"SystemMessage.h"
+
 #include"ChinaStockCodeConverter.h"
 
 #include"ChinaMarket.h"
@@ -21,9 +23,9 @@
 #include "SystemConfiguration.h"
 #include "SystemData.h"
 
-using namespace testing;
+using namespace std;
 
-#include<memory>
+using namespace testing;
 
 namespace FireBirdTest {
 	class CChinaMarketTest : public Test {

@@ -6,6 +6,9 @@
 #include"JsonParse.h"
 #include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
+#include "DayLineWebData.h"
+
+using std::make_shared;
 
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;

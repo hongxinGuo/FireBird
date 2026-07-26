@@ -6,8 +6,10 @@
 
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
+#include"FinnhubStock.h"
 
 #include"ProductFinnhubSECFilings.h"
+#include"SECFiling.h"
 #include "SystemMessage.h"
 #include"TestWebData.h"
 
@@ -166,32 +168,32 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		switch (m_index) {
 		case 0: // 空数据
-			EXPECT_TRUE(pStock->m_vSECFilings.empty());
+			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_TRUE(pStock->m_vSECFilings.empty());
+			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 2: // 空数据
-			EXPECT_TRUE(pStock->m_vSECFilings.empty());
+			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 3: // 不足三个字符
-			EXPECT_TRUE(pStock->m_vSECFilings.empty());
+			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 4: // 格式不对
-			EXPECT_TRUE(pStock->m_vSECFilings.empty()) << "没有改变";
+			EXPECT_TRUE(pStock->m_pvSECFilings->empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 10:
-			EXPECT_FALSE(pStock->m_vSECFilings.empty());
+			EXPECT_FALSE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
 			break;
@@ -200,7 +202,7 @@ namespace FireBirdTest {
 		}
 
 		//恢复原状
-		pStock->m_vSECFilings.clear();
+		pStock->m_pvSECFilings->clear();
 		pStock->SetSECFilingsUpdateDate(toLocalDays(19800101));
 		pStock->SetUpdateProfileDB(false);
 	}

@@ -7,6 +7,13 @@ class CVirtualHistoryCandle;
 #include <set>
 using std::set;
 
+using std::chrono::sys_seconds;
+using std::chrono::duration;
+using std::atomic_int64_t;
+using std::atomic_bool;
+using std::atomic_int;
+using std::binary_semaphore;
+
 constexpr int c_SelectedStockStartPosition = 0;
 
 class CChinaMarket : public CVirtualMarket {
@@ -20,18 +27,18 @@ public:
 	~CChinaMarket() override;
 
 	void ResetMarket() final;
-	chrono::local_seconds GetResetTime() final { return toLocalTime(30000); } // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
+	local_seconds GetResetTime() final { return toLocalTime(30000); } // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
 	void Reset();
 
 	void PrepareToCloseMarket() final;
 
-	bool IsTimeToResetSystem(chrono::local_seconds ls) final;
+	bool IsTimeToResetSystem(local_seconds ls) final;
 	bool IsOrdinaryTradeTime() final { return IsOrdinaryTradeTime(GetMarketTime()); } // 日常交易时间
-	bool IsOrdinaryTradeTime(chrono::local_seconds lTime) final;
+	bool IsOrdinaryTradeTime(local_seconds lTime) final;
 	bool IsWorkingTime() final { return IsWorkingTime(GetMarketTime()); }
-	bool IsWorkingTime(chrono::local_seconds lTime) final;
+	bool IsWorkingTime(local_seconds lTime) final;
 	bool IsDummyTime() final { return !IsWorkingTime(); }
-	bool IsDummyTime(chrono::local_seconds lTime) final { return !IsWorkingTime(lTime); }
+	bool IsDummyTime(local_seconds lTime) final { return !IsWorkingTime(lTime); }
 
 	int ProcessTask() override; // 每日定时任务调度,由基类的ScheduleTask调度
 	int ProcessCurrentImmediateTask() override; // 即时任务调度，由ScheduleTask调度
@@ -109,7 +116,7 @@ public:
 	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
 
-	void DeleteDayLine(chrono::local_days lDate) const;
+	void DeleteDayLine(local_days lDate) const;
 
 	static bool CreateStockCodeSet(set<string>& setStockCode, const vector<CVirtualHistoryCandle>* pvData);
 
@@ -125,9 +132,9 @@ public:
 	bool IsTodayTempRTDataLoaded() const noexcept { return m_fTodayTempDataLoaded; }
 	void SetTodayTempRTDataLoaded(const bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-	chrono::local_days GetLastLoginDate() const noexcept { return m_lLastLoginDate; }
-	void SetLastLoginDate(const chrono::local_days lDate) noexcept { m_lLastLoginDate = lDate; }
-	void SetLastLoginTime(const chrono::local_seconds lTime) noexcept { m_lLastLoginTime = lTime; }
+	local_days GetLastLoginDate() const noexcept { return m_lLastLoginDate; }
+	void SetLastLoginDate(const local_days lDate) noexcept { m_lLastLoginDate = lDate; }
+	void SetLastLoginTime(const local_seconds lTime) noexcept { m_lLastLoginTime = lTime; }
 
 	//处理实时股票变化等
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
@@ -150,7 +157,7 @@ public:
 	int GetCountDownTengxunNumber() const noexcept { return m_iCountDownTengxunNumber; }
 	void SetCountDownTengxunNumber(const int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
-	void SetTransactionTime(chrono::sys_seconds time) noexcept { m_tpNewTransactionTime = time; }
+	void SetTransactionTime(sys_seconds time) noexcept { m_tpNewTransactionTime = time; }
 	void SetTransactionTime(const time_t tt) noexcept { m_tpNewTransactionTime = ::toSysTime(tt); }
 	auto GetTransactionTimePoint() const noexcept { return m_tpNewTransactionTime; }
 	time_t GetTransactionTime() const noexcept { return m_tpNewTransactionTime.time_since_epoch().count(); }
@@ -223,15 +230,15 @@ protected:
 	bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
 	bool m_fUpdateTempDataDB; // 存储临时实时数据标识
 
-	chrono::sys_seconds m_tpNewTransactionTime{ chrono::duration<long long>(0) };
+	sys_seconds m_tpNewTransactionTime{ duration<long long>(0) };
 
 	bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
 	bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
 	int m_iCountDownTengxunNumber;
 
 	// Option各选项
-	chrono::local_days m_lLastLoginDate; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
-	chrono::local_seconds m_lLastLoginTime;
+	local_days m_lLastLoginDate; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
+	local_seconds m_lLastLoginTime;
 
 	bool m_fSelectedStockLoaded;
 

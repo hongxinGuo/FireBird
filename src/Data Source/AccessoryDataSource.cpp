@@ -1,13 +1,18 @@
 #include"pch.h"
 
 #include "AccessoryDataSource.h"
+#include"AccessoryFactory.h"
 
 #include "ClassDeclaration.h"
 #include "FinnhubInquiryType.h"
+#include "IXUniquePtr.h"
 #include "spdlog_assert.h"
+#include "SystemConfiguration.h"
 #include "WorldMarket.h"
 
 CAccessoryDataSource::CAccessoryDataSource() {
+	m_pAccessoryFactory = std::make_unique<CAccessoryFactory>();
+
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Accessory有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	//m_strHeaders = "User-Agent:PostmanRuntime/7.4.4.1\r\n";
@@ -27,7 +32,7 @@ bool CAccessoryDataSource::Reset() {
 	return true;
 }
 
-bool CAccessoryDataSource::GenerateInquiryMessage(const chrono::local_seconds& lCurrentTime) {
+bool CAccessoryDataSource::GenerateInquiryMessage(const local_seconds& lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
 	m_PrevInquireTimePoint = llTickCount;
@@ -43,7 +48,7 @@ bool CAccessoryDataSource::GenerateInquiryMessage(const chrono::local_seconds& l
 bool CAccessoryDataSource::GenerateIndexNasdaq100Stocks() {
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateIndexNasdaq100Stocks()) {
-		const CVirtualProductWebDataPtr p = m_AccessoryFactory.CreateProduct(gl_pWorldMarket, ACCESSORY_INDEX_NASDAQ100_STOCKS_);
+		const CVirtualProductWebDataPtr p = m_pAccessoryFactory->CreateProduct(gl_pWorldMarket, ACCESSORY_INDEX_NASDAQ100_STOCKS_);
 		StoreInquiry(p);
 		return true;
 	}

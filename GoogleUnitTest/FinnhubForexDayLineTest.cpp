@@ -5,6 +5,8 @@
 #include "containerFinnhubForexSymbol.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
+#include"DayLine.h"
+#include"FinnhubForex.h"
 
 #include"ProductFinnhubForexDayLine.h"
 #include "SystemMessage.h"

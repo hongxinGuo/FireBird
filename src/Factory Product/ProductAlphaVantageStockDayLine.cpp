@@ -3,14 +3,15 @@
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
-#include"WorldMarket.h"
-
 #include "ProductAlphaVantageStockDayLine.h"
 
 #include "ContainerTiingoStock.h"
+#include"TiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+
+using namespace std;
 
 CProductAlphaVantageStockDayLine::CProductAlphaVantageStockDayLine() {
 	m_strInquiryFunction = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=";

@@ -8,6 +8,8 @@
 #include"nlohmannJsonGetValue.h"
 #include "SystemConfiguration.h"
 
+using std::make_shared;
+
 namespace FireBirdTest {
 	class jsonGetValueTest : public ::testing::Test {
 		void SetUp() override {

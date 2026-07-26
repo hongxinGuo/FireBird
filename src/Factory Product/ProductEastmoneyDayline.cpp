@@ -6,6 +6,7 @@
 #include "EastmoneyDayLineDataSource.h"
 #include "JsonParse.h"
 #include"WebData.h"
+#include "DayLineWebData.h"
 
 #include"simdjson.h"
 #include "SystemData.h"

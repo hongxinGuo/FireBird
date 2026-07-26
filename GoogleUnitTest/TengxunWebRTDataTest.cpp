@@ -12,6 +12,7 @@
 #include"WebData.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CWebRTDataTest1 : public Test {

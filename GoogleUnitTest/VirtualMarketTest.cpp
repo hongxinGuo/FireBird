@@ -5,6 +5,8 @@
 #include"GeneralCheck.h"
 #include"VirtualMarket.h"
 
+using namespace std;
+
 namespace FireBirdTest {
 	class CVirtualMarketTest : public testing::Test {
 	protected:

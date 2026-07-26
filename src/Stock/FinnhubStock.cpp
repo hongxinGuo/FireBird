@@ -4,12 +4,13 @@
 #include"InsiderSentiment.h"
 #include"InsiderTransaction.h"
 #include"EPSSurprise.h"
+#include"FinnhubCompanyNews.h"
+#include "SECFiling.h"
 
 #include "FinnhubStock.h"
 
 #include"WorldMarket.h"
 
-#include"FinnhubCompanyNews.h"
 #include "InfoReport.h"
 
 #include<sqlpp23/sqlpp23.h>
@@ -17,12 +18,16 @@
 #include "SystemMessage.h"
 
 #include"dataBaseConnector.h"
+#include "SystemConfiguration.h"
 
 using std::chrono::year_month_day;
 using std::chrono::Sunday;
 using std::chrono::Saturday;
+using std::make_shared;
 
 CFinnhubStock::CFinnhubStock() {
+	m_pvSECFilings = make_shared<vector<CSECFiling>>();
+
 	SetExchange(string_view("US"));
 	CFinnhubStock::ResetAllUpdateDate();
 }
@@ -365,7 +370,7 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::UpdateSECFilingsDB() const {
-	const size_t size = m_vSECFilings.size();
+	const size_t size = m_pvSECFilings->size();
 	if (!m_strSymbol.empty()) {
 		size_t currentPos = 0;
 		CSECFiling SECFilings;
@@ -379,7 +384,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
 
 		for (const auto& row : result) {
-			SECFilings = m_vSECFilings.at(currentPos);
+			SECFilings = m_pvSECFilings->at(currentPos);
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) > 0) continue;
 			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) < 0) {	// 没有这个AccessNumber的SEC Filings？
 				multi_insert.add_values(
@@ -396,7 +401,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 			if (++currentPos == size) break;
 		}
 		for (size_t i = currentPos; i < size; i++) {
-			SECFilings = m_vSECFilings.at(i);
+			SECFilings = m_pvSECFilings->at(i);
 			multi_insert.add_values(
 				t.symbol = m_strSymbol,
 				t.accessNumber = SECFilings.m_strAccessNumber,
@@ -408,7 +413,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 				t.form = SECFilings.m_strForm
 			);
 		}
-		if (!m_vSECFilings.empty()) {
+		if (!m_pvSECFilings->empty()) {
 			db(multi_insert);
 		}
 		tx.commit();
@@ -473,6 +478,18 @@ bool CFinnhubStock::HaveNewDayLineData() {
 		|| (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate()))
 		return true;
 	return false;
+}
+
+size_t CFinnhubStock::GetCompanyNewsSize() const noexcept {
+	return m_vCompanyNews.size();
+}
+
+sys_seconds CFinnhubStock::GetCompanyNewsDateTime(const int iIndex) const {
+	return m_vCompanyNews.at(iIndex).m_DateTime;
+}
+
+void CFinnhubStock::ClearCompanyNews() {
+	m_vCompanyNews.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -562,12 +579,16 @@ bool CFinnhubStock::CheckInsiderSentimentStatus(local_days lCurrentDate) {
 }
 
 void CFinnhubStock::SetSECFilings(const CSECFilingsPtr& pv) {
-	m_vSECFilings.clear();
-	m_vSECFilings.reserve(pv->size());
+	m_pvSECFilings->clear();
+	m_pvSECFilings->reserve(pv->size());
 
 	for (const auto& secFiling : *pv) {
-		m_vSECFilings.push_back(secFiling);
+		m_pvSECFilings->push_back(secFiling);
 	}
+}
+
+void CFinnhubStock::ClearSECFilings() const {
+	m_pvSECFilings->clear();
 }
 
 local_days CFinnhubStock::GetProfileUpdateDate() {

@@ -2,6 +2,8 @@
 
 #include"ProductFinnhub.h"
 
+class CSECFiling;
+
 class CProductFinnhubSECFilings final : public CProductFinnhub {
 public:
 	CProductFinnhubSECFilings();
@@ -9,7 +11,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CSECFilingsPtr ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CSECFiling>> ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubSECFilings = shared_ptr<CProductFinnhubSECFilings>;

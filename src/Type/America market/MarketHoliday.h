@@ -1,5 +1,8 @@
 #pragma once
 
+using std::vector;
+using std::string;
+
 class CMarketHoliday final {
 public:
 	CMarketHoliday() {

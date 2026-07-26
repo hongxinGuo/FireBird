@@ -3,6 +3,7 @@
 #include"TimeConvert.h"
 
 #include"ChinaStock.h"
+#include"WeekLine.h"
 #include "ContainerChinaStockDayLine.h"
 
 #include<sqlpp23/sqlpp23.h>

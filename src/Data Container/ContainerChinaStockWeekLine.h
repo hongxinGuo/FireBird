@@ -1,7 +1,8 @@
 #pragma once
 
 #include "VirtualDataHistoryCandle.h"
-#include"WeekLine.h"
+
+class CWeekLine;
 
 class CContainerChinaStockWeekLine : public CVirtualDataHistoryCandle {
 public:
@@ -17,8 +18,8 @@ public:
 
 	void StoreVectorData(const vector<CWeekLine>& vWeekLine);
 
-	CWeekLine* GetData(const size_t lIndex) { return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetData(lIndex)); }
-	CWeekLine* GetWeekLine(local_days lDate) { return static_cast<CWeekLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CWeekLine* GetData(size_t lIndex);
+	CWeekLine* GetWeekLine(local_days lDate);
 };
 
 using CContainerChinaWeekLinePtr = shared_ptr<CContainerChinaStockWeekLine>;

@@ -7,6 +7,9 @@
 #include"GeneralCheck.h"
 
 #include"ChinaStockCodeConverter.h"
+#include "SystemConfiguration.h"
+
+using namespace std;
 
 namespace FireBirdTest {
 	class StockCodeConverterTest : public testing::Test {

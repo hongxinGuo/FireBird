@@ -7,8 +7,10 @@
 #include"MockTengxunDayLineDataSource.h"
 #include "SinaRTDataSource.h"
 #include "SystemConfiguration.h"
+#include"ChinaStock.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace {
 	CMockTengxunDayLineDataSourcePtr s_pMockTengxunDayLineDataSource; // 网易日线历史数据

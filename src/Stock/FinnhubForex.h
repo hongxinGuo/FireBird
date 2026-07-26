@@ -1,24 +1,26 @@
 #pragma once
 
 #include"VirtualStock.h"
-#include"ContainerForexDayLine.h"
 
-#include<memory>
-#include<vector>
+class CContainerForexDayLine;
+class CDayLine;
+
+using std::unique_ptr;
 
 class CFinnhubForex : public CVirtualStock {
 public:
-	CFinnhubForex() = default;
+	CFinnhubForex();
 	// 不允许赋值。
 	CFinnhubForex(const CFinnhubForex&) = delete;
 	CFinnhubForex& operator=(const CFinnhubForex&) = delete;
 	CFinnhubForex(const CFinnhubForex&&) noexcept = delete;
 	CFinnhubForex& operator=(const CFinnhubForex&&) noexcept = delete;
+	~CFinnhubForex() override = default;
 
 	int GetRatio() const final { return 1000; }
 
 	void UpdateDayLineDB();
-	virtual void SaveDayLineDB() { m_dataDayLine.SaveDB(GetSymbol()); }
+	virtual void SaveDayLineDB();
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
 
@@ -26,13 +28,13 @@ public:
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
 
-	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UnloadDayLine() { m_dataDayLine.Unload(); }
-	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	void UpdateDayLine(const shared_ptr<vector<CDayLine>>& vDayLine);
+	void UnloadDayLine();
+	size_t GetDayLineSize() const noexcept;
 	void UpdateDayLineStartEndDate();
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 
-	CContainerForexDayLine m_dataDayLine;
+	unique_ptr<CContainerForexDayLine> m_pDayLines;
 };
 
 using CForexSymbolPtr = shared_ptr<CFinnhubForex>;

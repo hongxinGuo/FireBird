@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"containerFinnhubForexSymbol.h"
-#include"FinnhubForex.h"
+#include "FinnhubForex.h"
 #include "InfoReport.h"
 
 #include<sqlpp23/sqlpp23.h>
@@ -92,4 +92,11 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB() {
 			ReportInformation(e);
 		}
 	}
+}
+
+CForexSymbolPtr CContainerFinnhubForexSymbol::GetItem(size_t lIndex) {
+	return dynamic_pointer_cast<CFinnhubForex>(Get(lIndex));
+}
+CForexSymbolPtr CContainerFinnhubForexSymbol::GetItem(const string& strStockCode) {
+	return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode));
 }

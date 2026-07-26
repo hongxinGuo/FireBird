@@ -9,9 +9,12 @@
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+#include "DayLineWebData.h"
 
 #include"nlohmannJsonDeclaration.h"
 #include "SystemData.h"
+
+using namespace std;
 
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {

@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"SystemData.h"
+#include"SystemMessage.h"
 
 #include"JsonParse.h"
 #include"nlohmannJsonGetValue.h"
@@ -9,6 +10,11 @@
 
 #include "SystemConfiguration.h"
 #include "TiingoDataSource.h"
+
+using std::istringstream;
+using std::chrono::minutes;
+using std::chrono::seconds;
+using std::make_shared;
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoCryptoWebSocket->SetError(false);
@@ -137,8 +143,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			char chType;
 			string sType;
 			istringstream ss;
-			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
-			chrono::minutes Minutes;
+			time_point<system_clock, microseconds> tpTime;
+			minutes Minutes;
 			string sString;
 			nlohmannJson js2, js3, js4;
 			nlohmannJson::iterator it;
@@ -178,8 +184,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					ss.clear();
 					ss.str(pCryptoData->m_sDateTime);
-					chrono::from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
-					pCryptoData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
+					from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
+					pCryptoData->m_tpTime = time_point_cast<seconds>(tpTime);
 					pCryptoData->m_strExchange = jsonGetString(++it); // 交易所
 					pCryptoData->m_dLastSize = jsonGetDouble(++it); // 最新数量
 					pCryptoData->m_dLastPrice = jsonGetDouble(++it); // 最新价格
@@ -190,8 +196,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					ss.clear();
 					ss.str(pCryptoData->m_sDateTime);
-					chrono::from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
-					pCryptoData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
+					from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
+					pCryptoData->m_tpTime = time_point_cast<seconds>(tpTime);
 					pCryptoData->m_strExchange = jsonGetString(++it);// 交易所
 					pCryptoData->m_dBidSize = jsonGetDouble(++it); // 买价数量
 					pCryptoData->m_dBidPrice = jsonGetDouble(++it); // 买价

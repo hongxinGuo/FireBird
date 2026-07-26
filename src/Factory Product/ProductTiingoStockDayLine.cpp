@@ -6,9 +6,12 @@
 #include "ProductTiingoStockDayLine.h"
 
 #include "ContainerTiingoStock.h"
+#include"TiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+
+using namespace std;
 
 string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate) {
 	string sParam = std::format("{}/prices?&startDate={:%F}&endDate={:%F}", strSymbol, lStartDate, lCurrentDate); // Note: 总是多申请一天的日线数据

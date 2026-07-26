@@ -8,8 +8,10 @@
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include "SystemMessage.h"
 #include"TestWebData.h"
+#include"FinnhubStock.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CFinnhubCompanyInsiderTransactionTest : public Test {

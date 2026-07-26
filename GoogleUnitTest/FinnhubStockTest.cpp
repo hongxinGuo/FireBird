@@ -9,6 +9,7 @@
 #include"InsiderSentiment.h"
 #include"InsiderTransaction.h"
 #include"EPSSurprise.h"
+#include"SECFiling.h"
 
 #include"FinnhubStock.h"
 #include"WorldMarket.h"
@@ -20,6 +21,8 @@
 #include"dataBaseConnector.h"
 
 using namespace testing;
+
+using namespace std;
 
 namespace FireBirdTest {
 	class CFinnhubStockTest : public Test {

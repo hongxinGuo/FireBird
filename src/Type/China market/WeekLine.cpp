@@ -5,6 +5,8 @@
 
 #include "ChinaStock.h"
 
+using namespace std;
+
 namespace {
 	CChinaStock s_stockWeekLine;
 }

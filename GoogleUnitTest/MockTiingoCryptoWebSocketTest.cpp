@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"MockTiingoCryptoWebSocket.h"
+#include "SystemConfiguration.h"
 #include "WorldMarket.h"
 
 using namespace testing;

@@ -2,6 +2,8 @@
 
 #include"log.h"
 
+#include"SystemMessage.h"
+
 #include "framework.h"
 
 #include "PropertiesWnd.h"
@@ -13,6 +15,7 @@
 #include "MainFrm.h"
 #include "FireBird.h"
 #include "SinaRTDataSource.h"
+#include "SystemConfiguration.h"
 #include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"

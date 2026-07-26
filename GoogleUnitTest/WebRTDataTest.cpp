@@ -11,6 +11,8 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
+using namespace std;
+
 namespace FireBirdTest {
 	class CStockWebRTDataTest1 : public testing::Test {
 	protected:

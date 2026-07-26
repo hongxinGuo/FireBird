@@ -6,10 +6,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "DayLine.h"
-#include "VirtualHistoryCandle.h"
-
 using std::atomic_bool;
+
+#include"DayLine.h"
+
+class CVirtualHistoryCandle;
+//class CDayLine;
 
 class CVirtualDataHistoryCandle {
 public:
@@ -33,7 +35,7 @@ public:
 
 	void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
 	void UpdateData(const vector<CDayLine>& vTempData);
-	void UpdateData(const CDayLinesPtr& pvTempDayLine);
+	void UpdateData(const shared_ptr<vector<CDayLine>>& pvTempDayLine);
 
 	int GetRatio() const {
 		if (m_ratio == 0)
@@ -54,7 +56,7 @@ public:
 		data.SetRatio(m_ratio);
 		m_vHistoryData.push_back(data);
 	}
-	void Add(const CDayLine& data) { Add(static_cast<CVirtualHistoryCandle>(data)); }
+	void Add(const CDayLine& data);
 	bool HaveDayLine(local_days date);
 
 	bool IsDataLoaded() const noexcept { return m_fDataLoaded.load(); }

@@ -14,6 +14,10 @@
 
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "SystemConfiguration.h"
+#include"FinnhubStock.h"
+
+using std::make_shared;
 
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();
@@ -21,6 +25,14 @@ CContainerFinnhubStock::CContainerFinnhubStock() {
 
 void CContainerFinnhubStock::Reset() {
 	CContainerVirtualStock::Reset();
+}
+
+CFinnhubStockPtr CContainerFinnhubStock::GetItem(size_t lIndex) {
+	return dynamic_pointer_cast<CFinnhubStock>(Get(lIndex));
+}
+
+CFinnhubStockPtr CContainerFinnhubStock::GetItem(const string& strStockCode) {
+	return dynamic_pointer_cast<CFinnhubStock>(Get(strStockCode));
 }
 
 void CContainerFinnhubStock::ResetEPSSurprise() {

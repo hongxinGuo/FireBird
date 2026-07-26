@@ -5,6 +5,8 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChinaStock.h"
+#include"ChinaStock.h"
+
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"

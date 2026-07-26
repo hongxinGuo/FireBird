@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include"SystemMessage.h"
+
 #include "ContainerFinnhubCountry.h"
 #include"GeneralCheck.h"
 #include"Country.h"

@@ -12,6 +12,8 @@
 
 #include"dataBaseConnector.h"
 
+using namespace std;
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 判断strStockCode是否为沪深A股主板的股票代码。
@@ -253,16 +255,6 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 	if (fUpdated) {
 		SetUpdateProfileDB(true);
 	}
-}
-
-bool CChinaStock::LoadStockCode(const CStockSymbol& stockSymbol) {
-	m_strDescription = stockSymbol.m_Description;
-	m_strDisplaySymbol = stockSymbol.m_DisplaySymbol;
-	m_strExchange = stockSymbol.m_Exchange;
-	m_strSymbol = stockSymbol.m_Symbol;
-	LoadUpdateDate(stockSymbol.m_UpdateDate);
-
-	return true;
 }
 
 void CChinaStock::CheckNeedProcessRTData() {

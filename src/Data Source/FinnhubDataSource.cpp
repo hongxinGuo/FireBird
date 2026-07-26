@@ -8,6 +8,7 @@
 #include"pch.h"
 
 #include"SystemConfiguration.h"
+#include"SystemMessage.h"
 
 #include"FinnhubInquiryType.h"
 #include"InaccessibleSymbol.h"
@@ -26,6 +27,11 @@
 #include "TimeConvert.h"
 #include "WebData.h"
 #include"WorldMarket.h"
+#include"FinnhubStock.h"
+#include "FinnhubCrypto.h"
+#include"FinnhubForex.h"
+
+using std::exception;
 
 namespace {
 	auto s_isAccessible = [](int inquireType, const std::string& exchangeCode) {
@@ -155,7 +161,7 @@ void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。

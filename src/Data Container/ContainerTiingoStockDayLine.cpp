@@ -6,6 +6,7 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoStock.h"
+#include "TiingoCandleLine.h"
 
 #include"TimeConvert.h"
 
@@ -213,7 +214,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 
 	// 从后向前调整日线数据
 	long j = 0;
-	chrono::local_days prevDate;
+	local_days prevDate;
 	int i = m_vHistoryData.size() - 1;
 	double currentFactor = 1.0;
 	auto currentData = GetData(i);
@@ -224,7 +225,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 		currentSpiltDate = vpSplitFactor.at(j)->date;
 		currentFactor = vpSplitFactor.at(j)->factor;
 		if (j < vpSplitFactor.size() - 1) prevDate = vpSplitFactor.at(j + 1)->date;
-		else prevDate = chrono::local_days{ chrono::days(0) };
+		else prevDate = local_days{ days(0) };
 
 		ASSERT(currentData->GetDate() == currentSpiltDate);
 		currentData->SetLastClose(currentData->GetLastClose() * prevFactor / currentFactor); // 拆分日只有前收盘价需要调整，其他价格不调整。
@@ -235,4 +236,17 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 		}
 		j++;
 	} while (i > 0);
+}
+
+CTiingoCandleLine* CContainerTiingoStockDayLine::GetData(size_t lIndex) {
+	return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex));
+}
+
+CTiingoCandleLine* CContainerTiingoStockDayLine::GetDayLine(local_days date) {
+	return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(date));
+}
+
+void CContainerTiingoStockDayLine::Add(CTiingoCandleLine& data) {
+	data.SetRatio(m_ratio);
+	m_vHistoryData.push_back(data);
 }

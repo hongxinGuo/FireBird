@@ -8,6 +8,8 @@
 #include "WebData.h"
 #include "WorldMarket.h"
 
+using namespace std;
+
 namespace {
 	map<string, int> s_mapItem{
 		{ "accoci", 1 },
@@ -272,7 +274,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 		}
 	} catch (simdjson_error&) {
 	}
-	std::ranges::sort(pvTiingoFinancialState->begin(), pvTiingoFinancialState->end(),
+	std::ranges::sort(*pvTiingoFinancialState,
 	                  [](const CTiingoCompanyFinancialStatePtr& p1, const CTiingoCompanyFinancialStatePtr& p2) { return p1->m_yearQuarter < p2->m_yearQuarter; });
 
 	return pvTiingoFinancialState;

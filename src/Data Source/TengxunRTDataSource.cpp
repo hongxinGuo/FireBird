@@ -7,6 +7,8 @@
 #include "SystemConfiguration.h"
 #include "WebData.h"
 
+using namespace std;
+
 CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_strInquiryFunction = "http://qt.gtimg.cn/q=";
 	m_strInquiryToken = "";
@@ -21,7 +23,7 @@ bool CTengxunRTDataSource::Reset() {
 	return true;
 }
 
-bool CTengxunRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+bool CTengxunRTDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (llTickCount > m_PrevInquireTimePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) {

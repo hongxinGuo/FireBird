@@ -4,6 +4,7 @@ using std::chrono::year_month_day;
 using std::chrono::year;
 using std::chrono::month;
 using std::chrono::day;
+using std::chrono::local_days;
 
 class CStockSplit {
 public:

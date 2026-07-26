@@ -1,9 +1,12 @@
 #include"pch.h"
 
 #include <gtest/gtest.h>
+#include"GeneralCheck.h"
+
+#include"SystemMessage.h"
 
 #include "ContainerTiingoStock.h"
-#include"GeneralCheck.h"
+#include "TiingoStock.h"
 #include"TiingoDataSource.h"
 
 #include"ProductTiingoIEXTopOfBook.h"
@@ -11,6 +14,7 @@
 #include "WorldMarket.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CProductTiingoIEXTopOfBookTest : public Test {

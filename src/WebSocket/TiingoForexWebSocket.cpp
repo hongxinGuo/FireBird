@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemMessage.h"
+
 #include"JsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
@@ -8,6 +10,11 @@
 #include "SystemConfiguration.h"
 #include "SystemData.h"
 #include "TiingoDataSource.h"
+
+using std::make_shared;
+using std::chrono::minutes;
+using std::chrono::seconds;
+using std::istringstream;
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoForexWebSocket->SetError(false);
@@ -134,8 +141,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 			string sService;
 			string sType;
 			istringstream ss;
-			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
-			chrono::minutes Minutes;
+			time_point<system_clock, microseconds> tpTime;
+			minutes Minutes;
 			string sString;
 			nlohmannJson::iterator it;
 			nlohmannJson js2, js3, js4;
@@ -179,8 +186,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 				sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 				ss.clear();
 				ss.str(pForexData->m_sDateTime);
-				chrono::from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
-				pForexData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
+				from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
+				pForexData->m_tpTime = time_point_cast<seconds>(tpTime);
 				pForexData->m_dBidSize = jsonGetDouble(++it); // 买价数量
 				pForexData->m_dBidPrice = jsonGetDouble(++it); // 买价
 				pForexData->m_dMidPrice = jsonGetDouble(++it); // 中间价 （BidPrice + AskPrice)/2

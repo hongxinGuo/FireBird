@@ -1,10 +1,13 @@
 #include"pch.h"
 
+#include"SystemMessage.h"
+
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
 
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
+#include"ChinaStock.h"
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
@@ -23,10 +26,14 @@
 #include "FinnhubWebSocket.h"
 #include "InaccessibleSymbol.h"
 #include "SinaRTDataSource.h"
+#include "SystemConfiguration.h"
 #include "SystemData.h"
 #include "TiingoCryptoWebSocket.h"
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
+
+#include"FinnhubStock.h"
+#include "TiingoStock.h"
 
 using namespace testing;
 

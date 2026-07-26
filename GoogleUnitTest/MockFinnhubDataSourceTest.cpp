@@ -8,8 +8,11 @@
 
 #include"ProductFinnhubStockSymbol.h"
 #include "SinaRTDataSource.h"
+#include "SystemConfiguration.h"
+#include "SystemMessage.h"
 
 using namespace testing;
+using namespace std;
 
 namespace {
 	CMockFinnhubDataSourcePtr s_pMockFinnhubDataSource;

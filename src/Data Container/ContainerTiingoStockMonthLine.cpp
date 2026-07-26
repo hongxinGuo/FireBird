@@ -2,6 +2,7 @@
 
 #include "ContainerTiingoStockMonthLine.h"
 #include "TiingoStock.h"
+#include "TiingoCandleLine.h"
 
 namespace {
 	CTiingoStock s_stockContainerTiingoStockMonthLine;
@@ -20,4 +21,17 @@ void CContainerTiingoStockMonthLine::UpdateData(const CTiingoCandleLinesPtr& pvT
 		}
 	}
 	m_fDataLoaded = true;
+}
+
+CTiingoCandleLine* CContainerTiingoStockMonthLine::GetData(size_t lIndex) {
+	return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetData(lIndex));
+}
+
+CTiingoCandleLine* CContainerTiingoStockMonthLine::GetDayLine(local_days lDate) {
+	return static_cast<CTiingoCandleLine*>(CVirtualDataHistoryCandle::GetCandle(lDate));
+}
+
+void CContainerTiingoStockMonthLine::Add(CTiingoCandleLine& data) {
+	data.SetRatio(m_ratio);
+	m_vHistoryData.push_back(data);
 }

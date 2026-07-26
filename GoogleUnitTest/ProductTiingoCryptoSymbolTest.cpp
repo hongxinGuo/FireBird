@@ -9,6 +9,8 @@
 #include"TiingoDataSource.h"
 
 #include"ProductTiingoCryptoSymbol.h"
+#include "SystemConfiguration.h"
+#include "SystemMessage.h"
 #include"TestWebData.h"
 
 using namespace testing;

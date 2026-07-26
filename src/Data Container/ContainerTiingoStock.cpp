@@ -3,6 +3,7 @@
 #include "ContainerTiingoStock.h"
 
 #include <set>
+using std::set;
 
 #include "Thread.h"
 #include "TimeConvert.h"
@@ -11,7 +12,11 @@
 
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
+#include"TiingoStock.h"
+
+using std::make_shared;
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();
@@ -19,6 +24,18 @@ CContainerTiingoStock::CContainerTiingoStock() {
 
 void CContainerTiingoStock::Reset() {
 	CContainerVirtualStock::Reset();
+}
+
+CTiingoStockPtr CContainerTiingoStock::GetItem( size_t lIndex){
+	return dynamic_pointer_cast<CTiingoStock>(Get(lIndex));
+}
+
+CTiingoStockPtr CContainerTiingoStock::GetStock(size_t lIndex){
+	return dynamic_pointer_cast<CTiingoStock>(Get(lIndex));
+}
+
+CTiingoStockPtr CContainerTiingoStock::GetStock(const string& strStockCode){
+	return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode));
 }
 
 void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
@@ -186,11 +203,11 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 ///Note：只存储该日日线数据，但不更新各种标识。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::BuildDayLine(chrono::local_days date) {
+void CContainerTiingoStock::BuildDayLine(local_days date) {
 	auto lSize = Size();
-	chrono::sys_seconds st = gl_pWorldMarket->ToSysTime(toLocalDateTime(date, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
+	sys_seconds st = gl_pWorldMarket->ToSysTime(toLocalDateTime(date, local_seconds(seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 
-	if (gl_pWorldMarket->GetMarketTime() < chrono::local_seconds{ 18h + 5min + 00s }) {
+	if (gl_pWorldMarket->GetMarketTime() < local_seconds{ 18h + 5min + 00s }) {
 		DeleteDayLine(date);
 	}
 
@@ -245,7 +262,7 @@ void CContainerTiingoStock::BuildDayLine(chrono::local_days date) {
 	gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(date);
 }
 
-void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
+void CContainerTiingoStock::LoadDayLine(local_days date) {
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
@@ -286,7 +303,7 @@ void CContainerTiingoStock::LoadDayLine(chrono::local_days date) {
 	}
 }
 
-void CContainerTiingoStock::DeleteDayLine(chrono::local_days date) {
+void CContainerTiingoStock::DeleteDayLine(local_days date) {
 	using namespace StockMarket;
 	const auto& t = TiingoStockDayline{};
 	auto db = gl_dbStockMarket.get();

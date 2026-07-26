@@ -3,12 +3,15 @@
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
 #include "ContainerFinnhubStock.h"
+#include"SECFiling.h"
 
 #include "ProductFinnhubSECFilings.h"
 
 #include"jsonParse.h"
 #include"simdjsonGetValue.h"
 #include "WebData.h"
+
+using namespace std;
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/filings?symbol=";

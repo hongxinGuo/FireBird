@@ -1,10 +1,12 @@
 #include"pch.h"
 
 #include <gtest/gtest.h>
+#include"GeneralCheck.h"
+
+#include"SystemMessage.h"
 
 #include "ContainerTiingoStock.h"
 #include "FinnhubInquiryType.h"
-#include"GeneralCheck.h"
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
@@ -18,8 +20,11 @@
 #include "ProductTiingoStockProfile.h"
 #include"TestWebData.h"
 #include "InaccessibleSymbol.h"
+#include "SystemConfiguration.h"
+#include"FinnhubStock.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CTiingoDataSourceTest : public Test {

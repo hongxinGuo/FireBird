@@ -9,6 +9,7 @@
 
 #include"log.h"
 #include"SystemData.h"
+#include"SystemMessage.h"
 
 #include"FinnhubInquiryType.h"
 #include"InaccessibleSymbol.h"
@@ -49,6 +50,7 @@
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include "EastmoneyDayLineDataSource.h"
+#include "SystemConfiguration.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 

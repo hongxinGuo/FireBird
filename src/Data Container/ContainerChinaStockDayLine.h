@@ -1,7 +1,8 @@
 #pragma once
 
-#include"WeekLine.h"
 #include "VirtualDataHistoryCandle.h"
+
+class CWeekLine;
 
 class CContainerChinaStockDayLine : public CVirtualDataHistoryCandle {
 public:

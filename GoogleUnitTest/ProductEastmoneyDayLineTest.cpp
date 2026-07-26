@@ -6,6 +6,7 @@
 
 #include"ChinaMarket.h"
 #include "ProductEastmoneyDayLine.h"
+#include"DayLine.h"
 #include "WebData.h"
 
 using namespace testing;

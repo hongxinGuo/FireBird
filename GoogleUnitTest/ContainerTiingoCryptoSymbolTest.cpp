@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerTiingoCryptoSymbol.h"
+#include "TiingoCrypto.h"
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"

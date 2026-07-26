@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Initialization.h"
+#include"SystemMessage.h"
 
 #include "spdlog/sinks/daily_file_sink.h"
 
@@ -24,6 +25,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 #include "FinnhubWebSocket.h"
+#include "SystemConfiguration.h"
 #include "TiingoCryptoWebSocket.h"
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
@@ -36,6 +38,9 @@ using namespace spdlog;
 #include"StockMarketSQLTable.h"
 
 #include"dataBaseConnector.h"
+
+using std::make_shared;
+using std::wstring;
 
 void DeleteAllFinnhubInaccessibleUSExchange() {
 	for (int i = 0; i < END_OF_ALL_INQUIRY_TYPE_; i++) {
@@ -56,8 +61,8 @@ namespace {
 		// 每月第一天删除对US交易所的禁止访问
 		ASSERT(gl_pChinaMarket != nullptr);
 		ASSERT(gl_pWorldMarket != nullptr);
-		gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
-		chrono::year_month_day ymd = chrono::year_month_day{ chrono::floor<chrono::days>(gl_tpNow) };
+		gl_tpNow = time_point_cast<seconds>(system_clock::now());
+		year_month_day ymd = year_month_day{ floor<days>(gl_tpNow) };
 		if (static_cast<unsigned>(ymd.day()) == 1) {
 			DeleteAllFinnhubInaccessibleUSExchange();
 		}
@@ -256,7 +261,7 @@ void InitializeLogSystem() {
 	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
 	gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
 
-	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+	//spdlog::flush_every(seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
 	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
 	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
 	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);
@@ -286,8 +291,8 @@ void TaskCheckWorldMarketReady() {
 }
 
 bool IsMarketResetting() {
-	return ranges::any_of(std::as_const(gl_vMarket),
-	                      [](const auto& pMarket) { return pMarket->IsResetting(); });
+	return std::ranges::any_of(std::as_const(gl_vMarket),
+	                           [](const auto& pMarket) { return pMarket->IsResetting(); });
 }
 
 void ScheduleMarketTask() {
@@ -319,10 +324,10 @@ void TaskSchedulePer100ms() {
 		return;
 	}
 	s_Processing = true;
-	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	try {
 		// 获取系统时间戳。
-		gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
+		gl_tpNow = time_point_cast<seconds>(system_clock::now());
 
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 		//Todo: 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
@@ -341,7 +346,7 @@ void TaskSchedulePer100ms() {
 		gl_systemMessage.PushErrorMessage(W2Utf8(str));
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
-	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	auto end = time_point_cast<milliseconds>(steady_clock::now());
 	gl_systemMessage.IncreaseScheduleTaskTime((end - start).count());
 	s_Processing = false;
 }

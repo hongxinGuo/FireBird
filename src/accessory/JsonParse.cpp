@@ -8,6 +8,7 @@
 #include"pch.h"
 
 #include "JsonParse.h"
+#include "DayLineWebData.h"
 
 #include"WebData.h"
 #include"WebRTData.h"
@@ -21,12 +22,15 @@
 #include"SystemMessage.h"
 
 #include"NlohmannJsonDeclaration.h"
-#include "ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include "SystemData.h"
 
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
+
+using std::istringstream;
+using std::make_shared;
+using std::min;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -323,8 +327,8 @@ CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strSto
 			sv = simdjsonGetStringView(item);
 			string str1(sv.data(), sv.length()); // 这里需要转换一下，直接使用string_view会导致内存溢出
 			istringstream ss(str1);
-			chrono::local_days ld;
-			ss >> chrono::parse("%F", ld);
+			local_days ld;
+			ss >> parse("%F", ld);
 			dayLine2.SetDate(ld);
 			item = (*++it).value();
 			sv = simdjsonGetStringView(item);

@@ -2,6 +2,8 @@
 
 #include "VirtualContainer.h"
 
+#include "ChinaStockCodeConverter.h"
+
 CVirtualContainer::CVirtualContainer() {
 	CVirtualContainer::Reset();
 }
@@ -29,4 +31,12 @@ string CVirtualContainer::GetNextStockInquiringMiddleStr(size_t& iStockIndex, co
 	}
 
 	return strReturn;
+}
+
+string CVirtualContainer::GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber) {
+	return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina);
+}
+
+string CVirtualContainer::GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber) {
+	return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina);
 }

@@ -14,6 +14,7 @@
 #include"dataBaseConnector.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CFinnhubCryptoSymbolTest : public ::testing::Test {

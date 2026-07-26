@@ -6,6 +6,7 @@
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
+#include"WeekLine.h"
 
 #include"ContainerChinaStockWeekLine.h"
 

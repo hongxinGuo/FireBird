@@ -4,7 +4,10 @@
 
 #include"GeneralCheck.h"
 #include "SystemConfiguration.h"
+#include "TimeConvert.h"
 #include "VirtualHistoryCandle.h"
+
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CVirtualHistoryCandleTest : public ::testing::Test {

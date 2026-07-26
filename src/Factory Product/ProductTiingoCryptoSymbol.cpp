@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemMessage.h"
+
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
@@ -7,9 +9,12 @@
 #include "ProductTiingoCryptoSymbol.h"
 
 #include "ContainerTiingoCryptoSymbol.h"
+#include "SystemConfiguration.h"
 #include "TiingoDataSource.h"
 #include "WebData.h"
 #include "WorldMarket.h"
+
+using namespace std;
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/crypto?";

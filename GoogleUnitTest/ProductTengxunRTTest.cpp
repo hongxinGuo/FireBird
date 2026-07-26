@@ -9,6 +9,7 @@
 #include "WebData.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CProductTengxunRTTest : public ::testing::Test {

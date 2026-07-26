@@ -15,6 +15,8 @@
 #include "MainFrm.h"
 #include "SystemConfiguration.h"
 
+using std::wstring;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -146,7 +148,7 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) const {
 
 	// 显示鼠标位置的价格线
 	double value = 0;
-	chrono::local_days date = chrono::local_days(1970y / 01 / 01);
+	local_days date = local_days(1970y / 01 / 01);
 	switch (m_iCurrentShowType) {
 	case SHOW_DAY_LINE_DATA_:
 		value = static_cast<double>(m_rectCandle.Height() - (ptCurrent.y - m_rectCandle.top)) * (m_lDayLineHigh - m_lDayLineLow) / m_rectCandle.Height() + m_lDayLineLow;

@@ -4,11 +4,13 @@
 #include"nlohmannJsonGetValue.h"
 
 #include"FinnhubStock.h"
-#include"ChinaMarket.h"
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 
 #include "ContainerFinnhubStock.h"
 #include "WebData.h"
+
+using std::make_shared;
+using std::istringstream;
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/earnings?symbol=";
@@ -28,7 +30,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
 	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(pvEPSSurprise); }
 	else {
-		pStock->SetLastEPSSurpriseUpdateDate(chrono::local_days(chrono::days(0))); // 将日期设置为更早。
+		pStock->SetLastEPSSurpriseUpdateDate(local_days(days(0))); // 将日期设置为更早。
 		pStock->SetUpdateProfileDB(true);
 	}
 	pStock->SetUpdateEPSSurprise(false);
@@ -50,8 +52,8 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 			pEPSSurprise.m_strSymbol = s;
 			s = jsonGetString(it, "period");
 			istringstream ss(s);
-			chrono::local_days ld;
-			ss >> chrono::parse("%F", ld);
+			local_days ld;
+			ss >> parse("%F", ld);
 			pEPSSurprise.m_lDate = ld;
 			pEPSSurprise.m_dEstimate = jsonGetDouble(it, "estimate");
 			pEPSSurprise.m_dActual = jsonGetDouble(it, "actual");

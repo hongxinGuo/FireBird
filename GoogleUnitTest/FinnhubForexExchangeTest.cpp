@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include"SystemMessage.h"
+
 #include "ContainerFinnhubForexExchange.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"

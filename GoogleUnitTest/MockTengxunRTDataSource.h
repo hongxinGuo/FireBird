@@ -7,7 +7,7 @@
 namespace testing {
 	class CMockTengxunRTDataSource final : public CTengxunRTDataSource {
 	public:
-		MOCK_METHOD((chrono::time_point<chrono::steady_clock>), GetTickCount, (), (override));
+		MOCK_METHOD((time_point<steady_clock>), GetTickCount, (), (override));
 	};
 
 	using CMockTengxunRTDataSourcePtr = shared_ptr<CMockTengxunRTDataSource>;

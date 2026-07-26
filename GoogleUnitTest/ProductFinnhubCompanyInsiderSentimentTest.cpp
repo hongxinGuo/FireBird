@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
+#include"FinnhubStock.h"
 
 #include"ProductFinnhubCompanyInsiderSentiment.h"
 #include "SystemMessage.h"
@@ -46,7 +47,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
-		const chrono::local_days lCurrentDate = gl_pWorldMarket->GetMarketDate();
+		const local_days lCurrentDate = gl_pWorldMarket->GetMarketDate();
 		string sCurrentDate = std::format("{:%F}", lCurrentDate);
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderSentiment(true);

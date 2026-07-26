@@ -7,11 +7,12 @@
 #include "FinnhubInquiryType.h"
 #include"GeneralCheck.h"
 #include "ProductFinnhub.h"
-#include"WorldMarket.h"
 #include"VirtualWebProduct.h"
 #include"TestWebData.h"
+#include"DayLine.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	TEST(CallableFunctionTest, TestCompareDayLine) {

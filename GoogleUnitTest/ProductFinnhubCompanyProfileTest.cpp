@@ -13,6 +13,7 @@
 #include"TestWebData.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CFinnhubCompanyProfileTest : public Test {

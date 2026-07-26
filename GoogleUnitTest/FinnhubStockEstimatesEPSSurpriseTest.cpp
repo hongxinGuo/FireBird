@@ -5,11 +5,14 @@
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
+#include"FinnhubStock.h"
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
 #include "SystemMessage.h"
 #include"TestWebData.h"
 
 using namespace testing;
+
+using namespace std;
 
 namespace FireBirdTest {
 	class CFinnhubStockEstimatesEPSSurpriseTest : public Test {

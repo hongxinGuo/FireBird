@@ -177,7 +177,6 @@
     <ClInclude Include="..\src\Type\China market\WeekLine.h" />
     <ClInclude Include="..\src\Type\SECFiling.h" />
     <ClInclude Include="..\src\Type\StockSplit.h" />
-    <ClInclude Include="..\src\Type\StockSymbol.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h" />
     <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h" />

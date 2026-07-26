@@ -19,6 +19,7 @@
 
 using namespace testing;
 #include<memory>
+using std::make_shared;
 
 namespace {
 	CMockChinaMarketPtr s_pMockChinaMarket;

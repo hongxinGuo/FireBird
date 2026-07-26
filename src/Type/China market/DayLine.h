@@ -2,8 +2,6 @@
 
 #include"VirtualHistoryCandle.h"
 
-#include<memory>
-
 using std::vector;
 
 class CDayLine final : public CVirtualHistoryCandle {

@@ -3,7 +3,6 @@
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
-#include"WorldMarket.h"
 #include"FinnhubCrypto.h"
 
 #include "ProductFinnhubCryptoDayLine.h"
@@ -11,6 +10,8 @@
 #include "ContainerFinnhubCrypto.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+
+using namespace std;
 
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/candle?symbol=";

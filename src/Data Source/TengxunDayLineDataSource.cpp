@@ -12,9 +12,8 @@
 
 #include"ChinaStockCodeConverter.h"
 #include "TengxunDayLineDataSource.h"
-
-#include <random>
-
+#include"VirtualWebProduct.h"
+#include"SystemMessage.h"
 #include"ProductTengxunDayLine.h"
 
 #include"ChinaMarket.h"
@@ -24,6 +23,13 @@
 #include "SystemConfiguration.h"
 #include "TimeConvert.h"
 #include "WebData.h"
+#include"ChinaStock.h"
+
+#include <random>
+using std::uniform_int_distribution;
+using std::make_shared;
+using std::literals::chrono_literals::operator ""h;
+using std::literals::chrono_literals::operator ""min;
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
@@ -53,7 +59,7 @@ bool CTengxunDayLineDataSource::Reset() {
 /// 采用随机方式申请数据，防止被腾讯日线服务器拒绝服务。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunDayLineDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	static int s_iSleep = 0;
 	static int s_number = 0;
 	const auto llTickCount = GetTickCount();
@@ -68,10 +74,10 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const chrono::local_secon
 		s_iSleep = 0;
 		s_number = mean / 200;
 		int time = 100000 + mean * 50;
-		m_PrevInquireTimePoint += chrono::milliseconds(time);
+		m_PrevInquireTimePoint += milliseconds(time);
 		TRACE("tengxunDayLine server suspended %d seconds\n", time / 1000);
 	}*/
-	if (llTickCount < m_PrevInquireTimePoint + chrono::milliseconds(4000 + mean)) return false;
+	if (llTickCount < m_PrevInquireTimePoint + milliseconds(4000 + mean)) return false;
 
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {
@@ -200,13 +206,13 @@ void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	// 第一次switch处理非json数据格式的错误
 	switch (m_dwHTTPStatusCode) {
 	case 501://请求功能尚未实现，实际是服务器正处于维护状态
-		m_PrevInquireTimePoint += chrono::seconds(1800); // 半小时后再查。
+		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		break;
 	case 200:
 		// everything is OK
 		break;
 	default: // something wrong,
-		m_PrevInquireTimePoint += chrono::seconds(1800); // 半小时后再查。
+		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		break;
 	}
 }

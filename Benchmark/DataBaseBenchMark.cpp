@@ -7,6 +7,8 @@
 
 #include "WorldMarket.h"
 
+using namespace std;
+
 class CDataBaseBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {

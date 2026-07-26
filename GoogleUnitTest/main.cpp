@@ -40,6 +40,8 @@
 
 #include"GeneralCheck.h"
 
+#include"SystemMessage.h"
+
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include "ContainerTiingoStock.h"
@@ -52,11 +54,17 @@
 
 #include"Initialization.h"
 #include"InaccessibleSymbol.h"
+#include "SystemConfiguration.h"
 #include "TiingoCryptoWebSocket.h"
 #include "TiingoDataSource.h"
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
 #include"TimeConvert.h"
+#include"ChinaStock.h"
+#include"FinnhubStock.h"
+#include "TiingoStock.h"
+
+using namespace std;
 
 using namespace testing;
 

@@ -7,8 +7,10 @@
 
 #include"ContainerVirtualStock.h"
 #include"ContainerChinaStock.h"
+#include"ChinaStock.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CContainerVirtualStockTest : public Test {

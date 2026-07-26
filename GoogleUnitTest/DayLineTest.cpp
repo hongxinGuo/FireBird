@@ -6,7 +6,7 @@
 #include"GeneralCheck.h"
 
 #include"DayLine.h"
-#include"ContainerChinaStock.h"
+#include"ChinaStock.h"
 
 namespace FireBirdTest {
 	class CStockDayLineTest : public ::testing::Test {

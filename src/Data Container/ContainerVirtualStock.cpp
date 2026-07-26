@@ -2,6 +2,7 @@
 
 #include "ContainerVirtualStock.h"
 
+#include "VirtualStock.h"
 #include "VirtualWebSocket.h"
 
 CContainerVirtualStock::CContainerVirtualStock() {
@@ -28,6 +29,9 @@ vectorString CContainerVirtualStock::GetSymbols() {
 	return vSymbol;
 }
 
+bool CContainerVirtualStock::IsSymbol(const shared_ptr<CVirtualStock>& p) const {
+	return IsSymbol(p->GetSymbol());
+}
 bool CContainerVirtualStock::IsUpdateProfileDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
@@ -46,6 +50,22 @@ size_t CContainerVirtualStock::GetDayLineNeedUpdateNumber() const {
 
 bool CContainerVirtualStock::IsUpdateDayLineDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateDayLineDB(); });
+}
+
+shared_ptr<CVirtualStock> CContainerVirtualStock::Get(const size_t lIndex) {
+	return m_vStock.at(lIndex);
+}
+
+shared_ptr<CVirtualStock> CContainerVirtualStock::Get(const string& strSymbol) {
+	return m_vStock.at(m_mapSymbol.at(strSymbol));
+}
+
+string CContainerVirtualStock::GetItemExchangeCode(const size_t lIndex) const {
+	return m_vStock.at(lIndex)->GetExchange();
+}
+
+size_t CContainerVirtualStock::GetOffset(const shared_ptr<CVirtualStock>& pStock) const {
+	return GetOffset(pStock->GetSymbol());
 }
 
 void CContainerVirtualStock::Add(const CVirtualStockPtr& pStock) {

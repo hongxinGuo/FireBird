@@ -7,7 +7,7 @@
 namespace testing {
 	class CMockTiingoDataSource final : public CTiingoDataSource {
 	public:
-		MOCK_METHOD((chrono::time_point<chrono::steady_clock>), GetTickCount, (), (override));
+		MOCK_METHOD((time_point<steady_clock>), GetTickCount, (), (override));
 		MOCK_METHOD(bool, GenerateMarketNews, (), (override));
 		MOCK_METHOD(bool, GenerateFundamentalDefinition, (), (override));
 		MOCK_METHOD(bool, GenerateCompanySymbol, (), (override));

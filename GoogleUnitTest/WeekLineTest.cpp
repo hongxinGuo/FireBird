@@ -9,7 +9,7 @@
 #include "SystemConfiguration.h"
 
 #include"WeekLine.h"
-#include"ContainerChinaStock.h"
+#include"ChinaStock.h"
 
 namespace FireBirdTest {
 	class CWeekLineTest : public ::testing::Test {
@@ -149,7 +149,7 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestUpdateWeekLine1) {
 		CWeekLine weekLine;
 		CDayLine dayLine;
-		dayLine.SetDate(chrono::local_days{ 2020y / 2 / 2 });
+		dayLine.SetDate(local_days{ 2020y / 2 / 2 });
 		dayLine.SetStockSymbol(string_view("600000.SS"));
 
 		dayLine.SetOpen(1010);

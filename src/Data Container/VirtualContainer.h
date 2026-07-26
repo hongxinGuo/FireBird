@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChinaStockCodeConverter.h"
+using std::string;
 
 class CVirtualContainer {
 public:
@@ -21,8 +21,8 @@ public:
 
 	// todo 以下函数只用于申请Sina、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
 	string GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber, string (*StockCodeTransfer)(const string& str));
-	string GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina); }
-	string GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina); }
+	string GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber);
+	string GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber);
 
 private:
 	size_t m_lSinaRTDataInquiringIndex;

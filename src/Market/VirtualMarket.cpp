@@ -9,6 +9,8 @@
 
 #include "StockExchange.h"
 
+using namespace std;
+
 CVirtualMarket::CVirtualMarket() {
 	CreateLocalTimeZone(m_strLocalMarketTimeZone);
 	m_fResetMarket = true;

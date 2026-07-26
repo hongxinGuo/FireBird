@@ -3,9 +3,12 @@
 #include <gtest/gtest.h>
 
 #include"GeneralCheck.h"
+#include"SystemMessage.h"
+
 #include"WorldMarket.h"
 #include"TiingoDataSource.h"
 #include"ProductTiingoMarketNews.h"
+#include "SystemConfiguration.h"
 #include"TestWebData.h"
 
 using namespace testing;

@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemMessage.h"
+
 #include"dataBaseConnector.h"
 
 #include"FinnhubInquiryType.h"
@@ -9,11 +11,15 @@
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include"VirtualWebProduct.h"
+#include"TiingoStock.h"
 
 #include "spdlog_assert.h"
 #include "InaccessibleSymbol.h"
+#include "SystemConfiguration.h"
 #include "WebData.h"
 #include"WorldMarket.h"
+
+using namespace std;
 
 namespace {
 	map<string, enum_ErrorMessageData> mapTiingoErrorMap{

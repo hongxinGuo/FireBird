@@ -7,6 +7,7 @@
 #include "FinnhubStock.h"
 #include"StockMarketSQLTable.h"
 #include"TimeConvert.h"
+#include"DayLine.h"
 
 namespace {
 	CFinnhubStock s_stockContainerFinnhubStockDayLine;
@@ -91,4 +92,12 @@ void CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
 	tx.commit();
 
 	m_fDataLoaded = true;
+}
+
+CDayLine* CContainerFinnhubStockDayLine::GetData(size_t lIndex) {
+	return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetData(lIndex));
+}
+
+CDayLine* CContainerFinnhubStockDayLine::GetDayLine(std::chrono::local_days lDate) {
+	return static_cast<CDayLine*>(CVirtualDataHistoryCandle::GetCandle(lDate));
 }

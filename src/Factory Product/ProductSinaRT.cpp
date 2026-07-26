@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemMessage.h"
+
 #include"ProductSinaRT.h"
 #include"ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"

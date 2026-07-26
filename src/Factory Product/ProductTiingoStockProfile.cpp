@@ -19,6 +19,12 @@
 #include"StockMarketSQLTable.h"
 
 #include"dataBaseConnector.h"
+#include "SystemConfiguration.h"
+#include "SystemMessage.h"
+
+using std::chrono::local_time;
+using std::istringstream;
+using std::make_shared;
 
 CProductTiingoStockProfile::CProductTiingoStockProfile() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/meta?";
@@ -39,7 +45,7 @@ string CProductTiingoStockProfile::CreateMessage() {
 void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 
-	ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) {
+	std::ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) {
 		auto s = pData1->GetSymbol();
 		return s.compare(pData2->GetSymbol()) < 0;
 	});
@@ -187,14 +193,14 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			else pStock->SetSECFilingWebSite(strNULL);
 			s1 = simdjsonGetStringView(itemValue, "statementLastUpdated");
 			istringstream ss1(s1);
-			chrono::local_time<chrono::milliseconds> ls1;
+			local_time<milliseconds> ls1;
 			ss1 >> parse("%FT%T%Z", ls1);
-			pStock->SetStatementLastUpdatedDate(chrono::floor<chrono::days>(ls1));
+			pStock->SetStatementLastUpdatedDate(floor<days>(ls1));
 			s1 = simdjsonGetStringView(itemValue, "dailyLastUpdated");
 			istringstream ss2(s1);
-			chrono::local_time<chrono::milliseconds> ls2;
+			local_time<milliseconds> ls2;
 			ss2 >> parse("%FT%T%Z", ls2);
-			pStock->SetDailyUpdateDate(chrono::floor<chrono::days>(ls2));
+			pStock->SetDailyUpdateDate(floor<days>(ls2));
 			s1 = simdjsonGetStringView(itemValue, "dataProviderPermaTicker");
 			if (s1 != strNotAvailable) {
 				pStock->SetDataProviderPermaTicker(s1);

@@ -8,6 +8,8 @@
 #include"WorldMarket.h"
 #include"TiingoDataSource.h"
 #include"ProductTiingoStockProfile.h"
+#include "SystemConfiguration.h"
+#include "SystemMessage.h"
 #include"TestWebData.h"
 
 using namespace testing;

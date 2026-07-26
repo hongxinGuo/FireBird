@@ -1,7 +1,8 @@
 #pragma once
 
-#include"FinnhubStock.h"
 #include"ContainerVirtualStock.h"
+
+class CFinnhubStock;
 
 class CContainerFinnhubStock final : public CContainerVirtualStock {
 public:
@@ -14,8 +15,8 @@ public:
 	~CContainerFinnhubStock() override = default ;
 	void Reset() override;
 
-	CFinnhubStockPtr GetItem(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubStock>(Get(lIndex)); }
-	CFinnhubStockPtr GetItem(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubStock>(Get(strStockCode)); }
+	shared_ptr<CFinnhubStock> GetItem(size_t lIndex);
+	shared_ptr<CFinnhubStock> GetItem(const string& strStockCode);
 
 	void ResetEPSSurprise();
 	void ResetPeer();

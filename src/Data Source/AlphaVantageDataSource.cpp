@@ -6,10 +6,13 @@
 #include "FinnhubInquiryType.h"
 #include "WorldMarket.h"
 #include"VirtualWebProduct.h"
+#include"FinnhubStock.h"
 
 #include "ContainerFinnhubStock.h"
+#include "TiingoStock.h"
 
 #include "spdlog_assert.h"
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
 namespace {
@@ -33,7 +36,7 @@ bool CAlphaVantageDataSource::Reset() {
 	return true;
 }
 
-bool CAlphaVantageDataSource::GenerateInquiryMessage(const chrono::local_seconds& lCurrentTime) {
+bool CAlphaVantageDataSource::GenerateInquiryMessage(const local_seconds& lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请Alpha Vantage各数据。

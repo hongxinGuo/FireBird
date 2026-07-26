@@ -1,12 +1,12 @@
 #include "pch.h"
 
-#include "containerChosenCrypto.h"
-
 #include<sqlpp23/sqlpp23.h>
 
+#include "containerChosenCrypto.h"
 #include "ContainerFinnhubCrypto.h"
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "FinnhubCrypto.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();
@@ -38,4 +38,12 @@ bool CContainerChosenCrypto::LoadDB() {
 	tx.commit();
 
 	return true;
+}
+
+CFinnhubCryptoPtr CContainerChosenCrypto::GetCryptoSymbol(size_t lIndex) {
+	return dynamic_pointer_cast<CFinnhubCrypto>(Get(lIndex));
+}
+
+CFinnhubCryptoPtr CContainerChosenCrypto::GetCryptoSymbol(const string& strStockCode) {
+	return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode));
 }

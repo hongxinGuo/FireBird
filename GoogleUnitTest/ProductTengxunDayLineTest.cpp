@@ -11,8 +11,10 @@
 #include "WebData.h"
 #include"DayLineWebData.h"
 #include "SystemData.h"
+#include"ChinaStock.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CProductTengxunDayLineTest : public Test {

@@ -14,6 +14,7 @@
 #include "TiingoStock.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CContainerTiingoStockDayLineTest : public ::testing::Test {

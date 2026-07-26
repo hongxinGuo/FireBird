@@ -9,6 +9,7 @@
 #include"FinnhubDataSource.h"
 
 #include"ProductFinnhubCryptoExchange.h"
+#include "SystemMessage.h"
 
 #include"TestWebData.h"
 

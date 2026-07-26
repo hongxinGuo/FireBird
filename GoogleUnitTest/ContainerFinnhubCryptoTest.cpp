@@ -10,6 +10,7 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoCrypto.h"
+#include "FinnhubCrypto.h"
 
 using std::make_shared;
 

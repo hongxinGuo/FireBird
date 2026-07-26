@@ -10,6 +10,8 @@
 #include "ContainerStockExchange.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-status?exchange=";
 }

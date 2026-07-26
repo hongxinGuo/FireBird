@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ContainerVirtualStock.h"
-#include "TiingoCrypto.h"
+
+class CTiingoCrypto;
 
 class CContainerTiingoCryptoSymbol : public CContainerVirtualStock {
 public:
@@ -13,8 +14,8 @@ public:
 	~CContainerTiingoCryptoSymbol() override = default;
 	void Reset() override;
 
-	CTiingoCryptoPtr GetCrypto(const size_t lIndex) { return dynamic_pointer_cast<CTiingoCrypto>(Get(lIndex)); }
-	CTiingoCryptoPtr GetCrypto(const string& strCryptoCode) { return dynamic_pointer_cast<CTiingoCrypto>(Get(strCryptoCode)); }
+	shared_ptr<CTiingoCrypto> GetCrypto(size_t lIndex);
+	shared_ptr<CTiingoCrypto> GetCrypto(const string& strCryptoCode);
 
 	void UpdateDB();
 	bool LoadDB();

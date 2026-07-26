@@ -6,10 +6,13 @@
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include"ProductTiingoStockDayLine.h"
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include"TestWebData.h"
+#include "TiingoStock.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CProductTiingoStockDayLineTest : public Test {

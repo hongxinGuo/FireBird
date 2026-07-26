@@ -7,6 +7,10 @@
 
 class CStockExchange;
 
+using std::chrono::sys_seconds;
+using std::chrono::weekday;
+using std::chrono::time_zone;
+
 class CVirtualMarket {
 public:
 	CVirtualMarket();
@@ -35,7 +39,7 @@ public:
 	virtual void ResetMarket();
 	bool IsResetTime();
 
-	virtual chrono::local_seconds GetResetTime();
+	virtual local_seconds GetResetTime();
 
 	bool IsResetting() const noexcept { return m_fResettingMarket; }
 
@@ -45,7 +49,7 @@ public:
 	bool IsMarketTaskEmpty() const { return m_marketTask.Empty(); }
 	void AddTask(const shared_ptr<CMarketTask>& pTask);
 	void AddTask(long lTaskType, long lExecuteTime);
-	void AddTask(long lTaskType, chrono::local_seconds executeTime);
+	void AddTask(long lTaskType, local_seconds executeTime);
 	shared_ptr<CMarketTask> GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	void DiscardAllMarketTask() {
@@ -61,28 +65,28 @@ public:
 
 	// MarketDisplayTask
 	bool HaveNewTask() const;
-	vector<shared_ptr<CMarketTask>> DiscardOutDatedTask(chrono::local_seconds lCurrentMarketTime);
+	vector<shared_ptr<CMarketTask>> DiscardOutDatedTask(local_seconds lCurrentMarketTime);
 	vector<shared_ptr<CMarketTask>> GetDisplayMarketTask();
 
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CreateLocalTimeZone(const string& strLocalNameOfMarket); // 系统启动时执行一次。
-	chrono::local_seconds GetMarketOpenTime() const;
-	chrono::local_seconds GetMarketCloseTime() const;
+	local_seconds GetMarketOpenTime() const;
+	local_seconds GetMarketCloseTime() const;
 
-	chrono::local_seconds GetMarketClock() const noexcept { return m_marketClock; } // 这个是市场时间
-	chrono::local_days GetMarketDate() const noexcept { return chrono::local_days(chrono::floor<chrono::days>(m_marketClock)); }// 市场日期
-	chrono::local_seconds GetMarketTime() const noexcept { return chrono::local_seconds(m_marketClock - chrono::floor<chrono::days>(m_marketClock)); } // 市场时间的当天秒数
-	chrono::weekday GetWeekDay() const noexcept { return chrono::weekday{ GetMarketDate() }; }
-	chrono::year_month_day GetMarketYMD() const noexcept { return chrono::year_month_day{ GetMarketDate() }; }
-	chrono::hh_mm_ss<chrono::seconds> GetMarketTimeHMS() const noexcept { return chrono::hh_mm_ss{ m_marketClock - chrono::floor<chrono::days>(m_marketClock) }; }
+	local_seconds GetMarketClock() const noexcept { return m_marketClock; } // 这个是市场时间
+	local_days GetMarketDate() const noexcept { return local_days(floor<days>(m_marketClock)); }// 市场日期
+	local_seconds GetMarketTime() const noexcept { return local_seconds(m_marketClock - floor<days>(m_marketClock)); } // 市场时间的当天秒数
+	weekday GetWeekDay() const noexcept { return weekday{ GetMarketDate() }; }
+	year_month_day GetMarketYMD() const noexcept { return year_month_day{ GetMarketDate() }; }
+	hh_mm_ss<seconds> GetMarketTimeHMS() const noexcept { return hh_mm_ss{ m_marketClock - floor<days>(m_marketClock) }; }
 
 	bool IsWorkingDay() const noexcept;
-	bool IsWorkingDay(const chrono::local_days& date) noexcept;
+	bool IsWorkingDay(const local_days& date) noexcept;
 
-	chrono::local_days GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
-	chrono::local_days GetCurrentTradeDate();// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
-	chrono::local_days GetNextTradeDate();// 下一个交易日（从次日开市时间至后日开市时间）
+	local_days GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
+	local_days GetCurrentTradeDate();// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
+	local_days GetNextTradeDate();// 下一个交易日（从次日开市时间至后日开市时间）
 
 	string GetStringOfLocalTime() const; // 得到本地时间的字符串
 	string GetStringOfMarketTime() const; // 得到本市场时间的字符串
@@ -90,18 +94,18 @@ public:
 	string GetStringOfMarketDateTime() const;
 	string GetStringOfLocalDateTime() const;
 
-	chrono::local_seconds ToLocalTime(const chrono::sys_seconds& sysTime) const { return m_marketTimeZone->to_local(sysTime); } // 将UTC时间转化为本市场的当地时间
-	chrono::sys_seconds ToSysTime(const chrono::local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
-	chrono::sys_seconds ConvertToUTCTime(int marketDate, long lMarketTime) const; // 将市场时间转化为UTC时间
-	long ConvertToDate(chrono::sys_seconds tp) const noexcept;
+	local_seconds ToLocalTime(const sys_seconds& sysTime) const { return m_marketTimeZone->to_local(sysTime); } // 将UTC时间转化为本市场的当地时间
+	sys_seconds ToSysTime(const local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
+	sys_seconds ConvertToUTCTime(int marketDate, long lMarketTime) const; // 将市场时间转化为UTC时间
+	long ConvertToDate(sys_seconds tp) const noexcept;
 
 	// 测试用
-	void TEST_SetMarketTime(chrono::local_seconds ls) noexcept {
-		chrono::local_days day = chrono::floor<chrono::days>(m_marketClock);
+	void TEST_SetMarketTime(local_seconds ls) noexcept {
+		local_days day = floor<days>(m_marketClock);
 		m_marketClock = toLocalDateTime(day, ls);
 	} // 此函数只用于测试
-	void TEST_SetMarketDate(chrono::local_days ld) noexcept {
-		chrono::local_seconds second{ m_marketClock - chrono::floor<chrono::days>(m_marketClock) };
+	void TEST_SetMarketDate(local_days ld) noexcept {
+		local_seconds second{ m_marketClock - floor<days>(m_marketClock) };
 		m_marketClock = toLocalDateTime(ld, second);
 	} // 此函数只用于测试
 
@@ -109,17 +113,17 @@ public:
 	string GetMarketID() const noexcept { return m_strMarketId; }
 
 	virtual bool IsOrdinaryTradeTime() { return true; } // 日常交易时间
-	virtual bool IsOrdinaryTradeTime(chrono::local_seconds) { return true; } // 参数为市场当前时间hhmmss
+	virtual bool IsOrdinaryTradeTime(local_seconds) { return true; } // 参数为市场当前时间hhmmss
 	virtual bool IsWorkingTime() { return true; } // 工作时间（日常交易时间 + 延长的交易时间）
-	virtual bool IsWorkingTime(chrono::local_seconds) { return true; } // 参数为市场当前时间hhmmss
+	virtual bool IsWorkingTime(local_seconds) { return true; } // 参数为市场当前时间hhmmss
 	virtual bool IsDummyTime() { return false; } // 空闲时间
-	virtual bool IsDummyTime(chrono::local_seconds) { return false; } // 参数为市场当前时间hhmmss
+	virtual bool IsDummyTime(local_seconds) { return false; } // 参数为市场当前时间hhmmss
 
 	bool IsMarketClosed() const { return GetMarketTime() > GetMarketCloseTime(); }
 
 	virtual bool IsReadyToInquireWebData() { return true; }
 
-	virtual bool IsTimeToResetSystem(chrono::local_seconds) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
+	virtual bool IsTimeToResetSystem(local_seconds) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
@@ -155,8 +159,8 @@ protected:
 	// 时间区
 	//string m_strLocalMarketTimeZone{ "Europe/London" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 	string m_strLocalMarketTimeZone{ "America/New_York" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
-	const chrono::time_zone* m_marketTimeZone{ nullptr }; // 本市场当地时区
-	chrono::local_seconds m_marketClock; // 本市场的当地时钟 m_marketClock = m_marketDate + m_marketTimeOfDay
+	const time_zone* m_marketTimeZone{ nullptr }; // 本市场当地时区
+	local_seconds m_marketClock; // 本市场的当地时钟 m_marketClock = m_marketDate + m_marketTimeOfDay
 
 private:
 	bool m_fResetMarket{ true }; // 重启系统标识

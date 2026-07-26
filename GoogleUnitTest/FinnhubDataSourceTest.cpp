@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemMessage.h"
+
 #include "ContainerFinnhubCrypto.h"
 #include "ContainerFinnhubCryptoExchange.h"
 #include "ContainerFinnhubForexExchange.h"
@@ -36,6 +38,7 @@
 #include "WebData.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CFinnhubDataSourceTest : public Test {

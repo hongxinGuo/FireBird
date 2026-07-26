@@ -6,10 +6,13 @@
 
 #include"worldMarket.h"
 #include "ContainerFinnhubStock.h"
+#include"FinnhubStock.h"
 
 #include "ProductFinnhubCompanyNews.h"
 
 #include "WebData.h"
+
+using std::make_shared;
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/company-news?symbol=";

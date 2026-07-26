@@ -2,32 +2,33 @@
 
 #include "TimeConvert.h"
 
-using namespace std::chrono;
+using std::istringstream;
+using std::chrono::weekday;
 
-chrono::local_days XferToLocalDays(const string& sDate) {
-	chrono::year_month_day ymd;
+local_days XferToLocalDays(const string& sDate) {
+	year_month_day ymd;
 	istringstream ss(sDate);
-	chrono::from_stream(ss, "%F", ymd);
+	from_stream(ss, "%F", ymd);
 	istringstream ss2(sDate);
-	chrono::local_days ls;
-	ss2 >> chrono::parse("%F", ls);
+	local_days ls;
+	ss2 >> parse("%F", ls);
 	return ls;
 }
 
-chrono::year_month_day GetNextMonth(chrono::year_month_day ymd) noexcept {
+year_month_day GetNextMonth(year_month_day ymd) noexcept {
 	using namespace std::chrono;
 	year_month ym{ ymd.year(), ymd.month() };
 	year_month nextYm = ym + months{ 1 };
 	return year_month_day{ nextYm / day{ 1 } };
 }
 
-chrono::local_days GetNextMonth(chrono::local_days ld) noexcept {
-	chrono::year_month_day ymd{ ld };
-	chrono::year_month_day ymd2 = GetNextMonth(ymd);
-	return chrono::local_days{ ymd2 };
+local_days GetNextMonth(local_days ld) noexcept {
+	year_month_day ymd{ ld };
+	year_month_day ymd2 = GetNextMonth(ymd);
+	return local_days{ ymd2 };
 }
 
-chrono::local_days GetNextMonday(chrono::local_days ld) {
+local_days GetNextMonday(local_days ld) {
 	weekday wd{ ld }; // 0 = Sunday, 1 = Monday, ...
 	int wd_index = static_cast<int>(wd.c_encoding());
 	int offset = (1 - wd_index + 7) % 7;
@@ -36,7 +37,7 @@ chrono::local_days GetNextMonday(chrono::local_days ld) {
 	return ld + days{ offset };
 }
 
-chrono::local_days GetPrevMonday(chrono::local_days ld) {
+local_days GetPrevMonday(local_days ld) {
 	weekday wd{ ld };
 	int wd_index = static_cast<int>(wd.c_encoding());
 	int offset = (wd_index + 6) % 7 + 7;
@@ -44,7 +45,7 @@ chrono::local_days GetPrevMonday(chrono::local_days ld) {
 	return ld - days{ offset };
 }
 
-chrono::local_days GetCurrentMonday(chrono::local_days ld) {
+local_days GetCurrentMonday(local_days ld) {
 	weekday wd{ ld };
 	int wd_index = static_cast<int>(wd.c_encoding());
 	return ld - days{ (wd_index + 6) % 7 };

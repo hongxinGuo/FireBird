@@ -7,6 +7,7 @@
 #include"TimeConvert.h"
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
+#include"FinnhubStock.h"
 
 #include"ProductFinnhubCompanyNews.h"
 #include "SystemMessage.h"
@@ -14,6 +15,7 @@
 #include"TestWebData.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class CFinnhubCompanyNewsTest : public Test {

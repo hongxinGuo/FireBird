@@ -13,6 +13,7 @@
 #include"WebRTData.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CProductSinaRTTest : public ::testing::Test {

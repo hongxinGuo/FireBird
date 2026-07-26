@@ -11,6 +11,8 @@
 
 #include<spanstream>
 
+using namespace std;
+
 CWebRTData::CWebRTData() {
 	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
 }

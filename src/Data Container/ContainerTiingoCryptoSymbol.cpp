@@ -8,6 +8,7 @@
 #include "ContainerVirtualStock.h"
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include "TiingoCrypto.h"
 
 using std::make_shared;
 
@@ -17,6 +18,14 @@ CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
 
 void CContainerTiingoCryptoSymbol::Reset() {
 	CContainerVirtualStock::Reset();
+}
+
+CTiingoCryptoPtr CContainerTiingoCryptoSymbol::GetCrypto(size_t lIndex) {
+	return dynamic_pointer_cast<CTiingoCrypto>(Get(lIndex));
+}
+
+CTiingoCryptoPtr CContainerTiingoCryptoSymbol::GetCrypto(const string& strCryptoCode) {
+	return dynamic_pointer_cast<CTiingoCrypto>(Get(strCryptoCode));
 }
 
 bool CContainerTiingoCryptoSymbol::LoadDB() {

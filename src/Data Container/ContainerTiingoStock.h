@@ -1,7 +1,10 @@
 #pragma once
-#include"TiingoStock.h"
 
 #include"ContainerVirtualStock.h"
+
+class CTiingoStock;
+
+using std::chrono::local_days;
 
 class CContainerTiingoStock : public CContainerVirtualStock {
 public:
@@ -13,11 +16,11 @@ public:
 	~CContainerTiingoStock() override = default;
 	void Reset() override;
 
-	CTiingoStockPtr GetItem(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
-	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
-	CTiingoStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode)); }
+	shared_ptr<CTiingoStock> GetItem(size_t lIndex);
+	shared_ptr<CTiingoStock> GetStock(size_t lIndex);
+	shared_ptr<CTiingoStock> GetStock(const string& strStockCode);
 
-	void UpdateProfile(const CTiingoStockPtr& pStock);
+	void UpdateProfile(const shared_ptr<CTiingoStock>& pStock);
 
 	void UpdateProfileDB();
 	bool LoadProfileDB();

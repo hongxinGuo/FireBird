@@ -12,15 +12,23 @@
 #include"VirtualWebProduct.h"
 #include "InquireEngine.h"
 #include "SystemConfiguration.h"
+#include "SystemMessage.h"
 
 #include"Thread.h"
 #include "WebData.h"
+
+using std::atomic;
+using std::binary_semaphore;
+using std::make_shared;
 
 atomic<int64_t> CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic<int64_t> CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
 	SetDefaultSessionOption();
+}
+void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
+	gl_systemMessage.PushInformationMessage(msg);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +44,7 @@ CVirtualDataSource::CVirtualDataSource() {
 /// lMarketTime：当前市场时间
 ///
 ////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::Run(const chrono::local_seconds& lMarketTime) {
+void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
 	SPDLOG_ASSERT(!IsInquiring());
 	gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
 			GenerateInquiryMessage(lMarketTime);
@@ -66,7 +74,7 @@ namespace {
 void CVirtualDataSource::InquireData() {
 	SPDLOG_ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
 	SPDLOG_ASSERT(IsInquiring());
-	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	int i = 0;
 	vector<result<CWebDataPtr>> vResults;
 	while (HaveInquiry()) { // 一次申请可以有多个数据
@@ -105,7 +113,7 @@ void CVirtualDataSource::InquireData() {
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
 		m_pCurrentProduct->UpdateSystemStatus();
 	}
-	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	auto end = time_point_cast<milliseconds>(steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());
 	SPDLOG_ASSERT(!HaveInquiry());
 	SPDLOG_ASSERT(IsInquiring());  //至此尚未重置此标识

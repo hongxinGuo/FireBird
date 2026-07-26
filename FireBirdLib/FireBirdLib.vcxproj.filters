@@ -195,9 +195,6 @@
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\SaveAndLoad.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\TimeConvert.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -687,9 +684,6 @@
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorRSI.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\StockSymbol.h">
-      <Filter>头文件\Type</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
@@ -708,6 +702,9 @@
     <ClInclude Include="..\src\log.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\accessory\SaveAndLoad.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -723,9 +720,6 @@
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\SaveAndLoad.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\TimeConvert.cpp">
@@ -1167,6 +1161,9 @@
       <Filter>源文件\Factory-Product\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\SaveAndLoad.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,5 @@
 #pragma once
 
-#include<memory>
 using std::shared_ptr;
 
 #include"nlohmann/json_fwd.hpp"

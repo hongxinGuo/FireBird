@@ -1,7 +1,10 @@
 #pragma once
 
 #include "VirtualDataHistoryCandle.h"
-#include"MonthLine.h"
+
+class CMonthLine;
+
+using std::chrono::local_days;
 
 class CContainerChinaStockMonthLine : public CVirtualDataHistoryCandle {
 public:
@@ -12,14 +15,10 @@ public:
 	CContainerChinaStockMonthLine& operator=(const CContainerChinaStockMonthLine& other) = delete;
 	CContainerChinaStockMonthLine& operator=(CContainerChinaStockMonthLine&& other) noexcept = delete;
 
-	CMonthLine* GetData(const size_t lIndex) { return static_cast<CMonthLine*>((CVirtualDataHistoryCandle::GetData(lIndex))); }
-	CMonthLine* GetDayLine(local_days lDate) { return static_cast<CMonthLine*>(CVirtualDataHistoryCandle::GetCandle(lDate)); }
+	CMonthLine* GetData(size_t lIndex);
+	CMonthLine* GetDayLine(local_days lDate);
 
-	bool Add(CMonthLine& data) {
-		data.SetRatio(m_ratio);
-		m_vHistoryData.push_back(data);
-		return true;
-	}
+	bool Add(CMonthLine& data);
 };
 
 using CContainerChinaStockMonthLinePtr = shared_ptr<CContainerChinaStockMonthLine>;

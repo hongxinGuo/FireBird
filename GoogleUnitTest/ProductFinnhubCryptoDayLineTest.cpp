@@ -7,6 +7,7 @@
 #include"WorldMarket.h"
 #include"ProductFinnhubCryptoDayLine.h"
 #include "SystemMessage.h"
+#include "FinnhubCrypto.h"
 
 #include"TestWebData.h"
 

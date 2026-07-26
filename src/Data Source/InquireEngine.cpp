@@ -17,6 +17,9 @@
 #include "spdlog_assert.h"
 #include "SystemConfiguration.h"
 
+using std::make_shared;
+using std::wstring;
+
 CInquireEngine::CInquireEngine() : m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 }
@@ -211,7 +214,7 @@ void CInquireEngine::TESTSetBuffer(string str) {
 	//for (INT64 i = 0; i < lTotalNumber; i++) {
 	//m_sBuffer.at(i) = str[i];
 	//}
-	ranges::copy(str, m_sBuffer.begin());
+	std::ranges::copy(str, m_sBuffer.begin());
 	m_sBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
 }

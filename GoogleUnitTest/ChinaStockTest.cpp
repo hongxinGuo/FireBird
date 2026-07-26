@@ -20,6 +20,7 @@
 #include "SystemConfiguration.h"
 
 using namespace testing;
+using namespace std;
 
 namespace FireBirdTest {
 	class AccessoryTest : public testing::Test {

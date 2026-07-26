@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "ContainerTiingoChosenStock.h"
+#include "TiingoStock.h"
+
 #include<sqlpp23/sqlpp23.h>
 
 #include "ContainerTiingoStock.h"
@@ -57,11 +59,19 @@ void CContainerTiingoChosenStock::UpdateDB() const {
 
 	for (size_t i = 0; i < m_vStock.size(); i++) {
 		string symbol = m_vStock.at(i)->GetSymbol();
-		if (ranges::find(vSymbol, symbol) == vSymbol.end()) {
+		if (std::ranges::find(vSymbol, symbol) == vSymbol.end()) {
 			db(sqlpp::insert_into(t).set(
 				t.Symbol = symbol
 			));
 		}
 	}
 	tx.commit();
+}
+
+CTiingoStockPtr CContainerTiingoChosenStock::GetStock(size_t lIndex) {
+	return dynamic_pointer_cast<CTiingoStock>(Get(lIndex));
+}
+
+CTiingoStockPtr CContainerTiingoChosenStock::GetStock(const string& strStockCode) {
+	return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode));
 }

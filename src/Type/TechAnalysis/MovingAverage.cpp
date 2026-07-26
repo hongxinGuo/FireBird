@@ -1,6 +1,10 @@
 #include"pch.h"
 
 #include"MovingAverage.h"
+#include"VirtualHistoryCandle.h"
+#include"VirtualDataHistoryCandle.h"
+
+using std::vector;
 
 void CMovingAverage::Calculate(const vector<long>& vValue) {
 	if (m_period >= vValue.size()) {

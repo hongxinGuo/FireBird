@@ -11,6 +11,7 @@
 #include"TestWebData.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CTengxunRTDataSourceTest : public ::testing::Test {

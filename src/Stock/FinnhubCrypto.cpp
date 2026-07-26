@@ -9,8 +9,10 @@
 
 #include"dataBaseConnector.h"
 
+using namespace std;
+
 CFinnhubCrypto::CFinnhubCrypto() {
-	m_pDayLines = make_shared<CContainerCryptoDayLine>();
+	m_pDayLines = make_unique<CContainerCryptoDayLine>();
 }
 
 void CFinnhubCrypto::SetCheckingDayLineStatus() {
@@ -30,11 +32,11 @@ string CFinnhubCrypto::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const 
 	return sParam;
 }
 
-void CFinnhubCrypto::UpdateDayLine(const CDayLinesPtr& vDayLine) {
+void CFinnhubCrypto::UpdateDayLine(const CDayLinesPtr& vDayLine) const {
 	m_pDayLines->UpdateData(vDayLine);
 }
 
-void CFinnhubCrypto::UnloadDayLine() {
+void CFinnhubCrypto::UnloadDayLine() const {
 	m_pDayLines->Unload();
 }
 
@@ -61,7 +63,7 @@ void CFinnhubCrypto::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CFinnhubCrypto::HaveNewDayLineData() {
+bool CFinnhubCrypto::HaveNewDayLineData() const {
 	if (m_pDayLines->Empty()) return false;
 	if (m_pDayLines->GetData(m_pDayLines->Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;

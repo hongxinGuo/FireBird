@@ -5,11 +5,14 @@
 
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
+#include"FinnhubStock.h"
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
 #include "TimeConvert.h"
 #include "WebData.h"
+
+using namespace std;
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-transactions?symbol=";

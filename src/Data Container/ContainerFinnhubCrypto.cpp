@@ -94,3 +94,11 @@ void CContainerFinnhubCrypto::UpdateProfileDB() {
 		}
 	}
 }
+
+CFinnhubCryptoPtr CContainerFinnhubCrypto::GetItem(size_t lIndex) {
+	return dynamic_pointer_cast<CFinnhubCrypto>(Get(lIndex));
+}
+
+CFinnhubCryptoPtr CContainerFinnhubCrypto::GetItem(const string& strStockCode) {
+	return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode));
+}

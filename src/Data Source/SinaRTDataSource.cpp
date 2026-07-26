@@ -7,6 +7,9 @@
 #include "SystemConfiguration.h"
 #include "WebData.h"
 
+using std::make_shared;
+using namespace std;
+
 /// <summary>
 /// 新浪实时数据服务器要求提供报头验证数据。
 ///
@@ -29,7 +32,7 @@ bool CSinaRTDataSource::Reset() {
 	return true;
 }
 
-bool CSinaRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+bool CSinaRTDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 	if (llTickCount < m_PrevInquireTimePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) return false;
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。

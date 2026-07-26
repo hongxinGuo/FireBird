@@ -3,6 +3,9 @@
 #include"VirtualStock.h"
 
 class CContainerCryptoDayLine;
+class CDayLine;
+
+using std::unique_ptr;
 
 class CFinnhubCrypto : public CVirtualStock {
 public:
@@ -19,11 +22,11 @@ public:
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
 
-	void UpdateDayLine(const CDayLinesPtr& vDayLine);
-	void UnloadDayLine();
+	void UpdateDayLine(const shared_ptr<vector<CDayLine>>& vDayLine) const;
+	void UnloadDayLine() const;
 	size_t GetDayLineSize() const noexcept;
 	void UpdateDayLineStartEndDate();
-	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
+	bool HaveNewDayLineData() const; //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 
 	void UpdateDayLineDB();
 	virtual void SaveDayLineDB();
@@ -31,7 +34,7 @@ public:
 	void DeleteDuplicatedDayLine() noexcept final;
 
 public:
-	shared_ptr<CContainerCryptoDayLine> m_pDayLines;
+	unique_ptr<CContainerCryptoDayLine> m_pDayLines;
 };
 
 typedef shared_ptr<CFinnhubCrypto> CFinnhubCryptoPtr;

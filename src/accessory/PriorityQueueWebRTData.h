@@ -4,6 +4,8 @@
 
 #include"WebRTData.h"
 
+//class CWebRTData;
+
 class CPriorityQueueWebRTData final {
 public:
 	CPriorityQueueWebRTData() = default;

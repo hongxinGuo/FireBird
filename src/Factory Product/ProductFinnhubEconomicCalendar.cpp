@@ -10,6 +10,7 @@
 
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
+#include"SystemMessage.h"
 
 #include "ProductFinnhubEconomicCalendar.h"
 
@@ -17,6 +18,8 @@
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
 #include "WebData.h"
+
+using std::make_shared;
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/calendar/economic?";

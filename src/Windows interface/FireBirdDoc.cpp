@@ -19,6 +19,8 @@
 #include "ContainerTiingoStockWeekLine.h"
 #include "TiingoStock.h"
 
+using namespace std;
+
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CFireBirdDoc, CDocument)

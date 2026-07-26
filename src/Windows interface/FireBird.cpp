@@ -18,6 +18,9 @@
 #include <spdlog/spdlog.h>
 
 #include"dataBaseConnector.h"
+#include "SystemConfiguration.h"
+
+using namespace std;
 
 #ifdef _MBCS
 #error "本系统使用UNI_CODE字符集"

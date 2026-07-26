@@ -9,7 +9,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
-#include "ContainerTiingoStock.h"
 #include"jsonParse.h"
 
 #include "ProductTiingoIEXTopOFBook.h"
@@ -19,6 +18,11 @@
 #include"simdjsonGetValue.h"
 #include "WebData.h"
 #include "WorldMarket.h"
+#include "ContainerTiingoStock.h"
+#include "SystemMessage.h"
+#include "TiingoStock.h"
+
+using namespace std;
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
 	m_strInquiryFunction = "https://api.tiingo.com/iex?";

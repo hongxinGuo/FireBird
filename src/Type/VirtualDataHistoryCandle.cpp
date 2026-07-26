@@ -1,11 +1,14 @@
 #include"pch.h"
 
+#include "VirtualHistoryCandle.h"
 #include"VirtualDataHistoryCandle.h"
+#include"DayLine.h"
 
 #include"TimeConvert.h"
 
 #include <algorithm>
-#include"DayLine.h"
+
+using namespace std;
 
 CVirtualDataHistoryCandle::CVirtualDataHistoryCandle() {
 	Reset();
@@ -55,6 +58,10 @@ bool CVirtualDataHistoryCandle::GetStartEndDate(local_days& lStartDate, local_da
 	lEndDate = m_vHistoryData.at(m_vHistoryData.size() - 1).GetDate();
 	ASSERT(lStartDate <= lEndDate);
 	return true;
+}
+
+void CVirtualDataHistoryCandle::Add(const CDayLine& data) {
+	Add(static_cast<CVirtualHistoryCandle>(data));
 }
 
 bool CVirtualDataHistoryCandle::HaveDayLine(local_days date) {

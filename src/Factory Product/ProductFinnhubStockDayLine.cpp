@@ -3,7 +3,6 @@
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
-#include"WorldMarket.h"
 #include"FinnhubStock.h"
 #include "ContainerFinnhubStock.h"
 
@@ -11,6 +10,9 @@
 
 #include "SystemMessage.h"
 #include "WebData.h"
+#include"DayLine.h"
+
+using namespace std;
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/candle?symbol=";

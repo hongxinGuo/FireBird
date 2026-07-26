@@ -8,6 +8,7 @@
 #include"TengxunRTDataSource.h"
 
 #include"GeneralCheck.h"
+#include "SystemConfiguration.h"
 
 namespace FireBirdTest {
 	class CSystemConfigurationTest : public testing::Test {

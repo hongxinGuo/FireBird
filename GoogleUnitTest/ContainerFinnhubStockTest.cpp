@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerFinnhubStock.h"
+#include"FinnhubStock.h"
 #include "JsonParse.h"
 
 #include<sqlpp23/sqlpp23.h>

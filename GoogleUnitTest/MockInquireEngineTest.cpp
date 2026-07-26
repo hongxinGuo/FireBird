@@ -10,6 +10,8 @@
 #include "SystemConfiguration.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 using namespace testing;
 
 namespace {

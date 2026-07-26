@@ -5,8 +5,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include "ContainerTiingoStock.h"
 #include"GeneralCheck.h"
+
+#include "ContainerTiingoStock.h"
+#include "TiingoStock.h"
 
 #include"Thread.h"
 
@@ -14,8 +16,11 @@
 
 #include"FinnhubDataSource.h"
 #include "SinaRTDataSource.h"
+#include "SystemConfiguration.h"
+#include "SystemMessage.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace {
 	CMockWorldMarketPtr s_pMockWorldMarket;

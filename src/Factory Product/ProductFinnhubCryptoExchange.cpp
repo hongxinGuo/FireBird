@@ -2,6 +2,7 @@
 
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
+#include"SystemMessage.h"
 
 #include "ProductFinnhubCryptoExchange.h"
 

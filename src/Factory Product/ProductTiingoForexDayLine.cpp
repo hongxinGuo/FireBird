@@ -8,6 +8,8 @@
 #include"WorldMarket.h"
 #include "WebData.h"
 
+using namespace std;
+
 CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }

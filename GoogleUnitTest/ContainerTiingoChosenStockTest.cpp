@@ -1,11 +1,11 @@
 #include"pch.h"
 
 #include"gmock/gmock.h"
-
 #include"GeneralCheck.h"
+#include<sqlpp23/sqlpp23.h>
 
 #include"ContainerTiingoChosenStock.h"
-#include<sqlpp23/sqlpp23.h>
+#include "TiingoStock.h"
 
 #include "ContainerTiingoStock.h"
 #include "dataBaseConnector.h"

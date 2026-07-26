@@ -3,10 +3,12 @@
 #include"GeneralCheck.h"
 
 #include"MockVirtualWebSocket.h"
+#include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include "WorldMarket.h"
 
 using namespace testing;
+using namespace std;
 
 namespace {
 	CMockVirtualWebSocketPtr s_pMockVirtualWebSocket;

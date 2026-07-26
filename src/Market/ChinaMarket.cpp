@@ -1,5 +1,8 @@
 #include"pch.h"
 
+#include<sqlpp23/sqlpp23.h>
+#include"SystemMessage.h"
+
 #include"TimeConvert.h"
 #include"Thread.h"
 #include"SystemData.h"
@@ -17,13 +20,19 @@
 
 #include"DayLineWebData.h"
 
-#include<sqlpp23/sqlpp23.h>
 
 #include "ContainerChinaStock.h"
 #include "ContainerStockExchange.h"
 #include "ContainerStockSymbol.h"
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+
+using std::literals::chrono_literals::operator ""h;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""s;
+using std::chrono::Sunday;
+
+using std::make_shared;
 
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
@@ -141,26 +150,26 @@ void CChinaMarket::PrepareToCloseMarket() {
 	// do nothing
 }
 
-bool CChinaMarket::IsTimeToResetSystem(chrono::local_seconds ls) {
-	if (((ls > chrono::local_seconds(9h + 12min + 59s)) && (ls < chrono::local_seconds(9h + 14min + 01s)))
-		|| ((ls > chrono::local_seconds(9h + 24min + 59s)) && (ls < chrono::local_seconds(9h + 27min + 01s))))
+bool CChinaMarket::IsTimeToResetSystem(local_seconds ls) {
+	if (((ls > local_seconds(9h + 12min + 59s)) && (ls < local_seconds(9h + 14min + 01s)))
+		|| ((ls > local_seconds(9h + 24min + 59s)) && (ls < local_seconds(9h + 27min + 01s))))
 		return true;
 	return false;
 }
 
-bool CChinaMarket::IsOrdinaryTradeTime(chrono::local_seconds lTime) {
+bool CChinaMarket::IsOrdinaryTradeTime(local_seconds lTime) {
 	if (!IsWorkingDay()) return false;
-	if (lTime < chrono::local_seconds(9h + 30min + 00s)) return false;
-	if (lTime > chrono::local_seconds(11h + 30min + 00s) && lTime < chrono::local_seconds(13h + 00min + 00s)) return false;
-	if (lTime > chrono::local_seconds(15h + 00min + 00s)) return false;
+	if (lTime < local_seconds(9h + 30min + 00s)) return false;
+	if (lTime > local_seconds(11h + 30min + 00s) && lTime < local_seconds(13h + 00min + 00s)) return false;
+	if (lTime > local_seconds(15h + 00min + 00s)) return false;
 	return true;
 }
 
-bool CChinaMarket::IsWorkingTime(chrono::local_seconds lTime) {
+bool CChinaMarket::IsWorkingTime(local_seconds lTime) {
 	if (!IsWorkingDay()) return false;
-	if (lTime < chrono::local_seconds(9h + 12min + 00s)) return false;
-	if (lTime > chrono::local_seconds(11h + 45min + 00s) && lTime < chrono::local_seconds(12h + 45min + 00s)) return false;
-	if (lTime > chrono::local_seconds(15h + 06min + 30s)) return false;
+	if (lTime < local_seconds(9h + 12min + 00s)) return false;
+	if (lTime > local_seconds(11h + 45min + 00s) && lTime < local_seconds(12h + 45min + 00s)) return false;
+	if (lTime > local_seconds(15h + 06min + 30s)) return false;
 	return true;
 }
 
@@ -392,12 +401,12 @@ void CChinaMarket::TaskSetCurrentStock() {
 void CChinaMarket::TaskDistributeAndCalculateRTData() {
 	gl_runtime.thread_pool_executor()->post([this] { // 无需等待结果，直接返回
 			gl_ProcessChinaMarketRTData.acquire();
-			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+			auto start = time_point_cast<milliseconds>(steady_clock::now());
 
 			this->DistributeRTData();
 			this->CalculateRTData();
 
-			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+			auto end = time_point_cast<milliseconds>(steady_clock::now());
 			this->SetDistributeAndCalculateTime((end - start).count());
 			gl_ProcessChinaMarketRTData.release();
 		});
@@ -437,8 +446,8 @@ void CChinaMarket::CalculateRTData() {
 }
 
 void CChinaMarket::TaskCreateTask() {
-	chrono::hh_mm_ss<chrono::seconds> hms = toTodayClock(GetMarketTime());
-	chrono::seconds seconds = hms.seconds();
+	hh_mm_ss<seconds> hms = toTodayClock(GetMarketTime());
+	seconds seconds = hms.seconds();
 	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
 	// 系统初始化检查
@@ -479,7 +488,7 @@ void CChinaMarket::TaskCreateTask() {
 	}
 
 	// 如果设定为周期性重启系统，则在星期天晚上9时重启。
-	if (gl_systemConfiguration.IsReloadSystem() && (GetWeekDay() == chrono::Sunday) && (GetMarketTime() < toLocalTime(210000))) {
+	if (gl_systemConfiguration.IsReloadSystem() && (GetWeekDay() == Sunday) && (GetMarketTime() < toLocalTime(210000))) {
 		AddTask(RELOAD_SYSTEM__, toLocalTime(210000));
 	}
 
@@ -858,7 +867,7 @@ bool CChinaMarket::ProcessDayLine() {
 }
 
 void CChinaMarket::UpdateOneYearStockDayLine() {
-	chrono::local_days lOneYearAgoDate = GetPrevDay(GetMarketDate(), 365);
+	local_days lOneYearAgoDate = GetPrevDay(GetMarketDate(), 365);
 	for (size_t index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
 		auto pStock = gl_dataContainerChinaStock.GetStock(index);
 		auto d = pStock->GetDayLineEndDate();
@@ -878,7 +887,7 @@ void CChinaMarket::UpdateAllStockDayLine() {
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 }
 
-void CChinaMarket::DeleteDayLine(chrono::local_days lDate) const {
+void CChinaMarket::DeleteDayLine(local_days lDate) const {
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();

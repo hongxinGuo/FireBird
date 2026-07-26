@@ -22,6 +22,7 @@
 #include"simdjson.h"
 #include "SystemConfiguration.h"
 using namespace simdjson;
+using namespace std;
 
 namespace {
 	// 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度

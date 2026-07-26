@@ -9,8 +9,11 @@
 #include"WorldMarket.h"
 
 #include"MockTiingoDataSource.h"
+#include "SystemConfiguration.h"
+#include "SystemMessage.h"
 
 using namespace testing;
+using namespace std;
 
 namespace {
 	CMockTiingoDataSourcePtr s_pTiingoDataSource;
