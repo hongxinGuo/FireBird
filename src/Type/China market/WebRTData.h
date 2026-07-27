@@ -123,7 +123,6 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include <chrono>
 
 enum {
 	INVALID_RT_WEB_DATA_ = 0,
@@ -132,7 +131,6 @@ enum {
 	NETEASE_RT_WEB_DATA_ = 3,
 };
 
-#include<array>
 using std::array;
 using std::shared_ptr;
 using std::string_view;

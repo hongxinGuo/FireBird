@@ -12,6 +12,7 @@
 
 #include"ProductTiingoIEXTopOfBook.h"
 #include"TestWebData.h"
+#include "TimeConvert.h"
 #include "WorldMarket.h"
 
 using namespace testing;

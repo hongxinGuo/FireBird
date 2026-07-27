@@ -7,6 +7,7 @@
 #include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
 #include "DayLineWebData.h"
+#include"DayLine.h"
 
 using std::make_shared;
 

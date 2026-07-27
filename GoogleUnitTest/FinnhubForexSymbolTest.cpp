@@ -4,7 +4,6 @@
 
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
-#include"ContainerForexDayLine.h"
 #include"TimeConvert.h"
 
 #include"FinnhubForex.h"

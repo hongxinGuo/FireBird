@@ -9,6 +9,10 @@
 
 #include"GeneralCheck.h"
 #include"SystemData.h"
+#include"FinnhubWebSocket.h"
+#include"TiingoIEXWebSocket.h"
+#include "TiingoCryptoWebSocket.h"
+#include"TiingoForexWebSocket.h"
 
 using namespace std;
 

@@ -14,6 +14,7 @@
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 using namespace std;

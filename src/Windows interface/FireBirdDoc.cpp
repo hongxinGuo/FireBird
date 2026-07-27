@@ -15,9 +15,9 @@
 #include"ChinaStock.h"
 #include "ContainerChinaStockMonthLine.h"
 #include "ContainerChinaStockWeekLine.h"
-#include "ContainerTiingoStockDayLine.h"
 #include "ContainerTiingoStockWeekLine.h"
 #include "TiingoStock.h"
+#include <VirtualDataHistoryCandle.h>
 
 using namespace std;
 

@@ -8,7 +8,7 @@ using std::max;
 using std::min;
 
 #include "VirtualHistoryCandle.h" // CVirtualHistoryCandle
-
+#include"VirtualDataHistoryCandle.h"
 #include"dataBaseConnector.h"
 
 using namespace FireBird::Indicators;

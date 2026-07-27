@@ -11,6 +11,8 @@
 #include "ContainerTiingoSymbol.h"
 #include "SystemMessage.h"
 #include "WebData.h"
+#include"ContainerTiingoStockDayLine.h"
+#include "TimeConvert.h"
 
 using namespace std;
 

@@ -9,6 +9,7 @@
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
+#include "WebRTData.h"
 
 #include"dataBaseConnector.h"
 

@@ -8,6 +8,9 @@
 
 #include "SystemData.h"
 #include "SystemMessage.h"
+#include "TiingoCryptoWebSocket.h"
+#include "TiingoForexWebSocket.h"
+#include "TiingoIEXWebSocket.h"
 
 using std::make_shared;
 

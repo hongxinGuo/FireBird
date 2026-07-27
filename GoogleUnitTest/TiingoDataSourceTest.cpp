@@ -24,6 +24,7 @@
 #include "InaccessibleSymbol.h"
 #include "SystemConfiguration.h"
 #include"FinnhubStock.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 using std::make_shared;

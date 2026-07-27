@@ -11,6 +11,8 @@
 #include"TestWebData.h"
 #include "TiingoStock.h"
 #include"TiingoCandleLine.h"
+#include"DayLine.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 using namespace std;

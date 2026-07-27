@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include "IndicatorMACD.h"
+#include "VirtualDataHistoryCandle.h"
 
 using std::max;
 using std::min;

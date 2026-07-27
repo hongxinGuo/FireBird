@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include "IndicatorRSI.h"
+#include <VirtualDataHistoryCandle.h>
+
 #include <deque>
 
 using namespace FireBird::Indicators;

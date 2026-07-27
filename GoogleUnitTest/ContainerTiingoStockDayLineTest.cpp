@@ -12,6 +12,7 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoStock.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 using namespace std;

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "ContainerTiingoStockDayLine.h"
-
 #include "VirtualStock.h"
+#include"ContainerTiingoStockDayLine.h"
 
-#include"TimeConvert.h"
-
+class CTiingoCandleLine;
 class CTiingoCompanyFinancialState;
 class CTiingoStockDailyMeta;
 class CTiingoIEXTopOfBook;
+
+using std::unique_ptr;
 
 class CTiingoStock : public CVirtualStock {
 public:
@@ -95,8 +95,8 @@ public:
 	bool IsUpdate52WeekHighLowDB() const noexcept { return m_fUpdate52WeekHighLowDB; }
 	void SetUpdate52WeekHighLowDB(bool fFlag) noexcept { m_fUpdate52WeekHighLowDB = fFlag; }
 
-	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
-	void SetDayLineLoaded(bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
+	bool IsDayLineLoaded() const noexcept override;
+	void SetDayLineLoaded(bool fFlag) noexcept override;
 
 	void UpdateRTData(const shared_ptr<CTiingoIEXTopOfBook>& pIEXTopOfBook);
 	void UpdateFinancialState(const shared_ptr<vector<shared_ptr<CTiingoCompanyFinancialState>>>& pv) noexcept { m_pvFinancialState = pv; }
@@ -108,22 +108,22 @@ public:
 	void UpdateDailyMeta(const shared_ptr<CTiingoStockDailyMeta>& pMeta);
 
 	void UpdateDayLineStartEndDate();
-	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	bool HaveDayLine(const local_days lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
-	CTiingoCandleLine* GetDayLine(const size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
-	CTiingoCandleLine* GetDayLineAtDate(const local_days lDate) { return m_dataDayLine.GetDayLine(lDate); }
+	size_t GetDayLineSize() const noexcept;
+	bool HaveDayLine(const local_days lDate) noexcept;
+	CTiingoCandleLine* GetDayLine(const size_t lIndex);
+	CTiingoCandleLine* GetDayLineAtDate(const local_days lDate);
 
 	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
+	CVirtualDataHistoryCandle* DayLine() noexcept final;
 
-	void UnloadDayLine() { m_dataDayLine.Unload(); }
-	void UpdateDayLineDB() { m_dataDayLine.UpdateDB(m_strSymbol); } // 先删除数据库中重复数据，再存储
-	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); } // 直接存储，
+	void UnloadDayLine();
+	void UpdateDayLineDB();// 先删除数据库中重复数据，再存储
+	void SaveDayLineDB(); // 直接存储，
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
-	void LoadDayLineDB() override { m_dataDayLine.LoadDB(m_strSymbol); }
+	void LoadDayLineDB() override;
 
-	void CalculateDayLineMA(const int length) { m_dataDayLine.CalculateMA(length); }
+	void CalculateDayLineMA(const int length);
 
 	void RebuildStockSplitDB() override;
 
@@ -133,23 +133,23 @@ public:
 	void CheckDayLineUpdateStatus(local_days lTodayDate);
 	void CheckStockDailyMetaStatus(local_days lCurrentDate);
 
-	local_days GetStatementLastUpdatedDate() { return toLocalDays(m_jsonUpdateDate["StatementLastUpdated"]); }
-	void SetStatementLastUpdatedDate(local_days date) { m_jsonUpdateDate["StatementLastUpdated"] = toFormattedDate(date); }
-	local_days GetDailyUpdateDate() { return toLocalDays(m_jsonUpdateDate["DailyUpdate"]); }
-	void SetDailyUpdateDate(local_days date) { m_jsonUpdateDate["DailyUpdate"] = toFormattedDate(date); }
+	local_days GetStatementLastUpdatedDate();
+	void SetStatementLastUpdatedDate(local_days date);
+	local_days GetDailyUpdateDate();
+	void SetDailyUpdateDate(local_days date);
 
-	local_days GetCompanyFinancialStatementUpdateDate() { return toLocalDays(m_jsonUpdateDate["CompanyFinancialStatement"]); }
-	void SetCompanyFinancialStatementUpdateDate(local_days date) { m_jsonUpdateDate["CompanyFinancialStatement"] = toFormattedDate(date); }
+	local_days GetCompanyFinancialStatementUpdateDate();
+	void SetCompanyFinancialStatementUpdateDate(local_days date);
 
-	local_days GetHistoryDayLineStartDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineStartDate"]); }
-	void SetHistoryDayLineStartDate(local_days date) { m_jsonUpdateDate["HistoryDayLineStartDate"] = toFormattedDate(date); }
-	local_days GetHistoryDayLineEndDate() { return toLocalDays(m_jsonUpdateDate["HistoryDayLineEndDate"]); }
-	void SetHistoryDayLineEndDate(local_days date) { m_jsonUpdateDate["HistoryDayLineEndDate"] = toFormattedDate(date); }
-	local_days GetUpdateStockDailyMetaDate() { return toLocalDays(m_jsonUpdateDate["UpdateStockDailyMetaDate"]); }
-	void SetUpdateStockDailyMetaDate(local_days date) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = toFormattedDate(date); }
+	local_days GetHistoryDayLineStartDate();
+	void SetHistoryDayLineStartDate(local_days date);
+	local_days GetHistoryDayLineEndDate();
+	void SetHistoryDayLineEndDate(local_days date);
+	local_days GetUpdateStockDailyMetaDate();
+	void SetUpdateStockDailyMetaDate(local_days date);
 
 	local_days GetDayLineProcessDate();
-	void SetDayLineProcessDate(local_days date) { m_jsonUpdateDate["DayLineProcessDate"] = toFormattedDate(date); }
+	void SetDayLineProcessDate(local_days date);
 
 	bool Have52WeekLowDate(local_days lDate) { return std::ranges::find(m_v52WeekLowDate, lDate) != m_v52WeekLowDate.end(); }
 	bool Have52WeekHighDate(local_days lDate) { return std::ranges::find(m_v52WeekHighDate, lDate) != m_v52WeekHighDate.end(); }

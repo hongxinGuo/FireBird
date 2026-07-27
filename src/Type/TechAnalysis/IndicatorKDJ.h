@@ -1,5 +1,9 @@
 #pragma once
-#include "VirtualDataHistoryCandle.h"
+
+class CVirtualDataHistoryCandle;
+
+using std::vector;
+using std::shared_ptr;
 
 struct Kdj {
 public:
@@ -19,7 +23,7 @@ public:
 	CIndicatorKDJ& operator=(CIndicatorKDJ&&) noexcept = delete;
 	~CIndicatorKDJ() = default;
 
-	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(shared_ptr<CVirtualDataHistoryCandle> pCandle) { m_pvCandle = pCandle; }
 	void Calculate(); //计算KDJ指标
 
 	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
@@ -27,6 +31,6 @@ public:
 protected:
 	int m_Period{ 9 }; // 默认九天为一个周期
 
-	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
+	shared_ptr<CVirtualDataHistoryCandle> m_pvCandle{ nullptr };
 	vector<Kdj> m_vKDJ;
 };

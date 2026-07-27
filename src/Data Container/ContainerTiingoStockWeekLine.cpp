@@ -3,6 +3,7 @@
 #include "ContainerTiingoStockWeekLine.h"
 #include "TiingoStock.h"
 #include "TiingoCandleLine.h"
+#include"ContainerTiingoStockDayLine.h"
 
 namespace {
 	CTiingoStock s_stockContainerTiingoStockWeekLine;

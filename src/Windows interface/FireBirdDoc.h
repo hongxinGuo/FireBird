@@ -9,6 +9,9 @@
 #include "IndicatorRSI.h"
 #include"IndicatorBoll.h"
 #include "VirtualStock.h"
+#include <VirtualDataHistoryCandle.h>
+
+class CVirtualDataHistoryCandle;
 
 class CFireBirdDoc : public CDocument {
 protected: // 仅从序列化创建
@@ -177,9 +180,9 @@ protected:
 	CVirtualStockPtr m_pCurrentStock{ nullptr }; // 当前股票
 
 	// 当前股票的日线、周线和月线
-	CVirtualDataHistoryCandlePtr m_pDataDayLine; // 日线数据容器
-	CVirtualDataHistoryCandlePtr m_pDataWeekLine; // 周线数据容器 
-	CVirtualDataHistoryCandlePtr m_pDataMonthLine; // 月线数据容器
+	shared_ptr<CVirtualDataHistoryCandle> m_pDataDayLine; // 日线数据容器
+	shared_ptr<CVirtualDataHistoryCandle> m_pDataWeekLine; // 周线数据容器 
+	shared_ptr<CVirtualDataHistoryCandle> m_pDataMonthLine; // 月线数据容器
 
 	//日线移动平均线
 	CMovingAverage m_dayLine5MovingAverage{ 5 };

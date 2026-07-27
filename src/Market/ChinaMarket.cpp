@@ -19,6 +19,7 @@
 #include "TengxunRTDataSource.h"
 
 #include"DayLineWebData.h"
+#include "WebRTData.h"
 
 #include "ContainerChinaStock.h"
 #include "ContainerStockExchange.h"

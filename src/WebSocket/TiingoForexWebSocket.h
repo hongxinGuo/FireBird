@@ -9,7 +9,6 @@
 #pragma once
 
 #include"VirtualWebSocket.h"
-#include <ixwebsocket/IXWebSocket.h>
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
 

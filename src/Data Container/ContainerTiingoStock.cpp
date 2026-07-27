@@ -26,15 +26,15 @@ void CContainerTiingoStock::Reset() {
 	CContainerVirtualStock::Reset();
 }
 
-CTiingoStockPtr CContainerTiingoStock::GetItem( size_t lIndex){
+CTiingoStockPtr CContainerTiingoStock::GetItem(size_t lIndex) {
 	return dynamic_pointer_cast<CTiingoStock>(Get(lIndex));
 }
 
-CTiingoStockPtr CContainerTiingoStock::GetStock(size_t lIndex){
+CTiingoStockPtr CContainerTiingoStock::GetStock(size_t lIndex) {
 	return dynamic_pointer_cast<CTiingoStock>(Get(lIndex));
 }
 
-CTiingoStockPtr CContainerTiingoStock::GetStock(const string& strStockCode){
+CTiingoStockPtr CContainerTiingoStock::GetStock(const string& strStockCode) {
 	return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode));
 }
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include"ContainerTiingoStockDayLine.h"
 #include "TiingoCandleLine.h"
 #include"TiingoStock.h"
 

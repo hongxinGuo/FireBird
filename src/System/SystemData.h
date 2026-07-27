@@ -13,10 +13,11 @@ using std::queue;
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
 
-#include"FinnhubWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-#include"TiingoForexWebSocket.h"
+class CFinnhubSocket;
+class CFinnhubWebSocket;
+class CTiingoIEXSocket;
+class CTiingoCryptoSocket;
+class CTiingoForexSocket;
 
 // 处理后的各种数据
 extern ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
@@ -34,40 +35,40 @@ public:
 
 	// Finnhub Socket缓存数据
 	size_t GetFinnhubSocketSize() const { return m_qFinnhubSocket.size(); }
-	void PushFinnhubSocket(const CFinnhubSocketPtr& p) { m_qFinnhubSocket.push(p); }
+	void PushFinnhubSocket(const shared_ptr<CFinnhubSocket>& p) { m_qFinnhubSocket.push(p); }
 
-	CFinnhubSocketPtr PopFinnhubSocket() {
-		CFinnhubSocketPtr p = m_qFinnhubSocket.front();
+	shared_ptr<CFinnhubSocket> PopFinnhubSocket() {
+		shared_ptr<CFinnhubSocket> p = m_qFinnhubSocket.front();
 		m_qFinnhubSocket.pop();
 		return p;
 	}
 
 	// TiingoCrypto Socket缓存数据
 	size_t GetTiingoCryptoSocketSize() const { return m_qTiingoCryptoSocket.size(); }
-	void PushTiingoCryptoSocket(const CTiingoCryptoSocketPtr& p) { m_qTiingoCryptoSocket.push(p); }
+	void PushTiingoCryptoSocket(const shared_ptr<CTiingoCryptoSocket>& p) { m_qTiingoCryptoSocket.push(p); }
 
-	CTiingoCryptoSocketPtr PopTiingoCryptoSocket() {
-		CTiingoCryptoSocketPtr p = m_qTiingoCryptoSocket.front();
+	shared_ptr<CTiingoCryptoSocket> PopTiingoCryptoSocket() {
+		shared_ptr<CTiingoCryptoSocket> p = m_qTiingoCryptoSocket.front();
 		m_qTiingoCryptoSocket.pop();
 		return p;
 	}
 
 	// TiingoIEX Socket缓存数据
 	size_t GetTiingoIEXSocketSize() const { return m_qTiingoIEXSocket.size(); }
-	void PushTiingoIEXSocket(const CTiingoIEXSocketPtr& p) { m_qTiingoIEXSocket.push(p); }
+	void PushTiingoIEXSocket(const shared_ptr<CTiingoIEXSocket>& p) { m_qTiingoIEXSocket.push(p); }
 
-	CTiingoIEXSocketPtr PopTiingoIEXSocket() {
-		CTiingoIEXSocketPtr p = m_qTiingoIEXSocket.front();
+	shared_ptr<CTiingoIEXSocket> PopTiingoIEXSocket() {
+		shared_ptr<CTiingoIEXSocket> p = m_qTiingoIEXSocket.front();
 		m_qTiingoIEXSocket.pop();
 		return p;
 	}
 
 	// TiingoForex Socket缓存数据
 	size_t GetTiingoForexSocketSize() const { return m_qTiingoForexSocket.size(); }
-	void PushTiingoForexSocket(const CTiingoForexSocketPtr& p) { m_qTiingoForexSocket.push(p); }
+	void PushTiingoForexSocket(const shared_ptr<CTiingoForexSocket>& p) { m_qTiingoForexSocket.push(p); }
 
-	CTiingoForexSocketPtr PopTiingoForexSocket() {
-		CTiingoForexSocketPtr p = m_qTiingoForexSocket.front();
+	shared_ptr<CTiingoForexSocket> PopTiingoForexSocket() {
+		shared_ptr<CTiingoForexSocket> p = m_qTiingoForexSocket.front();
 		m_qTiingoForexSocket.pop();
 		return p;
 	}
@@ -89,10 +90,10 @@ public:
 	size_t GetDayLineQueueSize() const { return gl_qDayLine.size_approx(); }
 
 private:
-	queue<CFinnhubSocketPtr> m_qFinnhubSocket;
-	queue<CTiingoCryptoSocketPtr> m_qTiingoCryptoSocket;
-	queue<CTiingoForexSocketPtr> m_qTiingoForexSocket;
-	queue<CTiingoIEXSocketPtr> m_qTiingoIEXSocket;
+	queue<shared_ptr<CFinnhubSocket>> m_qFinnhubSocket;
+	queue<shared_ptr<CTiingoCryptoSocket>> m_qTiingoCryptoSocket;
+	queue<shared_ptr<CTiingoForexSocket>> m_qTiingoForexSocket;
+	queue<shared_ptr<CTiingoIEXSocket>> m_qTiingoIEXSocket;
 };
 
 extern CSystemData gl_SystemData;

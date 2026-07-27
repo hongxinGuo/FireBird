@@ -2,7 +2,8 @@
 
 #include"VirtualStock.h"
 
-class CContainerForexDayLine;
+#include"ContainerForexDayLine.h"
+
 class CDayLine;
 
 using std::unique_ptr;
@@ -34,7 +35,7 @@ public:
 	void UpdateDayLineStartEndDate();
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 
-	unique_ptr<CContainerForexDayLine> m_pDayLines;
+	CContainerForexDayLine m_dataDayLines;
 };
 
 using CForexSymbolPtr = shared_ptr<CFinnhubForex>;

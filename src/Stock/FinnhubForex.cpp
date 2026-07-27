@@ -2,7 +2,6 @@
 
 #include"WorldMarket.h"
 #include "FinnhubForex.h"
-#include"ContainerForexDayLine.h"
 
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
@@ -13,7 +12,6 @@
 using namespace std;
 
 CFinnhubForex::CFinnhubForex() {
-	m_pDayLines = make_unique<CContainerForexDayLine>();
 }
 
 void CFinnhubForex::SetCheckingDayLineStatus() {
@@ -35,15 +33,15 @@ string CFinnhubForex::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
 }
 
 void CFinnhubForex::UpdateDayLine(const CDayLinesPtr& vDayLine) {
-	m_pDayLines->UpdateData(vDayLine);
+	m_dataDayLines.UpdateData(vDayLine);
 }
 
 void CFinnhubForex::UnloadDayLine() {
-	m_pDayLines->Unload();
+	m_dataDayLines.Unload();
 }
 
 size_t CFinnhubForex::GetDayLineSize() const noexcept {
-	return m_pDayLines->Size();
+	return m_dataDayLines.Size();
 }
 
 void CFinnhubForex::UpdateDayLineDB() {
@@ -56,29 +54,29 @@ void CFinnhubForex::UpdateDayLineDB() {
 }
 
 void CFinnhubForex::SaveDayLineDB() {
-	m_pDayLines->SaveDB(GetSymbol());
+	m_dataDayLines.SaveDB(GetSymbol());
 }
 
 bool CFinnhubForex::IsDayLineDuplicated() noexcept {
-	if (m_pDayLines->Empty()) return false;
-	if (m_pDayLines->GetData(0)->GetDate() > GetDayLineEndDate()) return false;
+	if (m_dataDayLines.Empty()) return false;
+	if (m_dataDayLines.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
 	return true;
 }
 
 void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
-	ASSERT(!m_pDayLines->Empty());
+	ASSERT(!m_dataDayLines.Empty());
 	using namespace StockMarket;
 	const auto& t = FinnhubForexDayline{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_pDayLines->GetData(0)->GetDate())));
+	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLines.GetData(0)->GetDate())));
 	tx.commit();
 }
 
 void CFinnhubForex::UpdateDayLineStartEndDate() {
 	chrono::local_days lStartDate = chrono::local_days{ chrono::days(0) }, lEndDate = chrono::local_days{ chrono::days(0) };
-	const bool fSucceed = m_pDayLines->GetStartEndDate(lStartDate, lEndDate);
+	const bool fSucceed = m_dataDayLines.GetStartEndDate(lStartDate, lEndDate);
 	if (!fSucceed) {
 		SetDayLineStartDate(toLocalDays(29900101));
 		SetDayLineEndDate(toLocalDays(19800101));
@@ -96,7 +94,7 @@ void CFinnhubForex::UpdateDayLineStartEndDate() {
 }
 
 bool CFinnhubForex::HaveNewDayLineData() {
-	if (m_pDayLines->Empty()) return false;
-	if (m_pDayLines->GetData(m_pDayLines->Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
+	if (m_dataDayLines.Empty()) return false;
+	if (m_dataDayLines.GetData(m_dataDayLines.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;
 }

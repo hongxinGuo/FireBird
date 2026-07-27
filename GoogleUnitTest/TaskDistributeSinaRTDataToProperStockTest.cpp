@@ -9,6 +9,7 @@
 #include "ContainerChinaStock.h"
 #include "SystemData.h"
 #include "SystemMessage.h"
+#include "WebRTData.h"
 
 using namespace testing;
 using std::make_shared;

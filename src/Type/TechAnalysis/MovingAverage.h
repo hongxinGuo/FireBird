@@ -1,5 +1,8 @@
 #pragma once
-#include <VirtualDataHistoryCandle.h>
+
+class CVirtualDataHistoryCandle;
+
+using std::vector;
 
 class CMovingAverage {
 public:

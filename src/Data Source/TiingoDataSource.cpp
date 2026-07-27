@@ -17,6 +17,7 @@
 #include "InaccessibleSymbol.h"
 #include "SystemConfiguration.h"
 #include "TiingoFactory.h"
+#include "TimeConvert.h"
 #include "WebData.h"
 #include"WorldMarket.h"
 

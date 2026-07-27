@@ -8,6 +8,7 @@
 #include "WebData.h"
 #include "WorldMarket.h"
 #include"TiingoCompanyFinancialState.h"
+#include "TimeConvert.h"
 
 using namespace std;
 

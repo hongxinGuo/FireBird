@@ -7,7 +7,7 @@
 #include"TiingoStock.h"
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
-
+#include"ContainerTiingoStockDayLine.h"
 #include<sqlpp23/sqlpp23.h>
 
 #include "ChinaStock.h"
@@ -19,6 +19,7 @@
 #include"dataBaseConnector.h"
 #include "FinnhubStock.h"
 #include "TiingoCandleLine.h"
+#include "TimeConvert.h"
 
 using namespace std;
 

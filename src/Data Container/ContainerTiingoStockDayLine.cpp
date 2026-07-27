@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include "ContainerTiingoStockDayLine.h"
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"

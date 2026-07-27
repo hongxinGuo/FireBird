@@ -1,16 +1,15 @@
 #pragma once
 
-#include "WebRTData.h"
-
 #include"VirtualStock.h"
-
-#include"DayLine.h"
 #include"ContainerChinaStockDayLine.h"
 
 constexpr auto CHINA_MARKET_BEGIN_DATE_ = 19900101;// 中国股票市场起始日
 
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
+
+using std::array;
+using std::shared_ptr;
 
 bool IsShareA(const string& strStockCode);
 bool IsChinaStock(const CVirtualStockPtr& pStock);

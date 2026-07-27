@@ -1,6 +1,13 @@
 #pragma once
 
-#include"VirtualDataHistoryCandle.h"
+//#include"VirtualDataHistoryCandle.h"
+
+class CVirtualHistoryCandle;
+class CVirtualDataHistoryCandle;
+
+using std::chrono::local_days;
+using std::chrono::days;
+using std::vector;
 
 struct CBoll {
 	local_days Date{ local_days(days(0)) };        // candle date
@@ -32,7 +39,7 @@ public:
 	CIndicatorBoll& operator=(CIndicatorBoll&&) noexcept = delete;
 	~CIndicatorBoll() = default;
 
-	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(shared_ptr<CVirtualDataHistoryCandle> pCandle) { m_pvCandle = pCandle; }
 	static std::vector<CBoll> Compute(const std::vector<CVirtualHistoryCandle>& candles, int period = 20, double k = 2.0);
 
 	// Convenience overload for shared pointer to vector (existing codebase uses shared vectors)
@@ -45,6 +52,6 @@ public:
 protected:
 	int m_Period{ 6 }; // 默认九天为一个周期
 
-	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
+	shared_ptr<CVirtualDataHistoryCandle> m_pvCandle{ nullptr };
 	vector<CBoll> m_vBoll;
 };

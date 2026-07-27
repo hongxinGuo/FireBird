@@ -13,6 +13,7 @@
 
 #include "ProductTiingoIEXTopOFBook.h"
 #include "TiingoIEXTopOFBook.h"
+#include"ContainerTiingoStockDayLine.h"
 
 #include "TiingoDataSource.h"
 
@@ -22,6 +23,7 @@
 #include "ContainerTiingoStock.h"
 #include "SystemMessage.h"
 #include "TiingoStock.h"
+#include "TimeConvert.h"
 
 using namespace std;
 

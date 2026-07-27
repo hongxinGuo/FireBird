@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include "IndicatorKDJ.h"
+#include "VirtualDataHistoryCandle.h"
 
 using namespace std;
 

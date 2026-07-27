@@ -151,7 +151,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				// 交易数据
 				js2 = jsonGetChild(&pt, "data");
 				for (auto it = js2.begin(); it != js2.end(); ++it) {
-					const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
+					auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
 					pFinnhubDataPtr->m_sSymbol = jsonGetString(it, "s");
 					pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(it, "p");
 					pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(it, "v");

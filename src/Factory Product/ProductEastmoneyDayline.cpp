@@ -2,6 +2,7 @@
 
 #include "ProductEastmoneyDayLine.h"
 #include "ContainerChinaStock.h"
+#include "DayLine.h"
 
 #include "EastmoneyDayLineDataSource.h"
 #include "JsonParse.h"

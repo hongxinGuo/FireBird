@@ -1,9 +1,10 @@
 #pragma once
 
-#include <VirtualDataHistoryCandle.h>
+class CVirtualDataHistoryCandle;
+class CVirtualHistoryCandle;
 
-#include <vector>
-#include <memory>
+using std::vector;
+using std::shared_ptr;
 
 struct CRSI {
 	double m_RSI6{ 0.0 };   // RSI value (0-100). 0 for indices before first full window.
@@ -39,7 +40,7 @@ public:
 	CIndicatorRSI& operator=(CIndicatorRSI&&) noexcept = delete;
 	~CIndicatorRSI() = default;
 
-	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(shared_ptr<CVirtualDataHistoryCandle> pCandle) { m_pvCandle = pCandle; }
 	void Calculate();
 	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
 
@@ -54,6 +55,6 @@ protected:
 	int m_PeriodMiddle{ 12 };
 	int m_PeriodSlow{ 24 };
 
-	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
+	shared_ptr<CVirtualDataHistoryCandle> m_pvCandle{ nullptr };
 	vector<CRSI> m_vRSI;
 };

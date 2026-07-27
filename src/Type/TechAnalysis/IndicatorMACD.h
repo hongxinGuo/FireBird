@@ -1,5 +1,9 @@
 #pragma once
-#include "VirtualDataHistoryCandle.h"
+
+class CVirtualDataHistoryCandle;
+
+using std::vector;
+using std::shared_ptr;
 
 struct MACDResult {
 public:
@@ -53,7 +57,7 @@ public:
 	}
 
 	void reset();
-	void SetCandle(CVirtualDataHistoryCandlePtr pCandle) { m_pvCandle = pCandle; }
+	void SetCandle(shared_ptr<CVirtualDataHistoryCandle> pCandle) { m_pvCandle = pCandle; }
 
 	// Batch compute: returns vector of Result aligned with input prices; entries before availability are NaN.
 	void Calculate(int fastPeriod = 12, int slowPeriod = 26, int signalPeriod = 9);
@@ -77,7 +81,7 @@ protected:
 	double currentLow_;
 	double currentDif_;
 
-	CVirtualDataHistoryCandlePtr m_pvCandle{ nullptr };
+	shared_ptr<CVirtualDataHistoryCandle> m_pvCandle{ nullptr };
 	vector<double> m_vClose;
 	vector<MACDResult> m_vMACD;
 };

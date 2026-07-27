@@ -44,6 +44,13 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetUpdateStockDailyMetaDate(toLocalDays(19800101));
 }
 
+bool CTiingoStock::IsDayLineLoaded() const noexcept {
+	return m_dataDayLine.IsDataLoaded();
+}
+void CTiingoStock::SetDayLineLoaded(bool fFlag) noexcept {
+	m_dataDayLine.SetDataLoaded(fFlag);
+}
+
 void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
 	m_tpTime = pIEXTopOfBook->m_timeStamp;
 	m_lOpen = pIEXTopOfBook->m_lOpen;
@@ -238,6 +245,38 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 	}
 }
 
+size_t CTiingoStock::GetDayLineSize() const noexcept {
+	return m_dataDayLine.Size();
+}
+
+bool CTiingoStock::HaveDayLine(const local_days lDate) noexcept {
+	return m_dataDayLine.HaveDayLine(lDate);
+}
+
+CTiingoCandleLine* CTiingoStock::GetDayLine(const size_t lIndex) {
+	return m_dataDayLine.GetData(lIndex);
+}
+
+CTiingoCandleLine* CTiingoStock::GetDayLineAtDate(const local_days lDate) {
+	return m_dataDayLine.GetDayLine(lDate);
+}
+
+CVirtualDataHistoryCandle* CTiingoStock::DayLine() noexcept {
+	return &m_dataDayLine;
+}
+
+void CTiingoStock::UnloadDayLine() {
+	m_dataDayLine.Unload();
+}
+
+void CTiingoStock::UpdateDayLineDB() {
+	m_dataDayLine.UpdateDB(m_strSymbol);
+}
+
+void CTiingoStock::SaveDayLineDB() {
+	m_dataDayLine.SaveDB(m_strSymbol);
+}
+
 bool CTiingoStock::IsDayLineDuplicated() noexcept {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
@@ -253,6 +292,14 @@ void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
 
 	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
 	tx.commit();
+}
+
+void CTiingoStock::LoadDayLineDB() {
+	m_dataDayLine.LoadDB(m_strSymbol);
+}
+
+void CTiingoStock::CalculateDayLineMA(const int length) {
+	m_dataDayLine.CalculateMA(length);
 }
 
 void CTiingoStock::RebuildStockSplitDB() {
@@ -309,6 +356,58 @@ void CTiingoStock::CheckStockDailyMetaStatus(chrono::local_days lCurrentDate) {
 	else {
 		SetUpdateStockDailyMeta(true);
 	}
+}
+
+local_days CTiingoStock::GetStatementLastUpdatedDate() {
+	return toLocalDays(m_jsonUpdateDate["StatementLastUpdated"]);
+}
+
+void CTiingoStock::SetStatementLastUpdatedDate(local_days date) {
+	m_jsonUpdateDate["StatementLastUpdated"] = toFormattedDate(date);
+}
+
+local_days CTiingoStock::GetDailyUpdateDate() {
+	return toLocalDays(m_jsonUpdateDate["DailyUpdate"]);
+}
+
+void CTiingoStock::SetDailyUpdateDate(local_days date) {
+	m_jsonUpdateDate["DailyUpdate"] = toFormattedDate(date);
+}
+
+local_days CTiingoStock::GetCompanyFinancialStatementUpdateDate() {
+	return toLocalDays(m_jsonUpdateDate["CompanyFinancialStatement"]);
+}
+
+void CTiingoStock::SetCompanyFinancialStatementUpdateDate(local_days date) {
+	m_jsonUpdateDate["CompanyFinancialStatement"] = toFormattedDate(date);
+}
+
+local_days CTiingoStock::GetHistoryDayLineStartDate() {
+	return toLocalDays(m_jsonUpdateDate["HistoryDayLineStartDate"]);
+}
+
+void CTiingoStock::SetHistoryDayLineStartDate(local_days date) {
+	m_jsonUpdateDate["HistoryDayLineStartDate"] = toFormattedDate(date);
+}
+
+local_days CTiingoStock::GetHistoryDayLineEndDate() {
+	return toLocalDays(m_jsonUpdateDate["HistoryDayLineEndDate"]);
+}
+
+void CTiingoStock::SetHistoryDayLineEndDate(local_days date) {
+	m_jsonUpdateDate["HistoryDayLineEndDate"] = toFormattedDate(date);
+}
+
+local_days CTiingoStock::GetUpdateStockDailyMetaDate() {
+	return toLocalDays(m_jsonUpdateDate["UpdateStockDailyMetaDate"]);
+}
+
+void CTiingoStock::SetUpdateStockDailyMetaDate(local_days date) {
+	m_jsonUpdateDate["UpdateStockDailyMetaDate"] = toFormattedDate(date);
+}
+
+void CTiingoStock::SetDayLineProcessDate(local_days date) {
+	m_jsonUpdateDate["DayLineProcessDate"] = toFormattedDate(date);
 }
 
 chrono::local_days CTiingoStock::GetDayLineProcessDate() {

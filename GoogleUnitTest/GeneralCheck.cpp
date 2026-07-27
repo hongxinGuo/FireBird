@@ -34,6 +34,7 @@
 
 #include"FinnhubStock.h"
 #include "TiingoStock.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 

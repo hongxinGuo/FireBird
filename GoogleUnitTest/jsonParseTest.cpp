@@ -9,8 +9,8 @@
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include "WebData.h"
-#include "DayLineWebData.h"
 #include"TimeConvert.h"
+#include"DayLine.h"
 
 #include"nlohmannJsonDeclaration.h"
 #include "SystemData.h"
