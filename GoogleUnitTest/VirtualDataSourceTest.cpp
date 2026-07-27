@@ -77,7 +77,7 @@ namespace FireBirdTest {
 		dataSource.StoreInquiry(p);
 		EXPECT_EQ(dataSource.InquiryQueueSize(), 1);
 		EXPECT_TRUE(dataSource.HaveInquiry());
-		const CVirtualProductWebDataPtr p2 = dataSource.GetCurrentProduct();
+		const CVirtualWebProductPtr p2 = dataSource.GetCurrentProduct();
 		EXPECT_EQ(p2->GetIndex(), 10000);
 		EXPECT_EQ(dataSource.InquiryQueueSize(), 0);
 		EXPECT_FALSE(dataSource.HaveInquiry());

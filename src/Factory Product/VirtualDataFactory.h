@@ -6,6 +6,10 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+class CVirtualMarket;
+
+#include "VirtualWebProduct.h"
+
 class CVirtualDataFactory {
 public:
 	CVirtualDataFactory() = default;
@@ -16,5 +20,5 @@ public:
 	CVirtualDataFactory& operator=(const CVirtualDataFactory&&) noexcept = delete;
 	virtual ~CVirtualDataFactory() = default;
 
-	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) = 0;
+	virtual CVirtualWebProductPtr CreateProduct(shared_ptr<CVirtualMarket> pMarket, int iInquireType) = 0;
 };

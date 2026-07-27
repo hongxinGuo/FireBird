@@ -8,11 +8,12 @@
 #include "ProductDummy.h"
 #include "ProductIndexNasdaq100Stocks.h"
 #include "SystemMessage.h"
+#include "VirtualMarket.h"
 
 using std::make_shared;
 
-CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
-	CVirtualProductWebDataPtr p = nullptr;
+CVirtualWebProductPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
+	CVirtualWebProductPtr p = nullptr;
 
 	switch (iInquireType) {
 	case ACCESSORY_INDEX_NASDAQ100_STOCKS_:

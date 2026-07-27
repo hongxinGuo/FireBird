@@ -19,6 +19,7 @@
 #include "TiingoFactory.h"
 #include "TimeConvert.h"
 #include "WebData.h"
+#include"VirtualMarket.h"
 #include"WorldMarket.h"
 
 using namespace std;
@@ -580,7 +581,7 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualWebProductPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
@@ -619,7 +620,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualWebProductPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
@@ -654,7 +655,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualWebProductPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "daily meta: ";
@@ -690,7 +691,7 @@ bool CTiingoDataSource::GenerateChosenStockDayLine() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualWebProductPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(gl_dataContainerTiingoStock.GetOffset(pTiingoStock));// 设置的是在总股票集中的位置，因处理日线数据时是用的总股票集
 			StoreInquiry(p);
 			string s = "Day line: ";
@@ -742,7 +743,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualWebProductPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			s_dayLineInquired++;
@@ -783,7 +784,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
+			const CVirtualWebProductPtr p = m_pTiingoFactory->CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(currentUpdatePos);
 			StoreInquiry(p);
 			string s = "Financial statement: ";

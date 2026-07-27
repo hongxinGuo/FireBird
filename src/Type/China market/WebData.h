@@ -7,8 +7,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"ClassDeclaration.h"
 #include"nlohmannJsonDeclaration.h"
+
+class CDayLineWebData;
+class CVirtualDataSource;
+class CInquireEngine;
 
 using std::string;
 using std::string_view;

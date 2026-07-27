@@ -3,6 +3,9 @@
 #include <queue>
 
 #include "InternetOption.h"
+#include "WebData.h"
+
+class CVirtualWebProduct;
 
 using std::chrono::milliseconds;
 using std::chrono::local_seconds;
@@ -203,15 +206,15 @@ public:
 	virtual time_point<steady_clock> GetTickCount() { return steady_clock::now(); } // 为了测试方便，将GetTickCount64包裹上一层。
 
 	// 各状态
-	CVirtualProductWebDataPtr GetCurrentInquiry() const noexcept { return m_pCurrentProduct; }
-	void SetCurrentInquiry(const CVirtualProductWebDataPtr& p) { m_pCurrentProduct = p; }
+	shared_ptr<CVirtualWebProduct> GetCurrentInquiry() const noexcept { return m_pCurrentProduct; }
+	void SetCurrentInquiry(const shared_ptr<CVirtualWebProduct>& p) { m_pCurrentProduct = p; }
 
 	size_t InquiryQueueSize() const noexcept { return m_qProduct.size(); }
 	void DiscardCurrentInquiry() { m_qProduct.pop(); }
 	void DiscardAllInquiry() { while (!m_qProduct.empty()) m_qProduct.pop(); }
-	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
-	CVirtualProductWebDataPtr PeekFrontProduct() { return m_qProduct.front(); }
-	CVirtualProductWebDataPtr GetCurrentProduct() {
+	void StoreInquiry(const shared_ptr<CVirtualWebProduct>& p) { m_qProduct.push(p); }
+	shared_ptr<CVirtualWebProduct> PeekFrontProduct() { return m_qProduct.front(); }
+	shared_ptr<CVirtualWebProduct> GetCurrentProduct() {
 		m_pCurrentProduct = m_qProduct.front();
 		m_qProduct.pop();
 		return m_pCurrentProduct;
@@ -266,8 +269,8 @@ public:
 	enum_ErrorMessageData GetErrorMessage() const noexcept { return m_eErrorMessageData; }
 
 protected:
-	queue<CVirtualProductWebDataPtr> m_qProduct; // 网络查询命令队列
-	CVirtualProductWebDataPtr m_pCurrentProduct{ nullptr };
+	queue<shared_ptr<CVirtualWebProduct>> m_qProduct; // 网络查询命令队列
+	shared_ptr<CVirtualWebProduct> m_pCurrentProduct{ nullptr };
 
 	std::atomic_int64_t m_dwHTTPStatusCode{ 200 }; // 网络状态码， 默认为200，表示正常。
 	std::atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码，默认为0，无错误。

@@ -20,8 +20,8 @@ public:
 	[[nodiscard]] size_t GetActiveStockSize() const;
 	[[nodiscard]] auto GetLoadedStockSize() const noexcept { return m_lLoadedStock; }
 
-	CChinaStockPtr GetStock(const string& strStockCode);
-	CChinaStockPtr GetStock(size_t lIndex);
+	shared_ptr<CChinaStock> GetStock(const string& strStockCode);
+	shared_ptr<CChinaStock> GetStock(size_t lIndex);
 	string GetStockName(const string& strStockCode);
 
 	void ProcessRTData();

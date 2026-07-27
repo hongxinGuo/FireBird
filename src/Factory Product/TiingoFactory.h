@@ -11,5 +11,5 @@ public:
 	CTiingoFactory& operator=(const CTiingoFactory&&) noexcept = delete;
 	~CTiingoFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) override;
+	CVirtualWebProductPtr CreateProduct(shared_ptr<CVirtualMarket> pMarket, int iInquireType) override;
 };

@@ -114,7 +114,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 			break;
 		}
 		if (fFound) {
-			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
+			const vector<CVirtualWebProductPtr> vProduct = CreateProduct(pStock);
 			SPDLOG_ASSERT(!vProduct.empty());
 			for (auto& product : vProduct) {
 				StoreInquiry(product);

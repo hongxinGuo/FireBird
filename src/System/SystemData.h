@@ -9,6 +9,9 @@
 #pragma once
 
 #include <queue>
+
+#include "DayLineWebData.h"
+#include "WebRTData.h"
 using std::queue;
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;

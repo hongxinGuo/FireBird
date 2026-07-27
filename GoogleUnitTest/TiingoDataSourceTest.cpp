@@ -237,7 +237,7 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateCompanySymbol());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
-		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
+		const CVirtualWebProductPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoStockProfile));
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 
@@ -252,7 +252,7 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateCryptoSymbol());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
-		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
+		const CVirtualWebProductPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoCryptoSymbol));
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 	}
@@ -265,7 +265,7 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateFundamentalDefinition());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
-		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
+		const CVirtualWebProductPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoFundamentalDefinition));
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 	}
@@ -290,7 +290,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateDayLine());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
 		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
-		CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
+		CVirtualWebProductPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoStockDayLine));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
@@ -348,7 +348,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateFinancialState());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
 		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
-		CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
+		CVirtualWebProductPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoFinancialState));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsUpdateFinancialState()) << "待数据处理后方重置此标识";

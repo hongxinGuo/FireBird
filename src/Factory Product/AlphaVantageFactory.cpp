@@ -8,10 +8,12 @@
 #include "ProductDummy.h"
 #include "AlphaVantageFactory.h"
 
+#include "VirtualMarket.h"
+
 using std::make_shared;
 
-CVirtualProductWebDataPtr CAlphaVantageFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
-	CVirtualProductWebDataPtr p = nullptr;
+CVirtualWebProductPtr CAlphaVantageFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
+	CVirtualWebProductPtr p = nullptr;
 
 	switch (iInquireType) {
 	case STOCK_PRICE_SPLITS_:

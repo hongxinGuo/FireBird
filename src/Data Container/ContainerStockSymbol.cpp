@@ -6,6 +6,7 @@
 #include "SystemConstantChinaMarket.h"
 #include<sqlpp23/sqlpp23.h>
 
+#include "ChinaStock.h"
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 

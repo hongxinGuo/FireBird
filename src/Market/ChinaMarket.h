@@ -1,8 +1,10 @@
 #pragma once
 
 #include"VirtualMarket.h"
+#include"WebRTData.h"
 
 class CVirtualHistoryCandle;
+class CChinaStock;
 
 #include <set>
 using std::set;
@@ -99,7 +101,7 @@ public:
 	void SetCurrentSelectedPosition(const long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
 	auto GetCurrentSelectedStockSet() const noexcept { return m_lCurrentSelectedStockSet; }
 	void SetCurrentSelectedStockSet(const long lIndex) noexcept { m_lCurrentSelectedStockSet = lIndex; }
-	CChinaStockPtr GetCurrentSelectedStock();
+	shared_ptr<CChinaStock> GetCurrentSelectedStock();
 
 	bool IsChosen10RSStrong1StockSet() const noexcept { return m_fChosen10RSStrong1StockSet; }
 	void SetChosen10RSStrong1StockSet(const bool fFlag) noexcept { m_fChosen10RSStrong1StockSet = fFlag; }
@@ -173,8 +175,8 @@ public:
 	void SetRTDataNeedCalculate(const bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
 	bool IsRTDataNeedCalculate() const noexcept { return m_RTDataNeedCalculate; }
 
-	bool AddChosenStock(const CChinaStockPtr& pStock);
-	bool DeleteChosenStock(const CChinaStockPtr& pStock);
+	bool AddChosenStock(const shared_ptr<CChinaStock>& pStock);
+	bool DeleteChosenStock(const shared_ptr<CChinaStock>& pStock);
 	size_t GetChosenStockSize() const { return m_avChosenStock.at(0).size(); }
 	size_t GetChosenStockSize(const long lIndex) const { return m_avChosenStock.at(lIndex).size(); }
 	void ClearChoiceStockContainer() { m_avChosenStock.at(0).clear(); }
@@ -212,7 +214,7 @@ public:
 	atomic_int64_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
 
 protected:
-	vector<vector<CChinaStockPtr>> m_avChosenStock; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
+	vector<vector<shared_ptr<CChinaStock>>> m_avChosenStock; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
 	long m_lCurrentSelectedPosition; // 当前股票集的位置
 	long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
 	long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。

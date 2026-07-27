@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductFinnhub.h"
+#include "WebData.h"
 
 class CInsiderSentiment;
 

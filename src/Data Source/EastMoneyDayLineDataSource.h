@@ -3,6 +3,7 @@
 #include"VirtualDataSource.h"
 
 class CVirtualWebProduct;
+class CChinaStock;
 
 class CEastmoneyDayLineDataSource : public CVirtualDataSource {
 public:
@@ -24,7 +25,7 @@ public:
 	void UpdateStatus(const CWebDataPtr& pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
 	virtual bool Inquire();
-	shared_ptr<CVirtualWebProduct> CreateProduct(const CChinaStockPtr& pStock) const;
+	shared_ptr<CVirtualWebProduct> CreateProduct(const shared_ptr<CChinaStock>& pStock) const;
 
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }

@@ -2,6 +2,8 @@
 
 #include"ProductFinnhub.h"
 
+class CFinnhubStock;
+
 class CProductFinnhubCompanyProfile final : public CProductFinnhub {
 public:
 	CProductFinnhubCompanyProfile();
@@ -9,7 +11,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	bool ParseFinnhubStockProfile(CWebDataPtr pWebData, CFinnhubStockPtr pStock) const;
+	bool ParseFinnhubStockProfile(CWebDataPtr pWebData, shared_ptr<CFinnhubStock> pStock) const;
 };
 
 using CFinnhubCompanyProfilePtr = shared_ptr<CProductFinnhubCompanyProfile>;

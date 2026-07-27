@@ -16,7 +16,7 @@ using namespace testing;
 
 namespace {
 	CMockInquireEnginePtr s_pInquireEngine; // 为了方便查找出错位置,将mock变量声明为全局的。
-	CVirtualProductWebDataPtr s_pProduct;
+	CVirtualWebProductPtr s_pProduct;
 }
 
 namespace FireBirdTest {

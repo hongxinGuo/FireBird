@@ -3,6 +3,9 @@
 #include"afxinet.h"
 
 #include"InternetOption.h"
+#include "WebData.h"
+
+class CVirtualWebProduct;
 
 using std::string;
 using std::shared_ptr;

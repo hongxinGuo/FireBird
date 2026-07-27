@@ -3,6 +3,7 @@
 #include <concurrentqueue/moodycamel/concurrentqueue.h>
 
 #include"MarketTaskQueue.h"
+#include "VirtualDataSource.h"
 
 class CStockExchange;
 

@@ -1,6 +1,8 @@
 #pragma once
 
+#include "DayLineWebData.h"
 #include "nlohmannJsonDeclaration.h"
+#include "WebData.h"
 
 using std::string;
 using std::string_view;

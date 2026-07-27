@@ -1,6 +1,7 @@
 #pragma once
 
 #include"VirtualWorldMarketWebProduct.h"
+#include"WebData.h"
 
 class CProductTiingo : public CVirtualWorldMarketWebProduct {
 public:

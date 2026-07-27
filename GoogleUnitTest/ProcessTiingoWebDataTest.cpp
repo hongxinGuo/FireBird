@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include "FinnhubStock.h"
 #include"GeneralCheck.h"
 
 #include"WebData.h"

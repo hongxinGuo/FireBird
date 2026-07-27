@@ -2,11 +2,13 @@
 
 #include"virtualDataFactory.h"
 
+class CVirtualMarket;
+
 class CFinnhubFactory final : public CVirtualDataFactory {
 public:
 	CFinnhubFactory() = default;
 
 	~CFinnhubFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) override;
+	CVirtualWebProductPtr CreateProduct(shared_ptr<CVirtualMarket> pMarket, int iInquireType) override;
 };

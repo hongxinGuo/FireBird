@@ -436,7 +436,7 @@ bool CFinnhubDataSource::GenerateRTQuote() {
 	static size_t s_lCurrentRTDataQuotePos = 0;
 	SPDLOG_ASSERT(!IsInquiring());
 	SPDLOG_ASSERT(gl_pWorldMarket->IsSystemReady());
-	const CVirtualProductWebDataPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_);
+	const CVirtualWebProductPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_);
 	product->SetIndex(s_lCurrentRTDataQuotePos);
 	StoreInquiry(product);
 	s_lCurrentRTDataQuotePos++;
@@ -562,7 +562,7 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 	static size_t s_lCurrentForexExchangePos = 0;
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateForexSymbol()) {
-		const CVirtualProductWebDataPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, FOREX_SYMBOLS_);
+		const CVirtualWebProductPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, FOREX_SYMBOLS_);
 		product->SetIndex(s_lCurrentForexExchangePos);
 		StoreInquiry(product);
 		string str = "forex symbol: ";
@@ -611,7 +611,7 @@ bool CFinnhubDataSource::GenerateCryptoSymbol() {
 	static size_t s_lCurrentCryptoExchangePos = 0;
 	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateCryptoSymbol()) {
-		const CVirtualProductWebDataPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
+		const CVirtualWebProductPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		product->SetIndex(s_lCurrentCryptoExchangePos);
 		StoreInquiry(product);
 		string str = "crypto symbol: ";
