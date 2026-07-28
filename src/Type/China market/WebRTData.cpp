@@ -1,5 +1,4 @@
 #include"pch.h"
-#include"globedef.h"
 
 #include"ChinaStockCodeConverter.h"
 
@@ -11,10 +10,11 @@
 
 #include<spanstream>
 
-using namespace std;
+using std::chrono::time_point_cast;
+using std::exception;
 
 CWebRTData::CWebRTData() {
-	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
+	m_tpTime = time_point_cast<seconds>(system_clock::from_time_t(0));
 }
 
 bool CWebRTData::CheckSinaRTDataActive() {
@@ -129,8 +129,8 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	string_view sv2 = GetNextField(svData, lCurrentPos, ',');
 	std::stringstream oss;
 	oss << sv << ' ' << sv2;
-	chrono::local_seconds lt;
-	oss >> chrono::parse("%Y-%m-%d %H:%M:%S", lt);
+	local_seconds lt;
+	oss >> parse("%Y-%m-%d %H:%M:%S", lt);
 	m_tpTime = gl_pChinaMarket->ToSysTime(lt);
 	/*
 	string sTime(sv.data(), sv.size());
@@ -297,8 +297,8 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	std::ispanstream ss(sv);
-	chrono::local_seconds lt;
-	ss >> chrono::parse("%Y%m%d%H%M%S", lt);
+	local_seconds lt;
+	ss >> parse("%Y%m%d%H%M%S", lt);
 	m_tpTime = gl_pChinaMarket->ToSysTime(lt);
 
 	// 涨跌
@@ -375,7 +375,7 @@ bool CWebRTData::CheckTengxunRTDataActive() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::IsValidTime(long lDays) const {
-	chrono::days day{ lDays };
+	days day{ lDays };
 	if (GetTime() < gl_tpNow - day) {// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}

@@ -47,6 +47,7 @@
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
+#include "CountableSemaphore.h"
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"

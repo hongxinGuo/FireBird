@@ -4,7 +4,6 @@
 
 #include "AccessoryFactory.h"
 
-#include "ClassDeclaration.h"
 #include "ProductDummy.h"
 #include "ProductIndexNasdaq100Stocks.h"
 #include "SystemMessage.h"

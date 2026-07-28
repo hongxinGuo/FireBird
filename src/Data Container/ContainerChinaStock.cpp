@@ -12,6 +12,7 @@
 
 #include<sqlpp23/sqlpp23.h>
 
+#include "CountableSemaphore.h"
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"

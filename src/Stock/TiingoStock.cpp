@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include <limits>
+
 #include"TiingoStock.h"
 
 #include "TiingoStockDailyMeta.h"
@@ -308,7 +310,7 @@ void CTiingoStock::RebuildStockSplitDB() {
 	}
 	m_pvStockSplit->clear();
 	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
-		if (std::abs(m_dataDayLine.GetData(index)->GetSplitFactor() - 1.0) > EPSILON) {
+		if (std::abs(m_dataDayLine.GetData(index)->GetSplitFactor() - 1.0) > numeric_limits<float>::epsilon()) {
 			CStockSplitPtr pStockSplit = make_shared<CStockSplit>();
 			pStockSplit->SetDate(m_dataDayLine.GetData(index)->GetDate());
 			pStockSplit->SetRatio(m_dataDayLine.GetData(index)->GetSplitFactor());
@@ -594,7 +596,7 @@ int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
 	ASSERT(index >= 250);
 	bool fIsNewLow = true;
 	bool fIsNewHigh = true;
-	double belowClose = dClose + EPSILON; // 增加一点以利于判断相同的数值。
+	double belowClose = dClose + numeric_limits<float>::epsilon(); // 增加一点以利于判断相同的数值。
 	for (size_t i = index - 250; i < index; i++) {
 		if (m_vClose[i] < belowClose) {
 			fIsNewLow = false;
@@ -602,7 +604,7 @@ int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
 		}
 	}
 	if (fIsNewLow) return -1; // 52周新低价
-	double aboveClose = dClose - EPSILON;// 减少一点以利于判断相同的数值。
+	double aboveClose = dClose - numeric_limits<float>::epsilon();// 减少一点以利于判断相同的数值。
 	for (size_t i = index - 250; i < index; i++) {
 		if (m_vClose[i] > aboveClose) {
 			fIsNewHigh = false;
@@ -628,7 +630,7 @@ void CTiingoStock::FindAll52WeekLowDate(size_t beginPos, size_t endPos) {
 	while (currentPos < endPos) {
 		if (fFound) {
 			bool fCurrentFound = false;
-			double belowCurrent52WeekLow = dCurrent52WeekLowValue - EPSILON;
+			double belowCurrent52WeekLow = dCurrent52WeekLowValue - numeric_limits<float>::epsilon();
 			for (auto index = currentBeginPos; index <= current52WeekLowPos; index++) {
 				if (currentPos == endPos) {
 					fCurrentFound = false;
@@ -663,13 +665,13 @@ size_t CTiingoStock::FindCurrent52WeekLowPos(size_t beginPos, size_t endPos, dou
 	ASSERT(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
-	double belowCurrentValue = value - EPSILON;
+	double belowCurrentValue = value - numeric_limits<float>::epsilon();
 
 	for (auto index = beginPos; index < endPos; index++) {
 		if (m_vClose[index] < belowCurrentValue) {
 			pos = index;
 			value = m_vClose[index];
-			belowCurrentValue = value - EPSILON;
+			belowCurrentValue = value - numeric_limits<float>::epsilon();
 		}
 	}
 	return pos;
@@ -684,7 +686,7 @@ void CTiingoStock::FindAll52WeekHighDate(size_t beginPos, size_t endPos) {
 
 	while (currentBeginPos < endPos - 1) {
 		if (fFound) { // 有最高价
-			auto aboveCurrent52WeekHigh = dCurrent52WeekHighValue + EPSILON;
+			auto aboveCurrent52WeekHigh = dCurrent52WeekHighValue + numeric_limits<float>::epsilon();
 			bool fCurrentFound = false;
 			for (auto index = currentBeginPos; index <= current52WeekHighPos; index++) { // 查询到最新的新高价
 				if (currentEndPos == endPos) {
@@ -731,13 +733,13 @@ size_t CTiingoStock::FindCurrent52WeekHighPos(size_t beginPos, size_t endPos, do
 	ASSERT(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
-	auto aboveCurrentValue = value + EPSILON;
+	auto aboveCurrentValue = value + numeric_limits<float>::epsilon();
 
 	for (auto index = beginPos; index < endPos; index++) {
 		if (m_vClose[index] > aboveCurrentValue) {
 			pos = index;
 			value = m_vClose[index];
-			aboveCurrentValue = value + EPSILON;
+			aboveCurrentValue = value + numeric_limits<float>::epsilon();
 		}
 	}
 	return pos;
@@ -747,7 +749,7 @@ double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) {
 	double dRatio = 1;
 	for (auto index = beginPos; index < endPos; index++) {
 		auto splitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
-		if (splitFactor > EPSILON) {
+		if (splitFactor > numeric_limits<float>::epsilon()) {
 			dRatio *= splitFactor;
 		}
 	}
@@ -760,11 +762,11 @@ void CTiingoStock::AdjustedStockCloseValue(double dSplitFactor, size_t calculate
 		for (auto index = dayLineSize - 1; index > calculatePos; index--) { // 向前复权（保持目前的股价不变）
 			m_vClose[index] *= dCurrentSplitFactor; // 使用除法向前复权。要先计算，然后才算splitFactor
 			auto currentSplitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
-			if (currentSplitFactor < 1 + EPSILON && currentSplitFactor > 1 - EPSILON) {
+			if (currentSplitFactor < 1 + numeric_limits<float>::epsilon() && currentSplitFactor > 1 - numeric_limits<float>::epsilon()) {
 				// do nothing
 			}
 			else {
-				if (currentSplitFactor > EPSILON) {
+				if (currentSplitFactor > numeric_limits<float>::epsilon()) {
 					dCurrentSplitFactor /= currentSplitFactor;
 				}
 			}
@@ -773,7 +775,7 @@ void CTiingoStock::AdjustedStockCloseValue(double dSplitFactor, size_t calculate
 	else { // 总体是扩股的。
 		for (auto index = calculatePos; index < dayLineSize; index++) { // 向后复权（目前的股价会变大）
 			auto currentSplitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
-			if ((currentSplitFactor < 1 + EPSILON) && currentSplitFactor > 1 - EPSILON) {
+			if ((currentSplitFactor < 1 + numeric_limits<float>::epsilon()) && currentSplitFactor > 1 - numeric_limits<float>::epsilon()) {
 				// do nothing
 			}
 			else {

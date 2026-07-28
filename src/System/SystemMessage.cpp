@@ -1,6 +1,9 @@
 #include"pch.h"
 
 #include "SystemMessage.h"
+
+#include <semaphore>
+
 #include"OutputWnd.h"
 #include "SystemConfiguration.h"
 

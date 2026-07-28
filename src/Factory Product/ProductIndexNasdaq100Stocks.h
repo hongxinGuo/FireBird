@@ -23,3 +23,5 @@ public:
 };
 
 using CProductIndexNasdaq100StocksPtr = shared_ptr<CProductIndexNasdaq100Stocks>;
+
+extern std::vector<std::string> gl_vNasdaq100Stocks;

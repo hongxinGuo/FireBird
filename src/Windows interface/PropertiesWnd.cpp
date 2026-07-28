@@ -9,6 +9,7 @@
 #include "PropertiesWnd.h"
 
 #include "ChinaMarket.h"
+#include "CountableSemaphore.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "FinnhubDataSource.h"
 #include "FinnhubWebSocket.h"

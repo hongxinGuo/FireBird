@@ -7,6 +7,8 @@
 #pragma once
 
 #include"WebData.h"
+#include"DayLine.h"
+
 using std::string;
 using std::vector;
 

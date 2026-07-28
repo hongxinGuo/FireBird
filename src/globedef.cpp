@@ -49,6 +49,7 @@
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
+#include "CountableSemaphore.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "SystemConfiguration.h"
 #include"concurrencpp/concurrencpp.h"

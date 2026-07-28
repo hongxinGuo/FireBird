@@ -178,6 +178,9 @@
     <Filter Include="源文件\Factory-Product\AlphaVantage">
       <UniqueIdentifier>{d8805d14-9375-4e8e-afb3-76eec1a7c832}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Type\Uitlities">
+      <UniqueIdentifier>{82ea1d75-591c-4916-8226-a377be387b23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -301,9 +304,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\nlohmannJsonDeclaration.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ClassDeclaration.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\System\InaccessibleSymbol.h">
@@ -452,9 +452,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerStockSymbol.h">
       <Filter>头文件\Data container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\globedef.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
@@ -701,6 +698,9 @@
     </ClInclude>
     <ClInclude Include="..\src\accessory\SaveAndLoad.h">
       <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\CountableSemaphore.h">
+      <Filter>头文件\Type\Uitlities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

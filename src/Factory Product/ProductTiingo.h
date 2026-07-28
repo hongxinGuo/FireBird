@@ -20,3 +20,5 @@ public:
 	// 测试用函数
 	bool Test_checkAccessRight_(CWebDataPtr pWebData) final; // todo 不再使用，准备删除之. 目前只用于测试函数中。
 };
+
+extern int64_t gl_TiingoTotalData;

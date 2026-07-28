@@ -3,6 +3,8 @@
 #include "ContainerTiingoStock.h"
 
 #include <set>
+
+#include "CountableSemaphore.h"
 using std::set;
 
 #include "Thread.h"

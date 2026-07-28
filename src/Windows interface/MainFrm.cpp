@@ -30,6 +30,7 @@
 #include "ContainerTiingoChosenStock.h"
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoStock.h"
+#include "CountableSemaphore.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "FinnhubWebSocket.h"
 #include "TimeConvert.h"
@@ -42,6 +43,10 @@
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
 #include "TiingoStock.h"
+
+#include"ProductTiingo.h"
+#include"ProductFinnhub.h"
+#include"VirtualChinaMarketWebProduct.h"
 
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;

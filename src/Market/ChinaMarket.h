@@ -6,6 +6,7 @@
 class CVirtualHistoryCandle;
 class CChinaStock;
 
+#include<semaphore>
 #include <set>
 using std::set;
 
@@ -263,4 +264,4 @@ private:
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;
 
 extern CChinaMarketPtr gl_pChinaMarket; // 中国股票市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
-extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。
+extern std::binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。

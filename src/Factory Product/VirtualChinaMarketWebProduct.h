@@ -21,3 +21,5 @@ public:
 
 	void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) final;
 };
+
+extern int64_t gl_ChinaMarketTotalData;

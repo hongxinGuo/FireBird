@@ -4,6 +4,7 @@
 
 #include "InternetOption.h"
 #include "WebData.h"
+#include"spdlog_assert.h"
 
 class CVirtualWebProduct;
 

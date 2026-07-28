@@ -201,7 +201,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	// 找出所有的拆分因子，并计算累计拆分因子。注意，拆分因子是从后向前计算的。
 	for (long i = m_vHistoryData.size() - 1; i >= 0; i--) {
 		auto data = m_vHistoryData.at(i);
-		if (std::abs(data.GetSplitFactor() - 1.0) > EPSILON) {
+		if (std::abs(data.GetSplitFactor() - 1.0) > std::numeric_limits<float>::epsilon()) {
 			dTotalFactor *= data.GetSplitFactor();
 			auto p = make_shared<CSplitFactor>();
 			p->date = data.GetDate();

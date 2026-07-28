@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"VirtualWebSocket.h"
+#include"spdlog_assert.h"
 
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
