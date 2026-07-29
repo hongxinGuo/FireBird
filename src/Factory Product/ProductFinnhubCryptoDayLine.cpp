@@ -78,7 +78,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 		time_t tTemp = 0;
 		js2 = jsonGetChild(js, "t");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
-			tTemp = it->get<INT64>();
+			tTemp = it->get<int64_t>();
 			chrono::local_seconds tp{ chrono::seconds{ tTemp } };
 			dayLine.SetDate(tp);
 			pvDayLine->push_back(dayLine);
@@ -90,7 +90,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 	}
 	try {
 		int i = 0;
-		INT64 llTemp;
+		int64_t llTemp;
 		double dTemp;
 		js2 = jsonGetChild(js, "c");
 		i = 0;

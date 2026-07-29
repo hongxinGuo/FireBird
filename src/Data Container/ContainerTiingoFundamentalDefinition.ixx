@@ -1,0 +1,50 @@
+module;
+
+export module ContainerTiingoFundamentalDefinition;
+
+import TiingoFundamentalDefinition;
+
+import std;
+using std::unordered_map;
+using std::string;
+using std::vector;
+
+export {
+	class CContainerTiingoFundamentalDefinition final {
+	public:
+		CContainerTiingoFundamentalDefinition();
+		CContainerTiingoFundamentalDefinition(const CContainerTiingoFundamentalDefinition& other) = delete;
+		CContainerTiingoFundamentalDefinition(CContainerTiingoFundamentalDefinition&& other) noexcept = delete;
+		CContainerTiingoFundamentalDefinition& operator=(const CContainerTiingoFundamentalDefinition& other) = delete;
+		CContainerTiingoFundamentalDefinition& operator=(CContainerTiingoFundamentalDefinition&& other) noexcept = delete;
+		~CContainerTiingoFundamentalDefinition() = default;
+
+		void Reset();
+		void Reserve(size_t size);
+
+		void Add(const CTiingoFundamentalDefinition& tiingoFundamentalDefinition);
+		bool Delete(const CTiingoFundamentalDefinition& tiingoFundamentalDefinition);
+		bool Delete(const string& strDataCode);
+		size_t GetTotalDefinition() const noexcept { return m_vTiingoFundamentalDefinition.size(); }
+
+		bool HaveDefinition(const string& strDataCode) const noexcept { return m_mapTiingoFundamentalDefinition.contains(strDataCode); }
+		bool HaveDefinition(const CTiingoFundamentalDefinition& definition) const { return HaveDefinition(definition.m_strDataCode); }
+
+		CTiingoFundamentalDefinition GetFundamentalDefinition(const size_t lIndex) const { return m_vTiingoFundamentalDefinition.at(lIndex); }
+		CTiingoFundamentalDefinition GetFundamentalDefinition(const string& strDataCode) const { return m_vTiingoFundamentalDefinition.at(m_mapTiingoFundamentalDefinition.at(strDataCode)); }
+
+		bool UpdateDB();
+		bool LoadDB();
+
+		bool IsUpdateDB() const noexcept { return m_fUpdated; }
+		void SetUpdateDB(bool fFlag) noexcept { m_fUpdated = fFlag; }
+
+	protected:
+		vector<CTiingoFundamentalDefinition> m_vTiingoFundamentalDefinition;
+		unordered_map<string, size_t> m_mapTiingoFundamentalDefinition;
+
+		bool m_fUpdated{ false };
+	};
+
+	extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;
+}

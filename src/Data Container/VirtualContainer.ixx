@@ -1,0 +1,35 @@
+module;
+
+export module VirtualContainer;
+
+import std;
+using std::string;
+
+export {
+	class CVirtualContainer {
+	public:
+		CVirtualContainer();
+		virtual ~CVirtualContainer() = default;
+		virtual void Reset();
+
+		virtual string GetItemSymbol(size_t lIndex) = 0;
+		virtual bool IsEmpty() = 0;
+		virtual size_t Size() = 0;
+		size_t GetNextIndex(size_t lIndex);
+
+		// todo 以下函数只用于申请Sina、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
+		void SetSinaRTDataInquiringIndex(const long lIndex) noexcept { m_lSinaRTDataInquiringIndex = lIndex; }
+		[[nodiscard]] auto GetSinaRTDataInquiringIndex() const noexcept { return m_lSinaRTDataInquiringIndex; }
+		void SetTengxunRTDataInquiringIndex(const long lIndex) noexcept { m_lTengxunRTDataInquiringIndex = lIndex; }
+		[[nodiscard]] auto GetTengxunRTDataInquiringIndex() const noexcept { return m_lTengxunRTDataInquiringIndex; }
+
+		// todo 以下函数只用于申请Sina、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
+		string GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber, string(*StockCodeTransfer)(const string& str));
+		string GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber);
+		string GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber);
+
+	private:
+		size_t m_lSinaRTDataInquiringIndex;
+		size_t m_lTengxunRTDataInquiringIndex;
+	};
+}

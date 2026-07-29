@@ -44,7 +44,7 @@ void CProductFinnhubCompanySymbolChange::ParseAndStoreWebData(CWebDataPtr pWebDa
 }
 
 CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::ParseFinnhubCompanySymbolChange(const CWebDataPtr& pWebData) {
-	auto pvCompanySymbolChange = make_shared<vector<CCompanySymbolChange>>();
+	auto pvCompanySymbolChange = make_shared<vector<CFinnhubCompanySymbolChange>>();
 	nlohmannJson js;
 
 	if (!pWebData->CreateJson(js)) return pvCompanySymbolChange;
@@ -53,7 +53,7 @@ CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::ParseFinnhubCompany
 	try {
 		nlohmannJson js2 = jsonGetChild(js, "data");
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
-			CCompanySymbolChange companySymbolChange;
+			CFinnhubCompanySymbolChange companySymbolChange;
 			string s = jsonGetString(it, "atDate");
 			companySymbolChange.m_sTime = s;
 			s = jsonGetString(it, "newSymbol");

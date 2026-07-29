@@ -1,0 +1,35 @@
+module;
+
+export module TengxunRTDataSource;
+
+import VirtualDataSource;
+import WebData;
+
+import std;
+using std::chrono::local_seconds;
+using std::shared_ptr;
+
+export {
+	class CTengxunRTDataSource : public CVirtualDataSource {
+	public:
+		CTengxunRTDataSource();
+		CTengxunRTDataSource(const CTengxunRTDataSource&) = delete;
+		CTengxunRTDataSource& operator=(const CTengxunRTDataSource&) = delete;
+		CTengxunRTDataSource(const CTengxunRTDataSource&&) noexcept = delete;
+		CTengxunRTDataSource& operator=(const CTengxunRTDataSource&&) noexcept = delete;
+		~CTengxunRTDataSource() override = default;
+
+		bool Reset() override;
+
+		bool GenerateInquiryMessage(const local_seconds& currentTime) override;
+
+		void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置Tengxun RT的m_pSession状态。
+		void CreateCurrentInquireString() override;
+
+		static bool IsInvalidTengxunRTData(const CWebData& WebDataReceived);
+	};
+
+	using CTengxunRTDataSourcePtr = shared_ptr<CTengxunRTDataSource>;
+
+	extern CTengxunRTDataSourcePtr gl_pTengxunRTDataSource;
+}

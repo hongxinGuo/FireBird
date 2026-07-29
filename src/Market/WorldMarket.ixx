@@ -1,0 +1,180 @@
+module;
+
+#include"concurrencpp/concurrencpp.h"
+
+export module WorldMarket;
+
+import VirtualMarket;
+
+import TiingoIEXSocket;
+import FinnhubSocket;
+
+import MarketStatus;
+import MarketHoliday;
+
+import TiingoStock;
+
+import std;
+using std::literals::chrono_literals::operator ""h;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""s;
+using std::atomic_int;
+using std::shared_ptr;
+using std::vector;
+using std::chrono::local_seconds;
+
+export {
+	class CWorldMarket : public CVirtualMarket {
+	public:
+		CWorldMarket();
+		// 只能有一个实例,不允许赋值、拷贝
+		CWorldMarket(const CWorldMarket&) = delete;
+		CWorldMarket& operator=(const CWorldMarket&) = delete;
+		CWorldMarket(const CWorldMarket&&) noexcept = delete;
+		CWorldMarket& operator=(const CWorldMarket&&) noexcept = delete;
+		~CWorldMarket() override;
+
+		void ResetMarket() final;
+		local_seconds GetResetTime() override;
+
+		void PrepareToCloseMarket() final;
+
+		void Reset();
+		void ResetFinnhub();
+		void ResetTiingo();
+		void ResetDataContainer();
+
+		bool IsTimeToResetSystem(local_seconds ls) final;
+		int ProcessTask() override; // 每日定时任务调度,由ScheduleTask调度
+		int ProcessCurrentImmediateTask() override; // 即时任务调度，由ScheduleTask调度
+
+		// 各项任务
+		void TaskCreateTask();
+		void TaskResetMarket();
+		bool TaskCheckMarketReady();
+		void TaskProcessWebSocketData();
+		void TaskMonitorWebSocket();
+		void TaskUpdateWorldMarketDB();
+
+		bool TaskUpdateTiingoIndustry();
+		bool TaskUpdateSicIndustry();
+		bool TaskUpdateNaicsIndustry();
+		bool TaskRebuildTiingoStockSplitDB();
+		bool TaskRebuildTiingoIndustryRS();
+
+		int TaskUpdateTiingoStockDayLineDB();
+
+		bool TaskUpdateForexDayLineDB();
+		bool TaskUpdateCryptoDayLineDB();
+
+		void TaskCreateTiingoTradeDayDayLine();
+		void TaskProcessTiingoDayLine();
+
+		static void TaskDeleteDelistedStock();
+
+		void TaskPerSecond();
+
+		void TaskMainTainTiingoDayLineDB();
+
+		bool UpdateEPSSurpriseDB();
+		void UpdateSECFilingsDB();
+
+		void TaskCalculateNasdaq100MA200UpDownRate(); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
+		concurrencpp::result<bool> LoadNasdaq100StocksDayLine();
+		void CalculateNasdaq100StocksMA(int length) const;
+		void calculateNasdaq100MA200UpDownRate();
+
+		void calculateStockYearHigherRate(); // 计算股票年内再次新高的数量和比例
+		void AddNewHighHigher(long lNewHighHigher) { m_iNewHighHigher += lNewHighHigher; }
+		long GetNewHighHigher() const { return m_iNewHighHigher; }
+		void AddNoNewHighHigher(long lNoNewHighHigher) { m_iNoNewHighHigher += lNoNewHighHigher; }
+		long GetNoNewHighHigher() const { return m_iNoNewHighHigher; }
+		void ResetNewHighHigher() {
+			m_iNewHighHigher = 0;
+			m_iNoNewHighHigher = 0;
+		}
+
+		// 各种状态
+
+		static bool UpdateToken();
+
+		// 数据库操作
+		virtual bool UpdateCompanyNewsDB();
+		virtual bool UpdateFinnhubStockDayLineDB();
+		static void UpdateInsiderTransactionDB();
+		virtual bool UpdateInsiderSentimentDB();
+		virtual bool UpdateTiingoIndustry();
+		virtual bool UpdateSicIndustry();
+		virtual bool UpdateNaicsIndustry();
+
+		void RebuildStockDayLineDB();
+		void RebuildEPSSurprise();
+		void RebuildPeer();
+		void RebuildBasicFinancial();
+		void RebuildTiingoStockSplitDB();
+
+		void UpdateTiingoOneYearStockDayLine();
+		void UpdateTiingoAllStockDayLine();
+
+		void RebuildIndustryRS();
+		void BuildIndustry();
+		void CalculateIndustryTotalValue();
+		void CalculateStockTotalValue(const vector<shared_ptr<CTiingoStock>>& vStocks);
+
+		vector<string> GetFinnhubWebSocketSymbols();
+
+		static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
+
+		static void ProcessWebSocketData();
+		static void ProcessFinnhubWebSocketData();
+		static void ProcessTiingoIEXWebSocketData();
+		static void ProcessTiingoCryptoWebSocketData();
+		static void ProcessTiingoForexWebSocketData();
+
+		void UpdateFinnhubStockFromWebSocket();
+		void UpdateFinnhubStockFromTiingoIEXSocket(const shared_ptr<CTiingoIEXSocket>& pTiingoIEXbData);
+		void UpdateFinnhubStockFromFinnhubSocket(const shared_ptr<CFinnhubSocket>& pFinnhub);
+
+		void UpdateMarketStatus(const shared_ptr<vector<CMarketStatus>>& pv) const;
+		void UpdateMarketHoliday(const shared_ptr<vector<CMarketHoliday>>& pv) const;
+
+		static void DeleteTiingoDelistedStock();
+		static void DeleteTiingoDayLine(const shared_ptr<CTiingoStock>& pStock);
+		static void DeleteTiingoFinancialStatement(const shared_ptr<CTiingoStock>& pStock);
+
+		bool IsReadyToInquireWebData() override { return !IsResetTime(); }
+
+		void SetPermitUpdateTiingoFundamentalDefinitionDB(bool fFlag) noexcept { m_fPermitUpdateTiingoFundamentalDefinitionDB = fFlag; }
+		bool IsPermitUpdateTiingoFundamentalDefinitionDB() const noexcept { return m_fPermitUpdateTiingoFundamentalDefinitionDB; }
+
+		bool IsBuildTodayTiingoDayLine() const noexcept { return m_bBuildTodayTiingoDayLine; }
+		void SetBuildTodayTiingoDayLine(bool fFlag) noexcept { m_bBuildTodayTiingoDayLine = fFlag; }
+
+		void ChangeToPrevStock();
+		void ChangeToNextStock();
+
+	protected:
+		long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
+		long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
+
+		shared_ptr<vector<CMarketStatus>> m_pvMarketStatus;
+		shared_ptr<vector<CMarketHoliday>> m_pvMarketHoliday;
+
+		bool m_bFinnhubWebSiteAccessible{ true }; // 由于finnhub.io不时被墙，故而需要此标识。
+
+		bool m_fPermitUpdateTiingoFundamentalDefinitionDB{ false };
+
+		bool m_bBuildTodayTiingoDayLine{ false };
+
+	protected:
+		vector<shared_ptr<CTiingoStock>> m_vNasdaq100TiingoStock;
+		atomic_int m_iNewHighHigher{ 0 };
+		atomic_int m_iNoNewHighHigher{ 0 };
+
+		array<vector<shared_ptr<CTiingoStock>>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
+	};
+
+	using CWorldMarketPtr = shared_ptr<CWorldMarket>;
+
+	extern CWorldMarketPtr gl_pWorldMarket; // 股票市场。 单一实例变量，仅允许存在一个实例。
+}

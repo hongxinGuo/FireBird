@@ -1,0 +1,28 @@
+module;
+
+export module FinnhubRecommendationTrends;
+
+import std;
+using std::string;
+using std::shared_ptr;
+using std::vector;
+
+export {
+	class CFinnhubRecommendationTrends final {
+	public:
+		CFinnhubRecommendationTrends();
+		~CFinnhubRecommendationTrends() = default;
+
+	public:
+		string m_strSymbol;
+		long m_lPeriod; // 格式：2020-03-01
+		long m_lStrongBuy;
+		long m_lBuy;
+		long m_lHold;
+		long m_lSell;
+		long m_lStrongSell;
+	};
+
+	using CFinnhubRecommendationTrendsPtr = shared_ptr<CFinnhubRecommendationTrends>;
+	using CFinnhubRecommendationTrendssPtr = shared_ptr<vector<CFinnhubRecommendationTrendsPtr>>;
+}

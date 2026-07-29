@@ -1,0 +1,37 @@
+module;
+
+export module ContainerStockExchange;
+
+import StockExchange;
+
+import std;
+using std::string;
+using std::vector;
+
+export {
+	class CContainerStockExchange final {
+	public:
+		CContainerStockExchange();
+		CContainerStockExchange(const CContainerStockExchange& other) = delete;
+		CContainerStockExchange(CContainerStockExchange&& other) noexcept = delete;
+		CContainerStockExchange& operator=(const CContainerStockExchange& other) = delete;
+		CContainerStockExchange& operator=(CContainerStockExchange&& other) noexcept = delete;
+		~CContainerStockExchange() = default;
+
+		void Reset();
+		void Reserve(size_t size);
+
+		CStockExchangePtr GetItem(const size_t lIndex) const { return m_vStockExchange.at(lIndex); }
+		CStockExchangePtr GetItem(const string& strExchangeSymbol) const;
+		string GetItemExchangeCode(const size_t lIndex) const { return m_vStockExchange.at(lIndex)->GetExchangeCode(); }
+		auto Size() const noexcept { return m_mapStockExchange.size(); }
+
+		bool LoadDB();
+
+	protected:
+		vector<CStockExchangePtr> m_vStockExchange;
+		std::unordered_map<string, size_t> m_mapStockExchange;
+	};
+
+	extern CContainerStockExchange gl_dataContainerStockExchange;
+}

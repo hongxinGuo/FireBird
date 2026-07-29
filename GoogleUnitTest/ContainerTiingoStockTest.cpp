@@ -260,7 +260,7 @@ namespace FireBirdTest {
 			const double expectedLow = static_cast<double>(pStock->GetLow()) / static_cast<double>(ratio);
 			EXPECT_NEAR(row.Low, expectedLow, 1e-9);
 
-			INT64 value = row.Volume;
+			int64_t value = row.Volume;
 			EXPECT_EQ(value, pStock->GetVolume());
 			value = row.Amount;
 			EXPECT_EQ(value, pStock->GetAmount());

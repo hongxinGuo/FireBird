@@ -25,9 +25,6 @@
     <Filter Include="头文件\Data container\China Market">
       <UniqueIdentifier>{495b8275-5277-4365-be95-2d9235b90bdd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Data container\WorldMarket">
-      <UniqueIdentifier>{39c09b90-7b46-4ebb-b1f5-5c8b6c6b90ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Data container">
       <UniqueIdentifier>{107cf94d-eda4-4438-a081-7246d11dc4e3}</UniqueIdentifier>
     </Filter>
@@ -183,524 +180,521 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
+    <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\InfoReport.h">
+    <ClInclude Include="..\src\accessory\InfoReport.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\nlohmannJsonGetValue.h">
+    <ClInclude Include="..\src\accessory\nlohmannJsonGetValue.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\JsonParse.h">
+    <ClInclude Include="..\src\accessory\JsonParse.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h">
+    <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\TimeConvert.h">
+    <ClInclude Include="..\src\accessory\TimeConvert.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
+    <ClInclude Include="..\src\Data Source\VirtualDataSource.ixx">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductDummy.h">
+    <ClInclude Include="..\src\Factory Product\ProductDummy.ixx">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h">
+    <ClInclude Include="..\src\Factory Product\VirtualDataFactory.ixx">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h">
+    <ClInclude Include="..\src\Factory Product\VirtualWebProduct.ixx">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\ChinaMarket.h">
+    <ClInclude Include="..\src\Market\ChinaMarket.ixx">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\VirtualMarket.h">
+    <ClInclude Include="..\src\Market\VirtualMarket.ixx">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\WorldMarket.h">
+    <ClInclude Include="..\src\Market\WorldMarket.ixx">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\ChinaStock.h">
+    <ClInclude Include="..\src\Stock\ChinaStock.ixx">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\VirtualStock.h">
+    <ClInclude Include="..\src\Stock\VirtualStock.ixx">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemConfiguration.h">
+    <ClInclude Include="..\src\System\SystemConfiguration.ixx">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemData.h">
+    <ClInclude Include="..\src\System\SystemData.ixx">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemMessage.h">
+    <ClInclude Include="..\src\System\SystemMessage.ixx">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\Country.h">
+    <ClInclude Include="..\src\Type\America market\Country.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\EconomicCalendar.h">
+    <ClInclude Include="..\src\Type\America market\EconomicCalendar.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\EPSSurprise.h">
+    <ClInclude Include="..\src\Type\America market\EPSSurprise.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\InsiderSentiment.h">
+    <ClInclude Include="..\src\Type\America market\InsiderSentiment.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\InsiderTransaction.h">
+    <ClInclude Include="..\src\Type\America market\InsiderTransaction.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\NaicsIndustry.h">
+    <ClInclude Include="..\src\Type\America market\NaicsIndustry.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\DayLine.h">
+    <ClInclude Include="..\src\Type\China market\DayLine.ixx">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\DayLineWebData.h">
+    <ClInclude Include="..\src\Type\China market\DayLineWebData.ixx">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\StockSection.h">
+    <ClInclude Include="..\src\Type\China market\StockSection.ixx">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\WebData.h">
+    <ClInclude Include="..\src\Type\China market\WebData.ixx">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\WebRTData.h">
+    <ClInclude Include="..\src\Type\China market\WebRTData.ixx">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\WeekLine.h">
+    <ClInclude Include="..\src\Type\China market\WeekLine.ixx">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualHistoryCandle.h">
+    <ClInclude Include="..\src\Type\VirtualHistoryCandle.ixx">
       <Filter>头文件\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h">
+    <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.ixx">
       <Filter>头文件\Web Socket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.h">
+    <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.ixx">
       <Filter>头文件\Web Socket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h">
+    <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.ixx">
       <Filter>头文件\Web Socket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WebSocket\TiingoIEXWebSocket.h">
+    <ClInclude Include="..\src\WebSocket\TiingoIEXWebSocket.ixx">
       <Filter>头文件\Web Socket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h">
+    <ClInclude Include="..\src\WebSocket\VirtualWebSocket.ixx">
       <Filter>头文件\Web Socket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\pch.h">
+    <ClInclude Include="..\src\Thread.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\targetver.h">
+    <ClInclude Include="..\src\FinnhubInquiryType.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Thread.h">
+    <ClInclude Include="..\src\nlohmannJsonDeclaration.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\FinnhubInquiryType.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\nlohmannJsonDeclaration.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\System\InaccessibleSymbol.h">
+    <ClInclude Include="..\src\System\InaccessibleSymbol.ixx">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\FinnhubDataSource.h">
+    <ClInclude Include="..\src\Data Source\FinnhubDataSource.ixx">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\SinaRTDataSource.h">
+    <ClInclude Include="..\src\Data Source\SinaRTDataSource.ixx">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\TiingoDataSource.h">
+    <ClInclude Include="..\src\Data Source\TiingoDataSource.ixx">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\FinnhubFactory.h">
+    <ClInclude Include="..\src\Factory Product\FinnhubFactory.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhub.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhub.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderTransaction.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderTransaction.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyNews.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyNews.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyPeer.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyPeer.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyProfile.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyProfile.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyProfileConcise.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyProfileConcise.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoDayLine.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoExchange.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoExchange.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoSymbol.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoSymbol.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubEconomicCalendar.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubEconomicCalendar.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubEconomicCountryList.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexDayLine.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexExchange.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexExchange.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexSymbol.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexSymbol.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockDayLine.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockSymbol.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockSymbol.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\TiingoFactory.h">
+    <ClInclude Include="..\src\Factory Product\TiingoFactory.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerChinaStockDayLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockDayLine.ixx">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerChinaStock.ixx">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerChinaStockWeekLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockWeekLine.ixx">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\containerChosenCrypto.h">
+    <ClInclude Include="..\src\Data Container\containerChosenCrypto.ixx">
       <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\containerChosenForex.h">
+    <ClInclude Include="..\src\Data Container\containerChosenForex.ixx">
       <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\containerTiingoChosenStock.h">
+    <ClInclude Include="..\src\Data Container\containerTiingoChosenStock.ixx">
       <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCrypto.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCrypto.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoIndustry.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoIndustry.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStock.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerVirtualStock.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerForexDayLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerForexDayLine.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.h">
+    <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerSICIndustry.h">
+    <ClInclude Include="..\src\Data Container\ContainerSICIndustry.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerStockSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerStockSymbol.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
+    <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.ixx">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h">
+    <ClInclude Include="..\src\Data Source\TengxunRTDataSource.ixx">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\MarketStatus.h">
+    <ClInclude Include="..\src\Type\America market\MarketStatus.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\MarketHoliday.h">
+    <ClInclude Include="..\src\Type\America market\MarketHoliday.ixx%3b">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingo.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingo.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h">
+    <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.ixx">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h">
+    <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.ixx">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductSinaRT.h">
+    <ClInclude Include="..\src\Factory Product\ProductSinaRT.ixx">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.ixx">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h">
+    <ClInclude Include="..\src\Factory Product\ProductTengxunRT.ixx">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\VirtualContainer.h">
+    <ClInclude Include="..\src\Data Container\VirtualContainer.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\simdjsonGetValue.h">
+    <ClInclude Include="..\src\accessory\simdjsonGetValue.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\InquireEngine.h">
+    <ClInclude Include="..\src\Data Source\InquireEngine.ixx">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\SECFiling.h">
+    <ClInclude Include="..\src\Type\SECFiling.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\TiingoCrypto.h">
+    <ClInclude Include="..\src\Stock\TiingoCrypto.ixx">
       <Filter>头文件\Stock\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\TiingoStock.h">
+    <ClInclude Include="..\src\Stock\TiingoStock.ixx">
       <Filter>头文件\Stock\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\FinnhubCrypto.h">
+    <ClInclude Include="..\src\Stock\FinnhubCrypto.ixx">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\FinnhubForex.h">
+    <ClInclude Include="..\src\Stock\FinnhubForex.ixx">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\FinnhubStock.h">
+    <ClInclude Include="..\src\Stock\FinnhubStock.ixx">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\Inaccessible.h">
+    <ClInclude Include="..\src\System\Inaccessible.ixx">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h">
+    <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h">
+    <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h">
+    <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoIndustry.h">
+    <ClInclude Include="..\src\Type\America market\TiingoIndustry.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h">
+    <ClInclude Include="..\src\Type\America market\TiingoMarketNews.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.h">
+    <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h">
+    <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.ixx">
       <Filter>头文件\Type\America market\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h">
+    <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.ixx">
       <Filter>头文件\Type\America market\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoCandleLine.h">
+    <ClInclude Include="..\src\Type\America market\TiingoCandleLine.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\MarketTaskQueue.h">
+    <ClInclude Include="..\src\Market\MarketTaskQueue.ixx">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\MarketTask.h">
+    <ClInclude Include="..\src\Market\MarketTask.ixx">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\StockExchange.h">
+    <ClInclude Include="..\src\Type\America market\StockExchange.ixx">
       <Filter>头文件\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerStockExchange.h">
+    <ClInclude Include="..\src\Data Container\ContainerStockExchange.ixx">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\TestWebData.h">
+    <ClInclude Include="..\src\Factory Product\TestWebData.ixx">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\InternetOption.h">
+    <ClInclude Include="..\src\Data Source\InternetOption.ixx">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\AccessoryFactory.h">
+    <ClInclude Include="..\src\Factory Product\AccessoryFactory.ixx">
       <Filter>头文件\Factory-Product\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\AccessoryDataSource.h">
+    <ClInclude Include="..\src\Data Source\AccessoryDataSource.ixx">
       <Filter>头文件\Data Source\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.h">
+    <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.ixx">
       <Filter>头文件\Factory-Product\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SystempublicDeclaration.h">
+    <ClInclude Include="..\src\SystempublicDeclaration.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h">
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.ixx">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h">
+    <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.ixx">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.ixx">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerChinaStockMonthLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerChinaStockMonthLine.ixx">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\MonthLine.h">
+    <ClInclude Include="..\src\Type\China market\MonthLine.ixx">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\spdlog_assert.h">
+    <ClInclude Include="..\src\accessory\spdlog_assert.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\src\System\Initialization.h">
       <Filter>源文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\CharSetTransfer.h">
+    <ClInclude Include="..\src\CharSetTransfer.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\StockSplit.h">
+    <ClInclude Include="..\src\Type\StockSplit.ixx">
       <Filter>头文件\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\AlphaVantageDataSource.h">
+    <ClInclude Include="..\src\Data Source\AlphaVantageDataSource.ixx">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.h">
+    <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.ixx">
       <Filter>头文件\Factory-Product\AlphaVantage</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.h">
+    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.ixx">
       <Filter>头文件\Factory-Product\AlphaVantage</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.h">
+    <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.ixx">
       <Filter>头文件\Factory-Product\AlphaVantage</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.h">
+    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.ixx">
       <Filter>头文件\Factory-Product\AlphaVantage</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.h">
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.ixx">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.h">
+    <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.ixx">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.h">
+    <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.ixx">
       <Filter>头文件\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorMACD.h">
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorMACD.ixx">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\dataBaseConnector.h">
+    <ClInclude Include="..\src\dataBaseConnector.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorRSI.h">
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorRSI.ixx">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.h">
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.ixx">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
     <ClInclude Include="..\src\StockMarketSQLTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
+    <ClInclude Include="..\src\System\SystemConstantChinaMarket.ixx">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\EastMoneyDayLineDataSource.h">
+    <ClInclude Include="..\src\Data Source\EastMoneyDayLineDataSource.ixx">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductEastmoneyDayline.h">
+    <ClInclude Include="..\src\Factory Product\ProductEastmoneyDayline.ixx">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\log.h">
+    <ClInclude Include="..\src\log.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\SaveAndLoad.h">
+    <ClInclude Include="..\src\accessory\SaveAndLoad.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\CountableSemaphore.h">
+    <ClInclude Include="..\src\Type\CountableSemaphore.ixx">
       <Filter>头文件\Type\Uitlities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\globedef.ixx">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

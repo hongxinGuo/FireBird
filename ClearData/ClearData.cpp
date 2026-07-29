@@ -1,12 +1,10 @@
 ﻿#define NOMINMAX
 #include"windows.h"
-
 #include <iostream>
-
+#include "StockMarketSQLTable.h"
 #include<sqlpp23/sqlpp23.h>
 
-#include "dataBaseConnector.h"
-#include "StockMarketSQLTable.h"
+import DataBaseConnector;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///

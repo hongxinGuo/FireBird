@@ -18,11 +18,11 @@
     <ClCompile Include="ClearData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\dataBaseConnector.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\dataBaseConnector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>

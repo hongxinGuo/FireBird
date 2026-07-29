@@ -1,0 +1,33 @@
+module;
+
+export module TiingoCrypto;
+
+import VirtualStock;
+import std;
+using std::string;
+using std::shared_ptr;
+using std::vector;
+
+export {
+	class CTiingoCrypto : public CVirtualStock {
+	public:
+		CTiingoCrypto() = default;
+		// 不允许赋值。
+		CTiingoCrypto(const CTiingoCrypto&) = delete;
+		CTiingoCrypto& operator=(const CTiingoCrypto&) = delete;
+		CTiingoCrypto(const CTiingoCrypto&&) noexcept = delete;
+		CTiingoCrypto& operator=(const CTiingoCrypto&&) noexcept = delete;
+		~CTiingoCrypto() override = default;
+
+		int GetRatio() const override { return 100000; };
+
+		//string m_strTicker; //由VirtualStock中的m_strSymbol代替
+		string m_strName{ " " };
+		//string m_strDescription; // 已废弃。由CVirtualStock中的m_strDescription代替
+		string m_strBaseCurrency{ " " };
+		string m_strQuoteCurrency{ " " };
+	};
+
+	using CTiingoCryptoPtr = shared_ptr<CTiingoCrypto>;
+	using CTiingoCryptosPtr = shared_ptr<vector<CTiingoCryptoPtr>>;
+}

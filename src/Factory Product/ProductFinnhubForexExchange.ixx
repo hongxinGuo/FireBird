@@ -1,0 +1,28 @@
+module;
+
+export module ProductFinnhubForexExchange;
+
+import ProductFinnhub;
+import WebData;
+
+import std;
+using std::string;
+using std::shared_ptr;
+using std::vector;
+
+
+export {
+	class CProductFinnhubForexExchange final : public CProductFinnhub {
+	public:
+		CProductFinnhubForexExchange();
+		~CProductFinnhubForexExchange() override = default;
+
+		string CreateMessage() override;
+		void ParseAndStoreWebData(CWebDataPtr pWebData) override;
+		shared_ptr<vector<string>> ParseFinnhubForexExchange(const CWebDataPtr& pWebData);
+
+		void UpdateSystemStatus() override;
+	};
+
+	using CFinnhubForexExchangePtr = shared_ptr<CProductFinnhubForexExchange>;
+}

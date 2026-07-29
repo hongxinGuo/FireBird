@@ -1,0 +1,24 @@
+module;
+
+export module ChinaStockCodeConverter;
+
+import std;
+using std::string;
+
+export {
+	// 股票代码采用国家标准制式
+	[[nodiscard]] inline bool IsShanghaiExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2) == "SS"; }
+	[[nodiscard]] inline bool IsShenzhenExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2) == "SZ"; }
+	[[nodiscard]] inline string GetStockSymbol(const string& strStandardCode) { return strStandardCode.substr(0, strStandardCode.length() - 3); }
+	[[nodiscard]] inline string GetStockExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2); }
+	[[nodiscard]] inline string CreateStockCode(const string& strStockExchange, const string& strStockSymbol) { return strStockSymbol + "." + strStockExchange; }
+
+	// 股票代码转
+	[[nodiscard]] string XferSinaToStandard(const string& strSina);
+	[[nodiscard]] string XferSinaToStandard(const string_view& svSina);
+	[[nodiscard]] inline string XferTengxunToStandard(const string& strTengxun) { return XferSinaToStandard(strTengxun); }
+	[[nodiscard]] string XferStandardToSina(const string& strStandard);
+	[[nodiscard]] inline string XferStandardToTengxun(const string& strStandardCode) { return XferStandardToSina(strStandardCode); }
+	[[nodiscard]] string XferStandardToEastmoney(const string& strStandardCode);
+	[[nodiscard]] string XferEastmoneyToStandard(const string& strEastmoneyCode);
+}

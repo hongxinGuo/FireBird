@@ -1,0 +1,38 @@
+module;
+
+export module TiingoIndustry;
+
+import std;
+using std::string;
+using std::vector;
+using std::shared_ptr;
+
+export {
+	class CTiingoIndustry final {
+	public:
+		CTiingoIndustry();
+		CTiingoIndustry(const CTiingoIndustry&) = default;
+		CTiingoIndustry& operator=(const CTiingoIndustry& other) = default;
+		CTiingoIndustry(CTiingoIndustry&&) noexcept = default;
+		CTiingoIndustry& operator=(CTiingoIndustry&&) noexcept = default;
+		~CTiingoIndustry() = default;
+
+		void Reset() noexcept {
+			m_strIndustry.clear();
+			m_strSector.clear();
+			m_fUpdated = false;
+		}
+
+		void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
+		bool IsUpdated() const noexcept { return m_fUpdated; }
+
+	public:
+		string m_strIndustry;
+		string m_strSector;
+
+		bool m_fUpdated;
+	};
+
+	using CTiingoIndustryPtr = shared_ptr<CTiingoIndustry>;
+	using CTiingoIndustriesPtr = shared_ptr<vector<CTiingoIndustry>>;
+}

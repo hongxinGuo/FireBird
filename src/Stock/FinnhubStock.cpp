@@ -201,11 +201,11 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 				multi_insert.add_values(
 					t.Symbol = insiderTransaction.m_strSymbol,
 					t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
-					t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用INT64。
+					t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用int64_t。
 					t.FilingDate = static_cast<int>(insiderTransaction.m_lFilingDate),
 					t.TransactionDate = static_cast<int>(insiderTransaction.m_lTransactionDate),
 					t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
-					t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用INT64。
+					t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用int64_t。
 					t.TransactionPrice = insiderTransaction.m_dTransactionPrice
 				);
 				nValues++;
@@ -221,11 +221,11 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 					multi_insert.add_values(
 						t.Symbol = insiderTransaction.m_strSymbol,
 						t.PersonName = insiderTransaction.m_strPersonName, // 人名最多100个字符
-						t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用INT64。
+						t.Share = static_cast<double>(insiderTransaction.m_lShare), // 交易股数有可能超过int的范围，故而使用int64_t。
 						t.FilingDate = static_cast<int>(insiderTransaction.m_lFilingDate),
 						t.TransactionDate = static_cast<int>(insiderTransaction.m_lTransactionDate),
 						t.TransactionCode = insiderTransaction.m_strTransactionCode, // 交易代码最多4个字符
-						t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用INT64。
+						t.ShareChange = static_cast<double>(insiderTransaction.m_lShareChange),// 交易股数有可能超过int的范围，故而使用int64_t。
 						t.TransactionPrice = insiderTransaction.m_dTransactionPrice
 					);
 					nValues++;

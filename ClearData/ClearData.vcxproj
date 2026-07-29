@@ -152,10 +152,10 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\dataBaseConnector.ixx" />
     <ClCompile Include="ClearData.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\dataBaseConnector.h" />
     <ClInclude Include="..\src\DataBase\StockMarketSQLTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

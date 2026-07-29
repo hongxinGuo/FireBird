@@ -198,9 +198,9 @@ void CInquireEngine::MoveDataToWebData(const CWebDataPtr& pWebData) {
 	pWebData->m_svDataBuffer = string_view(pWebData->m_sDataBuffer); //Note 同时创建string_view
 }
 
-void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {
+void CInquireEngine::TESTSetBuffer(const char* buffer, const int64_t lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber + 1);
-	for (INT64 i = 0; i < lTotalNumber; i++) {
+	for (int64_t i = 0; i < lTotalNumber; i++) {
 		m_sBuffer.at(i) = buffer[i];
 	}
 	m_sBuffer.at(lTotalNumber) = 0x000;
@@ -208,10 +208,10 @@ void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber)
 }
 
 void CInquireEngine::TESTSetBuffer(string str) {
-	const INT64 lTotalNumber = str.length();
+	const int64_t lTotalNumber = str.length();
 
 	m_sBuffer.resize(lTotalNumber + 1);
-	//for (INT64 i = 0; i < lTotalNumber; i++) {
+	//for (int64_t i = 0; i < lTotalNumber; i++) {
 	//m_sBuffer.at(i) = str[i];
 	//}
 	std::ranges::copy(str, m_sBuffer.begin());
@@ -219,8 +219,8 @@ void CInquireEngine::TESTSetBuffer(string str) {
 	m_lByteRead = lTotalNumber;
 }
 
-void CInquireEngine::TESTSetWebBuffer(const char* buffer, const INT64 lTotalNumber) {
-	for (INT64 i = 0; i < lTotalNumber; i++) {
+void CInquireEngine::TESTSetWebBuffer(const char* buffer, const int64_t lTotalNumber) {
+	for (int64_t i = 0; i < lTotalNumber; i++) {
 		m_dataBuffer[i] = buffer[i];
 	}
 }
