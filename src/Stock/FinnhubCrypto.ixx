@@ -1,11 +1,11 @@
 module;
 
-export module FinnhubCrypto;
+export module Stock.FinnhubCrypto;
 
-import VirtualStock;
+import Stock;
 
-import ContainerCryptoDayLine;
-import DayLine;
+import Container.HistoryCandle.CryptoDayLine;
+import HistoryCandle.DayLine;
 
 import std;
 using std::unique_ptr;

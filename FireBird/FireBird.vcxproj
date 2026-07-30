@@ -153,6 +153,7 @@
       <TranslateIncludes>false</TranslateIncludes>
       <EnableModules>false</EnableModules>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -224,6 +225,7 @@
       <EnableModules>false</EnableModules>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -286,6 +288,7 @@
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <EnableModules>false</EnableModules>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -340,14 +343,18 @@
     <None Include="res\FireBird.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\SystemPublicDeclaration.h" />
+    <ClInclude Include="..\src\SystempublicDeclaration.ixx">
+      <FileType>Document</FileType>
+    </ClInclude>
     <ClInclude Include="..\src\Windows interface\ChildFrm.h" />
     <ClInclude Include="..\src\Windows interface\FireBird.h" />
     <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />
     <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
     <ClInclude Include="..\src\Windows interface\GridProperty.h" />
     <ClInclude Include="..\src\Windows interface\MainFrm.h" />
-    <ClInclude Include="..\src\Windows interface\OutputWnd.h" />
+    <ClInclude Include="..\src\Windows interface\OutputWnd.h">
+      <FileType>Document</FileType>
+    </ClInclude>
     <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h" />
     <ClInclude Include="resource.h" />

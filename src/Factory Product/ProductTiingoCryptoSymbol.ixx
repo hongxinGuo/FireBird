@@ -1,9 +1,9 @@
 module;
 
-export module ProductTiingoCryptoSymbol;
+export module Product.Tiingo.CryptoSymbol;
 
-import ProductTiingo;
-import TiingoCrypto;
+import Product.Tiingo;
+import Stock.TiingoCrypto;
 import WebData;
 
 import std;

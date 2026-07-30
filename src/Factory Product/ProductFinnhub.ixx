@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhub;
+export module Product.Finnhub;
 
-import VirtualWorldMarketWebProduct;
+import Product;
 import WebData;
 
 import std;
@@ -11,7 +11,7 @@ using std::vector;
 using std::int64_t;
 
 export {
-	class CProductFinnhub : public CVirtualWorldMarketWebProduct {
+	class CProductFinnhub : public CVirtualWebProduct {
 	public:
 		CProductFinnhub() = default;
 		// 不允许赋值。

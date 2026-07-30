@@ -1,10 +1,10 @@
 module;
 
-export module ProductFinnhubForexDayLine;
+export module Product.Finnhub.ForexDayLine;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
-import DayLine;
+import HistoryCandle.DayLine;
 
 import std;
 using std::string;

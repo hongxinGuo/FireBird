@@ -2,17 +2,17 @@ module;
 
 #include"concurrencpp/concurrencpp.h"
 
-export module WorldMarket;
+export module Market.WorldMarket;
 
-import VirtualMarket;
+import Market;
 
-import TiingoIEXSocket;
-import FinnhubSocket;
+import TiingoIEXWebSocket;
+import FinnhubWebSocket;
 
 import MarketStatus;
 import MarketHoliday;
 
-import TiingoStock;
+import Stock.TiingoStock;
 
 import std;
 using std::literals::chrono_literals::operator ""h;
@@ -21,6 +21,8 @@ using std::literals::chrono_literals::operator ""s;
 using std::atomic_int;
 using std::shared_ptr;
 using std::vector;
+using std::string;
+using std::array;
 using std::chrono::local_seconds;
 
 export {

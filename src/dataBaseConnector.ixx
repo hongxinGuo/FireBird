@@ -1,9 +1,10 @@
 ﻿module;
-
 #define NOMINMAX
 #include <sqlpp23/mysql/mysql.h>
 
-export module DataBaseConnector;
+export module DatabaseConnector;
+
+import std;
 
 export {
 	// Inline global connection pool. Using an inline variable so the header can be

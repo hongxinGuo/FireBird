@@ -1,9 +1,10 @@
 module;
 
-export module FinnhubFactory;
+export module Factory.Finnhub;
 
-import virtualDataFactory;
-import VirtualMarket;
+import Factory;
+import Market;
+import Product;
 
 import std;
 using std::string;

@@ -10,6 +10,8 @@ using std::chrono::month;
 using std::chrono::day;
 using std::chrono::local_days;
 using std::string;
+using std::shared_ptr;
+using std::vector;
 
 export {
 	class CStockSplit {

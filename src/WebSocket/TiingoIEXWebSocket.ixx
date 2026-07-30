@@ -9,10 +9,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
+#include "IXWebSocketMessage.h"
 
-export module TiingoIEXWebSocket;
+export module WebSocket.TiingoIEX;
 
-import VirtualWebSocket;
+import WebSocket;
 import std;
 using std::string;
 using std::vector;
@@ -64,7 +65,7 @@ export {
 
 		bool ParseWebSocketData(shared_ptr<string> pData) override { return ParseTiingoIEXWebSocketData(pData); }
 
-		void MonitorWebSocket(const vectorString& vSymbol);
+		void MonitorWebSocket(const vector<string>& vSymbol);
 
 		static string CreateMessage(const vector<string>& vSymbol);
 		bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);

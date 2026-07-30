@@ -1,21 +1,26 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"SystemData.h"
-#include"SystemMessage.h"
+module WebSocket.TiingoIEX;
+import SystemData;
+import SystemMessage;
 
-#include"JsonParse.h"
-#include"nlohmannJsonGetValue.h"
+import JsonParse;
+import NlohmannJsonGetValue;
+import NlohmannJsonDeclaration;
 
-#include "TiingoIEXWebSocket.h"
+import SystemConfiguration;
+import DataSource.Tiingo;
 
-#include "SystemConfiguration.h"
-#include "TiingoDataSource.h"
-
+import std;
+import GlobeDef;
 using std::istringstream;
 using std::chrono::minutes;
 using std::chrono::nanoseconds;
 using std::chrono::seconds;
 using std::make_shared;
+using std::chrono::time_point;
+using std::chrono::system_clock;
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoIEXWebSocket->SetError(false);
@@ -65,7 +70,7 @@ void CTiingoIEXWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoIEXWebSocket);
 }
 
-void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
+void CTiingoIEXWebSocket::Send(const vector<string>& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -74,7 +79,7 @@ void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
-void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CTiingoIEXWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoIEXWebSocket(), vSymbol);
 }
@@ -93,8 +98,8 @@ void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbol2;
+string CTiingoIEXWebSocket::CreateMessage(const vector<string>& vSymbol) {
+	vector<string> vSymbol2;
 	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();

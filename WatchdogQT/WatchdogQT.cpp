@@ -1,7 +1,4 @@
 #include "WatchdogQT.h"
-
-#include"../src/SystemPublicDeclaration.h"
-
 #include<QMessageBox>
 #include<QLabel>
 #include<QChronoTimer>
@@ -9,6 +6,8 @@
 #include<chrono>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/daily_file_sink.h>
+
+import SystemPublicDeclaration;
 
 using namespace std;
 

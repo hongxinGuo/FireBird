@@ -1,10 +1,10 @@
 module;
 
-#include"stdafx.h"
+#include <afxwin.h>
 
 export module MovingAverage;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
 import std;
 using std::vector;

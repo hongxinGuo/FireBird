@@ -1,14 +1,15 @@
 module;
 
-export module ContainerStockSymbol;
+export module Container.StockSymbol;
 
-import StockSection;
-import VirtualContainer;
+import ChinaMarket.StockSection;
+import Container;
 
 import std;
 using std::unordered_map;
 using std::string;
 using std::vector;
+using std::shared_ptr;
 
 export {
 	class CContainerStockSymbol : public CVirtualContainer {

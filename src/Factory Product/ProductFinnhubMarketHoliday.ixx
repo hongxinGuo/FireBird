@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubMaketHoliday;
+export module Product.Finnhub.MaketHoliday;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
 import MarketHoliday;
 

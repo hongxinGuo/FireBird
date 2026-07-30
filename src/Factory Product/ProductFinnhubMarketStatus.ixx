@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubMarketStatus;
+export module Product.Finnhub.MarketStatus;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
 import MarketStatus;
 

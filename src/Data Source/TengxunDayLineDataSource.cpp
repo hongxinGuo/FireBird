@@ -8,26 +8,29 @@
 ///
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
+module;
 
-#include"ChinaStockCodeConverter.h"
-#include "TengxunDayLineDataSource.h"
-#include"VirtualWebProduct.h"
-#include"SystemMessage.h"
-#include"ProductTengxunDayLine.h"
+module DataSource.TengxunDayLine;
 
-#include"ChinaMarket.h"
-#include "ContainerChinaStock.h"
-#include "EastmoneyDayLineDataSource.h"
-#include "spdlog_assert.h"
-#include "SystemConfiguration.h"
-#include "TimeConvert.h"
-#include "WebData.h"
-#include"ChinaStock.h"
+import ChinaStockCodeConverter;
+import Product;
+import SystemMessage;
+import Product.TengxunDayLine;
 
-#include <random>
+import Market.ChinaMarket;
+import Container.Stock.ChinaStock;
+import DataSource.EastmoneyDayLine;
+import SpdlogAssert;
+import SystemConfiguration;
+import TimeConvert;
+import WebData;
+import Stock.ChinaStock;
+
+import std;
+#include <afx.h>
 using std::uniform_int_distribution;
 using std::make_shared;
+using std::chrono::local_seconds;
 using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 
@@ -77,7 +80,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 		m_PrevInquireTimePoint += milliseconds(time);
 		TRACE("tengxunDayLine server suspended %d seconds\n", time / 1000);
 	}*/
-	if (llTickCount < m_PrevInquireTimePoint + milliseconds(4000 + mean)) return false;
+	if (llTickCount < m_PrevInquireTimePoint + std::chrono::milliseconds(4000 + mean)) return false;
 
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {
@@ -206,13 +209,13 @@ void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	// 第一次switch处理非json数据格式的错误
 	switch (m_dwHTTPStatusCode) {
 	case 501://请求功能尚未实现，实际是服务器正处于维护状态
-		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
+		m_PrevInquireTimePoint += std::chrono::seconds(1800); // 半小时后再查。
 		break;
 	case 200:
 		// everything is OK
 		break;
 	default: // something wrong,
-		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
+		m_PrevInquireTimePoint += std::chrono::seconds(1800); // 半小时后再查。
 		break;
 	}
 }

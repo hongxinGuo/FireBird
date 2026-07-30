@@ -1,10 +1,10 @@
 module;
 
-export module ContainerTiingoCryptoSymbol;
+export module Container.Stock.TiingoCryptoSymbol;
 
-import ContainerVirtualStock;
+import Container.Stock;
 
-import TiingoCrypto;
+import Stock.TiingoCrypto;
 
 import std;
 using std::shared_ptr;

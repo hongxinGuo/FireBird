@@ -15,178 +15,518 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.ixx" />
-    <ClInclude Include="..\src\accessory\InfoReport.ixx" />
-    <ClInclude Include="..\src\accessory\nlohmannJsonGetValue.ixx" />
-    <ClInclude Include="..\src\accessory\JsonParse.ixx" />
-    <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.ixx" />
-    <ClInclude Include="..\src\accessory\SaveAndLoad.ixx" />
-    <ClInclude Include="..\src\accessory\simdjsonGetValue.ixx" />
-    <ClInclude Include="..\src\accessory\spdlog_assert.ixx" />
-    <ClInclude Include="..\src\accessory\TimeConvert.ixx" />
-    <ClInclude Include="..\src\CharSetTransfer.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerChinaStockMonthLine.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerVirtualStock.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerChinaStockDayLine.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerChinaStock.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerChinaStockWeekLine.ixx" />
-    <ClInclude Include="..\src\Data Container\containerChosenCrypto.ixx" />
-    <ClInclude Include="..\src\Data Container\containerChosenForex.ixx" />
-    <ClInclude Include="..\src\Data Container\containerTiingoChosenStock.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCrypto.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerStockExchange.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerForexDayLine.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerSICIndustry.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerStockSymbol.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoIndustry.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStock.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.ixx" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.ixx" />
-    <ClInclude Include="..\src\Data Container\VirtualContainer.ixx" />
-    <ClInclude Include="..\src\Data Source\AccessoryDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\AlphaVantageDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\EastMoneyDayLineDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\InquireEngine.ixx" />
-    <ClInclude Include="..\src\Data Source\InternetOption.ixx" />
-    <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\FinnhubDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\SinaRTDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\TengxunRTDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\TiingoDataSource.ixx" />
-    <ClInclude Include="..\src\Data Source\VirtualDataSource.ixx" />
-    <ClInclude Include="..\src\dataBaseConnector.ixx" />
-    <ClInclude Include="..\src\Factory Product\AccessoryFactory.ixx" />
-    <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductEastmoneyDayline.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.ixx" />
-    <ClInclude Include="..\src\Factory Product\TestWebData.ixx" />
-    <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\FinnhubFactory.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductDummy.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhub.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderTransaction.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyNews.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyPeer.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyProfile.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyProfileConcise.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoExchange.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubCryptoSymbol.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubEconomicCalendar.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubEconomicCountryList.h" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexExchange.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubForexSymbol.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductFinnhubStockSymbol.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductSinaRT.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTengxunRT.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingo.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.ixx" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.ixx" />
-    <ClInclude Include="..\src\Factory Product\TiingoFactory.ixx" />
-    <ClInclude Include="..\src\Factory Product\VirtualDataFactory.ixx" />
-    <ClInclude Include="..\src\Factory Product\VirtualWebProduct.ixx" />
-    <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.ixx" />
-    <ClInclude Include="..\src\FinnhubInquiryType.ixx" />
-    <ClInclude Include="..\src\globedef.ixx" />
-    <ClInclude Include="..\src\log.ixx" />
-    <ClInclude Include="..\src\Market\ChinaMarket.ixx" />
-    <ClInclude Include="..\src\Market\MarketTask.ixx" />
-    <ClInclude Include="..\src\Market\MarketTaskQueue.ixx" />
-    <ClInclude Include="..\src\Market\VirtualMarket.ixx" />
-    <ClInclude Include="..\src\Market\WorldMarket.ixx" />
-    <ClInclude Include="..\src\nlohmannJsonDeclaration.ixx" />
-    <ClInclude Include="..\src\StockMarketSQLTable.h" />
-    <ClInclude Include="..\src\Stock\ChinaStock.ixx" />
-    <ClInclude Include="..\src\Stock\FinnhubCrypto.ixx" />
-    <ClInclude Include="..\src\Stock\FinnhubForex.ixx" />
-    <ClInclude Include="..\src\Stock\TiingoCrypto.ixx" />
-    <ClInclude Include="..\src\Stock\TiingoStock.ixx" />
-    <ClInclude Include="..\src\Stock\VirtualStock.ixx" />
-    <ClInclude Include="..\src\Stock\FinnhubStock.ixx" />
-    <ClInclude Include="..\src\SystempublicDeclaration.ixx" />
-    <ClInclude Include="..\src\System\InaccessibleSymbol.ixx" />
-    <ClInclude Include="..\src\System\Inaccessible.ixx" />
+    <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\InfoReport.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\nlohmannJsonGetValue.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\JsonParse.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\SaveAndLoad.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\simdjsonGetValue.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\spdlog_assert.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\TimeConvert.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\CharSetTransfer.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerChinaStockMonthLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockMonthLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockWeekLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerVirtualStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerChinaStockDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerChinaStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerChinaStockWeekLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\containerChosenCrypto.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\containerChosenForex.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\containerTiingoChosenStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerCryptoDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCountry.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoExchange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCrypto.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubForexExchange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerStockExchange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerForexDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerNaicsIndustry.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerSICIndustry.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerStockSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoCryptoSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoIndustry.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayline.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\VirtualContainer.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\AccessoryDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\AlphaVantageDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\EastMoneyDayLineDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\InquireEngine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\InternetOption.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\FinnhubDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\SinaRTDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TengxunRTDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TiingoDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\VirtualDataSource.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\dataBaseConnector.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\AccessoryFactory.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockSplits.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductEastmoneyDayline.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubSECFilings.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoForexDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStockDailyMeta.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\TestWebData.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\FinnhubFactory.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductDummy.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhub.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyInsiderTransaction.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyNews.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyPeer.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyProfile.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCompanyProfileConcise.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCryptoDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCryptoExchange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubCryptoSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubEconomicCalendar.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubEconomicCountryList.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubForexDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubForexExchange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubForexSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductSinaRT.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTengxunRT.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingo.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStockProfile.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\TiingoFactory.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\VirtualDataFactory.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\VirtualWebProduct.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\FinnhubInquiryType.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\globedef.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\log.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\ChinaMarket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\MarketTask.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\MarketTaskQueue.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\VirtualMarket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\WorldMarket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\nlohmannJsonDeclaration.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\StockMarketSQLTable.h" />
+    <ClCompile Include="..\src\Stock\ChinaStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\FinnhubCrypto.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\FinnhubForex.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\TiingoCrypto.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\TiingoStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\VirtualStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\FinnhubStock.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\SystempublicDeclaration.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\System\InaccessibleSymbol.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\System\Inaccessible.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClInclude Include="..\Lib\simdjson\simdjson.h">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsHeaderUnit</CompileAs>
+    </ClInclude>
     <ClInclude Include="..\src\System\Initialization.h" />
-    <ClInclude Include="..\src\System\SystemConfiguration.ixx" />
-    <ClInclude Include="..\src\System\SystemConstantChinaMarket.ixx" />
-    <ClInclude Include="..\src\System\SystemData.ixx" />
-    <ClInclude Include="..\src\System\SystemMessage.ixx" />
-    <ClInclude Include="..\src\Thread.ixx" />
-    <ClInclude Include="..\src\Type\America market\Country.ixx" />
-    <ClInclude Include="..\src\Type\America market\EconomicCalendar.ixx" />
-    <ClInclude Include="..\src\Type\America market\EPSSurprise.ixx" />
-    <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.ixx" />
-    <ClInclude Include="..\src\Type\America market\FinnhubCompanySymbolChange.ixx" />
-    <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.ixx" />
-    <ClInclude Include="..\src\Type\America market\StockExchange.ixx" />
-    <ClInclude Include="..\src\Type\America market\InsiderSentiment.ixx" />
-    <ClInclude Include="..\src\Type\America market\InsiderTransaction.ixx" />
-    <ClInclude Include="..\src\Type\America market\MarketHoliday.ixx%3b" />
-    <ClInclude Include="..\src\Type\America market\MarketStatus.ixx" />
-    <ClInclude Include="..\src\Type\America market\NaicsIndustry.ixx" />
-    <ClInclude Include="..\src\Type\America market\TiingoCandleLine.ixx" />
-    <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.ixx" />
-    <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.ixx" />
-    <ClInclude Include="..\src\Type\America market\TiingoIndustry.ixx" />
-    <ClInclude Include="..\src\Type\America market\TiingoMarketNews.ixx" />
-    <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.ixx" />
-    <ClInclude Include="..\src\Type\China market\DayLine.ixx" />
-    <ClInclude Include="..\src\Type\China market\DayLineWebData.ixx" />
-    <ClInclude Include="..\src\Type\China market\MonthLine.ixx" />
-    <ClInclude Include="..\src\Type\China market\StockSection.ixx" />
-    <ClInclude Include="..\src\Type\China market\WebData.ixx" />
-    <ClInclude Include="..\src\Type\China market\WebRTData.ixx" />
-    <ClInclude Include="..\src\Type\China market\WeekLine.ixx" />
-    <ClInclude Include="..\src\Type\CountableSemaphore.ixx" />
-    <ClInclude Include="..\src\Type\SECFiling.ixx" />
-    <ClInclude Include="..\src\Type\StockSplit.ixx" />
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorBoll.ixx" />
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.ixx" />
-    <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.ixx" />
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorMACD.ixx" />
-    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorRSI.ixx" />
-    <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.ixx" />
-    <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.ixx" />
-    <ClInclude Include="..\src\Type\VirtualHistoryCandle.ixx" />
-    <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.ixx" />
-    <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.ixx" />
-    <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.ixx" />
-    <ClInclude Include="..\src\WebSocket\TiingoIEXWebSocket.ixx" />
-    <ClInclude Include="..\src\WebSocket\VirtualWebSocket.ixx" />
+    <ClCompile Include="..\src\System\SystemConfiguration.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\System\SystemConstantChinaMarket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\System\SystemData.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\System\SystemMessage.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClInclude Include="..\src\targetver.h" />
+    <ClCompile Include="..\src\Thread.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\Country.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\EconomicCalendar.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\EPSSurprise.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubCompanySymbolChange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\StockExchange.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\InsiderSentiment.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\InsiderTransaction.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\MarketHoliday.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\MarketStatus.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\NaicsIndustry.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoCandleLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoIEXTopOFBook.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoIndustry.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoMarketNews.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoStockDailyMeta.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\DayLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\DayLineWebData.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\MonthLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\StockSection.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\WebData.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\WebRTData.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\WeekLine.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\CountableSemaphore.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\SECFiling.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\StockSplit.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorBoll.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorMACD.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorRSI.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\VirtualHistoryCandle.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoCryptoWebSocket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoForexWebSocket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoIEXWebSocket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\VirtualWebSocket.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
@@ -287,9 +627,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockProfile.cpp" />
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp" />
-    <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualWebProduct.cpp" />
-    <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp" />
     <ClCompile Include="..\src\FinnhubInquiryType.cpp" />
     <ClCompile Include="..\src\globedef.cpp" />
     <ClCompile Include="..\src\Market\ChinaMarket.cpp" />
@@ -297,11 +635,6 @@
     <ClCompile Include="..\src\Market\MarketTaskQueue.cpp" />
     <ClCompile Include="..\src\Market\VirtualMarket.cpp" />
     <ClCompile Include="..\src\Market\WorldMarket.cpp" />
-    <ClCompile Include="..\src\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\src\Stock\ChinaStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubForex.cpp" />
@@ -476,6 +809,7 @@
       <EnableModules>false</EnableModules>
       <AdditionalOptions>/utf-8</AdditionalOptions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -513,6 +847,7 @@
       <AdditionalOptions>/utf-8</AdditionalOptions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -547,6 +882,7 @@
       <EnableModules>false</EnableModules>
       <AdditionalOptions>/utf-8</AdditionalOptions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>

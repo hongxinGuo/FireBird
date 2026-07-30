@@ -6,9 +6,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-#include<string>
+export module SystemPublicDeclaration;
 
-export module SystempublicDeclaration;
+import std;
 
 export {
 	inline std::wstring gl_wsFireBirdRunning{ L"FireBirdStockAnalysisRunningMutex" };

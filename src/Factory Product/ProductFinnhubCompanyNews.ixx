@@ -6,10 +6,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-export module ProductFinnhubCommpanyNews;
+export module Product.Finnhub.CommpanyNews;
 
-import ProductFinnhub;
-import CFinnhubCompanyNews;
+import Product.Finnhub;
+import FinnhubCompanyNews;
+import WebData;
 
 import std;
 using std::string;

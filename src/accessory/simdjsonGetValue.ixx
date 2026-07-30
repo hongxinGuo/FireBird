@@ -1,13 +1,14 @@
 module;
 
-#include"simdjson.h"
 #include"stdafx.h"
+#include"simdjson.h"
 
-export module SimdjsonGetValue;
+export module Simdjson.GetValue;
 
 
 using namespace simdjson;
 
+import std;
 using std::string_view;
 
 export {

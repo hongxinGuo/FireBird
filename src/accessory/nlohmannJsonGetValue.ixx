@@ -1,8 +1,10 @@
 module;
 
-#include"nlohmannJsonDeclaration.h"
+export module NlohmannJsonGetValue;
 
-export module nlohmannJsonGetValue;
+import NlohmannJsonDeclaration;
+
+import std;
 
 export {
 	[[nodiscard]] nlohmannJson jsonGetChild(nlohmannJson* pjs, const char* szKey);

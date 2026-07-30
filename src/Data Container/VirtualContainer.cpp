@@ -1,8 +1,11 @@
-#include "pch.h"
+module;
 
-#include "VirtualContainer.h"
+module Container;
 
-#include "ChinaStockCodeConverter.h"
+import ChinaStockCodeConverter;
+
+import std;
+using std::string;
 
 CVirtualContainer::CVirtualContainer() {
 	CVirtualContainer::Reset();

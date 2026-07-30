@@ -2,21 +2,21 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"pch.h"
+module;
 
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+module SystemConfiguration;
 
-#include"SystemConfiguration.h"
+import NlohmannJsonDeclaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+import DataSource.SinaRT;
+import DataSource.TengxunRT;
+import TimeConvert;
+#include <afx.h>
+#include <direct.h>
 
-#include "SinaRTDataSource.h"
-#include"TimeConvert.h"
-
-#include <fstream>
 using std::fstream;
 
-using namespace std;
-
-#include "TengxunRTDataSource.h"
+import std;
+using std::literals::chrono_literals::operator""ms;
 
 bool CSystemConfiguration::sm_bInitialized = false;
 
@@ -131,7 +131,7 @@ CSystemConfiguration::~CSystemConfiguration() {
 void CSystemConfiguration::UpdateDB() {
 	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + "json";
 	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + "bak";
-	filesystem::remove(GetConfigurationFileDirectory() + strNew);
+	std::filesystem::remove(GetConfigurationFileDirectory() + strNew);
 	rename((GetConfigurationFileDirectory() + strOld).c_str(), (GetConfigurationFileDirectory() + strNew).c_str()); // 保存备份
 
 	SaveDB();
@@ -426,7 +426,7 @@ void CSystemConfiguration::Update(shared_ptr<nlohmannJson> pJsonData) {
 
 void CSystemConfiguration::UpdateJsonData(shared_ptr<nlohmannJson> pJsonData) {
 	pJsonData->clear(); // 清除之前的数据。
-	wstring ws;
+	std::wstring ws;
 
 	// system
 	(*pJsonData)["SystemConfiguration"]["LogLevel"] = m_iLogLevel;
@@ -547,9 +547,9 @@ bool CSystemConfiguration::IsWebBusy() {
 }
 
 bool CSystemConfiguration::LoadDB() {
-	fstream f(GetConfigurationFileDirectoryAndName(), ios::in);
+	fstream f(GetConfigurationFileDirectoryAndName(), std::ios::in);
 	if (f.is_open()) {
-		shared_ptr<nlohmannJson> systemConfiguration = make_shared<nlohmannJson>();
+		shared_ptr<nlohmannJson> systemConfiguration = std::make_shared<nlohmannJson>();
 		f >> *systemConfiguration;
 		//systemConfiguration = nlohmannJson::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
 		f.close();
@@ -560,10 +560,10 @@ bool CSystemConfiguration::LoadDB() {
 }
 
 void CSystemConfiguration::SaveDB() {
-	shared_ptr<nlohmannJson> pSystemConfiguration = make_shared<nlohmannJson>();
+	shared_ptr<nlohmannJson> pSystemConfiguration = std::make_shared<nlohmannJson>();
 
 	UpdateJsonData(pSystemConfiguration);
-	fstream f(GetConfigurationFileDirectoryAndName(), ios::out);
+	fstream f(GetConfigurationFileDirectoryAndName(), std::ios::out);
 	f << *pSystemConfiguration;
 	f.close();
 }

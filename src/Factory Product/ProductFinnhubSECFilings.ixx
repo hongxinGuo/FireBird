@@ -1,9 +1,9 @@
 module;
 
-export module ProductFinnhubSECFilings;
+export module Product.Finnhub.SECFilings;
 
-import ProductFinnhub;
-
+import Product.Finnhub;
+import WebData;
 import SECFiling;
 
 import std;

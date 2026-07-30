@@ -1,15 +1,16 @@
 module;
+#include"sqlpp23/sqlpp23.h"
+#include"sqlpp23/mysql/mysql.h"
+export module Market.ChinaMarket;
 
-export module ChinaMarket;
-
-import VirtualMarket;
+import GlobeDef;
+import Market;
 import WebRTData;
-
-import VirtualHistoryCandle;
-import ChinaStock;
+import TimeConvert;
+import HistoryCandle;
+import Stock.ChinaStock;
 
 import std;
-#include <sqlpp23/core/clause/having.h>
 using std::set;
 using std::chrono::sys_seconds;
 using std::chrono::duration;
@@ -21,7 +22,8 @@ using std::atomic_int;
 using std::binary_semaphore;
 using std::shared_ptr;
 using std::int64_t;
-
+using std::string;
+using std::vector;
 
 export {
 

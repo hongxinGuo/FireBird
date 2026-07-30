@@ -1,13 +1,17 @@
-#include"pch.h"
+module;
 
-#include "InfoReport.h"
+#include <ATLComMem.h>
+module InfoReport;
 
-#include "CharSetTransfer.h"
-#include "SystemMessage.h"
-#include "SystempublicDeclaration.h"
+import CharSetTransfer;
+import SystemMessage;
+import SystemPublicDeclaration;
 
+import std;
 using std::exception;
 using std::wstring;
+using std::string;
+using std::format;
 
 void ReportErrorToSystemMessage(const string& strPrefix, const exception& e) {
 	string strError = strPrefix;

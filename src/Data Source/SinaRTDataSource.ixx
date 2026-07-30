@@ -1,8 +1,8 @@
 module;
 
-export module SinaRTDataSource;
+export module DataSource.SinaRT;
 
-import VirtualDataSource;
+import DataSource;
 import WebData;
 
 import std;

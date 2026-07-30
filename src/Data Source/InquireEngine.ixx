@@ -3,11 +3,9 @@ module;
 
 export module InquireEngine;
 
-
-import InternetOptionl
-
+import InternetOption;
 import WebData;
-import VirtualWebProduct;
+import Product;
 import std;
 
 using std::string;

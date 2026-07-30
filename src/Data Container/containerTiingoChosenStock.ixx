@@ -1,10 +1,10 @@
 module;
 
-export module ContainerTiingoChosenStock;
+export module Container.Stock.TiingoChosenStock;
 
-import ContainerVirtualStock;
+import Container.Stock;
 
-import TiingoStock;
+import Stock.TiingoStock;
 
 import std;
 using std::string;

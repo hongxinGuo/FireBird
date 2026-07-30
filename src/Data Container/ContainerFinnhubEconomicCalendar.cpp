@@ -1,11 +1,10 @@
-#include "pch.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
-#include "dataBaseConnector.h"
-
-#include "ContainerFinnhubEconomicCalendar.h"
-
 #include"StockMarketSQLTable.h"
+
+module ContainerFinnhubEconomicCalendar;
+
+import DatabaseConnector;
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();

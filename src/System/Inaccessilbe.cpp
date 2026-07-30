@@ -1,6 +1,6 @@
-#include "pch.h"
+module;
 
-#include "Inaccessible.h"
+module Inaccessible;
 
 namespace {
 	std::string Test_gl_sFinnhubInaccessibleSymbol = R"(

@@ -69,16 +69,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="..\src\Windows interface\FireBird.h">
+    <ClInclude Include="..\src\Windows interface\ChildFrm.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Windows interface\ChildFrm.h">
+    <ClInclude Include="..\src\Windows interface\FireBird.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBirdDoc.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBirdView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\GridProperty.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\MainFrm.h">
@@ -93,10 +96,7 @@
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SystemPublicDeclaration.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\GridProperty.h">
+    <ClInclude Include="..\src\SystempublicDeclaration.ixx">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

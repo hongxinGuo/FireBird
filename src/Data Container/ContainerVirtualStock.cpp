@@ -1,9 +1,13 @@
-#include "pch.h"
+module;
 
-#include "ContainerVirtualStock.h"
+module Container.Stock;
 
-#include "VirtualStock.h"
-#include "VirtualWebSocket.h"
+import Stock;
+
+import std;
+using std::vector;
+using std::string;
+using std::shared_ptr;
 
 CContainerVirtualStock::CContainerVirtualStock() {
 	CContainerVirtualStock::Reset();
@@ -20,8 +24,8 @@ string CContainerVirtualStock::GetItemSymbol(size_t lIndex) {
 	return m_vStock.at(lIndex)->GetSymbol();
 }
 
-vectorString CContainerVirtualStock::GetSymbols() {
-	vectorString vSymbol;
+vector<string> CContainerVirtualStock::GetSymbols() {
+	vector<string> vSymbol;
 	for (size_t l = 0; l < Size(); l++) {
 		vSymbol.push_back(GetItemSymbol(l));
 	}
@@ -52,7 +56,7 @@ bool CContainerVirtualStock::IsUpdateDayLineDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateDayLineDB(); });
 }
 
-shared_ptr<CVirtualStock> CContainerVirtualStock::Get(const size_t lIndex) {
+shared_ptr<CVirtualStock> CContainerVirtualStock::Get(size_t lIndex) {
 	return m_vStock.at(lIndex);
 }
 

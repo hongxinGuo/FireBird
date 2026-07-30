@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubCryptoExchange;
+export module Product.Finnhub.CryptoExchange;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
 
 import std;

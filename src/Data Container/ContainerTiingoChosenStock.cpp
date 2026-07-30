@@ -1,13 +1,17 @@
-#include "pch.h"
-
-#include "ContainerTiingoChosenStock.h"
-#include "TiingoStock.h"
-
-#include<sqlpp23/sqlpp23.h>
-
-#include "ContainerTiingoStock.h"
-#include "dataBaseConnector.h"
+module;
+#include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
+
+module Container.Stock.TiingoChosenStock;
+
+import Container.Stock.TiingoStock;
+import DatabaseConnector;
+import Stock.TiingoStock;
+
+import std;
+using std::dynamic_pointer_cast;
+using std::string;
+using std::vector;
 
 CContainerTiingoChosenStock::CContainerTiingoChosenStock() {
 	CContainerTiingoChosenStock::Reset();
@@ -24,7 +28,7 @@ bool CContainerTiingoChosenStock::LoadDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
+	size_t rows = result.size(); //Todo:
 	Reserve(rows + 10);
 	for (const auto& row : result) {
 		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
@@ -49,8 +53,8 @@ void CContainerTiingoChosenStock::UpdateDB() const {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
-	vSymbol.reserve(rows);
+	//size_t rows = result.size(); //Todo:
+	vSymbol.reserve(100 + 10);
 	for (const auto& row : result) {
 		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
 			vSymbol.push_back(string{ row.Symbol });

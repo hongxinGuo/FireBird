@@ -1,14 +1,20 @@
-#include "pch.h"
-
-#include "ContainerForexDayLine.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
-#include "FinnhubForex.h"
 #include"StockMarketSQLTable.h"
-#include "TiingoCandleLine.h"
-#include"TimeConvert.h"
+
+module Container.HistoryCandle.ForexDayLine;
+
+
+import DatabaseConnector;
+import Stock.FinnhubForex;
+import HistoryCandle;
+import HistoryCandle.DayLine;
+import HistoryCandle.TiingoCandleLine;
+import TimeConvert;
+
+import std;
+using std::vector;
+using std::string;
 
 namespace {
 	CFinnhubForex s_stock;

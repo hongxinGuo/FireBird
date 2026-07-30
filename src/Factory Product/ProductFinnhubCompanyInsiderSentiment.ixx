@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhhubCompanyInsiderSentiment;
+export module Product.Finnhhub.CompanyInsiderSentiment;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
 import InsiderSentiment;
 

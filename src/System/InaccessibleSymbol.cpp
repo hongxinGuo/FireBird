@@ -1,17 +1,16 @@
-#include "pch.h"
+module;
 
-#include"FinnhubInquiryType.h"
+module InaccessibleSymbol;
 
-#include "InaccessibleSymbol.h"
-#include"TimeConvert.h"
+import FinnhubInquiryType;
+import TimeConvert;
+import SystemConfiguration;
 
-#include<fstream>
+import std;
 using std::fstream;
 using std::ios;
 using std::make_shared;
 using namespace std;
-
-#include "SystemConfiguration.h"
 
 CInaccessibleSymbol::CInaccessibleSymbol(const string& strFileName) {
 	m_strFileName = strFileName;

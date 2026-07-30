@@ -1,10 +1,10 @@
 module;
 
-export module ContainerFinnhubStock;
+export module Container.Stock.FinnhubStock;
 
-import ContainerVirtualStock;
+import Container.Stock;
 
-import FinnhubStock;
+import Stock.FinnhubStock;
 
 import std;
 using std::shared_ptr;

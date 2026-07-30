@@ -1,8 +1,8 @@
 module;
 
-export module ProductTiingoFinancialState;
+export module Product.Tiingo.FinancialState;
 
-import ProductTiingo;
+import Product.Tiingo;
 import WebData;
 import TiingoCompanyFinancialState;
 

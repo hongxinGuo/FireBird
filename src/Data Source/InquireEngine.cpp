@@ -4,21 +4,29 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
+module;
+#include <afxinet.h>
+#include <WinInet.h>
 
-#include "SystemMessage.h"
-#include "InquireEngine.h"
 
-#include "CharSetTransfer.h"
-#include"Thread.h"
-#include"WebData.h"
+module InquireEngine;
 
-#include "InfoReport.h"
-#include "spdlog_assert.h"
-#include "SystemConfiguration.h"
+import SystemMessage;
+import GlobeDef;
+import CharSetTransfer;
+import Thread;
+import WebData;
 
+import InfoReport;
+import SpdlogAssert;
+import SystemConfiguration;
+import InternetOption;
+
+import std;
 using std::make_shared;
 using std::wstring;
+using std::string;
+using std::string_view;
 
 CInquireEngine::CInquireEngine() : m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。

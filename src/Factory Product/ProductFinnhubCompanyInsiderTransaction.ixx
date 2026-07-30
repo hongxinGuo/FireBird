@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubCompanyInsiderTransaction;
+export module Product.Finnhub.CompanyInsiderTransaction;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
 import InsiderTransaction;
 

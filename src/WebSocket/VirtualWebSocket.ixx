@@ -9,10 +9,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
+#include <afx.h>
 #include <ixwebsocket/IXWebSocket.h>
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
-export module VirtualWebSocket;
+export module WebSocket;
 
 using namespace moodycamel;
 
@@ -36,26 +37,26 @@ export {
 		std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
 		void Reset();
 
-		virtual void TaskConnectAndSendMessage(const vectorString& vSymbol);
+		virtual void TaskConnectAndSendMessage(const vector<string>& vSymbol);
 		virtual void TaskDisconnect();
-		bool ConnectAndSendMessage(const vectorString& vSymbol);
+		bool ConnectAndSendMessage(const vector<string>& vSymbol);
 		void Disconnect();
 
 		virtual bool ParseWebSocketData(std::shared_ptr<string>) { return true; }
 
 	protected:
 		virtual void Connect() { ASSERT(false); }
-		virtual void Send(const vectorString&) { ASSERT(FALSE); }
+		virtual void Send(const vector<string>&) { ASSERT(FALSE); }
 		void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 		virtual void StartWebSocket() { m_webSocket.start(); } // start()为异步的。为了测试，将此函数声明为虚函数
 		virtual void StopWebSocket() { m_webSocket.stop(); } // stop()是同步的。为了测试，将此函数声明为虚函数
 
 	public:
-		void MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol);
+		void MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vector<string>& vSymbol);
 
 	public:
 		bool IsSymbol(const string& sSymbol) const { return m_mapSymbol.contains(sSymbol); }
-		void AppendSymbol(const vectorString& vSymbol);
+		void AppendSymbol(const vector<string>& vSymbol);
 		bool AddSymbol(const string& sSymbol);
 		bool DeleteSymbol(const string& sSymbol);
 		void ClearSymbol();

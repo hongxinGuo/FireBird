@@ -17,6 +17,9 @@ export module Thread;
 
 using namespace concurrencpp;
 
+import std;
+using std::uint32_t;
+
 export {
 	extern concurrencpp::runtime gl_runtime;
 	extern concurrencpp::thread_pool_executor gl_webInquiryExecutor; // 网络申请线程池工作线程运行调度器

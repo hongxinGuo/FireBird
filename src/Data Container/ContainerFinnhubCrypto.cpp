@@ -1,16 +1,16 @@
-#include "pch.h"
-
-#include "ContainerFinnhubCrypto.h"
-
-#include"FinnhubCrypto.h"
-#include "InfoReport.h"
-
-#include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
+module;
+#include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
+module Container.Stock.FinnhubCrypto;
+
+import FinnhubCrypto;
+import InfoReport;
+import DatabaseConnector;
+
+import std;
 using std::make_shared;
+using std::string;
 
 CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();
@@ -56,7 +56,6 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 
 void CContainerFinnhubCrypto::UpdateProfileDB() {
 	if (IsUpdateProfileDB()) {
-		try {
 			using namespace StockMarket;
 			const auto& t = FinnhubCryptoSymbol{};
 			auto db = gl_dbStockMarket.get();
@@ -89,9 +88,6 @@ void CContainerFinnhubCrypto::UpdateProfileDB() {
 				}
 			}
 			tx.commit();
-		} catch (CException& e) {
-			ReportInformation(e);
-		}
 	}
 }
 

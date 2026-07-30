@@ -1,12 +1,16 @@
-#include "pch.h"
-
-#include<sqlpp23/sqlpp23.h>
-
-#include "containerChosenCrypto.h"
-#include "ContainerFinnhubCrypto.h"
-#include "dataBaseConnector.h"
+module;
+#include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
-#include "FinnhubCrypto.h"
+
+module ContainerChosenCrypto;
+
+import Container.Stock.FinnhubCrypto;
+import DatabaseConnector;
+import FinnhubCrypto;
+
+import std;
+using std::dynamic_pointer_cast;
+using std::string;
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();
@@ -23,8 +27,8 @@ bool CContainerChosenCrypto::LoadDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
-	Reserve(rows + 10);
+	//size_t rows = result.size(); //Todo: 
+	Reserve(100 + 10);
 	for (const auto& row : result) {
 		if (gl_dataFinnhubCryptoSymbol.IsSymbol(string{ row.Symbol })) {
 			auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(string{ row.Symbol });

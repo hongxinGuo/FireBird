@@ -1,12 +1,13 @@
 module;
 
-export module ProductDummy;
+export module Product.Dummy;
 
-import VirtualWebProduct;
+import Product;
 import WebData;
 
 import std;
 using std::shared_ptr;
+using std::string;
 
 export {
 	class CProductDummy final : public CVirtualWebProduct {

@@ -1,15 +1,15 @@
-#include "pch.h"
-#include "ContainerCryptoDayLine.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
-#include "FinnhubCrypto.h"
 #include"StockMarketSQLTable.h"
-#include"VirtualHistoryCandle.h"
-#include"DayLine.h"
 
-#include"TimeConvert.h"
+module Container.HistoryCandle.CryptoDayLine;
+
+
+import DatabaseConnector;
+import Stock.FinnhubCrypto;
+import HistoryCandle;
+import HistoryCandle.DayLine;
+import TimeConvert;
 
 namespace {
 	CFinnhubCrypto s_stock;

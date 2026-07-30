@@ -1,8 +1,8 @@
 module;
 
-export module DayLine;
+export module HistoryCandle.DayLine;
 
-import VirtualHistoryCandle;
+import HistoryCandle;
 
 import std;
 using std::vector;

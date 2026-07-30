@@ -1,8 +1,9 @@
 module;
+#include "IXWebSocketMessage.h"
 
-export module FinnhubWebSocket;
+export module WebSocket.Finnhub;
 
-import VirtualWebSocket;
+import WebSocket;
 
 import std;
 using std::string;

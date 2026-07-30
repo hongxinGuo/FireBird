@@ -1,10 +1,10 @@
 module;
 
-export module ContainerTiingoStockMonthLine;
+export module Container.HistoryCandle.TiingoStockMonthLine;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
-import TiingoCandleLine;
+import HistorCandle.TiingoCandleLine;
 
 import std;
 using std::shared_ptr;

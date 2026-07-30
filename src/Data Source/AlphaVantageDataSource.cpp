@@ -1,20 +1,21 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include "AlphaVantageDataSource.h"
+module DataSource.AlphaVantage;
 
-#include "ContainerTiingoStock.h"
-#include "FinnhubInquiryType.h"
-#include "WorldMarket.h"
-#include"VirtualWebProduct.h"
-#include"FinnhubStock.h"
-#include"AlphaVantageFactory.h"
+import Container.Stock.TiingoStock;
+import FinnhubInquiryType;
+import Market.WorldMarket;
+import Product;
+import Stock.FinnhubStock;
+import Factory.AlphaVantage;
 
-#include "ContainerFinnhubStock.h"
-#include "TiingoStock.h"
+import Container.Stock.FinnhubStock;
+import Stock.TiingoStock;
 
-#include "spdlog_assert.h"
-#include "SystemConfiguration.h"
-#include "SystemMessage.h"
+import SpdlogAssert;
+import SystemConfiguration;
+import SystemMessage;
 
 namespace {
 	auto s_setIndex = [](auto& product, long pos) { product->SetIndex(pos); };

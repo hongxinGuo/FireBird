@@ -9,17 +9,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
+#include <afx.h>
 #include <intsafe.h>
-export module VirtualHistoryCandle;
+export module HistoryCandle;
 
 import std;
-
 using std::string;
 using std::string_view;
 using std::vector;
 using std::chrono::local_days;
 using std::chrono::local_seconds;
 using std::chrono::days;
+using std::shared_ptr;
 
 export {
 	class CVirtualHistoryCandle {

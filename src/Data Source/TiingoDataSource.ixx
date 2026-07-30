@@ -1,10 +1,10 @@
 module;
 
-export module TiingoDataSource;
+export module DataSource.Tiingo;
 
-import VirtualDataSource;
+import DataSource;
 import WebData;
-import TiingoFactory;
+import Factory.Tiingo;
 
 import std;
 using std::unique_ptr;

@@ -4,6 +4,7 @@ export module ChinaStockCodeConverter;
 
 import std;
 using std::string;
+using std::string_view;
 
 export {
 	// 股票代码采用国家标准制式

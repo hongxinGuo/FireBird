@@ -1,14 +1,17 @@
-#include"pch.h"
-
-#include"WorldMarket.h"
-#include "FinnhubCrypto.h"
-#include"ContainerCryptoDayLine.h"
-
-#include<sqlpp23/sqlpp23.h>
+module;
 #include"StockMarketSQLTable.h"
-#include"TimeConvert.h"
+#include"afx.h"
+module FinnhubCrypto;
 
-#include"dataBaseConnector.h"
+import sqlpp23.core;
+import sqlpp23.mysql;
+
+import WorldMarket;
+import ContainerCryptoDayLine;
+
+import TimeConvert;
+
+import Database.Connector;
 
 using namespace std;
 

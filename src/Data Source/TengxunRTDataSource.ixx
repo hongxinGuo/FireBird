@@ -1,8 +1,8 @@
 module;
 
-export module TengxunRTDataSource;
+export module DataSource.TengxunRT;
 
-import VirtualDataSource;
+import DataSource;
 import WebData;
 
 import std;

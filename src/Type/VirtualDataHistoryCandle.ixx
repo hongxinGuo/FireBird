@@ -5,10 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
+#include <afx.h>
+#include <afxwin.h>
 
-#include"stdafx.h"
+export module Container.HistoryCandle;
 
-export module VirtualDataHistoryCandle;
+import HistoryCandle;
+import HistoryCandle.DayLine;
 
 import std;
 using std::atomic_bool;
@@ -17,8 +20,6 @@ using std::string;
 using std::vector;
 using std::chrono::local_days;
 
-import DayLine;
-import VirtualHistoryCandle;
 
 export {
 	class CVirtualDataHistoryCandle {

@@ -5,63 +5,76 @@
 // 默认状态为正常工作状态，装入工作数据库；测试状态由测试主函数设定，重新装入测试数据库。
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-#include"pch.h"
+module;
+#include <concurrentqueue/moodycamel/concurrentqueue.h>
 
-#include"log.h"
-#include"SystemData.h"
-#include"SystemMessage.h"
-
-#include"FinnhubInquiryType.h"
-#include"InaccessibleSymbol.h"
-
-#include"FinnhubDataSource.h"
-#include"SinaRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include"TengxunDayLineDataSource.h"
-#include"TiingoDataSource.h"
-
-#include"FinnhubWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-#include"TiingoForexWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-
-#include "ChinaMarket.h"
-#include "WorldMarket.h"
-
-#include "AccessoryDataSource.h"
-
-#include "containerChosenCrypto.h"
-
-#include "AlphaVantageDataSource.h"
-#include "ContainerChinaStock.h"
-#include "ContainerChosenForex.h"
-#include "ContainerFinnhubCountry.h"
-#include "ContainerFinnhubCrypto.h"
-#include "ContainerFinnhubCryptoExchange.h"
-#include "ContainerFinnhubEconomicCalendar.h"
-#include "ContainerFinnhubForexExchange.h"
-#include "containerFinnhubForexSymbol.h"
-#include "ContainerStockExchange.h"
-#include "ContainerFinnhubStock.h"
-#include "ContainerStockSymbol.h"
-#include "ContainerTiingoChosenStock.h"
-#include "ContainerTiingoCryptoSymbol.h"
-#include "ContainerTiingoFundamentalDefinition.h"
-#include "ContainerTiingoStock.h"
-#include "ContainerTiingoSymbol.h"
-#include "CountableSemaphore.h"
-#include "EastmoneyDayLineDataSource.h"
-#include "SystemConfiguration.h"
 #include"concurrencpp/concurrencpp.h"
+#include"spdlog/spdlog.h"
+#include"stdafx.h"
+
+module GlobeDef;
+
+import SystemData;
+import SystemMessage;
+import MarketTask;
+
+import WebRTData;
+import DayLineWebData;
+
+import FinnhubInquiryType;
+import InaccessibleSymbol;
+
+import FinnhubDataSource;
+import SinaRTDataSource;
+import TengxunRTDataSource;
+import TengxunDayLineDataSource;
+import TiingoDataSource;
+
+import FinnhubWebSocket;
+import TiingoCryptoWebSocket;
+import TiingoForexWebSocket;
+import TiingoIEXWebSocket;
+
+import VirtualMarket;
+import ChinaMarket;
+import WorldMarket;
+
+import AccessoryDataSource;
+
+import ContainerChosenCrypto;
+
+import AlphaVantageDataSource;
+import ContainerChinaStock;
+import ContainerChosenForex;
+import ContainerFinnhubCountry;
+import ContainerFinnhubCrypto;
+import ContainerFinnhubCryptoExchange;
+import ContainerFinnhubEconomicCalendar;
+import ContainerFinnhubForexExchange;
+import ContainerFinnhubForexSymbol;
+import ContainerStockExchange;
+import ContainerFinnhubStock;
+import ContainerStockSymbol;
+import ContainerTiingoChosenStock;
+import ContainerTiingoCryptoSymbol;
+import ContainerTiingoFundamentalDefinition;
+import ContainerTiingoStock;
+import ContainerTiingoSymbol;
+import CountableSemaphore;
+import EastmoneyDayLineDataSource;
+import SystemConfiguration;
+
 using namespace concurrencpp;
 
-HANDLE gl_hFireBirdMutex{ nullptr };
+import std;
+using std::shared_ptr;
+using std::binary_semaphore;
+using std::array;
+using std::vector;
+using std::string;
+using std::literals::chrono_literals::operator ""ms;
 
-shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
-shared_ptr<spdlog::logger> gl_traceLogger; // 跟踪日志，用于系统调试
-shared_ptr<spdlog::logger> gl_errorLogger; // 错误跟踪日志，用于系统调试，默认日志。
-shared_ptr<spdlog::logger> gl_dailyWebSocketLogger = nullptr;
-shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger = nullptr;
+HANDLE gl_hFireBirdMutex{ nullptr };
 
 // 以下变量皆为唯一实例
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
@@ -114,8 +127,8 @@ CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
 CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
 
 // 处理后的数据
-ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(100000); // 中国市场新浪实时数据队列。
-ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
+moodycamel::ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(100000); // 中国市场新浪实时数据队列。
+moodycamel::ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
 
 // ChinaMarket处理的数据
 CContainerChinaStock gl_dataContainerChinaStock;

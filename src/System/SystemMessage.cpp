@@ -1,12 +1,13 @@
-#include"pch.h"
+module;
 
-#include "SystemMessage.h"
+module SystemMessage;
 
 #include <semaphore>
 
-#include"OutputWnd.h"
-#include "SystemConfiguration.h"
+import SystemConfiguration;
+import OutputWnd;
 
+import std;
 using std::map;
 using std::binary_semaphore;
 

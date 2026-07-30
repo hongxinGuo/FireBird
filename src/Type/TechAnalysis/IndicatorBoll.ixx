@@ -1,9 +1,10 @@
 module;
 
+#include <afxwin.h>
 export module IndicatorBoll;
 
-import VirtualHistoryCandle;
-import VirtualDataHistoryCandle;
+import HistoryCandle;
+import Container.HistoryCandle;
 
 import std;
 using std::chrono::local_days;

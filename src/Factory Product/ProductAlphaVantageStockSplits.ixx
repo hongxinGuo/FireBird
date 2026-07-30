@@ -1,8 +1,8 @@
 module;
 
-export module ProductAlphaVantageStockSplits;
+export module Product.AlphaVantage.StockSplits;
 
-import ProductAlphaVantage;
+import Product.AlphaVantage;
 
 import WebData;
 import StockSplit;

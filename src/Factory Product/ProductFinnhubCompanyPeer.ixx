@@ -1,10 +1,10 @@
 module;
 
-export module ProductFinnhubCompanyPeer;
+export module Product.Finnhub.CompanyPeer;
 
 import WebData;
 import NlohmannJsonDeclaration;
-import ProductFinnhub;
+import Product.Finnhub;
 
 
 import std;

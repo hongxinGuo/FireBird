@@ -1,20 +1,30 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"SystemMessage.h"
+module WebSocket.TiingoForex;
+import SystemMessage;
 
-#include"JsonParse.h"
-#include"nlohmannJsonGetValue.h"
+import JsonParse;
+import NlohmannJsonGetValue;
+import NlohmannJsonDeclaration;
 
-#include "TiingoForexWebSocket.h"
+import SystemConfiguration;
+import SystemData;
+import DataSource.Tiingo;
 
-#include "SystemConfiguration.h"
-#include "SystemData.h"
-#include "TiingoDataSource.h"
-
+import std;
+import GlobeDef;
 using std::make_shared;
 using std::chrono::minutes;
 using std::chrono::seconds;
 using std::istringstream;
+using std::chrono::minutes;
+using std::chrono::nanoseconds;
+using std::chrono::milliseconds;
+using std::chrono::microseconds;
+using std::chrono::seconds;
+using std::chrono::time_point;
+using std::chrono::system_clock;
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoForexWebSocket->SetError(false);
@@ -71,7 +81,7 @@ void CTiingoForexWebSocket::Connect() {
 // {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoForexWebSocket::Send(const vectorString& vSymbol) {
+void CTiingoForexWebSocket::Send(const vector<string>& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -79,7 +89,7 @@ void CTiingoForexWebSocket::Send(const vectorString& vSymbol) {
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
-void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CTiingoForexWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoForexWebSocket(), vSymbol);
 }
@@ -98,8 +108,8 @@ void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbol2;
+string CTiingoForexWebSocket::CreateMessage(const vector<string>& vSymbol) {
+	vector<string> vSymbol2;
 	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();

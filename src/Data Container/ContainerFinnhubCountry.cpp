@@ -1,11 +1,13 @@
-#include "pch.h"
-
-#include "ContainerFinnhubCountry.h"
-
-#include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
+module;
+#include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
+
+module ContainerFinnhubCountry;
+
+import DatabaseConnector;
+import Country;
+
+import std;
 
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 
@@ -74,7 +76,8 @@ bool CContainerFinnhubCountry::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).order_by(t.Country.asc()));
-	Reserve(result.size());
+	//auto row = result.size(); //Todo:
+	Reserve(100);
 
 	int counter = 0;
 	for (const auto& row : result) {

@@ -17,6 +17,7 @@ using std::chrono::year;
 
 using std::chrono::hh_mm_ss;
 using std::string;
+using std::int64_t;
 
 export {
 	inline bool IsEarlyThen(local_days earlyDate, local_days latelyDate, long lTimeSpawnOfDays) {

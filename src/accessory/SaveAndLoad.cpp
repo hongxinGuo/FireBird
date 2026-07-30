@@ -1,8 +1,12 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include "SaveAndLoad.h"
+module SaveAndLoad;
 
-#include "CharSetTransfer.h"
+import CharSetTransfer;
+
+import std;
+using std::string;
 
 void SaveToFile(const string& strFileName, const string& s) {
 	CFile f;

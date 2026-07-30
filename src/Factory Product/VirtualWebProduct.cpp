@@ -43,3 +43,22 @@ bool CVirtualWebProduct::IsUSMarket() const {
 	if (m_strInquiringExchange == "US") return true;
 	return false;
 }
+
+void CVirtualWebProduct::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
+	for (const auto& pWebData : *pvWebData) {
+		if (pWebData != nullptr) {
+			gl_ChinaMarketTotalData += pWebData->GetBufferLength();
+		}
+	}
+}
+
+bool CVirtualWebProduct::IsValidData(const CWebDataPtr& pWebData) {
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = VOID_DATA_;
+		return false;
+	}
+	if (IsNoRightToAccess()) {
+		return false;
+	}
+	return true;
+}

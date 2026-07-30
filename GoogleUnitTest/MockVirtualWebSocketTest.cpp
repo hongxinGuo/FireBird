@@ -45,7 +45,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		vectorString vSymbol;
+		vector<string> vSymbol;
 	};
 
 	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage1) {

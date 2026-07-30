@@ -1,16 +1,17 @@
 module;
 
-#include "DayLineWebData.h"
-#include "nlohmannJsonDeclaration.h"
-#include "WebData.h"
-
 export module JsonParse;
 
+
+import DayLineWebData;
+import NlohmannJsonDeclaration;
+import WebData;
+import DayLine;
+
+import std;
 using std::string;
 using std::string_view;
 using std::shared_ptr;
-
-import DayLine;
 
 export {
 	long long StrToDecimal(const string_view& svData, size_t power);

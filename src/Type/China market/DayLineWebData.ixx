@@ -2,14 +2,14 @@ module;
 
 export module DayLineWebData;
 
-
-import DayLine;
+import HistoryCandle.DayLine;
 import WebData;
 
 import std;
 using std::vector;
 using std::string;
 using std::int64_t;
+using std::shared_ptr;
 
 export {
 	class CDayLineWebData final {

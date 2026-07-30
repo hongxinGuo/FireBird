@@ -6,10 +6,10 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-export module VirtualDataFactory;
+export module Factory;
 
-import VirtualMarket;
-import VirtualWebProduct;
+import Market;
+import Product;
 
 import std;
 using std::shared_ptr;

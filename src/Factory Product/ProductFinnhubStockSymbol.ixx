@@ -1,9 +1,9 @@
 module;
 
-export module ProductFinnhubStockSymbol;
+export module Product.Finnhub.StockSymbol;
 
-import ProductFinnhub;
-import FinnhubStock;
+import Product.Finnhub;
+import Stock.FinnhubStock;
 
 import WebData;
 

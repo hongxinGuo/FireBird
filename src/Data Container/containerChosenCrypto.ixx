@@ -1,9 +1,9 @@
 module;
 
-export module ContianerChosenCrypto;
+export module ContainerChosenCrypto;
 
-import ContainerVirtualStock;
-import FinnhubCrypto;
+import Container.Stock;
+import Stock.FinnhubCrypto;
 
 import std;
 using std::shared_ptr;

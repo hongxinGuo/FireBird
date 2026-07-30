@@ -5,32 +5,46 @@
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"pch.h"
-
-#include "JsonParse.h"
-#include "DayLineWebData.h"
-
-#include"WebData.h"
-#include"WebRTData.h"
-
-#include "ChinaStockCodeConverter.h"
-#include "InfoReport.h"
-#include "Thread.h"
-
-#include"simdjsonGetValue.h"
-
-#include"SystemMessage.h"
-
-#include"NlohmannJsonDeclaration.h"
-#include "ContainerChinaStock.h"
-#include "SystemData.h"
-
+module;
 #include"concurrencpp/concurrencpp.h"
-using namespace concurrencpp;
+#include"simdjson.h"
 
+module JsonParse;
+
+import JsonParse;
+import DayLineWebData;
+
+import WebData;
+import WebRTData;
+
+import ChinaStockCodeConverter;
+import InfoReport;
+import Thread;
+import HistoryCandle.DayLine;
+
+import SimdjsonGetValue;
+
+import SystemMessage;
+
+import NlohmannJsonDeclaration;
+import ContainerChinaStock;
+import SystemData;
+import Simdjson.GetValue;
+import Container.Stock.ChinaStock;
+
+using namespace concurrencpp;
+using namespace simdjson;
+
+import std;
 using std::istringstream;
 using std::make_shared;
 using std::min;
+using std::string;
+using std::string_view;
+using std::vector;
+using std::shared_ptr;
+using std::exception;
+using std::chrono::local_days;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -163,8 +177,8 @@ void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWh
 // Note 测试时，发现8个线程时效率反而下降，原因待查（CPU有8个物理核，16个逻辑核）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStringView) {
-	vector<result<bool>> results;
+result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<std::vector<std::string_view>> pvStringView) {
+	std::vector<result<bool>> results;
 	long DataSize = pvStringView->size();
 	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
 	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
@@ -175,7 +189,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 		chunk_end = min(chunk_end, DataSize);
 		auto result = gl_runtime.thread_pool_executor()->submit([pvStringView, chunk_begin, chunk_end] {
 			for (auto j = chunk_begin; j < chunk_end; j++) {
-				const auto pRTData = make_shared<CWebRTData>();
+				const auto pRTData = std::make_shared<CWebRTData>();
 				pRTData->ParseSinaData(pvStringView->at(j));
 				gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
 			}
@@ -194,7 +208,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 
 void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
-	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
+	const shared_ptr<std::vector<string_view>> pvStringView = std::make_shared<std::vector<string_view>>();
 	while (!pWebData->IsLastDataParagraph()) {
 		pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 	}
@@ -211,7 +225,7 @@ bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 	const string_view sv = pWebDataReceived->GetStringView(0, 21);
 
 	if (sv == "v_pv_none_match=\"1\";\n") {
-		ASSERT(pWebDataReceived->GetBufferLength() == 21);
+		assert(pWebDataReceived->GetBufferLength() == 21);
 		return true;
 	}
 	return false;
@@ -229,9 +243,9 @@ bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 // Note 调用此函数得线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
+concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<std::vector<string_view>> pvStringView) {
 	bool succeed = true;
-	vector<concurrencpp::result<bool>> results;
+	std::vector<concurrencpp::result<bool>> results;
 	const long DataSize = pvStringView->size();
 	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
 	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
@@ -243,7 +257,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
 			try {
 				for (auto j = chunk_begin; j < chunk_end; j++) {
-					const auto pRTData = make_shared<CWebRTData>();
+					const auto pRTData = std::make_shared<CWebRTData>();
 					const string_view sv = pvStringView->at(j);
 					pRTData->ParseTengxunData(sv);
 					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
@@ -378,7 +392,7 @@ CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strSto
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const string strSymbol = pWebData->GetStockCode();
-	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+	assert(gl_dataContainerChinaStock.IsSymbol(strSymbol));
 	const string_view svData = pWebData->GetStringView();
 
 	const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));

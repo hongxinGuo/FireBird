@@ -1,6 +1,10 @@
-#pragma once
-#include "CharSetTransfer.h"
+module;
+#include"stdafx.h"
 
+export module OutputList;
+
+import std;
+import CharSetTransfer;
 using std::string;
 
 class COutputList : public CListBox {

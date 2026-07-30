@@ -1,10 +1,10 @@
 module;
 
-export module ContainerChinaStockWeekLine;
+export module Container.HistoryCandle.ChinaStockWeekLine;
 
-import VirtualDataHistoryCandle;
-import VirtualHistoryCandle;
-import WeekLine;
+import Container.HistoryCandle;
+import HistoryCandle;
+import HistoryCandle.WeekLine;
 
 import std;
 using std::vector;

@@ -1,8 +1,8 @@
 module;
 
-export module MonthLine;
+export module HistoryCandle.MonthLine;
 
-import VirtualHistoryCandle;
+import HistoryCandle;
 
 import std;
 using std::shared_ptr;

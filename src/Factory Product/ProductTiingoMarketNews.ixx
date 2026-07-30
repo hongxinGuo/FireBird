@@ -1,8 +1,8 @@
 module;
 
-export module ProductTiingoMarketNews;
+export module Product.Tiingo.MarketNews;
 
-import ProductTiingo;
+import Product.Tiingo;
 import WebData;
 import TiingoMarketNews;
 

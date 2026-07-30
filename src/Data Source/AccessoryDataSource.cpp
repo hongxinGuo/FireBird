@@ -1,12 +1,13 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include "AccessoryDataSource.h"
-#include"AccessoryFactory.h"
-
-#include "FinnhubInquiryType.h"
-#include "spdlog_assert.h"
-#include "SystemConfiguration.h"
-#include "WorldMarket.h"
+module DataSource.Accessory;
+import Factory.Accessory;
+import Product;
+import FinnhubInquiryType;
+import SpdlogAssert;
+import SystemConfiguration;
+import Market.WorldMarket;
 
 CAccessoryDataSource::CAccessoryDataSource() {
 	m_pAccessoryFactory = std::make_unique<CAccessoryFactory>();

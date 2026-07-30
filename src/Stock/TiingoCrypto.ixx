@@ -1,8 +1,9 @@
 module;
 
-export module TiingoCrypto;
+export module Stock.TiingoCrypto;
 
-import VirtualStock;
+import Stock;
+
 import std;
 using std::string;
 using std::shared_ptr;

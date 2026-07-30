@@ -1,10 +1,10 @@
 module;
 
-export module ProductFinnhubCryptoSymbol;
+export module Product.Finnhub.CryptoSymbol;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
-import FinnhubCrypto;
+import Stock.FinnhubCrypto;
 
 import std;
 using std::string;

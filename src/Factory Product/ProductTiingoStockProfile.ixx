@@ -1,10 +1,10 @@
 module;
 
-export module ProductTiingoStockProfile;
+export module Product.Tiingo.StockProfile;
 
-import ProductTiingo;
+import Product.Tiingo;
 import WebData;
-import TiingoStock;
+import Stock.TiingoStock;
 
 import std;
 using std::shared_ptr;

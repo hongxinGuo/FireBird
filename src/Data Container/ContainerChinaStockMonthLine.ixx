@@ -1,10 +1,10 @@
 module;
 
-export module ContainerChinaStockMonthLine;
+export module Container.HistoryCandle.ChinaStockMonthLine;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
-import MonthLine;
+import HistoryCandle.MonthLine;
 
 import std;
 using std::chrono::local_days;

@@ -1,8 +1,12 @@
-#include"pch.h"
+module;
 
-#include"FinnhubInquiryType.h"
+#include <afx.h>
 
-#include "SystemConfiguration.h"
+module FinnhubInquiryType;
+import SystemConfiguration;
+
+import std;
+using std::string;
 
 CFinnhubInquiryType::CFinnhubInquiryType() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

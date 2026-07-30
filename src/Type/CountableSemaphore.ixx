@@ -1,6 +1,6 @@
 module;
 
-export module CounableSemaphore;
+export module CountableSemaphore;
 
 import std;
 using std::counting_semaphore;

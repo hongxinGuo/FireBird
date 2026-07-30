@@ -1,14 +1,15 @@
 module;
 
-export module AccessoryDataSource;
+export module DataSource.Accessory;
 
-import VirtualDataSource;
+import DataSource;
 
-import AccessoryFactory;
+import Factory.Accessory;
 
 import std;
 using std::unique_ptr;
 using std::shared_ptr;
+using std::chrono::local_seconds;
 
 export {
 	class CAccessoryDataSource : public CVirtualDataSource {

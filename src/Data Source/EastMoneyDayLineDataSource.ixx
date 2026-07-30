@@ -1,11 +1,11 @@
 module;
 
-export module EastmoneyDayLineDataSource;
+export module DataSource.EastmoneyDayLine;
 
-import VirtualDataSource;
+import DataSource;
 import WebData;
-import VirtualWebProduct;
-import ChinaStock;
+import Product;
+import Stock.ChinaStock;
 
 import std;
 using std::string;

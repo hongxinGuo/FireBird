@@ -23,6 +23,7 @@ import std;
 using std::string;
 using std::map;
 using std::shared_ptr;
+using std::literals::chrono_literals::operator""y;
 
 export {
 	class CInaccessibleSymbol {

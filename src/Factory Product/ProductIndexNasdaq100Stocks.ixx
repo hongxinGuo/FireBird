@@ -1,8 +1,9 @@
 module;
 
-export module ProductIndexNasdaq100Stocks;
+export module Product.IndexNasdaq100Stocks;
 
-import VirtualWorldMarketWebProduct;
+import Product;
+import WebData;
 
 import std;
 using std::string;
@@ -10,7 +11,7 @@ using std::shared_ptr;
 using std::vector;
 
 export {
-	class CProductIndexNasdaq100Stocks : public CVirtualWorldMarketWebProduct {
+	class CProductIndexNasdaq100Stocks : public CVirtualWebProduct {
 	public:
 		CProductIndexNasdaq100Stocks();
 		// 不允许赋值。

@@ -1,10 +1,16 @@
-#include"pch.h"
+module;
 
-#include "ChinaStockCodeConverter.h"
+#include"afx.h"
 
+module ChinaStockCodeConverter;
+
+import std;
+using namespace std;
 using std::exception;
+using std::string_view;
+using std::string;
 
-string XferSinaToStandard(const string& strSina) {
+std::string XferSinaToStandard(const std::string& strSina) {
 	ASSERT(strSina.length() >= 6);
 	const string strSymbol = strSina.substr(strSina.length() - 6, 6);
 	if (strSina.at(0) == 's') {
@@ -19,7 +25,7 @@ string XferSinaToStandard(const string& strSina) {
 	throw std::exception("XferSinaToStandard bad header");
 }
 
-string XferSinaToStandard(const string_view& svSina) {
+std::string XferSinaToStandard(const std::string_view& svSina) {
 	const string strSymbol(svSina.data() + 2, 6);
 	if (svSina.at(0) == 's') {
 		switch (svSina.at(1)) {
@@ -33,7 +39,7 @@ string XferSinaToStandard(const string_view& svSina) {
 	throw std::exception("XferSinaToStandard bad header");
 }
 
-string XferStandardToSina(const string& strStandard) {
+std::string XferStandardToSina(const std::string& strStandard) {
 	const string strSymbol = strStandard.substr(0, 6);
 	if (strStandard.at(strStandard.length() - 2) == 'S') {
 		switch (strStandard.at(strStandard.length() - 1)) {

@@ -1,11 +1,13 @@
 module;
 
-export module MarketQueue;
+export module MarketTaskQueue;
 
 import MarketTask;
 
 import std;
-
+using std::chrono::local_seconds;
+using std::chrono::hh_mm_ss;
+using std::chrono::seconds;
 using std::priority_queue;
 using std::vector;
 

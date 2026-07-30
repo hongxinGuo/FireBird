@@ -6,13 +6,14 @@
 // 无需实时动态更新。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
-#include "ContainerStockExchange.h"
-
+module;
+#include <afx.h>
 #include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+
+module ContainerStockExchange;
+
+import DatabaseConnector;
 
 using namespace std;
 

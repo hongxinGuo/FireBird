@@ -12,13 +12,12 @@
 module;
 
 #include <spdlog/common.h>
-#include"stdafx.h"
+#include"afx.h"
 
 export module SystemConfiguration;
 
-
 import NlohmannJsonDeclaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
-import Spdlog_assert;
+import SpdlogAssert;
 
 import std;
 using std::string;
@@ -329,7 +328,7 @@ export {
 		// 当下载新浪或者网易实时数据出现问题时，系统的其他网络活动应该让步。
 		bool IsWebBusy();
 
-		static bool IsInitialized() { return sm_bInitialized; }
+		bool IsInitialized() { return sm_bInitialized; }
 
 	protected:
 		static bool sm_bInitialized; // 使用静态变量来保证只生成唯一实列。

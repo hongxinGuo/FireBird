@@ -1,10 +1,10 @@
 module;
 
-export module ContainerFinnhubCrypto;
+export module Container.Stock.FinnhubCrypto;
 
-import ContainerVirtualStock;
+import Container.Stock;
 
-import FinnhubCrypto;
+import Stock.FinnhubCrypto;
 
 import std;
 using std::string;

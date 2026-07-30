@@ -1,10 +1,10 @@
 module;
 
-export module ContainerTiingoStock;
+export module Container.Stock.TiingoStock;
 
-import ContainerVirtualStock;
+import Container.Stock;
 
-import TiingoStock;
+import Stock.TiingoStock;
 
 import std;
 using std::chrono::local_days;

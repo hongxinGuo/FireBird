@@ -1,14 +1,13 @@
 module;
+#include"afx.h"
 
-#include <queue>
-
-export module VirtualDataSource;
+export module DataSource;
 
 import InternetOption;
 import WebData;
-import Spdlog_assert;
+import SpdlogAssert;
 
-import VirtualWebProduct;
+import Product;
 
 import std;
 using std::chrono::milliseconds;
@@ -20,6 +19,7 @@ using std::chrono::steady_clock;
 
 using std::queue;
 using std::string;
+using std::shared_ptr;
 
 export {
 

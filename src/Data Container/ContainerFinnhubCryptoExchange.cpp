@@ -1,11 +1,10 @@
-#include "pch.h"
-
-#include "ContainerFinnhubCryptoExchange.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+
+module ContainerFinnhubCryptoExchange;
+
+import DatabaseConnector;
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();

@@ -1,13 +1,13 @@
 module;
 
-#include"stdafx.h"
+#include"afx.h"
 #include <concurrentqueue/moodycamel/concurrentqueue.h>
-#include <sqlpp23/core/clause/group_by.h>
 
-export module VirtualMarket;
+export module Market;
 
+import MarketTask;
 import MarketTaskQueue;
-import VirtualDataSource;
+import DataSource;
 import StockExchange;
 
 import std;
@@ -20,6 +20,7 @@ using std::chrono::year_month_day;
 using std::chrono::hh_mm_ss;
 using std::chrono::days;
 using std::chrono::floor;
+using std::chrono::seconds;
 
 using std::weak_ptr;
 using std::shared_ptr;

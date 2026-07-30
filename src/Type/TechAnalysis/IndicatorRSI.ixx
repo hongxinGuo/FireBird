@@ -1,9 +1,10 @@
 module;
+#include <afxwin.h>
 
 export module IndicatorRSI;
 
-import VirtualDataHistoryCandle;
-import VirtualHistoryCandle;
+import Container.HistoryCandle;
+import HistoryCandle;
 
 import std;
 using std::vector;

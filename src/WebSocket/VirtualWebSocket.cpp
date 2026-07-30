@@ -1,13 +1,19 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include"VirtualWebSocket.h"
-#include"spdlog_assert.h"
+module WebSocket;
 
-#include "SystemConfiguration.h"
-#include "SystemMessage.h"
-#include "Thread.h"
+import FireBird.Log;
+import SpdlogAssert;
+import SystemConfiguration;
+import SystemMessage;
+import Thread;
+import GlobeDef;
 
-using namespace std;
+import std;
+using std::string;
+using std::vector;
+using std::exception;
 
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;
@@ -27,7 +33,7 @@ void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
 }
 
-void CVirtualWebSocket::TaskConnectAndSendMessage(const vectorString& vSymbol) {
+void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol) {
 	if (IsConnecting()) { // 如果正在连接，则不再生成第二个连接
 		TRACE(_T("WebSocket正在连接中，不再生成第二个连接\n"));
 		gl_dailyWebSocketLogger->info("{} WebSocket正在连接中，不再生成第二个连接", m_url);
@@ -47,7 +53,7 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vectorString& vSymbol) {
 // 
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
+bool CVirtualWebSocket::ConnectAndSendMessage(const vector<string>& vSymbol) {
 	//ASSERT(IsClosed());
 	try {
 		AppendSymbol(vSymbol);
@@ -66,7 +72,7 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 	return true;
 }
 
-void CVirtualWebSocket::AppendSymbol(const vectorString& vSymbol) {
+void CVirtualWebSocket::AppendSymbol(const vector<string>& vSymbol) {
 	for (auto& sSymbol : vSymbol) {
 		if (!m_mapSymbol.contains(sSymbol)) {	// 新符号？
 			AddSymbol(sSymbol);
@@ -126,7 +132,7 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 	ASSERT(!IsOpen()); // StartWebSocket()是异步的
 }
 
-void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol) {
+void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vector<string>& vSymbol) {
 	if (fDataSourceError) { // 相关的DataSource出现错误
 		if (IsOpen()) {
 			TaskDisconnect();

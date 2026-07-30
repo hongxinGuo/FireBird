@@ -1,10 +1,10 @@
 module;
 
-export module ProductFinnhubStockDayLine;
+export module Product.Finnhub.StockDayLine;
 
-import ProductFinnhub;
+import Product.Finnhub;
 
-import DayLine;
+import HistoryCandle.DayLine;
 import WebData;
 
 import std;

@@ -1,8 +1,8 @@
 module;
 
-export module ContainerTiingoStockWeekLine;
+export module Container.HistoryCandle.TiingoStockWeekLine;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
 import TiingoCandleLine;
 

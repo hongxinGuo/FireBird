@@ -1,10 +1,10 @@
 module;
 
-export module ContainerTiingoStockDayLine;
+export module Container.HistoryCandle.TiingoStockDayLine;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
-import TiingoCandleLine;
+import HistoryCandle.TiingoCandleLine;
 
 import std;
 using std::string;

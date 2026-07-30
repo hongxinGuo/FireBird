@@ -1,8 +1,8 @@
 module;
 
-export module WeekLine;
+export module HistoryCandle.WeekLine;
 
-import VirtualHistoryCandle;
+import HistoryCandle;
 
 import std;
 using std::shared_ptr;

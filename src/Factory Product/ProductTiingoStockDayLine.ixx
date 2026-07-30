@@ -1,11 +1,11 @@
 module;
 #define needMoreDayLineData_ 10 // 申请日线数据时，总是多申请一天的数据，以便使用前日收盘价作为昨收。
 
-export module ProductTiingoStockDayLine;
+export module Product.Tiingo.StockDayLine;
 
-import ProductTiingo;
+import Product.Tiingo;
 import WebData;
-import TiingoCandleLine;
+import HistoryCandle.TiingoCandleLine;
 
 import std;
 using std::string;

@@ -1,6 +1,6 @@
 module;
 
-export module VirtualContainer;
+export module Container;
 
 import std;
 using std::string;

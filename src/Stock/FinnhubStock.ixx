@@ -1,16 +1,16 @@
 module;
 
-export module FinnhubStock;
+export module Stock.FinnhubStock;
 
-import VirtualStock;
-import ContainerFinnhubStockDayLine;
+import Stock;
+import Container.HistoryCandle.FinnhubStockDayLine;
 import NlohmannJsonDeclaration;
 import FinnhubCompanyNews;
 import EPSSurprise;
 import SECFiling;
 import InsiderTransaction;
 import InsiderSentiment;
-import DayLine;
+import HistoryCandle.DayLine;
 
 import std;
 using std::chrono::weekday;

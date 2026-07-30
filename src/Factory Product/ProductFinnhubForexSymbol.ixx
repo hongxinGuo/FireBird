@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubForexSymbol;
+export module Product.Finnhub.ForexSymbol;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
 import FinnhubForex;
 

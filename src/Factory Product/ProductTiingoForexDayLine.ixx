@@ -1,9 +1,9 @@
 module;
 
-export module ProductTiingoForexDayLine;
+export module Product.Tiingo.ForexDayLine;
 
-import ProductTiingo;
-import DayLine;
+import Product.Tiingo;
+import HistoryCandle.DayLine;
 import WebData;
 
 import std;

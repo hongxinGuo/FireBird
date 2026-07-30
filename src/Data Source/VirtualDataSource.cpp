@@ -4,22 +4,28 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
+module;
+#include <afx.h>
+#include"concurrencpp/concurrencpp.h"
 
-#include"spdlog_assert.h"
+module DataSource;
 
-#include "VirtualDataSource.h"
-#include"VirtualWebProduct.h"
-#include "InquireEngine.h"
-#include "SystemConfiguration.h"
-#include "SystemMessage.h"
+import FireBird.Log;
+import SpdlogAssert;
+import Product;
+import InquireEngine;
+import SystemConfiguration;
+import SystemMessage;
 
-#include"Thread.h"
-#include "WebData.h"
+import Thread;
+import WebData;
 
+import std;
 using std::atomic;
 using std::binary_semaphore;
 using std::make_shared;
+using std::vector;
+using std::chrono::milliseconds;
 
 atomic<int64_t> CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic<int64_t> CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
@@ -76,7 +82,7 @@ void CVirtualDataSource::InquireData() {
 	SPDLOG_ASSERT(IsInquiring());
 	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	int i = 0;
-	vector<result<CWebDataPtr>> vResults;
+	vector<concurrencpp::result<CWebDataPtr>> vResults;
 	while (HaveInquiry()) { // 一次申请可以有多个数据
 		GetCurrentProduct();
 		CreateCurrentInquireString();

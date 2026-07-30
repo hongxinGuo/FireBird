@@ -1,9 +1,15 @@
-#include"pch.h"
+module;
 
-#include "TimeConvert.h"
+module TimeConvert;
 
+import std;
 using std::istringstream;
 using std::chrono::weekday;
+using std::chrono::local_days;
+using std::chrono::year_month_day;
+using std::chrono::days;
+using std::istringstream;
+using std::string;
 
 local_days XferToLocalDays(const string& sDate) {
 	year_month_day ymd;

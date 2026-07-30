@@ -1,8 +1,8 @@
 module;
 
-export module TiingoCandleLine;
+export module HistoryCandle.TiingoCandleLine;
 
-import VirtualHistoryCandle;
+import HistoryCandle;
 
 import std;
 using std::vector;

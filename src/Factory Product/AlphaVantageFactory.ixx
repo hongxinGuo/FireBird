@@ -1,9 +1,10 @@
 module;
 
-export module AlphaVantageFactory;
+export module Factory.AlphaVantage;
 
-import VirtualDataFactory;
-import VirtualMarket;
+import Factory;
+import Market;
+import Product;
 
 import std;
 using std::string;

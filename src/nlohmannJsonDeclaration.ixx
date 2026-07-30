@@ -4,6 +4,7 @@ module;
 
 export module NlohmannJsonDeclaration;
 
+import std;
 using std::shared_ptr;
 
 export {

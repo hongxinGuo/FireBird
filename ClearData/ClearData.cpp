@@ -2,9 +2,9 @@
 #include"windows.h"
 #include <iostream>
 #include "StockMarketSQLTable.h"
-#include<sqlpp23/sqlpp23.h>
 
-import DataBaseConnector;
+import sqlpp23.core;
+import DatabaseConnector;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///

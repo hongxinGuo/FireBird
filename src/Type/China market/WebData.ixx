@@ -9,19 +9,17 @@ module;
 
 export module WebData;
 
-
 import NlohmannJsonDeclaration;
 
-import DayLineWebData;
-import VirtualDataSource;
-import InquireEngine;
-
 import std;
-#include <memory>
 using std::string;
 using std::string_view;
 using std::chrono::sys_seconds;
 using std::shared_ptr;
+
+class CDayLineWebData;
+class CInquireEngine;
+class CVirtualDataSource;
 
 export {
 	constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;

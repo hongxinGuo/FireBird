@@ -1,9 +1,9 @@
 module;
 
-export module ContainerChinaStock;
+export module Container.Stock.ChinaStock;
 
-import ContainerVirtualStock;
-import ChinaStock;
+import Container.Stock;
+import Stock.ChinaStock;
 
 import std;
 using std::chrono::local_days;

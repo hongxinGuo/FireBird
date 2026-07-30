@@ -22,11 +22,10 @@ using std::queue;
 using std::shared_ptr;
 
 
-import FinnhubSocket;
 import FinnhubWebSocket;
-import TiingoIEXSocket;
-import TiingoCryptoSocket;
-import TiingoForexSocket;
+import TiingoIEXWebSocket;
+import TiingoCryptoWebSocket;
+import TiingoForexWebSocket;
 
 export {
 	// 处理后的各种数据

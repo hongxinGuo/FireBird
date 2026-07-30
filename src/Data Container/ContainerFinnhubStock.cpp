@@ -4,21 +4,26 @@
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
-
-#include"WorldMarket.h"
-#include "ContainerFinnhubStock.h"
-#include "jsonParse.h"
-
+module;
+#include <afx.h>
 #include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
-#include "SystemConfiguration.h"
-#include"FinnhubStock.h"
-#include"TimeConvert.h"
 
+module Container.Stock.FinnhubStock;
+import Market.WorldMarket;
+import JsonParse;
+
+
+import DatabaseConnector;
+import SystemConfiguration;
+import Stock.FinnhubStock;
+import Stock;
+import TimeConvert;
+
+import std;
 using std::make_shared;
+using std::string;
+using std::dynamic_pointer_cast;
 
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();

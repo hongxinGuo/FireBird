@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubEconomicCanendar;
+export module Product.Finnhub.EconomicCanendar;
 
-import ProductFinnhub;
+import Product.Finnhub;
 
 import WebData;
 import EconomicCalendar;

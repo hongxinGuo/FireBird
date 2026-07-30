@@ -2,14 +2,16 @@ module;
 
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
-export module ChinaStock;
+export module Stock.ChinaStock;
 
-import VirtualStock;
-import ContainerChinaStockDayLine;
-import WebRTData;
-import DayLine;
+import HistoryCandle;
+import Container.HistoryCandle;
+import Stock;
+import Container.HistoryCandle.ChinaStockDayLine;
+import WebData.Realtime;
+import HistoryCandle;.DayLine;
 
-constexpr auto CHINA_MARKET_BEGIN_DATE_ = 19900101;// 中国股票市场起始日
+export constexpr auto CHINA_MARKET_BEGIN_DATE_ = 19900101;// 中国股票市场起始日
 
 using namespace moodycamel;
 
@@ -17,6 +19,7 @@ import std;
 using std::array;
 using std::shared_ptr;
 using std::string;
+using std::vector;
 
 export {
 	bool IsShareA(const string& strStockCode);

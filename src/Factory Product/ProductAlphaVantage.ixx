@@ -1,8 +1,8 @@
 module;
 
-export module ProductAlphaVantage;
+export module Product.AlphaVantage;
 
-import VirtualWorldMarketWebProduct;
+import Product;
 
 import std;
 using std::string;
@@ -11,7 +11,7 @@ using std::vector;
 
 
 export {
-	class CProductAlphaVantage : public CVirtualWorldMarketWebProduct {
+	class CProductAlphaVantage : public CVirtualWebProduct {
 	public:
 		CProductAlphaVantage() = default;
 		// 不允许赋值。

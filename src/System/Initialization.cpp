@@ -1,46 +1,57 @@
-#include "pch.h"
-
-#include "Initialization.h"
-#include"SystemMessage.h"
-
-#include "spdlog/sinks/daily_file_sink.h"
-
-#include "AlphaVantageDataSource.h"
-#include"SinaRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include"TengxunDayLineDataSource.h"
-
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
-
-#include"ChinaMarket.h"
-#include "EastmoneyDayLineDataSource.h"
-#include "InaccessibleSymbol.h"
-#include "FinnhubInquiryType.h"
-#include"WorldMarket.h"
-
-#include "simdjsonGetValue.h"
-#include "Thread.h"
-
+module;
+#include <afx.h>
+#include <afxwin.h>
 #include <spdlog/sinks/basic_file_sink.h>
-
-#include "FinnhubWebSocket.h"
-#include "SystemConfiguration.h"
-#include "TiingoCryptoWebSocket.h"
-#include "TiingoForexWebSocket.h"
-#include "TiingoIEXWebSocket.h"
-using namespace spdlog;
-
-#include "CharSetTransfer.h"
-
-#include "AccessoryDataSource.h"
+#include"spdlog/sinks/daily_file_sink.h"
+#include"spdlog/spdlog.h"
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-#include"dataBaseConnector.h"
+module FireBird.Initialization;
 
+import SystemMessage;
+
+import DataSource.AlphaVantage;
+import DataSource.SinaRT;
+import DataSource.TengxunRT;
+import DataSource.TengxunDayLine;
+import DataSource.EastmoneyDayLine;
+import DataSource.Finnhub;
+import DataSource.Tiingo;
+import DataSource.Accessory;
+
+import Market.ChinaMarket;
+import InaccessibleSymbol;
+import FinnhubInquiryType;
+import Market.WorldMarket;
+
+import SimdjsonGetValue;
+import Thread;
+import CharSetTransfer;
+import GlobeDef;
+import DatabaseConnector;
+
+import WebSocket.Finnhub;
+import SystemConfiguration;
+import WebSocket.TiingoCrypto;
+import WebSocket.TiingoForex;
+import WebSocket.TiingoIEX;
+import FireBird.Log;
+
+using namespace spdlog;
+
+import std;
 using std::make_shared;
 using std::wstring;
+using std::string;
+using std::chrono::time_point;
+using std::chrono::seconds;
+using std::chrono::days;
+using std::chrono::system_clock;
+using std::chrono::steady_clock;
+using std::chrono::year_month_day;
+using std::chrono::time_point_cast;
+
 
 void DeleteAllFinnhubInaccessibleUSExchange() {
 	for (int i = 0; i < END_OF_ALL_INQUIRY_TYPE_; i++) {
@@ -324,7 +335,7 @@ void TaskSchedulePer100ms() {
 		return;
 	}
 	s_Processing = true;
-	auto start = time_point_cast<milliseconds>(steady_clock::now());
+	auto start = time_point_cast<std::chrono::milliseconds>(steady_clock::now());
 	try {
 		// 获取系统时间戳。
 		gl_tpNow = time_point_cast<seconds>(system_clock::now());
@@ -346,7 +357,7 @@ void TaskSchedulePer100ms() {
 		gl_systemMessage.PushErrorMessage(W2Utf8(str));
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
-	auto end = time_point_cast<milliseconds>(steady_clock::now());
+	auto end = time_point_cast<std::chrono::milliseconds>(steady_clock::now());
 	gl_systemMessage.IncreaseScheduleTaskTime((end - start).count());
 	s_Processing = false;
 }

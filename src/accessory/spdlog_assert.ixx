@@ -1,6 +1,9 @@
 module;
 
-export module Spdlog_assert;
+#include"spdlog/spdlog.h"
+#include <source_location>
+
+export module SpdlogAssert;
 
 import Log;
 
@@ -59,10 +62,33 @@ export {
 	}
 #endif
 
-	// Macros: use like SPDLOG_ASSERT(x) or SPDLOG_ASSERT_MSG(x, "detail")
-#define SPDLOG_ASSERT(expr) \
-  ((expr) ? static_cast<void>(0) : SpdlogAssertFail(#expr, __FILE__, __LINE__, __func__, nullptr))
+	// Module-friendly replacements for the previous macros.
+	// Note: macros cannot be exported from modules. Use these inline functions instead.
+	// - Use `SPDLOG_ASSERT(expr)` if you don't need the expression string.
+	// - Use `SPDLOG_ASSERT_MSG(expr, "msg")` to provide a message.
+	// - Use `SPDLOG_ASSERT_EX(expr, "expr_text", "msg")` to also supply the expression text.
 
-#define SPDLOG_ASSERT_MSG(expr, message) \
-  ((expr) ? static_cast<void>(0) : SpdlogAssertFail(#expr, __FILE__, __LINE__, __func__, (message)))
+	inline void SPDLOG_ASSERT(bool expr,
+													 std::source_location loc = std::source_location::current()) noexcept {
+		if (!expr) {
+			SpdlogAssertFail(nullptr, loc.file_name(), static_cast<int>(loc.line()), loc.function_name(), nullptr);
+		}
+	}
+
+	inline void SPDLOG_ASSERT_MSG(bool expr,
+															 const char* message,
+															 std::source_location loc = std::source_location::current()) noexcept {
+		if (!expr) {
+			SpdlogAssertFail(nullptr, loc.file_name(), static_cast<int>(loc.line()), loc.function_name(), message);
+		}
+	}
+
+	inline void SPDLOG_ASSERT_EX(bool expr,
+															 const char* exprStr,
+															 const char* message = nullptr,
+															 std::source_location loc = std::source_location::current()) noexcept {
+		if (!expr) {
+			SpdlogAssertFail(exprStr, loc.file_name(), static_cast<int>(loc.line()), loc.function_name(), message);
+		}
+	}
 }

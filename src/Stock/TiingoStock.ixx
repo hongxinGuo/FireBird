@@ -1,18 +1,19 @@
 module;
 
-export module TiingoStock;
+export module Stock.TiingoStock;
 
-import VirtualStock;
-import ContainerTiingoStockDayLine;
+import Stock;
+import Container.HistoryCandle.TiingoStockDayLine;
 
-import TiingoCandleLine;
+import HistoryCandle.TiingoCandleLine;
 import TiingoCompanyFinancialState;
 import TiingoStockDailyMeta;
 import TiingoIEXTopOfBook;
+import Container.HistoryCandle;
 
 import std;
 using std::unique_ptr;
-using std::shared_ttr;
+using std::shared_ptr;
 using std::string;
 using std::int32_t;
 using std::vector;
@@ -59,8 +60,8 @@ export {
 		void SetTiingoIndustry(const string& val) { m_strTiingoIndustry = val; }
 
 		// Getter and Setter for m_iSicCode
-		INT32 GetSicCode() const { return m_iSicCode; }
-		void SetSicCode(INT32 val) { m_iSicCode = val; }
+		int32_t GetSicCode() const { return m_iSicCode; }
+		void SetSicCode(int32_t val) { m_iSicCode = val; }
 
 		// Getter and Setter for m_strSicSector
 		string GetSicSector() const { return m_strSicSector; }

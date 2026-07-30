@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubForexExchange;
+export module Product.Finnhub.ForexExchange;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import WebData;
 
 import std;

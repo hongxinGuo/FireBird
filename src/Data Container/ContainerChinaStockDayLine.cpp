@@ -1,15 +1,18 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include"TimeConvert.h"
-
-#include"ChinaStock.h"
-#include"WeekLine.h"
-#include "ContainerChinaStockDayLine.h"
-
-#include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+#include"sqlpp23/sqlpp23.h"
+module Container.HistoryCandle.ChinaStockDayLine;
+
+import TimeConvert;
+import HistoryCandle;
+import Stock.ChinaStock;
+import HistoryCandle.WeekLine;
+import DatabaseConnector;
+
+import std;
+using std::vector;
 
 namespace {
 	CChinaStock s_stockContainerChinaDayLine;
@@ -68,7 +71,7 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol) {
 
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol).order_by(t.Date.asc()));
 	size_t rows = result.size();
-	Reserve(rows);
+	Reserve(rows + 10);
 
 	for (const auto& row : result) {
 		CVirtualHistoryCandle historyCandle;
@@ -107,8 +110,8 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol && t.Date >= static_cast<int>(lStartDate)).order_by(t.Date.asc()));
-	size_t rows = result.size();
-	Reserve(rows);
+	//size_t rows = result.size();
+	Reserve(3000);
 
 	for (const auto& row : result) {
 		CVirtualHistoryCandle historyCandle;

@@ -1,8 +1,8 @@
 module;
 
-export module ProductSinaRT;
+export module Product.SinaRT;
 
-import VirtualChinaMarketWebProduct;
+import Product;
 import WebData;
 
 import std;
@@ -11,7 +11,7 @@ using std::shared_ptr;
 using std::vector;
 
 export {
-	class CProductSinaRT final : public CVirtualChinaMarketWebProduct {
+	class CProductSinaRT final : public CVirtualWebProduct {
 	public:
 		CProductSinaRT();
 		// 不允许复制和赋值。

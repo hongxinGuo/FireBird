@@ -1,10 +1,10 @@
 module;
 
-export module AlphaVantageDataSource;
+export module DataSource.AlphaVantage;
 
-import VirtualDataSource;
+import DataSource;
 import WebData;
-import AlphaVantageFactory;
+import Factory.AlphaVantage;
 
 import std;
 using std::unique_ptr;

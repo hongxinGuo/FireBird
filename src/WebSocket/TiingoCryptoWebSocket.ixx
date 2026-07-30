@@ -7,10 +7,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 module;
+#include "IXWebSocketMessage.h"
 
-export module TiingoCryptoWebSocket;
+export module WebSocket.TiingoCrypto;
 
-import VirtualWebSocket;
+import WebSocket;
 
 import std;
 using std::vector;

@@ -1,28 +1,40 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include"SystemMessage.h"
+module DataSource.Tiingo;
 
-#include"dataBaseConnector.h"
+import FireBird.Log;
+import SystemMessage;
+import NlohmannJsonDeclaration;
+import DatabaseConnector;
 
-#include"FinnhubInquiryType.h"
-#include "TiingoDataSource.h"
+import FinnhubInquiryType;
 
-#include "ContainerTiingoChosenStock.h"
-#include "ContainerTiingoStock.h"
-#include "ContainerTiingoSymbol.h"
-#include"VirtualWebProduct.h"
-#include"TiingoStock.h"
+import Container.Stock.TiingoChosenStock;
+import Container.Stock.TiingoStock;
+import Container.Stock.TiingoSymbol;
+import Product;
+import Stock.TiingoStock;
 
-#include "spdlog_assert.h"
-#include "InaccessibleSymbol.h"
-#include "SystemConfiguration.h"
-#include "TiingoFactory.h"
-#include "TimeConvert.h"
-#include "WebData.h"
-#include"VirtualMarket.h"
-#include"WorldMarket.h"
+import SpdlogAssert;
+import InaccessibleSymbol;
+import SystemConfiguration;
+import Factory.Tiingo;
+import TimeConvert;
+import WebData;
+import Market;
+import Market.WorldMarket;
 
-using namespace std;
+import std;
+using std::map;
+using std::string;
+using std::string_view;
+using std::make_unique;
+using std::exception;
+using std::chrono::local_seconds;
+using std::literals::chrono_literals::operator""min;
+using std::literals::chrono_literals::operator""h;
+using std::literals::chrono_literals::operator""s;
 
 namespace {
 	map<string, enum_ErrorMessageData> mapTiingoErrorMap{
@@ -149,7 +161,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			}
 		}
 
-		l = std::min(pWebData->GetBufferLength(), static_cast<size_t>(30));
+		l = min(pWebData->GetBufferLength(), static_cast<size_t>(30));
 		strView = pWebData->GetStringView(0, l); //
 		s2 = strView;
 		str = "Warning: Tiingo no handled ";
@@ -442,7 +454,7 @@ void CTiingoDataSource::CheckWebData2(const CWebDataPtr& pWebData) {
 	}
 }
 
-bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
+bool CTiingoDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;

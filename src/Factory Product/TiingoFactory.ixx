@@ -1,10 +1,10 @@
 module;
 
-export module TiingoFactory;
+export module Factory.Tiingo;
 
-import VirtualDataFactory;
-import VirtualMarket;
-import VirtualWebProduct;
+import Factory;
+import Market;
+import Product;
 
 import std;
 using std::shared_ptr;

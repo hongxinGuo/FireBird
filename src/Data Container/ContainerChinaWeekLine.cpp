@@ -1,8 +1,13 @@
-#include"pch.h"
+module;
 
-#include "ChinaStock.h"
-#include "ContainerChinaStockWeekLine.h"
-#include"WeekLine.h"
+module Container.HistoryCandle.ChinaStockWeekLine;
+
+import Stock.ChinaStock;
+import HistoryCandle.WeekLine;
+
+import std;
+using std::chrono::local_days;
+using std::vector;
 
 namespace {
 	CChinaStock s_stockContainerChinaWeekLine;

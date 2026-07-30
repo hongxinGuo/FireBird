@@ -1,10 +1,10 @@
 module;
 
-export module FinnhubDataSource;
+export module DataSource.Finnhub;
 
-import VirtualDataSource;
+import DataSource;
 import WebData;
-import FinnhubFactory;
+import Factory.Finnhub;
 
 import std;
 using std::chrono::local_seconds;

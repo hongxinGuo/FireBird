@@ -1,8 +1,8 @@
 module;
 
-export module ContainerForexDayLine;
+export module Container.HistoryCandle.ForexDayLine;
 
-import  VirtualDataHistoryCandle;
+import  Container.HistoryCandle;
 
 import std;
 using std::string;

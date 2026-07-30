@@ -39,7 +39,7 @@ namespace FireBirdTest {
 
 	protected:
 		CMockTiingoIEXWebSocket m_tiingoIEXWebSocket;
-		vectorString vSymbol;
+		vector<string> vSymbol;
 	};
 
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket1) {

@@ -7,10 +7,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-export module ProductEsatmoneyDayLine;
+export module Product.EastmoneyDayLine;
 
-import VirtualChinaMarketWebProduct;
-import DayLine;
+import Product;
+import HistoryCandle.DayLine;
 import WebData;
 
 import std;
@@ -21,7 +21,7 @@ using std::string_view;
 using std::string;
 
 export {
-	class CProductEastmoneyDayLine final : public CVirtualChinaMarketWebProduct {
+	class CProductEastmoneyDayLine final : public CVirtualWebProduct {
 	public:
 		CProductEastmoneyDayLine();
 		// 不允许复制和赋值。

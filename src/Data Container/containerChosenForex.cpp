@@ -1,13 +1,18 @@
-#include "pch.h"
-
-#include"FinnhubForex.h"
-
-#include "ContainerChosenForex.h"
-#include<sqlpp23/sqlpp23.h>
-
-#include "containerFinnhubForexSymbol.h"
-#include "dataBaseConnector.h"
+module;
+#include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
+
+module Container.Stock.ChosenForex;
+
+
+import Container.Stock.FinnhubForexSymbol;
+import DatabaseConnector;
+import Stock.FinnhubForex;
+
+import std;
+import Container.Stock.ChosenForex;
+using std::dynamic_pointer_cast;
+using std::string;
 
 CContainerChosenForex::CContainerChosenForex() {
 	CContainerChosenForex::Reset();
@@ -24,7 +29,7 @@ bool CContainerChosenForex::LoadDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
+	size_t rows = result.size(); //Todo:
 	Reserve(rows + 10);
 	for (const auto& row : result) {
 		if (gl_dataFinnhubForexSymbol.IsSymbol(string{ row.Symbol })) {

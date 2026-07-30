@@ -1,12 +1,12 @@
 module;
 
-export module ContainerCryptoDayLine;
+export module Container.HistoryCandle.CryptoDayLine;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
 import std;
 using std::string;
-suing std::shared_ptr;
+using std::shared_ptr;
 
 export {
 	class CContainerCryptoDayLine final : public CVirtualDataHistoryCandle {

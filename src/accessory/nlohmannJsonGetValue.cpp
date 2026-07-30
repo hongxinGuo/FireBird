@@ -1,7 +1,10 @@
-#include"pch.h"
+module;
 
-#include "nlohmannJsonGetValue.h"
+module NlohmannJsonGetValue;
 
+import NlohmannJsonDeclaration;
+
+import std;
 using std::string;
 
 namespace {

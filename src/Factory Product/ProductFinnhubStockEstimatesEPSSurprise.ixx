@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubStockEstimatesEPSSurprise;
+export module Product.Finnhub.StockEstimatesEPSSurprise;
 
-import ProductFinnhub;
+import Product.Finnhub;
 import EPSSurprise;
 
 import WebData;

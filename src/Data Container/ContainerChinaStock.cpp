@@ -1,24 +1,32 @@
-#include"pch.h"
+module;
+#include "StockMarketSQLTable.h"
+#include"afx.h"
+#include"sqlpp23/sqlpp23.h"
+module Container.Stock.ChinaStock;
 
-#include"TimeConvert.h"
-#include"ChinaStockCodeConverter.h"
-#include"InfoReport.h"
+using namespace sqlpp;
 
-#include"ChinaMarket.h"
-#include "ContainerChinaStock.h"
-#include"ChinaStock.h"
+import TimeConvert;
+import ChinaStockCodeConverter;
+import InfoReport;
 
-#include"Thread.h"
+import Market.ChinaMarket;
+import Stock;
+import Stock.ChinaStock;
 
-#include<sqlpp23/sqlpp23.h>
+import Thread;
 
-#include "CountableSemaphore.h"
-#include "dataBaseConnector.h"
-#include"StockMarketSQLTable.h"
-#include "SystemMessage.h"
+import CountableSemaphore;
+import DatabaseConnector;
+import SystemMessage;
 
+import std;
 using std::chrono::Monday;
+using std::chrono::local_days;
 using std::make_shared;
+using std::exception;
+using std::string;
+using std::format;
 
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
@@ -53,9 +61,9 @@ long CContainerChinaStock::LoadProfileDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
-	auto rowCount = result.size();
-	Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
+	auto result = db(sqlpp::select(all_of(t)).from(t).order_by(t.ID.asc()));
+	auto rows = result.size();
+	Reserve(rows + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 	for (const auto& row : result) {
 		// 装入股票代码数据库
 		const auto pStock = make_shared<CChinaStock>();
@@ -197,7 +205,7 @@ void CContainerChinaStock::ClearDayLineNeedUpdateStatus() const {
 string CContainerChinaStock::GetStockName(const string& strStockCode) {
 	try {
 		return GetStock(m_mapSymbol.at(strStockCode))->GetDisplaySymbol();
-	} catch (exception& e) {
+	} catch (std::exception& e) {
 		ReportErrorToSystemMessage("GetStockName " + strStockCode + " ", e);
 		return "";
 	}
@@ -322,7 +330,7 @@ long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 	if (nValue > 0) db(multi_insert);
 	tx.commit();
 
-	s = std::format("{:%F} 的日线数据已生成", currentTradeDay);
+	s = format("{:%F} 的日线数据已生成", currentTradeDay);
 	gl_systemMessage.PushInformationMessage(s);
 
 	s = std::format("今日处理了{:d}个股票", iCount);

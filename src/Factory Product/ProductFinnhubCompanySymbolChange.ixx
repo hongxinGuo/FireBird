@@ -1,9 +1,9 @@
 module;
 
-export module Producttinnhubconpanysymbolchange:
+export module Product.Finnhub.Conpanysymbolchange:
 
-import ProductFinnhub;
-import CFinnhubCompanySymbolChange;
+import Product.Finnhub;
+import FinnhubCompanySymbolChange;
 import WebData;
 
 import std;

@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"PriorityQueueWebRTData.h"
+module PriorityQueueWebRTData;
 
 void CPriorityQueueWebRTData::Reset() {
 	m_MutexAccessData.lock();

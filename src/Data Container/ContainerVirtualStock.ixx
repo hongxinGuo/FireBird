@@ -1,12 +1,11 @@
 module;
 
-export module ContainerVirtualStock;
+export module Container.Stock;
 
-import VirtualContainer;
-import VirtualStock;
+import Container;
+import Stock;
+
 import std;
-
-
 using std::unordered_map;
 using std::vector;
 using std::shared_ptr;
@@ -41,7 +40,7 @@ export {
 		bool IsUpdateDB() const noexcept { return m_bUpdateDB; }
 		void SetUpdateDB(const bool fFlag) noexcept { m_bUpdateDB = fFlag; }
 
-		shared_ptr<CVirtualStock> Get(const size_t lIndex);
+		shared_ptr<CVirtualStock> Get(size_t lIndex);
 		shared_ptr<CVirtualStock> Get(const string& strSymbol);
 
 		string GetItemExchangeCode(const size_t lIndex) const;

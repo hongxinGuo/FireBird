@@ -1,12 +1,14 @@
-#include"pch.h"
+module;
 
-#include"SinaRTDataSource.h"
-#include"ProductSinaRT.h"
+module DataSource.SinaRT;
+import Product.SinaRT;
 
-#include"ChinaMarket.h"
-#include "SystemConfiguration.h"
-#include "WebData.h"
+import Market.ChinaMarket;
+import SystemConfiguration;
+import WebData;
 
+import std;
+#include <afx.h>
 using std::make_shared;
 using namespace std;
 
@@ -32,7 +34,7 @@ bool CSinaRTDataSource::Reset() {
 	return true;
 }
 
-bool CSinaRTDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
+bool CSinaRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 	if (llTickCount < m_PrevInquireTimePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) return false;
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。

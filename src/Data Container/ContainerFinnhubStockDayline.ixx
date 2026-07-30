@@ -1,9 +1,9 @@
 module;
 
-export module ContainerFinnhubStockDayLine;
+export module Container.HistoryCandle.FinnhubStockDayLine;
 
-import VirtualDataHistoryCandle;
-import DayLine;
+import Container.HistoryCandle;
+import HistoryCandle.DayLine;
 
 import std;
 using std::string;

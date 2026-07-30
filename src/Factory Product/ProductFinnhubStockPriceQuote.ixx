@@ -1,8 +1,8 @@
 module;
 
-export module ProductFinnhubStockPriceQuete;
+export module Product.Finnhub.StockPriceQuete;
 
-import ProductFinnhub;
+import Product.Finnhub;
 
 import FinnhubStock;
 import WebData;

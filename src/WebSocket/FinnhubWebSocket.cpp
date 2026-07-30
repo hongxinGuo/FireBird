@@ -1,22 +1,48 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"SystemData.h"
-#include "SystemConfiguration.h"
-#include"SystemMessage.h"
+#include"IXWebSocketSendInfo.h"
+#include"simdjson.h"
 
-#include"JsonParse.h"
-#include"nlohmannJsonGetValue.h"
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+module WebSocket.Finnhub;
+using namespace simdjson;
 
-#include "FinnhubWebSocket.h"
+import SystemData;
+import SystemConfiguration;
+import SystemMessage;
 
-#include "FinnhubDataSource.h"
+import JsonParse;
+import NlohmannJsonGetValue;
+import NlohmannJsonDeclaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
-#include"simdjsonGetValue.h"
-#include "TimeConvert.h"
-#include "WorldMarket.h"
+import DataSource.Finnhub;
+import MarketTask;
+import SimdjsonGetValue;
+import TimeConvert;
+import Market.WorldMarket;
+import Simdjson.GetValue;
 
-using namespace std;
+import std;
+import FireBird.Log;
+import GlobeDef;
+
+using std::make_shared;
+using std::atomic_bool;
+using std::chrono::minutes;
+using std::chrono::seconds;
+using std::istringstream;
+using std::string;
+using std::string_view;
+using std::chrono::minutes;
+using std::chrono::nanoseconds;
+using std::chrono::milliseconds;
+using std::chrono::microseconds;
+using std::chrono::seconds;
+using std::chrono::time_point;
+using std::chrono::system_clock;
+using std::literals::chrono_literals::operator""h;
+using std::literals::chrono_literals::operator""min;
+using std::literals::chrono_literals::operator""s;
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	string str;
@@ -100,7 +126,7 @@ void CFinnhubWebSocket::Connect() {
 	Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }
 
-void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
+void CFinnhubWebSocket::Send(const vector<string>& vSymbol) {
 	ASSERT(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
 		if (l >= 49) break; // note 免费账户只支持最多50个证券名称
@@ -122,7 +148,7 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 	return symbol.dump();
 }
 
-void CFinnhubWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CFinnhubWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pFinnhubDataSource->IsWebError(), gl_systemConfiguration.IsUsingFinnhubWebSocket(), vSymbol);
 }
@@ -200,7 +226,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
 /// <param name="pData"></param>
 /// <returns></returns>
-static ondemand::document s_docFinnhubWebSocket; // 使用静态变量以加速解析
+static simdjson::ondemand::document s_docFinnhubWebSocket; // 使用静态变量以加速解析
 static ondemand::parser s_parserFinnhubWebSocket;// 使用静态变量以加速解析
 bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<string>& pData) {
 	try {

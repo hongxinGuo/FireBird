@@ -6,15 +6,12 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-#include <memory>
-#include <vector>
+#include"afx.h"
 
-#include"stdafx.h"
-
-export module VirtualWebProduct;
+export module Product;
 
 import WebData;
-import DayLine;
+import HistoryCandle.DayLine;
 
 import std;
 using std::string;
@@ -55,6 +52,7 @@ export {
 		bool CheckInaccessible();
 		bool IsVoidJson(const shared_ptr<CWebData>& pWebData);
 
+		bool IsValidData(const CWebDataPtr& pWebData);
 		bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
 		bool IsNoRightToAccess() const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 		int GetReceivedDataStatus() const noexcept { return m_iReceivedDataStatus; }
@@ -76,6 +74,8 @@ export {
 
 		void SetInquireType(const int iInquireType) noexcept { m_iInquireType = iInquireType; }
 		int GetInquireType() const noexcept { return m_iInquireType; }
+
+		void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) final;
 
 		// 测试用
 		virtual bool Test_checkAccessRight_(shared_ptr<CWebData>) { return true; }  // todo 不再使用，准备删除之

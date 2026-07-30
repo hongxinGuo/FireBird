@@ -122,6 +122,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
@@ -132,6 +133,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_ASAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,6 +146,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -190,6 +193,7 @@
     <QtRcc Include="WatchdogQT.qrc" />
     <QtUic Include="WatchdogQT.ui" />
     <QtMoc Include="WatchdogQT.h" />
+    <ClCompile Include="..\src\SystempublicDeclaration.ixx" />
     <ClCompile Include="WatchdogQT.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

@@ -8,10 +8,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-export module TiingoForexWebSocket;
+#include "IXWebSocketMessage.h"
+export module WebSocket.TiingoForex;
 
 
-import VirtualWebSocket;
+import WebSocket;
 
 import std;
 using std::string;
@@ -62,7 +63,7 @@ export {
 
 	protected:
 		void Connect() override;
-		void Send(const vectorString& vSymbol) override;
+		void Send(const vector<string>& vSymbol) override;
 	};
 
 	using CTiingoForexWebSocketPtr = shared_ptr<CTiingoForexWebSocket>;

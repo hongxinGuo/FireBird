@@ -124,19 +124,16 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-#include"stdafx.h"
 export module WebRTData;
 
 import WebData;
 
 import std;
-#include <array>
-#include <memory>
 using std::array;
 using std::shared_ptr;
 using std::string_view;
 using std::string;
-
+using std::int64_t;
 
 export {
 	enum {
@@ -181,14 +178,14 @@ export {
 		void SetLow(const long lValue) noexcept { m_lLow = lValue; }
 		long GetNew() const noexcept { return m_lNew; }
 		void SetNew(const long lValue) noexcept { m_lNew = lValue; }
-		INT64 GetAmount() const noexcept { return m_llAmount; }
-		void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
-		INT64 GetVolume() const noexcept { return m_llVolume; }
-		void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
-		void SetTotalValue(const INT64 llValue) noexcept { m_llTotalValue = llValue; }
-		INT64 GetTotalValue() const noexcept { return m_llTotalValue; }
-		void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-		INT64 GetCurrentValue() const noexcept { return m_llCurrentValue; }
+		int64_t GetAmount() const noexcept { return m_llAmount; }
+		void SetAmount(const int64_t llValue) noexcept { m_llAmount = llValue; }
+		int64_t GetVolume() const noexcept { return m_llVolume; }
+		void SetVolume(const int64_t llValue) noexcept { m_llVolume = llValue; }
+		void SetTotalValue(const int64_t llValue) noexcept { m_llTotalValue = llValue; }
+		int64_t GetTotalValue() const noexcept { return m_llTotalValue; }
+		void SetCurrentValue(const int64_t llValue) noexcept { m_llCurrentValue = llValue; }
+		int64_t GetCurrentValue() const noexcept { return m_llCurrentValue; }
 		long GetBuy() const noexcept { return m_lBuy; }
 		void SetBuy(const long lValue) noexcept { m_lBuy = lValue; }
 		long GetSell() const noexcept { return m_lSell; }
@@ -232,10 +229,10 @@ export {
 		long m_lSell{ 0 }; // 竞卖价。单位：0.001元
 		long m_lHighLimitFromTengxun{ 0 }; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
 		long m_lLowLimitFromTengxun{ 0 }; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
-		INT64 m_llVolume{ 0 }; // 总成交量。单位：股
-		INT64 m_llAmount{ 0 }; // 总成交金额。单位：元
-		INT64 m_llTotalValue{ 0 }; // 总市值。单位：万元
-		INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
+		int64_t m_llVolume{ 0 }; // 总成交量。单位：股
+		int64_t m_llAmount{ 0 }; // 总成交金额。单位：元
+		int64_t m_llTotalValue{ 0 }; // 总市值。单位：万元
+		int64_t m_llCurrentValue{ 0 }; // 流通市值。单位：万元
 		array<long, 5> m_lPBuy{ 0, 0, 0, 0, 0 }; // 买盘价1--5。单位：0.001元
 		array<long, 5> m_lVBuy{ 0, 0, 0, 0, 0 }; // 买盘量1--5。单位：股
 		array<long, 5> m_lPSell{ 0, 0, 0, 0, 0 }; // 卖盘价1--5。单位：0.001元

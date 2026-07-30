@@ -1181,10 +1181,10 @@ void CWorldMarket::RebuildStockDayLineDB() {
 /// <summary>
 /// Finnhub WebSocket的免费账户最多只能发送50个证券的数据
 /// </summary>
-vectorString CWorldMarket::GetFinnhubWebSocketSymbols() {
-	vectorString vSymbol;
+vector<string> CWorldMarket::GetFinnhubWebSocketSymbols() {
+	vector<string> vSymbol;
 
-	vectorString vSymbolTemp = gl_dataContainerTiingoChosenStock.GetSymbols();
+	vector<string> vSymbolTemp = gl_dataContainerTiingoChosenStock.GetSymbols();
 	for (const auto& symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}

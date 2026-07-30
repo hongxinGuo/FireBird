@@ -9,10 +9,10 @@ module;
 
 #include <afx.h>
 
-export module ProductTengxunDayLine;
+export module Product.TengxunDayLine;
 
-import VirtualChinaMarketWebProduct;
-import DayLine;
+import Product;
+import HistoryCandle.DayLine;
 import WebData;
 
 import std;
@@ -21,7 +21,7 @@ using std::shared_ptr;
 using std::vector;
 
 export {
-	class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {
+	class CProductTengxunDayLine final : public CVirtualWebProduct {
 	public:
 		CProductTengxunDayLine();
 		// 不允许复制和赋值。

@@ -1,14 +1,18 @@
-#include "pch.h"
-
-#include"ChinaStockCodeConverter.h"
-#include "ContainerStockSymbol.h"
-
-#include "SystemConstantChinaMarket.h"
-#include<sqlpp23/sqlpp23.h>
-
-#include "ChinaStock.h"
-#include "dataBaseConnector.h"
+module;
+#include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
+
+module Container.StockSymbol;
+
+import ChinaStockCodeConverter;
+import SystemConstantChinaMarket;
+import StockSection;
+
+import Stock.ChinaStock;
+import DatabaseConnector;
+
+import std;
+using std::string;
 
 CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSymbol.resize(0);
@@ -108,9 +112,7 @@ string CContainerStockSymbol::GetItemSymbol(size_t lIndex) {
 }
 
 size_t CContainerStockSymbol::Size() {
-	{
-		return m_vStockSymbol.size();
-	}
+	return m_vStockSymbol.size();
 }
 
 void CContainerStockSymbol::LoadStockSectionDB() {

@@ -1,10 +1,11 @@
 module;
 
-#include"stdafx.h"
+#include <afxwin.h>
+#include"afx.h"
 
 export module IndicatorMACD;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
 import std;
 using std::vector;

@@ -1,11 +1,10 @@
 module;
 
-#include <queue>
-#include <mutex>
-
-export module PriorityQueueRTData;
+export module PriorityQueueWebRTData;
 
 import WebRTData;
+
+import std;
 
 export {
 	class CPriorityQueueWebRTData final {

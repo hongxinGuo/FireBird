@@ -1,20 +1,30 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"SystemData.h"
-#include"SystemMessage.h"
+module WebSocket.TiingoCrypto;
+import GlobeDef;
+import SystemData;
+import SystemMessage;
 
-#include"JsonParse.h"
-#include"nlohmannJsonGetValue.h"
+import JsonParse;
+import NlohmannJsonGetValue;
+import NlohmannJsonDeclaration;
 
-#include "TiingoCryptoWebSocket.h"
+import SystemConfiguration;
+import DataSource.Tiingo;
 
-#include "SystemConfiguration.h"
-#include "TiingoDataSource.h"
-
-using std::istringstream;
+import std;
+using std::make_shared;
 using std::chrono::minutes;
 using std::chrono::seconds;
-using std::make_shared;
+using std::istringstream;
+using std::chrono::minutes;
+using std::chrono::nanoseconds;
+using std::chrono::milliseconds;
+using std::chrono::microseconds;
+using std::chrono::seconds;
+using std::chrono::time_point;
+using std::chrono::system_clock;
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoCryptoWebSocket->SetError(false);
@@ -71,7 +81,7 @@ void CTiingoCryptoWebSocket::Connect() {
 // thresholdLevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
+void CTiingoCryptoWebSocket::Send(const vector<string>& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -82,7 +92,7 @@ void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
-void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CTiingoCryptoWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoCryptoWebSocket(), vSymbol);
 }
@@ -101,8 +111,8 @@ void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbol2;
+string CTiingoCryptoWebSocket::CreateMessage(const vector<string>& vSymbol) {
+	vector<string> vSymbol2;
 	nlohmannJson message;
 	message["eventName"] = "subscribe";
 	message["authorization"] = gl_pTiingoDataSource->GetInquiryToken();

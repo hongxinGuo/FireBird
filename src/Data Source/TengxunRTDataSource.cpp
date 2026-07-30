@@ -1,12 +1,14 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include"TengxunRTDataSource.h"
-#include"ProductTengxunRT.h"
+module DataSource.TengxunRT;
+import Product.TengxunRT;
 
-#include "ChinaMarket.h"
-#include "SystemConfiguration.h"
-#include "WebData.h"
+import Market.ChinaMarket;
+import SystemConfiguration;
+import WebData;
 
+import std;
 using namespace std;
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
@@ -23,7 +25,7 @@ bool CTengxunRTDataSource::Reset() {
 	return true;
 }
 
-bool CTengxunRTDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
+bool CTengxunRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& currentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (llTickCount > m_PrevInquireTimePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) {

@@ -1,8 +1,9 @@
 module;
 
+#include <afxwin.h>
 export module IndicatorKDJ;
 
-import VirtualDataHistoryCandle;
+import Container.HistoryCandle;
 
 import std;
 using std::vector;

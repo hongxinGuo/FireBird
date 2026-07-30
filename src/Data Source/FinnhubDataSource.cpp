@@ -5,34 +5,41 @@
 /// 20231126：20231127后，stock DayLine和Crypto DayLine不再免费。
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include"SystemConfiguration.h"
-#include"SystemMessage.h"
+module DataSource.Finnhub;
+import SystemConfiguration;
+import SystemMessage;
 
-#include"FinnhubInquiryType.h"
-#include"InaccessibleSymbol.h"
+import FinnhubInquiryType;
+import InaccessibleSymbol;
 
-#include "FinnhubDataSource.h"
+import Container.Stock.FinnhubCrypto;
+import ContainerFinnhubCryptoExchange;
+import ContainerFinnhubForexExchange;
+import Container.Stock.FinnhubForexSymbol;
+import Container.Stock.FinnhubStock;
+import ContainerStockExchange;
+import Product;
 
-#include "ContainerFinnhubCrypto.h"
-#include "ContainerFinnhubCryptoExchange.h"
-#include "ContainerFinnhubForexExchange.h"
-#include "containerFinnhubForexSymbol.h"
-#include "ContainerFinnhubStock.h"
-#include "ContainerStockExchange.h"
-#include"VirtualWebProduct.h"
+import SpdlogAssert;
+import TimeConvert;
+import WebData;
+import Market.WorldMarket;
+import Stock.FinnhubStock;
+import Stock.FinnhubCrypto;
+import Factory.Finnhub;
+import Stock.FinnhubForex;
 
-#include "spdlog_assert.h"
-#include "TimeConvert.h"
-#include "WebData.h"
-#include"WorldMarket.h"
-#include"FinnhubStock.h"
-#include "FinnhubCrypto.h"
-#include "FinnhubFactory.h"
-#include"FinnhubForex.h"
-
+import std;
 using std::exception;
+using std::map;
+using std::string;
+using std::chrono::local_seconds;
+using std::literals::chrono_literals::operator""min;
+using std::literals::chrono_literals::operator""h;
+using std::literals::chrono_literals::operator""s;
 
 namespace {
 	auto s_isAccessible = [](int inquireType, const std::string& exchangeCode) {

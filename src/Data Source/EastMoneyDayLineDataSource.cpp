@@ -6,25 +6,33 @@
 /// 
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
-
+module;
+#include <afx.h>
 #include <random>
 
-#include"ChinaStockCodeConverter.h"
-#include "EastmoneyDayLineDataSource.h"
-#include"ProductEastmoneyDayLine.h"
-#include"SystemMessage.h"
+module DataSource.EastmoneyDayLine;
 
-#include"ChinaMarket.h"
-#include "ContainerChinaStock.h"
-#include "SystemConfiguration.h"
-#include"VirtualWebProduct.h"
-#include "TimeConvert.h"
-#include "WebData.h"
-#include"ChinaStock.h"
+import ChinaStockCodeConverter;
+import Product.EastmoneyDayLine;
+import SystemMessage;
 
+import Market.ChinaMarket;
+import Container.Stock.ChinaStock;
+import SystemConfiguration;
+import Product;
+import TimeConvert;
+import WebData;
+import Stock.ChinaStock;
+
+import std;
 using std::make_shared;
-using namespace std;
+using std::string;
+using std::chrono::local_days;
+using std::chrono::local_seconds;
+using std::chrono::milliseconds;
+using std::chrono::seconds;
+using std::literals::chrono_literals::operator""h;
+using std::literals::chrono_literals::operator""min;
 
 CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

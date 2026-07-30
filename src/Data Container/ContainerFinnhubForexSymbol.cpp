@@ -1,15 +1,15 @@
-#include "pch.h"
-
-#include"containerFinnhubForexSymbol.h"
-#include "FinnhubForex.h"
-#include "InfoReport.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
+module Container.Stock.FinnhubForexSymbol;
+import Stock.FinnhubForex;
+import InfoReport;
+import DatabaseConnector;
+
+import std;
 using std::make_shared;
+using std::dynamic_pointer_cast;
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();
@@ -55,42 +55,38 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 
 void CContainerFinnhubForexSymbol::UpdateProfileDB() {
 	if (IsUpdateProfileDB()) {
-		try {
-			using namespace StockMarket;
-			const auto& t = FinnhubForexSymbol{};
-			auto db = gl_dbStockMarket.get();
-			auto tx = sqlpp::start_transaction(db);
+		using namespace StockMarket;
+		const auto& t = FinnhubForexSymbol{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-			for (size_t i = 0; i < m_vStock.size(); ++i) {
-				const auto& pStock = m_vStock[i];
-				if (pStock->IsUpdateProfileDB()) {
-					pStock->UpdateJsonUpdateDate();
-					if (pStock->IsNewStock()) {//插入新股票代码
-						db(sqlpp::insert_into(t).set(
-							t.Symbol = pStock->GetSymbol(),
-							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchange(),
-							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-						));
-						pStock->SetNewStock(false);
-					}
-					else {//更新现有股票代码
-						db(sqlpp::update(t).set(
-							t.Symbol = pStock->GetSymbol(),
-							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchange(),
-							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-						).where(t.Symbol == pStock->GetSymbol()));
-					}
-					pStock->SetUpdateProfileDB(false);
+		for (size_t i = 0; i < m_vStock.size(); ++i) {
+			const auto& pStock = m_vStock[i];
+			if (pStock->IsUpdateProfileDB()) {
+				pStock->UpdateJsonUpdateDate();
+				if (pStock->IsNewStock()) {//插入新股票代码
+					db(sqlpp::insert_into(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.Description = pStock->GetDescription(),
+						t.Exchange = pStock->GetExchange(),
+						t.DisplaySymbol = pStock->GetDisplaySymbol(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					));
+					pStock->SetNewStock(false);
 				}
+				else {//更新现有股票代码
+					db(sqlpp::update(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.Description = pStock->GetDescription(),
+						t.Exchange = pStock->GetExchange(),
+						t.DisplaySymbol = pStock->GetDisplaySymbol(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					).where(t.Symbol == pStock->GetSymbol()));
+				}
+				pStock->SetUpdateProfileDB(false);
 			}
-			tx.commit();
-		} catch (CException& e) {
-			ReportInformation(e);
 		}
+		tx.commit();
 	}
 }
 

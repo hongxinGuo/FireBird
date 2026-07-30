@@ -1,12 +1,10 @@
-#include "pch.h"
-
-#include "ContainerFinnhubForexExchange.h"
-#include "InfoReport.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
-
-#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
+
+module ContainerFinnhubForexExchange;
+import InfoReport;
+import DatabaseConnector;
 
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
 	Reset();
@@ -63,25 +61,21 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 
 bool CContainerFinnhubForexExchange::UpdateDB() {
 	if (m_llLastTotalForexExchange < m_vForexExchange.size()) {
-		try {
-			using namespace StockMarket;
-			const auto& t = FinnhubForexExchange{};
-			auto db = gl_dbStockMarket.get();
-			auto tx = sqlpp::start_transaction(db);
-			auto multi_insert = insert_into(t).columns(t.code);
-			int nValues = 0;
-			for (auto l = m_llLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
-				multi_insert.add_values(
-					t.code = m_vForexExchange.at(l)
-				);
-				nValues++;
-			}
-			if (nValues > 0) db(multi_insert);
-			tx.commit();
-			m_llLastTotalForexExchange = m_vForexExchange.size();
-		} catch (CException& e) {
-			ReportInformation(e);
+		using namespace StockMarket;
+		const auto& t = FinnhubForexExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.code);
+		int nValues = 0;
+		for (auto l = m_llLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
+			multi_insert.add_values(
+				t.code = m_vForexExchange.at(l)
+			);
+			nValues++;
 		}
+		if (nValues > 0) db(multi_insert);
+		tx.commit();
+		m_llLastTotalForexExchange = m_vForexExchange.size();
 		return true;
 	}
 	return false;

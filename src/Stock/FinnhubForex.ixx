@@ -1,16 +1,17 @@
 module;
 
-export module FinnhubForex;
+export module Stock.FinnhubForex;
 
-import VirtualStock;
-import ContainerForexDayLine;
-import DayLine;
+import Stock;
+import Container.HistoryCandle.ForexDayLine;
+import HistoryCandle.DayLine;
 
 import std;
 using std::unique_ptr;
 using std::shared_ptr;
 using std::vector;
-
+using std::string;
+using std::time_t;
 
 export {
 	class CFinnhubForex : public CVirtualStock {

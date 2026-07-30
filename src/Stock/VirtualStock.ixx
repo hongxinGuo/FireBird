@@ -2,13 +2,14 @@ module;
 
 #include <afx.h>
 
-export module VirtualStock;
+export module Stock;
 
-import std;
 import NlohmannJsonDeclaration;
 import StockSplit;
-import VirtualDataHistoryCandle;
+import HistoryCandle;
+import Container.HistoryCandle;
 
+import std;
 using std::string;
 using std::string_view;
 using std::atomic_bool;

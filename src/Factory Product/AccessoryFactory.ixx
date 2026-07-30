@@ -1,9 +1,10 @@
 module;
 
-export module AccessoryFactory;
+export module Factory.Accessory;
 
-import VirtualMarket;
-import VirtualDataFactory;
+import Market;
+import Factory;
+import Product;
 
 import std;
 using std::string;

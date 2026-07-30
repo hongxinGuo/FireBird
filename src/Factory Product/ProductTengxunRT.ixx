@@ -1,8 +1,8 @@
 module;
 
-export module ProductTengxunRT;
+export module Product.TengxunRT;
 
-import VirtualChinaMarketWebProduct;
+import Product;
 import WebData;
 
 import std;
@@ -12,7 +12,7 @@ using std::shared_ptr;
 using std::vector;
 
 export {
-	class CProductTengxunRT final : public CVirtualChinaMarketWebProduct {
+	class CProductTengxunRT final : public CVirtualWebProduct {
 	public:
 		CProductTengxunRT();
 		// 不允许赋值。

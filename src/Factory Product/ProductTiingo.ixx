@@ -1,8 +1,8 @@
 module;
 
-export module ProductTiingo;
+export module Product.Tiingo;
 
-import VirtualWorldMarketWebProduct;
+import Product;
 import WebData;
 
 import std;
@@ -11,7 +11,7 @@ using std::shared_ptr;
 using std::vector;
 
 export {
-	class CProductTiingo : public CVirtualWorldMarketWebProduct {
+	class CProductTiingo : public CVirtualWebProduct {
 	public:
 		CProductTiingo() = default;
 		// 不允许赋值。

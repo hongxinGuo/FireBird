@@ -1,10 +1,10 @@
 module;
 
-export module ProductAlphaVantageStockDAyLine;
+export module Product.AlphaVantage.StockDAyLine;
 
-import ProductAlphaVantage;
+import Product.AlphaVantage;
 
-import TiingoCandleLine;
+import HistoryCandle.TiingoCandleLine;
 import WebData;
 
 import std;

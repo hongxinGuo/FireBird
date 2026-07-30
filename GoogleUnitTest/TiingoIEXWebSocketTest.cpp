@@ -51,7 +51,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoIEXWebSocketTest, TestCreateMessage) {
-		vectorString vSymbol;
+		vector<string> vSymbol;
 		vSymbol.emplace_back("A");
 		vSymbol.emplace_back("AA");
 		vSymbol.emplace_back("AAL");

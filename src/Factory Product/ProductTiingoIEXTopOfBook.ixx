@@ -1,8 +1,8 @@
 module;
 
-export module ProductTiingoIEXTopOfBook;
+export module Product.Tiingo.IEXTopOfBook;
 
-import ProductTiingo;
+import Product.Tiingo;
 import WebData;
 import TiingoIEXTopOfBook;
 
