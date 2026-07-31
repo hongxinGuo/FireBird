@@ -14,7 +14,7 @@
 #include "ContainerChinaStock.h"
 #include"StockMarketSQLTable.h"
 
-#include"dataBaseConnector.h"
+#include"DatabaseConnector.h"
 #include "TiingoStock.h"
 #include"FinnhubStock.h"
 #include "SystemConfiguration.h"

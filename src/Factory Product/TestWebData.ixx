@@ -2,7 +2,7 @@ module;
 
 export module TestWebData;
 
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

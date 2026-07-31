@@ -1,8 +1,8 @@
 module;
 
-module NlohmannJsonGetValue;
+module FireBirdLib.Accessory.NlohmannJson.GetValue;
 
-import NlohmannJsonDeclaration;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 import std;
 using std::string;

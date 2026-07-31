@@ -1,10 +1,10 @@
 module;
 
-export module Factory.Accessory;
+export module FireBirdLib.Factory.Accessory;
 
-import Market;
-import Factory;
-import Product;
+import FireBirdLib.Market;
+import FireBirdLib.Factory;
+import FireBirdLib.Product;
 
 import std;
 using std::string;

@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"TiingoFundamentalDefinition.h"
+module TiingoFundamentalDefinition;
 
 CTiingoFundamentalDefinition::CTiingoFundamentalDefinition() {
 	Reset();

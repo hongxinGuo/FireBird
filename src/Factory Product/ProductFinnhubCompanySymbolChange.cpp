@@ -14,11 +14,11 @@
 #include"nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubCompanySymbolChange.h"
-#include"FinnhubCompanySymbolChange.h"
+#include"Type.FinnhubCompanySymbolChange.h"
 
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 
 using std::make_shared;
 

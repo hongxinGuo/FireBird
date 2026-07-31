@@ -1,8 +1,8 @@
 module;
 
-module Container.HistoryCandle.ChinaStockMonthLine;
+module FireBirdLib.Container.HistoryCandle.ChinaStockMonthLine;
 
-import Stock.ChinaStock;
+import FireBirdLib.Stock.ChinaStock;
 
 import std;
 using std::chrono::local_days;

@@ -6,7 +6,7 @@
 
 #include "ProductFinnhubCompanyPeer.h"
 
-#include "WebData.h"
+#include "FireBireLib.h"
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/peers?symbol=";

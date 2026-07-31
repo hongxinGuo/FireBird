@@ -1,7 +1,14 @@
-#include "pch.h"
+module;
 
-#include "MarketTask.h"
-#include"TimeConvert.h"
+module MarketTask;
+import FireBirdLib.Accessory.TimeConvert;
+
+import std;
+using std::map;
+using std::string;
+using std::chrono::local_seconds;
+using std::chrono::hh_mm_ss;
+using std::chrono::seconds;
 
 map<long, string> gl_mapMarketMapIndex;
 

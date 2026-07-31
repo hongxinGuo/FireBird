@@ -1,6 +1,6 @@
 module;
 
-export module StockExchange;
+export module Type.StockExchange;
 
 import std;
 using std::chrono::local_seconds;

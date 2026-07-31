@@ -23,7 +23,7 @@
 #include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
 #include "ContainerTiingoStock.h"
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include "EconomicCalendar.h"
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"

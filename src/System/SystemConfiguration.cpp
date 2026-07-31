@@ -6,10 +6,10 @@ module;
 
 module SystemConfiguration;
 
-import NlohmannJsonDeclaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
-import DataSource.SinaRT;
-import DataSource.TengxunRT;
-import TimeConvert;
+import FireBirdLib.Accessory.NlohmannJson.Declaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+import FireBirdLib.DataSource.SinaRT;
+import FireBirdLib.DataSource.TengxunRT;
+import FireBirdLib.Accessory.TimeConvert;
 #include <afx.h>
 #include <direct.h>
 

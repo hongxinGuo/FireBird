@@ -13,7 +13,7 @@ module;
 
 export module SystemData;
 
-import DayLineWebData;
+import FireBirdLib.WebData.DayLine;
 import WebRTData;
 
 using namespace moodycamel;

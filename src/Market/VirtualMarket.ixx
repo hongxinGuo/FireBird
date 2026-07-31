@@ -3,12 +3,12 @@ module;
 #include"afx.h"
 #include <concurrentqueue/moodycamel/concurrentqueue.h>
 
-export module Market;
+export module FireBirdLib.Market;
 
 import MarketTask;
 import MarketTaskQueue;
-import DataSource;
-import StockExchange;
+import FireBirdLib.DataSource;
+import Type.StockExchange;
 
 import std;
 using std::chrono::sys_seconds;

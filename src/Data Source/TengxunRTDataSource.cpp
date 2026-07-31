@@ -1,12 +1,12 @@
 module;
 #include <afx.h>
 
-module DataSource.TengxunRT;
-import Product.TengxunRT;
+module FireBirdLib.DataSource.TengxunRT;
+import FireBirdLib.Product.TengxunRT;
 
-import Market.ChinaMarket;
+import FireBirdLib.Market.ChinaMarket;
 import SystemConfiguration;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using namespace std;

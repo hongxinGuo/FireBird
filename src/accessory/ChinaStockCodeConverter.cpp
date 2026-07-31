@@ -2,7 +2,7 @@ module;
 
 #include"afx.h"
 
-module ChinaStockCodeConverter;
+module FireBirdLib.Accessory.ChinaStockCodeConverter;
 
 import std;
 using namespace std;

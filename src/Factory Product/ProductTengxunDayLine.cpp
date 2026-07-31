@@ -1,13 +1,14 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include "ProductTengxunDayLine.h"
-#include"ChinaMarket.h"
+module FireBirdLib.Product.TengxunDayLine;
+import FireBirdLib.Market.ChinaMarket;
 
-#include"JsonParse.h"
-#include "SystemData.h"
-#include "TengxunDayLineDataSource.h"
-#include "DayLineWebData.h"
-#include"DayLine.h"
+import FireBirdLib.Accessory.JsonParse;
+import SystemData;
+import FireBirdLib.DataSource.TengxunDayLine;
+import FireBirdLib.WebData.DayLine;
+import HistoryCandle.DayLine;
 
 using std::make_shared;
 
@@ -17,7 +18,7 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 }
 
 string CProductTengxunDayLine::CreateMessage() {
-	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CTengxunDayLineDataSource类完成，本Product无需动作。
+	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CTengxunDayLineDataSource类完成，本FireBirdLib.Product无需动作。
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

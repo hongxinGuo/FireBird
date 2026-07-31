@@ -1,10 +1,10 @@
 module;
 
-export module DataSource.Tiingo;
+export module FireBirdLib.DataSource.Tiingo;
 
-import DataSource;
-import WebData;
-import Factory.Tiingo;
+import FireBirdLib.DataSource;
+import FireBirdLib.WebData;
+import FireBirdLib.Factory.Tiingo;
 
 import std;
 using std::unique_ptr;

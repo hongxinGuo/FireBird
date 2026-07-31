@@ -4,7 +4,7 @@ module;
 module WebSocket;
 
 import FireBird.Log;
-import SpdlogAssert;
+import FireBirdLib.Accessory.SpdlogAssert;
 import SystemConfiguration;
 import SystemMessage;
 import Thread;
@@ -133,7 +133,7 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 }
 
 void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vector<string>& vSymbol) {
-	if (fDataSourceError) { // 相关的DataSource出现错误
+	if (fDataSourceError) { // 相关的FireBirdLib.DataSource出现错误
 		if (IsOpen()) {
 			TaskDisconnect();
 		}

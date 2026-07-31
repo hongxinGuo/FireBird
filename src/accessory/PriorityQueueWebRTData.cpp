@@ -1,6 +1,6 @@
 module;
 
-module PriorityQueueWebRTData;
+module FireBirdLib.Accessory.PriorityQueueWebRTData;
 
 void CPriorityQueueWebRTData::Reset() {
 	m_MutexAccessData.lock();

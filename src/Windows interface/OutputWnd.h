@@ -1,10 +1,6 @@
-module;
-#include"stdafx.h"
+#pragma once
 
-export module OutputList;
-
-import std;
-import CharSetTransfer;
+using namespace std;
 using std::string;
 
 class COutputList : public CListBox {
@@ -15,14 +11,15 @@ public:
 	COutputList& operator=(const COutputList&) = delete;
 	COutputList(const COutputList&&) = delete;
 	COutputList& operator=(const COutputList&&) = delete;
-	~COutputList() override = default ;
+	~COutputList() override = default;
 
 	// 实现
 	void TruncateList(long lNumberOfTruncation = 1000);
 	void SetCurAtLastLine();
 
 	int GetLineNumber() const noexcept { return m_iLineNumber; }
-	int AppendString(const string& str) { return AddString(Utf8ToW(str).c_str()); } // UNICODE下需要转换，utf-8 --> utf-16. 
+	//void Display(CSystemQueue* pQueue)
+	int AppendString(const string& str); // UNICODE下需要转换，utf-8 --> utf-16. 
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);

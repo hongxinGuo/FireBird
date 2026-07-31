@@ -2,17 +2,17 @@ module;
 #include "StockMarketSQLTable.h"
 #include"afx.h"
 #include"sqlpp23/sqlpp23.h"
-module Container.Stock.ChinaStock;
+module FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
 
 using namespace sqlpp;
 
-import TimeConvert;
-import ChinaStockCodeConverter;
-import InfoReport;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
+import FireBirdLib.Accessory.InfoReport;
 
-import Market.ChinaMarket;
-import Stock;
-import Stock.ChinaStock;
+import FireBirdLib.Market.ChinaMarket;
+import FireBirdLib.Stock;
+import FireBirdLib.Stock.ChinaStock;
 
 import Thread;
 

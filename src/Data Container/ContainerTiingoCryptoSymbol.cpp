@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "ContainerTiingoCryptoSymbol.h"
 
-#include "InfoReport.h"
+#include "FireBirdLib.Accessory.InfoReport.h"
 
 #include<sqlpp23/sqlpp23.h>
 
 #include "ContainerVirtualStock.h"
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoCrypto.h"
 

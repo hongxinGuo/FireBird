@@ -1,15 +1,20 @@
-#include"pch.h"
-
-#include"WorldMarket.h"
-#include "FinnhubForex.h"
-
+module;
+#include <afx.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
-#include"TimeConvert.h"
 
-#include"dataBaseConnector.h"
+module FireBirdLib.Stock.FinnhubStock;
 
-using namespace std;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Stock.FinnhubForex;
+
+import FireBirdLib.Accessory.TimeConvert;
+
+import DatabaseConnector;
+
+import std;
+using std::chrono::days;
+using std::chrono::local_days;
 
 CFinnhubForex::CFinnhubForex() {
 }
@@ -75,7 +80,7 @@ void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
 }
 
 void CFinnhubForex::UpdateDayLineStartEndDate() {
-	chrono::local_days lStartDate = chrono::local_days{ chrono::days(0) }, lEndDate = chrono::local_days{ chrono::days(0) };
+	local_days lStartDate = local_days{ days(0) }, lEndDate = local_days{ days(0) };
 	const bool fSucceed = m_dataDayLines.GetStartEndDate(lStartDate, lEndDate);
 	if (!fSucceed) {
 		SetDayLineStartDate(toLocalDays(29900101));

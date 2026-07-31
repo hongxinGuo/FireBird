@@ -12,7 +12,7 @@
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-#include"dataBaseConnector.h"
+#include"DatabaseConnector.h"
 
 using namespace testing;
 using namespace std;

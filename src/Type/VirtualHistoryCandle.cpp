@@ -1,13 +1,14 @@
-#include"pch.h"
+module;
 
-#include"VirtualHistoryCandle.h"
+module HistoryCandle;
 
-#include"TimeConvert.h"
+import FireBirdLib.Accessory.TimeConvert;
 
-using namespace std;
+import std;
+using std::chrono::local_days;
 
 void CVirtualHistoryCandle::Reset() {
-	m_tpDate = chrono::local_days{};
+	m_tpDate = local_days{};
 	m_strExchange.clear();
 	m_strStockSymbol.clear();
 	m_lLastClose = 0;

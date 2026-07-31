@@ -12,12 +12,12 @@ module;
 
 #include"simdjson.h"
 
-module SimdjsonGetValue;
+module FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.Simdjson.GetValue;
 
 using namespace simdjson;
 
 import std;
-import Simdjson.GetValue;
 using std::string_view;
 using std::string;
 using std::int64_t;

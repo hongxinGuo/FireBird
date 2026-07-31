@@ -2,13 +2,13 @@ module;
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
-module Container.StockSymbol;
+module FireBirdLib.Container.StockSymbol;
 
-import ChinaStockCodeConverter;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
 import SystemConstantChinaMarket;
 import StockSection;
 
-import Stock.ChinaStock;
+import FireBirdLib.Stock.ChinaStock;
 import DatabaseConnector;
 
 import std;
@@ -126,7 +126,7 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 	for (const auto& row : result) {
 		if (!m_vStockSection.at(row.IndexNumber)->IsActive()) {
 			m_vStockSection.at(row.IndexNumber)->SetActive(row.Active);
-			m_vStockSection.at(row.IndexNumber)->SetMarket(row.Market);
+			m_vStockSection.at(row.IndexNumber)->SetMarket(row.FireBirdLib.Market);
 			m_vStockSection.at(row.IndexNumber)->SetIndexNumber(row.IndexNumber);
 			m_vStockSection.at(row.IndexNumber)->SetComment(string{ row.Comment });
 		}
@@ -144,7 +144,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(sqlpp::select(all_of(t)).from(t));
-	auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.Market, t.IndexNumber, t.Comment);
+	auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.FireBirdLib.Market, t.IndexNumber, t.Comment);
 	int rows = result.size();
 	if (rows == 0) {
 		for (int i = 0; i < 2000; i++) {
@@ -152,7 +152,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 			multi_insert.add_values(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.Market = static_cast<int>(pStockSection->GetMarket()),
+				t.FireBirdLib.Market = static_cast<int>(pStockSection->GetMarket()),
 				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
 				t.Comment = pStockSection->GetComment()
 			);
@@ -165,7 +165,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 			db(update(t).set(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.Market = static_cast<int>(pStockSection->GetMarket()),
+				t.FireBirdLib.Market = static_cast<int>(pStockSection->GetMarket()),
 				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
 				t.Comment = pStockSection->GetComment()
 			).where(t.ID == i));

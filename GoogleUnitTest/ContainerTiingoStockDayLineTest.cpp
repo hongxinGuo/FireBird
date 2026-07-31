@@ -9,7 +9,7 @@
 #include<sqlpp23/sqlpp23.h>
 #include"TiingoCandleLine.h"
 
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoStock.h"
 #include "TimeConvert.h"

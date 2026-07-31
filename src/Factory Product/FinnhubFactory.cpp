@@ -1,41 +1,43 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"FinnhubInquiryType.h"
-#include"FinnhubStock.h"
+module FireBirdLib.Factory.Finnhub;
 
-#include"ProductFinnhubCompanyProfile.h"
-#include"ProductFinnhubCompanyProfileConcise.h"
-#include"ProductFinnhubCompanyNews.h"
-#include"ProductFinnhubCompanyPeer.h"
-#include"ProductFinnhubCompanyInsiderTransaction.h"
-#include"ProductFinnhubCompanyInsiderSentiment.h"
-#include"ProductFinnhubCryptoDayLine.h"
-#include"ProductFinnhubForexDayLine.h"
-#include"ProductFinnhubStockDayLine.h"
+import FinnhubInquiryType;
+import FireBirdLib.Stock.FinnhubStock;
 
-#include"ProductFinnhubMarketStatus.h"
-#include"ProductFinnhubMarketHoliday.h"
+import FireBirdLib.Product.Finnhub.CompanyProfile;
+import FireBirdLib.Product.Finnhub.CompanyProfileConcise;
+import FireBirdLib.Product.Finnhub.CompanyNews;
+import FireBirdLib.Product.Finnhub.CompanyPeer;
+import FireBirdLib.Product.Finnhub.CompanyInsiderTransaction;
+import FireBirdLib.Product.Finnhub.CompanyInsiderSentiment;
+import FireBirdLib.Product.Finnhub.CryptoDayLine;
+import FireBirdLib.Product.Finnhub.ForexDayLine;
+import FireBirdLib.Product.Finnhub.StockDayLine;
 
-#include"ProductFinnhubStockPriceQuote.h"
-#include"ProductFinnhubStockEstimatesEPSSurprise.h"
+import FireBirdLib.Product.Finnhub.MarketStatus;
+import FireBirdLib.Product.Finnhub.MarketHoliday;
 
-#include"ProductFinnhubStockSymbol.h"
-#include"ProductFinnhubCryptoSymbol.h"
-#include"ProductFinnhubForexSymbol.h"
+import FireBirdLib.Product.Finnhub.StockPriceQuote;
+import FireBirdLib.Product.Finnhub.StockEstimatesEPSSurprise;
 
-#include"ProductFinnhubForexExchange.h"
-#include"ProductFinnhubCryptoExchange.h"
+import FireBirdLib.Product.Finnhub.StockSymbol;
+import FireBirdLib.Product.Finnhub.CryptoSymbol;
+import FireBirdLib.Product.Finnhub.ForexSymbol;
 
-#include"ProductFinnhubEconomicCountryList.h"
-#include"ProductFinnhubEconomicCalendar.h"
+import FireBirdLib.Product.Finnhub.ForexExchange;
+import FireBirdLib.Product.Finnhub.CryptoExchange;
 
-#include"ProductDummy.h"
-#include "FinnhubFactory.h"
+import FireBirdLib.Product.Finnhub.EconomicCountryList;
+import FireBirdLib.Product.Finnhub.Type.EconomicCalendar;
 
-#include "ProductFinnhubCompanySymbolChange.h"
-#include "ProductFinnhubSECFilings.h"
-#include "SystemMessage.h"
-#include "VirtualMarket.h"
+import FireBirdLib.Product.Dummy;
+
+import FireBirdLib.Product.Finnhub.CompanySymbolChange;
+import FireBirdLib.Product.Finnhub.SECFilings;
+import SystemMessage;
+import FireBirdLib.Market;
 
 using std::make_shared;
 

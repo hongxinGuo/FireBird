@@ -10,9 +10,9 @@
 #include"TiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include "SystemMessage.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 #include"ContainerTiingoStockDayLine.h"
-#include "TimeConvert.h"
+#include "FireBirdLib.Accessory.TimeConvert.h"
 
 using namespace std;
 
@@ -157,7 +157,7 @@ CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const 
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
-		ReportJSonErrorToSystemMessage("Tiingo Stock DayLine " + str3, e.what());
+		ReportJSonErrorToSystemMessage("Tiingo FireBirdLib.Stock DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
 	std::ranges::sort(*pvDayLine, [](const CTiingoCandleLine& pData1, const CTiingoCandleLine& pData2) { return pData1.GetDate() < pData2.GetDate(); }); // 以日期早晚顺序排列。

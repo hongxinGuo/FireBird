@@ -1,9 +1,9 @@
 module;
 
-export module Product.Tiingo;
+export module FireBirdLib.Product.Tiingo;
 
-import Product;
-import WebData;
+import FireBirdLib.Product;
+import FireBirdLib.WebData;
 
 import std;
 using std::int64_t;

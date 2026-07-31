@@ -2,11 +2,11 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module Container.HistoryCandle.FinnhubStockDayLine;
+module FireBirdLib.Container.HistoryCandle.FinnhubStockDayLine;
 
 import DatabaseConnector;
-import Stock.FinnhubStock;
-import TimeConvert;
+import FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Accessory.TimeConvert;
 import HistoryCandle.DayLine;
 import HistoryCandle;
 

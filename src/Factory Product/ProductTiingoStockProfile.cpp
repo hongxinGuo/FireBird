@@ -8,8 +8,8 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
-#include "TimeConvert.h"
-#include "WebData.h"
+#include "FireBirdLib.Accessory.TimeConvert.h"
+#include "FireBireLib.h"
 #include "WorldMarket.h"
 
 #include<sqlpp23/sqlpp23.h>
@@ -18,7 +18,7 @@
 #include "ContainerTiingoSymbol.h"
 #include"StockMarketSQLTable.h"
 
-#include"dataBaseConnector.h"
+#include"DatabaseConnector.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
@@ -212,7 +212,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			iCount++;
 		}
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage("Tiingo Stock Symbol ", error.what());
+		ReportJSonErrorToSystemMessage("Tiingo FireBirdLib.Stock Symbol ", error.what());
 	}
 	return pvTiingoStock;
 }

@@ -225,8 +225,8 @@ namespace StockMarket {
       using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
-    struct Market {
-      SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Market, Market);
+    struct FireBirdLib.Market {
+      SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(FireBirdLib.Market, FireBirdLib.Market);
       using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
@@ -245,7 +245,7 @@ namespace StockMarket {
     using _table_columns = sqlpp::table_columns<T,
                ID,
                Active,
-               Market,
+               FireBirdLib.Market,
                IndexNumber,
                Comment>;
     using _required_insert_columns = sqlpp::detail::type_set<

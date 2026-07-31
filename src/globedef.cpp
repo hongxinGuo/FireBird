@@ -19,7 +19,7 @@ import SystemMessage;
 import MarketTask;
 
 import WebRTData;
-import DayLineWebData;
+import FireBirdLib.WebData.DayLine;
 
 import FinnhubInquiryType;
 import InaccessibleSymbol;

@@ -9,7 +9,7 @@
 #include "ContainerFinnhubStock.h"
 #include "ContainerStockExchange.h"
 #include "SystemMessage.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 
 using std::make_shared;
 
@@ -117,7 +117,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 			pvStock->push_back(pStock);
 		}
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Stock Symbol ", e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Symbol ", e.what());
 		return pvStock;
 	}
 	return pvStock;

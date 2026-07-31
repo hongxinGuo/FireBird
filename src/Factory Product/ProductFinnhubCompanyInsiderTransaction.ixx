@@ -1,9 +1,9 @@
 module;
 
-export module Product.Finnhub.CompanyInsiderTransaction;
+export module FireBirdLib.Product.Finnhub.CompanyInsiderTransaction;
 
-import Product.Finnhub;
-import WebData;
+import FireBirdLib.Product.Finnhub;
+import FireBirdLib.WebData;
 import InsiderTransaction;
 
 import std;

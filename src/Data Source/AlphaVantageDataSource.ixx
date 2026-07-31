@@ -1,10 +1,10 @@
 module;
 
-export module DataSource.AlphaVantage;
+export module FireBirdLib.DataSource.AlphaVantage;
 
-import DataSource;
-import WebData;
-import Factory.AlphaVantage;
+import FireBirdLib.DataSource;
+import FireBirdLib.WebData;
+import FireBirdLib.Factory.AlphaVantage;
 
 import std;
 using std::unique_ptr;

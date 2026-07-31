@@ -1,10 +1,10 @@
 module;
 
-export module Stock.FinnhubStock;
+export module FireBirdLib.Stock.FinnhubStock;
 
-import Stock;
-import Container.HistoryCandle.FinnhubStockDayLine;
-import NlohmannJsonDeclaration;
+import FireBirdLib.Stock;
+import FireBirdLib.Container.HistoryCandle.FinnhubStockDayLine;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 import FinnhubCompanyNews;
 import EPSSurprise;
 import SECFiling;

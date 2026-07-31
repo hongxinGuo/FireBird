@@ -10,7 +10,7 @@
 #include "jsonParse.h"
 #include<sqlpp23/sqlpp23.h>
 
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"

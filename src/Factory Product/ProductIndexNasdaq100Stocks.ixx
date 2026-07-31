@@ -1,9 +1,9 @@
 module;
 
-export module Product.IndexNasdaq100Stocks;
+export module FireBirdLib.Product.IndexNasdaq100Stocks;
 
-import Product;
-import WebData;
+import FireBirdLib.Product;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

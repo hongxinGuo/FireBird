@@ -1,9 +1,9 @@
 module;
 
-export module Product.Finnhub.MarketStatus;
+export module FireBirdLib.Product.Finnhub.MarketStatus;
 
-import Product.Finnhub;
-import WebData;
+import FireBirdLib.Product.Finnhub;
+import FireBirdLib.WebData;
 import MarketStatus;
 
 import std;

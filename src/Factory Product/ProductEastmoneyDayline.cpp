@@ -1,19 +1,27 @@
-#include "pch.h"
-
-#include "ProductEastmoneyDayLine.h"
-#include "ContainerChinaStock.h"
-#include "DayLine.h"
-
-#include "EastmoneyDayLineDataSource.h"
-#include "JsonParse.h"
-#include"WebData.h"
-#include "DayLineWebData.h"
+module;
+#include <afx.h>
 
 #include"simdjson.h"
-#include "SystemData.h"
+
+module FireBirdLib.Product.EastmoneyDayLine;
+
+import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+import HistoryCandle.DayLine;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
+
+import FireBirdLib.DataSource.EastmoneyDayLine;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.WebData;
+import HistoryCandle.DayLine;
+import FireBirdLib.WebData.DayLine;
+
+import SystemData;
+
 using namespace simdjson;
 
+import std;
 using std::make_shared;
+using std::chrono::local_days;
 
 // Helper: parse one 东方财富 Kline line like:
 // "2024-12-31,6.29,6.18,6.32,6.17,483794,313479921.00,2.38,-1.75,-0.11,0.59"
@@ -68,7 +76,7 @@ CProductEastmoneyDayLine::CProductEastmoneyDayLine() {
 }
 
 string CProductEastmoneyDayLine::CreateMessage() {
-	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CEastmoneyDayLineDataSource类完成，本Product无需动作。
+	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CEastmoneyDayLineDataSource类完成，本FireBirdLib.Product无需动作。
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,10 +1,10 @@
 module;
 
-export module Product.AlphaVantage.StockSplits;
+export module FireBirdLib.Product.AlphaVantage.StockSplits;
 
-import Product.AlphaVantage;
+import FireBirdLib.Product.AlphaVantage;
 
-import WebData;
+import FireBirdLib.WebData;
 import StockSplit;
 
 import std;

@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"TiingoMarketNews.h"
+moudle TiingoMarketNews;
 
 CTiingoMarketNews::CTiingoMarketNews() {
 	Reset();

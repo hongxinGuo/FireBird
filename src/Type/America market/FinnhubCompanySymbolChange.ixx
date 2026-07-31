@@ -1,6 +1,6 @@
 module;
 
-export module FinnhubCompanySymbolChange;
+export module Type.FinnhubCompanySymbolChange;
 
 import std;
 using std::shared_ptr;

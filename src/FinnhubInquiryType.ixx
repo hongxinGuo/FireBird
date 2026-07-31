@@ -13,7 +13,7 @@ export {
 		WEBSOCKET_TRADES_ = 1,
 		WEBSOCKET_NEWS_, // Premium
 
-		// Stock Fundamentals
+		// FireBirdLib.Stock Fundamentals
 		SYMBOL_LOOKUP_,
 		STOCK_SYMBOLS_,
 		MARKET_STATUS_,
@@ -45,7 +45,7 @@ export {
 		SYMBOL_CHANGE_, // Premium
 		ISIN_CHANGE_, // Premium
 
-		// Stock Estimates
+		// FireBirdLib.Stock Estimates
 		STOCK_ESTIMATES_RECOMMENDATION_TRENDS_, // not implemented
 		STOCK_ESTIMATES_PRICE_TARGET_, // Premium
 		STOCK_ESTIMATES_UPGRADE_DOWNGRADE_, // Premium
@@ -56,7 +56,7 @@ export {
 		STOCK_ESTIMATES_EPS_SURPRISE_,
 		STOCK_ESTIMATES_EARNING_CALENDAR_,
 
-		// Stock Price
+		// FireBirdLib.Stock Price
 		STOCK_PRICE_QUOTE_, // 实时数据优先级最低
 		STOCK_PRICE_CANDLES_, // 历史数据优先级低
 		STOCK_PRICE_TICK_DATA_, // Premium

@@ -1,8 +1,8 @@
 module;
 
-module Container.HistoryCandle.ChinaStockWeekLine;
+module FireBirdLib.Container.HistoryCandle.ChinaStockWeekLine;
 
-import Stock.ChinaStock;
+import FireBirdLib.Stock.ChinaStock;
 import HistoryCandle.WeekLine;
 
 import std;

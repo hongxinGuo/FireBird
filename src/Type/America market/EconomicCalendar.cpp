@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include "EconomicCalendar.h"
+module Type.EconomicCalendar;
 
 CEconomicCalendar::CEconomicCalendar() {
 	m_strCountry = " ";

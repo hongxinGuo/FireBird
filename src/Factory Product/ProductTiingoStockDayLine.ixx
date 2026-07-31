@@ -1,10 +1,10 @@
 module;
 #define needMoreDayLineData_ 10 // 申请日线数据时，总是多申请一天的数据，以便使用前日收盘价作为昨收。
 
-export module Product.Tiingo.StockDayLine;
+export module FireBirdLib.Product.Tiingo.StockDayLine;
 
-import Product.Tiingo;
-import WebData;
+import FireBirdLib.Product.Tiingo;
+import FireBirdLib.WebData;
 import HistoryCandle.TiingoCandleLine;
 
 import std;

@@ -1,8 +1,8 @@
-#include"pch.h"
+module;
 
-#include"MonthLine.h"
+module HistoryCandle.MonthLine;
 
-#include "ChinaStock.h"
+import FireBirdLib.Stock.ChinaStock;
 
 namespace {
 	CChinaStock s_stockMonthLine;

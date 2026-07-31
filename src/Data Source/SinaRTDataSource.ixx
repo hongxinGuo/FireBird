@@ -1,9 +1,9 @@
 module;
 
-export module DataSource.SinaRT;
+export module FireBirdLib.DataSource.SinaRT;
 
-import DataSource;
-import WebData;
+import FireBirdLib.DataSource;
+import FireBirdLib.WebData;
 
 import std;
 using std::chrono::local_seconds;

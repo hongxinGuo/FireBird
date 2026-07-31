@@ -1,9 +1,9 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include "IndicatorKDJ.h"
-#include "VirtualDataHistoryCandle.h"
+module IndicatorKDJ;
+import  FireBirdLib.Container.HistoryCandle;
 
-using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //

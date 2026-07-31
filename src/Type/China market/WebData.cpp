@@ -1,7 +1,13 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include"WebData.h"
-#include"JsonParse.h"
+module FireBireLib;
+
+import FireBirdLib.Accessory.JsonParse;
+import GlobeDef;
+
+import std;
+using std::string;
 
 CWebData::CWebData() {
 	m_tpTime = toSysTime(0);

@@ -3,7 +3,7 @@
 #include "ContainerTiingoFundamentalDefinition.h"
 #include<sqlpp23/sqlpp23.h>
 
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 using std::map;

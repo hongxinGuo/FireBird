@@ -1,6 +1,6 @@
 module;
 
-export module TimeConvert;
+export module FireBirdLib.Accessory.TimeConvert;
 
 import std;
 

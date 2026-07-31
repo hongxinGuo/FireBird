@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"InsiderSentiment.h"
+module InsiderSentiment;
 
 CInsiderSentiment::CInsiderSentiment() {
 	m_strSymbol = " ";

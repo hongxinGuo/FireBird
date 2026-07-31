@@ -1,9 +1,9 @@
-#include"pch.h"
+module;
 
-#include"TimeConvert.h"
-#include "WeekLine.h"
+module HistoryCandle.WeekLine;
 
-#include "ChinaStock.h"
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Stock.ChinaStock;
 
 using namespace std;
 

@@ -8,7 +8,7 @@
 #include "TiingoCrypto.h"
 #include<sqlpp23/sqlpp23.h>
 
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 using std::make_shared;

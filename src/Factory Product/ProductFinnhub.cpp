@@ -3,8 +3,11 @@
 #include"ProductFinnhub.h"
 
 #include"InaccessibleSymbol.h"
-#include "WebData.h"
+module;
 
+module FireBirdLib.FireBirdLib.Product.Finnhub;
+
+import std;
 using std::make_shared;
 using std::exception;
 

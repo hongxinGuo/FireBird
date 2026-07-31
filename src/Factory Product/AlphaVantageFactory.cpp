@@ -1,14 +1,14 @@
-#include "pch.h"
+module;
 
-#include "SystemMessage.h"
+module FireBirdLib.Factory.AlphaVantage;
+import SystemMessage;
 
-#include "FinnhubInquiryType.h"
-#include "ProductAlphaVantageStockDayLine.h"
-#include "ProductAlphaVantageStockSplits.h"
-#include "ProductDummy.h"
-#include "AlphaVantageFactory.h"
+import FinnhubInquiryType;
+import FireBirdLib.Product.AlphaVantageStockDayLine;
+import FireBirdLib.Product.AlphaVantageStockSplits;
+import FireBirdLib.Product.Dummy;
 
-#include "VirtualMarket.h"
+import FireBirdLib.Market;
 
 using std::make_shared;
 

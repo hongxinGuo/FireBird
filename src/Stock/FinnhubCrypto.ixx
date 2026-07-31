@@ -1,10 +1,10 @@
 module;
 
-export module Stock.FinnhubCrypto;
+export module FireBirdLib.Stock.FinnhubCrypto;
 
-import Stock;
+import FireBirdLib.Stock;
 
-import Container.HistoryCandle.CryptoDayLine;
+import FireBirdLib.Container.HistoryCandle.CryptoDayLine;
 import HistoryCandle.DayLine;
 
 import std;

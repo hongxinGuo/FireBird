@@ -1,19 +1,22 @@
-#include"pch.h"
-
-#include"TimeConvert.h"
-#include"ChinaStockCodeConverter.h"
-
-#include "ChinaStock.h"
-
-#include"ChinaMarket.h"
+module;
+#include <afx.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
-#include "SystemMessage.h"
-#include "WebRTData.h"
 
-#include"dataBaseConnector.h"
+module FireBirdLib.Stock.ChinaStock;
 
-using namespace std;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
+import FireBirdLib.Market.ChinaMarket;
+import SystemMessage;
+import WebRTData;
+
+import DatabaseConnector;
+import HistoryCandle.DayLine;
+
+import std;
+using std::chrono::days;
+using std::chrono::Monday;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -183,7 +186,7 @@ void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const {
-	pBeUpdated->SetDate(floor<chrono::days>(gl_pChinaMarket->ToLocalTime(GetTimePoint())));
+	pBeUpdated->SetDate(floor<days>(gl_pChinaMarket->ToLocalTime(GetTimePoint())));
 	pBeUpdated->SetExchange(m_strExchange);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
 	pBeUpdated->SetLastClose(m_lLastClose);
@@ -275,8 +278,8 @@ bool CChinaStock::CheckDayLineStatus() {
 	if (gl_pChinaMarket->GetLastTradeDate() <= GetDayLineEndDate()) {// 最新日线数据为今日或者上一个交易日的数据。
 		SetUpdateDayLine(false); // 日线数据不需要更新
 	}
-	else if (gl_pChinaMarket->GetLastTradeDate() > GetDayLineEndDate() + chrono::days(60)) {// 退市股票如果已下载过日线数据，则每星期一复查日线数据
-		if (gl_pChinaMarket->GetWeekDay() != chrono::Monday && GetDayLineEndDate() != toLocalDays(CHINA_MARKET_BEGIN_DATE_)) {
+	else if (gl_pChinaMarket->GetLastTradeDate() > GetDayLineEndDate() + days(60)) {// 退市股票如果已下载过日线数据，则每星期一复查日线数据
+		if (gl_pChinaMarket->GetWeekDay() != Monday && GetDayLineEndDate() != toLocalDays(CHINA_MARKET_BEGIN_DATE_)) {
 			SetUpdateDayLine(false);
 		}
 	}

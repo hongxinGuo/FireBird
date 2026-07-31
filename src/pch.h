@@ -7,12 +7,16 @@
 #ifndef PCH_H_INCLUDE_
 #define PCH_H_INCLUDE_
 
-#if _MSVC_LANG <= 202002L
-#error "本系统使用C++23及以上标准"
-#endif
-
 #define NOMINMAX // 禁止windows.h中定义min和max宏，避免与std::min和std::max冲突
 
 #include"stdafx.h"
+
+#include"nlohmann/json.hpp"
+
+#include"StockMarketSQLTable.h"
+
+#include"spdlog_assert.h"
+
+#include"globedef.h"
 
 #endif

@@ -19,7 +19,7 @@
 
 #include"simdjsonGetValue.h"
 #include "SystemConfiguration.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 
 using std::make_shared;
 
@@ -56,7 +56,7 @@ void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //				"Economic Measures",
 //				"Economics",
 //				"Markets",
-//				"Stock",
+//				"FireBirdLib.Stock",
 //				"Technology",
 //				"Tiingo Top",
 //				"Trade"

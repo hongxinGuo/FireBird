@@ -1,10 +1,10 @@
 module;
 
-export module Container.Stock.TiingoCryptoSymbol;
+export module FireBirdLib.Container.FireBirdLib.Stock.TiingoCryptoSymbol;
 
-import Container.Stock;
+import FireBirdLib.Container.FireBirdLib.Stock;
 
-import Stock.TiingoCrypto;
+import FireBirdLib.Stock.TiingoCrypto;
 
 import std;
 using std::shared_ptr;

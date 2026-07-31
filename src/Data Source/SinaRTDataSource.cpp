@@ -1,11 +1,11 @@
 module;
 
-module DataSource.SinaRT;
-import Product.SinaRT;
+module FireBirdLib.DataSource.SinaRT;
+import FireBirdLib.Product.SinaRT;
 
-import Market.ChinaMarket;
+import FireBirdLib.Market.ChinaMarket;
 import SystemConfiguration;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 #include <afx.h>

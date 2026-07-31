@@ -1,6 +1,6 @@
 module;
 
-export module SaveAndLoad;
+export module FireBirdLib.Accessory.SaveAndLoad;
 
 import std;
 using std::string;

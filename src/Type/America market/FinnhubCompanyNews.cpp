@@ -1,6 +1,7 @@
-#include"pch.h"
+module;
 
-#include"FinnhubCompanyNews.h"
+module FinnhubCompanyNews;
+import GlobeDef;
 
 CFinnhubCompanyNews::CFinnhubCompanyNews() {
 	Reset();

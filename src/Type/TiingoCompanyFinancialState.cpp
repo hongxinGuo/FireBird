@@ -1,6 +1,7 @@
-#include"pch.h"
+module;
 
-#include"TiingoCompanyFinancialState.h"
+#include <afx.h>
+module TiingoCompanyFinancialState;
 
 CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
 	m_symbol = "";

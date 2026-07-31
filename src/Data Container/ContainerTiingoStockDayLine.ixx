@@ -1,8 +1,8 @@
 module;
 
-export module Container.HistoryCandle.TiingoStockDayLine;
+export module FireBirdLib.Container.HistoryCandle.TiingoStockDayLine;
 
-import Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 
 import HistoryCandle.TiingoCandleLine;
 

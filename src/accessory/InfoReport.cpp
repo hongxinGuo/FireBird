@@ -1,7 +1,7 @@
 module;
 
 #include <ATLComMem.h>
-module InfoReport;
+module FireBirdLib.Accessory.InfoReport;
 
 import CharSetTransfer;
 import SystemMessage;

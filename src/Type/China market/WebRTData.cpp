@@ -1,17 +1,24 @@
-#include"pch.h"
+module;
+#include <afx.h>
+#include <exception>
 
-#include"ChinaStockCodeConverter.h"
+module WebRTData;
 
-#include"jsonParse.h"
-#include"WebRTData.h"
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
+import FireBirdLib.Accessory.JsonParse;
+import GlobeDef;
+import CharSetTransfer;
+import FireBirdLib.Market.ChinaMarket;
 
-#include "CharSetTransfer.h"
-#include "ChinaMarket.h"
 
-#include<spanstream>
-
+import std;
 using std::chrono::time_point_cast;
+using std::chrono::seconds;
+using std::chrono::system_clock;
+using std::chrono::local_seconds;
+using std::chrono::days;
 using std::exception;
+using std::ospanstream;
 
 CWebRTData::CWebRTData() {
 	m_tpTime = time_point_cast<seconds>(system_clock::from_time_t(0));
@@ -296,9 +303,9 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	// 30 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
 	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	std::ispanstream ss(sv);
+	std::istringstream ss1(string{ sv });
 	local_seconds lt;
-	ss >> parse("%Y%m%d%H%M%S", lt);
+	ss1 >> parse("%Y%m%d%H%M%S", lt);
 	m_tpTime = gl_pChinaMarket->ToSysTime(lt);
 
 	// 涨跌

@@ -1,9 +1,12 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include "IndicatorRSI.h"
-#include <VirtualDataHistoryCandle.h>
+module IndicatorRSI;
+import FireBirdLib.Container.HistoryCandle;
 
-#include <deque>
+import std;
+using std::max;
+using std::min;
 
 using namespace FireBird::Indicators;
 

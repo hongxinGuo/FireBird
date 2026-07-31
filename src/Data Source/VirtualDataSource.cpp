@@ -8,17 +8,17 @@ module;
 #include <afx.h>
 #include"concurrencpp/concurrencpp.h"
 
-module DataSource;
+module FireBirdLib.DataSource;
 
-import FireBird.Log;
-import SpdlogAssert;
-import Product;
+import FireBirdLib.Log;
+import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.Product;
 import InquireEngine;
-import SystemConfiguration;
-import SystemMessage;
+import System.Configuration;
+import System.Message;
 
 import Thread;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::atomic;
@@ -39,7 +39,7 @@ void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///<summary>
-/// DataSource的顶层函数。
+/// FireBirdLib.DataSource的顶层函数。
 ///
 /// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，否则thread_pool_executor所生成线程的返回值无法读取，原因待查。
 ///

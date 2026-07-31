@@ -1,10 +1,10 @@
 module;
 
-export module Container.Stock.TiingoSymbol;
+export module FireBirdLib.Container.FireBirdLib.Stock.TiingoSymbol;
 
-import Container.Stock;
+import FireBirdLib.Container.FireBirdLib.Stock;
 
-import Stock.TiingoStock;
+import FireBirdLib.Stock.TiingoStock;
 
 import std;
 using std::string;

@@ -1,17 +1,19 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+module FireBirdLib.Product.AlphaVantage.StockDayLine;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-#include "ProductAlphaVantageStockDayLine.h"
-#include"ContainerTiingoStockDayLine.h"
+import FireBirdLib.Container.HistoryCandle.TiingoStockDayLine;
 
-#include "ContainerTiingoStock.h"
-#include"TiingoStock.h"
-#include "ContainerTiingoSymbol.h"
-#include "SystemMessage.h"
-#include "WebData.h"
-#include"TiingoCandleLine.h"
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoSymbol;
+import SystemMessage;
+import FireBirdLib.WebData;
+import HistoryCandle.TiingoCandleLine;
 
 using namespace std;
 
@@ -145,7 +147,7 @@ CTiingoCandleLinesPtr CProductAlphaVantageStockDayLine::ParseAlphaVantageStockDa
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
-		ReportJSonErrorToSystemMessage("AlphaVantage Stock DayLine " + str3, e.what());
+		ReportJSonErrorToSystemMessage("AlphaVantage FireBirdLib.Stock DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
 	std::ranges::sort(*pvDayLine, [](const CTiingoCandleLine& pData1, const CTiingoCandleLine& pData2) { return pData1.GetDate() < pData2.GetDate(); }); // 以日期早晚顺序排列。

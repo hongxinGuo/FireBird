@@ -1,6 +1,6 @@
 module;
 
-export module FinnhubRecommendationTrends;
+export module Type.FinnhubRecommendationTrends;
 
 import std;
 using std::string;

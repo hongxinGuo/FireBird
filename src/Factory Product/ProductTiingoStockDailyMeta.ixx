@@ -1,10 +1,10 @@
 module;
 
-export module Product.Tiingo.StockDailyMeta;
+export module FireBirdLib.Product.Tiingo.StockDailyMeta;
 
-import Product.Tiingo;
+import FireBirdLib.Product.Tiingo;
 import TiingoStockDailyMeta;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

@@ -9,16 +9,16 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module Container.Stock.FinnhubStock;
-import Market.WorldMarket;
-import JsonParse;
+module FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.JsonParse;
 
 
 import DatabaseConnector;
 import SystemConfiguration;
-import Stock.FinnhubStock;
-import Stock;
-import TimeConvert;
+import FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Stock;
+import FireBirdLib.Accessory.TimeConvert;
 
 import std;
 using std::make_shared;

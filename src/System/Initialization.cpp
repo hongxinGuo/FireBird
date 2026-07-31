@@ -11,21 +11,21 @@ module FireBird.Initialization;
 
 import SystemMessage;
 
-import DataSource.AlphaVantage;
-import DataSource.SinaRT;
-import DataSource.TengxunRT;
-import DataSource.TengxunDayLine;
-import DataSource.EastmoneyDayLine;
-import DataSource.Finnhub;
-import DataSource.Tiingo;
-import DataSource.Accessory;
+import FireBirdLib.DataSource.AlphaVantage;
+import FireBirdLib.DataSource.SinaRT;
+import FireBirdLib.DataSource.TengxunRT;
+import FireBirdLib.DataSource.TengxunDayLine;
+import FireBirdLib.DataSource.EastmoneyDayLine;
+import FireBirdLib.DataSource.Finnhub;
+import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.DataSource.Accessory;
 
-import Market.ChinaMarket;
+import FireBirdLib.Market.ChinaMarket;
 import InaccessibleSymbol;
 import FinnhubInquiryType;
-import Market.WorldMarket;
+import FireBirdLib.Market.WorldMarket;
 
-import SimdjsonGetValue;
+import FireBirdLib.Accessory.Simdjson.GetValue;
 import Thread;
 import CharSetTransfer;
 import GlobeDef;
@@ -341,7 +341,7 @@ void TaskSchedulePer100ms() {
 		gl_tpNow = time_point_cast<seconds>(system_clock::now());
 
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
-		//Todo: 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
+		//Todo: 其他各FireBirdLib.DataSource的调度，也考虑移至此处。目前各FireBirdLib.DataSource的调度，在CVirtualMarket的ScheduleTask()中。
 	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
 		string str = "ScheduleMarketTask unhandled exception founded : ";
 		str += e->what();

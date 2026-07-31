@@ -1,6 +1,6 @@
 module;
 
-export module ChinaStockCodeConverter;
+export module FireBirdLib.Accessory.ChinaStockCodeConverter;
 
 import std;
 using std::string;

@@ -2,10 +2,10 @@ module;
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
-module Container.Stock.FinnhubCrypto;
+module FireBirdLib.Container.FireBirdLib.Stock.FinnhubCrypto;
 
 import FinnhubCrypto;
-import InfoReport;
+import FireBirdLib.Accessory.InfoReport;
 import DatabaseConnector;
 
 import std;

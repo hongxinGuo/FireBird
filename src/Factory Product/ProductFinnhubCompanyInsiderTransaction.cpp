@@ -10,8 +10,8 @@
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
-#include "TimeConvert.h"
-#include "WebData.h"
+#include "FireBirdLib.Accessory.TimeConvert.h"
+#include "FireBireLib.h"
 
 using namespace std;
 
@@ -88,7 +88,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 		pt1 = jsonGetChild(js, "data");
 		stockSymbol = jsonGetString(js, "symbol");
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Stock Insider Transaction " + GetInquiryFunction(), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Insider Transaction " + GetInquiryFunction(), e.what());
 		return pvInsiderTransaction;
 	}
 
@@ -116,7 +116,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			pvInsiderTransaction->push_back(insiderTransaction);
 		}
 	} catch (nlohmannJson::exception& e) {
-		string str = "Finnhub Stock ";
+		string str = "Finnhub FireBirdLib.Stock ";
 		str += insiderTransaction.m_strSymbol;
 		str += " Insider Transaction ";
 		ReportJSonErrorToSystemMessage(str, e.what());

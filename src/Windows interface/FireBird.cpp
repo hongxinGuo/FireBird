@@ -17,7 +17,7 @@
 
 #include <spdlog/spdlog.h>
 
-#include"dataBaseConnector.h"
+#include"DatabaseConnector.h"
 #include "SystemConfiguration.h"
 
 using namespace std;

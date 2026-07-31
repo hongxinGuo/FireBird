@@ -1,5 +1,6 @@
-#include"pch.h"
-#include"FinnhubRecommendationTrends.h"
+module;
+
+module Type.FinnhubRecommendationTrends;
 
 CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
 	m_strSymbol = "";

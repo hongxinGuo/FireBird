@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"EPSSurprise.h"
+module EPSSurprise;
 
 CEPSSurprise::CEPSSurprise() {
 	m_strSymbol = " ";

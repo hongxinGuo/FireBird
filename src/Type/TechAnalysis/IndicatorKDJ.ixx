@@ -3,7 +3,7 @@ module;
 #include <afxwin.h>
 export module IndicatorKDJ;
 
-import Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 
 import std;
 using std::vector;

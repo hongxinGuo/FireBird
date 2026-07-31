@@ -1,7 +1,7 @@
 module;
 #include <afx.h>
 
-module SaveAndLoad;
+module FireBirdLib.Accessory.SaveAndLoad;
 
 import CharSetTransfer;
 

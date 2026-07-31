@@ -11,7 +11,7 @@
 #include "ContainerTiingoStock.h"
 #include "TiingoStock.h"
 #include"FinnhubStock.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile2?symbol=";
@@ -94,7 +94,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 		s = jsonGetString(js, "ipo");
 		if (!s.empty()) pStock->SetIPODate(s);
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Stock Profile Concise ", e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Profile Concise ", e.what());
 		return false; // 出现错误则返回任务失败
 	}
 	return true;

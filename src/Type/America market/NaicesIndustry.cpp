@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"NaicsIndustry.h"
+module NaicsIndustry;
 
 CNaicsIndustry::CNaicsIndustry() {
 	m_strNaics = " ";

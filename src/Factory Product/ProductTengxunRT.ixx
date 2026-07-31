@@ -1,9 +1,9 @@
 module;
 
-export module Product.TengxunRT;
+export module FireBirdLib.Product.TengxunRT;
 
-import Product;
-import WebData;
+import FireBirdLib.Product;
+import FireBirdLib.WebData;
 
 import std;
 #include <vector>

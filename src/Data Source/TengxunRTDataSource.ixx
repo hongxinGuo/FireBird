@@ -1,9 +1,9 @@
 module;
 
-export module DataSource.TengxunRT;
+export module FireBirdLib.DataSource.TengxunRT;
 
-import DataSource;
-import WebData;
+import FireBirdLib.DataSource;
+import FireBirdLib.WebData;
 
 import std;
 using std::chrono::local_seconds;

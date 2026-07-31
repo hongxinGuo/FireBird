@@ -1,10 +1,10 @@
 module;
 
-export module Container.Stock.FinnhubStock;
+export module FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
 
-import Container.Stock;
+import FireBirdLib.Container.FireBirdLib.Stock;
 
-import Stock.FinnhubStock;
+import FireBirdLib.Stock.FinnhubStock;
 
 import std;
 using std::shared_ptr;

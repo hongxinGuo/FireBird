@@ -1,19 +1,23 @@
 module;
-#include"StockMarketSQLTable.h"
 #include"afx.h"
+#include"sqlpp23/sqlpp23.h"
+#include"StockMarketSQLTable.h"
 module FinnhubCrypto;
 
-import sqlpp23.core;
-import sqlpp23.mysql;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Container.HistoryCandle.CryptoDayLine;
+import HistoryCandle.DayLine;
 
-import WorldMarket;
-import ContainerCryptoDayLine;
+import FireBirdLib.Accessory.TimeConvert;
 
-import TimeConvert;
+import DatabaseConnector;
+import FireBirdLib.Stock.FinnhubCrypto;
 
-import Database.Connector;
-
-using namespace std;
+import std;
+using std::string;
+using std::make_unique;
+using std::chrono::days;
+using std::chrono::local_days;
 
 CFinnhubCrypto::CFinnhubCrypto() {
 	m_pDayLines = make_unique<CContainerCryptoDayLine>();
@@ -49,7 +53,7 @@ size_t CFinnhubCrypto::GetDayLineSize() const noexcept {
 }
 
 void CFinnhubCrypto::UpdateDayLineStartEndDate() {
-	chrono::local_days lStartDate = chrono::local_days{ chrono::days(0) }, lEndDate = chrono::local_days{ chrono::days(0) };
+	local_days lStartDate = local_days{ days(0) }, lEndDate = local_days{ days(0) };
 	const bool fSucceed = m_pDayLines->GetStartEndDate(lStartDate, lEndDate);
 	if (!fSucceed) {
 		SetDayLineStartDate(toLocalDays(29900101));

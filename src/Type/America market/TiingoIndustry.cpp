@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"TiingoIndustry.h"
+module TiingoIndustry;
 
 CTiingoIndustry::CTiingoIndustry() {
 	m_strIndustry = " ";

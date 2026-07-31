@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"TimeConvert.h"
+#include"FireBirdLib.Accessory.TimeConvert.h"
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
@@ -11,7 +11,7 @@
 
 #include "ProductFinnhubCompanyNews.h"
 
-#include "WebData.h"
+#include "FireBireLib.h"
 
 using std::make_shared;
 
@@ -68,12 +68,12 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 /// {
 ///"category": "company",
 ///"datetime" : 1666012311,
-///"headline" : "Top 10 Stock Picks of William Von Mueffling’s Cantillon Capital Management",
+///"headline" : "Top 10 FireBirdLib.Stock Picks of William Von Mueffling’s Cantillon Capital Management",
 ///"id" : 116688201,
 ///"image" : "https://s.yimg.com/uu/api/res/1.2/8bic0IrK7TXPlRFGOhnriQ--~B/aD02MDA7dz01OTQ7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/8c6d80ff8a0b3edee7be3c636143c877",
 ///"related" : "A",
 ///"source" : "Yahoo",
-///"summary" : "In this article, we discuss the top 10 stock picks of William Von Mueffling’s Cantillon Capital Management. If you want to skip our detailed analysis of Mueffling’s investment philosophy and performance, go directly to Top 5 Stock Picks of William Von Mueffling’s Cantillon Capital Management. William Von Mueffling worked at Lazard Asset Management before launching […]",
+///"summary" : "In this article, we discuss the top 10 stock picks of William Von Mueffling’s Cantillon Capital Management. If you want to skip our detailed analysis of Mueffling’s investment philosophy and performance, go directly to Top 5 FireBirdLib.Stock Picks of William Von Mueffling’s Cantillon Capital Management. William Von Mueffling worked at Lazard Asset Management before launching […]",
 ///"url" : "https://finnhub.io/api/news?id=a0fe8819916603e447eb52cad56f2cc3bb148097c65e81bf335d39961f67b502"
 ///		}
 CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
@@ -110,7 +110,7 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 			companyNews.Reset();
 		}
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Stock News ", e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock News ", e.what());
 		return pvFinnhubCompanyNews; // 没有公司简介
 	}
 	return pvFinnhubCompanyNews;

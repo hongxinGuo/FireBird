@@ -9,7 +9,7 @@
 #include "ProductFinnhubStockDayLine.h"
 
 #include "SystemMessage.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 #include"DayLine.h"
 
 using namespace std;
@@ -72,7 +72,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebData
 		}
 	} catch (nlohmannJson::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage("Finnhub Stock Candle missing 's' " + GetInquiryFunction(), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Candle missing 's' " + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
 
@@ -86,7 +86,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebData
 			pvDayLine->push_back(pDayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Stock Candle missing 't' " + GetInquiryFunction(), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Candle missing 't' " + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
 	try {
@@ -123,7 +123,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebData
 			llTemp = jsonGetLongLong(it);
 			pvDayLine->at(i++).SetVolume(llTemp);
 		}
-	} catch (nlohmannJson::exception& e) { ReportJSonErrorToSystemMessage("Finnhub Stock Candle Error#3 " + GetInquiryFunction(), e.what()); }
+	} catch (nlohmannJson::exception& e) { ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Candle Error#3 " + GetInquiryFunction(), e.what()); }
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;

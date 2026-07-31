@@ -1,9 +1,9 @@
 module;
 
-export module ContainerChosenCrypto;
+export module FireBirdLib.Container.FireBirdLib.Stock.ChosenCrypto;
 
-import Container.Stock;
-import Stock.FinnhubCrypto;
+import FireBirdLib.Container.FireBirdLib.Stock;
+import FireBirdLib.Stock.FinnhubCrypto;
 
 import std;
 using std::shared_ptr;

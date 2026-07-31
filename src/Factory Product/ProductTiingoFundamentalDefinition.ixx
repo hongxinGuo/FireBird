@@ -3,7 +3,7 @@ module;
 export module ProductTiingoFundamentalDefinition;
 
 import ProductTiingo;
-import WebData;
+import FireBireLib;
 import TiingoFundamentalDefinition;
 
 import std;

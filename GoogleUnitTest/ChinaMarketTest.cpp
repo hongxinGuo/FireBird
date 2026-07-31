@@ -18,7 +18,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "ContainerChinaStock.h"
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include"DayLineWebData.h"
 #include "SystemConfiguration.h"

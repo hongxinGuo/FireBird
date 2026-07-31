@@ -1,16 +1,16 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 网络数据的申请，采用Factory-Product模式，各数据对应相应的Product。
-/// Product具体完成申请数据的组装，返回的网络数据的解析和存储。
+/// 网络数据的申请，采用FireBirdLib.Factory-FireBirdLib.Product模式，各数据对应相应的FireBirdLib.Product。
+/// FireBirdLib.Product具体完成申请数据的组装，返回的网络数据的解析和存储。
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
 #include"afx.h"
 
-export module Product;
+export module FireBirdLib.Product;
 
-import WebData;
+import FireBirdLib.WebData;
 import HistoryCandle.DayLine;
 
 import std;
@@ -39,7 +39,7 @@ export {
 		virtual ~CVirtualWebProduct() = default;
 
 		virtual string CreateMessage() { return ""; }
-		virtual void CalculateTotalDataLength(shared_ptr<vector<shared_ptr<CWebData>>>) {}
+		virtual void CalculateTotalDataLength(shared_ptr<vector<shared_ptr<CWebData>>>);
 
 		virtual void ParseAndStoreWebData(shared_ptr<CWebData>) {} // default do nothing
 		virtual void ParseAndStoreWebData(shared_ptr<vector<shared_ptr<CWebData>>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
@@ -75,7 +75,6 @@ export {
 		void SetInquireType(const int iInquireType) noexcept { m_iInquireType = iInquireType; }
 		int GetInquireType() const noexcept { return m_iInquireType; }
 
-		void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) final;
 
 		// 测试用
 		virtual bool Test_checkAccessRight_(shared_ptr<CWebData>) { return true; }  // todo 不再使用，准备删除之

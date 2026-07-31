@@ -3131,20 +3131,20 @@ concept container_but_not_string =
 // Concept: Indexable container that is not a string or associative container
 // Accepts: std::vector, std::array, std::deque (have operator[], value_type, not string_like)
 // Rejects: std::string (string_like), std::list (no operator[]), std::map (has key_type)
-template<typename Container>
+template<typename FireBirdLib.Container>
 concept indexable_container = requires {
-  typename Container::value_type;
-  requires !concepts::string_like<Container>;
-  requires !requires { typename Container::key_type; };  // Reject maps/sets
-  requires requires(Container& c, std::size_t i) {
-    { c[i] } -> std::convertible_to<typename Container::value_type>;
+  typename FireBirdLib.Container::value_type;
+  requires !concepts::string_like<FireBirdLib.Container>;
+  requires !requires { typename FireBirdLib.Container::key_type; };  // Reject maps/sets
+  requires requires(FireBirdLib.Container& c, std::size_t i) {
+    { c[i] } -> std::convertible_to<typename FireBirdLib.Container::value_type>;
   };
 };
 
 
 // Variable template to use with std::meta::substitute
-template<typename Container>
-constexpr bool indexable_container_v = indexable_container<Container>;
+template<typename FireBirdLib.Container>
+constexpr bool indexable_container_v = indexable_container<FireBirdLib.Container>;
 
 } // namespace concepts
 

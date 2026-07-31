@@ -8,7 +8,7 @@
 #include "ProductFinnhubStockPriceQuote.h"
 
 #include "ContainerFinnhubStock.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/quote?symbol=";
@@ -55,7 +55,7 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& p
 		pStock->SetTransactionTime(tt);
 	} catch (nlohmannJson::exception& e) {
 		// 数据格式不对，跳过。
-		ReportJSonErrorToSystemMessage("Finnhub Stock Quote ", e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Quote ", e.what());
 		return false;
 	}
 	return true;

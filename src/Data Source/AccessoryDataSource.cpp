@@ -1,13 +1,13 @@
 module;
 #include <afx.h>
 
-module DataSource.Accessory;
-import Factory.Accessory;
-import Product;
+module FireBirdLib.DataSource.Accessory;
+import FireBirdLib.Factory.Accessory;
+import FireBirdLib.Product;
 import FinnhubInquiryType;
-import SpdlogAssert;
+import FireBirdLib.Accessory.SpdlogAssert;
 import SystemConfiguration;
-import Market.WorldMarket;
+import FireBirdLib.Market.WorldMarket;
 
 CAccessoryDataSource::CAccessoryDataSource() {
 	m_pAccessoryFactory = std::make_unique<CAccessoryFactory>();

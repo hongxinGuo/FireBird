@@ -2,7 +2,7 @@ module;
 
 export module ContainerStockExchange;
 
-import StockExchange;
+import Type.StockExchange;
 
 import std;
 using std::string;

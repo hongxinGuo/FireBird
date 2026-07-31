@@ -126,7 +126,7 @@ module;
 
 export module WebRTData;
 
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::array;

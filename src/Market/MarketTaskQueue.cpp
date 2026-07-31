@@ -1,7 +1,14 @@
-#include "pch.h"
-#include "MarketTaskQueue.h"
+module;
+#include <afx.h>
 
+module MarketTaskQueue;
+
+import std;
 using std::make_shared;
+using std::chrono::local_seconds;
+using std::chrono::hh_mm_ss;
+using std::chrono::seconds;
+using std::vector;
 
 CMarketTaskQueue::CMarketTaskQueue() {
 	CreateIndexMap();

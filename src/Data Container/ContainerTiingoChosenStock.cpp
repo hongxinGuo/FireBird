@@ -2,11 +2,11 @@ module;
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
-module Container.Stock.TiingoChosenStock;
+module FireBirdLib.Container.FireBirdLib.Stock.TiingoChosenStock;
 
-import Container.Stock.TiingoStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
 import DatabaseConnector;
-import Stock.TiingoStock;
+import FireBirdLib.Stock.TiingoStock;
 
 import std;
 using std::dynamic_pointer_cast;

@@ -1,20 +1,24 @@
-#include"pch.h"
+module;
+#include <limits>
 
-#include "IndicatorBoll.h"
+#include"afx.h"
+module IndicatorBoll;
 
-#include <deque>
+
+import HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
+import DatabaseConnector;
+
+import std;
+using namespace std;
 using std::deque;
 using std::max;
 using std::min;
+using std::vector;
+using std::numeric_limits;
 
-#include "VirtualHistoryCandle.h" // CVirtualHistoryCandle
-#include"VirtualDataHistoryCandle.h"
-#include"dataBaseConnector.h"
-
-using namespace FireBird::Indicators;
-
-std::vector<CBoll> CIndicatorBoll::Compute(const std::vector<CVirtualHistoryCandle>& candles, int period, double k) {
-	std::vector<CBoll> results;
+vector<CBoll> CIndicatorBoll::Compute(const vector<CVirtualHistoryCandle>& candles, int period, double k) {
+	vector<CBoll> results;
 	if (period <= 0 || candles.empty()) return results;
 
 	results.reserve(candles.size());
@@ -108,11 +112,11 @@ void CIndicatorBoll::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	for (size_t i = startIndex; i < m_vBoll.size(); ++i) {
 		const auto& b = m_vBoll[i];
 		// Skip zero/invalid entries when computing bounds
-		if (b.Upper != 0.0) dHigh = std::max(dHigh, b.Upper);
-		if (b.Lower != 0.0) dLow = std::min(dLow, b.Lower);
+		if (b.Upper != 0.0) dHigh = max(dHigh, b.Upper);
+		if (b.Lower != 0.0) dLow = min(dLow, b.Lower);
 		if (b.Mid != 0.0) {
-			dHigh = std::max(dHigh, b.Mid);
-			dLow = std::min(dLow, b.Mid);
+			dHigh = max(dHigh, b.Mid);
+			dLow = min(dLow, b.Mid);
 		}
 	}
 	if (dHigh <= dLow) {

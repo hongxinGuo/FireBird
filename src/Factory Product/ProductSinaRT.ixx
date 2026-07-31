@@ -1,9 +1,9 @@
 module;
 
-export module Product.SinaRT;
+export module FireBirdLib.Product.SinaRT;
 
-import Product;
-import WebData;
+import FireBirdLib.Product;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

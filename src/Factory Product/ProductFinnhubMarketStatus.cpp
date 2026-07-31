@@ -9,7 +9,7 @@
 #include "ProductFinnhubMarketStatus.h"
 
 #include "ContainerStockExchange.h"
-#include "WebData.h"
+#include "FireBireLib.h"
 
 using std::make_shared;
 
@@ -73,7 +73,7 @@ CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const C
 
 		pvMarketStatus->push_back(marketStatus);
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Market Status ", e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Market Status ", e.what());
 		return pvMarketStatus;
 	}
 	return pvMarketStatus;

@@ -1,10 +1,10 @@
 module;
 
-export module Product.Finnhub.CryptoSymbol;
+export module FireBirdLib.Product.Finnhub.CryptoSymbol;
 
-import Product.Finnhub;
-import WebData;
-import Stock.FinnhubCrypto;
+import FireBirdLib.Product.Finnhub;
+import FireBirdLib.WebData;
+import FireBirdLib.Stock.FinnhubCrypto;
 
 import std;
 using std::string;

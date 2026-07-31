@@ -1,13 +1,13 @@
 module;
 #include"afx.h"
 
-export module DataSource;
+export module FireBirdLib.DataSource;
 
 import InternetOption;
-import WebData;
-import SpdlogAssert;
-
-import Product;
+//class CWebData;
+import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.WebData;
+import FireBirdLib.Product;
 
 import std;
 using std::chrono::milliseconds;
@@ -106,9 +106,9 @@ export {
 			return false;
 		}
 
-		template <typename Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename IsAccessible, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
+		template <typename FireBirdLib.Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename IsAccessible, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
 		bool GenerateInquiryIterateWithAccessCheck(
-			Container& container,
+			FireBirdLib.Container& container,
 			int inquireType,
 			IsNeedUpdate isNeedUpdate,
 			IsItemNeedUpdate isItemNeedUpdate,
@@ -148,9 +148,9 @@ export {
 			return haveInquiry;
 		}
 
-		template <typename Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
+		template <typename FireBirdLib.Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
 		bool GenerateInquiryIterateWithoutAccessCheck(
-			Container& container,
+			FireBirdLib.Container& container,
 			int inquireType,
 			IsNeedUpdate isNeedUpdate,
 			IsItemNeedUpdate isItemNeedUpdate,
@@ -195,7 +195,7 @@ export {
 		void InquireData();
 		virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 		virtual void CreateCurrentInquireString();
-		virtual void CheckWebData(const CWebDataPtr&) {} // 此WebData内容为错误信息？
+		virtual void CheckWebData(const CWebDataPtr&) {} // 此FireBireLib内容为错误信息？
 
 		void SetDefaultSessionOption();
 

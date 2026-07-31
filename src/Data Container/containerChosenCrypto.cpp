@@ -4,7 +4,7 @@ module;
 
 module ContainerChosenCrypto;
 
-import Container.Stock.FinnhubCrypto;
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubCrypto;
 import DatabaseConnector;
 import FinnhubCrypto;
 
@@ -27,8 +27,8 @@ bool CContainerChosenCrypto::LoadDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t));
-	//size_t rows = result.size(); //Todo: 
-	Reserve(100 + 10);
+	size_t rows = result.size(); //Todo: 
+	Reserve(rows + 10);
 	for (const auto& row : result) {
 		if (gl_dataFinnhubCryptoSymbol.IsSymbol(string{ row.Symbol })) {
 			auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(string{ row.Symbol });

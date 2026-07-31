@@ -1,11 +1,11 @@
 module;
 
-export module JsonParse;
+export module FireBirdLib.Accessory.JsonParse;
 
 
-import DayLineWebData;
-import NlohmannJsonDeclaration;
-import WebData;
+import FireBirdLib.WebData.DayLine;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.WebData;
 import DayLine;
 
 import std;

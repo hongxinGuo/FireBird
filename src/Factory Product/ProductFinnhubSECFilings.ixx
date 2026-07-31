@@ -1,9 +1,9 @@
 module;
 
-export module Product.Finnhub.SECFilings;
+export module FireBirdLib.Product.Finnhub.SECFilings;
 
-import Product.Finnhub;
-import WebData;
+import FireBirdLib.Product.Finnhub;
+import FireBirdLib.WebData;
 import SECFiling;
 
 import std;

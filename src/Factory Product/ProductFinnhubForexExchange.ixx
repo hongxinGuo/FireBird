@@ -1,9 +1,9 @@
 module;
 
-export module Product.Finnhub.ForexExchange;
+export module FireBirdLib.Product.Finnhub.ForexExchange;
 
-import Product.Finnhub;
-import WebData;
+import FireBirdLib.Product.Finnhub;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

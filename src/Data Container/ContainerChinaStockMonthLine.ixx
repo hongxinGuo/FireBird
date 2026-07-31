@@ -1,8 +1,8 @@
 module;
 
-export module Container.HistoryCandle.ChinaStockMonthLine;
+export module FireBirdLib.Container.HistoryCandle.ChinaStockMonthLine;
 
-import Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 
 import HistoryCandle.MonthLine;
 

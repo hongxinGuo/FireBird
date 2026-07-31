@@ -1,19 +1,19 @@
 module;
 #include <afx.h>
 
-module DataSource.AlphaVantage;
+module FireBirdLib.DataSource.AlphaVantage;
 
-import Container.Stock.TiingoStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
 import FinnhubInquiryType;
-import Market.WorldMarket;
-import Product;
-import Stock.FinnhubStock;
-import Factory.AlphaVantage;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Product;
+import FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Factory.AlphaVantage;
 
-import Container.Stock.FinnhubStock;
-import Stock.TiingoStock;
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Stock.TiingoStock;
 
-import SpdlogAssert;
+import FireBirdLib.Accessory.SpdlogAssert;
 import SystemConfiguration;
 import SystemMessage;
 

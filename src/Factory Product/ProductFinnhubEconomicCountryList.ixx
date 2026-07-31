@@ -1,10 +1,10 @@
 module;
 
-export module Product.Finnhub.EconomicCountryList;
+export module FireBirdLib.Product.Finnhub.EconomicCountryList;
 
-import Product.Finnhub;
+import FireBirdLib.Product.Finnhub;
 import Country;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::shared_ptr;

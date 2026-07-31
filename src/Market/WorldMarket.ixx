@@ -2,17 +2,19 @@ module;
 
 #include"concurrencpp/concurrencpp.h"
 
-export module Market.WorldMarket;
+export module FireBirdLib.Market.WorldMarket;
 
-import Market;
+import FireBirdLib.Market;
 
-import TiingoIEXWebSocket;
-import FinnhubWebSocket;
+import WebSocket.TiingoIEX;
+import WebSocket.Finnhub;
+import WebSocket.TiingoIEX;
+import WebSocket.Finnhub;
 
 import MarketStatus;
 import MarketHoliday;
 
-import Stock.TiingoStock;
+import FireBirdLib.Stock.TiingoStock;
 
 import std;
 using std::literals::chrono_literals::operator ""h;

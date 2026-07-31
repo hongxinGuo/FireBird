@@ -3,7 +3,7 @@ module;
 #include"stdafx.h"
 #include <exception>
 
-export module InfoReport;
+export module FireBirdLib.Accessory.InfoReport;
 
 import std;
 

@@ -2,7 +2,7 @@ module;
 
 export module ContainerFinnhubEconomicCalendar;
 
-import EconomicCalendar;
+import Type.EconomicCalendar;
 
 import std;
 using std::map;

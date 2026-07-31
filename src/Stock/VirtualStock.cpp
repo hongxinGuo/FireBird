@@ -1,14 +1,15 @@
-#include"pch.h"
+module;
 
-#include "VirtualStock.h"
-#include "StockSplit.h"
+module FireBirdLib.Stock;
 
-#include "jsonParse.h"
-#include "nlohmannJsonGetValue.h"
+import StockSplit;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.TimeConvert;
 
-#include"TimeConvert.h"
-
-using namespace std;
+import std;
+using std::make_shared;
+using std::string;
 
 shared_ptr<CVirtualStock> gl_pCurrentStock{ nullptr };
 
@@ -69,7 +70,7 @@ void CVirtualStock::AddStockSplit(const shared_ptr<CStockSplit>& StockSplit) con
 	}
 	m_pvStockSplit->push_back(StockSplit);
 	//按日期顺序添加拆股信息
-	ranges::sort(*m_pvStockSplit, [](CStockSplitPtr a, CStockSplitPtr b) {
+	std::ranges::sort(*m_pvStockSplit, [](CStockSplitPtr a, CStockSplitPtr b) {
 		return a->GetDate() < b->GetDate();
 	});
 }

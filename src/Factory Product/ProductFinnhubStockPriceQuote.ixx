@@ -1,11 +1,11 @@
 module;
 
-export module Product.Finnhub.StockPriceQuete;
+export module FireBirdLib.Product.Finnhub.StockPriceQuote;
 
-import Product.Finnhub;
+import FireBirdLib.Product.Finnhub;
 
-import FinnhubStock;
-import WebData;
+import FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

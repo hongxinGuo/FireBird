@@ -3,7 +3,7 @@ module;
 #include"stdafx.h"
 #include"simdjson.h"
 
-export module Simdjson.GetValue;
+export module FireBirdLib.Accessory.Simdjson.GetValue;
 
 
 using namespace simdjson;

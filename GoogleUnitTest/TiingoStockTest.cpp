@@ -16,7 +16,7 @@
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
-#include"dataBaseConnector.h"
+#include"DatabaseConnector.h"
 #include "FinnhubStock.h"
 #include "TiingoCandleLine.h"
 #include "TimeConvert.h"

@@ -18,7 +18,7 @@
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
-#include"dataBaseConnector.h"
+#include"DatabaseConnector.h"
 
 using namespace testing;
 

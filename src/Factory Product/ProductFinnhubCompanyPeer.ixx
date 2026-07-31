@@ -1,10 +1,10 @@
 module;
 
-export module Product.Finnhub.CompanyPeer;
+export module FireBirdLib.Product.Finnhub.CompanyPeer;
 
-import WebData;
-import NlohmannJsonDeclaration;
-import Product.Finnhub;
+import FireBirdLib.WebData;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Product.Finnhub;
 
 
 import std;

@@ -1,11 +1,11 @@
 module;
 
-export module Product.Finnhub.StockDayLine;
+export module FireBirdLib.Product.Finnhub.StockDayLine;
 
-import Product.Finnhub;
+import FireBirdLib.Product.Finnhub;
 
 import HistoryCandle.DayLine;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

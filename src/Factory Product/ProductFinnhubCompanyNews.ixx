@@ -6,11 +6,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-export module Product.Finnhub.CommpanyNews;
+export module FireBirdLib.Product.Finnhub.CompanyNews;
 
-import Product.Finnhub;
+import FireBirdLib.Product.Finnhub;
 import FinnhubCompanyNews;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

@@ -1,6 +1,6 @@
 module;
 
-export module EconomicCalendar;
+export module Type.EconomicCalendar;
 
 import std;
 using std::string;

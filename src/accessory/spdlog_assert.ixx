@@ -3,7 +3,7 @@ module;
 #include"spdlog/spdlog.h"
 #include <source_location>
 
-export module SpdlogAssert;
+export module FireBirdLib.Accessory.SpdlogAssert;
 
 import Log;
 

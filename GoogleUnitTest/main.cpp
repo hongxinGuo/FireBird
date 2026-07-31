@@ -45,7 +45,7 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include "ContainerTiingoStock.h"
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
 #include "FinnhubWebSocket.h"

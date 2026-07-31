@@ -16,8 +16,8 @@ module;
 
 export module SystemConfiguration;
 
-import NlohmannJsonDeclaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
-import SpdlogAssert;
+import FireBirdLib.Accessory.NlohmannJson.Declaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+import FireBirdLib.Accessory.SpdlogAssert;
 
 import std;
 using std::string;
@@ -351,7 +351,7 @@ export {
 		EChinaMarketDataSourceServer m_iChinaMarketDayLineServer{ TengxunDayLine_ }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
 		milliseconds m_chinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
-		// World Market
+		// World FireBirdLib.Market
 		unsigned m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
 		string m_strFinnhubToken{ "" }; // 令牌
 		bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户

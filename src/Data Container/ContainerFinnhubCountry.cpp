@@ -76,8 +76,8 @@ bool CContainerFinnhubCountry::LoadDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 	auto result = db(select(all_of(t)).from(t).order_by(t.Country.asc()));
-	//auto row = result.size(); //Todo:
-	Reserve(100);
+	auto rows = result.size();
+	Reserve(rows);
 
 	int counter = 0;
 	for (const auto& row : result) {

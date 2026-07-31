@@ -1,6 +1,6 @@
 module;
 
-module TimeConvert;
+module FireBirdLib.Accessory.TimeConvert;
 
 import std;
 using std::istringstream;

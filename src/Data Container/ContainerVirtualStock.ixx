@@ -1,9 +1,9 @@
 module;
 
-export module Container.Stock;
+export module FireBirdLib.Container.FireBirdLib.Stock;
 
-import Container;
-import Stock;
+import FireBirdLib.Container;
+import FireBirdLib.Stock;
 
 import std;
 using std::unordered_map;

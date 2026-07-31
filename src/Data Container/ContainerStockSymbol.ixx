@@ -1,9 +1,9 @@
 module;
 
-export module Container.StockSymbol;
+export module FireBirdLib.Container.StockSymbol;
 
-import ChinaMarket.StockSection;
-import Container;
+import StockSection;
+import FireBirdLib.Container;
 
 import std;
 using std::unordered_map;

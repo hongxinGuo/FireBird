@@ -1,5 +1,6 @@
-#include"pch.h"
-#include "StockSection.h"
+module;
+
+module StockSection;
 
 CStockSection::CStockSection() {
 	m_fActive = false;

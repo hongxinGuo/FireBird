@@ -8,7 +8,7 @@
 #include "TiingoStock.h"
 
 #include "ContainerTiingoStock.h"
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 
 using namespace testing;

@@ -2,15 +2,15 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module Container.HistoryCandle.ForexDayLine;
+module FireBirdLib.Container.HistoryCandle.ForexDayLine;
 
 
 import DatabaseConnector;
-import Stock.FinnhubForex;
+import FireBirdLib.Stock.FinnhubForex;
 import HistoryCandle;
 import HistoryCandle.DayLine;
 import HistoryCandle.TiingoCandleLine;
-import TimeConvert;
+import FireBirdLib.Accessory.TimeConvert;
 
 import std;
 using std::vector;

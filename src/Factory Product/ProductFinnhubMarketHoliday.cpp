@@ -7,8 +7,8 @@
 #include "MarketHoliday.h"
 
 #include "ContainerStockExchange.h"
-#include "TimeConvert.h"
-#include "WebData.h"
+#include "FireBirdLib.Accessory.TimeConvert.h"
+#include "FireBireLib.h"
 #include "WorldMarket.h"
 
 using namespace std;

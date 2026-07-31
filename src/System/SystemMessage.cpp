@@ -1,15 +1,15 @@
 module;
+#include <stdafx.h>
+#include"OutputWnd.h"
 
 module SystemMessage;
 
-#include <semaphore>
-
 import SystemConfiguration;
-import OutputWnd;
 
 import std;
 using std::map;
 using std::binary_semaphore;
+using std::string;
 
 map<long, string> gl_mapHTTPStatusCode{
 	// Informational

@@ -4,7 +4,7 @@ module;
 export module IndicatorBoll;
 
 import HistoryCandle;
-import Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 
 import std;
 using std::chrono::local_days;

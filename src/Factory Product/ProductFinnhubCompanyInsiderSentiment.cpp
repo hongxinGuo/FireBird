@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"TimeConvert.h"
+#include"FireBirdLib.Accessory.TimeConvert.h"
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
@@ -12,7 +12,7 @@
 
 #include "ContainerFinnhubStock.h"
 
-#include "WebData.h"
+#include "FireBireLib.h"
 
 using std::make_shared;
 
@@ -86,7 +86,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 		pt1 = jsonGetChild(js, "data");
 		stockSymbol = jsonGetString(js, "symbol");
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Stock Insider Sentiment " + GetInquiryFunction(), e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Insider Sentiment " + GetInquiryFunction(), e.what());
 		return pvInsiderSentiment;
 	}
 
@@ -104,7 +104,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 			pvInsiderSentiment->emplace_back(insiderSentiment);
 		}
 	} catch (nlohmannJson::exception& e) {
-		string str = "Finnhub Stock ";
+		string str = "Finnhub FireBirdLib.Stock ";
 		str += insiderSentiment.m_strSymbol;
 		str += " Insider Sentiment ";
 		ReportJSonErrorToSystemMessage(str, e.what());

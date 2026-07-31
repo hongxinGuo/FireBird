@@ -1,9 +1,9 @@
 module;
 
-export module Product.Finnhub.CryptoDayLine;
+export module FireBirdLib.Product.Finnhub.CryptoDayLine;
 
-import Product.Finnhub;
-import WebData;
+import FireBirdLib.Product.Finnhub;
+import FireBirdLib.WebData;
 import HistoryCandle.DayLine;
 
 import std;

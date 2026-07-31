@@ -1,14 +1,18 @@
-#include"pch.h"
+module;
 
-#include"SystemMessage.h"
+module FireBirdLib.Product.SinaRT;
+import SystemMessage;
 
-#include"ProductSinaRT.h"
-#include"ChinaMarket.h"
-#include "ChinaStockCodeConverter.h"
+import FireBirdLib.Market.ChinaMarket;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
 
-#include"JsonParse.h"
-#include "SinaRTDataSource.h"
-#include "WebData.h"
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.SinaRT;
+import FireBirdLib.WebData;
+
+import std;
+using std::string;
+using std::string_view;
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;

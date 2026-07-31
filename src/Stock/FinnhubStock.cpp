@@ -1,29 +1,35 @@
-#include"pch.h"
-
-#include"TimeConvert.h"
-#include"InsiderSentiment.h"
-#include"InsiderTransaction.h"
-#include"EPSSurprise.h"
-#include"FinnhubCompanyNews.h"
-#include "SECFiling.h"
-
-#include "FinnhubStock.h"
-
-#include"WorldMarket.h"
-
-#include "InfoReport.h"
-
+module;
+#include <afx.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
-#include "SystemMessage.h"
 
-#include"dataBaseConnector.h"
-#include "SystemConfiguration.h"
+module FireBirdLib.Stock.FinnhubStock;
+
+import FireBirdLib.Accessory.TimeConvert;
+import InsiderSentiment;
+import InsiderTransaction;
+import EPSSurprise;
+import FinnhubCompanyNews;
+import SECFiling;
+
+import FireBirdLib.Stock.FinnhubStock;
+
+import FireBirdLib.Market.WorldMarket;
+
+import FireBirdLib.Accessory.InfoReport;
+
+import SystemMessage;
+
+import DatabaseConnector;
+import SystemConfiguration;
 
 using std::chrono::year_month_day;
 using std::chrono::Sunday;
 using std::chrono::Saturday;
 using std::make_shared;
+using std::string;
+using std::string_view;
+using std::literals::chrono_literals::operator ""y;
 
 CFinnhubStock::CFinnhubStock() {
 	m_pvSECFilings = make_shared<vector<CSECFiling>>();
@@ -168,31 +174,30 @@ bool CFinnhubStock::CheckDayLineUpdateStatus(local_days todayDate, local_days lL
 }
 
 void CFinnhubStock::UpdateInsiderTransactionDB() {
-	try {
-		using namespace StockMarket;
-		const auto& t = FinnhubInsiderTransaction{};
-		{
-			auto db = gl_dbStockMarket.get();
-			auto tx = sqlpp::start_transaction(db);
+	using namespace StockMarket;
+	const auto& t = FinnhubInsiderTransaction{};
+	{
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-			{
-				auto result = db(select(all_of(t)).from(t).order_by(t.TransactionDate.desc()).where(t.Symbol == m_strSymbol.c_str()));
-				auto rows = result.size();
-				if (rows == 0) {
-					m_lInsiderTransactionEndDate = 19800101;
-				}
-				else {
-					auto& row = result.front();
-					m_lInsiderTransactionEndDate = row.TransactionDate; // 倒序排序，最新的日期位于第一个。
-				}
-			}
-			tx.commit();
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == m_strSymbol).order_by(t.TransactionDate.desc()));
+		auto rows = result.size();
+		if (rows == 0) {
+			m_lInsiderTransactionEndDate = 19800101;
 		}
-		CInsiderTransaction insiderTransaction;
+		else {
+			auto& row = result.front();
+			m_lInsiderTransactionEndDate = row.TransactionDate; // 倒序排序，最新的日期位于第一个。
+		}
+		tx.commit();
+	}
+
+	CInsiderTransaction insiderTransaction;
+	{
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		auto multi_insert = insert_into(t).columns(t.Symbol, t.PersonName, t.Share, t.FilingDate, t.TransactionDate,
-		                                           t.TransactionCode, t.ShareChange, t.TransactionPrice);
+																							 t.TransactionCode, t.ShareChange, t.TransactionPrice);
 
 		int nValues = 0;
 		for (size_t i = 0; i < m_vInsiderTransaction.size(); i++) {
@@ -236,8 +241,6 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 			db(multi_insert);
 		}
 		tx.commit();
-	} catch (CException& e) {
-		ReportInformation(e);
 	}
 }
 

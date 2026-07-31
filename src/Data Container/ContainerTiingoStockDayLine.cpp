@@ -2,12 +2,12 @@
 
 #include<sqlpp23/sqlpp23.h>
 
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoStock.h"
 #include "TiingoCandleLine.h"
 
-#include"TimeConvert.h"
+#include"FireBirdLib.Accessory.TimeConvert.h"
 
 using std::make_shared;
 

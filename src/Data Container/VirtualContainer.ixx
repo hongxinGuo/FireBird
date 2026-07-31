@@ -1,6 +1,6 @@
 module;
 
-export module Container;
+export module FireBirdLib.Container;
 
 import std;
 using std::string;

@@ -1,9 +1,9 @@
 module;
 
-export module Product.Tiingo.IEXTopOfBook;
+export module FireBirdLib.Product.Tiingo.IEXTopOfBook;
 
-import Product.Tiingo;
-import WebData;
+import FireBirdLib.Product.Tiingo;
+import FireBirdLib.WebData;
 import TiingoIEXTopOfBook;
 
 import std;

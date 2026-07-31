@@ -8,6 +8,10 @@
 #include "SystemMessage.h"
 #include "WorldMarket.h"
 #include"TimeConvert.h"
+import CharSetTransfer;
+import SystemMessage;
+import Market.ChinaMarket;
+import Market.WorldMarket;
 
 using std::max;
 
@@ -149,7 +153,13 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (gl_systemMessage.StockMarketInformationSize() > 0) {
 			lCurrentPos = m_wndStockMarketInformation.GetCurSel();
 			if (m_wndStockMarketInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayStockMarketInformation(&m_wndStockMarketInformation, sTime);
+			auto pMessage = gl_systemMessage.GetStockMarketInformationMessageQueue();
+			size_t lTotal = pMessage->Size();
+			lTotal = std::min<size_t>(lTotal, m_wndStockMarketInformation.GetLineNumber());
+			for (size_t i = 0; i < lTotal; i++) {
+				string str2 = sTime + ": " + pMessage->PopMessage();
+				m_wndStockMarketInformation.AppendString(str2);
+			}
 			if (fUpdate) {
 				m_wndStockMarketInformation.SetCurAtLastLine();
 			}
@@ -161,7 +171,13 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (gl_systemMessage.InformationSize() > 0) {
 			lCurrentPos = m_wndOutputInformation.GetCurSel();
 			if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayInformation(&m_wndOutputInformation, sTime);
+			auto pMessage = gl_systemMessage.GetSystemInformationMessageQueue();
+			size_t lTotal = pMessage->Size();
+			lTotal = std::min<size_t>(lTotal, m_wndOutputInformation.GetLineNumber());
+			for (size_t i = 0; i < lTotal; i++) {
+				string str2 = sTime + ": " + pMessage->PopMessage();
+				m_wndOutputInformation.AppendString(str2);
+			}
 			if (fUpdate) {
 				m_wndOutputInformation.SetCurAtLastLine();
 			}
@@ -171,7 +187,13 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (gl_systemMessage.ChinaMarketInformationSize() > 0) {
 			lCurrentPos = m_wndChinaMarketInformation.GetCurSel();
 			if (m_wndChinaMarketInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayChinaMarketInformation(&m_wndChinaMarketInformation, sTime);
+			auto pMessage = gl_systemMessage.GetChinaMarketInformationMessageQueue();
+			size_t lTotal = pMessage->Size();
+			lTotal = std::min<size_t>(lTotal, m_wndChinaMarketInformation.GetLineNumber());
+			for (size_t i = 0; i < lTotal; i++) {
+				string str2 = sTime + ": " + pMessage->PopMessage();
+				m_wndChinaMarketInformation.AppendString(str2);
+			}
 			if (fUpdate) {
 				m_wndChinaMarketInformation.SetCurAtLastLine();
 			}
@@ -182,7 +204,13 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (gl_systemMessage.DayLineInfoSize() > 0) {
 			lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
 			if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, sTime);
+			auto pMessage = gl_systemMessage.GetDayLineInformationMessageQueue();
+			size_t lTotal = pMessage->Size();
+			lTotal = std::min<size_t>(lTotal, m_wndOutputDayLineInfo.GetLineNumber());
+			for (size_t i = 0; i < lTotal; i++) {
+				string str2 = sTime + ": " + pMessage->PopMessage();
+				m_wndOutputDayLineInfo.AppendString(str2);
+			}
 			if (fUpdate) {
 				m_wndOutputDayLineInfo.SetCurAtLastLine();
 			}
@@ -193,7 +221,13 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (gl_systemMessage.WebSocketInfoSize() > 0) {
 			lCurrentPos = m_wndOutputWebSocketInfo.GetCurSel();
 			if (m_wndOutputWebSocketInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, sTime);
+			auto pMessage = gl_systemMessage.GetWebSocketMessageQueue();
+			size_t lTotal = pMessage->Size();
+			lTotal = std::min<size_t>(lTotal, m_wndOutputWebSocketInfo.GetLineNumber());
+			for (size_t i = 0; i < lTotal; i++) {
+				string str2 = sTime + ": " + pMessage->PopMessage();
+				m_wndOutputWebSocketInfo.AppendString(str2);
+			}
 			if (fUpdate) {
 				m_wndOutputWebSocketInfo.SetCurAtLastLine();
 			}
@@ -204,7 +238,13 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (gl_systemMessage.InnerSystemInfoSize() > 0) {
 			lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
 			if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, sTime);
+			auto pMessage = gl_systemMessage.GetInnerSystemInformationMessageQueue();
+			size_t lTotal = pMessage->Size();
+			lTotal = std::min<size_t>(lTotal, m_wndOutputInnerSystemInformation.GetLineNumber());
+			for (size_t i = 0; i < lTotal; i++) {
+				string str2 = sTime + ": " + pMessage->PopMessage();
+				m_wndOutputInnerSystemInformation.AppendString(str2);
+			}
 			if (fUpdate) {
 				m_wndOutputInnerSystemInformation.SetCurAtLastLine();
 			}
@@ -215,7 +255,13 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		if (gl_systemMessage.ErrorMessageSize() > 0) {
 			lCurrentPos = m_wndErrorMessage.GetCurSel();
 			if (m_wndErrorMessage.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, sTime);
+			auto pMessage = gl_systemMessage.GetErrorMessageQueue();
+			size_t lTotal = pMessage->Size();
+			lTotal = std::min<size_t>(lTotal, m_wndErrorMessage.GetLineNumber());
+			for (size_t i = 0; i < lTotal; i++) {
+				string str2 = sTime + ": " + pMessage->PopMessage();
+				m_wndErrorMessage.AppendString(str2);
+			}
 			if (fUpdate) {
 				m_wndErrorMessage.SetCurAtLastLine();
 			}
@@ -268,6 +314,10 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList 消息处理程序
+
+int COutputList::AppendString(const string& str) {
+	return AddString(Utf8ToW(str).c_str());// UNICODE下需要转换，utf-8 --> utf-16. 
+}
 
 void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
 	CMenu menu;

@@ -1,24 +1,24 @@
-#include"pch.h"
-
-#include <limits>
-
-#include"TiingoStock.h"
-
-#include "TiingoStockDailyMeta.h"
-#include "TimeConvert.h"
-#include "WorldMarket.h"
-#include<sqlpp23/sqlpp23.h>
+module;
+#include <afx.h>
+#include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
-#include "SystemMessage.h"
 
-#include "TiingoCandleLine.h"
+module FireBirdLib.Stock.TiingoStock;
 
-#include "TiingoCompanyFinancialState.h"
-#include "TiingoIEXTopOFBook.h"
+import TiingoStockDailyMeta;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Market.WorldMarket;
+import SystemMessage;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-#include"dataBaseConnector.h"
-#include "StockSplit.h"
-#include "SystemConfiguration.h"
+import HistoryCandle.TiingoCandleLine;
+
+import TiingoCompanyFinancialState;
+import TiingoIEXTopOfBook;
+
+import DatabaseConnector;
+import StockSplit;
+import SystemConfiguration;
 
 using namespace std;
 

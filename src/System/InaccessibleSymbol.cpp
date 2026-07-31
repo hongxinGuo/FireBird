@@ -3,7 +3,7 @@ module;
 module InaccessibleSymbol;
 
 import FinnhubInquiryType;
-import TimeConvert;
+import FireBirdLib.Accessory.TimeConvert;
 import SystemConfiguration;
 
 import std;

@@ -1,11 +1,11 @@
 module;
 
-export module Product.AlphaVantage.StockDAyLine;
+export module FireBirdLib.Product.AlphaVantage.StockDayLine;
 
-import Product.AlphaVantage;
+import FireBirdLib.Product.AlphaVantage;
 
 import HistoryCandle.TiingoCandleLine;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

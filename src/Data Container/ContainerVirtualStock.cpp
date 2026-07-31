@@ -1,8 +1,8 @@
 module;
 
-module Container.Stock;
+module FireBirdLib.Container.FireBirdLib.Stock;
 
-import Stock;
+import FireBirdLib.Stock;
 
 import std;
 using std::vector;

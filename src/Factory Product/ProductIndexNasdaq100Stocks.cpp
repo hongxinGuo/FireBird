@@ -1,17 +1,24 @@
-#include "pch.h"
-
-#include "ProductIndexNasdaq100Stocks.h"
-
-#include "AccessoryDataSource.h"
-#include "simdjsonGetValue.h"
-
-#include"WebData.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
+
+#include "simdjson.h"
 #include"StockMarketSQLTable.h"
 
-#include"dataBaseConnector.h"
-#include "SystemMessage.h"
+module FireBirdLib.Product.IndexNasdaq100Stocks;
+
+import FireBirdLib.DataSource.Accessory;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+
+import FireBirdLib.WebData;
+
+import DatabaseConnector;
+import SystemMessage;
+
+import std;
+using std::string_view;
+
+using namespace simdjson;
 
 CProductIndexNasdaq100Stocks::CProductIndexNasdaq100Stocks() {
 	m_strInquiryFunction = "https://www.slickcharts.com/nasdaq100";
@@ -92,7 +99,7 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 	size_t positionEnd = svData2.find("; </script>"); // 有效数据后的字符串
 	string_view sv = svData2.substr(0, positionEnd);
 
-	ondemand::parser parser;
+	simdjson::ondemand::parser parser;
 	const simdjson::padded_string jsonPadded(sv);
 	ondemand::document doc = parser.iterate(jsonPadded).value();
 	auto item1 = doc["companyListComponent"];

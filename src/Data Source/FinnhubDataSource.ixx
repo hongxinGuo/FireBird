@@ -1,10 +1,10 @@
 module;
 
-export module DataSource.Finnhub;
+export module FireBirdLib.DataSource.Finnhub;
 
-import DataSource;
-import WebData;
-import Factory.Finnhub;
+import FireBirdLib.DataSource;
+import FireBirdLib.WebData;
+import FireBirdLib.Factory.Finnhub;
 
 import std;
 using std::chrono::local_seconds;

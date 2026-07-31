@@ -2,14 +2,14 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module Container.HistoryCandle.CryptoDayLine;
+module FireBirdLib.Container.HistoryCandle.CryptoDayLine;
 
 
 import DatabaseConnector;
-import Stock.FinnhubCrypto;
+import FireBirdLib.Stock.FinnhubCrypto;
 import HistoryCandle;
 import HistoryCandle.DayLine;
-import TimeConvert;
+import FireBirdLib.Accessory.TimeConvert;
 
 namespace {
 	CFinnhubCrypto s_stock;

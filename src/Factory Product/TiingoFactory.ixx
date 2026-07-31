@@ -1,10 +1,10 @@
 module;
 
-export module Factory.Tiingo;
+export module FireBirdLib.Factory.Tiingo;
 
-import Factory;
-import Market;
-import Product;
+import FireBirdLib.Factory;
+import FireBirdLib.Market;
+import FireBirdLib.Product;
 
 import std;
 using std::shared_ptr;

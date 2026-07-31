@@ -34,7 +34,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[WEBSOCKET_TRADES_] = "WebSocketTrades";
 	m_mapFinnhubInquiryIndexToString[WEBSOCKET_NEWS_] = "WebSocketNews"; // Premium
 
-	// Stock Fundamentals
+	// FireBirdLib.Stock Fundamentals
 	m_mapFinnhubInquiryIndexToString[SYMBOL_LOOKUP_] = "StockFundamentalsSymbolLookup";
 	m_mapFinnhubInquiryIndexToString[STOCK_SYMBOLS_] = "StockFundamentalsSymbols";
 	m_mapFinnhubInquiryIndexToString[MARKET_STATUS_] = "StockFundamentalsMarketStatus";
@@ -66,7 +66,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[SYMBOL_CHANGE_] = "StockFundamentalsSymbolChange"; // Premium
 	m_mapFinnhubInquiryIndexToString[ISIN_CHANGE_] = "StockFundamentalsISINChange"; // Premium
 
-	// Stock Estimates
+	// FireBirdLib.Stock Estimates
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_RECOMMENDATION_TRENDS_] = "StockEstimatesRecommendationTrends";
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_PRICE_TARGET_] = "StockEstimatesPriceTarget";
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_UPGRADE_DOWNGRADE_] = "StockEstimatesUpgradeDownGrade"; // Premium
@@ -77,7 +77,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_EPS_SURPRISE_] = "StockEstimatesEPSSurprise";
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_EARNING_CALENDAR_] = "StockEstimatesEarningCalendar";
 
-	// Stock Price
+	// FireBirdLib.Stock Price
 	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_QUOTE_] = "StockPriceQuote"; // 实时数据优先级最低
 	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_CANDLES_] = "StockPriceCandles"; // 历史数据优先级低
 	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_TICK_DATA_] = "StockPriceTickData"; //Premium
@@ -144,7 +144,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 
 	// Economic
 	m_mapFinnhubInquiryIndexToString[ECONOMIC_COUNTRY_LIST_] = "EconomicCountryList";
-	m_mapFinnhubInquiryIndexToString[ECONOMIC_CALENDAR_] = "EconomicCalendar"; //Premium
+	m_mapFinnhubInquiryIndexToString[ECONOMIC_CALENDAR_] = "Type.EconomicCalendar"; //Premium
 	m_mapFinnhubInquiryIndexToString[ECONOMIC_CODES_] = "EconomicCodes"; //Premium
 	m_mapFinnhubInquiryIndexToString[ECONOMIC_ECONOMIC_] = "EconomicEconomic"; //Premium
 
@@ -159,7 +159,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex["WebSocketTrades"] = WEBSOCKET_TRADES_;
 	m_mapFinnhubInquiryStringToIndex["WebSocketNews"] = WEBSOCKET_NEWS_; // Premium
 
-	// Stock Fundamentals
+	// FireBirdLib.Stock Fundamentals
 	m_mapFinnhubInquiryStringToIndex["StockFundamentalsSymbolLookup"] = SYMBOL_LOOKUP_;
 	m_mapFinnhubInquiryStringToIndex["StockFundamentalsSymbols"] = STOCK_SYMBOLS_;
 	m_mapFinnhubInquiryStringToIndex["StockFundamentalsMarketStatus"] = MARKET_STATUS_;
@@ -191,7 +191,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex["StockFundamentalsSymbolChange"] = SYMBOL_CHANGE_; // Premium
 	m_mapFinnhubInquiryStringToIndex["StockFundamentalsISINChange"] = ISIN_CHANGE_; // Premium
 
-	// Stock Estimates
+	// FireBirdLib.Stock Estimates
 	m_mapFinnhubInquiryStringToIndex["StockEstimatesRecommendationTrends"] = STOCK_ESTIMATES_RECOMMENDATION_TRENDS_;
 	m_mapFinnhubInquiryStringToIndex["StockEstimatesPriceTarget"] = STOCK_ESTIMATES_PRICE_TARGET_;
 	m_mapFinnhubInquiryStringToIndex["StockEstimatesUpgradeDownGrade"] = STOCK_ESTIMATES_UPGRADE_DOWNGRADE_; // Premium
@@ -202,7 +202,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex["StockEstimatesEPSSurprise"] = STOCK_ESTIMATES_EPS_SURPRISE_;
 	m_mapFinnhubInquiryStringToIndex["StockEstimatesEarningCalendar"] = STOCK_ESTIMATES_EARNING_CALENDAR_;
 
-	// Stock Price
+	// FireBirdLib.Stock Price
 	m_mapFinnhubInquiryStringToIndex["StockPriceQuote"] = STOCK_PRICE_QUOTE_; // 实时数据优先级最低
 	m_mapFinnhubInquiryStringToIndex["StockPriceCandles"] = STOCK_PRICE_CANDLES_; // 历史数据优先级低
 	m_mapFinnhubInquiryStringToIndex["StockPriceTickData"] = STOCK_PRICE_TICK_DATA_; //Premium
@@ -269,7 +269,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 
 	// Economic
 	m_mapFinnhubInquiryStringToIndex["EconomicCountryList"] = ECONOMIC_COUNTRY_LIST_;
-	m_mapFinnhubInquiryStringToIndex["EconomicCalendar"] = ECONOMIC_CALENDAR_; //Premium
+	m_mapFinnhubInquiryStringToIndex["Type.EconomicCalendar"] = ECONOMIC_CALENDAR_; //Premium
 	m_mapFinnhubInquiryStringToIndex["EconomicCodes"] = ECONOMIC_CODES_; //Premium
 	m_mapFinnhubInquiryStringToIndex["EconomicEconomic"] = ECONOMIC_ECONOMIC_; //Premium
 

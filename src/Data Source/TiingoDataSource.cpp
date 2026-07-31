@@ -1,29 +1,29 @@
 module;
 #include <afx.h>
 
-module DataSource.Tiingo;
+module FireBirdLib.DataSource.Tiingo;
 
 import FireBird.Log;
 import SystemMessage;
-import NlohmannJsonDeclaration;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 import DatabaseConnector;
 
 import FinnhubInquiryType;
 
-import Container.Stock.TiingoChosenStock;
-import Container.Stock.TiingoStock;
-import Container.Stock.TiingoSymbol;
-import Product;
-import Stock.TiingoStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoChosenStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoSymbol;
+import FireBirdLib.Product;
+import FireBirdLib.Stock.TiingoStock;
 
-import SpdlogAssert;
+import FireBirdLib.Accessory.SpdlogAssert;
 import InaccessibleSymbol;
 import SystemConfiguration;
-import Factory.Tiingo;
-import TimeConvert;
-import WebData;
-import Market;
-import Market.WorldMarket;
+import FireBirdLib.Factory.Tiingo;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.WebData;
+import FireBirdLib.Market;
+import FireBirdLib.Market.WorldMarket;
 
 import std;
 using std::map;
@@ -490,7 +490,7 @@ bool CTiingoDataSource::GenerateMarketNews() {
 		MARKET_NEWS_,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction("Market news"); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("FireBirdLib.Market news"); }
 	);
 }
 
@@ -522,7 +522,7 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 		reportMsg1,
 		isUpdateNeeded,
 		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction("Stock Symbol"); }
+		[] { gl_systemMessage.SetCurrentTiingoFunction("FireBirdLib.Stock Symbol"); }
 
 	);
 }

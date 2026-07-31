@@ -17,8 +17,8 @@
 #include "ContainerFinnhubEconomicCalendar.h"
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
-#include "WebData.h"
-#include"EconomicCalendar.h"
+#include "FireBireLib.h"
+#include"Type.EconomicCalendar.h"
 
 using std::make_shared;
 

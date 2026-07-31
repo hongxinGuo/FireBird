@@ -4,10 +4,10 @@ module;
 export module InquireEngine;
 
 import InternetOption;
-import WebData;
-import Product;
-import std;
 
+class CWebData;
+
+import std;
 using std::string;
 using std::shared_ptr;
 
@@ -15,7 +15,7 @@ export {
 	constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
 
 	class CInquireEngine {
-		friend CVirtualWebProduct;
+		//friend CVirtualWebProduct;
 
 	public:
 		CInquireEngine();
@@ -27,7 +27,7 @@ export {
 		virtual ~CInquireEngine();
 
 		void ConfigureSession(const InternetOption& option) const;
-		CWebDataPtr GetWebData(); // 实际读取处理函数
+		shared_ptr<CWebData> GetWebData(); // 实际读取处理函数
 		virtual void OpenFile(); // 无法测试，故而虚拟化后使用Mock类来测试。
 		virtual void GetFileHeaderInformation(); // 无法测试，故而虚拟化后使用Mock类来测试。
 		void DeleteWebFile();
@@ -35,10 +35,10 @@ export {
 		virtual UINT ReadWebFileOneTime(); // 无法测试，故而虚拟化后使用Mock类来测试。
 		void XferReadingToBuffer(UINT uByteRead);
 		bool IncreaseBufferSizeIfNeeded(long lIncreaseSize);
-		CWebDataPtr CreateWebData();
+		shared_ptr<CWebData> CreateWebData();
 
 		void VerifyDataLength() const;
-		void MoveDataToWebData(const CWebDataPtr& pWebData); // 将接收到的数移至pWebData中，使用std::move来加快速度。
+		void MoveDataToWebData(const shared_ptr<CWebData>& pWebData); // 将接收到的数移至pWebData中，使用std::move来加快速度。
 
 		long GetByteRead() const noexcept { return m_lByteRead; }
 		void SetByteRead(long number) { m_lByteRead = number; } // 仅用于测试中

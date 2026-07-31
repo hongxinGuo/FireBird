@@ -6,10 +6,10 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
+export module FireBireLib.WebData;
 
-export module WebData;
 
-import NlohmannJsonDeclaration;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 import std;
 using std::string;
@@ -17,18 +17,15 @@ using std::string_view;
 using std::chrono::sys_seconds;
 using std::shared_ptr;
 
-class CDayLineWebData;
-class CInquireEngine;
-class CVirtualDataSource;
 
 export {
 	constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
 	class CWebData {
 	public:
-		friend CVirtualDataSource;
-		friend CInquireEngine;
-		friend CDayLineWebData;
+		friend class  CVirtualDataSource;
+		friend class CInquireEngine;
+		friend class  CDayLineWebData;
 
 		CWebData();
 		// 不允许赋值。
@@ -77,10 +74,12 @@ export {
 		// 测试用函数
 		void Test_SetBuffer_(const string& strBuffer);
 
+	public:
+
 	protected:
 		sys_seconds m_tpTime;// 此数据的提取时间。UTC时间，单位为秒。
-		string m_strStockCode; // 此数据的相关证券代码，可以空缺
 		string m_sDataBuffer;
+		string m_strStockCode; // 此数据的相关证券代码，可以空缺
 		string_view m_svDataBuffer; // m_sDataBuffer的string_view
 		size_t m_lCurrentPos;
 		size_t m_lCurrentParagraphStartPos; // 当前段起始位置

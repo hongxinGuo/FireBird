@@ -1,10 +1,10 @@
 module;
 
-export module DataSource.Accessory;
+export module FireBirdLib.DataSource.Accessory;
 
-import DataSource;
+import FireBirdLib.DataSource;
 
-import Factory.Accessory;
+import FireBirdLib.Factory.Accessory;
 
 import std;
 using std::unique_ptr;

@@ -1,18 +1,21 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+module FireBirdLib.Product.AlphaVantage.StockSplits;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-#include "ProductAlphaVantageStockSplits.h"
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Stock.TiingoStock;
+import StockSplit;
+import SystemMessage;
+import FireBirdLib.WebData;
 
-#include "ContainerTiingoStock.h"
-#include "TiingoStock.h"
-#include"StockSplit.h"
-#include "SystemMessage.h"
-#include "WebData.h"
-
+import std;
 using std::make_shared;
 using std::istringstream;
+using std::chrono::local_days;
 
 CProductAlphaVantageStockSplits::CProductAlphaVantageStockSplits() {
 	m_strInquiryFunction = "https://www.alphavantage.co/query?function=SPLITS&symbol=";
@@ -104,7 +107,7 @@ CStockSplitsPtr CProductAlphaVantageStockSplits::ParseAlphaVantageStockSplits(co
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
-		ReportJSonErrorToSystemMessage("AlphaVantage Stock Splits " + str3, e.what());
+		ReportJSonErrorToSystemMessage("AlphaVantage FireBirdLib.Stock Splits " + str3, e.what());
 		return pvSplits; // 数据解析出错的话，则放弃。
 	}
 	std::ranges::sort(*pvSplits, [](const CStockSplitPtr& pSplits1, const CStockSplitPtr& pSplits2) { return pSplits1->GetDate() < pSplits2->GetDate(); }); // 以日期早晚顺序排列。

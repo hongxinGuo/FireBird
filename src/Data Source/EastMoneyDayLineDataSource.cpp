@@ -10,19 +10,19 @@ module;
 #include <afx.h>
 #include <random>
 
-module DataSource.EastmoneyDayLine;
+module FireBirdLib.DataSource.EastmoneyDayLine;
 
-import ChinaStockCodeConverter;
-import Product.EastmoneyDayLine;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
+import FireBirdLib.Product.EastmoneyDayLine;
 import SystemMessage;
 
-import Market.ChinaMarket;
-import Container.Stock.ChinaStock;
+import FireBirdLib.Market.ChinaMarket;
+import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
 import SystemConfiguration;
-import Product;
-import TimeConvert;
-import WebData;
-import Stock.ChinaStock;
+import FireBirdLib.Product;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.WebData;
+import FireBirdLib.Stock.ChinaStock;
 
 import std;
 using std::make_shared;
@@ -130,7 +130,7 @@ bool CEastmoneyDayLineDataSource::Inquire() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-/// 东方财富日线服务器申请信息的处理只能放在DataSource中处理，
+/// 东方财富日线服务器申请信息的处理只能放在FireBirdLib.DataSource中处理，
 /// product中存储的是处理后的完整申请字符串。
 /// 东方财富日线的申请格式为：https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=market.stockCode&fields1=f1,f2,f3,f4,f5,f6
 ///     &fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&end=20250101&lmt=number

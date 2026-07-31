@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"StockExchange.h"
+module Type.StockExchange;
 
 CStockExchange::CStockExchange() {
 	m_strCode = " ";

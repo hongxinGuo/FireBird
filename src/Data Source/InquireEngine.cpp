@@ -15,10 +15,10 @@ import SystemMessage;
 import GlobeDef;
 import CharSetTransfer;
 import Thread;
-import WebData;
+import FireBirdLib.WebData;
 
-import InfoReport;
-import SpdlogAssert;
+import FireBirdLib.Accessory.InfoReport;
+import FireBirdLib.Accessory.SpdlogAssert;
 import SystemConfiguration;
 import InternetOption;
 

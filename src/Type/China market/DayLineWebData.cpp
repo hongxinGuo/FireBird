@@ -1,8 +1,12 @@
-#include"pch.h"
+module;
 
-#include"ChinaMarket.h"
-#include"DayLineWebData.h"
-#include"WebData.h"
+module FireBirdLib.WebData.DayLine;
+
+import FireBirdLib.Market.ChinaMarket;
+import FireBirdLib.WebData;
+
+import std;
+using std::move;
 
 CDayLineWebData::CDayLineWebData() {
 	Reset();
@@ -10,14 +14,15 @@ CDayLineWebData::CDayLineWebData() {
 
 void CDayLineWebData::Reset() {
 	m_strStockCode = "";
-	m_sDataBuffer.resize(0);
+	m_sBuffer.resize(0);
 	m_vTempDayLine.resize(0);
 	m_lCurrentPos = 0;
 }
 
-bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
+
+bool CDayLineWebData::TransferWebDataToBuffer(shared_ptr<CWebData> pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-	m_sDataBuffer = std::move(pWebData->m_sDataBuffer);
+	m_sBuffer = std::move(pWebData->m_sDataBuffer);
 	m_strStockCode = pWebData->GetStockCode();
 	m_lCurrentPos = 0;
 

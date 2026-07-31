@@ -175,9 +175,6 @@
     <Filter Include="源文件\Factory-Product\AlphaVantage">
       <UniqueIdentifier>{d8805d14-9375-4e8e-afb3-76eec1a7c832}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Type\Uitlities">
-      <UniqueIdentifier>{82ea1d75-591c-4916-8226-a377be387b23}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\System\Initialization.h">
@@ -1091,9 +1088,6 @@
     <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.ixx">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\CountableSemaphore.ixx">
-      <Filter>头文件\Type\Uitlities</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Type\America market\StockExchange.ixx">
       <Filter>头文件\Type</Filter>
     </ClCompile>
@@ -1121,13 +1115,7 @@
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.ixx">
       <Filter>头文件\Web Socket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\CharSetTransfer.ixx">
-      <Filter>头文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\dataBaseConnector.ixx">
-      <Filter>头文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FinnhubInquiryType.ixx">
       <Filter>头文件</Filter>
     </ClCompile>
     <ClCompile Include="..\src\globedef.ixx">
@@ -1147,6 +1135,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Thread.ixx">
       <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\CountableSemaphore.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CharSetTransfer.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FinnhubInquiryType.ixx">
+      <Filter>头文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

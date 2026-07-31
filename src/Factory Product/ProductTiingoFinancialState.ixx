@@ -1,9 +1,9 @@
 module;
 
-export module Product.Tiingo.FinancialState;
+export module FireBirdLib.Product.Tiingo.FinancialState;
 
-import Product.Tiingo;
-import WebData;
+import FireBirdLib.Product.Tiingo;
+import FireBirdLib.WebData;
 import TiingoCompanyFinancialState;
 
 import std;

@@ -1,9 +1,9 @@
 module;
 
-export module Product.Dummy;
+export module FireBirdLib.Product.Dummy;
 
-import Product;
-import WebData;
+import FireBirdLib.Product;
+import FireBirdLib.WebData;
 
 import std;
 using std::shared_ptr;

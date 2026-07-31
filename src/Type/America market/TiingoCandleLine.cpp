@@ -1,8 +1,8 @@
-#include "pch.h"
+module;
 
-#include"ContainerTiingoStockDayLine.h"
-#include "TiingoCandleLine.h"
-#include"TiingoStock.h"
+module HistoryCandle.TiingoCandleLine;
+
+import FireBirdLib.Stock.TiingoStock;
 
 namespace {
 	CTiingoStock s_stock; // 用于获得各价格的放大比率。

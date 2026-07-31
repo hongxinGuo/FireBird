@@ -1,15 +1,15 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 网络数据的申请，采用Factory-Product模式，各数据对应相应的Product。
-/// Factory只负责根据生成
+/// 网络数据的申请，采用FireBirdLib.Factory-FireBirdLib.Product模式，各数据对应相应的FireBirdLib.Product。
+/// FireBirdLib.Factory只负责根据生成
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-export module Factory;
+export module FireBirdLib.Factory;
 
-import Market;
-import Product;
+import FireBirdLib.Market;
+import FireBirdLib.Product;
 
 import std;
 using std::shared_ptr;

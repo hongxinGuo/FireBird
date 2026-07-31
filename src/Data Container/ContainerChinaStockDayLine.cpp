@@ -3,11 +3,11 @@ module;
 
 #include"StockMarketSQLTable.h"
 #include"sqlpp23/sqlpp23.h"
-module Container.HistoryCandle.ChinaStockDayLine;
+module FireBirdLib.Container.HistoryCandle.ChinaStockDayLine;
 
-import TimeConvert;
+import FireBirdLib.Accessory.TimeConvert;
 import HistoryCandle;
-import Stock.ChinaStock;
+import FireBirdLib.Stock.ChinaStock;
 import HistoryCandle.WeekLine;
 import DatabaseConnector;
 
@@ -110,8 +110,8 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol && t.Date >= static_cast<int>(lStartDate)).order_by(t.Date.asc()));
-	//size_t rows = result.size();
-	Reserve(3000);
+	size_t rows = result.size();
+	Reserve(rows + 10);
 
 	for (const auto& row : result) {
 		CVirtualHistoryCandle historyCandle;

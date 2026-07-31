@@ -1,36 +1,48 @@
-#include"pch.h"
-
+module;
+#include <afx.h>
+#include <afxwin.h>
 #include<sqlpp23/sqlpp23.h>
-#include"SystemMessage.h"
+#include "StockMarketSQLTable.h"
 
-#include"TimeConvert.h"
-#include"Thread.h"
-#include"SystemData.h"
+module FireBirdLib.Market.ChinaMarket;
 
-#include"ChinaStock.h"
-#include"ChinaMarket.h"
+import FireBird.Log;
+import SystemMessage;
+import MarketTask;
+import FireBirdLib.Accessory.TimeConvert;
+import Thread;
+import SystemData;
+import SystemConfiguration;
 
-#include "EastmoneyDayLineDataSource.h"
-#include "InfoReport.h"
+import FireBirdLib.Stock.ChinaStock;
 
-#include "SinaRTDataSource.h"
-#include "SystemConfiguration.h"
-#include "TengxunDayLineDataSource.h"
-#include "TengxunRTDataSource.h"
+import FireBirdLib.DataSource.EastmoneyDayLine;
+import FireBirdLib.Accessory.InfoReport;
 
-#include"DayLineWebData.h"
-#include "WebRTData.h"
+import FireBirdLib.DataSource.SinaRT;
+import FireBirdLib.DataSource.TengxunDayLine;
+import FireBirdLib.DataSource.TengxunRT;
 
-#include "ContainerChinaStock.h"
-#include "ContainerStockExchange.h"
-#include "ContainerStockSymbol.h"
-#include "dataBaseConnector.h"
-#include"StockMarketSQLTable.h"
+import FireBirdLib.WebData.DayLine;
+import WebRTData;
+import FireBirdLib.Stock;
 
+import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+import ContainerStockExchange;
+import FireBirdLib.Container.StockSymbol;
+import DatabaseConnector;
+
+import std;
 using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 using std::literals::chrono_literals::operator ""s;
 using std::chrono::Sunday;
+using std::chrono::local_seconds;
+using std::chrono::time_point_cast;
+using std::chrono::seconds;
+using std::chrono::hh_mm_ss;
+using std::chrono::steady_clock;
+using std::chrono::milliseconds;
 
 using std::make_shared;
 
@@ -293,7 +305,7 @@ void CChinaMarket::CreateStock(const string& strStockCode, const string& strStoc
 	pStock->SetNeedProcessRTData(fProcessRTData);
 	gl_dataContainerChinaStock.Add(pStock);
 	ASSERT(pStock->IsUpdateDayLine());
-	string str = "china Market生成新代码";
+	string str = "china FireBirdLib.Market生成新代码";
 	str += pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 }

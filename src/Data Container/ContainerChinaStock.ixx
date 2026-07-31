@@ -1,9 +1,9 @@
 module;
 
-export module Container.Stock.ChinaStock;
+export module FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
 
-import Container.Stock;
-import Stock.ChinaStock;
+import FireBirdLib.Container.FireBirdLib.Stock;
+import FireBirdLib.Stock.ChinaStock;
 
 import std;
 using std::chrono::local_days;

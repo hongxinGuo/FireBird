@@ -1,9 +1,9 @@
 module;
 
-export module Stock.FinnhubForex;
+export module FireBirdLib.Stock.FinnhubForex;
 
-import Stock;
-import Container.HistoryCandle.ForexDayLine;
+import FireBirdLib.Stock;
+import FireBirdLib.Container.HistoryCandle.ForexDayLine;
 import HistoryCandle.DayLine;
 
 import std;

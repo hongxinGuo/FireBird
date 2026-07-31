@@ -8,7 +8,7 @@ module;
 #include <afx.h>
 #include <afxwin.h>
 
-export module Container.HistoryCandle;
+export module FireBirdLib.Container.HistoryCandle;
 
 import HistoryCandle;
 import HistoryCandle.DayLine;

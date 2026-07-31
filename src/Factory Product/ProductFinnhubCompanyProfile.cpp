@@ -9,7 +9,7 @@
 #include "ProductFinnhubCompanyProfile.h"
 #include"FinnhubStock.h"
 
-#include "WebData.h"
+#include "FireBireLib.h"
 
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile?symbol=";
@@ -56,7 +56,7 @@ void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///  "naics": "Communications Equipment Manufacturing",
 ///  "naicsNationalIndustry": "Radio and Television Broadcasting and Wireless Communications Equipment Manufacturing",
 ///  "naicsSector": "Manufacturing",
-///  "naicsSubsector": "Computer and Electronic Product Manufacturing",
+///  "naicsSubsector": "Computer and Electronic FireBirdLib.Product Manufacturing",
 ///  "name": "Apple Inc",
 ///  "phone": "14089961010",
 ///  "shareOutstanding": 4375.47998046875,
@@ -136,7 +136,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 		s = jsonGetString(js, "finnhubIndustry");
 		if (!s.empty()) pStock->SetFinnhubIndustry(s);
 	} catch (nlohmannJson::exception& e) {
-		ReportJSonErrorToSystemMessage("Finnhub Stock Profile ", e.what());
+		ReportJSonErrorToSystemMessage("Finnhub FireBirdLib.Stock Profile ", e.what());
 		return false; // 没有公司简介
 	}
 	return true;

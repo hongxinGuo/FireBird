@@ -1,10 +1,15 @@
-#include"pch.h"
+module;
+#include <ATLComMem.h>
+#include <limits>
 
-#include "IndicatorMACD.h"
-#include "VirtualDataHistoryCandle.h"
 
+module IndicatorMACD;
+import FireBirdLib.Container.HistoryCandle;
+
+import std;
 using std::max;
 using std::min;
+using std::numeric_limits;
 
 double MACDResult::Max() const {
 	if (m_macd >= m_hist) {

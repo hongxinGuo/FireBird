@@ -2,7 +2,7 @@
 ///
 /// 腾讯日线历史数据。
 ///
-/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
+/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在FireBirdLib.DataSource中处理，
 /// product中存储的是处理后的完整申请字符串。
 /// 腾讯日线的申请格式为：https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sz000003,day,2002-12-01,2009-01-23,2000,,
 ///
@@ -10,21 +10,21 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-module DataSource.TengxunDayLine;
+module FireBirdLib.DataSource.TengxunDayLine;
 
-import ChinaStockCodeConverter;
-import Product;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
+import FireBirdLib.Product;
 import SystemMessage;
-import Product.TengxunDayLine;
+import FireBirdLib.Product.TengxunDayLine;
 
-import Market.ChinaMarket;
-import Container.Stock.ChinaStock;
-import DataSource.EastmoneyDayLine;
-import SpdlogAssert;
+import FireBirdLib.Market.ChinaMarket;
+import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+import FireBirdLib.DataSource.EastmoneyDayLine;
+import FireBirdLib.Accessory.SpdlogAssert;
 import SystemConfiguration;
-import TimeConvert;
-import WebData;
-import Stock.ChinaStock;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.WebData;
+import FireBirdLib.Stock.ChinaStock;
 
 import std;
 #include <afx.h>
@@ -138,7 +138,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
+/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在FireBirdLib.DataSource中处理，
 /// product中存储的是处理后的完整申请字符串。
 /// 腾讯日线的申请格式为：https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sz000003,day,2002-12-01,2009-01-23,2000,,
 //

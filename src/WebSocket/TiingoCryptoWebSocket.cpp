@@ -6,12 +6,12 @@ import GlobeDef;
 import SystemData;
 import SystemMessage;
 
-import JsonParse;
-import NlohmannJsonGetValue;
-import NlohmannJsonDeclaration;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 import SystemConfiguration;
-import DataSource.Tiingo;
+import FireBirdLib.DataSource.Tiingo;
 
 import std;
 using std::make_shared;

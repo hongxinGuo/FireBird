@@ -2,12 +2,12 @@ module;
 
 #include <afx.h>
 
-export module Stock;
+export module FireBirdLib.Stock;
 
-import NlohmannJsonDeclaration;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 import StockSplit;
 import HistoryCandle;
-import Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 
 import std;
 using std::string;

@@ -1,5 +1,6 @@
-#include"pch.h"
-#include"Country.h"
+module;
+
+module Country;
 
 CCountry::CCountry() {
 	Reset();

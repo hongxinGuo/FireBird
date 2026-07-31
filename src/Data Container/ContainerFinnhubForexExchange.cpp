@@ -3,7 +3,7 @@ module;
 #include"StockMarketSQLTable.h"
 
 module ContainerFinnhubForexExchange;
-import InfoReport;
+import FireBirdLib.Accessory.InfoReport;
 import DatabaseConnector;
 
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {

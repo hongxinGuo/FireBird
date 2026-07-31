@@ -1,6 +1,6 @@
 module;
 
-export module PriorityQueueWebRTData;
+export module FireBirdLib.Accessory.PriorityQueueWebRTData;
 
 import WebRTData;
 

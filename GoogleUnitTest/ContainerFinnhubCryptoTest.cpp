@@ -7,7 +7,7 @@
 #include"ContainerFinnhubCrypto.h"
 #include<sqlpp23/sqlpp23.h>
 
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoCrypto.h"
 #include "FinnhubCrypto.h"

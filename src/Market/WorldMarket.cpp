@@ -1,56 +1,59 @@
-#include"pch.h"
-
-#include"systemData.h"
-#include"SystemMessage.h"
-
-#include "WorldMarket.h"
-
-#include "AccessoryDataSource.h"
-#include "AlphaVantageDataSource.h"
-#include"thread.h"
-
-#include"InaccessibleSymbol.h"
-
-#include"FinnhubDataSource.h"
-
-#include"FinnhubWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-#include"TiingoForexWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-
-#include "ChinaMarket.h"
-#include "TiingoDataSource.h"
-#include "TimeConvert.h"
-#include"FinnhubForex.h"
-
-#include "MarketStatus.h"
-#include"MarketHoliday.h"
-#include "FinnhubCrypto.h"
-#include"FinnhubStock.h"
-#include "TiingoCandleLine.h"
-#include"TiingoStock.h"
-
+module;
+#include <afx.h>
 #include<sqlpp23/sqlpp23.h>
-
-#include "ContainerFinnhubStock.h"
-#include "containerChosenCrypto.h"
-#include "ContainerChosenForex.h"
-#include "ContainerFinnhubCountry.h"
-#include "ContainerFinnhubCrypto.h"
-#include "ContainerFinnhubCryptoExchange.h"
-#include "ContainerFinnhubEconomicCalendar.h"
-#include "ContainerFinnhubForexExchange.h"
-#include "containerFinnhubForexSymbol.h"
-#include "ContainerStockExchange.h"
-#include "ContainerTiingoChosenStock.h"
-#include "ContainerTiingoCryptoSymbol.h"
-#include "ContainerTiingoFundamentalDefinition.h"
-#include "ContainerTiingoStock.h"
-#include "ContainerTiingoSymbol.h"
-#include "CountableSemaphore.h"
-#include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
-#include "SystemConfiguration.h"
+#include"concurrencpp/concurrencpp.h"
+
+module FireBirdLib.Market.WorldMarket;
+
+using namespace concurrencpp;
+
+import SystemData;
+import SystemMessage;
+import Thread;
+import MarketStatus;
+import MarketHoliday;
+import InaccessibleSymbol;
+import MarketTask;
+import FireBirdLib.Stock;
+
+import FireBirdLib.DataSource.Accessory;
+import FireBirdLib.DataSource.AlphaVantage;
+import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.DataSource.Finnhub;
+
+import WebSocket.Finnhub;
+import WebSocket.TiingoIEX;
+import WebSocket.TiingoForex;
+import WebSocket.TiingoCrypto;
+
+import FireBirdLib.Market.ChinaMarket;
+import HistoryCandle.TiingoCandleLine;
+import FireBirdLib.Accessory.TimeConvert;
+
+import FireBirdLib.Stock.FinnhubCrypto;
+import FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Stock.FinnhubForex;
+
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Container.FireBirdLib.Stock.ChosenCrypto;
+import FireBirdLib.Container.FireBirdLib.Stock.ChosenForex;
+import ContainerFinnhubCountry;
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubCrypto;
+import ContainerFinnhubCryptoExchange;
+import ContainerFinnhubEconomicCalendar;
+import ContainerFinnhubForexExchange;
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubForexSymbol;
+import ContainerStockExchange;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoChosenStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoCryptoSymbol;
+import ContainerTiingoFundamentalDefinition;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Container.FireBirdLib.Stock.TiingoSymbol;
+import CountableSemaphore;
+import DatabaseConnector;
+import SystemConfiguration;
 
 using namespace std;
 
@@ -177,7 +180,7 @@ void CWorldMarket::ResetMarket() {
 		pDataSource->Reset();
 	}
 
-	string s = "重置World Market于美东标准时间：" + GetStringOfMarketTime();
+	string s = "重置World FireBirdLib.Market于美东标准时间：" + GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(s);
 
 	m_fResettingMarket = false;
@@ -371,7 +374,7 @@ bool CWorldMarket::TaskUpdateNaicsIndustry() {
 
 bool CWorldMarket::TaskRebuildTiingoStockSplitDB() {
 	gl_runtime.background_executor()->post([this] {
-		gl_systemMessage.SetWorldMarketSavingFunction("T Rebuild Stock Split DB");
+		gl_systemMessage.SetWorldMarketSavingFunction("T Rebuild FireBirdLib.Stock Split DB");
 		this->RebuildTiingoStockSplitDB();
 	});
 	return true;
@@ -811,7 +814,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateDayLineDB()) { // stock dayLine
 		gl_runtime.background_executor()->post([] {
-			gl_systemMessage.SetWorldMarketSavingFunction("F Stock dayLine");
+			gl_systemMessage.SetWorldMarketSavingFunction("F FireBirdLib.Stock dayLine");
 			gl_pWorldMarket->UpdateFinnhubStockDayLineDB();
 		});
 	}
@@ -841,7 +844,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 	}
 
 	// Tiingo部分
-	if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo Stock
+	if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo FireBirdLib.Stock
 		gl_runtime.background_executor()->post([] {
 			gl_systemMessage.SetWorldMarketSavingFunction("T profile");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -890,7 +893,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 			auto iUpdatedCount = TaskUpdateTiingoStockDayLineDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				string s = std::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
+				string s = std::format("{:d} Tiingo FireBirdLib.Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			s_bUpdatingTiingoStockDayLine = false;

@@ -1,7 +1,7 @@
-#include"pch.h"
+module;
 
-#include "DayLine.h"
-#include "ChinaStock.h"
+module HistoryCandle.DayLine;
+import FireBirdLib.Stock.ChinaStock;
 
 namespace {
 	CChinaStock s_stock;

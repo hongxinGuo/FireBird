@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"TiingoIEXTopOFBook.h"
+module TiingoIEXTopOfBook;
 
 CTiingoIEXTopOfBook::CTiingoIEXTopOfBook() {
 }

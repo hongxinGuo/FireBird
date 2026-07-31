@@ -8,11 +8,11 @@
 using std::set;
 
 #include "Thread.h"
-#include "TimeConvert.h"
+#include "FireBirdLib.Accessory.TimeConvert.h"
 #include "WorldMarket.h"
 #include<sqlpp23/sqlpp23.h>
 
-#include "dataBaseConnector.h"
+#include "DatabaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"

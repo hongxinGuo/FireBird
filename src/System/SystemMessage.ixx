@@ -1,9 +1,8 @@
 module;
 #include <concurrentqueue/moodycamel/concurrentqueue.h>
+#include <stdafx.h>
 
 export module SystemMessage;
-
-import OutputList;
 
 import std;
 using std::atomic_long;
@@ -91,11 +90,8 @@ export {
 		string PopMessage();
 		size_t Size() const;
 
-		void Display(COutputList* pOutputList, const string& strTime);
 
-		virtual void SysCallOutputListAddString(COutputList* pOutputList, const string& str);
-
-	protected:
+	public:
 		moodycamel::ConcurrentQueue<string> m_queueMessage;
 	};
 
@@ -112,40 +108,37 @@ export {
 		void PushStockMarketInformationMessage(const string& str) { m_StockMarketInformation.PushMessage(str); }
 		string PopStockMarketInformationMessage() { return m_StockMarketInformation.PopMessage(); }
 		size_t StockMarketInformationSize() const { return m_StockMarketInformation.Size(); }
-		void DisplayStockMarketInformation(COutputList* pOutputList, const string& strTime) { m_StockMarketInformation.Display(pOutputList, strTime); }
+		CSystemDeque* GetStockMarketInformationMessageQueue() { return &m_StockMarketInformation; }
 
 		void PushInformationMessage(const string& str) { m_SystemInformation.PushMessage(str); }
 		string PopInformationMessage() { return m_SystemInformation.PopMessage(); }
 		size_t InformationSize() const { return m_SystemInformation.Size(); }
-		void DisplayInformation(COutputList* pOutputList, const string& strTime) { m_SystemInformation.Display(pOutputList, strTime); }
+		CSystemDeque* GetSystemInformationMessageQueue() { return &m_SystemInformation; }
 
 		void PushChinaMarketInformationMessage(const string& str) { m_ChinaMarketInformation.PushMessage(str); }
 		string PopChinaMarketInformationMessage() { return m_ChinaMarketInformation.PopMessage(); }
 		size_t ChinaMarketInformationSize() const { return m_ChinaMarketInformation.Size(); }
-		void DisplayChinaMarketInformation(COutputList* pOutputList, const string& strTime) { m_ChinaMarketInformation.Display(pOutputList, strTime); }
+		CSystemDeque* GetChinaMarketInformationMessageQueue() { return &m_ChinaMarketInformation; }
 
 		void PushDayLineInfoMessage(const string& s) { m_DayLineInformation.PushMessage(s); }
 		string PopDayLineInfoMessage() { return m_DayLineInformation.PopMessage(); }
 		size_t DayLineInfoSize() const { return m_DayLineInformation.Size(); }
-
-		void DisplayDayLineInfo(COutputList* pOutputList, const string& strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
+		CSystemDeque* GetDayLineInformationMessageQueue() { return &m_DayLineInformation; }
 
 		void PushWebSocketInfoMessage(const string& str) { m_WebSocketInfo.PushMessage(str); }
 		string PopWebSocketInfoMessage() { return m_WebSocketInfo.PopMessage(); }
 		size_t WebSocketInfoSize() const { return m_WebSocketInfo.Size(); }
-
-		void DisplayWebSocketInfo(COutputList* pOutputList, const string& strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
+		CSystemDeque* GetWebSocketMessageQueue() { return &m_WebSocketInfo; }
 
 		void PushInnerSystemInformationMessage(const string& str) { m_InnerSystemInformation.PushMessage(str); }
 		string PopInnerSystemInformationMessage() { return m_InnerSystemInformation.PopMessage(); }
 		size_t InnerSystemInfoSize() const { return m_InnerSystemInformation.Size(); }
-
-		void DisplayInnerSystemInformation(COutputList* pOutputList, const string& strTime) { m_InnerSystemInformation.Display(pOutputList, strTime); }
+		CSystemDeque* GetInnerSystemInformationMessageQueue() { return &m_InnerSystemInformation; }
 
 		void PushErrorMessage(const string& str) { m_ErrorMessage.PushMessage(str); }
 		string PopErrorMessage() { return m_ErrorMessage.PopMessage(); }
 		size_t ErrorMessageSize() const { return m_ErrorMessage.Size(); }
-		void DisplayErrorMessage(COutputList* pOutputList, const string& strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
+		CSystemDeque* GetErrorMessageQueue()  { return &m_ErrorMessage; }
 
 		int GetProcessedFinnhubWebSocket() const noexcept { return m_iProcessedFinnhubWebSocket; }
 		void SetProcessedFinnhubWebSocket(const int iValue) noexcept { m_iProcessedFinnhubWebSocket = iValue; }

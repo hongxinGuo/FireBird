@@ -1,8 +1,8 @@
 module;
 
-export module Stock.TiingoCrypto;
+export module FireBirdLib.Stock.TiingoCrypto;
 
-import Stock;
+import FireBirdLib.Stock;
 
 import std;
 using std::string;

@@ -1,8 +1,8 @@
 module;
 
-module Container;
+module FireBirdLib.Container;
 
-import ChinaStockCodeConverter;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
 
 import std;
 using std::string;

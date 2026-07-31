@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"InsiderTransaction.h"
+module InsiderTransaction;
 
 CInsiderTransaction::CInsiderTransaction() {
 	m_strSymbol = " ";

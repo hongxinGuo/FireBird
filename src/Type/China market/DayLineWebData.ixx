@@ -1,9 +1,10 @@
 module;
 
-export module DayLineWebData;
+export module FireBirdLib.WebData.DayLine;
 
 import HistoryCandle.DayLine;
-import WebData;
+
+import FireBirdLib.WebData;
 
 import std;
 using std::vector;
@@ -25,15 +26,15 @@ export {
 		void SetStockCode(const std::string& strSymbol) noexcept { m_strStockCode = strSymbol; }
 		std::string GetStockCode() { return m_strStockCode; }
 
-		bool TransferWebDataToBuffer(const CWebDataPtr& pWebData);
-		string GetBuffer() { return m_sDataBuffer; }
+		bool TransferWebDataToBuffer(shared_ptr<CWebData> pWebData);
+		string GetBuffer() { return m_sBuffer; }
 
 		int64_t GetCurrentPos() const noexcept { return m_lCurrentPos; }
 		void SetCurrentPos(const int64_t lValue) noexcept { m_lCurrentPos = lValue; }
 
 	private:
 		string m_strStockCode{};
-		string m_sDataBuffer{}; // 日线读取缓冲区
+		string m_sBuffer{}; // 日线读取缓冲区
 		vector<CDayLine> m_vTempDayLine{}; // 日线数据缓冲区
 		int64_t m_lCurrentPos{ 0 };
 	};

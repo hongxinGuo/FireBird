@@ -1,14 +1,15 @@
-#include"pch.h"
+module;
+#include <afx.h>
 
-#include "VirtualHistoryCandle.h"
-#include"VirtualDataHistoryCandle.h"
-#include"DayLine.h"
+module FireBirdLib.Container.HistoryCandle;
 
-#include"TimeConvert.h"
+import HistoryCandle;
+import HistoryCandle.DayLine;
 
-#include <algorithm>
+import FireBirdLib.Accessory.TimeConvert;
 
-using namespace std;
+import std;
+using std::chrono::local_days;
 
 CVirtualDataHistoryCandle::CVirtualDataHistoryCandle() {
 	Reset();
@@ -65,8 +66,8 @@ void CVirtualDataHistoryCandle::Add(const CDayLine& data) {
 }
 
 bool CVirtualDataHistoryCandle::HaveDayLine(local_days date) {
-	return ranges::any_of(m_vHistoryData.begin(), m_vHistoryData.end(),
-	                      [date](const CVirtualHistoryCandle& p) { return p.GetDate() == date; });
+	return std::ranges::any_of(m_vHistoryData.begin(), m_vHistoryData.end(),
+	                           [date](const CVirtualHistoryCandle& p) { return p.GetDate() == date; });
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +157,7 @@ void CVirtualDataHistoryCandle::CreateMonthLine(CVirtualDataHistoryCandle& dataD
 	while (index < monthLineSize) {
 		monthLine.Reset();
 		auto pDayLine = dataDayLine.GetData(index++);
-		chrono::local_days lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
+		local_days lCurrentEndDate = GetNextMonth(pDayLine->GetDate());
 		monthLine.SetDate(pDayLine->GetDate());
 		monthLine.SetOpen(pDayLine->GetOpen());
 		monthLine.SetLow(pDayLine->GetLow());

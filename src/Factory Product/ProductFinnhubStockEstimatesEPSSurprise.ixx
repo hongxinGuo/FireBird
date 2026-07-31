@@ -1,11 +1,11 @@
 module;
 
-export module Product.Finnhub.StockEstimatesEPSSurprise;
+export module FireBirdLib.Product.Finnhub.StockEstimatesEPSSurprise;
 
-import Product.Finnhub;
+import FireBirdLib.Product.Finnhub;
 import EPSSurprise;
 
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

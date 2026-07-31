@@ -1,5 +1,6 @@
-#include"pch.h"
-#include"SECFiling.h"
+module;
+
+module SECFiling;
 
 CSECFiling::CSECFiling() {
 	Reset();

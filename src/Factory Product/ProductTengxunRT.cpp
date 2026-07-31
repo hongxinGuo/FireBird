@@ -1,12 +1,11 @@
-#include"pch.h"
+module;
 
-#include"ProductTengxunRT.h"
+module FireBirdLib.Product.TengxunRT;
 
-//#include "HighPerformanceCounter.h"
-#include "ChinaMarket.h"
-#include "ContainerChinaStock.h"
-#include"JsonParse.h"
-#include "TengxunRTDataSource.h"
+import FireBirdLib.Market.ChinaMarket;
+import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.TengxunRT;
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;

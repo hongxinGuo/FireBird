@@ -1,10 +1,10 @@
 module;
 
-export module Product.Tiingo.CryptoDayLine;
+export module FireBirdLib.Product.Tiingo.CryptoDayLine;
 
-import Product.Tiingo;
+import FireBirdLib.Product.Tiingo;
 import HistoryCandle.DayLine;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

@@ -3,7 +3,7 @@ module;
 
 export module IndicatorRSI;
 
-import Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 import HistoryCandle;
 
 import std;

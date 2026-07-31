@@ -1,11 +1,11 @@
 module;
 
-export module Product.Finnhub.EconomicCanendar;
+export module FireBirdLib.Product.Finnhub.Type.EconomicCalendar;
 
-import Product.Finnhub;
+import FireBirdLib.Product.Finnhub;
 
-import WebData;
-import EconomicCalendar;
+import FireBirdLib.WebData;
+import Type.EconomicCalendar;
 
 import std;
 using std::string;

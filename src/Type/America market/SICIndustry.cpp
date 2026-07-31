@@ -1,6 +1,6 @@
-#include"pch.h"
+module;
 
-#include"SICIndustry.h"
+module SICIndustry;
 
 CSICIndustry::CSICIndustry() {
 	m_lCode = 0;

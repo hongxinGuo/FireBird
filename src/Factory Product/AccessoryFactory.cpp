@@ -1,13 +1,13 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"FinnhubInquiryType.h"
+module FireBirdLib.Factory.Accessory;
 
-#include "AccessoryFactory.h"
-
-#include "ProductDummy.h"
-#include "ProductIndexNasdaq100Stocks.h"
-#include "SystemMessage.h"
-#include "VirtualMarket.h"
+import FireBirdLib.Product.Dummy;
+import FireBirdLib.Product.IndexNasdaq100Stocks;
+import SystemMessage;
+import FireBirdLib.Market;
+import FinnhubInquiryType;
 
 using std::make_shared;
 

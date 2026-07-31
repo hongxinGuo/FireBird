@@ -8,29 +8,29 @@
 module;
 #include <afx.h>
 
-module DataSource.Finnhub;
+module FireBirdLib.DataSource.Finnhub;
 import SystemConfiguration;
 import SystemMessage;
 
 import FinnhubInquiryType;
 import InaccessibleSymbol;
 
-import Container.Stock.FinnhubCrypto;
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubCrypto;
 import ContainerFinnhubCryptoExchange;
 import ContainerFinnhubForexExchange;
-import Container.Stock.FinnhubForexSymbol;
-import Container.Stock.FinnhubStock;
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubForexSymbol;
+import FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
 import ContainerStockExchange;
-import Product;
+import FireBirdLib.Product;
 
-import SpdlogAssert;
-import TimeConvert;
-import WebData;
-import Market.WorldMarket;
-import Stock.FinnhubStock;
-import Stock.FinnhubCrypto;
-import Factory.Finnhub;
-import Stock.FinnhubForex;
+import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.WebData;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Stock.FinnhubCrypto;
+import FireBirdLib.Factory.Finnhub;
+import FireBirdLib.Stock.FinnhubForex;
 
 import std;
 using std::exception;
@@ -184,7 +184,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 		|| currentTime >= GetNextTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateCompanySymbolChange()) return true; // 第一步申请股票代码更改。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	if (GenerateCountryList()) return true;
-	// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
+	// Finnhub不提供FireBirdLib.Stock Exchange名单，使用预先提供的股票交易所列表。
 	if (GenerateForexExchange()) return true;
 	if (GenerateCryptoExchange()) return true;
 	if (GenerateMarketStatus()) return true;
@@ -202,7 +202,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	if (GenerateInsiderTransaction()) return true;
 	if (GenerateInsiderSentiment()) return true;
 	if (GenerateCryptoDayLine()) return true; // Crypto dayLine20231127后只限于付费用户使用
-	if (GenerateStockDayLine()) return true; // Stock dayLine20231127后只限于付费用户使用
+	if (GenerateStockDayLine()) return true; // FireBirdLib.Stock dayLine20231127后只限于付费用户使用
 	if (GenerateForexDayLine()) return true; // Forex dayLine目前只限于付费用户使用
 	if (GenerateEPSSurprise()) return true;
 	if (GenerateSECFilings()) return true;
@@ -236,7 +236,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateMarketStatus(); };
 	auto createProduct = [this](int inquireType) { return m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setMessage = [](const auto& item) {
-		std::string str = "Market status: ";
+		std::string str = "FireBirdLib.Market status: ";
 		str += item->GetExchangeCode();
 		gl_systemMessage.SetCurrentFinnhubFunction(str);
 	};
@@ -262,7 +262,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateMarketHoliday(); };
 	auto createProduct = [this](int inquireType) { return m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setMessage = [](const auto& item) {
-		std::string str = "Market holiday: ";
+		std::string str = "FireBirdLib.Market holiday: ";
 		str += item->GetExchangeCode();
 		gl_systemMessage.SetCurrentFinnhubFunction(str);
 	};

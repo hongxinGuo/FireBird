@@ -1,17 +1,17 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 /// Note 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要分次查询不同日期的数据方可。
-/// 目前采用的方法是生成一次多个查询，DataSource查询后将数据暂存于本Product中，待所有查询都完成后由本Product负责将数据组合起来。
+/// 目前采用的方法是生成一次多个查询，FireBirdLib.DataSource查询后将数据暂存于本FireBirdLib.Product中，待所有查询都完成后由本FireBirdLib.Product负责将数据组合起来。
 ///
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 
-export module Product.EastmoneyDayLine;
+export module FireBirdLib.Product.EastmoneyDayLine;
 
-import Product;
+import FireBirdLib.Product;
 import HistoryCandle.DayLine;
-import WebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string_view;

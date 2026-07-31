@@ -9,28 +9,27 @@ module;
 #include"concurrencpp/concurrencpp.h"
 #include"simdjson.h"
 
-module JsonParse;
+module FireBirdLib.Accessory.JsonParse;
 
-import JsonParse;
-import DayLineWebData;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.WebData.DayLine;
 
-import WebData;
+import FireBirdLib.WebData;
 import WebRTData;
 
-import ChinaStockCodeConverter;
-import InfoReport;
+import FireBirdLib.Accessory.ChinaStockCodeConverter;
+import FireBirdLib.Accessory.InfoReport;
 import Thread;
 import HistoryCandle.DayLine;
 
-import SimdjsonGetValue;
+import FireBirdLib.Accessory.Simdjson.GetValue;
 
 import SystemMessage;
 
-import NlohmannJsonDeclaration;
-import ContainerChinaStock;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
 import SystemData;
-import Simdjson.GetValue;
-import Container.Stock.ChinaStock;
+import FireBirdLib.Accessory.Simdjson.GetValue;
 
 using namespace concurrencpp;
 using namespace simdjson;

@@ -1,11 +1,11 @@
 module;
 
-export module DataSource.TengxunDayLine;
+export module FireBirdLib.DataSource.TengxunDayLine;
 
-import DataSource;
-import WebData;
-import Product;
-import Stock.ChinaStock;
+import FireBirdLib.DataSource;
+import FireBirdLib.WebData;
+import FireBirdLib.Product;
+import FireBirdLib.Stock.ChinaStock;
 
 import std;
 using std::vector;
