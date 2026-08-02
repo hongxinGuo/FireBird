@@ -21,7 +21,7 @@ import FireBirdLib.Product.TengxunDayLine;
 import FireBirdLib.Market.ChinaMarket;
 import FireBirdLib.Container.Stock.ChinaStock;
 import FireBirdLib.DataSource.EastmoneyDayLine;
-import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.SpdlogAssert;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;

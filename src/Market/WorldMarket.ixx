@@ -4,12 +4,12 @@ module;
 
 export module FireBirdLib.Market.WorldMarket;
 
-import FireBirdLib.Market;
+export import FireBirdLib.Market;
 
-import WebSocket.TiingoIEX;
-import WebSocket.Finnhub;
-import WebSocket.TiingoIEX;
-import WebSocket.Finnhub;
+import FireBirdLib.WebSocket.TiingoIEX;
+import FireBirdLib.WebSocket.Finnhub;
+import FireBirdLib.WebSocket.TiingoIEX;
+import FireBirdLib.WebSocket.Finnhub;
 
 import FireBirdLib.Type.MarketStatus;
 import FireBirdLib.Type.MarketHoliday;

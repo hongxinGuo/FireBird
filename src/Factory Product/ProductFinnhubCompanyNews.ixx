@@ -8,7 +8,7 @@ module;
 
 export module FireBirdLib.Product.Finnhub.CompanyNews;
 
-import FireBirdLib.Product.Finnhub;
+export import FireBirdLib.Product.Finnhub;
 import FireBirdLib.Type.FinnhubCompanyNews;
 import FireBirdLib.WebData;
 

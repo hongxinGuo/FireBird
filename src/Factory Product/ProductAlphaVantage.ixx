@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Product.AlphaVantage;
 
-import FireBirdLib.Product;
+export import FireBirdLib.Product;
 
 import std;
 using std::string;

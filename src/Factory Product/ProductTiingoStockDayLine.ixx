@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Product.Tiingo.StockDayLine;
 
-import FireBirdLib.Product.Tiingo;
+export import FireBirdLib.Product.Tiingo;
 import FireBirdLib.WebData;
 import FireBirdLib.HistoryCandle.TiingoCandleLine;
 
@@ -14,7 +14,7 @@ using std::shared_ptr;
 
 
 export {
-	constexpr int needMoreDayLineData_ = 10 // 申请日线数据时，总是多申请一天的数据，以便使用前日收盘价作为昨收。
+	constexpr int needMoreDayLineData_ = 10; // 申请日线数据时，总是多申请一天的数据，以便使用前日收盘价作为昨收。
 	class CProductTiingoStockDayLine final : public CProductTiingo {
 	public:
 		CProductTiingoStockDayLine();

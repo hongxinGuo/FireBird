@@ -17,9 +17,9 @@ import FireBirdLib.Thread;
 import FireBirdLib.WebData;
 
 import FireBirdLib.Accessory.InfoReport;
-import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.SpdlogAssert;
 import FireBirdLib.SystemConfiguration;
-import FireBirdLib.DataSource.InternetOption;
+import FireBirdLib.InternetOption;
 
 import std;
 using std::make_shared;

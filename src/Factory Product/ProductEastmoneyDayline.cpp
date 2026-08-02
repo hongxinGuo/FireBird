@@ -13,7 +13,7 @@ import FireBirdLib.DataSource.EastmoneyDayLine;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.WebData;
 import FireBirdLib.HistoryCandle.DayLine;
-import FireBirdLib.WebData.DayLine;
+import FireBirdLib.DayLineWebData;
 
 import FireBirdLib.SystemData;
 

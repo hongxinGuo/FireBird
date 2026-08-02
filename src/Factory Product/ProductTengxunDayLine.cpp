@@ -7,7 +7,7 @@ import FireBirdLib.Market.ChinaMarket;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.SystemData;
 import FireBirdLib.DataSource.TengxunDayLine;
-import FireBirdLib.WebData.DayLine;
+import FireBirdLib.DayLineWebData;
 import FireBirdLib.HistoryCandle.DayLine;
 
 using std::make_shared;

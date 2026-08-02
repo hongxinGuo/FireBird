@@ -1,5 +1,4 @@
 module;
-
 #include <afx.h>
 
 export module FireBirdLib.Stock;

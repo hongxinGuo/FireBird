@@ -23,7 +23,7 @@ import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.ContainerStockExchange;
 import FireBirdLib.Product;
 
-import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.SpdlogAssert;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;
 import FireBirdLib.Market.WorldMarket;

@@ -3,7 +3,7 @@ module;
 
 export module FireBirdLib.WebSocket.Finnhub;
 
-import FireBirdLib.WebSocket;
+export import FireBirdLib.WebSocket;
 
 import std;
 using std::string;

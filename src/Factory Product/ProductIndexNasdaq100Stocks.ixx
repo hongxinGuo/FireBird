@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Product.IndexNasdaq100Stocks;
 
-import FireBirdLib.Product;
+export import FireBirdLib.Product;
 import FireBirdLib.WebData;
 
 import std;

@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Product.Finnhub.CompanyInsiderSentiment;
 
-import FireBirdLib.Product.Finnhub;
+export import FireBirdLib.Product.Finnhub;
 import FireBirdLib.WebData;
 import FireBirdLib.Type.InsiderSentiment;
 

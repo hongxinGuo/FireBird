@@ -16,7 +16,7 @@ import FireBirdLib.Container.Stock.TiingoSymbol;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.TiingoStock;
 
-import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.SpdlogAssert;
 import FireBirdLib.InaccessibleSymbol;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Factory.Tiingo;

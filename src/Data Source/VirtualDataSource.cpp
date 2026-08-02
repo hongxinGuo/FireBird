@@ -11,7 +11,7 @@ module;
 module FireBirdLib.DataSource;
 
 import FireBirdLib.Log;
-import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.SpdlogAssert;
 import FireBirdLib.Product;
 import FireBirdLib.DataSource.InquireEngine;
 import FireBirdLib.SystemConfiguration;

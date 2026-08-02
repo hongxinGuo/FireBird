@@ -2,29 +2,31 @@ module;
 
 export module FireBirdLib.Type.SICIndustry;
 
-import std;
+export import std;
 using std::string;
 using std::vector;
 using std::shared_ptr;
 
-class CSICIndustry final {
-public:
-	CSICIndustry();
-	CSICIndustry(const CSICIndustry&) = delete;
-	CSICIndustry& operator=(const CSICIndustry&) = delete;
-	CSICIndustry(const CSICIndustry&&) noexcept = delete;
-	CSICIndustry& operator=(const CSICIndustry&&) noexcept = delete;
-	~CSICIndustry() = default;
+export {
+	class CSICIndustry final {
+	public:
+		CSICIndustry();
+		CSICIndustry(const CSICIndustry&) = delete;
+		CSICIndustry& operator=(const CSICIndustry&) = delete;
+		CSICIndustry(const CSICIndustry&&) noexcept = delete;
+		CSICIndustry& operator=(const CSICIndustry&&) noexcept = delete;
+		~CSICIndustry() = default;
 
-	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
-	bool IsUpdated() const noexcept { return m_fUpdated; }
+		void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
+		bool IsUpdated() const noexcept { return m_fUpdated; }
 
-public:
-	long m_lCode;
-	string m_strIndustry;
-	string m_strSector;
+	public:
+		long m_lCode;
+		string m_strIndustry;
+		string m_strSector;
 
-	bool m_fUpdated;
-};
+		bool m_fUpdated;
+	};
 
-using CSICIndustryPtr = shared_ptr<CSICIndustry>;
+	using CSICIndustryPtr = shared_ptr<CSICIndustry>;
+}

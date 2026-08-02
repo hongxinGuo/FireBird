@@ -2,12 +2,13 @@ module;
 
 export module FireBirdLib.DataSource.AlphaVantage;
 
-import FireBirdLib.DataSource;
+export import FireBirdLib.DataSource;
 import FireBirdLib.WebData;
 import FireBirdLib.Factory.AlphaVantage;
 
 import std;
 using std::unique_ptr;
+using std::shared_ptr;
 using std::chrono::local_seconds;
 
 export {

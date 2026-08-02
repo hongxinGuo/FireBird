@@ -1,6 +1,6 @@
 module;
 
-module FireBirdLib.WebData.DayLine;
+module FireBirdLib.DayLineWebData;
 
 import FireBirdLib.Market.ChinaMarket;
 import FireBirdLib.WebData;

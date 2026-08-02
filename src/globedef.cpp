@@ -21,7 +21,7 @@ import FireBirdLib.SystemMessage;
 import FireBirdLib.MarketTask;
 
 import FireBirdLib.WebData;
-import FireBirdLib.WebData.DayLine;
+import FireBirdLib.DayLineWebData;
 
 import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.InaccessibleSymbol;

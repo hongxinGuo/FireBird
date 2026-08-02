@@ -7,12 +7,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-
 #include "IXWebSocketMessage.h"
 export module FireBirdLib.WebSocket.TiingoForex;
 
-
-import FireBirdLib.WebSocket;
+export import FireBirdLib.WebSocket;
 
 import std;
 using std::string;

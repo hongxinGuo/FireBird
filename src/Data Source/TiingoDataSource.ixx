@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.Tiingo;
 
-import FireBirdLib.DataSource;
+export import FireBirdLib.DataSource;
 import FireBirdLib.WebData;
 import FireBirdLib.Factory.Tiingo;
 

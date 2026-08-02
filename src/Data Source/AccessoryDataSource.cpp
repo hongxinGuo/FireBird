@@ -5,9 +5,12 @@ module FireBirdLib.DataSource.Accessory;
 import FireBirdLib.Factory.Accessory;
 import FireBirdLib.Product;
 import FireBirdLib.FinnhubInquiryType;
-import FireBirdLib.Accessory.SpdlogAssert;
-import SystemConfiguration;
+import FireBirdLib.SpdlogAssert;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Market.WorldMarket;
+
+import std;
+using std::chrono::local_seconds;
 
 CAccessoryDataSource::CAccessoryDataSource() {
 	m_pAccessoryFactory = std::make_unique<CAccessoryFactory>();
@@ -36,16 +39,13 @@ bool CAccessoryDataSource::GenerateInquiryMessage(const local_seconds& lCurrentT
 
 	m_PrevInquireTimePoint = llTickCount;
 
-	SPDLOG_ASSERT(!IsInquiring());
 
 	if (GenerateIndexNasdaq100Stocks()) return true;
 
-	SPDLOG_ASSERT(!IsInquiring());
 	return false;
 }
 
 bool CAccessoryDataSource::GenerateIndexNasdaq100Stocks() {
-	SPDLOG_ASSERT(!IsInquiring());
 	if (IsUpdateIndexNasdaq100Stocks()) {
 		const CVirtualWebProductPtr p = m_pAccessoryFactory->CreateProduct(gl_pWorldMarket, ACCESSORY_INDEX_NASDAQ100_STOCKS_);
 		StoreInquiry(p);

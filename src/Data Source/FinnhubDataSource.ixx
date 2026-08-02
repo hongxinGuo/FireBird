@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.Finnhub;
 
-import FireBirdLib.DataSource;
+export import FireBirdLib.DataSource;
 import FireBirdLib.WebData;
 import FireBirdLib.Factory.Finnhub;
 

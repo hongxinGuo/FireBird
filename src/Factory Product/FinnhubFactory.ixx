@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Factory.Finnhub;
 
-import FireBirdLib.Factory;
+export import FireBirdLib.Factory;
 import FireBirdLib.Market;
 import FireBirdLib.Product;
 

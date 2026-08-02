@@ -2,18 +2,17 @@ module;
 
 export module FireBirdLib.Stock.FinnhubStock;
 
-import FireBirdLib.Stock;
+export import FireBirdLib.Stock;
 import FireBirdLib.Container.HistoryCandle.FinnhubStockDayLine;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 import FireBirdLib.Type.FinnhubCompanyNews;
 import FireBirdLib.EPSSurprise;
-import FireBirdLib.SECFiling;
 import FireBirdLib.Type.InsiderTransaction;
 import FireBirdLib.Type.InsiderSentiment;
 import FireBirdLib.HistoryCandle.DayLine;
+import FireBirdLib.Type.SECFiling;
 
 import std;
-import FireBirdLib.Type.SECFiling;
 using std::chrono::weekday;
 using std::chrono::sys_seconds;
 using std::chrono::local_days;

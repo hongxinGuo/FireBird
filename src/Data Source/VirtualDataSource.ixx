@@ -3,8 +3,8 @@ module;
 
 export module FireBirdLib.DataSource;
 
-import FireBirdLib.DataSource.InternetOption;
-import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.InternetOption;
+import FireBirdLib.SpdlogAssert;
 import FireBirdLib.WebData;
 import FireBirdLib.Product;
 

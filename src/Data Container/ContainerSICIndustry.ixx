@@ -5,6 +5,7 @@ export module FireBireLib.ContainerSICIndustry;
 import FireBirdLib.Type.SICIndustry;
 
 import std;
+using std::shared_ptr;
 using std::vector;
 using std::map;
 

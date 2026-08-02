@@ -3,7 +3,7 @@ module;
 
 export module FireBirdLib.DataSource.InquireEngine;
 
-import FireBirdLib.DataSource.InternetOption;
+import FireBirdLib.InternetOption;
 
 class CWebData;
 

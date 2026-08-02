@@ -1,4 +1,5 @@
 module;
+#include <afx.h>
 
 module FireBirdLib.DataSource.SinaRT;
 import FireBirdLib.Product.SinaRT;
@@ -8,7 +9,6 @@ import FireBirdLib.SystemConfiguration;
 import FireBirdLib.WebData;
 
 import std;
-#include <afx.h>
 using std::make_shared;
 using namespace std;
 

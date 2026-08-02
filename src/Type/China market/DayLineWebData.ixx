@@ -1,6 +1,6 @@
 module;
 
-export module FireBirdLib.WebData.DayLine;
+export module FireBirdLib.DayLineWebData;
 
 import FireBirdLib.HistoryCandle.DayLine;
 

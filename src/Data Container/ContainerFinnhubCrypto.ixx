@@ -2,12 +2,12 @@ module;
 
 export module FireBirdLib.Container.Stock.FinnhubCrypto;
 
-import FireBirdLib.Container.Stock;
+export import FireBirdLib.Container.Stock;
 
 import FireBirdLib.Stock.FinnhubCrypto;
+import FireBirdLib.Container.Stock;
 
 import std;
-import FireBirdLib.Container.Stock;
 using std::string;
 using std::shared_ptr;
 

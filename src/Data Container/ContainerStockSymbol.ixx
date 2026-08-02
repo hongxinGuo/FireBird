@@ -2,8 +2,8 @@ module;
 
 export module FireBirdLib.Container.StockSymbol;
 
+export import FireBirdLib.Container;
 import FireBirdLib.StockSection;
-import FireBirdLib.Container;
 
 import std;
 using std::unordered_map;

@@ -23,4 +23,4 @@ export {
 	};
 
 	using CFinnhubCryptoDayLinePtr = shared_ptr<CProductFinnhubCryptoDayLine>;
-}}
+}

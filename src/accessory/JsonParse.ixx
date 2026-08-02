@@ -3,7 +3,7 @@ module;
 export module FireBirdLib.Accessory.JsonParse;
 
 
-import FireBirdLib.WebData.DayLine;
+import FireBirdLib.DayLineWebData;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 import FireBirdLib.WebData;
 import FireBirdLib.HistoryCandle.DayLine;

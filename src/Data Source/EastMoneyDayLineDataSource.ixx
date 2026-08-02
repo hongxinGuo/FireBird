@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.EastmoneyDayLine;
 
-import FireBirdLib.DataSource;
+export import FireBirdLib.DataSource;
 import FireBirdLib.WebData;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.ChinaStock;
@@ -11,6 +11,9 @@ import std;
 using std::string;
 using std::shared_ptr;
 using std::vector;
+using std::chrono::local_seconds;
+using std::chrono::time_point;
+using std::chrono::steady_clock;
 
 export {
 	class CEastmoneyDayLineDataSource : public CVirtualDataSource {

@@ -23,7 +23,7 @@ import FireBirdLib.DataSource.SinaRT;
 import FireBirdLib.DataSource.TengxunDayLine;
 import FireBirdLib.DataSource.TengxunRT;
 
-import FireBirdLib.WebData.DayLine;
+import FireBirdLib.DayLineWebData;
 import FireBirdLib.Stock;
 
 import FireBirdLib.Container.Stock.ChinaStock;

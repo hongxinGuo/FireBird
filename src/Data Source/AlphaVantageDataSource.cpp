@@ -1,6 +1,7 @@
 module;
+#define NOMINMAX
 #include <afx.h>
-
+#include"sqlpp23/sqlpp23.h"
 module FireBirdLib.DataSource.AlphaVantage;
 
 import FireBirdLib.Container.Stock.TiingoStock;
@@ -9,13 +10,17 @@ import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Factory.AlphaVantage;
-
 import FireBirdLib.Container.Stock.FinnhubStock;
-import FireBirdLib.Stock.TiingoStock;
 
-import FireBirdLib.Accessory.SpdlogAssert;
+import FireBirdLib.SpdlogAssert;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.SystemMessage;
+
+using namespace sqlpp;
+
+import std;
+using std::make_unique;
+using std::chrono::local_seconds;
 
 namespace {
 	auto s_setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
@@ -46,11 +51,11 @@ bool CAlphaVantageDataSource::GenerateInquiryMessage(const local_seconds& lCurre
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请Alpha Vantage各数据。
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketAlphaVantageInquiryTime())) return false;
 	m_PrevInquireTimePoint = llTickCount;
-	SPDLOG_ASSERT(!IsInquiring());
+	//SPDLOG_ASSERT(!IsInquiring());//Todo: 无法编译
 	if (GenerateStockSplit()) return true;
 	if (GenerateStockDayLine()) return true;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	//SPDLOG_ASSERT(!IsInquiring());
 	if (!m_fAlphaVantageDataInquiryFinished) {
 		gl_systemMessage.PushInformationMessage("Alpha Vantage data inquiry finished");
 		gl_systemMessage.SetCurrentAlphaVantageFunction("finished");

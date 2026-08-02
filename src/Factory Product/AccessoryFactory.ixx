@@ -2,8 +2,8 @@ module;
 
 export module FireBirdLib.Factory.Accessory;
 
+export import FireBirdLib.Factory;
 import FireBirdLib.Market;
-import FireBirdLib.Factory;
 import FireBirdLib.Product;
 
 import std;

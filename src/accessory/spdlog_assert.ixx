@@ -1,9 +1,10 @@
 module;
 
 #include"spdlog/spdlog.h"
-#include <source_location>
 
-export module FireBirdLib.Accessory.SpdlogAssert;
+export module FireBirdLib.SpdlogAssert;
+
+import std;
 
 export {
 #ifdef _DEBUG

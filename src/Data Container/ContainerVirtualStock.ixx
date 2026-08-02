@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Container.Stock;
 
-import FireBirdLib.Container;
+export import FireBirdLib.Container;
 import FireBirdLib.Stock;
 
 import std;

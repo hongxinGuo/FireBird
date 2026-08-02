@@ -2,8 +2,7 @@ module;
 
 export module FireBirdLib.Container.Stock.TiingoChosenStock;
 
-import FireBirdLib.Container.Stock;
-import FireBirdLib.Container.Stock;
+export import FireBirdLib.Container.Stock;
 
 import FireBirdLib.Stock.TiingoStock;
 
