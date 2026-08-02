@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Accessory.PriorityQueueWebRTData;
 
-import WebRTData;
+import FireBirdLib.WebRTData;
 
 import std;
 

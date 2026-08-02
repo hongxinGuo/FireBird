@@ -1,6 +1,6 @@
 module;
 
-export module SECFiling;
+export module FireBirdLib.Type.SECFiling;
 
 import std;
 using std::vector;

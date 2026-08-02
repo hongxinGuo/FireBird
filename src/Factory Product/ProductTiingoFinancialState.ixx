@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Tiingo.FinancialState;
 
 import FireBirdLib.Product.Tiingo;
 import FireBirdLib.WebData;
-import TiingoCompanyFinancialState;
+import FireBirdLib.Type.TiingoCompanyFinancialState;
 
 import std;
 using std::string;

@@ -4,14 +4,14 @@ module FireBirdLib.Market;
 
 import FireBirdLib.Accessory.TimeConvert;
 
-import ContainerStockExchange;
-import SystemConfiguration;
+import FireBirdLib.GlobeDef;
+import FireBirdLib.ContainerStockExchange;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.DataSource;
-import Type.StockExchange;
+import FireBirdLib.Type.StockExchange;
 
 import std;
 #include <afx.h>
-import GlobeDef;
 using std::chrono::time_point_cast;
 using std::chrono::milliseconds;
 using std::chrono::local_seconds;

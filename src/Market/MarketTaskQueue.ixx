@@ -1,8 +1,8 @@
 module;
 
-export module MarketTaskQueue;
+export module FireBirdLib.MarketTaskQueue;
 
-import MarketTask;
+import FireBirdLib.MarketTask;
 
 import std;
 using std::chrono::local_seconds;

@@ -2,11 +2,11 @@ module;
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
-module ContainerChosenCrypto;
+module FireBirdLib.Container.Stock.ChosenCrypto;
 
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubCrypto;
-import DatabaseConnector;
-import FinnhubCrypto;
+import FireBirdLib.Container.Stock.FinnhubCrypto;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.Stock.FinnhubCrypto;
 
 import std;
 using std::dynamic_pointer_cast;

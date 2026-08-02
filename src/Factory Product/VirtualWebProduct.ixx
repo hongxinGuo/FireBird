@@ -11,7 +11,7 @@ module;
 export module FireBirdLib.Product;
 
 import FireBirdLib.WebData;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import std;
 using std::string;

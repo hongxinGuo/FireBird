@@ -3,8 +3,8 @@ module;
 export module FireBirdLib.Container.HistoryCandle.ChinaStockWeekLine;
 
 import FireBirdLib.Container.HistoryCandle;
-import HistoryCandle;
-import HistoryCandle.WeekLine;
+import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.WeekLine;
 
 import std;
 using std::vector;

@@ -1,6 +1,6 @@
 module;
 
-export module Type.FinnhubCompanySymbolChange;
+export module FireBirdLib.Type.FinnhubCompanySymbolChange;
 
 import std;
 using std::shared_ptr;

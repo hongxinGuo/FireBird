@@ -2,8 +2,8 @@ module;
 
 #include <afx.h>
 
-module FinnhubInquiryType;
-import SystemConfiguration;
+module FireBirdLib.FinnhubInquiryType;
+import FireBirdLib.SystemConfiguration;
 
 import std;
 using std::string;

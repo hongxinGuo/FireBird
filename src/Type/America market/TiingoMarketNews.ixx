@@ -1,6 +1,6 @@
 module;
 
-export module TiingoMarketNews;
+export module FireBirdLib.Type.TiingoMarketNews;
 
 import std;
 using std::string;

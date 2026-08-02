@@ -1,6 +1,6 @@
 module;
 
-export module TiingoFundamentalDefinition;
+export module FireBirdLib.Type.TiingoFundamentalDefinition;
 
 import std;
 using std::vector;

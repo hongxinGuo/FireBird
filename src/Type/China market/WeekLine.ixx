@@ -1,8 +1,8 @@
 module;
 
-export module HistoryCandle.WeekLine;
+export module FireBirdLib.HistoryCandle.WeekLine;
 
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 
 import std;
 using std::shared_ptr;

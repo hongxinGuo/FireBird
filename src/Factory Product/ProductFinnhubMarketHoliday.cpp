@@ -1,15 +1,11 @@
-#include "pch.h"
+module;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include "ProductFinnhubMarketHoliday.h"
-#include "MarketHoliday.h"
-
-#include "ContainerStockExchange.h"
-#include "FireBirdLib.Accessory.TimeConvert.h"
-#include "FireBireLib.h"
-#include "WorldMarket.h"
+module FireBirdLib.Product.Finnhub.MarketHoliday;
+import FireBirdLib.ContainerStockExchange;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Accessory.TimeConvert;
 
 using namespace std;
 

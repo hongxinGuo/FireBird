@@ -1,6 +1,6 @@
 module;
 
-module StockSection;
+module FireBirdLib.StockSection;
 
 CStockSection::CStockSection() {
 	m_fActive = false;

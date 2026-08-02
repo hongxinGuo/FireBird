@@ -2,7 +2,7 @@ module;
 
 module FireBirdLib.Stock;
 
-import StockSplit;
+import FireBirdLib.StockSplit;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Accessory.NlohmannJson.GetValue;
 import FireBirdLib.Accessory.TimeConvert;

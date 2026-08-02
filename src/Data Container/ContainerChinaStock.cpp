@@ -2,7 +2,7 @@ module;
 #include "StockMarketSQLTable.h"
 #include"afx.h"
 #include"sqlpp23/sqlpp23.h"
-module FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+module FireBirdLib.Container.Stock.ChinaStock;
 
 using namespace sqlpp;
 
@@ -13,11 +13,12 @@ import FireBirdLib.Accessory.InfoReport;
 import FireBirdLib.Market.ChinaMarket;
 import FireBirdLib.Stock;
 import FireBirdLib.Stock.ChinaStock;
+import FireBirdLib.SystemMessage;
 
-import Thread;
+import FireBirdLib.Thread;
 
-import CountableSemaphore;
-import DatabaseConnector;
+import FireBirdLib.CountableSemaphore;
+import FireBirdLib.DatabaseConnector;
 import SystemMessage;
 
 import std;

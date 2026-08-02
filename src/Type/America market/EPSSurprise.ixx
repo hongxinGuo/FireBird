@@ -1,6 +1,6 @@
 module;
 
-export module EPSSurprise;
+export module FireBirdLib.EPSSurprise;
 
 import std;
 using std::string;

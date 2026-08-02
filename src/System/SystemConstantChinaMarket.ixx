@@ -1,6 +1,6 @@
 module;
 
-export module SystemConstantChinaMarket;
+export module FireBirdLib.SystemConstantChinaMarket;
 
 export {
 

@@ -1,19 +1,13 @@
-#include "pch.h"
+module;
 
-#include"SystemMessage.h"
-
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include"TiingoCrypto.h"
-#include "ProductTiingoCryptoSymbol.h"
-
-#include "ContainerTiingoCryptoSymbol.h"
-#include "SystemConfiguration.h"
-#include "TiingoDataSource.h"
-#include "FireBireLib.h"
-#include "WorldMarket.h"
-
+module FireBirdLib.Product.Tiingo.CryptoSymbol;
+import FireBirdLib.Container.Stock.TiingoCryptoSymbol;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Market.WorldMarket;
 using namespace std;
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {

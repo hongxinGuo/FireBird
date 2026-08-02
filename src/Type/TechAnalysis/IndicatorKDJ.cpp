@@ -1,7 +1,7 @@
 module;
 #include <afx.h>
 
-module IndicatorKDJ;
+module FireBirdLib.IndicatorKDJ;
 import  FireBirdLib.Container.HistoryCandle;
 
 

@@ -1,6 +1,6 @@
 module;
 
-module TiingoIEXTopOfBook;
+module FireBirdLib.Type.TiingoIEXTopOfBook;
 
 CTiingoIEXTopOfBook::CTiingoIEXTopOfBook() {
 }

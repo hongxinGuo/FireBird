@@ -5,8 +5,8 @@ module;
 export module FireBirdLib.Stock;
 
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
-import StockSplit;
-import HistoryCandle;
+import FireBirdLib.StockSplit;
+import FireBirdLib.HistoryCandle;
 import FireBirdLib.Container.HistoryCandle;
 
 import std;

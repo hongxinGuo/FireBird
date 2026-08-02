@@ -2,12 +2,12 @@ module;
 #include <limits>
 
 #include"afx.h"
-module IndicatorBoll;
+module FireBirdLib.IndicatorBoll;
 
 
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 import FireBirdLib.Container.HistoryCandle;
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
 import std;
 using namespace std;

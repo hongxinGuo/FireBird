@@ -1,6 +1,6 @@
 module;
 
-module MarketTask;
+module FireBirdLib.MarketTask;
 import FireBirdLib.Accessory.TimeConvert;
 
 import std;

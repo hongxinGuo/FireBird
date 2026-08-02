@@ -11,12 +11,14 @@ import WebSocket.Finnhub;
 import WebSocket.TiingoIEX;
 import WebSocket.Finnhub;
 
-import MarketStatus;
-import MarketHoliday;
+import FireBirdLib.Type.MarketStatus;
+import FireBirdLib.Type.MarketHoliday;
 
 import FireBirdLib.Stock.TiingoStock;
 
 import std;
+import FireBirdLib.WebSocket.TiingoIEX;
+import FireBirdLib.WebSocket.Finnhub;
 using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 using std::literals::chrono_literals::operator ""s;

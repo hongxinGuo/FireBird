@@ -1,8 +1,8 @@
 module;
 
-export module ContainerFinnhubEconomicCalendar;
+export module FireBirdLib.ContainerFinnhubEconomicCalendar;
 
-import Type.EconomicCalendar;
+import FireBirdLib.Type.EconomicCalendar;
 
 import std;
 using std::map;

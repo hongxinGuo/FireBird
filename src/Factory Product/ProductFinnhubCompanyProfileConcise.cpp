@@ -1,17 +1,15 @@
-#include "pch.h"
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+module;
 
-#include"worldMarket.h"
-#include "ContainerFinnhubStock.h"
+module FireBirdLib.Product.Finnhub.CompanyProfileConcise;
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.Stock.TiingoStock;
 
-#include "ProductFinnhubCompanyProfileConcise.h"
-
-#include "ContainerTiingoStock.h"
-#include "TiingoStock.h"
-#include"FinnhubStock.h"
-#include "FireBireLib.h"
+using std::string;
 
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile2?symbol=";

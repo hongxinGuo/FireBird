@@ -4,7 +4,7 @@ export module FireBirdLib.Container.HistoryCandle.TiingoStockMonthLine;
 
 import FireBirdLib.Container.HistoryCandle;
 
-import HistorCandle.TiingoCandleLine;
+import FireBirdLib.HistoryCandle.TiingoCandleLine;
 
 import std;
 using std::shared_ptr;

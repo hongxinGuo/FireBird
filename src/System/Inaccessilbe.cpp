@@ -1,6 +1,6 @@
 module;
 
-module Inaccessible;
+module FireBirdLib.Inaccessible;
 
 namespace {
 	std::string Test_gl_sFinnhubInaccessibleSymbol = R"(

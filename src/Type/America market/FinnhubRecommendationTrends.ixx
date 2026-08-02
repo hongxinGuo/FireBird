@@ -1,6 +1,6 @@
 module;
 
-export module Type.FinnhubRecommendationTrends;
+export module FireBirdLib.Type.FinnhubRecommendationTrends;
 
 import std;
 using std::string;

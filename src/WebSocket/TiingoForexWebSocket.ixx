@@ -9,10 +9,10 @@
 module;
 
 #include "IXWebSocketMessage.h"
-export module WebSocket.TiingoForex;
+export module FireBirdLib.WebSocket.TiingoForex;
 
 
-import WebSocket;
+import FireBirdLib.WebSocket;
 
 import std;
 using std::string;

@@ -1,9 +1,9 @@
 module;
 
 #include <afxwin.h>
-export module IndicatorBoll;
+export module FireBirdLib.IndicatorBoll;
 
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 import FireBirdLib.Container.HistoryCandle;
 
 import std;

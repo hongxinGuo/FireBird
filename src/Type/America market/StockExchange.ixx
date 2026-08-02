@@ -1,6 +1,6 @@
 module;
 
-export module Type.StockExchange;
+export module FireBirdLib.Type.StockExchange;
 
 import std;
 using std::chrono::local_seconds;

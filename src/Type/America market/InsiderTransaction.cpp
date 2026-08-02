@@ -1,6 +1,6 @@
 module;
 
-module InsiderTransaction;
+module FireBirdLib.Type.InsiderTransaction;
 
 CInsiderTransaction::CInsiderTransaction() {
 	m_strSymbol = " ";

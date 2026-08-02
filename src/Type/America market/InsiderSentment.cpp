@@ -1,6 +1,6 @@
 module;
 
-module InsiderSentiment;
+module FireBirdLib.Type.InsiderSentiment;
 
 CInsiderSentiment::CInsiderSentiment() {
 	m_strSymbol = " ";

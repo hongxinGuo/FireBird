@@ -14,11 +14,11 @@ module FireBirdLib.DataSource.EastmoneyDayLine;
 
 import FireBirdLib.Accessory.ChinaStockCodeConverter;
 import FireBirdLib.Product.EastmoneyDayLine;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 
 import FireBirdLib.Market.ChinaMarket;
-import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
-import SystemConfiguration;
+import FireBirdLib.Container.Stock.ChinaStock;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Product;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;

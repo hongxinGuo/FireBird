@@ -10,8 +10,8 @@ module;
 
 export module FireBirdLib.Container.HistoryCandle;
 
-import HistoryCandle;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import std;
 using std::atomic_bool;

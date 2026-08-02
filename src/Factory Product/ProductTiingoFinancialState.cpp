@@ -1,16 +1,19 @@
-#include "pch.h"
+module;
+#include <map>
+#include <string>
 
-#include"TiingoStock.h"
-#include "ProductTiingoFinancialState.h"
+module FireBirdLib.Product.Tiingo.FinancialState;
 
-#include "ContainerTiingoStock.h"
-#include"simdjsonGetValue.h"
-#include "FireBireLib.h"
-#include "WorldMarket.h"
-#include"TiingoCompanyFinancialState.h"
-#include "FireBirdLib.Accessory.TimeConvert.h"
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Type.TiingoCompanyFinancialState;
+import FireBirdLib.Product;
 
 using namespace std;
+using std::map;
+using std::string;
 
 namespace {
 	map<string, int> s_mapItem{

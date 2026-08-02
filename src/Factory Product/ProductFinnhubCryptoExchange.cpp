@@ -1,15 +1,15 @@
-#include "pch.h"
+module;
+#include <afx.h>
+module FireBirdLib.Product.Finnhub.CryptoExchange;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-#include"SystemMessage.h"
+import FireBirdLib.ContainerFinnhubCryptoExchange;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Finnhub;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-#include "ProductFinnhubCryptoExchange.h"
-
-#include "ContainerFinnhubCryptoExchange.h"
-#include "FinnhubDataSource.h"
-#include "FireBireLib.h"
-
+using std::string;
 using std::make_shared;
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {

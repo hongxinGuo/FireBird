@@ -1,20 +1,17 @@
-#include "pch.h"
-
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-#include"WorldMarket.h"
-#include "ProductTiingoStockDayLine.h"
-#include"TiingoCandleLine.h"
-
-#include "ContainerTiingoStock.h"
-#include"TiingoStock.h"
-#include "ContainerTiingoSymbol.h"
-#include "SystemMessage.h"
-#include "FireBireLib.h"
-#include"ContainerTiingoStockDayLine.h"
-#include "FireBirdLib.Accessory.TimeConvert.h"
+module;
+module FireBirdLib.Product.Tiingo.StockDayLine;
+#include <afx.h>
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Container.Stock.TiingoSymbol;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Accessory.JsonParse;
 
 using namespace std;
+using std::string;
 
 string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, chrono::local_days lStartDate, chrono::local_days lCurrentDate) {
 	string sParam = std::format("{}/prices?&startDate={:%F}&endDate={:%F}", strSymbol, lStartDate, lCurrentDate); // Note: 总是多申请一天的日线数据

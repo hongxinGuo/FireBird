@@ -1,6 +1,6 @@
 module;
 
-module EPSSurprise;
+module FireBirdLib.EPSSurprise;
 
 CEPSSurprise::CEPSSurprise() {
 	m_strSymbol = " ";

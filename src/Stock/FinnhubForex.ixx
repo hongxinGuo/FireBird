@@ -4,7 +4,7 @@ export module FireBirdLib.Stock.FinnhubForex;
 
 import FireBirdLib.Stock;
 import FireBirdLib.Container.HistoryCandle.ForexDayLine;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import std;
 using std::unique_ptr;

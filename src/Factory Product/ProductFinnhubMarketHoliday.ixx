@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Finnhub.MarketHoliday;
 
 import FireBirdLib.Product.Finnhub;
 import FireBirdLib.WebData;
-import MarketHoliday;
+import FireBirdLib.Type.MarketHoliday;
 
 import std;
 using std::string;

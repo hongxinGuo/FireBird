@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Finnhub.CompanyInsiderSentiment;
 
 import FireBirdLib.Product.Finnhub;
 import FireBirdLib.WebData;
-import InsiderSentiment;
+import FireBirdLib.Type.InsiderSentiment;
 
 import std;
 using std::string;

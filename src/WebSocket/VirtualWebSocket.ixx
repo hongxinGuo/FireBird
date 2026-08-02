@@ -13,7 +13,7 @@ module;
 #include <ixwebsocket/IXWebSocket.h>
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
-export module WebSocket;
+export module FireBirdLib.WebSocket;
 
 using namespace moodycamel;
 

@@ -1,6 +1,6 @@
 module;
 
-module HistoryCandle.DayLine;
+module FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.Stock.ChinaStock;
 
 namespace {

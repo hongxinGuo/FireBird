@@ -8,19 +8,18 @@ module;
 #include <afxinet.h>
 #include <WinInet.h>
 
+module FireBirdLib.DataSource.InquireEngine;
 
-module InquireEngine;
-
-import SystemMessage;
-import GlobeDef;
-import CharSetTransfer;
-import Thread;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.GlobeDef;
+import FireBirdLib.CharSetTransfer;
+import FireBirdLib.Thread;
 import FireBirdLib.WebData;
 
 import FireBirdLib.Accessory.InfoReport;
 import FireBirdLib.Accessory.SpdlogAssert;
-import SystemConfiguration;
-import InternetOption;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.DataSource.InternetOption;
 
 import std;
 using std::make_shared;

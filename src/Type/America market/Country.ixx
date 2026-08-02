@@ -1,6 +1,6 @@
 module;
 
-export module Country;
+export module FireBirdLib.Country;
 
 import std;
 using std::vector;

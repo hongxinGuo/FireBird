@@ -13,7 +13,7 @@ module;
 
 #include"concurrencpp/concurrencpp.h"
 
-export module Thread;
+export module FireBirdLib.Thread;
 
 using namespace concurrencpp;
 

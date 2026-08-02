@@ -1,16 +1,13 @@
-#include "pch.h"
+module;
+#include "simdjson.h"
 
-#include"WorldMarket.h"
-#include"FinnhubStock.h"
-#include "ContainerFinnhubStock.h"
-#include"SECFiling.h"
+module FireBirdLib.Product.Finnhub.SECFilings;
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
 
-#include "ProductFinnhubSECFilings.h"
-
-#include"jsonParse.h"
-#include"simdjsonGetValue.h"
-#include "FireBireLib.h"
-
+using namespace simdjson;
 using namespace std;
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {

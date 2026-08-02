@@ -5,17 +5,17 @@ module;
 
 module FireBirdLib.Product.EastmoneyDayLine;
 
-import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
-import HistoryCandle.DayLine;
+import FireBirdLib.Container.Stock.ChinaStock;
+import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 import FireBirdLib.DataSource.EastmoneyDayLine;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.WebData;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.WebData.DayLine;
 
-import SystemData;
+import FireBirdLib.SystemData;
 
 using namespace simdjson;
 

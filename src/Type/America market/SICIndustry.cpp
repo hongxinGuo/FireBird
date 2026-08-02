@@ -1,6 +1,6 @@
 module;
 
-module SICIndustry;
+module FireBirdLib.Type.SICIndustry;
 
 CSICIndustry::CSICIndustry() {
 	m_lCode = 0;

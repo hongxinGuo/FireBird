@@ -2,7 +2,7 @@ module;
 
 export module ContainerTiingoFundamentalDefinition;
 
-import TiingoFundamentalDefinition;
+import FireBirdLib.Type.TiingoFundamentalDefinition;
 
 import std;
 using std::unordered_map;

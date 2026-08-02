@@ -1,8 +1,8 @@
 module;
 
-export module FireBirdLib.Container.FireBirdLib.Stock.ChosenForex;
+export module FireBirdLib.Container.Stock.ChosenForex;
 
-import FireBirdLib.Container.FireBirdLib.Stock;
+import FireBirdLib.Container.Stock;
 
 import FireBirdLib.Stock.FinnhubForex;
 

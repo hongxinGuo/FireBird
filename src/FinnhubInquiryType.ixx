@@ -1,6 +1,6 @@
 module;
 
-export module FinnhubInquiryType;
+export module FireBirdLib.FinnhubInquiryType;
 
 import std;
 using std::string;

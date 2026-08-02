@@ -1,6 +1,6 @@
 module;
 
-export module Type.EconomicCalendar;
+export module FireBirdLib.Type.EconomicCalendar;
 
 import std;
 using std::string;

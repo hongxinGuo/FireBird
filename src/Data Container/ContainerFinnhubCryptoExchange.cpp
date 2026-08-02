@@ -2,9 +2,9 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module ContainerFinnhubCryptoExchange;
+module FireBirdLib.ContainerFinnhubCryptoExchange;
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();

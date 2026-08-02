@@ -8,11 +8,11 @@ module FireBirdLib.Stock.ChinaStock;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Accessory.ChinaStockCodeConverter;
 import FireBirdLib.Market.ChinaMarket;
-import SystemMessage;
-import WebRTData;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.WebRTData;
 
-import DatabaseConnector;
-import HistoryCandle.DayLine;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import std;
 using std::chrono::days;

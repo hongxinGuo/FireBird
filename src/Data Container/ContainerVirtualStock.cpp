@@ -1,6 +1,6 @@
 module;
 
-module FireBirdLib.Container.FireBirdLib.Stock;
+module FireBirdLib.Container.Stock;
 
 import FireBirdLib.Stock;
 

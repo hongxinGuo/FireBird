@@ -1145,5 +1145,8 @@
     <ClCompile Include="..\src\FinnhubInquiryType.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Type\America market\SICIndustry.ixx">
+      <Filter>头文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 module;
 
-module HistoryCandle.TiingoCandleLine;
+module FireBirdLib.HistoryCandle.TiingoCandleLine;
 
 import FireBirdLib.Stock.TiingoStock;
 

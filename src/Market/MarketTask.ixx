@@ -2,7 +2,7 @@ module;
 
 #include <concurrencpp/timers/timer.h>
 
-export module MarketTask;
+export module FireBirdLib.MarketTask;
 
 import std;
 using std::chrono::local_seconds;

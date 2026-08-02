@@ -5,10 +5,10 @@ module FireBirdLib.Product.TengxunDayLine;
 import FireBirdLib.Market.ChinaMarket;
 
 import FireBirdLib.Accessory.JsonParse;
-import SystemData;
+import FireBirdLib.SystemData;
 import FireBirdLib.DataSource.TengxunDayLine;
 import FireBirdLib.WebData.DayLine;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 using std::make_shared;
 

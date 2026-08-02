@@ -1,7 +1,7 @@
 module;
 
-module FinnhubCompanyNews;
-import GlobeDef;
+module FireBirdLib.Type.FinnhubCompanyNews;
+import FireBirdLib.GlobeDef;
 
 CFinnhubCompanyNews::CFinnhubCompanyNews() {
 	Reset();

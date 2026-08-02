@@ -3,8 +3,8 @@ module;
 export module FireBirdLib.Product.Tiingo.StockDailyMeta;
 
 import FireBirdLib.Product.Tiingo;
-import TiingoStockDailyMeta;
 import FireBirdLib.WebData;
+import FireBirdLib.Type.TiingoStockDailyMeta;
 
 import std;
 using std::string;

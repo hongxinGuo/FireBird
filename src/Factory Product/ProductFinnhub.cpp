@@ -1,15 +1,13 @@
-#include"pch.h"
-
-#include"ProductFinnhub.h"
-
-#include"InaccessibleSymbol.h"
 module;
 
-module FireBirdLib.FireBirdLib.Product.Finnhub;
+module FireBirdLib.Product.Finnhub;
+import FireBirdLib.InaccessibleSymbol;
+import FireBirdLib.Inaccessible;
 
 import std;
 using std::make_shared;
 using std::exception;
+using std::out_of_range;
 
 void CProductFinnhub::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
 	for (const auto& pWebData : *pvWebData) {

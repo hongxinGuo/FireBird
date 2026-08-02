@@ -6,21 +6,23 @@
 ///
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"SystemMessage.h"
+module FireBirdLib.Product.Finnhub.CompanySymbolChange;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Product;
+import FireBirdLib.Type.FinnhubCompanySymbolChange;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Finnhub;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
 
-#include "ProductFinnhubCompanySymbolChange.h"
-#include"Type.FinnhubCompanySymbolChange.h"
-
-#include "FinnhubDataSource.h"
-#include "SystemConfiguration.h"
-#include "FireBireLib.h"
-
+import std;
 using std::make_shared;
+using std::string;
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?from=2020-01-01&to=2026-12-31&";

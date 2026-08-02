@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Accessory.NlohmannJson.GetValue;
 
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+export import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 import std;
 

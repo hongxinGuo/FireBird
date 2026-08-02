@@ -6,7 +6,8 @@ export module FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.WebData.DayLine;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 import FireBirdLib.WebData;
-import DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import std;
 using std::string;

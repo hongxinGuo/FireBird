@@ -3,9 +3,8 @@ module;
 export module FireBirdLib.Product.Finnhub.Type.EconomicCalendar;
 
 import FireBirdLib.Product.Finnhub;
-
 import FireBirdLib.WebData;
-import Type.EconomicCalendar;
+import FireBirdLib.Type.EconomicCalendar;
 
 import std;
 using std::string;

@@ -11,7 +11,7 @@ module;
 
 #include <afx.h>
 #include <intsafe.h>
-export module HistoryCandle;
+export module FireBirdLib.HistoryCandle;
 
 import std;
 using std::string;

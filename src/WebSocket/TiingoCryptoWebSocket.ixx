@@ -9,9 +9,9 @@
 module;
 #include "IXWebSocketMessage.h"
 
-export module WebSocket.TiingoCrypto;
+export module FireBirdLib.WebSocket.TiingoCrypto;
 
-import WebSocket;
+import FireBirdLib.WebSocket;
 
 import std;
 using std::vector;

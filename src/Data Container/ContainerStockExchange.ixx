@@ -1,8 +1,8 @@
 module;
 
-export module ContainerStockExchange;
+export module FireBirdLib.ContainerStockExchange;
 
-import Type.StockExchange;
+import FireBirdLib.Type.StockExchange;
 
 import std;
 using std::string;

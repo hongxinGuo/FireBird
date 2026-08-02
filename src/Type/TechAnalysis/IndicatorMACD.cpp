@@ -3,7 +3,7 @@ module;
 #include <limits>
 
 
-module IndicatorMACD;
+module FireBirdLib.IndicatorMACD;
 import FireBirdLib.Container.HistoryCandle;
 
 import std;

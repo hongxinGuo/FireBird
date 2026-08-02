@@ -1,8 +1,8 @@
 module;
 
-export module ContainerFinnhubCountry;
+export module FireBirdLib.ContainerFinnhubCountry;
 
-import Country;
+import FireBirdLib.Country;
 
 import std;
 using std::unordered_map;

@@ -2,9 +2,9 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module ContainerFinnhubEconomicCalendar;
+module FireBirdLib.ContainerFinnhubEconomicCalendar;
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();

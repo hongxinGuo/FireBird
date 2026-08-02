@@ -2,9 +2,9 @@ module;
 #include <stdafx.h>
 #include"OutputWnd.h"
 
-module SystemMessage;
+module FireBirdLib.SystemMessage;
 
-import SystemConfiguration;
+import FireBirdLib.SystemConfiguration;
 
 import std;
 using std::map;

@@ -1,14 +1,14 @@
 module;
 #include <afx.h>
 
-module WebSocket;
+module FireBirdLib.WebSocket;
 
-import FireBird.Log;
+import FireBirdLib.Log;
 import FireBirdLib.Accessory.SpdlogAssert;
-import SystemConfiguration;
-import SystemMessage;
-import Thread;
-import GlobeDef;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Thread;
+import FireBirdLib.GlobeDef;
 
 import std;
 using std::string;

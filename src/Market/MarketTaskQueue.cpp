@@ -1,7 +1,7 @@
 module;
 #include <afx.h>
 
-module MarketTaskQueue;
+module FireBirdLib.MarketTaskQueue;
 
 import std;
 using std::make_shared;

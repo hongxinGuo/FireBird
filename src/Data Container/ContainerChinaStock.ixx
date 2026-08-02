@@ -1,8 +1,8 @@
 module;
 
-export module FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+export module FireBirdLib.Container.Stock.ChinaStock;
 
-import FireBirdLib.Container.FireBirdLib.Stock;
+import FireBirdLib.Container.Stock;
 import FireBirdLib.Stock.ChinaStock;
 
 import std;

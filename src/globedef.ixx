@@ -1,6 +1,6 @@
 module;
 
-export module GlobeDef;
+export module FireBirdLib.GlobeDef;
 
 import std;
 using std::shared_ptr;

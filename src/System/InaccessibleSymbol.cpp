@@ -1,10 +1,10 @@
 module;
 
-module InaccessibleSymbol;
+module FireBirdLib.InaccessibleSymbol;
 
-import FinnhubInquiryType;
+import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.Accessory.TimeConvert;
-import SystemConfiguration;
+import FireBirdLib.SystemConfiguration;
 
 import std;
 using std::fstream;

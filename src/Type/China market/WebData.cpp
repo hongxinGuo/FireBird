@@ -1,10 +1,10 @@
 module;
 #include <afx.h>
 
-module FireBireLib;
+module FireBirdLib.WebData;
 
 import FireBirdLib.Accessory.JsonParse;
-import GlobeDef;
+import FireBirdLib.GlobeDef;
 
 import std;
 using std::string;

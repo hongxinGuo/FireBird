@@ -9,7 +9,7 @@ module;
 export module FireBirdLib.Product.Finnhub.CompanyNews;
 
 import FireBirdLib.Product.Finnhub;
-import FinnhubCompanyNews;
+import FireBirdLib.Type.FinnhubCompanyNews;
 import FireBirdLib.WebData;
 
 import std;

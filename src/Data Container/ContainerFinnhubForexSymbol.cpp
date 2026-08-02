@@ -2,10 +2,10 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module FireBirdLib.Container.FireBirdLib.Stock.FinnhubForexSymbol;
+module FireBirdLib.Container.Stock.FinnhubForexSymbol;
 import FireBirdLib.Stock.FinnhubForex;
 import FireBirdLib.Accessory.InfoReport;
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
 import std;
 using std::make_shared;

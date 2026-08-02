@@ -9,7 +9,7 @@ module;
 
 module FireBird.Initialization;
 
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 
 import FireBirdLib.DataSource.AlphaVantage;
 import FireBirdLib.DataSource.SinaRT;
@@ -21,22 +21,22 @@ import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.DataSource.Accessory;
 
 import FireBirdLib.Market.ChinaMarket;
-import InaccessibleSymbol;
-import FinnhubInquiryType;
+import FireBirdLib.InaccessibleSymbol;
+import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.Market.WorldMarket;
 
 import FireBirdLib.Accessory.Simdjson.GetValue;
-import Thread;
-import CharSetTransfer;
-import GlobeDef;
-import DatabaseConnector;
+import FireBirdLib.Thread;
+import FireBirdLib.CharSetTransfer;
+import FireBirdLib.GlobeDef;
+import FireBirdLib.DatabaseConnector;
 
-import WebSocket.Finnhub;
-import SystemConfiguration;
-import WebSocket.TiingoCrypto;
-import WebSocket.TiingoForex;
-import WebSocket.TiingoIEX;
-import FireBird.Log;
+import FireBirdLib.WebSocket.Finnhub;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.WebSocket.TiingoCrypto;
+import FireBirdLib.WebSocket.TiingoForex;
+import FireBirdLib.WebSocket.TiingoIEX;
+import FireBirdLib.Log;
 
 using namespace spdlog;
 

@@ -2,15 +2,15 @@ module;
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
-module FireBirdLib.Container.FireBirdLib.Stock.ChosenForex;
+module FireBirdLib.Container.Stock.ChosenForex;
 
 
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubForexSymbol;
-import DatabaseConnector;
+import FireBirdLib.Container.Stock.FinnhubForexSymbol;
 import FireBirdLib.Stock.FinnhubForex;
 
 import std;
-import FireBirdLib.Container.FireBirdLib.Stock.ChosenForex;
+import FireBirdLib.Container.Stock.ChosenForex;
+import FireBirdLib.DatabaseConnector;
 using std::dynamic_pointer_cast;
 using std::string;
 

@@ -1,6 +1,6 @@
 module;
 
-export module StockSection;
+export module FireBirdLib.StockSection;
 
 import std;
 using std::string;

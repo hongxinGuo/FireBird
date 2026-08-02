@@ -4,12 +4,12 @@ module;
 
 export module FireBirdLib.Stock.ChinaStock;
 
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 import FireBirdLib.Container.HistoryCandle;
 import FireBirdLib.Stock;
 import FireBirdLib.Container.HistoryCandle.ChinaStockDayLine;
-import WebRTData;
-import HistoryCandle.DayLine;
+import FireBirdLib.WebRTData;
+import FireBirdLib.HistoryCandle.DayLine;
 
 export constexpr auto CHINA_MARKET_BEGIN_DATE_ = 19900101;// 中国股票市场起始日
 

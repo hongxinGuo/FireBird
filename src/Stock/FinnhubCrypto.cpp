@@ -6,11 +6,11 @@ module FinnhubCrypto;
 
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Container.HistoryCandle.CryptoDayLine;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import FireBirdLib.Accessory.TimeConvert;
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 import FireBirdLib.Stock.FinnhubCrypto;
 
 import std;

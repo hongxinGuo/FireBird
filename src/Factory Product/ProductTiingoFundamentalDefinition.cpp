@@ -1,18 +1,17 @@
-#include "pch.h"
+module;
+#include "simdjson.h"
 
-#include"jsonParse.h"
+module ProductTiingoFundamentalDefinition;
+import ContainerTiingoFundamentalDefinition;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.SystemMessage;
 
-#include"TiingoFundamentalDefinition.h"
-#include "ProductTiingoFundamentalDefinition.h"
-
-#include "ContainerTiingoFundamentalDefinition.h"
-#include "TiingoDataSource.h"
-
-#include"simdjsonGetValue.h"
-#include "SystemMessage.h"
-#include "FireBireLib.h"
+using namespace simdjson;
 
 using std::make_shared;
+using std::string_view;
 
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/definitions?";
@@ -70,7 +69,7 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
-		ondemand::document doc = parser.iterate(jsonPadded).value();
+		simdjson::ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		int iCount = 0;
 		for (auto item : doc) {

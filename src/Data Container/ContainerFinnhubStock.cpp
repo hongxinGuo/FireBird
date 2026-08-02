@@ -9,13 +9,13 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
+module FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Accessory.JsonParse;
 
 
-import DatabaseConnector;
-import SystemConfiguration;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Stock;
 import FireBirdLib.Accessory.TimeConvert;

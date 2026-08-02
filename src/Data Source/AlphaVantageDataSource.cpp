@@ -3,19 +3,19 @@ module;
 
 module FireBirdLib.DataSource.AlphaVantage;
 
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
-import FinnhubInquiryType;
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Factory.AlphaVantage;
 
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.Stock.TiingoStock;
 
 import FireBirdLib.Accessory.SpdlogAssert;
-import SystemConfiguration;
-import SystemMessage;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
 
 namespace {
 	auto s_setIndex = [](auto& product, long pos) { product->SetIndex(pos); };

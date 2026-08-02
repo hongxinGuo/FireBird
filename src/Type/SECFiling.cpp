@@ -1,6 +1,6 @@
 module;
 
-module SECFiling;
+module FireBirdLib.Type.SECFiling;
 
 CSECFiling::CSECFiling() {
 	Reset();

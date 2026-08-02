@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Finnhub.CryptoDayLine;
 
 import FireBirdLib.Product.Finnhub;
 import FireBirdLib.WebData;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import std;
 using std::string;

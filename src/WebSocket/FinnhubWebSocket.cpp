@@ -4,27 +4,27 @@ module;
 #include"IXWebSocketSendInfo.h"
 #include"simdjson.h"
 
-module WebSocket.Finnhub;
+module FireBirdLib.WebSocket.Finnhub;
 using namespace simdjson;
 
-import SystemData;
-import SystemConfiguration;
-import SystemMessage;
+import FireBirdLib.SystemData;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
 
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Accessory.NlohmannJson.GetValue;
 import FireBirdLib.Accessory.NlohmannJson.Declaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 import FireBirdLib.DataSource.Finnhub;
-import MarketTask;
+import FireBirdLib.MarketTask;
 import FireBirdLib.Accessory.Simdjson.GetValue;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Accessory.Simdjson.GetValue;
 
 import std;
-import FireBird.Log;
-import GlobeDef;
+import FireBirdLib.Log;
+import FireBirdLib.GlobeDef;
 
 using std::make_shared;
 using std::atomic_bool;

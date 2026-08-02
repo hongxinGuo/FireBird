@@ -1,6 +1,6 @@
 module;
 
-export module ContainerFinnhubForexExchange;
+export module FireBirdLib.ContainerFinnhubForexExchange;
 
 import std;
 using std::unordered_map;

@@ -1,6 +1,6 @@
 module;
 
-export module InsiderSentiment;
+export module FireBirdLib.Type.InsiderSentiment;
 
 import std;
 using std::string;

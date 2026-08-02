@@ -3,9 +3,9 @@ module;
 #include <ATLComMem.h>
 module FireBirdLib.Accessory.InfoReport;
 
-import CharSetTransfer;
-import SystemMessage;
-import SystemPublicDeclaration;
+import FireBirdLib.CharSetTransfer;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.SystemPublicDeclaration;
 
 import std;
 using std::exception;

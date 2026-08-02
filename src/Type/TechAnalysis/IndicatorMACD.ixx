@@ -1,9 +1,11 @@
 module;
 
 #include <afxwin.h>
+#include <limits>
+
 #include"afx.h"
 
-export module IndicatorMACD;
+export module FireBirdLib.IndicatorMACD;
 
 import FireBirdLib.Container.HistoryCandle;
 

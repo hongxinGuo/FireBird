@@ -1,28 +1,28 @@
-#include "pch.h"
-
-#include"jsonParse.h"
-
-#include"TiingoStock.h"
-#include "ProductTiingoStockProfile.h"
-
-#include "TiingoDataSource.h"
-
-#include"simdjsonGetValue.h"
-#include "FireBirdLib.Accessory.TimeConvert.h"
-#include "FireBireLib.h"
-#include "WorldMarket.h"
-
+module;
 #include<sqlpp23/sqlpp23.h>
-
-#include "ContainerTiingoStock.h"
-#include "ContainerTiingoSymbol.h"
+#include "simdjson.h"
 #include"StockMarketSQLTable.h"
 
-#include"DatabaseConnector.h"
-#include "SystemConfiguration.h"
-#include "SystemMessage.h"
+module FireBirdLib.Product.Tiingo.StockProfile;
+import FireBirdLib.Container.Stock.TiingoSymbol;
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.Accessory.TimeConvert;
+
+
+using namespace simdjson;
 
 using std::chrono::local_time;
+using std::chrono::day;
+using std::chrono::days;
+using std::chrono::milliseconds;
+using std::string_view;
 using std::istringstream;
 using std::make_shared;
 

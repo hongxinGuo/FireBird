@@ -8,12 +8,12 @@ import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 import FireBirdLib.Container.HistoryCandle.TiingoStockDayLine;
 
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Stock.TiingoStock;
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoSymbol;
-import SystemMessage;
+import FireBirdLib.Container.Stock.TiingoSymbol;
+import FireBirdLib.SystemMessage;
 import FireBirdLib.WebData;
-import HistoryCandle.TiingoCandleLine;
+import FireBirdLib.HistoryCandle.TiingoCandleLine;
 
 using namespace std;
 

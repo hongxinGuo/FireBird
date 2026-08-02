@@ -3,9 +3,12 @@ module;
 module FireBirdLib.Product.TengxunRT;
 
 import FireBirdLib.Market.ChinaMarket;
-import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+import FireBirdLib.Container.Stock.ChinaStock;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.TengxunRT;
+
+import std;
+using std::string;
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;

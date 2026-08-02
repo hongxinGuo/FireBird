@@ -1,6 +1,6 @@
 module;
 
-module Type.StockExchange;
+module FireBirdLib.Type.StockExchange;
 
 CStockExchange::CStockExchange() {
 	m_strCode = " ";

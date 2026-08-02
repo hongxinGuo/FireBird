@@ -1,15 +1,17 @@
 module;
+#include <afx.h>
 
 module FireBirdLib.Factory.AlphaVantage;
-import SystemMessage;
 
-import FinnhubInquiryType;
-import FireBirdLib.Product.AlphaVantageStockDayLine;
-import FireBirdLib.Product.AlphaVantageStockSplits;
+import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.Product.Dummy;
 
 import FireBirdLib.Market;
+import FireBirdLib.Product.AlphaVantage.StockSplits;
+import FireBirdLib.Product.AlphaVantage.StockDayLine;
+import FireBirdLib.SystemMessage;
 
+import std;
 using std::make_shared;
 
 CVirtualWebProductPtr CAlphaVantageFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {

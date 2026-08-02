@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Container.HistoryCandle.ChinaStockWeekLine;
 
 import FireBirdLib.Stock.ChinaStock;
-import HistoryCandle.WeekLine;
+import FireBirdLib.HistoryCandle.WeekLine;
 
 import std;
 using std::chrono::local_days;

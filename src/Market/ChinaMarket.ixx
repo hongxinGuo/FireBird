@@ -3,11 +3,11 @@ module;
 #include"sqlpp23/mysql/mysql.h"
 export module FireBirdLib.Market.ChinaMarket;
 
-import GlobeDef;
+import FireBirdLib.GlobeDef;
 import FireBirdLib.Market;
-import WebRTData;
+import FireBirdLib.WebRTData;
 import FireBirdLib.Accessory.TimeConvert;
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 import FireBirdLib.Stock.ChinaStock;
 
 import std;

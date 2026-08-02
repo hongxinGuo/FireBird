@@ -5,7 +5,7 @@ export module FireBirdLib.Stock.FinnhubCrypto;
 import FireBirdLib.Stock;
 
 import FireBirdLib.Container.HistoryCandle.CryptoDayLine;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import std;
 using std::unique_ptr;

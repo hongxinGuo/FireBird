@@ -1,22 +1,17 @@
-#include "pch.h"
+module;
+module FireBirdLib.Factory.Tiingo;
 
-#include"FinnhubInquiryType.h"
-
-#include "TiingoFactory.h"
-
-#include"ProductTiingoStockProfile.h"
-#include"ProductTiingoStockDayLine.h"
-
-#include"ProductTiingoCryptoSymbol.h"
-
-#include"ProductDummy.h"
-#include "ProductTiingoFinancialState.h"
-#include "ProductTiingoFundamentalDefinition.h"
-#include "ProductTiingoIEXTopOFBook.h"
-#include "ProductTiingoMarketNews.h"
-#include "ProductTiingoStockDailyMeta.h"
-#include "SystemMessage.h"
-#include "VirtualMarket.h"
+import FireBirdLib.Product.Tiingo.StockProfile;
+import FireBirdLib.FinnhubInquiryType;
+import FireBirdLib.Product.Tiingo.StockDayLine;
+import FireBirdLib.Product.Tiingo.MarketNews;
+import FireBirdLib.Product.Tiingo.CryptoSymbol;
+import ProductTiingoFundamentalDefinition;
+import FireBirdLib.Product.Tiingo.FinancialState;
+import FireBirdLib.Product.Tiingo.StockDailyMeta;
+import FireBirdLib.Product.Tiingo.IEXTopOfBook;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Product.Dummy;
 
 using namespace std;
 

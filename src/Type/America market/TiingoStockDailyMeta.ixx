@@ -1,6 +1,6 @@
 module;
 
-export module TiingoStockDailyMeta;
+export module FireBirdLib.Type.TiingoStockDailyMeta;
 
 import std;
 using std::vector;

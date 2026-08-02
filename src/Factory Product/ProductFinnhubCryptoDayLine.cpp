@@ -1,16 +1,12 @@
-#include "pch.h"
+module;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include"FinnhubCrypto.h"
-
-#include "ProductFinnhubCryptoDayLine.h"
-
-#include "ContainerFinnhubCrypto.h"
-#include "SystemMessage.h"
-#include "FireBireLib.h"
-#include"DayLine.h"
+module FireBirdLib.Product.Finnhub.CryptoDayLine;
+import FireBirdLib.Container.Stock.FinnhubCrypto;
+import FireBirdLib.GlobeDef;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Product;
 
 using namespace std;
 

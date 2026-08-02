@@ -1,3 +1,3 @@
-#include"pch.h"
+module;
 
-#include"ProductAlphaVantage.h"
+module FireBirdLib.Product.AlphaVantage;

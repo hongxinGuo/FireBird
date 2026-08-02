@@ -1,6 +1,6 @@
 module;
 
-module TiingoIndustry;
+module FireBirdLib.Type.TiingoIndustry;
 
 CTiingoIndustry::CTiingoIndustry() {
 	m_strIndustry = " ";

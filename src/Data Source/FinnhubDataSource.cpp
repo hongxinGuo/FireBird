@@ -9,18 +9,18 @@ module;
 #include <afx.h>
 
 module FireBirdLib.DataSource.Finnhub;
-import SystemConfiguration;
-import SystemMessage;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
 
-import FinnhubInquiryType;
-import InaccessibleSymbol;
+import FireBirdLib.FinnhubInquiryType;
+import FireBirdLib.InaccessibleSymbol;
 
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubCrypto;
-import ContainerFinnhubCryptoExchange;
-import ContainerFinnhubForexExchange;
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubForexSymbol;
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
-import ContainerStockExchange;
+import FireBirdLib.Container.Stock.FinnhubCrypto;
+import FireBirdLib.ContainerFinnhubCryptoExchange;
+import FireBirdLib.ContainerFinnhubForexExchange;
+import FireBirdLib.Container.Stock.FinnhubForexSymbol;
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.ContainerStockExchange;
 import FireBirdLib.Product;
 
 import FireBirdLib.Accessory.SpdlogAssert;
@@ -31,6 +31,8 @@ import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Stock.FinnhubCrypto;
 import FireBirdLib.Factory.Finnhub;
 import FireBirdLib.Stock.FinnhubForex;
+
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 import std;
 using std::exception;

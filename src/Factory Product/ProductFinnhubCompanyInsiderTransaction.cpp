@@ -1,17 +1,12 @@
-#include "pch.h"
+module;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include"WorldMarket.h"
-#include "ContainerFinnhubStock.h"
-#include"FinnhubStock.h"
-#include "InsiderTransaction.h"
-
-#include "ProductFinnhubCompanyInsiderTransaction.h"
-
-#include "FireBirdLib.Accessory.TimeConvert.h"
-#include "FireBireLib.h"
+module FireBirdLib.Product.Finnhub.CompanyInsiderTransaction;
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.GlobeDef;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Accessory.JsonParse;
 
 using namespace std;
 

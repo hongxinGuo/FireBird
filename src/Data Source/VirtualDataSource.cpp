@@ -13,11 +13,11 @@ module FireBirdLib.DataSource;
 import FireBirdLib.Log;
 import FireBirdLib.Accessory.SpdlogAssert;
 import FireBirdLib.Product;
-import InquireEngine;
-import System.Configuration;
-import System.Message;
+import FireBirdLib.DataSource.InquireEngine;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
 
-import Thread;
+import FireBirdLib.Thread;
 import FireBirdLib.WebData;
 
 import std;

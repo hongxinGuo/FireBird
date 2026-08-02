@@ -1,6 +1,6 @@
 module;
 
-module HistoryCandle;
+module FireBirdLib.HistoryCandle;
 
 import FireBirdLib.Accessory.TimeConvert;
 

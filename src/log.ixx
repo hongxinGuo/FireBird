@@ -2,7 +2,7 @@ module;
 
 #include "spdlog/spdlog.h"
 
-export module FireBird.Log;
+export module FireBirdLib.Log;
 
 using std::shared_ptr;
 

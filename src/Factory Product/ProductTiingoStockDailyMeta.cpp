@@ -6,20 +6,17 @@
 ///
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
+module;
+#include "simdjson.h"
+module FireBirdLib.Product.Tiingo.StockDailyMeta;
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Log;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
 
-#include"jsonParse.h"
-
-#include "ProductTiingoStockDailyMeta.h"
-#include "TiingoStockDailyMeta.h"
-
-#include "ContainerTiingoStock.h"
-#include"simdjsonGetValue.h"
-#include "SystemMessage.h"
-#include "FireBireLib.h"
-#include "WorldMarket.h"
-#include "TiingoStock.h"
-
+using namespace simdjson;
 using namespace std;
 
 CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {

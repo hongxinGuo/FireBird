@@ -1,8 +1,8 @@
-#include"pch.h"
+module;
 
-#include"MovingAverage.h"
-#include"VirtualHistoryCandle.h"
-#include"VirtualDataHistoryCandle.h"
+module FireBirdLib.MovingAverage;
+import FireBirdLib.HistoryCandle;
+import FireBirdLib.Container;
 
 using std::vector;
 

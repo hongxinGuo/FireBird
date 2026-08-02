@@ -1,8 +1,8 @@
 module;
 
-export module HistoryCandle.DayLine;
+export module FireBirdLib.HistoryCandle.DayLine;
 
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 
 import std;
 using std::vector;

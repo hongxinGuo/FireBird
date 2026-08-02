@@ -1,8 +1,8 @@
 module;
 
-export module ContainerSICIndustry;
+export module FireBireLib.ContainerSICIndustry;
 
-import SicIndustry;
+import FireBirdLib.Type.SICIndustry;
 
 import std;
 using std::vector;

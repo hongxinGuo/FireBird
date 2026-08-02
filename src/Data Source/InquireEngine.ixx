@@ -1,9 +1,9 @@
 module;
 #include"afxinet.h"
 
-export module InquireEngine;
+export module FireBirdLib.DataSource.InquireEngine;
 
-import InternetOption;
+import FireBirdLib.DataSource.InternetOption;
 
 class CWebData;
 

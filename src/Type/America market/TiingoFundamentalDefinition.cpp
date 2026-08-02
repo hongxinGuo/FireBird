@@ -1,6 +1,6 @@
 module;
 
-module TiingoFundamentalDefinition;
+module FireBirdLib.Type.TiingoFundamentalDefinition;
 
 CTiingoFundamentalDefinition::CTiingoFundamentalDefinition() {
 	Reset();

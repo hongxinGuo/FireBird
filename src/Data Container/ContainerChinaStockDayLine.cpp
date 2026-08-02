@@ -1,15 +1,15 @@
 module;
 #include <afx.h>
-
 #include"StockMarketSQLTable.h"
 #include"sqlpp23/sqlpp23.h"
+
 module FireBirdLib.Container.HistoryCandle.ChinaStockDayLine;
 
 import FireBirdLib.Accessory.TimeConvert;
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 import FireBirdLib.Stock.ChinaStock;
-import HistoryCandle.WeekLine;
-import DatabaseConnector;
+import FireBirdLib.HistoryCandle.WeekLine;
+import FireBirdLib.DatabaseConnector;
 
 import std;
 using std::vector;

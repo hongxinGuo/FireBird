@@ -5,11 +5,11 @@ module;
 module FireBirdLib.Container.HistoryCandle.ForexDayLine;
 
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 import FireBirdLib.Stock.FinnhubForex;
-import HistoryCandle;
-import HistoryCandle.DayLine;
-import HistoryCandle.TiingoCandleLine;
+import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.TiingoCandleLine;
 import FireBirdLib.Accessory.TimeConvert;
 
 import std;

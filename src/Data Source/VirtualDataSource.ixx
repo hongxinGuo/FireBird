@@ -3,8 +3,7 @@ module;
 
 export module FireBirdLib.DataSource;
 
-import InternetOption;
-//class CWebData;
+import FireBirdLib.DataSource.InternetOption;
 import FireBirdLib.Accessory.SpdlogAssert;
 import FireBirdLib.WebData;
 import FireBirdLib.Product;
@@ -106,9 +105,9 @@ export {
 			return false;
 		}
 
-		template <typename FireBirdLib.Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename IsAccessible, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
+		template <typename Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename IsAccessible, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
 		bool GenerateInquiryIterateWithAccessCheck(
-			FireBirdLib.Container& container,
+			Container& container,
 			int inquireType,
 			IsNeedUpdate isNeedUpdate,
 			IsItemNeedUpdate isItemNeedUpdate,
@@ -148,9 +147,9 @@ export {
 			return haveInquiry;
 		}
 
-		template <typename FireBirdLib.Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
+		template <typename Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
 		bool GenerateInquiryIterateWithoutAccessCheck(
-			FireBirdLib.Container& container,
+			Container& container,
 			int inquireType,
 			IsNeedUpdate isNeedUpdate,
 			IsItemNeedUpdate isItemNeedUpdate,
@@ -195,7 +194,7 @@ export {
 		void InquireData();
 		virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 		virtual void CreateCurrentInquireString();
-		virtual void CheckWebData(const CWebDataPtr&) {} // 此FireBireLib内容为错误信息？
+		virtual void CheckWebData(const CWebDataPtr&) {} // 此FireBirdLib内容为错误信息？
 
 		void SetDefaultSessionOption();
 

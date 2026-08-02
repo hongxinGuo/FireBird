@@ -3,7 +3,7 @@ module;
 export module FireBirdLib.Product.Finnhub.StockEstimatesEPSSurprise;
 
 import FireBirdLib.Product.Finnhub;
-import EPSSurprise;
+import FireBirdLib.EPSSurprise;
 
 import FireBirdLib.WebData;
 

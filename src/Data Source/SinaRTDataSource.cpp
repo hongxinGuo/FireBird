@@ -4,7 +4,7 @@ module FireBirdLib.DataSource.SinaRT;
 import FireBirdLib.Product.SinaRT;
 
 import FireBirdLib.Market.ChinaMarket;
-import SystemConfiguration;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.WebData;
 
 import std;

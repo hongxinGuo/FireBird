@@ -2,11 +2,11 @@ module;
 
 export module ProductTiingoFundamentalDefinition;
 
-import ProductTiingo;
-import FireBireLib;
-import TiingoFundamentalDefinition;
+import FireBirdLib.Product.Tiingo;
+import FireBirdLib.WebData;
 
 import std;
+import FireBirdLib.Type.TiingoFundamentalDefinition;
 using std::string;
 using std::shared_ptr;
 using std::vector;

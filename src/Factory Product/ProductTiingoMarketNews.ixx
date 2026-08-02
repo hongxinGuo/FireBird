@@ -4,9 +4,9 @@ export module FireBirdLib.Product.Tiingo.MarketNews;
 
 import FireBirdLib.Product.Tiingo;
 import FireBirdLib.WebData;
-import TiingoMarketNews;
 
 import std;
+import FireBirdLib.Type.TiingoMarketNews;
 using std::string;
 using std::shared_ptr;
 using std::vector;

@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Finnhub.ForexSymbol;
 
 import FireBirdLib.Product.Finnhub;
 import FireBirdLib.WebData;
-import FinnhubForex;
+import FireBirdLib.Stock.FinnhubForex;
 
 import std;
 using std::string;

@@ -1,16 +1,19 @@
 module;
 #include <afx.h>
 
-module WebSocket.TiingoCrypto;
-import GlobeDef;
-import SystemData;
-import SystemMessage;
+#include "IXWebSocketMessageType.h"
+
+module FireBirdLib.WebSocket.TiingoCrypto;
+
+import FireBirdLib.GlobeDef;
+import FireBirdLib.SystemData;
+import FireBirdLib.SystemMessage;
 
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Accessory.NlohmannJson.GetValue;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-import SystemConfiguration;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.DataSource.Tiingo;
 
 import std;

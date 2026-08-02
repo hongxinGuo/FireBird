@@ -6,22 +6,22 @@
 ///
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
+module;
+#include"afx.h"
+#include "simdjson.h"
 
-#include"SystemMessage.h"
+module FireBirdLib.Product.Tiingo.MarketNews;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.SystemConfiguration;
 
-#include"jsonParse.h"
-
-#include "ProductTiingoMarketNews.h"
-
-#include "TiingoDataSource.h"
-#include "TiingoMarketNews.h"
-
-#include"simdjsonGetValue.h"
-#include "SystemConfiguration.h"
-#include "FireBireLib.h"
+using namespace simdjson;
 
 using std::make_shared;
+using std::string_view;
+using std::int64_t;
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/news?";

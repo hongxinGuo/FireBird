@@ -1,6 +1,6 @@
 module;
 
-module NaicsIndustry;
+module FireBirdLib.Type.NaicsIndustry;
 
 CNaicsIndustry::CNaicsIndustry() {
 	m_strNaics = " ";

@@ -1,6 +1,6 @@
 module;
 
-export module MarketStatus;
+export module FireBirdLib.Type.MarketStatus;
 
 import std;
 using std::string;

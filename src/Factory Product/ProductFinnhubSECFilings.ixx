@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Finnhub.SECFilings;
 
 import FireBirdLib.Product.Finnhub;
 import FireBirdLib.WebData;
-import SECFiling;
+import FireBirdLib.Type.SECFiling;
 
 import std;
 using std::string;

@@ -5,7 +5,7 @@ export module FireBirdLib.Product.AlphaVantage.StockSplits;
 import FireBirdLib.Product.AlphaVantage;
 
 import FireBirdLib.WebData;
-import StockSplit;
+import FireBirdLib.StockSplit;
 
 import std;
 using std::string;

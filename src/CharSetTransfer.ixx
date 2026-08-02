@@ -14,7 +14,7 @@ module;
 
 #include"afx.h"
 
-export module CharSetTransfer;
+export module FireBirdLib.CharSetTransfer;
 
 import std;
 

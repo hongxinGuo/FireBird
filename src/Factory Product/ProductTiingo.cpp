@@ -1,11 +1,9 @@
-#include"pch.h"
+module;
 
-#include"ProductTiingo.h"
-
-#include "FinnhubInquiryType.h"
-#include "TiingoDataSource.h"
-#include"InaccessibleSymbol.h"
-#include "FireBireLib.h"
+module FireBirdLib.Product.Tiingo;
+import FireBirdLib.InaccessibleSymbol;
+import FireBirdLib.Inaccessible;
+import FireBirdLib.DataSource.Tiingo;
 
 using std::make_shared;
 

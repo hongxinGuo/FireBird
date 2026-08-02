@@ -1,19 +1,17 @@
-#include "pch.h"
+module;
 
-#include"FireBirdLib.Accessory.TimeConvert.h"
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+module FireBirdLib.Product.Finnhub.CompanyNews;
 
-#include"worldMarket.h"
-#include "ContainerFinnhubStock.h"
-#include"FinnhubStock.h"
-#include"FinnhubCompanyNews.h"
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.GlobeDef;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Accessory.TimeConvert;
 
-#include "ProductFinnhubCompanyNews.h"
-
-#include "FireBireLib.h"
-
+import std;
 using std::make_shared;
+using std::string;
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/company-news?symbol=";

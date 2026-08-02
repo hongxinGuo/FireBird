@@ -1,6 +1,6 @@
 module;
 
-export module NaicsIndustry;
+export module FireBirdLib.Type.NaicsIndustry;
 
 import std;
 using std::string;

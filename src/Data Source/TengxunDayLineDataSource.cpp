@@ -9,25 +9,25 @@
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
+#include <afx.h>
 
 module FireBirdLib.DataSource.TengxunDayLine;
 
 import FireBirdLib.Accessory.ChinaStockCodeConverter;
 import FireBirdLib.Product;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 import FireBirdLib.Product.TengxunDayLine;
 
 import FireBirdLib.Market.ChinaMarket;
-import FireBirdLib.Container.FireBirdLib.Stock.ChinaStock;
+import FireBirdLib.Container.Stock.ChinaStock;
 import FireBirdLib.DataSource.EastmoneyDayLine;
 import FireBirdLib.Accessory.SpdlogAssert;
-import SystemConfiguration;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;
 import FireBirdLib.Stock.ChinaStock;
 
 import std;
-#include <afx.h>
 using std::uniform_int_distribution;
 using std::make_shared;
 using std::chrono::local_seconds;

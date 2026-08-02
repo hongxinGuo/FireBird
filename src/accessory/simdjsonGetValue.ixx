@@ -5,7 +5,6 @@ module;
 
 export module FireBirdLib.Accessory.Simdjson.GetValue;
 
-
 using namespace simdjson;
 
 import std;

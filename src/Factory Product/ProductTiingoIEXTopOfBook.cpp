@@ -7,25 +7,19 @@
 /// Note: tiingo IEX top of book缺乏分拆信息，且会更新已退市的股票（无意义的数据），不使用这种数据来更新日线资料，，只用于更新实时数据。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
-
-#include"jsonParse.h"
-
-#include "ProductTiingoIEXTopOFBook.h"
-#include "TiingoIEXTopOFBook.h"
-#include"ContainerTiingoStockDayLine.h"
-
-#include "TiingoDataSource.h"
-
-#include"simdjsonGetValue.h"
-#include "FireBireLib.h"
-#include "WorldMarket.h"
-#include "ContainerTiingoStock.h"
-#include "SystemMessage.h"
-#include "TiingoStock.h"
-#include "FireBirdLib.Accessory.TimeConvert.h"
+module;
+module FireBirdLib.Product.Tiingo.IEXTopOfBook;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Stock.TiingoStock;
 
 using namespace std;
+using namespace simdjson;
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
 	m_strInquiryFunction = "https://api.tiingo.com/iex?";

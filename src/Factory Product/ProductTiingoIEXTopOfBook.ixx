@@ -4,9 +4,9 @@ export module FireBirdLib.Product.Tiingo.IEXTopOfBook;
 
 import FireBirdLib.Product.Tiingo;
 import FireBirdLib.WebData;
-import TiingoIEXTopOfBook;
 
 import std;
+import FireBirdLib.Type.TiingoIEXTopOfBook;
 using std::string;
 using std::shared_ptr;
 using std::vector;

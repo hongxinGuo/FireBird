@@ -2,12 +2,12 @@ module;
 #include <afx.h>
 #include <exception>
 
-module WebRTData;
+module FireBirdLib.WebRTData;
 
 import FireBirdLib.Accessory.ChinaStockCodeConverter;
 import FireBirdLib.Accessory.JsonParse;
-import GlobeDef;
-import CharSetTransfer;
+import FireBirdLib.GlobeDef;
+import FireBirdLib.CharSetTransfer;
 import FireBirdLib.Market.ChinaMarket;
 
 

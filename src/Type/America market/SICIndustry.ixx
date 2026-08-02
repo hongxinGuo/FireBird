@@ -1,5 +1,8 @@
-#pragma once
+module;
 
+export module FireBirdLib.Type.SICIndustry;
+
+import std;
 using std::string;
 using std::vector;
 using std::shared_ptr;

@@ -1,6 +1,6 @@
 module;
 
-module Type.FinnhubRecommendationTrends;
+module FireBirdLib.Type.FinnhubRecommendationTrends;
 
 CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
 	m_strSymbol = "";

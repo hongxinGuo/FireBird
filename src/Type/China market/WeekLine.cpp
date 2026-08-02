@@ -1,6 +1,6 @@
 module;
 
-module HistoryCandle.WeekLine;
+module FireBirdLib.HistoryCandle.WeekLine;
 
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Stock.ChinaStock;

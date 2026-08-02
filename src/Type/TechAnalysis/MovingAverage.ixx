@@ -2,7 +2,7 @@ module;
 
 #include <afxwin.h>
 
-export module MovingAverage;
+export module FireBirdLib.MovingAverage;
 
 import FireBirdLib.Container.HistoryCandle;
 

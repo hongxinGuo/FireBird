@@ -1,6 +1,6 @@
 module;
 
-module Type.FinnhubCompanySymbolChange;
+module FireBirdLib.Type.FinnhubCompanySymbolChange;
 
 CFinnhubCompanySymbolChange::CFinnhubCompanySymbolChange() {
 	m_iTime = 19800101;

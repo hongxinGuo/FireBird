@@ -10,7 +10,7 @@ import FireBirdLib.Stock.FinnhubForex;
 
 import FireBirdLib.Accessory.TimeConvert;
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
 import std;
 using std::chrono::days;

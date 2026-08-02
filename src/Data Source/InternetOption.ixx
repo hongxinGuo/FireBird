@@ -1,6 +1,6 @@
 module;
 
-export module InternetOption;
+export module FireBirdLib.DataSource.InternetOption;
 
 
 export {

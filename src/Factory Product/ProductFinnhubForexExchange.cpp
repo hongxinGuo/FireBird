@@ -1,17 +1,15 @@
-#include "pch.h"
+module;
 
-#include"SystemMessage.h"
-
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include "ProductFinnhubForexExchange.h"
-
-#include "ContainerFinnhubForexExchange.h"
-#include "FinnhubDataSource.h"
-#include "FireBireLib.h"
+module FireBirdLib.Product.Finnhub.ForexExchange;
+#include <afx.h>
+import FireBirdLib.ContainerFinnhubForexExchange;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.DataSource.Finnhub;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;
+using std::string;
 
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/exchange?";

@@ -11,9 +11,9 @@
 module;
 #include "IXWebSocketMessage.h"
 
-export module WebSocket.TiingoIEX;
+export module FireBirdLib.WebSocket.TiingoIEX;
 
-import WebSocket;
+import FireBirdLib.WebSocket;
 import std;
 using std::string;
 using std::vector;

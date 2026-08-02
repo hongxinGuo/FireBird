@@ -1,6 +1,6 @@
 module;
 
-export module TiingoIEXTopOfBook;
+export module FireBirdLib.Type.TiingoIEXTopOfBook;
 
 import std;
 using std::shared_ptr;

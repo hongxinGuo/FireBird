@@ -5,13 +5,14 @@ export module FireBirdLib.Stock.TiingoStock;
 import FireBirdLib.Stock;
 import FireBirdLib.Container.HistoryCandle.TiingoStockDayLine;
 
-import HistoryCandle.TiingoCandleLine;
-import TiingoCompanyFinancialState;
-import TiingoStockDailyMeta;
-import TiingoIEXTopOfBook;
+import FireBirdLib.HistoryCandle.TiingoCandleLine;
+import FireBirdLib.TiingoCompanyFinancialState;
 import FireBirdLib.Container.HistoryCandle;
 
 import std;
+import FireBirdLib.Type.TiingoCompanyFinancialState;
+import FireBirdLib.Type.TiingoIEXTopOfBook;
+import FireBirdLib.Type.TiingoStockDailyMeta;
 using std::unique_ptr;
 using std::shared_ptr;
 using std::string;

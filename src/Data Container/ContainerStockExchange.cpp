@@ -11,9 +11,9 @@ module;
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
-module ContainerStockExchange;
+module FireBirdLib.ContainerStockExchange;
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
 using namespace std;
 

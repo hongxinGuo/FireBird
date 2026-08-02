@@ -2,10 +2,10 @@ module;
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
-module ContainerFinnhubCountry;
+module FireBirdLib.ContainerFinnhubCountry;
 
-import DatabaseConnector;
-import Country;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.Country;
 
 import std;
 

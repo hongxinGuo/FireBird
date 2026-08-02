@@ -2,7 +2,7 @@
 #define NOMINMAX
 #include <sqlpp23/mysql/mysql.h>
 
-export module DatabaseConnector;
+export module FireBirdLib.DatabaseConnector;
 
 import std;
 

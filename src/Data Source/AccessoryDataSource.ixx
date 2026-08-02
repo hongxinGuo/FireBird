@@ -2,8 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.Accessory;
 
-import FireBirdLib.DataSource;
-
+export import FireBirdLib.DataSource;
 import FireBirdLib.Factory.Accessory;
 
 import std;

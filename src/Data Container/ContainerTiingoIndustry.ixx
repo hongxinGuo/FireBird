@@ -1,8 +1,8 @@
 module;
 
-export module ContainerTiingoIndustry;
+export module FireBirdLib.ContainerTiingoIndustry;
 
-import TiingoIndustry;
+import FireBirdLib.Type.TiingoIndustry;
 
 import std;
 using std::string;

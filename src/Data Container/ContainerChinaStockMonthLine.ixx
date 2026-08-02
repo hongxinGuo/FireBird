@@ -4,7 +4,7 @@ export module FireBirdLib.Container.HistoryCandle.ChinaStockMonthLine;
 
 import FireBirdLib.Container.HistoryCandle;
 
-import HistoryCandle.MonthLine;
+import FireBirdLib.HistoryCandle.MonthLine;
 
 import std;
 using std::chrono::local_days;

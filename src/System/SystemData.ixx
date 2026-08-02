@@ -11,10 +11,10 @@ module;
 #include <queue>
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
-export module SystemData;
+export module FireBirdLib.SystemData;
 
 import FireBirdLib.WebData.DayLine;
-import WebRTData;
+import FireBirdLib.WebRTData;
 
 using namespace moodycamel;
 import std;
@@ -22,10 +22,10 @@ using std::queue;
 using std::shared_ptr;
 
 
-import FinnhubWebSocket;
-import TiingoIEXWebSocket;
-import TiingoCryptoWebSocket;
-import TiingoForexWebSocket;
+import FireBirdLib.WebSocket.Finnhub;
+import FireBirdLib.WebSocket.TiingoIEX;
+import FireBirdLib.WebSocket.TiingoCrypto;
+import FireBirdLib.WebSocket.TiingoForex;
 
 export {
 	// 处理后的各种数据

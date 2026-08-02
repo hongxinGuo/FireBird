@@ -5,10 +5,10 @@ module;
 
 export module FireBirdLib.Market;
 
-import MarketTask;
-import MarketTaskQueue;
+import FireBirdLib.MarketTask;
+import FireBirdLib.MarketTaskQueue;
 import FireBirdLib.DataSource;
-import Type.StockExchange;
+import FireBirdLib.Type.StockExchange;
 
 import std;
 using std::chrono::sys_seconds;

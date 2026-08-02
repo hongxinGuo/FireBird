@@ -1,6 +1,6 @@
 module;
 
-export module StockSplit;
+export module FireBirdLib.StockSplit;
 
 import std;
 

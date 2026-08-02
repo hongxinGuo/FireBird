@@ -1,6 +1,6 @@
 module;
 
-export module Inaccessible;
+export module FireBirdLib.Inaccessible;
 
 import std;
 using std::set;

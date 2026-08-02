@@ -1,7 +1,7 @@
 module;
 #include <afx.h>
 
-module IndicatorRSI;
+module FireBirdLib.IndicatorRSI;
 import FireBirdLib.Container.HistoryCandle;
 
 import std;

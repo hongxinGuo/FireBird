@@ -1,12 +1,9 @@
-#include "pch.h"
+module;
+module FireBirdLib.Product.Finnhub.CompanyPeer;
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.Market.WorldMarket;
 
-#include"WorldMarket.h"
-#include"FinnhubStock.h"
-#include "ContainerFinnhubStock.h"
-
-#include "ProductFinnhubCompanyPeer.h"
-
-#include "FireBireLib.h"
+using std::string;
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/peers?symbol=";

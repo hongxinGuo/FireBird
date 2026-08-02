@@ -1,6 +1,6 @@
 module;
 
-export module InsiderTransaction;
+export module FireBirdLib.Type.InsiderTransaction;
 
 import std;
 using std::string;

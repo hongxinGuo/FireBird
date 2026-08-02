@@ -6,10 +6,10 @@ import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Accessory.NlohmannJson.GetValue;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
+import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Stock.TiingoStock;
-import StockSplit;
-import SystemMessage;
+import FireBirdLib.StockSplit;
+import FireBirdLib.SystemMessage;
 import FireBirdLib.WebData;
 
 import std;

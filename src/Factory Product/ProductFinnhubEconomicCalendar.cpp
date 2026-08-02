@@ -6,21 +6,21 @@
 ///
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-#include"SystemMessage.h"
-
-#include "ProductFinnhubEconomicCalendar.h"
-
-#include "ContainerFinnhubEconomicCalendar.h"
-#include "FinnhubDataSource.h"
-#include "SystemConfiguration.h"
-#include "FireBireLib.h"
-#include"Type.EconomicCalendar.h"
+module FireBirdLib.Product.Finnhub.Type.EconomicCalendar;
+import FireBirdLib.ContainerFinnhubEconomicCalendar;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Finnhub;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Product;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 using std::make_shared;
+using std::string;
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/calendar/economic?";

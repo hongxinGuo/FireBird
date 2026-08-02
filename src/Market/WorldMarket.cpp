@@ -6,15 +6,15 @@ module;
 
 module FireBirdLib.Market.WorldMarket;
 
+import FireBirdLib.ContainerFinnhubCryptoExchange;
+import ContainerTiingoFundamentalDefinition;
 using namespace concurrencpp;
 
-import SystemData;
-import SystemMessage;
-import Thread;
-import MarketStatus;
-import MarketHoliday;
-import InaccessibleSymbol;
-import MarketTask;
+import FireBirdLib.SystemData;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Thread;
+import FireBirdLib.InaccessibleSymbol;
+import FireBirdLib.MarketTask;
 import FireBirdLib.Stock;
 
 import FireBirdLib.DataSource.Accessory;
@@ -22,13 +22,18 @@ import FireBirdLib.DataSource.AlphaVantage;
 import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.DataSource.Finnhub;
 
-import WebSocket.Finnhub;
-import WebSocket.TiingoIEX;
-import WebSocket.TiingoForex;
-import WebSocket.TiingoCrypto;
+import FireBirdLib.WebSocket.Finnhub;
+import FireBirdLib.WebSocket.TiingoIEX;
+import FireBirdLib.WebSocket.TiingoForex;
+import FireBirdLib.WebSocket.TiingoCrypto;
+
+import FireBirdLib.WebSocket.Finnhub;
+import FireBirdLib.WebSocket.TiingoCrypto;
+import FireBirdLib.WebSocket.TiingoForex;
+import FireBirdLib.WebSocket.TiingoIEX;
 
 import FireBirdLib.Market.ChinaMarket;
-import HistoryCandle.TiingoCandleLine;
+import FireBirdLib.HistoryCandle.TiingoCandleLine;
 import FireBirdLib.Accessory.TimeConvert;
 
 import FireBirdLib.Stock.FinnhubCrypto;
@@ -36,24 +41,22 @@ import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Stock.TiingoStock;
 import FireBirdLib.Stock.FinnhubForex;
 
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubStock;
-import FireBirdLib.Container.FireBirdLib.Stock.ChosenCrypto;
-import FireBirdLib.Container.FireBirdLib.Stock.ChosenForex;
-import ContainerFinnhubCountry;
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubCrypto;
-import ContainerFinnhubCryptoExchange;
-import ContainerFinnhubEconomicCalendar;
-import ContainerFinnhubForexExchange;
-import FireBirdLib.Container.FireBirdLib.Stock.FinnhubForexSymbol;
-import ContainerStockExchange;
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoChosenStock;
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoCryptoSymbol;
-import ContainerTiingoFundamentalDefinition;
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoSymbol;
-import CountableSemaphore;
-import DatabaseConnector;
-import SystemConfiguration;
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.Container.Stock.ChosenCrypto;
+import FireBirdLib.Container.Stock.ChosenForex;
+import FireBirdLib.ContainerFinnhubCountry;
+import FireBirdLib.Container.Stock.FinnhubCrypto;
+import FireBirdLib.ContainerFinnhubEconomicCalendar;
+import FireBirdLib.ContainerFinnhubForexExchange;
+import FireBirdLib.Container.Stock.FinnhubForexSymbol;
+import FireBirdLib.ContainerStockExchange;
+import FireBirdLib.Container.Stock.TiingoChosenStock;
+import FireBirdLib.Container.Stock.TiingoCryptoSymbol;
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.Container.Stock.TiingoSymbol;
+import FireBirdLib.CountableSemaphore;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.SystemConfiguration;
 
 using namespace std;
 

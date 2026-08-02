@@ -1,9 +1,8 @@
 module;
 
-export module FireBirdLib.Container.FireBirdLib.Stock.FinnhubForexSymbol;
+export module FireBirdLib.Container.Stock.FinnhubForexSymbol;
 
-import FireBirdLib.Container.FireBirdLib.Stock;
-
+import FireBirdLib.Container.Stock;
 import FireBirdLib.Stock.FinnhubForex;
 
 import std;

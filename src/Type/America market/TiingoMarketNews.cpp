@@ -1,6 +1,6 @@
 module;
+module FireBirdLib.Type.TiingoMarketNews;
 
-moudle TiingoMarketNews;
 
 CTiingoMarketNews::CTiingoMarketNews() {
 	Reset();

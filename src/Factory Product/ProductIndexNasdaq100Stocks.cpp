@@ -12,12 +12,12 @@ import FireBirdLib.Accessory.Simdjson.GetValue;
 
 import FireBirdLib.WebData;
 
-import DatabaseConnector;
-import SystemMessage;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.SystemMessage;
 
 import std;
 using std::string_view;
-
+using std::string;
 using namespace simdjson;
 
 CProductIndexNasdaq100Stocks::CProductIndexNasdaq100Stocks() {

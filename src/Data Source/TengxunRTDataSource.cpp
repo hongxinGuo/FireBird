@@ -5,7 +5,7 @@ module FireBirdLib.DataSource.TengxunRT;
 import FireBirdLib.Product.TengxunRT;
 
 import FireBirdLib.Market.ChinaMarket;
-import SystemConfiguration;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.WebData;
 
 import std;

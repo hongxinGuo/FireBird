@@ -6,22 +6,13 @@ module;
 module FireBirdLib.Stock.FinnhubStock;
 
 import FireBirdLib.Accessory.TimeConvert;
-import InsiderSentiment;
-import InsiderTransaction;
-import EPSSurprise;
-import FinnhubCompanyNews;
-import SECFiling;
 
 import FireBirdLib.Stock.FinnhubStock;
-
 import FireBirdLib.Market.WorldMarket;
-
 import FireBirdLib.Accessory.InfoReport;
-
-import SystemMessage;
-
-import DatabaseConnector;
-import SystemConfiguration;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemMessage;
 
 using std::chrono::year_month_day;
 using std::chrono::Sunday;

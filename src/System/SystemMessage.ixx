@@ -2,7 +2,7 @@ module;
 #include <concurrentqueue/moodycamel/concurrentqueue.h>
 #include <stdafx.h>
 
-export module SystemMessage;
+export module FireBirdLib.SystemMessage;
 
 import std;
 using std::atomic_long;

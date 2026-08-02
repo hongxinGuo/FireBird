@@ -1,6 +1,6 @@
 module;
 
-export module TestWebData;
+export module FireBirdLib.TestWebData;
 
 import FireBirdLib.WebData;
 

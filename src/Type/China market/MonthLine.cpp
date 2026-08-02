@@ -1,6 +1,6 @@
 module;
 
-module HistoryCandle.MonthLine;
+module FireBirdLib.HistoryCandle.MonthLine;
 
 import FireBirdLib.Stock.ChinaStock;
 

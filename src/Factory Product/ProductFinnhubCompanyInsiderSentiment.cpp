@@ -1,20 +1,20 @@
-#include "pch.h"
+module;
 
-#include"FireBirdLib.Accessory.TimeConvert.h"
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+module FireBirdLib.Product.Finnhub.CompanyInsiderSentiment;
 
-#include"WorldMarket.h"
-#include"FinnhubStock.h"
-#include"InsiderSentiment.h"
+import FireBirdLib.Accessory.TimeConvert;
+import FireBirdLib.Stock.FinnhubStock;
+import FireBirdLib.Market.WorldMarket;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.InfoReport;
 
-#include "ProductFinnhubCompanyInsiderSentiment.h"
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
 
-#include "ContainerFinnhubStock.h"
-
-#include "FireBireLib.h"
-
+import std;
 using std::make_shared;
+using std::string;
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-sentiment?symbol=";

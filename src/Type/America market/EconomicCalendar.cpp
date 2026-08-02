@@ -1,6 +1,6 @@
 module;
 
-module Type.EconomicCalendar;
+module FireBirdLib.Type.EconomicCalendar;
 
 CEconomicCalendar::CEconomicCalendar() {
 	m_strCountry = " ";

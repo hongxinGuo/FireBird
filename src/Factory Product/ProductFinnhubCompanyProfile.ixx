@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Finnhub.CompanyProfile;
 
 import FireBirdLib.Product.Finnhub;
 import FireBirdLib.WebData;
-import FinnhubStock;
+import FireBirdLib.Stock.FinnhubStock;
 
 import std;
 using std::string;

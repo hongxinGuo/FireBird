@@ -24,7 +24,7 @@
 //]
 module;
 
-export module FinnhubCompanyNews;
+export module FireBirdLib.Type.FinnhubCompanyNews;
 
 import std;
 using std::string;

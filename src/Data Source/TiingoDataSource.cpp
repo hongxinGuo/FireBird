@@ -4,21 +4,21 @@ module;
 module FireBirdLib.DataSource.Tiingo;
 
 import FireBird.Log;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
-import FinnhubInquiryType;
+import FireBirdLib.FinnhubInquiryType;
 
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoChosenStock;
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoStock;
-import FireBirdLib.Container.FireBirdLib.Stock.TiingoSymbol;
+import FireBirdLib.Container.Stock.TiingoChosenStock;
+import FireBirdLib.Container.Stock.TiingoStock;
+import FireBirdLib.Container.Stock.TiingoSymbol;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.TiingoStock;
 
 import FireBirdLib.Accessory.SpdlogAssert;
-import InaccessibleSymbol;
-import SystemConfiguration;
+import FireBirdLib.InaccessibleSymbol;
+import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Factory.Tiingo;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;

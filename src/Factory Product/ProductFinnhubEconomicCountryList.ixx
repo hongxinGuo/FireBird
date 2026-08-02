@@ -3,7 +3,7 @@ module;
 export module FireBirdLib.Product.Finnhub.EconomicCountryList;
 
 import FireBirdLib.Product.Finnhub;
-import Country;
+import FireBirdLib.Country;
 import FireBirdLib.WebData;
 
 import std;

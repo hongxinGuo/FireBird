@@ -5,12 +5,13 @@ module;
 module FireBirdLib.Container.StockSymbol;
 
 import FireBirdLib.Accessory.ChinaStockCodeConverter;
-import SystemConstantChinaMarket;
-import StockSection;
+import FireBirdLib.SystemConstantChinaMarket;
+import FireBirdLib.StockSection;
 
 import FireBirdLib.Stock.ChinaStock;
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
+using namespace sqlpp;
 import std;
 using std::string;
 

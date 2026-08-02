@@ -3,7 +3,7 @@ module;
 export module FireBirdLib.Product.Tiingo.CryptoDayLine;
 
 import FireBirdLib.Product.Tiingo;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.WebData;
 
 import std;

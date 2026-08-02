@@ -5,8 +5,6 @@ module;
 
 export module FireBirdLib.Accessory.SpdlogAssert;
 
-import Log;
-
 export {
 #ifdef _DEBUG
 	inline void SpdlogAssertFail(const char* expr,

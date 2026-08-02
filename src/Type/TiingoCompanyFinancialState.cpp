@@ -1,7 +1,7 @@
 module;
 
 #include <afx.h>
-module TiingoCompanyFinancialState;
+module FireBirdLib.Type.TiingoCompanyFinancialState;
 
 CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
 	m_symbol = "";

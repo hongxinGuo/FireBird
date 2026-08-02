@@ -1,17 +1,15 @@
-#include "pch.h"
+module;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include"FinnhubStock.h"
-#include "ProductFinnhubStockEstimatesEPSSurprise.h"
-#include"EPSSurprise.h"
-
-#include "ContainerFinnhubStock.h"
-#include "FireBireLib.h"
+module FireBirdLib.Product.Finnhub.StockEstimatesEPSSurprise;
+import FireBirdLib.Container.Stock.FinnhubStock;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;
 using std::istringstream;
+using std::string;
+using std::chrono::local_days;
+using std::chrono::days;
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/earnings?symbol=";

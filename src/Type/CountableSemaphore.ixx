@@ -1,6 +1,6 @@
 module;
 
-export module CountableSemaphore;
+export module FireBirdLib.CountableSemaphore;
 
 import std;
 using std::counting_semaphore;

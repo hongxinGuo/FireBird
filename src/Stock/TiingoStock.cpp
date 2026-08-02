@@ -5,20 +5,20 @@ module;
 
 module FireBirdLib.Stock.TiingoStock;
 
-import TiingoStockDailyMeta;
+import FireBirdLib.Type.TiingoStockDailyMeta;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Market.WorldMarket;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-import HistoryCandle.TiingoCandleLine;
+import FireBirdLib.HistoryCandle.TiingoCandleLine;
 
-import TiingoCompanyFinancialState;
-import TiingoIEXTopOfBook;
+import FireBirdLib.Type.TiingoCompanyFinancialState;
+import FireBirdLib.Type.TiingoIEXTopOfBook;
 
-import DatabaseConnector;
-import StockSplit;
-import SystemConfiguration;
+import FireBirdLib.DatabaseConnector;
+import FireBirdLib.StockSplit;
+import FireBirdLib.SystemConfiguration;
 
 using namespace std;
 

@@ -1,16 +1,12 @@
-#include "pch.h"
+module;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include"Country.h"
-
-#include "ProductFinnhubEconomicCountryList.h"
-
-#include "ContainerFinnhubCountry.h"
-#include "FinnhubDataSource.h"
-#include "SystemMessage.h"
-#include "FireBireLib.h"
+module FireBirdLib.Product.Finnhub.EconomicCountryList;
+import FireBirdLib.ContainerFinnhubCountry;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.DataSource.Finnhub;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
 using std::make_shared;
 

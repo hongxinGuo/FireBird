@@ -2,8 +2,8 @@ module;
 #include <afx.h>
 
 module FireBirdLib.Accessory.SaveAndLoad;
+import FireBirdLib.CharSetTransfer;
 
-import CharSetTransfer;
 
 import std;
 using std::string;

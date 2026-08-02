@@ -1,6 +1,6 @@
 module;
 
-module Country;
+module FireBirdLib.Country;
 
 CCountry::CCountry() {
 	Reset();

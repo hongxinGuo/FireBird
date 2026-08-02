@@ -1,16 +1,13 @@
-#include "pch.h"
+module;
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-
-#include "ProductFinnhubForexSymbol.h"
-
-#include "ContainerFinnhubForexExchange.h"
-#include "containerFinnhubForexSymbol.h"
-#include "FireBireLib.h"
-#include "FinnhubForex.h"
+module FireBirdLib.Product.Finnhub.ForexSymbol;
+import FireBirdLib.ContainerFinnhubForexExchange;
+import FireBirdLib.Container.Stock.FinnhubForexSymbol;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;
+using std::string;
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/symbol?exchange=";

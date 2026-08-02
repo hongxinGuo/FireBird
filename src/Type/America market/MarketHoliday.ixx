@@ -1,6 +1,6 @@
 module;
 
-export module MarketHoliday;
+export module FireBirdLib.Type.MarketHoliday;
 
 import std;
 using std::vector;

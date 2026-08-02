@@ -1,16 +1,13 @@
-#include "pch.h"
+module;
+#include <afx.h>
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-#include "ProductTiingoCryptoDayLine.h"
-
-#include "ContainerFinnhubCrypto.h"
-#include "ContainerTiingoCryptoSymbol.h"
-#include "SystemMessage.h"
-#include "FireBireLib.h"
-#include "FinnhubCrypto.h"
-#include "TiingoCrypto.h"
-#include"DayLine.h"
+module FireBirdLib.Product.Tiingo.CryptoDayLine;
+import FireBirdLib.Container.Stock.TiingoCryptoSymbol;
+import FireBirdLib.Container.Stock.FinnhubCrypto;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Product;
 
 using namespace std;
 

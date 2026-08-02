@@ -1,10 +1,10 @@
 module;
 #include <afxwin.h>
 
-export module IndicatorRSI;
+export module FireBirdLib.IndicatorRSI;
 
 import FireBirdLib.Container.HistoryCandle;
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 
 import std;
 using std::vector;

@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.WebData.DayLine;
 
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 
 import FireBirdLib.WebData;
 

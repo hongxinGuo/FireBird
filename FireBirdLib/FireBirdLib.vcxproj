@@ -527,6 +527,9 @@
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.ixx">
       <FileType>Document</FileType>
     </ClCompile>
+    <ClCompile Include="..\src\Type\America market\SICIndustry.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">

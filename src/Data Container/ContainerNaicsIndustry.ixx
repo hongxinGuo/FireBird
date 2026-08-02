@@ -1,8 +1,8 @@
 module;
 
-export module ContainerNaicsIndustry;
+export module FireBirdLib.ContainerNaicsIndustry;
 
-import NaicsIndustry;
+import FireBirdLib.Type.NaicsIndustry;
 
 import std;
 using std::vector;

@@ -5,9 +5,9 @@ module FireBirdLib.Factory.Accessory;
 
 import FireBirdLib.Product.Dummy;
 import FireBirdLib.Product.IndexNasdaq100Stocks;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 import FireBirdLib.Market;
-import FinnhubInquiryType;
+import FireBirdLib.FinnhubInquiryType;
 
 using std::make_shared;
 

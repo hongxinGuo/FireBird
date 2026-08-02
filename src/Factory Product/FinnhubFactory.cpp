@@ -3,7 +3,7 @@ module;
 
 module FireBirdLib.Factory.Finnhub;
 
-import FinnhubInquiryType;
+import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.Stock.FinnhubStock;
 
 import FireBirdLib.Product.Finnhub.CompanyProfile;
@@ -15,6 +15,7 @@ import FireBirdLib.Product.Finnhub.CompanyInsiderSentiment;
 import FireBirdLib.Product.Finnhub.CryptoDayLine;
 import FireBirdLib.Product.Finnhub.ForexDayLine;
 import FireBirdLib.Product.Finnhub.StockDayLine;
+import FireBirdLib.Product.Finnhub.CompanySymbolChange;
 
 import FireBirdLib.Product.Finnhub.MarketStatus;
 import FireBirdLib.Product.Finnhub.MarketHoliday;
@@ -34,9 +35,8 @@ import FireBirdLib.Product.Finnhub.Type.EconomicCalendar;
 
 import FireBirdLib.Product.Dummy;
 
-import FireBirdLib.Product.Finnhub.CompanySymbolChange;
 import FireBirdLib.Product.Finnhub.SECFilings;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 import FireBirdLib.Market;
 
 using std::make_shared;

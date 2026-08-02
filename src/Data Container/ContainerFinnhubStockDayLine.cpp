@@ -4,11 +4,11 @@ module;
 
 module FireBirdLib.Container.HistoryCandle.FinnhubStockDayLine;
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Accessory.TimeConvert;
-import HistoryCandle.DayLine;
-import HistoryCandle;
+import FireBirdLib.HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle;
 
 import std;
 using std::string;

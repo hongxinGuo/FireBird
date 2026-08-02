@@ -3,8 +3,7 @@ module;
 export module FireBirdLib.Product.Finnhub.StockDayLine;
 
 import FireBirdLib.Product.Finnhub;
-
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.WebData;
 
 import std;

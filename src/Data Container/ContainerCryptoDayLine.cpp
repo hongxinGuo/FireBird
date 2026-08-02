@@ -5,10 +5,10 @@ module;
 module FireBirdLib.Container.HistoryCandle.CryptoDayLine;
 
 
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 import FireBirdLib.Stock.FinnhubCrypto;
-import HistoryCandle;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.Accessory.TimeConvert;
 
 namespace {

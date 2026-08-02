@@ -1,9 +1,9 @@
 module;
 
-export module FireBirdLib.Product.Finnhub.Conpanysymbolchange:
+export module FireBirdLib.Product.Finnhub.CompanySymbolChange;
 
 import FireBirdLib.Product.Finnhub;
-import Type.FinnhubCompanySymbolChange;
+import FireBirdLib.Type.FinnhubCompanySymbolChange;
 import FireBirdLib.WebData;
 
 import std;

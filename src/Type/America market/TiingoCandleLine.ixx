@@ -1,8 +1,8 @@
 module;
 
-export module HistoryCandle.TiingoCandleLine;
+export module FireBirdLib.HistoryCandle.TiingoCandleLine;
 
-import HistoryCandle;
+import FireBirdLib.HistoryCandle;
 
 import std;
 using std::vector;

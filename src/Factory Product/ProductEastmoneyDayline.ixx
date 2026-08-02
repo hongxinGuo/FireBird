@@ -10,7 +10,7 @@ module;
 export module FireBirdLib.Product.EastmoneyDayLine;
 
 import FireBirdLib.Product;
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.WebData;
 
 import std;

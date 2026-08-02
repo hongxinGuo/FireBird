@@ -1,19 +1,19 @@
 module;
 #include <afx.h>
 
-module WebSocket.TiingoForex;
-import SystemMessage;
+module FireBirdLib.WebSocket.TiingoForex;
+import FireBirdLib.SystemMessage;
 
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Accessory.NlohmannJson.GetValue;
 import FireBirdLib.Accessory.NlohmannJson.Declaration;
 
-import SystemConfiguration;
-import SystemData;
+import FireBirdLib.SystemConfiguration;
+import FireBirdLib.SystemData;
 import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.GlobeDef;
 
 import std;
-import GlobeDef;
 using std::make_shared;
 using std::chrono::minutes;
 using std::chrono::seconds;

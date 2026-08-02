@@ -1,7 +1,7 @@
 module;
 
 module FireBirdLib.Product.SinaRT;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 
 import FireBirdLib.Market.ChinaMarket;
 import FireBirdLib.Accessory.ChinaStockCodeConverter;

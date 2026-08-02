@@ -1,15 +1,14 @@
-#include "pch.h"
-#include "ProductTiingoForexDayLine.h"
+module;
+#include <afx.h>
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-#include "SystemMessage.h"
-
-#include"WorldMarket.h"
-#include "FireBireLib.h"
-#include"DayLine.h"
+module FireBirdLib.Product.Tiingo.ForexDayLine;
+import FireBirdLib.SystemMessage;
+import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.JsonParse;
+import FireBirdLib.Product;
 
 using namespace std;
+using std::string;
 
 CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";

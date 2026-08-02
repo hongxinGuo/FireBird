@@ -2,7 +2,7 @@ module;
 
 module FireBirdLib.Product;
 
-import HistoryCandle.DayLine;
+import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.WebData;
 
 [[nodiscard]] bool CompareDayLineDate(const CDayLine& p1, const CDayLine& p2) {
