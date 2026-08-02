@@ -5,15 +5,16 @@ module FireBirdLib.Product.Finnhub.CompanyInsiderSentiment;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.Accessory.InfoReport;
 
 import FireBirdLib.Container.Stock.FinnhubStock;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 import std;
 using std::make_shared;
+using std::vector;
 using std::string;
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {

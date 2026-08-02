@@ -12,8 +12,8 @@ module;
 
 #include"simdjson.h"
 
-module FireBirdLib.Accessory.Simdjson.GetValue;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+module FireBirdLib.Accessory.SimdjsonGetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 
 using namespace simdjson;
 

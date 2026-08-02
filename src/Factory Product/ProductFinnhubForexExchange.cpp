@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Product.Finnhub.ForexExchange;
 #include <afx.h>
 import FireBirdLib.ContainerFinnhubForexExchange;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Accessory.JsonParse;

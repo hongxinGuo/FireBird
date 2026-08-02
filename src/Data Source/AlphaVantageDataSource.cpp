@@ -2,6 +2,7 @@ module;
 #define NOMINMAX
 #include <afx.h>
 #include"sqlpp23/sqlpp23.h"
+#include"absl/log/absl_check.h"
 module FireBirdLib.DataSource.AlphaVantage;
 
 import FireBirdLib.Container.Stock.TiingoStock;
@@ -12,7 +13,6 @@ import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Factory.AlphaVantage;
 import FireBirdLib.Container.Stock.FinnhubStock;
 
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.SystemMessage;
 
@@ -51,11 +51,11 @@ bool CAlphaVantageDataSource::GenerateInquiryMessage(const local_seconds& lCurre
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请Alpha Vantage各数据。
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketAlphaVantageInquiryTime())) return false;
 	m_PrevInquireTimePoint = llTickCount;
-	//SPDLOG_ASSERT(!IsInquiring());//Todo: 无法编译
+	ABSL_CHECK(!IsInquiring());
 	if (GenerateStockSplit()) return true;
 	if (GenerateStockDayLine()) return true;
 
-	//SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (!m_fAlphaVantageDataInquiryFinished) {
 		gl_systemMessage.PushInformationMessage("Alpha Vantage data inquiry finished");
 		gl_systemMessage.SetCurrentAlphaVantageFunction("finished");

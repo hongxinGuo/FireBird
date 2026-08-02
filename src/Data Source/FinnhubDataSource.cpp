@@ -7,6 +7,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 #include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemConfiguration;
@@ -23,7 +24,6 @@ import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.ContainerStockExchange;
 import FireBirdLib.Product;
 
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;
 import FireBirdLib.Market.WorldMarket;
@@ -32,7 +32,7 @@ import FireBirdLib.Stock.FinnhubCrypto;
 import FireBirdLib.Factory.Finnhub;
 import FireBirdLib.Stock.FinnhubForex;
 
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import std;
 using std::exception;
@@ -180,9 +180,9 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	if (llTickCount <= m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
 
 	m_PrevInquireTimePoint = llTickCount;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	// Ensure we are not in the market reset window before proceeding
-	SPDLOG_ASSERT(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
+	ABSL_CHECK(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
 		|| currentTime >= GetNextTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateCompanySymbolChange()) return true; // 第一步申请股票代码更改。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	if (GenerateCountryList()) return true;
@@ -212,7 +212,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 		//InquireRTQuote()) return true;
 	}
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (!m_fFinnhubDataInquiryFinished) {
 		gl_systemMessage.PushInformationMessage("finnhub data inquiry finished");
 		gl_systemMessage.SetCurrentFinnhubFunction("finished");
@@ -443,8 +443,8 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 
 bool CFinnhubDataSource::GenerateRTQuote() {
 	static size_t s_lCurrentRTDataQuotePos = 0;
-	SPDLOG_ASSERT(!IsInquiring());
-	SPDLOG_ASSERT(gl_pWorldMarket->IsSystemReady());
+	ABSL_CHECK(!IsInquiring());
+	ABSL_CHECK(gl_pWorldMarket->IsSystemReady());
 	const CVirtualWebProductPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_);
 	product->SetIndex(s_lCurrentRTDataQuotePos);
 	StoreInquiry(product);
@@ -569,7 +569,7 @@ bool CFinnhubDataSource::GenerateForexExchange() {
 
 bool CFinnhubDataSource::GenerateForexSymbol() {
 	static size_t s_lCurrentForexExchangePos = 0;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateForexSymbol()) {
 		const CVirtualWebProductPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, FOREX_SYMBOLS_);
 		product->SetIndex(s_lCurrentForexExchangePos);
@@ -618,7 +618,7 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 
 bool CFinnhubDataSource::GenerateCryptoSymbol() {
 	static size_t s_lCurrentCryptoExchangePos = 0;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateCryptoSymbol()) {
 		const CVirtualWebProductPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		product->SetIndex(s_lCurrentCryptoExchangePos);

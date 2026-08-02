@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Product.Finnhub.StockDayLine;
 import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.Accessory.JsonParse;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.GlobeDef;
 import FireBirdLib.Product;

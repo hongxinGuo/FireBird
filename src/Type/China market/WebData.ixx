@@ -8,8 +8,7 @@
 module;
 export module FireBirdLib.WebData;
 
-
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import std;
 using std::string;

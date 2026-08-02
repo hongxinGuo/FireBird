@@ -4,7 +4,7 @@ module FireBirdLib.Stock;
 
 import FireBirdLib.StockSplit;
 import FireBirdLib.Accessory.JsonParse;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.TimeConvert;
 
 import std;

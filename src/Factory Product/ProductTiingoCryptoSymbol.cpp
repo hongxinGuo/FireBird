@@ -2,7 +2,7 @@ module;
 
 module FireBirdLib.Product.Tiingo.CryptoSymbol;
 import FireBirdLib.Container.Stock.TiingoCryptoSymbol;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.SystemConfiguration;

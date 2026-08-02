@@ -4,7 +4,7 @@ module FireBirdLib.Product.Finnhub.StockSymbol;
 import FireBirdLib.ContainerStockExchange;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Container.Stock.FinnhubStock;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;

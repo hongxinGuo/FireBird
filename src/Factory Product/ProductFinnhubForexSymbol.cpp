@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Product.Finnhub.ForexSymbol;
 import FireBirdLib.ContainerFinnhubForexExchange;
 import FireBirdLib.Container.Stock.FinnhubForexSymbol;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;

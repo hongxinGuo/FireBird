@@ -12,7 +12,7 @@ module FireBirdLib.Product.Tiingo.IEXTopOfBook;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Container.Stock.TiingoStock;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.SystemMessage;

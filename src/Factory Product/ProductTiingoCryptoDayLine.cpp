@@ -4,7 +4,7 @@ module;
 module FireBirdLib.Product.Tiingo.CryptoDayLine;
 import FireBirdLib.Container.Stock.TiingoCryptoSymbol;
 import FireBirdLib.Container.Stock.FinnhubCrypto;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Product;

@@ -4,7 +4,7 @@ export module FireBirdLib.Stock.FinnhubStock;
 
 export import FireBirdLib.Stock;
 import FireBirdLib.Container.HistoryCandle.FinnhubStockDayLine;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.Type.FinnhubCompanyNews;
 import FireBirdLib.EPSSurprise;
 import FireBirdLib.Type.InsiderTransaction;

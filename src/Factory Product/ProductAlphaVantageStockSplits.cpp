@@ -3,8 +3,8 @@ module;
 
 module FireBirdLib.Product.AlphaVantage.StockSplits;
 import FireBirdLib.Accessory.JsonParse;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Stock.TiingoStock;

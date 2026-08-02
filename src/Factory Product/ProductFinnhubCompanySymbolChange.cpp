@@ -10,11 +10,11 @@ module;
 #include <afx.h>
 
 module FireBirdLib.Product.Finnhub.CompanySymbolChange;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.Product;
 import FireBirdLib.Type.FinnhubCompanySymbolChange;
 
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemConfiguration;

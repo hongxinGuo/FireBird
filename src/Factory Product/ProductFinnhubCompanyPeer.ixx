@@ -4,7 +4,7 @@ export module FireBirdLib.Product.Finnhub.CompanyPeer;
 export import FireBirdLib.Product.Finnhub;
 
 import FireBirdLib.WebData;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 
 import std;

@@ -5,7 +5,7 @@ import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Container.Stock.TiingoSymbol;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Stock.TiingoStock;
 import FireBirdLib.Accessory.JsonParse;

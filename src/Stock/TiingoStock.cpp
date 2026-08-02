@@ -9,7 +9,7 @@ import FireBirdLib.Type.TiingoStockDailyMeta;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.SystemMessage;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import FireBirdLib.HistoryCandle.TiingoCandleLine;
 

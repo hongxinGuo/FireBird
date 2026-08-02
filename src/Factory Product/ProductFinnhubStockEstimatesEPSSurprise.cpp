@@ -2,7 +2,7 @@ module;
 
 module FireBirdLib.Product.Finnhub.StockEstimatesEPSSurprise;
 import FireBirdLib.Container.Stock.FinnhubStock;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;

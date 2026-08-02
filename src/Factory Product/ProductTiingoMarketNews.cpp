@@ -11,7 +11,7 @@ module;
 #include "simdjson.h"
 
 module FireBirdLib.Product.Tiingo.MarketNews;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.SystemMessage;

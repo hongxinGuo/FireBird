@@ -4,7 +4,7 @@ module;
 module FireBirdLib.Product.Finnhub.SECFilings;
 import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using namespace simdjson;

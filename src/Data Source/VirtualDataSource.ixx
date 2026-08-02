@@ -1,10 +1,11 @@
 module;
+#include <absl/log/absl_check.h>
+
 #include"afx.h"
 
 export module FireBirdLib.DataSource;
 
 import FireBirdLib.InternetOption;
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.WebData;
 import FireBirdLib.Product;
 
@@ -79,7 +80,7 @@ export {
 
 		template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
 		bool GenerateSimpleInquiry(int inquireType, UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
-			SPDLOG_ASSERT(!IsInquiring());
+			ABSL_CHECK(!IsInquiring());
 			if (isUpdateNeeded()) {
 				StoreInquiry(createProduct(inquireType));
 				reportMsg();
@@ -91,7 +92,7 @@ export {
 		template <typename UpdateCheck, typename ValidDate, typename SetUpdated, typename ReportMsg1, typename ProductFactory, typename ReportMsg>
 		bool GenerateSimpleInquiryWithCheck(int inquireType, ValidDate validDate, SetUpdated setUpdated, ReportMsg1 reportMsg1,
 																				UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
-			SPDLOG_ASSERT(!IsInquiring());
+			ABSL_CHECK(!IsInquiring());
 			if (isUpdateNeeded()) {
 				if (!validDate()) {
 					setUpdated();

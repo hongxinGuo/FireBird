@@ -4,9 +4,9 @@ module FireBirdLib.Product.Finnhub.ForexDayLine;
 import FireBirdLib.Container.Stock.FinnhubForexSymbol;
 import FireBirdLib.GlobeDef;
 import FireBirdLib.SystemMessage;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.Product;
 
 using namespace std;

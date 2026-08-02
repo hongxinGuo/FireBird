@@ -15,7 +15,7 @@ module;
 
 export module FireBirdLib.InaccessibleSymbol;
 
-import FireBirdLib.Accessory.NlohmannJson.Declaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+import FireBirdLib.Accessory.NlohmannJsonDeclaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.Inaccessible;
 

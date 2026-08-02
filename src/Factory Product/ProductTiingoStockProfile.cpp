@@ -8,7 +8,7 @@ import FireBirdLib.Container.Stock.TiingoSymbol;
 import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.SystemMessage;

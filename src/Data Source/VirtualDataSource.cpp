@@ -6,12 +6,13 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 #include <afx.h>
+#include <absl/log/absl_check.h>
+
 #include"concurrencpp/concurrencpp.h"
 
 module FireBirdLib.DataSource;
 
 import FireBirdLib.Log;
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.Product;
 import FireBirdLib.DataSource.InquireEngine;
 import FireBirdLib.SystemConfiguration;
@@ -51,7 +52,7 @@ void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
 ///
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
 			GenerateInquiryMessage(lMarketTime);
 			if (HaveInquiry()) {
@@ -78,8 +79,8 @@ namespace {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::InquireData() {
-	SPDLOG_ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
-	SPDLOG_ASSERT(IsInquiring());
+	ABSL_CHECK(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
+	ABSL_CHECK(IsInquiring());
 	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	int i = 0;
 	vector<concurrencpp::result<CWebDataPtr>> vResults;
@@ -121,8 +122,8 @@ void CVirtualDataSource::InquireData() {
 	}
 	auto end = time_point_cast<milliseconds>(steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());
-	SPDLOG_ASSERT(!HaveInquiry());
-	SPDLOG_ASSERT(IsInquiring());  //至此尚未重置此标识
+	ABSL_CHECK(!HaveInquiry());
+	ABSL_CHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 
@@ -135,7 +136,7 @@ void CVirtualDataSource::SetDefaultSessionOption() {
 }
 
 void CVirtualDataSource::CreateCurrentInquireString() {
-	SPDLOG_ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_CHECK(m_pCurrentProduct != nullptr);
 	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
 	CreateTotalInquiringString();
 }

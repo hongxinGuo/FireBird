@@ -22,14 +22,14 @@ import FireBirdLib.Accessory.InfoReport;
 import FireBirdLib.Thread;
 import FireBirdLib.HistoryCandle.DayLine;
 
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 
 import FireBirdLib.SystemMessage;
 
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.Container.Stock.ChinaStock;
 import FireBirdLib.SystemData;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 
 using namespace concurrencpp;
 using namespace simdjson;

@@ -6,8 +6,8 @@ import FireBirdLib.SystemData;
 import FireBirdLib.SystemMessage;
 
 import FireBirdLib.Accessory.JsonParse;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.DataSource.Tiingo;

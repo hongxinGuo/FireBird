@@ -4,7 +4,6 @@ module;
 module FireBirdLib.WebSocket;
 
 import FireBirdLib.Log;
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Thread;

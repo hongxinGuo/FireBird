@@ -2,7 +2,7 @@ module;
 
 #include"nlohmann/json.hpp"
 
-export module FireBirdLib.Accessory.NlohmannJson.Declaration;
+export module FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import std;
 using std::shared_ptr;

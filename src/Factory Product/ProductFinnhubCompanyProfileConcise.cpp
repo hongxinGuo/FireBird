@@ -4,7 +4,7 @@ module;
 module FireBirdLib.Product.Finnhub.CompanyProfileConcise;
 import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Stock.TiingoStock;

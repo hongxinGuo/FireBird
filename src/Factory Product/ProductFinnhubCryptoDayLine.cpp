@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Product.Finnhub.CryptoDayLine;
 import FireBirdLib.Container.Stock.FinnhubCrypto;
 import FireBirdLib.GlobeDef;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Product;

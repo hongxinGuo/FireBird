@@ -4,7 +4,7 @@ module FireBirdLib.Product.Finnhub.CompanyInsiderTransaction;
 import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.GlobeDef;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Accessory.JsonParse;
 

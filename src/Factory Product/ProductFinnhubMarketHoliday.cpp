@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Product.Finnhub.MarketHoliday;
 import FireBirdLib.ContainerStockExchange;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Accessory.TimeConvert;
 

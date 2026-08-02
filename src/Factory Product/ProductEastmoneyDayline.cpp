@@ -7,7 +7,7 @@ module FireBirdLib.Product.EastmoneyDayLine;
 
 import FireBirdLib.Container.Stock.ChinaStock;
 import FireBirdLib.HistoryCandle.DayLine;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import FireBirdLib.DataSource.EastmoneyDayLine;
 import FireBirdLib.Accessory.JsonParse;

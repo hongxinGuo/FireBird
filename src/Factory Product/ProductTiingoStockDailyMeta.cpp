@@ -13,7 +13,7 @@ import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Log;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using namespace simdjson;

@@ -7,8 +7,8 @@ module;
 module FireBirdLib.Product.IndexNasdaq100Stocks;
 
 import FireBirdLib.DataSource.Accessory;
-import FireBirdLib.Accessory.Simdjson.GetValue;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 
 import FireBirdLib.WebData;
 

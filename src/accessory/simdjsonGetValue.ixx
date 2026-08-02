@@ -1,17 +1,18 @@
 module;
-
-#include"stdafx.h"
 #include"simdjson.h"
 
-export module FireBirdLib.Accessory.Simdjson.GetValue;
+export module FireBirdLib.Accessory.SimdjsonGetValue;
 
 using namespace simdjson;
 
 import std;
 using std::string_view;
+using std::string;
+using std::uint64_t;
 
 export {
-	inline ondemand::array gl_simdjsonEmptyArray;
+	/*
+	inline simdjson::ondemand::array gl_simdjsonEmptyArray;
 
 	void CreateSimdjsonEmptyArray();
 
@@ -19,11 +20,10 @@ export {
 	[[nodiscard]] double simdjsonGetDouble(ondemand::object& object, const string_view& key, double defaultValue = 0.0);
 	[[nodiscard]] double simdjsonGetDouble(ondemand::document& document, const string_view& key, double defaultValue = 0.0);
 	[[nodiscard]] double simdjsonGetDouble(ondemand::value& value, double defaultValue = 0.0);
-
-	[[nodiscard]] INT64 simdjsonGetInt64(ondemand::value& value, const string_view& key, INT64 defaultValue = 0);
-	[[nodiscard]] INT64 simdjsonGetInt64(ondemand::object& object, const string_view& key, INT64 defaultValue = 0);
-	[[nodiscard]] INT64 simdjsonGetInt64(ondemand::document& document, const string_view& key, INT64 defaultValue = 0);
-	[[nodiscard]] INT64 simdjsonGetInt64(ondemand::value& value, INT64 defaultValue = 0);
+	[[nodiscard]] int64_t simdjsonGetInt64(ondemand::value& value, const string_view& key, int64_t defaultValue = 0);
+	[[nodiscard]] int64_t simdjsonGetInt64(ondemand::object& object, const string_view& key, int64_t defaultValue = 0);
+	[[nodiscard]] int64_t simdjsonGetInt64(ondemand::document& document, const string_view& key, int64_t defaultValue = 0);
+	[[nodiscard]] int64_t simdjsonGetInt64(ondemand::value& value, int64_t defaultValue = 0);
 
 	[[nodiscard]] bool simdjsonGetBool(ondemand::value& value, const string_view& key, bool defaultValue = false);
 	[[nodiscard]] bool simdjsonGetBool(ondemand::object& object, const string_view& key, bool defaultValue = false);
@@ -43,5 +43,5 @@ export {
 	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::value& value, const string_view& key);
 	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::object& object, const string_view& key);
 	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::document& doc, const string_view& key);
-	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::value& value);
+	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::value& value);*/
 }

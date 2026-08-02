@@ -10,6 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
 #include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.TengxunDayLine;
 
@@ -21,7 +22,6 @@ import FireBirdLib.Product.TengxunDayLine;
 import FireBirdLib.Market.ChinaMarket;
 import FireBirdLib.Container.Stock.ChinaStock;
 import FireBirdLib.DataSource.EastmoneyDayLine;
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;
@@ -118,7 +118,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 		}
 		if (fFound) {
 			const vector<CVirtualWebProductPtr> vProduct = CreateProduct(pStock);
-			SPDLOG_ASSERT(!vProduct.empty());
+			ABSL_CHECK(!vProduct.empty());
 			for (auto& product : vProduct) {
 				StoreInquiry(product);
 			}

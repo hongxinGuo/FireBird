@@ -7,7 +7,7 @@ module FireBirdLib.Product.Tiingo.FinancialState;
 import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Type.TiingoCompanyFinancialState;
 import FireBirdLib.Product;
 

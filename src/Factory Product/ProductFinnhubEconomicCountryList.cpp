@@ -2,11 +2,11 @@ module;
 
 module FireBirdLib.Product.Finnhub.EconomicCountryList;
 import FireBirdLib.ContainerFinnhubCountry;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemMessage;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 using std::make_shared;
 

@@ -3,11 +3,12 @@ module;
 module FireBirdLib.Product.Finnhub.MarketStatus;
 import FireBirdLib.ContainerStockExchange;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;
 using std::string;
+using std::vector;
 
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-status?exchange=";

@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Product.Finnhub.CompanyProfile;
 import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.Market.WorldMarket;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using std::string;

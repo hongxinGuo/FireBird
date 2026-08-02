@@ -3,7 +3,7 @@ module;
 
 module FireBirdLib.Product.Tiingo.ForexDayLine;
 import FireBirdLib.SystemMessage;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Product;
 

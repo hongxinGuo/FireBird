@@ -3,7 +3,7 @@ module;
 
 export module FireBirdLib.Stock;
 
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.StockSplit;
 import FireBirdLib.HistoryCandle;
 import FireBirdLib.Container.HistoryCandle;

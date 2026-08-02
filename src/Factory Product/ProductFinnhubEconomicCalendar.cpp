@@ -11,13 +11,13 @@ module;
 
 module FireBirdLib.Product.Finnhub.Type.EconomicCalendar;
 import FireBirdLib.ContainerFinnhubEconomicCalendar;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Product;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 using std::make_shared;
 using std::string;

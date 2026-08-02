@@ -5,7 +5,6 @@ module FireBirdLib.DataSource.Accessory;
 import FireBirdLib.Factory.Accessory;
 import FireBirdLib.Product;
 import FireBirdLib.FinnhubInquiryType;
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Market.WorldMarket;
 

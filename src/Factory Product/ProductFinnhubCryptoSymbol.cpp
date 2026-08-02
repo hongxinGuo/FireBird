@@ -3,7 +3,7 @@ module;
 module FireBirdLib.Product.Finnhub.CryptoSymbol;
 import FireBirdLib.ContainerFinnhubCryptoExchange;
 import FireBirdLib.Container.Stock.FinnhubCrypto;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;

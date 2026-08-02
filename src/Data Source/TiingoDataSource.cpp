@@ -1,11 +1,12 @@
 module;
 #include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.Tiingo;
 
-import FireBird.Log;
+import FireBirdLib.Log;
 import FireBirdLib.SystemMessage;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.DatabaseConnector;
 
 import FireBirdLib.FinnhubInquiryType;
@@ -16,7 +17,6 @@ import FireBirdLib.Container.Stock.TiingoSymbol;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.TiingoStock;
 
-import FireBirdLib.SpdlogAssert;
 import FireBirdLib.InaccessibleSymbol;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Factory.Tiingo;
@@ -460,9 +460,9 @@ bool CTiingoDataSource::GenerateInquiryMessage(const local_seconds& currentTime)
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;
 
 	m_PrevInquireTimePoint = llTickCount;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	// Ensure we are not in the market reset window before proceeding
-	SPDLOG_ASSERT(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
+	ABSL_CHECK(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
 		|| currentTime >= GetNextTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	if (GenerateFundamentalDefinition()) return true;
@@ -476,7 +476,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const local_seconds& currentTime)
 		if (GenerateFinancialState()) return true;
 	}
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	gl_systemMessage.SetCurrentTiingoFunction("idling");
 	return false;
 }
@@ -572,7 +572,7 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
 		size_t currentUpdatePos;
 		bool fFound = false;
@@ -615,7 +615,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
 		size_t currentUpdatePos;
 		bool fFound = false;
@@ -654,7 +654,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
 		size_t currentUpdatePos;
 		bool fFound = false;
@@ -689,14 +689,14 @@ bool CTiingoDataSource::GenerateChosenStockDayLine() {
 	size_t lStockSetSize = gl_dataContainerTiingoChosenStock.Size();
 	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateChosenStockDayLine()) {
 		CTiingoStockPtr pTiingoStock;
 		bool fFound = false;
 		for (size_t currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoChosenStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
-				SPDLOG_ASSERT(pTiingoStock->IsActive()); // 活跃股票？
+				ABSL_CHECK(pTiingoStock->IsActive()); // 活跃股票？
 				fFound = true;
 				break;
 			}
@@ -733,7 +733,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateDayLine()) {
 		size_t currentUpdatePos;
 		CTiingoStockPtr pTiingoStock;
@@ -741,7 +741,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
-				SPDLOG_ASSERT(pTiingoStock->IsActive()); // 活跃股票？
+				ABSL_CHECK(pTiingoStock->IsActive()); // 活跃股票？
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户下载所有股票的日线
 					fFound = true;
 					break;
@@ -779,7 +779,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_FINANCIAL_STATEMENT_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_CHECK(!IsInquiring());
 	if (IsUpdateFinancialState()) {
 		size_t currentUpdatePos;
 		bool fFound = false;

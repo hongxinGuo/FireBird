@@ -25,7 +25,7 @@ import FireBirdLib.InaccessibleSymbol;
 import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.Market.WorldMarket;
 
-import FireBirdLib.Accessory.Simdjson.GetValue;
+import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Thread;
 import FireBirdLib.CharSetTransfer;
 import FireBirdLib.GlobeDef;

@@ -1,11 +1,17 @@
 module;
+#include <stdexcept>
 
 module FireBirdLib.Product.Tiingo;
 import FireBirdLib.InaccessibleSymbol;
 import FireBirdLib.Inaccessible;
 import FireBirdLib.DataSource.Tiingo;
+import FireBirdLib.FinnhubInquiryType;
+import FireBirdLib.WebData;
 
 using std::make_shared;
+using std::out_of_range;
+using std::shared_ptr;
+using std::vector;
 
 void CProductTiingo::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
 	for (const auto& pWebData : *pvWebData) {

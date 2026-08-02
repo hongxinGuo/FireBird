@@ -3,11 +3,11 @@ module;
 module FireBirdLib.Product.Finnhub.CryptoExchange;
 
 import FireBirdLib.ContainerFinnhubCryptoExchange;
-import FireBirdLib.Accessory.NlohmannJson.GetValue;
+import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemMessage;
-import FireBirdLib.Accessory.NlohmannJson.Declaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 using std::string;
 using std::make_shared;
