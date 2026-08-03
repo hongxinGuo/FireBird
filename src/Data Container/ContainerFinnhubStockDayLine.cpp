@@ -8,7 +8,7 @@ import FireBirdLib.DatabaseConnector;
 import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.HistoryCandle.DayLine;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 
 import std;
 using std::string;

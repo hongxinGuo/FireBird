@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Stock.FinnhubCrypto;
 
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 
 import FireBirdLib.Container.HistoryCandle.CryptoDayLine;
 import FireBirdLib.HistoryCandle.DayLine;

@@ -7,7 +7,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/daily_file_sink.h>
 
-import SystemPublicDeclaration;
+import FireBirdLib.SystemPublicDeclaration;
 
 using namespace std;
 

@@ -33,7 +33,7 @@ export {
 		void CheckWebData(const CWebDataPtr& pWebData) override;
 
 		void CreateCurrentInquireString() override;
-		void UpdateStatus(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
+		void UpdateStatus(const CWebDataPtr& pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
 		virtual bool Inquire();
 		shared_ptr<CVirtualWebProduct> CreateProduct(const shared_ptr<CChinaStock>& pStock) const;

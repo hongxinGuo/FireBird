@@ -11,7 +11,7 @@ module;
 
 #include <intsafe.h>
 #include <absl/log/absl_check.h>
-export module FireBirdLib.HistoryCandle;
+export module FireBirdLib.HistoryCandle.Virtual;
 
 import std;
 using std::string;

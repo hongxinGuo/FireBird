@@ -10,7 +10,7 @@ module;
 
 export module FireBirdLib.Container.HistoryCandle;
 
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.HistoryCandle.DayLine;
 
 import std;

@@ -3,7 +3,7 @@ module;
 export module FireBirdLib.Container.HistoryCandle.ChinaStockWeekLine;
 
 import FireBirdLib.Container.HistoryCandle;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.HistoryCandle.WeekLine;
 
 import std;

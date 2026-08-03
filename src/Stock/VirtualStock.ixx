@@ -2,11 +2,11 @@ module;
 #include <absl/log/absl_check.h>
 
 #include"nlohmann/json.hpp"
-export module FireBirdLib.Stock;
+export module FireBirdLib.Stock.Virtual;
 
 import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.StockSplit;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.Container.HistoryCandle;
 
 import std;

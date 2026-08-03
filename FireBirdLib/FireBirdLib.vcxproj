@@ -361,6 +361,7 @@
     <ClCompile Include="..\src\Stock\FinnhubForex.ixx">
       <FileType>Document</FileType>
     </ClCompile>
+    <ClCompile Include="..\src\Stock\Stock.ixx" />
     <ClCompile Include="..\src\Stock\TiingoCrypto.ixx">
       <FileType>Document</FileType>
     </ClCompile>
@@ -382,6 +383,8 @@
     <ClCompile Include="..\src\System\Inaccessible.ixx">
       <FileType>Document</FileType>
     </ClCompile>
+    <ClCompile Include="..\src\Type\HistoryCandle.ixx" />
+    <ClCompile Include="..\src\WebSocket\WebSocket.ixx" />
     <ClInclude Include="..\Lib\simdjson\simdjson.h">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsHeaderUnit</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">CompileAsHeaderUnit</CompileAs>

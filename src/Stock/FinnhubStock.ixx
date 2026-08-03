@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Stock.FinnhubStock;
 
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 import FireBirdLib.Container.HistoryCandle.FinnhubStockDayLine;
 import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.Type.FinnhubCompanyNews;

@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.HistoryCandle.TiingoCandleLine;
 
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 
 import std;
 using std::vector;

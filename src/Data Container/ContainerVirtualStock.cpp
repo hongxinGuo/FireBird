@@ -2,7 +2,7 @@ module;
 
 module FireBirdLib.Container.Stock;
 
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 
 import std;
 using std::vector;

@@ -7,7 +7,7 @@ module FireBirdLib.Container.HistoryCandle.ForexDayLine;
 
 import FireBirdLib.DatabaseConnector;
 import FireBirdLib.Stock.FinnhubForex;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.HistoryCandle.TiingoCandleLine;
 import FireBirdLib.Accessory.TimeConvert;

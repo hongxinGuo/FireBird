@@ -12,7 +12,7 @@ import FireBirdLib.Accessory.ChinaStockCodeConverter;
 import FireBirdLib.Accessory.InfoReport;
 
 import FireBirdLib.Market.ChinaMarket;
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 import FireBirdLib.Stock.ChinaStock;
 import FireBirdLib.SystemMessage;
 

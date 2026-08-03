@@ -6,7 +6,7 @@ module;
 module FireBirdLib.Container.HistoryCandle.ChinaStockDayLine;
 
 import FireBirdLib.Accessory.TimeConvert;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.Stock.ChinaStock;
 import FireBirdLib.HistoryCandle.WeekLine;
 import FireBirdLib.DatabaseConnector;

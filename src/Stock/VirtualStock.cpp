@@ -1,6 +1,6 @@
 module;
 
-module FireBirdLib.Stock;
+module FireBirdLib.Stock.Virtual;
 
 import FireBirdLib.StockSplit;
 import FireBirdLib.Accessory.JsonParse;

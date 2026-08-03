@@ -3,7 +3,7 @@ module;
 export module FireBirdLib.Container.Stock;
 
 import FireBirdLib.Container;
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 
 import std;
 using std::unordered_map;

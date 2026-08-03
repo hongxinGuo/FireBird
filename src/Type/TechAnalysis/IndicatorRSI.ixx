@@ -4,7 +4,7 @@ module;
 export module FireBirdLib.IndicatorRSI;
 
 import FireBirdLib.Container.HistoryCandle;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 
 import std;
 using std::vector;

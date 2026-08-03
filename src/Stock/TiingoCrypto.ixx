@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Stock.TiingoCrypto;
 
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 
 import std;
 using std::string;

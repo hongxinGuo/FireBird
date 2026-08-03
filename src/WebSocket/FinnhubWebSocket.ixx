@@ -2,7 +2,7 @@ module;
 #include <ixwebsocket/IXWebSocket.h>
 
 export module FireBirdLib.WebSocket.Finnhub;
-import FireBirdLib.WebSocket;
+import FireBirdLib.WebSocket.Virtual;
 
 import std;
 using std::string;

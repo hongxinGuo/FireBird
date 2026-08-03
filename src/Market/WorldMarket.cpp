@@ -15,7 +15,6 @@ import FireBirdLib.SystemMessage;
 import FireBirdLib.Thread;
 import FireBirdLib.InaccessibleSymbol;
 import FireBirdLib.MarketTask;
-import FireBirdLib.Stock;
 
 import FireBirdLib.DataSource.Accessory;
 import FireBirdLib.DataSource.AlphaVantage;
@@ -40,6 +39,7 @@ import FireBirdLib.Stock.FinnhubCrypto;
 import FireBirdLib.Stock.FinnhubStock;
 import FireBirdLib.Stock.TiingoStock;
 import FireBirdLib.Stock.FinnhubForex;
+import FireBirdLib.Stock.Virtual;
 
 import FireBirdLib.Container.Stock.FinnhubStock;
 import FireBirdLib.Container.Stock.ChosenCrypto;

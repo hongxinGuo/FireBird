@@ -7,9 +7,12 @@ module FireBirdLib.Container.HistoryCandle.CryptoDayLine;
 
 import FireBirdLib.DatabaseConnector;
 import FireBirdLib.Stock.FinnhubCrypto;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.Accessory.TimeConvert;
+
+using namespace std;
+using namespace std::chrono;
 
 namespace {
 	CFinnhubCrypto s_stock;

@@ -6,7 +6,7 @@ import FireBirdLib.Market;
 import FireBirdLib.GlobeDef;
 import FireBirdLib.WebRTData;
 import FireBirdLib.Accessory.TimeConvert;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.Stock.ChinaStock;
 
 

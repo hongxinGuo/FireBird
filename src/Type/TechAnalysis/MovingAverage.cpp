@@ -1,7 +1,7 @@
 module;
 
 module FireBirdLib.MovingAverage;
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.Container;
 
 using std::vector;

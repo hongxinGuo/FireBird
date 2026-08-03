@@ -196,7 +196,7 @@ void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	}
 }
 
-void CEastmoneyDayLineDataSource::UpdateStatus( CWebDataPtr pData) {
+void CEastmoneyDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

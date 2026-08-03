@@ -6,6 +6,9 @@ module FireBirdLib.ContainerFinnhubCryptoExchange;
 
 import FireBirdLib.DatabaseConnector;
 
+using namespace std;
+using namespace std::chrono;
+
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();
 }

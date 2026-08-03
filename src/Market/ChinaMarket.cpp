@@ -26,7 +26,7 @@ import FireBirdLib.DataSource.TengxunDayLine;
 import FireBirdLib.DataSource.TengxunRT;
 
 import FireBirdLib.DayLineWebData;
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 
 import FireBirdLib.Container.Stock.ChinaStock;
 import FireBirdLib.ContainerStockExchange;

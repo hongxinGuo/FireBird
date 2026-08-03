@@ -13,7 +13,7 @@ module;
 
 export module FireBirdLib.WebSocket.TiingoIEX;
 
-import FireBirdLib.WebSocket;
+import FireBirdLib.WebSocket.Virtual;
 import std;
 using std::string;
 using std::vector;

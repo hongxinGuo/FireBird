@@ -4,7 +4,7 @@ module;
 module FireBirdLib.IndicatorBoll;
 
 
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.Container.HistoryCandle;
 import FireBirdLib.DatabaseConnector;
 

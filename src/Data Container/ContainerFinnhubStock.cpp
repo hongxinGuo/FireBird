@@ -17,7 +17,7 @@ import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.DatabaseConnector;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Stock.FinnhubStock;
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 import FireBirdLib.Accessory.TimeConvert;
 
 using namespace std;

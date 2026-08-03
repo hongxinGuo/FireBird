@@ -1148,5 +1148,14 @@
     <ClCompile Include="..\src\System\Initialization.ixx">
       <Filter>头文件\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\WebSocket\WebSocket.ixx">
+      <Filter>头文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\Stock.ixx">
+      <Filter>头文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\HistoryCandle.ixx">
+      <Filter>头文件\Type</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@ module;
 #include <absl/log/absl_check.h>
 module FireBirdLib.Container.HistoryCandle;
 
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.HistoryCandle.DayLine;
 
 import FireBirdLib.Accessory.TimeConvert;

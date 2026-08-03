@@ -2,9 +2,9 @@ module;
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
 export module FireBirdLib.Stock.ChinaStock;
-import FireBirdLib.Stock;
+import FireBirdLib.Stock.Virtual;
 
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.Container.HistoryCandle;
 import FireBirdLib.Container.HistoryCandle.ChinaStockDayLine;
 import FireBirdLib.WebRTData;

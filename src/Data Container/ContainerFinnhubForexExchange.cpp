@@ -6,6 +6,9 @@ module FireBirdLib.ContainerFinnhubForexExchange;
 import FireBirdLib.Accessory.InfoReport;
 import FireBirdLib.DatabaseConnector;
 
+using namespace std;
+using namespace std::chrono;
+
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
 	Reset();
 }

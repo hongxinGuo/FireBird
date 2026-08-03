@@ -3,7 +3,7 @@ module;
 #include <afxwin.h>
 export module FireBirdLib.IndicatorBoll;
 
-import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle.Virtual;
 import FireBirdLib.Container.HistoryCandle;
 
 import std;

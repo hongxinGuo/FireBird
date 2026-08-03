@@ -2,7 +2,7 @@ module;
 #include <ATLComMem.h>
 #include <absl/log/absl_check.h>
 
-module FireBirdLib.WebSocket;
+module FireBirdLib.WebSocket.Virtual;
 
 import FireBirdLib.Log;
 import FireBirdLib.SystemConfiguration;

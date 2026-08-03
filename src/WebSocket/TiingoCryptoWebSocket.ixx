@@ -11,7 +11,7 @@ module;
 
 export module FireBirdLib.WebSocket.TiingoCrypto;
 
-import FireBirdLib.WebSocket;
+import FireBirdLib.WebSocket.Virtual;
 
 import std;
 using std::vector;
