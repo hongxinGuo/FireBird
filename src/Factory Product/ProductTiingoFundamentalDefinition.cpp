@@ -9,9 +9,8 @@ import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.SystemMessage;
 
 using namespace simdjson;
-
-using std::make_shared;
-using std::string_view;
+using namespace std;
+using namespace std::chrono;
 
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/definitions?";

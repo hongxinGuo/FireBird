@@ -8,7 +8,8 @@ import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
-using std::make_shared;
+using namespace std;
+using namespace std::chrono;
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/country?";

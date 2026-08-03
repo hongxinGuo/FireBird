@@ -7,8 +7,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-
-#include <queue>
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
 export module FireBirdLib.SystemData;
@@ -18,6 +16,7 @@ import FireBirdLib.WebRTData;
 
 using namespace moodycamel;
 import std;
+using namespace std;
 using std::queue;
 using std::shared_ptr;
 

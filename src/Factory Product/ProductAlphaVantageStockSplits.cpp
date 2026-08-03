@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Product.AlphaVantage.StockSplits;
 import FireBirdLib.Accessory.JsonParse;
@@ -12,9 +12,7 @@ import FireBirdLib.StockSplit;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.WebData;
 
-import std;
-using std::make_shared;
-using std::istringstream;
+using namespace std;
 using std::chrono::local_days;
 
 CProductAlphaVantageStockSplits::CProductAlphaVantageStockSplits() {
@@ -28,7 +26,7 @@ CProductAlphaVantageStockSplits::CProductAlphaVantageStockSplits() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductAlphaVantageStockSplits::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	ASSERT(pStock->IsActive()); // 活跃股票
+	ABSL_CHECK(pStock->IsActive()); // 活跃股票
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + m_strInquiringSymbol;

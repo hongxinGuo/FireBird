@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Product.AlphaVantage.StockSplits;
 
-export import FireBirdLib.Product.AlphaVantage;
+import FireBirdLib.Product.AlphaVantage;
 
 import FireBirdLib.WebData;
 import FireBirdLib.StockSplit;

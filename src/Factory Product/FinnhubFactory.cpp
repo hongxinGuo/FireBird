@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Factory.Finnhub;
 
@@ -16,7 +16,6 @@ import FireBirdLib.Product.Finnhub.CryptoDayLine;
 import FireBirdLib.Product.Finnhub.ForexDayLine;
 import FireBirdLib.Product.Finnhub.StockDayLine;
 import FireBirdLib.Product.Finnhub.CompanySymbolChange;
-
 import FireBirdLib.Product.Finnhub.MarketStatus;
 import FireBirdLib.Product.Finnhub.MarketHoliday;
 
@@ -39,7 +38,7 @@ import FireBirdLib.Product.Finnhub.SECFilings;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Market;
 
-using std::make_shared;
+using namespace std;
 
 CVirtualWebProductPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualWebProductPtr p = nullptr;
@@ -159,7 +158,7 @@ CVirtualWebProductPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, 
 		break;
 	default:
 		p = make_shared<CProductDummy>();
-		TRACE(_T("未处理指令%d\n"), iInquireType);
+		ABSL_DCHECK(0) << "未处理指令" << iInquireType;
 		gl_systemMessage.PushErrorMessage("Finnhub product未实现");
 		break;
 	}

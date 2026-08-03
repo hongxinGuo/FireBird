@@ -1,5 +1,6 @@
 module;
-#include"afx.h"
+#include <absl/log/absl_check.h>
+
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 module FinnhubCrypto;
@@ -24,7 +25,7 @@ CFinnhubCrypto::CFinnhubCrypto() {
 }
 
 void CFinnhubCrypto::SetCheckingDayLineStatus() {
-	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
+	ABSL_CHECK(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	// 不再更新日线数据比上上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
 	if (gl_pWorldMarket->GetLastTradeDate() <= GetDayLineEndDate()) {
 		// 最新日线数据为今日或者上一个交易日的数据。
@@ -97,7 +98,7 @@ bool CFinnhubCrypto::IsDayLineDuplicated() noexcept {
 }
 
 void CFinnhubCrypto::DeleteDuplicatedDayLine() noexcept {
-	ASSERT(!m_pDayLines->Empty());
+	ABSL_CHECK(!m_pDayLines->Empty());
 	using namespace StockMarket;
 	const auto& t = FinnhubCryptoDayline{};
 	auto db = gl_dbStockMarket.get();

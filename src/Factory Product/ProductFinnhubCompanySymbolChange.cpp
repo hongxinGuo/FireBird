@@ -7,7 +7,7 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Product.Finnhub.CompanySymbolChange;
 import FireBirdLib.Accessory.NlohmannJsonDeclaration;
@@ -20,9 +20,7 @@ import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.SystemMessage;
 
-import std;
-using std::make_shared;
-using std::string;
+using namespace std;
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?from=2020-01-01&to=2026-12-31&";
@@ -30,7 +28,7 @@ CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
 
 string CProductFinnhubCompanySymbolChange::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
-	ASSERT(m_strInquiringExchange == "ALL");
+	ABSL_CHECK(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strInquiry;
 }

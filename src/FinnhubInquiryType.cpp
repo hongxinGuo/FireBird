@@ -1,6 +1,5 @@
 module;
-
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.SystemConfiguration;
@@ -9,11 +8,11 @@ import std;
 using std::string;
 
 CFinnhubInquiryType::CFinnhubInquiryType() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("XferFinnhubInquiryType全局变量只允许存在一个实例\n"));
+		ABSL_DCHECK(1) << "XferFinnhubInquiryType全局变量只允许存在一个实例\n";
 #ifdef _DEBUG
-		ASSERT(FALSE);
+		ABSL_CHECK(0);
 #endif // _DEBUG
 	}
 

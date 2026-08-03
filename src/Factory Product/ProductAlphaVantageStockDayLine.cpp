@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Product.AlphaVantage.StockDayLine;
 import FireBirdLib.Accessory.JsonParse;
@@ -30,7 +30,7 @@ CProductAlphaVantageStockDayLine::CProductAlphaVantageStockDayLine() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductAlphaVantageStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	ASSERT(pStock->IsActive()); // 活跃股票
+	ABSL_CHECK(pStock->IsActive()); // 活跃股票
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + m_strInquiringSymbol;

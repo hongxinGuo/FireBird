@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
 #include <afxwin.h>
+#include <absl/log/absl_check.h>
 
 export module FireBirdLib.Container.HistoryCandle;
 
@@ -37,10 +37,10 @@ export {
 		void Unload() noexcept { Reset(); }
 
 		// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
-		virtual void SaveDB(const string&) { ASSERT(0); }
-		virtual void LoadDB(const string&) { ASSERT(0); }
+		virtual void SaveDB(const string&) { ABSL_CHECK(0); }
+		virtual void LoadDB(const string&) { ABSL_CHECK(0); }
 
-		virtual void SplitAdjust() { ASSERT(0); } // 拆分调整
+		virtual void SplitAdjust() { ABSL_CHECK(0); } // 拆分调整
 
 		void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
 		void UpdateData(const vector<CDayLine>& vTempData);
@@ -48,7 +48,7 @@ export {
 
 		int GetRatio() const {
 			if (m_ratio == 0)
-				ASSERT(0);
+				ABSL_CHECK(0);
 			return m_ratio;
 		}
 

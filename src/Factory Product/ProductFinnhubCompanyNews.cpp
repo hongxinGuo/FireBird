@@ -9,9 +9,8 @@ import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.Accessory.TimeConvert;
 
-import std;
-using std::make_shared;
-using std::string;
+using namespace std;
+using namespace std::chrono;
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/company-news?symbol=";

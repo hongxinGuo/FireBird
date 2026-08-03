@@ -7,7 +7,6 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include"afx.h"
 #include "simdjson.h"
 
 module FireBirdLib.Product.Tiingo.MarketNews;
@@ -18,10 +17,7 @@ import FireBirdLib.SystemMessage;
 import FireBirdLib.SystemConfiguration;
 
 using namespace simdjson;
-
-using std::make_shared;
-using std::string_view;
-using std::int64_t;
+using namespace std;
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/news?";

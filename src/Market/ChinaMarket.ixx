@@ -1,6 +1,7 @@
 module;
+#include <semaphore>
 export module FireBirdLib.Market.ChinaMarket;
-export import FireBirdLib.Market;
+import FireBirdLib.Market;
 
 import FireBirdLib.GlobeDef;
 import FireBirdLib.WebRTData;

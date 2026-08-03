@@ -3,6 +3,8 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
+#include <direct.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.SystemConfiguration;
 
@@ -10,12 +12,9 @@ import FireBirdLib.Accessory.NlohmannJsonDeclaration; // 按照顺序输出json�
 import FireBirdLib.DataSource.SinaRT;
 import FireBirdLib.DataSource.TengxunRT;
 import FireBirdLib.Accessory.TimeConvert;
-#include <afx.h>
-#include <direct.h>
 
-using std::fstream;
-
-import std;
+using namespace std;
+using namespace std::chrono;
 using std::literals::chrono_literals::operator""ms;
 
 bool CSystemConfiguration::sm_bInitialized = false;
@@ -96,11 +95,11 @@ std::string gl_sSystemConfiguration = R"(
 
 // 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
 CSystemConfiguration::CSystemConfiguration() {
-	ASSERT(!sm_bInitialized); // 只生成唯一实例
+	ABSL_CHECK(!sm_bInitialized); // 只生成唯一实例
 	if (sm_bInitialized) {
-		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
+		ABSL_DCHECK(1) << "GlobeOption全局变量只允许存在一个实例";
 #ifdef _DEBUG
-		ASSERT(FALSE);
+		ABSL_CHECK(0);
 #endif // _DEBUG
 	}
 	sm_bInitialized = true;
@@ -173,7 +172,7 @@ void CSystemConfiguration::Update(shared_ptr<nlohmannJson> pJsonData) {
 	}
 	try {
 		m_iBackgroundThreadPermittedNumber = pJsonData->at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
-		m_iBackgroundThreadPermittedNumber = min(m_iBackgroundThreadPermittedNumber, 16);
+		m_iBackgroundThreadPermittedNumber = std::min(m_iBackgroundThreadPermittedNumber, 16);
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}

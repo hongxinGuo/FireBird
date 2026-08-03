@@ -5,13 +5,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
 #include <absl/log/absl_check.h>
-
 #include"concurrencpp/concurrencpp.h"
 
-module FireBirdLib.DataSource;
-
+module FireBirdLib.DataSource.Virtual;
+import FireBirdLib.WebData;
 import FireBirdLib.Log;
 import FireBirdLib.Product;
 import FireBirdLib.DataSource.InquireEngine;
@@ -21,12 +19,8 @@ import FireBirdLib.SystemMessage;
 import FireBirdLib.Thread;
 import FireBirdLib.WebData;
 
-import std;
-using std::atomic;
-using std::binary_semaphore;
-using std::make_shared;
-using std::vector;
-using std::chrono::milliseconds;
+using namespace std;
+using namespace std::chrono;
 
 atomic<int64_t> CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic<int64_t> CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
@@ -75,7 +69,6 @@ namespace {
 //Note 只能使用thread_pool_executor或者background_executor，不能使用thread_executor。
 //Note 20250227, 现在似乎可以使用thread_executor了，原因不明。
 //
-//Note MFC的ASSERT()、TRACE等函数不是线程安全的，在多线程环境下不能使用这些函数。使用自制的spdlog断言。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::InquireData() {
@@ -88,13 +81,12 @@ void CVirtualDataSource::InquireData() {
 		GetCurrentProduct();
 		CreateCurrentInquireString();
 		if (m_bConcurrentForbid) {
-			Sleep(1000);
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			s_InquiryWebData.acquire();
-			TRACE("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol().c_str(), ++i);
 		}
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
-			auto pWebData = pEngine->GetWebData();
+			CWebDataPtr pWebData = pEngine->GetWebData();
 			SetWebErrorCode(pEngine->GetErrorCode());
 			SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
 			if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);

@@ -1,5 +1,6 @@
 module;
-#include <afx.h>
+#include <ATLComMem.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.WebSocket;
 
@@ -34,11 +35,11 @@ void CVirtualWebSocket::Reset() {
 
 void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol) {
 	if (IsConnecting()) { // 如果正在连接，则不再生成第二个连接
-		TRACE(_T("WebSocket正在连接中，不再生成第二个连接\n"));
+		ABSL_DCHECK(1) << "WebSocket正在连接中，不再生成第二个连接";
 		gl_dailyWebSocketLogger->info("{} WebSocket正在连接中，不再生成第二个连接", m_url);
 		return;
 	}
-	TRACE("TaskConnectAndSendMessage\n");
+	ABSL_DCHECK(1) << "TaskConnectAndSendMessage";
 	gl_dailyWebSocketLogger->info("{} TaskConnectAndSendMessage", m_url);
 	gl_runtime.thread_executor()->post([this, vSymbol] {
 		this->GetShared()->ConnectAndSendMessage(vSymbol);
@@ -53,11 +54,11 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol)
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualWebSocket::ConnectAndSendMessage(const vector<string>& vSymbol) {
-	//ASSERT(IsClosed());
+	//ABSL_CHECK(IsClosed());
 	try {
 		AppendSymbol(vSymbol);
 		Connect();
-		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
+		//ABSL_CHECK(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) {
 			if (gl_systemConfiguration.IsExitingSystem()) return false;
 			Sleep(1);
@@ -106,7 +107,7 @@ bool CVirtualWebSocket::IsIdle(time_t tPeriod) const {
 void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
-	ASSERT(IsClosed());
+	ABSL_CHECK(IsClosed());
 	TLSOption.tls = true;
 	m_webSocket.setTLSOptions(TLSOption);
 
@@ -128,7 +129,7 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	StartWebSocket();
-	ASSERT(!IsOpen()); // StartWebSocket()是异步的
+	ABSL_CHECK(!IsOpen()); // StartWebSocket()是异步的
 }
 
 void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vector<string>& vSymbol) {

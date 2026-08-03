@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.EastmoneyDayLine;
 
-export import FireBirdLib.DataSource;
+import FireBirdLib.DataSource.Virtual;
 import FireBirdLib.WebData;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.ChinaStock;
@@ -33,7 +33,7 @@ export {
 		void CheckWebData(const CWebDataPtr& pWebData) override;
 
 		void CreateCurrentInquireString() override;
-		void UpdateStatus(const CWebDataPtr& pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
+		void UpdateStatus(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
 		virtual bool Inquire();
 		shared_ptr<CVirtualWebProduct> CreateProduct(const shared_ptr<CChinaStock>& pStock) const;

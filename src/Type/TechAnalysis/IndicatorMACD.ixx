@@ -1,9 +1,6 @@
 module;
-
 #include <afxwin.h>
 #include <limits>
-
-#include"afx.h"
 
 export module FireBirdLib.IndicatorMACD;
 

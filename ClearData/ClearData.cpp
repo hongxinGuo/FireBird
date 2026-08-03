@@ -1,10 +1,11 @@
 ﻿#define NOMINMAX
 #include"windows.h"
 #include <iostream>
+#include"sqlpp23/sqlpp23.h"
+#include"sqlpp23/mysql/mysql.h"
 #include "StockMarketSQLTable.h"
 
-import sqlpp23.core;
-import DatabaseConnector;
+import FireBirdLib.DatabaseConnector;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///

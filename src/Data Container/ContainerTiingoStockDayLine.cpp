@@ -20,7 +20,7 @@ CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
 }
 
 void CContainerTiingoStockDayLine::SaveDB(const string& strSymbol) {
-	ASSERT(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
+	ABSL_CHECK(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
 
 	using namespace StockMarket;
@@ -115,7 +115,7 @@ void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStoc
 }
 
 void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
-	//	ASSERT(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
+	//	ABSL_CHECK(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
 
 	using namespace StockMarket;
@@ -192,7 +192,7 @@ struct CSplitFactor {
 };
 
 void CContainerTiingoStockDayLine::SplitAdjust() {
-	ASSERT(IsDataLoaded());
+	ABSL_CHECK(IsDataLoaded());
 
 	SetSplitAdjusted(true);
 	// 按拆分因子调整日线数据
@@ -226,7 +226,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 		if (j < vpSplitFactor.size() - 1) prevDate = vpSplitFactor.at(j + 1)->date;
 		else prevDate = local_days{ days(0) };
 
-		ASSERT(currentData->GetDate() == currentSpiltDate);
+		ABSL_CHECK(currentData->GetDate() == currentSpiltDate);
 		currentData->SetLastClose(currentData->GetLastClose() * prevFactor / currentFactor); // 拆分日只有前收盘价需要调整，其他价格不调整。
 
 		while (currentData->GetDate() > prevDate && i > 0) { // 调整拆分日之前的日线数据，直到下一个拆分日（如果有的话）

@@ -12,8 +12,8 @@ import FireBirdLib.Stock.ChinaStock;
 import FireBirdLib.DatabaseConnector;
 
 using namespace sqlpp;
-import std;
-using std::string;
+using namespace std;
+using namespace std::chrono;
 
 CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSymbol.resize(0);
@@ -127,7 +127,7 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 	for (const auto& row : result) {
 		if (!m_vStockSection.at(row.IndexNumber)->IsActive()) {
 			m_vStockSection.at(row.IndexNumber)->SetActive(row.Active);
-			m_vStockSection.at(row.IndexNumber)->SetMarket(row.FireBirdLib.Market);
+			m_vStockSection.at(row.IndexNumber)->SetMarket(row.Market);
 			m_vStockSection.at(row.IndexNumber)->SetIndexNumber(row.IndexNumber);
 			m_vStockSection.at(row.IndexNumber)->SetComment(string{ row.Comment });
 		}
@@ -145,7 +145,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 	auto tx = sqlpp::start_transaction(db);
 
 	auto result = db(sqlpp::select(all_of(t)).from(t));
-	auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.FireBirdLib.Market, t.IndexNumber, t.Comment);
+	auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.Market, t.IndexNumber, t.Comment);
 	int rows = result.size();
 	if (rows == 0) {
 		for (int i = 0; i < 2000; i++) {
@@ -153,7 +153,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 			multi_insert.add_values(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.FireBirdLib.Market = static_cast<int>(pStockSection->GetMarket()),
+				t.Market = static_cast<int>(pStockSection->GetMarket()),
 				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
 				t.Comment = pStockSection->GetComment()
 			);
@@ -166,7 +166,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 			db(update(t).set(
 				t.ID = i,
 				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.FireBirdLib.Market = static_cast<int>(pStockSection->GetMarket()),
+				t.Market = static_cast<int>(pStockSection->GetMarket()),
 				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
 				t.Comment = pStockSection->GetComment()
 			).where(t.ID == i));

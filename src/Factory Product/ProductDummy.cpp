@@ -1,6 +1,7 @@
 module;
 
 module FireBirdLib.Product.Dummy;
+using namespace std;
 
 CProductDummy::CProductDummy() {
 	m_strInquiryFunction = "";

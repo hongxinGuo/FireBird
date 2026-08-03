@@ -2,6 +2,10 @@ module;
 
 module FireBirdLib.Inaccessible;
 
+import std;
+using std::string;
+using std::vector;
+
 namespace {
 	std::string Test_gl_sFinnhubInaccessibleSymbol = R"(
 		{ "UpdateDate" : 20221205,

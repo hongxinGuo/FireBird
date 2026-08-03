@@ -7,7 +7,7 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Product.Finnhub.Type.EconomicCalendar;
 import FireBirdLib.ContainerFinnhubEconomicCalendar;
@@ -19,8 +19,8 @@ import FireBirdLib.SystemMessage;
 import FireBirdLib.Product;
 import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
-using std::make_shared;
-using std::string;
+using namespace std;
+using namespace std::chrono;
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/calendar/economic?";
@@ -28,7 +28,7 @@ CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 
 string CProductFinnhubEconomicCalendar::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
-	ASSERT(m_strInquiringExchange == "ALL");
+	ABSL_CHECK(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strInquiry;
 }

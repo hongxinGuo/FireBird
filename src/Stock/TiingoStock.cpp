@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 #include"sqlpp23/sqlpp23.h"
 #include"StockMarketSQLTable.h"
 
@@ -21,6 +21,7 @@ import FireBirdLib.StockSplit;
 import FireBirdLib.SystemConfiguration;
 
 using namespace std;
+using namespace std::chrono;
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
@@ -183,7 +184,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 }
 
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
-	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
+	ABSL_CHECK(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
 	if (pStock->m_strTiingoSector.length() > 1) m_strTiingoSector = pStock->m_strTiingoSector;
 	if (pStock->m_strTiingoIndustry.length() > 1)m_strTiingoIndustry = pStock->m_strTiingoIndustry;
 	if (pStock->m_iSicCode > 0)m_iSicCode = pStock->m_iSicCode;
@@ -347,7 +348,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days lTodayDate) {
 		m_fUpdateDayLine = false;
 		return;
 	}
-	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
+	ABSL_CHECK(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
 	m_fUpdateDayLine = true;
 }
 
@@ -593,7 +594,7 @@ void CTiingoStock::FindHighLow3(size_t endPos) {
 }
 
 int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
-	ASSERT(index >= 250);
+	ABSL_CHECK(index >= 250);
 	bool fIsNewLow = true;
 	bool fIsNewHigh = true;
 	double belowClose = dClose + numeric_limits<float>::epsilon(); // 增加一点以利于判断相同的数值。
@@ -662,7 +663,7 @@ void CTiingoStock::FindAll52WeekLowDate(size_t beginPos, size_t endPos) {
 }
 
 size_t CTiingoStock::FindCurrent52WeekLowPos(size_t beginPos, size_t endPos, double& value) const {
-	ASSERT(beginPos < endPos);
+	ABSL_CHECK(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
 	double belowCurrentValue = value - numeric_limits<float>::epsilon();
@@ -730,7 +731,7 @@ void CTiingoStock::FindAll52WeekHighDate(size_t beginPos, size_t endPos) {
 }
 
 size_t CTiingoStock::FindCurrent52WeekHighPos(size_t beginPos, size_t endPos, double& value) const {
-	ASSERT(beginPos < endPos);
+	ABSL_CHECK(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
 	auto aboveCurrentValue = value + numeric_limits<float>::epsilon();

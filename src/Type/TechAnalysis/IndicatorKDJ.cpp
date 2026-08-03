@@ -1,6 +1,6 @@
 module;
+#include <absl/log/absl_check.h>
 #include <afx.h>
-
 module FireBirdLib.IndicatorKDJ;
 import  FireBirdLib.Container.HistoryCandle;
 
@@ -17,7 +17,7 @@ import  FireBirdLib.Container.HistoryCandle;
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CIndicatorKDJ::Calculate() {
-	ASSERT(m_pvCandle != nullptr);
+	ABSL_CHECK(m_pvCandle != nullptr);
 
 	m_vKDJ.resize(m_pvCandle->Size());
 	for (int i = 0; i < m_Period; i++) {

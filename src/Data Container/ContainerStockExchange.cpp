@@ -7,7 +7,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
@@ -42,7 +42,7 @@ CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymb
 		}
 		return nullptr;
 	}
-	ASSERT(FALSE);
+	ABSL_CHECK(0);
 	return nullptr;
 }
 

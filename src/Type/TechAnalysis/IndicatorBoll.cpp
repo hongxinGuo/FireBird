@@ -1,7 +1,6 @@
 module;
+#include <ATLComMem.h>
 #include <limits>
-
-#include"afx.h"
 module FireBirdLib.IndicatorBoll;
 
 
@@ -107,7 +106,7 @@ void CIndicatorBoll::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 
 	// Determine vertical range from last `pointsToDraw` boll values
 	double dHigh = std::numeric_limits<double>::lowest();
-	double dLow = std::numeric_limits<double>::max();
+	double dLow = std::numeric_limits<double>::max_digits10();
 	const size_t startIndex = m_vBoll.size() - pointsToDraw;
 	for (size_t i = startIndex; i < m_vBoll.size(); ++i) {
 		const auto& b = m_vBoll[i];

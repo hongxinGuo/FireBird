@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Container.Stock.TiingoSymbol;
 
-export import FireBirdLib.Container.Stock;
+import FireBirdLib.Container.Stock;
 import FireBirdLib.Stock.TiingoStock;
 
 import std;

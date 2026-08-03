@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.MarketTaskQueue;
 
@@ -39,7 +39,7 @@ vector<CMarketTaskPtr> CMarketTaskQueue::GetTasks() {
 		vTask.push_back(m_vMarketTask.top());
 		m_vMarketTask.pop();
 	}
-	ASSERT(m_vMarketTask.empty());
+	ABSL_CHECK(m_vMarketTask.empty());
 	for (const auto& pTask : vTask) {
 		m_vMarketTask.push(pTask);
 	}

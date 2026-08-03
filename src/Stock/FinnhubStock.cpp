@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
@@ -14,12 +14,8 @@ import FireBirdLib.DatabaseConnector;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.SystemMessage;
 
-using std::chrono::year_month_day;
-using std::chrono::Sunday;
-using std::chrono::Saturday;
-using std::make_shared;
-using std::string;
-using std::string_view;
+using namespace std;
+using namespace std::chrono;
 using std::literals::chrono_literals::operator ""y;
 
 CFinnhubStock::CFinnhubStock() {
@@ -79,7 +75,7 @@ void CFinnhubStock::CheckProfileUpdateStatus(local_days todayDate) {
 /// 默认状态为每周更新一次
 ///
 bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
-	ASSERT(m_fUpdateCompanyNews);
+	ABSL_CHECK(m_fUpdateCompanyNews);
 	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
 		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
 			// 每星期更新一次公司新闻
@@ -104,7 +100,7 @@ bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
 bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
-	ASSERT(m_fUpdateBasicFinancial);
+	ABSL_CHECK(m_fUpdateBasicFinancial);
 	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
 		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
 			// 系统每季更新一次数据，故查询两次即可。
@@ -133,7 +129,7 @@ bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
 /// <param name="lDayOfWeek"></param>
 /// <returns></returns>
 bool CFinnhubStock::CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday lDayOfWeek) {
-	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
+	ABSL_CHECK(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 
 	if (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100)) {
 		SetUpdateDayLine(false);
@@ -286,7 +282,7 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::UpdateCompanyNewsDB() {
-	ASSERT(!m_vCompanyNews.empty());
+	ABSL_CHECK(!m_vCompanyNews.empty());
 	const size_t size = m_vCompanyNews.size();
 
 	long long cutoffDateTime = 0;

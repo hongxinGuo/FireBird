@@ -1,4 +1,5 @@
 module;
+#include"nlohmann/json.hpp"
 
 module FireBirdLib.Accessory.NlohmannJsonGetValue;
 

@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 #include"StockMarketSQLTable.h"
 #include"sqlpp23/sqlpp23.h"
 
@@ -11,8 +11,8 @@ import FireBirdLib.Stock.ChinaStock;
 import FireBirdLib.HistoryCandle.WeekLine;
 import FireBirdLib.DatabaseConnector;
 
-import std;
-using std::vector;
+using namespace std;
+using namespace std::chrono;
 
 namespace {
 	CChinaStock s_stockContainerChinaDayLine;
@@ -143,8 +143,8 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 }
 
 bool CContainerChinaStockDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
-	ASSERT(IsDataLoaded());
-	ASSERT(Size() > 0);
+	ABSL_CHECK(IsDataLoaded());
+	ABSL_CHECK(Size() > 0);
 	size_t currentDayLinePos = 0;
 
 	vWeekLine.clear();
@@ -157,8 +157,8 @@ bool CContainerChinaStockDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 }
 
 CWeekLine CContainerChinaStockDayLine::CreateNewWeekLine(size_t& currentDayLinePos) {
-	ASSERT(Size() > 0);
-	ASSERT(currentDayLinePos < Size());
+	ABSL_CHECK(Size() > 0);
+	ABSL_CHECK(currentDayLinePos < Size());
 	const auto lNextMonday = GetNextMonday(GetData(currentDayLinePos)->GetDate());
 	const auto lNewestDay = GetData(Size() - 1)->GetDate();
 	CWeekLine weekLine;

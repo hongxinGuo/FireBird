@@ -1,6 +1,7 @@
 module;
+#include <absl/log/absl_check.h>
+
 #include "StockMarketSQLTable.h"
-#include"afx.h"
 #include"sqlpp23/sqlpp23.h"
 module FireBirdLib.Container.Stock.ChinaStock;
 
@@ -19,7 +20,7 @@ import FireBirdLib.Thread;
 
 import FireBirdLib.CountableSemaphore;
 import FireBirdLib.DatabaseConnector;
-import SystemMessage;
+import FireBirdLib.SystemMessage;
 
 import std;
 using std::chrono::Monday;
@@ -99,7 +100,6 @@ long CContainerChinaStock::LoadProfileDB() {
 }
 
 void CContainerChinaStock::UpdateProfileDB() {
-	try {
 		using namespace StockMarket;
 		const auto& t = ChinaStockProfile{};
 		auto db = gl_dbStockMarket.get();
@@ -135,9 +135,6 @@ void CContainerChinaStock::UpdateProfileDB() {
 		}
 		tx.commit();
 		m_lLoadedStock = m_vStock.size();
-	} catch (CException& e) {
-		ReportInformation(e);
-	}
 }
 
 bool CContainerChinaStock::IsDayLineDBUpdated() noexcept {
@@ -179,14 +176,14 @@ string CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	}
 
 	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
-		TRACE(_T("未找到需更新日线历史数据的股票\n"));
+		ABSL_DCHECK(0) << "未找到需更新日线历史数据的股票";
 		return "";
 	}
 
 	// 找到了需申请日线历史数据的股票
 	const CChinaStockPtr pStock = GetStock(lIndex);
-	ASSERT(!pStock->IsUpdateDayLineDB());
-	ASSERT(pStock->IsUpdateDayLine());
+	ABSL_CHECK(!pStock->IsUpdateDayLineDB());
+	ABSL_CHECK(pStock->IsUpdateDayLine());
 	pStock->SetUpdateDayLine(false);
 	strReturn += XferStandardToTengxun(pStock->GetSymbol());
 	return strReturn;

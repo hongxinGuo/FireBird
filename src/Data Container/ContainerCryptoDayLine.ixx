@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Container.HistoryCandle.CryptoDayLine;
 
-export import FireBirdLib.Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 
 import std;
 using std::string;

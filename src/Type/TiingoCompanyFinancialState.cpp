@@ -1,6 +1,5 @@
 module;
-
-#include <afx.h>
+#include <absl/log/absl_check.h>
 module FireBirdLib.Type.TiingoCompanyFinancialState;
 
 CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
@@ -536,7 +535,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 		m_trailingPEG1Y = fValue;
 		break;
 	default:
-		ASSERT(FALSE);
+		ABSL_CHECK(0);
 		break;
 	}
 }

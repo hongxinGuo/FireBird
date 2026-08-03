@@ -56,7 +56,7 @@ bool CContainerTiingoFundamentalDefinition::Delete(const string& strDataCode) {
 }
 
 bool CContainerTiingoFundamentalDefinition::UpdateDB() {
-	ASSERT(m_fUpdated);
+	ABSL_CHECK(m_fUpdated);
 	map<string, size_t> mapDefinition;
 	using namespace StockMarket;
 	const auto& t = TiingoFundamentalDefinitions{};

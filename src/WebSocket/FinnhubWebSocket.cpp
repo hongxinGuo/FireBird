@@ -1,7 +1,7 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
+#include <ixwebsocket/IXWebSocket.h>
 
-#include"IXWebSocketSendInfo.h"
 #include"simdjson.h"
 
 module FireBirdLib.WebSocket.Finnhub;
@@ -26,20 +26,8 @@ import std;
 import FireBirdLib.Log;
 import FireBirdLib.GlobeDef;
 
-using std::make_shared;
-using std::atomic_bool;
-using std::chrono::minutes;
-using std::chrono::seconds;
-using std::istringstream;
-using std::string;
-using std::string_view;
-using std::chrono::minutes;
-using std::chrono::nanoseconds;
-using std::chrono::milliseconds;
-using std::chrono::microseconds;
-using std::chrono::seconds;
-using std::chrono::time_point;
-using std::chrono::system_clock;
+using namespace std;
+using namespace std::chrono;
 using std::literals::chrono_literals::operator""h;
 using std::literals::chrono_literals::operator""min;
 using std::literals::chrono_literals::operator""s;
@@ -105,13 +93,13 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage("Finnhub WebSocket Pong");
 		break;
 	default: // error
-		ASSERT(0);
+		ABSL_CHECK(0);
 		break;
 	}
 }
 
 CFinnhubWebSocket::CFinnhubWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://ws.finnhub.io";
 }
 
@@ -127,12 +115,12 @@ void CFinnhubWebSocket::Connect() {
 }
 
 void CFinnhubWebSocket::Send(const vector<string>& vSymbol) {
-	ASSERT(IsOpen());
+	ABSL_CHECK(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
 		if (l >= 49) break; // note 免费账户只支持最多50个证券名称
 		string strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
 		ix::WebSocketSendInfo info = m_webSocket.send(strMessage);
-		ASSERT(info.success);
+		ABSL_CHECK(info.success);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 	}
 }

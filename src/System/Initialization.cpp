@@ -1,12 +1,12 @@
 module;
-#include <afx.h>
-#include <afxwin.h>
-#include <spdlog/sinks/basic_file_sink.h>
-#include"spdlog/sinks/daily_file_sink.h"
-#include"spdlog/spdlog.h"
+#include <absl/log/absl_check.h>
+#include <spdlog/spdlog.h>
+#include<spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/daily_file_sink.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
-
+#define NOMINMAX
+#include <afxwin.h>
 module FireBird.Initialization;
 
 import FireBirdLib.SystemMessage;
@@ -37,21 +37,12 @@ import FireBirdLib.WebSocket.TiingoCrypto;
 import FireBirdLib.WebSocket.TiingoForex;
 import FireBirdLib.WebSocket.TiingoIEX;
 import FireBirdLib.Log;
+import FireBirdLib.MarketTask;
 
 using namespace spdlog;
 
-import std;
-using std::make_shared;
-using std::wstring;
-using std::string;
-using std::chrono::time_point;
-using std::chrono::seconds;
-using std::chrono::days;
-using std::chrono::system_clock;
-using std::chrono::steady_clock;
-using std::chrono::year_month_day;
-using std::chrono::time_point_cast;
-
+using namespace std;
+using namespace std::chrono;
 
 void DeleteAllFinnhubInaccessibleUSExchange() {
 	for (int i = 0; i < END_OF_ALL_INQUIRY_TYPE_; i++) {
@@ -70,8 +61,8 @@ void DeleteAllFinnhubInaccessibleUSExchange() {
 namespace {
 	void DeleteAllFinnhubInaccessibleUSExchangeAtFirstDay() {
 		// 每月第一天删除对US交易所的禁止访问
-		ASSERT(gl_pChinaMarket != nullptr);
-		ASSERT(gl_pWorldMarket != nullptr);
+		ABSL_CHECK(gl_pChinaMarket != nullptr);
+		ABSL_CHECK(gl_pWorldMarket != nullptr);
 		gl_tpNow = time_point_cast<seconds>(system_clock::now());
 		year_month_day ymd = year_month_day{ floor<days>(gl_tpNow) };
 		if (static_cast<unsigned>(ymd.day()) == 1) {
@@ -80,22 +71,22 @@ namespace {
 	}
 
 	void CreateMarketContainer() {
-		ASSERT(gl_pChinaMarket != nullptr);
-		ASSERT(gl_pWorldMarket != nullptr);
+		ABSL_CHECK(gl_pChinaMarket != nullptr);
+		ABSL_CHECK(gl_pWorldMarket != nullptr);
 		gl_vMarket.push_back(gl_pWorldMarket); // 美国股票市场
 		gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
 	}
 
 	void CreateDataSource() {
 		// 此五个要在gl_pChinaMarket前生成
-		ASSERT(gl_pChinaMarket == nullptr);
+		ABSL_CHECK(gl_pChinaMarket == nullptr);
 		gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 		gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 		gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
 		gl_pEastmoneyDayLineDataSource = make_shared<CEastmoneyDayLineDataSource>();
 
 		// 此四个要在gl_pWorldMarket前生成
-		ASSERT(gl_pWorldMarket == nullptr);
+		ABSL_CHECK(gl_pWorldMarket == nullptr);
 		gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
 		gl_pAlphaVantageDataSource = make_shared<CAlphaVantageDataSource>();
@@ -104,7 +95,7 @@ namespace {
 
 	void CreateWebSocket() {
 		// WebSocket要在gl_pWorldMarket之前生成
-		ASSERT(gl_pWorldMarket == nullptr);
+		ABSL_CHECK(gl_pWorldMarket == nullptr);
 		gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
 		gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
 		gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
@@ -113,22 +104,22 @@ namespace {
 
 	void CreateMarket() {
 		// 市场要在数据源和WebSocket之后生成
-		ASSERT(gl_pFinnhubDataSource != nullptr);
-		ASSERT(gl_pTiingoDataSource != nullptr);
-		ASSERT(gl_pAccessoryDataSource != nullptr);
+		ABSL_CHECK(gl_pFinnhubDataSource != nullptr);
+		ABSL_CHECK(gl_pTiingoDataSource != nullptr);
+		ABSL_CHECK(gl_pAccessoryDataSource != nullptr);
 
-		ASSERT(gl_pSinaRTDataSource != nullptr);
-		ASSERT(gl_pTengxunRTDataSource != nullptr);
-		ASSERT(gl_pTengxunDayLineDataSource != nullptr);
-		ASSERT(gl_pEastmoneyDayLineDataSource != nullptr);
+		ABSL_CHECK(gl_pSinaRTDataSource != nullptr);
+		ABSL_CHECK(gl_pTengxunRTDataSource != nullptr);
+		ABSL_CHECK(gl_pTengxunDayLineDataSource != nullptr);
+		ABSL_CHECK(gl_pEastmoneyDayLineDataSource != nullptr);
 
-		ASSERT(gl_pFinnhubWebSocket != nullptr);
-		ASSERT(gl_pTiingoIEXWebSocket != nullptr);
-		ASSERT(gl_pTiingoCryptoWebSocket != nullptr);
-		ASSERT(gl_pTiingoForexWebSocket != nullptr);
+		ABSL_CHECK(gl_pFinnhubWebSocket != nullptr);
+		ABSL_CHECK(gl_pTiingoIEXWebSocket != nullptr);
+		ABSL_CHECK(gl_pTiingoCryptoWebSocket != nullptr);
+		ABSL_CHECK(gl_pTiingoForexWebSocket != nullptr);
 
-		ASSERT(gl_pChinaMarket == nullptr);
-		ASSERT(gl_pWorldMarket == nullptr);
+		ABSL_CHECK(gl_pChinaMarket == nullptr);
+		ABSL_CHECK(gl_pWorldMarket == nullptr);
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	}
@@ -184,7 +175,7 @@ void SystemInitialization() {
 	gl_systemConfiguration.SetThreadExecutorCurrencyLevel(gl_runtime.thread_executor()->max_concurrency_level());
 	gl_systemConfiguration.SetBackgroundExecutorCurrencyLevel(gl_runtime.background_executor()->max_concurrency_level());
 
-	TRACE("Start scheduling task\n");
+	ABSL_DCHECK(1) << "Start scheduling task";
 	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
 	gl_aTimer.at(GENERAL_TASK_PER_100MS__) = gl_runtime.timer_queue()->make_timer(
 		1000ms,
@@ -206,8 +197,8 @@ void SystemInitialization() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void AssignDataSourceAndWebInquiryToMarket() {
-	ASSERT(gl_pChinaMarket != nullptr);
-	ASSERT(gl_pWorldMarket != nullptr);
+	ABSL_CHECK(gl_pChinaMarket != nullptr);
+	ABSL_CHECK(gl_pWorldMarket != nullptr);
 
 	// china market's data source 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
@@ -348,15 +339,7 @@ void TaskSchedulePer100ms() {
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-	} catch (CException* e) {
-		WCHAR buffer[1000];
-		wstring str = L"ScheduleMarketTask unhandled CException founded : ";
-		e->GetErrorMessage(buffer, 1);
-		str += buffer;
-		gl_systemMessage.PushInformationMessage(W2Utf8(str));
-		gl_systemMessage.PushErrorMessage(W2Utf8(str));
-		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-	}
+	} 
 	auto end = time_point_cast<std::chrono::milliseconds>(steady_clock::now());
 	gl_systemMessage.IncreaseScheduleTaskTime((end - start).count());
 	s_Processing = false;
@@ -383,15 +366,7 @@ void TaskSchedulePerSecond() {
 		gl_systemMessage.PushErrorMessage(str1);
 		gl_errorLogger->error("{}", str1);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-	} catch (CException* e) {	// 此处截获本体指针，以备处理完后删除之。
-		WCHAR buffer[1000];
-		wstring str = L"TaskSchedulePerSecond unhandled CException founded : ";
-		e->GetErrorMessage(buffer, 1);
-		str += buffer;
-		gl_systemMessage.PushErrorMessage(W2Utf8(str));
-		gl_errorLogger->error("{}", W2Utf8(str));
-		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-	}
+	} 
 }
 
 void TaskExitSystem() {

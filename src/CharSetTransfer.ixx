@@ -11,8 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-
-#include"afx.h"
+#include <atlconv.h>
 
 export module FireBirdLib.CharSetTransfer;
 
@@ -28,13 +27,13 @@ export {
 
 	inline std::wstring Utf8ToW(const std::string& utf8) {
 		if (utf8.empty()) return {};
-		CA2W wide(utf8.c_str(), CP_UTF8);
+		ATL::CA2W wide(utf8.c_str(), CP_UTF8);
 		return std::wstring(wide.m_psz);
 	}
 
 	inline std::wstring Gbk2W(const std::string& gbk) {
 		if (gbk.empty()) return {};
-		CA2W wide(gbk.c_str(), 936);
+		ATL::CA2W wide(gbk.c_str(), 936);
 		return std::wstring(wide.m_psz);
 	}
 
@@ -45,8 +44,8 @@ export {
 
 	inline std::string Utf8ToGbk(const std::string& utf8) {
 		if (utf8.empty()) return {};
-		CA2W wide(utf8.c_str(), CP_UTF8);
-		CW2A gbk(wide.m_psz, 936);
+		ATL::CA2W wide(utf8.c_str(), CP_UTF8);
+		ATL::CW2A gbk(wide.m_psz, 936);
 		return std::string(gbk.m_psz);
 	}
 }

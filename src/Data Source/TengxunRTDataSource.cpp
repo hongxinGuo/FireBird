@@ -1,6 +1,5 @@
 module;
-#include <afx.h>
-
+#include <absl/log/absl_check.h>
 module FireBirdLib.DataSource.TengxunRT;
 import FireBirdLib.Product.TengxunRT;
 
@@ -38,7 +37,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& c
 		}
 		if (!IsInquiring()) {
 			const auto product = make_shared<CProductTengxunRT>();
-			ASSERT(!HaveInquiry());
+			ABSL_CHECK(!HaveInquiry());
 			StoreInquiry(product);
 			return true;
 		}
@@ -68,7 +67,7 @@ bool CTengxunRTDataSource::IsInvalidTengxunRTData(const CWebData& WebDataReceive
 	const string_view sv = WebDataReceived.GetStringView(0, 21);
 
 	if (sv == "v_pv_none_match=\"1\";\n") {
-		ASSERT(WebDataReceived.GetBufferLength() == 21);
+		ABSL_CHECK(WebDataReceived.GetBufferLength() == 21);
 		return true;
 	}
 	else return false;

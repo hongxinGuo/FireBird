@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 #include"simdjson.h"
 
@@ -19,9 +19,8 @@ import FireBirdLib.SystemData;
 
 using namespace simdjson;
 
-import std;
-using std::make_shared;
-using std::chrono::local_days;
+using namespace std;
+using namespace std::chrono;
 
 // Helper: parse one 东方财富 Kline line like:
 // "2024-12-31,6.29,6.18,6.32,6.17,483794,313479921.00,2.38,-1.75,-0.11,0.59"
@@ -120,7 +119,7 @@ void CProductEastmoneyDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const string strSymbol = pWebData->GetStockCode();
-	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+	ABSL_CHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
 	const string_view svData = pWebData->GetStringView();
 
 	const shared_ptr<vector<CDayLine>> pvDayLine = ParseEastmoneyDayLine(svData, pWebData->GetStockCode());

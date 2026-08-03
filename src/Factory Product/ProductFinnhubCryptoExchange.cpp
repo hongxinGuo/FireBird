@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 module FireBirdLib.Product.Finnhub.CryptoExchange;
 
 import FireBirdLib.ContainerFinnhubCryptoExchange;
@@ -9,15 +9,15 @@ import FireBirdLib.DataSource.Finnhub;
 import FireBirdLib.SystemMessage;
 import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
-using std::string;
-using std::make_shared;
+using namespace std;
+using namespace std::chrono;
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/exchange?";
 }
 
 string CProductFinnhubCryptoExchange::CreateMessage() {
-	ASSERT(m_strInquiringExchange == "ALL");
+	ABSL_CHECK(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;

@@ -7,12 +7,11 @@ module FireBirdLib.Container.Stock.FinnhubCrypto;
 import FinnhubCrypto;
 import FireBirdLib.Accessory.InfoReport;
 import FireBirdLib.DatabaseConnector;
-
-import std;
 import FireBirdLib.Container.Stock;
 import FireBirdLib.Container.Stock.FinnhubCrypto;
-using std::make_shared;
-using std::string;
+
+using namespace std;
+using namespace std::chrono;
 
 CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();

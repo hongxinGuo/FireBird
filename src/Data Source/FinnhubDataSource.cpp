@@ -6,7 +6,6 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
 #include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.Finnhub;
@@ -60,7 +59,7 @@ namespace {
 CFinnhubDataSource::CFinnhubDataSource() {
 	m_pFinnhubFactory = std::make_unique<CFinnhubFactory>();
 
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	// 无需（也无法）每日更新的变量放在这里
 
 	m_strInquiryFunction = ""; // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
@@ -119,7 +118,7 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 }
 
 void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_CHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	nlohmannJson js;
@@ -159,7 +158,7 @@ void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省分支不应该出现
-			ASSERT(false);
+			ABSL_CHECK(false);
 			break;
 		}
 	} catch (nlohmannJson::exception&) { // no error. do nothing

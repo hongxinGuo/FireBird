@@ -4,7 +4,7 @@ module;
 
 export module FireBirdLib.Market.WorldMarket;
 
-export import FireBirdLib.Market;
+import FireBirdLib.Market;
 
 import FireBirdLib.WebSocket.TiingoIEX;
 import FireBirdLib.WebSocket.Finnhub;

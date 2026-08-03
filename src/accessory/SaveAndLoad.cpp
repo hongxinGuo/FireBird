@@ -1,6 +1,6 @@
 module;
+#include"targetver.h"
 #include <afx.h>
-
 module FireBirdLib.Accessory.SaveAndLoad;
 import FireBirdLib.CharSetTransfer;
 

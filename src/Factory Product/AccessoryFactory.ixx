@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Factory.Accessory;
 
-export import FireBirdLib.Factory;
+import FireBirdLib.Factory;
 import FireBirdLib.Market;
 import FireBirdLib.Product;
 

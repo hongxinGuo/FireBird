@@ -1,9 +1,8 @@
 module;
-
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
 export module FireBirdLib.Stock.ChinaStock;
-export import FireBirdLib.Stock;
+import FireBirdLib.Stock;
 
 import FireBirdLib.HistoryCandle;
 import FireBirdLib.Container.HistoryCandle;

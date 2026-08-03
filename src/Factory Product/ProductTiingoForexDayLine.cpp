@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Product.Tiingo.ForexDayLine;
 import FireBirdLib.SystemMessage;
@@ -38,7 +38,7 @@ string CProductTiingoForexDayLine::CreateMessage() {
 }
 
 void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_index >= 0);
+	ABSL_CHECK(m_index >= 0);
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetForex(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoForexDayLine(pWebData);

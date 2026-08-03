@@ -6,6 +6,7 @@ import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
 using std::make_shared;
+using std::vector;
 using std::istringstream;
 using std::string;
 using std::chrono::local_days;

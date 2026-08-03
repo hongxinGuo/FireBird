@@ -1,5 +1,4 @@
 module;
-
 #include <concurrencpp/timers/timer.h>
 
 export module FireBirdLib.MarketTask;

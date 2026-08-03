@@ -1,6 +1,6 @@
 module;
-#include <afx.h>
-
+#include <absl/log/absl_check.h>
+#include <ixwebsocket/IXWebSocket.h>
 module FireBirdLib.WebSocket.TiingoIEX;
 import FireBirdLib.SystemData;
 import FireBirdLib.SystemMessage;
@@ -13,14 +13,8 @@ import FireBirdLib.SystemConfiguration;
 import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.GlobeDef;
 
-import std;
-using std::istringstream;
-using std::chrono::minutes;
-using std::chrono::nanoseconds;
-using std::chrono::seconds;
-using std::make_shared;
-using std::chrono::time_point;
-using std::chrono::system_clock;
+using namespace std;
+using namespace std::chrono;
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoIEXWebSocket->SetError(false);
@@ -57,7 +51,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 CTiingoIEXWebSocket::CTiingoIEXWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://api.tiingo.com/iex";
 }
 
@@ -71,7 +65,7 @@ void CTiingoIEXWebSocket::Connect() {
 }
 
 void CTiingoIEXWebSocket::Send(const vector<string>& vSymbol) {
-	ASSERT(IsOpen());
+	ABSL_CHECK(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 	m_webSocket.send(messageAuth);
@@ -176,7 +170,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (nlohmannJson::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
-					ASSERT(GetSubscriptionId() == 0);
+					ABSL_CHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;

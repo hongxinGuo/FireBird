@@ -7,9 +7,8 @@ import FireBirdLib.Stock.FinnhubForex;
 import FireBirdLib.Accessory.InfoReport;
 import FireBirdLib.DatabaseConnector;
 
-import std;
-using std::make_shared;
-using std::dynamic_pointer_cast;
+using namespace std;
+using namespace std::chrono;
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();

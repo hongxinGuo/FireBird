@@ -1,6 +1,7 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
+#include"nlohmann/json.hpp"
 export module FireBirdLib.Stock;
 
 import FireBirdLib.Accessory.NlohmannJsonDeclaration;
@@ -90,25 +91,25 @@ export {
 		void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 
 		virtual CVirtualDataHistoryCandle* DayLine() noexcept {
-			ASSERT(0);
+			ABSL_CHECK(0);
 			return nullptr;
 		}
 		virtual CVirtualDataHistoryCandle* WeekLine() noexcept {
-			ASSERT(0);
+			ABSL_CHECK(0);
 			return nullptr;
 		}
 		virtual CVirtualDataHistoryCandle* MonthLine() noexcept {
-			ASSERT(0);
+			ABSL_CHECK(0);
 			return nullptr;
 		}
 
-		virtual void LoadDayLineDB() { ASSERT(0); }
+		virtual void LoadDayLineDB() { ABSL_CHECK(0); }
 
 		virtual bool IsDayLineDuplicated() noexcept {
-			ASSERT(0);
+			ABSL_CHECK(0);
 			return false;
 		}
-		virtual void DeleteDuplicatedDayLine() noexcept { ASSERT(0); }
+		virtual void DeleteDuplicatedDayLine() noexcept { ABSL_CHECK(0); }
 
 		auto GetDayLineStartDate() const noexcept { return m_dayLineStartDate; }
 		void SetDayLineStartDate(const local_days& date) noexcept { m_dayLineStartDate = date; }
@@ -144,20 +145,20 @@ export {
 		bool IsSameStock(const shared_ptr<CVirtualStock>& pStock) const;
 
 		virtual bool IsDayLineLoaded() const noexcept {
-			ASSERT(0);
+			ABSL_CHECK(0);
 			return false;
 		}
-		virtual void SetDayLineLoaded(const bool) noexcept { ASSERT(0); }
+		virtual void SetDayLineLoaded(const bool) noexcept { ABSL_CHECK(0); }
 		virtual bool IsWeekLineLoaded() const noexcept {
-			ASSERT(0);
+			ABSL_CHECK(0);
 			return false;
 		}
-		virtual void SetWeekLineLoaded(const bool) noexcept { ASSERT(0); }
+		virtual void SetWeekLineLoaded(const bool) noexcept { ABSL_CHECK(0); }
 		virtual bool IsMonthLineLoaded() const noexcept {
-			ASSERT(0);
+			ABSL_CHECK(0);
 			return false;
 		}
-		virtual void SetMonthLineLoaded(const bool) noexcept { ASSERT(0); }
+		virtual void SetMonthLineLoaded(const bool) noexcept { ABSL_CHECK(0); }
 
 		void SetSelected(bool flag) noexcept { m_bSelected = flag; }
 		bool IsSelected() const noexcept { return m_bSelected; }

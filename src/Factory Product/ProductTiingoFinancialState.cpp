@@ -1,7 +1,5 @@
 module;
-#include <map>
-#include <string>
-
+#include"simdjson.h"
 module FireBirdLib.Product.Tiingo.FinancialState;
 
 import FireBirdLib.Container.Stock.TiingoStock;
@@ -10,10 +8,11 @@ import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Accessory.SimdjsonGetValue;
 import FireBirdLib.Type.TiingoCompanyFinancialState;
 import FireBirdLib.Product;
+import FireBirdLib.Stock.TiingoStock;
 
+using namespace simdjson;
 using namespace std;
-using std::map;
-using std::string;
+using namespace std::chrono;
 
 namespace {
 	map<string, int> s_mapItem{

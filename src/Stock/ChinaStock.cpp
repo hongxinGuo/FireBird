@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
@@ -175,7 +175,7 @@ bool CChinaStock::IsDayLineDuplicated() noexcept {
 }
 
 void CChinaStock::DeleteDuplicatedDayLine() noexcept {
-	ASSERT(!m_dataDayLine.Empty());
+	ABSL_CHECK(!m_dataDayLine.Empty());
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();

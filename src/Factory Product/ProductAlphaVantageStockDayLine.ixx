@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Product.AlphaVantage.StockDayLine;
 
-export import FireBirdLib.Product.AlphaVantage;
+import FireBirdLib.Product.AlphaVantage;
 
 import FireBirdLib.HistoryCandle.TiingoCandleLine;
 import FireBirdLib.WebData;

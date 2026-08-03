@@ -1,8 +1,9 @@
 module;
+#include"nlohmann/json.hpp"
 
 export module FireBirdLib.Accessory.NlohmannJsonGetValue;
 
-export import FireBirdLib.Accessory.NlohmannJsonDeclaration;
+import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 
 import std;
 

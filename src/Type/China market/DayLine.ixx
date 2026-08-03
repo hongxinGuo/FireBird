@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.HistoryCandle.DayLine;
 
-export import FireBirdLib.HistoryCandle;
+import FireBirdLib.HistoryCandle;
 
 import std;
 using std::vector;

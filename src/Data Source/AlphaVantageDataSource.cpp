@@ -1,6 +1,5 @@
 module;
-#define NOMINMAX
-#include <afx.h>
+//#define NOMINMAX
 #include"sqlpp23/sqlpp23.h"
 #include"absl/log/absl_check.h"
 module FireBirdLib.DataSource.AlphaVantage;
@@ -29,7 +28,7 @@ namespace {
 CAlphaVantageDataSource::CAlphaVantageDataSource() {
 	m_pAlphaVantageFactory = std::make_unique<CAlphaVantageFactory>();
 
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // AlphaVantage有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
 	m_strSuffix = "&apikey=";

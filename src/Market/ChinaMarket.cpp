@@ -1,8 +1,10 @@
 module;
+#include "StockMarketSQLTable.h"
+#include<sqlpp23/sqlpp23.h>
+#define NOMINMAX
 #include <afx.h>
 #include <afxwin.h>
-#include<sqlpp23/sqlpp23.h>
-#include "StockMarketSQLTable.h"
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Market.ChinaMarket;
 
@@ -31,28 +33,21 @@ import FireBirdLib.ContainerStockExchange;
 import FireBirdLib.Container.StockSymbol;
 import FireBirdLib.DatabaseConnector;
 
-import std;
+using namespace std;
+using namespace std::chrono;
 using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 using std::literals::chrono_literals::operator ""s;
-using std::chrono::Sunday;
-using std::chrono::local_seconds;
-using std::chrono::time_point_cast;
-using std::chrono::seconds;
-using std::chrono::hh_mm_ss;
-using std::chrono::steady_clock;
-using std::chrono::milliseconds;
 
-using std::make_shared;
 
 CChinaMarket::CChinaMarket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
+		ABSL_DCHECK(0) << "ChinaMarket市场变量只允许存在一个实例";
 	}
 	m_strMarketId = "SS";
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
-	ASSERT(m_exchange != nullptr);
+	ABSL_CHECK(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = "Asia/Shanghai";
 	CreateLocalTimeZone(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
 
@@ -161,7 +156,7 @@ void CChinaMarket::Reset() {
 }
 
 void CChinaMarket::PrepareToCloseMarket() {
-	ASSERT(gl_systemConfiguration.IsExitingSystem());
+	ABSL_CHECK(gl_systemConfiguration.IsExitingSystem());
 	// do nothing
 }
 
@@ -247,7 +242,7 @@ int CChinaMarket::ProcessTask() {
 			TaskPreparingMarketOpen();
 			break;
 		default:
-			ASSERT(0); // 错误的任务号
+			ABSL_CHECK(0); // 错误的任务号
 			break;
 		}
 		return pTask->GetType();
@@ -256,7 +251,7 @@ int CChinaMarket::ProcessTask() {
 }
 
 int CChinaMarket::ProcessCurrentImmediateTask() {
-	ASSERT(!m_marketImmediateTask.Empty());
+	ABSL_CHECK(!m_marketImmediateTask.Empty());
 
 	auto pTask = m_marketImmediateTask.GetTask();
 	auto taskType = pTask->GetType();
@@ -269,7 +264,7 @@ int CChinaMarket::ProcessCurrentImmediateTask() {
 		TaskSetCurrentStock();
 		break;
 	default:
-		ASSERT(0); // 错误的任务号
+		ABSL_CHECK(0); // 错误的任务号
 		break;
 	}
 	return pTask->GetType();
@@ -303,7 +298,7 @@ void CChinaMarket::CreateStock(const string& strStockCode, const string& strStoc
 	pStock->SetUpdateProfileDB(true);
 	pStock->SetNeedProcessRTData(fProcessRTData);
 	gl_dataContainerChinaStock.Add(pStock);
-	ASSERT(pStock->IsUpdateDayLine());
+	ABSL_CHECK(pStock->IsUpdateDayLine());
 	string str = "china FireBirdLib.Market生成新代码";
 	str += pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -329,7 +324,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	if (IsCheckingActiveStock()) {
 		if (!gl_dataContainerChinaStock.IsSymbol(strSymbol) && pRTData->HaveName()) {
 			//Note： 有股票代码和名称，则该股票已经上市了，现状（退市等）不明。
-			ASSERT(strSymbol.length() == 9);
+			ABSL_CHECK(strSymbol.length() == 9);
 			CreateStock(strSymbol, pRTData->GetStockName(), true);
 		}
 	}
@@ -363,7 +358,7 @@ bool CChinaMarket::IsRealTimeDataSourceEnable() noexcept {
 	case TengxunRealTime_:
 		return gl_pTengxunRTDataSource->IsEnable();
 	default:
-		ASSERT(0);
+		ABSL_CHECK(0);
 		return true;
 	}
 }
@@ -377,7 +372,7 @@ void CChinaMarket::EnableRealTimeDataSource(bool fEnable) noexcept {
 		gl_pTengxunRTDataSource->Enable(fEnable);
 		break;
 	default:
-		ASSERT(0);
+		ABSL_CHECK(0);
 		break;
 	}
 }
@@ -545,14 +540,14 @@ void CChinaMarket::TaskAccessoryPerMinuteTask() {
 }
 
 void CChinaMarket::TaskPreparingMarketOpen() {
-	ASSERT(GetMarketTime() == toLocalTime(92959)); // 每日执行一次
+	ABSL_CHECK(GetMarketTime() == toLocalTime(92959)); // 每日执行一次
 	// 目前尚未有需执行的任务
 }
 
 bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
 	if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 		m_avChosenStock.at(0).push_back(pStock);
-		ASSERT(!pStock->IsUpdateChosenStockDB());
+		ABSL_CHECK(!pStock->IsUpdateChosenStockDB());
 		return true;
 	}
 	return false;
@@ -594,7 +589,7 @@ bool CChinaMarket::TaskProcessTodayStock() {
 }
 
 void CChinaMarket::ProcessTodayStock() {
-	ASSERT(IsSystemReady()); // 调用本工作线程时必须设置好市场。
+	ABSL_CHECK(IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
 	gl_dataContainerChinaStock.BuildDayLine(GetMarketDate());
 	gl_dataContainerChinaStock.UpdateProfileDB();
@@ -630,7 +625,7 @@ void CChinaMarket::EnableDayLineDataSource() {
 	switch (gl_systemConfiguration.GetChinaMarketDayLineServer()) {
 	case TengxunDayLine_:
 		gl_pTengxunDayLineDataSource->Enable(true);
-		TRACE(_T("启动腾讯日线数据源\n"));
+		ABSL_DCHECK(1) << "启动腾讯日线数据源";
 		break;
 	default:
 		gl_pTengxunDayLineDataSource->Enable(true);
@@ -660,7 +655,7 @@ bool CChinaMarket::IsWebBusy() {
 		bWebBusy = gl_pTengxunRTDataSource->IsWebBusy();
 		break;
 	default: // error
-		ASSERT(0);
+		ABSL_CHECK(0);
 		break;
 	}
 	if (bWebBusy) {
@@ -687,7 +682,7 @@ long long CChinaMarket::GetHTTPStatus() {
 		httpStatus = gl_pTengxunRTDataSource->GetHTTPStatusCode();
 		break;
 	default: // error
-		ASSERT(0);
+		ABSL_CHECK(0);
 		break;
 	}
 	return httpStatus;
@@ -707,7 +702,7 @@ bool CChinaMarket::IsWebReaTimeDataError() {
 		webError = gl_pTengxunRTDataSource->IsWebError();
 		break;
 	default: // error
-		ASSERT(0);
+		ABSL_CHECK(0);
 		break;
 	}
 	return webError;
@@ -723,7 +718,7 @@ long long CChinaMarket::GetWebRealTimeDataErrorCode() {
 		errorCode = gl_pTengxunRTDataSource->GetWebErrorCode();
 		break;
 	default: // error
-		ASSERT(0);
+		ABSL_CHECK(0);
 		break;
 	}
 	return errorCode;
@@ -869,7 +864,7 @@ bool CChinaMarket::ProcessDayLine() {
 	CDayLineWebDataPtr pData;
 	bool succeed = gl_qDayLine.try_dequeue(pData);
 	while (succeed) {
-		ASSERT(gl_dataContainerChinaStock.IsSymbol(pData->GetStockCode()));
+		ABSL_CHECK(gl_dataContainerChinaStock.IsSymbol(pData->GetStockCode()));
 		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine()); // pData的日线数据是正序的，最新日期的在最后面。
 

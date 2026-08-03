@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Container.Stock.ChinaStock;
 
-export import FireBirdLib.Container.Stock;
+import FireBirdLib.Container.Stock;
 import FireBirdLib.Stock.ChinaStock;
 
 import std;
@@ -47,7 +47,7 @@ export {
 
 		string CreateTengxunDayLineInquiringStr();
 
-		void TaskUpdateDayLineDB();
+		void TaskUpdateDayLineDB(); 
 
 		[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 
@@ -57,7 +57,7 @@ export {
 		static void DeleteDayLine(local_days date);
 
 	protected:
-		size_t m_lLoadedStock; // 本次装载的股票总数
+		size_t m_lLoadedStock; //本次装载的股票总数
 	};
 
 	extern CContainerChinaStock gl_dataContainerChinaStock;

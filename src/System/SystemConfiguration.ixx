@@ -10,10 +10,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-
+#include"targetver.h"
+#include <afx.h>
 #include <spdlog/common.h>
-#include"afx.h"
-
 export module FireBirdLib.SystemConfiguration;
 
 import FireBirdLib.Accessory.NlohmannJsonDeclaration; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。

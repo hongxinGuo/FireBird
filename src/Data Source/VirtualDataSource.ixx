@@ -1,9 +1,7 @@
 module;
 #include <absl/log/absl_check.h>
 
-#include"afx.h"
-
-export module FireBirdLib.DataSource;
+export module FireBirdLib.DataSource.Virtual;
 
 import FireBirdLib.InternetOption;
 import FireBirdLib.WebData;
@@ -20,6 +18,7 @@ using std::chrono::steady_clock;
 using std::queue;
 using std::string;
 using std::shared_ptr;
+using std::int64_t;
 
 export {
 
@@ -200,7 +199,7 @@ export {
 		void SetDefaultSessionOption();
 
 		virtual void ConfigureInternetOption() {
-			ASSERT(false); // 调用了基类函数ConfigureInternetOption
+			ABSL_CHECK(false); // 调用了基类函数ConfigureInternetOption
 		} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 		virtual void UpdateStatus(const CWebDataPtr&) {} //成功接收后更新系统状态。
 
@@ -249,10 +248,10 @@ export {
 			else m_dwWebErrorCode = 0;
 		}
 		auto GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
-		void SetWebErrorCode(INT64 dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
+		void SetWebErrorCode(int64_t dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
 		auto GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode.load(); }
-		void SetHTTPStatusCode(INT64 dwStatusCode) noexcept { m_dwHTTPStatusCode = dwStatusCode; }
+		void SetHTTPStatusCode(int64_t dwStatusCode) noexcept { m_dwHTTPStatusCode = dwStatusCode; }
 
 		long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 		void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }

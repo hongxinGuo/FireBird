@@ -1,6 +1,6 @@
 module;
-#include <afx.h>
-
+#include <absl/log/absl_check.h>
+#include <ixwebsocket/IXWebSocket.h>
 module FireBirdLib.WebSocket.TiingoForex;
 import FireBirdLib.SystemMessage;
 
@@ -13,18 +13,9 @@ import FireBirdLib.SystemData;
 import FireBirdLib.DataSource.Tiingo;
 import FireBirdLib.GlobeDef;
 
-import std;
-using std::make_shared;
-using std::chrono::minutes;
-using std::chrono::seconds;
-using std::istringstream;
-using std::chrono::minutes;
-using std::chrono::nanoseconds;
-using std::chrono::milliseconds;
-using std::chrono::microseconds;
-using std::chrono::seconds;
-using std::chrono::time_point;
-using std::chrono::system_clock;
+using namespace std;
+using namespace std::chrono;
+
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoForexWebSocket->SetError(false);
@@ -59,7 +50,7 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 CTiingoForexWebSocket::CTiingoForexWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://api.tiingo.com/fx";
 }
 
@@ -82,7 +73,7 @@ void CTiingoForexWebSocket::Connect() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoForexWebSocket::Send(const vector<string>& vSymbol) {
-	ASSERT(IsOpen());
+	ABSL_CHECK(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 	m_webSocket.send(messageAuth);
@@ -170,7 +161,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (nlohmannJson::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-					ASSERT(GetSubscriptionId() == 0);
+					ABSL_CHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;

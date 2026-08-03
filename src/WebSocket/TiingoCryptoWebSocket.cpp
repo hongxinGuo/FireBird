@@ -1,8 +1,6 @@
 module;
-#include <afx.h>
-
-#include "IXWebSocketMessageType.h"
-
+#include <absl/log/absl_check.h>
+#include <ixwebsocket/IXWebSocket.h>
 module FireBirdLib.WebSocket.TiingoCrypto;
 
 import FireBirdLib.GlobeDef;
@@ -16,18 +14,9 @@ import FireBirdLib.Accessory.NlohmannJsonDeclaration;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.DataSource.Tiingo;
 
-import std;
-using std::make_shared;
-using std::chrono::minutes;
-using std::chrono::seconds;
-using std::istringstream;
-using std::chrono::minutes;
-using std::chrono::nanoseconds;
-using std::chrono::milliseconds;
-using std::chrono::microseconds;
-using std::chrono::seconds;
-using std::chrono::time_point;
-using std::chrono::system_clock;
+using namespace std;
+using namespace std::chrono;
+
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoCryptoWebSocket->SetError(false);
@@ -64,7 +53,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://api.tiingo.com/crypto";
 }
 
@@ -85,11 +74,11 @@ void CTiingoCryptoWebSocket::Connect() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoCryptoWebSocket::Send(const vector<string>& vSymbol) {
-	ASSERT(IsOpen());
+	ABSL_CHECK(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 
-	ASSERT(IsOpen());
+	ABSL_CHECK(IsOpen());
 
 	m_webSocket.send(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
@@ -175,7 +164,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (nlohmannJson::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
-					ASSERT(GetSubscriptionId() == 0);
+					ABSL_CHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;

@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Factory.AlphaVantage;
 
@@ -26,7 +26,7 @@ CVirtualWebProductPtr CAlphaVantageFactory::CreateProduct(CVirtualMarketPtr pMar
 		break;
 	default:
 		p = make_shared<CProductDummy>();
-		TRACE(_T("未处理指令%d\n"), iInquireType);
+		ABSL_DCHECK(0) << "未处理指令";
 		gl_systemMessage.PushErrorMessage("Alpha Vantage product未实现");
 		break;
 	}

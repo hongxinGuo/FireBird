@@ -8,6 +8,7 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
+#include "simdjson.h"
 module FireBirdLib.Product.Tiingo.IEXTopOfBook;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Accessory.TimeConvert;
@@ -19,6 +20,7 @@ import FireBirdLib.SystemMessage;
 import FireBirdLib.Stock.TiingoStock;
 
 using namespace std;
+using namespace std::chrono;
 using namespace simdjson;
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {

@@ -41,8 +41,8 @@ CTiingoStockPtr CContainerTiingoStock::GetStock(const string& strStockCode) {
 }
 
 void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
-	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
-	ASSERT(IsSymbol(pStock->GetSymbol()));
+	ABSL_CHECK(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
+	ABSL_CHECK(IsSymbol(pStock->GetSymbol()));
 
 	auto pTiingoStock = GetStock(pStock->GetSymbol());
 	pTiingoStock->UpdateProfile(pStock);
@@ -57,7 +57,7 @@ void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 ///
 /// </summary>
 void CContainerTiingoStock::UpdateProfileDB() {
-	ASSERT(IsUpdateProfileDB());
+	ABSL_CHECK(IsUpdateProfileDB());
 
 	set<string> setExistingSymbols;
 
@@ -72,7 +72,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CTiingoStockPtr pStock = GetStock(l);
-		ASSERT(pStock != nullptr);
+		ABSL_CHECK(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
 			int IsActive = pStock->IsActive() ? 1 : 0;
 			int IsADR = pStock->IsADR() ? 1 : 0;

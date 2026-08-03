@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Stock.FinnhubForex;
 
-export import FireBirdLib.Stock;
+import FireBirdLib.Stock;
 import FireBirdLib.Container.HistoryCandle.ForexDayLine;
 import FireBirdLib.HistoryCandle.DayLine;
 

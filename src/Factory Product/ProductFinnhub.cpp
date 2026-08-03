@@ -3,11 +3,16 @@ module;
 module FireBirdLib.Product.Finnhub;
 import FireBirdLib.InaccessibleSymbol;
 import FireBirdLib.Inaccessible;
+import FireBirdLib.FinnhubInquiryType;
+import FireBirdLib.WebData;
 
 import std;
 using std::make_shared;
 using std::exception;
 using std::out_of_range;
+using std::vector;
+using std::shared_ptr;
+using std::string;
 
 void CProductFinnhub::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
 	for (const auto& pWebData : *pvWebData) {

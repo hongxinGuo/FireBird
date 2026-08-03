@@ -1,6 +1,5 @@
 module;
-#include <afx.h>
-#include <exception>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.WebRTData;
 
@@ -11,14 +10,8 @@ import FireBirdLib.CharSetTransfer;
 import FireBirdLib.Market.ChinaMarket;
 
 
-import std;
-using std::chrono::time_point_cast;
-using std::chrono::seconds;
-using std::chrono::system_clock;
-using std::chrono::local_seconds;
-using std::chrono::days;
-using std::exception;
-using std::ospanstream;
+using namespace std;
+using namespace std::chrono;
 
 CWebRTData::CWebRTData() {
 	m_tpTime = time_point_cast<seconds>(system_clock::from_time_t(0));
@@ -71,7 +64,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWebRTData::ParseSinaData(const string_view& svData) {
-	ASSERT(svData.length() >= 23);
+	ABSL_CHECK(svData.length() >= 23);
 	size_t lCurrentPos = 11; // 跨过字符串："var hq_str_"
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
 	m_strSymbol = XferSinaToStandard(svStockSymbol);
@@ -323,7 +316,7 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	string str(sv.data(), sv.size());
 	sscanf_s(str.c_str(), "%f/%d/%I64d", &fTemp, &lTemp, &m_llAmount);
-	m_llVolume = static_cast<INT64>(lTemp) * 100; // 腾讯成交量数据单位为手（100股）。
+	m_llVolume = static_cast<int64_t>(lTemp) * 100; // 腾讯成交量数据单位为手（100股）。
 	// 成交手数
 	// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
 	sv = GetNextField(svData, lCurrentPos, '~'); //
@@ -343,7 +336,7 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 流通市值（单位为：亿元）
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	INT64 lTemp2 = StrToDecimal(sv, 3);
+	int64_t lTemp2 = StrToDecimal(sv, 3);
 	m_llCurrentValue = lTemp2 * 100000; // 这里需要两次乘以100000
 	// 总市值（单位为：亿元）
 	sv = GetNextField(svData, lCurrentPos, '~'); //

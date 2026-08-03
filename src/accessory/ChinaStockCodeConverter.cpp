@@ -1,6 +1,6 @@
 module;
+#include <absl/log/absl_check.h>
 
-#include"afx.h"
 
 module FireBirdLib.Accessory.ChinaStockCodeConverter;
 
@@ -11,7 +11,7 @@ using std::string_view;
 using std::string;
 
 std::string XferSinaToStandard(const std::string& strSina) {
-	ASSERT(strSina.length() >= 6);
+	ABSL_CHECK(strSina.length() >= 6);
 	const string strSymbol = strSina.substr(strSina.length() - 6, 6);
 	if (strSina.at(0) == 's') {
 		switch (strSina.at(1)) {

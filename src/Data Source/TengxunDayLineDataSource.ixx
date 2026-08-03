@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.TengxunDayLine;
 
-import FireBirdLib.DataSource;
+import FireBirdLib.DataSource.Virtual;
 import FireBirdLib.WebData;
 import FireBirdLib.Product;
 import FireBirdLib.Stock.ChinaStock;

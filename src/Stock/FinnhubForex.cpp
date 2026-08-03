@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 #include<sqlpp23/sqlpp23.h>
 #include"StockMarketSQLTable.h"
 
@@ -12,15 +12,14 @@ import FireBirdLib.Accessory.TimeConvert;
 
 import FireBirdLib.DatabaseConnector;
 
-import std;
-using std::chrono::days;
-using std::chrono::local_days;
+using namespace std;
+using namespace std::chrono;
 
 CFinnhubForex::CFinnhubForex() {
 }
 
 void CFinnhubForex::SetCheckingDayLineStatus() {
-	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
+	ABSL_CHECK(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
 	if (gl_pWorldMarket->GetLastTradeDate() <= GetDayLineEndDate()) {
 		// 最新日线数据为今日或者上一个交易日的数据。
@@ -30,7 +29,7 @@ void CFinnhubForex::SetCheckingDayLineStatus() {
 
 string CFinnhubForex::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
 	time_t tStartTime = gl_pWorldMarket->ConvertToUTCTime(toFormattedDate(GetDayLineEndDate()), 150000).time_since_epoch().count();
-	tStartTime = max(tStartTime, tCurrentTime - static_cast<time_t>(365) * 24 * 3600);// 免费账户只能读取一年以内的日线数据。
+	tStartTime = std::max(tStartTime, tCurrentTime - static_cast<time_t>(365) * 24 * 3600);// 免费账户只能读取一年以内的日线数据。
 
 	string sParam = std::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
 
@@ -69,7 +68,7 @@ bool CFinnhubForex::IsDayLineDuplicated() noexcept {
 }
 
 void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
-	ASSERT(!m_dataDayLines.Empty());
+	ABSL_CHECK(!m_dataDayLines.Empty());
 	using namespace StockMarket;
 	const auto& t = FinnhubForexDayline{};
 	auto db = gl_dbStockMarket.get();

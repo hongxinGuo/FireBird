@@ -3,8 +3,10 @@ module;
 #include"StockMarketSQLTable.h"
 
 module FireBirdLib.ContainerFinnhubEconomicCalendar;
-
 import FireBirdLib.DatabaseConnector;
+
+using namespace std;
+using namespace std::chrono;
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();

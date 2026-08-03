@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.TengxunRT;
 
-import FireBirdLib.DataSource;
+import FireBirdLib.DataSource.Virtual;
 import FireBirdLib.WebData;
 
 import std;

@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.Product.Tiingo.CryptoDayLine;
 import FireBirdLib.Container.Stock.TiingoCryptoSymbol;
@@ -33,7 +33,7 @@ string CProductTiingoCryptoDayLine::CreateMessage() {
 }
 
 void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_index >= 0);
+	ABSL_CHECK(m_index >= 0);
 	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
 	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
 	pCrypto->SetUpdateDayLine(false);

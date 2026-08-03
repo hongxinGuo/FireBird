@@ -9,7 +9,6 @@
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
 #include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.TengxunDayLine;
@@ -27,15 +26,13 @@ import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;
 import FireBirdLib.Stock.ChinaStock;
 
-import std;
-using std::uniform_int_distribution;
-using std::make_shared;
-using std::chrono::local_seconds;
+using namespace std;
+using namespace std::chrono;
 using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_strHeaders = "Referer:https://gu.qq.com/\r\n";
 	m_strInquiryFunction = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=";
 	m_strSuffix = ",2000,,";
@@ -64,7 +61,6 @@ bool CTengxunDayLineDataSource::Reset() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	static int s_iSleep = 0;
-	static int s_number = 0;
 	const auto llTickCount = GetTickCount();
 
 	std::random_device r;
@@ -78,7 +74,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 		s_number = mean / 200;
 		int time = 100000 + mean * 50;
 		m_PrevInquireTimePoint += milliseconds(time);
-		TRACE("tengxunDayLine server suspended %d seconds\n", time / 1000);
+		ABSL_DCHECK(0) << "tengxunDayLine server suspended";	
 	}*/
 	if (llTickCount < m_PrevInquireTimePoint + std::chrono::milliseconds(4000 + mean)) return false;
 
@@ -180,7 +176,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 			dynamic_pointer_cast<CProductTengxunDayLine>(p)->SetInquiryNumber(iCounter);
 		}
 	}
-	ASSERT(iCounter == vProduct.size());
+	ABSL_CHECK(iCounter == vProduct.size());
 	return vProduct;
 }
 
@@ -203,7 +199,7 @@ void CTengxunDayLineDataSource::ConfigureInternetOption() {
 }
 
 void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_CHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误

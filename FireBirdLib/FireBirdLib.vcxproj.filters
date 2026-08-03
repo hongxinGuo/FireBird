@@ -177,9 +177,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\System\Initialization.h">
-      <Filter>源文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -1147,6 +1144,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\SICIndustry.ixx">
       <Filter>头文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\Initialization.ixx">
+      <Filter>头文件\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

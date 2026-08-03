@@ -1,6 +1,5 @@
 module;
-#include <afx.h>
-
+#include <absl/log/absl_check.h>
 module FireBirdLib.DataSource.SinaRT;
 import FireBirdLib.Product.SinaRT;
 
@@ -62,7 +61,7 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CSinaRTDataSource::CreateCurrentInquireString() {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_CHECK(m_pCurrentProduct != nullptr);
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
@@ -88,7 +87,7 @@ void CSinaRTDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	case ERROR_NO_ERROR_:
 		break;
 	default:
-		ASSERT(0);
+		ABSL_CHECK(0);
 		break;
 	}
 }

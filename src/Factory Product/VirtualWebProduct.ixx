@@ -5,8 +5,7 @@
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-
-#include"afx.h"
+#include <absl/log/absl_check.h>
 
 export module FireBirdLib.Product;
 
@@ -43,7 +42,7 @@ export {
 
 		virtual void ParseAndStoreWebData(shared_ptr<CWebData>) {} // default do nothing
 		virtual void ParseAndStoreWebData(shared_ptr<vector<shared_ptr<CWebData>>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
-			ASSERT(pvWebData->size() == 1);
+			ABSL_CHECK(pvWebData->size() == 1);
 			ParseAndStoreWebData(pvWebData->at(0)); // 默认只有一个数据，
 		}
 		virtual void AddInaccessibleSymbol() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）

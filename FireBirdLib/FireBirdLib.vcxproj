@@ -387,7 +387,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">CompileAsHeaderUnit</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsHeaderUnit</CompileAs>
     </ClInclude>
-    <ClInclude Include="..\src\System\Initialization.h" />
+    <ClCompile Include="..\src\System\Initialization.ixx" />
     <ClCompile Include="..\src\System\SystemConfiguration.ixx">
       <FileType>Document</FileType>
     </ClCompile>

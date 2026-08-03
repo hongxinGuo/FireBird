@@ -7,8 +7,8 @@
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-#include <afx.h>
 #include <random>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.EastmoneyDayLine;
 
@@ -24,18 +24,13 @@ import FireBirdLib.Accessory.TimeConvert;
 import FireBirdLib.WebData;
 import FireBirdLib.Stock.ChinaStock;
 
-import std;
-using std::make_shared;
-using std::string;
-using std::chrono::local_days;
-using std::chrono::local_seconds;
-using std::chrono::milliseconds;
-using std::chrono::seconds;
+using namespace std;
+using namespace std::chrono;
 using std::literals::chrono_literals::operator""h;
 using std::literals::chrono_literals::operator""min;
 
 CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = "";
 	m_strHeaders = "Referer:https://quote.eastmoney.com/\r\n";
 	m_strParam = "";
@@ -73,7 +68,7 @@ bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const local_seconds& cu
 		s_number = mean / 200;
 		int time = 180000 + mean * 50;
 		m_PrevInquireTimePoint += milliseconds(time);
-		TRACE("Eastmoney DayLine server suspended %d seconds\n", time / 1000);
+		ABSL_DCHECK(0) << "Eastmoney DayLine server suspended";
 	}
 	const auto llTickCount = GetTickCount();
 	if (llTickCount < m_PrevInquireTimePoint + milliseconds(m_InqueringTime + mean)) return false;
@@ -182,7 +177,7 @@ void CEastmoneyDayLineDataSource::ConfigureInternetOption() {
 }
 
 void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_CHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误
@@ -195,13 +190,13 @@ void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 		// everything is OK
 		break;
 	default: // something wrong,
-		TRACE(_T("关闭东方财富日线服务\n"));
+		ABSL_DCHECK(0) << "关闭东方财富日线服务";
 		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		break;
 	}
 }
 
-void CEastmoneyDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
+void CEastmoneyDayLineDataSource::UpdateStatus( CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

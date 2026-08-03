@@ -5,8 +5,7 @@ module FireBirdLib.DayLineWebData;
 import FireBirdLib.Market.ChinaMarket;
 import FireBirdLib.WebData;
 
-import std;
-using std::move;
+using namespace std;
 
 CDayLineWebData::CDayLineWebData() {
 	Reset();

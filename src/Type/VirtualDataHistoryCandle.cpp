@@ -1,6 +1,6 @@
 module;
 #include <afx.h>
-
+#include <absl/log/absl_check.h>
 module FireBirdLib.Container.HistoryCandle;
 
 import FireBirdLib.HistoryCandle;
@@ -9,6 +9,7 @@ import FireBirdLib.HistoryCandle.DayLine;
 import FireBirdLib.Accessory.TimeConvert;
 
 import std;
+using namespace std;
 using std::chrono::local_days;
 
 CVirtualDataHistoryCandle::CVirtualDataHistoryCandle() {
@@ -57,7 +58,7 @@ bool CVirtualDataHistoryCandle::GetStartEndDate(local_days& lStartDate, local_da
 
 	lStartDate = m_vHistoryData.at(0).GetDate();
 	lEndDate = m_vHistoryData.at(m_vHistoryData.size() - 1).GetDate();
-	ASSERT(lStartDate <= lEndDate);
+	ABSL_CHECK(lStartDate <= lEndDate);
 	return true;
 }
 
@@ -118,7 +119,7 @@ void CVirtualDataHistoryCandle::CalculateMA(size_t length) {
 }
 
 void CVirtualDataHistoryCandle::CreateWeekLine(CVirtualDataHistoryCandle& dataDayLine) {
-	ASSERT(dataDayLine.IsDataLoaded());
+	ABSL_CHECK(dataDayLine.IsDataLoaded());
 	size_t index = 0;
 	CVirtualHistoryCandle weekLine;
 	size_t dayLineSize = dataDayLine.Size();
@@ -150,7 +151,7 @@ void CVirtualDataHistoryCandle::CreateWeekLine(CVirtualDataHistoryCandle& dataDa
 }
 
 void CVirtualDataHistoryCandle::CreateMonthLine(CVirtualDataHistoryCandle& dataDayLine) {
-	ASSERT(dataDayLine.IsDataLoaded());
+	ABSL_CHECK(dataDayLine.IsDataLoaded());
 	size_t index = 0;
 	CVirtualHistoryCandle monthLine;
 	size_t monthLineSize = dataDayLine.Size();

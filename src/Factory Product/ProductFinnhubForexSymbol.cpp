@@ -6,8 +6,8 @@ import FireBirdLib.Container.Stock.FinnhubForexSymbol;
 import FireBirdLib.Accessory.NlohmannJsonGetValue;
 import FireBirdLib.Accessory.JsonParse;
 
-using std::make_shared;
-using std::string;
+using namespace std;
+using namespace std::chrono;
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/symbol?exchange=";

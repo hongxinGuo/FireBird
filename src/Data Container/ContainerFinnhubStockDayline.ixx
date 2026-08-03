@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Container.HistoryCandle.FinnhubStockDayLine;
 
-export import FireBirdLib.Container.HistoryCandle;
+import FireBirdLib.Container.HistoryCandle;
 import FireBirdLib.HistoryCandle.DayLine;
 
 import std;

@@ -4,8 +4,7 @@ module;
 export module FireBirdLib.DataSource.InquireEngine;
 
 import FireBirdLib.InternetOption;
-
-class CWebData;
+import FireBirdLib.WebData;
 
 import std;
 using std::string;

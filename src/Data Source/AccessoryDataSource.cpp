@@ -1,5 +1,5 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.Accessory;
 import FireBirdLib.Factory.Accessory;
@@ -8,13 +8,13 @@ import FireBirdLib.FinnhubInquiryType;
 import FireBirdLib.SystemConfiguration;
 import FireBirdLib.Market.WorldMarket;
 
-import std;
-using std::chrono::local_seconds;
+using namespace std;
+using namespace std::chrono;
 
 CAccessoryDataSource::CAccessoryDataSource() {
 	m_pAccessoryFactory = std::make_unique<CAccessoryFactory>();
 
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Accessory有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	//m_strHeaders = "User-Agent:PostmanRuntime/7.4.4.1\r\n";
 

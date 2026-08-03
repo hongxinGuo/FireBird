@@ -10,7 +10,6 @@ module;
 
 #include"concurrencpp/concurrencpp.h"
 #include"spdlog/spdlog.h"
-#include"afx.h"
 
 module FireBirdLib.GlobeDef;
 
@@ -84,8 +83,8 @@ namespace {
 	CSystemData gl_SystemData;
 
 	CFinnhubInquiryType gl_FinnhubInquiryType;
-	CInaccessibleSymbol gl_finnhubInaccessibleExchange = "FinnhubInaccessibleExchange.json";; // finnhub禁止访问交易所名单（免费账户无法访问的交易所数据）。唯一实例
-	CInaccessibleSymbol gl_tiingoInaccessibleStock = "TiingoInaccessibleStock.json"; // tiingo禁止访问股票名单（免费账户无法访问的股票数据）。唯一实例
+	CInaccessibleSymbol gl_finnhubInaccessibleExchange { "FinnhubInaccessibleExchange.json" }; // finnhub禁止访问交易所名单（免费账户无法访问的交易所数据）。唯一实例
+	CInaccessibleSymbol gl_tiingoInaccessibleStock { "TiingoInaccessibleStock.json" }; // tiingo禁止访问股票名单（免费账户无法访问的股票数据）。唯一实例
 
 	std::chrono::sys_seconds gl_tpNow; // 当前系统时钟的时间戳， 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 	const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地时区

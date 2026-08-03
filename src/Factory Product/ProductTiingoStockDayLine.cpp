@@ -1,6 +1,6 @@
 module;
+#include <absl/log/absl_check.h>
 module FireBirdLib.Product.Tiingo.StockDayLine;
-#include <afx.h>
 import FireBirdLib.Container.Stock.TiingoStock;
 import FireBirdLib.Market.WorldMarket;
 import FireBirdLib.Accessory.TimeConvert;
@@ -29,7 +29,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductTiingoStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	ASSERT(pStock->IsActive()); // 活跃股票
+	ABSL_CHECK(pStock->IsActive()); // 活跃股票
 	chrono::local_days lStartDate{ 1980y / 01 / 01 };
 	if (pStock->GetDayLineEndDate() > toLocalDays(19800101)) lStartDate = pStock->GetDayLineEndDate() - chrono::days(needMoreDayLineData_);
 	string strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, gl_pWorldMarket->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。

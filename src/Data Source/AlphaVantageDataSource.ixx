@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.DataSource.AlphaVantage;
 
-export import FireBirdLib.DataSource;
+import FireBirdLib.DataSource.Virtual;
 import FireBirdLib.WebData;
 import FireBirdLib.Factory.AlphaVantage;
 

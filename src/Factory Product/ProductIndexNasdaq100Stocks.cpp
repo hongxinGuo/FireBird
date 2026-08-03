@@ -16,8 +16,8 @@ import FireBirdLib.DatabaseConnector;
 import FireBirdLib.SystemMessage;
 
 import std;
-using std::string_view;
-using std::string;
+using namespace std;
+using namespace std::chrono;
 using namespace simdjson;
 
 CProductIndexNasdaq100Stocks::CProductIndexNasdaq100Stocks() {

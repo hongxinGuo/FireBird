@@ -11,7 +11,6 @@ using std::string;
 using std::uint64_t;
 
 export {
-	/*
 	inline simdjson::ondemand::array gl_simdjsonEmptyArray;
 
 	void CreateSimdjsonEmptyArray();
@@ -43,5 +42,5 @@ export {
 	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::value& value, const string_view& key);
 	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::object& object, const string_view& key);
 	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::document& doc, const string_view& key);
-	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::value& value);*/
+	[[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::value& value);
 }

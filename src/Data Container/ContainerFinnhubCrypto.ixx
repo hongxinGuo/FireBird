@@ -2,7 +2,7 @@ module;
 
 export module FireBirdLib.Container.Stock.FinnhubCrypto;
 
-export import FireBirdLib.Container.Stock;
+import FireBirdLib.Container.Stock;
 
 import FireBirdLib.Stock.FinnhubCrypto;
 import FireBirdLib.Container.Stock;

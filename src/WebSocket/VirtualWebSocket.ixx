@@ -8,8 +8,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module;
-
-#include <afx.h>
+#include <absl/log/absl_check.h>
 #include <ixwebsocket/IXWebSocket.h>
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 
@@ -18,6 +17,7 @@ export module FireBirdLib.WebSocket;
 using namespace moodycamel;
 
 import std;
+using namespace std;
 using std::string;
 using std::map;
 using std::vector;
@@ -45,8 +45,8 @@ export {
 		virtual bool ParseWebSocketData(std::shared_ptr<string>) { return true; }
 
 	protected:
-		virtual void Connect() { ASSERT(false); }
-		virtual void Send(const vector<string>&) { ASSERT(FALSE); }
+		virtual void Connect() { ABSL_CHECK(false); }
+		virtual void Send(const vector<string>&) { ABSL_CHECK(FALSE); }
 		void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 		virtual void StartWebSocket() { m_webSocket.start(); } // start()为异步的。为了测试，将此函数声明为虚函数
 		virtual void StopWebSocket() { m_webSocket.stop(); } // stop()是同步的。为了测试，将此函数声明为虚函数

@@ -1,5 +1,4 @@
 module;
-#include <afx.h>
 #include <absl/log/absl_check.h>
 
 module FireBirdLib.DataSource.Tiingo;
@@ -54,7 +53,7 @@ namespace {
 CTiingoDataSource::CTiingoDataSource() {
 	m_pTiingoFactory = make_unique<CTiingoFactory>();
 
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_CHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
 	m_strSuffix = "";
@@ -90,7 +89,7 @@ void CTiingoDataSource::ConfigureInternetOption() {
 }
 
 void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_CHECK(m_pCurrentProduct != nullptr);
 
 	string s2;
 	string str;
@@ -161,7 +160,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			}
 		}
 
-		l = min(pWebData->GetBufferLength(), static_cast<size_t>(30));
+		l = std::min(pWebData->GetBufferLength(), static_cast<size_t>(30));
 		strView = pWebData->GetStringView(0, l); //
 		s2 = strView;
 		str = "Warning: Tiingo no handled ";
@@ -262,7 +261,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			break;
 		case ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_: // 用尽了每月数据使用量 HTTP status code: 429
-			ASSERT(m_dwHTTPStatusCode == 429);
+			ABSL_CHECK(m_dwHTTPStatusCode == 429);
 			gl_systemMessage.PushErrorMessage("Tiingo run over monthly bandwidth allocation");
 			m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_);
 			break;
@@ -287,7 +286,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省情况不应该出现
-			ASSERT(false);
+			ABSL_CHECK(false);
 			break;
 		}
 	} catch (nlohmannJson::exception&) { // no error. do nothing
@@ -296,7 +295,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 }
 
 void CTiingoDataSource::CheckWebData2(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_CHECK(m_pCurrentProduct != nullptr);
 
 	string s2;
 	string str;
@@ -446,7 +445,7 @@ void CTiingoDataSource::CheckWebData2(const CWebDataPtr& pWebData) {
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省情况不应该出现
-			ASSERT(false);
+			ABSL_CHECK(false);
 			break;
 		}
 	} catch (nlohmannJson::exception&) { // no error. do nothing

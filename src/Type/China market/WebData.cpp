@@ -1,13 +1,16 @@
 module;
-#include <afx.h>
+#include <absl/log/absl_check.h>
 
 module FireBirdLib.WebData;
 
 import FireBirdLib.Accessory.JsonParse;
 import FireBirdLib.GlobeDef;
 
-import std;
-using std::string;
+//import std;
+
+using namespace std;
+//using std::string;
+//using std::string_view;
 
 CWebData::CWebData() {
 	m_tpTime = toSysTime(0);
@@ -32,7 +35,7 @@ bool CWebData::SetData(const char* buffer, size_t lDataLength) {
 	for (size_t i = 0; i < lDataLength; i++) {
 		m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i];
 	}
-	m_svDataBuffer = string_view(m_sDataBuffer);
+	m_svDataBuffer = std::string_view(m_sDataBuffer);
 	return true;
 }
 
@@ -48,14 +51,14 @@ bool CWebData::SetData(const char* buffer, size_t lDataLength) {
 // 无效数据格式为：var hq_str_sh688801="";
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-string_view CWebData::GetCurrentSinaData() {
+std::string_view CWebData::GetCurrentSinaData() {
 	//const string_view svCurrentTotal2 = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
 	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lStart = svCurrentTotal.find_first_of('v');
 	const auto lEnd = svCurrentTotal.find_first_of(';');
-	ASSERT(lStart <= svCurrentTotal.length());
-	ASSERT(lEnd <= svCurrentTotal.length());
-	ASSERT(lStart <= lEnd);
+	ABSL_CHECK(lStart <= svCurrentTotal.length());
+	ABSL_CHECK(lEnd <= svCurrentTotal.length());
+	ABSL_CHECK(lStart <= lEnd);
 	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
 	return svCurrentTotal.substr(lStart, lEnd - lStart + 1); // 包括最后的字符';'
 }
@@ -82,9 +85,9 @@ string_view CWebData::GetCurrentTengxunData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lStart = svCurrentTotal.find_first_of('v');
 	const auto lEnd = svCurrentTotal.find_first_of(';');
-	ASSERT(lStart <= svCurrentTotal.length());
-	ASSERT(lEnd <= svCurrentTotal.length());
-	ASSERT(lStart <= lEnd);
+	ABSL_CHECK(lStart <= svCurrentTotal.length());
+	ABSL_CHECK(lEnd <= svCurrentTotal.length());
+	ABSL_CHECK(lStart <= lEnd);
 	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
 	return svCurrentTotal.substr(lStart, lEnd - lStart + 1);
 }
