@@ -4,6 +4,7 @@
 #include"nlohmannJsonGetValue.h"
 
 #include "ProductAlphaVantageStockDayLine.h"
+
 #include"ContainerTiingoStockDayLine.h"
 
 #include "ContainerTiingoStock.h"
@@ -28,7 +29,7 @@ CProductAlphaVantageStockDayLine::CProductAlphaVantageStockDayLine() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 string CProductAlphaVantageStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	ASSERT(pStock->IsActive()); // 活跃股票
+	ABSL_DCHECK(pStock->IsActive()); // 活跃股票
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + m_strInquiringSymbol;

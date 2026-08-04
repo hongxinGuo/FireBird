@@ -47,7 +47,7 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 				m_pDataMonthLine->SetSplitAdjusted(true);
 			}
 			else { // 中国市场股票
-				ASSERT(IsChinaStock(pStock));
+				ABSL_DCHECK(IsChinaStock(pStock));
 				m_pDataDayLine = make_shared<CContainerChinaStockDayLine>();
 				m_pDataDayLine->LoadDB(pStock->GetSymbol());
 				m_pDataDayLine->SplitAdjust();
@@ -91,36 +91,36 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 }
 
 void CFireBirdDoc::CalculateDayLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
-	ASSERT(historyCandle.IsSplitAdjusted());
+	ABSL_DCHECK(historyCandle.IsSplitAdjusted());
 	m_dayLine5MovingAverage.Calculate(historyCandle);
 	m_dayLine10MovingAverage.Calculate(historyCandle);
 	m_dayLine30MovingAverage.Calculate(historyCandle);
 	m_dayLine50MovingAverage.Calculate(historyCandle);
 	m_dayLine120MovingAverage.Calculate(historyCandle);
 	m_dayLine250MovingAverage.Calculate(historyCandle);
-	ASSERT(m_dayLine50MovingAverage.Size() == m_pDataDayLine->Size() - 50);
+	ABSL_DCHECK(m_dayLine50MovingAverage.Size() == m_pDataDayLine->Size() - 50);
 }
 
 void CFireBirdDoc::CalculateWeekLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
-	ASSERT(historyCandle.IsSplitAdjusted());
+	ABSL_DCHECK(historyCandle.IsSplitAdjusted());
 	m_weekLine5MovingAverage.Calculate(historyCandle);
 	m_weekLine10MovingAverage.Calculate(historyCandle);
 	m_weekLine30MovingAverage.Calculate(historyCandle);
 	m_weekLine50MovingAverage.Calculate(historyCandle);
 	m_weekLine120MovingAverage.Calculate(historyCandle);
 	m_weekLine250MovingAverage.Calculate(historyCandle);
-	ASSERT(m_weekLine50MovingAverage.Size() == m_pDataWeekLine->Size() - 50);
+	ABSL_DCHECK(m_weekLine50MovingAverage.Size() == m_pDataWeekLine->Size() - 50);
 }
 
 void CFireBirdDoc::CalculateMonthLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
-	ASSERT(historyCandle.IsSplitAdjusted());
+	ABSL_DCHECK(historyCandle.IsSplitAdjusted());
 	m_monthLine5MovingAverage.Calculate(historyCandle);
 	m_monthLine10MovingAverage.Calculate(historyCandle);
 	m_monthLine30MovingAverage.Calculate(historyCandle);
 	m_monthLine50MovingAverage.Calculate(historyCandle);
 	m_monthLine120MovingAverage.Calculate(historyCandle);
 	m_monthLine250MovingAverage.Calculate(historyCandle);
-	ASSERT(m_monthLine50MovingAverage.Size() == m_pDataMonthLine->Size() - 50);
+	ABSL_DCHECK(m_monthLine50MovingAverage.Size() == m_pDataMonthLine->Size() - 50);
 }
 
 std::pair<long, long> CFireBirdDoc::GetDayLineHighLow(int iCandleNumber) const {

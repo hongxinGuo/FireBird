@@ -13,8 +13,8 @@
 #include"VirtualWebProduct.h"
 #include"TiingoStock.h"
 
-#include "spdlog_assert.h"
 #include "InaccessibleSymbol.h"
+#include "log.h"
 #include "SystemConfiguration.h"
 #include "TiingoFactory.h"
 #include "TimeConvert.h"
@@ -41,7 +41,7 @@ namespace {
 CTiingoDataSource::CTiingoDataSource() {
 	m_pTiingoFactory = make_unique<CTiingoFactory>();
 
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
 	m_strSuffix = "";
@@ -77,7 +77,7 @@ void CTiingoDataSource::ConfigureInternetOption() {
 }
 
 void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	string s2;
 	string str;
@@ -249,7 +249,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			break;
 		case ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_: // 用尽了每月数据使用量 HTTP status code: 429
-			ASSERT(m_dwHTTPStatusCode == 429);
+			ABSL_DCHECK(m_dwHTTPStatusCode == 429);
 			gl_systemMessage.PushErrorMessage("Tiingo run over monthly bandwidth allocation");
 			m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_);
 			break;
@@ -274,7 +274,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省情况不应该出现
-			ASSERT(false);
+			ABSL_DCHECK(false);
 			break;
 		}
 	} catch (nlohmannJson::exception&) { // no error. do nothing
@@ -283,7 +283,7 @@ void CTiingoDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 }
 
 void CTiingoDataSource::CheckWebData2(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	string s2;
 	string str;
@@ -433,7 +433,7 @@ void CTiingoDataSource::CheckWebData2(const CWebDataPtr& pWebData) {
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省情况不应该出现
-			ASSERT(false);
+			ABSL_DCHECK(false);
 			break;
 		}
 	} catch (nlohmannJson::exception&) { // no error. do nothing
@@ -447,9 +447,9 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;
 
 	m_PrevInquireTimePoint = llTickCount;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	// Ensure we are not in the market reset window before proceeding
-	SPDLOG_ASSERT(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
+	ABSL_DCHECK(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
 		|| currentTime >= GetNextTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	if (GenerateFundamentalDefinition()) return true;
@@ -463,7 +463,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 		if (GenerateFinancialState()) return true;
 	}
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	gl_systemMessage.SetCurrentTiingoFunction("idling");
 	return false;
 }
@@ -559,7 +559,7 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
 		size_t currentUpdatePos;
 		bool fFound = false;
@@ -602,7 +602,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
 		size_t currentUpdatePos;
 		bool fFound = false;
@@ -641,7 +641,7 @@ bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_STOCK_DAILY_META_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateStockDailyMeta()) {
 		size_t currentUpdatePos;
 		bool fFound = false;
@@ -676,14 +676,14 @@ bool CTiingoDataSource::GenerateChosenStockDayLine() {
 	size_t lStockSetSize = gl_dataContainerTiingoChosenStock.Size();
 	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateChosenStockDayLine()) {
 		CTiingoStockPtr pTiingoStock;
 		bool fFound = false;
 		for (size_t currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoChosenStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
-				SPDLOG_ASSERT(pTiingoStock->IsActive()); // 活跃股票？
+				ABSL_DCHECK(pTiingoStock->IsActive()); // 活跃股票？
 				fFound = true;
 				break;
 			}
@@ -720,7 +720,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateDayLine()) {
 		size_t currentUpdatePos;
 		CTiingoStockPtr pTiingoStock;
@@ -728,7 +728,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 		for (currentUpdatePos = 0; currentUpdatePos < lStockSetSize; currentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(currentUpdatePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
-				SPDLOG_ASSERT(pTiingoStock->IsActive()); // 活跃股票？
+				ABSL_DCHECK(pTiingoStock->IsActive()); // 活跃股票？
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户下载所有股票的日线
 					fFound = true;
 					break;
@@ -766,7 +766,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_FINANCIAL_STATEMENT_;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateFinancialState()) {
 		size_t currentUpdatePos;
 		bool fFound = false;

@@ -74,16 +74,16 @@ namespace {
 }
 
 CWorldMarket::CWorldMarket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("CWorldMarket市场变量只允许存在一个实例\n"));
+		ABSL_DLOG(INFO) << "CWorldMarket市场变量只允许存在一个实例\n";
 	}
 
 	gl_dataContainerStockExchange.LoadDB(); // 交易所信息只需装载一次。
 
 	m_strMarketId = "US";
 	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
-	ASSERT(m_exchange != nullptr);
+	ABSL_DCHECK(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = "America/New_York";
 	CreateLocalTimeZone(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
 
@@ -186,7 +186,7 @@ chrono::local_seconds CWorldMarket::GetResetTime() {
 }
 
 void CWorldMarket::PrepareToCloseMarket() {
-	//ASSERT(gl_systemConfiguration.IsExitingSystem());
+	//ABSL_DCHECK(gl_systemConfiguration.IsExitingSystem());
 	DisconnectAllWebSocket();
 }
 
@@ -228,7 +228,7 @@ int CWorldMarket::ProcessTask() {
 			TaskCalculateNasdaq100MA200UpDownRate();
 			break;
 		case WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__:
-			ASSERT(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
+			ABSL_DCHECK(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__:
@@ -262,14 +262,14 @@ int CWorldMarket::ProcessTask() {
 }
 
 int CWorldMarket::ProcessCurrentImmediateTask() {
-	ASSERT(!m_marketImmediateTask.Empty());
+	ABSL_DCHECK(!m_marketImmediateTask.Empty());
 
 	auto pTask = m_marketImmediateTask.GetTask();
 	auto taskType = pTask->GetType();
 	m_marketImmediateTask.DiscardCurrentTask();
 	switch (taskType) {
 	default:
-		ASSERT(0); // 错误的任务号
+		ABSL_DCHECK(0); // 错误的任务号
 		break;
 	}
 	return pTask->GetType();
@@ -321,10 +321,10 @@ void CWorldMarket::TaskMonitorWebSocket() {
 
 void CWorldMarket::TaskResetMarket() {
 	// 市场时间十七时重启系统
-	ASSERT(!m_fResettingMarket);
+	ABSL_DCHECK(!m_fResettingMarket);
 	ResetMarket();
 	SetSystemReady(false);
-	ASSERT(!m_fResettingMarket);
+	ABSL_DCHECK(!m_fResettingMarket);
 
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, GetMarketTime()); // 每次重置系统时，必须设置系统状态检查任务
 }
@@ -435,7 +435,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 	CForexSymbolPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubForexSymbol.Size();
 
-	//TRACE("Finnhub forex dayLine\n");
+	//ABSL_DLOG(INFO) << "Finnhub forex dayLine\n";
 	for (size_t i = 0; i < symbolSize; i++) {
 		pSymbol = gl_dataFinnhubForexSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
@@ -484,7 +484,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	CFinnhubCryptoPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
 
-	//TRACE("Finnhub Crypto dayLine\n");
+	//ABSL_DLOG(INFO) << "Finnhub Crypto dayLine\n";
 	for (size_t i = 0; i < symbolSize; ++i) {
 		pSymbol = gl_dataFinnhubCryptoSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
@@ -538,8 +538,8 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine() {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskProcessTiingoDayLine() {
 	if (gl_systemConfiguration.GetTiingoStockDayLineProcessedDate() >= GetCurrentTradeDate()) return; // 已更新完52WeekHighLow,不再自动更新。
-	ASSERT(!gl_pTiingoDataSource->IsUpdateDayLine());// 接收完日线数据后方可处理
-	ASSERT(!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()); // 接收完IEX日线数据后方可处理
+	ABSL_DCHECK(!gl_pTiingoDataSource->IsUpdateDayLine());// 接收完日线数据后方可处理
+	ABSL_DCHECK(!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()); // 接收完IEX日线数据后方可处理
 	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskProcessTodayDayLine();
 	});
@@ -560,11 +560,11 @@ void CWorldMarket::TaskPerSecond() {
 		m_iCountDownPerMinute = 59;
 	}
 	if (--m_iCountDownPerHour < 0) { // 每小时一次
-		ASSERT(gl_systemConfiguration.GetTiingoHourLyRequestLimit() > 100);
+		ABSL_DCHECK(gl_systemConfiguration.GetTiingoHourLyRequestLimit() > 100);
 		m_iCountDownPerHour = 3599;
 	}
 	if (--m_iCountDownPerDay < 0) { // 每天一次
-		ASSERT(gl_systemConfiguration.GetTiingoDailyRequestLimit() > 10000);
+		ABSL_DCHECK(gl_systemConfiguration.GetTiingoDailyRequestLimit() > 10000);
 		m_iCountDownPerDay = 3600 * 24 - 1;
 	}
 }
@@ -914,7 +914,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 		static int s_counter2 = 0;
 		if (s_counter2 > 30) {
 			gl_runtime.background_executor()->post([] {
-				TRACE("Finnhub profile\n");
+				ABSL_DLOG(INFO) << "Finnhub profile\n";
 				gl_systemMessage.SetWorldMarketSavingFunction("F stock profile");
 				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				gl_dataContainerFinnhubStock.UpdateProfileDB();
@@ -923,7 +923,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 					string s = std::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
 					gl_systemMessage.PushInnerSystemInformationMessage(s);
 				}
-				TRACE("Finnhub profile updated\n");
+				ABSL_DLOG(INFO) << "Finnhub profile updated\n";
 			});
 			s_counter2 = 0;
 		}
@@ -946,12 +946,12 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 
 	chrono::local_seconds lNextTime = GetNextTime(GetMarketTime(), 0h, 1min, 0s);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 5min + 10s;
-	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
+	ABSL_DCHECK(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
 }
 
 bool CWorldMarket::UpdateToken() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 
 	if (gl_systemConfiguration.GetFinnhubToken().length() > 5) {
 		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken());
@@ -1180,10 +1180,10 @@ void CWorldMarket::RebuildStockDayLineDB() {
 /// <summary>
 /// Finnhub WebSocket的免费账户最多只能发送50个证券的数据
 /// </summary>
-vectorString CWorldMarket::GetFinnhubWebSocketSymbols() {
-	vectorString vSymbol;
+vector<string> CWorldMarket::GetFinnhubWebSocketSymbols() {
+	vector<string> vSymbol;
 
-	vectorString vSymbolTemp = gl_dataContainerTiingoChosenStock.GetSymbols();
+	vector<string> vSymbolTemp = gl_dataContainerTiingoChosenStock.GetSymbols();
 	for (const auto& symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}
@@ -1207,7 +1207,7 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbols() {
 /// </summary>
 void CWorldMarket::DisconnectAllWebSocket() {
 	//本函数只在系统退出时调用
-	//ASSERT(gl_systemConfiguration.IsExitingSystem()); 
+	//ABSL_DCHECK(gl_systemConfiguration.IsExitingSystem()); 
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_pFinnhubWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_pTiingoIEXWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_pTiingoCryptoWebSocket->Disconnect();
@@ -1376,7 +1376,7 @@ void CWorldMarket::DeleteTiingoDelistedStock() {
 	auto Size = gl_dataContainerTiingoDelistedSymbol.Size();
 	for (size_t index = 0; index < Size; index++) {
 		auto pTiingoDelistedStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
-		ASSERT(gl_dataContainerTiingoStock.IsSymbol(pTiingoDelistedStock));
+		ABSL_DCHECK(gl_dataContainerTiingoStock.IsSymbol(pTiingoDelistedStock));
 		DeleteTiingoDayLine(pTiingoDelistedStock); // 删除日线
 		DeleteTiingoFinancialStatement(pTiingoDelistedStock); // 删除财经报告
 		gl_dataContainerTiingoStock.Delete(pTiingoDelistedStock->GetSymbol()); // 删除代码
@@ -1405,7 +1405,7 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 }
 
 void CWorldMarket::ChangeToPrevStock() {
-	ASSERT(gl_pCurrentStock != nullptr);
+	ABSL_DCHECK(gl_pCurrentStock != nullptr);
 	size_t lIndex = 0;
 	if (gl_dataContainerTiingoChosenStock.IsSymbol(gl_pCurrentStock)) {
 		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(gl_pCurrentStock);
@@ -1418,7 +1418,7 @@ void CWorldMarket::ChangeToPrevStock() {
 }
 
 void CWorldMarket::ChangeToNextStock() {
-	ASSERT(gl_pCurrentStock != nullptr);
+	ABSL_DCHECK(gl_pCurrentStock != nullptr);
 	size_t lIndex = 0;
 	if (gl_dataContainerTiingoChosenStock.IsSymbol(gl_pCurrentStock)) {
 		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(gl_pCurrentStock);

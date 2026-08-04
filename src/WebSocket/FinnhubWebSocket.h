@@ -34,14 +34,14 @@ public:
 
 	static string CreateFinnhubWebSocketString(string sSymbol);
 
-	void MonitorWebSocket(const vectorString& vSymbol);
+	void MonitorWebSocket(const vector<string>& vSymbol);
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 	bool ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<string>& pData);
 
 protected:
 	void Connect() override;
-	void Send(const vectorString& vSymbol) override;
+	void Send(const vector<string>& vSymbol) override;
 };
 
 using CFinnhubWebSocketPtr = shared_ptr<CFinnhubWebSocket>;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <queue>
-
+#include"absl/log/absl_check.h"
 #include "InternetOption.h"
 
 using std::chrono::milliseconds;
@@ -71,7 +71,7 @@ public:
 
 	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiry(int inquireType, UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
-		SPDLOG_ASSERT(!IsInquiring());
+		ABSL_DCHECK(!IsInquiring());
 		if (isUpdateNeeded()) {
 			StoreInquiry(createProduct(inquireType));
 			reportMsg();
@@ -83,7 +83,7 @@ public:
 	template <typename UpdateCheck, typename ValidDate, typename SetUpdated, typename ReportMsg1, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiryWithCheck(int inquireType, ValidDate validDate, SetUpdated setUpdated, ReportMsg1 reportMsg1,
 	                                    UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
-		SPDLOG_ASSERT(!IsInquiring());
+		ABSL_DCHECK(!IsInquiring());
 		if (isUpdateNeeded()) {
 			if (!validDate()) {
 				setUpdated();
@@ -191,7 +191,7 @@ public:
 	void SetDefaultSessionOption();
 
 	virtual void ConfigureInternetOption() {
-		ASSERT(false); // 调用了基类函数ConfigureInternetOption
+		ABSL_DCHECK(false); // 调用了基类函数ConfigureInternetOption
 	} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void UpdateStatus(const CWebDataPtr&) {} //成功接收后更新系统状态。
 

@@ -12,7 +12,6 @@
 #include "ContainerFinnhubStock.h"
 #include "TiingoStock.h"
 
-#include "spdlog_assert.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
@@ -23,7 +22,7 @@ namespace {
 CAlphaVantageDataSource::CAlphaVantageDataSource() {
 	m_pAlphaVantageFactory = std::make_unique<CAlphaVantageFactory>();
 
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // AlphaVantage有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
 	m_strSuffix = "&apikey=";
@@ -45,11 +44,11 @@ bool CAlphaVantageDataSource::GenerateInquiryMessage(const local_seconds& lCurre
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请Alpha Vantage各数据。
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketAlphaVantageInquiryTime())) return false;
 	m_PrevInquireTimePoint = llTickCount;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (GenerateStockSplit()) return true;
 	if (GenerateStockDayLine()) return true;
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (!m_fAlphaVantageDataInquiryFinished) {
 		gl_systemMessage.PushInformationMessage("Alpha Vantage data inquiry finished");
 		gl_systemMessage.SetCurrentAlphaVantageFunction("finished");

@@ -36,7 +36,7 @@ string CProductTiingoCryptoDayLine::CreateMessage() {
 }
 
 void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_index >= 0);
+	ABSL_DCHECK(m_index >= 0);
 	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
 	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
 	pCrypto->SetUpdateDayLine(false);
@@ -50,13 +50,13 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pCrypto->UpdateDayLine(*pvDayLine);
 		pCrypto->SetUpdateDayLineDB(true);
 		pCrypto->SetUpdateProfileDB(true);
-		//TRACE(_T("处理Tiingo %s日线数据\n"), pCrypto->GetSymbol().GetBuffer());
+		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().c_str());
 		return;
 	}
 	else {
 		pCrypto->SetUpdateDayLineDB(false);
 		pCrypto->SetUpdateProfileDB(false);
-		//TRACE(_T("处理Tiingo %s日线数据\n"), pCrypto->GetSymbol().GetBuffer());
+		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().c_str());
 	}
 	*/
 }

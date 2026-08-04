@@ -220,7 +220,7 @@ namespace FireBirdTest {
 			const string sTemp = jsSystemConfiguration[nlohmannJson::json_pointer("/ChinaMarket/RealtimeServer")];
 			EXPECT_TRUE(sTemp=="sina");
 		} catch (nlohmannJson::type_error&) {
-			EXPECT_TRUE(FALSE);
+			EXPECT_TRUE(false);
 		}
 	}
 

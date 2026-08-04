@@ -535,7 +535,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 		m_trailingPEG1Y = fValue;
 		break;
 	default:
-		ASSERT(FALSE);
+		ABSL_DCHECK(false);
 		break;
 	}
 }

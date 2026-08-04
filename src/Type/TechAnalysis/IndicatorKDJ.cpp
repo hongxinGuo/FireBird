@@ -17,7 +17,7 @@ using namespace std;
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CIndicatorKDJ::Calculate() {
-	ASSERT(m_pvCandle != nullptr);
+	ABSL_DCHECK(m_pvCandle != nullptr);
 
 	m_vKDJ.resize(m_pvCandle->Size());
 	for (int i = 0; i < m_Period; i++) {

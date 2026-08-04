@@ -46,7 +46,7 @@ public:
 	local_days GetMonthLineDate(size_t countDownIndex) const;
 
 	void ShowDayLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
-		ASSERT(m_pDataDayLine->IsSplitAdjusted());
+		ABSL_DCHECK(m_pDataDayLine->IsSplitAdjusted());
 		m_pDataDayLine->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 

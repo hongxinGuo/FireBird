@@ -64,7 +64,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWebRTData::ParseSinaData(const string_view& svData) {
-	ASSERT(svData.length() >= 23);
+	ABSL_DCHECK(svData.length() >= 23);
 	size_t lCurrentPos = 11; // 跨过字符串："var hq_str_"
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
 	m_strSymbol = XferSinaToStandard(svStockSymbol);

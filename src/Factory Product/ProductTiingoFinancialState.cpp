@@ -205,7 +205,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					else {
 						value4 = simdjsonGetDouble(value.value());
 					}
-					//TRACE("%s\n", s.c_str());
+					//ABSL_DLOG(INFO) << std::format("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialState->Assign(index, value4);
@@ -225,7 +225,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					else {
 						value4 = simdjsonGetDouble(value.value());
 					}
-					//TRACE("%s\n", s.c_str());
+					//ABSL_DLOG(INFO) << std::format("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialState->Assign(index, value4);
@@ -245,7 +245,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					else {
 						value4 = simdjsonGetDouble(value.value());
 					}
-					//TRACE("%s\n", s.c_str());
+					//ABSL_DLOG(INFO) << std::format("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialState->Assign(index, value4);
@@ -265,7 +265,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					else {
 						value4 = simdjsonGetDouble(value.value());
 					}
-					//TRACE("%s\n", s.c_str());
+					//ABSL_DLOG(INFO) << std::format("%s\n", s.c_str());
 					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialState->Assign(index, value4);

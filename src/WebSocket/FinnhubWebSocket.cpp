@@ -11,6 +11,7 @@
 #include "FinnhubWebSocket.h"
 
 #include "FinnhubDataSource.h"
+#include "log.h"
 
 #include"simdjsonGetValue.h"
 #include "TimeConvert.h"
@@ -79,13 +80,13 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage("Finnhub WebSocket Pong");
 		break;
 	default: // error
-		ASSERT(0);
+		ABSL_DCHECK(0);
 		break;
 	}
 }
 
 CFinnhubWebSocket::CFinnhubWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://ws.finnhub.io";
 }
 
@@ -100,13 +101,13 @@ void CFinnhubWebSocket::Connect() {
 	Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }
 
-void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
-	ASSERT(IsOpen());
+void CFinnhubWebSocket::Send(const vector<string>& vSymbol) {
+	ABSL_DCHECK(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
 		if (l >= 49) break; // note 免费账户只支持最多50个证券名称
 		string strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
 		ix::WebSocketSendInfo info = m_webSocket.send(strMessage);
-		ASSERT(info.success);
+		ABSL_DCHECK(info.success);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 	}
 }
@@ -122,7 +123,7 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 	return symbol.dump();
 }
 
-void CFinnhubWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CFinnhubWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pFinnhubDataSource->IsWebError(), gl_systemConfiguration.IsUsingFinnhubWebSocket(), vSymbol);
 }

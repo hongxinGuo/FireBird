@@ -5,7 +5,6 @@
 #include"ChinaStock.h"
 #include"WeekLine.h"
 #include "ContainerChinaStockDayLine.h"
-
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
@@ -140,8 +139,8 @@ void CContainerChinaStockDayLine::LoadDB(const string& strStockSymbol, long lSta
 }
 
 bool CContainerChinaStockDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
-	ASSERT(IsDataLoaded());
-	ASSERT(Size() > 0);
+	ABSL_DCHECK(IsDataLoaded());
+	ABSL_DCHECK(Size() > 0);
 	size_t currentDayLinePos = 0;
 
 	vWeekLine.clear();
@@ -154,8 +153,8 @@ bool CContainerChinaStockDayLine::BuildWeekLine(vector<CWeekLine>& vWeekLine) {
 }
 
 CWeekLine CContainerChinaStockDayLine::CreateNewWeekLine(size_t& currentDayLinePos) {
-	ASSERT(Size() > 0);
-	ASSERT(currentDayLinePos < Size());
+	ABSL_DCHECK(Size() > 0);
+	ABSL_DCHECK(currentDayLinePos < Size());
 	const auto lNextMonday = GetNextMonday(GetData(currentDayLinePos)->GetDate());
 	const auto lNewestDay = GetData(Size() - 1)->GetDate();
 	CWeekLine weekLine;

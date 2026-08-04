@@ -28,7 +28,7 @@ CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
 
 string CProductFinnhubCompanySymbolChange::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
-	ASSERT(m_strInquiringExchange == "ALL");
+	ABSL_DCHECK(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strInquiry;
 }

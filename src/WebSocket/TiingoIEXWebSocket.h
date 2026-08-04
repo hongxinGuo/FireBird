@@ -56,14 +56,14 @@ public:
 
 	bool ParseWebSocketData(shared_ptr<string> pData) override { return ParseTiingoIEXWebSocketData(pData); }
 
-	void MonitorWebSocket(const vectorString& vSymbol);
+	void MonitorWebSocket(const vector<string>& vSymbol);
 
-	static string CreateMessage(const vectorString& vSymbol);
+	static string CreateMessage(const vector<string>& vSymbol);
 	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);
 
 protected:
 	void Connect() override;
-	void Send(const vectorString& vSymbol) override;
+	void Send(const vector<string>& vSymbol) override;
 };
 
 using CTiingoIEXWebSocketPtr = shared_ptr<CTiingoIEXWebSocket>;

@@ -8,7 +8,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 #include "ContainerStockExchange.h"
-
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
@@ -41,7 +40,7 @@ CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymb
 		}
 		return nullptr;
 	}
-	ASSERT(FALSE);
+	ABSL_DCHECK(false);
 	return nullptr;
 }
 

@@ -82,7 +82,7 @@ void CFinnhubStock::CheckProfileUpdateStatus(local_days todayDate) {
 /// 默认状态为每周更新一次
 ///
 bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
-	ASSERT(m_fUpdateCompanyNews);
+	ABSL_DCHECK(m_fUpdateCompanyNews);
 	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
 		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
 			// 每星期更新一次公司新闻
@@ -107,7 +107,7 @@ bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
 bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
-	ASSERT(m_fUpdateBasicFinancial);
+	ABSL_DCHECK(m_fUpdateBasicFinancial);
 	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
 		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
 			// 系统每季更新一次数据，故查询两次即可。
@@ -136,7 +136,7 @@ bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
 /// <param name="lDayOfWeek"></param>
 /// <returns></returns>
 bool CFinnhubStock::CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday lDayOfWeek) {
-	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
+	ABSL_DCHECK(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 
 	if (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100)) {
 		SetUpdateDayLine(false);
@@ -292,7 +292,7 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::UpdateCompanyNewsDB() {
-	ASSERT(!m_vCompanyNews.empty());
+	ABSL_DCHECK(!m_vCompanyNews.empty());
 	const size_t size = m_vCompanyNews.size();
 
 	long long cutoffDateTime = 0;
@@ -432,7 +432,7 @@ bool CFinnhubStock::UpdateDayLineDB() {
 				string str = GetSymbol();
 				str += "日线资料存储完成";
 				gl_systemMessage.PushDayLineInfoMessage(str);
-				//TRACE(_T("更新%s日线数据\n"), GetSymbol().GetBuffer());
+				//ABSL_DLOG(INFO) <<"更新日线数据" << GetSymbol().GetBuffer();
 				UnloadDayLine();
 				return true;
 			}

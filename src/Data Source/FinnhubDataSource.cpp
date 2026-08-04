@@ -23,7 +23,6 @@
 #include "ContainerStockExchange.h"
 #include"VirtualWebProduct.h"
 
-#include "spdlog_assert.h"
 #include "TimeConvert.h"
 #include "WebData.h"
 #include"WorldMarket.h"
@@ -51,7 +50,7 @@ namespace {
 CFinnhubDataSource::CFinnhubDataSource() {
 	m_pFinnhubFactory = std::make_unique<CFinnhubFactory>();
 
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	// 无需（也无法）每日更新的变量放在这里
 
 	m_strInquiryFunction = ""; // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
@@ -110,7 +109,7 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 }
 
 void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	nlohmannJson js;
@@ -150,7 +149,7 @@ void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省分支不应该出现
-			ASSERT(false);
+			ABSL_DCHECK(false);
 			break;
 		}
 	} catch (nlohmannJson::exception&) { // no error. do nothing
@@ -171,9 +170,9 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	if (llTickCount <= m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
 
 	m_PrevInquireTimePoint = llTickCount;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	// Ensure we are not in the market reset window before proceeding
-	SPDLOG_ASSERT(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
+	ABSL_DCHECK(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
 		|| currentTime >= GetNextTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateCompanySymbolChange()) return true; // 第一步申请股票代码更改。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	if (GenerateCountryList()) return true;
@@ -203,7 +202,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 		//InquireRTQuote()) return true;
 	}
 
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (!m_fFinnhubDataInquiryFinished) {
 		gl_systemMessage.PushInformationMessage("finnhub data inquiry finished");
 		gl_systemMessage.SetCurrentFinnhubFunction("finished");
@@ -434,8 +433,8 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 
 bool CFinnhubDataSource::GenerateRTQuote() {
 	static size_t s_lCurrentRTDataQuotePos = 0;
-	SPDLOG_ASSERT(!IsInquiring());
-	SPDLOG_ASSERT(gl_pWorldMarket->IsSystemReady());
+	ABSL_DCHECK(!IsInquiring());
+	ABSL_DCHECK(gl_pWorldMarket->IsSystemReady());
 	const CVirtualProductWebDataPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_);
 	product->SetIndex(s_lCurrentRTDataQuotePos);
 	StoreInquiry(product);
@@ -560,7 +559,7 @@ bool CFinnhubDataSource::GenerateForexExchange() {
 
 bool CFinnhubDataSource::GenerateForexSymbol() {
 	static size_t s_lCurrentForexExchangePos = 0;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateForexSymbol()) {
 		const CVirtualProductWebDataPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, FOREX_SYMBOLS_);
 		product->SetIndex(s_lCurrentForexExchangePos);
@@ -609,7 +608,7 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 
 bool CFinnhubDataSource::GenerateCryptoSymbol() {
 	static size_t s_lCurrentCryptoExchangePos = 0;
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	if (IsUpdateCryptoSymbol()) {
 		const CVirtualProductWebDataPtr product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		product->SetIndex(s_lCurrentCryptoExchangePos);

@@ -36,7 +36,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const local_seconds& currentTi
 		}
 		if (!IsInquiring()) {
 			const auto product = make_shared<CProductTengxunRT>();
-			ASSERT(!HaveInquiry());
+			ABSL_DCHECK(!HaveInquiry());
 			StoreInquiry(product);
 			return true;
 		}
@@ -66,7 +66,7 @@ bool CTengxunRTDataSource::IsInvalidTengxunRTData(const CWebData& WebDataReceive
 	const string_view sv = WebDataReceived.GetStringView(0, 21);
 
 	if (sv == "v_pv_none_match=\"1\";\n") {
-		ASSERT(WebDataReceived.GetBufferLength() == 21);
+		ABSL_DCHECK(WebDataReceived.GetBufferLength() == 21);
 		return true;
 	}
 	else return false;

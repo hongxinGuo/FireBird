@@ -27,7 +27,7 @@ using std::make_shared;
 using namespace std;
 
 CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = "";
 	m_strHeaders = "Referer:https://quote.eastmoney.com/\r\n";
 	m_strParam = "";
@@ -65,7 +65,7 @@ bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const local_seconds& cu
 		s_number = mean / 200;
 		int time = 180000 + mean * 50;
 		m_PrevInquireTimePoint += milliseconds(time);
-		TRACE("Eastmoney DayLine server suspended %d seconds\n", time / 1000);
+		ABSL_DLOG(INFO) << std::format("Eastmoney DayLine server suspended %d seconds\n", time / 1000);
 	}
 	const auto llTickCount = GetTickCount();
 	if (llTickCount < m_PrevInquireTimePoint + milliseconds(m_InqueringTime + mean)) return false;
@@ -174,7 +174,7 @@ void CEastmoneyDayLineDataSource::ConfigureInternetOption() {
 }
 
 void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误
@@ -187,7 +187,7 @@ void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 		// everything is OK
 		break;
 	default: // something wrong,
-		TRACE(_T("关闭东方财富日线服务\n"));
+		ABSL_DLOG(INFO) << "关闭东方财富日线服务\n";
 		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		break;
 	}

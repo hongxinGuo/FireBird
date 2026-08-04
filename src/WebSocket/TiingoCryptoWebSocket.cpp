@@ -51,7 +51,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://api.tiingo.com/crypto";
 }
 
@@ -71,18 +71,18 @@ void CTiingoCryptoWebSocket::Connect() {
 // thresholdLevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
-	ASSERT(IsOpen());
+void CTiingoCryptoWebSocket::Send(const vector<string>& vSymbol) {
+	ABSL_DCHECK(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 
-	ASSERT(IsOpen());
+	ABSL_DCHECK(IsOpen());
 
 	m_webSocket.send(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
-void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CTiingoCryptoWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoCryptoWebSocket(), vSymbol);
 }
@@ -101,8 +101,8 @@ void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbol2;
+string CTiingoCryptoWebSocket::CreateMessage(const vector<string>& vSymbol) {
+	vector<string> vSymbol2;
 	nlohmannJson message;
 	message["eventName"] = "subscribe";
 	message["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
@@ -162,7 +162,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (nlohmannJson::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
-					ASSERT(GetSubscriptionId() == 0);
+					ABSL_DCHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;

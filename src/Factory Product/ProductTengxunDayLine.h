@@ -24,7 +24,7 @@ public:
 	~CProductTengxunDayLine() override = default;
 
 	string CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr) override { ASSERT(false); } // 腾讯日线不使用此函数
+	void ParseAndStoreWebData(CWebDataPtr) override { ABSL_DCHECK(false); } // 腾讯日线不使用此函数
 	void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) override;
 
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }

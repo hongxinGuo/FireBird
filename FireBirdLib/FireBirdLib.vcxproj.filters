@@ -630,9 +630,6 @@
     <ClInclude Include="..\src\Type\China market\MonthLine.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\spdlog_assert.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\Initialization.h">
       <Filter>源文件\System</Filter>
     </ClInclude>

@@ -696,7 +696,7 @@ namespace FireBirdTest {
 		}
 		pStock->SetSymbol(string_view("600010.SS"));
 		pStock->SetDayLineEndDate(toLocalDays(10190101));
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
+		ABSL_DCHECK(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineDB();
 
 		stock.SetSymbol(string_view("600010.SS"));
@@ -756,7 +756,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(string_view("600004.SS"));
 		pStock->SetDayLineStartDate(toLocalDays(19920102));
 		pStock->SetDayLineEndDate(toLocalDays(20800100));
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
+		ABSL_DCHECK(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(CHINA_MARKET_BEGIN_DATE_ + 9 * 100000 + 2)) << "日线最新日期已更新";
 		EXPECT_EQ(pStock->GetDayLineStartDate(), toLocalDays(CHINA_MARKET_BEGIN_DATE_ + 2)) << "日线最初日期已更新";
@@ -792,7 +792,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(string_view("600008.SS"));
 		pStock->SetDayLineStartDate(toLocalDays(19900101));
 		pStock->SetDayLineEndDate(toLocalDays(20800102));
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
+		ABSL_DCHECK(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(20800102));
 		EXPECT_EQ(pStock->GetDayLineStartDate(), toLocalDays(19900101 + 100000)) << "当起始日期为19900101时，需要更新之";
@@ -828,7 +828,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(string_view("600008.SS"));
 		pStock->SetDayLineStartDate(toLocalDays(19900102));
 		pStock->SetDayLineEndDate(toLocalDays(20800102));
-		ASSERT(!gl_systemConfiguration.IsWorkingMode());
+		ABSL_DCHECK(!gl_systemConfiguration.IsWorkingMode());
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(20800102));
 		EXPECT_EQ(pStock->GetDayLineStartDate(), toLocalDays(19900102));

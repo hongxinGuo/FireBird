@@ -66,7 +66,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB2() {
 			while (!setWorldCrypto.IsEOF()) {	//更新原有的代码集状态
 				if (IsSymbol(T2Utf8(setWorldCrypto.m_Ticker))) {
 					const CTiingoCryptoPtr pCrypto = GetCrypto(T2Utf8(setWorldCrypto.m_Ticker));
-					ASSERT(pCrypto != nullptr);
+					ABSL_DCHECK(pCrypto != nullptr);
 					if (pCrypto->IsUpdateProfileDB()) {
 						pCrypto->Update(setWorldCrypto);
 						pCrypto->SetUpdateProfileDB(false);
@@ -79,7 +79,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB2() {
 			}
 			for (size_t l = 0; l < m_vStock.size(); l++) {
 				const CTiingoCryptoPtr pCrypto = GetCrypto(l);
-				ASSERT(pCrypto != nullptr);
+				ABSL_DCHECK(pCrypto != nullptr);
 				if (pCrypto->IsUpdateProfileDB()) {
 					pCrypto->Append(setWorldCrypto);
 					pCrypto->SetUpdateProfileDB(false);
@@ -110,7 +110,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 		for (const auto& row : rows) {
 			if (IsSymbol(string{ row.Symbol })) {
 				const CTiingoCryptoPtr pCrypto = GetCrypto(string{ row.Symbol });
-				ASSERT(pCrypto != nullptr);
+				ABSL_DCHECK(pCrypto != nullptr);
 				if (pCrypto->IsUpdateProfileDB()) {
 					// 更新已有记录
 					db(update(t).set(
@@ -132,7 +132,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 		int nValues = 0;
 		for (size_t l = 0; l < m_vStock.size(); l++) {
 			const CTiingoCryptoPtr pCrypto = GetCrypto(l);
-			ASSERT(pCrypto != nullptr);
+			ABSL_DCHECK(pCrypto != nullptr);
 			if (pCrypto->IsUpdateProfileDB()) {
 				multi_insert.add_values(
 					t.Symbol = pCrypto->GetSymbol(),

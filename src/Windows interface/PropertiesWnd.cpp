@@ -71,7 +71,7 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 	pVar = static_cast<LPVARIANT>(value);
 	switch (pProp->GetData()) {
 	case SYSTEM_LOG_LEVEL_:
-		ASSERT(pVar->vt == VT_BSTR);
+		ABSL_DCHECK(pVar->vt == VT_BSTR);
 		wStr = pVar->bstrVal;
 		str = wStr;
 		if (mapTraceLevel.contains(str)) {
@@ -104,30 +104,30 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		gl_systemConfiguration.SetUpdateDB(true);
 		break;
 	case SYSTEM_DEBUG_MODE_:
-		ASSERT(pVar->vt == VT_BOOL);
+		ABSL_DCHECK(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
 		gl_systemConfiguration.SetUpdateDB(true);
 		break;
 	case SYSTEM_RELOAD_SYSTEM_:
-		ASSERT(pVar->vt == VT_BOOL);
+		ABSL_DCHECK(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
 		gl_systemConfiguration.SetUpdateDB(true);
 		break;
 	case CHINA_MARKET_REALTIME_DATA_SOURCE_ENABLE_:
-		ASSERT(pVar->vt == VT_BOOL);
+		ABSL_DCHECK(pVar->vt == VT_BOOL);
 		gl_pChinaMarket->EnableRealTimeDataSource(pVar->boolVal);
 		break;
 	case FINNHUB_DATA_SOURCE_ENABLE_:
-		ASSERT(pVar->vt == VT_BOOL);
+		ABSL_DCHECK(pVar->vt == VT_BOOL);
 		gl_pFinnhubDataSource->Enable(pVar->boolVal);
 		break;
 	case TIINGO_DATA_SOURCE_ENABLE_:
-		ASSERT(pVar->vt == VT_BOOL);
+		ABSL_DCHECK(pVar->vt == VT_BOOL);
 		gl_pTiingoDataSource->Enable(pVar->boolVal);
 		break;
 	default:
-		TRACE(_T("未处理PropertyGridCtrl例外\n")); // 未处理例外
-		//ASSERT(0);
+		ABSL_DLOG(INFO) <<"未处理PropertyGridCtrl例外\n"; // 未处理例外
+		//ABSL_DCHECK(0);
 		break;
 	}
 	CMFCPropertyGridCtrl::OnPropertyChanged(pProp);

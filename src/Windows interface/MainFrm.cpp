@@ -174,7 +174,7 @@ CMainFrame::CMainFrame() {
 
 CMainFrame::~CMainFrame() {
 	if (!gl_systemConfiguration.IsWorkingMode())
-		TRACE(_T("使用了Test驱动\n"));
+		ABSL_DLOG(INFO) <<"使用了Test驱动";
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
@@ -211,7 +211,7 @@ CMainFrame::~CMainFrame() {
 
 	while (gl_BackgroundWorkingThread.GetCount() > 0) Sleep(1); // 等待后台工作线程运行结束
 
-	TRACE("exit finally \n");
+	ABSL_DLOG(INFO) <<"exit finally";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,11 +262,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	CString strToolBarName;
-	ASSERT(strToolBarName.LoadString(IDS_TOOLBAR_STANDARD));
+	ABSL_DCHECK(strToolBarName.LoadString(IDS_TOOLBAR_STANDARD));
 	m_wndToolBar.SetWindowText(strToolBarName);
 
 	CString strCustomize;
-	ASSERT(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
+	ABSL_DCHECK(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
 	m_wndToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 
 	// Allow user-defined toolbars operations:
@@ -349,7 +349,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置1000毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(1, 1000, nullptr);
 	if (m_uIdTimer == 0) {
-		TRACE(_T("生成1000ms时钟时失败\n"));
+		ABSL_DLOG(INFO) <<"生成1000ms时钟时失败\n";
 	}
 
 	// 更新系统显示高度和宽度
@@ -381,7 +381,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 BOOL CMainFrame::CreateDockingWindows() {
 	// 创建输出窗口
 	CString strOutputWnd;
-	ASSERT(strOutputWnd.LoadString(IDS_OUTPUT_WND));
+	ABSL_DCHECK(strOutputWnd.LoadString(IDS_OUTPUT_WND));
 	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND,
 	                        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
 		TRACE0("未能创建输出窗口\n");
@@ -390,7 +390,7 @@ BOOL CMainFrame::CreateDockingWindows() {
 
 	// Create properties window
 	CString strPropertiesWnd;
-	ASSERT(strPropertiesWnd.LoadString(IDS_PROPERTIES_WND));
+	ABSL_DCHECK(strPropertiesWnd.LoadString(IDS_PROPERTIES_WND));
 	if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
 		TRACE0("Failed to create Properties window\n");
 		return FALSE; // failed to create
@@ -398,7 +398,7 @@ BOOL CMainFrame::CreateDockingWindows() {
 
 	// Create Realtime property window
 	CString strPropertyRealtimeWnd;
-	ASSERT(strPropertyRealtimeWnd.LoadString(IDS_PROPERTY_REALTIME_WND));
+	ABSL_DCHECK(strPropertyRealtimeWnd.LoadString(IDS_PROPERTY_REALTIME_WND));
 	if (!m_wndPropertyRealTime.Create(strPropertyRealtimeWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTY_REALTIME_WND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
 		TRACE0("Failed to create Property realtime window\n");
 		return FALSE; // failed to create
@@ -428,7 +428,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 	ASSERT_VALID(pUserToolbar);
 
 	CString strCustomize;
-	ASSERT(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
+	ABSL_DCHECK(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
 
 	pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 	return lres;
@@ -440,7 +440,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext)) { return FALSE; }
 
 	CString strCustomize;
-	ASSERT(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
+	ABSL_DCHECK(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
 
 	for (int i = 0; i < iMaxUserToolbars; i++) {
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
@@ -475,7 +475,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 }
 
 void CMainFrame::UpdateStatus() {
-	ASSERT(!IsMarketResetting());
+	ABSL_DCHECK(!IsMarketResetting());
 
 	//更新状态条
 	if (IsCurrentEditStockChanged()) {
@@ -616,7 +616,7 @@ void CMainFrame::SetCurrentStock(const CVirtualStockPtr& pStock) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
-		TRACE(_T("应用户申请，准备退出程序\n"));
+		ABSL_DLOG(INFO) <<"应用户申请，准备退出程序\n";
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		ReportExitToWatchdog();
 		for (auto& timer : gl_aTimer) {// 退出所有的计时器，关闭所有的工作线程。
@@ -638,10 +638,10 @@ void CMainFrame::OnProcessTodayStock() {
 
 void CMainFrame::ProcessChinaMarketStock() {
 	gl_runtime.thread_executor()->post([] {
-		TRACE("China market Process today stock\n");
+		ABSL_DLOG(INFO) <<"China market Process today stock\n";
 		gl_systemMessage.SetChinaMarketSavingFunction("Process today stock");
 		gl_pChinaMarket->ProcessTodayStock();
-		TRACE("China market Processed today stock\n");
+		ABSL_DLOG(INFO) <<"China market Processed today stock\n";
 	});
 }
 
@@ -680,7 +680,7 @@ void CMainFrame::CreateNewView() {
 
 void CMainFrame::SetCurrentDocumentStock(const CVirtualStockPtr& pStock) {
 	auto pDoc = dynamic_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
-	ASSERT(pDoc != nullptr);
+	ABSL_DCHECK(pDoc != nullptr);
 	pDoc->SetCurrentStock(pStock);
 }
 

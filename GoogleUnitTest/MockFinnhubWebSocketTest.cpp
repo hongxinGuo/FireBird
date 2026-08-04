@@ -39,7 +39,7 @@ namespace FireBirdTest {
 
 	protected:
 		CMockFinnhubWebSocket m_finnhubWebSocket;
-		vectorString vSymbol;
+		vector<string> vSymbol;
 	};
 
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket1) {

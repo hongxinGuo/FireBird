@@ -163,7 +163,7 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) const {
 		date = GetDocument()->GetMonthLineDate((m_rectCandle.Width() + m_iCandleWidth - (ptCurrent.x - m_rectCandle.left)) / m_iCandleWidth);
 		break;
 	default:
-		ASSERT(0);
+		ABSL_DCHECK(0);
 		break;
 	}
 	auto strDate = std::format("{:%F}, ", date);
@@ -352,8 +352,8 @@ void CFireBirdView::Show(CDC* pdc) {
 		return;
 	}
 
-	ASSERT(pStock != nullptr);
-	ASSERT(GetDocument()->IsDataReady());
+	ABSL_DCHECK(pStock != nullptr);
+	ABSL_DCHECK(GetDocument()->IsDataReady());
 	switch (m_iCurrentShowType) {
 	case SHOW_DAY_LINE_DATA_: // show day line(or week line) stock data
 	case SHOW_WEEK_LINE_DATA_:
@@ -402,7 +402,7 @@ void CFireBirdView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
 #ifdef _DEBUG
 CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CFireBirdDoc)));
+	ABSL_DCHECK(m_pDocument->IsKindOf(RUNTIME_CLASS(CFireBirdDoc)));
 	return dynamic_cast<CFireBirdDoc*>(m_pDocument);
 }
 #endif //_DEBUG
@@ -598,7 +598,7 @@ void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
 		}
 		// 画新的十字线
 		if (m_rectCandle.PtInRect(point)) {
-			ASSERT(!m_bNeedErase);
+			ABSL_DCHECK(!m_bNeedErase);
 			ShowCross(pDC, point);
 			m_bNeedErase = true;
 			m_ptMouseOld = point;

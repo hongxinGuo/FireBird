@@ -15,7 +15,7 @@ CFinnhubForex::CFinnhubForex() {
 }
 
 void CFinnhubForex::SetCheckingDayLineStatus() {
-	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
+	ABSL_DCHECK(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
 	if (gl_pWorldMarket->GetLastTradeDate() <= GetDayLineEndDate()) {
 		// 最新日线数据为今日或者上一个交易日的数据。
@@ -64,7 +64,7 @@ bool CFinnhubForex::IsDayLineDuplicated() noexcept {
 }
 
 void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
-	ASSERT(!m_dataDayLines.Empty());
+	ABSL_DCHECK(!m_dataDayLines.Empty());
 	using namespace StockMarket;
 	const auto& t = FinnhubForexDayline{};
 	auto db = gl_dbStockMarket.get();

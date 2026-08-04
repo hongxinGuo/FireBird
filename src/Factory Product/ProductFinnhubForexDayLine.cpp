@@ -38,13 +38,13 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pForexSymbol->UpdateDayLine(pvDayLine);
 		pForexSymbol->SetUpdateDayLineDB(true);
 		pForexSymbol->SetUpdateProfileDB(true);
-		//TRACE(_T("处理%s日线数据\n"), pForexSymbol->GetSymbol().GetBuffer());
+		//ABSL_DLOG(INFO) << std::format("处理%s日线数据\n", pForexSymbol->GetSymbol().c_str());
 		return;
 	}
 	else {
 		pForexSymbol->SetUpdateDayLineDB(false);
 		pForexSymbol->SetUpdateProfileDB(false);
-		//TRACE(_T("处理%s日线数据\n"), pForexSymbol->GetSymbol().GetBuffer());
+		//ABSL_DLOG(INFO) << std::format("处理%s日线数据\n", pForexSymbol->GetSymbol().c_str());
 	}
 }
 

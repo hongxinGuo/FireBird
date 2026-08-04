@@ -8,7 +8,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 #include <ixwebsocket/IXWebSocket.h>
 
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
@@ -19,7 +18,6 @@ using std::map;
 using std::vector;
 using std::shared_ptr;
 
-using vectorString = vector<string>;
 class CVirtualWebSocket;
 using CVirtualWebSocketPtr = shared_ptr<CVirtualWebSocket>;
 
@@ -36,26 +34,26 @@ public:
 	std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
 	void Reset();
 
-	virtual void TaskConnectAndSendMessage(const vectorString& vSymbol);
+	virtual void TaskConnectAndSendMessage(const vector<string>& vSymbol);
 	virtual void TaskDisconnect();
-	bool ConnectAndSendMessage(const vectorString& vSymbol);
+	bool ConnectAndSendMessage(const vector<string>& vSymbol);
 	void Disconnect();
 
 	virtual bool ParseWebSocketData(std::shared_ptr<string>) { return true; }
 
 protected:
-	virtual void Connect() { ASSERT(false); }
-	virtual void Send(const vectorString&) { ASSERT(FALSE); }
+	virtual void Connect() { ABSL_DCHECK(false); }
+	virtual void Send(const vector<string>&) { ABSL_DCHECK(false); }
 	void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 	virtual void StartWebSocket() { m_webSocket.start(); } // start()为异步的。为了测试，将此函数声明为虚函数
 	virtual void StopWebSocket() { m_webSocket.stop(); } // stop()是同步的。为了测试，将此函数声明为虚函数
 
 public:
-	void MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol);
+	void MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vector<string>& vSymbol);
 
 public:
 	bool IsSymbol(const string& sSymbol) const { return m_mapSymbol.contains(sSymbol); }
-	void AppendSymbol(const vectorString& vSymbol);
+	void AppendSymbol(const vector<string>& vSymbol);
 	bool AddSymbol(const string& sSymbol);
 	bool DeleteSymbol(const string& sSymbol);
 	void ClearSymbol();
@@ -98,18 +96,18 @@ public:
 	size_t DataSize() const { return m_qWebSocketData.size_approx(); }
 
 public:
-	vectorString m_vCurrentInquireSymbol;
+	vector<string> m_vCurrentInquireSymbol;
 
 protected:
 	ix::WebSocket m_webSocket;
-	string m_url{ "" };
+	string m_url{ " " };
 
 	int m_iStatusCode{ 0 }; // WebSocket返回的状态码。正确：200， 错误：400等。
 	bool m_fError{ false };
-	string m_statusMessage{ "" }; // 正确时为状态信息，错误时为错误信息。
+	string m_statusMessage{ " " }; // 正确时为状态信息，错误时为错误信息。
 	int m_iSubscriptionId{ 0 };
 
-	vectorString m_vSymbol;
+	vector<string> m_vSymbol;
 	map<string, size_t> m_mapSymbol;
 
 	time_t m_HeartbeatTime{ 0 }; // 最新心跳时间， UTC制式

@@ -8,7 +8,7 @@ namespace testing {
 	class CMockFinnhubWebSocket final : public CFinnhubWebSocket {
 	public:
 		MOCK_METHOD(ix::ReadyState, GetState, (), (override, const));
-		MOCK_METHOD(void, TaskConnectAndSendMessage, (const vectorString& vSymbol), (override));
+		MOCK_METHOD(void, TaskConnectAndSendMessage, (const vector<string>& vSymbol), (override));
 		MOCK_METHOD(void, TaskDisconnect, (), (override));
 	};
 

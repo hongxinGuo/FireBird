@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"WebData.h"
+
 #include"JsonParse.h"
 
 CWebData::CWebData() {
@@ -47,9 +48,9 @@ string_view CWebData::GetCurrentSinaData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lStart = svCurrentTotal.find_first_of('v');
 	const auto lEnd = svCurrentTotal.find_first_of(';');
-	ASSERT(lStart <= svCurrentTotal.length());
-	ASSERT(lEnd <= svCurrentTotal.length());
-	ASSERT(lStart <= lEnd);
+	ABSL_DCHECK(lStart <= svCurrentTotal.length());
+	ABSL_DCHECK(lEnd <= svCurrentTotal.length());
+	ABSL_DCHECK(lStart <= lEnd);
 	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
 	return svCurrentTotal.substr(lStart, lEnd - lStart + 1); // 包括最后的字符';'
 }
@@ -76,9 +77,9 @@ string_view CWebData::GetCurrentTengxunData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lStart = svCurrentTotal.find_first_of('v');
 	const auto lEnd = svCurrentTotal.find_first_of(';');
-	ASSERT(lStart <= svCurrentTotal.length());
-	ASSERT(lEnd <= svCurrentTotal.length());
-	ASSERT(lStart <= lEnd);
+	ABSL_DCHECK(lStart <= svCurrentTotal.length());
+	ABSL_DCHECK(lEnd <= svCurrentTotal.length());
+	ABSL_DCHECK(lStart <= lEnd);
 	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
 	return svCurrentTotal.substr(lStart, lEnd - lStart + 1);
 }

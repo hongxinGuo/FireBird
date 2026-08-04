@@ -2,6 +2,7 @@
 
 #include"VirtualWebSocket.h"
 
+#include "log.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include "Thread.h"
@@ -26,13 +27,13 @@ void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
 }
 
-void CVirtualWebSocket::TaskConnectAndSendMessage(const vectorString& vSymbol) {
+void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol) {
 	if (IsConnecting()) { // 如果正在连接，则不再生成第二个连接
-		TRACE(_T("WebSocket正在连接中，不再生成第二个连接\n"));
+		ABSL_DLOG(INFO) << "WebSocket正在连接中，不再生成第二个连接\n";
 		gl_dailyWebSocketLogger->info("{} WebSocket正在连接中，不再生成第二个连接", m_url);
 		return;
 	}
-	TRACE("TaskConnectAndSendMessage\n");
+	ABSL_DLOG(INFO) << "TaskConnectAndSendMessage\n";
 	gl_dailyWebSocketLogger->info("{} TaskConnectAndSendMessage", m_url);
 	gl_runtime.thread_executor()->post([this, vSymbol] {
 		this->GetShared()->ConnectAndSendMessage(vSymbol);
@@ -46,12 +47,12 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vectorString& vSymbol) {
 // 
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
-	//ASSERT(IsClosed());
+bool CVirtualWebSocket::ConnectAndSendMessage(const vector<string>& vSymbol) {
+	//ABSL_DCHECK(IsClosed());
 	try {
 		AppendSymbol(vSymbol);
 		Connect();
-		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
+		//ABSL_DCHECK(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) {
 			if (gl_systemConfiguration.IsExitingSystem()) return false;
 			Sleep(1);
@@ -65,7 +66,7 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 	return true;
 }
 
-void CVirtualWebSocket::AppendSymbol(const vectorString& vSymbol) {
+void CVirtualWebSocket::AppendSymbol(const vector<string>& vSymbol) {
 	for (auto& sSymbol : vSymbol) {
 		if (!m_mapSymbol.contains(sSymbol)) {	// 新符号？
 			AddSymbol(sSymbol);
@@ -100,7 +101,7 @@ bool CVirtualWebSocket::IsIdle(time_t tPeriod) const {
 void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
-	ASSERT(IsClosed());
+	ABSL_DCHECK(IsClosed());
 	TLSOption.tls = true;
 	m_webSocket.setTLSOptions(TLSOption);
 
@@ -122,10 +123,10 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	StartWebSocket();
-	ASSERT(!IsOpen()); // StartWebSocket()是异步的
+	ABSL_DCHECK(!IsOpen()); // StartWebSocket()是异步的
 }
 
-void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol) {
+void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vector<string>& vSymbol) {
 	if (fDataSourceError) { // 相关的DataSource出现错误
 		if (IsOpen()) {
 			TaskDisconnect();

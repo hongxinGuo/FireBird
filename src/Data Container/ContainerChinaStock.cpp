@@ -6,6 +6,7 @@
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
+
 #include"ChinaStock.h"
 
 #include"Thread.h"
@@ -169,14 +170,14 @@ string CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	}
 
 	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
-		TRACE(_T("未找到需更新日线历史数据的股票\n"));
+		ABSL_DLOG(INFO) << "未找到需更新日线历史数据的股票";
 		return "";
 	}
 
 	// 找到了需申请日线历史数据的股票
 	const CChinaStockPtr pStock = GetStock(lIndex);
-	ASSERT(!pStock->IsUpdateDayLineDB());
-	ASSERT(pStock->IsUpdateDayLine());
+	ABSL_DCHECK(!pStock->IsUpdateDayLineDB());
+	ABSL_DCHECK(pStock->IsUpdateDayLine());
 	pStock->SetUpdateDayLine(false);
 	strReturn += XferStandardToTengxun(pStock->GetSymbol());
 	return strReturn;

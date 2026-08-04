@@ -112,7 +112,7 @@ void CProductEastmoneyDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const string strSymbol = pWebData->GetStockCode();
-	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+	ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
 	const string_view svData = pWebData->GetStringView();
 
 	const shared_ptr<vector<CDayLine>> pvDayLine = ParseEastmoneyDayLine(svData, pWebData->GetStockCode());

@@ -19,7 +19,7 @@
 
 #include"dataBaseConnector.h"
 #include "SystemConfiguration.h"
-
+#include"log.h"
 using namespace std;
 
 #ifdef _MBCS
@@ -91,7 +91,7 @@ namespace {
 
 // CFireBirdApp 初始化
 BOOL CFireBirdApp::InitInstance() {
-	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 确保此标识初始态为实际状态
+	ABSL_DCHECK(gl_systemConfiguration.IsWorkingMode()); // 确保此标识初始态为实际状态
 
 	if (IsFireBirdAlreadyRunning(sFireBirdApp)) {
 		MessageBox(nullptr,
@@ -236,7 +236,7 @@ void CFireBirdApp::OnAppAbout() {
 void CFireBirdApp::PreLoadState() {
 	CString strName;
 	const BOOL bNameValid = strName.LoadString(IDS_EDIT_MENU);
-	ASSERT(bNameValid);
+	ABSL_DCHECK(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 }
 

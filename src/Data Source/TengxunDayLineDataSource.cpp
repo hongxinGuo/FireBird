@@ -19,7 +19,6 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include "EastmoneyDayLineDataSource.h"
-#include "spdlog_assert.h"
 #include "SystemConfiguration.h"
 #include "TimeConvert.h"
 #include "WebData.h"
@@ -32,7 +31,7 @@ using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strHeaders = "Referer:https://gu.qq.com/\r\n";
 	m_strInquiryFunction = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=";
 	m_strSuffix = ",2000,,";
@@ -75,7 +74,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 		s_number = mean / 200;
 		int time = 100000 + mean * 50;
 		m_PrevInquireTimePoint += milliseconds(time);
-		TRACE("tengxunDayLine server suspended %d seconds\n", time / 1000);
+		ABSL_DLOG(INFO) << std::format("tengxunDayLine server suspended %d seconds\n", time / 1000);
 	}*/
 	if (llTickCount < m_PrevInquireTimePoint + milliseconds(4000 + mean)) return false;
 
@@ -115,7 +114,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 		}
 		if (fFound) {
 			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
-			SPDLOG_ASSERT(!vProduct.empty());
+			ABSL_DCHECK(!vProduct.empty());
 			for (auto& product : vProduct) {
 				StoreInquiry(product);
 			}
@@ -177,7 +176,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 			dynamic_pointer_cast<CProductTengxunDayLine>(p)->SetInquiryNumber(iCounter);
 		}
 	}
-	ASSERT(iCounter == vProduct.size());
+	ABSL_DCHECK(iCounter == vProduct.size());
 	return vProduct;
 }
 
@@ -200,7 +199,7 @@ void CTengxunDayLineDataSource::ConfigureInternetOption() {
 }
 
 void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误

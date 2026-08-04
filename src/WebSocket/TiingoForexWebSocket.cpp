@@ -49,7 +49,7 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 CTiingoForexWebSocket::CTiingoForexWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://api.tiingo.com/fx";
 }
 
@@ -71,15 +71,15 @@ void CTiingoForexWebSocket::Connect() {
 // {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoForexWebSocket::Send(const vectorString& vSymbol) {
-	ASSERT(IsOpen());
+void CTiingoForexWebSocket::Send(const vector<string>& vSymbol) {
+	ABSL_DCHECK(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 	m_webSocket.send(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
-void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CTiingoForexWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoForexWebSocket(), vSymbol);
 }
@@ -98,8 +98,8 @@ void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbol2;
+string CTiingoForexWebSocket::CreateMessage(const vector<string>& vSymbol) {
+	vector<string> vSymbol2;
 	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
@@ -160,7 +160,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (nlohmannJson::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-					ASSERT(GetSubscriptionId() == 0);
+					ABSL_DCHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;

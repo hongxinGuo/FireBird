@@ -172,7 +172,7 @@ bool CChinaStock::IsDayLineDuplicated() noexcept {
 }
 
 void CChinaStock::DeleteDuplicatedDayLine() noexcept {
-	ASSERT(!m_dataDayLine.Empty());
+	ABSL_DCHECK(!m_dataDayLine.Empty());
 	using namespace StockMarket;
 	const auto& t = ChinaStockDayline{};
 	auto db = gl_dbStockMarket.get();

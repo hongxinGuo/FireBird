@@ -17,7 +17,7 @@ CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 }
 
 string CProductFinnhubCryptoExchange::CreateMessage() {
-	ASSERT(m_strInquiringExchange == "ALL");
+	ABSL_DCHECK(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;

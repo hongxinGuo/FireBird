@@ -70,7 +70,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestAddSymbol) {
-		const vectorString vSymbol{ "a", "b", "c", "d", "e" };
+		const vector<string> vSymbol{ "a", "b", "c", "d", "e" };
 
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 		m_finnhubWebSocket.AppendSymbol(vSymbol);

@@ -181,7 +181,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 }
 
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
-	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
+	ABSL_DCHECK(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
 	if (pStock->m_strTiingoSector.length() > 1) m_strTiingoSector = pStock->m_strTiingoSector;
 	if (pStock->m_strTiingoIndustry.length() > 1)m_strTiingoIndustry = pStock->m_strTiingoIndustry;
 	if (pStock->m_iSicCode > 0)m_iSicCode = pStock->m_iSicCode;
@@ -345,7 +345,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days lTodayDate) {
 		m_fUpdateDayLine = false;
 		return;
 	}
-	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
+	ABSL_DCHECK(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
 	m_fUpdateDayLine = true;
 }
 
@@ -591,7 +591,7 @@ void CTiingoStock::FindHighLow3(size_t endPos) {
 }
 
 int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
-	ASSERT(index >= 250);
+	ABSL_DCHECK(index >= 250);
 	bool fIsNewLow = true;
 	bool fIsNewHigh = true;
 	double belowClose = dClose + EPSILON; // 增加一点以利于判断相同的数值。
@@ -660,7 +660,7 @@ void CTiingoStock::FindAll52WeekLowDate(size_t beginPos, size_t endPos) {
 }
 
 size_t CTiingoStock::FindCurrent52WeekLowPos(size_t beginPos, size_t endPos, double& value) const {
-	ASSERT(beginPos < endPos);
+	ABSL_DCHECK(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
 	double belowCurrentValue = value - EPSILON;
@@ -728,7 +728,7 @@ void CTiingoStock::FindAll52WeekHighDate(size_t beginPos, size_t endPos) {
 }
 
 size_t CTiingoStock::FindCurrent52WeekHighPos(size_t beginPos, size_t endPos, double& value) const {
-	ASSERT(beginPos < endPos);
+	ABSL_DCHECK(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
 	auto aboveCurrentValue = value + EPSILON;

@@ -50,14 +50,14 @@ public:
 
 	bool ParseWebSocketData(const shared_ptr<string> pData) override { return ParseTiingoCryptoWebSocketData(pData); }
 
-	void MonitorWebSocket(const vectorString& vSymbol);
+	void MonitorWebSocket(const vector<string>& vSymbol);
 
-	static string CreateMessage(const vectorString& vSymbol);
+	static string CreateMessage(const vector<string>& vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
 
 protected:
 	void Connect() override;
-	void Send(const vectorString& vSymbol) override;
+	void Send(const vector<string>& vSymbol) override;
 };
 
 using CTiingoCryptoWebSocketPtr = shared_ptr<CTiingoCryptoWebSocket>;

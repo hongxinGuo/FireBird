@@ -6,11 +6,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
-#include"spdlog_assert.h"
-
 #include "VirtualDataSource.h"
 #include"VirtualWebProduct.h"
 #include "InquireEngine.h"
+#include "log.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
@@ -45,7 +44,7 @@ void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
 ///
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
-	SPDLOG_ASSERT(!IsInquiring());
+	ABSL_DCHECK(!IsInquiring());
 	gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
 			GenerateInquiryMessage(lMarketTime);
 			if (HaveInquiry()) {
@@ -68,12 +67,11 @@ namespace {
 //Note 只能使用thread_pool_executor或者background_executor，不能使用thread_executor。
 //Note 20250227, 现在似乎可以使用thread_executor了，原因不明。
 //
-//Note MFC的ASSERT()、TRACE等函数不是线程安全的，在多线程环境下不能使用这些函数。使用自制的spdlog断言。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::InquireData() {
-	SPDLOG_ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
-	SPDLOG_ASSERT(IsInquiring());
+	ABSL_DCHECK(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
+	ABSL_DCHECK(IsInquiring());
 	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	int i = 0;
 	vector<result<CWebDataPtr>> vResults;
@@ -83,7 +81,7 @@ void CVirtualDataSource::InquireData() {
 		if (m_bConcurrentForbid) {
 			Sleep(1000);
 			s_InquiryWebData.acquire();
-			TRACE("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol().c_str(), ++i);
+			ABSL_DLOG(INFO) << std::format("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol().c_str(), ++i);
 		}
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
@@ -115,8 +113,8 @@ void CVirtualDataSource::InquireData() {
 	}
 	auto end = time_point_cast<milliseconds>(steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());
-	SPDLOG_ASSERT(!HaveInquiry());
-	SPDLOG_ASSERT(IsInquiring());  //至此尚未重置此标识
+	ABSL_DCHECK(!HaveInquiry());
+	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 
@@ -129,7 +127,7 @@ void CVirtualDataSource::SetDefaultSessionOption() {
 }
 
 void CVirtualDataSource::CreateCurrentInquireString() {
-	SPDLOG_ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
 	CreateTotalInquiringString();
 }

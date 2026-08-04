@@ -78,12 +78,12 @@ void CIndicatorRSI::Calculate() {
 		m_vRSI.push_back(CRSI{ rsiValues.at(i), 0.0, 0.0 });
 	}
 	std::vector<double> rsiValues2 = Compute(m_pvCandle->GetDataVector(), m_PeriodMiddle);
-	ASSERT(rsiValues2.size() == rsiValues.size());
+	ABSL_DCHECK(rsiValues2.size() == rsiValues.size());
 	for (size_t i = 0; i < rsiValues.size(); ++i) {
 		m_vRSI.at(i).m_RSI12 = rsiValues2.at(i);
 	}
 	std::vector<double> rsiValues3 = Compute(m_pvCandle->GetDataVector(), m_PeriodSlow);
-	ASSERT(rsiValues3.size() == rsiValues.size());
+	ABSL_DCHECK(rsiValues3.size() == rsiValues.size());
 	for (size_t i = 0; i < rsiValues.size(); ++i) {
 		m_vRSI.at(i).m_RSI24 = rsiValues3.at(i);
 	}

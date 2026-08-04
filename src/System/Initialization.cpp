@@ -4,6 +4,7 @@
 #include"SystemMessage.h"
 
 #include "spdlog/sinks/daily_file_sink.h"
+#include <spdlog/sinks/basic_file_sink.h>
 
 #include "AlphaVantageDataSource.h"
 #include"SinaRTDataSource.h"
@@ -22,8 +23,9 @@
 #include "simdjsonGetValue.h"
 #include "Thread.h"
 
-#include <spdlog/sinks/basic_file_sink.h>
 
+#include "FinnhubWebSocket.h"
+#include"log.h"
 #include "FinnhubWebSocket.h"
 #include "SystemConfiguration.h"
 #include "TiingoCryptoWebSocket.h"
@@ -59,8 +61,8 @@ void DeleteAllFinnhubInaccessibleUSExchange() {
 namespace {
 	void DeleteAllFinnhubInaccessibleUSExchangeAtFirstDay() {
 		// 每月第一天删除对US交易所的禁止访问
-		ASSERT(gl_pChinaMarket != nullptr);
-		ASSERT(gl_pWorldMarket != nullptr);
+		ABSL_DCHECK(gl_pChinaMarket != nullptr);
+		ABSL_DCHECK(gl_pWorldMarket != nullptr);
 		gl_tpNow = time_point_cast<seconds>(system_clock::now());
 		year_month_day ymd = year_month_day{ floor<days>(gl_tpNow) };
 		if (static_cast<unsigned>(ymd.day()) == 1) {
@@ -69,22 +71,22 @@ namespace {
 	}
 
 	void CreateMarketContainer() {
-		ASSERT(gl_pChinaMarket != nullptr);
-		ASSERT(gl_pWorldMarket != nullptr);
+		ABSL_DCHECK(gl_pChinaMarket != nullptr);
+		ABSL_DCHECK(gl_pWorldMarket != nullptr);
 		gl_vMarket.push_back(gl_pWorldMarket); // 美国股票市场
 		gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
 	}
 
 	void CreateDataSource() {
 		// 此五个要在gl_pChinaMarket前生成
-		ASSERT(gl_pChinaMarket == nullptr);
+		ABSL_DCHECK(gl_pChinaMarket == nullptr);
 		gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 		gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 		gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
 		gl_pEastmoneyDayLineDataSource = make_shared<CEastmoneyDayLineDataSource>();
 
 		// 此四个要在gl_pWorldMarket前生成
-		ASSERT(gl_pWorldMarket == nullptr);
+		ABSL_DCHECK(gl_pWorldMarket == nullptr);
 		gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
 		gl_pAlphaVantageDataSource = make_shared<CAlphaVantageDataSource>();
@@ -93,7 +95,7 @@ namespace {
 
 	void CreateWebSocket() {
 		// WebSocket要在gl_pWorldMarket之前生成
-		ASSERT(gl_pWorldMarket == nullptr);
+		ABSL_DCHECK(gl_pWorldMarket == nullptr);
 		gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
 		gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
 		gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
@@ -102,22 +104,22 @@ namespace {
 
 	void CreateMarket() {
 		// 市场要在数据源和WebSocket之后生成
-		ASSERT(gl_pFinnhubDataSource != nullptr);
-		ASSERT(gl_pTiingoDataSource != nullptr);
-		ASSERT(gl_pAccessoryDataSource != nullptr);
+		ABSL_DCHECK(gl_pFinnhubDataSource != nullptr);
+		ABSL_DCHECK(gl_pTiingoDataSource != nullptr);
+		ABSL_DCHECK(gl_pAccessoryDataSource != nullptr);
 
-		ASSERT(gl_pSinaRTDataSource != nullptr);
-		ASSERT(gl_pTengxunRTDataSource != nullptr);
-		ASSERT(gl_pTengxunDayLineDataSource != nullptr);
-		ASSERT(gl_pEastmoneyDayLineDataSource != nullptr);
+		ABSL_DCHECK(gl_pSinaRTDataSource != nullptr);
+		ABSL_DCHECK(gl_pTengxunRTDataSource != nullptr);
+		ABSL_DCHECK(gl_pTengxunDayLineDataSource != nullptr);
+		ABSL_DCHECK(gl_pEastmoneyDayLineDataSource != nullptr);
 
-		ASSERT(gl_pFinnhubWebSocket != nullptr);
-		ASSERT(gl_pTiingoIEXWebSocket != nullptr);
-		ASSERT(gl_pTiingoCryptoWebSocket != nullptr);
-		ASSERT(gl_pTiingoForexWebSocket != nullptr);
+		ABSL_DCHECK(gl_pFinnhubWebSocket != nullptr);
+		ABSL_DCHECK(gl_pTiingoIEXWebSocket != nullptr);
+		ABSL_DCHECK(gl_pTiingoCryptoWebSocket != nullptr);
+		ABSL_DCHECK(gl_pTiingoForexWebSocket != nullptr);
 
-		ASSERT(gl_pChinaMarket == nullptr);
-		ASSERT(gl_pWorldMarket == nullptr);
+		ABSL_DCHECK(gl_pChinaMarket == nullptr);
+		ABSL_DCHECK(gl_pWorldMarket == nullptr);
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	}
@@ -173,7 +175,7 @@ void SystemInitialization() {
 	gl_systemConfiguration.SetThreadExecutorCurrencyLevel(gl_runtime.thread_executor()->max_concurrency_level());
 	gl_systemConfiguration.SetBackgroundExecutorCurrencyLevel(gl_runtime.background_executor()->max_concurrency_level());
 
-	TRACE("Start scheduling task\n");
+	ABSL_DLOG(INFO) << "Start scheduling task";
 	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
 	gl_aTimer.at(GENERAL_TASK_PER_100MS__) = gl_runtime.timer_queue()->make_timer(
 		1000ms,
@@ -195,8 +197,8 @@ void SystemInitialization() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void AssignDataSourceAndWebInquiryToMarket() {
-	ASSERT(gl_pChinaMarket != nullptr);
-	ASSERT(gl_pWorldMarket != nullptr);
+	ABSL_DCHECK(gl_pChinaMarket != nullptr);
+	ABSL_DCHECK(gl_pWorldMarket != nullptr);
 
 	// china market's data source 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);

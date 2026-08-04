@@ -8,6 +8,7 @@
 
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
+
 #include "jsonParse.h"
 
 #include<sqlpp23/sqlpp23.h>
@@ -132,7 +133,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pFinnhubStock);
-			ASSERT(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
+			ABSL_DCHECK(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
 		}
 		else {
 			db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
@@ -145,7 +146,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 }
 
 void CContainerFinnhubStock::UpdateProfileDB() {
-	ASSERT(IsUpdateProfileDB());
+	ABSL_DCHECK(IsUpdateProfileDB());
 
 	using namespace StockMarket;
 	const auto& t = FinnhubStockProfile{};
@@ -154,7 +155,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CFinnhubStockPtr pStock = GetItem(l);
-		ASSERT(pStock != nullptr);
+		ABSL_DCHECK(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
 			pStock->UpdateJsonUpdateDate();
 			if (pStock->IsNewStock()) {// 新代码，插入。

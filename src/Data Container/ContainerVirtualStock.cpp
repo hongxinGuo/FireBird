@@ -20,8 +20,8 @@ string CContainerVirtualStock::GetItemSymbol(size_t lIndex) {
 	return m_vStock.at(lIndex)->GetSymbol();
 }
 
-vectorString CContainerVirtualStock::GetSymbols() {
-	vectorString vSymbol;
+vector<string> CContainerVirtualStock::GetSymbols() {
+	vector<string> vSymbol;
 	for (size_t l = 0; l < Size(); l++) {
 		vSymbol.push_back(GetItemSymbol(l));
 	}

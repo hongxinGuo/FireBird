@@ -39,7 +39,7 @@ string CProductTiingoForexDayLine::CreateMessage() {
 }
 
 void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_index >= 0);
+	ABSL_DCHECK(m_index >= 0);
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetForex(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoForexDayLine(pWebData);
@@ -53,13 +53,13 @@ void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pForex->UpdateDayLine(*pvDayLine);
 		pForex->SetUpdateDayLineDB(true);
 		pForex->SetUpdateProfileDB(true);
-		//TRACE(_T("处理Tiingo %s日线数据\n"), pForex->GetSymbol().GetBuffer());
+		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pForex->GetSymbol().c_str());
 		return;
 	}
 	else {
 		pForex->SetUpdateDayLineDB(false);
 		pForex->SetUpdateProfileDB(false);
-		//TRACE(_T("处理Tiingo %s日线数据\n"), pForex->GetSymbol().GetBuffer());
+		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pForex->GetSymbol().c_str());
 	}
 	*/
 }

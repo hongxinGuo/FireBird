@@ -5,7 +5,7 @@
 using std::exception;
 
 string XferSinaToStandard(const string& strSina) {
-	ASSERT(strSina.length() >= 6);
+	ABSL_DCHECK(strSina.length() >= 6);
 	const string strSymbol = strSina.substr(strSina.length() - 6, 6);
 	if (strSina.at(0) == 's') {
 		switch (strSina.at(1)) {

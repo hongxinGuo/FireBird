@@ -60,7 +60,7 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const local_seconds& currentTime)
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CSinaRTDataSource::CreateCurrentInquireString() {
-	ASSERT(m_pCurrentProduct != nullptr);
+	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
@@ -86,7 +86,7 @@ void CSinaRTDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 	case ERROR_NO_ERROR_:
 		break;
 	default:
-		ASSERT(0);
+		ABSL_DCHECK(0);
 		break;
 	}
 }

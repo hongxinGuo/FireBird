@@ -8,6 +8,7 @@
 #include"pch.h"
 
 #include "JsonParse.h"
+
 #include "DayLineWebData.h"
 
 #include"WebData.h"
@@ -211,7 +212,7 @@ bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 	const string_view sv = pWebDataReceived->GetStringView(0, 21);
 
 	if (sv == "v_pv_none_match=\"1\";\n") {
-		ASSERT(pWebDataReceived->GetBufferLength() == 21);
+		ABSL_DCHECK(pWebDataReceived->GetBufferLength() == 21);
 		return true;
 	}
 	return false;
@@ -378,7 +379,7 @@ CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strSto
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const string strSymbol = pWebData->GetStockCode();
-	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+	ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
 	const string_view svData = pWebData->GetStringView();
 
 	const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));

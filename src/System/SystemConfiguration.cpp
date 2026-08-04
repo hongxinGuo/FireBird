@@ -96,11 +96,11 @@ std::string gl_sSystemConfiguration = R"(
 
 // 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
 CSystemConfiguration::CSystemConfiguration() {
-	ASSERT(!sm_bInitialized); // 只生成唯一实例
+	ABSL_DCHECK(!sm_bInitialized); // 只生成唯一实例
 	if (sm_bInitialized) {
-		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
+		ABSL_DLOG(INFO) << "GlobeOption全局变量只允许存在一个实例\n";
 #ifdef _DEBUG
-		ASSERT(FALSE);
+		ABSL_DCHECK(false);
 #endif // _DEBUG
 	}
 	sm_bInitialized = true;

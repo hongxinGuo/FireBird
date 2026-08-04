@@ -52,7 +52,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 CTiingoIEXWebSocket::CTiingoIEXWebSocket() {
-	ASSERT(gl_systemConfiguration.IsInitialized());
+	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_url = "wss://api.tiingo.com/iex";
 }
 
@@ -65,8 +65,8 @@ void CTiingoIEXWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoIEXWebSocket);
 }
 
-void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
-	ASSERT(IsOpen());
+void CTiingoIEXWebSocket::Send(const vector<string>& vSymbol) {
+	ABSL_DCHECK(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 	m_webSocket.send(messageAuth);
@@ -74,7 +74,7 @@ void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
-void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+void CTiingoIEXWebSocket::MonitorWebSocket(const vector<string>& vSymbol) {
 	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoIEXWebSocket(), vSymbol);
 }
@@ -93,8 +93,8 @@ void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbol2;
+string CTiingoIEXWebSocket::CreateMessage(const vector<string>& vSymbol) {
+	vector<string> vSymbol2;
 	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
@@ -171,7 +171,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (nlohmannJson::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
-					ASSERT(GetSubscriptionId() == 0);
+					ABSL_DCHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				break;

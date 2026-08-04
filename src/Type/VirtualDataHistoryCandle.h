@@ -28,10 +28,10 @@ public:
 	void Unload() noexcept { Reset(); }
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
-	virtual void SaveDB(const string&) { ASSERT(0); }
-	virtual void LoadDB(const string&) { ASSERT(0); }
+	virtual void SaveDB(const string&) { ABSL_DCHECK(0); }
+	virtual void LoadDB(const string&) { ABSL_DCHECK(0); }
 
-	virtual void SplitAdjust() { ASSERT(0); } // 拆分调整
+	virtual void SplitAdjust() { ABSL_DCHECK(0); } // 拆分调整
 
 	void UpdateData(const vector<CVirtualHistoryCandle>& vTempData);
 	void UpdateData(const vector<CDayLine>& vTempData);
@@ -39,7 +39,7 @@ public:
 
 	int GetRatio() const {
 		if (m_ratio == 0)
-			ASSERT(0);
+			ABSL_DCHECK(0);
 		return m_ratio;
 	}
 

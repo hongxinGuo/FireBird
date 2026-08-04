@@ -22,7 +22,6 @@
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h" />
-    <ClInclude Include="..\src\accessory\spdlog_assert.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\CharSetTransfer.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />

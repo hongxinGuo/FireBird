@@ -14,7 +14,6 @@
 #include"WebData.h"
 
 #include "InfoReport.h"
-#include "spdlog_assert.h"
 #include "SystemConfiguration.h"
 
 using std::make_shared;
@@ -47,7 +46,7 @@ CInquireEngine::~CInquireEngine() {
 	m_pFile = nullptr;
 }
 void CInquireEngine::ConfigureSession(const InternetOption& option) const {
-	SPDLOG_ASSERT(m_pSession != nullptr);
+	ABSL_DCHECK(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, option.option_data_receive_timeout);
@@ -118,7 +117,7 @@ void CInquireEngine::OpenFile() {
 }
 
 void CInquireEngine::GetFileHeaderInformation() {
-	SPDLOG_ASSERT(m_pFile != nullptr);
+	ABSL_DCHECK(m_pFile != nullptr);
 	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode); // 获取HTTP状态码
 	wchar_t buffer[100];
 	DWORD dw = 100;
@@ -143,7 +142,7 @@ void CInquireEngine::QueryDataLength() {
 	DWORD* p = &dw;
 	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, buffer, p);
 	m_lContentLength = _wtol(buffer);
-	SPDLOG_ASSERT(m_lContentLength >= 0);
+	ABSL_DCHECK(m_lContentLength >= 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,7 +160,7 @@ UINT CInquireEngine::ReadWebFileOneTime() {
 // release编译模式下，使用memcpy函数完成，耗时120纳秒。
 //
 void CInquireEngine::XferReadingToBuffer(UINT uByteRead) {
-	SPDLOG_ASSERT(m_sBuffer.size() > m_lByteRead + uByteRead);
+	ABSL_DCHECK(m_sBuffer.size() > m_lByteRead + uByteRead);
 	memcpy(m_sBuffer.data() + m_lByteRead, m_dataBuffer, uByteRead);
 }
 
@@ -192,7 +191,7 @@ void CInquireEngine::VerifyDataLength() const {
 }
 
 void CInquireEngine::MoveDataToWebData(const CWebDataPtr& pWebData) {
-	SPDLOG_ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
+	ABSL_DCHECK(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
 	m_sBuffer.resize(m_lByteRead); //Note 设置缓冲区大小为实际数据量，抛弃掉最后的字符0x000. 切记
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 	pWebData->m_svDataBuffer = string_view(pWebData->m_sDataBuffer); //Note 同时创建string_view

@@ -244,7 +244,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 			if (pStockFirst->IsActive()) {
 				if (pStockNext->IsActive()) {
 					if (pStockFirst->GetDailyUpdateDate() < pStockNext->GetDailyUpdateDate()) { // 都是活跃股票时，比较最后更新日期，保留较新的那个。
-						//TRACE("active %s: %d ---- %d\n", pStockFirst->GetSymbol(), pStockFirst->GetDailyUpdateDate(), pStockNext->GetDailyUpdateDate());
+						//ABSL_DLOG(INFO) << std::format("active %s: %d ---- %d\n", pStockFirst->GetSymbol(), pStockFirst->GetDailyUpdateDate(), pStockNext->GetDailyUpdateDate());
 						string str = "多个活跃股票:" + pStockFirst->GetSymbol();
 						//gl_systemMessage.PushInnerSystemInformationMessage(str);
 						pStockFirst = pStockNext;

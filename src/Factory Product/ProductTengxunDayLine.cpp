@@ -45,7 +45,7 @@ string CProductTengxunDayLine::CreateMessage() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {
 	if (gl_pTengxunDayLineDataSource->GetHTTPStatusCode() != 200) return; // 网络数据不正常时不处理。
-	ASSERT(pvWebData->size() <= m_iInquiryNumber);
+	ABSL_DCHECK(pvWebData->size() <= m_iInquiryNumber);
 
 	vector<CDayLine> vDayLine;
 	string strStockSymbol;
@@ -75,7 +75,7 @@ void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLine>& vDayLine) 
 		for (size_t i = 0; i < vDayLine.size() - 1; i++) {
 			const auto& p1 = vDayLine.at(i);
 			auto& p2 = vDayLine.at(i + 1);
-			ASSERT(p1.GetDate() < p2.GetDate()); // 没有重复数据
+			ABSL_DCHECK(p1.GetDate() < p2.GetDate()); // 没有重复数据
 			p2.SetLastClose(p1.GetClose());
 		}
 	}

@@ -10,12 +10,11 @@
 #define NOMINMAX // 禁止windows.h中定义min和max宏，避免与std::min和std::max冲突
 
 #include"stdafx.h"
-
+#include <absl/log/absl_check.h> // ABSL_DCHECK(condition) << "message";
+#include"absl/log/absl_log.h" // ABSL_DLOG(INFO) << "message"; 
 #include"nlohmann/json.hpp"
 
 #include"StockMarketSQLTable.h"
-
-#include"spdlog_assert.h"
 
 #include"globedef.h"
 

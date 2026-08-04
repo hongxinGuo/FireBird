@@ -14,6 +14,7 @@
 #include "TiingoStockDailyMeta.h"
 
 #include "ContainerTiingoStock.h"
+#include "log.h"
 #include"simdjsonGetValue.h"
 #include "SystemMessage.h"
 #include "WebData.h"

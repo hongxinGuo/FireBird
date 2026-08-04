@@ -30,7 +30,7 @@ public:
 
 	int GetRatio() const {
 		if (m_ratio == 0)
-			ASSERT(0);
+			ABSL_DCHECK(0);
 		return m_ratio;
 	};
 	void SetRatio(int ratio) { m_ratio = ratio; }

@@ -273,7 +273,7 @@ int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 
-	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 预设为是实际系统。
+	ABSL_DCHECK(gl_systemConfiguration.IsWorkingMode()); // 预设为是实际系统。
 	gl_systemConfiguration.SetWorkingMode(false); // 实际系统，测试状态为假。
 
 	return RUN_ALL_TESTS();

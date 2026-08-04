@@ -57,7 +57,7 @@ void CVirtualMarket::ScheduleTask() {
 		auto pTask = m_marketImmediateTask.GetTask();
 		vTaskType.push_back(ProcessCurrentImmediateTask());// 执行所有即时任务
 	}
-	ASSERT(vTaskType.size() == immediateTaskSize);
+	ABSL_DCHECK(vTaskType.size() == immediateTaskSize);
 #ifdef _TRACE_SCHEDULE_TASK___
 	if (immediateTaskSize > 0) {
 		for (size_t i = 0; i < immediateTaskSize; i++) {
@@ -79,7 +79,7 @@ void CVirtualMarket::RunDataSource() const {
 }
 
 void CVirtualMarket::ResetMarket() {
-	ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
+	ABSL_DCHECK(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }
 
 bool CVirtualMarket::IsResetTime() {
@@ -88,7 +88,7 @@ bool CVirtualMarket::IsResetTime() {
 
 chrono::local_seconds CVirtualMarket::GetResetTime() {
 	if (gl_systemConfiguration.IsWorkingMode()) // 不允许在运行状态时调用此函数
-		ASSERT(0);
+		ABSL_DCHECK(0);
 	return chrono::local_seconds{};
 }
 
@@ -127,9 +127,9 @@ void CVirtualMarket::AdjustTaskTime() {
 		vTask.push_back(m_marketTask.GetTask());
 		m_marketTask.DiscardCurrentTask();
 	}
-	ASSERT(m_marketTask.Empty());
+	ABSL_DCHECK(m_marketTask.Empty());
 	for (const auto& pMarketTask : vTask) {
-		ASSERT(pMarketTask->GetTime() >= toLocalTime(240000));
+		ABSL_DCHECK(pMarketTask->GetTime() >= toLocalTime(240000));
 		pMarketTask->SetTime(pMarketTask->GetTime() - 24h);
 		m_marketTask.AddTask(pMarketTask);
 	}
