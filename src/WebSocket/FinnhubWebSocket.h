@@ -15,7 +15,7 @@ public:
 public:
 	string m_sSymbol;
 	double m_dLastPrice;
-	INT64 m_iSeconds; // UNIX milliseconds timestamp
+	int64_t m_iSeconds; // UNIX milliseconds timestamp //TODO: change to std::chrono::milliseconds
 	double m_dLastVolume;
 };
 

@@ -64,12 +64,12 @@ namespace FireBirdTest {
 		const double splitFactor = 1.0;
 		const double dividend = 0.0;
 		const double upAndDown = 1.0;
-		const INT64 volume = 1000;
-		const INT64 amount = 124000000;
+		const int64_t volume = 1000;
+		const int64_t amount = 124000000;
 		const double upDownRate = 0.8;
 		const double changeHandRate = 0.1;
-		const INT64 totalValue = 1000000;
-		const INT64 currentValue = 100000;
+		const int64_t totalValue = 1000000;
+		const int64_t currentValue = 100000;
 		const double rs = 50.0;
 		const double rsIndex = 1.0;
 		const double rsBackup = 0.0;

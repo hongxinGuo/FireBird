@@ -93,7 +93,7 @@ CTiingoMarketNewssPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const CWeb
 			marketNews.m_strSource = s1;
 			s1 = simdjsonGetStringView(itemValue, "crawlDate");
 			sscanf_s(s1.c_str(), "%04i-%02i-%02iT%02i:%02i:%02i.%fZ", &year, &month, &day, &hour, &minute, &second, &f);
-			marketNews.m_llCrawlDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
+			marketNews.m_llCrawlDate = static_cast<int64_t>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 			s1 = simdjsonGetStringView(itemValue, "description");
 			marketNews.m_strDescription = s1;
 			s1 = simdjsonGetStringView(itemValue, "url");
@@ -104,7 +104,7 @@ CTiingoMarketNewssPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const CWeb
 			marketNews.m_strTitle = s1;
 			s1 = simdjsonGetStringView(itemValue, "publishedDate");
 			sscanf_s(s1.c_str(), "%04i-%02i-%02iT%02i:%02i:%02iZ", &year, &month, &day, &hour, &minute, &second);
-			marketNews.m_LLPublishDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
+			marketNews.m_LLPublishDate = static_cast<int64_t>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 
 			//auto jArray = simdjsonGetArray(itemValue, "tickers");
 			for (auto value : itemValue["tickers"]) {

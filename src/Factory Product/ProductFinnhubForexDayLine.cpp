@@ -91,7 +91,7 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(const CWebData
 	}
 	try {
 		int i;
-		INT64 llTemp;
+		int64_t llTemp;
 		double dTemp;
 		js2 = jsonGetChild(js, "c");
 		i = 0;

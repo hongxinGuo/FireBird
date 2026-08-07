@@ -3,8 +3,10 @@
 #include <gmock/gmock-matchers.h>
 #include <gmock/gmock-more-matchers.h>
 
-#include"SystemMessage.h"
+#include<sqlpp23/sqlpp23.h>
+#include"StockMarketSQLTable.h"
 
+#include"SystemMessage.h"
 #include"ChinaStockCodeConverter.h"
 
 #include"ChinaMarket.h"
@@ -15,11 +17,8 @@
 #include "SinaRTDataSource.h"
 #include "TengxunRTDataSource.h"
 
-#include<sqlpp23/sqlpp23.h>
-
 #include "ContainerChinaStock.h"
 #include "dataBaseConnector.h"
-#include"StockMarketSQLTable.h"
 #include"DayLineWebData.h"
 #include "SystemConfiguration.h"
 #include "SystemData.h"
@@ -1206,7 +1205,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		auto result = db(select(all_of(t)).from(t).where(t.Symbol == "000001.SS"));
-		int rows = result.size();
+		size_t rows = result.size();
 		EXPECT_EQ(rows, 1);
 		auto& row = result.front();
 		EXPECT_EQ(row.Exchange, "CN");
@@ -1216,8 +1215,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5702) << "测试代码库中的股票代码总数为5701,增加了一个";
 
 		auto result1 = db(select(all_of(t)).from(t).where(t.Symbol == "Test"));
-		int rows1 = result.size();
-		EXPECT_EQ(rows1, 1);
+		size_t rows2 = result.size();
+		EXPECT_EQ(rows2, 1);
 
 		db(delete_from(t).where(t.Symbol == "Test"));
 		tx.commit();

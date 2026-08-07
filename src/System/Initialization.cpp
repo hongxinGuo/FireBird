@@ -6,6 +6,7 @@
 #include "spdlog/sinks/daily_file_sink.h"
 #include <spdlog/sinks/basic_file_sink.h>
 
+#include "AlpacaDataSource.h"
 #include "AlphaVantageDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
@@ -22,7 +23,6 @@
 
 #include "simdjsonGetValue.h"
 #include "Thread.h"
-
 
 #include "FinnhubWebSocket.h"
 #include"log.h"
@@ -85,11 +85,12 @@ namespace {
 		gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
 		gl_pEastmoneyDayLineDataSource = make_shared<CEastmoneyDayLineDataSource>();
 
-		// 此四个要在gl_pWorldMarket前生成
+		// 此五个要在gl_pWorldMarket前生成
 		ABSL_DCHECK(gl_pWorldMarket == nullptr);
 		gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
 		gl_pAlphaVantageDataSource = make_shared<CAlphaVantageDataSource>();
+		gl_pAlpacaDataSource = make_shared<CAlpacaDataSource>();
 		gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
 	}
 
@@ -106,6 +107,7 @@ namespace {
 		// 市场要在数据源和WebSocket之后生成
 		ABSL_DCHECK(gl_pFinnhubDataSource != nullptr);
 		ABSL_DCHECK(gl_pTiingoDataSource != nullptr);
+		ABSL_DCHECK(gl_pAlpacaDataSource != nullptr);
 		ABSL_DCHECK(gl_pAccessoryDataSource != nullptr);
 
 		ABSL_DCHECK(gl_pSinaRTDataSource != nullptr);
@@ -238,6 +240,7 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	// world market's data source
 	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
 	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
+	gl_pWorldMarket->StoreDataSource(gl_pAlpacaDataSource);
 	//gl_pWorldMarket->StoreDataSource(gl_pAlphaVantageDataSource); // Alpha vantage的每日申请次数为25次，暂时不使用。
 	gl_pWorldMarket->StoreDataSource(gl_pAccessoryDataSource);
 }

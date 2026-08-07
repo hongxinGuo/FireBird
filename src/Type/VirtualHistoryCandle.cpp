@@ -1,13 +1,10 @@
 #include"pch.h"
 
 #include"VirtualHistoryCandle.h"
-
 #include"TimeConvert.h"
 
-using namespace std;
-
 void CVirtualHistoryCandle::Reset() {
-	m_tpDate = chrono::local_days{};
+	m_tpDate = std::chrono::local_days{};
 	m_strExchange.clear();
 	m_strStockSymbol.clear();
 	m_lLastClose = 0;

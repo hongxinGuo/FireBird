@@ -39,7 +39,7 @@ public:
 	long m_lHigh{ 0 }; // 最高价
 	long m_lLow{ 0 }; // 最低价
 	long m_lNew{ 0 }; // 最新价
-	INT64 m_llVolume{ 0 };
+	int64_t m_llVolume{ 0 };
 };
 
 using CTiingoIEXTopOfBookPtr = shared_ptr<CTiingoIEXTopOfBook>;

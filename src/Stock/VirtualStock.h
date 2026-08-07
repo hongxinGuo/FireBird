@@ -59,10 +59,10 @@ public:
 	virtual void SetLow(const int lValue) noexcept { m_lLow = lValue; }
 	int GetNew() const noexcept { return m_lNew; }
 	virtual void SetNew(const int lValue) noexcept { m_lNew = lValue; }
-	INT64 GetAmount() const noexcept { return m_llAmount; }
-	virtual void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
-	INT64 GetVolume() const noexcept { return m_llVolume; }
-	virtual void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
+	int64_t GetAmount() const noexcept { return m_llAmount; }
+	virtual void SetAmount(const int64_t llValue) noexcept { m_llAmount = llValue; }
+	int64_t GetVolume() const noexcept { return m_llVolume; }
+	virtual void SetVolume(const int64_t llValue) noexcept { m_llVolume = llValue; }
 
 	int GetUpDown() const noexcept { return m_lUpDown; }
 	virtual void SetUpDown(const int lValue) noexcept { m_lUpDown = lValue; }
@@ -70,10 +70,10 @@ public:
 	virtual void SetUpDownRate(const double dValue) noexcept { m_dUpDownRate = dValue; }
 	double GetChangeHandRate() const noexcept { return m_dChangeHandRate; }
 	virtual void SetChangeHandRate(const double dValue) noexcept { m_dChangeHandRate = dValue; }
-	INT64 GetTotalValue() const noexcept { return m_llTotalValue; }
-	virtual void SetTotalValue(const INT64 llValue) noexcept { m_llTotalValue = llValue; }
-	INT64 GetCurrentValue() const noexcept { return m_llCurrentValue; }
-	virtual void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+	int64_t GetTotalValue() const noexcept { return m_llTotalValue; }
+	virtual void SetTotalValue(const int64_t llValue) noexcept { m_llTotalValue = llValue; }
+	int64_t GetCurrentValue() const noexcept { return m_llCurrentValue; }
+	virtual void SetCurrentValue(const int64_t llValue) noexcept { m_llCurrentValue = llValue; }
 
 	//
 	bool IsNewStock() const noexcept { return m_fNewStock; }
@@ -176,11 +176,11 @@ protected:
 	int m_lNew{ 0 }; // 以0.001元计的最新价
 	int m_lUpDown{ 0 }; // 涨跌值
 	double m_dUpDownRate{ 0 }; // 涨跌率
-	INT64 m_llVolume{ 0 }; // 以1股计的成交量
-	INT64 m_llAmount{ 0 }; // 以元计的成交金额
+	int64_t m_llVolume{ 0 }; // 以1股计的成交量
+	int64_t m_llAmount{ 0 }; // 以元计的成交金额
 	double m_dChangeHandRate{ 0 }; // 换手率
-	INT64 m_llTotalValue{ 0 }; // 总市值。单位：万元
-	INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
+	int64_t m_llTotalValue{ 0 }; // 总市值。单位：万元
+	int64_t m_llCurrentValue{ 0 }; // 流通市值。单位：万元
 
 	bool m_fNewStock{ false }; // 本日新发现的股票
 	bool m_fActive{ false }; // 是否是活跃股票

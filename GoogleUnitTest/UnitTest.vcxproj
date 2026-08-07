@@ -150,6 +150,7 @@
     <ClCompile Include="MockTiingoForexWebSocketTest.cpp" />
     <ClCompile Include="MockTiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="MockVirtualWebSocketTest.cpp" />
+    <ClCompile Include="ProductAlpacaStockDayLineTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
     <ClCompile Include="ProductEastmoneyDayLineTest.cpp" />
     <ClCompile Include="ProductFinnbhubSECFilingsTest.cpp" />

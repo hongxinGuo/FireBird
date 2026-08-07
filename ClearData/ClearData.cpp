@@ -135,7 +135,7 @@ namespace {
 int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd) {
 	std::cout << "ClearData: Clearing test database...\n";
 
-	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test", "localhost", 3306, 20, false); // Note:: 连接测试环境的数据库
+	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test"); // Note:: 连接测试环境的数据库
 
 	ClearTestDataBase();
 

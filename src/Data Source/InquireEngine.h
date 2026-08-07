@@ -10,8 +10,6 @@ using std::shared_ptr;
 constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
 
 class CInquireEngine {
-	friend CVirtualWebProduct;
-
 public:
 	CInquireEngine();
 	CInquireEngine(const InternetOption& internetOption, const string& strInquire, const string& strHeaders);
@@ -54,9 +52,9 @@ public:
 
 public:
 	// 以下为测试用函数
-	void TESTSetBuffer(const char* buffer, INT64 lTotalNumber);
+	void TESTSetBuffer(const char* buffer, int64_t lTotalNumber);
 	void TESTSetBuffer(string str);
-	void TESTSetWebBuffer(const char* buffer, INT64 lTotalNumber);
+	void TESTSetWebBuffer(const char* buffer, int64_t lTotalNumber);
 
 protected:
 	shared_ptr<CInternetSession> m_pSession{ nullptr }; // 初始化时必须生成指针。

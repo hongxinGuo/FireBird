@@ -47,7 +47,7 @@ CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymb
 bool CContainerStockExchange::LoadDB() {
 	if (m_vStockExchange.empty()) {
 		// 交易所信息永远使用工作数据库。
-		InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 20, false);
+		InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market");
 		using namespace StockMarket;
 		const auto& t = FinnhubStockExchange{};
 		auto db = gl_dbStockMarket.get();

@@ -345,9 +345,9 @@ namespace FireBirdTest {
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			string strGbk = Utf8ToGbk(pData->m_strData); // 转成GBK编码
-			m_lStringLength = strGbk.length();
-			m_pSinaWebRTData->Resize(m_lStringLength);
-			m_pSinaWebRTData->SetData(strGbk.c_str(), m_lStringLength);
+			m_stringLength = strGbk.length();
+			m_pSinaWebRTData->Resize(m_stringLength);
+			m_pSinaWebRTData->SetData(strGbk.c_str(), m_stringLength);
 			for (int i = 0; i < 5; i++) {
 				m_RTData.SetPBuy(i, -1);
 				m_RTData.SetPSell(i, -1);
@@ -380,7 +380,7 @@ namespace FireBirdTest {
 	public:
 		int m_iCount;
 		char* m_pData;
-		long m_lStringLength;
+		size_t m_stringLength;
 		CWebDataPtr m_pSinaWebRTData;
 		CWebRTData m_RTData;
 		string_view svData;

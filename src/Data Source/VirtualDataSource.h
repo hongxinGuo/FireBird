@@ -56,8 +56,6 @@ enum e_TiingoErrorMessage {
 };*/
 
 class CVirtualDataSource {
-	friend CVirtualWebProduct;
-
 public:
 	CVirtualDataSource();
 	// 不允许赋值。
@@ -240,10 +238,10 @@ public:
 		else m_dwWebErrorCode = 0;
 	}
 	auto GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
-	void SetWebErrorCode(INT64 dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
+	void SetWebErrorCode(int64_t dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
 	auto GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode.load(); }
-	void SetHTTPStatusCode(INT64 dwStatusCode) noexcept { m_dwHTTPStatusCode = dwStatusCode; }
+	void SetHTTPStatusCode(int64_t dwStatusCode) noexcept { m_dwHTTPStatusCode = dwStatusCode; }
 
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }

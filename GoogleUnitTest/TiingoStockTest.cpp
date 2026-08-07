@@ -519,7 +519,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pvDayLine->GetData(11052)->GetOpen(), pvWeekLine->GetData(2289)->GetOpen()) << "周一的开盘价相等";
 		EXPECT_EQ(234325000, pvWeekLine->GetData(2289)->GetHigh()) << "最高价";
 		EXPECT_EQ(220270000, pvWeekLine->GetData(2289)->GetLow()) << "最低价";
-		INT64 volume = 0, amount = 0;
+		int64_t volume = 0, amount = 0;
 		for (int i = 0; i < 4; i++) {
 			volume += pvDayLine->GetData(11052 + i)->GetVolume();
 			amount += pvDayLine->GetData(11051 + i)->GetAmount();

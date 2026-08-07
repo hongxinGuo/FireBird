@@ -29,6 +29,7 @@
 #include "WorldMarket.h"
 
 #include "AccessoryDataSource.h"
+#include "AlpacaDataSource.h"
 
 #include "containerChosenCrypto.h"
 
@@ -104,6 +105,7 @@ CEastmoneyDayLineDataSourcePtr gl_pEastmoneyDayLineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
 CAlphaVantageDataSourcePtr gl_pAlphaVantageDataSource = nullptr;
+extern CAlpacaDataSourcePtr gl_pAlpacaDataSource = nullptr;
 CAccessoryDataSourcePtr gl_pAccessoryDataSource = nullptr;
 
 // Web socket， 皆为唯一实例。

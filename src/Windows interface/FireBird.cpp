@@ -3,28 +3,17 @@
 #include"pch.h"
 
 #include "FireBird.h"
-
 #include "MainFrm.h"
-
 #include "FireBirdDoc.h"
 #include "FireBirdView.h"
-
 #include "ChildFrm.h"
 
 #include "Initialization.h"
 #include "SystemPublicDeclaration.h"
-#include "WorldMarket.h"
-
-#include <spdlog/spdlog.h>
-
-#include"dataBaseConnector.h"
 #include "SystemConfiguration.h"
-#include"log.h"
-using namespace std;
 
-#ifdef _MBCS
-#error "本系统使用UNI_CODE字符集"
-#endif
+#include"log.h"
+#include"dataBaseConnector.h"
 
 #ifndef _UNICODE
 #error "本系统使用UNI_CODE字符集"
@@ -48,10 +37,8 @@ END_MESSAGE_MAP()
 // CFireBirdApp 构造
 
 CFireBirdApp::CFireBirdApp() {
-	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now()); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
-	gl_pTimeZoneLocal = chrono::current_zone(); // 获取软件运行所在的当地时区
-
-	//sqlpp::mysql::global_library_init(); // 初始化sqlpp11的MySQL库，且只能初始化一次。
+	gl_tpNow = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now()); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
+	gl_pTimeZoneLocal = std::chrono::current_zone(); // 获取软件运行所在的当地时区
 
 	m_bHiColorIcons = TRUE;
 
@@ -70,7 +57,6 @@ CFireBirdApp::CFireBirdApp() {
 }
 
 CFireBirdApp::~CFireBirdApp() {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 }
 
 // 唯一的 CFireBirdApp 对象
@@ -102,7 +88,7 @@ BOOL CFireBirdApp::InitInstance() {
 	}
 
 	// 连接数据库，生成链接池
-	InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market", "localhost", 3306, 20, false);
+	InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market" );
 
 	InitializeLogSystem();
 

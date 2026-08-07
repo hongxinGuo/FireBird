@@ -49,8 +49,8 @@ namespace {
 double simdjsonGetDouble(ondemand::value& value, double defaultValue) {
 	return simdjsonGetHelper<double, ondemand::value>([](ondemand::value& v) { return v.get_double(); }, value, defaultValue);
 }
-INT64 simdjsonGetInt64(ondemand::value& value, INT64 defaultValue) {
-	return simdjsonGetHelper<INT64, ondemand::value>([](ondemand::value& v) { return v.get_int64(); }, value, defaultValue);
+int64_t simdjsonGetInt64(ondemand::value& value, int64_t defaultValue) {
+	return simdjsonGetHelper<int64_t, ondemand::value>([](ondemand::value& v) { return v.get_int64(); }, value, defaultValue);
 }
 bool simdjsonGetBool(ondemand::value& value) {
 	return simdjsonGetHelper<bool, ondemand::value>([](ondemand::value& v) { return v.get_bool(); }, value, false);
@@ -75,16 +75,16 @@ double simdjsonGetDouble(ondemand::document& doc, const string_view& key, double
 	return simdjsonGetHelper<double, ondemand::document>([](ondemand::value& v) { return v.get_double(); }, doc, key, defaultValue);
 }
 
-INT64 simdjsonGetInt64(ondemand::value& value, const string_view& key, INT64 defaultValue) {
-	return simdjsonGetHelper<INT64, ondemand::value>([](ondemand::value& v) { return v.get_int64(); }, value, key, defaultValue);
+int64_t simdjsonGetInt64(ondemand::value& value, const string_view& key, int64_t defaultValue) {
+	return simdjsonGetHelper<int64_t, ondemand::value>([](ondemand::value& v) { return v.get_int64(); }, value, key, defaultValue);
 }
 
-INT64 simdjsonGetInt64(ondemand::object& object, const string_view& key, INT64 defaultValue) {
-	return simdjsonGetHelper<INT64, ondemand::object>([](ondemand::value& v) { return v.get_int64(); }, object, key, defaultValue);
+int64_t simdjsonGetInt64(ondemand::object& object, const string_view& key, int64_t defaultValue) {
+	return simdjsonGetHelper<int64_t, ondemand::object>([](ondemand::value& v) { return v.get_int64(); }, object, key, defaultValue);
 }
 
-INT64 simdjsonGetInt64(ondemand::document& doc, const string_view& key, INT64 defaultValue) {
-	return simdjsonGetHelper<INT64, ondemand::document>([](ondemand::value& v) { return v.get_int64(); }, doc, key, defaultValue);
+int64_t simdjsonGetInt64(ondemand::document& doc, const string_view& key, int64_t defaultValue) {
+	return simdjsonGetHelper<int64_t, ondemand::document>([](ondemand::value& v) { return v.get_int64(); }, doc, key, defaultValue);
 }
 
 bool simdjsonGetBool(ondemand::value& value, const string_view& key, bool defaultValue) {

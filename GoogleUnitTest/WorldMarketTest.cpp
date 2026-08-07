@@ -585,7 +585,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 		auto result = db(select(all_of(t)).from(t).order_by(t.Symbol.asc()).where(t.SICSector == std::string("Test")));
-		int rows = result.size();
+		size_t rows = result.size();
 		EXPECT_EQ(rows, 2);
 		EXPECT_EQ(result.front().Symbol, "A");
 		result.pop_front();

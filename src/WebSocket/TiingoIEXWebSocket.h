@@ -27,7 +27,7 @@ public:
 public:
 	string m_sDateTime; // json ISO format
 	std::chrono::sys_seconds m_tpTime;
-	INT64 m_iNanoseconds;
+	int64_t m_iNanoseconds;
 	string m_sSymbol;
 	double m_dBidSize;
 	double m_dBidPrice;

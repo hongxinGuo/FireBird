@@ -158,13 +158,9 @@ namespace {
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() {
-	if (!sm_fGlobeInit) {
-		sm_fGlobeInit = true;
-		ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
-	}
-	else {
-		ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
-	}
+	ABSL_DCHECK(sm_fGlobeInit);
+	sm_fGlobeInit = true;
+	ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
 
 	// 默认下后台工作线程数为32，使用系统配置降低至实际数量。
 	for (int i = 0; i < MAX_BACKGROUND_WORKING_THREAD_ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
@@ -174,7 +170,7 @@ CMainFrame::CMainFrame() {
 
 CMainFrame::~CMainFrame() {
 	if (!gl_systemConfiguration.IsWorkingMode())
-		ABSL_DLOG(INFO) <<"使用了Test驱动";
+		ABSL_DLOG(INFO) << "使用了Test驱动";
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
@@ -187,13 +183,9 @@ CMainFrame::~CMainFrame() {
 		gl_hFireBirdMutex = nullptr;
 	}
 
-	if (sm_fGlobeInit) {
-		sm_fGlobeInit = false;
-		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
-	}
-	else {
-		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
-	}
+	ABSL_DCHECK(sm_fGlobeInit);
+	sm_fGlobeInit = false;
+	ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
 
 	if (gl_pChinaMarket->IsUpdateOptionDB()) {
 		gl_pChinaMarket->UpdateOptionDB();
@@ -211,7 +203,7 @@ CMainFrame::~CMainFrame() {
 
 	while (gl_BackgroundWorkingThread.GetCount() > 0) Sleep(1); // 等待后台工作线程运行结束
 
-	ABSL_DLOG(INFO) <<"exit finally";
+	ABSL_DLOG(INFO) << "exit finally";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -349,7 +341,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置1000毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(1, 1000, nullptr);
 	if (m_uIdTimer == 0) {
-		ABSL_DLOG(INFO) <<"生成1000ms时钟时失败\n";
+		ABSL_DLOG(INFO) << "生成1000ms时钟时失败\n";
 	}
 
 	// 更新系统显示高度和宽度
@@ -616,7 +608,7 @@ void CMainFrame::SetCurrentStock(const CVirtualStockPtr& pStock) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
-		ABSL_DLOG(INFO) <<"应用户申请，准备退出程序\n";
+		ABSL_DLOG(INFO) << "应用户申请，准备退出程序\n";
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		ReportExitToWatchdog();
 		for (auto& timer : gl_aTimer) {// 退出所有的计时器，关闭所有的工作线程。
@@ -638,10 +630,10 @@ void CMainFrame::OnProcessTodayStock() {
 
 void CMainFrame::ProcessChinaMarketStock() {
 	gl_runtime.thread_executor()->post([] {
-		ABSL_DLOG(INFO) <<"China market Process today stock\n";
+		ABSL_DLOG(INFO) << "China market Process today stock\n";
 		gl_systemMessage.SetChinaMarketSavingFunction("Process today stock");
 		gl_pChinaMarket->ProcessTodayStock();
-		ABSL_DLOG(INFO) <<"China market Processed today stock\n";
+		ABSL_DLOG(INFO) << "China market Processed today stock\n";
 	});
 }
 

@@ -54,8 +54,8 @@ public:
 	void SetRSIndex(const double value) noexcept { m_dRealtimeRSIndex = value; }
 
 	// 更新当前各变量状态
-	void SetLastSavedVolume(const INT64 llVolume) noexcept { m_llLastSavedVolume = llVolume; }
-	INT64 GetLastSavedVolume() const noexcept { return m_llLastSavedVolume; }
+	void SetLastSavedVolume(const int64_t llVolume) noexcept { m_llLastSavedVolume = llVolume; }
+	int64_t GetLastSavedVolume() const noexcept { return m_llLastSavedVolume; }
 
 	// 各种状态标识提取和设置
 	bool IsChosen() const noexcept { return m_fChosen; }
@@ -141,7 +141,7 @@ protected:
 	double m_dRealtimeRS{ 0 }; // 当日实时相对强度 单位：1%
 	double m_dRealtimeRSIndex{ 0 }; // 当日实时相对强度（相对于指数）单位：1%
 
-	INT64 m_llLastSavedVolume{ 0 }; // 如果交易中途系统退出，则再次登入时上次的交易数量
+	int64_t m_llLastSavedVolume{ 0 }; // 如果交易中途系统退出，则再次登入时上次的交易数量
 
 	bool m_fHaveFirstRTData{ false }; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
 	bool m_fNeedProcessRTData{ true }; //指数类股票无需计算交易和挂单情况

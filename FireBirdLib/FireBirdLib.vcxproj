@@ -57,6 +57,7 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h" />
     <ClInclude Include="..\src\Data Container\VirtualContainer.h" />
     <ClInclude Include="..\src\Data Source\AccessoryDataSource.h" />
+    <ClInclude Include="..\src\Data Source\AlpacaDataSource.h" />
     <ClInclude Include="..\src\Data Source\AlphaVantageDataSource.h" />
     <ClInclude Include="..\src\Data Source\EastMoneyDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\InquireEngine.h" />
@@ -69,7 +70,10 @@
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h" />
     <ClInclude Include="..\src\dataBaseConnector.h" />
     <ClInclude Include="..\src\Factory Product\AccessoryFactory.h" />
+    <ClInclude Include="..\src\Factory Product\AlpacaFactory.h" />
     <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.h" />
+    <ClInclude Include="..\src\Factory Product\ProductAlpaca.h" />
+    <ClInclude Include="..\src\Factory Product\ProductAlpacaStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.h" />
@@ -232,6 +236,7 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\VirtualContainer.cpp" />
     <ClCompile Include="..\src\Data Source\AccessoryDataSource.cpp" />
+    <ClCompile Include="..\src\Data Source\AlpacaDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\AlphaVantageDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\EastMoneyDayLineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp" />
@@ -242,7 +247,9 @@
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp" />
     <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp" />
+    <ClCompile Include="..\src\Factory Product\AlpacaFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductAlpacaStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockSplits.cpp" />

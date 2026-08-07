@@ -12,10 +12,9 @@ inline auto GetStockMarketDB() { return gl_dbStockMarket.get(); }
 inline void InitSqlppMySQLConnectionPool(const std::string& user,
                                          const std::string& password,
                                          const std::string& database,
-                                         const std::string& host,
+                                         const std::string& host = "localhost",
                                          int port = 3306,
-                                         std::size_t poolSize = 20,
-                                         bool debug = false) {
+                                         std::size_t poolSize = 20) {
 	static std::once_flag g_sqlppInitFlag;
 	std::call_once(g_sqlppInitFlag, [] {
 		try {
@@ -33,8 +32,5 @@ inline void InitSqlppMySQLConnectionPool(const std::string& user,
 	config->database = database;
 	config->host = host;
 	config->port = port;
-#ifdef _DEBUG
-	//config->debug = debug;
-#endif
 	gl_dbStockMarket = sqlpp::mysql::connection_pool(config, static_cast<int>(poolSize));
 }

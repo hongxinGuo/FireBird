@@ -7,7 +7,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"ClassDeclaration.h"
 #include"nlohmannJsonDeclaration.h"
 
 using std::string;
@@ -18,10 +17,6 @@ constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
 class CWebData {
 public:
-	friend CVirtualDataSource;
-	friend CInquireEngine;
-	friend CDayLineWebData;
-
 	CWebData();
 	// 不允许赋值。
 	CWebData(const CWebData&) = delete;
@@ -44,6 +39,12 @@ public:
 	std::string GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const std::string& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
+
+	void SetDataBuffer(string&& str) {
+		m_sDataBuffer = std::move(str);
+		m_svDataBuffer = string_view(m_sDataBuffer);
+	}
+	string&& MoveDataBuffer() noexcept { return std::move(m_sDataBuffer); }
 
 	std::string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	auto GetCurrentPos() const noexcept { return m_lCurrentPos; }

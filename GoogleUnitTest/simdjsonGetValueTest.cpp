@@ -61,7 +61,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(s, "\"string1\"");
 			EXPECT_THROW(s = simdjsonGetRawJsonToken(doc, "no koken"), simdjson_error);
 			ondemand::array array1 = simdjsonGetArray(doc, "array1");
-			for (INT64 item : array1) {
+			for (int64_t item : array1) {
 				EXPECT_EQ(item, i++) << "array1的数据为：1， 2， 3";
 			}
 			EXPECT_EQ(i, 4);
@@ -208,12 +208,12 @@ namespace FireBirdTest {
 
 	TEST(simdjsonGetValueTest, TestsimdjsonGetValue2) {
 		try {
-			vector<INT64> vi;
+			vector<int64_t> vi;
 			vector<double> vd;
 			vector<string> vs;
 			vector<string> vsRaw;
 			vector<bool> vb;
-			vector<INT64> vArray;
+			vector<int64_t> vArray;
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_simdjson2).value();
 			for (ondemand::field field : doc.get_object()) {
@@ -222,7 +222,7 @@ namespace FireBirdTest {
 				string sRaw(svRaw);
 				vsRaw.push_back(sRaw);
 				EXPECT_THROW(svRaw = simdjsonGetRawJsonToken(object, "no key"), simdjson_error);
-				INT64 i = simdjsonGetInt64(object, ("a"));
+				int64_t i = simdjsonGetInt64(object, ("a"));
 				vi.push_back(i);
 				double d = simdjsonGetDouble(object, ("b"));
 				vd.push_back(d);
@@ -257,7 +257,7 @@ namespace FireBirdTest {
 
 	TEST(simdjsonGetValueTest, TestsimdjsonGetValue3) {
 		try {
-			vector<INT64> vi;
+			vector<int64_t> vi;
 			vector<double> vd;
 			vector<string> vs;
 			vector<bool> vb;
@@ -266,7 +266,7 @@ namespace FireBirdTest {
 			for (auto field : doc.get_object()) {
 				auto item = field.value();
 				auto itemValue = item.value();
-				INT64 i = simdjsonGetInt64(itemValue, ("a"));
+				int64_t i = simdjsonGetInt64(itemValue, ("a"));
 				vi.push_back(i);
 				double d = simdjsonGetDouble(itemValue, ("b"));
 				vd.push_back(d);
@@ -396,7 +396,7 @@ namespace FireBirdTest {
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 		string s1, s2;
 		double d1, d2;
-		INT64 i1, i2;
+		int64_t i1, i2;
 		bool b1, b2;
 		ondemand::array array1, array2;
 		switch (m_lIndex) {

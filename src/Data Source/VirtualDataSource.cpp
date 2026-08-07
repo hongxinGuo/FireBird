@@ -81,7 +81,7 @@ void CVirtualDataSource::InquireData() {
 		if (m_bConcurrentForbid) {
 			Sleep(1000);
 			s_InquiryWebData.acquire();
-			ABSL_DLOG(INFO) << std::format("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol().c_str(), ++i);
+			ABSL_DLOG(INFO) << std::format("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol(), ++i);
 		}
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {

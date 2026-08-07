@@ -12,6 +12,9 @@
 using std::string;
 using std::string_view;
 using std::vector;
+using std::shared_ptr;
+using std::make_shared;
+using std::int64_t;
 using std::chrono::local_days;
 using std::chrono::local_seconds;
 using std::chrono::days;
@@ -80,18 +83,18 @@ public:
 	double GetChangeHandRate() const noexcept { return m_dChangeHandRate; }
 	void SetChangeHandRate(const string& str) noexcept { m_dChangeHandRate = strtod(str.c_str(), nullptr); }
 	void SetChangeHandRate(const double dValue) noexcept { m_dChangeHandRate = dValue; }
-	INT64 GetVolume() const noexcept { return m_llVolume; }
-	void SetVolume(const string& str) noexcept { m_llVolume = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
-	void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
-	INT64 GetAmount() const noexcept { return m_llAmount; }
-	void SetAmount(const string& str) noexcept { m_llAmount = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
-	void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
-	INT64 GetTotalValue() const noexcept { return m_llTotalValue; }
-	void SetTotalValue(const string& str) noexcept { m_llTotalValue = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
-	void SetTotalValue(const INT64 llValue) noexcept { m_llTotalValue = llValue; }
-	INT64 GetCurrentValue() const noexcept { return m_llCurrentValue; }
-	void SetCurrentValue(const string& str) noexcept { m_llCurrentValue = static_cast<INT64>(strtod(str.c_str(), nullptr)); }
-	void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+	int64_t GetVolume() const noexcept { return m_llVolume; }
+	void SetVolume(const string& str) noexcept { m_llVolume = static_cast<int64_t>(strtod(str.c_str(), nullptr)); }
+	void SetVolume(const int64_t llValue) noexcept { m_llVolume = llValue; }
+	int64_t GetAmount() const noexcept { return m_llAmount; }
+	void SetAmount(const string& str) noexcept { m_llAmount = static_cast<int64_t>(strtod(str.c_str(), nullptr)); }
+	void SetAmount(const int64_t llValue) noexcept { m_llAmount = llValue; }
+	int64_t GetTotalValue() const noexcept { return m_llTotalValue; }
+	void SetTotalValue(const string& str) noexcept { m_llTotalValue = static_cast<int64_t>(strtod(str.c_str(), nullptr)); }
+	void SetTotalValue(const int64_t llValue) noexcept { m_llTotalValue = llValue; }
+	int64_t GetCurrentValue() const noexcept { return m_llCurrentValue; }
+	void SetCurrentValue(const string& str) noexcept { m_llCurrentValue = static_cast<int64_t>(strtod(str.c_str(), nullptr)); }
+	void SetCurrentValue(const int64_t llValue) noexcept { m_llCurrentValue = llValue; }
 
 	void SetAverage(size_t length, long lValue) noexcept;
 	long GetAverage(int length) const noexcept;
@@ -116,10 +119,10 @@ protected:
 	double m_dUpDown{ 0 }; // 涨跌额
 	double m_dUpDownRate{ 0 };
 	double m_dChangeHandRate{ 0 }; // 换手率
-	INT64 m_llVolume{ 0 }; // 成交量,单位:股
-	INT64 m_llAmount{ 0 }; // 成交金额,单位:元/万元（大盘）
-	INT64 m_llTotalValue{ 0 }; // 总市值。单位：万元
-	INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
+	int64_t m_llVolume{ 0 }; // 成交量,单位:股
+	int64_t m_llAmount{ 0 }; // 成交金额,单位:元/万元（大盘）
+	int64_t m_llTotalValue{ 0 }; // 总市值。单位：万元
+	int64_t m_llCurrentValue{ 0 }; // 流通市值。单位：万元
 
 protected:
 	// 各类平均线

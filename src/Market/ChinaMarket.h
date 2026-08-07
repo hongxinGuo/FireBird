@@ -186,9 +186,9 @@ public:
 	void SetUpdateChosenStockDB(const bool fFlag) noexcept { m_fUpdateChosenStockDB = fFlag; }
 	bool IsUpdateChosenStockDB() const noexcept { return m_fUpdateChosenStockDB; }
 
-	INT64 GetRTDataReceived() const noexcept { return m_llRTDataReceived.load(); }
-	void SetRTDataReceived(const INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
-	void IncreaseRTDataReceived(const INT64 llValue = 1) noexcept { m_llRTDataReceived += llValue; }
+	int64_t GetRTDataReceived() const noexcept { return m_llRTDataReceived.load(); }
+	void SetRTDataReceived(const int64_t llValue) noexcept { m_llRTDataReceived = llValue; }
+	void IncreaseRTDataReceived(const int64_t llValue = 1) noexcept { m_llRTDataReceived += llValue; }
 
 	int GetRTDataCounter() const noexcept { return m_iCurrentDayRTDataCounter; }
 	void IncreaseRTDataCounter(const int iValue = 1) noexcept { m_iCurrentDayRTDataCounter += iValue; }
@@ -242,8 +242,8 @@ protected:
 
 	bool m_fSelectedStockLoaded;
 
-	INT64 m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额
-	INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
+	int64_t m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额
+	int64_t m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
 
 	// 系统状态区
 	bool m_fCheckActiveStock; // 是否查询今日活跃股票代码

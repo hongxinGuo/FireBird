@@ -79,7 +79,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		s_bWebSocketClosing = false;
 		gl_systemMessage.PushWebSocketInfoMessage("Finnhub WebSocket Pong");
 		break;
-	default: // error
+	default: // error, all branch are covered
 		ABSL_DCHECK(0);
 		break;
 	}
