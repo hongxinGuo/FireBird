@@ -51,7 +51,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
 		companyPeer.SetIndex(1);
-		EXPECT_EQ(companyPeer.CreateMessage(), (companyPeer.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
+		EXPECT_EQ(companyPeer.CreateMessage()->front(), (companyPeer.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);

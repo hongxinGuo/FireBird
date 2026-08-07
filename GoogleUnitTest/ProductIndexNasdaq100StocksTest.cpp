@@ -45,7 +45,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductIndexNasdaq100StocksTest, TestCreatMessage) {
-		EXPECT_EQ(nasdaq100Stocks.CreateMessage(), nasdaq100Stocks.GetInquiryFunction());
+		EXPECT_EQ(nasdaq100Stocks.CreateMessage()->front(), nasdaq100Stocks.GetInquiryFunction());
 	}
 
 	TEST_F(CProductIndexNasdaq100StocksTest, TestUpdateDataSourceStatus) {

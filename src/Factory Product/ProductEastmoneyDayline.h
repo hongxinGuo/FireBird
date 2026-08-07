@@ -27,7 +27,7 @@ public:
 	CProductEastmoneyDayLine& operator=(const CProductEastmoneyDayLine&&) noexcept = delete;
 	~CProductEastmoneyDayLine() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr) override; // 腾讯日线不使用此函数
 	shared_ptr<vector<CDayLine>> ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode);
 

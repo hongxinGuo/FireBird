@@ -10,7 +10,7 @@ public:
 	CProductFinnhubCompanySymbolChange();
 	~CProductFinnhubCompanySymbolChange() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CCompanySymbolChange>> ParseFinnhubCompanySymbolChange(const CWebDataPtr& pWebData);
 

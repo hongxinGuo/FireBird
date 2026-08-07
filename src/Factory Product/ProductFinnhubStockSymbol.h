@@ -9,7 +9,7 @@ public:
 	CProductFinnhubStockSymbol();
 	~CProductFinnhubStockSymbol() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	static bool IsBadStockSymbol(const string& strStockSymbol, const string& strExchangeCode);
 	shared_ptr<vector<shared_ptr<CFinnhubStock>>> ParseFinnhubStockSymbol(const CWebDataPtr& pWebData);

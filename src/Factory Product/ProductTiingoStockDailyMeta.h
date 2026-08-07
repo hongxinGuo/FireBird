@@ -14,7 +14,7 @@ public:
 	CProductTiingoStockDailyMeta& operator=(const CProductTiingoStockDailyMeta&&) noexcept = delete;
 	~CProductTiingoStockDailyMeta() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<CTiingoStockDailyMeta> ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData);
 };

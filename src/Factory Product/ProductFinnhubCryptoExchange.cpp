@@ -16,11 +16,13 @@ CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/exchange?";
 }
 
-string CProductFinnhubCryptoExchange::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubCryptoExchange::CreateMessage() {
 	ABSL_DCHECK(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
-	m_strInquiry = m_strInquiryFunction;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {

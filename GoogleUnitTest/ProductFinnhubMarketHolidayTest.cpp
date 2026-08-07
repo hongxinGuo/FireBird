@@ -48,7 +48,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestCreatMessage) {
 		MarketHolidayProduct.SetIndex(1);
-		EXPECT_EQ(MarketHolidayProduct.CreateMessage(), (MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
+		EXPECT_EQ(MarketHolidayProduct.CreateMessage()->front(), (MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
 
 	namespace {

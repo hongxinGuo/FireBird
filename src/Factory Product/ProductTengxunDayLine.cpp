@@ -16,8 +16,10 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_iInquiryNumber = 0;
 }
 
-string CProductTengxunDayLine::CreateMessage() {
-	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CTengxunDayLineDataSource类完成，本Product无需动作。
+shared_ptr<vector<string>> CProductTengxunDayLine::CreateMessage() {
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_strInquiryFunction);
+	return pInquiry;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

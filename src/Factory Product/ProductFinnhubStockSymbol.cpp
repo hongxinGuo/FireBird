@@ -17,11 +17,13 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/symbol?exchange=";
 }
 
-string CProductFinnhubStockSymbol::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubStockSymbol::CreateMessage() {
 	m_strInquiringExchange = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
 
-	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + m_strInquiringExchange;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

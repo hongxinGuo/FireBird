@@ -7,7 +7,7 @@ public:
 	CProductFinnhubCompanyPeer();
 	~CProductFinnhubCompanyPeer() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	nlohmannJson ParseFinnhubStockPeer(const CWebDataPtr& pWebData);
 };

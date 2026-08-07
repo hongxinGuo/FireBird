@@ -18,7 +18,7 @@ public:
 	CProductAlphaVantageStockDayLine& operator=(const CProductAlphaVantageStockDayLine&&) noexcept = delete;
 	~CProductAlphaVantageStockDayLine() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
 	shared_ptr<vector<CTiingoCandleLine>> ParseAlphaVantageStockDayLine(const shared_ptr<CWebData>& pWebData);
 };

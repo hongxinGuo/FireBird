@@ -45,7 +45,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const local_seconds& currentTi
 }
 
 void CTengxunRTDataSource::CreateCurrentInquireString() {
-	m_strInquiry = m_pCurrentProduct->CreateMessage();
+	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();
 }
 
 void CTengxunRTDataSource::ConfigureInternetOption() {

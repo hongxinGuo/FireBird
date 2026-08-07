@@ -111,13 +111,16 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 // 格式为：https://api.tiingo.com/tiingo/fundamentals/AAPL/statements?startDate=1980-01-01
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-string CProductTiingoFinancialState::CreateMessage() {
+shared_ptr<vector<string>> CProductTiingoFinancialState::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	string strParam = "/" + pStock->GetSymbol() + "/statements?startDate=";
 	m_strInquiringSymbol = pStock->GetSymbol();
 	string sDate = ConvertDateToTimeStamp(pStock->GetCompanyFinancialStatementUpdateDate());
-	m_strInquiry = m_strInquiryFunction + strParam + sDate;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + strParam + sDate;
+
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -50,7 +50,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestCreatMessage) {
 		economicCalendar.SetIndex(1);
-		EXPECT_TRUE(economicCalendar.CreateMessage()== economicCalendar.GetInquiryFunction());
+		EXPECT_TRUE(economicCalendar.CreateMessage()->front() == economicCalendar.GetInquiryFunction());
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestProcessWebData) {

@@ -49,7 +49,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
 		companySymbolProduct.SetIndex(1);
-		EXPECT_EQ(companySymbolProduct.CreateMessage(), (companySymbolProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
+		EXPECT_EQ(companySymbolProduct.CreateMessage()->front(), (companySymbolProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {

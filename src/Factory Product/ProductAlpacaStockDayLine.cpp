@@ -24,8 +24,6 @@ using namespace std;
 
 CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 	m_strInquiryFunction = "https://data.alpaca.markets/v2/stocks/bars?symbols=";
-https://data.alpaca.markets/v2/stocks/bars?symbols=rig&timeframe=1D&limit=2&feed=iex&adjustment=raw&sort=asc&start=2026-01-01&end=2026-08-08
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -35,15 +33,17 @@ https://data.alpaca.markets/v2/stocks/bars?symbols=rig&timeframe=1D&limit=2&feed
 /// 
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-string CProductAlpacaStockDayLine::CreateMessage() {
+shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ABSL_DCHECK(pStock->IsActive()); // 活跃股票
 	chrono::local_days lStartDate{ 1980y / 01 / 01 };
 	if (pStock->GetDayLineEndDate() > toLocalDays(19800101)) lStartDate = pStock->GetDayLineEndDate() - chrono::days(needMoreDayLineData_);
-	string sParam = std::format("{}&timeframe=1D&limit=2&feed=iex&adjustment=raw&sort=asc&start={:%F}&end={:%F}", pStock->GetSymbol(), lStartDate, gl_pWorldMarket->GetMarketDate()); // Note: 总是多申请一天的日线数据
+	string sParam = std::format("{}&timeframe=1D&limit=1000&feed=iex&adjustment=raw&sort=asc&start={:%F}&end={:%F}", pStock->GetSymbol(), lStartDate, gl_pWorldMarket->GetMarketDate()); // Note: 总是多申请一天的日线数据
 
-	m_strInquiry = m_strInquiryFunction + sParam;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + sParam;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,10 +58,10 @@ void CProductAlpacaStockDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebData
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
 
 	shared_ptr<vector<CTiingoCandleLine>> pvDayLine = make_shared<vector<CTiingoCandleLine>>();
-	string strStockSymbol;
-	for (auto& pWebData : *pvWebData) { // 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
+	for (auto& pWebData : *pvWebData) {
+		// 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
 		const auto pDayLines = ParseWebData(pWebData);
-		strStockSymbol = pWebData->GetStockCode();
+		string stockSymbol = pWebData->GetStockCode();
 		for (auto& pData : *pDayLines) {
 			pvDayLine->push_back(pData);
 		}
@@ -128,86 +128,46 @@ CTiingoCandleLinesPtr CProductAlpacaStockDayLine::ParseWebData(CWebDataPtr pWebD
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 
 	try {
-		s = js.at("detail"); // 是否有报错信息
-		string strMessage = "Alpaca stock dayLine ";
-		strMessage += s;
-		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
-		return pvDayLine;
-	} catch (nlohmannJson::exception&) {
-		// 正确， do nothing，继续执行
-	}
-	try {
-		// New format: { "bars": { "RIG": [ { "t":"...", "c":..., "h":..., "l":..., "o":..., "v":... }, ... ] }, ... }
-		if (js.contains("bars")) {
-			auto& bars = js["bars"];
-			for (auto itBar = bars.begin(); itBar != bars.end(); ++itBar) {
-				// itBar.key() is the symbol (e.g. "RIG"), itBar.value() is the array of bar objects
-				auto& arr = itBar.value();
-				for (auto& item : arr) {
-					CTiingoStock stock;
-					CTiingoCandleLine dayLine;
-
-					// time string like "2026-01-02T05:00:00Z"
-					s = item.value("t", string());
-					chrono::sys_time<chrono::milliseconds> utc_tp;
-					istringstream ss(s);
-					ss >> chrono::parse("%FT%T%Z", utc_tp);
-					chrono::year_month_day ymd = chrono::year_month_day{ chrono::sys_days(chrono::floor<chrono::days>(utc_tp)) };
-					long lTemp = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
-					dayLine.SetDate(lTemp);
-
-					double dTemp = item.value("c", 0.0);
-					dayLine.SetClose(dTemp * stock.GetRatio());
-					dTemp = item.value("h", 0.0);
-					dayLine.SetHigh(dTemp * stock.GetRatio());
-					dTemp = item.value("l", 0.0);
-					dayLine.SetLow(dTemp * stock.GetRatio());
-					dTemp = item.value("o", 0.0);
-					dayLine.SetOpen(dTemp * stock.GetRatio());
-
-					long vol = static_cast<long>(item.value("v", 0));
-					dayLine.SetVolume(vol);
-
-					dayLine.SetDividend(item.value("divCash", 0.0));
-					dayLine.SetSplitFactor(item.value("splitFactor", 1.0));
-
-					pvDayLine->push_back(dayLine);
-				}
-			}
-		}
-		else {
-			// Fallback to previous format (keys like "date", "close", etc.)
-			for (auto it = js.begin(); it != js.end(); ++it) {
+		// format: { "bars": { "RIG": [ { "t":"...", "c":..., "h":..., "l":..., "o":..., "v":... }, ... ] }, ... }
+		auto& bars = js["bars"];
+		for (auto itBar = bars.begin(); itBar != bars.end(); ++itBar) {
+			// itBar.key() is the symbol (e.g. "RIG"), itBar.value() is the array of bar objects
+			auto& arr = itBar.value();
+			for (auto& item : arr) {
 				CTiingoStock stock;
 				CTiingoCandleLine dayLine;
-				s = jsonGetString(it, "date");
+
+				// time string like "2026-01-02T05:00:00Z"
+				s = item.value("t", string());
 				chrono::sys_time<chrono::milliseconds> utc_tp;
 				istringstream ss(s);
 				ss >> chrono::parse("%FT%T%Z", utc_tp);
 				chrono::year_month_day ymd = chrono::year_month_day{ chrono::sys_days(chrono::floor<chrono::days>(utc_tp)) };
 				long lTemp = static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day());
 				dayLine.SetDate(lTemp);
-				double dTemp = jsonGetDouble(it, "close");
+
+				double dTemp = item.value("c", 0.0);
 				dayLine.SetClose(dTemp * stock.GetRatio());
-				dTemp = jsonGetDouble(it, "high");
+				dTemp = item.value("h", 0.0);
 				dayLine.SetHigh(dTemp * stock.GetRatio());
-				dTemp = jsonGetDouble(it, "low");
+				dTemp = item.value("l", 0.0);
 				dayLine.SetLow(dTemp * stock.GetRatio());
-				dTemp = jsonGetDouble(it, "open");
+				dTemp = item.value("o", 0.0);
 				dayLine.SetOpen(dTemp * stock.GetRatio());
-				lTemp = jsonGetLong(it, "volume");
-				dTemp = jsonGetDouble(it, "divCash");
-				dayLine.SetDividend(dTemp);
-				dTemp = jsonGetDouble(it, "splitFactor");
-				dayLine.SetSplitFactor(dTemp);
-				dayLine.SetVolume(lTemp);
+
+				long vol = static_cast<long>(item.value("v", 0));
+				dayLine.SetVolume(vol);
+
+				dayLine.SetDividend(item.value("divCash", 0.0));
+				dayLine.SetSplitFactor(item.value("splitFactor", 1.0));
+
 				pvDayLine->push_back(dayLine);
 			}
 		}
 	} catch (nlohmannJson::exception& e) {
 		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
-		ReportJSonErrorToSystemMessage("AlphaVantage Stock DayLine " + str3, e.what());
+		ReportJSonErrorToSystemMessage("Alpaca Stock DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
 	std::ranges::sort(*pvDayLine, [](const CTiingoCandleLine& pData1, const CTiingoCandleLine& pData2) { return pData1.GetDate() < pData2.GetDate(); }); // 以日期早晚顺序排列。

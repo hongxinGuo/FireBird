@@ -9,7 +9,7 @@ public:
 	CProductFinnhubStockEstimatesEPSSurprise();
 	~CProductFinnhubStockEstimatesEPSSurprise() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CEPSSurprise>> ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData);
 };

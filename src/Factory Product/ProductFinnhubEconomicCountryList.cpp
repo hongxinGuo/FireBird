@@ -18,9 +18,11 @@ CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/country?";
 }
 
-string CProductFinnhubEconomicCountryList::CreateMessage() {
-	m_strInquiry = m_strInquiryFunction;
-	return m_strInquiry;
+shared_ptr<vector<string>> CProductFinnhubEconomicCountryList::CreateMessage() {
+	m_inquiryString = m_strInquiryFunction;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {

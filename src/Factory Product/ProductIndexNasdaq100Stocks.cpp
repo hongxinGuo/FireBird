@@ -13,13 +13,17 @@
 #include"dataBaseConnector.h"
 #include "SystemMessage.h"
 
+using std::make_shared;
+
 CProductIndexNasdaq100Stocks::CProductIndexNasdaq100Stocks() {
 	m_strInquiryFunction = "https://www.slickcharts.com/nasdaq100";
 }
 
-string CProductIndexNasdaq100Stocks::CreateMessage() {
-	m_strInquiry = m_strInquiryFunction;
-	return m_strInquiry;
+shared_ptr<vector<string>> CProductIndexNasdaq100Stocks::CreateMessage() {
+	m_inquiryString = m_strInquiryFunction;
+	shared_ptr<vector<string>> pInquiryStrings = make_shared<vector<string>>();
+	pInquiryStrings->push_back(m_inquiryString);
+	return pInquiryStrings;
 }
 
 void CProductIndexNasdaq100Stocks::ParseAndStoreWebData(CWebDataPtr pWebData) {

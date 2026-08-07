@@ -20,14 +20,16 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-sentiment?symbol=";
 }
 
-string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	const string sCurrentDate = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
-	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate;
+	m_inquiryString = m_strInquiryFunction + pStock->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate;
 	m_strInquiringExchange = pStock->GetExchange();
 
-	return m_strInquiry;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {

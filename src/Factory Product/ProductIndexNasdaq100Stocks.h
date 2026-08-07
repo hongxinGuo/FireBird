@@ -15,7 +15,7 @@ public:
 	CProductIndexNasdaq100Stocks& operator=(const CProductIndexNasdaq100Stocks&&) noexcept = delete;
 	~CProductIndexNasdaq100Stocks() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	vector<string> ParseIndexNasdaq100Stocks(const CWebDataPtr& pWebData);
 

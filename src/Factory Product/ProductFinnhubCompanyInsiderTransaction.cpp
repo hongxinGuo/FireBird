@@ -19,12 +19,14 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-transactions?symbol=";
 }
 
-string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
-	m_strInquiry = m_strInquiryFunction + pStock->GetFinnhubInsiderTransactionInquiryParam(GetUTCTime());
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + pStock->GetFinnhubInsiderTransactionInquiryParam(GetUTCTime());
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {

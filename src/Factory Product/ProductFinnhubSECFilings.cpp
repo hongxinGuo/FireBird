@@ -17,12 +17,14 @@ CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/filings?symbol=";
 }
 
-string CProductFinnhubSECFilings::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubSECFilings::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
-	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + pStock->GetSymbol();
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {

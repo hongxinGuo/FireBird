@@ -171,13 +171,13 @@
     <ClCompile Include="FinnhubFactoryTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubEconomicCountryListTest.cpp">
+    <ClCompile Include="ProductFinnhubEconomicCountryListTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="ProductFinnhubCryptoExchangeTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubForexExchangeTest.cpp">
+    <ClCompile Include="ProductFinnhubForexExchangeTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="ProductFinnhubCompanyInsiderTransactionTest.cpp">
@@ -261,7 +261,7 @@
     <ClCompile Include="FinnhubINquiryTypeTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanyNewsTest.cpp">
+    <ClCompile Include="ProductFinnhubCompanyNewsTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="InaccessibleSymbolTest.cpp">

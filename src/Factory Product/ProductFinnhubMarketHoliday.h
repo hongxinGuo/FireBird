@@ -9,7 +9,7 @@ public:
 	CProductFinnhubMarketHoliday();
 	~CProductFinnhubMarketHoliday() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CMarketHoliday>> ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData);
 };

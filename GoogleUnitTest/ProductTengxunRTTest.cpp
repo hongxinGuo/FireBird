@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTengxunRTTest, TestCreateMessage) {
-		const string strInquiry = tengxunRT.CreateMessage();
+		const string strInquiry = tengxunRT.CreateMessage()->front();
 		EXPECT_EQ(strInquiry.substr(0, 21), "http://qt.gtimg.cn/q=");
 		EXPECT_GT(strInquiry.length(), 21) << "无需检查随后的股票代码制式";
 	}

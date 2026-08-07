@@ -24,9 +24,9 @@ CAlpacaDataSource::CAlpacaDataSource() {
 
 	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Alpaca有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
-	m_strHeaders = "APCA-API-KEY-ID:PK3J5QOOORALNDMELW2XS5RDZX\r\nAPCA-API-SECRET-KEY DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk\r\n\r\n";
+	m_strHeaders = "APCA-API-KEY-ID:PK3J5QOOORALNDMELW2XS5RDZX\r\nAPCA-API-SECRET-KEY:DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk\r\nConnection:close\r\n\r\n";
 	m_strParam = "";
-	m_strSuffix = "&apikey=";
+	m_strSuffix = "";
 	m_strInquiryToken = "";
 	m_lInquiringNumber = 1; // Alpaca实时数据查询数量默认值
 
@@ -69,7 +69,7 @@ bool CAlpacaDataSource::GenerateStockDayLine() {
 	const std::string finishedMsg = "Alpha Vantage dayline updated";
 
 	return GenerateInquiryIterateWithoutAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_dataContainerTiingoStock,
 		STOCK_PRICE_CANDLES_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,

@@ -163,7 +163,7 @@
     <ClCompile Include="ContainerStockSymbolTest.cpp" />
     <ClCompile Include="ContainerTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="ContainerFinnhubStockDayLineTest.cpp" />
-    <ClCompile Include="FinnhubCompanyNewsTest.cpp" />
+    <ClCompile Include="ProductFinnhubCompanyNewsTest.cpp" />
     <ClCompile Include="FinnhubINquiryTypeTest.cpp" />
     <ClCompile Include="InaccessibleSymbolTest.cpp" />
     <ClCompile Include="InfoReportTest.cpp" />
@@ -200,10 +200,10 @@
     <ClCompile Include="ProductFinnhubCryptoExchangeTest.cpp" />
     <ClCompile Include="ProductFinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="FinnhubEconomicCalendarTest.cpp" />
-    <ClCompile Include="FinnhubEconomicCountryListTest.cpp" />
+    <ClCompile Include="ProductFinnhubEconomicCountryListTest.cpp" />
     <ClCompile Include="FinnhubFactoryTest.cpp" />
     <ClCompile Include="FinnhubForexDayLineTest.cpp" />
-    <ClCompile Include="FinnhubForexExchangeTest.cpp" />
+    <ClCompile Include="ProductFinnhubForexExchangeTest.cpp" />
     <ClCompile Include="ProductFinnhubForexSymbolTest.cpp" />
     <ClCompile Include="FinnhubStockDayLineTest.cpp" />
     <ClCompile Include="FinnhubStockEstimatesEPSSurpriseTest.cpp" />

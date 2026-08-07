@@ -22,7 +22,7 @@ CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 ///	Finnhub的免费日线只提供一年的。本系统最初的执行时间为2019年，即finnhub没有2018年以前的日线。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-string CProductTiingoForexDayLine::CreateMessage() {
+shared_ptr<vector<string>> CProductTiingoForexDayLine::CreateMessage() {
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetStock(GetIndex());
 	string strParam;
@@ -35,7 +35,9 @@ string CProductTiingoForexDayLine::CreateMessage() {
 	pStock->SetUpdateDayLine(false);
 	m_strInquiry = m_strInquiryFunction + strParam;
 		*/
-	return m_strInquiry;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

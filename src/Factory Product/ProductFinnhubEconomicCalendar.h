@@ -10,7 +10,7 @@ public:
 	CProductFinnhubEconomicCalendar();
 	~CProductFinnhubEconomicCalendar() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
 	shared_ptr<vector<CEconomicCalendar>> ParseFinnhubEconomicCalendar(const shared_ptr<CWebData>& pWebData);
 

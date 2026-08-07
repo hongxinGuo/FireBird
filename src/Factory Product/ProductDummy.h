@@ -14,7 +14,7 @@ public:
 	CProductDummy& operator=(const CProductDummy&&) noexcept = delete;
 	~CProductDummy() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr) override {}
 };
 

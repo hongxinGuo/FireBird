@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateDayLine(true);
 		stockDayLine.SetIndex(1);
-		EXPECT_TRUE(stockDayLine.CreateMessage() ==
+		EXPECT_TRUE(stockDayLine.CreateMessage()->front() ==
 			stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateDayLine()) << "接收到的数据处理后方重置此标识";
 

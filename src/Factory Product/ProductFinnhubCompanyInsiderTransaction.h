@@ -12,7 +12,7 @@ public:
 	CProductFinnhubCompanyInsiderTransaction();
 	~CProductFinnhubCompanyInsiderTransaction() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	void UpdateSystemStatus() override;
 	shared_ptr<vector<CInsiderTransaction>> ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData);

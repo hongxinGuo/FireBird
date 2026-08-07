@@ -9,7 +9,7 @@ public:
 	CProductFinnhubEconomicCountryList();
 	~CProductFinnhubEconomicCountryList() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CCountry>> ParseFinnhubCountryList(const CWebDataPtr& pWebData);
 

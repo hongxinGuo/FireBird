@@ -48,7 +48,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestCreatMessage) {
 		cryptoSymbolProduct.SetIndex(1);
-		EXPECT_EQ(cryptoSymbolProduct.CreateMessage(), (cryptoSymbolProduct.GetInquiryFunction() + gl_dataContainerFinnhubCryptoExchange.GetItem(1)));
+		EXPECT_EQ(cryptoSymbolProduct.CreateMessage()->front(), (cryptoSymbolProduct.GetInquiryFunction() + gl_dataContainerFinnhubCryptoExchange.GetItem(1)));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestProcessWebData) {

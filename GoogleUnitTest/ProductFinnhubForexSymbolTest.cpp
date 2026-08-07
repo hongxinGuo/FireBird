@@ -48,7 +48,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
 		productForexSymbol.SetIndex(1);
-		EXPECT_TRUE(productForexSymbol.CreateMessage() == productForexSymbol.GetInquiryFunction() + gl_dataContainerFinnhubForexExchange.GetItem(1));
+		EXPECT_TRUE(productForexSymbol.CreateMessage()->front() == productForexSymbol.GetInquiryFunction() + gl_dataContainerFinnhubForexExchange.GetItem(1));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestProcessWebData) {

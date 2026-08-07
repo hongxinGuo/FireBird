@@ -18,10 +18,12 @@ CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/definitions?";
 }
 
-string CProductTiingoFundamentalDefinition::CreateMessage() {
+shared_ptr<vector<string>> CProductTiingoFundamentalDefinition::CreateMessage() {
 	m_strInquiringSymbol = "All";
-	m_strInquiry = m_strInquiryFunction;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductTiingoFundamentalDefinition::ParseAndStoreWebData(CWebDataPtr pWebData) {

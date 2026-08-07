@@ -17,11 +17,13 @@ CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-status?exchange=";
 }
 
-string CProductFinnhubMarketStatus::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubMarketStatus::CreateMessage() {
 	m_strInquiringExchange = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
-	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
+	m_inquiryString = m_strInquiryFunction + m_strInquiringExchange;
 
-	return m_strInquiry;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {

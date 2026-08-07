@@ -21,7 +21,7 @@ public:
 	CProductTiingoStockDayLine& operator=(const CProductTiingoStockDayLine&&) noexcept = delete;
 	~CProductTiingoStockDayLine() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CTiingoCandleLine>> ParseTiingoStockDayLine(const CWebDataPtr& pWebData);
 

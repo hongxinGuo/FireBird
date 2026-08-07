@@ -9,7 +9,7 @@ public:
 	CProductFinnhubSECFilings();
 	~CProductFinnhubSECFilings() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CSECFiling>> ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData);
 };

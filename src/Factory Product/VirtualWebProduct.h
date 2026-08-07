@@ -29,7 +29,7 @@ public:
 	CVirtualWebProduct& operator=(const CVirtualWebProduct&&) noexcept = delete;
 	virtual ~CVirtualWebProduct() = default;
 
-	virtual string CreateMessage() { return ""; }
+	virtual shared_ptr<vector<string>> CreateMessage() { return make_shared<vector<string>>(vector<string>{ "" }); }
 	virtual void CalculateTotalDataLength(shared_ptr<vector<shared_ptr<CWebData>>>) {}
 
 	virtual void ParseAndStoreWebData(shared_ptr<CWebData>) {} // default do nothing
@@ -48,7 +48,7 @@ public:
 	int GetReceivedDataStatus() const noexcept { return m_iReceivedDataStatus; }
 	void SetReceivedDataStatus(int iType) noexcept { m_iReceivedDataStatus = iType; }
 
-	string GetInquiry() const noexcept { return m_strInquiry; }
+	string GetInquiry() const noexcept { return m_inquiryString; }
 	string GetInquiryFunction() const noexcept { return m_strInquiryFunction; }
 	void SetInquiryFunction(const string& strMessage) noexcept { m_strInquiryFunction = strMessage; }
 
@@ -70,7 +70,7 @@ public:
 
 protected:
 	string m_strInquiryFunction{};
-	string m_strInquiry{};
+	string m_inquiryString{};
 	string m_strInquiringExchange{ "ALL" }; // 默认是申请所有的交易所数据。
 	string m_strInquiringSymbol{}; // 目前查询的证券名称
 	size_t m_index{ 0 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界

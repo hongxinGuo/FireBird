@@ -53,8 +53,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestCreatMessage) {
-		EXPECT_EQ(IEXTopOfBook.CreateMessage(), IEXTopOfBook.GetInquiryFunction());
-		EXPECT_EQ(IEXTopOfBook.CreateMessage(), "https://api.tiingo.com/iex?");
+		EXPECT_EQ(IEXTopOfBook.CreateMessage()->front(), IEXTopOfBook.GetInquiryFunction());
+		EXPECT_EQ(IEXTopOfBook.CreateMessage()->front(), "https://api.tiingo.com/iex?");
 		EXPECT_EQ(IEXTopOfBook.GetInquiringSymbol(), "All") << "此时已被CreateMessage赋值";
 	}
 

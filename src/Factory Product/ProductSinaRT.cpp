@@ -10,6 +10,8 @@
 #include "SinaRTDataSource.h"
 #include "WebData.h"
 
+using std::make_shared;
+
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiryFunction = "https://hq.sinajs.cn/list=";
@@ -22,11 +24,13 @@ CProductSinaRT::CProductSinaRT() {
 // 开市时使用今日活跃股票池
 //
 /////////////////////////////////////////////////////////////////////////////////////
-string CProductSinaRT::CreateMessage() {
+shared_ptr<vector<string>> CProductSinaRT::CreateMessage() {
 	string strStocks = gl_pChinaMarket->GetSinaStockInquiringStr(gl_pSinaRTDataSource->GetInquiringNumber(), gl_pChinaMarket->IsCheckingActiveStock());
 	const string_view strSinaStockCode = string_view(strStocks.data(), 8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
 	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
-	return m_strInquiryFunction + strStocks;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_strInquiryFunction + strStocks);
+	return pInquiry;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -54,7 +54,7 @@ namespace FireBirdTest {
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderSentiment(true);
 		companyInsiderSentiment.SetIndex(1);
-		EXPECT_EQ(companyInsiderSentiment.CreateMessage(),
+		EXPECT_EQ(companyInsiderSentiment.CreateMessage()->front(),
 		          (companyInsiderSentiment.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateInsiderSentiment()) << "接收到的数处理后方设置此标识";
 

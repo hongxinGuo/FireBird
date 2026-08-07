@@ -14,7 +14,7 @@ public:
 	CProductTiingoCryptoSymbol& operator=(const CProductTiingoCryptoSymbol&&) noexcept = delete;
 	~CProductTiingoCryptoSymbol() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<shared_ptr<CTiingoCrypto>>> ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData);
 

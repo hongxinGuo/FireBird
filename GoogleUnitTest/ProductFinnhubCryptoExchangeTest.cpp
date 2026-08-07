@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestCreatMessage) {
-		EXPECT_EQ(cryptoExchange.CreateMessage(), "https://finnhub.io/api/v1/crypto/exchange?");
+		EXPECT_EQ(cryptoExchange.CreateMessage()->front(), "https://finnhub.io/api/v1/crypto/exchange?");
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {

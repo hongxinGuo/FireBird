@@ -14,13 +14,15 @@ CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/quote?symbol=";
 }
 
-string CProductFinnhubStockPriceQuote::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubStockPriceQuote::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchange();
-	m_strInquiry = m_strInquiryFunction + strParam;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + strParam;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -47,7 +47,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
 		stockPriceQuote.SetIndex(1);
-		EXPECT_TRUE(stockPriceQuote.CreateMessage() == stockPriceQuote.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
+		EXPECT_TRUE(stockPriceQuote.CreateMessage()->front() == stockPriceQuote.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestProcessWebData) {

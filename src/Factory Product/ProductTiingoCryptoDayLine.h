@@ -14,7 +14,7 @@ public:
 	CProductTiingoCryptoDayLine& operator=(const CProductTiingoCryptoDayLine&&) noexcept = delete;
 	~CProductTiingoCryptoDayLine() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CDayLine>> ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData);
 };

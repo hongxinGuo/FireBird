@@ -14,7 +14,7 @@ public:
 	CProductTiingoFundamentalDefinition& operator=(const CProductTiingoFundamentalDefinition&&) noexcept = delete;
 	~CProductTiingoFundamentalDefinition() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CTiingoFundamentalDefinition>> ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData);
 

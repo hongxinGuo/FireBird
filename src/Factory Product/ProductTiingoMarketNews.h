@@ -13,7 +13,7 @@ public:
 	CProductTiingoMarketNews& operator=(const CProductTiingoMarketNews&&) noexcept = delete;
 	~CProductTiingoMarketNews() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CTiingoMarketNews>> ParseTiingoMarketNews(const CWebDataPtr& pWebData);
 

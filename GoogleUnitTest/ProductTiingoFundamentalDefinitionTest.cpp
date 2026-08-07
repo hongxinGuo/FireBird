@@ -46,7 +46,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestCreatMessage) {
-		EXPECT_EQ(marketFundamentalDefinition.CreateMessage(), marketFundamentalDefinition.GetInquiryFunction());
+		EXPECT_EQ(marketFundamentalDefinition.CreateMessage()->front(), marketFundamentalDefinition.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestProcessWebData) {

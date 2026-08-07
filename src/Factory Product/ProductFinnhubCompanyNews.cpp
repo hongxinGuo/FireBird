@@ -25,7 +25,7 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-string CProductFinnhubCompanyNews::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubCompanyNews::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 	string strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	auto limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
@@ -37,9 +37,11 @@ string CProductFinnhubCompanyNews::CreateMessage() {
 	strMessage += "&to=";
 	strMessage += sTemp;
 
-	m_strInquiry = strMessage;
+	m_inquiryString = strMessage;
 	m_strInquiringExchange = pStock->GetExchange();
-	return m_strInquiry;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {

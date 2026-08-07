@@ -18,7 +18,7 @@ public:
 	CProductAlphaVantageStockSplits& operator=(const CProductAlphaVantageStockSplits&&) noexcept = delete;
 	~CProductAlphaVantageStockSplits() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
 	shared_ptr<vector<shared_ptr<CStockSplit>>> ParseAlphaVantageStockSplits(const shared_ptr<CWebData>& pWebData);
 };

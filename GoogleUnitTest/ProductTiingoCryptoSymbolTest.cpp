@@ -51,7 +51,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoCryptoTest, TestCreatMessage) {
-		EXPECT_EQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
+		EXPECT_EQ(stockSymbol.CreateMessage()->front(), stockSymbol.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoCryptoTest, TestUpdateDataSourceStatus) {

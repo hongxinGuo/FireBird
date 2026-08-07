@@ -14,7 +14,7 @@ public:
 	CProductTiingoIEXTopOfBook& operator=(const CProductTiingoIEXTopOfBook&&) noexcept = delete;
 	~CProductTiingoIEXTopOfBook() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<shared_ptr<CTiingoIEXTopOfBook>>> ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData);
 

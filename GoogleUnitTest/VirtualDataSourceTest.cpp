@@ -43,7 +43,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualDataSourceTest, TestInitialize) {
 		EXPECT_EQ(dataSource.GetHeaders(), "");
-		EXPECT_EQ(dataSource.GetInquiringString(), "");
+		EXPECT_TRUE(dataSource.GetInquiringString() ==nullptr);
 		EXPECT_EQ(dataSource.GetInquiryFunction(), "");
 		EXPECT_EQ(dataSource.GetInquiryToken(), "");
 	}
@@ -115,16 +115,21 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualDataSourceTest, TestCreateTotalInquiringString) {
 		dataSource.SetInquirySuffix("abcdef");
-		dataSource.CreateTotalInquiringString();
-		EXPECT_EQ(dataSource.GetInquiringString(), "abcdef");
+		shared_ptr<vector<string>> pInquiryStrings = make_shared<vector<string>>();
+		pInquiryStrings->push_back(dataSource.GetInquiryFunction());
+		dataSource.CreateTotalInquiringString(pInquiryStrings);
+		EXPECT_EQ(dataSource.GetInquiringString()->at(0), "abcdef");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
-		EXPECT_EQ(dataSource.GetInquiringString(), "");
+		EXPECT_TRUE(dataSource.GetInquiringString() == nullptr);
 		dataSource.SetInquiringString("abcdefg");
-		EXPECT_EQ(dataSource.GetInquiringString(), "abcdefg");
+		EXPECT_EQ(dataSource.GetInquiringString()->front(), "abcdefg");
 		dataSource.AppendInquiringString("hijk");
-		EXPECT_EQ(dataSource.GetInquiringString(), "abcdefghijk");
+		EXPECT_EQ(dataSource.GetInquiringString()->front(), "abcdefg");
+		EXPECT_EQ(dataSource.GetInquiringString()->at(1), "hijk");
+
+		EXPECT_FALSE(dataSource.GetInquiringString() == nullptr);
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringNumber) {

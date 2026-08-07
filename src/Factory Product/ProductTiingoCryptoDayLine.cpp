@@ -25,14 +25,16 @@ CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
 ///	Finnhub的免费日线只提供一年的。本系统最初的执行时间为2019年，即finnhub没有2018年以前的日线。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-string CProductTiingoCryptoDayLine::CreateMessage() {
+shared_ptr<vector<string>> CProductTiingoCryptoDayLine::CreateMessage() {
 	const auto pCrypto = gl_dataContainerTiingoCryptoSymbol.GetCrypto(GetIndex());
 	string strParam = pCrypto->m_strName + "&startDate=2010-01-02&resampleFreq=1day"; // 永远申请完整日线
 	pCrypto->SetUpdateDayLine(false);
 	m_strInquiringSymbol = pCrypto->GetSymbol();
 
-	m_strInquiry = m_strInquiryFunction + strParam;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + strParam;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

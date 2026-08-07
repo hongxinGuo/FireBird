@@ -162,7 +162,7 @@ CVirtualWebProductPtr CEastmoneyDayLineDataSource::CreateProduct(const CChinaSto
 //
 ////////////////////////////////////////////////////////////////////////////////
 void CEastmoneyDayLineDataSource::CreateCurrentInquireString() {
-	m_strInquiry = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
+	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
 }
 
 void CEastmoneyDayLineDataSource::ConfigureInternetOption() {

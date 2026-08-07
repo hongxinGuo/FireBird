@@ -53,7 +53,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCompanyProfileTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
 		companyProfile.SetIndex(1);
-		EXPECT_EQ(companyProfile.CreateMessage(), (companyProfile.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
+		EXPECT_EQ(companyProfile.CreateMessage()->front(), (companyProfile.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyProfile()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);

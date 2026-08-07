@@ -65,7 +65,7 @@ namespace FireBirdTest {
 		strMessage += "&to=";
 		strMessage += sTemp;
 
-		EXPECT_EQ(companyNews.CreateMessage(), strMessage);
+		EXPECT_EQ(companyNews.CreateMessage()->front(), strMessage);
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);

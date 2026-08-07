@@ -158,7 +158,7 @@ namespace {
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() {
-	ABSL_DCHECK(sm_fGlobeInit);
+	ABSL_DCHECK(!sm_fGlobeInit);
 	sm_fGlobeInit = true;
 	ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
 

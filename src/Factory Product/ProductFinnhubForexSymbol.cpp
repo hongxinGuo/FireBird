@@ -16,10 +16,12 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/symbol?exchange=";
 }
 
-string CProductFinnhubForexSymbol::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubForexSymbol::CreateMessage() {
 	m_strInquiringExchange = gl_dataContainerFinnhubForexExchange.GetItem(m_index);
-	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + m_strInquiringExchange;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

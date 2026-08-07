@@ -9,7 +9,7 @@ public:
 	CProductFinnhubCryptoExchange();
 	~CProductFinnhubCryptoExchange() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
 
 	shared_ptr<vector<string>> ParseFinnhubCryptoExchange(const shared_ptr<CWebData>& pWebData);

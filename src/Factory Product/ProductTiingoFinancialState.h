@@ -14,7 +14,7 @@ public:
 	CProductTiingoFinancialState& operator=(const CProductTiingoFinancialState&&) noexcept = delete;
 	~CProductTiingoFinancialState() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<std::vector<shared_ptr<CTiingoCompanyFinancialState>>> ParseTiingoFinancialState(const CWebDataPtr& pWebData);
 };

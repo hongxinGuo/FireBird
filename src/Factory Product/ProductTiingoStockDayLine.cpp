@@ -30,7 +30,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 /// 即使是免费账户，tiingo日线也能够提供30年以上的数据，故而申请全部数据。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-string CProductTiingoStockDayLine::CreateMessage() {
+shared_ptr<vector<string>> CProductTiingoStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ABSL_DCHECK(pStock->IsActive()); // 活跃股票
 	chrono::local_days lStartDate{ 1980y / 01 / 01 };
@@ -38,8 +38,10 @@ string CProductTiingoStockDayLine::CreateMessage() {
 	string strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, gl_pWorldMarket->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 
-	m_strInquiry = m_strInquiryFunction + strParam;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + strParam;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -7,7 +7,7 @@ public:
 	CProductFinnhubCompanyProfileConcise();
 	~CProductFinnhubCompanyProfileConcise() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	bool ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock) const;
 };

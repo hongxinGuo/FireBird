@@ -67,8 +67,10 @@ CProductEastmoneyDayLine::CProductEastmoneyDayLine() {
 	m_iInquiryNumber = 0;
 }
 
-string CProductEastmoneyDayLine::CreateMessage() {
-	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CEastmoneyDayLineDataSource类完成，本Product无需动作。
+shared_ptr<vector<string>> CProductEastmoneyDayLine::CreateMessage() {
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_strInquiryFunction);
+	return pInquiry;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -42,6 +42,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductDummyTest, TestCreateMessage) {
-		EXPECT_EQ(dummy.CreateMessage(), "");
+		EXPECT_EQ(dummy.CreateMessage()->front(), "");
 	}
 }

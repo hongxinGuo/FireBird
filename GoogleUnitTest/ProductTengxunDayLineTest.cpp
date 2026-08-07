@@ -51,7 +51,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTengxunDayLineTest, TestCreateMessage) {
-		EXPECT_EQ(tengxunDayLine.CreateMessage(), "") << "腾讯日线数据的申请字符串由CTengxunDayLineWebInquiry类完成，本Product无需动作，只是返回strInquiry";
+		EXPECT_EQ(tengxunDayLine.CreateMessage()->front(), "") << "腾讯日线数据的申请字符串由CTengxunDayLineWebInquiry类完成，本Product无需动作，只是返回strInquiry";
 	}
 
 	TEST_F(CProductTengxunDayLineTest, TestParseAndStoreWebData) {

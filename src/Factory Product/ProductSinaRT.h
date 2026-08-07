@@ -16,7 +16,7 @@ public:
 	CProductSinaRT& operator=(const CProductSinaRT&&) noexcept = delete;
 	~CProductSinaRT() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
 
 protected:

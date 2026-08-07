@@ -17,12 +17,14 @@ CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-holiday?exchange=";
 }
 
-string CProductFinnhubMarketHoliday::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubMarketHoliday::CreateMessage() {
 	const auto strParam = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
 
 	m_strInquiringExchange = strParam;
-	m_strInquiry = m_strInquiryFunction + strParam;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + strParam;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {

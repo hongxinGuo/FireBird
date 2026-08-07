@@ -23,10 +23,12 @@ CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_ratio = 3;
 }
 
-string CProductTiingoCryptoSymbol::CreateMessage() {
+shared_ptr<vector<string>> CProductTiingoCryptoSymbol::CreateMessage() {
 	m_strInquiringSymbol = "All";
-	m_strInquiry = m_strInquiryFunction;
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction;
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

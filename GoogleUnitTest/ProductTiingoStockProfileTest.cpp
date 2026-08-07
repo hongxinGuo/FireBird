@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoStockProfileTest, TestCreatMessage) {
-		EXPECT_TRUE(stockSymbol.CreateMessage() == stockSymbol.GetInquiryFunction());
+		EXPECT_TRUE(stockSymbol.CreateMessage()->front() == stockSymbol.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoStockProfileTest, TestProcessWebData) {

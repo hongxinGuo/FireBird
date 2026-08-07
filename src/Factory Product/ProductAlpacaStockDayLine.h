@@ -24,7 +24,7 @@ public:
 	CProductAlpacaStockDayLine& operator=(const CProductAlpacaStockDayLine&&) noexcept = delete;
 	~CProductAlpacaStockDayLine() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(shared_ptr<CWebData>) override { ABSL_DCHECK(0); } // Alpaca日线不使用此函数
 	void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) override;
 	CTiingoCandleLinesPtr ParseWebData(CWebDataPtr pWebData);
@@ -35,5 +35,5 @@ public:
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
-	int m_iInquiryNumber; // 本轮查询次数
+	int m_iInquiryNumber{ 1 }; // 本轮查询次数
 };

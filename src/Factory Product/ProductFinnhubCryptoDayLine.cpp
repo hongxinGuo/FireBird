@@ -18,12 +18,14 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/candle?symbol=";
 }
 
-string CProductFinnhubCryptoDayLine::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubCryptoDayLine::CreateMessage() {
 	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchange();
-	m_strInquiry = m_strInquiryFunction + pCryptoSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + pCryptoSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

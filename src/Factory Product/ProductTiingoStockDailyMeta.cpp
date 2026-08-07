@@ -27,12 +27,14 @@ CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
-string CProductTiingoStockDailyMeta::CreateMessage() {
+shared_ptr<vector<string>> CProductTiingoStockDailyMeta::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	m_strInquiringSymbol = pStock->GetSymbol();
 
-	m_strInquiry = m_strInquiryFunction + m_strInquiringSymbol + "?";
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + m_strInquiringSymbol + "?";
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {

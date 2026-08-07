@@ -4,6 +4,7 @@
 #include"absl/log/absl_check.h"
 #include "InternetOption.h"
 
+using std::vector;
 using std::chrono::milliseconds;
 using std::chrono::local_seconds;
 using std::chrono::duration;
@@ -193,10 +194,10 @@ public:
 	} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void UpdateStatus(const CWebDataPtr&) {} //成功接收后更新系统状态。
 
-	void CreateTotalInquiringString();
-	string GetInquiringString() const noexcept { return m_strInquiry; }
-	void SetInquiringString(const string& str) noexcept { m_strInquiry = str; }
-	void AppendInquiringString(const string& str) noexcept { m_strInquiry += str; }
+	void CreateTotalInquiringString(shared_ptr<vector<string>> pInquiryStrings);
+	shared_ptr<vector<string>> GetInquiringString() const noexcept { return m_pInquiryStrings; }
+	void SetInquiringString(const string& str) noexcept { m_pInquiryStrings = make_shared<vector<string>>(vector<string>{ str }); }
+	void AppendInquiringString(const string& str) const noexcept { m_pInquiryStrings->push_back(str); }
 
 	virtual time_point<steady_clock> GetTickCount() { return steady_clock::now(); } // 为了测试方便，将GetTickCount64包裹上一层。
 
@@ -272,7 +273,7 @@ protected:
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR_ };
 
 	InternetOption m_internetOption;
-	string m_strInquiry{}; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
+	shared_ptr<vector<string>> m_pInquiryStrings{ nullptr }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
 	string m_strInquiryFunction{}; // 查询字符串功能部分
 	string m_strParam{}; // 查询字符串的参数
 	string m_strSuffix{}; // 查询字符串的后缀部分

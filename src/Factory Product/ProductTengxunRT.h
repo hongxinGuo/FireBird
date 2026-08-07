@@ -12,7 +12,7 @@ public:
 	CProductTengxunRT& operator=(const CProductTengxunRT&&) noexcept = delete;
 	~CProductTengxunRT() override = default;
 
-	string CreateMessage() override;
+	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 protected:

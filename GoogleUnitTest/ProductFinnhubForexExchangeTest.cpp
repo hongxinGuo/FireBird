@@ -47,7 +47,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestCreatMessage) {
-		EXPECT_EQ(forexExchange.CreateMessage(), "https://finnhub.io/api/v1/forex/exchange?");
+		EXPECT_EQ(forexExchange.CreateMessage()->front(), "https://finnhub.io/api/v1/forex/exchange?");
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestProcessWebData) {

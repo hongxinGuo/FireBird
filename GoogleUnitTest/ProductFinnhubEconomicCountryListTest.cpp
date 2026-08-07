@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestCreatMessage) {
-		EXPECT_EQ(countryList.CreateMessage(), "https://finnhub.io/api/v1/country?");
+		EXPECT_EQ(countryList.CreateMessage()->front(), "https://finnhub.io/api/v1/country?");
 	}
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestUpdateDataSourceStatus) {

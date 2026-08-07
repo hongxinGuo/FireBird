@@ -53,7 +53,7 @@ namespace FireBirdTest {
 		string sDate = ConvertDateToTimeStamp(gl_dataContainerTiingoStock.GetStock(1)->GetCompanyFinancialStatementUpdateDate());
 		string strMessage = "https://api.tiingo.com/tiingo/fundamentals/AA/statements?startDate=";
 		strMessage += sDate;
-		EXPECT_EQ(financialState.CreateMessage(), strMessage);
+		EXPECT_EQ(financialState.CreateMessage()->front(), strMessage);
 	}
 
 	TEST_F(CProductTiingoFinancialStateTest, TestProcessWebData) {

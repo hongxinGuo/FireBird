@@ -49,7 +49,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestCreatMessage) {
 		cryptoDayLine.SetIndex(1);
-		EXPECT_EQ(cryptoDayLine.CreateMessage(),
+		EXPECT_EQ(cryptoDayLine.CreateMessage()->front(),
 		          (cryptoDayLine.GetInquiryFunction() + gl_dataFinnhubCryptoSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())));
 	}
 

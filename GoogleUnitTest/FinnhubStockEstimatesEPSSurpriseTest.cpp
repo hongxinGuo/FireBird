@@ -51,7 +51,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestCreatMessage) {
 		stockEstimatesEPSSurprise.SetIndex(1);
-		EXPECT_TRUE(stockEstimatesEPSSurprise.CreateMessage() == stockEstimatesEPSSurprise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
+		EXPECT_TRUE(stockEstimatesEPSSurprise.CreateMessage()->front() == stockEstimatesEPSSurprise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestProcessWebData) {

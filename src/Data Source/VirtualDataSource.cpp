@@ -73,28 +73,31 @@ void CVirtualDataSource::InquireData() {
 	ABSL_DCHECK(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
 	ABSL_DCHECK(IsInquiring());
 	auto start = time_point_cast<milliseconds>(steady_clock::now());
-	int i = 0;
 	vector<result<CWebDataPtr>> vResults;
 	while (HaveInquiry()) { // 一次申请可以有多个数据
 		GetCurrentProduct();
 		CreateCurrentInquireString();
-		if (m_bConcurrentForbid) {
-			Sleep(1000);
-			s_InquiryWebData.acquire();
-			ABSL_DLOG(INFO) << std::format("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol(), ++i);
-		}
-		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
-		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
-			auto pWebData = pEngine->GetWebData();
-			SetWebErrorCode(pEngine->GetErrorCode());
-			SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
-			if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
+		ABSL_DCHECK(!m_pInquiryStrings->empty());
+		for (size_t index = 0; index < m_pInquiryStrings->size(); index++) {
+			auto inquiryString = m_pInquiryStrings->at(index);
 			if (m_bConcurrentForbid) {
-				s_InquiryWebData.release();
+				Sleep(1000);
+				s_InquiryWebData.acquire();
+				ABSL_DLOG(INFO) << std::format("%s %d times\n", m_pCurrentProduct->GetInquiringSymbol(), ++index);
 			}
-			return pWebData;
-		});
-		vResults.emplace_back(std::move(result));
+			CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, inquiryString, GetHeaders());
+			auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
+				auto pWebData = pEngine->GetWebData();
+				SetWebErrorCode(pEngine->GetErrorCode());
+				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
+				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
+				if (m_bConcurrentForbid) {
+					s_InquiryWebData.release();
+				}
+				return pWebData;
+			});
+			vResults.emplace_back(std::move(result));
+		}
 	}
 	const shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
 	for (auto& pWebData : vResults) {
@@ -128,12 +131,15 @@ void CVirtualDataSource::SetDefaultSessionOption() {
 
 void CVirtualDataSource::CreateCurrentInquireString() {
 	ABSL_DCHECK(m_pCurrentProduct != nullptr);
-	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
-	CreateTotalInquiringString();
+	auto pInquiryStrings = m_pCurrentProduct->CreateMessage();
+	CreateTotalInquiringString(pInquiryStrings);
 }
 
-void CVirtualDataSource::CreateTotalInquiringString() {
-	m_strInquiry = m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken;
+void CVirtualDataSource::CreateTotalInquiringString(shared_ptr<vector<string>> pInquiryStrings) {
+	for (size_t i = 0; i < pInquiryStrings->size(); i++) {
+		pInquiryStrings->at(i) += m_strParam + m_strSuffix + m_strInquiryToken;
+	}
+	m_pInquiryStrings = pInquiryStrings;
 }
 
 void CVirtualDataSource::ReportErrorNotHandled(const string& sError) {

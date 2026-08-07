@@ -18,12 +18,14 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/candle?symbol=";
 }
 
-string CProductFinnhubForexDayLine::CreateMessage() {
+shared_ptr<vector<string>> CProductFinnhubForexDayLine::CreateMessage() {
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_index);
 
 	m_strInquiringExchange = pForexSymbol->GetExchange();
-	m_strInquiry = m_strInquiryFunction + pForexSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
-	return m_strInquiry;
+	m_inquiryString = m_strInquiryFunction + pForexSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
+	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
+	pInquiry->push_back(m_inquiryString);
+	return pInquiry;
 }
 
 void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

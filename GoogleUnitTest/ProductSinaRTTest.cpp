@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductSinaRTTest, TestCreateMessage) {
-		const string strInquiry = sinaRT.CreateMessage();
+		const string strInquiry = sinaRT.CreateMessage()->front();
 		EXPECT_EQ(strInquiry.substr(0, 26), "https://hq.sinajs.cn/list=");
 		EXPECT_GT(strInquiry.length(), 26) << "无需检查随后的股票代码制式";
 	}
