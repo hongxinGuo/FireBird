@@ -396,7 +396,7 @@ namespace FireBirdTest {
 	TEST_P(CalculateSinaRTDataTest2, TestSinaRTData) {
 		chrono::year_month_day ymd{ chrono::year{ 2019 }, chrono::month{ 7 }, chrono::day{ 16 } };// 2019年11月7日
 		chrono::local_days day{ ymd };
-		chrono::sys_seconds st = gl_pChinaMarket->ToSysTime(day + 15h);
+		chrono::sys_seconds st = gl_pChinaMarket->ToUTCTime(day + 15h);
 
 		auto tUTCTime = gl_tpNow;
 		TestSetUTCTime(st);

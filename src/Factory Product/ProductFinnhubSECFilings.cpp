@@ -94,12 +94,12 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			ss.str(s1);
 			chrono::local_seconds tpTime;
 			chrono::from_stream(ss, "%F %T", tpTime);
-			SECFiling.m_iFiledDate = gl_pWorldMarket->ToSysTime(tpTime).time_since_epoch().count();
+			SECFiling.m_iFiledDate = gl_pWorldMarket->ToUTCTime(tpTime).time_since_epoch().count();
 			s1 = simdjsonGetStringView(itemValue, "acceptedDate");
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%F %T", tpTime);
-			SECFiling.m_iAcceptedDate = gl_pWorldMarket->ToSysTime(tpTime).time_since_epoch().count();
+			SECFiling.m_iAcceptedDate = gl_pWorldMarket->ToUTCTime(tpTime).time_since_epoch().count();
 			s1 = simdjsonGetStringView(itemValue, "reportUrl");
 			SECFiling.m_strReportURL = s1;
 			s1 = simdjsonGetStringView(itemValue, "filingUrl");

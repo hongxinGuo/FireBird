@@ -49,7 +49,12 @@ void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
 			GenerateInquiryMessage(lMarketTime);
 			if (HaveInquiry()) {
 				SetInquiring(true);
-				InquireData();
+				if (m_bUsingNewInterface) {
+					InquireData2();
+				}
+				else {
+					InquireData();
+				}
 			}
 		});
 }
@@ -116,6 +121,20 @@ void CVirtualDataSource::InquireData() {
 	}
 	auto end = time_point_cast<milliseconds>(steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());
+	ABSL_DCHECK(!HaveInquiry());
+	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
+	SetInquiring(false); // 此标识的重置需要位于位于最后一步
+}
+
+void CVirtualDataSource::InquireData2() {
+	ABSL_DCHECK(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
+	ABSL_DCHECK(IsInquiring());
+	auto start = time_point_cast<milliseconds>(steady_clock::now());
+	vector<result<CWebDataPtr>> vResults;
+	while (HaveInquiry()) { // 一次申请可以有多个数据
+		GetCurrentProduct();
+		m_pCurrentProduct->InquireData(m_strHeaders, m_strParam, m_strSuffix, m_strInquiryToken);
+	}
 	ABSL_DCHECK(!HaveInquiry());
 	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步

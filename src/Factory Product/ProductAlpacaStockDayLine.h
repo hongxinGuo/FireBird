@@ -7,6 +7,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <cpr/response.h>
+
 #include "TiingoCandleLine.h"
 #include"VirtualChinaMarketWebProduct.h"
 
@@ -24,11 +26,15 @@ public:
 	CProductAlpacaStockDayLine& operator=(const CProductAlpacaStockDayLine&&) noexcept = delete;
 	~CProductAlpacaStockDayLine() override = default;
 
+	void InquireData(const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+
 	shared_ptr<vector<string>> CreateMessage() override;
+	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
+	shared_ptr<std::vector<std::string>> CreateMessageInternal(string paramAdjust);
 	void ParseAndStoreWebData(shared_ptr<CWebData>) override { ABSL_DCHECK(0); } // Alpaca日线不使用此函数
-	void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) override;
-	CTiingoCandleLinesPtr ParseWebData(CWebDataPtr pWebData);
-	void CheckAndPrepareDayLine(vector<CTiingoCandleLine>& vDayLine);
+	void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) override { ABSL_DCHECK(0); };
+
+	void Parse(shared_ptr<vector<CTiingoCandleLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
 
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
 	int GetInquiryNumber() const { return m_iInquiryNumber; }

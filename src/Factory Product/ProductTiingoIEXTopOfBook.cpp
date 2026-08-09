@@ -50,7 +50,7 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	int i = 0;
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	auto lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
-	auto st = gl_pWorldMarket->ToSysTime(toLocalDateTime(lNewestTradeDay, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
+	auto st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(lNewestTradeDay, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 	if (pvTiingoIEXTopOFBook->empty()) return;
 	for (auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 		if (pIEXTopOFBook->m_timeStamp < st) continue; // 只使用不早于一天的实时数据

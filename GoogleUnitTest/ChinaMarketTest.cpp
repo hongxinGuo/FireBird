@@ -352,7 +352,7 @@ namespace FireBirdTest {
 		chrono::sys_seconds tpSaved = gl_tpNow;
 		auto date = 2019y / 11 / 7;
 		chrono::local_seconds tpLocal = chrono::local_days{ date } + 16h;
-		chrono::sys_seconds tp = gl_pChinaMarket->ToSysTime(tpLocal);
+		chrono::sys_seconds tp = gl_pChinaMarket->ToUTCTime(tpLocal);
 		gl_tpNow = tp;
 		gl_pChinaMarket->CalculateTime();
 
@@ -409,7 +409,7 @@ namespace FireBirdTest {
 		chrono::sys_seconds tpSaved = gl_tpNow;
 		auto date = 2019y / 11 / 9;
 		chrono::local_seconds tpLocal = chrono::local_days{ date } + 16h;
-		chrono::sys_seconds tp = gl_pChinaMarket->ToSysTime(tpLocal);
+		chrono::sys_seconds tp = gl_pChinaMarket->ToUTCTime(tpLocal);
 		gl_tpNow = tp;
 		gl_pChinaMarket->CalculateTime();
 
@@ -464,7 +464,7 @@ namespace FireBirdTest {
 		chrono::sys_seconds tpSaved = gl_tpNow;
 		auto date = 2019y / 11 / 10;
 		chrono::local_seconds tpLocal = chrono::local_days{ date } + 16h;
-		chrono::sys_seconds tp = gl_pChinaMarket->ToSysTime(tpLocal);
+		chrono::sys_seconds tp = gl_pChinaMarket->ToUTCTime(tpLocal);
 		gl_tpNow = tp;
 		gl_pChinaMarket->CalculateTime();
 
@@ -520,7 +520,7 @@ namespace FireBirdTest {
 		chrono::sys_seconds tpSaved = gl_tpNow;
 		auto date = 2019y / 11 / 9;
 		chrono::local_seconds tpLocal = chrono::local_days{ date } + 16h;
-		chrono::sys_seconds tp = gl_pChinaMarket->ToSysTime(tpLocal);
+		chrono::sys_seconds tp = gl_pChinaMarket->ToUTCTime(tpLocal);
 		gl_tpNow = tp;
 		gl_pChinaMarket->CalculateTime();
 
@@ -578,7 +578,7 @@ namespace FireBirdTest {
 		chrono::sys_seconds tpSaved = gl_tpNow;
 		auto date = 2019y / 11 / 10; // 2019年11月10日是星期日，2019年11月9日是星期六。测试在星期六设定每周自动重启系统时的任务生成情况。
 		chrono::local_seconds tpLocal = chrono::local_days{ date } + 16h;
-		chrono::sys_seconds tp = gl_pChinaMarket->ToSysTime(tpLocal);
+		chrono::sys_seconds tp = gl_pChinaMarket->ToUTCTime(tpLocal);
 		gl_tpNow = tp;
 		gl_pChinaMarket->CalculateTime();
 
@@ -643,7 +643,7 @@ namespace FireBirdTest {
 		chrono::sys_seconds tpSaved = gl_tpNow;
 		auto date = 2019y / 11 / 10;
 		chrono::local_seconds tpLocal = chrono::local_days{ date } + 16h;
-		chrono::sys_seconds tp = gl_pChinaMarket->ToSysTime(tpLocal);
+		chrono::sys_seconds tp = gl_pChinaMarket->ToUTCTime(tpLocal);
 		gl_tpNow = tp;
 		gl_pChinaMarket->CalculateTime();
 

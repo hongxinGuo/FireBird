@@ -260,7 +260,7 @@ namespace FireBirdTest {
 
 		chrono::year_month_day ymd{ chrono::year{ 2019 }, chrono::month{ 10 }, chrono::day{ 11 } };// 2019年11月7日
 		chrono::local_days day{ ymd };
-		chrono::sys_seconds st = gl_pChinaMarket->ToSysTime(day + 15h + 58min + 58s);
+		chrono::sys_seconds st = gl_pChinaMarket->ToUTCTime(day + 15h + 58min + 58s);
 
 		switch (m_iCount) {
 		case 0:

@@ -32,6 +32,8 @@ CAlpacaDataSource::CAlpacaDataSource() {
 
 	CAlpacaDataSource::ConfigureInternetOption();
 	CAlpacaDataSource::Reset();
+
+	m_bUsingNewInterface = true; // Alpaca使用新接口
 }
 
 bool CAlpacaDataSource::Reset() {

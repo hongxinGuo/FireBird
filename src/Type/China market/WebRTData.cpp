@@ -131,7 +131,7 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	oss << sv << ' ' << sv2;
 	chrono::local_seconds lt;
 	oss >> chrono::parse("%Y-%m-%d %H:%M:%S", lt);
-	m_tpTime = gl_pChinaMarket->ToSysTime(lt);
+	m_tpTime = gl_pChinaMarket->ToUTCTime(lt);
 	/*
 	string sTime(sv.data(), sv.size());
 	sTime += ' '; //添加一个空格，以利于下面的转换
@@ -299,7 +299,7 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	std::ispanstream ss(sv);
 	chrono::local_seconds lt;
 	ss >> chrono::parse("%Y%m%d%H%M%S", lt);
-	m_tpTime = gl_pChinaMarket->ToSysTime(lt);
+	m_tpTime = gl_pChinaMarket->ToUTCTime(lt);
 
 	// 涨跌
 	sv = GetNextField(svData, lCurrentPos, '~'); //

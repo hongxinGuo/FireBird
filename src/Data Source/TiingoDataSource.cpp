@@ -44,7 +44,6 @@ CTiingoDataSource::CTiingoDataSource() {
 	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
-	m_strSuffix = "";
 	m_strSuffix = "&token=";
 	m_strInquiryToken = "";
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值

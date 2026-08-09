@@ -205,7 +205,7 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::BuildDayLine(local_days date) {
 	auto lSize = Size();
-	sys_seconds st = gl_pWorldMarket->ToSysTime(toLocalDateTime(date, local_seconds(seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
+	sys_seconds st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(date, local_seconds(seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 
 	if (gl_pWorldMarket->GetMarketTime() < local_seconds{ 18h + 5min + 00s }) {
 		DeleteDayLine(date);
@@ -267,7 +267,7 @@ void CContainerTiingoStock::LoadDayLine(local_days date) {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
 
-		auto st = gl_pWorldMarket->ToSysTime(toLocalDateTime(date, toLocalTime(170000)));
+		auto st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(date, toLocalTime(170000)));
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);

@@ -32,7 +32,7 @@ using std::literals::chrono_literals::operator ""min;
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
-	m_strHeaders = "Referer:https://gu.qq.com/\r\n";
+	m_strHeaders = "Referer:https://gu.qq.com/\r\n\r\n";
 	m_strInquiryFunction = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=";
 	m_strSuffix = ",2000,,";
 	m_iMaxNormalInquireTime = 500;

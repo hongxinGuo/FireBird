@@ -29,7 +29,7 @@ using namespace std;
 CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = "";
-	m_strHeaders = "Referer:https://quote.eastmoney.com/\r\n";
+	m_strHeaders = "Referer:https://quote.eastmoney.com/\r\n\r\n";
 	m_strParam = "";
 	m_strSuffix = "";
 	m_iMaxNormalInquireTime = 500;

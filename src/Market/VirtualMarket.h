@@ -99,7 +99,7 @@ public:
 	string GetStringOfLocalDateTime() const;
 
 	local_seconds ToLocalTime(const sys_seconds& sysTime) const { return m_marketTimeZone->to_local(sysTime); } // 将UTC时间转化为本市场的当地时间
-	sys_seconds ToSysTime(const local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
+	sys_seconds ToUTCTime(const local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
 	sys_seconds ConvertToUTCTime(int marketDate, long lMarketTime) const; // 将市场时间转化为UTC时间
 	long ConvertToDate(sys_seconds tp) const noexcept;
 
