@@ -205,7 +205,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	ABSL_DCHECK(!IsInquiring());
 	if (!m_fFinnhubDataInquiryFinished) {
 		gl_systemMessage.PushInformationMessage("finnhub data inquiry finished");
-		gl_systemMessage.SetCurrentFinnhubFunction("finished");
+		gl_systemMessage.SetCurrentFinnhubFunction("idling");
 		m_fFinnhubDataInquiryFinished = true;
 	}
 	return false;

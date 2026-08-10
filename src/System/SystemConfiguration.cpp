@@ -284,6 +284,12 @@ void CSystemConfiguration::Update(shared_ptr<nlohmannJson> pJsonData) {
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
+	try {
+		int duration = pJsonData->at("WorldMarket").at("AlpacaInquiryTime");
+		m_worldMarketAlpacaInquiryTime = milliseconds(duration); // 默认每分钟最多查询100次
+	} catch (nlohmannJson::out_of_range&) {
+		m_fUpdateDB = true;
+	}
 
 	// Tiingo.com
 	try {
@@ -471,6 +477,7 @@ void CSystemConfiguration::UpdateJsonData(shared_ptr<nlohmannJson> pJsonData) {
 	(*pJsonData)["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
 	(*pJsonData)["WorldMarket"]["FinnhubInquiryTime"] = m_worldMarketFinnhubInquiryTime.count();
 	(*pJsonData)["WorldMarket"]["TiingoInquiryTime"] = m_worldMarketTiingoInquiryTime.count();
+	(*pJsonData)["WorldMarket"]["AlpacaInquiryTime"] = m_worldMarketAlpacaInquiryTime.count();
 
 	// Tiingo.com
 	(*pJsonData)["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;

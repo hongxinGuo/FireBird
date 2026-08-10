@@ -25,6 +25,19 @@ void CMarketTaskQueue::AddTask(const long lTaskType, const local_seconds execute
 	m_vMarketTask.push(pTask);
 }
 
+void CMarketTaskQueue::DeleteTask(long lTaskType) {
+	vector<CMarketTaskPtr> vTask;
+	while (!m_vMarketTask.empty()) {
+		if (m_vMarketTask.top()->GetType() != lTaskType) {
+			vTask.push_back(m_vMarketTask.top());
+		}
+		m_vMarketTask.pop();
+	}
+	for (const auto& pTask : vTask) {
+		m_vMarketTask.push(pTask);
+	}
+}
+
 vector<CMarketTaskPtr> CMarketTaskQueue::GetTasks() {
 	vector<CMarketTaskPtr> vTask;
 

@@ -573,7 +573,7 @@ bool CChinaMarket::SetCheckActiveStockFlag() {
 }
 
 bool CChinaMarket::TaskProcessTodayStock() {
-	if (IsSystemReady() && GetMarketTimeHMS().to_duration() > 15h + 04min) {
+	if (IsProcessTodayStock() || IsSystemReady() && GetMarketTimeHMS().to_duration() > 15h + 04min) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_systemMessage.SetChinaMarketSavingFunction("process today stock");
 			this->ProcessTodayStock();

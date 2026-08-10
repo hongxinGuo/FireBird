@@ -8,6 +8,7 @@
 
 #include "PropertiesWnd.h"
 
+#include "AlpacaDataSource.h"
 #include "ChinaMarket.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "FinnhubDataSource.h"
@@ -125,8 +126,12 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		ABSL_DCHECK(pVar->vt == VT_BOOL);
 		gl_pTiingoDataSource->Enable(pVar->boolVal);
 		break;
+	case ALPACA_DATA_SOURCE_ENABLE_:
+		ABSL_DCHECK(pVar->vt == VT_BOOL);
+		gl_pAlpacaDataSource->Enable(pVar->boolVal);
+		break;
 	default:
-		ABSL_DLOG(INFO) <<"未处理PropertyGridCtrl例外\n"; // 未处理例外
+		ABSL_DLOG(INFO) << "未处理PropertyGridCtrl例外\n"; // 未处理例外
 		//ABSL_DCHECK(0);
 		break;
 	}
@@ -381,22 +386,32 @@ void CPropertiesWnd::InitPropList() {
 	pGroup4->AddSubItem(m_pPropTiingoCurrentFunction);
 	m_wndPropList.AddProperty(pGroup4);
 
+	// alpaca group
+	CMFCPropertyGridProperty* pGroup5 = new CGridProperty("Alpaca");
+	pGroup5->AddSubItem(new CGridProperty(_T("Enable Data Source"), static_cast<_variant_t>(gl_pAlpacaDataSource->IsEnable()), _T("Enable"), ALPACA_DATA_SOURCE_ENABLE_));
+	m_pPropAlpacaDataSourceWebStatus = new CGridProperty(_T("Web Status"), _T("running"));
+	m_pPropAlpacaDataSourceWebStatus->Enable(FALSE);
+	pGroup5->AddSubItem(m_pPropAlpacaDataSourceWebStatus);
+	m_pPropAlpacaCurrentFunction = new CGridProperty(_T("Inquiring:"), _T(""));
+	m_pPropAlpacaCurrentFunction->Enable(FALSE);
+	pGroup5->AddSubItem(m_pPropAlpacaCurrentFunction);
+	m_wndPropList.AddProperty(pGroup5);
+
 	// web socket group
-	CMFCPropertyGridProperty* pGroup5 = new CGridProperty("Web Socket");
+	CMFCPropertyGridProperty* pGroup6 = new CGridProperty("Web Socket");
 	m_pPropFinnhubWebSocket = new CGridProperty(_T("Finnhub"), _T("Closed"));
 	m_pPropFinnhubWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropFinnhubWebSocket);
+	pGroup6->AddSubItem(m_pPropFinnhubWebSocket);
 	m_pPropTiingoIEXWebSocket = new CGridProperty(_T("TiingoIEX"), _T("Closed"));
 	m_pPropTiingoIEXWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropTiingoIEXWebSocket);
+	pGroup6->AddSubItem(m_pPropTiingoIEXWebSocket);
 	m_pPropTiingoForexWebSocket = new CGridProperty(_T("TiingoForex"), _T("Closed"));
 	m_pPropTiingoForexWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropTiingoForexWebSocket);
+	pGroup6->AddSubItem(m_pPropTiingoForexWebSocket);
 	m_pPropTiingoCryptoWebSocket = new CGridProperty(_T("TiingoCrypto"), _T("Closed"));
 	m_pPropTiingoCryptoWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropTiingoCryptoWebSocket);
-
-	m_wndPropList.AddProperty(pGroup5);
+	pGroup6->AddSubItem(m_pPropTiingoCryptoWebSocket);
+	m_wndPropList.AddProperty(pGroup6);
 }
 
 void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd) {
@@ -513,6 +528,37 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	m_pPropTiingoCurrentFunction->SetValue(strMessage);
 
 	string str;
+	switch (gl_pFinnhubWebSocket->GetState()) {
+	case ix::ReadyState::Closed:
+		str = "Closed";
+		break;
+	case ix::ReadyState::Closing:
+		str = "Closing";
+		break;
+	case ix::ReadyState::Connecting:
+		str = "Connecting";
+		break;
+	case ix::ReadyState::Open:
+		str = "Open";
+		break;
+	}
+	m_pPropFinnhubWebSocket->SetValue(str);
+
+	// Alpaca web status
+	if (gl_pAlpacaDataSource->IsWebError()) {
+		string s5 = std::format("HTTP:{:3Ld}  (EC:{:5Ld})", gl_pAlpacaDataSource->GetHTTPStatusCode(), gl_pAlpacaDataSource->GetWebErrorCode());
+		m_pPropAlpacaDataSourceWebStatus->SetValue(s5);
+	}
+	else {
+		string s6 = std::format("HTTP:{:3Ld}", gl_pAlpacaDataSource->GetHTTPStatusCode());
+		m_pPropAlpacaDataSourceWebStatus->SetValue(s6);
+	}
+
+	// Alpaca current function
+	strMessage = gl_systemMessage.GetCurrentAlpacaFunction();
+	m_pPropAlpacaCurrentFunction->SetValue(strMessage);
+
+	str;
 	switch (gl_pFinnhubWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
 		str = "Closed";

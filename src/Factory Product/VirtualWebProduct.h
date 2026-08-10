@@ -5,6 +5,7 @@
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
+#include <cpr/response.h>
 
 class CWebData;
 
@@ -31,6 +32,7 @@ public:
 
 	//Note: 由Product来申请网络数据，使用cpr库。Note:DataSource需要设置使用新接口m_bUsingNewInterface为true，才能使用此函数。
 	virtual void InquireData(const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {} // default do nothing
+	virtual void WebStatusCheck(cpr::Response&) {} // cpr新接口的网络状态检查
 
 	virtual shared_ptr<vector<string>> CreateMessage() { return make_shared<vector<string>>(vector<string>{ "" }); }
 	virtual void CalculateTotalDataLength(shared_ptr<vector<shared_ptr<CWebData>>>) {}

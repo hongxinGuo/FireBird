@@ -208,6 +208,9 @@ public:
 
 	void SetDistributeAndCalculateTime(time_t tt) { m_ttDistributeAndCalculateTime = tt; }
 
+	bool IsProcessTodayStock() const noexcept { return m_bProcessTodayStock; }
+	void SetProcessTodayStock(bool fFlag) noexcept { m_bProcessTodayStock = fFlag; }
+
 public:
 	atomic_int64_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
 
@@ -229,6 +232,7 @@ protected:
 	bool m_fFastReceivingRTData; // 是否开始接收实时数据
 	bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
 	bool m_fUpdateTempDataDB; // 存储临时实时数据标识
+	bool m_bProcessTodayStock{ true }; // 收市后处理当日数据，生成当日日线数据。
 
 	sys_seconds m_tpNewTransactionTime{ duration<long long>(0) };
 

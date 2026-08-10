@@ -27,6 +27,7 @@ public:
 	~CProductAlpacaStockDayLine() override = default;
 
 	void InquireData(const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
@@ -35,11 +36,15 @@ public:
 	void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) override { ABSL_DCHECK(0); };
 
 	void Parse(shared_ptr<vector<CTiingoCandleLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
+	void CalculateSplitFactor(vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit);
 
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
 	int GetInquiryNumber() const { return m_iInquiryNumber; }
 
+	bool IsDataEnded() const noexcept { return m_bDataEnded; }
+
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
 	int m_iInquiryNumber{ 1 }; // 本轮查询次数
+	bool m_bDataEnded{ true };
 };

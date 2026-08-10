@@ -54,6 +54,7 @@ public:
 	void AddTask(const shared_ptr<CMarketTask>& pTask);
 	void AddTask(long lTaskType, long lExecuteTime);
 	void AddTask(long lTaskType, local_seconds executeTime);
+	void DeleteTask(long lTaskType);
 	shared_ptr<CMarketTask> GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	void DiscardAllMarketTask() {

@@ -6,10 +6,8 @@
 #include "FinnhubInquiryType.h"
 #include "WorldMarket.h"
 #include"VirtualWebProduct.h"
-#include"FinnhubStock.h"
 #include"AlpacaFactory.h"
 
-#include "ContainerFinnhubStock.h"
 #include "TiingoStock.h"
 
 #include "SystemConfiguration.h"
@@ -52,7 +50,8 @@ bool CAlpacaDataSource::GenerateInquiryMessage(const local_seconds& lCurrentTime
 
 	ABSL_DCHECK(!IsInquiring());
 	if (!m_fAlpacaDataInquiryFinished) {
-		gl_systemMessage.PushInformationMessage("Alpha Vantage data inquiry finished");
+		gl_systemMessage.PushInformationMessage("Alpaca data inquiry finished");
+		gl_systemMessage.SetCurrentAlpacaFunction("idling");
 		m_fAlpacaDataInquiryFinished = true;
 	}
 	return false;
@@ -65,10 +64,10 @@ bool CAlpacaDataSource::GenerateStockDayLine() {
 	auto setMessage = [](const auto& item) {
 		std::string str = "DayLine:";
 		str += item->GetSymbol();
-		gl_systemMessage.SetCurrentFinnhubFunction(str);
+		gl_systemMessage.SetCurrentAlpacaFunction(str);
 	};
 	auto setUpdateFlag = [this](bool flag) { SetUpdateStockDayLine(flag); };
-	const std::string finishedMsg = "Alpha Vantage dayline updated";
+	const std::string finishedMsg = "Alpaca dayline updated";
 
 	return GenerateInquiryIterateWithoutAccessCheck(
 		gl_dataContainerTiingoStock,

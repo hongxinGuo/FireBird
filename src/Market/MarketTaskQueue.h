@@ -17,6 +17,7 @@ public:
 	void AddTask(long lTaskType, local_seconds executeTime);
 	CMarketTaskPtr GetTask() const { return m_vMarketTask.top(); }
 	void DiscardCurrentTask() { m_vMarketTask.pop(); }
+	void DeleteTask(long lTaskType); // 删除指定类型的任务
 	size_t Size() const { return m_vMarketTask.size(); }
 	bool Empty() const { return m_vMarketTask.empty(); }
 

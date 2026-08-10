@@ -9,7 +9,8 @@ enum configuration_option {
 	SYSTEM_RELOAD_SYSTEM_,
 	CHINA_MARKET_REALTIME_DATA_SOURCE_ENABLE_,
 	FINNHUB_DATA_SOURCE_ENABLE_,
-	TIINGO_DATA_SOURCE_ENABLE_
+	TIINGO_DATA_SOURCE_ENABLE_,
+	ALPACA_DATA_SOURCE_ENABLE_
 };
 
 class CPropertiesToolBar : public CMFCToolBar {
@@ -99,14 +100,18 @@ protected:
 	CGridProperty* m_pPropChinaMarketThreadStatus{ nullptr };
 
 	// world market
-	CGridProperty* m_pPropFinnhubDataSourceWebStatus{ nullptr };
 
 	// finnhub.io
+	CGridProperty* m_pPropFinnhubDataSourceWebStatus{ nullptr };
 	CGridProperty* m_pPropFinnhubCurrentFunction{ nullptr };
 
 	// Tiingo.com
 	CGridProperty* m_pPropTiingoDataSourceWebStatus{ nullptr };
 	CGridProperty* m_pPropTiingoCurrentFunction{ nullptr };
+
+	// Alpaca
+	CGridProperty* m_pPropAlpacaDataSourceWebStatus{ nullptr };
+	CGridProperty* m_pPropAlpacaCurrentFunction{ nullptr };
 
 	// web socket group
 	CGridProperty* m_pPropFinnhubWebSocket{ nullptr };

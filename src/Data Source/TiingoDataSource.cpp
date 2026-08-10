@@ -463,6 +463,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	}
 
 	ABSL_DCHECK(!IsInquiring());
+	gl_systemMessage.PushInformationMessage("Tiingo data inquiry finished");
 	gl_systemMessage.SetCurrentTiingoFunction("idling");
 	return false;
 }

@@ -102,6 +102,10 @@ void CVirtualMarket::AddTask(const CMarketTaskPtr& pTask) {
 	m_qMarketDisplayTask.enqueue(pTask);
 }
 
+void CVirtualMarket::DeleteTask(long lTaskType) {
+	m_marketTask.DeleteTask(lTaskType);
+}
+
 void CVirtualMarket::AddTask(const long lTaskType, const long lExecuteTime) {
 	const auto pTask = make_shared<CMarketTask>();
 	pTask->SetType(lTaskType);

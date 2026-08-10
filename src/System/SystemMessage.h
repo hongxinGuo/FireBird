@@ -180,6 +180,8 @@ public:
 	void SetCurrentTiingoFunction(const string& str);
 	string GetCurrentAlphaVantageFunction() const;
 	void SetCurrentAlphaVantageFunction(const string& str);
+	string GetCurrentAlpacaFunction() const;
+	void SetCurrentAlpacaFunction(const string& str);
 
 	string GetChinaMarketSavingFunction() { return m_sChinaMarketSavingFunction; }
 	void SetChinaMarketSavingFunction(const string& str) { m_sChinaMarketSavingFunction = str; }
@@ -212,6 +214,7 @@ protected:
 	string m_sCurrentFinnhubFunction{}; // 当前任务和处理的证券名称
 	string m_sCurrentTiingoFunction{}; // 当前任务和处理的证券名称
 	string m_sCurrentAlphaVantageFunction{}; // 当前任务和处理的证券名称
+	string m_sCurrentAlpacaFunction{}; // 当前任务和处理的证券名称
 
 	string m_sChinaMarketSavingFunction{};
 	string m_sWorldMarketSavingFunction{};

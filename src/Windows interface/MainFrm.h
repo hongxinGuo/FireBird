@@ -145,4 +145,6 @@ public:
 	afx_msg void OnUpdateUsingEastmoneyDaylineDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnTiingoMaintainDaylineDb();
 	afx_msg void OnUpdateTiingoMaintainDaylineDb(CCmdUI* pCmdUI);
+	afx_msg void OnDoProcessTodayStock();
+	afx_msg void OnUpdateDoProcessTodayStock(CCmdUI* pCmdUI);
 };

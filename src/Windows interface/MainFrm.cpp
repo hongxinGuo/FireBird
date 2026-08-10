@@ -109,6 +109,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_EASTMONEY_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingEastmoneyDaylineDataServer)
 	ON_COMMAND(ID_TIINGO_MAINTAIN_DAYLINE_DB, &CMainFrame::OnTiingoMaintainDaylineDb)
 	ON_UPDATE_COMMAND_UI(ID_TIINGO_MAINTAIN_DAYLINE_DB, &CMainFrame::OnUpdateTiingoMaintainDaylineDb)
+	ON_COMMAND(ID_DO_PROCESS_TODAY_STOCK, &CMainFrame::OnDoProcessTodayStock)
+	ON_UPDATE_COMMAND_UI(ID_DO_PROCESS_TODAY_STOCK, &CMainFrame::OnUpdateDoProcessTodayStock)
 END_MESSAGE_MAP()
 
 namespace {
@@ -638,7 +640,7 @@ void CMainFrame::ProcessChinaMarketStock() {
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->IsSystemReady()) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsProcessTodayStock()) {
 		// 系统自动更新日线数据时，不允许处理当日的实时数据。
 		SysCallCmdUIEnable(pCmdUI, true);
 	}
@@ -1085,10 +1087,16 @@ void CMainFrame::OnTiingoDownloadOneYearDayline() {
 }
 
 void CMainFrame::OnBuildChinaStockOneYearDayline() {
+	gl_pChinaMarket->SetProcessTodayStock(false); //目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
+	gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
+	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
 	gl_pChinaMarket->UpdateOneYearStockDayLine();
 }
 
 void CMainFrame::OnBuildChinaMarketAllStockDayline() {
+	gl_pChinaMarket->SetProcessTodayStock(false);//目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
+	gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
+	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__,gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
 	gl_pChinaMarket->UpdateAllStockDayLine();
 }
 
@@ -1098,4 +1106,22 @@ void CMainFrame::OnTiingoMaintainDaylineDb() {
 
 void CMainFrame::OnUpdateTiingoMaintainDaylineDb(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
+}
+
+void CMainFrame::OnDoProcessTodayStock() {
+	if (gl_pChinaMarket->IsProcessTodayStock()) {
+		gl_pChinaMarket->SetProcessTodayStock(false);
+	}
+	else {
+		gl_pChinaMarket->SetProcessTodayStock(true);
+	}
+}
+
+void CMainFrame::OnUpdateDoProcessTodayStock(CCmdUI* pCmdUI) {
+	if (gl_pChinaMarket->IsProcessTodayStock()) {
+		pCmdUI->SetCheck(true);
+	}
+	else {
+		pCmdUI->SetCheck(false);
+	}
 }

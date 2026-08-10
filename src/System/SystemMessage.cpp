@@ -160,6 +160,7 @@ namespace {
 	binary_semaphore s_sReadCurrentFinnhubFunction{ 1 };
 	binary_semaphore s_sReadCurrentTiingoFunction{ 1 };
 	binary_semaphore s_sReadCurrentAlphaVantageFunction{ 1 };
+	binary_semaphore s_sReadCurrentAlpacaFunction{ 1 };
 }
 
 void CSystemMessage::SetStockCodeForInquiringRTData(const string& strStockCode) {
@@ -279,6 +280,19 @@ void CSystemMessage::SetCurrentAlphaVantageFunction(const string& str) {
 	s_sReadCurrentAlphaVantageFunction.release();
 }
 
+string CSystemMessage::GetCurrentAlpacaFunction() const {
+	s_sReadCurrentAlpacaFunction.acquire();
+	string str = m_sCurrentAlpacaFunction;
+	s_sReadCurrentAlpacaFunction.release();
+	return str;
+}
+
+void CSystemMessage::SetCurrentAlpacaFunction(const string& str) {
+	s_sReadCurrentAlpacaFunction.acquire();
+	m_sCurrentAlpacaFunction = str;
+	s_sReadCurrentAlpacaFunction.release();
+}
+
 void CSystemDeque::Display(COutputList* pOutputList, const string& strTime) {
 	size_t lTotal = Size();
 	lTotal = std::min<size_t>(lTotal, pOutputList->GetLineNumber());
@@ -309,7 +323,7 @@ size_t CSystemDeque::Size() const {
 CSystemMessage::CSystemMessage() {
 	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	if (static int siCounter = 0; siCounter++ > 0) {
-		ABSL_DLOG(INFO) <<"系统消息只允许一个实例";
+		ABSL_DLOG(INFO) << "系统消息只允许一个实例";
 		gl_systemMessage.PushErrorMessage("错误：系统不允许生成多个CSystemMessage实例");
 	}
 
