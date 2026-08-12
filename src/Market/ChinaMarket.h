@@ -81,7 +81,7 @@ public:
 	bool TaskUpdateStockSection(); //
 
 	bool ProcessDayLine();
-	void UpdateOneYearStockDayLine();
+	void UpdateOneYearStockDayLine(local_days date);
 	void UpdateAllStockDayLine();
 
 	// 各工作线程调用包裹函数

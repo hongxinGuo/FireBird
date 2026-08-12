@@ -871,13 +871,12 @@ bool CChinaMarket::ProcessDayLine() {
 	return true;
 }
 
-void CChinaMarket::UpdateOneYearStockDayLine() {
-	local_days lOneYearAgoDate = GetPrevDay(GetMarketDate(), 365);
+void CChinaMarket::UpdateOneYearStockDayLine(local_days date) {
 	for (size_t index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
 		auto pStock = gl_dataContainerChinaStock.GetStock(index);
 		auto d = pStock->GetDayLineEndDate();
-		if (pStock->GetDayLineEndDate() > lOneYearAgoDate) {
-			pStock->SetDayLineEndDate(lOneYearAgoDate);
+		if (pStock->GetDayLineEndDate() > date) {
+			pStock->SetDayLineEndDate(date);
 		}
 		pStock->SetUpdateDayLine(true);
 		pStock->SetUpdateProfileDB(true);

@@ -100,6 +100,8 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
+
+		CMarketTaskQueue marketTaskQueue;
 	};
 
 	TEST_F(CChinaMarketTest, TestInitialize) {
@@ -1433,5 +1435,74 @@ namespace FireBirdTest {
 		gl_pSinaRTDataSource->Enable(origSinaEnabled);
 		gl_pTengxunRTDataSource->Enable(origTengxunEnabled);
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(oldServer);
+	}
+
+	TEST_F(CChinaMarketTest, TestGetSet) {
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, toLocalTime(101010));
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, toLocalTime(10000));
+
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, toLocalTime(1));
+		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM, toLocalTime(1));
+
+		EXPECT_EQ(marketTaskQueue.Size(), 4);
+		EXPECT_FALSE(marketTaskQueue.Empty());
+
+		auto pTask = marketTaskQueue.GetTask();
+		marketTaskQueue.DiscardCurrentTask();
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(1)) << "任务按时间顺序排列,较早的排在前面";
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		pTask = marketTaskQueue.GetTask();
+		marketTaskQueue.DiscardCurrentTask();
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM) << "相同时间的任务，排列顺序按入列先后";
+		pTask = marketTaskQueue.GetTask();
+		marketTaskQueue.DiscardCurrentTask();
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "任务按时间顺序排列,较早的排在前面";
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		pTask = marketTaskQueue.GetTask();
+		marketTaskQueue.DiscardCurrentTask();
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(101010)) << "任务按时间顺序排列,较早的排在前面";
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		EXPECT_EQ(marketTaskQueue.Size(), 0);
+	}
+
+	TEST_F(CChinaMarketTest, TestGetTasks) {
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, toLocalTime(1));
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, toLocalTime(3));
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, toLocalTime(2));
+
+		const auto vTask = marketTaskQueue.GetTasks();
+
+		EXPECT_EQ(vTask.at(0)->GetTime(), toLocalTime(1));
+		EXPECT_EQ(vTask.at(0)->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		EXPECT_EQ(vTask.at(1)->GetTime(), toLocalTime(2));
+		EXPECT_EQ(vTask.at(1)->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		EXPECT_EQ(vTask.at(2)->GetTime(), toLocalTime(3));
+		EXPECT_EQ(vTask.at(2)->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+	}
+
+	// New test: verify DeleteTask removes all tasks with the specified type
+	TEST_F(CChinaMarketTest, TestDeleteTask) {
+		// Add two tasks of the same type and one of a different type
+		marketTaskQueue.AddTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__, toLocalTime(5));
+		marketTaskQueue.AddTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__, toLocalTime(10));
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, toLocalTime(7));
+
+		EXPECT_EQ(marketTaskQueue.Size(), 3);
+
+		// Delete all tasks of type CHINA_MARKET_UPDATE_CURRENT_STOCK__
+		marketTaskQueue.DeleteTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__);
+
+		// After deletion only the other task should remain
+		EXPECT_EQ(marketTaskQueue.Size(), 1);
+
+		const auto remaining = marketTaskQueue.GetTasks();
+		ASSERT_EQ(remaining.size(), 1u);
+		EXPECT_EQ(remaining.at(0)->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+
+		// Ensure no remaining task has the deleted type
+		for (const auto& t : remaining) {
+			EXPECT_NE(t->GetType(), CHINA_MARKET_UPDATE_CURRENT_STOCK__);
+		}
 	}
 }

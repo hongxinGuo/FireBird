@@ -1,8 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// Note 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要分次查询不同日期的数据方可。
-/// 目前采用的方法是生成一次多个查询，DataSource查询后将数据暂存于本Product中，待所有查询都完成后由本Product负责将数据组合起来。
-///
+/// Note Alpaca日线目前一次能够提供1000个数据。当日线总量超过1000个时，服务器分次提供。
+/// 对于每个股票查询数据量较少（<100）的情况，可以一次申请多个股票，以减少总查询时间。
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
@@ -15,8 +14,14 @@
 class CDayLine;
 
 using std::vector;
+using std::unordered_map;
 
 class CProductAlpacaStockDayLine final : public CVirtualChinaMarketWebProduct {
+	struct StockDayLine {
+		string symbol;
+		shared_ptr<vector<CTiingoCandleLine>> pvDayLine;
+	};
+
 public:
 	CProductAlpacaStockDayLine();
 	// 不允许复制和赋值。
@@ -26,25 +31,27 @@ public:
 	CProductAlpacaStockDayLine& operator=(const CProductAlpacaStockDayLine&&) noexcept = delete;
 	~CProductAlpacaStockDayLine() override = default;
 
-	void InquireData(const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
 	void WebStatusCheck(cpr::Response& r) override;
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
 	shared_ptr<std::vector<std::string>> CreateMessageInternal(string paramAdjust);
-	void ParseAndStoreWebData(shared_ptr<CWebData>) override { ABSL_DCHECK(0); } // Alpaca日线不使用此函数
-	void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) override { ABSL_DCHECK(0); };
 
 	void Parse(shared_ptr<vector<CTiingoCandleLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
 	void CalculateSplitFactor(vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit);
 
-	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
-	int GetInquiryNumber() const { return m_iInquiryNumber; }
-
 	bool IsDataEnded() const noexcept { return m_bDataEnded; }
+
+	bool HaveSymbol(const string& strSymbol) const noexcept { return m_mapStockDayLine.contains(strSymbol); }
+	size_t GetPos(const string& strSymbol) const { return m_mapStockDayLine.at(strSymbol); }
+	void AddDayLine(const string& strSymbol, shared_ptr<vector<CTiingoCandleLine>> pvDayLine);
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
-	int m_iInquiryNumber{ 1 }; // 本轮查询次数
 	bool m_bDataEnded{ true };
+
+	vector<StockDayLine> m_vStockDayLine; // 每个股票的日线数据
+	unordered_map<string, size_t> m_mapStockDayLine;
+	vector<StockDayLine> m_vStockDayLineSplit; // 每个股票的日线数据
 };

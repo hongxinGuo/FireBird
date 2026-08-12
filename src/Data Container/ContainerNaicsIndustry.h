@@ -2,6 +2,8 @@
 
 #include"NaicsIndustry.h"
 
+using std::map;
+
 class CContainerNaicsIndustry final {
 public:
 	CContainerNaicsIndustry();

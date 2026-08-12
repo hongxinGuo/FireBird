@@ -44,6 +44,25 @@ namespace {
 			throw;
 		}
 	}
+	/*
+	template <typename T, typename Container, typename Getter>
+	T simdjsonGetHelper(Getter getter, Container& value, const std::string_view& key, const T& defaultValue) {
+		try {
+			// Access the key inside its own try so missing-key exceptions are caught here
+			ondemand::value valueInner = value[key].value();
+			try {
+				return getter(valueInner);
+			}
+			catch (simdjson_error& error) {
+				if (valueInner.is_null()) return defaultValue;
+				throw; // other simdjson errors rethrow
+			}
+		}
+		catch (simdjson_error& ) {
+			// Key not present or access error -> return default
+			return defaultValue;
+		}
+	}*/
 }
 
 double simdjsonGetDouble(ondemand::value& value, double defaultValue) {

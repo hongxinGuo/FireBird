@@ -68,15 +68,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 	std::default_random_engine e1(r());
 	uniform_int_distribution<int> uniform_dist(1, 4000);
 	int mean = uniform_dist(e1);
-	/*
-	if (s_iSleep > 30 + s_number) {
-		s_iSleep = 0;
-		s_number = mean / 200;
-		int time = 100000 + mean * 50;
-		m_PrevInquireTimePoint += milliseconds(time);
-		ABSL_DLOG(INFO) << std::format("tengxunDayLine server suspended %d seconds\n", time / 1000);
-	}*/
-	if (llTickCount < m_PrevInquireTimePoint + milliseconds(4000 + mean)) return false;
+	if (llTickCount < m_PrevInquireTimePoint + milliseconds(2000 + mean)) return false;
 
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {

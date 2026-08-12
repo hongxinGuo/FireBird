@@ -8,9 +8,6 @@
     <Filter Include="源文件">
       <UniqueIdentifier>{ec6fa43c-281b-4128-8239-ebc020b47c13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{7a5574f6-a3d5-4829-bfa0-6fe6790d7cb4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FireBird.rc">
@@ -69,35 +66,38 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="..\src\Windows interface\FireBird.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Windows interface\ChildFrm.h">
-      <Filter>头文件</Filter>
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgGetDate.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\FireBird.h">
+      <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBirdDoc.h">
-      <Filter>头文件</Filter>
+      <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBirdView.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\MainFrm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\OutputWnd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SystemPublicDeclaration.h">
-      <Filter>头文件</Filter>
+      <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\GridProperty.h">
-      <Filter>头文件</Filter>
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\MainFrm.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\OutputWnd.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SystemPublicDeclaration.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +123,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgGetDate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

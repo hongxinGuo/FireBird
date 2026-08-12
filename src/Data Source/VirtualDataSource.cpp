@@ -44,19 +44,48 @@ void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
 ///
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
-	ABSL_DCHECK(!IsInquiring());
-	gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
+	if (!IsInquiring()) {
+		gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
+				GenerateInquiryMessage(lMarketTime);
+				if (HaveInquiry()) {
+					SetInquiring(true);
+					if (m_bUsingNewInterface) {
+						InquireData2(std::stop_token{});
+					}
+					else {
+						InquireData();
+					}
+				}
+			});
+	}
+}
+
+void CVirtualDataSource::Run2(const local_seconds& lMarketTime) {
+	if (!IsInquiring()) {
+		ABSL_DCHECK(!m_runThread.joinable()); // 当没有申请时，工作线程不应该存在
+		// 如果已有运行线程，先请求停止并等待其结束（避免并发的 Run 导致竞态）
+		if (m_runThread.joinable()) {
+			m_runThread.request_stop();
+			m_runThread.join();
+		}
+
+		// 启动新的 jthread，支持协作式停止（std::stop_token）
+		m_runThread = std::jthread([this, lMarketTime](const std::stop_token& st) {
+			// 如果被立即请求停止，则直接返回
+			if (st.stop_requested()) return;
+
 			GenerateInquiryMessage(lMarketTime);
 			if (HaveInquiry()) {
 				SetInquiring(true);
 				if (m_bUsingNewInterface) {
-					InquireData2();
+					InquireData2(st);
 				}
 				else {
 					InquireData();
 				}
 			}
 		});
+	}
 }
 
 namespace {
@@ -126,18 +155,17 @@ void CVirtualDataSource::InquireData() {
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 
-void CVirtualDataSource::InquireData2() {
-	ABSL_DCHECK(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
+void CVirtualDataSource::InquireData2(const std::stop_token& token) {
 	ABSL_DCHECK(IsInquiring());
 	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	while (HaveInquiry()) { // 一次申请可以有多个数据
+		if (token.stop_requested()) break;
 		GetCurrentProduct();
-		m_pCurrentProduct->InquireData(m_strHeaders, m_strParam, m_strSuffix, m_strInquiryToken);
+		m_pCurrentProduct->InquireData(token, m_strHeaders, m_strParam, m_strSuffix, m_strInquiryToken);
 		m_pCurrentProduct->UpdateSystemStatus();
 	}
 	auto end = time_point_cast<milliseconds>(steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());
-	ABSL_DCHECK(!HaveInquiry());
 	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
@@ -169,4 +197,11 @@ void CVirtualDataSource::ReportErrorNotHandled(const string& sError) {
 	string s = "error not processed:";
 	s += sError;
 	gl_systemMessage.PushInnerSystemInformationMessage(s);
+}
+
+void CVirtualDataSource::StopThread() {
+	if (m_runThread.joinable()) {
+		m_runThread.request_stop();
+		m_runThread.join();
+	}
 }

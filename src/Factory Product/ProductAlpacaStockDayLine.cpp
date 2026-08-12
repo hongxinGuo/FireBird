@@ -70,7 +70,7 @@ CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 /// Note: Alpaca的日线数据不提供split信息，故而需要两次申请来确定股票的split信息。第一次申请是获取股票的原始日线数据，第二次申请是获取股票的前向除权数据。
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductAlpacaStockDayLine::InquireData(const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
 	shared_ptr<vector<CTiingoCandleLine>> pvDayLineWithSplit = make_shared<vector<CTiingoCandleLine>>();
 	shared_ptr<vector<CTiingoCandleLine>> pvDayLine = make_shared<vector<CTiingoCandleLine>>();
 	shared_ptr<vector<string>> pInquiry = CreateMessage();
@@ -83,6 +83,7 @@ void CProductAlpacaStockDayLine::InquireData(const string& strHeaders, const str
 	};
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) return;
 		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, headers);
 
 		status = r.status_code;
@@ -99,6 +100,7 @@ void CProductAlpacaStockDayLine::InquireData(const string& strHeaders, const str
 
 	auto inquireStrings2 = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStrings2) {
+		if (st.stop_requested()) return;
 		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, headers);
 
 		status = r.status_code;
@@ -113,6 +115,7 @@ void CProductAlpacaStockDayLine::InquireData(const string& strHeaders, const str
 		return a.GetDate() < b.GetDate();
 	});
 
+	if (st.stop_requested()) return;
 	ABSL_DCHECK(pvDayLineWithSplit->size() == pvDayLine->size());
 	if (!pvDayLine->empty()) {
 		ABSL_DCHECK(pvDayLine->at(0).GetDate() == pvDayLineWithSplit->at(0).GetDate());
@@ -284,6 +287,21 @@ void CProductAlpacaStockDayLine::CalculateSplitFactor(vector<CTiingoCandleLine>&
 			for (size_t j = 0; j <= i; ++j) {
 				vDayLineWithSplit[j].SetClose(vDayLineWithSplit[j].GetClose() * splitFactor);
 			}
+		}
+	}
+}
+
+void CProductAlpacaStockDayLine::AddDayLine(const string& strSymbol, shared_ptr<vector<CTiingoCandleLine>> pvDayLine) {
+	if (!HaveSymbol(strSymbol)) { // 如果没有该股票的日线数据，则添加之
+		m_mapStockDayLine[strSymbol] = m_vStockDayLine.size();
+		m_vStockDayLine.push_back({ strSymbol, pvDayLine });
+		shared_ptr<vector<CTiingoCandleLine>> pvDayLineWithSplit = make_shared<vector<CTiingoCandleLine>>();
+		m_vStockDayLineSplit.push_back({ strSymbol, pvDayLineWithSplit }); // 生成空的日线数据，等待后续的分割因子计算。
+	}
+	else { // 如果已经有该股票的日线数据，则掭加之
+		size_t index = m_mapStockDayLine[strSymbol];
+		for (size_t i = 0; i < pvDayLine->size(); ++i) {
+			m_vStockDayLine[index].pvDayLine->push_back((*pvDayLine)[i]);
 		}
 	}
 }

@@ -78,6 +78,7 @@ protected:
 	bool m_fUpdateIEXTopOFBook{ true }; // 定时更新IEX last top of book.
 	bool m_fEndMarketIEXTopOfBookUpdated{ false }; // 最新交易日闭市IEXTopOfBook数据已更新。
 
+	bool m_fTiingoDataInquiryFinished{ false };
 	// 带宽限制
 	long long m_llBandWidthLeft{ 5368709120 };
 };

@@ -30,6 +30,7 @@
 #include "ContainerTiingoChosenStock.h"
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoStock.h"
+#include "DlgGetDate.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "FinnhubWebSocket.h"
 #include "TimeConvert.h"
@@ -102,8 +103,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate)
 	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CMainFrame::OnTiingoRebuildStockSplit)
 	ON_COMMAND(ID_TIINGO_DOWNLOAD_ALL_DAYLINE, &CMainFrame::OnTiingoDownloadAllDayline)
-	ON_COMMAND(ID_TIINGO_DOWNLOAD_ONE_YEAR_DAYLINE, &CMainFrame::OnTiingoDownloadOneYearDayline)
-	ON_COMMAND(ID_BUILD_CHINA_STOCK_ONE_YEAR_DAYLINE, &CMainFrame::OnBuildChinaStockOneYearDayline)
+	ON_COMMAND(ID_TIINGO_DOWNLOAD_ONE_YEAR_DAYLINE, &CMainFrame::OnTiingoDownloadDaylineAfterSelectedDate)
+	ON_COMMAND(ID_BUILD_CHINA_STOCK_ONE_YEAR_DAYLINE, &CMainFrame::OnBuildChinaStockDaylineAfterSelectedDate)
 	ON_COMMAND(ID_BUILD_CHINA_MARKET_ALL_STOCK_DAYLINE, &CMainFrame::OnBuildChinaMarketAllStockDayline)
 	ON_COMMAND(ID_USING_EASTMONEY_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingEastmoneyDaylineDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_EASTMONEY_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingEastmoneyDaylineDataServer)
@@ -1082,21 +1083,37 @@ void CMainFrame::OnTiingoDownloadAllDayline() {
 	gl_pWorldMarket->UpdateTiingoAllStockDayLine();
 }
 
-void CMainFrame::OnTiingoDownloadOneYearDayline() {
-	gl_pWorldMarket->UpdateTiingoOneYearStockDayLine();
+void CMainFrame::OnTiingoDownloadDaylineAfterSelectedDate() {
+	CDlgGetDate dlg;
+
+	if (dlg.DoModal() == IDOK) {
+		local_days date{ year(dlg.m_date.GetYear()) / month(dlg.m_date.GetMonth()) / day(dlg.m_date.GetDay()) };
+		if (date < gl_pChinaMarket->GetMarketDate()) { // 如果用户输入的日期小于当前市场日期，则执行更新
+			gl_pWorldMarket->UpdateTiingoOneYearStockDayLine();
+		}
+	}
 }
 
-void CMainFrame::OnBuildChinaStockOneYearDayline() {
-	gl_pChinaMarket->SetProcessTodayStock(false); //目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
-	gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
-	gl_pChinaMarket->UpdateOneYearStockDayLine();
+void CMainFrame::OnBuildChinaStockDaylineAfterSelectedDate() {
+	CDlgGetDate dlg;
+
+	if (dlg.DoModal() == IDOK) {
+		local_days date{ year(dlg.m_date.GetYear()) / month(dlg.m_date.GetMonth()) / day(dlg.m_date.GetDay()) };
+		if (date < gl_pChinaMarket->GetMarketDate()) { // 如果用户输入的日期小于当前市场日期，则执行更新
+			gl_pChinaMarket->UpdateOneYearStockDayLine(date);
+			gl_pChinaMarket->SetProcessTodayStock(false); //目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
+			gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
+			gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
+			gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
+		}
+	}
 }
 
 void CMainFrame::OnBuildChinaMarketAllStockDayline() {
 	gl_pChinaMarket->SetProcessTodayStock(false);//目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
 	gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__,gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
+	gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
+	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
 	gl_pChinaMarket->UpdateAllStockDayLine();
 }
 

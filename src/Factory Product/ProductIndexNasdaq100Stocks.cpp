@@ -54,8 +54,7 @@ void CProductIndexNasdaq100Stocks::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //  https://www.slickcharts.com/nasdaq100网页中，有效内容格式为：
 //
 // {
-//	"companyListComponent": {
-//		"companyList": [
+//		nasdaq100List: [
 //		{
 //			"name": "Nvidia",
 //				"symbol" : "NVDA",
@@ -81,32 +80,77 @@ void CProductIndexNasdaq100Stocks::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //				"weight" : "12.70%"
 //		},
 //   ]
-//  }
 // }
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWebDataPtr& pWebData) {
+vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks2(const CWebDataPtr& pWebData) {
 	vector<string> vSymbol;
 
 	string_view svData = pWebData->GetStringView();
 	string s(svData);
-	size_t positionStart = svData.find("<script> window.__sc_init_state__ = "); // 有效数据前面的字符串
-	positionStart += 36; // 跨过此字符串
+	size_t positionStart = svData.find("[null,{type:\"data\",data:{nasdaq100List:"); // 有效数据前面的字符串
+	positionStart += 39; // 跨过此字符串
 	string_view svData2 = svData.substr(positionStart);
-	size_t positionEnd = svData2.find("; </script>"); // 有效数据后的字符串
+	size_t positionEnd = svData2.find("]") + 1; // 有效数据后的字符串
 	string_view sv = svData2.substr(0, positionEnd);
 
-	ondemand::parser parser;
-	const simdjson::padded_string jsonPadded(sv);
-	ondemand::document doc = parser.iterate(jsonPadded).value();
-	auto item1 = doc["companyListComponent"];
-	auto item2 = item1["companyList"];
+	try {
+		ondemand::parser parser;
+		const simdjson::padded_string jsonPadded(sv);
+		ondemand::document doc = parser.iterate(jsonPadded).value();
+		auto arr = doc.get_array();
+		for (auto item : arr) {
+			auto itemValue = item.value();
+			auto lastPrice = simdjsonGetDouble(item.value(), "lastPrice");
+			auto svSymbol = simdjsonGetStringView(item.value(), "symbol");
+			string s2(svSymbol.data(), svSymbol.length());
+			vSymbol.push_back(s2);
+		}
+	} catch (simdjson_error& e) {
+		gl_systemMessage.PushErrorMessage("Nasdaq 100 List format changed");
+		return vSymbol;
+	}
 
-	for (auto item : item2) {
-		auto itemValue = item.value();
-		auto svSymbol = simdjsonGetStringView(itemValue, "symbol");
-		string s2(svSymbol.data(), svSymbol.length());
-		vSymbol.push_back(s2);
+	return vSymbol;
+}
+
+vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWebDataPtr& pWebData) {
+	vector<string> vSymbol;
+
+	string_view svData = pWebData->GetStringView();
+	size_t positionStart = svData.find("[null,{type:\"data\",data:{nasdaq100List:"); // 有效数据前面的字符串
+	if (positionStart == string_view::npos) {
+		return vSymbol;
+	}
+	positionStart += 39; // 跨过此字符串
+	string_view svData2 = svData.substr(positionStart);
+	size_t foundEnd = svData2.find("]");
+	if (foundEnd == string_view::npos) {
+		return vSymbol;
+	}
+	// include the closing bracket
+	std::string jsonText(svData2.substr(0, foundEnd + 1));
+
+	try {
+		using json = nlohmann::json;
+		json j = json::parse(jsonText);
+
+		if (!j.is_array()) {
+			gl_systemMessage.PushErrorMessage("Nasdaq 100 List format changed");
+			return vSymbol;
+		}
+
+		for (const auto& item : j) {
+			if (item.contains("symbol") && item["symbol"].is_string()) {
+				vSymbol.push_back(item["symbol"].get<std::string>());
+			}
+		}
+	} catch (const nlohmann::json::parse_error& e) {
+		gl_systemMessage.PushErrorMessage("Nasdaq 100 List format changed");
+		return vSymbol;
+	} catch (const std::exception& ex) {
+		gl_systemMessage.PushErrorMessage("Nasdaq 100 List parse error");
+		return vSymbol;
 	}
 
 	return vSymbol;

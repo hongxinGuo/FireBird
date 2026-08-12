@@ -71,6 +71,7 @@ public:
 	// MarketDisplayTask
 	bool HaveNewTask() const;
 	vector<shared_ptr<CMarketTask>> DiscardOutDatedTask(local_seconds lCurrentMarketTime);
+	void DeleteDisplayTask(long lType);
 	vector<shared_ptr<CMarketTask>> GetDisplayMarketTask();
 
 	// 时间函数

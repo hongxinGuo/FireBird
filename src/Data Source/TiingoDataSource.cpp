@@ -64,6 +64,8 @@ bool CTiingoDataSource::Reset() {
 	m_fUpdateIEXTopOFBook = true;
 	m_fEndMarketIEXTopOfBookUpdated = false;
 
+	m_fTiingoDataInquiryFinished = false;
+
 	return true;
 }
 
@@ -463,8 +465,12 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	}
 
 	ABSL_DCHECK(!IsInquiring());
-	gl_systemMessage.PushInformationMessage("Tiingo data inquiry finished");
-	gl_systemMessage.SetCurrentTiingoFunction("idling");
+	if (!m_fTiingoDataInquiryFinished) {
+		gl_systemMessage.PushInformationMessage("Tiingo data inquiry finished");
+		gl_systemMessage.SetCurrentTiingoFunction("idling");
+		m_fTiingoDataInquiryFinished = true;
+		return false;
+	}
 	return false;
 }
 

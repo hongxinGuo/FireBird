@@ -138,8 +138,8 @@ protected:
 
 public:
 	afx_msg void OnTiingoDownloadAllDayline();
-	afx_msg void OnTiingoDownloadOneYearDayline();
-	afx_msg void OnBuildChinaStockOneYearDayline();
+	afx_msg void OnTiingoDownloadDaylineAfterSelectedDate();
+	afx_msg void OnBuildChinaStockDaylineAfterSelectedDate();
 	afx_msg void OnBuildChinaMarketAllStockDayline();
 	afx_msg void OnUsingEastmoneyDaylineDataServer();
 	afx_msg void OnUpdateUsingEastmoneyDaylineDataServer(CCmdUI* pCmdUI);

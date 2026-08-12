@@ -350,6 +350,7 @@
     <ClInclude Include="..\src\Windows interface\OutputWnd.h" />
     <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h" />
+    <ClInclude Include="DlgGetDate.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +362,7 @@
     <ClCompile Include="..\src\Windows interface\OutputWnd.cpp" />
     <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp" />
     <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp" />
+    <ClCompile Include="DlgGetDate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireBirdLib\FireBirdLib.vcxproj">

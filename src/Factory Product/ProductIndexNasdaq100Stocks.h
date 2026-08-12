@@ -17,6 +17,7 @@ public:
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	vector<string> ParseIndexNasdaq100Stocks2(const CWebDataPtr& pWebData);
 	vector<string> ParseIndexNasdaq100Stocks(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;

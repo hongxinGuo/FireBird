@@ -67,6 +67,7 @@ public:
 	virtual ~CVirtualDataSource() = default;
 
 	static void ReportFinishedMsg(const std::string& msg);
+	void Run2(const local_seconds& lMarketTime);
 
 	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiry(int inquireType, UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {
@@ -183,7 +184,7 @@ public:
 
 	void Run(const local_seconds& lMarketTime);
 	void InquireData();
-	void InquireData2();
+	void InquireData2(const std::stop_token& token);
 	virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const CWebDataPtr&) {} // 此WebData内容为错误信息？
@@ -265,6 +266,8 @@ public:
 	void SetErrorMessage(enum_ErrorMessageData error) { m_eErrorMessageData = error; }
 	enum_ErrorMessageData GetErrorMessage() const noexcept { return m_eErrorMessageData; }
 
+	void StopThread();
+
 protected:
 	queue<CVirtualProductWebDataPtr> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct{ nullptr };
@@ -296,6 +299,8 @@ protected:
 	bool m_bConcurrentForbid{ false }; // 禁止使用并行申请模式。
 
 	bool m_bUsingNewInterface{ false }; // Todo: 准备使用cpr的新接口，迁移成功后即可删除。
+
+	std::jthread m_runThread; // Run发起的后台线程，用于执行InquireData2函数。此线程在析构函数中自动结束。
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;

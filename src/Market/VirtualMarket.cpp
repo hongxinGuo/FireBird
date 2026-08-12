@@ -172,6 +172,21 @@ vector<CMarketTaskPtr> CVirtualMarket::DiscardOutDatedTask(chrono::local_seconds
 	return validTasks;
 }
 
+void CVirtualMarket::DeleteDisplayTask(long lType) {
+	vector<CMarketTaskPtr> validTasks;
+	CMarketTaskPtr pTask = nullptr;
+
+	while (m_qMarketDisplayTask.try_dequeue(pTask)) {
+		if (pTask->GetType() != lType) {
+			validTasks.emplace_back(pTask);
+		}
+	}
+	m_lLastQueueLength = validTasks.size();
+	for (const auto& pTaskRemained : validTasks) {
+		m_qMarketDisplayTask.enqueue(pTaskRemained);
+	}
+}
+
 vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 	return vector<CMarketTaskPtr>();
 }

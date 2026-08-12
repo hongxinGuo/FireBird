@@ -8,6 +8,7 @@
 
 #include"AccessoryDataSource.h"
 #include"ProductIndexNasdaq100Stocks.h"
+#include "WebData.h"
 
 using namespace testing;
 
@@ -58,5 +59,24 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		gl_pAccessoryDataSource->SetUpdateIndexNasdaq100Stocks(true);
+	}
+
+	TEST_F(CProductIndexNasdaq100StocksTest, ParsesSymbolsCorrectly) {
+		auto pWebData = std::make_shared<CWebData>();
+
+		// 构造页面片段，必须包含函数中查找的精确前缀
+		const std::string jsonArray = R"([{"name":"Nvidia","symbol":"NVDA","cik":null},{"name":"Microsoft","symbol":"MSFT","cik":null},{"name":"Apple","symbol":"AAPL","cik":null}])";
+		const std::string page =
+		std::string("prefix[null,{type:\"data\",data:{nasdaq100List:") + jsonArray + "}}]suffix";
+
+		pWebData->Test_SetBuffer_(page);
+
+		CProductIndexNasdaq100Stocks product;
+		auto symbols = product.ParseIndexNasdaq100Stocks(pWebData);
+
+		ASSERT_EQ(symbols.size(), 3u);
+		EXPECT_EQ(symbols[0], "NVDA");
+		EXPECT_EQ(symbols[1], "MSFT");
+		EXPECT_EQ(symbols[2], "AAPL");
 	}
 }

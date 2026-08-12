@@ -41,6 +41,10 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_DIALOG_PROGRAM_OPTION       310
 #define IDD_DIALOG_CHINA_STOCKMARKET    316
+#define IDD_DIALOG1                     320
+#define IDD_DIALOG_GET_DATE             320
+#define IDD_DIALOG2                     324
+#define IDD_DIALOG_GET_DATE2            324
 #define IDS_INFORMATION_TAB             400
 #define IDS_TRANSACTION_TAB             401
 #define IDS_DAYLINE_INFO_TAB            402
@@ -78,6 +82,7 @@
 #define IDC_EDIT_SECOND_STRONG1         1018
 #define IDC_EDIT_THIRD_TIME_LENGTH1     1019
 #define IDC_EDIT_THIRD_STRONG1          1020
+#define IDC_DATETIMEPICKER1             1021
 #define ID_PROCESS_TODAY_STOCK          32771
 #define ID_REBUILD_DAYLINE_DATABASE     32772
 #define ID_CALCULATE_TODAY_RELATIVE_STRONG 32773
@@ -225,9 +230,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        320
+#define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32990
-#define _APS_NEXT_CONTROL_VALUE         1020
+#define _APS_NEXT_CONTROL_VALUE         1022
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
