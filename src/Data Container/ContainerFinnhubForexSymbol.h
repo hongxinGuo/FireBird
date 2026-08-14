@@ -15,7 +15,7 @@ public:
 	void Reset() override;
 
 	bool LoadProfileDB();
-	void UpdateProfileDB();
+	void UpdateProfileDB(std::stop_token st);
 
 	shared_ptr<CFinnhubForex> GetItem(size_t lIndex);
 	shared_ptr<CFinnhubForex> GetItem(const string& strStockCode);

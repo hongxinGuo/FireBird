@@ -24,9 +24,9 @@ public:
 	void ResetDayLine();
 
 	bool LoadProfileDB();
-	void UpdateProfileDB();
+	void UpdateProfileDB(std::stop_token st);
 
-	void UpdateInsiderTransactionDB();
+	void UpdateInsiderTransactionDB(std::stop_token st);
 
 	static bool ValidateStockSymbol(const CFinnhubStockPtr& pStock);
 

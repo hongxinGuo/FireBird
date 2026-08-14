@@ -145,7 +145,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	return true;
 }
 
-void CContainerFinnhubStock::UpdateProfileDB() {
+void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 	ABSL_DCHECK(IsUpdateProfileDB());
 
 	using namespace StockMarket;
@@ -154,6 +154,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 	auto tx = start_transaction(db);
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
+		if (st.stop_requested()) return;
 		const CFinnhubStockPtr pStock = GetItem(l);
 		ABSL_DCHECK(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
@@ -243,17 +244,15 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 	tx.commit();
 }
 
-void CContainerFinnhubStock::UpdateInsiderTransactionDB() {
+void CContainerFinnhubStock::UpdateInsiderTransactionDB(std::stop_token st) {
 	for (size_t i = 0; i < m_vStock.size(); i++) {
+		if (st.stop_requested()) return;
 		const CFinnhubStockPtr pStock = GetItem(i);
 		if (pStock->IsUpdateInsiderTransactionDB()) {
 			pStock->SetUpdateInsiderTransactionDB(false);
 			if (pStock->HaveInsiderTransaction()) {
 				pStock->UpdateInsiderTransactionDB();
 			}
-		}
-		if (gl_systemConfiguration.IsExitingSystem()) {
-			break; // 如果程序正在退出，则停止存储。
 		}
 	}
 }

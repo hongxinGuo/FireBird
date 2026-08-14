@@ -101,7 +101,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_INQUIRE_IEX_TOP_OF_BOOK, &CMainFrame::OnInquireIexTopOfBook)
 	ON_COMMAND(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnCalculateNasdaq100200maUpdownRate)
 	ON_UPDATE_COMMAND_UI(ID_CalculateNasdaq100_200MA_UpDownRate, &CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate)
-	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CMainFrame::OnTiingoRebuildStockSplit)
+	ON_COMMAND(ID_TIINGO_REBUILD_STOCK_SPLIT, &CMainFrame::OnTiingoRebuildStockSplitDB)
 	ON_COMMAND(ID_TIINGO_DOWNLOAD_ALL_DAYLINE, &CMainFrame::OnTiingoDownloadAllDayline)
 	ON_COMMAND(ID_TIINGO_DOWNLOAD_ONE_YEAR_DAYLINE, &CMainFrame::OnTiingoDownloadDaylineAfterSelectedDate)
 	ON_COMMAND(ID_BUILD_CHINA_STOCK_ONE_YEAR_DAYLINE, &CMainFrame::OnBuildChinaStockDaylineAfterSelectedDate)
@@ -201,12 +201,27 @@ CMainFrame::~CMainFrame() {
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
-		gl_dataContainerChinaStock.UpdateProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+		gl_dataContainerChinaStock.UpdateProfileDB(std::stop_token()); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
-	while (gl_BackgroundWorkingThread.GetCount() > 0) Sleep(1); // 等待后台工作线程运行结束
+	CloseAllBackgroundThread();
+	CloseAllThread();
+
+	::SystemShutdown();
 
 	ABSL_DLOG(INFO) << "exit finally";
+}
+
+void CMainFrame::CloseAllThread() {
+	if (m_jtProcessTodayStock.joinable()) {
+		m_jtProcessTodayStock.request_stop();
+		m_jtProcessTodayStock.join();
+	}
+
+	if (m_jtUpdateChinaStockProfileDB.joinable()) {
+		m_jtUpdateChinaStockProfileDB.request_stop();
+		m_jtUpdateChinaStockProfileDB.join();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -614,7 +629,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 		ABSL_DLOG(INFO) << "应用户申请，准备退出程序\n";
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		ReportExitToWatchdog();
-		for (auto& timer : gl_aTimer) {// 退出所有的计时器，关闭所有的工作线程。
+		for (auto& timer : gl_aTimer) {// 退出所有的计时器，防止生成新的工作线程（已经运行的工作线程之后通知退出）。
 			timer.cancel();
 		}
 		for (const auto& pMarket : gl_vMarket) {
@@ -632,10 +647,14 @@ void CMainFrame::OnProcessTodayStock() {
 }
 
 void CMainFrame::ProcessChinaMarketStock() {
-	gl_runtime.thread_executor()->post([] {
+	if (m_jtProcessTodayStock.joinable()) {
+		m_jtProcessTodayStock.request_stop();
+		m_jtProcessTodayStock.join();
+	}
+	m_jtProcessTodayStock = std::jthread([](std::stop_token st) {
 		ABSL_DLOG(INFO) << "China market Process today stock\n";
 		gl_systemMessage.SetChinaMarketSavingFunction("Process today stock");
-		gl_pChinaMarket->ProcessTodayStock();
+		gl_pChinaMarket->ProcessTodayStock(st);
 		ABSL_DLOG(INFO) << "China market Processed today stock\n";
 	});
 }
@@ -830,13 +849,17 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);
-	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, 1);
+	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION_DB_, 1);
 }
 
 void CMainFrame::OnUpdateStockProfile() {
-	gl_runtime.thread_executor()->post([] {
+	if (m_jtUpdateChinaStockProfileDB.joinable()) {
+		m_jtUpdateChinaStockProfileDB.request_stop();
+		m_jtUpdateChinaStockProfileDB.join();
+	}
+	m_jtUpdateChinaStockProfileDB = std::jthread([this](std::stop_token st) {
 		gl_systemMessage.SetChinaMarketSavingFunction("update china stock profile");
-		gl_dataContainerChinaStock.UpdateProfileDB();
+		gl_dataContainerChinaStock.UpdateProfileDB(st);
 	});
 }
 
@@ -1044,7 +1067,7 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnProcessTiingoDayLine() {
 	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskProcessTodayDayLine();
+		gl_dataContainerTiingoStock.TaskProcessTodayDayLine(std::stop_token{});
 	});
 }
 
@@ -1075,8 +1098,8 @@ void CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 }
 
-void CMainFrame::OnTiingoRebuildStockSplit() {
-	gl_pWorldMarket->RebuildTiingoStockSplitDB();
+void CMainFrame::OnTiingoRebuildStockSplitDB() {
+	gl_pWorldMarket->RebuildTiingoStockSplitDB(std::stop_token{});
 }
 
 void CMainFrame::OnTiingoDownloadAllDayline() {
@@ -1089,7 +1112,7 @@ void CMainFrame::OnTiingoDownloadDaylineAfterSelectedDate() {
 	if (dlg.DoModal() == IDOK) {
 		local_days date{ year(dlg.m_date.GetYear()) / month(dlg.m_date.GetMonth()) / day(dlg.m_date.GetDay()) };
 		if (date < gl_pChinaMarket->GetMarketDate()) { // 如果用户输入的日期小于当前市场日期，则执行更新
-			gl_pWorldMarket->UpdateTiingoOneYearStockDayLine();
+			gl_pWorldMarket->UpdateTiingoStockDayLine(date);
 		}
 	}
 }
@@ -1102,18 +1125,18 @@ void CMainFrame::OnBuildChinaStockDaylineAfterSelectedDate() {
 		if (date < gl_pChinaMarket->GetMarketDate()) { // 如果用户输入的日期小于当前市场日期，则执行更新
 			gl_pChinaMarket->UpdateOneYearStockDayLine(date);
 			gl_pChinaMarket->SetProcessTodayStock(false); //目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
-			gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-			gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-			gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
+			gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
+			gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
+			gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
 		}
 	}
 }
 
 void CMainFrame::OnBuildChinaMarketAllStockDayline() {
 	gl_pChinaMarket->SetProcessTodayStock(false);//目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
-	gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-	gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
+	gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
+	gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
+	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
 	gl_pChinaMarket->UpdateAllStockDayLine();
 }
 

@@ -54,7 +54,7 @@ void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 /// 免费账户只存储新证券即可；付费账户需要更新所有新接收到的数据。
 ///
 /// </summary>
-void CContainerTiingoStock::UpdateProfileDB() {
+void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 	ABSL_DCHECK(IsUpdateProfileDB());
 
 	set<string> setExistingSymbols;
@@ -69,6 +69,7 @@ void CContainerTiingoStock::UpdateProfileDB() {
 	}
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
+		if (st.stop_requested()) return;
 		const CTiingoStockPtr pStock = GetStock(l);
 		ABSL_DCHECK(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
@@ -323,8 +324,9 @@ long CContainerTiingoStock::GetTotalActiveStocks() {
 	return iCount;
 }
 
-void CContainerTiingoStock::UpdateFinancialStateDB() {
+void CContainerTiingoStock::UpdateFinancialStateDB(std::stop_token st) {
 	for (size_t i = 0; i < Size(); i++) {
+		if (st.stop_requested()) return;
 		auto pStock = GetStock(i);
 		if (pStock->IsUpdateFinancialStateDB()) {
 			pStock->UpdateFinancialStateDB();
@@ -533,20 +535,20 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 ///
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::TaskProcessTodayDayLine() {
+void CContainerTiingoStock::TaskProcessTodayDayLine(std::stop_token st) {
 	gl_systemMessage.PushInnerSystemInformationMessage("开始处理Tiingo日线数据");
 	gl_pWorldMarket->ResetNewHighHigher();
 
 	auto lSize = Size();
 	vector<result<void>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
+		if (st.stop_requested()) return;
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
 			gl_BackgroundWorkingThread.Acquire();
-			auto result = gl_runtime.thread_executor()->submit([pStock] {
-				if (!gl_systemConfiguration.IsExitingSystem()) {
-					pStock->ProcessDayLine();
-				}
+			auto result = gl_runtime.thread_executor()->submit([pStock, st] {
+				if (st.stop_requested()) return;
+				pStock->ProcessDayLine();
 				gl_BackgroundWorkingThread.Release();
 			});
 			vResults.emplace_back(std::move(result));
@@ -555,6 +557,7 @@ void CContainerTiingoStock::TaskProcessTodayDayLine() {
 	for (auto& result2 : vResults) {
 		result2.get(); // 在这里等待所有的线程执行完毕
 	}
+	if (st.stop_requested()) return;
 	gl_systemConfiguration.SetTiingoStockDayLineProcessedDate(gl_pWorldMarket->GetMarketDate());
 	gl_systemMessage.PushInnerSystemInformationMessage("结束处理Tiingo日线任务，开始存储");
 
@@ -566,7 +569,7 @@ void CContainerTiingoStock::TaskProcessTodayDayLine() {
 	});
 	result2.get();
 	result3.get();
-
+	if (st.stop_requested()) return;
 	for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(i);
 		pStock->SetUpdate52WeekHighLowDB(false);

@@ -41,7 +41,7 @@ bool CContainerFinnhubCountry::Delete(const CCountry& country) {
 // 此种更新方法，是默认新的国家代码附加在最后。
 //
 //////////////////////////////////////////////////////////////////////////
-void CContainerFinnhubCountry::UpdateDB() const {
+void CContainerFinnhubCountry::UpdateDB(std::stop_token st) const {
 	if (m_llLastTotalCountry < m_vCountry.size()) {
 		using namespace StockMarket;
 		const auto& t = FinnhubCountryList{};
@@ -51,6 +51,7 @@ void CContainerFinnhubCountry::UpdateDB() const {
 		                                           t.Country, t.Currency, t.CurrencyCode);
 		int nValues = 0;
 		for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
+			if (st.stop_requested()) return;
 			const CCountry& country = m_vCountry.at(l);
 			multi_insert.add_values(
 				t.Code2 = country.m_strCode2,

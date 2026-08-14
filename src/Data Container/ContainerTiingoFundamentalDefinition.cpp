@@ -55,7 +55,7 @@ bool CContainerTiingoFundamentalDefinition::Delete(const string& strDataCode) {
 	return false;
 }
 
-bool CContainerTiingoFundamentalDefinition::UpdateDB() {
+bool CContainerTiingoFundamentalDefinition::UpdateDB(std::stop_token st) {
 	ABSL_DCHECK(m_fUpdated);
 	map<string, size_t> mapDefinition;
 	using namespace StockMarket;
@@ -71,6 +71,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 
 	int nValues = 0;
 	for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
+		if (st.stop_requested()) return false;
 		if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
 			multi_insert.add_values(
 				t.dataCode = tiingoFundamentalDefinition.m_strDataCode,

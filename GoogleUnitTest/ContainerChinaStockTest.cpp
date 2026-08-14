@@ -184,7 +184,7 @@ namespace FireBirdTest {
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
-		gl_dataContainerChinaStock.UpdateProfileDB();
+		gl_dataContainerChinaStock.UpdateProfileDB(std::stop_token());
 
 		// Verify DB: existing stock updated
 		{

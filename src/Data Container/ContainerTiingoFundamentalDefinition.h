@@ -29,7 +29,7 @@ public:
 	CTiingoFundamentalDefinition GetFundamentalDefinition(const size_t lIndex) const { return m_vTiingoFundamentalDefinition.at(lIndex); }
 	CTiingoFundamentalDefinition GetFundamentalDefinition(const string& strDataCode) const { return m_vTiingoFundamentalDefinition.at(m_mapTiingoFundamentalDefinition.at(strDataCode)); }
 
-	bool UpdateDB();
+	bool UpdateDB(std::stop_token st);
 	bool LoadDB();
 
 	bool IsUpdateDB() const noexcept { return m_fUpdated; }

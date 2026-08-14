@@ -224,6 +224,9 @@ protected:
 	CIndicatorBoll m_weekLineBoll;
 	CIndicatorBoll m_monthLineBoll;
 
+	// thread变量，用于异步计算各种指标
+	std::jthread m_jtLoadCurrentStockDB;
+
 	// 生成的消息映射函数
 protected:
 	DECLARE_MESSAGE_MAP()

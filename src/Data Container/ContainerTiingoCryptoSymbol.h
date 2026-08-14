@@ -17,7 +17,7 @@ public:
 	shared_ptr<CTiingoCrypto> GetCrypto(size_t lIndex);
 	shared_ptr<CTiingoCrypto> GetCrypto(const string& strCryptoCode);
 
-	void UpdateDB();
+	void UpdateDB(std::stop_token st);
 	bool LoadDB();
 };
 

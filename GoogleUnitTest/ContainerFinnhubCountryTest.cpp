@@ -96,7 +96,7 @@ namespace FireBirdTest {
 
 		// Add and call UpdateDB2 (which uses sqlpp to insert new rows)
 		container.Add(country);
-		container.UpdateDB();
+		container.UpdateDB(std::stop_token{});
 
 		// Verify row exists in FinnhubCountryList
 		using namespace StockMarket;

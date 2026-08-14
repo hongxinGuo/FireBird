@@ -35,6 +35,7 @@ CAlpacaDataSource::CAlpacaDataSource() {
 }
 
 bool CAlpacaDataSource::Reset() {
+	m_fUpdateStockDayLine = true;
 	m_fAlpacaDataInquiryFinished = false;
 	return true;
 }

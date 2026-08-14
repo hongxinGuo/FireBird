@@ -94,7 +94,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "添加了两个股票";
 
-		gl_dataContainerTiingoStock.UpdateProfileDB(); // 更新代码集
+		gl_dataContainerTiingoStock.UpdateProfileDB(std::stop_token{}); // 更新代码集
 
 		// 恢复原状
 		using namespace StockMarket;
@@ -347,7 +347,7 @@ namespace FireBirdTest {
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
-		gl_dataContainerTiingoStock.UpdateProfileDB();
+		gl_dataContainerTiingoStock.UpdateProfileDB(std::stop_token{});
 
 		// Verify DB: existing stock updated
 		{

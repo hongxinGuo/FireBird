@@ -27,7 +27,7 @@ public:
 	bool Delete(const CCountry& country);
 	CCountry GetCountry(const string& strCountry) { return m_vCountry.at(m_mapCountry.at(strCountry)); }
 
-	void UpdateDB() const;
+	void UpdateDB(std::stop_token st) const;
 	bool LoadDB();
 
 protected:

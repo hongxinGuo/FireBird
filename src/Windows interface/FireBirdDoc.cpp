@@ -34,10 +34,16 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	m_pCurrentStock = pStock;
 	if (pStock == nullptr) return;
 		m_bDataReady = false;
-		gl_runtime.background_executor()->post([this, pStock] {
+		if (m_jtLoadCurrentStockDB.joinable()) {
+			m_jtLoadCurrentStockDB.request_stop();
+			m_jtLoadCurrentStockDB.join();
+		}
+		m_jtLoadCurrentStockDB = std::jthread([this, pStock](std::stop_token st) {
+			if (st.stop_requested()) return;
 			if (IsTiingoStock(pStock)) {
 				m_pDataDayLine = make_shared<CContainerTiingoStockDayLine>();
 				m_pDataDayLine->LoadDB(pStock->GetSymbol());
+				if (st.stop_requested()) return;
 				m_pDataDayLine->SplitAdjust();
 				m_pDataWeekLine = make_shared<CContainerTiingoStockWeekLine>();
 				m_pDataWeekLine->CreateWeekLine(*m_pDataDayLine);
@@ -50,6 +56,7 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 				ABSL_DCHECK(IsChinaStock(pStock));
 				m_pDataDayLine = make_shared<CContainerChinaStockDayLine>();
 				m_pDataDayLine->LoadDB(pStock->GetSymbol());
+				if (st.stop_requested()) return;
 				m_pDataDayLine->SplitAdjust();
 				m_pDataWeekLine = make_shared<CContainerChinaStockWeekLine>();
 				m_pDataWeekLine->CreateWeekLine(*m_pDataDayLine);
@@ -58,32 +65,43 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 				m_pDataMonthLine->CreateMonthLine(*m_pDataDayLine);
 				m_pDataMonthLine->SetSplitAdjusted(true);
 			}
-
+			if (st.stop_requested()) return;
 			CalculateDayLineMovingAverage(*m_pDataDayLine);
 			CalculateWeekLineMovingAverage(*m_pDataWeekLine);
 			CalculateMonthLineMovingAverage(*m_pDataMonthLine);
+			if (st.stop_requested()) return;
 			m_dayLineKDJ.SetCandle(m_pDataDayLine);
 			m_dayLineKDJ.Calculate();
+			if (st.stop_requested()) return;
 			m_weekLineKDJ.SetCandle(m_pDataWeekLine);
 			m_weekLineKDJ.Calculate();
 			m_monthLineKDJ.SetCandle(m_pDataMonthLine);
 			m_monthLineKDJ.Calculate();
+			if (st.stop_requested()) return;
 			m_dayLineMACD.SetCandle(m_pDataDayLine);
 			m_dayLineMACD.Calculate();
+			if (st.stop_requested()) return;
 			m_weekLineMACD.SetCandle(m_pDataWeekLine);
 			m_weekLineMACD.Calculate();
+			if (st.stop_requested()) return;
 			m_monthLineMACD.SetCandle(m_pDataMonthLine);
 			m_monthLineMACD.Calculate();
+			if (st.stop_requested()) return;
 			m_dayLineRSI.SetCandle(m_pDataDayLine);
 			m_dayLineRSI.Calculate();
+			if (st.stop_requested()) return;
 			m_weekLineRSI.SetCandle(m_pDataWeekLine);
 			m_weekLineRSI.Calculate();
+			if (st.stop_requested()) return;
 			m_monthLineRSI.SetCandle(m_pDataMonthLine);
 			m_monthLineRSI.Calculate();
+			if (st.stop_requested()) return;
 			m_dayLineBoll.SetCandle(m_pDataDayLine);
 			m_dayLineBoll.Calculate();
+			if (st.stop_requested()) return;
 			m_weekLineBoll.SetCandle(m_pDataWeekLine);
 			m_weekLineBoll.Calculate();
+			if (st.stop_requested()) return;
 			m_monthLineBoll.SetCandle(m_pDataMonthLine);
 			m_monthLineBoll.Calculate();
 			m_bDataReady = true;

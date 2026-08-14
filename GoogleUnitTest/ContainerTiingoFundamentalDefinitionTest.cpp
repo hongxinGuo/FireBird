@@ -104,7 +104,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85);
 		EXPECT_TRUE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 
-		m_dataTiingoFundamentalDefinition.UpdateDB();
+		m_dataTiingoFundamentalDefinition.UpdateDB(std::stop_token{});
 
 		using namespace StockMarket;
 		const auto& t = TiingoFundamentalDefinitions{};

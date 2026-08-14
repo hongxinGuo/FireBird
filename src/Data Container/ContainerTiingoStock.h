@@ -22,7 +22,7 @@ public:
 
 	void UpdateProfile(const shared_ptr<CTiingoStock>& pStock);
 
-	void UpdateProfileDB();
+	void UpdateProfileDB(std::stop_token st);
 	bool LoadProfileDB();
 	static void DeleteDuplicatedSymbolFromDB();
 
@@ -33,7 +33,7 @@ public:
 
 	long GetTotalActiveStocks();
 
-	void UpdateFinancialStateDB();
+	void UpdateFinancialStateDB(std::stop_token st);
 	void TaskUpdate52WeekHighDB();
 	void TaskUpdate52WeekLowDB();
 	void TaskCalculate();
@@ -48,7 +48,7 @@ public:
 
 	void SetUpdateFinancialState(bool fFlag);
 
-	void TaskProcessTodayDayLine();
+	void TaskProcessTodayDayLine(std::stop_token st);
 	void ReportHighHigherRate();
 };
 

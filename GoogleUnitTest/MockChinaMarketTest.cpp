@@ -113,7 +113,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask1) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_CREATE_TASK__, 10000);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_CREATE_TASK_, 10000);
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskCreateTask()).Times(1);
 
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask2) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, toLocalTime(91300));
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET_, toLocalTime(91300));
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket()).Times(1);
 
@@ -136,7 +136,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask3) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, toLocalTime(92600));
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET_, toLocalTime(92600));
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket()).Times(1);
 
@@ -148,7 +148,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask4) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, toLocalTime(91500));
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, toLocalTime(91500));
 
 		s_pMockChinaMarket->TEST_SetMarketTime(toLocalTime(93000));
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask());
@@ -156,7 +156,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
 		EXPECT_EQ(pTask->GetTime(), toLocalTime(93001)) << "每秒一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
@@ -164,7 +164,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask9) {
-		s_pMockChinaMarket->AddTask(RELOAD_SYSTEM__, toLocalTime(210000));
+		s_pMockChinaMarket->AddTask(RELOAD_SYSTEM_, toLocalTime(210000));
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskExitSystem()).Times(1);
 
@@ -186,7 +186,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__);
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
 		EXPECT_EQ(pTask->GetTime(), toLocalTime(10100)) << "每一分钟一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
@@ -199,7 +199,7 @@ namespace FireBirdTest {
 
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
 		EXPECT_EQ(pTask->GetTime(), toLocalTime(100001)) << "每秒一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());

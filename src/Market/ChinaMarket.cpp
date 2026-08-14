@@ -55,7 +55,7 @@ CChinaMarket::CChinaMarket() {
 
 	Reset();
 
-	AddTask(CHINA_MARKET_CREATE_TASK__, 1);
+	AddTask(CHINA_MARKET_CREATE_TASK_, 1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,6 +75,29 @@ CChinaMarket::~CChinaMarket() {
 		gl_systemConfiguration.SetCurrentStock(gl_pCurrentStock->GetSymbol());
 		gl_systemConfiguration.SetUpdateDB(true);
 	}
+
+	CloseAllThread();
+}
+
+void CChinaMarket::CloseAllThread() {
+	if (m_jtProcessAndUpdateDayLineDB.joinable()) {
+		m_jtProcessAndUpdateDayLineDB.request_stop();
+		m_jtProcessAndUpdateDayLineDB.join();
+	}
+
+	if (m_jtUpdateSystemConfiguration.joinable()) {
+		m_jtUpdateSystemConfiguration.request_stop();
+		m_jtUpdateSystemConfiguration.join();
+	}
+
+	if (m_jtProcessTodayStock.joinable()) {
+		m_jtProcessTodayStock.request_stop();
+		m_jtProcessTodayStock.join();
+	}
+	if (m_jtUpdateStockProfileDB.joinable()) {
+		m_jtUpdateStockProfileDB.request_stop();
+		m_jtUpdateStockProfileDB.join();
+	}
 }
 
 void CChinaMarket::ResetMarket() {
@@ -90,7 +113,7 @@ void CChinaMarket::ResetMarket() {
 	LoadChosenStockDB();
 
 	if (!gl_systemConfiguration.GetCurrentStock().empty()) {
-		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__);
+		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK_);
 	}
 
 	gl_ProcessChinaMarketRTData.release();
@@ -192,48 +215,48 @@ int CChinaMarket::ProcessTask() {
 	if (GetMarketTime() >= pTask->GetTime()) { // time to executive?
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
-		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
+		case CHINA_MARKET_CREATE_TASK_: // 生成其他任务
 			TaskCreateTask();
 			break;
-		case RELOAD_SYSTEM__: // 重启系统？
+		case RELOAD_SYSTEM_: // 重启系统？
 			ReportSchedulingExitToWatchdog();
 			TaskExitSystem();
 			break;
-		case CHINA_MARKET_CHECK_SYSTEM_READY__:
+		case CHINA_MARKET_CHECK_SYSTEM_READY_:
 			TaskCheckMarketReady();
 			break;
-		case CHINA_MARKET_RESET__: // 市场重置
+		case CHINA_MARKET_RESET_: // 市场重置
 			TaskResetMarket();
 			break;
 		case CHINA_MARKET_CHECK_SYSTEM: // 系统检查
 			TaskCheckSystem();
 			break;
-		case CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__:
+		case CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_:
 			TaskPerSecond();
 			TaskDistributeAndCalculateRTData();
 			break;
-		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
+		case CHINA_MARKET_BUILD_TODAY_DATABASE_:
 			TaskProcessTodayStock();
 			break;
-		case CHINA_MARKET_VALIDATE_TODAY_DATABASE__:
+		case CHINA_MARKET_VALIDATE_TODAY_DATABASE_:
 			//not implemented
 			break;
-		case CHINA_MARKET_UPDATE_OPTION_DB__:
+		case CHINA_MARKET_UPDATE_OPTION_DB_:
 			TaskUpdateOptionDB();
 			break;
-		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
+		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_:
 			TaskUpdateStockProfileDB();
 			break;
-		case CHINA_MARKET_UPDATE_STOCK_SECTION__:
+		case CHINA_MARKET_UPDATE_STOCK_SECTION_DB_:
 			TaskUpdateStockSection();
 			break;
-		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
-			TaskProcessAndSaveDayLine();
+		case CHINA_MARKET_UPDATE_DAY_LINE_DB_:
+			TaskProcessAndUpdateDayLineDB();
 			break;
-		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__:
+		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_:
 			TaskAccessoryPerMinuteTask();
 			break;
-		case CHINA_MARKET_PREPARING_MARKET_OPEN__:
+		case CHINA_MARKET_PREPARING_MARKET_OPEN_:
 			TaskPreparingMarketOpen();
 			break;
 		default:
@@ -252,10 +275,10 @@ int CChinaMarket::ProcessCurrentImmediateTask() {
 	auto taskType = pTask->GetType();
 	m_marketImmediateTask.DiscardCurrentTask();
 	switch (taskType) {
-	case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
+	case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB_:
 		TaskUpdateChosenStockDB();
 		break;
-	case CHINA_MARKET_UPDATE_CURRENT_STOCK__: // 
+	case CHINA_MARKET_UPDATE_CURRENT_STOCK_: // 
 		TaskSetCurrentStock();
 		break;
 	default:
@@ -273,7 +296,7 @@ bool CChinaMarket::TaskCheckMarketReady() {
 			gl_systemMessage.PushInformationMessage("中国股票市场初始化完毕");
 		}
 	}
-	if (!IsSystemReady()) AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, GetNextSecond(GetMarketTime()));
+	if (!IsSystemReady()) AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, GetNextSecond(GetMarketTime()));
 
 	return IsSystemReady();
 }
@@ -416,7 +439,7 @@ void CChinaMarket::TaskDistributeAndCalculateRTData() {
 			gl_ProcessChinaMarketRTData.release();
 		});
 
-	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(GetMarketTime())); // 每秒执行一次
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, GetNextSecond(GetMarketTime())); // 每秒执行一次
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -456,16 +479,16 @@ void CChinaMarket::TaskCreateTask() {
 	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
 	// 系统初始化检查
-	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, 1);
+	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, 1);
 	// 每秒一次分配实时数据
-	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1); // 开始执行时间为：1
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, 1); // 开始执行时间为：1
 
 	// 辅助任务。在随后的正点分钟执行。
-	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, GetNextTime(GetMarketTime(), 0h, 1min, -seconds));
+	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_, GetNextTime(GetMarketTime(), 0h, 1min, -seconds));
 
 	// 市场重置
 	if (GetMarketTime() < toLocalTime(91300)) {
-		AddTask(CHINA_MARKET_RESET__, toLocalTime(91300)); // 执行时间为：91300
+		AddTask(CHINA_MARKET_RESET_, toLocalTime(91300)); // 执行时间为：91300
 	}
 
 	// 第一次系统检查
@@ -475,29 +498,29 @@ void CChinaMarket::TaskCreateTask() {
 
 	// 准备开市任务。每日执行一次，于92959执行。
 	if (GetMarketTime() < toLocalTime(92959)) {
-		AddTask(CHINA_MARKET_PREPARING_MARKET_OPEN__, 92959);
+		AddTask(CHINA_MARKET_PREPARING_MARKET_OPEN_, 92959);
 	}
 
 	// 每十秒钟存储一次日线历史数据。
-	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 93000); // 中午休市时开始更新日线历史数据。
+	AddTask(CHINA_MARKET_UPDATE_DAY_LINE_DB_, 93000); // 中午休市时开始更新日线历史数据。
 
 	// 每五分钟存储一次系统选项数据库
-	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(GetMarketTime(), 0h, 3min, 5s - seconds)); // 开始执行时间为启动之后的三分钟。
+	AddTask(CHINA_MARKET_UPDATE_OPTION_DB_, GetNextTime(GetMarketTime(), 0h, 3min, 5s - seconds)); // 开始执行时间为启动之后的三分钟。
 
 	// 每五分钟存储一次股票简要数据库
-	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(GetMarketTime(), 0h, 4min, 10s - seconds)); // 开始执行时间为启动之后的四分钟。
+	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_, GetNextTime(GetMarketTime(), 0h, 4min, 10s - seconds)); // 开始执行时间为启动之后的四分钟。
 
 	if (IsWorkingDay() && GetMarketTime() < toLocalTime(150300)) {
 		// 生成本日历史数据
-		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150530); // 开始执行时间为：150530
+		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, 150530); // 开始执行时间为：150530
 	}
 
 	// 如果设定为周期性重启系统，则在星期天晚上9时重启。
 	if (gl_systemConfiguration.IsReloadSystem() && (GetWeekDay() == Sunday) && (GetMarketTime() < toLocalTime(210000))) {
-		AddTask(RELOAD_SYSTEM__, toLocalTime(210000));
+		AddTask(RELOAD_SYSTEM_, toLocalTime(210000));
 	}
 
-	AddTask(CHINA_MARKET_CREATE_TASK__, toLocalTime(240000)); // 重启市场任务的任务于每日零时执行
+	AddTask(CHINA_MARKET_CREATE_TASK_, toLocalTime(240000)); // 重启市场任务的任务于每日零时执行
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -525,13 +548,17 @@ void CChinaMarket::TaskAccessoryPerMinuteTask() {
 	ResetEffectiveRTDataRatio(); // 重置有效实时数据比率
 
 	if (gl_systemConfiguration.IsUpdateDB()) { // 每分钟检查一次系统配置是否需要存储。
-		gl_runtime.thread_executor()->post([] {
-			gl_systemConfiguration.UpdateDB();
+		if (m_jtUpdateSystemConfiguration.joinable()) {
+			m_jtUpdateSystemConfiguration.request_stop();
+			m_jtUpdateSystemConfiguration.join();
+		}
+		m_jtUpdateSystemConfiguration = std::jthread([](std::stop_token st) {
+			if (st.stop_requested()) return;
+			gl_systemConfiguration.UpdateDB();// 处理系统配置更新数据库
+			gl_systemConfiguration.SetUpdateDB(false);
 		});
-		gl_systemConfiguration.SetUpdateDB(false);
 	}
-
-	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, GetNextTime(GetMarketTime(), 0h, 1min, 0s)); // 每分钟整点执行一次
+	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_, GetNextTime(GetMarketTime(), 0h, 1min, 0s)); // 每分钟整点执行一次
 }
 
 void CChinaMarket::TaskPreparingMarketOpen() {
@@ -574,20 +601,24 @@ bool CChinaMarket::SetCheckActiveStockFlag() {
 
 bool CChinaMarket::TaskProcessTodayStock() {
 	if (IsProcessTodayStock() || IsSystemReady() && GetMarketTimeHMS().to_duration() > 15h + 04min) {
-		gl_runtime.thread_executor()->post([this] {
+		if (m_jtProcessTodayStock.joinable()) {
+			m_jtProcessTodayStock.request_stop();
+			m_jtProcessTodayStock.join();
+		}
+		m_jtProcessTodayStock = std::jthread([this](std::stop_token st) {
 			gl_systemMessage.SetChinaMarketSavingFunction("process today stock");
-			this->ProcessTodayStock();
+			this->ProcessTodayStock(st);
 		});
 		return true;
 	}
 	return false;
 }
 
-void CChinaMarket::ProcessTodayStock() {
+void CChinaMarket::ProcessTodayStock(std::stop_token st) {
 	ABSL_DCHECK(IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
 	gl_dataContainerChinaStock.BuildDayLine(GetMarketDate());
-	gl_dataContainerChinaStock.UpdateProfileDB();
+	gl_dataContainerChinaStock.UpdateProfileDB(st);
 	if (GetMarketTimeHMS().to_duration() > 15h + 04min) {	// 如果中国股市闭市了
 		SetUpdateOptionDB(true); // 更新状态
 	}
@@ -743,8 +774,8 @@ bool CChinaMarket::CheckMarketOpen() {
 bool CChinaMarket::TaskResetMarket() {
 	// 九点十三分重启系统。 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
 	SetSystemReady(false);
-	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, GetMarketTime()); // 每次重置系统时，必须进行系统初始化状态检查
-	AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, GetNextTime(GetMarketTime(), 0h, 5min, 0s)); // 五分钟后再更新此数据库
+	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, GetMarketTime()); // 每次重置系统时，必须进行系统初始化状态检查
+	AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION_DB_, GetNextTime(GetMarketTime(), 0h, 5min, 0s)); // 五分钟后再更新此数据库
 	ResetMarket();
 
 	return true;
@@ -770,12 +801,16 @@ bool CChinaMarket::TaskCheckSystem() {
 }
 
 bool CChinaMarket::TaskUpdateStockProfileDB() {
-	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(GetMarketTime(), 0h, 5min, 0s));
+	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_, GetNextTime(GetMarketTime(), 0h, 5min, 0s));
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
-		gl_runtime.thread_executor()->post([] {
+		if (m_jtUpdateStockProfileDB.joinable()) {
+			m_jtUpdateStockProfileDB.request_stop();
+			m_jtUpdateStockProfileDB.join();
+		}
+		m_jtUpdateStockProfileDB = std::jthread([this](std::stop_token st) {
 			gl_systemMessage.SetChinaMarketSavingFunction("update china stock profile");
-			gl_dataContainerChinaStock.UpdateProfileDB();
+			gl_dataContainerChinaStock.UpdateProfileDB(st);
 		});
 		return true;
 	}
@@ -783,7 +818,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB() {
 }
 
 bool CChinaMarket::TaskUpdateOptionDB() {
-	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(GetMarketTime(), 0h, 5min, 0s));
+	AddTask(CHINA_MARKET_UPDATE_OPTION_DB_, GetNextTime(GetMarketTime(), 0h, 5min, 0s));
 
 	gl_runtime.thread_executor()->post([this] {
 		gl_systemMessage.SetChinaMarketSavingFunction("update option");
@@ -816,20 +851,24 @@ bool CChinaMarket::TaskUpdateStockSection() {
 	return false;
 }
 
-void CChinaMarket::TaskProcessAndSaveDayLine() {
-	gl_runtime.thread_executor()->post([this] {
+void CChinaMarket::TaskProcessAndUpdateDayLineDB() {
+	if (m_jtProcessAndUpdateDayLineDB.joinable()) {
+		m_jtProcessAndUpdateDayLineDB.request_stop();
+		m_jtProcessAndUpdateDayLineDB.join();
+	}
+	m_jtProcessAndUpdateDayLineDB = std::jthread([this](const std::stop_token& st) {
 		if (IsDayLineNeedProcess()) {
 			this->ProcessDayLine();
 		}
-
+		if (st.stop_requested()) return;
 		// 判断是否存储日线库和股票代码库
 		if (gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
-			gl_dataContainerChinaStock.TaskUpdateDayLineDB();
+			gl_dataContainerChinaStock.TaskUpdateDayLineDB(st);
 		}
 	});
 
 	if (!IsSavingDayLineDBTaskFinished()) {// 当尚未更新完日线历史数据时
-		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
+		AddTask(CHINA_MARKET_UPDATE_DAY_LINE_DB_, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 	}
 }
 
@@ -882,13 +921,13 @@ void CChinaMarket::UpdateOneYearStockDayLine(local_days date) {
 		pStock->SetUpdateProfileDB(true);
 	}
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
-	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
+	AddTask(CHINA_MARKET_UPDATE_DAY_LINE_DB_, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 }
 
 void CChinaMarket::UpdateAllStockDayLine() {
 	gl_dataContainerChinaStock.SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
-	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
+	AddTask(CHINA_MARKET_UPDATE_DAY_LINE_DB_, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 }
 
 void CChinaMarket::DeleteDayLine(local_days lDate) const {

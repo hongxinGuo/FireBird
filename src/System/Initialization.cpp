@@ -81,17 +81,26 @@ namespace {
 		// 此五个要在gl_pChinaMarket前生成
 		ABSL_DCHECK(gl_pChinaMarket == nullptr);
 		gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
+		gl_vDataSource.push_back(gl_pSinaRTDataSource);
 		gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
+		gl_vDataSource.push_back(gl_pTengxunRTDataSource);
 		gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
+		gl_vDataSource.push_back(gl_pTengxunDayLineDataSource);
 		gl_pEastmoneyDayLineDataSource = make_shared<CEastmoneyDayLineDataSource>();
+		gl_vDataSource.push_back(gl_pEastmoneyDayLineDataSource);
 
 		// 此五个要在gl_pWorldMarket前生成
 		ABSL_DCHECK(gl_pWorldMarket == nullptr);
 		gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
+		gl_vDataSource.push_back(gl_pFinnhubDataSource);
 		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
+		gl_vDataSource.push_back(gl_pTiingoDataSource);
 		gl_pAlphaVantageDataSource = make_shared<CAlphaVantageDataSource>();
+		gl_vDataSource.push_back(gl_pAlphaVantageDataSource);
 		gl_pAlpacaDataSource = make_shared<CAlpacaDataSource>();
+		gl_vDataSource.push_back(gl_pAlpacaDataSource);
 		gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
+		gl_vDataSource.push_back(gl_pAccessoryDataSource);
 	}
 
 	void CreateWebSocket() {
@@ -179,18 +188,39 @@ void SystemInitialization() {
 
 	ABSL_DLOG(INFO) << "Start scheduling task";
 	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
-	gl_aTimer.at(GENERAL_TASK_PER_100MS__) = gl_runtime.timer_queue()->make_timer(
+	gl_aTimer.at(GENERAL_TASK_PER_100MS_) = gl_runtime.timer_queue()->make_timer(
 		1000ms,
 		100ms,
 		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
 		::TaskSchedulePer100ms);
 
 	// 设置每秒执行一次的辅助工作线程调度，用于执行各项辅助工作。
-	gl_aTimer.at(GENERAL_TASK_PER_SECOND__) = gl_runtime.timer_queue()->make_timer(
+	gl_aTimer.at(GENERAL_TASK_PER_SECOND_) = gl_runtime.timer_queue()->make_timer(
 		1000ms,
 		1000ms,
 		gl_runtime.thread_executor(), // 此为辅助调度任务
 		::TaskSchedulePerSecond);
+}
+
+void SystemShutdown() {
+	gl_pWorldMarket = nullptr;
+	gl_pChinaMarket = nullptr;
+
+	gl_pAccessoryDataSource = nullptr;
+	gl_pAlphaVantageDataSource = nullptr;
+	gl_pAlpacaDataSource = nullptr;
+	gl_pFinnhubDataSource = nullptr;
+	gl_pTiingoDataSource = nullptr;
+
+	gl_pSinaRTDataSource = nullptr;
+	gl_pTengxunRTDataSource = nullptr;
+	gl_pTengxunDayLineDataSource = nullptr;
+	gl_pEastmoneyDayLineDataSource = nullptr;
+
+	gl_pFinnhubWebSocket = nullptr;
+	gl_pTiingoCryptoWebSocket = nullptr;
+	gl_pTiingoForexWebSocket = nullptr;
+	gl_pTiingoIEXWebSocket = nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,7 +322,7 @@ void TaskCheckWorldMarketReady() {
 	const string str = "世界市场初始化完毕";
 	gl_systemMessage.PushInformationMessage(str);
 	gl_pWorldMarket->SetSystemReady(true);
-	gl_aTimer.at(WORLD_MARKET_CHECK_SYSTEM_READY__).cancel(); // 市场准备好后即删除此任务。
+	gl_aTimer.at(WORLD_MARKET_CHECK_SYSTEM_READY_).cancel(); // 市场准备好后即删除此任务。
 }
 
 bool IsMarketResetting() {
@@ -303,6 +333,16 @@ bool IsMarketResetting() {
 void ScheduleMarketTask() {
 	for (const auto& pVirtualMarket : gl_vMarket) {
 		pVirtualMarket->ScheduleTask();
+	}
+}
+
+void CloseAllBackgroundThread() {
+	CloseDataSourceBackgroundThread();
+}
+
+void CloseDataSourceBackgroundThread() {
+	for (const auto& pDataSource : gl_vDataSource) {
+		pDataSource->StopThread();
 	}
 }
 

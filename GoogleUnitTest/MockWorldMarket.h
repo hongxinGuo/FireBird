@@ -7,8 +7,9 @@
 namespace testing {
 	class CMockWorldMarket final : public CWorldMarket {
 	public:
-		MOCK_METHOD(bool, UpdateFinnhubStockDayLineDB, (), (override));
-		MOCK_METHOD(bool, UpdateInsiderSentimentDB, (), (override));
+		MOCK_METHOD(bool, UpdateFinnhubStockDayLineDB, (std::stop_token), (override));
+		MOCK_METHOD(bool, UpdateInsiderSentimentDB, (std::stop_token), (override));
+		MOCK_METHOD(bool, UpdateCompanyNewsDB, (std::stop_token), (override));
 		MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateSicIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));

@@ -64,7 +64,7 @@ public:
 	CVirtualDataSource& operator=(const CVirtualDataSource&) = delete;
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
-	virtual ~CVirtualDataSource() = default;
+	virtual ~CVirtualDataSource();
 
 	static void ReportFinishedMsg(const std::string& msg);
 	void Run2(const local_seconds& lMarketTime);
@@ -184,7 +184,7 @@ public:
 
 	void Run(const local_seconds& lMarketTime);
 	void InquireData();
-	void InquireData2(const std::stop_token& token);
+	void InquireData2(const std::stop_token& st);
 	virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const CWebDataPtr&) {} // 此WebData内容为错误信息？
@@ -304,3 +304,5 @@ protected:
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;
+
+extern vector<CVirtualDataSourcePtr> gl_vDataSource; // 各数据源，用于主动结束线程时使用。

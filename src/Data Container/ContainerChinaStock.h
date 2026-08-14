@@ -27,7 +27,7 @@ public:
 	void ProcessRTData();
 
 	long LoadProfileDB();
-	void UpdateProfileDB();
+	void UpdateProfileDB(std::stop_token st);
 
 	void UnloadDayLine() noexcept;
 	long BuildDayLine(local_days currentTradeDay);
@@ -42,7 +42,7 @@ public:
 
 	string CreateTengxunDayLineInquiringStr();
 
-	void TaskUpdateDayLineDB();
+	void TaskUpdateDayLineDB(std::stop_token st);
 
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 

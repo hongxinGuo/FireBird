@@ -12,7 +12,6 @@ using std::chrono::duration;
 using std::atomic_int64_t;
 using std::atomic_bool;
 using std::atomic_int;
-using std::binary_semaphore;
 
 constexpr int c_SelectedStockStartPosition = 0;
 
@@ -26,6 +25,7 @@ public:
 	CChinaMarket& operator=(const CChinaMarket&&) noexcept = delete;
 	~CChinaMarket() override;
 
+	void CloseAllThread();
 	void ResetMarket() final;
 	local_seconds GetResetTime() final; // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
 	void Reset();
@@ -50,7 +50,7 @@ public:
 	virtual bool TaskResetMarket();
 	bool TaskCheckSystem();
 	void TaskDistributeAndCalculateRTData();
-	void TaskProcessAndSaveDayLine();
+	void TaskProcessAndUpdateDayLineDB();
 	void TaskPerSecond(); // 每秒一次的辅助任务
 	void TaskAccessoryPerMinuteTask(); // 每分钟重复执行的辅助任务
 	void TaskPreparingMarketOpen();
@@ -71,7 +71,7 @@ public:
 	bool IsWebDayLineDataError();
 	long long GetWebDayLineDataErrorCode();
 
-	void ProcessTodayStock();
+	void ProcessTodayStock(std::stop_token st);
 	bool CheckMarketOpen();
 
 	bool TaskUpdateStockProfileDB();
@@ -260,9 +260,16 @@ protected:
 private:
 	long m_lRTDataReceivedInCurrentMinute; // 每分钟接收到的实时数据数量
 	long m_lNewRTDataReceivedInCurrentMinute; // 每分钟接收到的新实时数据数量
+
+	// 各thread的std::jthread变量，用于自动结束线程。
+	std::jthread m_jtProcessAndUpdateDayLineDB;
+	std::jthread m_jtUpdateSystemConfiguration;
+
+	std::jthread m_jtProcessTodayStock;
+	std::jthread m_jtUpdateStockProfileDB;
 };
 
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;
 
 extern CChinaMarketPtr gl_pChinaMarket; // 中国股票市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
-extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。
+extern std::binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。

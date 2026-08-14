@@ -77,7 +77,7 @@ namespace FireBirdTest {
 		pFinnhubCrypto->SetUpdateProfileDB(true);
 		m_dataFinnhubCrypto.Add(pFinnhubCrypto);
 		EXPECT_EQ(m_dataFinnhubCrypto.Size(), 8368);
-		m_dataFinnhubCrypto.UpdateProfileDB();
+		m_dataFinnhubCrypto.UpdateProfileDB(std::stop_token{});
 
 		// 恢复原状
 		using namespace StockMarket;

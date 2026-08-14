@@ -53,7 +53,7 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 	return true;
 }
 
-void CContainerFinnhubForexSymbol::UpdateProfileDB() {
+void CContainerFinnhubForexSymbol::UpdateProfileDB(std::stop_token st) {
 	if (IsUpdateProfileDB()) {
 		try {
 			using namespace StockMarket;
@@ -62,6 +62,7 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB() {
 			auto tx = sqlpp::start_transaction(db);
 
 			for (size_t i = 0; i < m_vStock.size(); ++i) {
+				if (st.stop_requested()) return;
 				const auto& pStock = m_vStock[i];
 				if (pStock->IsUpdateProfileDB()) {
 					pStock->UpdateJsonUpdateDate();

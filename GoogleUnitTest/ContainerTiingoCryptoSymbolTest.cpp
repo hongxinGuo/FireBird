@@ -92,7 +92,7 @@ namespace FireBirdTest {
 		pTiingoCrypto->SetUpdateProfileDB(true);
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1279);
-		m_dataTiingoCryptoSymbol.UpdateDB();
+		m_dataTiingoCryptoSymbol.UpdateDB(std::stop_token{}	);
 
 		// 恢复原状
 		using namespace StockMarket;

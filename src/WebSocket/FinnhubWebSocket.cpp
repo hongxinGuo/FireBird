@@ -25,12 +25,11 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pFinnhubWebSocket->SetError(false);
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
+		s_bWebSocketClosing = false;
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		s_bWebSocketClosing = false;
-		if (!gl_systemConfiguration.IsExitingSystem()) {
-			gl_pFinnhubWebSocket->PushData(msg->str);
-		}
+		if (gl_systemConfiguration.IsExitingSystem()) break;
+		gl_pFinnhubWebSocket->PushData(msg->str);
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_pFinnhubWebSocket->SetError(true);
@@ -50,7 +49,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 			gl_dailyWebSocketLogger->error("{}", str);
 			// finnhub webSocket有时会出现EC429（too many connection attempt），由其他账户同时申请所致。此时需要暂停本账户的申请以维持其他账户的申请能够顺利执行
 			// 10分钟后自动重新连接。
-			gl_pWorldMarket->AddTask(WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0h, 10min, 0s));
+			gl_pWorldMarket->AddTask(WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET_, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0h, 10min, 0s));
 		}
 		break;
 	case ix::WebSocketMessageType::Open:

@@ -30,6 +30,7 @@ public:
 	local_seconds GetResetTime() override;
 
 	void PrepareToCloseMarket() final;
+	void CloseAllThread();
 
 	void Reset();
 	void ResetFinnhub();
@@ -54,7 +55,7 @@ public:
 	bool TaskRebuildTiingoStockSplitDB();
 	bool TaskRebuildTiingoIndustryRS();
 
-	int TaskUpdateTiingoStockDayLineDB();
+	int TaskUpdateTiingoStockDayLineDB(std::stop_token st);
 
 	bool TaskUpdateForexDayLineDB();
 	bool TaskUpdateCryptoDayLineDB();
@@ -68,8 +69,8 @@ public:
 
 	void TaskMainTainTiingoDayLineDB();
 
-	bool UpdateEPSSurpriseDB();
-	void UpdateSECFilingsDB();
+	bool UpdateEPSSurpriseDB(std::stop_token st);
+	void UpdateSECFilingsDB(std::stop_token st);
 
 	void TaskCalculateNasdaq100MA200UpDownRate(); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
 	concurrencpp::result<bool> LoadNasdaq100StocksDayLine();
@@ -91,10 +92,9 @@ public:
 	static bool UpdateToken();
 
 	// 数据库操作
-	virtual bool UpdateCompanyNewsDB();
-	virtual bool UpdateFinnhubStockDayLineDB();
-	static void UpdateInsiderTransactionDB();
-	virtual bool UpdateInsiderSentimentDB();
+	virtual bool UpdateCompanyNewsDB(std::stop_token st);
+	virtual bool UpdateFinnhubStockDayLineDB(std::stop_token st);
+	virtual bool UpdateInsiderSentimentDB(std::stop_token st);
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSicIndustry();
 	virtual bool UpdateNaicsIndustry();
@@ -103,9 +103,9 @@ public:
 	void RebuildEPSSurprise();
 	void RebuildPeer();
 	void RebuildBasicFinancial();
-	void RebuildTiingoStockSplitDB();
+	void RebuildTiingoStockSplitDB(std::stop_token st);
 
-	void UpdateTiingoOneYearStockDayLine();
+	void UpdateTiingoStockDayLine(local_days startDate);
 	void UpdateTiingoAllStockDayLine();
 
 	void RebuildIndustryRS();
@@ -158,12 +158,39 @@ protected:
 
 	bool m_bBuildTodayTiingoDayLine{ false };
 
-protected:
 	vector<shared_ptr<CTiingoStock>> m_vNasdaq100TiingoStock;
 	atomic_int m_iNewHighHigher{ 0 };
 	atomic_int m_iNoNewHighHigher{ 0 };
 
 	array<vector<shared_ptr<CTiingoStock>>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
+
+private:
+	// 各thread的std::jthread变量，用于自动结束线程。
+	std::jthread m_jtRebuildStockSplitDB;
+
+	std::jthread m_jtUpdateFinnhubIndustryDB;
+	std::jthread m_jtUpdateFinnhubForexExchangeDB;
+	std::jthread m_jtUpdateFinnhubCryptoExchangeDB;
+	std::jthread m_jtUpdateFinnhubForexSymbolDB;
+	std::jthread m_jtUpdateFinnhubCryptoSymbolDB;
+	std::jthread m_jtUpdateFinnhubInsiderTransactionDB;
+	std::jthread m_jtUpdateFinnhubInsiderSentimentDB;
+	std::jthread m_jtUpdateFinnhubCompanyNewsDB;
+	std::jthread m_jtUpdateFinnhubEconomicCalendarDB;
+	std::jthread m_jtUpdateFinnhubStockDayLineDB;
+	std::jthread m_jtUpdateFinnhubEPSSurpriseDB;
+	std::jthread m_jtUpdateSECFilingsDB;
+	std::jthread m_jtUpdateFinnhubStockProfileDB;
+
+	std::jthread m_jtUpdateTiingoStockDayLineDB;
+	std::jthread m_jtProcessTiingoDayLine;
+	std::jthread m_jtUpdateTiingoStockProfileDB;
+	std::jthread m_jtUpdateTiingoCryptoSymbolDB;
+	std::jthread m_jtUpdateTiingoFundamentalDefinitionDB;
+	std::jthread m_jtUpdateTiingoFinancialStateDB;
+
+	std::jthread m_jtUpdateFinnhubInaccessibleExchangeDB;
+	std::jthread m_jtUpdateTiingoInaccessibleStockDB;
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

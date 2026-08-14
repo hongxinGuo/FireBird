@@ -3,6 +3,7 @@
 void DeleteAllFinnhubInaccessibleUSExchange();
 
 void SystemInitialization();
+void SystemShutdown();
 
 void InitializeMarkets();
 void InitializeLogSystem();
@@ -19,3 +20,6 @@ void TaskCheckWorldMarketReady();// world market task
 
 bool IsMarketResetting(); // 
 void ScheduleMarketTask();
+
+void CloseAllBackgroundThread();
+void CloseDataSourceBackgroundThread();

@@ -26,9 +26,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(marketTask.GetTime(), toLocalTime(0));
 		EXPECT_EQ(marketTask.GetType(), 0);
 
-		const CMarketTask task2(CHINA_MARKET_BUILD_TODAY_DATABASE__, toLocalTime(1010));
+		const CMarketTask task2(CHINA_MARKET_BUILD_TODAY_DATABASE_, toLocalTime(1010));
 		EXPECT_EQ(task2.GetTime(), toLocalTime(1010));
-		EXPECT_EQ(task2.GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		EXPECT_EQ(task2.GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
 	}
 
 	TEST_F(CMarketTaskTest, TestGetTime) {
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 	TEST_F(CMarketTaskTest, TestGetType) {
 		EXPECT_EQ(marketTask.GetType(), 0);
 
-		marketTask.SetType(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-		EXPECT_EQ(marketTask.GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		marketTask.SetType(CHINA_MARKET_BUILD_TODAY_DATABASE_);
+		EXPECT_EQ(marketTask.GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
 	}
 }

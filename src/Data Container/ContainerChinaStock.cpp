@@ -89,7 +89,7 @@ long CContainerChinaStock::LoadProfileDB() {
 	return lDayLineNeedCheck;
 }
 
-void CContainerChinaStock::UpdateProfileDB() {
+void CContainerChinaStock::UpdateProfileDB(std::stop_token st) {
 	try {
 		using namespace StockMarket;
 		const auto& t = ChinaStockProfile{};
@@ -99,6 +99,7 @@ void CContainerChinaStock::UpdateProfileDB() {
 		auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange, t.DisplaySymbol, t.UpdateDate);
 
 		for (size_t i = 0; i < m_vStock.size(); ++i) {
+			if (st.stop_requested()) return;
 			const auto& pStock = m_vStock[i];
 			if (pStock->IsUpdateProfileDB()) {
 				pStock->UpdateJsonUpdateDate();
@@ -248,8 +249,9 @@ long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-void CContainerChinaStock::TaskUpdateDayLineDB() {
+void CContainerChinaStock::TaskUpdateDayLineDB(std::stop_token st) {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
+		if (st.stop_requested()) return;
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateDayLineDB()) {
 			pStock->SetUpdateDayLineDB(false);

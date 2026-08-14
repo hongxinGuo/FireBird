@@ -19,6 +19,7 @@ public:
 	CMainFrame(CMainFrame&&) noexcept = delete;
 	CMainFrame& operator=(CMainFrame&&) noexcept = delete;
 	~CMainFrame() override;
+	void CloseAllThread();
 
 	// 特性
 
@@ -83,6 +84,11 @@ protected:
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
 	BOOL PreTranslateMessage(MSG* pMsg) override;
+
+	// thread
+	std::jthread m_jtProcessTodayStock;
+	std::jthread m_jtUpdateChinaStockProfileDB;
+
 	// 生成的消息映射函数
 
 protected:
@@ -132,7 +138,7 @@ protected:
 	afx_msg void OnInquireIexTopOfBook();
 	afx_msg void OnCalculateNasdaq100200maUpdownRate();
 	afx_msg void OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI);
-	afx_msg void OnTiingoRebuildStockSplit();
+	afx_msg void OnTiingoRebuildStockSplitDB();
 
 	DECLARE_MESSAGE_MAP()
 
