@@ -154,7 +154,7 @@ void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 	auto tx = start_transaction(db);
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		const CFinnhubStockPtr pStock = GetItem(l);
 		ABSL_DCHECK(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
@@ -246,7 +246,7 @@ void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 
 void CContainerFinnhubStock::UpdateInsiderTransactionDB(std::stop_token st) {
 	for (size_t i = 0; i < m_vStock.size(); i++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		const CFinnhubStockPtr pStock = GetItem(i);
 		if (pStock->IsUpdateInsiderTransactionDB()) {
 			pStock->SetUpdateInsiderTransactionDB(false);

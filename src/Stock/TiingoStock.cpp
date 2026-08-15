@@ -308,7 +308,7 @@ void CTiingoStock::RebuildStockSplitDB(std::stop_token st) {
 	}
 	m_pvStockSplit->clear();
 	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		if (std::abs(m_dataDayLine.GetData(index)->GetSplitFactor() - 1.0) > EPSILON) {
 			CStockSplitPtr pStockSplit = make_shared<CStockSplit>();
 			pStockSplit->SetDate(m_dataDayLine.GetData(index)->GetDate());

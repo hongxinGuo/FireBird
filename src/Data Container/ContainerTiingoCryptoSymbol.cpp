@@ -108,7 +108,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB(std::stop_token st) {
 		// 1) 更新或删除数据库中已有但容器中不存在的记录
 		auto rows = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 		for (const auto& row : rows) {
-			if (st.stop_requested()) return;
+			if (st.stop_requested()) break;
 			if (IsSymbol(string{ row.Symbol })) {
 				const CTiingoCryptoPtr pCrypto = GetCrypto(string{ row.Symbol });
 				ABSL_DCHECK(pCrypto != nullptr);
@@ -132,7 +132,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB(std::stop_token st) {
 		// 2) 插入容器中新添加或标记为需写入的记录
 		int nValues = 0;
 		for (size_t l = 0; l < m_vStock.size(); l++) {
-			if (st.stop_requested()) return;
+			if (st.stop_requested()) break;
 			const CTiingoCryptoPtr pCrypto = GetCrypto(l);
 			ABSL_DCHECK(pCrypto != nullptr);
 			if (pCrypto->IsUpdateProfileDB()) {

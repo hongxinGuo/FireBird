@@ -83,7 +83,7 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st, const st
 	};
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, headers);
 
 		status = r.status_code;
@@ -100,7 +100,7 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st, const st
 
 	auto inquireStrings2 = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStrings2) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, headers);
 
 		status = r.status_code;

@@ -51,7 +51,7 @@ void CContainerFinnhubCountry::UpdateDB(std::stop_token st) const {
 		                                           t.Country, t.Currency, t.CurrencyCode);
 		int nValues = 0;
 		for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
-			if (st.stop_requested()) return;
+			if (st.stop_requested()) break;
 			const CCountry& country = m_vCountry.at(l);
 			multi_insert.add_values(
 				t.Code2 = country.m_strCode2,

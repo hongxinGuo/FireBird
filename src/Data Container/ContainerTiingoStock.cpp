@@ -69,7 +69,7 @@ void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 	}
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		const CTiingoStockPtr pStock = GetStock(l);
 		ABSL_DCHECK(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
@@ -327,7 +327,7 @@ long CContainerTiingoStock::GetTotalActiveStocks() {
 
 void CContainerTiingoStock::UpdateFinancialStateDB(std::stop_token st) {
 	for (size_t i = 0; i < Size(); i++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		auto pStock = GetStock(i);
 		if (pStock->IsUpdateFinancialStateDB()) {
 			pStock->UpdateFinancialStateDB();
@@ -484,7 +484,7 @@ void CContainerTiingoStock::TaskCalculate2(std::stop_token st) {
 	db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		auto pStock = GetStock(vPos.at(index));
 		db(sqlpp::insert_into(t).set(
 			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
@@ -545,7 +545,7 @@ void CContainerTiingoStock::TaskProcessTodayDayLine(std::stop_token st) {
 	auto lSize = Size();
 	vector<result<void>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
 			gl_BackgroundWorkingThread.Acquire();

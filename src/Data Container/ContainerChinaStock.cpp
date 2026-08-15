@@ -99,7 +99,7 @@ void CContainerChinaStock::UpdateProfileDB(std::stop_token st) {
 		auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange, t.DisplaySymbol, t.UpdateDate);
 
 		for (size_t i = 0; i < m_vStock.size(); ++i) {
-			if (st.stop_requested()) return;
+			if (st.stop_requested()) break;
 			const auto& pStock = m_vStock[i];
 			if (pStock->IsUpdateProfileDB()) {
 				pStock->UpdateJsonUpdateDate();
@@ -250,23 +250,18 @@ long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 void CContainerChinaStock::TaskUpdateDayLineDB(std::stop_token st) {
-	vector<result<void>> results;
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateDayLineDB()) {
 			pStock->SetUpdateDayLineDB(false);
 			gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
 			gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
-			auto result = gl_runtime.thread_executor()->submit([pStock] {
+			 gl_runtime.thread_executor()->post([pStock] {
 				pStock->UpdateDayLineDB();
 				gl_BackgroundWorkingThread.Release();
 			});
-			results.emplace_back(std::move(result));
 		}
-	}
-	for (auto& r : results) {
-		r.get();
 	}
 }
 

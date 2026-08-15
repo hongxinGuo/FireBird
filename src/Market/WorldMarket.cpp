@@ -562,7 +562,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(std::stop_token st) {
 
 	//ABSL_DLOG(INFO) << "Finnhub forex dayLine\n";
 	for (size_t i = 0; i < symbolSize; i++) {
-		if (st.stop_requested()) return false;
+		if (st.stop_requested()) break;
 		if (gl_systemConfiguration.IsExitingSystem()) break;// 如果程序正在退出，则停止存储。
 		pSymbol = gl_dataFinnhubForexSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
@@ -611,7 +611,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(std::stop_token st) {
 
 	//ABSL_DLOG(INFO) << "Finnhub Crypto dayLine\n";
 	for (size_t i = 0; i < symbolSize; ++i) {
-		if (st.stop_requested()) return false;
+		if (st.stop_requested()) break;
 		pSymbol = gl_dataFinnhubCryptoSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
 			pSymbol->SetUpdateDayLineDB(false);
@@ -712,7 +712,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB(std::stop_token st) {
 
 	CFinnhubStockPtr pStock = nullptr;
 	for (size_t l = 0; l < stockSize; ++l) {
-		if (st.stop_requested()) return false; // 如果程序正在退出，则停止存储。
+		if (st.stop_requested()) break; // 如果程序正在退出，则停止存储。
 		pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateEPSSurpriseDB()) {
 			pStock->SetUpdateEPSSurpriseDB(false);
@@ -728,7 +728,7 @@ void CWorldMarket::UpdateSECFilingsDB(std::stop_token st) {
 
 	CFinnhubStockPtr pStock = nullptr;
 	for (size_t l = 0; l < stockSize; ++l) {
-		if (st.stop_requested()) return; // 如果程序正在退出，则停止存储。
+		if (st.stop_requested()) break; // 如果程序正在退出，则停止存储。
 		pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateSECFilingsDB()) {
 			pStock->SetUpdateSECFilingsDB(false);
@@ -1136,21 +1136,25 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 		gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine();
 	}
 
-	if (m_jtUpdateForexDayLineDB.joinable()) {
-		m_jtUpdateForexDayLineDB.request_stop();
-		m_jtUpdateForexDayLineDB.join();
+	if (gl_dataFinnhubForexSymbol.IsUpdateDayLineDB()) {
+		if (m_jtUpdateForexDayLineDB.joinable()) {
+			m_jtUpdateForexDayLineDB.request_stop();
+			m_jtUpdateForexDayLineDB.join();
+		}
+		m_jtUpdateForexDayLineDB = std::jthread([this](std::stop_token st) {
+			TaskUpdateForexDayLineDB(st); // 这个函数内部继续生成工作线程
+		});
 	}
-	m_jtUpdateForexDayLineDB = std::jthread([this](std::stop_token st) {
-		TaskUpdateForexDayLineDB(st); // 这个函数内部继续生成工作线程
-	});
 
-	if (m_jtUpdateCryptoDayLineDB.joinable()) {
-		m_jtUpdateCryptoDayLineDB.request_stop();
-		m_jtUpdateCryptoDayLineDB.join();
+	if (gl_dataFinnhubCryptoSymbol.IsUpdateDayLineDB()) {
+		if (m_jtUpdateCryptoDayLineDB.joinable()) {
+			m_jtUpdateCryptoDayLineDB.request_stop();
+			m_jtUpdateCryptoDayLineDB.join();
+		}
+		m_jtUpdateCryptoDayLineDB = std::jthread([this](std::stop_token st) {
+			this->TaskUpdateCryptoDayLineDB(st); // 这个函数内部继续生成工作线程
+		});
 	}
-	m_jtUpdateCryptoDayLineDB = std::jthread([this](std::stop_token st) {
-		this->TaskUpdateCryptoDayLineDB(st); // 这个函数内部继续生成工作线程
-	});
 
 	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && gl_dataContainerFinnhubStock.IsUpdateProfileDB()) { // stock profile
 		static int s_counter2 = 0;
@@ -1232,7 +1236,7 @@ bool CWorldMarket::UpdateToken() {
 
 bool CWorldMarket::UpdateFinnhubStockDayLineDB(std::stop_token st) {
 	for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-		if (st.stop_requested()) return false; // 如果程序正在退出，则停止存储。
+		if (st.stop_requested()) break; // 如果程序正在退出，则停止存储。
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 		pStock->UpdateDayLineDB();
 	}
@@ -1241,7 +1245,7 @@ bool CWorldMarket::UpdateFinnhubStockDayLineDB(std::stop_token st) {
 
 bool CWorldMarket::UpdateCompanyNewsDB(std::stop_token st) {
 	for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-		if (st.stop_requested()) return false; // 如果程序正在退出，则停止存储。
+		if (st.stop_requested()) break; // 如果程序正在退出，则停止存储。
 		const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateCompanyNewsDB()) {
 			pStock->UpdateCompanyNewsDB();
@@ -1255,7 +1259,7 @@ bool CWorldMarket::UpdateCompanyNewsDB(std::stop_token st) {
 
 bool CWorldMarket::UpdateInsiderSentimentDB(std::stop_token st) {
 	for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-		if (st.stop_requested()) return false; // 如果程序正在退出，则停止存储。
+		if (st.stop_requested()) break; // 如果程序正在退出，则停止存储。
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 		if (pStock->IsUpdateInsiderSentimentDB()) {
 			pStock->SetUpdateInsiderSentimentDB(false);
@@ -1300,7 +1304,7 @@ void CWorldMarket::RebuildBasicFinancial() {
 
 void CWorldMarket::RebuildTiingoStockSplitDB(std::stop_token st) {
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
 		gl_BackgroundWorkingThread.Acquire();
 		gl_runtime.thread_executor()->post([st, pStock] {
@@ -1627,7 +1631,7 @@ void CWorldMarket::UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const {
 void CWorldMarket::DeleteTiingoDelistedStock(std::stop_token st) {
 	auto Size = gl_dataContainerTiingoDelistedSymbol.Size();
 	for (size_t index = 0; index < Size; index++) {
-		if (st.stop_requested()) return;
+		if (st.stop_requested()) break;
 		auto pTiingoDelistedStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
 		ABSL_DCHECK(gl_dataContainerTiingoStock.IsSymbol(pTiingoDelistedStock));
 		DeleteTiingoDayLine(pTiingoDelistedStock); // 删除日线

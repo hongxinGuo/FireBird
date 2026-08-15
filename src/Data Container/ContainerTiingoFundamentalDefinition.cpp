@@ -71,7 +71,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB(std::stop_token st) {
 
 	int nValues = 0;
 	for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
-		if (st.stop_requested()) return false;
+		if (st.stop_requested()) break;
 		if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
 			multi_insert.add_values(
 				t.dataCode = tiingoFundamentalDefinition.m_strDataCode,
