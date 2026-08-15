@@ -370,38 +370,24 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::UpdateSECFilingsDB() const {
+	if (m_strSymbol.empty()) return false;
+
 	const size_t size = m_pvSECFilings->size();
-	if (!m_strSymbol.empty()) {
-		size_t currentPos = 0;
-		CSECFiling SECFilings;
-		using namespace StockMarket;
-		const auto& t = FinnhubStockSecFilings{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-		auto multi_insert = insert_into(t).columns(t.symbol, t.accessNumber, t.cik, t.filedDate,
-		                                           t.acceptedDate, t.filingURL, t.reportURL, t.form);
+	size_t currentPos = 0;
+	CSECFiling SECFilings;
+	using namespace StockMarket;
+	const auto& t = FinnhubStockSecFilings{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto multi_insert = insert_into(t).columns(t.symbol, t.accessNumber, t.cik, t.filedDate,
+	                                           t.acceptedDate, t.filingURL, t.reportURL, t.form);
 
-		auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
+	auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
 
-		for (const auto& row : result) {
-			SECFilings = m_pvSECFilings->at(currentPos);
-			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) > 0) continue;
-			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) < 0) {	// 没有这个AccessNumber的SEC Filings？
-				multi_insert.add_values(
-					t.symbol = m_strSymbol,
-					t.accessNumber = SECFilings.m_strAccessNumber,
-					t.cik = SECFilings.m_iCIK,
-					t.filedDate = static_cast<int>(SECFilings.m_iFiledDate),
-					t.acceptedDate = static_cast<int>(SECFilings.m_iAcceptedDate),
-					t.filingURL = SECFilings.m_strFilingURL,
-					t.reportURL = SECFilings.m_strReportURL,
-					t.form = SECFilings.m_strForm
-				);
-			}
-			if (++currentPos == size) break;
-		}
-		for (size_t i = currentPos; i < size; i++) {
-			SECFilings = m_pvSECFilings->at(i);
+	for (const auto& row : result) {
+		SECFilings = m_pvSECFilings->at(currentPos);
+		if (SECFilings.m_strAccessNumber.compare(row.accessNumber) > 0) continue;
+		if (SECFilings.m_strAccessNumber.compare(row.accessNumber) < 0) {	// 没有这个AccessNumber的SEC Filings？
 			multi_insert.add_values(
 				t.symbol = m_strSymbol,
 				t.accessNumber = SECFilings.m_strAccessNumber,
@@ -413,11 +399,25 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 				t.form = SECFilings.m_strForm
 			);
 		}
-		if (!m_pvSECFilings->empty()) {
-			db(multi_insert);
-		}
-		tx.commit();
+		if (++currentPos == size) break;
 	}
+	for (size_t i = currentPos; i < size; i++) {
+		SECFilings = m_pvSECFilings->at(i);
+		multi_insert.add_values(
+			t.symbol = m_strSymbol,
+			t.accessNumber = SECFilings.m_strAccessNumber,
+			t.cik = SECFilings.m_iCIK,
+			t.filedDate = static_cast<int>(SECFilings.m_iFiledDate),
+			t.acceptedDate = static_cast<int>(SECFilings.m_iAcceptedDate),
+			t.filingURL = SECFilings.m_strFilingURL,
+			t.reportURL = SECFilings.m_strReportURL,
+			t.form = SECFilings.m_strForm
+		);
+	}
+	if (!m_pvSECFilings->empty()) {
+		db(multi_insert);
+	}
+	tx.commit();
 	return true;
 }
 

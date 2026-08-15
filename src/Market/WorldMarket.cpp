@@ -520,7 +520,6 @@ bool CWorldMarket::TaskRebuildTiingoIndustryRS() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 int CWorldMarket::TaskUpdateTiingoStockDayLineDB(std::stop_token st) {
-	vector<std::jthread> vThreads;
 	CTiingoStockPtr pTiingoStock = nullptr;
 	const size_t symbolSize = gl_dataContainerTiingoStock.Size();
 	int iUpdatedCount = 0;
@@ -529,8 +528,7 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB(std::stop_token st) {
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
 			gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
-			vThreads.emplace_back([pTiingoStock, this](std::stop_token st) {
-				if (st.stop_requested()) return;
+			gl_runtime.thread_executor()->post([pTiingoStock] {
 				pTiingoStock->UpdateDayLineStartEndDate();
 				pTiingoStock->SetUpdateDayLineDB(false); // 先设置标识，防止重入时重复更新。
 				pTiingoStock->SetUpdateProfileDB(true);
@@ -558,7 +556,6 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB(std::stop_token st) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskUpdateForexDayLineDB(std::stop_token st) {
-	vector<std::jthread> threads;
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubForexSymbol.Size();
@@ -572,11 +569,10 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(std::stop_token st) {
 			pSymbol->SetUpdateDayLineDB(false);// Only call once
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					threads.emplace_back([st, pSymbol] {
+					gl_runtime.thread_executor()->post([pSymbol] {
 						gl_systemMessage.SetWorldMarketSavingFunction("F forex dayLine");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						pSymbol->UpdateDayLineDB();
-						if (st.stop_requested()) return;
 						pSymbol->UpdateDayLineStartEndDate();
 						pSymbol->SetUpdateProfileDB(true);
 						pSymbol->UnloadDayLine();
@@ -609,7 +605,6 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(std::stop_token st) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskUpdateCryptoDayLineDB(std::stop_token st) {
-	vector<std::jthread> threads;
 	bool fUpdated = false;
 	CFinnhubCryptoPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
@@ -622,11 +617,10 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(std::stop_token st) {
 			pSymbol->SetUpdateDayLineDB(false);
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					threads.emplace_back([st,pSymbol] {
+					gl_runtime.thread_executor()->post([pSymbol] {
 						gl_systemMessage.SetWorldMarketSavingFunction("F crypto dayLine");
 						auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						pSymbol->UpdateDayLineDB();
-						if (st.stop_requested()) return;
 						string str2 = pSymbol->GetSymbol();
 						str2 += "日线资料存储完成";
 						gl_systemMessage.PushDayLineInfoMessage(str2);
@@ -1305,12 +1299,11 @@ void CWorldMarket::RebuildBasicFinancial() {
 }
 
 void CWorldMarket::RebuildTiingoStockSplitDB(std::stop_token st) {
-	vector<std::jthread> threads;
 	for (size_t index = 0; index < gl_dataContainerTiingoStock.Size(); index++) {
 		if (st.stop_requested()) return;
 		auto pStock = gl_dataContainerTiingoStock.GetStock(index);
 		gl_BackgroundWorkingThread.Acquire();
-		threads.emplace_back([st, pStock] {
+		gl_runtime.thread_executor()->post([st, pStock] {
 			pStock->RebuildStockSplitDB(st);
 			pStock->SetUpdateProfileDB(true);
 			gl_BackgroundWorkingThread.Release();

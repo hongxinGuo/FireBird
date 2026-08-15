@@ -342,7 +342,12 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(chrono::local_days lTodayDate
 }
 
 void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days lTodayDate) {
-	if (GetDayLineEndDate() >= gl_pWorldMarket->GetCurrentTradeDate()) { // 已更新？
+	auto currentTradeDate = gl_pWorldMarket->GetCurrentTradeDate();
+	if (GetDayLineEndDate() >= currentTradeDate) { // 已更新？
+		m_fUpdateDayLine = false;
+		return;
+	}
+	if ((currentTradeDate - GetDayLineEndDate()).count() == 1 && gl_pWorldMarket->GetMarketTime() < local_seconds{ 18h }) {
 		m_fUpdateDayLine = false;
 		return;
 	}

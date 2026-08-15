@@ -1207,4 +1207,61 @@ namespace FireBirdTest {
 		stock.SetUpdateCompanyNews(true);
 		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(toLocalDays(20220202)));
 	}
+
+	TEST_F(CFinnhubStockTest, UpdateSECFilingsDB_InsertsNewRows) {
+		// Prepare DB and clean previous test rows
+		auto db = gl_dbStockMarket.get();
+		const auto& t = StockMarket::FinnhubStockSecFilings{};
+		{
+			auto tx = sqlpp::start_transaction(db);
+			db(sqlpp::delete_from(t).where(t.symbol == "TEST"));
+			tx.commit();
+		}
+
+		// Prepare a CFinnhubStock with one SEC filing
+		CFinnhubStock stock;
+		string symbol = "TEST";
+		stock.SetSymbol(symbol);
+
+		auto pv = make_shared<vector<CSECFiling>>();
+		CSECFiling f;
+		f.m_strSymbol = "TEST";
+		f.m_strAccessNumber = "ACC-0001";
+		f.m_iCIK = 123456;
+		f.m_strForm = "10-K";
+		f.m_iFiledDate = static_cast<time_t>(1622505600);    // arbitrary timestamp
+		f.m_iAcceptedDate = static_cast<time_t>(1622592000); // arbitrary timestamp
+		f.m_strFilingURL = "https://example.com/filing/acc0001";
+		f.m_strReportURL = "https://example.com/report/acc0001";
+		pv->push_back(f);
+
+		stock.SetSECFilings(pv);
+
+		// Call function under test
+		EXPECT_TRUE(stock.UpdateSECFilingsDB());
+
+		// Verify rows inserted
+		{
+			auto tx = sqlpp::start_transaction(db);
+			auto result = db(select(all_of(t)).from(t).where(t.symbol == "TEST").order_by(t.accessNumber.asc()));
+			tx.commit();
+			ASSERT_EQ(result.size(), 1u);
+
+			const auto& row = result.front();
+			EXPECT_EQ(row.accessNumber, std::string("ACC-0001"));
+			EXPECT_EQ(row.cik, 123456);
+			EXPECT_EQ(row.form, std::string("10-K"));
+			EXPECT_EQ(row.filedDate, static_cast<int>(f.m_iFiledDate));
+			EXPECT_EQ(row.acceptedDate, static_cast<int>(f.m_iAcceptedDate));
+			EXPECT_EQ(row.filingURL, std::string("https://example.com/filing/acc0001"));
+			EXPECT_EQ(row.reportURL, std::string("https://example.com/report/acc0001"));
+		}
+
+		// Cleanup
+		{
+			auto tx = sqlpp::start_transaction(db);
+			db(sqlpp::delete_from(t).where(t.symbol == "TEST"));
+			tx.commit();
+		}
+	}
 }
