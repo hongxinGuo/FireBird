@@ -229,7 +229,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
 		// Run the function under test
-		gl_dataContainerTiingoStock.BuildDayLine(lDate);
+		gl_dataContainerTiingoStock.BuildDayLine(std::stop_token{}, lDate);
 
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 

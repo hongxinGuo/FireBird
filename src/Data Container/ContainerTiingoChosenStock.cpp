@@ -41,7 +41,7 @@ bool CContainerTiingoChosenStock::LoadDB() {
 	return true;
 }
 
-void CContainerTiingoChosenStock::UpdateDB() const {
+void CContainerTiingoChosenStock::UpdateDB(std::stop_token st) const {
 	vector<string> vSymbol;
 	using namespace StockMarket;
 	const auto& t = WorldChoiceStock{};
@@ -52,12 +52,14 @@ void CContainerTiingoChosenStock::UpdateDB() const {
 	size_t rows = result.size();
 	vSymbol.reserve(rows);
 	for (const auto& row : result) {
+		if (st.stop_requested()) return;
 		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
 			vSymbol.push_back(string{ row.Symbol });
 		}
 	}
 
 	for (size_t i = 0; i < m_vStock.size(); i++) {
+		if (st.stop_requested()) return;
 		string symbol = m_vStock.at(i)->GetSymbol();
 		if (std::ranges::find(vSymbol, symbol) == vSymbol.end()) {
 			db(sqlpp::insert_into(t).set(

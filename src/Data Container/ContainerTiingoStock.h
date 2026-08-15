@@ -27,7 +27,7 @@ public:
 	static void DeleteDuplicatedSymbolFromDB();
 
 	void ResetDayLineStartEndDate();
-	void BuildDayLine(local_days date);
+	void BuildDayLine(std::stop_token st, local_days date);
 	void LoadDayLine(local_days date);
 	void DeleteDayLine(local_days lDate);
 
@@ -37,7 +37,7 @@ public:
 	void TaskUpdate52WeekHighDB();
 	void TaskUpdate52WeekLowDB();
 	void TaskCalculate();
-	void TaskCalculate2();
+	void TaskCalculate2(std::stop_token st);
 
 	void Delete52WeekHighDB();
 

@@ -84,12 +84,10 @@ void CChinaMarket::CloseAllThread() {
 		m_jtProcessAndUpdateDayLineDB.request_stop();
 		m_jtProcessAndUpdateDayLineDB.join();
 	}
-
 	if (m_jtUpdateSystemConfiguration.joinable()) {
 		m_jtUpdateSystemConfiguration.request_stop();
 		m_jtUpdateSystemConfiguration.join();
 	}
-
 	if (m_jtProcessTodayStock.joinable()) {
 		m_jtProcessTodayStock.request_stop();
 		m_jtProcessTodayStock.join();
@@ -97,6 +95,18 @@ void CChinaMarket::CloseAllThread() {
 	if (m_jtUpdateStockProfileDB.joinable()) {
 		m_jtUpdateStockProfileDB.request_stop();
 		m_jtUpdateStockProfileDB.join();
+	}
+	if (m_jtUpdateOptionDB.joinable()) {
+		m_jtUpdateOptionDB.request_stop();
+		m_jtUpdateOptionDB.join();
+	}
+	if (m_jtUpdateChosenStockDB.joinable()) {
+		m_jtUpdateChosenStockDB.request_stop();
+		m_jtUpdateChosenStockDB.join();
+	}
+	if (m_jtUpdateStockSectionDB.joinable()) {
+		m_jtUpdateStockSectionDB.request_stop();
+		m_jtUpdateStockSectionDB.join();
 	}
 }
 
@@ -427,17 +437,21 @@ void CChinaMarket::TaskSetCurrentStock() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskDistributeAndCalculateRTData() {
-	gl_runtime.thread_pool_executor()->post([this] { // 无需等待结果，直接返回
-			gl_ProcessChinaMarketRTData.acquire();
-			auto start = time_point_cast<milliseconds>(steady_clock::now());
+	if (m_jtDistributeAndProcessRTData.joinable()) {
+		m_jtDistributeAndProcessRTData.request_stop();
+		m_jtDistributeAndProcessRTData.join();
+	}
+	m_jtDistributeAndProcessRTData = std::jthread([this](std::stop_token st) {
+		gl_ProcessChinaMarketRTData.acquire();
+		auto start = time_point_cast<microseconds>(steady_clock::now());
 
-			this->DistributeRTData();
-			this->CalculateRTData();
+		this->DistributeRTData();
+		this->CalculateRTData();
 
-			auto end = time_point_cast<milliseconds>(steady_clock::now());
-			this->SetDistributeAndCalculateTime((end - start).count());
-			gl_ProcessChinaMarketRTData.release();
-		});
+		auto end = time_point_cast<microseconds>(steady_clock::now());
+		this->SetDistributeAndCalculateTime((end - start).count());
+		gl_ProcessChinaMarketRTData.release();
+	});
 
 	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, GetNextSecond(GetMarketTime())); // 每秒执行一次
 }
@@ -818,19 +832,26 @@ bool CChinaMarket::TaskUpdateStockProfileDB() {
 }
 
 bool CChinaMarket::TaskUpdateOptionDB() {
-	AddTask(CHINA_MARKET_UPDATE_OPTION_DB_, GetNextTime(GetMarketTime(), 0h, 5min, 0s));
-
-	gl_runtime.thread_executor()->post([this] {
+	if (m_jtUpdateOptionDB.joinable()) {
+		m_jtUpdateOptionDB.request_stop();
+		m_jtUpdateOptionDB.join();
+	}
+	m_jtUpdateOptionDB = std::jthread([this](std::stop_token st) {
 		gl_systemMessage.SetChinaMarketSavingFunction("update option");
 		this->UpdateOptionDB();
 	});
+	AddTask(CHINA_MARKET_UPDATE_OPTION_DB_, GetNextTime(GetMarketTime(), 0h, 5min, 0s));
 
 	return true;
 }
 
 bool CChinaMarket::TaskUpdateChosenStockDB() {
 	if (IsUpdateChosenStockDB()) {
-		gl_runtime.thread_executor()->post([this] {
+		if (m_jtUpdateChosenStockDB.joinable()) {
+			m_jtUpdateChosenStockDB.request_stop();
+			m_jtUpdateChosenStockDB.join();
+		}
+		m_jtUpdateChosenStockDB = std::jthread([this](std::stop_token st) {
 			gl_systemMessage.SetChinaMarketSavingFunction("update chose stock");
 			this->AppendChosenStockDB();
 		});
@@ -841,7 +862,11 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
-		gl_runtime.thread_executor()->post([] {
+		if (m_jtUpdateStockSectionDB.joinable()) {
+			m_jtUpdateStockSectionDB.request_stop();
+			m_jtUpdateStockSectionDB.join();
+		}
+		m_jtUpdateStockSectionDB = std::jthread([](std::stop_token st) {
 			gl_systemMessage.SetChinaMarketSavingFunction("update stockSection");
 			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
 		});

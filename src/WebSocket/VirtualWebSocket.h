@@ -36,7 +36,7 @@ public:
 
 	virtual void TaskConnectAndSendMessage(const vector<string>& vSymbol);
 	virtual void TaskDisconnect();
-	bool ConnectAndSendMessage(const vector<string>& vSymbol);
+	bool ConnectAndSendMessage(std::stop_token st, const vector<string>& vSymbol);
 	void Disconnect();
 
 	virtual bool ParseWebSocketData(std::shared_ptr<string>) { return true; }
@@ -113,6 +113,10 @@ protected:
 	time_t m_HeartbeatTime{ 0 }; // 最新心跳时间， UTC制式
 
 	ConcurrentQueue<shared_ptr<string>> m_qWebSocketData{ 32 }; // 接收到的WebSocket数据
+
+	// thread
+	std::jthread m_jtDisConnect;
+	std::jthread m_jtConnectAndSendMessage;
 };
 
 using CVirtualWebSocketPtr = shared_ptr<CVirtualWebSocket>;

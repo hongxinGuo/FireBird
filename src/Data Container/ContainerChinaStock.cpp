@@ -250,6 +250,7 @@ long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 void CContainerChinaStock::TaskUpdateDayLineDB(std::stop_token st) {
+	vector<result<void>> results;
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		if (st.stop_requested()) return;
 		const CChinaStockPtr pStock = GetStock(l);
@@ -257,11 +258,15 @@ void CContainerChinaStock::TaskUpdateDayLineDB(std::stop_token st) {
 			pStock->SetUpdateDayLineDB(false);
 			gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
 			gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
-			gl_runtime.thread_executor()->post([pStock] {
+			auto result = gl_runtime.thread_executor()->submit([pStock] {
 				pStock->UpdateDayLineDB();
 				gl_BackgroundWorkingThread.Release();
 			});
+			results.emplace_back(std::move(result));
 		}
+	}
+	for (auto& r : results) {
+		r.get();
 	}
 }
 

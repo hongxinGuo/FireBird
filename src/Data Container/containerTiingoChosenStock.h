@@ -17,7 +17,7 @@ public:
 	void Reset() override;
 
 	bool LoadDB();
-	void UpdateDB() const;
+	void UpdateDB(std::stop_token st) const;
 
 	shared_ptr<CTiingoStock> GetStock(size_t lIndex);
 	shared_ptr<CTiingoStock> GetStock(const string& strStockCode);

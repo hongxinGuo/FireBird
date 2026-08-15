@@ -67,7 +67,6 @@ public:
 	virtual ~CVirtualDataSource();
 
 	static void ReportFinishedMsg(const std::string& msg);
-	void Run2(const local_seconds& lMarketTime);
 
 	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiry(int inquireType, UpdateCheck isUpdateNeeded, ProductFactory createProduct, ReportMsg reportMsg) {

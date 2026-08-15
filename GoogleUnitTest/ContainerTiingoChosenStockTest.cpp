@@ -135,7 +135,7 @@ namespace FireBirdTest {
 		chosen.Add(pStock2);
 
 		// Call method under test
-		chosen.UpdateDB();
+		chosen.UpdateDB(std::stop_token{});
 
 		// Read back rows from DB and verify symbols were inserted
 		{
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 			auto result = db(select(all_of(t)).from(t));
 			std::vector<std::string> dbSymbols;
 			for (const auto& row : result) {
-				if (row.Symbol != "") dbSymbols.push_back(string{ row.Symbol });
+				if (!row.Symbol.empty()) dbSymbols.emplace_back(row.Symbol);
 			}
 			std::vector<std::string> expected = { "A", "AA", "AAL", "AAPL", pStock1->GetSymbol(), pStock2->GetSymbol() };
 			EXPECT_THAT(dbSymbols, UnorderedElementsAreArray(expected));

@@ -204,7 +204,7 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 ///Note：只存储该日日线数据，但不更新各种标识。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::BuildDayLine(local_days date) {
+void CContainerTiingoStock::BuildDayLine(std::stop_token ststopToken, local_days date) {
 	auto lSize = Size();
 	sys_seconds st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(date, local_seconds(seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 
@@ -224,6 +224,7 @@ void CContainerTiingoStock::BuildDayLine(local_days date) {
 
 		int nValues = 0;
 		for (size_t i = 0; i < lSize; i++) {
+			if (ststopToken.stop_requested()) return;
 			auto pTiingoStock = GetStock(i);
 			//if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
 			if (pTiingoStock->GetTimePoint() >= st) {
@@ -445,12 +446,13 @@ void CContainerTiingoStock::TaskCalculate() {
 // 使用并行工作协程，加速运行
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::TaskCalculate2() {
+void CContainerTiingoStock::TaskCalculate2(std::stop_token st) {
 	vector<result<int>> results;
 	vector<int> vPos;
 	gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
 	auto lSize = Size();
 	for (auto index = 0; index < lSize; index++) {
+		if (st.stop_possible()) return;
 		gl_BackgroundWorkingThread.Acquire();
 		auto result = gl_runtime.thread_executor()->submit([this, index] {
 			if (gl_systemConfiguration.IsExitingSystem()) return -1;
@@ -482,6 +484,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 	db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
 
 	for (size_t index = 0; index < vPos.size(); index++) {
+		if (st.stop_requested()) return;
 		auto pStock = GetStock(vPos.at(index));
 		db(sqlpp::insert_into(t).set(
 			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),

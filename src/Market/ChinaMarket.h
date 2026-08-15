@@ -267,6 +267,10 @@ private:
 
 	std::jthread m_jtProcessTodayStock;
 	std::jthread m_jtUpdateStockProfileDB;
+	std::jthread m_jtUpdateOptionDB;
+	std::jthread m_jtUpdateChosenStockDB;
+	std::jthread m_jtUpdateStockSectionDB;
+	std::jthread m_jtDistributeAndProcessRTData;
 };
 
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;

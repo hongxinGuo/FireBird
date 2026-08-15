@@ -38,7 +38,7 @@ private:
 
 private slots:
 	void Update();
-	void UpdatePer10Second();
+	void UpdatePer20Second();
 	void onActionAboutTriggered();
 
 private:

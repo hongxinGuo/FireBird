@@ -10,7 +10,7 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateFinnhubStockDayLineDB, (std::stop_token), (override));
 		MOCK_METHOD(bool, UpdateInsiderSentimentDB, (std::stop_token), (override));
 		MOCK_METHOD(bool, UpdateCompanyNewsDB, (std::stop_token), (override));
-		MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
+		MOCK_METHOD(bool, UpdateTiingoIndustry, (std::stop_token), (override));
 		MOCK_METHOD(bool, UpdateSicIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));
 		MOCK_METHOD(local_seconds, GetResetTime, (), (override));

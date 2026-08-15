@@ -57,13 +57,13 @@ public:
 
 	int TaskUpdateTiingoStockDayLineDB(std::stop_token st);
 
-	bool TaskUpdateForexDayLineDB();
-	bool TaskUpdateCryptoDayLineDB();
+	bool TaskUpdateForexDayLineDB(std::stop_token st);
+	bool TaskUpdateCryptoDayLineDB(std::stop_token st);
 
 	void TaskCreateTiingoTradeDayDayLine();
 	void TaskProcessTiingoDayLine();
 
-	static void TaskDeleteDelistedStock();
+	void TaskDeleteDelistedStock();
 
 	void TaskPerSecond();
 
@@ -73,7 +73,7 @@ public:
 	void UpdateSECFilingsDB(std::stop_token st);
 
 	void TaskCalculateNasdaq100MA200UpDownRate(); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
-	concurrencpp::result<bool> LoadNasdaq100StocksDayLine();
+	concurrencpp::result<bool> LoadNasdaq100StocksDayLine(std::stop_token st);
 	void CalculateNasdaq100StocksMA(int length) const;
 	void calculateNasdaq100MA200UpDownRate();
 
@@ -95,7 +95,7 @@ public:
 	virtual bool UpdateCompanyNewsDB(std::stop_token st);
 	virtual bool UpdateFinnhubStockDayLineDB(std::stop_token st);
 	virtual bool UpdateInsiderSentimentDB(std::stop_token st);
-	virtual bool UpdateTiingoIndustry();
+	virtual bool UpdateTiingoIndustry(std::stop_token st);
 	virtual bool UpdateSicIndustry();
 	virtual bool UpdateNaicsIndustry();
 
@@ -108,7 +108,7 @@ public:
 	void UpdateTiingoStockDayLine(local_days startDate);
 	void UpdateTiingoAllStockDayLine();
 
-	void RebuildIndustryRS();
+	void RebuildIndustryRS(std::stop_token st);
 	void BuildIndustry();
 	void CalculateIndustryTotalValue();
 	void CalculateStockTotalValue(const vector<shared_ptr<CTiingoStock>>& vStocks);
@@ -130,7 +130,7 @@ public:
 	void UpdateMarketStatus(const shared_ptr<vector<CMarketStatus>>& pv) const;
 	void UpdateMarketHoliday(const shared_ptr<vector<CMarketHoliday>>& pv) const;
 
-	static void DeleteTiingoDelistedStock();
+	static void DeleteTiingoDelistedStock(std::stop_token st);
 	static void DeleteTiingoDayLine(const shared_ptr<CTiingoStock>& pStock);
 	static void DeleteTiingoFinancialStatement(const shared_ptr<CTiingoStock>& pStock);
 
@@ -181,6 +181,8 @@ private:
 	std::jthread m_jtUpdateFinnhubEPSSurpriseDB;
 	std::jthread m_jtUpdateSECFilingsDB;
 	std::jthread m_jtUpdateFinnhubStockProfileDB;
+	std::jthread m_jtUpdateCryptoDayLineDB;
+	std::jthread m_jtUpdateForexDayLineDB;
 
 	std::jthread m_jtUpdateTiingoStockDayLineDB;
 	std::jthread m_jtProcessTiingoDayLine;
@@ -188,9 +190,17 @@ private:
 	std::jthread m_jtUpdateTiingoCryptoSymbolDB;
 	std::jthread m_jtUpdateTiingoFundamentalDefinitionDB;
 	std::jthread m_jtUpdateTiingoFinancialStateDB;
+	std::jthread m_jtCreateTiingoTradeDayDayLineDB;
+	std::jthread m_jtUpdateTiingoIndustryDB;
+	std::jthread m_jtUpdateTiingoChosenStockDB;
+	std::jthread m_jtDeleteDelistedTiingoStock;
+	std::jthread m_jtRebuildTiingoIndustryRS;
+	std::jthread m_jtUpdateNaicsIndustryDB;
+	std::jthread m_jtUpdateSicIndustryDB;
 
 	std::jthread m_jtUpdateFinnhubInaccessibleExchangeDB;
 	std::jthread m_jtUpdateTiingoInaccessibleStockDB;
+	std::jthread m_jtCalculateNasdaq100;
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

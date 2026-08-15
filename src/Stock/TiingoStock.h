@@ -125,7 +125,7 @@ public:
 
 	void CalculateDayLineMA(const int length);
 
-	void RebuildStockSplitDB() override;
+	void RebuildStockSplitDB(std::stop_token st) override;
 
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
 	void CheckUpdateStatus(local_days lTodayDate);

@@ -217,10 +217,21 @@ void CMainFrame::CloseAllThread() {
 		m_jtProcessTodayStock.request_stop();
 		m_jtProcessTodayStock.join();
 	}
-
 	if (m_jtUpdateChinaStockProfileDB.joinable()) {
 		m_jtUpdateChinaStockProfileDB.request_stop();
 		m_jtUpdateChinaStockProfileDB.join();
+	}
+	if (m_jtCreateTiingoTradeDayDayLineDB.joinable()) {
+		m_jtCreateTiingoTradeDayDayLineDB.request_stop();
+		m_jtCreateTiingoTradeDayDayLineDB.join();
+	}
+	if (m_jtProcessTodayDayLine.joinable()) {
+		m_jtProcessTodayDayLine.request_stop();
+		m_jtProcessTodayDayLine.join();
+	}
+	if (m_jtCalculateNewLowFiveTimes.joinable()) {
+		m_jtCalculateNewLowFiveTimes.request_stop();
+		m_jtCalculateNewLowFiveTimes.join();
 	}
 }
 
@@ -556,7 +567,7 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(1, s);
 
 	// 更新实时数据分配及处理时间
-	s = std::format("{:5Ld}", gl_pChinaMarket->m_ttDistributeAndCalculateTime.load());
+	s = std::format("{:8Ld}", gl_pChinaMarket->m_ttDistributeAndCalculateTime.load());
 	SysCallSetInnerSystemPaneText(2, s);
 
 	// 更新TaskSchedulePer100ms()处理时间
@@ -1050,9 +1061,13 @@ void CMainFrame::OnResetTiingoDayLineDate() {
 }
 
 void CMainFrame::OnCreateTiingoTradeDayDayLine() {
-	gl_runtime.thread_executor()->post([] {
+	if (m_jtCreateTiingoTradeDayDayLineDB.joinable()) {
+		m_jtCreateTiingoTradeDayDayLineDB.request_stop();
+		m_jtCreateTiingoTradeDayDayLineDB.join();
+	}
+	m_jtCreateTiingoTradeDayDayLineDB = std::jthread([](std::stop_token st) {
 		gl_systemMessage.SetWorldMarketSavingFunction("T create dayLine");
-		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
+		gl_dataContainerTiingoStock.BuildDayLine(st, gl_pWorldMarket->GetCurrentTradeDate());
 	});
 }
 
@@ -1066,8 +1081,12 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnProcessTiingoDayLine() {
-	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskProcessTodayDayLine(std::stop_token{});
+	if (m_jtProcessTodayDayLine.joinable()) {
+		m_jtProcessTodayDayLine.request_stop();
+		m_jtProcessTodayDayLine.join();
+	}
+	m_jtProcessTodayDayLine = std::jthread([](std::stop_token st) {
+		gl_dataContainerTiingoStock.TaskProcessTodayDayLine(st);
 	});
 }
 
@@ -1081,8 +1100,12 @@ void CMainFrame::OnUpdateProcessTiingoDayLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnCalculateNewLowFiveTimes() {
-	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskCalculate2();
+	if (m_jtCalculateNewLowFiveTimes.joinable()) {
+		m_jtCalculateNewLowFiveTimes.request_stop();
+		m_jtCalculateNewLowFiveTimes.join();
+	}
+	m_jtCalculateNewLowFiveTimes = std::jthread([](std::stop_token st) {
+		gl_dataContainerTiingoStock.TaskCalculate2(st);
 	});
 }
 

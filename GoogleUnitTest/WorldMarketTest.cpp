@@ -771,7 +771,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateTiingoIndustry) {
-		EXPECT_THAT(gl_pWorldMarket->UpdateTiingoIndustry(), IsFalse());
+		EXPECT_THAT(gl_pWorldMarket->UpdateTiingoIndustry(std::stop_token{}), IsFalse());
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateSicIndustry) {

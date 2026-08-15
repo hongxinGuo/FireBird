@@ -78,7 +78,7 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
 		}
 	}
-	gl_pWorldMarket->DeleteTiingoDelistedStock(); // 最后从代码即中删除已经退市的股票
+	gl_pWorldMarket->DeleteTiingoDelistedStock(std::stop_token{}); // 最后从代码即中删除已经退市的股票
 
 	// Note 先在这里存储
 	SaveNewSymbol();

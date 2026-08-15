@@ -55,9 +55,9 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	auto* timer = new QChronoTimer(1s, this);
 	connect(timer, &QChronoTimer::timeout, this, &WatchdogQT::Update);
 	timer->start();
-	// 设置每十秒一次的计时器
-	auto* timer2 = new QChronoTimer(10s, this);
-	connect(timer2, &QChronoTimer::timeout, this, &WatchdogQT::UpdatePer10Second);
+	// 设置每二十秒一次的计时器
+	auto* timer2 = new QChronoTimer(20s, this);
+	connect(timer2, &QChronoTimer::timeout, this, &WatchdogQT::UpdatePer20Second);
 	timer2->start();
 
 	setWindowState(Qt::WindowMinimized); // watchdog初始时最小化
@@ -149,8 +149,8 @@ void WatchdogQT::Update() {
 	while (!m_listOutput.empty()) m_listOutput.pop_front();
 }
 
-void WatchdogQT::UpdatePer10Second() {
-	static int s_Counter = 6; // 初始值为6次，即一分钟后执行启动FireBird任务（每十秒钟监视一次）
+void WatchdogQT::UpdatePer20Second() {
+	static int s_Counter = 3; // 初始值为3次，即一分钟后执行启动FireBird任务（每二十秒钟监视一次）
 	if (--s_Counter < 1) {
 		if (!IsFireBirdAlreadyRunning(sFireBirdApp)) {
 			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);

@@ -49,23 +49,6 @@ void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
 /// lMarketTime：当前市场时间
 ///
 ////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::Run2(const local_seconds& lMarketTime) {
-	if (!IsInquiring()) {
-		gl_runtime.thread_executor()->post([this, lMarketTime] { //Note 此处必须使用thread_executor
-				GenerateInquiryMessage(lMarketTime);
-				if (HaveInquiry()) {
-					SetInquiring(true);
-					if (m_bUsingNewInterface) {
-						InquireData2(std::stop_token{});
-					}
-					else {
-						InquireData();
-					}
-				}
-			});
-	}
-}
-
 void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
 	if (!IsInquiring()) {
 		// 如果已有运行完的线程，先请求停止并等待其结束（避免并发的 Run 导致竞态）

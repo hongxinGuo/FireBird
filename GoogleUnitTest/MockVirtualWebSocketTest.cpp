@@ -54,7 +54,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockVirtualWebSocket, Connect).Times(1);
 		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(vSymbol)).Times(1);
 
-		EXPECT_TRUE(s_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
+		EXPECT_TRUE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
 	}
 
@@ -64,7 +64,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockVirtualWebSocket, Connect).Times(1);
 		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(vSymbol)).Times(1);
 
-		EXPECT_TRUE(s_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
+		EXPECT_TRUE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
 	}
 
@@ -75,7 +75,7 @@ namespace FireBirdTest {
 		.WillOnce(Throw(e));
 		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(_)).Times(0);
 
-		EXPECT_FALSE(s_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
+		EXPECT_FALSE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Test Message");
 	}
@@ -89,23 +89,9 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(vSymbol)).Times(1)
 		.WillOnce(Throw(e));
 
-		EXPECT_FALSE(s_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
+		EXPECT_FALSE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Test Message");
-	}
-
-	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage6) {
-		EXPECT_FALSE(gl_systemConfiguration.IsExitingSystem());
-		gl_systemConfiguration.SetExitingSystem(true);
-		EXPECT_CALL(*s_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Connecting)); // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Connect).Times(1);
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Send).Times(0); // 系统正在退出时，本函数直接返回
-
-		EXPECT_FALSE(s_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol)) << "系统正在退出时，本函数直接返回";
-
-		// 恢复原状
-		gl_systemConfiguration.SetExitingSystem(false);
 	}
 
 	TEST_F(CMockVirtualWebSocketTest, TestMonitorWebSocket1) {

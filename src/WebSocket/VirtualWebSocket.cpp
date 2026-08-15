@@ -35,8 +35,11 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol)
 	}
 	ABSL_DLOG(INFO) << "TaskConnectAndSendMessage\n";
 	gl_dailyWebSocketLogger->info("{} TaskConnectAndSendMessage", m_url);
-	gl_runtime.thread_executor()->post([this, vSymbol] {
-		this->GetShared()->ConnectAndSendMessage(vSymbol);
+	if (m_jtConnectAndSendMessage.joinable()) {
+		m_jtConnectAndSendMessage.join();
+	}
+	m_jtConnectAndSendMessage = std::jthread([this, vSymbol](std::stop_token st) {
+		this->GetShared()->ConnectAndSendMessage(st, vSymbol);
 	});
 }
 
@@ -47,14 +50,14 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol)
 // 
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualWebSocket::ConnectAndSendMessage(const vector<string>& vSymbol) {
+bool CVirtualWebSocket::ConnectAndSendMessage(std::stop_token st, const vector<string>& vSymbol) {
 	//ABSL_DCHECK(IsClosed());
 	try {
 		AppendSymbol(vSymbol);
 		Connect();
 		//ABSL_DCHECK(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) {
-			if (gl_systemConfiguration.IsExitingSystem()) return false;
+			if (st.stop_requested()) return false;
 			Sleep(1);
 		}
 		Send(m_vSymbol);
@@ -164,7 +167,10 @@ void CVirtualWebSocket::Disconnect() {
 }
 
 void CVirtualWebSocket::TaskDisconnect() {
-	gl_runtime.thread_executor()->post([this] {
+	if (m_jtDisConnect.joinable()) {
+		m_jtDisConnect.join();
+	}
+	m_jtDisConnect = std::jthread([this](std::stop_token st) {
 		this->GetShared()->Disconnect();
 	});
 }

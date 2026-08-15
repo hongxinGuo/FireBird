@@ -679,7 +679,7 @@ namespace FireBirdTest {
 
 		stock.SetSymbol(string_view("AAPL"));
 
-		stock.RebuildStockSplitDB();
+		stock.RebuildStockSplitDB(std::stop_token{});
 
 		EXPECT_EQ(stock.GetStockSplitCount(), 5);
 		EXPECT_EQ(stock.GetStockSplit(0)->GetDate(), toLocalDays(19870616));

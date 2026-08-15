@@ -302,12 +302,13 @@ void CTiingoStock::CalculateDayLineMA(const int length) {
 	m_dataDayLine.CalculateMA(length);
 }
 
-void CTiingoStock::RebuildStockSplitDB() {
+void CTiingoStock::RebuildStockSplitDB(std::stop_token st) {
 	if (!m_dataDayLine.IsDataLoaded()) {
 		m_dataDayLine.LoadDB(m_strSymbol);
 	}
 	m_pvStockSplit->clear();
 	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
+		if (st.stop_requested()) return;
 		if (std::abs(m_dataDayLine.GetData(index)->GetSplitFactor() - 1.0) > EPSILON) {
 			CStockSplitPtr pStockSplit = make_shared<CStockSplit>();
 			pStockSplit->SetDate(m_dataDayLine.GetData(index)->GetDate());
