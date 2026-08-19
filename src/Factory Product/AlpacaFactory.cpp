@@ -3,9 +3,11 @@
 #include "SystemMessage.h"
 
 #include "FinnhubInquiryType.h"
-#include "ProductAlpacaStockDayLine.h"
 #include "ProductDummy.h"
 #include "AlpacaFactory.h"
+
+#include "ProductAlpacaStockSymbol.h"
+#include "ProductAlpacaStockDayLine.h"
 
 using std::make_shared;
 
@@ -13,6 +15,9 @@ CVirtualProductWebDataPtr CAlpacaFactory::CreateProduct(CVirtualMarketPtr pMarke
 	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iInquireType) {
+	case ALPACA_TRADING_ASSET_:
+		p = make_shared<CProductAlpacaStockSymbol>();
+		break;
 	case STOCK_PRICE_CANDLES_:
 		p = make_shared<CProductAlpacaStockDayLine>();
 		break;

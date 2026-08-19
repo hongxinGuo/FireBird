@@ -142,6 +142,9 @@
     <Filter Include="Test源文件\Factory Product\Alpaca">
       <UniqueIdentifier>{ef3207c5-b899-4b58-a8e0-5dc125d9adee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Data Container\Alpaca">
+      <UniqueIdentifier>{526b53b2-5c84-4d1f-9fe8-556409efd37e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -566,6 +569,12 @@
     </ClCompile>
     <ClCompile Include="ProductAlpacaStockDayLineTest.cpp">
       <Filter>Test源文件\Factory Product\Alpaca</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductAlpacaStockSymbolTest.cpp">
+      <Filter>Test源文件\Factory Product\Alpaca</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerAlpacaStockSymbolTest.cpp">
+      <Filter>Test源文件\Data Container\Alpaca</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

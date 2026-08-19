@@ -37,6 +37,7 @@ public:
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
 	shared_ptr<std::vector<std::string>> CreateMessageInternal(string paramAdjust);
+	local_days GetStartInquireDay(size_t stockIndex) const;
 
 	void Parse(shared_ptr<vector<CTiingoCandleLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
 	void CalculateSplitFactor(vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit);

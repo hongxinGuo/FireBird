@@ -152,8 +152,9 @@ void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 	const auto& t = FinnhubStockProfile{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
+	auto stockSize = m_vStock.size();
 
-	for (size_t l = 0; l < m_vStock.size(); l++) {
+	for (size_t l = 0; l < stockSize; l++) {
 		if (st.stop_requested()) break;
 		const CFinnhubStockPtr pStock = GetItem(l);
 		ABSL_DCHECK(pStock != nullptr);

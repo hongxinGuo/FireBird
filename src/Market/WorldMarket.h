@@ -63,8 +63,6 @@ public:
 	void TaskCreateTiingoTradeDayDayLine();
 	void TaskProcessTiingoDayLine();
 
-	void TaskDeleteDelistedStock();
-
 	void TaskPerSecond();
 
 	void TaskMainTainTiingoDayLineDB();
@@ -130,7 +128,7 @@ public:
 	void UpdateMarketStatus(const shared_ptr<vector<CMarketStatus>>& pv) const;
 	void UpdateMarketHoliday(const shared_ptr<vector<CMarketHoliday>>& pv) const;
 
-	static void DeleteTiingoDelistedStock(std::stop_token st);
+	void DeleteTiingoDelistedStock(std::stop_token st);
 	static void DeleteTiingoDayLine(const shared_ptr<CTiingoStock>& pStock);
 	static void DeleteTiingoFinancialStatement(const shared_ptr<CTiingoStock>& pStock);
 
@@ -141,13 +139,15 @@ public:
 
 	bool IsBuildTodayTiingoDayLine() const noexcept { return m_bBuildTodayTiingoDayLine; }
 	void SetBuildTodayTiingoDayLine(bool fFlag) noexcept { m_bBuildTodayTiingoDayLine = fFlag; }
+	bool IsDeleteTiingoDelistedStock() const noexcept { return m_bDeleteTiingoDelistedStock; }
+	void SetDeleteTiingoDelistedStock(bool fFlag) noexcept { m_bDeleteTiingoDelistedStock = fFlag; }
 
 	void ChangeToPrevStock();
 	void ChangeToNextStock();
 
 protected:
-	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
-	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
+	long m_lCurrentUpdateDayLinePos{ 0 };
+	long m_lCurrentUpdateEPSSurprisePos{ 0 };
 
 	shared_ptr<vector<CMarketStatus>> m_pvMarketStatus;
 	shared_ptr<vector<CMarketHoliday>> m_pvMarketHoliday;
@@ -155,8 +155,8 @@ protected:
 	bool m_bFinnhubWebSiteAccessible{ true }; // 由于finnhub.io不时被墙，故而需要此标识。
 
 	bool m_fPermitUpdateTiingoFundamentalDefinitionDB{ false };
-
 	bool m_bBuildTodayTiingoDayLine{ false };
+	bool m_bDeleteTiingoDelistedStock{ false };
 
 	vector<shared_ptr<CTiingoStock>> m_vNasdaq100TiingoStock;
 	atomic_int m_iNewHighHigher{ 0 };
@@ -166,6 +166,7 @@ protected:
 
 private:
 	// 各thread的std::jthread变量，用于自动结束线程。
+	std::jthread m_jtUpdateAlpacaStockDB;
 	std::jthread m_jtRebuildStockSplitDB;
 
 	std::jthread m_jtUpdateFinnhubIndustryDB;

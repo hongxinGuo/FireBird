@@ -50,6 +50,10 @@ public:
 
 	void TaskProcessTodayDayLine(std::stop_token st);
 	void ReportHighHigherRate();
+	void Update5YearLow90PercentStockDB();
+	void Update5YearLow70PercentStockDB();
+	void Update5YearLow80PercentStockDB();
+	void Update5YearLowStockDB();
 };
 
 extern CContainerTiingoStock gl_dataContainerTiingoStock;

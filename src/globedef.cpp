@@ -34,6 +34,7 @@
 #include "containerChosenCrypto.h"
 
 #include "AlphaVantageDataSource.h"
+#include "ContainerAlpacaStockSymbol.h"
 #include "ContainerChinaStock.h"
 #include "ContainerChosenForex.h"
 #include "ContainerFinnhubCountry.h"
@@ -144,6 +145,8 @@ CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinitio
 CContainerTiingoChosenStock gl_dataContainerTiingoChosenStock;
 CContainerChosenForex gl_dataContainerChosenWorldForex;
 CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
+
+CContainerAlpacaStockSymbol gl_dataContainerAlpacaStockSymbol;
 
 // 各市场。皆为唯一实例。为最后声明的变量。
 CWorldMarketPtr gl_pWorldMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//

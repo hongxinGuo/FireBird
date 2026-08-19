@@ -115,6 +115,7 @@
     </ClCompile>
     <ClCompile Include="CharSetTransferTest.cpp" />
     <ClCompile Include="CompanyNewsTest.cpp" />
+    <ClCompile Include="ContainerAlpacaStockSymbolTest.cpp" />
     <ClCompile Include="ContainerFinnhubCountryTest.cpp" />
     <ClCompile Include="ContainerFinnhubCryptoTest.cpp" />
     <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="MockTiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="MockVirtualWebSocketTest.cpp" />
     <ClCompile Include="ProductAlpacaStockDayLineTest.cpp" />
+    <ClCompile Include="ProductAlpacaStockSymbolTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
     <ClCompile Include="ProductEastmoneyDayLineTest.cpp" />
     <ClCompile Include="ProductFinnbhubSECFilingsTest.cpp" />

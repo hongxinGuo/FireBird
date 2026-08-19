@@ -67,8 +67,8 @@ void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 	for (const auto& row : db(select(all_of(t)).from(t))) {
 		setExistingSymbols.insert(string{ row.Symbol.value() });
 	}
-
-	for (size_t l = 0; l < m_vStock.size(); l++) {
+	size_t vectorSize = m_vStock.size();
+	for (size_t l = 0; l < vectorSize; l++) {
 		if (st.stop_requested()) break;
 		const CTiingoStockPtr pStock = GetStock(l);
 		ABSL_DCHECK(pStock != nullptr);
@@ -541,6 +541,9 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 void CContainerTiingoStock::TaskProcessTodayDayLine(std::stop_token st) {
 	gl_systemMessage.PushInnerSystemInformationMessage("开始处理Tiingo日线数据");
 	gl_pWorldMarket->ResetNewHighHigher();
+	gl_vCurrent5YearLow70Percent.clear();
+	gl_vCurrent5YearLow80Percent.clear();
+	gl_vCurrent5YearLow90Percent.clear();
 
 	auto lSize = Size();
 	vector<result<void>> vResults;
@@ -551,7 +554,7 @@ void CContainerTiingoStock::TaskProcessTodayDayLine(std::stop_token st) {
 			gl_BackgroundWorkingThread.Acquire();
 			auto result = gl_runtime.thread_executor()->submit([pStock, st] {
 				if (st.stop_requested()) return;
-				pStock->ProcessDayLine();
+				pStock->ProcessDayLine(st);
 				gl_BackgroundWorkingThread.Release();
 			});
 			vResults.emplace_back(std::move(result));
@@ -584,6 +587,10 @@ void CContainerTiingoStock::TaskProcessTodayDayLine(std::stop_token st) {
 	result5.get();
 
 	ReportHighHigherRate();
+
+	// 存储五年低股票至数据库
+	Update5YearLowStockDB();
+
 	gl_systemMessage.PushInnerSystemInformationMessage("Tiingo日线数据处理完毕");
 }
 
@@ -591,4 +598,56 @@ void CContainerTiingoStock::ReportHighHigherRate() {
 	auto s = std::format("3月内再创新高数:{:d}, 3月内未再次新高数:{:d}, 比率:{:.2f}", gl_pWorldMarket->GetNewHighHigher(), gl_pWorldMarket->GetNoNewHighHigher(),
 	                     static_cast<double>(gl_pWorldMarket->GetNewHighHigher()) / gl_pWorldMarket->GetNoNewHighHigher());
 	gl_systemMessage.PushStockMarketInformationMessage(s);
+}
+
+void CContainerTiingoStock::Update5YearLow90PercentStockDB() {
+	using namespace StockMarket;
+	const auto& t = TiingoStock5yearLow90Percent{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+	for (auto& symbol : gl_vCurrent5YearLow90Percent) {
+		db(insert_into(t).set(
+			t.Symbol = symbol,
+			t.Date = date
+		));
+	}
+	tx.commit();
+}
+
+void CContainerTiingoStock::Update5YearLow70PercentStockDB() {
+	using namespace StockMarket;
+	const auto& t = TiingoStock5yearLow70Percent{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	db.start_transaction();
+	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+	for (auto& symbol : gl_vCurrent5YearLow70Percent) {
+		db(insert_into(t).set(
+			t.Symbol = symbol,
+			t.Date = date
+		));
+	}
+	tx.commit();
+}
+
+void CContainerTiingoStock::Update5YearLow80PercentStockDB() {
+	using namespace StockMarket;
+	const auto& t = TiingoStock5yearLow80Percent{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+	for (auto& symbol : gl_vCurrent5YearLow80Percent) {
+		db(insert_into(t).set(
+			t.Symbol = symbol,
+			t.Date = date
+		));
+	}
+	tx.commit();
+}
+
+void CContainerTiingoStock::Update5YearLowStockDB() {
+	Update5YearLow70PercentStockDB();
+	Update5YearLow80PercentStockDB();
+	Update5YearLow90PercentStockDB();
 }

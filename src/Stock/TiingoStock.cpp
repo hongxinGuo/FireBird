@@ -6,6 +6,8 @@
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 #include<sqlpp23/sqlpp23.h>
+
+#include <algorithm>
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
@@ -19,6 +21,10 @@
 #include "SystemConfiguration.h"
 
 using namespace std;
+
+std::vector<std::string> gl_vCurrent5YearLow70Percent;
+std::vector<std::string> gl_vCurrent5YearLow80Percent;
+std::vector<std::string> gl_vCurrent5YearLow90Percent;
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
@@ -503,12 +509,12 @@ void CTiingoStock::Load52WeekLowDB() {
 /// 
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoStock::ProcessDayLine() {
-	if (gl_systemConfiguration.IsExitingSystem()) return;
+void CTiingoStock::ProcessDayLine(std::stop_token st) {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 		m_dataDayLine.SplitAdjust();
 	}
+	if (st.stop_requested()) return;
 
 	auto endPos = m_dataDayLine.Size();
 	if (endPos < 300) return; // 最少300个日线数据
@@ -524,14 +530,18 @@ void CTiingoStock::ProcessDayLine() {
 
 	//FindHighLow3(endPos); // 这种是最简单的。耗时虽然长，但与数据库操作相比还是短的，故而采用更快速的算法没有那么必须了。
 	FindHighLow2(endPos); // 这种速度较快。
-	m_dataDayLine.Unload();
-	SetUpdate52WeekHighLowDB(true); // 设置存储52周新高和52周新低的标识。
 
 	// 计算三个月内再创新高的几率
 	CalculateNewHighHigher();
+
+	// 计算是否符合五年低
+	Find70PercentLow();
+
+	m_dataDayLine.Unload();
+	SetUpdate52WeekHighLowDB(true); // 设置存储52周新高和52周新低的标识。
 }
 
-void CTiingoStock::ProcessDayLine2() {
+void CTiingoStock::ProcessDayLine2(std::stop_token st) {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 		m_dataDayLine.SplitAdjust();
@@ -550,11 +560,14 @@ void CTiingoStock::ProcessDayLine2() {
 	AdjustedStockCloseValue(dSplitFactor, 0, endPos);
 	FindHighLow2(endPos);
 
+	// 计算是否符合五年低
+	Find70PercentLow();
+
 	UnloadDayLine();
 	SetUpdate52WeekHighLowDB(true);
 }
 
-void CTiingoStock::ProcessDayLine3() {
+void CTiingoStock::ProcessDayLine3(std::stop_token st) {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 		m_dataDayLine.SplitAdjust();
@@ -572,12 +585,43 @@ void CTiingoStock::ProcessDayLine3() {
 	double dSplitFactor = CalculateSplitFactor(0, endPos);
 	AdjustedStockCloseValue(dSplitFactor, 0, endPos);
 	FindHighLow3(endPos);
-	m_dataDayLine.Unload();
 	SetUpdate52WeekHighLowDB(true);
 
 	// 计算三个月内再创新高的几率
 	CalculateNewHighHigher();
 	CalculateNewLowLower();
+
+	// 计算是否符合五年低
+	Find70PercentLow();
+
+	m_dataDayLine.Unload();
+}
+
+void CTiingoStock::Find70PercentLow() {
+	ABSL_DCHECK(m_vClose.size() > 300);
+	size_t cutoff = 0;
+	if (m_vClose.size() > 1200) cutoff = m_vClose.size() - 1200;
+	double high5Year = 0;
+	for (size_t i = m_vClose.size() - 1; i > cutoff; --i) {
+		high5Year = std::max(m_vClose.at(i), high5Year);
+	}
+	double MarketValue = 301;
+	if (GetShareCount() > 0) MarketValue = GetShareCount() * m_vClose.at(m_vClose.size() - 1);
+	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 10)) {
+		if (MarketValue > 300) { // 市值超过3亿元。
+			gl_vCurrent5YearLow90Percent.push_back(GetSymbol());
+		}
+	}
+	else if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 5)) {
+		if (MarketValue > 300) { // 市值超过3亿元。
+			gl_vCurrent5YearLow80Percent.push_back(GetSymbol());
+		}
+	}
+	else if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 3.3)) {
+		if (MarketValue > 300) { // 市值超过3亿元。
+			gl_vCurrent5YearLow70Percent.push_back(GetSymbol());
+		}
+	}
 }
 
 void CTiingoStock::FindHighLow3(size_t endPos) {

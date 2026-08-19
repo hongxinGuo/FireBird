@@ -4,6 +4,13 @@
 -- ------------------------------------------------------
 -- Server version	9.7.1
 
+CREATE TABLE `alpaca_stock_symbol` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Exchange` varchar(45) NOT NULL DEFAULT'‘ ’',
+  `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `Name` varchar(1000) NOT NULL DEFAULT '‘ ’'
+);
+
 CREATE TABLE `china_choice_stock` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(10) NOT NULL DEFAULT '‘ ’'
@@ -289,8 +296,8 @@ CREATE TABLE `finnhub_stock_profile` (
   `WebURL` varchar(150)  NOT NULL DEFAULT ' ',
   `Logo` varchar(110)  NOT NULL DEFAULT ' ',
   `FinnhubIndustry` varchar(100)  NOT NULL DEFAULT ' ',
-  `Peer` varchar(1000)  NOT NULL DEFAULT '{}',
-  `UpdateDate` varchar(4000)  NOT NULL DEFAULT '{}'
+  `Peer` varchar(500)  NOT NULL DEFAULT '{}',
+  `UpdateDate` varchar(3000)  NOT NULL DEFAULT '{}'
 );
 
 CREATE TABLE `finnhub_stock_sec_filings` (
@@ -480,6 +487,24 @@ CREATE TABLE `tiingo_stock_52week_low` (
   `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
   `Exchange` varchar(50) NOT NULL DEFAULT '‘ ’',
   `Date` int NOT NULL DEFAULT '0'
+);
+
+CREATE TABLE `tiingo_stock_5year_low_70percent` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `Date` int NOT NULL DEFAULT '19700101'
+);
+
+CREATE TABLE `tiingo_stock_5year_low_80percent` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `Date` int NOT NULL DEFAULT '19700101'
+);
+
+CREATE TABLE `tiingo_stock_5year_low_90percent` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
+  `Date` int NOT NULL DEFAULT '19700101'
 );
 
 CREATE TABLE `tiingo_stock_current_trace` (

@@ -2,13 +2,13 @@
 
 #include "AlpacaDataSource.h"
 
-#include "ContainerTiingoStock.h"
 #include "FinnhubInquiryType.h"
 #include "WorldMarket.h"
 #include"VirtualWebProduct.h"
 #include"AlpacaFactory.h"
-
-#include "TiingoStock.h"
+#include"TiingoStock.h"
+#include "ContainerTiingoStock.h"
+#include"ContainerAlpacaStockSymbol.h"
 
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
@@ -35,7 +35,8 @@ CAlpacaDataSource::CAlpacaDataSource() {
 }
 
 bool CAlpacaDataSource::Reset() {
-	m_fUpdateStockDayLine = true;
+	m_bUpdateTradingAsset = true;
+	m_fUpdateStockDayLine = false;
 	m_fAlpacaDataInquiryFinished = false;
 	return true;
 }
@@ -47,6 +48,7 @@ bool CAlpacaDataSource::GenerateInquiryMessage(const local_seconds& lCurrentTime
 	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketAlpacaInquiryTime())) return false;
 	m_PrevInquireTimePoint = llTickCount;
 	ABSL_DCHECK(!IsInquiring());
+	if (GenerateTradingAsset()) return true;
 	if (GenerateStockDayLine()) return true;
 
 	ABSL_DCHECK(!IsInquiring());
@@ -58,29 +60,55 @@ bool CAlpacaDataSource::GenerateInquiryMessage(const local_seconds& lCurrentTime
 	return false;
 }
 
-bool CAlpacaDataSource::GenerateStockDayLine() {
-	auto isUpdateNeeded = [this]() { return IsUpdateStockDayLine(); };
-	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
-	auto createProduct = [this](int inquireType) { return m_pAlpacaFactory->CreateProduct(gl_pWorldMarket, inquireType); };
-	auto setMessage = [](const auto& item) {
-		std::string str = "DayLine:";
-		str += item->GetSymbol();
-		gl_systemMessage.SetCurrentAlpacaFunction(str);
+bool CAlpacaDataSource::GenerateTradingAsset() {
+	auto isUpdateNeeded = [this]() { return IsUpdateTradingAsset(); };
+	auto createProduct = [this](int inquireType) {
+		return m_pAlpacaFactory->CreateProduct(gl_pWorldMarket, inquireType);
 	};
-	auto setUpdateFlag = [this](bool flag) { SetUpdateStockDayLine(flag); };
-	const std::string finishedMsg = "Alpaca dayline updated";
-
-	return GenerateInquiryIterateWithoutAccessCheck(
-		gl_dataContainerTiingoStock,
-		STOCK_PRICE_CANDLES_,
+	return GenerateSimpleInquiry(
+		ALPACA_TRADING_ASSET_,
 		isUpdateNeeded,
-		isUpdateItemNeeded,
 		createProduct,
-		s_setIndex,
-		setMessage,
-		setUpdateFlag,
-		finishedMsg
+		[] {
+			gl_systemMessage.SetCurrentAlpacaFunction("Trading asset");
+			gl_systemMessage.PushInformationMessage("Alpaca Trading asset updated");
+		}
 	);
+}
+
+bool CAlpacaDataSource::GenerateStockDayLine() {
+	const auto size = gl_dataContainerTiingoStock.Size();
+	bool haveInquiry = false;
+	CTiingoStockPtr item;
+	if (IsUpdateStockDayLine()) {
+		bool found = false;
+		size_t pos;
+		for (pos = 0; pos < size; ++pos) {
+			item = gl_dataContainerTiingoStock.GetItem(pos);
+			if (item->IsUpdateDayLine()) {
+				// Alpaca活跃证券中有大量option、ETF、债券等其他品种，只能作为辅助信息来源。
+				if (gl_dataContainerAlpacaStockSymbol.IsSymbol(item->GetSymbol())) { // 如果同时alpaca证券集中有才申请。
+					found = true;
+					break;
+				}
+			}
+		}
+		if (found) {
+			auto product = m_pAlpacaFactory->CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_);
+			product->SetIndex(pos);
+			StoreInquiry(product);
+			std::string str = "DayLine:";
+			str += item->GetSymbol();
+			gl_systemMessage.SetCurrentAlpacaFunction(str);
+			haveInquiry = true;
+		}
+		else {
+			SetUpdateStockDayLine(false);
+			ReportFinishedMsg("Alpaca dayline updated");
+			haveInquiry = false;
+		}
+	}
+	return haveInquiry;
 }
 
 void CAlpacaDataSource::ConfigureInternetOption() {

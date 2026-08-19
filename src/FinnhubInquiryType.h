@@ -131,6 +131,9 @@ enum {
 	// Accessory product
 	ACCESSORY_INDEX_NASDAQ100_STOCKS_,
 
+	// Alpaca product
+	ALPACA_TRADING_ASSET_,
+
 	// 结束标志
 	END_OF_ALL_INQUIRY_TYPE_
 };

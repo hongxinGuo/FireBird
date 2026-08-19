@@ -14,6 +14,7 @@
 
 #include<sqlpp23/sqlpp23.h>
 
+#include "AlpacaDataSource.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include"StockMarketSQLTable.h"
@@ -61,24 +62,28 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CTiingoStocksPtr pvNewTiingoStock = DeleteDuplicatedSymbol(pvTiingoStock);
 
 	for (const auto& pTiingoStock : *pvNewTiingoStock) {
+		auto symbol = pTiingoStock->GetSymbol();
 		if (!pTiingoStock->IsActive()) { // 退市股票？
-			if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
+			if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
+				gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(false);
 				gl_dataContainerTiingoDelistedSymbol.Add(pTiingoStock); // 存入退市代码集中，准备删除其日线数据。
 			}
-			continue;
 		}
-		if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
+		else if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 已存在代码
+			gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(true);
 			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 				gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
 			}
 		}
-		else {
+		else { // 新股票代码
 			pTiingoStock->SetUpdateProfileDB(true);
 			gl_dataContainerTiingoStock.Add(pTiingoStock); // 将此股票存入数据库。
 			gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
 		}
 	}
-	gl_pWorldMarket->DeleteTiingoDelistedStock(std::stop_token{}); // 最后从代码即中删除已经退市的股票
+	gl_pWorldMarket->SetDeleteTiingoDelistedStock(true); // 设置删除已经退市的股票标志
+	gl_pWorldMarket->DeleteTiingoDelistedStock(std::stop_token{});
+	gl_pWorldMarket->SetDeleteTiingoDelistedStock(false);
 
 	// Note 先在这里存储
 	SaveNewSymbol();
@@ -92,6 +97,7 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //	  "permaTicker":"US000000000133",
 //		"ticker" : "IBM",
 //		"name" : "International Business Machines Corp",
+//		"isActive" : true,
 //    "isADR" : false,
 //    "industry":"Information Technology Services",
 //    "sector":"Technology",
@@ -102,7 +108,6 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //		"location":"New York, USA",
 //		"companyWebsite":"http://www.ibm.com",
 //		"secFillingWebsite":"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051143",
-//		"isActive" : true,
 //		"statementLastUpdated" : "2019-12-22T22:08:11.534Z",
 //		"dailyLastUpdated" : "2019-12-22T22:08:17.530Z"
 // },
@@ -221,6 +226,8 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 
 void CProductTiingoStockProfile::UpdateSystemStatus() {
 	gl_pTiingoDataSource->SetUpdateStockSymbol(false);
+	gl_pAlpacaDataSource->Enable(true); // 此时才允许Alpaca申请数据
+	gl_pAlpacaDataSource->SetUpdateStockDayLine(true); // 更新完Tiingo stock后才允许申请alpaca日线数据，因其也使用Tiingo stock。
 	gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(gl_pWorldMarket->GetMarketDate());
 	gl_systemMessage.PushInformationMessage("Tiingo stock symbol updated");
 }
@@ -246,10 +253,9 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 			if (pStockFirst->IsActive()) {
 				if (pStockNext->IsActive()) {
 					if (pStockFirst->GetDailyUpdateDate() < pStockNext->GetDailyUpdateDate()) { // 都是活跃股票时，比较最后更新日期，保留较新的那个。
-						//ABSL_DLOG(INFO) << std::format("active %s: %d ---- %d\n", pStockFirst->GetSymbol(), pStockFirst->GetDailyUpdateDate(), pStockNext->GetDailyUpdateDate());
 						string str = "多个活跃股票:" + pStockFirst->GetSymbol();
-						//gl_systemMessage.PushInnerSystemInformationMessage(str);
-						pStockFirst = pStockNext;
+						gl_systemMessage.PushInnerSystemInformationMessage(str);
+						pStockFirst = pStockNext; // 抛弃掉前面的，否则抛弃后面的。皆不存储
 					}
 				}
 			}

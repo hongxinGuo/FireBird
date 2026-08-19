@@ -5,6 +5,7 @@
 #include"SystemMessage.h"
 
 #include"Thread.h"
+#include "log.h"
 
 #include "FireBird.h"
 #include "MainFrm.h"
@@ -23,6 +24,7 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+#include "AlpacaDataSource.h"
 #include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
@@ -213,10 +215,6 @@ CMainFrame::~CMainFrame() {
 }
 
 void CMainFrame::CloseAllThread() {
-	if (m_jtProcessTodayStock.joinable()) {
-		m_jtProcessTodayStock.request_stop();
-		m_jtProcessTodayStock.join();
-	}
 	if (m_jtUpdateChinaStockProfileDB.joinable()) {
 		m_jtUpdateChinaStockProfileDB.request_stop();
 		m_jtUpdateChinaStockProfileDB.join();
@@ -224,10 +222,6 @@ void CMainFrame::CloseAllThread() {
 	if (m_jtCreateTiingoTradeDayDayLineDB.joinable()) {
 		m_jtCreateTiingoTradeDayDayLineDB.request_stop();
 		m_jtCreateTiingoTradeDayDayLineDB.join();
-	}
-	if (m_jtProcessTodayDayLine.joinable()) {
-		m_jtProcessTodayDayLine.request_stop();
-		m_jtProcessTodayDayLine.join();
 	}
 	if (m_jtCalculateNewLowFiveTimes.joinable()) {
 		m_jtCalculateNewLowFiveTimes.request_stop();
@@ -639,6 +633,17 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
 		ABSL_DLOG(INFO) << "应用户申请，准备退出程序\n";
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
+		gl_dailyLogger->info("FireBird prepare to exit");
+
+		// 新增记录：检查 Watchdog 窗口是否存在并写日志（用于排查被谁重启）
+		HWND hWatchdog = ::FindWindow(nullptr, Utf8ToW(sWatchDogApp).c_str());
+		if (hWatchdog != nullptr) {
+			gl_dailyLogger->info("Watchdog detected before exit.");
+		}
+		else {
+			gl_dailyLogger->info("Watchdog not detected before exit.");
+		}
+
 		ReportExitToWatchdog();
 		for (auto& timer : gl_aTimer) {// 退出所有的计时器，防止生成新的工作线程（已经运行的工作线程之后通知退出）。
 			timer.cancel();
@@ -658,16 +663,9 @@ void CMainFrame::OnProcessTodayStock() {
 }
 
 void CMainFrame::ProcessChinaMarketStock() {
-	if (m_jtProcessTodayStock.joinable()) {
-		m_jtProcessTodayStock.request_stop();
-		m_jtProcessTodayStock.join();
-	}
-	m_jtProcessTodayStock = std::jthread([](std::stop_token st) {
-		ABSL_DLOG(INFO) << "China market Process today stock\n";
-		gl_systemMessage.SetChinaMarketSavingFunction("Process today stock");
-		gl_pChinaMarket->ProcessTodayStock(st);
-		ABSL_DLOG(INFO) << "China market Processed today stock\n";
-	});
+	ABSL_DLOG(INFO) << "China market Process today stock\n";
+	gl_pChinaMarket->TaskProcessTodayStock();
+	ABSL_DLOG(INFO) << "China market Processed today stock\n";
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
@@ -1081,17 +1079,11 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnProcessTiingoDayLine() {
-	if (m_jtProcessTodayDayLine.joinable()) {
-		m_jtProcessTodayDayLine.request_stop();
-		m_jtProcessTodayDayLine.join();
-	}
-	m_jtProcessTodayDayLine = std::jthread([](std::stop_token st) {
-		gl_dataContainerTiingoStock.TaskProcessTodayDayLine(st);
-	});
+	gl_pWorldMarket->TaskProcessTiingoDayLine();
 }
 
 void CMainFrame::OnUpdateProcessTiingoDayLine(CCmdUI* pCmdUI) {
-	if (gl_pTiingoDataSource->IsUpdateDayLine()) {
+	if (gl_pTiingoDataSource->IsUpdateDayLine() || gl_pAlpacaDataSource->IsUpdateStockDayLine()) {
 		pCmdUI->Enable(false); // 更新日线数据时，不允许处理日线数据。
 	}
 	else {

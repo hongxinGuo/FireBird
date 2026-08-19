@@ -88,6 +88,9 @@
     <Filter Include="Web Socket">
       <UniqueIdentifier>{4770675b-0e3b-4450-9a7f-a04e94192386}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data container\Alpaca">
+      <UniqueIdentifier>{b6b76e52-2d8d-4c6e-9808-2b8d390053f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -621,6 +624,15 @@
     <ClInclude Include="..\src\Factory Product\ProductAlpaca.h">
       <Filter>Factory-Product\Alpaca</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerAlpacaStockSymbol.h">
+      <Filter>Data container\Alpaca</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Stock\AlpacaStock.h">
+      <Filter>Stock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductAlpacaStockSymbol.h">
+      <Filter>Factory-Product\Alpaca</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1089,6 +1101,15 @@
       <Filter>Factory-Product\Alpaca</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductAlpacaStockDayLine.cpp">
+      <Filter>Factory-Product\Alpaca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerAlpacaStockSymbol.cpp">
+      <Filter>Data container\Alpaca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\AlpacaStock.cpp">
+      <Filter>Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductAlpacaStockSymbol.cpp">
       <Filter>Factory-Product\Alpaca</Filter>
     </ClCompile>
   </ItemGroup>

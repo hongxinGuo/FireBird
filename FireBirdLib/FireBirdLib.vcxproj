@@ -25,6 +25,7 @@
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\CharSetTransfer.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
+    <ClInclude Include="..\src\Data Container\ContainerAlpacaStockSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaStockMonthLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockMonthLine.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlpaca.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlpacaStockDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\ProductAlpacaStockSymbol.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.h" />
     <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.h" />
@@ -135,6 +137,7 @@
     <ClInclude Include="..\src\nlohmannJsonDeclaration.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\StockMarketSQLTable.h" />
+    <ClInclude Include="..\src\Stock\AlpacaStock.h" />
     <ClInclude Include="..\src\Stock\ChinaStock.h" />
     <ClInclude Include="..\src\Stock\FinnhubCrypto.h" />
     <ClInclude Include="..\src\Stock\FinnhubForex.h" />
@@ -207,6 +210,7 @@
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerAlpacaStockSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaMonthLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoNewSymbol.cpp" />
@@ -250,6 +254,7 @@
     <ClCompile Include="..\src\Factory Product\AlpacaFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlpacaStockDayLine.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductAlpacaStockSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockSplits.cpp" />
@@ -310,6 +315,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\src\Stock\AlpacaStock.cpp" />
     <ClCompile Include="..\src\Stock\ChinaStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubForex.cpp" />

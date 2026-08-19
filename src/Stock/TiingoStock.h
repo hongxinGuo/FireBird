@@ -168,7 +168,7 @@ public:
 	size_t Get52WeekHighSize() const { return m_v52WeekHighDate.size(); }
 	auto Get52WeekHighDate(size_t index) const { return m_v52WeekHighDate.at(index); }
 
-	void ProcessDayLine(); // 系统调用这个函数
+	void ProcessDayLine(std::stop_token st); // 系统调用这个函数
 	void FindHighLow3(size_t endPos);
 	void FindHighLow2(size_t endPos);
 	void FindAll52WeekLowDate(size_t beginPos, size_t endPos);
@@ -180,8 +180,9 @@ public:
 	int IsLowOrHigh(size_t index, double dClose) const;
 
 	// 测试用函数
-	void ProcessDayLine2(); // 用于测试
-	void ProcessDayLine3(); // 用于测试
+	void ProcessDayLine2(std::stop_token st); // 用于测试
+	void ProcessDayLine3(std::stop_token st); // 用于测试
+	void Find70PercentLow();
 	void CalculateNewHighHigher(int period = 90);
 	void CalculateNewLowLower(int period = 90);
 
@@ -236,3 +237,7 @@ using CTiingoStockPtr = shared_ptr<CTiingoStock>;
 using CTiingoStocksPtr = shared_ptr<vector<CTiingoStockPtr>>;
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock);
+
+extern std::vector<std::string> gl_vCurrent5YearLow70Percent;
+extern std::vector<std::string> gl_vCurrent5YearLow80Percent;
+extern std::vector<std::string> gl_vCurrent5YearLow90Percent;

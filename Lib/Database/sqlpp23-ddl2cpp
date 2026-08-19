@@ -1,0 +1,855 @@
+#!/usr/bin/env python3
+
+##
+# Copyright (c) 2013, Roland Bock
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+#
+#  * Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+# OF THE POSSIBILITY OF SUCH DAMAGE.
+##
+
+import argparse
+import logging
+import logging.handlers
+import pyparsing as pp
+import sys
+import re
+import os
+import io
+import unittest
+from dataclasses import dataclass
+from enum import IntEnum
+from typing import Any, Dict, List
+
+
+class ExitCode(IntEnum):
+    SUCCESS = 0
+    BAD_ARGS = 1
+    BAD_DDL_COMMAND = 10
+    BAD_DDL_PARSING = 20
+    BAD_CUSTOM_TYPES = 30
+    BAD_COLUMN_ANNOTATION = 40
+
+
+# The following code could be organized as modules instead of classes. However, using modules
+# implies that the program code would be split into several files and we want to avoid that
+# because it would complicate program installation. That is why we use classes.
+
+
+class DdlParser:
+    """Rather basic SQL command parser that is not geared at fully parsing all SQL dialects or
+    even the full ANSI SQL. Instead it recognizes only the SQL subset that is needed to build
+    the database model, while ignoring anything else.
+    """
+
+    base_sql_type_to_cpp = {
+    # boolean types
+    "BOOL": "::sqlpp::boolean",
+    "BOOLEAN": "::sqlpp::boolean",
+    # integral types
+    "BIGINT": "::sqlpp::integral",
+    "INT": "::sqlpp::integral",
+    "INT2": "::sqlpp::integral",  # PostgreSQL
+    "INT4": "::sqlpp::integral",  # PostgreSQL
+    "INT8": "::sqlpp::integral",  # PostgreSQL
+    "INTEGER": "::sqlpp::integral",
+    "MEDIUMINT": "::sqlpp::integral",
+    "SMALLINT": "::sqlpp::integral",
+    "TINYINT": "::sqlpp::integral",
+    # serial types
+    "BIGSERIAL": "::sqlpp::serial",  # PostgreSQL
+    "SERIAL": "::sqlpp::serial",  # PostgreSQL
+    "SERIAL2": "::sqlpp::serial",  # PostgreSQL
+    "SERIAL4": "::sqlpp::serial",  # PostgreSQL
+    "SERIAL8": "::sqlpp::serial",  # PostgreSQL
+    "SMALLSERIAL": "::sqlpp::serial",  # PostgreSQL
+    # floating_point types
+    "DECIMAL": "::sqlpp::floating_point",  # MYSQL
+    "DOUBLE": "::sqlpp::floating_point",
+    "FLOAT8": "::sqlpp::floating_point",  # PostgreSQL
+    "FLOAT": "::sqlpp::floating_point",
+    "FLOAT4": "::sqlpp::floating_point",  # PostgreSQL
+    "NUMERIC": "::sqlpp::floating_point",  # PostgreSQL
+    "REAL": "::sqlpp::floating_point",
+    # text types
+    "CHAR": "::sqlpp::text",
+    "VARCHAR": "::sqlpp::text",
+    "CHARACTER VARYING": "::sqlpp::text",  # PostgreSQL
+    "TEXT": "::sqlpp::text",
+    "CLOB": "::sqlpp::text",
+    "ENUM": "::sqlpp::text",  # MYSQL
+    "SET": "::sqlpp::text",
+    "LONGTEXT": "::sqlpp::text",  # MYSQL
+    "JSONB": "::sqlpp::text",  # PostgreSQL
+    "JSON": "::sqlpp::text",  # PostgreSQL
+    "TINYTEXT": "::sqlpp::text",  # MYSQL
+    "MEDIUMTEXT": "::sqlpp::text",  # MYSQL
+    "RATIONAL": "::sqlpp::text", # PostgreSQL pg_rationale extension
+    # blob types
+    "BYTEA": "::sqlpp::blob",
+    "TINYBLOB": "::sqlpp::blob",
+    "BLOB": "::sqlpp::blob",
+    "MEDIUMBLOB": "::sqlpp::blob",
+    "LONGBLOB": "::sqlpp::blob",
+    "BINARY": "::sqlpp::blob",  # MYSQL
+    "VARBINARY": "::sqlpp::blob",  # MYSQL
+    # date types
+    "DATE": "::sqlpp::date",
+    # timestamp types
+    "DATETIME": "::sqlpp::timestamp",
+    "TIMESTAMP": "::sqlpp::timestamp",
+    "TIMESTAMPTZ": "::sqlpp::timestamp",  # PostgreSQL
+    # time types
+    "TIME": "::sqlpp::time",
+    }
+
+    # Parsers that are initialized later
+    ddl_expression = None
+    ddl_type = None
+    ddl_column = None
+    ddl_constraint = None
+    ddl = None
+
+    @classmethod
+    def initialize(cls, custom_types={}):
+        """Initialize the DDL parser"""
+
+        # Basic parsers
+        ddl_left = pp.Suppress("(")
+        ddl_right = pp.Suppress(")")
+        ddl_number = pp.Word(pp.nums + "+-.", pp.nums + "+-.Ee")
+        ddl_string = pp.QuotedString("'") | pp.QuotedString('"', esc_quote='""') | pp.QuotedString("`")
+        # ddl_string.set_debug(True) #uncomment to debug pyparsing
+        ddl_term = pp.Word(pp.alphas + "_", pp.alphanums + "_.$")
+        ddl_name = pp.DelimitedList(ddl_term | ddl_string, delim='.', combine=True)
+        ddl_operator = pp.Or(
+            map(pp.CaselessLiteral, ["+", "-", "*", "/", "<", "<=", ">", ">=", "=", "%"]),
+            pp.CaselessKeyword("DIV")
+        )
+        ddl_braced_expression = pp.Forward()
+        ddl_function_call = pp.Forward()
+        ddl_cast_end = "::" + ddl_term
+        ddl_cast = ddl_string + ddl_cast_end
+        ddl_braced_arguments = pp.Forward()
+        cls.ddl_expression = pp.OneOrMore(
+            ddl_braced_expression
+            | ddl_function_call
+            | ddl_cast_end
+            | ddl_cast
+            | ddl_operator
+            | ddl_string
+            | ddl_term
+            | ddl_number
+            | ddl_braced_arguments
+        )
+        ddl_braced_arguments << ddl_left + pp.DelimitedList(cls.ddl_expression) + ddl_right
+        ddl_braced_expression << ddl_left + cls.ddl_expression + ddl_right
+        ddl_arguments = pp.Suppress(pp.DelimitedList(cls.ddl_expression))
+        ddl_function_call << ddl_name + ddl_left + pp.Optional(ddl_arguments) + ddl_right
+
+        # Type parser:
+        # Use `set_name` to make error messages more readable
+        # Use the reverse order to favor longer matches, e.g. SERIAL8 over SERIAL
+        # Use a fallback to match custom types (that might be annotated with cpp_type).
+        sql_type_to_cpp = cls.base_sql_type_to_cpp | custom_types
+        type_parsers = [
+            pp.CaselessKeyword(sql_type).set_name("SQL type name") # Use set_name to make error messages more readable
+            for sql_type in sorted(sql_type_to_cpp, reverse=True) # reverse order to favor longer matches, e.g. SERIAL8 over SERIAL
+        ]
+        fallback_parser = pp.Word(pp.alphanums).set_name("SQL type name")
+
+        cls.ddl_type = pp.MatchFirst(type_parsers + [fallback_parser])
+
+        def translate_type(tokens):
+            sql_type = tokens[0]
+            tokens["cpp_type"] = sql_type_to_cpp.get(sql_type.upper(), "UNKNOWN")
+            return tokens
+
+        # Constraints parser
+        ddl_unsigned = pp.CaselessKeyword("UNSIGNED").set_results_name("is_unsigned")
+        ddl_digits = "," + pp.Word(pp.nums)
+        ddl_width = ddl_left + pp.Word(pp.nums) + pp.Optional(ddl_digits) + ddl_right
+        ddl_timezone = (
+            (pp.CaselessKeyword("WITH") | pp.CaselessKeyword("WITHOUT"))
+            + pp.CaselessKeyword("TIME")
+            + pp.CaselessKeyword("ZONE")
+        )
+        ddl_not_null = (pp.CaselessKeyword("NOT") + pp.CaselessKeyword("NULL")).set_results_name("not_null")
+        ddl_default_value = pp.CaselessKeyword("DEFAULT").set_results_name("has_default_value")
+        ddl_generated_value = pp.CaselessKeyword("GENERATED").set_results_name("has_generated_value")
+        ddl_auto_keywords = [
+            "AUTO_INCREMENT",
+            "AUTOINCREMENT"
+        ]
+        ddl_auto_value = pp.Or(map(pp.CaselessKeyword, sorted(ddl_auto_keywords, reverse=True))).set_results_name("has_auto_value")
+        ddl_primary_key = (pp.CaselessKeyword("PRIMARY") + pp.CaselessKeyword("KEY")).set_results_name("is_primary_key")
+        ddl_ignored_keywords = [
+            "CONSTRAINT",
+            "FOREIGN",
+            "KEY",
+            "FULLTEXT",
+            "INDEX",
+            "UNIQUE",
+            "CHECK",
+            "PERIOD",
+        ]
+
+        # Consumes either up to a newline or the absolute end of the file stream
+        ddl_regular_comment = pp.Regex(r'(--|#).*')
+
+        cls.ddl_constraint = ((
+                pp.Or(map(
+                    pp.CaselessKeyword,
+                    sorted(ddl_ignored_keywords + ["PRIMARY"], reverse=True)
+                ))
+                - cls.ddl_expression
+            ).ignore(ddl_regular_comment).set_results_name("is_constraint")
+        ) - pp.Suppress(pp.ZeroOrMore(ddl_regular_comment)) # eat any trailing comment before the comma or closing parenthesis
+
+        ddl_column_comment = (
+            pp.CaselessKeyword("COMMENT")
+            - ddl_string.set_results_name("column_comment")
+        )
+
+        # Column parser
+        cls.ddl_column = pp.Group(
+            pp.ZeroOrMore(ddl_regular_comment).set_results_name("comments")
+            + ddl_name.set_results_name("name")
+            - (
+                cls.ddl_type.copy().set_parse_action(translate_type)
+                - pp.Optional(pp.Literal("[") + pp.Word(pp.nums + "[]")).set_results_name("is_array")
+                - pp.Suppress(pp.Optional(ddl_width))
+                - pp.Suppress(pp.Optional(ddl_timezone))
+                - pp.ZeroOrMore(
+                    ddl_unsigned
+                    | ddl_not_null
+                    | pp.Suppress(pp.CaselessKeyword("NULL"))
+                    | ddl_auto_value
+                    | ddl_default_value
+                    | ddl_generated_value
+                    | ddl_primary_key
+                    | ddl_column_comment
+                    | pp.Suppress(pp.OneOrMore(pp.Or(map(pp.CaselessKeyword, sorted(ddl_ignored_keywords, reverse=True)))))
+                    | pp.Suppress(cls.ddl_expression)
+                )
+            ).ignore(ddl_regular_comment) # ignore comments pretty much anywhere within the column spec
+            + pp.Suppress(pp.ZeroOrMore(ddl_regular_comment)) # eat any trailing comment before the comma or closing parenthesis
+        )
+
+        # CREATE TABLE parser
+        ddl_create_table = (
+            pp.Suppress(pp.CaselessKeyword("CREATE"))
+            + pp.Suppress(pp.Optional(pp.CaselessKeyword("OR") + pp.CaselessKeyword("REPLACE")))
+            + pp.Suppress(pp.CaselessKeyword("TABLE"))
+            - pp.Suppress(pp.Optional(pp.CaselessKeyword("IF") - pp.CaselessKeyword("NOT") - pp.CaselessKeyword("EXISTS")))
+            - ddl_name.set_results_name("table_name")
+            - ddl_left
+            - pp.Group(pp.DelimitedList(pp.Suppress(cls.ddl_constraint) | cls.ddl_column)).set_results_name("columns")
+            - ddl_right
+        ).set_name("CREATE [OR REPLACE] TABLE ...")
+
+        # ALTER TABLE ... ALTER COLUMN ... SET DEFAULT ... parser
+        ddl_set_default = (
+            pp.CaselessKeyword("ALTER")
+            + pp.CaselessKeyword("TABLE")
+            + pp.Optional(pp.CaselessKeyword("ONLY"))
+            + ddl_name.set_results_name("table_name")
+            + pp.CaselessKeyword("ALTER")
+            + pp.CaselessKeyword("COLUMN")
+            + ddl_name.set_results_name("column_name")
+            + pp.CaselessKeyword("SET")
+            + pp.CaselessKeyword("DEFAULT")
+            - cls.ddl_expression
+        ).set_name("ALTER TABLE ...ALTER COLUMN ... SET DEFAULT ...")
+
+        # COMMENT ON COLUMN parser (PostgreSQL)
+        # Captures: schema.table.column or table.column, and the quoted comment string
+        ddl_comment_on_column = (
+            pp.CaselessKeyword("COMMENT")
+            + pp.CaselessKeyword("ON")
+            + pp.CaselessKeyword("COLUMN")
+            - ddl_name.set_results_name("qualified_column")
+            - pp.CaselessKeyword("IS")
+            - ddl_string.set_results_name("column_comment")
+        ).set_name("COMMENT ON COLUMN ...")
+
+        # DDL command parser
+        ddl_command_basic = (
+            ddl_regular_comment.set_results_name("regular_comment")
+            | ddl_create_table.set_results_name("create_table")
+            | ddl_set_default.set_results_name("set_default")
+            | ddl_comment_on_column.set_results_name("comment_on_column")
+        )
+        def rewrap_command_token(text, loc, tokens):
+            command = tokens.value
+            # FIXME: Remove the call to strip() once the following pyparsing bug is fixed
+            # https://github.com/pyparsing/pyparsing/issues/621
+            command["command_text"] = text[tokens.locn_start:tokens.locn_end].strip()
+            return [command]
+        ddl_command_with_loc = pp.Located(ddl_command_basic).set_parse_action(rewrap_command_token)
+
+        # Main DDL parser
+        cls.ddl = (
+            pp.OneOrMore(pp.Suppress(pp.SkipTo(ddl_command_basic, False)) + ddl_command_with_loc)
+            .parse_with_tabs()
+        )
+
+    @classmethod
+    def is_base_type(cls, name):
+        return hasattr(cls, f"ddl_{name}_types")
+
+    @classmethod
+    def parse_ddls(cls, ddl_paths):
+        try:
+            return [cls.ddl.parse_file(path) for path in ddl_paths]
+        except pp.ParseBaseException as e:
+            logging.error(f"Failed to parse {ddl_paths}")
+            logging.info(e.explain(1))
+            raise SystemExit(ExitCode.BAD_DDL_PARSING)
+
+class DdlExecutor:
+    """Executes the parsed DDL commands and builds the database model"""
+
+    @dataclass
+    class _ColumnDef:
+        name: str
+        is_const: bool
+        is_nullable: bool
+        has_default: bool
+        is_array: bool
+        comments: []
+        cpp_type: str = None
+
+    @dataclass
+    class _TableDef:
+        name: str
+        columns: Dict[str, Any]
+        commands: List[str]
+
+    _assume_auto_id = None
+    _warn_on_timestamp = None
+    _has_error = None
+    _has_unknown_type = None
+    _tables = None
+    _strip_sql_schema = None
+
+    @classmethod
+    def _strip_schema(cls, name):
+        """Strip the --strip-sql-schema prefix from a table name if present."""
+        if cls._strip_sql_schema and name.startswith(cls._strip_sql_schema + "."):
+            return name[len(cls._strip_sql_schema) + 1:]
+        return name
+
+    # Extract annotations for columns. Currently the only recognized annotation is
+    # - cpp_type: used to map a column to a C++ data type
+    @classmethod
+    def _extract_column_annotations(cls, comment):
+        annotations = {}
+        m = re.search(r'cpp_type:\s*(\S+)', comment)
+        if m:
+            annotations['cpp_type'] = m.group(1)
+        return annotations
+
+    @classmethod
+    def apply_column_annotations(cls, table, column):
+        annotations = {}
+
+        for comment in column.comments:
+            new_annotations = cls._extract_column_annotations(comment)
+
+            for key, value in new_annotations.items():
+                if key in annotations and annotations[key] != value:
+                    logging.error(
+                        f"Mismatched {key} annotations found for {table.name}.{column.name}: "
+                        f"One annotation says '{annotations[key]}' but another says '{value}'."
+                    )
+                    cls._has_error = True
+                annotations[key] = value
+
+        if 'cpp_type' in annotations:
+            column.cpp_type = annotations["cpp_type"]
+            column.is_array = False
+
+    @classmethod
+    def apply_column_to_cpp_type(cls, table, column, column_to_cpp_type):
+        schema_qualified_table_name = table.name
+        table_name = table.name.split('.')[-1]
+        for name in [f"{schema_qualified_table_name}.{column.name}", f"{table_name}.{column.name}", column.name]:
+            if name.upper() in column_to_cpp_type:
+                column.cpp_type = column_to_cpp_type[name.upper()]
+                column.is_array = False
+                return
+
+    @classmethod
+    def execute(cls, parsed_ddls, args, column_to_cpp_type):
+        cls._assume_auto_id = args.assume_auto_id
+        cls._warn_on_timestamp = not args.suppress_timestamp_warning
+        cls._strip_sql_schema = args.strip_sql_schema
+        cls._has_error = False
+        cls._has_unknown_type = False
+        cls._tables = {}
+        for pd in parsed_ddls:
+            for command in pd:
+                cls._execute_command(command)
+        if cls._has_error:
+            sys.exit(ExitCode.BAD_DDL_COMMAND)
+
+        # Apply all column annotations
+        for table_def in cls._tables.values():
+            for col_def in table_def.columns.values():
+                cls.apply_column_annotations(table_def, col_def)
+                cls.apply_column_to_cpp_type(table_def, col_def, column_to_cpp_type)
+                if col_def.cpp_type and col_def.cpp_type.endswith("sqlpp::serial"):
+                    col_def.has_default = True
+                    col_def.is_nullable = False
+                    col_def.cpp_type = "::sqlpp::integral"
+        if cls._has_error:
+            sys.exit(ExitCode.BAD_COLUMN_ANNOTATION)
+
+        # Any column that still has UNKNOWN cpp_type is a real error.
+        for table_def in cls._tables.values():
+            for col_def in table_def.columns.values():
+                if col_def.cpp_type == "UNKNOWN":
+                    logging.error(f"SQL data type of {table_def.name}.{col_def.name} is not supported.")
+                    cls._has_error = True
+                if col_def.is_array:
+                    logging.error(f"Array type of {table_def.name}.{col_def.name} is not supported.")
+                    cls._has_error = True
+        if cls._has_error:
+            logging.error("Unsupported SQL data type(s).")
+            logging.info("See https://github.com/rbock/sqlpp23/tree/main/docs/custom_type_mapping.md")
+            sys.exit(ExitCode.BAD_DDL_COMMAND)
+        return cls._tables
+
+    @classmethod
+    def _execute_command(cls, command):
+        if command.create_table:
+            cls._execute_create_table(command)
+        elif command.set_default:
+            cls._execute_set_default(command)
+        elif command.comment_on_column:
+            cls._execute_comment_on_column(command)
+        elif command.regular_comment:
+            pass
+        else:
+            logging.error("Unknown DDL command:" + os.linesep + command.dump())
+            raise RuntimeError()
+
+    @classmethod
+    def _execute_create_table(cls, command):
+        table_name = cls._strip_schema(command.table_name)
+        if table_name in cls._tables:
+            logging.error(f"Duplicate table name {table_name}")
+            cls._has_error = True
+            return
+        else:
+            cls._tables[table_name] = cls._TableDef(
+                name = table_name,
+                # We return the columns as a dictionary. Later, when we iterate the columns dictionary,
+                # we rely on the column iteration order being the same as the same as the column
+                # insertion order. This is only guaranteed in Python 3.7+
+                columns = cls._get_create_table_columns(table_name, command.columns),
+                commands = [command.command_text]
+            )
+
+    @classmethod
+    def _get_create_table_columns(cls, table_name, cols_expr):
+        columns = {}
+        for ce in cols_expr:
+            cls._get_create_table_column(columns, table_name, ce)
+        return columns
+
+    @classmethod
+    def _get_create_table_column(cls, columns, table_name, col_expr):
+        if col_expr.is_constraint:
+            return
+        col_name = col_expr.name
+        if col_name in columns:
+            logging.error(f"Duplicate column name {table_name}.{col_name}")
+            cls._has_error = True
+            return
+        if col_expr.type == "timestamp":
+            if cls._warn_on_timestamp:
+                logging.warning(f"date and time values are assumed to be without timezone.")
+                logging.warning(f"If you are using types WITH timezones, your code has to deal with that.")
+                logging.info(f"You can disable this warning using --suppress-timestamp-warning")
+                cls._warn_on_timestamp = False
+        cpp_type = col_expr.cpp_type
+        if cpp_type.endswith("sqlpp::integral") and col_expr.is_unsigned:
+            cpp_type = cpp_type.replace("sqlpp::integral", "sqlpp::unsigned_integral")
+        # UNKNOWN type is allowed if a cpp_type annotation resolves it later.
+        # The check for unresolved UNKNOWN types happens in execute() after all
+        # cpp_type sources (inline comment, COMMENT ON COLUMN, --path-to-custom-type-mapping)
+        # have been applied.
+        is_nullable = (
+            not col_expr.not_null and
+            not col_expr.is_primary_key
+        )
+        comments = col_expr.get("comments")
+        column_comment = col_expr.get("column_comment", None)
+        if column_comment:
+            comments.append(column_comment)
+        columns[col_name] = cls._ColumnDef(
+            name = col_name,
+            is_const = col_expr.has_generated_value,
+            is_nullable = is_nullable,
+            has_default = (
+                col_expr.has_default_value or
+                col_expr.has_auto_value or
+                (cls._assume_auto_id and col_name == "id") or
+                col_expr.has_generated_value or
+                is_nullable
+            ),
+            is_array = col_expr.is_array,
+            comments = comments,
+            cpp_type = cpp_type
+        )
+
+    @classmethod
+    def _execute_set_default(cls, command):
+        table_name = cls._strip_schema(command.table_name)
+        if table_name not in cls._tables:
+            logging.error(f"Unknown table name in ALTER TABLE {command.table_name}")
+            cls._has_error = True
+            return
+        table_def = cls._tables[table_name]
+        if command.column_name not in table_def.columns:
+            logging.error(f"Unknown column name in ALTER TABLE {command.table_name} ALTER COLUMN {command.column_name}")
+            cls._has_error = True
+            return
+        column_def = table_def.columns[command.column_name]
+        column_def.has_default = True
+        table_def.commands.append(command.command_text)
+
+    @classmethod
+    def _execute_comment_on_column(cls, command):
+        # qualified_column is schema.table.column or table.column; split off the last part
+        qualified = command.qualified_column
+        last_dot = qualified.rfind(".")
+        if last_dot == -1:
+            logging.error(f"COMMENT ON COLUMN target '{qualified}' is not in table.column format")
+            cls._has_error = True
+            return
+        table_name = cls._strip_schema(qualified[:last_dot])
+        col_name = qualified[last_dot + 1:]
+        if table_name not in cls._tables:
+            # Not every COMMENT ON COLUMN refers to a table we parsed; silently skip.
+            return
+        table_def = cls._tables[table_name]
+        if col_name not in table_def.columns:
+            return
+        comment = command.column_comment or None
+        if not comment:
+            return
+        table_def.columns[col_name].comments.append(comment)
+
+class ModelWriter:
+    """This class writes the database model as C++ headers and/or a module file"""
+
+    _HEADER_TEMPLATE = """#pragma once
+
+// clang-format off
+// generated by {commandline}
+
+#include <sqlpp23/core/name/create_name_tag.h>
+
+{import_std}
+{include_std}
+
+{import_core}
+{include_core}
+
+namespace {namespace} {{
+{tables}
+}} // namespace {namespace}
+"""
+
+    _MODULE_TEMPLATE = """module;
+
+// clang-format off
+// generated by {commandline}
+
+{include_std}
+#include <sqlpp23/core/name/create_name_tag.h>
+
+export module {module_name};
+{import_std}
+import sqlpp23.core;
+
+namespace {namespace} {{
+{tables}
+}} // namespace {namespace}
+"""
+
+    _custom_template = None
+    _args = None
+
+    def __init__(self, custom_template, args):
+        self._custom_template = custom_template
+        self._args = args
+
+    def write(self, tables):
+        if self._args.path_to_header:
+            self._create_header(tables)
+        elif self._args.path_to_header_directory:
+            self._create_split_headers(tables)
+        elif self._args.path_to_module:
+            self._create_module(tables)
+
+    def _create_header(self, tables):
+        with open(self._args.path_to_header, "w") as ostream:
+            serialized_tables = self.create_tables(tables.values())
+            self.write_header(ostream, self._HEADER_TEMPLATE, serialized_tables)
+
+    def _create_split_headers(self, tables):
+        for t in tables.values():
+            path = os.path.join(self._args.path_to_header_directory, self._to_class_name(t.name) + ".h")
+            with open(path, "w") as ostream:
+                serialized_tables = self.create_tables([t])
+                self.write_header(ostream, self._HEADER_TEMPLATE, serialized_tables)
+
+    def _create_module(self, tables):
+        with open(self._args.path_to_module, "w") as ostream:
+            serialized_tables = self.create_tables(tables.values())
+            self.write_header(ostream, self._MODULE_TEMPLATE, serialized_tables)
+
+    def write_header(self, ostream, template, serialized_tables):
+
+        if self._custom_template:
+            template = self._custom_template
+
+        print(template.format(
+        commandline = ' '.join(sys.argv),
+        import_std = "import std;" if self._args.use_import_std else "",
+        include_std = "" if self._args.use_import_std else "#include <optional>",
+        import_core = "import sqlpp23.core;" if self._args.use_import_sqlpp23 else "",
+        include_core = "" if self._args.use_import_sqlpp23 else """#include <sqlpp23/core/basic/table.h>
+#include <sqlpp23/core/basic/table_columns.h>
+#include <sqlpp23/core/type_traits.h>""",
+        namespace = self._args.namespace,
+        module_name = self._args.module_name,
+        tables = serialized_tables
+    ), file=ostream, end='')
+
+    def create_table(self, table, ostream):
+        export = "export " if self._args.path_to_module else ""
+        table_class = self._to_class_name(table.name)
+        table_member = self._to_member_name(table.name)
+        table_sql_name = self._escape_if_reserved(table.name)
+        table_spec = table_class + "_"
+        table_template_parameters = ""
+        table_required_insert_columns = ""
+        if self._args.generate_table_creation_helper:
+            creation_helper_func = "create" + ("" if self._args.naming_style == "camel-case" else "_") + table_class
+            print(f"""  {export}template<typename Db>
+  void {creation_helper_func}(Db& db) {{
+    db(R"+++(DROP TABLE IF EXISTS {table.name})+++");""", file=ostream)
+            for command in table.commands:
+                print(f"    db(R\"+++({command})+++\");", file=ostream)
+            print("  }\n", file=ostream)
+        print(f"  {export}struct {table_spec} {{", file=ostream)
+        for column in table.columns.values():
+            column_class = self._to_class_name(column.name)
+            column_member = self._to_member_name(column.name)
+            column_sql_name = self._escape_if_reserved(column.name)
+            cpp_type = column.cpp_type
+            if column.is_nullable:
+                cpp_type = f"std::optional<{cpp_type}>"
+            if column.is_const:
+                cpp_type = f"const {cpp_type}"
+            has_default = "std::true_type" if column.has_default else "std::false_type"
+            print(f"""    struct {column_class} {{
+      SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP({column_sql_name}, {column_member});
+      using data_type = {cpp_type};
+      using has_default = {has_default};
+    }};""", file=ostream)
+            if table_template_parameters:
+                table_template_parameters += ","
+            table_template_parameters += "\n               " + column_class
+            if not column.has_default:
+                if table_required_insert_columns:
+                    table_required_insert_columns += ","
+                table_required_insert_columns += f"\n               sqlpp::column_t<sqlpp::table_t<{table_spec}>, {column_class}>";
+        print(f"""    SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP({table_sql_name}, {table_member});
+    template<typename T>
+    using _table_columns = sqlpp::table_columns<T,{table_template_parameters}>;
+    using _required_insert_columns = sqlpp::detail::type_set<{table_required_insert_columns}>;
+  }};
+  {export}using {table_class} = ::sqlpp::table_t<{table_spec}>;
+""", file=ostream)
+
+    def create_tables(self, tables):
+        with io.StringIO() as ostream:
+            for table in tables:
+                self.create_table(table, ostream)
+            return ostream.getvalue()
+
+    # Prepends optional schema with an `_`
+    # Replaces each space in names with `_`
+    # Interprets `_` and numbers as word separators
+    # Depending on naming_style
+    #    - returns name as UpperCamelCase
+    #    - returns identity
+    def _to_class_name(self, name):
+        name = name.replace(".", "_")
+        name = name.replace(" ", "_")
+        if self._args.naming_style == "camel-case":
+            return re.sub(r"(^_*|[_0-9])(\S)", self._repl_camel_case_func, name)
+        # otherwise return identity (except that we concatenate an optional schema with the table name)
+        return name
+
+    # Prepends optional schema with an `_`
+    # Replaces each space in names with `_`
+    # Interprets `_` and numbers as word separators
+    # Depending on naming_style
+    #    - returns name as lowerCamelCase
+    #    - returns identity
+    def _to_member_name(self, name):
+        name = name.replace(".", "_")
+        name = name.replace(" ", "_")
+        if self._args.naming_style == "camel-case":
+            return re.sub(r"(_|[0-9])(\S)", self._repl_camel_case_func, name)
+        # otherwise return identity (except that we concatenate an optional schema with the table name)
+        return name
+
+    @staticmethod
+    def _repl_camel_case_func(m):
+        if m.group(1) in ["_", " "]:
+            return m.group(2).upper()
+        else:
+            return m.group(1) + m.group(2).upper()
+
+    @staticmethod
+    def _escape_if_reserved(name):
+        reserved_names = [
+            "BEGIN",
+            "END",
+            "GROUP",
+            "ORDER",
+        ]
+        if name.upper() in reserved_names:
+            return "!{}".format(name)
+        return name
+
+
+def parse_commandline_args():
+    arg_parser = argparse.ArgumentParser(prog="sqlpp23-ddl2cpp")
+    required = arg_parser.add_argument_group("Required parameters for code generation")
+    required.add_argument("--path-to-ddl", nargs="*", help="one or more path(s) to DDL input file(s)")
+    required.add_argument("--namespace", help="namespace for generated table classes")
+
+    paths_wrap = arg_parser.add_argument_group("Choose one path for code generation")
+    paths = paths_wrap.add_mutually_exclusive_group(required=True)
+    paths.add_argument("--path-to-module", help="path to generated module file (also requires --module-name)")
+    paths.add_argument("--path-to-header", help="path to generated header file (one file for all tables)")
+    paths.add_argument("--path-to-header-directory", help="path to directory for generated header files (one file per table)")
+
+    options = arg_parser.add_argument_group("Additional options")
+    options.add_argument("--path-to-custom-type-mapping", help="path to csv file defining aliases of existing SQL data types. Columns: "
+                                                        "'type' or 'column', "
+                                                        "an SQL type or a column or a table.column_name, "
+                                                        "a c++type")
+    options.add_argument("--module-name", help="name of the generated module (to be used with --path-to-module)")
+    options.add_argument("--strip-sql-schema", help="strip this schema prefix from table names (e.g. 'public')")
+    options.add_argument("--suppress-timestamp-warning", action="store_true", help="suppress show warning about date / time data types")
+    options.add_argument("--assume-auto-id", action="store_true", help="assume column 'id' to have an automatic value as if AUTO_INCREMENT was specified (e.g. implicit for SQLite ROWID (default: False)")
+    options.add_argument("--naming-style", choices=["camel-case", "identity"], default="camel-case", help="naming style for generated tables and columns.\n\n\n\n 'camel-case' (default): interprets '_' as word separator and translates table names to UpperCamelCase and column names to lowerCamelCase, e.g. 'my_cool_table.important_column' will be represented as 'MyCoolTable{}.importantColumn' in generated code.\n 'identity' uses table and column names as is in generated code (default: 'camel-case')")
+    options.add_argument("--generate-table-creation-helper", action="store_true", help="create a helper function for each table that drops and creates the table")
+    options.add_argument("--use-import-sqlpp23", action="store_true", help="import sqlpp23 as module instead of including the header file (default: False)")
+    options.add_argument("--use-import-std", action="store_true", help="import std as module instead of including the respective standard header files (default: False)")
+    options.add_argument("--path-to-custom-template", help="path to a file containing template for header generation, e.g. to include custom headers")
+
+    args = arg_parser.parse_args()
+
+    if not args.path_to_ddl or not len(args.path_to_ddl):
+        logging.error("Missing argument --path-to-ddl")
+        arg_parser.print_help()
+        sys.exit(ExitCode.BAD_ARGS)
+
+    if not args.namespace:
+        logging.error("Missing argument --namespace")
+        arg_parser.print_help()
+        sys.exit(ExitCode.BAD_ARGS)
+
+    if not args.path_to_module and not args.path_to_header and not args.path_to_header_directory:
+        logging.error("Missing argument(s): at least one path for code generation")
+        arg_parser.print_help()
+        sys.exit(ExitCode.BAD_ARGS)
+
+    if args.path_to_module and not args.module_name:
+        logging.error("Missing argument --module-name")
+        arg_parser.print_help()
+        sys.exit(ExitCode.BAD_ARGS)
+
+    return args
+
+
+def get_custom_types(filename, csv_file):
+    import csv
+    sql_type_to_cpp = {}
+    column_to_cpp_type = {}
+    required_fields = ["row_type", "entity", "cpp_type"]
+    reader = csv.DictReader(csv_file, fieldnames=required_fields, delimiter=",", skipinitialspace=True)
+
+    for line_num, row in enumerate(reader, start=1):
+        # Explicitly check if any required column is missing (resolved as None)
+        for field in required_fields:
+            if row[field] is None:
+                logging.error(f"Malformed CSV: Missing column '{field}' on line {line_num}")
+                sys.exit(ExitCode.BAD_CUSTOM_TYPES)
+
+        row_type=row["row_type"]
+        entity=row["entity"].upper()
+        cpp_type=row["cpp_type"]
+
+        if row_type == "type":
+            sql_type_to_cpp[entity] = cpp_type
+        elif row_type == "column":
+            column_to_cpp_type[entity] = cpp_type
+        else:
+            logging.error(f"Unknown row type in {filename}: {row_type} on line {line_num}")
+            sys.exit(ExitCode.BAD_CUSTOM_TYPES)
+
+    return sql_type_to_cpp, column_to_cpp_type
+
+def run():
+    args = parse_commandline_args()
+
+    sql_type_to_cpp, column_to_cpp_type = {}, {}
+    if args.path_to_custom_type_mapping:
+        with open(args.path_to_custom_type_mapping, newline="") as csv_file:
+            sql_type_to_cpp, column_to_cpp_type = get_custom_types(args.path_to_custom_type_mapping, csv_file)
+    custom_template = None
+    if args.path_to_custom_template:
+        with open(args.path_to_custom_template, "r") as template_file:
+            custom_template = template_file.read()
+    DdlParser.initialize(sql_type_to_cpp)
+    parsed_ddls = DdlParser.parse_ddls(args.path_to_ddl)
+    tables = DdlExecutor.execute(parsed_ddls, args, column_to_cpp_type)
+    model_writer = ModelWriter(custom_template, args)
+    model_writer.write(tables)
+    sys.exit(ExitCode.SUCCESS)
+
+if __name__ == "__main__":
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+
+    run()
+
+

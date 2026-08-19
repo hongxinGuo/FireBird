@@ -32,6 +32,7 @@
 
 #include<sqlpp23/sqlpp23.h>
 
+#include "containerAlpacaStockSymbol.h"
 #include "ContainerFinnhubStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
@@ -148,6 +149,8 @@ void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerTiingoChosenStock.Reset();
 	gl_dataContainerChosenWorldForex.Reset();
 	gl_dataContainerChosenWorldCrypto.Reset();
+
+	gl_dataContainerAlpacaStockSymbol.Reset();
 }
 
 void CWorldMarket::ResetMarket() {
@@ -156,6 +159,8 @@ void CWorldMarket::ResetMarket() {
 	Reset();
 
 	UpdateToken();
+
+	gl_dataContainerAlpacaStockSymbol.LoadProfileDB();
 
 	gl_dataContainerFinnhubCountry.LoadDB();
 	gl_dataContainerFinnhubStock.LoadProfileDB();
@@ -355,7 +360,12 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE_:
-			gl_pWorldMarket->TaskProcessTiingoDayLine();
+			if (!gl_pTiingoDataSource->IsUpdateDayLine() && !gl_pAlphaVantageDataSource->IsUpdateStockDayLine()) {
+				gl_pWorldMarket->TaskProcessTiingoDayLine();
+			}
+			else {
+				AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE_, gl_pWorldMarket->GetMarketCloseTime() + 10min); // 十分钟后继续
+			}
 			break;
 		default:
 			break;
@@ -399,6 +409,7 @@ void CWorldMarket::TaskCreateTask() {
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // Note:测试完后再允许
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
 	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_, GetNextTime(GetMarketTime(), 0h, 3min, 0s - seconds)); // 三分钟计算Nasdaq100 200MA比率
+	//AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE_, GetNextTime(GetMarketTime(), 1h, 0min, 0s - seconds)); //todo: 一小时后处理Tiingo日线数据
 	AddTask(WORLD_MARKET_CREATE_TASK_, 240000); // 重启市场任务的任务于每日零时执行
 }
 
@@ -679,16 +690,6 @@ void CWorldMarket::TaskProcessTiingoDayLine() {
 	});
 }
 
-void CWorldMarket::TaskDeleteDelistedStock() {
-	if (m_jtDeleteDelistedTiingoStock.joinable()) {
-		m_jtDeleteDelistedTiingoStock.request_stop();
-		m_jtDeleteDelistedTiingoStock.join();
-	}
-	m_jtDeleteDelistedTiingoStock = std::jthread([](std::stop_token st) {
-		DeleteTiingoDelistedStock(st);
-	});
-}
-
 void CWorldMarket::TaskPerSecond() {
 	static int m_iCountDownPerMinute = 59;
 	static int m_iCountDownPerHour = 3599;
@@ -906,6 +907,16 @@ bool CWorldMarket::TaskCheckMarketReady() {
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskUpdateWorldMarketDB() {
+	if (gl_dataContainerAlpacaStockSymbol.IsUpdateProfileDB()) {
+		if (m_jtUpdateAlpacaStockDB.joinable()) {
+			m_jtUpdateAlpacaStockDB.request_stop();
+			m_jtUpdateAlpacaStockDB.join();
+		}
+		m_jtUpdateAlpacaStockDB = std::jthread([](std::stop_token st) {
+			gl_dataContainerAlpacaStockSymbol.UpdateProfileDB(st);
+		});
+	}
+
 	if (gl_dataContainerFinnhubCountry.GetLastTotalCountry() < gl_dataContainerFinnhubCountry.GetTotalCountry()) { // 国家名称
 		if (m_jtUpdateFinnhubIndustryDB.joinable()) {
 			m_jtUpdateFinnhubIndustryDB.request_stop();
@@ -1045,21 +1056,23 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 	}
 
 	// Tiingo部分
-	if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo Stock
-		if (m_jtUpdateTiingoStockProfileDB.joinable()) {
-			m_jtUpdateTiingoStockProfileDB.request_stop();
-			m_jtUpdateTiingoStockProfileDB.join();
-		}
-		m_jtUpdateTiingoStockProfileDB = std::jthread([](std::stop_token st) {
-			gl_systemMessage.SetWorldMarketSavingFunction("T profile");
-			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			gl_dataContainerTiingoStock.UpdateProfileDB(st);
-			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			if ((end - start).count() > 2000) {
-				string s = std::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s);
+	if (!gl_pWorldMarket->IsDeleteTiingoDelistedStock()) {
+		if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo Stock profile,此更新需要与更新TiingoDelistedStock互斥
+			if (m_jtUpdateTiingoStockProfileDB.joinable()) {
+				m_jtUpdateTiingoStockProfileDB.request_stop();
+				m_jtUpdateTiingoStockProfileDB.join();
 			}
-		});
+			m_jtUpdateTiingoStockProfileDB = std::jthread([](std::stop_token st) {
+				gl_systemMessage.SetWorldMarketSavingFunction("T profile");
+				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+				gl_dataContainerTiingoStock.UpdateProfileDB(st);
+				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+				if ((end - start).count() > 2000) {
+					string s = std::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
+					gl_systemMessage.PushInnerSystemInformationMessage(s);
+				}
+			});
+		}
 	}
 
 	if (gl_dataContainerTiingoCryptoSymbol.IsUpdateProfileDB()) { // Tiingo crypto symbol
@@ -1157,27 +1170,23 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 	}
 
 	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && gl_dataContainerFinnhubStock.IsUpdateProfileDB()) { // stock profile
-		static int s_counter2 = 0;
-		if (s_counter2 > 30) {
+		static bool s_running = false;
+		if (!s_running) {
+			s_running = true;
 			if (m_jtUpdateFinnhubStockProfileDB.joinable()) {
 				m_jtUpdateFinnhubStockProfileDB.request_stop();
 				m_jtUpdateFinnhubStockProfileDB.join();
 			}
 			m_jtUpdateFinnhubStockProfileDB = std::jthread([](std::stop_token st) {
-				ABSL_DLOG(INFO) << "Finnhub profile\n";
 				gl_systemMessage.SetWorldMarketSavingFunction("F stock profile");
 				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				gl_dataContainerFinnhubStock.UpdateProfileDB(st);
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-				if ((end - start).count() > 2000) {
-					string s = std::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
-					gl_systemMessage.PushInnerSystemInformationMessage(s);
-				}
-				ABSL_DLOG(INFO) << "Finnhub profile updated\n";
+				string s = std::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
+				s_running = false;
 			});
-			s_counter2 = 0;
 		}
-		s_counter2++;
 	}
 
 	if (gl_finnhubInaccessibleExchange.IsUpdateDB()) { // 更新禁止访问证券交易所名单
@@ -1638,6 +1647,20 @@ void CWorldMarket::DeleteTiingoDelistedStock(std::stop_token st) {
 		DeleteTiingoFinancialStatement(pTiingoDelistedStock); // 删除财经报告
 		gl_dataContainerTiingoStock.Delete(pTiingoDelistedStock->GetSymbol()); // 删除代码
 	}
+
+	string symbol;
+	using namespace StockMarket;
+	const auto& t = TiingoStockProfile{};
+	auto db = gl_dbStockMarket.get();
+	auto tx = sqlpp::start_transaction(db);
+	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
+	for (const auto& row : result) {
+		symbol = row.Symbol.value();
+		if (gl_dataContainerTiingoDelistedSymbol.IsSymbol(symbol)) {
+			db(sqlpp::delete_from(t).where(t.ID == row.ID));
+		}
+	}
+	tx.commit();
 }
 
 void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {

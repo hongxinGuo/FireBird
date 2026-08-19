@@ -94,7 +94,10 @@ void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	y = rectDrawArea.bottom - (it--)->m_J * rectDrawArea.Height() / 100;
 	pDC->MoveTo(rectDrawArea.right - offset, y);
 	for (; it != m_vKDJ.begin(); --it, i++) {
-		y = rectDrawArea.bottom - it->m_J * rectDrawArea.Height() / 100;
+		double j;
+		if (it->m_J > 100) j = 100;
+		else j = it->m_J;
+		y = rectDrawArea.bottom - j * rectDrawArea.Height() / 100;
 		pDC->LineTo(rectDrawArea.right - offset - iStepWidth * i, y);
 		if (i >= m_vKDJ.size()) break;
 		if (rectDrawArea.right <= iStepWidth * i) break; // 画到窗口左边框为止

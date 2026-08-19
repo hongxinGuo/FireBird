@@ -86,10 +86,8 @@ protected:
 	BOOL PreTranslateMessage(MSG* pMsg) override;
 
 	// thread
-	std::jthread m_jtProcessTodayStock;
 	std::jthread m_jtUpdateChinaStockProfileDB;
 	std::jthread m_jtCreateTiingoTradeDayDayLineDB;
-	std::jthread m_jtProcessTodayDayLine;
 	std::jthread m_jtCalculateNewLowFiveTimes;
 
 	// 生成的消息映射函数

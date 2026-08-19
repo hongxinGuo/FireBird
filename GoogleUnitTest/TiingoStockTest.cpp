@@ -606,11 +606,11 @@ namespace FireBirdTest {
 
 		auto pStock3 = make_shared<CTiingoStock>();
 		pStock3->SetSymbol(string_view("ACI"));
-		pStock3->ProcessDayLine3();
+		pStock3->ProcessDayLine3(std::stop_token{});
 
 		auto pStock2 = make_shared<CTiingoStock>();
 		pStock2->SetSymbol(string_view("ACI"));
-		pStock2->ProcessDayLine2();
+		pStock2->ProcessDayLine2(std::stop_token{});
 
 		EXPECT_TRUE(pStock3->m_v52WeekLowDate.size() == pStock2->m_v52WeekLowDate.size());
 		EXPECT_TRUE(pStock3->m_v52WeekHighDate.size() == pStock2->m_v52WeekHighDate.size());
@@ -643,11 +643,11 @@ namespace FireBirdTest {
 
 		auto pStock3 = make_shared<CTiingoStock>();
 		pStock3->SetSymbol(string_view("A"));
-		pStock3->ProcessDayLine3();
+		pStock3->ProcessDayLine3(std::stop_token{});
 
 		auto pStock2 = make_shared<CTiingoStock>();
 		pStock2->SetSymbol(string_view("A"));
-		pStock2->ProcessDayLine2();
+		pStock2->ProcessDayLine2(std::stop_token{});
 
 		EXPECT_TRUE(pStock3->m_v52WeekLowDate.size() == pStock2->m_v52WeekLowDate.size());
 		EXPECT_TRUE(pStock3->m_v52WeekHighDate.size() == pStock2->m_v52WeekHighDate.size());

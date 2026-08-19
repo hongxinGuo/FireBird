@@ -69,9 +69,6 @@
     <ClInclude Include="..\src\Windows interface\ChildFrm.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="DlgGetDate.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBird.h">
       <Filter>源文件</Filter>
     </ClInclude>
@@ -97,6 +94,9 @@
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SystemPublicDeclaration.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\DlgGetDate.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -125,7 +125,7 @@
     <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DlgGetDate.cpp">
+    <ClCompile Include="..\src\Windows interface\DlgGetDate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

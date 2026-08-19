@@ -116,7 +116,7 @@ void CFireBirdDoc::CalculateDayLineMovingAverage(CVirtualDataHistoryCandle& hist
 	m_dayLine50MovingAverage.Calculate(historyCandle);
 	m_dayLine120MovingAverage.Calculate(historyCandle);
 	m_dayLine250MovingAverage.Calculate(historyCandle);
-	ABSL_DCHECK(m_dayLine50MovingAverage.Size() == m_pDataDayLine->Size() - 50);
+	if (m_pDataDayLine->Size() > 50)	ABSL_DCHECK(m_dayLine50MovingAverage.Size() == m_pDataDayLine->Size() - 50);
 }
 
 void CFireBirdDoc::CalculateWeekLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
@@ -127,7 +127,7 @@ void CFireBirdDoc::CalculateWeekLineMovingAverage(CVirtualDataHistoryCandle& his
 	m_weekLine50MovingAverage.Calculate(historyCandle);
 	m_weekLine120MovingAverage.Calculate(historyCandle);
 	m_weekLine250MovingAverage.Calculate(historyCandle);
-	ABSL_DCHECK(m_weekLine50MovingAverage.Size() == m_pDataWeekLine->Size() - 50);
+	if (m_pDataWeekLine->Size() > 50) ABSL_DCHECK(m_weekLine50MovingAverage.Size() == m_pDataWeekLine->Size() - 50);
 }
 
 void CFireBirdDoc::CalculateMonthLineMovingAverage(CVirtualDataHistoryCandle& historyCandle) {
@@ -138,7 +138,7 @@ void CFireBirdDoc::CalculateMonthLineMovingAverage(CVirtualDataHistoryCandle& hi
 	m_monthLine50MovingAverage.Calculate(historyCandle);
 	m_monthLine120MovingAverage.Calculate(historyCandle);
 	m_monthLine250MovingAverage.Calculate(historyCandle);
-	ABSL_DCHECK(m_monthLine50MovingAverage.Size() == m_pDataMonthLine->Size() - 50);
+	if (m_pDataMonthLine->Size() > 50) ABSL_DCHECK(m_monthLine50MovingAverage.Size() == m_pDataMonthLine->Size() - 50);
 }
 
 std::pair<long, long> CFireBirdDoc::GetDayLineHighLow(int iCandleNumber) const {

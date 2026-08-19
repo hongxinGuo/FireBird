@@ -7,6 +7,7 @@
 #include"FinnhubInquiryType.h"
 #include "TiingoDataSource.h"
 
+#include "AlpacaDataSource.h"
 #include "ContainerTiingoChosenStock.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
@@ -455,6 +456,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
+	gl_pAlpacaDataSource->SetUpdateStockDayLine(true); // 此时方才允许申请Alpaca日线数据。
 	if (GenerateCryptoSymbol()) return true;
 	//if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
 	if (GenerateChosenStockDayLine()) return true; // 无论免费还是付费，都先申请自选股的日线数据。
@@ -462,6 +464,11 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 		if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。Note:免费账户只更新自选股的日线
 		if (GenerateStockDailyMeta()) return true; // 公司Meta数据申请要位于包含多项申请的项目之首， 每日市场时间十八时之后开始执行。
 		if (GenerateFinancialState()) return true;
+	}
+	else {
+		SetUpdateDayLine(false);
+		SetUpdateStockDailyMeta(false);
+		SetUpdateFinancialState(false);
 	}
 
 	ABSL_DCHECK(!IsInquiring());
@@ -508,9 +515,10 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 	};
 	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo symbol needn't update"); };
 
+#ifdef _DEBUG
 	return GenerateSimpleInquiryWithCheck(
 		STOCK_SYMBOLS_,
-		[]() { return gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() < gl_pWorldMarket->GetMarketDate(); },
+		[]() { return true; }, // 调试时总是允许
 		setUpdated,
 		reportMsg1,
 		isUpdateNeeded,
@@ -518,6 +526,19 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 		[] { gl_systemMessage.SetCurrentTiingoFunction("Stock Symbol"); }
 
 	);
+#else
+	return GenerateSimpleInquiryWithCheck(
+		STOCK_SYMBOLS_,
+		//[]() { return gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() < gl_pWorldMarket->GetMarketDate(); },
+		[]() { return true; }, // 调试时总是允许
+		setUpdated,
+		reportMsg1,
+		isUpdateNeeded,
+		createProduct,
+		[] { gl_systemMessage.SetCurrentTiingoFunction("Stock Symbol"); }
+
+	);
+#endif
 }
 
 bool CTiingoDataSource::GenerateCryptoSymbol() {
