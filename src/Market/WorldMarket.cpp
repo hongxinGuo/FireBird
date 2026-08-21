@@ -32,6 +32,7 @@
 
 #include<sqlpp23/sqlpp23.h>
 
+#include "AlpacaDataSource.h"
 #include "containerAlpacaStockSymbol.h"
 #include "ContainerFinnhubStock.h"
 #include "containerChosenCrypto.h"
@@ -367,6 +368,14 @@ int CWorldMarket::ProcessTask() {
 				AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE_, gl_pWorldMarket->GetMarketCloseTime() + 10min); // 十分钟后继续
 			}
 			break;
+		case WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_:
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(200000)) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, 200000);
+			}
+			else { // 当日20时之后或者第二日交易时间前
+				gl_pAlphaVantageDataSource->SetUpdateStockDayLine(true);
+			}
+			break;
 		default:
 			break;
 		}
@@ -406,6 +415,7 @@ void CWorldMarket::TaskCreateTask() {
 	AddTask(WORLD_MARKET_UPDATE_DB_, GetNextTime(GetMarketTime(), 0h, 0min, 40s - seconds));// 更新股票简介数据库的任务
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA_, GetMarketTime());
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 0h, 0min, 20s)); // 开始下载日线历史数据
+	AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 0h, 0min, 25s)); // 开始下载日线历史数据
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // Note:测试完后再允许
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
 	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_, GetNextTime(GetMarketTime(), 0h, 3min, 0s - seconds)); // 三分钟计算Nasdaq100 200MA比率
@@ -1333,7 +1343,10 @@ void CWorldMarket::UpdateTiingoStockDayLine(local_days startDate) {
 		}
 	}
 	gl_pTiingoDataSource->SetUpdateChosenStockDayLine(true);
-	gl_pTiingoDataSource->SetUpdateDayLine(true);
+	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
+		gl_pTiingoDataSource->SetUpdateDayLine(true);
+	}
+	gl_pAlpacaDataSource->SetUpdateStockDayLine(true);
 }
 
 void CWorldMarket::UpdateTiingoAllStockDayLine() {

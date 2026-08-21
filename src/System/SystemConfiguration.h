@@ -354,7 +354,7 @@ protected:
 	milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
 	milliseconds m_worldMarketTiingoInquiryTime{ 3600000 / 500 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
 	milliseconds m_worldMarketAlphaVantageInquiryTime{ 3600000 / 1000 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询1000次
-	milliseconds m_worldMarketAlpacaInquiryTime{ 60000 / 100 }; // 每次查询间隔时间，单位为毫秒.免费账户每分钟最多查询200次，这里设为100次/分钟。
+	milliseconds m_worldMarketAlpacaInquiryTime{ 60000 / 50 }; // 每次查询间隔时间，单位为毫秒.免费账户每分钟最多查询200次，这里设为50次/分钟。
 	string m_strCurrentStock{ "" }; // 当前所选股票
 
 	// Tiingo.com

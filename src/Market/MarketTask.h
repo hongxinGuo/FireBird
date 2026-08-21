@@ -54,6 +54,9 @@ enum {
 	WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, // 每日收市后下载日线历史数据。
 	WORLD_MARKET_TIINGO_PROCESS_DAYLINE_, // 处理Tiingo的日线数据
 
+	// Alpaca数据
+	WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, // 每日收市后下载日线历史数据。
+
 	WORLD_MARKET_TIMER_TASK_PER_MINUTE_,// 每分钟执行一次的任务调度
 	WORLD_MARKET_TIMER_TASK_PER_HOUR_, // 每小时执行一次的任务调度
 	WORLD_MARKET_TIMER_TASK_PER_DAY_, // 每天执行一次的任务调度

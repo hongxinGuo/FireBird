@@ -6,6 +6,10 @@
 #include "GeneralCheck.h"
 #include "TiingoCandleLine.h"
 #include "TiingoStock.h"
+#include"ContainerTiingoStock.h"
+#include"TimeConvert.h"
+#include"WorldMarket.h"
+#include"AlpacaDataSource.h"
 
 using namespace testing;
 using namespace std;
@@ -38,54 +42,43 @@ namespace FireBirdTest {
 		CProductAlpacaStockDayLine product;
 	};
 
-	TEST_F(CProductAlpacaStockDayLineTest, ParseSimpleBars) {
-		// 构造一个简单的 JSON 响应，包含两个 bar
-		const std::string json1 = R"({
-        "bars": {
-            "AAPL": [
-                { "t": "2020-01-02T00:00:00Z", "o": 1.1, "h": 1.2, "l": 1.0, "c": 1.15, "v": 100, "vw": 1.12 },
-                { "t": "2020-01-03T00:00:00Z", "o": 2.1, "h": 2.2, "l": 2.0, "c": 2.15, "v": 200, "vw": 2.12 }
-            ]
-        },
-				"next_page_token": null
-    })";
-
-		const std::string json2 = R"({
-        "bars": {
-            "AAPL": [
-                { "t": "2020-01-02T00:00:00Z", "o": 1.1, "h": 1.2, "l": 1.0, "c": 1.15, "v": 100, "vw": 1.12 },
-                { "t": "2020-01-03T00:00:00Z", "o": 2.1, "h": 2.2, "l": 2.0, "c": 2.15, "v": 200, "vw": 2.12 }
-            ]
-        },
-				"next_page_token": "UklHfER8MTc4NTkwMjQwMDAwMDAwMDAwMA"
-    })";
-
-		auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
+	TEST(ProductAlpacaStockDayLine_Parse2, ParsesTwoBarsSingleSymbol) {
+		CProductAlpacaStockDayLine prod;
 		cpr::Response r;
-		r.text = json1;
+		r.status_code = 200;
+		r.text = R"({
+      "bars": {
+        "RIG": [
+          { "c": 5.14, "h": 5.24, "l": 5.095, "o": 5.195, "t": "2026-08-03T04:00:00Z", "v": 1398585, "vw": 5.172631 },
+          { "c": 5.22, "h": 5.28, "l": 5.045, "o": 5.055, "t": "2026-08-04T04:00:00Z", "v": 2681580, "vw": 5.225845 }
+        ],
+        "AAPL": [
+          { "c": 5.34, "h": 5.24, "l": 5.095, "o": 5.195, "t": "2026-08-03T04:00:00Z", "v": 1398585, "vw": 5.172631 },
+          { "c": 5.22, "h": 5.28, "l": 5.045, "o": 5.055, "t": "2026-08-04T04:00:00Z", "v": 2681580, "vw": 5.225845 }
+        ]
+      },
+      "next_page_token": null
+    })";
 
-		product.Parse(pvDayLine, r, "AAPL");
-		EXPECT_TRUE(product.IsDataEnded());
+		auto pv = make_shared<vector<TiingoDayLine>>();
+		bool ok = prod.Parse(pv, r, "RIG");
 
-		ASSERT_EQ(pvDayLine->size(), 2u);
+		EXPECT_TRUE(ok);
+		ASSERT_EQ(pv->size(), 2u);
+		EXPECT_EQ(pv->at(0).m_symbol, "AAPL") << "无论在json中的位置先后，解析后总是按symbol排序";
+		ASSERT_EQ(pv->at(0).m_dayLine.size(), 2u);
+		ASSERT_EQ(pv->at(0).m_dayLine.at(0).GetClose(), 5340000);
 
-		// 解析会将价格乘以 CTiingoStock::GetRatio() (默认为 1000000)
-		CTiingoStock stockPrototype;
-		const long long ratio = stockPrototype.GetRatio();
+		EXPECT_EQ(pv->at(1).m_symbol, "RIG");
+		ASSERT_EQ(pv->at(1).m_dayLine.size(), 2u);
+		ASSERT_EQ(pv->at(1).m_dayLine.at(0).GetClose(), 5140000);
 
-		EXPECT_EQ(pvDayLine->at(0).GetVolume(), 100);
-		EXPECT_EQ(pvDayLine->at(1).GetVolume(), 200);
+		const auto& first = pv->at(0).m_dayLine[0];
+		EXPECT_EQ(first.GetVolume(), 1398585);
 
-		EXPECT_EQ(pvDayLine->at(0).GetClose(), static_cast<long long>(1.15 * ratio));
-		EXPECT_EQ(pvDayLine->at(1).GetClose(), static_cast<long long>(2.15 * ratio));
-
-		EXPECT_EQ(pvDayLine->at(0).GetOpen(), static_cast<long long>(1.1 * ratio));
-		EXPECT_EQ(pvDayLine->at(1).GetOpen(), static_cast<long long>(2.1 * ratio));
-
-		r.text = json2;
-
-		product.Parse(pvDayLine, r, "AAPL");
-		EXPECT_FALSE(product.IsDataEnded());
+		// CTiingoStock::GetRatio() is used in Parse2; use same to compute expected scaled close value.
+		long long expectedClose = static_cast<long long>(5.34 * CTiingoStock().GetRatio());
+		EXPECT_EQ(first.GetClose(), expectedClose);
 	}
 
 	// Helper to create a CTiingoCandleLine with date and close
@@ -140,5 +133,62 @@ namespace FireBirdTest {
 		EXPECT_EQ(raw.at(0).GetClose(), withSplit.at(0).GetClose());
 		EXPECT_EQ(raw.at(1).GetClose(), withSplit.at(1).GetClose());
 		EXPECT_EQ(raw.at(1).GetSplitFactor(), 2); // split factor should be 2 for the second day
+	}
+
+	TEST_F(CProductAlpacaStockDayLineTest, CreateMessageInternal2_ChunksWhenTotalDaysExceeds1000) {
+		// 添加一个测试股票，使其起始日期足够早，触发分段（countNumber > 0）
+		auto pStock = make_shared<CTiingoStock>();
+		pStock->SetSymbol(string{ "Test" });
+		pStock->SetActive(true);
+		// 设为 1980-01-01，使 totalDays 很大，从而产生多个 limit=1000 的查询片段
+		pStock->SetDayLineEndDate(toLocalDays(19800101));
+
+		// 添加到容器
+		gl_dataContainerTiingoStock.Add(pStock);
+
+		// 创建 product 并设置 index 到刚添加的股票
+		CProductAlpacaStockDayLine product;
+		product.SetIndex(gl_dataContainerTiingoStock.GetOffset("Test"));
+
+		// 调用待测试函数
+		auto urls = product.CreateMessageInternal("&adjustment=raw");
+
+		ASSERT_NE(urls, nullptr);
+		EXPECT_GT(urls->size(), 1u) << "Expected CreateMessageInternal2 to produce multiple query URLs when totalDays > 1000";
+
+		// 基本检查：URL 包含查询前缀、symbol 与 limit=1000
+		for (const auto& u : *urls) {
+			EXPECT_NE(u.find("https://data.alpaca.markets/v2/stocks/bars?"), string::npos);
+			EXPECT_NE(u.find("symbols=Test"), string::npos);
+			EXPECT_NE(u.find("limit=1000"), string::npos);
+		}
+
+		// 清理
+		gl_dataContainerTiingoStock.Delete("Test");
+	}
+
+	TEST_F(CProductAlpacaStockDayLineTest, CreateMessageInternal2) {
+		vector<local_days> vEndDate;
+		for (size_t i = 0; i < 10; i++) { // 测试数据库中的日线结束日期较早，人工设置为较近的日期以生成多个股票的查询串。共十个。
+			vEndDate.push_back(gl_dataContainerTiingoStock.GetStock(i)->GetDayLineEndDate());
+			gl_dataContainerTiingoStock.GetStock(i)->SetDayLineEndDate(toLocalDays(year_month_day(gl_pWorldMarket->GetMarketDate() - std::chrono::days(5))));
+		}
+		gl_pAlpacaDataSource->SetInquireStockNumber(100);
+
+		// 创建 product
+		CProductAlpacaStockDayLine product;
+		product.SetIndex(gl_dataContainerTiingoStock.GetOffset("A"));
+
+		// 调用待测试函数
+		auto urls = product.CreateMessageInternal("&adjustment=raw");
+
+		ASSERT_NE(urls, nullptr);
+		EXPECT_EQ(urls->size(), 1);
+		EXPECT_EQ(urls->at(0).substr(0, 121), "https://data.alpaca.markets/v2/stocks/bars?symbols=A,AA,AACG,AAL&timeframe=1D&limit=1000&feed=iex&adjustment=raw&sort=asc") << "Alpaca代码集中不存在的股票AACT,AADI等没有申请";
+
+		// 恢复原状
+		for (size_t i = 0; i < 10; i++) {
+			gl_dataContainerTiingoStock.GetStock(i)->SetDayLineEndDate(vEndDate.at(i));
+		}
 	}
 } // namespace FireBirdTest

@@ -100,7 +100,8 @@ public:
 
 	void UpdateRTData(const shared_ptr<CTiingoIEXTopOfBook>& pIEXTopOfBook);
 	void UpdateFinancialState(const shared_ptr<vector<shared_ptr<CTiingoCompanyFinancialState>>>& pv) noexcept { m_pvFinancialState = pv; }
-	void UpdateDayLine(const shared_ptr<vector<CTiingoCandleLine>>& vTempDayLine);
+	void UpdateDayLine(const shared_ptr<vector<CTiingoCandleLine>>& pvTempDayLine);
+	void UpdateDayLine(vector<CTiingoCandleLine>& vTempDayLine);
 	void UpdateFinancialStateDB();
 	void ClearFinancialState() { m_pvFinancialState.reset(); }
 

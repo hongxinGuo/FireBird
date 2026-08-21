@@ -25,6 +25,7 @@
 
 #include<cpr/cpr.h>
 
+#include "ContainerAlpacaStockSymbol.h"
 #include "ContainerTiingoSymbol.h"
 
 using namespace std;
@@ -53,6 +54,7 @@ namespace {
 
 CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 	m_strInquiryFunction = "https://data.alpaca.markets/v2/stocks/bars?";
+	m_currentMarketDate = gl_pWorldMarket->GetMarketDate();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,69 +73,91 @@ CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
-	shared_ptr<vector<CTiingoCandleLine>> pvDayLineWithSplit = make_shared<vector<CTiingoCandleLine>>();
-	shared_ptr<vector<CTiingoCandleLine>> pvDayLine = make_shared<vector<CTiingoCandleLine>>();
-	shared_ptr<vector<string>> pInquiry = CreateMessage();
+	shared_ptr<vector<TiingoDayLine>> pvDayLineWithSplit = make_shared<vector<TiingoDayLine>>();
+	shared_ptr<vector<TiingoDayLine>> pvDayLine = make_shared<vector<TiingoDayLine>>();
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
-	long status = 200;
-	cpr::Header headers = cpr::Header{
-		{ "APCA-API-KEY-ID", "PK3J5QOOORALNDMELW2XS5RDZX" },
-		{ "APCA-API-SECRET-KEY", "DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk" },
-		{ "accept", "application/json" }
-	};
+	long status;
+
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, headers);
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
 
 		status = r.status_code;
 		if (status != 200) {
 			WebStatusCheck(r);
-			pTiingoStock->SetUpdateDayLine(false);
+			ClearUpdateDayLineFlag();
 			return;
 		}
 		Parse(pvDayLine, r, pTiingoStock->GetSymbol());
 	}
-	std::ranges::sort(*pvDayLine, [](const CTiingoCandleLine& a, const CTiingoCandleLine& b) {
-		return a.GetDate() < b.GetDate();
-	});
 
 	auto inquireStrings2 = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStrings2) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, headers);
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
 
 		status = r.status_code;
 		if (status != 200) {
 			WebStatusCheck(r);
-			pTiingoStock->SetUpdateDayLine(false);
+			ClearUpdateDayLineFlag();
 			return;
 		}
 		Parse(pvDayLineWithSplit, r, pTiingoStock->GetSymbol());
 	}
-	std::ranges::sort(*pvDayLineWithSplit, [](const CTiingoCandleLine& a, const CTiingoCandleLine& b) {
-		return a.GetDate() < b.GetDate();
-	});
 
 	if (st.stop_requested()) return;
-	ABSL_DCHECK(pvDayLineWithSplit->size() == pvDayLine->size());
-	if (!pvDayLine->empty()) {
-		ABSL_DCHECK(pvDayLine->at(0).GetDate() == pvDayLineWithSplit->at(0).GetDate());
-		ABSL_DCHECK(pvDayLine->at(pvDayLine->size() - 1).GetDate() == pvDayLineWithSplit->at(pvDayLineWithSplit->size() - 1).GetDate());
-		CalculateSplitFactor(*pvDayLine, *pvDayLineWithSplit);
+	map<string, size_t> mapSymbolIndex;
+	for (size_t index = 0; index < pvDayLine->size(); index++) {
+		mapSymbolIndex[pvDayLine->at(index).m_symbol] = index;
+	}
+
+	for (size_t index = 0; index < pvDayLineWithSplit->size(); index++) {
+		auto pos = mapSymbolIndex.at(pvDayLineWithSplit->at(index).m_symbol);
+		UpdateDayLine(pvDayLine->at(pos).m_symbol, pvDayLine->at(pos).m_dayLine, pvDayLineWithSplit->at(pos).m_dayLine);
+	}
+	ClearUpdateDayLineFlag();
+}
+
+void CProductAlpacaStockDayLine::ClearUpdateDayLineFlag() {
+	for (const auto& symbol : m_vStockSymbol) {
+		if (gl_dataContainerTiingoStock.IsSymbol(symbol)) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(symbol);
+			pStock->SetUpdateDayLine(false);
+			pStock->SetUpdateProfileDB(true);
+		}
+	}
+	m_vStockSymbol.clear();
+}
+
+void CProductAlpacaStockDayLine::UpdateDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit) {
+	ABSL_DCHECK(vDayLineWithSplit.size() == vDayLine.size());
+	ABSL_DCHECK(gl_dataContainerTiingoStock.IsSymbol(stockSymbol));
+	auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(stockSymbol);
+	if (!vDayLine.empty()) {
+		ABSL_DCHECK(vDayLine.at(0).GetDate() == vDayLineWithSplit.at(0).GetDate());
+		ABSL_DCHECK(vDayLine.at(vDayLine.size() - 1).GetDate() == vDayLineWithSplit.at(vDayLineWithSplit.size() - 1).GetDate());
+
+		std::ranges::sort(vDayLine, [](const CTiingoCandleLine& a, const CTiingoCandleLine& b) {
+			return a.GetDate() < b.GetDate();
+		});
+		std::ranges::sort(vDayLineWithSplit, [](const CTiingoCandleLine& a, const CTiingoCandleLine& b) {
+			return a.GetDate() < b.GetDate();
+		});
+
+		CalculateSplitFactor(vDayLine, vDayLineWithSplit);
 		long lastClose = 0;
-		for (auto& dayLine : *pvDayLine) {// 使用前日收盘数据作为昨收
+		for (auto& dayLine : vDayLine) {// 使用前日收盘数据作为昨收
 			dayLine.SetExchange(pTiingoStock->GetExchange());
 			dayLine.SetStockSymbol(pTiingoStock->GetSymbol());
 			dayLine.SetLastClose(lastClose);
 			lastClose = dayLine.GetClose();
 		}
-		if ((pvDayLine->size() > 1) && pTiingoStock->GetDayLineEndDate() != chrono::local_days{ 1980y / 01 / 01 }) {
-			pvDayLine->erase(pvDayLine->begin()); // 删除重复日线数据
+		if ((vDayLine.size() > 1) && pTiingoStock->GetDayLineEndDate() != chrono::local_days{ 1980y / 01 / 01 }) {
+			vDayLine.erase(vDayLine.begin()); // 删除重复日线数据
 		}
-		pTiingoStock->UpdateDayLine(pvDayLine);
+		pTiingoStock->UpdateDayLine(vDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);
-		pvDayLine = nullptr;
 	}
 	// 清除tiingo stock的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);
@@ -164,7 +188,7 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 	case 500: // Internal server error.
 		break;
 	default: // unknown problem
-		string number = std::format("Error: Alpaca stock dayLine {:d}", r.status_code);
+		string number = std::format("stock {} Error: Alpaca stock dayLine, status code: {:d}", m_strInquiringSymbol, r.status_code);
 		gl_systemMessage.PushErrorMessage(number);
 		break;
 	}
@@ -185,39 +209,65 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageWi
 }
 
 shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageInternal(string paramAdjust) {
-	int totalDays = 0;
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	ABSL_DCHECK(pStock->IsActive()); // 活跃股票
-	chrono::local_days lStartDate = GetStartInquireDay(GetIndex());
-	auto endDate = gl_pWorldMarket->GetMarketDate();
-	totalDays = std::chrono::duration_cast<std::chrono::days>(gl_pWorldMarket->GetMarketDate() - lStartDate).count();
-	string symbols = pStock->GetSymbol();
+	chrono::local_days startDate = GetStartInquireDay(GetIndex());
+	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentMarketDate - startDate).count();
+	string symbol = pStock->GetSymbol();
 	int countNumber = totalDays / 1000;
-
-	//string symbol = std::format("symbols={}&timeframe=1D&limit=1000&feed=iex{}&sort=asc", pStock->GetSymbol(), paramAdjust);
 	if (countNumber > 0) {
 		for (int i = 0; i < countNumber; ++i) {
 			string sParam = std::format("symbols={}&timeframe=1D&limit=1000&feed=iex{}&sort=asc&start={:%F}&end={:%F}",
-			                            symbols, paramAdjust, lStartDate + chrono::days(i * 1000), lStartDate + chrono::days((i + 1) * 1000 - 1)); // Note: 总是多申请一天的日线数据
+			                            symbol, paramAdjust, startDate + chrono::days(i * 1000), startDate + chrono::days((i + 1) * 1000 - 1)); // Note: 总是多申请一天的日线数据
 
 			m_inquiryString = m_strInquiryFunction + sParam;
 			pInquiry->push_back(m_inquiryString);
 		}
 		string sParam = std::format("symbols={}&timeframe=1D&limit=1000&feed=iex{}&sort=asc&start={:%F}&end={:%F}",
-		                            symbols, paramAdjust, lStartDate + chrono::days(countNumber * 1000), gl_pWorldMarket->GetMarketDate()); // Note: 总是多申请一天的日线数据
+		                            symbol, paramAdjust, startDate + chrono::days(countNumber * 1000), m_currentMarketDate); // Note: 总是多申请一天的日线数据
 		pInquiry->push_back(m_strInquiryFunction + sParam);
+		m_vStockSymbol.push_back(symbol);
 	}
 	else {
+		int stepLength = totalDays;
+		string symbols = pStock->GetSymbol();
+		auto number = gl_pAlpacaDataSource->GetInquireStockNumber();
+		m_vStockSymbol.push_back(pStock->GetSymbol());
+		int index = 1;
+		size_t pos = 1;
+		while (index < number) {
+			if (index > 40) break;
+			if ((GetIndex() + pos) >= gl_dataContainerTiingoStock.Size()) break; // 到达终点了
+			auto pStock2 = gl_dataContainerTiingoStock.GetStock(GetIndex() + pos);
+			if (!gl_dataContainerAlpacaStockSymbol.IsSymbol(pStock2->GetSymbol())) { // Alpaca代码集中没有的股票不查询
+				pos++;
+				continue;
+			}
+			auto currentStartDay = GetStartInquireDay(GetIndex() + pos);
+			int currentDays = std::chrono::duration_cast<std::chrono::days>(m_currentMarketDate - currentStartDay).
+			count();
+			if (currentStartDay < startDate) {
+				stepLength = currentDays;
+				if (stepLength * (index + 1) > 1000) break;
+				startDate = currentStartDay;
+			}
+
+			symbols += ",";
+			symbols += pStock2->GetSymbol();
+			m_vStockSymbol.push_back(pStock2->GetSymbol());
+			pos++;
+			index++;
+		}
 		string sParam = std::format("symbols={}&timeframe=1D&limit=1000&feed=iex{}&sort=asc&start={:%F}&end={:%F}",
-		                            pStock->GetSymbol(), paramAdjust, lStartDate, gl_pWorldMarket->GetMarketDate()); // Note: 总是多申请一天的日线数据
+		                            symbols, paramAdjust, startDate, m_currentMarketDate); // Note: 总是多申请一天的日线数据
 		pInquiry->push_back(m_strInquiryFunction + sParam);
 	}
+
 	return pInquiry;
 }
 
-local_days CProductAlpacaStockDayLine::GetStartInquireDay(size_t stockIndex) const{
-	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
+local_days CProductAlpacaStockDayLine::GetStartInquireDay(size_t stockIndex) const {
+	const auto pStock = gl_dataContainerTiingoStock.GetStock(stockIndex);
 	chrono::local_days lStartDate{ 1980y / 01 / 01 };
 	if (pStock->GetDayLineEndDate() > toLocalDays(19800101)) {
 		lStartDate = pStock->GetDayLineEndDate() - chrono::days(needMoreDayLineData_);
@@ -261,16 +311,20 @@ local_days CProductAlpacaStockDayLine::GetStartInquireDay(size_t stockIndex) con
 ///
 ///
 ///
-///
-void CProductAlpacaStockDayLine::Parse(shared_ptr<vector<CTiingoCandleLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CProductAlpacaStockDayLine::Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol) {
 	CTiingoStock stock;
+	TiingoDayLine tiingoDayLine;
 	nlohmannJson j = nlohmann::json::parse(r.text, nullptr, false);
 
-	if (!j.at("next_page_token").is_null()) m_bDataEnded = false;
-	//string nextPageToken = j.value("next_page_token", "");
+	if (!j.at("next_page_token").is_null()) {
+		m_bDataEnded = false;
+		return false;
+	}
 
 	auto bars_data = j.at("bars").get<std::map<std::string, std::vector<Bar>>>();
 	for (const auto& [symbol, bars] : bars_data) {
+		tiingoDayLine.m_symbol = symbol;
 		for (const auto& bar : bars) {
 			CTiingoCandleLine dayLine;
 			chrono::sys_seconds utc_tp;
@@ -284,9 +338,13 @@ void CProductAlpacaStockDayLine::Parse(shared_ptr<vector<CTiingoCandleLine>> pvD
 			dayLine.SetLow(bar.low * stock.GetRatio());
 			dayLine.SetClose(bar.close * stock.GetRatio());
 			dayLine.SetVolume(bar.volume);
-			pvDayLine->push_back(dayLine);
+			tiingoDayLine.m_dayLine.push_back(dayLine);
 		}
+		pvDayLine->push_back(tiingoDayLine);
+		tiingoDayLine.m_symbol.clear();
+		tiingoDayLine.m_dayLine.clear();
 	}
+	return true;
 }
 
 void CProductAlpacaStockDayLine::CalculateSplitFactor(vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit) {

@@ -13,6 +13,11 @@
 
 class CDayLine;
 
+struct TiingoDayLine {
+	string m_symbol;
+	vector<CTiingoCandleLine> m_dayLine;
+};
+
 using std::vector;
 using std::unordered_map;
 
@@ -32,6 +37,9 @@ public:
 	~CProductAlpacaStockDayLine() override = default;
 
 	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void ClearUpdateDayLineFlag();
+	void UpdateDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine,
+	                   vector<CTiingoCandleLine>& vDayLineWithSplit);
 	void WebStatusCheck(cpr::Response& r) override;
 
 	shared_ptr<vector<string>> CreateMessage() override;
@@ -39,7 +47,7 @@ public:
 	shared_ptr<std::vector<std::string>> CreateMessageInternal(string paramAdjust);
 	local_days GetStartInquireDay(size_t stockIndex) const;
 
-	void Parse(shared_ptr<vector<CTiingoCandleLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
+	bool Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
 	void CalculateSplitFactor(vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit);
 
 	bool IsDataEnded() const noexcept { return m_bDataEnded; }
@@ -50,8 +58,10 @@ public:
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
+	std::chrono::local_days m_currentMarketDate;
 	bool m_bDataEnded{ true };
 
+	vector<string> m_vStockSymbol;
 	vector<StockDayLine> m_vStockDayLine; // 每个股票的日线数据
 	unordered_map<string, size_t> m_mapStockDayLine;
 	vector<StockDayLine> m_vStockDayLineSplit; // 每个股票的日线数据

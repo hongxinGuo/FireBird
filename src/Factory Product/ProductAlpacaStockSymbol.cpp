@@ -64,14 +64,14 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st, const str
 	shared_ptr<vector<CAlpacaStockPtr>> pvStock = make_shared<vector<CAlpacaStockPtr>>();
 	shared_ptr<vector<string>> pInquiry = CreateMessage();
 	long status = 200;
-	cpr::Header headers = cpr::Header{
-		{ "APCA-API-KEY-ID", "PK3J5QOOORALNDMELW2XS5RDZX" },
-		{ "APCA-API-SECRET-KEY", "DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk" },
-		{ "accept", "application/json" }
-	};
+
+	//pair<string, string> API_key = gl_pAlpacaDataSource->GetApiKey();
+	//pair<string, string> Secret_key = gl_pAlpacaDataSource->GetSecretKey();
+	//cpr::Header headers2 = cpr::Header{ API_key, Secret_key, { "accept", "application/json" } };
+
 	auto inquireStrings = CreateMessage();
 	ABSL_DCHECK(inquireStrings->size() == 1);
-	cpr::Response r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, headers);
+	cpr::Response r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader());
 
 	status = r.status_code;
 	if (status != 200) {

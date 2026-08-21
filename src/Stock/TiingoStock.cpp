@@ -67,10 +67,19 @@ void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
 	m_llVolume = pIEXTopOfBook->m_llVolume;
 }
 
-void CTiingoStock::UpdateDayLine(const CTiingoCandleLinesPtr& vTempDayLine) {
-	m_dataDayLine.Reserve(vTempDayLine->size());
+void CTiingoStock::UpdateDayLine(const CTiingoCandleLinesPtr& pvTempDayLine) {
+	m_dataDayLine.Reserve(pvTempDayLine->size());
 
-	for (auto& p : *vTempDayLine) {
+	for (auto& p : *pvTempDayLine) {
+		m_dataDayLine.Add(p);
+	}
+	m_dataDayLine.SetDataLoaded(true);
+}
+
+void CTiingoStock::UpdateDayLine(vector<CTiingoCandleLine>& vTempDayLine) {
+	m_dataDayLine.Reserve(vTempDayLine.size());
+
+	for (auto& p : vTempDayLine) {
 		m_dataDayLine.Add(p);
 	}
 	m_dataDayLine.SetDataLoaded(true);

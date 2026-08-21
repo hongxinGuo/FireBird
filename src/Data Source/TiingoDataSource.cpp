@@ -456,7 +456,6 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
-	gl_pAlpacaDataSource->SetUpdateStockDayLine(true); // 此时方才允许申请Alpaca日线数据。
 	if (GenerateCryptoSymbol()) return true;
 	//if (GenerateIEXTopOfBook()) return true; // Note 免费账户的此项数据已经不包含所有股票的即时信息
 	if (GenerateChosenStockDayLine()) return true; // 无论免费还是付费，都先申请自选股的日线数据。

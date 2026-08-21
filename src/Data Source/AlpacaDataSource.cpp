@@ -36,7 +36,7 @@ CAlpacaDataSource::CAlpacaDataSource() {
 
 bool CAlpacaDataSource::Reset() {
 	m_bUpdateTradingAsset = true;
-	m_fUpdateStockDayLine = false;
+	m_fUpdateStockDayLine = false;// 更新日线时间由任务决定
 	m_fAlpacaDataInquiryFinished = false;
 	return true;
 }

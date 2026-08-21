@@ -66,10 +66,10 @@ void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
 			if (HaveInquiry()) {
 				SetInquiring(true);
 				if (m_bUsingNewInterface) {
-					InquireData2(st);
+					Inquire2(st);
 				}
 				else {
-					InquireData();
+					Inquire();
 				}
 			}
 		});
@@ -91,7 +91,7 @@ namespace {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::InquireData() {
+void CVirtualDataSource::Inquire() {
 	ABSL_DCHECK(IsInquiring());
 	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	vector<result<CWebDataPtr>> vResults;
@@ -141,7 +141,7 @@ void CVirtualDataSource::InquireData() {
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 
-void CVirtualDataSource::InquireData2(const std::stop_token& st) {
+void CVirtualDataSource::Inquire2(const std::stop_token& st) {
 	ABSL_DCHECK(IsInquiring());
 	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	while (HaveInquiry()) { // 一次申请可以有多个数据

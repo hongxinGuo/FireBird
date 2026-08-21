@@ -88,4 +88,6 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_] = "查询Tiingo IEX实时数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_] = "查询Tiingo股票日线历史数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_PROCESS_DAYLINE_] = "处理Tiingo日线数据";
+
+	gl_mapMarketMapIndex[WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_] = "查询Alpaca股票日线历史数据";
 }

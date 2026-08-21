@@ -226,8 +226,6 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 
 void CProductTiingoStockProfile::UpdateSystemStatus() {
 	gl_pTiingoDataSource->SetUpdateStockSymbol(false);
-	gl_pAlpacaDataSource->Enable(true); // 此时才允许Alpaca申请数据
-	gl_pAlpacaDataSource->SetUpdateStockDayLine(true); // 更新完Tiingo stock后才允许申请alpaca日线数据，因其也使用Tiingo stock。
 	gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(gl_pWorldMarket->GetMarketDate());
 	gl_systemMessage.PushInformationMessage("Tiingo stock symbol updated");
 }
