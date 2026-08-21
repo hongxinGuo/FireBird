@@ -517,7 +517,7 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 #ifdef _DEBUG
 	return GenerateSimpleInquiryWithCheck(
 		STOCK_SYMBOLS_,
-		[]() { return true; }, // 调试时总是允许
+		[]() { return gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() < gl_pWorldMarket->GetMarketDate(); }, //todo: 调试时总是允许
 		setUpdated,
 		reportMsg1,
 		isUpdateNeeded,

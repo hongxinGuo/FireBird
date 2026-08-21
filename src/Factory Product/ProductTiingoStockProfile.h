@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ContainerTiingoSymbol.h"
 #include"ProductTiingo.h"
 
 class CTiingoStock;
@@ -23,9 +24,12 @@ public:
 	shared_ptr<vector<shared_ptr<CTiingoStock>>> ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
 
 	void UpdateSystemStatus() override;
-	static shared_ptr<vector<shared_ptr<CTiingoStock>>> DeleteDuplicatedSymbol(const shared_ptr<vector<shared_ptr<CTiingoStock>>>& pvTiingoStock);
+	void DeleteDuplicatedSymbol(const shared_ptr<vector<shared_ptr<CTiingoStock>>>& pvTiingoStock);
 	static void SaveNewSymbol();
 	void SaveDelistedSymbol();
+
+protected:
+	CContainerTiingoSymbol m_containerCurrentTiingoSymbols;
 };
 
 using CProductTiingoStockProfilePtr = shared_ptr<CProductTiingoStockProfile>;

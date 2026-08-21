@@ -59,9 +59,10 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (pvTiingoStock->empty()) return;
 
 	// 删除代码集中重复的代码，相同代码的多个活跃股票则保留DailyUpdate最新的那个，其他也都删除。
-	CTiingoStocksPtr pvNewTiingoStock = DeleteDuplicatedSymbol(pvTiingoStock);
+	DeleteDuplicatedSymbol(pvTiingoStock);
 
-	for (const auto& pTiingoStock : *pvNewTiingoStock) {
+	for (size_t index = 0; index < m_containerCurrentTiingoSymbols.Size(); index++) {
+		auto pTiingoStock = m_containerCurrentTiingoSymbols.GetStock(index);
 		auto symbol = pTiingoStock->GetSymbol();
 		if (!pTiingoStock->IsActive()) { // 退市股票？
 			if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
@@ -236,15 +237,15 @@ void CProductTiingoStockProfile::UpdateSystemStatus() {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock) {
-	CTiingoStocksPtr pvNewTiingoStock = make_shared<vector<CTiingoStockPtr>>();
+void CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock) {
+	m_containerCurrentTiingoSymbols.Reset();
 
 	CTiingoStockPtr pStockFirst = pvTiingoStock->at(0);
 	for (size_t l = 1; l < pvTiingoStock->size(); l++) {
 		CTiingoStockPtr pStockNext = pvTiingoStock->at(l);
 		auto s = pStockFirst->GetSymbol();
 		if (s != pStockNext->GetSymbol()) { // 代码不同
-			pvNewTiingoStock->push_back(pStockFirst);
+			m_containerCurrentTiingoSymbols.Add(pStockFirst);
 			pStockFirst = pStockNext;
 		}
 		else { // 相同代码
@@ -262,7 +263,6 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 			}
 		}
 	}
-	return pvNewTiingoStock;
 }
 
 void CProductTiingoStockProfile::SaveNewSymbol() {

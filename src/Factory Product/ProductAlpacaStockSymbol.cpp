@@ -63,17 +63,12 @@ CProductAlpacaStockSymbol::CProductAlpacaStockSymbol() {
 void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
 	shared_ptr<vector<CAlpacaStockPtr>> pvStock = make_shared<vector<CAlpacaStockPtr>>();
 	shared_ptr<vector<string>> pInquiry = CreateMessage();
-	long status = 200;
-
-	//pair<string, string> API_key = gl_pAlpacaDataSource->GetApiKey();
-	//pair<string, string> Secret_key = gl_pAlpacaDataSource->GetSecretKey();
-	//cpr::Header headers2 = cpr::Header{ API_key, Secret_key, { "accept", "application/json" } };
 
 	auto inquireStrings = CreateMessage();
 	ABSL_DCHECK(inquireStrings->size() == 1);
 	cpr::Response r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader());
 
-	status = r.status_code;
+	long status = r.status_code;
 	if (status != 200) {
 		WebStatusCheck(r);
 		return;
@@ -85,9 +80,7 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st, const str
 		return a->GetSymbol() < b->GetSymbol();
 	});
 	for (const auto& pStock : *pvStock) {
-		if (gl_dataContainerAlpacaStockSymbol.IsSymbol(pStock->GetSymbol())) { // 现存代码
-		}
-		else {
+		if (!gl_dataContainerAlpacaStockSymbol.IsSymbol(pStock->GetSymbol())) { // 新代码
 			pStock->SetUpdateProfileDB(true);
 			pStock->SetNewStock(true);
 			gl_dataContainerAlpacaStockSymbol.Add(pStock); // 存储新代码

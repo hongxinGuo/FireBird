@@ -45,6 +45,8 @@ public:
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
 	shared_ptr<std::vector<std::string>> CreateMessageInternal(string paramAdjust);
+	shared_ptr<std::vector<std::string>> InquireOneStock(string paramAdjust);
+	shared_ptr<std::vector<std::string>> InquireMultipleStocks(string paramAdjust);
 	local_days GetStartInquireDay(size_t stockIndex) const;
 
 	bool Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
@@ -52,16 +54,11 @@ public:
 
 	bool IsDataEnded() const noexcept { return m_bDataEnded; }
 
-	bool HaveSymbol(const string& strSymbol) const noexcept { return m_mapStockDayLine.contains(strSymbol); }
-	size_t GetPos(const string& strSymbol) const { return m_mapStockDayLine.at(strSymbol); }
-	void AddDayLine(const string& strSymbol, shared_ptr<vector<CTiingoCandleLine>> pvDayLine);
-
 protected:
-	long m_lCurrentStockPosition; // 股票当前查询位置
 	std::chrono::local_days m_currentMarketDate;
 	bool m_bDataEnded{ true };
 
-	vector<string> m_vStockSymbol;
+	vector<string> m_vStockSymbols;
 	vector<StockDayLine> m_vStockDayLine; // 每个股票的日线数据
 	unordered_map<string, size_t> m_mapStockDayLine;
 	vector<StockDayLine> m_vStockDayLineSplit; // 每个股票的日线数据

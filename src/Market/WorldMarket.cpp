@@ -370,7 +370,7 @@ int CWorldMarket::ProcessTask() {
 			break;
 		case WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_:
 			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(200000)) {
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, 200000);
+				AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, 200000);
 			}
 			else { // 当日20时之后或者第二日交易时间前
 				gl_pAlphaVantageDataSource->SetUpdateStockDayLine(true);
