@@ -107,8 +107,8 @@ public:
 	void SetDayLineStartDate(const local_days& date) noexcept { m_dayLineStartDate = date; }
 	auto GetDayLineEndDate() const noexcept { return m_dayLineEndDate; }
 	void SetDayLineEndDate(const local_days& date) noexcept { m_dayLineEndDate = date; }
-	double GetShareCount() const { return m_dShareCount; }
-	void SetShareCount(double val) { m_dShareCount = val; }
+	double GetShareCount() const { return m_jsonUpdateDate.value("ShareOutstanding", 0.0); }
+	void SetShareCount(double val) { m_jsonUpdateDate["ShareOutstanding"] = val; }
 
 	size_t GetStockSplitCount() const noexcept { return m_pvStockSplit->size(); }
 	shared_ptr<CStockSplit> GetStockSplit(size_t index) const noexcept { return m_pvStockSplit->at(index); }
@@ -165,7 +165,6 @@ protected:
 	local_days m_dayLineStartDate{ 2990y / 01 / 01 }; // 日线历史数据的起始日期
 	local_days m_dayLineEndDate{ 1980y / 01 / 01 }; // 日线历史数据的结束日期
 	shared_ptr<vector<shared_ptr<CStockSplit>>> m_pvStockSplit{ nullptr };
-	double m_dShareCount{ 0.0 }; // 股本数量, 单位：百万股。从Finnhub获取。
 
 	// 实时数据区
 	std::chrono::sys_seconds m_tpTime{};// 实时数据交易时间

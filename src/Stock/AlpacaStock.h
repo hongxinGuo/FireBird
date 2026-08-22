@@ -5,7 +5,7 @@
 class CAlpacaStock : public CVirtualStock {
 public:
 	CAlpacaStock();
-	// ²»ÔÊÐí¸³Öµ¡£
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
 	CAlpacaStock(const CAlpacaStock&) = default;
 	CAlpacaStock& operator=(const CAlpacaStock&) = delete;
 	CAlpacaStock(const CAlpacaStock&&) noexcept = delete;

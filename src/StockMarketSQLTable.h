@@ -2576,7 +2576,7 @@ namespace StockMarket {
   };
   using TiingoStock52WeekLow = ::sqlpp::table_t<TiingoStock52WeekLow_>;
 
-  struct TiingoStock5yearLow70Percent_ {
+  struct TiingoStock5yearsLow70Percent_ {
     struct ID {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ID, ID);
       using data_type = ::sqlpp::integral;
@@ -2592,7 +2592,7 @@ namespace StockMarket {
       using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
-    SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_5year_low_70percent, tiingoStock5yearLow70Percent);
+    SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_5years_low_70percent, tiingoStock5yearsLow70Percent);
     template<typename T>
     using _table_columns = sqlpp::table_columns<T,
                ID,
@@ -2600,9 +2600,9 @@ namespace StockMarket {
                Date>;
     using _required_insert_columns = sqlpp::detail::type_set<>;
   };
-  using TiingoStock5yearLow70Percent = ::sqlpp::table_t<TiingoStock5yearLow70Percent_>;
+  using TiingoStock5yearsLow70Percent = ::sqlpp::table_t<TiingoStock5yearsLow70Percent_>;
 
-  struct TiingoStock5yearLow80Percent_ {
+  struct TiingoStock5yearsLow80Percent_ {
     struct ID {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ID, ID);
       using data_type = ::sqlpp::integral;
@@ -2618,7 +2618,7 @@ namespace StockMarket {
       using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
-    SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_5year_low_80percent, tiingoStock5yearLow80Percent);
+    SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_5years_low_80percent, tiingoStock5yearsLow80Percent);
     template<typename T>
     using _table_columns = sqlpp::table_columns<T,
                ID,
@@ -2626,9 +2626,9 @@ namespace StockMarket {
                Date>;
     using _required_insert_columns = sqlpp::detail::type_set<>;
   };
-  using TiingoStock5yearLow80Percent = ::sqlpp::table_t<TiingoStock5yearLow80Percent_>;
+  using TiingoStock5yearsLow80Percent = ::sqlpp::table_t<TiingoStock5yearsLow80Percent_>;
 
-  struct TiingoStock5yearLow90Percent_ {
+  struct TiingoStock5yearsLow90Percent_ {
     struct ID {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ID, ID);
       using data_type = ::sqlpp::integral;
@@ -2644,7 +2644,7 @@ namespace StockMarket {
       using data_type = ::sqlpp::integral;
       using has_default = std::true_type;
     };
-    SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_5year_low_90percent, tiingoStock5yearLow90Percent);
+    SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_stock_5years_low_90percent, tiingoStock5yearsLow90Percent);
     template<typename T>
     using _table_columns = sqlpp::table_columns<T,
                ID,
@@ -2652,7 +2652,7 @@ namespace StockMarket {
                Date>;
     using _required_insert_columns = sqlpp::detail::type_set<>;
   };
-  using TiingoStock5yearLow90Percent = ::sqlpp::table_t<TiingoStock5yearLow90Percent_>;
+  using TiingoStock5yearsLow90Percent = ::sqlpp::table_t<TiingoStock5yearsLow90Percent_>;
 
   struct TiingoStockCurrentTrace_ {
     struct ID {

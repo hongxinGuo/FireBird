@@ -394,4 +394,142 @@ namespace FireBirdTest {
 		// Final assertions: flags cleared
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 	}
+
+	TEST_F(CContainerTiingoStockTest, Update5YearLow70PercentStockDB_InsertsRowsForCurrentVector) {
+		// Set a deterministic market date for the test.
+		// Use TEST_SetMarketDate which exists for test purposes in CVirtualMarket derived classes.
+		using namespace std::chrono;
+
+		// Prepare table handle and clear any existing rows for the date we will use
+		using namespace StockMarket;
+		const auto& t = TiingoStock5yearsLow70Percent{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		// Delete any existing rows for the test date to isolate the test
+		auto dateStr = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+		db(sqlpp::delete_from(t).where(t.Date == dateStr));
+		tx.commit();
+
+		// Set the global vector with test symbols
+		gl_vCurrent5YearsLow70Percent.clear();
+		gl_vCurrent5YearsLow70Percent.emplace_back("TESTSYM1");
+		gl_vCurrent5YearsLow70Percent.emplace_back("TESTSYM2");
+
+		// Act: call the function under test
+		gl_dataContainerTiingoStock.Update5YearLow70PercentStockDB();
+
+		// Assert: verify rows were inserted
+		auto db2 = gl_dbStockMarket.get();
+		auto tx2 = sqlpp::start_transaction(db2);
+		auto rows = db2(select(all_of(t)).from(t).where(t.Date == dateStr).order_by(t.Symbol.asc()));
+
+		std::vector<std::string> inserted;
+		for (const auto& r : rows) {
+			inserted.emplace_back(r.Symbol);
+		}
+		tx2.commit();
+
+		// We expect exactly the two symbols we inserted
+		EXPECT_EQ(inserted.size(), 2u);
+		EXPECT_EQ(inserted[0], "TESTSYM1");
+		EXPECT_EQ(inserted[1], "TESTSYM2");
+
+		// Cleanup: remove inserted rows so the test DB remains clean
+		auto tx3 = sqlpp::start_transaction(db2);
+		db2(sqlpp::delete_from(t).where(t.Date == dateStr));
+		tx3.commit();
+	}
+
+	TEST_F(CContainerTiingoStockTest, Update5YearLow80PercentStockDB_InsertsRowsForCurrentVector) {
+		// Set a deterministic market date for the test.
+		// Use TEST_SetMarketDate which exists for test purposes in CVirtualMarket derived classes.
+		using namespace std::chrono;
+
+		// Prepare table handle and clear any existing rows for the date we will use
+		using namespace StockMarket;
+		const auto& t = TiingoStock5yearsLow80Percent{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		// Delete any existing rows for the test date to isolate the test
+		auto dateStr = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+		db(sqlpp::delete_from(t).where(t.Date == dateStr));
+		tx.commit();
+
+		// Set the global vector with test symbols
+		gl_vCurrent5YearsLow80Percent.clear();
+		gl_vCurrent5YearsLow80Percent.emplace_back("TESTSYM1");
+		gl_vCurrent5YearsLow80Percent.emplace_back("TESTSYM2");
+
+		// Act: call the function under test
+		gl_dataContainerTiingoStock.Update5YearLow80PercentStockDB();
+
+		// Assert: verify rows were inserted
+		auto db2 = gl_dbStockMarket.get();
+		auto tx2 = sqlpp::start_transaction(db2);
+		auto rows = db2(select(all_of(t)).from(t).where(t.Date == dateStr).order_by(t.Symbol.asc()));
+
+		std::vector<std::string> inserted;
+		for (const auto& r : rows) {
+			inserted.emplace_back(r.Symbol);
+		}
+		tx2.commit();
+
+		// We expect exactly the two symbols we inserted
+		EXPECT_EQ(inserted.size(), 2u);
+		EXPECT_EQ(inserted[0], "TESTSYM1");
+		EXPECT_EQ(inserted[1], "TESTSYM2");
+
+		// Cleanup: remove inserted rows so the test DB remains clean
+		auto tx3 = sqlpp::start_transaction(db2);
+		db2(sqlpp::delete_from(t).where(t.Date == dateStr));
+		tx3.commit();
+	}
+
+	TEST_F(CContainerTiingoStockTest, Update5YearLow90PercentStockDB_InsertsRowsForCurrentVector) {
+		// Set a deterministic market date for the test.
+		// Use TEST_SetMarketDate which exists for test purposes in CVirtualMarket derived classes.
+		using namespace std::chrono;
+
+		// Prepare table handle and clear any existing rows for the date we will use
+		using namespace StockMarket;
+		const auto& t = TiingoStock5yearsLow90Percent{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		// Delete any existing rows for the test date to isolate the test
+		auto dateStr = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+		db(sqlpp::delete_from(t).where(t.Date == dateStr));
+		tx.commit();
+
+		// Set the global vector with test symbols
+		gl_vCurrent5YearsLow90Percent.clear();
+		gl_vCurrent5YearsLow90Percent.emplace_back("TESTSYM1");
+		gl_vCurrent5YearsLow90Percent.emplace_back("TESTSYM2");
+
+		// Act: call the function under test
+		gl_dataContainerTiingoStock.Update5YearLow90PercentStockDB();
+
+		// Assert: verify rows were inserted
+		auto db2 = gl_dbStockMarket.get();
+		auto tx2 = sqlpp::start_transaction(db2);
+		auto rows = db2(select(all_of(t)).from(t).where(t.Date == dateStr).order_by(t.Symbol.asc()));
+
+		std::vector<std::string> inserted;
+		for (const auto& r : rows) {
+			inserted.emplace_back(r.Symbol);
+		}
+		tx2.commit();
+
+		// We expect exactly the two symbols we inserted
+		EXPECT_EQ(inserted.size(), 2u);
+		EXPECT_EQ(inserted[0], "TESTSYM1");
+		EXPECT_EQ(inserted[1], "TESTSYM2");
+
+		// Cleanup: remove inserted rows so the test DB remains clean
+		auto tx3 = sqlpp::start_transaction(db2);
+		db2(sqlpp::delete_from(t).where(t.Date == dateStr));
+		tx3.commit();
+	}
 }

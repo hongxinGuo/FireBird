@@ -800,11 +800,6 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10030));
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-
-		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_);
 		EXPECT_EQ(pTask->GetTime(), toLocalTime(10035));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
@@ -827,6 +822,11 @@ namespace FireBirdTest {
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_);
 		EXPECT_EQ(pTask->GetTime(), toLocalTime(10300));
+		gl_pWorldMarket->DiscardCurrentMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_);
+		EXPECT_EQ(pTask->GetTime(), toLocalTime(20030));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
@@ -860,11 +860,6 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_);
-		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 1min + 30s);
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-
-		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_);
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 1min + 35s);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
@@ -887,6 +882,11 @@ namespace FireBirdTest {
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_);
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 4min + 00s);
+		gl_pWorldMarket->DiscardCurrentMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 1h + 1min + 30s);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();

@@ -351,10 +351,10 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(190000)) {
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, 190000);
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(200000)) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, 200000);
 			}
-			else { // 当日19时之后或者第二日交易时间前
+			else { // 当日20时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateStockDailyMeta(true);
 				gl_pTiingoDataSource->SetUpdateChosenStockDayLine(true);
 				gl_pTiingoDataSource->SetUpdateDayLine(true);
@@ -369,11 +369,16 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(200000)) {
-				AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, 200000);
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(190000)) {
+				AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, 190000);
 			}
-			else { // 当日20时之后或者第二日交易时间前
-				gl_pAlphaVantageDataSource->SetUpdateStockDayLine(true);
+			else { // 当日19时之后或者第二日交易时间前
+				if (gl_pTiingoDataSource->IsUpdateStockSymbol()) {
+					AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
+				}
+				else {
+					gl_pAlpacaDataSource->SetUpdateStockDayLine(true);
+				}
 			}
 			break;
 		default:
@@ -414,11 +419,11 @@ void CWorldMarket::TaskCreateTask() {
 
 	AddTask(WORLD_MARKET_UPDATE_DB_, GetNextTime(GetMarketTime(), 0h, 0min, 40s - seconds));// 更新股票简介数据库的任务
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA_, GetMarketTime());
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 0h, 0min, 20s)); // 开始下载日线历史数据
 	AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 0h, 0min, 25s)); // 开始下载日线历史数据
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // Note:测试完后再允许
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
 	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_, GetNextTime(GetMarketTime(), 0h, 3min, 0s - seconds)); // 三分钟计算Nasdaq100 200MA比率
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 1h, 0min, 20s)); // 开始下载日线历史数据
 	//AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE_, GetNextTime(GetMarketTime(), 1h, 0min, 0s - seconds)); //todo: 一小时后处理Tiingo日线数据
 	AddTask(WORLD_MARKET_CREATE_TASK_, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -555,9 +560,9 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB(std::stop_token st) {
 				pTiingoStock->SetUpdateProfileDB(true);
 				pTiingoStock->UpdateDayLineDB();
 				pTiingoStock->UnloadDayLine();
-				string str = pTiingoStock->GetSymbol();
-				str += "日线资料存储完成";
-				gl_systemMessage.PushDayLineInfoMessage(str);
+				//string str = pTiingoStock->GetSymbol();
+				//str += "日线资料存储完成";
+				//gl_systemMessage.PushDayLineInfoMessage(str);
 				gl_BackgroundWorkingThread.Release();
 			});
 			iUpdatedCount++;
@@ -688,7 +693,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskProcessTiingoDayLine() {
-	if (gl_systemConfiguration.GetTiingoStockDayLineProcessedDate() >= GetCurrentTradeDate()) return; // 已更新完52WeekHighLow,不再自动更新。
+	//if (gl_systemConfiguration.GetTiingoStockDayLineProcessedDate() >= GetCurrentTradeDate()) return; // 已更新完52WeekHighLow,不再自动更新。
 	ABSL_DCHECK(!gl_pTiingoDataSource->IsUpdateDayLine());// 接收完日线数据后方可处理
 	if (m_jtProcessTiingoDayLine.joinable()) {
 		m_jtProcessTiingoDayLine.request_stop();

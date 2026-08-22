@@ -489,19 +489,19 @@ CREATE TABLE `tiingo_stock_52week_low` (
   `Date` int NOT NULL DEFAULT '0'
 );
 
-CREATE TABLE `tiingo_stock_5year_low_70percent` (
+CREATE TABLE `tiingo_stock_5years_low_70percent` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
   `Date` int NOT NULL DEFAULT '19700101'
 );
 
-CREATE TABLE `tiingo_stock_5year_low_80percent` (
+CREATE TABLE `tiingo_stock_5years_low_80percent` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
   `Date` int NOT NULL DEFAULT '19700101'
 );
 
-CREATE TABLE `tiingo_stock_5year_low_90percent` (
+CREATE TABLE `tiingo_stock_5years_low_90percent` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(45) NOT NULL DEFAULT '‘ ’',
   `Date` int NOT NULL DEFAULT '19700101'

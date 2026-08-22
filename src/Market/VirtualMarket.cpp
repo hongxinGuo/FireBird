@@ -210,7 +210,7 @@ bool CVirtualMarket::IsWorkingDay(const chrono::local_days& date) noexcept {
 	return true;
 }
 
-chrono::local_days CVirtualMarket::GetNextTradeDate() {
+chrono::local_days CVirtualMarket::GetNextTradeDate() const {
 	chrono::days day{ 1 };
 	if (GetWeekDay() == chrono::Saturday) {
 		++day; // 下周一
@@ -222,7 +222,7 @@ chrono::local_days CVirtualMarket::GetNextTradeDate() {
 	return GetMarketDate() + day;
 }
 
-chrono::local_days CVirtualMarket::GetCurrentTradeDate() {
+chrono::local_days CVirtualMarket::GetCurrentTradeDate() const {
 	chrono::days day(0);
 	if (GetWeekDay() == chrono::Saturday) {
 		day = chrono::days(1); // 周五
@@ -233,7 +233,7 @@ chrono::local_days CVirtualMarket::GetCurrentTradeDate() {
 	return GetMarketDate() - day;
 }
 
-chrono::local_days CVirtualMarket::GetLastTradeDate() {
+chrono::local_days CVirtualMarket::GetLastTradeDate() const {
 	chrono::days day;
 	chrono::weekday weekDay = GetWeekDay();
 	if (GetWeekDay() == chrono::Monday) {

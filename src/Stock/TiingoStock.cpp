@@ -22,9 +22,9 @@
 
 using namespace std;
 
-std::vector<std::string> gl_vCurrent5YearLow70Percent;
-std::vector<std::string> gl_vCurrent5YearLow80Percent;
-std::vector<std::string> gl_vCurrent5YearLow90Percent;
+std::vector<std::string> gl_vCurrent5YearsLow70Percent;
+std::vector<std::string> gl_vCurrent5YearsLow80Percent;
+std::vector<std::string> gl_vCurrent5YearsLow90Percent;
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
@@ -341,14 +341,14 @@ bool CTiingoStock::HaveNewDayLineData() {
 	return false;
 }
 
-void CTiingoStock::CheckUpdateStatus(chrono::local_days lTodayDate) {
-	CheckFinancialStateUpdateStatus(lTodayDate);
-	CheckDayLineUpdateStatus(lTodayDate);
-	CheckStockDailyMetaStatus(lTodayDate);
+void CTiingoStock::CheckUpdateStatus(chrono::local_days currentTadeDate) {
+	CheckFinancialStateUpdateStatus(currentTadeDate);
+	CheckDayLineUpdateStatus(currentTadeDate);
+	CheckStockDailyMetaStatus(currentTadeDate);
 }
 
-void CTiingoStock::CheckFinancialStateUpdateStatus(chrono::local_days lTodayDate) {
-	if (IsEarlyThen(GetCompanyFinancialStatementUpdateDate(), lTodayDate, gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate())) {
+void CTiingoStock::CheckFinancialStateUpdateStatus(chrono::local_days currentTradeDate) {
+	if (IsEarlyThen(GetCompanyFinancialStatementUpdateDate(), currentTradeDate, gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate())) {
 		m_fUpdateFinancialState = true;
 	}
 	else {
@@ -356,8 +356,7 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(chrono::local_days lTodayDate
 	}
 }
 
-void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days lTodayDate) {
-	auto currentTradeDate = gl_pWorldMarket->GetCurrentTradeDate();
+void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days currentTradeDate) {
 	if (GetDayLineEndDate() >= currentTradeDate) { // 已更新？
 		m_fUpdateDayLine = false;
 		return;
@@ -366,12 +365,12 @@ void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days lTodayDate) {
 		m_fUpdateDayLine = false;
 		return;
 	}
-	ABSL_DCHECK(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
+	ABSL_DCHECK(GetDayLineEndDate() < currentTradeDate);
 	m_fUpdateDayLine = true;
 }
 
-void CTiingoStock::CheckStockDailyMetaStatus(chrono::local_days lCurrentDate) {
-	if (GetUpdateStockDailyMetaDate() >= gl_pWorldMarket->GetCurrentTradeDate()) {
+void CTiingoStock::CheckStockDailyMetaStatus(chrono::local_days currentTradeDate) {
+	if (GetUpdateStockDailyMetaDate() >= currentTradeDate) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
@@ -614,21 +613,19 @@ void CTiingoStock::Find70PercentLow() {
 	for (size_t i = m_vClose.size() - 1; i > cutoff; --i) {
 		high5Year = std::max(m_vClose.at(i), high5Year);
 	}
-	double MarketValue = 301;
-	if (GetShareCount() > 0) MarketValue = GetShareCount() * m_vClose.at(m_vClose.size() - 1);
-	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 10)) {
-		if (MarketValue > 300) { // 市值超过3亿元。
-			gl_vCurrent5YearLow90Percent.push_back(GetSymbol());
+	double marketValue = 301;
+	if (GetShareCount() > 0) marketValue = GetShareCount() * m_vClose.at(m_vClose.size() - 1) / GetRatio();
+	if (marketValue > 300) {
+		if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 10)) {
+			gl_vCurrent5YearsLow90Percent.push_back(GetSymbol());
+			return;
 		}
-	}
-	else if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 5)) {
-		if (MarketValue > 300) { // 市值超过3亿元。
-			gl_vCurrent5YearLow80Percent.push_back(GetSymbol());
+		if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 5)) {
+			gl_vCurrent5YearsLow80Percent.push_back(GetSymbol());
+			return;
 		}
-	}
-	else if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 3.3)) {
-		if (MarketValue > 300) { // 市值超过3亿元。
-			gl_vCurrent5YearLow70Percent.push_back(GetSymbol());
+		if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 3.3)) {
+			gl_vCurrent5YearsLow70Percent.push_back(GetSymbol());
 		}
 	}
 }

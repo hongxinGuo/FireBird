@@ -252,7 +252,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 	int totalInquiryStocks = 1;
 	size_t pos = 1;
 	while (true) {
-		if (totalInquiryStocks > 40) break; //todo: 先按10个股票测试
+		if (totalInquiryStocks > 60) break;
 		if (GetIndex() + pos >= gl_dataContainerTiingoStock.Size()) break; // 到达终点了
 		pStock = gl_dataContainerTiingoStock.GetStock(GetIndex() + pos);
 		if (!gl_dataContainerAlpacaStockSymbol.IsSymbol(pStock->GetSymbol())) { // Alpaca代码集中没有的股票不查询

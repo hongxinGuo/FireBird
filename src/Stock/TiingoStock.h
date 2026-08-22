@@ -129,10 +129,10 @@ public:
 	void RebuildStockSplitDB(std::stop_token st) override;
 
 	bool HaveNewDayLineData(); //Todo: 移至VirtualStock中，合并其他股票类型的同名函数
-	void CheckUpdateStatus(local_days lTodayDate);
-	void CheckFinancialStateUpdateStatus(local_days lTodayDate);
-	void CheckDayLineUpdateStatus(local_days lTodayDate);
-	void CheckStockDailyMetaStatus(local_days lCurrentDate);
+	void CheckUpdateStatus(local_days currentTadeDate);
+	void CheckFinancialStateUpdateStatus(local_days currentTradeDate);
+	void CheckDayLineUpdateStatus(local_days currentTradeDate);
+	void CheckStockDailyMetaStatus(local_days currentTradeDate);
 
 	local_days GetStatementLastUpdatedDate();
 	void SetStatementLastUpdatedDate(local_days date);
@@ -239,6 +239,6 @@ using CTiingoStocksPtr = shared_ptr<vector<CTiingoStockPtr>>;
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock);
 
-extern std::vector<std::string> gl_vCurrent5YearLow70Percent;
-extern std::vector<std::string> gl_vCurrent5YearLow80Percent;
-extern std::vector<std::string> gl_vCurrent5YearLow90Percent;
+extern std::vector<std::string> gl_vCurrent5YearsLow70Percent;
+extern std::vector<std::string> gl_vCurrent5YearsLow80Percent;
+extern std::vector<std::string> gl_vCurrent5YearsLow90Percent;

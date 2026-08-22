@@ -514,10 +514,10 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 	};
 	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo symbol needn't update"); };
 
-#ifdef _DEBUG
 	return GenerateSimpleInquiryWithCheck(
 		STOCK_SYMBOLS_,
-		[]() { return gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() < gl_pWorldMarket->GetMarketDate(); }, //todo: 调试时总是允许
+		[]() { return gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() < gl_pWorldMarket->GetMarketDate(); },
+		//[]() { return true; }, // 调试时总是允许
 		setUpdated,
 		reportMsg1,
 		isUpdateNeeded,
@@ -525,19 +525,6 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 		[] { gl_systemMessage.SetCurrentTiingoFunction("Stock Symbol"); }
 
 	);
-#else
-	return GenerateSimpleInquiryWithCheck(
-		STOCK_SYMBOLS_,
-		//[]() { return gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() < gl_pWorldMarket->GetMarketDate(); },
-		[]() { return true; }, // 调试时总是允许
-		setUpdated,
-		reportMsg1,
-		isUpdateNeeded,
-		createProduct,
-		[] { gl_systemMessage.SetCurrentTiingoFunction("Stock Symbol"); }
-
-	);
-#endif
 }
 
 bool CTiingoDataSource::GenerateCryptoSymbol() {

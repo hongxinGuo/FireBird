@@ -90,9 +90,9 @@ public:
 	bool IsWorkingDay() const noexcept;
 	bool IsWorkingDay(const local_days& date) noexcept;
 
-	local_days GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
-	local_days GetCurrentTradeDate();// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
-	local_days GetNextTradeDate();// 下一个交易日（从次日开市时间至后日开市时间）
+	local_days GetLastTradeDate() const;// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
+	local_days GetCurrentTradeDate() const;// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
+	local_days GetNextTradeDate() const;// 下一个交易日（从次日开市时间至后日开市时间）
 
 	string GetStringOfLocalTime() const; // 得到本地时间的字符串
 	string GetStringOfMarketTime() const; // 得到本市场时间的字符串

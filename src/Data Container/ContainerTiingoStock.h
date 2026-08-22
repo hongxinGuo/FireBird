@@ -24,7 +24,7 @@ public:
 
 	void UpdateProfileDB(std::stop_token st);
 	bool LoadProfileDB();
-	static void DeleteDuplicatedSymbolFromDB();
+	void DeleteDuplicatedSymbolFromDB();
 
 	void ResetDayLineStartEndDate();
 	void BuildDayLine(std::stop_token st, local_days date);

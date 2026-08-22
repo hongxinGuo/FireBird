@@ -25,7 +25,6 @@ void CVirtualStock::ResetAllUpdateDate() {
 }
 
 void CVirtualStock::UpdateJsonUpdateDate() {
-	m_jsonUpdateDate["ShareOutstanding"] = m_dShareCount;
 	m_jsonUpdateDate["DayLineStartDate"] = toFormattedDate(m_dayLineStartDate);
 	m_jsonUpdateDate["DayLineEndDate"] = toFormattedDate(m_dayLineEndDate);
 	nlohmannJson jsStockSplit = nlohmannJson::array();
@@ -39,7 +38,6 @@ void CVirtualStock::UpdateJsonUpdateDate() {
 }
 
 void CVirtualStock::UpdateAllUpdateDate() {
-	m_dShareCount = m_jsonUpdateDate.value("ShareOutstanding", 0.0);
 	m_dayLineStartDate = toLocalDays(m_jsonUpdateDate["DayLineStartDate"]);
 	m_dayLineEndDate = toLocalDays(m_jsonUpdateDate["DayLineEndDate"]);
 
