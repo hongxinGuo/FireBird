@@ -83,7 +83,7 @@ void CFinnhubStock::CheckProfileUpdateStatus(local_days todayDate) {
 ///
 bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
 	ABSL_DCHECK(m_fUpdateCompanyNews);
-	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
+	if (GetShareOutstanding() > 0 && GetMarketCapitalization() > 0) {
 		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
 			// 每星期更新一次公司新闻
 			m_fUpdateCompanyNews = false;
@@ -108,7 +108,7 @@ bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
 /// <returns></returns>
 bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
 	ABSL_DCHECK(m_fUpdateBasicFinancial);
-	if (m_dShareOutstanding > 0 && m_dMarketCapitalization > 0) {
+	if (GetShareOutstanding() > 0 && GetMarketCapitalization() > 0) {
 		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
 			// 系统每季更新一次数据，故查询两次即可。
 			m_fUpdateBasicFinancial = true;

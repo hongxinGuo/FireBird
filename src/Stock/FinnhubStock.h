@@ -136,8 +136,6 @@ public:
 	void SetIPODate(const string& strIPODate) { m_strIPODate = strIPODate; }
 	string GetIsin() const { return m_strIsin; }
 	void SetIsin(const string& strIsin) { m_strIsin = strIsin; }
-	double GetMarketCapitalization() const noexcept { return m_dMarketCapitalization; }
-	void SetMarketCapitalization(double dMarketCapitalization) noexcept { m_dMarketCapitalization = dMarketCapitalization; }
 	string GetNaics() const { return m_strNaics; }
 	void SetNaics(const string& strNaics) { m_strNaics = strNaics; }
 	string GetNaicsNationalIndustry() const { return m_strNaicsNationalIndustry; }
@@ -150,8 +148,6 @@ public:
 	void SetName(const string& strName) { m_strName = strName; }
 	string GetPhone() const { return m_strPhone; }
 	void SetPhone(const string& strPhone) { m_strPhone = strPhone; }
-	double GetShareOutstanding() const noexcept { return m_dShareOutstanding; }
-	void SetShareOutstanding(const double dShareOutstanding) noexcept { m_dShareOutstanding = dShareOutstanding; }
 	string GetState() const { return m_strState; }
 	void SetState(const string& strState) { m_strState = strState; }
 	string GetTicker() const { return m_strTicker; }
@@ -230,14 +226,12 @@ protected:
 	string m_strGsubind{};
 	string m_strIPODate{};
 	string m_strIsin{};
-	double m_dMarketCapitalization{ 0 };
 	string m_strNaics{};
 	string m_strNaicsNationalIndustry{};
 	string m_strNaicsSector{};
 	string m_strNaicsSubsector{};
 	string m_strName{};
 	string m_strPhone{};
-	double m_dShareOutstanding{ 0 };
 	string m_strState{};
 	string m_strTicker{};
 	string m_strWebURL{};

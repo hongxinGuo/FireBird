@@ -183,7 +183,7 @@ public:
 	// 测试用函数
 	void ProcessDayLine2(std::stop_token st); // 用于测试
 	void ProcessDayLine3(std::stop_token st); // 用于测试
-	void Find70PercentLow();
+	void Find70PercentLow() const;
 	void CalculateNewHighHigher(int period = 90);
 	void CalculateNewLowLower(int period = 90);
 

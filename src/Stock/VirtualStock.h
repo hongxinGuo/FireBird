@@ -107,8 +107,10 @@ public:
 	void SetDayLineStartDate(const local_days& date) noexcept { m_dayLineStartDate = date; }
 	auto GetDayLineEndDate() const noexcept { return m_dayLineEndDate; }
 	void SetDayLineEndDate(const local_days& date) noexcept { m_dayLineEndDate = date; }
-	double GetShareCount() const { return m_jsonUpdateDate.value("ShareOutstanding", 0.0); }
-	void SetShareCount(double val) { m_jsonUpdateDate["ShareOutstanding"] = val; }
+	double GetShareOutstanding() const noexcept { return m_jsonUpdateDate.value("ShareOutstanding", 0.0); }
+	void SetShareOutstanding(double val) noexcept { m_jsonUpdateDate["ShareOutstanding"] = val; }
+	double GetMarketCapitalization() const noexcept { return m_jsonUpdateDate.value("MarketCapitalization", 0.0); }
+	void SetMarketCapitalization(double val) noexcept { m_jsonUpdateDate["MarketCapitalization"] = val; }
 
 	size_t GetStockSplitCount() const noexcept { return m_pvStockSplit->size(); }
 	shared_ptr<CStockSplit> GetStockSplit(size_t index) const noexcept { return m_pvStockSplit->at(index); }

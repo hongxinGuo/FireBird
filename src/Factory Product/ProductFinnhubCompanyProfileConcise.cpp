@@ -32,10 +32,11 @@ void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
 	if (fSucceed) {
-		pStock->SetShareCount(pStock->GetShareOutstanding());
+		pStock->SetShareOutstanding(pStock->GetShareOutstanding());
 		if (gl_dataContainerTiingoStock.IsSymbol(pStock->GetSymbol())) { // 同时更新tiingo的股本数据
 			CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(pStock->GetSymbol());
-			pTiingoStock->SetShareCount(pStock->GetShareOutstanding()); // finnhub的单位是百万股
+			pTiingoStock->SetShareOutstanding(pStock->GetShareOutstanding()); // finnhub的单位是百万股
+			pTiingoStock->SetMarketCapitalization(pStock->GetMarketCapitalization()); // 单位为百万元。
 			pTiingoStock->SetUpdateProfileDB(true);
 		}
 	}

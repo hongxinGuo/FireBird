@@ -605,7 +605,8 @@ void CTiingoStock::ProcessDayLine3(std::stop_token st) {
 	m_dataDayLine.Unload();
 }
 
-void CTiingoStock::Find70PercentLow() {
+void CTiingoStock::Find70PercentLow() const {
+	if (GetMarketCapitalization() < 500) return;
 	ABSL_DCHECK(m_vClose.size() > 300);
 	size_t cutoff = 0;
 	if (m_vClose.size() > 1200) cutoff = m_vClose.size() - 1200;
@@ -613,20 +614,16 @@ void CTiingoStock::Find70PercentLow() {
 	for (size_t i = m_vClose.size() - 1; i > cutoff; --i) {
 		high5Year = std::max(m_vClose.at(i), high5Year);
 	}
-	double marketValue = 301;
-	if (GetShareCount() > 0) marketValue = GetShareCount() * m_vClose.at(m_vClose.size() - 1) / GetRatio();
-	if (marketValue > 300) {
-		if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 10)) {
-			gl_vCurrent5YearsLow90Percent.push_back(GetSymbol());
-			return;
-		}
-		if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 5)) {
-			gl_vCurrent5YearsLow80Percent.push_back(GetSymbol());
-			return;
-		}
-		if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 3.3)) {
-			gl_vCurrent5YearsLow70Percent.push_back(GetSymbol());
-		}
+	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 10)) {
+		gl_vCurrent5YearsLow90Percent.push_back(GetSymbol());
+		return;
+	}
+	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 5)) {
+		gl_vCurrent5YearsLow80Percent.push_back(GetSymbol());
+		return;
+	}
+	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 3.3)) {
+		gl_vCurrent5YearsLow70Percent.push_back(GetSymbol());
 	}
 }
 
