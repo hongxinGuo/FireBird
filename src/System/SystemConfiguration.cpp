@@ -12,6 +12,8 @@
 #include"TimeConvert.h"
 
 #include <fstream>
+
+#include "FinnhubDataSource.h"
 using std::fstream;
 
 using namespace std;

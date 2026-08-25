@@ -61,7 +61,7 @@ namespace FireBirdTest {
     })";
 
 		auto pv = make_shared<vector<TiingoDayLine>>();
-		bool ok = prod.Parse(pv, r, "RIG");
+		bool ok = prod.Parse(pv, r.text, "RIG");
 
 		EXPECT_TRUE(ok);
 		ASSERT_EQ(pv->size(), 2u);
@@ -184,7 +184,7 @@ namespace FireBirdTest {
 
 		ASSERT_NE(urls, nullptr);
 		EXPECT_EQ(urls->size(), 1);
-		EXPECT_EQ(urls->at(0).substr(0, 121), "https://data.alpaca.markets/v2/stocks/bars?symbols=A,AA,AACG,AAL&timeframe=1D&limit=1000&feed=iex&adjustment=raw&sort=asc") << "Alpaca代码集中不存在的股票AACT,AADI等没有申请";
+		EXPECT_EQ(urls->at(0).substr(0, 112), "https://data.alpaca.markets/v2/stocks/bars?symbols=A,AA,AACG,AAL&timeframe=1D&limit=1000&adjustment=raw&sort=asc") << "Alpaca代码集中不存在的股票AACT,AADI等没有申请";
 
 		// 恢复原状
 		for (size_t i = 0; i < 10; i++) {

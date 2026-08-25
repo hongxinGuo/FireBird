@@ -8,13 +8,56 @@
 
 #include "ContainerFinnhubStock.h"
 #include "ContainerStockExchange.h"
+#include "FinnhubDataSource.h"
 #include "SystemMessage.h"
-#include "WebData.h"
+
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/symbol?exchange=";
+}
+
+void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry + gl_pFinnhubDataSource->GetToken() });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pvStock = Parse(r.text);
+		const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
+		pExchange->SetUpdateStockSymbol(false);
+
+		//检查合法性：只有美国股票代码无须加上交易所后缀。
+		if (!pvStock->empty()) {
+			const auto pStock = pvStock->at(0);
+			if (IsBadStockSymbol(pStock->GetSymbol(), m_strInquiringExchange)) {
+				string s = "股票代码格式不符：";
+				s += pStock->GetSymbol();
+				s += "  ";
+				s += m_strInquiringExchange;
+				gl_systemMessage.PushErrorMessage(s);
+			}
+		}
+		for (const auto& pStock : *pvStock) {
+			if (!gl_dataContainerFinnhubStock.IsSymbol(pStock)) {
+				pStock->SetNewStock(true);
+				pStock->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
+				gl_dataContainerFinnhubStock.Add(pStock);
+			}
+		}
+	}
+}
+
+void CProductFinnhubStockSymbol::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockSymbol::CreateMessage() {
@@ -24,31 +67,6 @@ shared_ptr<vector<string>> CProductFinnhubStockSymbol::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
-	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
-	pExchange->SetUpdateStockSymbol(false);
-
-	//检查合法性：只有美国股票代码无须加上交易所后缀。
-	if (!pvStock->empty()) {
-		const auto pStock = pvStock->at(0);
-		if (IsBadStockSymbol(pStock->GetSymbol(), m_strInquiringExchange)) {
-			string s = "股票代码格式不符：";
-			s += pStock->GetSymbol();
-			s += "  ";
-			s += m_strInquiringExchange;
-			gl_systemMessage.PushErrorMessage(s);
-		}
-	}
-	for (const auto& pStock : *pvStock) {
-		if (!gl_dataContainerFinnhubStock.IsSymbol(pStock)) {
-			pStock->SetNewStock(true);
-			pStock->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
-			gl_dataContainerFinnhubStock.Add(pStock);
-		}
-	}
 }
 
 bool CProductFinnhubStockSymbol::IsBadStockSymbol(const string& strStockSymbol, const string& strExchangeCode) {
@@ -82,15 +100,17 @@ bool CProductFinnhubStockSymbol::IsBadStockSymbol(const string& strStockSymbol, 
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
+CFinnhubStocksPtr CProductFinnhubStockSymbol::Parse(const string& text) const {
 	auto pvStock = make_shared<vector<CFinnhubStockPtr>>();
 	CFinnhubStockPtr pStock = nullptr;
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvStock;
-	if (!IsValidData(pWebData)) return pvStock;
+	if (text.empty()) return pvStock;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvStock;
+	if (::IsVoidJson(text)) return pvStock;
 
+	pvStock->reserve(40000);
 	try {
 		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
@@ -123,4 +143,8 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 		return pvStock;
 	}
 	return pvStock;
+}
+
+void CProductFinnhubStockSymbol::UpdateSystemStatus() {
+	//do nothing now
 }

@@ -56,7 +56,8 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 		CreateJsonWithNlohmann(m_jsonUpdateDate, strUpdateDate);
 		UpdateAllUpdateDate();
 	} catch (nlohmannJson::exception&) {
-		CreateJsonWithNlohmann(m_jsonUpdateDate, "{}");
+		string s = "{}";
+		CreateJsonWithNlohmann(m_jsonUpdateDate, s);
 		ResetAllUpdateDate();
 	}
 }

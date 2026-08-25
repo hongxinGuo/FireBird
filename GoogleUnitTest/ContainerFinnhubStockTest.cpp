@@ -59,7 +59,7 @@ namespace FireBirdTest {
 			pStock->SetBasicFinancialUpdateDate(toLocalDays(20000101));
 		}
 
-		gl_dataContainerFinnhubStock.ResetBasicFinancial();
+		gl_dataContainerFinnhubStock.ResetStockProfile();
 
 		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);

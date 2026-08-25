@@ -76,34 +76,35 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st, const st
 	shared_ptr<vector<TiingoDayLine>> pvDayLineWithSplit = make_shared<vector<TiingoDayLine>>();
 	shared_ptr<vector<TiingoDayLine>> pvDayLine = make_shared<vector<TiingoDayLine>>();
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
-	long status;
 
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
 
-		status = r.status_code;
-		if (status != 200) {
+		if (m_statusCode != 200) {
 			WebStatusCheck(r);
 			ClearUpdateDayLineFlag();
 			return;
 		}
-		Parse(pvDayLine, r, pTiingoStock->GetSymbol());
+		Parse(pvDayLine, r.text, pTiingoStock->GetSymbol());
 	}
 
 	auto inquireStrings2 = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStrings2) {
 		if (st.stop_requested()) break;
 		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
 
-		status = r.status_code;
-		if (status != 200) {
+		if (m_statusCode != 200) {
 			WebStatusCheck(r);
 			ClearUpdateDayLineFlag();
 			return;
 		}
-		Parse(pvDayLineWithSplit, r, pTiingoStock->GetSymbol());
+		Parse(pvDayLineWithSplit, r.text, pTiingoStock->GetSymbol());
 	}
 
 	if (st.stop_requested()) return;
@@ -181,7 +182,11 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 		break;
 	case 401: // Authentication headers are missing or invalid.
 		break;
-	case 403: // The requested resource is forbidden.
+	case 403: // The requested resource is forbidden.{"message":"subscription does not permit querying recent SIP data"}
+		j = nlohmann::json::parse(r.text, nullptr, false);
+		message = "Alpaca stock dayLine: ";
+		message += j.at("message");
+		gl_systemMessage.PushErrorMessage(message);
 		break;
 	case 429: // Too many requests.You hit the rate limit.
 		break;
@@ -227,13 +232,13 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireOneStock
 	string symbol = pStock->GetSymbol();
 	int countNumber = totalDays / 1000;
 	for (int i = 0; i < countNumber; ++i) {
-		string sParam = std::format("symbols={}&timeframe=1D&limit=1000&feed=iex{}&sort=asc&start={:%F}&end={:%F}",
+		string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
 		                            symbol, paramAdjust, startDate + chrono::days(i * 1000), startDate + chrono::days((i + 1) * 1000 - 1)); // Note: 总是多申请一天的日线数据
 
 		m_inquiryString = m_strInquiryFunction + sParam;
 		pInquiry->push_back(m_inquiryString);
 	}
-	string sParam = std::format("symbols={}&timeframe=1D&limit=1000&feed=iex{}&sort=asc&start={:%F}&end={:%F}",
+	string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
 	                            symbol, paramAdjust, startDate + chrono::days(countNumber * 1000), m_currentMarketDate); // Note: 总是多申请一天的日线数据
 	pInquiry->push_back(m_strInquiryFunction + sParam);
 	m_vStockSymbols.push_back(symbol);
@@ -277,7 +282,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 		pos++;
 		totalInquiryStocks++;
 	}
-	string sParam = std::format("symbols={}&timeframe=1D&limit=1000&feed=iex{}&sort=asc&start={:%F}&end={:%F}",
+	string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
 	                            symbols, paramAdjust, startDate, m_currentMarketDate); // Note: 总是多申请一天的日线数据
 	pInquiry->push_back(m_strInquiryFunction + sParam);
 
@@ -330,10 +335,10 @@ local_days CProductAlpacaStockDayLine::GetStartInquireDay(size_t stockIndex) con
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductAlpacaStockDayLine::Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol) {
+bool CProductAlpacaStockDayLine::Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const string& text, const string& stockSymbol) {
 	CTiingoStock stock;
 	TiingoDayLine tiingoDayLine;
-	nlohmannJson j = nlohmann::json::parse(r.text, nullptr, false);
+	nlohmannJson j = nlohmann::json::parse(text, nullptr, false);
 
 	if (!j.at("next_page_token").is_null()) {
 		ABSL_DCHECK(false) << stockSymbol;

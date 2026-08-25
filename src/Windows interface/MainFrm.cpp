@@ -84,7 +84,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoForexWebSocket)
 	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIEXWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIEXWebSocket)
-	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
+	ON_COMMAND(ID_REBUILD_FINNHUB_STOCK_PROFILE, &CMainFrame::OnRebuildStockProfile)
 	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainChinaMarketStockDayLine)
 	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainChinaMarketStockDayLine)
 	ON_WM_SIZE()
@@ -972,8 +972,8 @@ void CMainFrame::OnUpdateRecordTiingoIEXWebSocket(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnRebuildBasicFinancial() {
-	gl_pWorldMarket->RebuildBasicFinancial();
+void CMainFrame::OnRebuildStockProfile() {
+	gl_pWorldMarket->RebuildFinnhubStockProfile();
 }
 
 void CMainFrame::OnMaintainChinaMarketStockDayLine() {

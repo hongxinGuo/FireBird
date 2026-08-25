@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"cpr/cpr.h"
+
 #include"jsonParse.h"
 #include"nlohmannJsonGetValue.h"
 
@@ -10,12 +12,36 @@
 #include "ContainerFinnhubCountry.h"
 #include "FinnhubDataSource.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 
 using std::make_shared;
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/country?";
+}
+
+void CProductFinnhubEconomicCountryList::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry + gl_pFinnhubDataSource->GetToken() });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		auto pvCountry = Parse(r.text);
+		for (const auto& pCountry : *pvCountry) {
+			if (!gl_dataContainerFinnhubCountry.IsCountry(pCountry)) {
+				gl_dataContainerFinnhubCountry.Add(pCountry);
+			}
+		}
+	}
+}
+
+void CProductFinnhubEconomicCountryList::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubEconomicCountryList::CreateMessage() {
@@ -25,24 +51,15 @@ shared_ptr<vector<string>> CProductFinnhubEconomicCountryList::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvCountry = ParseFinnhubCountryList(pWebData);
-	for (const auto& pCountry : *pvCountry) {
-		if (!gl_dataContainerFinnhubCountry.IsCountry(pCountry)) {
-			gl_dataContainerFinnhubCountry.Add(pCountry);
-		}
-	}
-}
-
-CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
+CCountriesPtr CProductFinnhubEconomicCountryList::Parse(const std::string& text) {
 	auto pvCountry = make_shared<vector<CCountry>>();
-	pvCountry->reserve(300);
-
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvCountry;
-	if (!IsValidData(pWebData)) return pvCountry;
+	if (text.empty()) return pvCountry;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvCountry;
+	if (::IsVoidJson(text)) return pvCountry;
 
+	pvCountry->reserve(300);
 	try {
 		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
@@ -72,6 +89,8 @@ CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const 
 }
 
 void CProductFinnhubEconomicCountryList::UpdateSystemStatus() {
+	if (m_statusCode != 200) return;
+
 	gl_pFinnhubDataSource->SetUpdateCountryList(false);
 	gl_systemMessage.PushInformationMessage("Finnhub economic country List updated");
 }

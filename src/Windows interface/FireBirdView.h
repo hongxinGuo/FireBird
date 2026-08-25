@@ -30,6 +30,7 @@ public:
 
 	void ShowCandleData(CDC* pDC, CRect rectDrawArea);
 	void ShowCross(CDC* pDC, CPoint ptCurrent) const;
+	void ShowVolume(CDC* pDC, CRect rectDrawArea) const;
 	void ShowIndicator(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorKDJ(CDC* pDC, CRect rectDrawArea);
 	void ShowIndicatorMACD(CDC* pDC, CRect rectDrawArea) const;
@@ -95,6 +96,7 @@ protected:
 	CRect m_rectClient; // 客户区大小
 	CRect m_rectInformation; // 显示股票信息的区域，文字宽度
 	CRect m_rectCandle;
+	CRect m_rectVolume;
 	CRect m_rectIndicator;
 	CPoint m_ptMouse;
 	CPoint m_ptMouseOld{ -1, -1 };// 记录上一次鼠标位置
@@ -131,6 +133,7 @@ public:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	void AdjustAreas();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnShowAV5();
 	afx_msg void OnShowAV10();

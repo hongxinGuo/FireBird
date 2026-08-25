@@ -20,7 +20,7 @@ public:
 
 	void ResetEPSSurprise();
 	void ResetPeer();
-	void ResetBasicFinancial();
+	void ResetStockProfile();
 	void ResetDayLine();
 
 	bool LoadProfileDB();

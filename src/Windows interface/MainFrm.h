@@ -120,7 +120,7 @@ protected:
 	afx_msg void OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRecordTiingoIEXWebSocket();
 	afx_msg void OnUpdateRecordTiingoIEXWebSocket(CCmdUI* pCmdUI);
-	afx_msg void OnRebuildBasicFinancial();
+	afx_msg void OnRebuildStockProfile();
 	afx_msg void OnMaintainChinaMarketStockDayLine();
 	afx_msg void OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);

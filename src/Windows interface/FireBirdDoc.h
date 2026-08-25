@@ -41,6 +41,10 @@ public:
 	std::pair<long, long> GetWeekLineHighLow(int iCandleNumber) const;
 	std::pair<long, long> GetMonthLineHighLow(int iCandleNumber) const;
 
+	int64_t GetDayLineVolumeHigh(int iCandleNumber) const { return m_pDataDayLine->GetVolumeHigh(iCandleNumber); }
+	int64_t GetWeekLineVolumeHigh(int iCandleNumber) const { return m_pDataWeekLine->GetVolumeHigh(iCandleNumber); }
+	int64_t GetMonthLineVolumeHigh(int iCandleNumber) const { return m_pDataMonthLine->GetVolumeHigh(iCandleNumber); }
+
 	local_days GetDayLineDate(size_t countDownIndex) const;
 	local_days GetWeekLineDate(size_t countDownIndex) const;
 	local_days GetMonthLineDate(size_t countDownIndex) const;
@@ -48,6 +52,10 @@ public:
 	void ShowDayLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
 		ABSL_DCHECK(m_pDataDayLine->IsSplitAdjusted());
 		m_pDataDayLine->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
+	}
+
+	void ShowDayLineVolume(CDC* pDC, CRect rectClient, int iStepWidth, int64_t lHigh) const {
+		m_pDataDayLine->ToShowVolume(pDC, rectClient, iStepWidth, lHigh);
 	}
 
 	void ShowDayLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
@@ -73,6 +81,10 @@ public:
 		m_pDataWeekLine->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
 	}
 
+	void ShowWeekLineVolume(CDC* pDC, CRect rectClient, int iStepWidth, int64_t lHigh) const {
+		m_pDataWeekLine->ToShowVolume(pDC, rectClient, iStepWidth, lHigh);
+	}
+
 	void ShowWeekLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
 		m_weekLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
@@ -94,6 +106,10 @@ public:
 
 	void ShowMonthLine(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
 		m_pDataMonthLine->ToShow(pDC, rectClient, iStepWidth, lHigh, lLow);
+	}
+
+	void ShowMonthLineVolume(CDC* pDC, CRect rectClient, int iStepWidth, int64_t lHigh) const {
+		m_pDataMonthLine->ToShowVolume(pDC, rectClient, iStepWidth, lHigh);
 	}
 
 	void ShowMonthLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {

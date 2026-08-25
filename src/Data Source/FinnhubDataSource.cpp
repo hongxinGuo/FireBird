@@ -63,6 +63,16 @@ CFinnhubDataSource::CFinnhubDataSource() {
 	CFinnhubDataSource::ConfigureInternetOption();
 
 	CFinnhubDataSource::Reset();
+
+	m_bUsingNewInterface = true; // finnhub使用新接口
+
+	auto s = gl_systemConfiguration.GetFinnhubToken();
+	if (!s.empty()) {
+		SetToken(s);
+	}
+	else {
+		gl_systemConfiguration.SetFinnhubToken(GetToken()); // 如果SystemConfiguration中的Finnhub token为空的话，则使用自带token。
+	}
 }
 
 bool CFinnhubDataSource::Reset() {
@@ -177,29 +187,29 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	if (GenerateCompanySymbolChange()) return true; // 第一步申请股票代码更改。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	if (GenerateCountryList()) return true;
 	// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
-	if (GenerateForexExchange()) return true;
-	if (GenerateCryptoExchange()) return true;
-	if (GenerateMarketStatus()) return true;
-	if (GenerateMarketHoliday()) return true;
+	//if (GenerateForexExchange()) return true;
+	//if (GenerateCryptoExchange()) return true;
+	//if (GenerateMarketStatus()) return true;
+	//if (GenerateMarketHoliday()) return true;
 	if (GenerateCompanySymbol()) return true; // 第一个动作，首先申请当日证券代码
-	if (GenerateForexSymbol()) return true;
-	if (GenerateCryptoSymbol()) return true;
+	//if (GenerateForexSymbol()) return true;
+	//if (GenerateCryptoSymbol()) return true;
 
 	if (!gl_pWorldMarket->IsSystemReady()) return false; // proceeding when world market ready
 
 	// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 	if (GenerateCompanyProfileConcise()) return true;
-	if (GenerateCompanyNews()) return true;
-	if (GeneratePeer()) return true;
-	if (GenerateInsiderTransaction()) return true;
-	if (GenerateInsiderSentiment()) return true;
-	if (GenerateCryptoDayLine()) return true; // Crypto dayLine20231127后只限于付费用户使用
-	if (GenerateStockDayLine()) return true; // Stock dayLine20231127后只限于付费用户使用
-	if (GenerateForexDayLine()) return true; // Forex dayLine目前只限于付费用户使用
-	if (GenerateEPSSurprise()) return true;
-	if (GenerateSECFilings()) return true;
+	//if (GenerateCompanyNews()) return true;
+	//if (GeneratePeer()) return true;
+	//if (GenerateInsiderTransaction()) return true;
+	//if (GenerateInsiderSentiment()) return true;
+	//if (GenerateCryptoDayLine()) return true; // Crypto dayLine20231127后只限于付费用户使用
+	//if (GenerateStockDayLine()) return true; // Stock dayLine20231127后只限于付费用户使用
+	//if (GenerateForexDayLine()) return true; // Forex dayLine目前只限于付费用户使用
+	//if (GenerateEPSSurprise()) return true;
+	//if (GenerateSECFilings()) return true;
 	if (IsUpdateStockDayLine()) {
-		//InquireRTQuote()) return true;
+		//InquireRTQuote() return true;
 	}
 
 	ABSL_DCHECK(!IsInquiring());

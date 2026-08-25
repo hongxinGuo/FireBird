@@ -293,11 +293,11 @@ CREATE TABLE `finnhub_stock_profile` (
   `ShareOutstanding` decimal(20,6) NOT NULL DEFAULT '0.000000',
   `state` varchar(45)  NOT NULL DEFAULT ' ',
   `Ticker` varchar(45)  NOT NULL DEFAULT ' ',
-  `WebURL` varchar(150)  NOT NULL DEFAULT ' ',
-  `Logo` varchar(110)  NOT NULL DEFAULT ' ',
-  `FinnhubIndustry` varchar(100)  NOT NULL DEFAULT ' ',
-  `Peer` varchar(500)  NOT NULL DEFAULT '{}',
-  `UpdateDate` varchar(3000)  NOT NULL DEFAULT '{}'
+  `WebURL` varchar(200)  NOT NULL DEFAULT ' ',
+  `Logo` varchar(200)  NOT NULL DEFAULT ' ',
+  `FinnhubIndustry` varchar(200)  NOT NULL DEFAULT ' ',
+  `Peer` varchar(1000)  NOT NULL DEFAULT '{}',
+  `UpdateDate` varchar(4000)  NOT NULL DEFAULT '{}'
 );
 
 CREATE TABLE `finnhub_stock_sec_filings` (

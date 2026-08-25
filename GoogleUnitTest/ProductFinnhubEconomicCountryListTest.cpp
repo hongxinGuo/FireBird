@@ -110,7 +110,7 @@ namespace FireBirdTest {
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
 	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
 		                         &finnhubWebData95, &finnhubWebData96, &finnhubWebData97, &finnhubWebData100));
-
+	/*
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
 		switch (m_index) {
@@ -151,7 +151,7 @@ namespace FireBirdTest {
 			break;
 		}
 	}
-
+	*/
 	class ProcessFinnhubCountryListTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {

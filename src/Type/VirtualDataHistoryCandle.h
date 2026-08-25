@@ -72,6 +72,8 @@ public:
 
 	// 显示此容器
 	std::pair<long, long> GetHighLow(int iCandleNumber);
+	int64_t GetVolumeHigh(int iCandleNumber);
+	void ToShowVolume(CDC* pDC, CRect rectClient, int iStepWidth, int64_t lHigh);
 	void ToShow(CDC* pDC, CRect rectClient, int iStepWidth, long lHigh, long lLow);
 
 	void ShowLine(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, const vector<double>& vData);

@@ -18,12 +18,41 @@
 
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
-#include "WebData.h"
+#include<cpr/cpr.h>
 
 using std::make_shared;
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
-	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?from=2020-01-01&to=2026-12-31&";
+	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?from=2020-01-01&to=2025-12-31";
+}
+
+void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry + gl_pFinnhubDataSource->GetToken() });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		auto pv = Parse(r.text);
+		//gl_dataContainerFinnhubCompanySymbolChange.Update(*pv);
+	}
+}
+
+void CProductFinnhubCompanySymbolChange::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 403: // no right to access
+		if (r.text == R"({"error":"You don't have access to this resource."})") {
+			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanySymbolChange::CreateMessage() {
@@ -35,22 +64,13 @@ shared_ptr<vector<string>> CProductFinnhubCompanySymbolChange::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubCompanySymbolChange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvCompanySymbolChange = ParseFinnhubCompanySymbolChange(pWebData);
-	if (pvCompanySymbolChange->empty()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-	}
-	else {
-		//gl_dataContainerFinnhubCompanySymbolChange.Update(*pvCompanySymbolChange);
-	}
-}
-
-CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::ParseFinnhubCompanySymbolChange(const CWebDataPtr& pWebData) {
+CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::Parse(const string& text) {
 	auto pvCompanySymbolChange = make_shared<vector<CCompanySymbolChange>>();
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvCompanySymbolChange;
-	if (!IsValidData(pWebData)) return pvCompanySymbolChange;
+	if (text.empty()) return pvCompanySymbolChange;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvCompanySymbolChange;
+	if (::IsVoidJson(text)) return pvCompanySymbolChange;
 
 	try {
 		nlohmannJson js2 = jsonGetChild(js, "data");
@@ -70,7 +90,10 @@ CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::ParseFinnhubCompany
 	}
 	return pvCompanySymbolChange;
 }
+
 void CProductFinnhubCompanySymbolChange::UpdateSystemStatus() {
+	if (m_statusCode != 200 && m_statusCode != 403) return;
+
 	gl_pFinnhubDataSource->SetUpdateCompanySymbolChange(false);
 	gl_systemMessage.PushInformationMessage("Finnhub company symbol change updated");
 	if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型

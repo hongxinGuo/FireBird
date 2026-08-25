@@ -100,7 +100,7 @@ public:
 	void RebuildStockDayLineDB();
 	void RebuildEPSSurprise();
 	void RebuildPeer();
-	void RebuildBasicFinancial();
+	void RebuildFinnhubStockProfile();
 	void RebuildTiingoStockSplitDB(std::stop_token st);
 
 	void UpdateTiingoStockDayLine(local_days startDate);

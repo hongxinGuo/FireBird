@@ -22,4 +22,8 @@ shared_ptr<std::vector<CDayLine>> ParseTengxunDayLine(const string_view& svData,
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived);
 
 //bool CreateJsonWithNlohmann(nlohmannJson& js, string& str, long lBeginPos = 0, long lEndPos = 0);
-bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string& s, long lBeginPos = 0, long lEndPos = 0);
+bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string& s, size_t lBeginPos = 0, size_t lEndPos = 0);
+bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string_view s, size_t lBeginPos = 0, size_t lEndPos = 0);
+
+inline bool IsVoidJson(const string_view sw) { return sw == "{}" || sw == "[]"; }
+inline bool IsVoidJson(const string& s) { return s == "{}" || s == "[]"; }

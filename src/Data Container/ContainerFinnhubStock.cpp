@@ -17,6 +17,7 @@
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 #include"FinnhubStock.h"
+#include "log.h"
 #include"TimeConvert.h"
 
 using std::make_shared;
@@ -56,12 +57,12 @@ void CContainerFinnhubStock::ResetPeer() {
 	}
 }
 
-void CContainerFinnhubStock::ResetBasicFinancial() {
+void CContainerFinnhubStock::ResetStockProfile() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CFinnhubStockPtr pStock = GetItem(l);
-		if (pStock->GetBasicFinancialUpdateDate() != toLocalDays(19800101)) {
-			pStock->SetBasicFinancialUpdateDate(toLocalDays(19800101));
-			pStock->SetUpdateBasicFinancial(true);
+		if (pStock->GetProfileUpdateDate() != toLocalDays(19800101)) {
+			pStock->SetProfileUpdateDate(toLocalDays(19800101));
+			pStock->SetUpdateCompanyProfile(true);
 			pStock->SetUpdateProfileDB(true);
 		}
 	}
@@ -83,7 +84,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 
 	auto db = gl_dbStockMarket.get();
 	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
+	auto result = db(select(all_of(t)).from(t).order_by(t.Symbol.asc()));
 	auto rowCount = result.size();
 	Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
 	CFinnhubStockPtr pFinnhubStock = nullptr;
@@ -160,84 +161,88 @@ void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 		ABSL_DCHECK(pStock != nullptr);
 		if (pStock->IsUpdateProfileDB()) {
 			pStock->UpdateJsonUpdateDate();
-			if (pStock->IsNewStock()) {// 新代码，插入。
-				db(insert_into(t).set(
-					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchange(),
-					t.Description = pStock->GetDescription(),
-					t.DisplaySymbol = pStock->GetDisplaySymbol(),
-					t.Type = pStock->GetType(),
-					t.Mic = pStock->GetMic(),
-					t.Figi = pStock->GetFigi(),
-					t.Currency = pStock->GetCurrency(),
-					t.Address = pStock->GetAddress(),
-					t.City = pStock->GetCity(),
-					t.Country = pStock->GetCountry(),
-					t.cusip = pStock->GetCusip(),
-					t.sedol = pStock->GetSedol(),
-					t.EmployeeTotal = static_cast<int>(pStock->GetEmployeeTotal()),
-					t.ggroup = pStock->GetGgroup(),
-					t.gind = pStock->GetGind(),
-					t.gsector = pStock->GetGsector(),
-					t.gsubind = pStock->GetGsubind(),
-					t.IPODate = pStock->GetIPODate(),
-					t.isin = pStock->GetIsin(),
-					t.MarketCapitalization = pStock->GetMarketCapitalization(),
-					t.naics = pStock->GetNaics(),
-					t.naicsNationalIndustry = pStock->GetNaicsNationalIndustry(),
-					t.naicsSector = pStock->GetNaicsSector(),
-					t.naicsSubsector = pStock->GetNaicsSubsector(),
-					t.Name = pStock->GetName(),
-					t.Phone = pStock->GetPhone(),
-					t.ShareOutstanding = pStock->GetShareOutstanding(),
-					t.state = pStock->GetState(),
-					t.Ticker = pStock->GetTicker(),
-					t.WebURL = pStock->GetWebURL(),
-					t.Logo = pStock->GetLogo(),
-					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
-					t.Peer = pStock->GetJsonPeer().dump(),
-					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-				));
-				pStock->SetNewStock(false);
-			}
-			else { // 如果是原有的代码，则更新
-				db(update(t).set(
-					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchange(),
-					t.Description = pStock->GetDescription(),
-					t.DisplaySymbol = pStock->GetDisplaySymbol(),
-					t.Type = pStock->GetType(),
-					t.Mic = pStock->GetMic(),
-					t.Figi = pStock->GetFigi(),
-					t.Currency = pStock->GetCurrency(),
-					t.Address = pStock->GetAddress(),
-					t.City = pStock->GetCity(),
-					t.Country = pStock->GetCountry(),
-					t.cusip = pStock->GetCusip(),
-					t.sedol = pStock->GetSedol(),
-					t.EmployeeTotal = static_cast<int>(pStock->GetEmployeeTotal()),
-					t.ggroup = pStock->GetGgroup(),
-					t.gind = pStock->GetGind(),
-					t.gsector = pStock->GetGsector(),
-					t.gsubind = pStock->GetGsubind(),
-					t.IPODate = pStock->GetIPODate(),
-					t.isin = pStock->GetIsin(),
-					t.MarketCapitalization = pStock->GetMarketCapitalization(),
-					t.naics = pStock->GetNaics(),
-					t.naicsNationalIndustry = pStock->GetNaicsNationalIndustry(),
-					t.naicsSector = pStock->GetNaicsSector(),
-					t.naicsSubsector = pStock->GetNaicsSubsector(),
-					t.Name = pStock->GetName(),
-					t.Phone = pStock->GetPhone(),
-					t.ShareOutstanding = pStock->GetShareOutstanding(),
-					t.state = pStock->GetState(),
-					t.Ticker = pStock->GetTicker(),
-					t.WebURL = pStock->GetWebURL(),
-					t.Logo = pStock->GetLogo(),
-					t.FinnhubIndustry = pStock->GetFinnhubIndustry(),
-					t.Peer = pStock->GetJsonPeer().dump(),
-					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-				).where(t.Symbol == pStock->GetSymbol()));
+			try {
+				if (pStock->IsNewStock()) {// 新代码，插入。
+					db(insert_into(t).set(
+						t.Symbol = pStock->GetSymbol().substr(0, 20),
+						t.Exchange = pStock->GetExchange().substr(0, 20),
+						t.Description = pStock->GetDescription().substr(0, 200),
+						t.DisplaySymbol = pStock->GetDisplaySymbol().substr(0, 20),
+						t.Type = pStock->GetType().substr(0, 20),
+						t.Mic = pStock->GetMic().substr(0, 20),
+						t.Figi = pStock->GetFigi().substr(0, 20),
+						t.Currency = pStock->GetCurrency().substr(0, 20),
+						t.Address = pStock->GetAddress().substr(0, 100),
+						t.City = pStock->GetCity().substr(0, 20),
+						t.Country = pStock->GetCountry().substr(0, 20),
+						t.cusip = pStock->GetCusip().substr(0, 20),
+						t.sedol = pStock->GetSedol().substr(0, 20),
+						t.EmployeeTotal = static_cast<int>(pStock->GetEmployeeTotal()),
+						t.ggroup = pStock->GetGgroup().substr(0, 45),
+						t.gind = pStock->GetGind().substr(0, 45),
+						t.gsector = pStock->GetGsector().substr(0, 45),
+						t.gsubind = pStock->GetGsubind().substr(0, 45),
+						t.IPODate = pStock->GetIPODate().substr(0, 20),
+						t.isin = pStock->GetIsin().substr(0, 45),
+						t.MarketCapitalization = pStock->GetMarketCapitalization(),
+						t.naics = pStock->GetNaics().substr(0, 45),
+						t.naicsNationalIndustry = pStock->GetNaicsNationalIndustry().substr(0, 100),
+						t.naicsSector = pStock->GetNaicsSector().substr(0, 100),
+						t.naicsSubsector = pStock->GetNaicsSubsector().substr(0, 100),
+						t.Name = pStock->GetName().substr(0, 200),
+						t.Phone = pStock->GetPhone().substr(0, 100),
+						t.ShareOutstanding = pStock->GetShareOutstanding(),
+						t.state = pStock->GetState().substr(0, 45),
+						t.Ticker = pStock->GetTicker().substr(0, 45),
+						t.WebURL = pStock->GetWebURL().substr(0, 200),
+						t.Logo = pStock->GetLogo().substr(0, 200),
+						t.FinnhubIndustry = pStock->GetFinnhubIndustry().substr(0, 200),
+						t.Peer = pStock->GetJsonPeer().dump(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					));
+					pStock->SetNewStock(false);
+				}
+				else { // 如果是原有的代码，则更新
+					db(update(t).set(
+						t.Symbol = pStock->GetSymbol().substr(0, 20),
+						t.Exchange = pStock->GetExchange().substr(0, 20),
+						t.Description = pStock->GetDescription().substr(0, 200),
+						t.DisplaySymbol = pStock->GetDisplaySymbol().substr(0, 20),
+						t.Type = pStock->GetType().substr(0, 20),
+						t.Mic = pStock->GetMic().substr(0, 20),
+						t.Figi = pStock->GetFigi().substr(0, 20),
+						t.Currency = pStock->GetCurrency().substr(0, 20),
+						t.Address = pStock->GetAddress().substr(0, 100),
+						t.City = pStock->GetCity().substr(0, 20),
+						t.Country = pStock->GetCountry().substr(0, 20),
+						t.cusip = pStock->GetCusip().substr(0, 20),
+						t.sedol = pStock->GetSedol().substr(0, 20),
+						t.EmployeeTotal = static_cast<int>(pStock->GetEmployeeTotal()),
+						t.ggroup = pStock->GetGgroup().substr(0, 45),
+						t.gind = pStock->GetGind().substr(0, 45),
+						t.gsector = pStock->GetGsector().substr(0, 45),
+						t.gsubind = pStock->GetGsubind().substr(0, 45),
+						t.IPODate = pStock->GetIPODate().substr(0, 20),
+						t.isin = pStock->GetIsin().substr(0, 45),
+						t.MarketCapitalization = pStock->GetMarketCapitalization(),
+						t.naics = pStock->GetNaics().substr(0, 45),
+						t.naicsNationalIndustry = pStock->GetNaicsNationalIndustry().substr(0, 100),
+						t.naicsSector = pStock->GetNaicsSector().substr(0, 100),
+						t.naicsSubsector = pStock->GetNaicsSubsector().substr(0, 100),
+						t.Name = pStock->GetName().substr(0, 200),
+						t.Phone = pStock->GetPhone().substr(0, 100),
+						t.ShareOutstanding = pStock->GetShareOutstanding(),
+						t.state = pStock->GetState().substr(0, 45),
+						t.Ticker = pStock->GetTicker().substr(0, 45),
+						t.WebURL = pStock->GetWebURL().substr(0, 200),
+						t.Logo = pStock->GetLogo().substr(0, 200),
+						t.FinnhubIndustry = pStock->GetFinnhubIndustry().substr(0, 200),
+						t.Peer = pStock->GetJsonPeer().dump(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					).where(t.Symbol == pStock->GetSymbol()));
+				}
+			} catch (sqlpp::mysql::exception& e) {
+				gl_errorLogger->warn("Finnhub stock profile update error: {}", e.what());
 			}
 			pStock->SetUpdateProfileDB(false);
 		}

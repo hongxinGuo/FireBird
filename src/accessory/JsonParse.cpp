@@ -392,7 +392,17 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	return pDayLineData;
 }
 
-bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string& s, const long lBeginPos, const long lEndPos) {
+bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string& s, const size_t lBeginPos, const size_t lEndPos) {
+	try {
+		js = nlohmannJson::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+	} catch (nlohmannJson::parse_error&) {
+		js.clear();
+		return false;
+	}
+	return true;
+}
+
+bool CreateJsonWithNlohmann(nlohmannJson& js, const std::string_view s, const size_t lBeginPos, const size_t lEndPos) {
 	try {
 		js = nlohmannJson::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	} catch (nlohmannJson::parse_error&) {

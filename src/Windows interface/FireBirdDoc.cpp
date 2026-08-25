@@ -156,6 +156,7 @@ std::pair<long, long> CFireBirdDoc::GetMonthLineHighLow(int iCandleNumber) const
 	return pairHighLow;
 }
 
+
 chrono::local_days CFireBirdDoc::GetDayLineDate(size_t countDownIndex) const {
 	if (m_pCurrentStock == nullptr) return chrono::local_days(chrono::days(0));
 	if (m_pDataDayLine->Size() < countDownIndex) return m_pDataDayLine->GetData(0)->GetDate();

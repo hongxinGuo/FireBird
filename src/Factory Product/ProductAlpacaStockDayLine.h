@@ -37,10 +37,10 @@ public:
 	~CProductAlpacaStockDayLine() override = default;
 
 	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
 	void ClearUpdateDayLineFlag();
 	void UpdateDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine,
 	                   vector<CTiingoCandleLine>& vDayLineWithSplit);
-	void WebStatusCheck(cpr::Response& r) override;
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
@@ -49,7 +49,7 @@ public:
 	shared_ptr<std::vector<std::string>> InquireMultipleStocks(string paramAdjust);
 	local_days GetStartInquireDay(size_t stockIndex) const;
 
-	bool Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const cpr::Response& r, const string& stockSymbol);
+	bool Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const string& text, const string& stockSymbol);
 	void CalculateSplitFactor(vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit);
 
 	bool IsDataEnded() const noexcept { return m_bDataEnded; }

@@ -189,6 +189,21 @@ void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) const {
 	pDC->SelectObject(pOldPen);
 }
 
+void CFireBirdView::ShowVolume(CDC* pDC, CRect rectDrawArea) const {
+	switch (m_iCurrentShowType) {
+	case SHOW_DAY_LINE_DATA_:
+		GetDocument()->ShowDayLineVolume(pDC, rectDrawArea, m_iCandleWidth, GetDocument()->GetDayLineVolumeHigh(rectDrawArea.Width() / m_iCandleWidth));
+		break;
+	case SHOW_WEEK_LINE_DATA_:
+		GetDocument()->ShowWeekLineVolume(pDC, rectDrawArea, m_iCandleWidth, GetDocument()->GetWeekLineVolumeHigh(rectDrawArea.Width() / m_iCandleWidth));
+		break;
+	case SHOW_MONTH_LINE_DATA_:
+		GetDocument()->ShowMonthLineVolume(pDC, rectDrawArea, m_iCandleWidth, GetDocument()->GetMonthLineVolumeHigh(rectDrawArea.Width() / m_iCandleWidth));
+		break;
+	default:
+		break;
+	}
+}
 void CFireBirdView::ShowIndicator(CDC* pDC, CRect rectDrawArea) {
 	switch (m_iShowIndicator) {
 	case SHOW_INDICATOR_KDJ_:
@@ -295,6 +310,7 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	if (IsShowBollingLine()) {
 		ShowIndicatorBollingLine(pDC, m_rectCandle);
 	}
+	ShowVolume(pDC, m_rectVolume);
 	ShowIndicator(pDC, m_rectIndicator);
 }
 
@@ -434,20 +450,7 @@ int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	GetClientRect(&m_rectClient);
 
-	m_rectInformation.left = m_rectClient.left;
-	m_rectInformation.top = m_rectClient.top;
-	m_rectInformation.right = m_rectClient.right;
-	m_rectInformation.bottom = 20;
-
-	m_rectCandle.left = m_rectClient.left;
-	m_rectCandle.top = 21;
-	m_rectCandle.right = m_rectClient.right;
-	m_rectCandle.bottom = m_rectClient.bottom * 3 / 4 - 50;
-
-	m_rectIndicator.left = m_rectClient.left;
-	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
-	m_rectIndicator.right = m_rectClient.right;
-	m_rectIndicator.bottom = m_rectClient.bottom;
+	AdjustAreas();
 
 	m_uIdTimer = SetTimer(3, 200, nullptr); // 200毫秒每次调度，用于显示实时股票数据。
 	if (m_uIdTimer == 0) {
@@ -457,12 +460,7 @@ int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
-	SysCallOnSize(nType, cx, cy);
-
-	m_rectClient.right = cx;
-	m_rectClient.bottom = cy;
-
+void CFireBirdView::AdjustAreas() {
 	m_rectInformation.left = m_rectClient.left;
 	m_rectInformation.top = m_rectClient.top;
 	m_rectInformation.right = m_rectClient.right;
@@ -471,12 +469,26 @@ void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
 	m_rectCandle.left = m_rectClient.left;
 	m_rectCandle.top = 21;
 	m_rectCandle.right = m_rectClient.right;
-	m_rectCandle.bottom = m_rectClient.bottom * 3 / 4 - 50;
+	m_rectCandle.bottom = m_rectClient.bottom * 7 / 10 - 50;
+
+	m_rectVolume.left = m_rectClient.left;
+	m_rectVolume.top = m_rectClient.bottom * 7 / 10 + 1;
+	m_rectVolume.right = m_rectClient.right;
+	m_rectVolume.bottom = m_rectClient.bottom * 8 / 10 - 1;
 
 	m_rectIndicator.left = m_rectClient.left;
-	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
+	m_rectIndicator.top = m_rectClient.bottom * 8 / 10 + 1;
 	m_rectIndicator.right = m_rectClient.right;
 	m_rectIndicator.bottom = m_rectClient.bottom;
+}
+
+void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
+	SysCallOnSize(nType, cx, cy);
+
+	m_rectClient.right = cx;
+	m_rectClient.bottom = cy;
+
+	AdjustAreas();
 }
 
 void CFireBirdView::OnShowAV5() {

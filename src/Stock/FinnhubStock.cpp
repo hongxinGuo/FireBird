@@ -69,8 +69,13 @@ void CFinnhubStock::CheckUpdateStatus(local_days todayDate) {
 	CheckInsiderSentimentStatus(todayDate);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 当GetStockProfileUpdateRate的值为零时，每次都执行检查任务。
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CFinnhubStock::CheckProfileUpdateStatus(local_days todayDate) {
-	if (IsEarlyThen(GetProfileUpdateDate(), todayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) {
+	if (IsEarlyThen(GetProfileUpdateDate(), todayDate, gl_systemConfiguration.GetStockProfileUpdateRate() - 1)) {
 		m_fUpdateCompanyProfile = true;
 	}
 	else {

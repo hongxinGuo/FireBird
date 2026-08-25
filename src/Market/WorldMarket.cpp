@@ -899,8 +899,10 @@ void CWorldMarket::calculateStockYearHigherRate() {
 
 bool CWorldMarket::TaskCheckMarketReady() {
 	if (!IsSystemReady()) {
-		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
-			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
+		//todo:
+		//if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
+		//	&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
+		if (!gl_pFinnhubDataSource->IsUpdateSymbol()) {
 			gl_systemMessage.PushInformationMessage("世界市场初始化完毕");
 			SetSystemReady(true);
 		}
@@ -1194,11 +1196,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 			}
 			m_jtUpdateFinnhubStockProfileDB = std::jthread([](std::stop_token st) {
 				gl_systemMessage.SetWorldMarketSavingFunction("F stock profile");
-				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				gl_dataContainerFinnhubStock.UpdateProfileDB(st);
-				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-				string s = std::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s);
 				s_running = false;
 			});
 		}
@@ -1321,9 +1319,9 @@ void CWorldMarket::RebuildPeer() {
 	gl_pFinnhubDataSource->SetUpdatePeer(true);
 }
 
-void CWorldMarket::RebuildBasicFinancial() {
-	gl_dataContainerFinnhubStock.ResetBasicFinancial();
-	gl_pFinnhubDataSource->SetUpdateStockBasicFinancial(true);
+void CWorldMarket::RebuildFinnhubStockProfile() {
+	gl_dataContainerFinnhubStock.ResetStockProfile();
+	gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 }
 
 void CWorldMarket::RebuildTiingoStockSplitDB(std::stop_token st) {

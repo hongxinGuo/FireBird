@@ -143,15 +143,14 @@ void CVirtualDataSource::Inquire() {
 
 void CVirtualDataSource::Inquire2(const std::stop_token& st) {
 	ABSL_DCHECK(IsInquiring());
-	auto start = time_point_cast<milliseconds>(steady_clock::now());
 	while (HaveInquiry()) { // 一次申请可以有多个数据
 		if (st.stop_requested()) break;
 		GetCurrentProduct();
 		m_pCurrentProduct->InquireData(st, m_strHeaders, m_strParam, m_strSuffix, m_strInquiryToken);
 		m_pCurrentProduct->UpdateSystemStatus();
 	}
-	auto end = time_point_cast<milliseconds>(steady_clock::now());
-	SetCurrentInquiryTime((end - start).count());
+	SetHTTPStatusCode(m_pCurrentProduct->GetStatusCode());
+	SetCurrentInquiryTime(m_pCurrentProduct->GetElapsedTime() * 1000);
 	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }

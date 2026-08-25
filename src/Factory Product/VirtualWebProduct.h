@@ -30,9 +30,10 @@ public:
 	CVirtualWebProduct& operator=(const CVirtualWebProduct&&) noexcept = delete;
 	virtual ~CVirtualWebProduct() = default;
 
-	//Note: 由Product来申请网络数据，使用cpr库。Note:DataSource需要设置使用新接口m_bUsingNewInterface为true，才能使用此函数。
-	virtual void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {} // default do nothing
-	virtual void WebStatusCheck(cpr::Response&) {} // cpr新接口的网络状态检查
+	//Note: 由Product（而不是dataSource)来申请网络数据，使用cpr库。DataSource需要设置使用新接口m_bUsingNewInterface为true，才能使用下面两个函数。
+	// 各继承类必须实现此两个函数。
+	virtual void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) { ABSL_DCHECK(false); } // default do nothing
+	virtual void WebStatusCheck(cpr::Response&) { ABSL_DCHECK(false); } // cpr新接口的网络状态检查
 
 	virtual shared_ptr<vector<string>> CreateMessage() { return make_shared<vector<string>>(vector<string>{ "" }); }
 	virtual void CalculateTotalDataLength(shared_ptr<vector<shared_ptr<CWebData>>>) {}
@@ -70,6 +71,9 @@ public:
 	void SetInquireType(const int iInquireType) noexcept { m_iInquireType = iInquireType; }
 	int GetInquireType() const noexcept { return m_iInquireType; }
 
+	int GetStatusCode() const noexcept { return m_statusCode; }
+	double GetElapsedTime() const noexcept { return m_elapsed; }
+
 	// 测试用
 	virtual bool Test_checkAccessRight_(shared_ptr<CWebData>) { return true; }  // todo 不再使用，准备删除之
 
@@ -81,6 +85,8 @@ protected:
 	size_t m_index{ 0 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界
 	int m_iInquireType{ -1 }; // product索引，Finnhub申请的索引，如SYMBOL_LOOKUP_等。 预先设置为越界
 	int m_iReceivedDataStatus{ GOOD_DATA_ }; // 1:有效数据；2:void data(只有{}或[]两个数据); 3:没有权利申请
+	int m_statusCode{ 200 }; // 网络状态码
+	double m_elapsed{ 0 }; // 申请网络数据所花费的时间。单位:秒
 };
 
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;

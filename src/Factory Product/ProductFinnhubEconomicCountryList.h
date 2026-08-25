@@ -9,9 +9,11 @@ public:
 	CProductFinnhubEconomicCountryList();
 	~CProductFinnhubEconomicCountryList() override = default;
 
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CCountry>> ParseFinnhubCountryList(const CWebDataPtr& pWebData);
+	shared_ptr<vector<CCountry>> Parse(const std::string& text);
 
 	void UpdateSystemStatus() override;
 };

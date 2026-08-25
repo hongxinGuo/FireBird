@@ -606,7 +606,7 @@ void CTiingoStock::ProcessDayLine3(std::stop_token st) {
 }
 
 void CTiingoStock::Find70PercentLow() const {
-	if (GetMarketCapitalization() < 500) return;
+	if (GetShareOutstanding() * m_vClose.at(m_vClose.size() - 1) / GetRatio() < 500) return;
 	ABSL_DCHECK(m_vClose.size() > 300);
 	size_t cutoff = 0;
 	if (m_vClose.size() > 1200) cutoff = m_vClose.size() - 1200;

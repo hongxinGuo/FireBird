@@ -272,3 +272,43 @@ std::pair<long, long> CVirtualDataHistoryCandle::GetHighLow(int iCandleNumber) {
 	}
 	return { lHigh, lLow };
 }
+
+int64_t CVirtualDataHistoryCandle::GetVolumeHigh(int iCandleNumber) {
+	int64_t high = 0;
+	auto it = m_vHistoryData.end();
+	--it;
+	size_t i = 0;
+	auto value = *it;
+
+	for (; it != m_vHistoryData.begin(); --it) {
+		value = *it;
+		high = std::max<int64_t>(high, value.GetVolume());
+		if (i > m_vHistoryData.size()) break;
+		if (i >= iCandleNumber) break;
+		i++;
+	}
+	return high;
+}
+
+void CVirtualDataHistoryCandle::ToShowVolume(CDC* pDC, CRect rectClient, int iStepWidth, int64_t lHigh) {
+	constexpr COLORREF crRed(RGB(255, 0, 0));
+	CPen penRed1(PS_SOLID, 1, crRed);
+
+	auto it = m_vHistoryData.end();
+	long offset = iStepWidth / 2;
+	--it;
+	size_t i = 0;
+	auto pOldPen = pDC->SelectObject(&penRed1);
+	for (; it != m_vHistoryData.begin(); --it) {
+		const auto& value = *it;
+		const long x = rectClient.right - offset - i * iStepWidth;
+		int y = rectClient.bottom - static_cast<double>(value.GetVolume() / lHigh) * rectClient.Height();
+		pDC->MoveTo(x, y);
+		pDC->LineTo(x, rectClient.bottom);
+
+		i++;
+		if (i >= m_vHistoryData.size()) break;
+		if (rectClient.right <= iStepWidth * i) break; // 画到窗口左边框为止
+	}
+	pDC->SelectObject(pOldPen);
+}

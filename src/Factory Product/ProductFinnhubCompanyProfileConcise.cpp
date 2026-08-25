@@ -9,12 +9,47 @@
 #include "ProductFinnhubCompanyProfileConcise.h"
 
 #include "ContainerTiingoStock.h"
+#include "FinnhubDataSource.h"
 #include "TiingoStock.h"
 #include"FinnhubStock.h"
-#include "WebData.h"
+
+#include"cpr/cpr.h"
 
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile2?symbol=";
+}
+void CProductFinnhubCompanyProfileConcise::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry + gl_pFinnhubDataSource->GetToken() });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		pStock->SetUpdateCompanyProfile(false);
+		const bool fSucceed = Parse(r.text, pStock);
+		if (fSucceed) {
+			pStock->SetShareOutstanding(pStock->GetShareOutstanding());
+			if (gl_dataContainerTiingoStock.IsSymbol(pStock->GetSymbol())) { // 同时更新tiingo的股本数据
+				CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(pStock->GetSymbol());
+				pTiingoStock->SetShareOutstanding(pStock->GetShareOutstanding()); // finnhub的单位是百万股
+				pTiingoStock->SetMarketCapitalization(pStock->GetMarketCapitalization()); // 单位为百万元。
+				pTiingoStock->SetUpdateProfileDB(true);
+			}
+		}
+		if (fSucceed) {
+			pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
+			pStock->SetUpdateProfileDB(true);
+		}
+	}
+}
+void CProductFinnhubCompanyProfileConcise::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyProfileConcise::CreateMessage() {
@@ -25,25 +60,6 @@ shared_ptr<vector<string>> CProductFinnhubCompanyProfileConcise::CreateMessage()
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	pStock->SetUpdateCompanyProfile(false);
-	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
-	if (fSucceed) {
-		pStock->SetShareOutstanding(pStock->GetShareOutstanding());
-		if (gl_dataContainerTiingoStock.IsSymbol(pStock->GetSymbol())) { // 同时更新tiingo的股本数据
-			CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(pStock->GetSymbol());
-			pTiingoStock->SetShareOutstanding(pStock->GetShareOutstanding()); // finnhub的单位是百万股
-			pTiingoStock->SetMarketCapitalization(pStock->GetMarketCapitalization()); // 单位为百万元。
-			pTiingoStock->SetUpdateProfileDB(true);
-		}
-	}
-	if (fSucceed || pWebData->IsVoidJson() || IsNoRightToAccess()) {
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
-		pStock->SetUpdateProfileDB(true);
-	}
 }
 
 /// <summary>
@@ -63,14 +79,18 @@ void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 ///
 /// </summary>
 /// <param name="pWebData"></param>
+/// <param name="text"></param>
 /// <param name="pStock"></param>
 /// <returns></returns>
-bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock) const {
+/// 
+/// 
+bool CProductFinnhubCompanyProfileConcise::Parse(const string& text, const CFinnhubStockPtr& pStock) const {
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return false;
-	if (pWebData->IsVoidJson()) return true; // 即使为空，也完成了查询。
+	if (text.empty()) return true;
+	if (!::CreateJsonWithNlohmann(js, text)) return false;
+	if (::IsVoidJson(text)) return true; // 即使为空，也完成了查询。
 	if (IsNoRightToAccess()) return true;
 
 	try {
@@ -101,4 +121,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 		return false; // 出现错误则返回任务失败
 	}
 	return true;
+}
+
+void CProductFinnhubCompanyProfileConcise::UpdateSystemStatus() {
 }

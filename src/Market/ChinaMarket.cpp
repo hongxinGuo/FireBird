@@ -443,12 +443,12 @@ void CChinaMarket::TaskDistributeAndCalculateRTData() {
 	}
 	m_jtDistributeAndProcessRTData = std::jthread([this](std::stop_token st) {
 		gl_ProcessChinaMarketRTData.acquire();
-		auto start = time_point_cast<microseconds>(steady_clock::now());
+		auto start = time_point_cast<milliseconds>(steady_clock::now());
 
 		this->DistributeRTData();
 		this->CalculateRTData();
 
-		auto end = time_point_cast<microseconds>(steady_clock::now());
+		auto end = time_point_cast<milliseconds>(steady_clock::now());
 		this->SetDistributeAndCalculateTime((end - start).count());
 		gl_ProcessChinaMarketRTData.release();
 	});
