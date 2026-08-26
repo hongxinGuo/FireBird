@@ -212,8 +212,7 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 
 	TEST_F(jsonParseTest, TestParseTengxunDayLine) {
 		const string sTengxunDayLine = R"({"code":0,"msg":"","data":{"sh600601":{"day":[["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],"qt":{},"mx_price":{"mx":[],"price":[]},"prec":"2.560","version":"16"}}})";
-		string_view svData = sTengxunDayLine;
-		const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLine(svData, "sh600601");
+		const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLineImp(sTengxunDayLine, "sh600601");
 
 		EXPECT_EQ(pvDayLine->size(), 2);
 		EXPECT_EQ(pvDayLine->at(0).GetStockSymbol(), "600601.SS") << "此时使用标准股票代码形式";

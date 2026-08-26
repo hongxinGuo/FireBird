@@ -26,7 +26,7 @@ public:
 	void ConfigureInternetOption() override;
 	void CheckWebData(const CWebDataPtr& pWebData) override;
 
-	string GetToken() const noexcept { return "&token=" + m_token; }
+	string GetToken() const noexcept { return m_token; }
 	void SetToken(const string& s) noexcept { m_token = s; }
 
 	// 可供申请的项目，目前共21项。

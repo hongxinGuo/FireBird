@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include <random>
+
 #include "ProductEastmoneyDayLine.h"
 #include "ContainerChinaStock.h"
 #include "DayLine.h"
@@ -11,6 +13,8 @@
 
 #include"simdjson.h"
 #include "SystemData.h"
+#include"cpr/cpr.h"
+
 using namespace simdjson;
 
 using std::make_shared;
@@ -67,6 +71,47 @@ CProductEastmoneyDayLine::CProductEastmoneyDayLine() {
 	m_iInquiryNumber = 0;
 }
 
+void CProductEastmoneyDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	std::random_device random;
+	std::default_random_engine e1(random());
+	std::uniform_int_distribution<int> uniform_dist(0, 3);
+	int mean = uniform_dist(e1);
+
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry;
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString }, gl_pEastmoneyDayLineDataSource->GetHeader(mean));
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		auto pDayLineData = make_shared<CDayLineWebData>();
+		const string strSymbol = GetInquiringSymbol();
+		ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+
+		const shared_ptr<vector<CDayLine>> pvDayLine = Parse(r.text, strSymbol);
+		if (pvDayLine->empty()) return; // 如果没有日线，则不处理
+		std::ranges::sort(*pvDayLine, [](const CDayLine& pData1, const CDayLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
+		for (auto& dayLine : *pvDayLine) {
+			dayLine.SetStockSymbol(strSymbol);
+			pDayLineData->AppendDayLine(dayLine);
+		}
+		pDayLineData->SetStockCode(strSymbol);
+		gl_qDayLine.enqueue(pDayLineData);
+	}
+}
+
+void CProductEastmoneyDayLine::WebStatusCheck(cpr::Response& r) {
+}
+
+void CProductEastmoneyDayLine::UpdateSystemStatus() {
+}
+
 shared_ptr<vector<string>> CProductEastmoneyDayLine::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_strInquiryFunction);
@@ -109,30 +154,10 @@ shared_ptr<vector<string>> CProductEastmoneyDayLine::CreateMessage() {
 ///
 /// 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductEastmoneyDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	if (gl_pEastmoneyDayLineDataSource->GetHTTPStatusCode() != 200) return; //网络数据不正常时不处理。
-
-	auto pDayLineData = make_shared<CDayLineWebData>();
-	const string strSymbol = pWebData->GetStockCode();
-	ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
-	const string_view svData = pWebData->GetStringView();
-
-	const shared_ptr<vector<CDayLine>> pvDayLine = ParseEastmoneyDayLine(svData, pWebData->GetStockCode());
-	if (pvDayLine->size() == 0) return; // 如果没有日线，则不处理
-	std::ranges::sort(*pvDayLine, [](const CDayLine& pData1, const CDayLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
-	for (auto& dayLine : *pvDayLine) {
-		dayLine.SetStockSymbol(strSymbol);
-		pDayLineData->AppendDayLine(dayLine);
-	}
-	pDayLineData->SetStockCode(strSymbol);
-	gl_qDayLine.enqueue(pDayLineData);
-}
-
-CDayLinesPtr CProductEastmoneyDayLine::ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode) {
+CDayLinesPtr CProductEastmoneyDayLine::Parse(const string& svData, const string& strStockCode) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
 	pvDayLine->reserve(2000);
 
-	const string strStockSymbol = strStockCode;
 	try {
 		long lLastClose = 0;
 		ondemand::parser parser;
@@ -150,7 +175,7 @@ CDayLinesPtr CProductEastmoneyDayLine::ParseEastmoneyDayLine(const string_view& 
 		auto dayArray = a4.value();
 		for (auto dayLine : dayArray) {
 			CDayLine dayLine2;
-			dayLine2.SetStockSymbol(strStockSymbol);
+			dayLine2.SetStockSymbol(strStockCode);
 			dayLine2.SetLastClose(lLastClose);
 			string s = std::string(dayLine.get_string().value());
 			if (ParseEastmoneyKlineLine(s, dayLine2, lLastClose)) {

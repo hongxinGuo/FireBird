@@ -88,7 +88,7 @@ namespace FireBirdTest {
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubMarketStatus1, ParseFinnhubMarketStatusTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubMarketStatusWebData22));
 
 	TEST_P(ParseFinnhubMarketStatusTest, TestParseFinnhubMarketStatus0) {
-		m_pvMarketStatus = m_finnhubMarketStatusProduct.ParseFinnhubMarketStatus(m_pWebData);
+		m_pvMarketStatus = m_finnhubMarketStatusProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_lIndex) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvMarketStatus->size(), 0);

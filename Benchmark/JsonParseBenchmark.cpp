@@ -324,9 +324,8 @@ BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) 
 
 // 解析并处理tengxun日线数据。
 BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& state) {
-	const string_view svData = sTengxunDayLine;
 	for (auto _ : state) {
-		auto vData = ParseTengxunDayLine(svData, "sh000001"); // 默认测试文件中的股票代码为sh000001.
+		auto vData = ParseTengxunDayLineImp(sTengxunDayLine, "sh000001"); // 默认测试文件中的股票代码为sh000001.
 	}
 }
 

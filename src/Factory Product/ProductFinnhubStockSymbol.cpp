@@ -23,7 +23,10 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st, const st
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry + gl_pFinnhubDataSource->GetToken() });
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString },
+		                           cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL } // 允许重定向
+		);
 		m_statusCode = r.status_code;
 		m_elapsed = r.elapsed;
 
@@ -58,6 +61,21 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st, const st
 }
 
 void CProductFinnhubStockSymbol::WebStatusCheck(cpr::Response& r) {
+	string s;
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 302://redirected, not an error
+		break;
+	case 403: // forbidden
+		s = std::format("Finnhub stock symbol concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	default:
+		s = std::format("Finnhub stock symbol concise http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockSymbol::CreateMessage() {

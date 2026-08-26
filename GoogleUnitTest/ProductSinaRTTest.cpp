@@ -53,7 +53,8 @@ namespace FireBirdTest {
 		EXPECT_GT(strInquiry.length(), 26) << "无需检查随后的股票代码制式";
 	}
 
-	TEST_F(CProductSinaRTTest, TestParseAndStoreWebData) {
+	//todo: 移至jsonParseTest中
+	TEST_F(CProductSinaRTTest, TestParse) {
 		CWebRTDataPtr pRTData;
 		const string strDataUTF8 = "var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\nvar hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\n";
 		string strGBK = Utf8ToGbk(strDataUTF8); // 新浪实时数据的编码为GBK
@@ -61,7 +62,7 @@ namespace FireBirdTest {
 		pData->Test_SetBuffer_(strGBK);
 		EXPECT_FALSE(gl_qChinaMarketRTData.try_dequeue(pRTData));
 
-		sinaRT.ParseAndStoreWebData(pData);
+		//Parse(pData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.try_dequeue(pRTData));
 		EXPECT_EQ(pRTData->GetSymbol(), "600000.SS") << "第二个数据的代码";

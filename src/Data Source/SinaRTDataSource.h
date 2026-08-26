@@ -1,6 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
+#include <cpr/cprtypes.h>
 
 class CSinaRTDataSource : public CVirtualDataSource {
 public:
@@ -19,6 +20,8 @@ public:
 	void CreateCurrentInquireString() override;
 
 	void CheckWebData(const CWebDataPtr& pWebData) override;
+
+	cpr::Header GetHeader() const noexcept { return cpr::Header{ { "Referer", "https://finance.sina.com.cn" } }; }
 };
 
 using CSinaRTDataSourcePtr = shared_ptr<CSinaRTDataSource>;

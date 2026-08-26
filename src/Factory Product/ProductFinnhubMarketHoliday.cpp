@@ -7,14 +7,43 @@
 #include "MarketHoliday.h"
 
 #include "ContainerStockExchange.h"
+#include "FinnhubDataSource.h"
 #include "TimeConvert.h"
-#include "WebData.h"
 #include "WorldMarket.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-holiday?exchange=";
+}
+
+void CProductFinnhubMarketHoliday::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pvHoliday = Parse(r.text);
+		const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
+		pExchange->SetUpdateMarketHoliday(false);
+
+		gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);
+	}
+}
+
+void CProductFinnhubMarketHoliday::WebStatusCheck(cpr::Response& r) {
+}
+
+void CProductFinnhubMarketHoliday::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubMarketHoliday::CreateMessage() {
@@ -25,14 +54,6 @@ shared_ptr<vector<string>> CProductFinnhubMarketHoliday::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvHoliday = ParseFinnhubMarketHoliday(pWebData);
-	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
-	pExchange->SetUpdateMarketHoliday(false);
-
-	gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +78,7 @@ void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData) {
+CMarketHolidaysPtr CProductFinnhubMarketHoliday::Parse(const string& text) {
 	auto pvHoliday = make_shared<vector<CMarketHoliday>>();
 	pvHoliday->reserve(200);
 
@@ -65,8 +86,9 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	string sExchange, sTimeZone;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvHoliday;
-	if (!IsValidData(pWebData)) return pvHoliday;
+	if (text.empty()) return pvHoliday;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvHoliday;
+	if (::IsVoidJson(text)) return pvHoliday;
 
 	s = jsonGetString(js, "exchange");
 	if (!s.empty()) sExchange = s;

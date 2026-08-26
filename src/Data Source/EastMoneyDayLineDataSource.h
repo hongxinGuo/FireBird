@@ -1,8 +1,17 @@
 #pragma once
 
+#include <cpr/cprtypes.h>
+
 #include"VirtualDataSource.h"
 
 class CVirtualWebProduct;
+
+inline vector<string> UAList{
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+};
 
 class CEastmoneyDayLineDataSource : public CVirtualDataSource {
 public:
@@ -23,7 +32,7 @@ public:
 	void CreateCurrentInquireString() override;
 	void UpdateStatus(const CWebDataPtr& pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
-	virtual bool Inquire();
+	bool GenerateDayLine();
 	shared_ptr<CVirtualWebProduct> CreateProduct(const CChinaStockPtr& pStock) const;
 
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
@@ -32,6 +41,16 @@ public:
 	void SetDownLoadingStockCode(const string& strStockCode);
 	string GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = ""; }
+
+	static string GetUAList(int index) { return UAList.at(index); }
+	cpr::Header GetHeader(int index) {
+		return cpr::Header{
+			{ "User-Agent", GetUAList(index) },
+			{ "Referer", "https://quote.eastmoney.com/" },
+			{ "accept", "*/*" },
+			{ "Connection", "keep-alive" }
+		};
+	}
 
 protected:
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据

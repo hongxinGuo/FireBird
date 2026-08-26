@@ -11,10 +11,38 @@
 #include "FinnhubDataSource.h"
 #include "WebData.h"
 
+#include"cpr/cpr.h"
+
 using std::make_shared;
 
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/forex/exchange?";
+}
+
+void CProductFinnhubForexExchange::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pvForexExchange = Parse(r.text);
+		for (const auto& str : *pvForexExchange) {
+			if (!gl_dataContainerFinnhubForexExchange.IsExchange(str)) {
+				gl_dataContainerFinnhubForexExchange.Add(str);
+			}
+		}
+	}
+}
+
+void CProductFinnhubForexExchange::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubForexExchange::CreateMessage() {
@@ -26,22 +54,14 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
-	for (const auto& str : *pvForexExchange) {
-		if (!gl_dataContainerFinnhubForexExchange.IsExchange(str)) {
-			gl_dataContainerFinnhubForexExchange.Add(str);
-		}
-	}
-}
-
-shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(const CWebDataPtr& pWebData) {
+shared_ptr<vector<string>> CProductFinnhubForexExchange::Parse(const string& text) {
 	auto pvExchange = make_shared<vector<string>>();
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvExchange;
-	if (!IsValidData(pWebData)) return pvExchange;
+	if (text.empty()) return pvExchange;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvExchange;
+	if (::IsVoidJson(text)) return pvExchange;
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {

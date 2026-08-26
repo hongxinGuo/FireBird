@@ -203,6 +203,27 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	ParseSinaRTDataUsingCoroutine(pvStringView).get();// 在这里堵塞
 }
 
+static string_view GetCurrentSinaRTData(const string& text, size_t& currentPos) {
+	const string_view svCurrentTotal = string_view(text).substr(currentPos);
+	const auto lStart = svCurrentTotal.find_first_of('v');
+	const auto lEnd = svCurrentTotal.find_first_of(';');
+	ABSL_DCHECK(lStart <= svCurrentTotal.length());
+	ABSL_DCHECK(lEnd <= svCurrentTotal.length());
+	ABSL_DCHECK(lStart <= lEnd);
+	currentPos += lEnd + 1; // 将当前位置移至当前数据结束处之后
+	return svCurrentTotal.substr(lStart, lEnd - lStart + 1); // 包括最后的字符';'
+}
+
+void ParseSinaRTData(const string& text) {
+	size_t currentPos = 0;
+	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
+	while (currentPos < text.size() - 2) {
+		pvStringView->emplace_back(GetCurrentSinaRTData(text, currentPos));
+	}
+	if (pvStringView->empty()) return;
+	ParseSinaRTDataUsingCoroutine(pvStringView).get();// 在这里堵塞
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
@@ -272,6 +293,28 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView).get(); // 等待线程执行完后方继续。
 }
 
+static string_view GetCurrentTengxunRTData(const string& text, size_t& currentPos) {
+	//const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	const string_view svCurrentTotal = string_view(text).substr(currentPos);
+	const auto lStart = svCurrentTotal.find_first_of('v');
+	const auto lEnd = svCurrentTotal.find_first_of(';');
+	ABSL_DCHECK(lStart <= svCurrentTotal.length());
+	ABSL_DCHECK(lEnd <= svCurrentTotal.length());
+	ABSL_DCHECK(lStart <= lEnd);
+	currentPos += lEnd + 1; // 将当前位置移至当前数据结束处之后
+	return svCurrentTotal.substr(lStart, lEnd - lStart + 1);
+}
+
+void ParseTengxunRTData(const string& text) {
+	size_t currentPos = 0;
+	shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
+	while (currentPos < text.size() - 2) {
+		pvStringView->emplace_back(GetCurrentTengxunRTData(text, currentPos));
+	}
+	if (pvStringView->empty()) return;
+	ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView).get(); // 等待线程执行完后方继续。
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 腾讯日线数据结构：
@@ -293,7 +336,7 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 // 使用simdjson解析速度release模式下比Nholmann json快50%，但debug模式下慢一倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strStockCode) {
+CDayLinesPtr ParseTengxunDayLineImp(const string& text, const string& strStockCode) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
 	pvDayLine->reserve(2000);
 
@@ -306,7 +349,7 @@ CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strSto
 
 		//const padded_string_view jsonPaddedView(svData, svData.length()); // Note 此时的svData带有长度为SIMDJSON_PADDING长度的后缀
 		//doc = parser.iterate(jsonPaddedView).value();
-		const padded_string jsonPadded(svData);
+		const padded_string jsonPadded(text);
 		doc = parser.iterate(jsonPadded).value();
 		auto a1 = doc["data"];
 		auto a2 = a1[strStockCode];
@@ -376,19 +419,17 @@ CDayLinesPtr ParseTengxunDayLine(const string_view& svData, const string& strSto
 //	 }
 // }
 //
-CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
+CDayLineWebDataPtr ParseTengxunDayLine(const string& text, const string& stockSymbol) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
-	const string strSymbol = pWebData->GetStockCode();
-	ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
-	const string_view svData = pWebData->GetStringView();
+	ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(stockSymbol));
 
-	const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));
+	const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLineImp(text, XferStandardToTengxun(stockSymbol));
 	std::ranges::sort(*pvDayLine, [](const CDayLine& pData1, const CDayLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
 	for (auto& dayLine : *pvDayLine) {
-		dayLine.SetStockSymbol(strSymbol);
+		dayLine.SetStockSymbol(stockSymbol);
 		pDayLineData->AppendDayLine(dayLine);
 	}
-	pDayLineData->SetStockCode(strSymbol);
+	pDayLineData->SetStockCode(stockSymbol);
 	return pDayLineData;
 }
 

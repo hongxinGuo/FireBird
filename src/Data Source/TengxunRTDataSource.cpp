@@ -17,6 +17,8 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 	CTengxunRTDataSource::ConfigureInternetOption();
 
 	CTengxunRTDataSource::Reset();
+
+	m_bUsingNewInterface = true;
 }
 
 bool CTengxunRTDataSource::Reset() {

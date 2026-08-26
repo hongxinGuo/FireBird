@@ -12,6 +12,7 @@
 #include "FinnhubDataSource.h"
 #include "TiingoStock.h"
 #include"FinnhubStock.h"
+#include "SystemMessage.h"
 
 #include"cpr/cpr.h"
 
@@ -22,7 +23,8 @@ void CProductFinnhubCompanyProfileConcise::InquireData(const std::stop_token& st
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry + gl_pFinnhubDataSource->GetToken() });
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
 		m_statusCode = r.status_code;
 		m_elapsed = r.elapsed;
 
@@ -50,6 +52,20 @@ void CProductFinnhubCompanyProfileConcise::InquireData(const std::stop_token& st
 	}
 }
 void CProductFinnhubCompanyProfileConcise::WebStatusCheck(cpr::Response& r) {
+	string s;
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 302: //redirected, not an error
+	case 403: // forbidden
+		s = std::format("Finnhub company profile concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	default:
+		s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyProfileConcise::CreateMessage() {

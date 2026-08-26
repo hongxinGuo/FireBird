@@ -23,6 +23,8 @@ CAccessoryDataSource::CAccessoryDataSource() {
 
 	CAccessoryDataSource::ConfigureInternetOption();
 	CAccessoryDataSource::Reset();
+
+	m_bUsingNewInterface = true;
 }
 
 bool CAccessoryDataSource::Reset() {

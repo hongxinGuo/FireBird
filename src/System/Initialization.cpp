@@ -7,7 +7,6 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 #include "AlpacaDataSource.h"
-#include "AlphaVantageDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"TengxunDayLineDataSource.h"
@@ -95,8 +94,6 @@ namespace {
 		gl_vDataSource.push_back(gl_pFinnhubDataSource);
 		gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
 		gl_vDataSource.push_back(gl_pTiingoDataSource);
-		gl_pAlphaVantageDataSource = make_shared<CAlphaVantageDataSource>();
-		gl_vDataSource.push_back(gl_pAlphaVantageDataSource);
 		gl_pAlpacaDataSource = make_shared<CAlpacaDataSource>();
 		gl_vDataSource.push_back(gl_pAlpacaDataSource);
 		gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
@@ -207,7 +204,6 @@ void SystemShutdown() {
 	gl_pChinaMarket = nullptr;
 
 	gl_pAccessoryDataSource = nullptr;
-	gl_pAlphaVantageDataSource = nullptr;
 	gl_pAlpacaDataSource = nullptr;
 	gl_pFinnhubDataSource = nullptr;
 	gl_pTiingoDataSource = nullptr;

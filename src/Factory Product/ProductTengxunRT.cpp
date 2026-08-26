@@ -2,17 +2,40 @@
 
 #include"ProductTengxunRT.h"
 
-//#include "HighPerformanceCounter.h"
 #include "ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiryFunction = "http://qt.gtimg.cn/q=";
+}
+
+void CProductTengxunRT::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		gl_pChinaMarket->IncreaseRTDataCounter();
+		ParseTengxunRTData(r.text); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
+	}
+}
+
+void CProductTengxunRT::WebStatusCheck(cpr::Response& r) {
+}
+
+void CProductTengxunRT::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductTengxunRT::CreateMessage() {
@@ -30,7 +53,3 @@ shared_ptr<vector<string>> CProductTengxunRT::CreateMessage() {
 // 使用并行工作线程模式改写后，速度为串行模式得2倍以上。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_pChinaMarket->IncreaseRTDataCounter();
-	ParseTengxunRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
-}

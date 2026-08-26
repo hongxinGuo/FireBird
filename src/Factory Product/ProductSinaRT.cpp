@@ -8,13 +8,42 @@
 
 #include"JsonParse.h"
 #include "SinaRTDataSource.h"
-#include "WebData.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiryFunction = "https://hq.sinajs.cn/list=";
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 使用thread pool + coroutine协程并行解析，速度比单线程模式要快一倍以上。
+// Note 8个核心的cpu，并行数只能设置为4个左右，更高的设置并不能缩短执行时间，且导致执行时间延长，原因待查。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CProductSinaRT::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pSinaRTDataSource->GetHeader());
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		if (r.text.empty()) return;
+		gl_pChinaMarket->IncreaseRTDataCounter();
+		ParseSinaRTData(r.text); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
+	}
+}
+void CProductSinaRT::WebStatusCheck(cpr::Response& r) {
+}
+
+void CProductSinaRT::UpdateSystemStatus() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -31,16 +60,4 @@ shared_ptr<vector<string>> CProductSinaRT::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_strInquiryFunction + strStocks);
 	return pInquiry;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 使用thread pool + coroutine协程并行解析，速度比单线程模式要快一倍以上。
-// Note 8个核心的cpu，并行数只能设置为4个左右，更高的设置并不能缩短执行时间，且导致执行时间延长，原因待查。
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	if (pWebData->GetBufferLength() == 0) return;
-	gl_pChinaMarket->IncreaseRTDataCounter();
-	ParseSinaRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 }

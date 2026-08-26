@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
-		m_pvExchange = m_finnhubCryptoExchange.ParseFinnhubCryptoExchange(m_pWebData);
+		m_pvExchange = m_finnhubCryptoExchange.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvExchange->size(), 0);

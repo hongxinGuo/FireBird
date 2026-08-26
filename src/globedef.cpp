@@ -33,7 +33,6 @@
 
 #include "containerChosenCrypto.h"
 
-#include "AlphaVantageDataSource.h"
 #include "ContainerAlpacaStockSymbol.h"
 #include "ContainerChinaStock.h"
 #include "ContainerChosenForex.h"
@@ -85,7 +84,7 @@ CCountableSemaphore gl_BackgroundWorkingThread; // 最多后台工作线程允�
 concurrencpp::runtime gl_runtime; // 工作线程运行调度器
 concurrencpp::thread_pool_executor gl_webInquiryExecutor{ "WebInquiry", 4, 100ms }; // 线程池工作线程运行调度器
 
-long gl_concurrency_level = 4; // 并行计算允许最大数量。默认为四个协程。目前八核状态下，更多的更多的协程并不能提升效率。
+long gl_concurrency_level = 4; // 并行计算允许最大数量。默认为四个协程。目前八核状态下，更多的协程并不能提升效率。
 array<timer, TASK_END_> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
 
 int64_t gl_TiingoTotalData = 0;
@@ -106,7 +105,6 @@ CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;
 CEastmoneyDayLineDataSourcePtr gl_pEastmoneyDayLineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
-CAlphaVantageDataSourcePtr gl_pAlphaVantageDataSource = nullptr;
 CAlpacaDataSourcePtr gl_pAlpacaDataSource = nullptr;
 CAccessoryDataSourcePtr gl_pAccessoryDataSource = nullptr;
 vector<CVirtualDataSourcePtr> gl_vDataSource; // 各数据源，用于主动结束线程时使用。

@@ -111,7 +111,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData74, &finnhubWebData75, &finnhubWebData80));
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
-		m_pvExchange = m_finnhubForexExchange.ParseFinnhubForexExchange(m_pWebData);
+		m_pvExchange = m_finnhubForexExchange.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvExchange->size(), 0);

@@ -7,6 +7,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "DayLine.h"
 #include"VirtualChinaMarketWebProduct.h"
 
 using std::string_view;
@@ -27,9 +28,12 @@ public:
 	CProductEastmoneyDayLine& operator=(const CProductEastmoneyDayLine&&) noexcept = delete;
 	~CProductEastmoneyDayLine() override = default;
 
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr) override; // 腾讯日线不使用此函数
-	shared_ptr<vector<CDayLine>> ParseEastmoneyDayLine(const string_view& svData, const string& strStockCode);
+	CDayLinesPtr Parse(const string& svData, const string& strStockCode);
 
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
 	int GetInquiryNumber() const { return m_iInquiryNumber; }

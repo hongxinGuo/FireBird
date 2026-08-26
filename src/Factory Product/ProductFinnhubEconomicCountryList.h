@@ -11,11 +11,10 @@ public:
 
 	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
 	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<vector<CCountry>> Parse(const std::string& text);
-
-	void UpdateSystemStatus() override;
 };
 
 using CFinnhubEconomicCountryListPtr = shared_ptr<CProductFinnhubEconomicCountryList>;

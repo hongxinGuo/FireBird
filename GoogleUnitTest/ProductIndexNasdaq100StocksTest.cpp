@@ -72,7 +72,7 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(page);
 
 		CProductIndexNasdaq100Stocks product;
-		auto symbols = product.ParseIndexNasdaq100Stocks(pWebData);
+		auto symbols = product.Parse(pWebData->GetDataBuffer());
 
 		ASSERT_EQ(symbols.size(), 3u);
 		EXPECT_EQ(symbols[0], "NVDA");

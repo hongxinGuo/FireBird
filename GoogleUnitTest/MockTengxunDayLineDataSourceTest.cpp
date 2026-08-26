@@ -64,7 +64,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage1) {
 		gl_pSinaRTDataSource->SetWebError(true);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
-		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, Inquire).Times(0);
+		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GenerateInquireDayLine).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
 
 		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(toLocalTime(120000))) << "WebBusy时，不申请数据";
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage2) {
 		gl_pSinaRTDataSource->SetWebError(false);
-		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, Inquire).Times(0);
+		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GenerateInquireDayLine).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
 
 		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(toLocalTime(120000))) << "WebBusy时，不申请数据";
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());
 		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(120000)); // dummy time and > 114500
 		s_pMockTengxunDayLineDataSource->SetInquiring(true);
-		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, Inquire).Times(0);
+		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GenerateInquireDayLine).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
 
 		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(toLocalTime(120000) )) << "有查询申请时，不申请数据";

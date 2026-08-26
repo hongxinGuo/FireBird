@@ -77,13 +77,13 @@ namespace FireBirdTest {
 	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine1) {
 		TengxunDayLineDataSource.SetInquiring(true);
 
-		EXPECT_FALSE(TengxunDayLineDataSource.Inquire());
+		EXPECT_FALSE(TengxunDayLineDataSource.GenerateInquireDayLine());
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine2) {
 		TengxunDayLineDataSource.SetUpdateDayLine(false);
 
-		EXPECT_FALSE(TengxunDayLineDataSource.Inquire());
+		EXPECT_FALSE(TengxunDayLineDataSource.GenerateInquireDayLine());
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine3) {
@@ -97,7 +97,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.GetStock(10)->SetUpdateDayLine(true);
 
 		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
-		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << gl_pChinaMarket->GetMarketClock();
+		EXPECT_TRUE(TengxunDayLineDataSource.GenerateInquireDayLine()) << gl_pChinaMarket->GetMarketClock();
 		EXPECT_GT(TengxunDayLineDataSource.InquiryQueueSize(), 0);
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000001.SS");
@@ -105,14 +105,14 @@ namespace FireBirdTest {
 		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
-		EXPECT_TRUE(TengxunDayLineDataSource.Inquire());
+		EXPECT_TRUE(TengxunDayLineDataSource.GenerateInquireDayLine());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000006.SS");
 		TengxunDayLineDataSource.SetInquiring(false);
 		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
-		EXPECT_FALSE(TengxunDayLineDataSource.Inquire()) << "查询完了";
+		EXPECT_FALSE(TengxunDayLineDataSource.GenerateInquireDayLine()) << "查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "中国市场股票日线历史数据更新完毕");
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());

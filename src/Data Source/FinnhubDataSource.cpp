@@ -21,6 +21,7 @@
 #include "containerFinnhubForexSymbol.h"
 #include "ContainerFinnhubStock.h"
 #include "ContainerStockExchange.h"
+#include "ContainerTiingoStock.h"
 #include"VirtualWebProduct.h"
 
 #include "TimeConvert.h"
@@ -187,10 +188,10 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	if (GenerateCompanySymbolChange()) return true; // 第一步申请股票代码更改。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	if (GenerateCountryList()) return true;
 	// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
-	//if (GenerateForexExchange()) return true;
-	//if (GenerateCryptoExchange()) return true;
-	//if (GenerateMarketStatus()) return true;
-	//if (GenerateMarketHoliday()) return true;
+	if (GenerateForexExchange()) return true;
+	if (GenerateCryptoExchange()) return true;
+	if (GenerateMarketStatus()) return true;
+	if (GenerateMarketHoliday()) return true;
 	if (GenerateCompanySymbol()) return true; // 第一个动作，首先申请当日证券代码
 	//if (GenerateForexSymbol()) return true;
 	//if (GenerateCryptoSymbol()) return true;
@@ -312,29 +313,43 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 }
 
 bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
-	auto isUpdateNeeded = [this]() { return IsUpdateStockProfile(); };
-	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateCompanyProfile(); };
-	auto createProduct = [this](int inquireType) { return m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, inquireType); };
-	auto setMessage = [](const auto& item) {
-		std::string str = "Company Profile:";
-		str += item->GetSymbol();
-		gl_systemMessage.SetCurrentFinnhubFunction(str);
-	};
-	auto setUpdateFlag = [this](bool flag) { SetUpdateStockProfile(flag); };
-	const std::string finishedMsg = "Finnhub company profile basic updated";
+	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
+	bool fHaveInquiry = false;
+	constexpr int iInquireType = COMPANY_PROFILE_CONCISE_;
 
-	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
-		COMPANY_PROFILE_CONCISE_,
-		isUpdateNeeded,
-		isUpdateItemNeeded,
-		s_isAccessible,
-		createProduct,
-		s_setIndex,
-		setMessage,
-		setUpdateFlag,
-		finishedMsg
-	);
+	ASSERT(gl_pWorldMarket->IsSystemReady());
+	ASSERT(!IsInquiring());
+	if (IsUpdateStockProfile()) {
+		long lCurrentProfilePos;
+		bool fFound = false;
+		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
+			if (const auto pStock = gl_dataContainerFinnhubStock.GetItem(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
+				if (gl_dataContainerTiingoStock.IsSymbol(pStock->GetSymbol())) { // 只更新Tiingo股票集中有的股票
+					if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquireType, pStock->GetExchange())) {
+						fFound = true;
+						break;
+					}
+				}
+			}
+		}
+		if (fFound) {
+			const auto product = m_pFinnhubFactory->CreateProduct(gl_pWorldMarket, iInquireType);
+			product->SetIndex(lCurrentProfilePos);
+			StoreInquiry(product);
+			SetInquiring(true);
+			fHaveInquiry = true;
+			string str = "简介:";
+			str += gl_dataContainerFinnhubStock.GetItem(lCurrentProfilePos)->GetSymbol();
+			gl_systemMessage.SetCurrentFinnhubFunction(str);
+		}
+		else {
+			SetUpdateStockProfile(false);
+			const string str = "Finnhub company profile basic updated";
+			gl_systemMessage.PushInformationMessage(str);
+			fHaveInquiry = false;
+		}
+	}
+	return fHaveInquiry;
 }
 
 bool CFinnhubDataSource::GenerateCompanyNews() {

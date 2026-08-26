@@ -46,9 +46,6 @@
     <Filter Include="Factory-Product\Accessory">
       <UniqueIdentifier>{afe80ecb-e336-4750-9ec8-cc3528be72c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Factory-Product\AlphaVantage">
-      <UniqueIdentifier>{3821548c-13ae-49c5-b2e8-d78b1d812b75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Factory-Product\Alpaca">
       <UniqueIdentifier>{01ca4f72-6b78-4d23-af50-0ead80203ee3}</UniqueIdentifier>
     </Filter>
@@ -528,18 +525,6 @@
     <ClInclude Include="..\src\Type\StockSplit.h">
       <Filter>Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\AlphaVantageFactory.h">
-      <Filter>Factory-Product\AlphaVantage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.h">
-      <Filter>Factory-Product\AlphaVantage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantage.h">
-      <Filter>Factory-Product\AlphaVantage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductAlphaVantageStockSplits.h">
-      <Filter>Factory-Product\AlphaVantage</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanySymbolChange.h">
       <Filter>Factory-Product\Finnhub</Filter>
     </ClInclude>
@@ -611,9 +596,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Thread.h">
       <Filter>Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\AlphaVantageDataSource.h">
-      <Filter>Data Source\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\System\Initialization.h">
       <Filter>System</Filter>
@@ -761,9 +743,6 @@
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp">
       <Filter>Data Source\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Source\AlphaVantageDataSource.cpp">
-      <Filter>Data Source\WorldMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp">
       <Filter>Data Source</Filter>
     </ClCompile>
@@ -781,18 +760,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp">
       <Filter>Data Source\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\AlphaVantageFactory.cpp">
-      <Filter>Factory-Product\AlphaVantage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductAlphaVantage.cpp">
-      <Filter>Factory-Product\AlphaVantage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockDayLine.cpp">
-      <Filter>Factory-Product\AlphaVantage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductAlphaVantageStockSplits.cpp">
-      <Filter>Factory-Product\AlphaVantage</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductEastmoneyDayline.cpp">
       <Filter>Factory-Product\ChinaMarket</Filter>

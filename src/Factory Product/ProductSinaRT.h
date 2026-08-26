@@ -16,8 +16,11 @@ public:
 	CProductSinaRT& operator=(const CProductSinaRT&&) noexcept = delete;
 	~CProductSinaRT() override = default;
 
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

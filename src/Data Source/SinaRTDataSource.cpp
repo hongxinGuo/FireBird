@@ -26,6 +26,8 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	CSinaRTDataSource::ConfigureInternetOption();
 
 	CSinaRTDataSource::Reset();
+
+	m_bUsingNewInterface = true;
 }
 
 bool CSinaRTDataSource::Reset() {

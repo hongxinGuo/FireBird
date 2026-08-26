@@ -2,12 +2,18 @@
 
 #include "ProductTengxunDayLine.h"
 #include"ChinaMarket.h"
+#include "ChinaStockCodeConverter.h"
+#include "ContainerChinaStock.h"
+#include"ChinaStock.h"
 
 #include"JsonParse.h"
 #include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
 #include "DayLineWebData.h"
 #include"DayLine.h"
+#include "TimeConvert.h"
+
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
@@ -16,10 +22,73 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_iInquiryNumber = 0;
 }
 
+void CProductTengxunDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	vector<CDayLine> vDayLine;
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		cpr::Response r = cpr::Get(cpr::Url{ inquiry });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pDayLineWebData = ParseTengxunDayLine(r.text, m_stockSymbol);
+		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
+			if (gl_pChinaMarket->IsWorkingDay(pData.GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
+				vDayLine.push_back(pData);
+			}
+		}
+	}
+	const CDayLineWebDataPtr p = make_shared<CDayLineWebData>();
+	p->SetStockCode(m_stockSymbol);
+	p->ClearDayLine();
+	CheckAndPrepareDayLine(vDayLine);
+	for (const auto& pData : vDayLine) {
+		p->AppendDayLine(pData);
+	}
+	gl_qDayLine.enqueue(p);
+}
+
+void CProductTengxunDayLine::WebStatusCheck(cpr::Response& r) {
+}
+
+void CProductTengxunDayLine::UpdateSystemStatus() {
+	gl_dataContainerChinaStock.GetStock(m_stockSymbol)->SetUpdateDayLine(false);
+}
+
 shared_ptr<vector<string>> CProductTengxunDayLine::CreateMessage() {
-	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
-	pInquiry->push_back(m_strInquiryFunction);
-	return pInquiry;
+	shared_ptr<vector<string>> pvInquireStrings = make_shared<vector<string>>();
+	auto pStock = gl_dataContainerChinaStock.GetStock(m_stockSymbol);
+	long lStartDate = toFormattedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	const long lCurrentDate = toFormattedDate(gl_pChinaMarket->GetMarketDate());
+	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;
+	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
+	long l = 0;
+	int iCounter = 0;
+	const string strStockCode = XferStandardToTengxun(pStock->GetSymbol());
+	shared_ptr<CProductTengxunDayLine> product = nullptr;
+	do {
+		string sStartDate = ConvertDateToTimeStamp(toLocalDays(lStartDate));
+		string sEndDate;
+		const long year = lStartDate / 10000;
+		if ((l + 7) > yearDiffer) {
+			sEndDate = ConvertDateToTimeStamp(toLocalDays(lCurrentDate));
+		}
+		else {
+			sEndDate = ConvertDateToTimeStamp(toLocalDays((year + 6) * 10000 + 1231)); // 第七年的最后一天
+		}
+		const string strTotalMessage = m_strInquiryFunction + strStockCode + ",day," + sStartDate + "," + sEndDate + m_strSuffix;
+		pvInquireStrings->push_back(strTotalMessage);
+		l += 7;
+		lStartDate = (year + 7) * 10000 + 101;
+		iCounter++;
+	} while (l <= yearDiffer);
+
+	return pvInquireStrings;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,30 +114,6 @@ shared_ptr<vector<string>> CProductTengxunDayLine::CreateMessage() {
 // 1991年左右的腾讯日线有周六的，需要清除掉。
 // 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {
-	if (gl_pTengxunDayLineDataSource->GetHTTPStatusCode() != 200) return; // 网络数据不正常时不处理。
-	ABSL_DCHECK(pvWebData->size() <= m_iInquiryNumber);
-
-	vector<CDayLine> vDayLine;
-	string strStockSymbol;
-	for (auto& pWebData : *pvWebData) { // 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
-		const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
-		strStockSymbol = pDayLineWebData->GetStockCode();
-		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
-			if (gl_pChinaMarket->IsWorkingDay(pData.GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
-				vDayLine.push_back(pData);
-			}
-		}
-	}
-	const CDayLineWebDataPtr p = make_shared<CDayLineWebData>();
-	p->SetStockCode(strStockSymbol);
-	p->ClearDayLine();
-	CheckAndPrepareDayLine(vDayLine);
-	for (const auto& pData : vDayLine) {
-		p->AppendDayLine(pData);
-	}
-	gl_qDayLine.enqueue(p);
-}
 
 void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLine>& vDayLine) {
 	if (vDayLine.size() > 1) {

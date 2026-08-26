@@ -39,6 +39,8 @@ CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 
 	CTengxunDayLineDataSource::ConfigureInternetOption();
 	CTengxunDayLineDataSource::Reset();
+
+	m_bUsingNewInterface = true;
 }
 
 bool CTengxunDayLineDataSource::Reset() {
@@ -78,7 +80,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine()
 		&& gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
 		if (!IsInquiring()) {
-			Inquire();
+			GenerateInquireDayLine();
 			s_iSleep++;
 			return true;
 		}
@@ -86,7 +88,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 	return false;
 }
 
-bool CTengxunDayLineDataSource::Inquire() {
+bool CTengxunDayLineDataSource::GenerateInquireDayLine() {
 	const auto lStockSetSize = gl_dataContainerChinaStock.Size();
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
@@ -105,14 +107,11 @@ bool CTengxunDayLineDataSource::Inquire() {
 			break;
 		}
 		if (fFound) {
-			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
-			ABSL_DCHECK(!vProduct.empty());
-			for (auto& product : vProduct) {
-				StoreInquiry(product);
-			}
+			const auto product = make_shared<CProductTengxunDayLine>();
+			product->SetStockSymbol(pStock->GetSymbol());
+			StoreInquiry(product);
 			SetDownLoadingStockCode(pStock->GetSymbol());
 			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());
-			pStock->SetUpdateDayLine(false);
 			return true;
 		}
 		else {

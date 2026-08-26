@@ -6,7 +6,6 @@
 #include "WorldMarket.h"
 
 #include "AccessoryDataSource.h"
-#include "AlphaVantageDataSource.h"
 #include"thread.h"
 
 #include"InaccessibleSymbol.h"
@@ -361,7 +360,7 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE_:
-			if (!gl_pTiingoDataSource->IsUpdateDayLine() && !gl_pAlphaVantageDataSource->IsUpdateStockDayLine()) {
+			if (!gl_pTiingoDataSource->IsUpdateDayLine() && !gl_pAlpacaDataSource->IsUpdateStockDayLine()) {
 				gl_pWorldMarket->TaskProcessTiingoDayLine();
 			}
 			else {
@@ -1244,13 +1243,6 @@ bool CWorldMarket::UpdateToken() {
 	}
 	else {
 		gl_systemMessage.PushInformationMessage("Tiingo Token Needed");
-	}
-
-	if (gl_systemConfiguration.GetAlphaVantageToken().length() > 5) {
-		gl_pAlphaVantageDataSource->SetInquiryToken(gl_systemConfiguration.GetAlphaVantageToken());
-	}
-	else {
-		gl_systemMessage.PushInformationMessage("AlphaVantage Token Needed");
 	}
 
 	return true;

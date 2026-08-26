@@ -8,12 +8,51 @@
 
 #include "ContainerFinnhubCryptoExchange.h"
 #include "FinnhubDataSource.h"
-#include "WebData.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/exchange?";
+}
+
+void CProductFinnhubCryptoExchange::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		const auto pvCryptoExchange = Parse(r.text);
+		for (const auto& str : *pvCryptoExchange) {
+			if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(str)) {
+				gl_dataContainerFinnhubCryptoExchange.Add(str);
+			}
+		}
+	}
+}
+
+void CProductFinnhubCryptoExchange::WebStatusCheck(cpr::Response& r) {
+	string s;
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 302: //redirected, not an error
+	case 403: // forbidden
+		s = std::format("Finnhub Crypto exchange concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	default:
+		s = std::format("Finnhub Crypto exchange http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductFinnhubCryptoExchange::CreateMessage() {
@@ -25,27 +64,19 @@ shared_ptr<vector<string>> CProductFinnhubCryptoExchange::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
-	for (const auto& str : *pvCryptoExchange) {
-		if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(str)) {
-			gl_dataContainerFinnhubCryptoExchange.Add(str);
-		}
-	}
-}
-
 //
 //
 // ["KRAKEN", "HITBTC", "COINBASE", "GEMINI", "POLONIEX", "Binance", "ZB", "BITTREX", "KUCOIN", "OKEX", "BITFINEX", "HUOBI"]
 //
 //
-shared_ptr<vector<string>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData) {
+shared_ptr<vector<string>> CProductFinnhubCryptoExchange::Parse(const string& text) {
 	string sError;
 	auto pvExchange = make_shared<vector<string>>();
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvExchange;
-	if (!IsValidData(pWebData)) return pvExchange;
+	if (text.empty()) return pvExchange;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvExchange;
+	if (::IsVoidJson(text)) return pvExchange; // 即使为空，也完成了查询。
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {

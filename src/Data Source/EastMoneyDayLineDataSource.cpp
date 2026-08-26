@@ -36,6 +36,8 @@ CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 
 	CEastmoneyDayLineDataSource::ConfigureInternetOption();
 	CEastmoneyDayLineDataSource::Reset();
+
+	m_bUsingNewInterface = true;
 }
 
 bool CEastmoneyDayLineDataSource::Reset() {
@@ -78,14 +80,14 @@ bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const local_seconds& cu
 		&& gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
 		if (!IsInquiring()) {
 			s_iSleep++;
-			Inquire();
+			GenerateDayLine();
 			return true;
 		}
 	}
 	return false;
 }
 
-bool CEastmoneyDayLineDataSource::Inquire() {
+bool CEastmoneyDayLineDataSource::GenerateDayLine() {
 	const auto lStockSetSize = gl_dataContainerChinaStock.Size();
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
@@ -162,7 +164,7 @@ CVirtualWebProductPtr CEastmoneyDayLineDataSource::CreateProduct(const CChinaSto
 //
 ////////////////////////////////////////////////////////////////////////////////
 void CEastmoneyDayLineDataSource::CreateCurrentInquireString() {
-	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
+	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();
 }
 
 void CEastmoneyDayLineDataSource::ConfigureInternetOption() {

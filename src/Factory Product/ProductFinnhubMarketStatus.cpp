@@ -9,12 +9,43 @@
 #include "ProductFinnhubMarketStatus.h"
 
 #include "ContainerStockExchange.h"
-#include "WebData.h"
+#include "FinnhubDataSource.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-status?exchange=";
+}
+
+void CProductFinnhubMarketStatus::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		const auto pvMarketStatus = Parse(r.text);
+		const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
+		pExchange->SetUpdateMarketStatus(false);
+
+		if (!pvMarketStatus->empty()) {
+			gl_pWorldMarket->UpdateMarketStatus(pvMarketStatus);
+		}
+	}
+}
+
+void CProductFinnhubMarketStatus::WebStatusCheck(cpr::Response& r) {
+	CProductFinnhub::WebStatusCheck(r);
+}
+
+void CProductFinnhubMarketStatus::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubMarketStatus::CreateMessage() {
@@ -24,16 +55,6 @@ shared_ptr<vector<string>> CProductFinnhubMarketStatus::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvMarketStatus = ParseFinnhubMarketStatus(pWebData);
-	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
-	pExchange->SetUpdateMarketStatus(false);
-
-	if (!pvMarketStatus->empty()) {
-		gl_pWorldMarket->UpdateMarketStatus(pvMarketStatus);
-	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,15 +71,16 @@ void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CWebDataPtr& pWebData) {
+CMarketStatusesPtr CProductFinnhubMarketStatus::Parse(const string& text) {
 	auto pvMarketStatus = make_shared<vector<CMarketStatus>>();
 	pvMarketStatus->reserve(200);
 
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvMarketStatus;
-	if (!IsValidData(pWebData)) return pvMarketStatus;
+	if (text.empty()) return pvMarketStatus;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvMarketStatus;
+	if (::IsVoidJson(text)) return pvMarketStatus;
 
 	try {
 		CMarketStatus marketStatus;

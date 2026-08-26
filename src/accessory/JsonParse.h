@@ -16,9 +16,12 @@ void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWh
 void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWhat, const char* jsonData);
 
 void ParseSinaRTData(const CWebDataPtr& pWebData);
+void ParseSinaRTData(const string& text);
 void ParseTengxunRTData(const CWebDataPtr& pWebData);
-CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
-shared_ptr<std::vector<CDayLine>> ParseTengxunDayLine(const string_view& svData, const string& strStockCode);
+void ParseTengxunRTData(const string& text);
+
+CDayLineWebDataPtr ParseTengxunDayLine(const string& text, const string& stockSymbol);
+shared_ptr<std::vector<CDayLine>> ParseTengxunDayLineImp(const string& text, const string& strStockCode);
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived);
 
 //bool CreateJsonWithNlohmann(nlohmannJson& js, string& str, long lBeginPos = 0, long lEndPos = 0);
