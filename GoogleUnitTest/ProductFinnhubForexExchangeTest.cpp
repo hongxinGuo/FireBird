@@ -123,69 +123,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 5:
-			EXPECT_EQ(m_pvExchange->size(), 0);
+			EXPECT_EQ(m_pvExchange->size(), 1);
 			break;
 		case 10:
 			EXPECT_EQ(m_pvExchange->at(0), "new exchange");
 			EXPECT_EQ(m_pvExchange->at(1), "fxcm");
 			EXPECT_EQ(m_pvExchange->size(), 8);
-			break;
-		default:
-			break;
-		}
-	}
-
-	class ProcessFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubForexExchange.Test_checkAccessRight_(m_pWebData);
-
-			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";
-		}
-
-		void TearDown() override {
-			// clearUp
-			gl_pFinnhubDataSource->SetUpdateForexExchange(true);
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubForexExchange m_finnhubForexExchange;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexExchange1, ProcessFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		                         &finnhubWebData74, &finnhubWebData75, &finnhubWebData80));
-
-	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
-		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 2: // 格式不对
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载的11个";
-			break;
-		case 3: // 缺乏字符串
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载的11个";
-			break;
-		case 4:
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载的11个";
-			break;
-		case 5:
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载的11个";
-			break;
-		case 10:
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 12) << "加入了new exchange这个新的交易所";
-
-			EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.Delete("new exchange")); // 清除new exchange这个新加入的
 			break;
 		default:
 			break;

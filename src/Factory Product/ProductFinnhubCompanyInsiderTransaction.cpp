@@ -10,13 +10,45 @@
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
+#include "FinnhubDataSource.h"
 #include "TimeConvert.h"
-#include "WebData.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-transactions?symbol=";
+}
+
+void CProductFinnhubCompanyInsiderTransaction::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		CInsiderTransactionsPtr pvInsiderTransaction = Parse(r.text);
+		pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
+		pStock->SetUpdateInsiderTransaction(false);
+		pStock->SetUpdateProfileDB(true);
+		if (!pvInsiderTransaction->empty()) {
+			pStock->UpdateInsiderTransaction(pvInsiderTransaction);
+			pStock->SetUpdateInsiderTransactionDB(true);
+			pvInsiderTransaction = nullptr;
+		}
+	}
+}
+
+void CProductFinnhubCompanyInsiderTransaction::WebStatusCheck(cpr::Response& r) {
+	CProductFinnhub::WebStatusCheck(r);
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
@@ -27,19 +59,6 @@ shared_ptr<vector<string>> CProductFinnhubCompanyInsiderTransaction::CreateMessa
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	CInsiderTransactionsPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
-	pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pStock->SetUpdateInsiderTransaction(false);
-	pStock->SetUpdateProfileDB(true);
-	if (!pvInsiderTransaction->empty()) {
-		pStock->UpdateInsiderTransaction(pvInsiderTransaction);
-		pStock->SetUpdateInsiderTransactionDB(true);
-		pvInsiderTransaction = nullptr;
-	}
 }
 
 void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus() {
@@ -73,7 +92,7 @@ void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus() {
 //  }
 //
 //
-CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData) {
+CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::Parse(const string& text) {
 	auto pvInsiderTransaction = make_shared<vector<CInsiderTransaction>>();
 	pvInsiderTransaction->reserve(500);
 
@@ -83,8 +102,10 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	CInsiderTransaction insiderTransaction;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvInsiderTransaction;
-	if (!IsValidData(pWebData)) return pvInsiderTransaction;
+	if (text.empty()) return pvInsiderTransaction;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvInsiderTransaction;
+	if (::IsVoidJson(text)) return pvInsiderTransaction; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvInsiderTransaction;
 
 	try {
 		pt1 = jsonGetChild(js, "data");

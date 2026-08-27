@@ -1,12 +1,9 @@
 #include "pch.h"
 
-#include"FinnhubInquiryType.h"
-
 #include "AccessoryFactory.h"
 
 #include "ClassDeclaration.h"
 #include "ProductDummy.h"
-#include "ProductIndexNasdaq100Stocks.h"
 #include "SystemMessage.h"
 
 using std::make_shared;
@@ -15,9 +12,6 @@ CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMa
 	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iInquireType) {
-	case ACCESSORY_INDEX_NASDAQ100_STOCKS_:
-		p = make_shared<CProductIndexNasdaq100Stocks>();
-		break;
 	default:
 		p = make_shared<CProductDummy>();
 		ABSL_DLOG(INFO) << std::format("未处理指令%d\n", iInquireType);

@@ -36,7 +36,7 @@ public:
 	CProductAlpacaStockDayLine& operator=(const CProductAlpacaStockDayLine&&) noexcept = delete;
 	~CProductAlpacaStockDayLine() override = default;
 
-	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void InquireData(const std::stop_token& st) override; // default do nothing
 	void WebStatusCheck(cpr::Response& r) override;
 	void ClearUpdateDayLineFlag();
 	void UpdateDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine,

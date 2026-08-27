@@ -100,7 +100,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
-		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.ParseFinnhubCryptoSymbol(m_pWebData);
+		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
@@ -130,62 +130,5 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubCryptoSymbolTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubCryptoSymbolProduct.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubCryptoSymbolProduct.SetIndex(0);
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoSymbol, ProcessFinnhubCryptoSymbolTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
-		                         &finnhubWebData215, &finnhubWebData220));
-
-	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
-		CFinnhubCryptoPtr pCrypto;
-		m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 0: // 空数据
-			break;
-		case 1: // 无权利访问的数据
-			break;
-		case 2: // 格式不对
-			break;
-		case 3: // 缺乏字符串
-			break;
-		case 4: // 缺乏字符串
-			break;
-		case 5: // 缺乏字符串
-			break;
-		case 10:
-			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol("New Symbol"));
-			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem("New Symbol");
-			EXPECT_EQ(pCrypto->GetDescription(), "Oanda Singapore 30");
-
-			// 恢复原状
-			gl_dataFinnhubCryptoSymbol.Delete(pCrypto);
-			break;
-		default:
-			break;
-		}
-	}
+	
 }

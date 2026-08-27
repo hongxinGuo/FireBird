@@ -2,6 +2,7 @@
 
 #include"VirtualWebProduct.h"
 #include"DayLine.h"
+#include "SystemMessage.h"
 #include "WebData.h"
 
 [[nodiscard]] bool CompareDayLineDate(const CDayLine& p1, const CDayLine& p2) {
@@ -14,6 +15,19 @@ bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
 		return true;
 	}
 	return false;
+}
+
+void CVirtualWebProduct::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0: //
+		// do nothing
+		break;
+	default:
+		string sType = typeid(this).name();
+		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushErrorMessage(s);
+		break;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

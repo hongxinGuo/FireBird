@@ -15,7 +15,6 @@ public:
 	~CProductDummy() override = default;
 
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr) override {}
 };
 
 using CProductDummyPtr = shared_ptr<CProductDummy>;

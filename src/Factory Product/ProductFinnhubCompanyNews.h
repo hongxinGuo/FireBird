@@ -8,16 +8,19 @@
 
 #include"ProductFinnhub.h"
 
-class CFinnhubCompanyNews;
+#include"FinnhubCompanyNews.h";
 
 class CProductFinnhubCompanyNews final : public CProductFinnhub {
 public:
 	CProductFinnhubCompanyNews();
 	~CProductFinnhubCompanyNews() override = default;
 
+	void InquireData(const std::stop_token& st) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CFinnhubCompanyNews>> ParseFinnhubCompanyNews(const CWebDataPtr& pWebData);
+	CCompanyNewssPtr Parse(const string& text);
 };
 
 using CProductFinnhubCompanyNewsPtr = shared_ptr<CProductFinnhubCompanyNews>;

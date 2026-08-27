@@ -9,13 +9,69 @@
 #include "ProductFinnhubStockDayLine.h"
 
 #include "SystemMessage.h"
-#include "WebData.h"
+#include "FinnhubDataSource.h"
+#include"cpr/cpr.h"
 #include"DayLine.h"
 
 using namespace std;
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/candle?symbol=";
+}
+
+void CProductFinnhubStockDayLine::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pvDayLine = Parse(r.text);
+		pStock->SetUpdateDayLine(false);
+		long lastClose = 0;
+		for (auto& dayLine : *pvDayLine) {
+			dayLine.SetExchange(pStock->GetExchange());
+			dayLine.SetStockSymbol(pStock->GetSymbol());
+			if ((lastClose != 0) && (dayLine.GetLastClose() == 0)) dayLine.SetLastClose(lastClose);
+			lastClose = dayLine.GetClose();
+		}
+		if (!pvDayLine->empty()) {
+			pStock->UpdateDayLine(pvDayLine);
+			if (pStock->GetDayLineSize() > 0) {// 添加了新数据
+				pStock->SetUpdateDayLineDB(true);
+				pStock->SetUpdateProfileDB(true);
+				const auto lSize = pStock->GetDayLineSize() - 1;
+			}
+		}
+	}
+}
+
+void CProductFinnhubStockDayLine::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0: //
+		// do nothing
+		break;
+	case 401: // no right to access
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
+	default:
+		string sType = typeid(this).name();
+		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushErrorMessage(s);
+		break;
+	}
+}
+
+void CProductFinnhubStockDayLine::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockDayLine::CreateMessage() {
@@ -29,28 +85,7 @@ shared_ptr<vector<string>> CProductFinnhubStockDayLine::CreateMessage() {
 	return pInquiryStrings;
 }
 
-void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
-	pStock->SetUpdateDayLine(false);
-	long lastClose = 0;
-	for (auto& dayLine : *pvDayLine) {
-		dayLine.SetExchange(pStock->GetExchange());
-		dayLine.SetStockSymbol(pStock->GetSymbol());
-		if ((lastClose != 0) && (dayLine.GetLastClose() == 0)) dayLine.SetLastClose(lastClose);
-		lastClose = dayLine.GetClose();
-	}
-	if (!pvDayLine->empty()) {
-		pStock->UpdateDayLine(pvDayLine);
-		if (pStock->GetDayLineSize() > 0) {// 添加了新数据
-			pStock->SetUpdateDayLineDB(true);
-			pStock->SetUpdateProfileDB(true);
-			const auto lSize = pStock->GetDayLineSize() - 1;
-		}
-	}
-}
-
-CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebDataPtr& pWebData) {
+CDayLinesPtr CProductFinnhubStockDayLine::Parse(const string& text) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
 	pvDayLine->reserve(3000); // 预先分配空间，避免频繁扩容。一般来说，日线数据不会超过1000条。
 
@@ -59,8 +94,10 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(const CWebData
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvDayLine;
-	if (!IsValidData(pWebData)) return pvDayLine;
+	if (text.empty()) return pvDayLine;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvDayLine;
+	if (::IsVoidJson(text)) return pvDayLine; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvDayLine;
 
 	try {
 		auto s = jsonGetString(js, "s");

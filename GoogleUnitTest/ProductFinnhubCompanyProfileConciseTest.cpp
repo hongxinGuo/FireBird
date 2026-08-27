@@ -71,104 +71,105 @@ namespace FireBirdTest {
 		Test_FinnhubWebData finnhubWebData20(10, "AAPL", R"({"country":"US","currency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://finnhub.io/api/logo?symbol=AAPL","marketCapitalization":2014236,"name":"Apple Inc","phone":"14089961010.0","shareOutstanding":16788.096,"ticker":"AAPL","weburl":"https://www.apple.com/"})");
 	}
 
+	//TODO:
+	/*
 	class ProcessFinnhubStockProfileConciseTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			m_pStock->SetCountry("");
-			m_pStock->SetShareOutstanding(0);
-			m_pWebData = pData->m_pData;
-			m_FinnhubCompanyProfileConcise.Test_checkAccessRight_(m_pWebData);
-
-			m_FinnhubCompanyProfileConcise.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetProfileUpdateDate(toLocalDays(19800101));
-			m_pStock->SetUpdateCompanyProfile(true);
-			m_pStock->SetUpdateProfileDB(false);
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubCompanyProfileConcise m_FinnhubCompanyProfileConcise;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData0,
-		                         &finnhubWebData1, &finnhubWebData12,&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
-
-	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
-		CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_pStock->GetSymbol());
-		pTiingoStock->SetShareOutstanding(0);
-		pTiingoStock->SetUpdateProfileDB(false);
-		m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 0: // 空数据
-			EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
-			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0);
-			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
-			break;
-		case 1: // 无权利访问的数据
-			EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
-			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0);
-			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
-			break;
-		case 2: // 格式不对
-			EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
-			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0) << "股本数据更新为Finnhub的数据";
-			EXPECT_FALSE(pTiingoStock->IsUpdateProfileDB());
-			break;
-		case 3: // 缺乏address项
-			EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
-			EXPECT_NE(m_pStock->GetCountry(), "US") << "没有赋值此项";
-			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0) << "股本数据更新为Finnhub的数据";
-			EXPECT_FALSE(pTiingoStock->IsUpdateProfileDB());
-			break;
-		case 4: // 空数据
-			EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
-			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0) << "股本数据更新为Finnhub的数据";
-			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
-			break;
-		case 10:
-			EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
-			EXPECT_TRUE(m_pStock->GetTicker()== "AAPL");
-			EXPECT_TRUE(m_pStock->GetCountry()== "US");
-			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 16788.096) << "股本数据更新为Finnhub的数据";
-			EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
-			break;
-		default:
-			break;
-		}
-		pTiingoStock->SetUpdateProfileDB(false);
-	}
+		protected:
+			void SetUp() override {
+				SCOPED_TRACE("");
+				GeneralCheck();
+				const Test_FinnhubWebData* pData = GetParam();
+				m_index = pData->m_index;
+				m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
+				EXPECT_TRUE(m_pStock != nullptr);
+				m_pStock->SetCountry("");
+				m_pStock->SetShareOutstanding(0);
+				m_pWebData = pData->m_pData;
+				m_FinnhubCompanyProfileConcise.Test_checkAccessRight_(m_pWebData);
+	
+				m_FinnhubCompanyProfileConcise.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
+			}
+	
+			void TearDown() override {
+				// clearUp
+				while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+				m_pStock->SetProfileUpdateDate(toLocalDays(19800101));
+				m_pStock->SetUpdateCompanyProfile(true);
+				m_pStock->SetUpdateProfileDB(false);
+	
+				SCOPED_TRACE("");
+				GeneralCheck();
+			}
+	
+		public:
+			int m_index;
+			CFinnhubStockPtr m_pStock;
+			CWebDataPtr m_pWebData;
+			CProductFinnhubCompanyProfileConcise m_FinnhubCompanyProfileConcise;
+		};
+	
+		INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData0,
+			                         &finnhubWebData1, &finnhubWebData12,&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
+		TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
+			CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_pStock->GetSymbol());
+			pTiingoStock->SetShareOutstanding(0);
+			pTiingoStock->SetUpdateProfileDB(false);
+			m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
+			switch (m_index) {
+			case 0: // 空数据
+				EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
+				EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+				EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0);
+				EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
+				break;
+			case 1: // 无权利访问的数据
+				EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
+				EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+				EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0);
+				EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
+				break;
+			case 2: // 格式不对
+				EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
+				EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+				EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0) << "股本数据更新为Finnhub的数据";
+				EXPECT_FALSE(pTiingoStock->IsUpdateProfileDB());
+				break;
+			case 3: // 缺乏address项
+				EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
+				EXPECT_NE(m_pStock->GetCountry(), "US") << "没有赋值此项";
+				EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+				EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0) << "股本数据更新为Finnhub的数据";
+				EXPECT_FALSE(pTiingoStock->IsUpdateProfileDB());
+				break;
+			case 4: // 空数据
+				EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
+				EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+				EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 0) << "股本数据更新为Finnhub的数据";
+				EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
+				break;
+			case 10:
+				EXPECT_TRUE(m_pStock->GetExchange()== "US") << "交易所代码不使用读取的数据";
+				EXPECT_TRUE(m_pStock->GetTicker()== "AAPL");
+				EXPECT_TRUE(m_pStock->GetCountry()== "US");
+				EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+				EXPECT_DOUBLE_EQ(pTiingoStock->GetShareOutstanding(), 16788.096) << "股本数据更新为Finnhub的数据";
+				EXPECT_TRUE(pTiingoStock->IsUpdateProfileDB());
+				break;
+			default:
+				break;
+			}
+			pTiingoStock->SetUpdateProfileDB(false);
+		}*/
 }

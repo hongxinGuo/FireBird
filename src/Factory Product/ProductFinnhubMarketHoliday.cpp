@@ -8,6 +8,7 @@
 
 #include "ContainerStockExchange.h"
 #include "FinnhubDataSource.h"
+#include "SystemMessage.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 #include"cpr/cpr.h"
@@ -18,7 +19,7 @@ CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/market-holiday?exchange=";
 }
 
-void CProductFinnhubMarketHoliday::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductFinnhubMarketHoliday::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
@@ -41,6 +42,20 @@ void CProductFinnhubMarketHoliday::InquireData(const std::stop_token& st, const 
 }
 
 void CProductFinnhubMarketHoliday::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0: //
+		// do nothing
+		break;
+	case 401: // no right to access
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
+	default:
+		string sType = typeid(this).name();
+		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushErrorMessage(s);
+		break;
+	}
 }
 
 void CProductFinnhubMarketHoliday::UpdateSystemStatus() {
@@ -90,12 +105,12 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::Parse(const string& text) {
 	if (!::CreateJsonWithNlohmann(js, text)) return pvHoliday;
 	if (::IsVoidJson(text)) return pvHoliday;
 
-	s = jsonGetString(js, "exchange");
-	if (!s.empty()) sExchange = s;
-	s = jsonGetString(js, "timezone");
-	if (!s.empty()) sTimeZone = s;
-	auto js1 = jsonGetChild(js, "data");
 	try {
+		s = jsonGetString(js, "exchange");
+		if (!s.empty()) sExchange = s;
+		s = jsonGetString(js, "timezone");
+		if (!s.empty()) sTimeZone = s;
+		auto js1 = jsonGetChild(js, "data");
 		CMarketHoliday holiday;
 		for (auto it = js1.begin(); it != js1.end(); ++it) {
 			s = jsonGetString(it, "eventName");

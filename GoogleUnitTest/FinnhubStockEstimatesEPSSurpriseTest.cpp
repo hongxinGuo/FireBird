@@ -108,7 +108,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
-		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
+		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
@@ -152,93 +152,4 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubEPSSurpriseTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			m_pWebData = pData->m_pData;
-			m_finnhubStockEstimatesEPSSurprise.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubStockEstimatesEPSSurprise.SetIndex(0);
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetUpdateCompanyProfile(true);
-			m_pStock->SetUpdateProfileDB(false);
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise, ProcessFinnhubEPSSurpriseTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-		                         &finnhubWebData125, &finnhubWebData130));
-
-	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
-		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0);
-		m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 0: // 空数据
-			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
-			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0)));
-			break;
-		case 1: // 无权利访问的数据
-			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
-			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0)));
-			break;
-		case 2: // 格式不对
-			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
-			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0)));
-			break;
-		case 3: //第一个数据缺actual
-			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
-			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 0);
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), chrono::local_days(chrono::days(0))) << "数据为空时，将日期设置为原点";
-			break;
-		case 4: // 第二个数据缺缺actual
-			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
-			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 1);
-			break;
-		case 5: // 第三个数据缺CodeNo
-			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
-			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 2);
-			break;
-		case 10:
-			EXPECT_FALSE(pStock->m_fUpdateEPSSurprise);
-			EXPECT_TRUE(pStock->m_fUpdateEPSSurpriseDB);
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
-			break;
-		default:
-			break;
-		}
-		// 恢复原状
-		pStock->m_fUpdateEPSSurprise = true;
-		pStock->m_fUpdateEPSSurpriseDB = false;
-		pStock->SetUpdateProfileDB(false);
-		pStock->m_vEPSSurprise.resize(0);
-		pStock->SetLastEPSSurpriseUpdateDate(toLocalDays(19800101));
-	}
 }

@@ -26,12 +26,12 @@ CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?from=2020-01-01&to=2025-12-31";
 }
 
-void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString }, cpr::Ssl(cpr::ssl::CaInfo{ "C:/FireBird/cacert.pem" }));
 		m_statusCode = r.status_code;
 		m_elapsed = r.elapsed;
 

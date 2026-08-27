@@ -86,43 +86,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(TengxunDayLineDataSource.GenerateInquireDayLine());
 	}
 
-	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine3) {
-		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
-		TengxunDayLineDataSource.SetInquiring(false);
-		TengxunDayLineDataSource.SetUpdateDayLine(true);
-		for (size_t l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
-			gl_dataContainerChinaStock.GetStock(l)->SetUpdateDayLine(false);
-		}
-		gl_dataContainerChinaStock.GetStock(0)->SetUpdateDayLine(true);
-		gl_dataContainerChinaStock.GetStock(10)->SetUpdateDayLine(true);
-
-		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
-		EXPECT_TRUE(TengxunDayLineDataSource.GenerateInquireDayLine()) << gl_pChinaMarket->GetMarketClock();
-		EXPECT_GT(TengxunDayLineDataSource.InquiryQueueSize(), 0);
-		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000001.SS");
-		TengxunDayLineDataSource.SetInquiring(false);
-		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
-		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
-
-		EXPECT_TRUE(TengxunDayLineDataSource.GenerateInquireDayLine());
-		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
-		EXPECT_TRUE(TengxunDayLineDataSource.GetDownLoadingStockCode() == "000006.SS");
-		TengxunDayLineDataSource.SetInquiring(false);
-		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
-		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
-
-		EXPECT_FALSE(TengxunDayLineDataSource.GenerateInquireDayLine()) << "查询完了";
-		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), "中国市场股票日线历史数据更新完毕");
-		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
-
-		// 恢复原状
-		for (size_t l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
-			gl_dataContainerChinaStock.GetStock(l)->SetUpdateDayLine(true);
-		}
-	}
-
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct1) {
 		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20230201));
 		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");

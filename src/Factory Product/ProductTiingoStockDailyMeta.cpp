@@ -29,7 +29,7 @@ CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
-void CProductTiingoStockDailyMeta::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductTiingoStockDailyMeta::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;

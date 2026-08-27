@@ -8,13 +8,60 @@
 #include"EPSSurprise.h"
 
 #include "ContainerFinnhubStock.h"
-#include "WebData.h"
+#include "FinnhubDataSource.h"
+#include "SystemMessage.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 using std::istringstream;
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/earnings?symbol=";
+}
+
+void CProductFinnhubStockEstimatesEPSSurprise::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pvEPSSurprise = Parse(r.text);
+		if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(pvEPSSurprise); }
+		else {
+			pStock->SetLastEPSSurpriseUpdateDate(local_days(days(0))); // 将日期设置为更早。
+			pStock->SetUpdateProfileDB(true);
+		}
+		pStock->SetUpdateEPSSurprise(false);
+		pStock->m_fUpdateEPSSurpriseDB = true;
+	}
+}
+
+void CProductFinnhubStockEstimatesEPSSurprise::WebStatusCheck(cpr::Response& r) {
+	string s;
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 302: //redirected, not an error
+	case 403: // forbidden
+		s = std::format("Finnhub company profile concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	default:
+		s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	}
+}
+
+void CProductFinnhubStockEstimatesEPSSurprise::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
@@ -28,25 +75,15 @@ shared_ptr<vector<string>> CProductFinnhubStockEstimatesEPSSurprise::CreateMessa
 	return pInquiry;
 }
 
-void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
-	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(pvEPSSurprise); }
-	else {
-		pStock->SetLastEPSSurpriseUpdateDate(local_days(days(0))); // 将日期设置为更早。
-		pStock->SetUpdateProfileDB(true);
-	}
-	pStock->SetUpdateEPSSurprise(false);
-	pStock->m_fUpdateEPSSurpriseDB = true;
-}
-
-CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
+CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::Parse(const string& text) {
 	auto pvEPSSurprise = make_shared<vector<CEPSSurprise>>();
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvEPSSurprise;
-	if (!IsValidData(pWebData)) return pvEPSSurprise;
+	if (text.empty()) return pvEPSSurprise;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvEPSSurprise;
+	if (::IsVoidJson(text)) return pvEPSSurprise; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvEPSSurprise;
 
 	try {
 		CEPSSurprise pEPSSurprise;

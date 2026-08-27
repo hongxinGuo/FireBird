@@ -302,7 +302,7 @@ void CVirtualDataHistoryCandle::ToShowVolume(CDC* pDC, CRect rectClient, int iSt
 	for (; it != m_vHistoryData.begin(); --it) {
 		const auto& value = *it;
 		const long x = rectClient.right - offset - i * iStepWidth;
-		int y = rectClient.bottom - static_cast<double>(value.GetVolume() / lHigh) * rectClient.Height();
+		int y = rectClient.bottom - static_cast<double>(value.GetVolume()) / lHigh * rectClient.Height();
 		pDC->MoveTo(x, y);
 		pDC->LineTo(x, rectClient.bottom);
 

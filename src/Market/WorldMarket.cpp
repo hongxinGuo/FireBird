@@ -898,10 +898,8 @@ void CWorldMarket::calculateStockYearHigherRate() {
 
 bool CWorldMarket::TaskCheckMarketReady() {
 	if (!IsSystemReady()) {
-		//todo:
-		//if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
-		//	&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
-		if (!gl_pFinnhubDataSource->IsUpdateSymbol()) {
+		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
+			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
 			gl_systemMessage.PushInformationMessage("世界市场初始化完毕");
 			SetSystemReady(true);
 		}

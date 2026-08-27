@@ -60,7 +60,7 @@ CProductAlpacaStockSymbol::CProductAlpacaStockSymbol() {
 /// 
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 	shared_ptr<vector<CAlpacaStockPtr>> pvStock = make_shared<vector<CAlpacaStockPtr>>();
 	shared_ptr<vector<string>> pInquiry = CreateMessage();
 

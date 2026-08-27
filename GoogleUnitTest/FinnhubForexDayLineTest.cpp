@@ -121,7 +121,7 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
 		string strMessage;
 
-		m_pvDayLine = m_finnhubForexDayLine.ParseFinnhubForexCandle(m_pWebData);
+		m_pvDayLine = m_finnhubForexDayLine.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);
@@ -168,110 +168,5 @@ namespace FireBirdTest {
 		if (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
-	class ProcessFinnhubForexCandleTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol )) << pData->m_strSymbol;
-			m_pWebData = pData->m_pData;
-			m_finnhubForexDayLine.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubForexDayLine.SetIndex(0);
-		}
-
-		void TearDown() override {
-			// clearUp
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubForexDayLine m_finnhubForexDayLine;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexCandle, ProcessFinnhubForexCandleTest,
-	                         testing::Values(&finnhubForexCandle61, &finnhubForexCandle62_1, &finnhubForexCandle62, &finnhubForexCandle63, &finnhubForexCandle64, &finnhubForexCandle65,
-		                         &finnhubForexCandle66, &finnhubForexCandle67, &finnhubForexCandle68, &finnhubForexCandle69, &finnhubForexCandle70));
-
-	TEST_P(ProcessFinnhubForexCandleTest, TestParseFinnhubForexCandle) {
-		CForexSymbolPtr pForex = gl_dataFinnhubForexSymbol.GetItem(0);
-
-		m_finnhubForexDayLine.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 1: // 格式不对
-			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			break;
-		case 2: // s项报告not ok
-			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
-			break;
-		case 3: // s项报告 no data
-			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			break;
-		case 4:
-			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			break;
-		case 5: // 缺乏C项，无效数据
-			EXPECT_EQ(pForex->GetDayLineSize(), 0);
-			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			break;
-		case 6:
-			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			break;
-		case 7:
-			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
-			break;
-		case 8:
-			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			break;
-		case 9:
-			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			break;
-		case 10:
-			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			break;
-		case 11: // 没有s项
-			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
-			EXPECT_FALSE(pForex->IsUpdateDayLine());
-			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			break;
-		default:
-			break;
-		}
-		if (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-	}
+	
 }

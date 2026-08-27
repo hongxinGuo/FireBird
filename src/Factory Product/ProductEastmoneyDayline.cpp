@@ -71,7 +71,7 @@ CProductEastmoneyDayLine::CProductEastmoneyDayLine() {
 	m_iInquiryNumber = 0;
 }
 
-void CProductEastmoneyDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductEastmoneyDayLine::InquireData(const std::stop_token& st) {
 	std::random_device random;
 	std::default_random_engine e1(random());
 	std::uniform_int_distribution<int> uniform_dist(0, 3);

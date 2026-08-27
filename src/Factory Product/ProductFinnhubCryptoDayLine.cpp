@@ -11,11 +11,65 @@
 #include "SystemMessage.h"
 #include "WebData.h"
 #include"DayLine.h"
+#include "FinnhubDataSource.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/candle?symbol=";
+}
+
+void CProductFinnhubCryptoDayLine::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
+		const auto pvDayLine = Parse(r.text);
+		pCryptoSymbol->SetUpdateDayLine(false);
+		if (!pvDayLine->empty()) {
+			for (auto& dayLine : *pvDayLine) {
+				dayLine.SetExchange(pCryptoSymbol->GetExchange());
+				dayLine.SetStockSymbol(pCryptoSymbol->GetSymbol());
+			}
+			pCryptoSymbol->UpdateDayLine(pvDayLine);
+			pCryptoSymbol->UpdateDayLineStartEndDate();
+			pCryptoSymbol->SetUpdateDayLineDB(true);
+			pCryptoSymbol->SetUpdateProfileDB(true);
+		}
+		else {
+			pCryptoSymbol->SetUpdateDayLineDB(false);
+		}
+	}
+}
+
+void CProductFinnhubCryptoDayLine::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0: //
+		// do nothing
+		break;
+	case 401: // no right to access
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
+	default:
+		string sType = typeid(this).name();
+		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushErrorMessage(s);
+		break;
+	}
+}
+void CProductFinnhubCryptoDayLine::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCryptoDayLine::CreateMessage() {
@@ -28,26 +82,7 @@ shared_ptr<vector<string>> CProductFinnhubCryptoDayLine::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
-	const auto pvDayLine = ParseFinnhubCryptoCandle(pWebData);
-	pCryptoSymbol->SetUpdateDayLine(false);
-	if (!pvDayLine->empty()) {
-		for (auto& dayLine : *pvDayLine) {
-			dayLine.SetExchange(pCryptoSymbol->GetExchange());
-			dayLine.SetStockSymbol(pCryptoSymbol->GetSymbol());
-		}
-		pCryptoSymbol->UpdateDayLine(pvDayLine);
-		pCryptoSymbol->UpdateDayLineStartEndDate();
-		pCryptoSymbol->SetUpdateDayLineDB(true);
-		pCryptoSymbol->SetUpdateProfileDB(true);
-	}
-	else {
-		pCryptoSymbol->SetUpdateDayLineDB(false);
-	}
-}
-
-CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {
+CDayLinesPtr CProductFinnhubCryptoDayLine::Parse(const string& text) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
 	pvDayLine->reserve(1000);
 
@@ -56,8 +91,10 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvDayLine;
-	if (!IsValidData(pWebData)) return pvDayLine;
+	if (text.empty()) return pvDayLine;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvDayLine;
+	if (::IsVoidJson(text)) return pvDayLine; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvDayLine;
 
 	try {
 		string s;
@@ -72,7 +109,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 		}
 	} catch (nlohmannJson::exception&) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle missing 's': ", pWebData->GetDataBuffer());
+		ReportJSonErrorToSystemMessage("Finnhub Crypto Candle missing 's': ", text);
 		return pvDayLine;
 	}
 	try {

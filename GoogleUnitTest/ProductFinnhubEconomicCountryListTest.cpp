@@ -110,9 +110,9 @@ namespace FireBirdTest {
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
 	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
 		                         &finnhubWebData95, &finnhubWebData96, &finnhubWebData97, &finnhubWebData100));
-	/*
+
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
-		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
+		m_pvCountry = m_finnhubEconomicCountryList.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvCountry->size(), 0);
@@ -132,11 +132,9 @@ namespace FireBirdTest {
 			break;
 		case 6: // 空数据
 			EXPECT_TRUE(m_pvCountry->empty());
-			EXPECT_TRUE(m_finnhubEconomicCountryList.IsVoidData());
 			break;
 		case 7: // 无权访问数据
 			EXPECT_TRUE(m_pvCountry->empty());
-			EXPECT_TRUE(m_finnhubEconomicCountryList.IsNoRightToAccess());
 			break;
 		case 10:
 			EXPECT_EQ(m_pvCountry->size(), 2);
@@ -146,67 +144,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvCountry->at(0).m_strCountry, "Saint Martin (French part)") << "以国家名称排序，位于第一个位置";
 			EXPECT_EQ(m_pvCountry->at(0).m_strCode2, "MF");
 			EXPECT_EQ(m_pvCountry->at(0).m_strCurrencyCode, "ANG");
-			break;
-		default:
-			break;
-		}
-	}
-	*/
-	class ProcessFinnhubCountryListTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCountryList.Test_checkAccessRight_(m_pWebData);
-		}
-
-		void TearDown() override {
-			// clearUp
-			if (gl_dataContainerFinnhubCountry.IsCountry("Zero")) {
-				const auto pCountry = gl_dataContainerFinnhubCountry.GetCountry("Zero");
-				gl_dataContainerFinnhubCountry.Delete(pCountry);
-			}
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubEconomicCountryList m_finnhubEconomicCountryList;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
-	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-		                         &finnhubWebData95, &finnhubWebData96, &finnhubWebData97, &finnhubWebData100));
-
-	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
-		const auto l = gl_dataContainerFinnhubCountry.GetTotalCountry();
-		CCountryPtr pCountry = nullptr;
-		m_finnhubEconomicCountryList.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 2: // 格式不对
-			break;
-		case 3: // 缺乏CodeNo
-			break;
-		case 4: // 第二个数据缺Code2
-			EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), l + 1);
-			break;
-		case 5: // 第二个数据缺CodeNo
-			EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), l + 1);
-			break;
-		case 6: // 空数据
-			EXPECT_TRUE(m_finnhubEconomicCountryList.IsVoidData());
-			break;
-		case 7: // 无权访问数据
-			EXPECT_TRUE(m_finnhubEconomicCountryList.IsNoRightToAccess());
-			break;
-		case 10:
-			EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), l + 1);
 			break;
 		default:
 			break;

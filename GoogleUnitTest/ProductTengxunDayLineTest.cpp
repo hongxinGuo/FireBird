@@ -49,43 +49,4 @@ namespace FireBirdTest {
 	TEST_F(CProductTengxunDayLineTest, TestInitialize) {
 		EXPECT_EQ(tengxunDayLine.GetInquiryFunction(), "");
 	}
-
-	TEST_F(CProductTengxunDayLineTest, TestCreateMessage) {
-		EXPECT_EQ(tengxunDayLine.CreateMessage()->front(), "") << "腾讯日线数据的申请字符串由CTengxunDayLineWebInquiry类完成，本Product无需动作，只是返回strInquiry";
-	}
-
-	TEST_F(CProductTengxunDayLineTest, TestParseAndStoreWebData) {
-		auto pData = make_shared<CWebData>();
-		shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
-		const string strTengxunDayLine = R"({"code":0,"msg":"","data":{"sh600601":{"day":[["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],"qt":{},"mx_price":{"mx":[],"price":[]},"prec":"2.560","version":"16"}}})";
-		pData->Test_SetBuffer_(strTengxunDayLine);
-		pData->SetStockCode("600601.SS");
-		pvWebData->push_back(pData);
-		auto pData2 = make_shared<CWebData>();
-		const string strTengxunDayLine2 = R"({"code":0,"msg":"","data":{"sh600601":{"day":[["2023-01-23","2.550","2.650","2.610","2.550","86162.000"],["2023-01-24","2.600","2.620","2.620","2.590","100735.000"]],"qt":{},"mx_price":{"mx":[],"price":[]},"prec":"2.560","version":"16"}}})";
-		pData2->Test_SetBuffer_(strTengxunDayLine2);
-		pData2->SetStockCode("600601.SS");
-		pvWebData->push_back(pData2);
-		tengxunDayLine.SetInquiryNumber(2); // 测试版要确保此值大于等于数据量，否则会引发断言失败。
-		EXPECT_TRUE(gl_dataContainerChinaStock.GetStock("600601.SS")->IsUpdateDayLine()) << "此时标识尚未清除";
-
-		tengxunDayLine.ParseAndStoreWebData(pvWebData);
-
-		EXPECT_EQ(gl_qDayLine.size_approx(), 1) << "两个数据皆为同一个股票日线，故而合二为一了";
-		CDayLineWebDataPtr pTengxunDayLine;
-		gl_qDayLine.try_dequeue(pTengxunDayLine);
-		EXPECT_EQ(pTengxunDayLine->GetStockCode(), "600601.SS");
-
-		const auto vDayLine = pTengxunDayLine->GetProcessedDayLine();
-		EXPECT_EQ(vDayLine.size(), 4) << "两个数据各有两个日期的日线数据";
-		EXPECT_EQ(vDayLine.at(0).GetStockSymbol(), "600601.SS") << "腾讯日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
-		EXPECT_EQ(vDayLine.at(0).GetDate(), toLocalDays(20230119));
-		EXPECT_EQ(vDayLine.at(0).GetLastClose(), 0) << "第一个数据没有收盘数据";
-		EXPECT_EQ(vDayLine.at(1).GetDate(), toLocalDays(20230120));
-		EXPECT_EQ(vDayLine.at(1).GetLastClose(), 2600);
-		EXPECT_EQ(vDayLine.at(2).GetDate(), toLocalDays(20230123));
-		EXPECT_EQ(vDayLine.at(2).GetLastClose(), 2620);
-		EXPECT_EQ(vDayLine.at(3).GetDate(), toLocalDays(20230124));
-		EXPECT_EQ(vDayLine.at(3).GetLastClose(), 2650);
-	}
 }

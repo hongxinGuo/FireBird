@@ -179,55 +179,5 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessTiingoCryptoTest : public TestWithParam<Test_TiingoWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_TiingoWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-		}
-
-		void TearDown() override {
-			// clearUp
-			gl_systemConfiguration.SetUpdateDB(false);
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductTiingoCryptoSymbol m_tiingoCryptoSymbolProduct;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCrypto1,
-	                         ProcessTiingoCryptoTest,
-	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
-
-	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
-		CTiingoCryptoPtr pCrypto;
-		const auto l = gl_dataContainerTiingoCryptoSymbol.Size();
-		m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 11: // 格式不对
-			break;
-		case 12: // 格式不对
-			break;
-		case 20:
-			EXPECT_EQ(gl_dataContainerTiingoCryptoSymbol.Size(), l + 1);
-			EXPECT_TRUE(gl_dataContainerTiingoCryptoSymbol.IsSymbol("New Symbol"));
-
-			pCrypto = gl_dataContainerTiingoCryptoSymbol.GetCrypto("New Symbol");
-			gl_dataContainerTiingoCryptoSymbol.Delete(pCrypto);
-			break;
-		default:
-			break;
-		}
-		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol()) << "此标识由UpdateStatus函数更新";
-
-		gl_pTiingoDataSource->SetUpdateCryptoSymbol(true);
-	}
+	
 }

@@ -11,13 +11,40 @@
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
 #include "ContainerFinnhubStock.h"
+#include "FinnhubDataSource.h"
 
-#include "WebData.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-sentiment?symbol=";
+}
+void CProductFinnhubCompanyInsiderSentiment::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		CInsiderSentimentsPtr pvInsiderSentiment = Parse(r.text);
+		if (!pvInsiderSentiment->empty()) {
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+			pStock->UpdateInsiderSentiment(pvInsiderSentiment);
+			pStock->SetUpdateInsiderSentimentDB(true);
+			pvInsiderSentiment = nullptr;
+		}
+	}
+}
+
+void CProductFinnhubCompanyInsiderSentiment::WebStatusCheck(cpr::Response& r) {
+	CProductFinnhub::WebStatusCheck(r);
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
@@ -30,16 +57,6 @@ shared_ptr<vector<string>> CProductFinnhubCompanyInsiderSentiment::CreateMessage
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
-	if (!pvInsiderSentiment->empty()) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-		pStock->UpdateInsiderSentiment(pvInsiderSentiment);
-		pStock->SetUpdateInsiderSentimentDB(true);
-		pvInsiderSentiment = nullptr;
-	}
 }
 
 void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
@@ -71,7 +88,7 @@ void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
 //  ],
 //  "symbol": "TSLA"}
 //
-CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData) {
+CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::Parse(const string& text) {
 	auto pvInsiderSentiment = make_shared<vector<CInsiderSentiment>>();
 	pvInsiderSentiment->reserve(100);
 
@@ -81,9 +98,10 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	CInsiderSentiment insiderSentiment;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvInsiderSentiment;
-	if (!IsValidData(pWebData)) return pvInsiderSentiment;
-
+	if (text.empty()) return pvInsiderSentiment;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvInsiderSentiment;
+	if (::IsVoidJson(text)) return pvInsiderSentiment; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvInsiderSentiment;
 	try {
 		pt1 = jsonGetChild(js, "data");
 		stockSymbol = jsonGetString(js, "symbol");

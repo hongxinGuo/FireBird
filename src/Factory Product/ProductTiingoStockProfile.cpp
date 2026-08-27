@@ -31,7 +31,7 @@ CProductTiingoStockProfile::CProductTiingoStockProfile() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/meta?";
 }
 
-void CProductTiingoStockProfile::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductTiingoStockProfile::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
@@ -90,18 +90,17 @@ void CProductTiingoStockProfile::InquireData(const std::stop_token& st, const st
 	}
 }
 
-	void CProductTiingoStockProfile::WebStatusCheck(cpr::Response & r) {
-		switch (r.status_code) {
-		case 0:
-			break;
-		case 403: // forbidden
-			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-			break;
-		default:
-			break;
-		}
+void CProductTiingoStockProfile::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		break;
 	}
-
+}
 
 shared_ptr<vector<string>> CProductTiingoStockProfile::CreateMessage() {
 	m_strInquiringSymbol = "All";
@@ -117,7 +116,6 @@ shared_ptr<vector<string>> CProductTiingoStockProfile::CreateMessage() {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -252,7 +250,6 @@ CTiingoStocksPtr CProductTiingoStockProfile::Parse(const string& text) {
 	}
 	return pvTiingoStock;
 }
-
 
 void CProductTiingoStockProfile::UpdateSystemStatus() {
 	gl_pTiingoDataSource->SetUpdateStockSymbol(false);

@@ -2,7 +2,7 @@
 
 #include"ProductFinnhub.h"
 
-class CInsiderTransaction;
+#include"InsiderTransaction.h";
 
 using std::shared_ptr;
 using std::vector;
@@ -12,10 +12,12 @@ public:
 	CProductFinnhubCompanyInsiderTransaction();
 	~CProductFinnhubCompanyInsiderTransaction() override = default;
 
-	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void InquireData(const std::stop_token& st) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
 	void UpdateSystemStatus() override;
-	shared_ptr<vector<CInsiderTransaction>> ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData);
+	CInsiderTransactionsPtr Parse(const string& text);
+
+	shared_ptr<vector<string>> CreateMessage() override;
 };
 
 using CFinnhubCompanyInsiderTransactionPtr = shared_ptr<CProductFinnhubCompanyInsiderTransaction>;

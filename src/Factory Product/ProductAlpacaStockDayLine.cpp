@@ -72,7 +72,7 @@ CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 /// Note: Alpaca的日线数据不提供split信息，故而需要两次申请来确定股票的split信息。第一次申请是获取股票的原始日线数据，第二次申请是获取股票的前向除权数据。
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	shared_ptr<vector<TiingoDayLine>> pvDayLineWithSplit = make_shared<vector<TiingoDayLine>>();
 	shared_ptr<vector<TiingoDayLine>> pvDayLine = make_shared<vector<TiingoDayLine>>();
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);

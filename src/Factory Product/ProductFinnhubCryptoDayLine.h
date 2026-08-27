@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DayLine.h"
 #include"ProductFinnhub.h"
 
 class CDayLine;
@@ -9,9 +10,12 @@ public:
 	CProductFinnhubCryptoDayLine();
 	~CProductFinnhubCryptoDayLine() override = default;
 
+	void InquireData(const std::stop_token& st) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CDayLine>> ParseFinnhubCryptoCandle(CWebDataPtr pWebData);
+	CDayLinesPtr Parse(const string& text);
 };
 
 using CFinnhubCryptoDayLinePtr = shared_ptr<CProductFinnhubCryptoDayLine>;

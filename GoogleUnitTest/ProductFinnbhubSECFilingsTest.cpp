@@ -96,7 +96,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData2, &SECFilings102, &SECFilings103, &SECFilings110));
 
 	TEST_P(ParseFinnhubSECFilingsTest, TestParseFinnhubSECFilings2) {
-		pvSECFilings = m_finnhubSECFilings.ParseFinnhubStockSECFilings(m_pWebData);
+		pvSECFilings = m_finnhubSECFilings.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_TRUE(pvSECFilings->empty());
@@ -127,84 +127,5 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-	}
-
-	class ProcessFinnhubSECFilingsTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubSECFilings.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubSECFilings.SetIndex(0); // 第一个股票
-			gl_dataContainerFinnhubStock.GetItem(0)->SetSECFilingsUpdateDate(toLocalDays(19800101));
-			gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateSECFilings(true);
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index{ 0 };
-		CWebDataPtr m_pWebData;
-		CProductFinnhubSECFilings m_finnhubSECFilings;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubSECFilings, ProcessFinnhubSECFilingsTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData2, &SECFilings102, &SECFilings103,&SECFilings110));
-
-	TEST_P(ProcessFinnhubSECFilingsTest, TestProcessFinnhubSECFilings1) {
-		string s;
-		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0);
-		EXPECT_FALSE(pStock->IsUpdateProfileDB());
-		m_finnhubSECFilings.ParseAndStoreWebData(m_pWebData);
-		EXPECT_FALSE(pStock->IsUpdateSECFilings());
-		EXPECT_TRUE(pStock->IsUpdateProfileDB());
-		switch (m_index) {
-		case 0: // 空数据
-			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
-			break;
-		case 1: // 无权利访问的数据
-			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
-			break;
-		case 2: // 空数据
-			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
-			break;
-		case 3: // 不足三个字符
-			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
-			break;
-		case 4: // 格式不对
-			EXPECT_TRUE(pStock->m_pvSECFilings->empty()) << "没有改变";
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
-			break;
-		case 10:
-			EXPECT_FALSE(pStock->m_pvSECFilings->empty());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), gl_pWorldMarket->GetMarketDate()) << "已更改为当前市场日期";
-			break;
-		default:
-			break;
-		}
-
-		//恢复原状
-		pStock->m_pvSECFilings->clear();
-		pStock->SetSECFilingsUpdateDate(toLocalDays(19800101));
-		pStock->SetUpdateProfileDB(false);
 	}
 }

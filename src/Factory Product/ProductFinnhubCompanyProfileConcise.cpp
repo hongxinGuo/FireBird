@@ -19,7 +19,7 @@
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile2?symbol=";
 }
-void CProductFinnhubCompanyProfileConcise::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductFinnhubCompanyProfileConcise::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;

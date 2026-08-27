@@ -11,6 +11,7 @@
 #include "TengxunDayLineDataSource.h"
 #include "DayLineWebData.h"
 #include"DayLine.h"
+#include "SystemMessage.h"
 #include "TimeConvert.h"
 
 #include"cpr/cpr.h"
@@ -22,7 +23,30 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_iInquiryNumber = 0;
 }
 
-void CProductTengxunDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// {
+// "code":0,
+// "msg":"",
+// "data":
+//   {
+//   "sh600601":
+//      { "day":
+//				[ ["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],
+//					["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],
+//				"qt":{},
+//				"mx_price":{"mx":[],"price":[]},
+//				"prec":"2.560",
+//				"version":"16"
+//		  }
+//	 }
+// }
+//
+// 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要多次查询不同日期的数据方可。查询到的网络数据存储于pvWebData中。
+// 1991年左右的腾讯日线有周六的，需要清除掉。
+// 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+void CProductTengxunDayLine::InquireData(const std::stop_token& st) {
 	vector<CDayLine> vDayLine;
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
@@ -54,6 +78,19 @@ void CProductTengxunDayLine::InquireData(const std::stop_token& st, const string
 }
 
 void CProductTengxunDayLine::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	case 501: // mot implemented
+		break;
+	default:
+		break;
+	}
+	string s = std::format("Tengxun dayLine update error. http code: {}, error code:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+	gl_systemMessage.PushErrorMessage(s);
 }
 
 void CProductTengxunDayLine::UpdateSystemStatus() {
@@ -66,7 +103,6 @@ shared_ptr<vector<string>> CProductTengxunDayLine::CreateMessage() {
 	long lStartDate = toFormattedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = toFormattedDate(gl_pChinaMarket->GetMarketDate());
 	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;
-	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
 	long l = 0;
 	int iCounter = 0;
 	const string strStockCode = XferStandardToTengxun(pStock->GetSymbol());
@@ -90,30 +126,6 @@ shared_ptr<vector<string>> CProductTengxunDayLine::CreateMessage() {
 
 	return pvInquireStrings;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// {
-// "code":0,
-// "msg":"",
-// "data":
-//   {
-//   "sh600601":
-//      { "day":
-//				[ ["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],
-//					["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],
-//				"qt":{},
-//				"mx_price":{"mx":[],"price":[]},
-//				"prec":"2.560",
-//				"version":"16"
-//		  }
-//	 }
-// }
-//
-// 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要多次查询不同日期的数据方可。查询到的网络数据存储于pvWebData中。
-// 1991年左右的腾讯日线有周六的，需要清除掉。
-// 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLine>& vDayLine) {
 	if (vDayLine.size() > 1) {

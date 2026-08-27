@@ -5,15 +5,48 @@
 
 #include "ProductFinnhubCryptoSymbol.h"
 
+#include <cpr/api.h>
+
 #include "ContainerFinnhubCrypto.h"
 #include "ContainerFinnhubCryptoExchange.h"
 #include "WebData.h"
 #include "FinnhubCrypto.h"
+#include "FinnhubDataSource.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/crypto/symbol?exchange=";
+}
+void CProductFinnhubCryptoSymbol::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pvCryptoSymbol = Parse(r.text);
+		for (const auto& pSymbol : *pvCryptoSymbol) {
+			if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
+				pSymbol->SetExchange(gl_dataContainerFinnhubCryptoExchange.GetItem(m_index));
+				gl_dataFinnhubCryptoSymbol.Add(pSymbol);
+			}
+		}
+	}
+}
+void CProductFinnhubCryptoSymbol::WebStatusCheck(cpr::Response& r) {
+	CProductFinnhub::WebStatusCheck(r);
+}
+void CProductFinnhubCryptoSymbol::UpdateSystemStatus() {
+	CProductFinnhub::UpdateSystemStatus();
 }
 
 shared_ptr<vector<string>> CProductFinnhubCryptoSymbol::CreateMessage() {
@@ -25,16 +58,6 @@ shared_ptr<vector<string>> CProductFinnhubCryptoSymbol::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
-	for (const auto& pSymbol : *pvCryptoSymbol) {
-		if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchange(gl_dataContainerFinnhubCryptoExchange.GetItem(m_index));
-			gl_dataFinnhubCryptoSymbol.Add(pSymbol);
-		}
-	}
 }
 
 //
@@ -51,13 +74,14 @@ void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //  }]
 //
 //
-CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const CWebDataPtr& pWebData) {
+CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::Parse(const string& text) {
 	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoPtr>>();
 	string sError;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvCryptoSymbol;
-	if (!IsValidData(pWebData)) return pvCryptoSymbol;
+	if (text.empty()) return pvCryptoSymbol;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvCryptoSymbol;
+	if (::IsVoidJson(text)) return pvCryptoSymbol;
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {

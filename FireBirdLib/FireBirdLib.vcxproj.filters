@@ -486,14 +486,8 @@
     <ClInclude Include="..\src\Data Source\InternetOption.h">
       <Filter>Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\AccessoryFactory.h">
-      <Filter>Factory-Product\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\AccessoryDataSource.h">
       <Filter>Data Source\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.h">
-      <Filter>Factory-Product\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.h">
       <Filter>Data container\Tiingo</Filter>
@@ -726,9 +720,6 @@
       <Filter>Data container</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp">
-      <Filter>Data Source\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.cpp">
       <Filter>Data Source\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Source\AlpacaDataSource.cpp">

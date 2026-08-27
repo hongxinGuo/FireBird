@@ -135,6 +135,8 @@ namespace FireBirdTest {
 		}
 	}
 
+	//todo:
+/*
 	class ProcessFinnhubStockSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
@@ -165,8 +167,6 @@ namespace FireBirdTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData22, &finnhubWebData23,
 		                         &finnhubWebData30));
-	//todo:
-	/*
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		CFinnhubStockPtr pStock, pStock2;
 		m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);

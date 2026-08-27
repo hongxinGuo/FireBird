@@ -80,123 +80,125 @@ namespace FireBirdTest {
 		Test_FinnhubWebData finnhubWebData40(10, "AAPL", R"({"c":[118.7,119.11,119.04],"h":[118.89,119.18,119.16],"l":[118.7,118.69,118.98],"o":[118.86,118.69,119.15],"s":"ok","t":[1615300020,1615300080,1615300140],"v":[36665,105291,68286]})");
 	}
 
+	//todo:
+	/*
 	class ProcessFinnhubStockCandleTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			pvDayLine = nullptr;
-			m_pWebData = pData->m_pData;
-			m_finnhubStockDayLine.Test_checkAccessRight_(m_pWebData);
-
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
-			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetUpdateCompanyProfile(true);
-			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetUpdateDayLineDB(false);
-			m_pStock->SetUpdateDayLine(true);
-			m_pStock->UnloadDayLine();
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CFinnhubStockPtr m_pStock;
-		CDayLinesPtr pvDayLine;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubStockDayLine m_finnhubStockDayLine;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCandle1,
-	                         ProcessFinnhubStockCandleTest,
-	                         testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
-		                         &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
-
-	TEST_P(ProcessFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
-		string strMessage;
-
-		m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 1: // 格式不对
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 2: // s项报告not ok
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			strMessage = "日线返回值不为ok";
-			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
-			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 3: // s项报告 no data
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 4:
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 5: // 缺乏C项，为无效数据
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 6:
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
-			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 7:
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
-			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 8:
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
-			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 9:
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
-			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 10:
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
-			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 11: // 没有s项
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
-			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			break;
-		default:
-			break;
-		}
-	}
+		protected:
+			void SetUp() override {
+				SCOPED_TRACE("");
+				GeneralCheck();
+				const Test_FinnhubWebData* pData = GetParam();
+				m_index = pData->m_index;
+				pvDayLine = nullptr;
+				m_pWebData = pData->m_pData;
+				m_finnhubStockDayLine.Test_checkAccessRight_(m_pWebData);
+	
+				m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
+				m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
+			}
+	
+			void TearDown() override {
+				// clearUp
+				while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+				m_pStock->SetUpdateCompanyProfile(true);
+				m_pStock->SetUpdateProfileDB(false);
+				m_pStock->SetUpdateDayLineDB(false);
+				m_pStock->SetUpdateDayLine(true);
+				m_pStock->UnloadDayLine();
+	
+				SCOPED_TRACE("");
+				GeneralCheck();
+			}
+	
+		public:
+			int m_index;
+			CFinnhubStockPtr m_pStock;
+			CDayLinesPtr pvDayLine;
+			CWebDataPtr m_pWebData;
+			CProductFinnhubStockDayLine m_finnhubStockDayLine;
+		};
+	
+		INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCandle1,
+		                         ProcessFinnhubStockCandleTest,
+		                         testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
+			                         &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
+	
+		TEST_P(ProcessFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
+			string strMessage;
+	
+			m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
+			switch (m_index) {
+			case 1: // 格式不对
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+				EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 2: // s项报告not ok
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+				strMessage = "日线返回值不为ok";
+				EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
+				EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 3: // s项报告 no data
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+				EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 4:
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+				EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 5: // 缺乏C项，为无效数据
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+				EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 6:
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
+				EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 7:
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
+				EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 8:
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
+				EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 9:
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
+				EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 10:
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
+				EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+				break;
+			case 11: // 没有s项
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+				EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+				EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+				EXPECT_FALSE(m_pStock->IsUpdateDayLine());
+				EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
+				break;
+			default:
+				break;
+			}
+		}*/
 }

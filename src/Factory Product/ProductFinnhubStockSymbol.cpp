@@ -19,7 +19,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/symbol?exchange=";
 }
 
-void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
@@ -67,9 +67,13 @@ void CProductFinnhubStockSymbol::WebStatusCheck(cpr::Response& r) {
 		break;
 	case 302://redirected, not an error
 		break;
+	case 401: // no right to access
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
 	case 403: // forbidden
-		s = std::format("Finnhub stock symbol concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
 		break;
 	default:
 		s = std::format("Finnhub stock symbol concise http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);

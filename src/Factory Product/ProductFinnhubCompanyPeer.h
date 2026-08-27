@@ -7,9 +7,12 @@ public:
 	CProductFinnhubCompanyPeer();
 	~CProductFinnhubCompanyPeer() override = default;
 
+	void InquireData(const std::stop_token& st) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	nlohmannJson ParseFinnhubStockPeer(const CWebDataPtr& pWebData);
+	nlohmannJson Parse(const string& text);
 };
 
 using CFinnhubCompanyPeerPtr = shared_ptr<CProductFinnhubCompanyPeer>;

@@ -47,30 +47,28 @@ namespace FireBirdTest {
 		CContainerFinnhubStock m_containerFinnhubStock;
 	};
 
-	TEST_F(CContainerFinnhubStockTest, TestResetBasicFinancial) {
+	TEST_F(CContainerFinnhubStockTest, TestResetStockProfile) {
 		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
-			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
-			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), toLocalDays(19800101));
+			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
+			EXPECT_EQ(pStock->GetProfileUpdateDate(), toLocalDays(19800101));
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
-			pStock->SetUpdateBasicFinancial(false);
+			pStock->SetUpdateCompanyProfile(false);
 			pStock->SetUpdateProfileDB(false);
-			pStock->SetBasicFinancialUpdateDate(toLocalDays(20000101));
+			pStock->SetProfileUpdateDate(toLocalDays(20000101));
 		}
 
 		gl_dataContainerFinnhubStock.ResetStockProfile();
 
 		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
-			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
-			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), toLocalDays(19800101));
+			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
+			EXPECT_EQ(pStock->GetProfileUpdateDate(), toLocalDays(19800101));
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
 			// 恢复原状
-			//pStock->SetUpdateBasicFinancial(false);
 			pStock->SetUpdateProfileDB(false);
-			//pStock->SetBasicFinancialUpdateDate(toLocalDays(20000101));
 		}
 	}
 

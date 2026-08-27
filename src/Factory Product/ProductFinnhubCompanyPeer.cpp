@@ -6,10 +6,41 @@
 
 #include "ProductFinnhubCompanyPeer.h"
 
-#include "WebData.h"
+#include "FinnhubDataSource.h"
+#include "jsonParse.h"
+#include"cpr/cpr.h"
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/peers?symbol=";
+}
+
+void CProductFinnhubCompanyPeer::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const nlohmannJson jsonPeer = Parse(r.text);
+		pStock->SetPeer(jsonPeer);
+		pStock->SetPeerUpdateDate(gl_pWorldMarket->GetMarketDate());
+		pStock->SetUpdatePeer(false);
+		pStock->SetUpdateProfileDB(true);
+	}
+}
+
+void CProductFinnhubCompanyPeer::WebStatusCheck(cpr::Response& r) {
+	CProductFinnhub::WebStatusCheck(r);
+}
+void CProductFinnhubCompanyPeer::UpdateSystemStatus() {
+	CProductFinnhub::UpdateSystemStatus();
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyPeer::CreateMessage() {
@@ -22,21 +53,14 @@ shared_ptr<vector<string>> CProductFinnhubCompanyPeer::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	const nlohmannJson jsonPeer = ParseFinnhubStockPeer(pWebData);
-	pStock->SetPeer(jsonPeer);
-	pStock->SetPeerUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pStock->SetUpdatePeer(false);
-	pStock->SetUpdateProfileDB(true);
-}
-
-nlohmannJson CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(const CWebDataPtr& pWebData) {
+nlohmannJson CProductFinnhubCompanyPeer::Parse(const string& text) {
 	nlohmannJson jsonPeer; // 默认的空状态（没有竞争对手)
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return jsonPeer;
-	if (!IsValidData(pWebData)) return jsonPeer;
+	if (text.empty()) return jsonPeer;
+	if (!::CreateJsonWithNlohmann(js, text)) return jsonPeer;
+	if (::IsVoidJson(text)) return jsonPeer; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return jsonPeer;
 
 	return js;
 }

@@ -32,8 +32,8 @@ public:
 
 	//Note: 由Product（而不是dataSource)来申请网络数据，使用cpr库。DataSource需要设置使用新接口m_bUsingNewInterface为true，才能使用下面两个函数。
 	// 各继承类必须实现此两个函数。
-	virtual void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) { ABSL_DCHECK(false); } // default do nothing
-	virtual void WebStatusCheck(cpr::Response&) { ABSL_DCHECK(false); } // cpr新接口的网络状态检查
+	virtual void InquireData(const std::stop_token&) { ABSL_DCHECK(false); } // default do nothing
+	virtual void WebStatusCheck(cpr::Response& r); // cpr新接口的网络状态检查
 
 	virtual shared_ptr<vector<string>> CreateMessage() { return make_shared<vector<string>>(vector<string>{ "" }); }
 

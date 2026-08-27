@@ -537,9 +537,6 @@
     <ClCompile Include="ContainerTiingoStockDayLineTest.cpp">
       <Filter>Test源文件\Data Container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="ProductIndexNasdaq100StocksTest.cpp">
-      <Filter>Test源文件\Factory Product\Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="CharSetTransferTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>

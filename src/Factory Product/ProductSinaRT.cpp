@@ -23,7 +23,7 @@ CProductSinaRT::CProductSinaRT() {
 // Note 8个核心的cpu，并行数只能设置为4个左右，更高的设置并不能缩短执行时间，且导致执行时间延长，原因待查。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductSinaRT::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+void CProductSinaRT::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
@@ -41,6 +41,15 @@ void CProductSinaRT::InquireData(const std::stop_token& st, const string& strHea
 	}
 }
 void CProductSinaRT::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		break;
+	}
 }
 
 void CProductSinaRT::UpdateSystemStatus() {

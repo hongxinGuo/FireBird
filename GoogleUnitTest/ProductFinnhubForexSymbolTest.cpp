@@ -100,7 +100,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
-		m_pvForexSymbol = m_productFinnhubForexSymbol.ParseFinnhubForexSymbol(m_pWebData);
+		m_pvForexSymbol = m_productFinnhubForexSymbol.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvForexSymbol->size(), 0);
@@ -130,62 +130,4 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubForexSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_productFinnhubForexSymbol.Test_checkAccessRight_(m_pWebData);
-
-			m_productFinnhubForexSymbol.SetIndex(0);
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubForexSymbol m_productFinnhubForexSymbol;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexSymbol1, ProcessFinnhubForexSymbolTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
-		                         &finnhubWebData85, &finnhubWebData90));
-
-	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
-		CForexSymbolPtr pForexSymbol;
-		m_productFinnhubForexSymbol.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 0: // 空数据
-			break;
-		case 1: // 无权利访问的数据
-			break;
-		case 2: // 格式不对
-			break;
-		case 3: // 缺乏字符串
-			break;
-		case 4: // 缺乏字符串
-			break;
-		case 5: // 缺乏字符串
-			break;
-		case 10:
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol("New Symbol")) << "新添加的Forex代码";
-			pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("New Symbol");
-			EXPECT_EQ(pForexSymbol->GetExchange(), "oanda") << "Index为零时的交易所";
-
-			// 恢复原状
-			gl_dataFinnhubForexSymbol.Delete(pForexSymbol);
-			break;
-		default:
-			break;
-		}
-	}
 }

@@ -2,17 +2,19 @@
 
 #include"ProductFinnhub.h"
 
-class CDayLine;
-class CWebData;
+#include"DayLine.h"
 
 class CProductFinnhubStockDayLine final : public CProductFinnhub {
 public:
 	CProductFinnhubStockDayLine();
 	~CProductFinnhubStockDayLine() override = default;
 
+	void InquireData(const std::stop_token& st) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
-	shared_ptr<vector<CDayLine>> ParseFinnhubStockCandle(const shared_ptr<CWebData>& pWebData);
+	CDayLinesPtr Parse(const string& text);
 };
 
 using CFinnhubStockDayLinePtr = shared_ptr<CProductFinnhubStockDayLine>;

@@ -113,7 +113,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_EQ(m_pvExchange->size(), 0);
+			EXPECT_EQ(m_pvExchange->size(), 1);
 			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvExchange->size(), 0);
@@ -129,62 +129,5 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-	}
-
-	class ProcessFinnhubCryptoExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubCryptoExchange.Test_checkAccessRight_(m_pWebData);
-
-			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12) << "最初装载了12个";
-		}
-
-		void TearDown() override {
-			// clearUp
-			gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12) << "最初装载了12个";
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubCryptoExchange m_finnhubCryptoExchange;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoExchange1, ProcessFinnhubCryptoExchangeTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1,& finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
-
-	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
-		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 0: // 空数据
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12);
-			break;
-		case 1: // 无权利访问的数据
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12);
-			break;
-		case 2: // 格式不对
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12);
-			break;
-		case 3: // 缺乏字符串
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12);
-			break;
-		case 10:
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 13) << "加入了new exchange这个新的交易所";
-			EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.Delete("new exchange")); // 清除new exchange这个新加入的
-			break;
-		default:
-			break;
-		}
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 	}
 }

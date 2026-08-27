@@ -14,6 +14,15 @@
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile?symbol=";
 }
+void CProductFinnhubCompanyProfile::InquireData(const std::stop_token& st) {
+	CProductFinnhub::InquireData(st);
+}
+void CProductFinnhubCompanyProfile::WebStatusCheck(cpr::Response& r) {
+	CProductFinnhub::WebStatusCheck(r);
+}
+void CProductFinnhubCompanyProfile::UpdateSystemStatus() {
+	CProductFinnhub::UpdateSystemStatus();
+}
 
 shared_ptr<vector<string>> CProductFinnhubCompanyProfile::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);

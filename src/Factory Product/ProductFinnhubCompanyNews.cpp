@@ -11,12 +11,68 @@
 
 #include "ProductFinnhubCompanyNews.h"
 
-#include "WebData.h"
+#include "FinnhubDataSource.h"
+#include "SystemMessage.h"
+#include "cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/company-news?symbol=";
+}
+
+void CProductFinnhubCompanyNews::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		auto pvFinnhubCompanyNews = Parse(r.text);
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+
+		if (!pvFinnhubCompanyNews->empty()) {
+			// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
+			// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
+			for (auto& finnhubCompanyNews : *pvFinnhubCompanyNews) {
+				finnhubCompanyNews.m_strCompanySymbol = pStock->GetSymbol();
+			}
+			pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
+			pStock->SetUpdateCompanyNewsDB(true);
+			pvFinnhubCompanyNews = nullptr;
+		}
+		pStock->SetCompanyNewsUpdateDate(gl_pWorldMarket->GetMarketDate());
+		pStock->SetUpdateCompanyNews(false);
+		pStock->SetUpdateProfileDB(true);
+	}
+
+}
+
+void CProductFinnhubCompanyNews::WebStatusCheck(cpr::Response& r) {
+	string s;
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 302: //redirected, not an error
+	case 403: // forbidden
+		s = std::format("Finnhub company profile concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	default:
+		s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	}
+}
+void CProductFinnhubCompanyNews::UpdateSystemStatus() {
+	CProductFinnhub::UpdateSystemStatus();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,24 +100,6 @@ shared_ptr<vector<string>> CProductFinnhubCompanyNews::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-
-	if (!pvFinnhubCompanyNews->empty()) {
-		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
-		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
-		for (auto& finnhubCompanyNews : *pvFinnhubCompanyNews) {
-			finnhubCompanyNews.m_strCompanySymbol = pStock->GetSymbol();
-		}
-		pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
-		pStock->SetUpdateCompanyNewsDB(true);
-		pvFinnhubCompanyNews = nullptr;
-	}
-	pStock->SetCompanyNewsUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pStock->SetUpdateCompanyNews(false);
-	pStock->SetUpdateProfileDB(true);
-}
 
 /// <summary>
 /// 公司新闻，目前只提供北美公司的新闻
@@ -78,13 +116,15 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///"summary" : "In this article, we discuss the top 10 stock picks of William Von Mueffling’s Cantillon Capital Management. If you want to skip our detailed analysis of Mueffling’s investment philosophy and performance, go directly to Top 5 Stock Picks of William Von Mueffling’s Cantillon Capital Management. William Von Mueffling worked at Lazard Asset Management before launching […]",
 ///"url" : "https://finnhub.io/api/news?id=a0fe8819916603e447eb52cad56f2cc3bb148097c65e81bf335d39961f67b502"
 ///		}
-CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
+CCompanyNewssPtr CProductFinnhubCompanyNews::Parse(const string& text) {
 	nlohmannJson js;
 	auto pvFinnhubCompanyNews = make_shared<vector<CFinnhubCompanyNews>>();
 	pvFinnhubCompanyNews->reserve(100);
 
-	if (!pWebData->CreateJson(js)) return pvFinnhubCompanyNews;
-	if (!IsValidData(pWebData)) return pvFinnhubCompanyNews;
+	if (text.empty()) return pvFinnhubCompanyNews;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvFinnhubCompanyNews;
+	if (::IsVoidJson(text)) return pvFinnhubCompanyNews; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvFinnhubCompanyNews;
 
 	try {
 		string s;

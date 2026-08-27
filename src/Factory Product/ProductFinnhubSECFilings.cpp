@@ -7,14 +7,64 @@
 
 #include "ProductFinnhubSECFilings.h"
 
+#include "FinnhubDataSource.h"
 #include"jsonParse.h"
 #include"simdjsonGetValue.h"
+#include "SystemMessage.h"
 #include "WebData.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/filings?symbol=";
+}
+
+void CProductFinnhubSECFilings::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		auto pvSECFilings = Parse(r.text);
+		auto size = pvSECFilings->size();
+		pStock->SetUpdateSECFilings(false);
+		pStock->SetSECFilingsUpdateDate(gl_pWorldMarket->GetMarketDate());
+		pStock->SetUpdateProfileDB(true);
+		if (size > 0) {
+			pStock->SetSECFilings(pvSECFilings);
+			pStock->SetUpdateSECFilingsDB(true);
+		}
+		pvSECFilings = nullptr;
+	}
+}
+
+void CProductFinnhubSECFilings::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0: //
+		// do nothing
+		break;
+	case 401: // no right to access
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
+	default:
+		string sType = typeid(this).name();
+		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushErrorMessage(s);
+		break;
+	}
+}
+
+void CProductFinnhubSECFilings::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubSECFilings::CreateMessage() {
@@ -25,20 +75,6 @@ shared_ptr<vector<string>> CProductFinnhubSECFilings::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	auto pvSECFilings = ParseFinnhubStockSECFilings(pWebData);
-	auto size = pvSECFilings->size();
-	pStock->SetUpdateSECFilings(false);
-	pStock->SetSECFilingsUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pStock->SetUpdateProfileDB(true);
-	if (size > 0) {
-		pStock->SetSECFilings(pvSECFilings);
-		pStock->SetUpdateSECFilingsDB(true);
-	}
-	pvSECFilings = nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,17 +104,18 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ]
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
+CSECFilingsPtr CProductFinnhubSECFilings::Parse(const string& text) {
 	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFiling>>();
 	pvSECFilings->reserve(100);
 
+	if (::IsVoidJson(text)) return pvSECFilings; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvSECFilings;
+
 	string s1;
-	if (!IsValidData(pWebData)) return pvSECFilings;
 	try {
 		std::istringstream ss;
-		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJson);
+		const simdjson::padded_string jsonPadded(text);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		for (auto item : doc) {

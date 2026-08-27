@@ -24,12 +24,14 @@ atomic<int64_t> CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 CVirtualDataSource::CVirtualDataSource() {
 	SetDefaultSessionOption();
 }
+
 CVirtualDataSource::~CVirtualDataSource() {
 	if (m_runThread.joinable()) { // Close thread.
 		m_runThread.request_stop();
 		m_runThread.join();
 	}
 }
+
 void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
 	gl_systemMessage.PushInformationMessage(msg);
 }
@@ -89,7 +91,7 @@ void CVirtualDataSource::Inquire(const std::stop_token& st) {
 	while (HaveInquiry()) { // 一次申请可以有多个数据
 		if (st.stop_requested()) break;
 		GetCurrentProduct();
-		m_pCurrentProduct->InquireData(st, m_strHeaders, m_strParam, m_strSuffix, m_token);
+		m_pCurrentProduct->InquireData(st);
 		m_pCurrentProduct->UpdateSystemStatus();
 	}
 	SetHTTPStatusCode(m_pCurrentProduct->GetStatusCode());

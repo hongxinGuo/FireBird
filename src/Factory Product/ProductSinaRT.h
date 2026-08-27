@@ -16,7 +16,7 @@ public:
 	CProductSinaRT& operator=(const CProductSinaRT&&) noexcept = delete;
 	~CProductSinaRT() override = default;
 
-	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void InquireData(const std::stop_token& st) override; // default do nothing
 	void WebStatusCheck(cpr::Response& r) override;
 	void UpdateSystemStatus() override;
 

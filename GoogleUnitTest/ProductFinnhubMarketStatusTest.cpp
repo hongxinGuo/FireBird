@@ -106,48 +106,4 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubMarketStatusTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubMarketStatusProduct.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubMarketStatusProduct.SetIndex(0); // 第一个交易所（AS)
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		long m_lIndex;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubMarketStatus m_finnhubMarketStatusProduct;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubMarketStatus1, ProcessFinnhubMarketStatusTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubMarketStatusWebData22));
-
-	TEST_P(ProcessFinnhubMarketStatusTest, TestParseFinnhubMarketStatus0) {
-		CMarketStatusPtr pMarketStatus;
-		m_finnhubMarketStatusProduct.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
-		case 0: // 空数据
-			break;
-		case 1: // 无权利访问的数据
-			break;
-		case 2: // 正确的数据
-
-			break;
-		default:
-			break;
-		}
-	}
 }

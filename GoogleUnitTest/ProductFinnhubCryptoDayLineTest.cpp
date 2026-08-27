@@ -119,7 +119,7 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
 		string strMessage;
 
-		m_pvDayLine = m_finnhubCryptoDayLine.ParseFinnhubCryptoCandle(m_pWebData);
+		m_pvDayLine = m_finnhubCryptoDayLine.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);
@@ -161,114 +161,4 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
-			m_pWebData = pData->m_pData;
-			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubCryptoDayLine.SetIndex(0);
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubCryptoDayLine m_finnhubCryptoDayLine;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoCandle, ProcessFinnhubCryptoCandleTest,
-	                         testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
-		                         &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
-
-	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
-		CFinnhubCryptoPtr pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(0);
-		m_finnhubCryptoDayLine.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 1: // 格式不对
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
-			break;
-		case 2: // s项报告not ok
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
-			break;
-		case 3: // s项报告 no data
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
-			break;
-		case 4: //数据缺乏t项
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
-			break;
-		case 5: // 数据缺乏c项，非有效数据。
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 0) << "数据缺乏c项，非有效数据";
-			break;
-		case 6:
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
-			break;
-		case 7:
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
-			break;
-		case 8:
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
-			break;
-		case 9:
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
-			break;
-		case 10:
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
-			break;
-		case 11: // 没有s项
-			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
-			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
-			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
-			break;
-		default:
-			break;
-		}
-		pCrypto->SetUpdateDayLine(true);
-		pCrypto->SetUpdateDayLineDB(false);
-		pCrypto->SetUpdateProfileDB(false);
-		pCrypto->UnloadDayLine();
-	}
 }

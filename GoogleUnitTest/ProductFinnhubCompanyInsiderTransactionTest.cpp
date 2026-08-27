@@ -98,81 +98,9 @@ namespace FireBirdTest {
 		Test_FinnhubWebData finnhubWebData135(5, "AAPL", R"({"data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-02","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "no symbol" : "RIG"})");
 	}
 
-	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), toLocalDays(19800101));
-			m_pStock->SetUpdateInsiderTransactionDB(false);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderTransaction.Test_checkAccessRight_(m_pWebData);
 
-			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
-			m_finnhubCompanyInsiderTransaction.SetIndex(lIndex);
-		}
 
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetUpdateInsiderTransactionDB(false);
-			m_pStock->SetInsiderTransactionUpdateDate(toLocalDays(19800101));
 
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubCompanyInsiderTransaction m_finnhubCompanyInsiderTransaction;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderTransaction1, ProcessFinnhubInsiderTransactionTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData135, &finnhubWebData134, &finnhubWebData133));
-
-	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
-		m_finnhubCompanyInsiderTransaction.ParseAndStoreWebData(m_pWebData);
-		EXPECT_FALSE(m_pStock->IsUpdateInsiderTransaction());
-		switch (m_index) {
-		case 0: // 空数据
-			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), chrono::local_days(chrono::days(0))) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderTransactionDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderTransactionDB());
-			break;
-		case 1: // 无权利访问的数据
-			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), chrono::local_days(chrono::days(0))) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderTransactionDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderTransactionDB());
-			break;
-		case 3: // 正确
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderTransactionDB());
-			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), chrono::local_days(chrono::days(0))) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 4:
-			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), chrono::local_days(chrono::days(0))) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderTransactionDB());
-			break;
-		case 5:
-			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), chrono::local_days(chrono::days(0))) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderTransactionDB());
-			break;
-		default:
-			break;
-		}
-	}
 
 	class ParseFinnhubInsiderTransactionTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -210,7 +138,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData135, &finnhubWebData134, &finnhubWebData133));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
-		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);
+		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.Parse(m_pWebData->GetDataBuffer());
 		switch (m_lIndex) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);

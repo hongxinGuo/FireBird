@@ -113,121 +113,25 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
-		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
+		auto pv = m_finnhubCompanyInsiderSentiment.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
+			EXPECT_EQ(pv->size(), 0);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
+			EXPECT_EQ(pv->size(), 0);
 			break;
 		case 2: // 正确
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
+			EXPECT_EQ(pv->size(), 2);
 			break;
 		case 3:
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_EQ(pv->size(), 0);
 			break;
 		case 4:
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
+			EXPECT_EQ(pv->size(), 0);
 			break;
 		case 5: // 空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101)) << "市场日期未更改";
-			break;
-		default:
-			break;
-		}
-	}
-
-	class ParseFinnhubInsiderSentimentTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_pWebData);
-
-			m_pvInsiderSentiment = nullptr;
-			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
-			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetUpdateInsiderSentimentDB(false);
-			m_pStock->SetInsiderSentimentUpdateDate(toLocalDays(19800101));
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
-		CInsiderSentimentsPtr m_pvInsiderSentiment;
-		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderSentiment1, ParseFinnhubInsiderSentimentTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
-
-	TEST_P(ParseFinnhubInsiderSentimentTest, TestParseFinnhubInsiderSentiment0) {
-		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 0: // 空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			break;
-		case 1: // 无权利访问的数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			break;
-		case 2: // 正确
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB()) << "有效数据，需要更新";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			break;
-		case 3: // 缺乏data项
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			break;
-		case 4: // 缺乏Symbol
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
-			break;
-		case 5: //空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";
+			EXPECT_EQ(pv->size(), 0);
 			break;
 		default:
 			break;
@@ -272,7 +176,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest2, TestParseFinnhubInsiderSentiment0) {
-		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
+		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
