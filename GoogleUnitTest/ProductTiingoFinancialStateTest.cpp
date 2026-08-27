@@ -114,7 +114,7 @@ namespace FireBirdTest {
 		                         &tiingoFinancialState3, &tiingoFinancialState4, &tiingoFinancialState10));
 
 	TEST_P(ParseTiingoFinancialStateTest, TestParseFinancialState) {
-		m_pvFinancialState = m_tiingoFinancialStateProduct.ParseTiingoFinancialState(m_pWebData);
+		m_pvFinancialState = m_tiingoFinancialStateProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvFinancialState->size(), 1);

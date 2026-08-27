@@ -137,7 +137,7 @@ namespace FireBirdTest {
 		                         &tiingoMarketNews3, &tiingoMarketNews4, &tiingoMarketNews10));
 
 	TEST_P(ParseTiingoMarketNewsTest, TestParseTiingoMarketNews) {
-		m_pvMarketNews = m_tiingoMarketNewsProduct.ParseTiingoMarketNews(m_pWebData);
+		m_pvMarketNews = m_tiingoMarketNewsProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvMarketNews->size(), 1);

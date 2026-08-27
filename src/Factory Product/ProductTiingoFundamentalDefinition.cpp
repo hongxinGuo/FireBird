@@ -10,12 +10,49 @@
 
 #include"simdjsonGetValue.h"
 #include "SystemMessage.h"
-#include "WebData.h"
+
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/definitions?";
+}
+
+void CProductTiingoFundamentalDefinition::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+		}
+		const auto pvFundamentalDefinition = Parse(r.text);
+		if (!pvFundamentalDefinition->empty()) {
+			for (auto& definition : *pvFundamentalDefinition) {
+				if (!gl_dataContainerTiingoFundamentalDefinition.HaveDefinition(definition.m_strDataCode)) {
+					gl_dataContainerTiingoFundamentalDefinition.Add(definition);
+					gl_dataContainerTiingoFundamentalDefinition.SetUpdateDB(true);
+				}
+			}
+		}
+	}
+}
+
+void CProductTiingoFundamentalDefinition::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductTiingoFundamentalDefinition::CreateMessage() {
@@ -24,18 +61,6 @@ shared_ptr<vector<string>> CProductTiingoFundamentalDefinition::CreateMessage() 
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductTiingoFundamentalDefinition::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvFundamentalDefinition = ParseTiingoFundamentalDefinition(pWebData);
-	if (!pvFundamentalDefinition->empty()) {
-		for (auto& definition : *pvFundamentalDefinition) {
-			if (!gl_dataContainerTiingoFundamentalDefinition.HaveDefinition(definition.m_strDataCode)) {
-				gl_dataContainerTiingoFundamentalDefinition.Add(definition);
-				gl_dataContainerTiingoFundamentalDefinition.SetUpdateDB(true);
-			}
-		}
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,18 +85,18 @@ void CProductTiingoFundamentalDefinition::ParseAndStoreWebData(CWebDataPtr pWebD
 // 使用simdjson解析，速度为Nlohmann-json的三倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData) {
+CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::Parse(const string& text) {
 	auto pvFundamentalDefinition = make_shared<vector<CTiingoFundamentalDefinition>>();
 	pvFundamentalDefinition->reserve(100); // 预先分配空间，减少内存重新分配的次数。
 	CTiingoFundamentalDefinitionPtr pFundamentalDefinition = nullptr;
 
-	if (!IsValidData(pWebData)) return pvFundamentalDefinition;
+	if (::IsVoidJson(text)) return pvFundamentalDefinition;
+	if (IsNoRightToAccess()) return pvFundamentalDefinition;
 
 	try {
 		string s1;
-		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJson);
+		const simdjson::padded_string jsonPadded(text);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		int iCount = 0;

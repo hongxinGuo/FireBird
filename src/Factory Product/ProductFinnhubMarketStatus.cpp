@@ -42,7 +42,6 @@ void CProductFinnhubMarketStatus::InquireData(const std::stop_token& st, const s
 }
 
 void CProductFinnhubMarketStatus::WebStatusCheck(cpr::Response& r) {
-	CProductFinnhub::WebStatusCheck(r);
 }
 
 void CProductFinnhubMarketStatus::UpdateSystemStatus() {

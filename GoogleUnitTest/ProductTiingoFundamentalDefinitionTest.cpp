@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		                         &tiingoFundamentalDefinition3, &tiingoFundamentalDefinition4, &tiingoFundamentalDefinition10));
 
 	TEST_P(ParseTiingoFundamentalDefinitionTest, TestParseTiingoFundamentalDefinition) {
-		m_pvFundamentalDefinition = m_tiingoFundamentalDefinitionProduct.ParseTiingoFundamentalDefinition(m_pWebData);
+		m_pvFundamentalDefinition = m_tiingoFundamentalDefinitionProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);

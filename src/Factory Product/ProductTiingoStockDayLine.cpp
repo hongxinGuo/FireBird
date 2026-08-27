@@ -12,7 +12,9 @@
 #include "SystemMessage.h"
 #include "WebData.h"
 #include"ContainerTiingoStockDayLine.h"
+#include "TiingoDataSource.h"
 #include "TimeConvert.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
@@ -23,6 +25,61 @@ string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbo
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
+}
+
+void CProductTiingoStockDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+		}
+
+		const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
+
+		auto pvDayLine = Parse(r.text);
+		if (!pvDayLine->empty()) {
+			long lastClose = 0;
+			for (auto& dayLine : *pvDayLine) {// 使用前日收盘数据作为昨收
+				dayLine.SetExchange(pTiingoStock->GetExchange());
+				dayLine.SetStockSymbol(pTiingoStock->GetSymbol());
+				dayLine.SetLastClose(lastClose);
+				lastClose = dayLine.GetClose();
+			}
+			if ((pvDayLine->size() > 1) && pTiingoStock->GetDayLineEndDate() != chrono::local_days{ 1980y / 01 / 01 }) {
+				pvDayLine->erase(pvDayLine->begin()); // 删除重复日线数据
+			}
+			pTiingoStock->UpdateDayLine(pvDayLine);
+			pTiingoStock->SetUpdateDayLineDB(true);
+			pvDayLine = nullptr;
+		}
+		// 清除tiingo stock的日线更新标识
+		pTiingoStock->SetUpdateDayLine(false);
+		pTiingoStock->SetUpdateProfileDB(true);
+		if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 新股票？
+			gl_dataContainerTiingoNewSymbol.Delete(pTiingoStock); // 下载完日线数据后，就从Tiingo新代码容器中删除之。
+		}
+	}
+}
+
+void CProductTiingoStockDayLine::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		break;
+	}
+}
+
+void CProductTiingoStockDayLine::UpdateSystemStatus() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -42,33 +99,6 @@ shared_ptr<vector<string>> CProductTiingoStockDayLine::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
-
-	auto pvDayLine = ParseTiingoStockDayLine(pWebData);
-	if (!pvDayLine->empty()) {
-		long lastClose = 0;
-		for (auto& dayLine : *pvDayLine) {// 使用前日收盘数据作为昨收
-			dayLine.SetExchange(pTiingoStock->GetExchange());
-			dayLine.SetStockSymbol(pTiingoStock->GetSymbol());
-			dayLine.SetLastClose(lastClose);
-			lastClose = dayLine.GetClose();
-		}
-		if ((pvDayLine->size() > 1) && pTiingoStock->GetDayLineEndDate() != chrono::local_days{ 1980y / 01 / 01 }) {
-			pvDayLine->erase(pvDayLine->begin()); // 删除重复日线数据
-		}
-		pTiingoStock->UpdateDayLine(pvDayLine);
-		pTiingoStock->SetUpdateDayLineDB(true);
-		pvDayLine = nullptr;
-	}
-	// 清除tiingo stock的日线更新标识
-	pTiingoStock->SetUpdateDayLine(false);
-	pTiingoStock->SetUpdateProfileDB(true);
-	if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 新股票？
-		gl_dataContainerTiingoNewSymbol.Delete(pTiingoStock); // 下载完日线数据后，就从Tiingo新代码容器中删除之。
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,15 +139,17 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
+CTiingoCandleLinesPtr CProductTiingoStockDayLine::Parse(const string& text) {
 	auto pvDayLine = make_shared<vector<CTiingoCandleLine>>();
 	pvDayLine->reserve(3000); // 预先分配7500个元素的空间，避免频繁扩容。Tiingo日线数据最多有几十年，每年250个交易日，1000个元素足够了。
 
 	string s;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvDayLine;
-	if (!IsValidData(pWebData)) return pvDayLine;
+	if (text.empty()) return pvDayLine;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvDayLine;
+	if (::IsVoidJson(text)) return pvDayLine;
+	if (IsNoRightToAccess()) return pvDayLine;
 
 	try {
 		s = js.at("detail"); // 是否有报错信息
@@ -157,8 +189,7 @@ CTiingoCandleLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const 
 			dayLine.Reset(); //Note 需要重置对象，以免下次循环时，之前的数据还在，导致数据错误。
 		}
 	} catch (nlohmannJson::exception& e) {
-		string str3 = pWebData->GetDataBuffer();
-		str3 = str3.substr(0, 120);
+		string str3 = text.substr(0, 120);
 		ReportJSonErrorToSystemMessage("Tiingo Stock DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}

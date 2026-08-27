@@ -134,7 +134,6 @@
     <ClCompile Include="InaccessibleTest.cpp" />
     <ClCompile Include="IndicatorKDJTest.cpp" />
     <ClCompile Include="IndicatorMACDTest.cpp" />
-    <ClCompile Include="InquireEngineTest.cpp" />
     <ClCompile Include="MarketTaskQueueTest.cpp" />
     <ClCompile Include="MarketTaskTest.cpp" />
     <ClCompile Include="MockContainerChinaStockTest.cpp" />
@@ -142,7 +141,6 @@
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
     <ClCompile Include="MockFinnhubWebSocketTest.cpp" />
-    <ClCompile Include="MockInquireEngineTest.cpp" />
     <ClCompile Include="MockSinaRTDataSourceTest.cpp" />
     <ClCompile Include="MockTengxunDayLineDataSourceTest.cpp" />
     <ClCompile Include="MockTengxunRTDataSourceTest.cpp" />
@@ -262,7 +260,6 @@
     <ClCompile Include="ContainerChinaWeekLineTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
     <ClInclude Include="MockFinnhubWebSocket.h" />
-    <ClInclude Include="MockInquireEngine.h" />
     <ClInclude Include="MockTiingoCryptoWebSocket.h" />
     <ClInclude Include="MockTiingoForexWebSocket.h" />
     <ClInclude Include="MockTiingoIEXWebSocket.h" />

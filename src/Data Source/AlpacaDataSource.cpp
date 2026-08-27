@@ -25,13 +25,11 @@ CAlpacaDataSource::CAlpacaDataSource() {
 	m_strHeaders = "APCA-API-KEY-ID:PK3J5QOOORALNDMELW2XS5RDZX\r\nAPCA-API-SECRET-KEY:DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk\r\nConnection:close\r\n\r\n";
 	m_strParam = "";
 	m_strSuffix = "";
-	m_strInquiryToken = "";
+	m_token = "";
 	m_lInquiringNumber = 1; // Alpaca实时数据查询数量默认值
 
 	CAlpacaDataSource::ConfigureInternetOption();
 	CAlpacaDataSource::Reset();
-
-	m_bUsingNewInterface = true; // Alpaca使用新接口
 }
 
 bool CAlpacaDataSource::Reset() {

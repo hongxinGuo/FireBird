@@ -11,8 +11,8 @@
 #include "ContainerTiingoCryptoSymbol.h"
 #include "SystemConfiguration.h"
 #include "TiingoDataSource.h"
-#include "WebData.h"
 #include "WorldMarket.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
@@ -23,24 +23,40 @@ CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_ratio = 3;
 }
 
+void CProductTiingoCryptoSymbol::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		const auto pvTiingoCrypto = Parse(r.text);
+		if (!pvTiingoCrypto->empty()) {
+			for (auto& tiingoCrypto : *pvTiingoCrypto) {
+				if (!gl_dataContainerTiingoCryptoSymbol.IsSymbol(tiingoCrypto->GetSymbol())) {
+					tiingoCrypto->SetUpdateProfileDB(true);
+					gl_dataContainerTiingoCryptoSymbol.Add(tiingoCrypto);
+				}
+			}
+		}
+	}
+}
+
+void CProductTiingoCryptoSymbol::WebStatusCheck(cpr::Response& r) {
+}
+
 shared_ptr<vector<string>> CProductTiingoCryptoSymbol::CreateMessage() {
 	m_strInquiringSymbol = "All";
 	m_inquiryString = m_strInquiryFunction;
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
-	if (!pvTiingoCrypto->empty()) {
-		for (const auto& pTiingoCrypto : *pvTiingoCrypto) {
-			if (!gl_dataContainerTiingoCryptoSymbol.IsSymbol(pTiingoCrypto->GetSymbol())) {
-				pTiingoCrypto->SetUpdateProfileDB(true);
-				gl_dataContainerTiingoCryptoSymbol.Add(pTiingoCrypto);
-			}
-		}
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,13 +79,14 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData) {
+CTiingoCryptosPtr CProductTiingoCryptoSymbol::Parse(const string& text) {
 	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoPtr>>();
 	CTiingoCryptoPtr pTiingoCrypto = nullptr;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvTiingoCrypto;
-	if (!IsValidData(pWebData)) return pvTiingoCrypto;
+	if (text.empty()) return pvTiingoCrypto;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvTiingoCrypto;
+	if (::IsVoidJson(text)) return pvTiingoCrypto;
 
 	try {
 		int iCount = 0;

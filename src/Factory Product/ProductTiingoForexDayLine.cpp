@@ -8,11 +8,34 @@
 #include"WorldMarket.h"
 #include "WebData.h"
 #include"DayLine.h"
+#include "TiingoDataSource.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
 CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
+}
+
+void CProductTiingoForexDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+		}
+	}
+}
+
+void CProductTiingoForexDayLine::WebStatusCheck(cpr::Response& r) {
+}
+
+void CProductTiingoForexDayLine::UpdateSystemStatus() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -38,32 +61,6 @@ shared_ptr<vector<string>> CProductTiingoForexDayLine::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ABSL_DCHECK(m_index >= 0);
-	/*
-	const auto pForex = gl_dataContainerFinnhubForex.GetForex(m_lIndex);
-	const CDayLinesPtr pvDayLine = ParseTiingoForexDayLine(pWebData);
-	pForex->SetUpdateDayLine(false);
-	if (!pvDayLine->empty()) {
-		for (const auto& pDayLine2 : *pvDayLine) {
-			pDayLine2->SetExchange(pForex->GetExchangeCode());
-			pDayLine2->SetForexSymbol(pForex->GetSymbol());
-			pDayLine2->SetDisplaySymbol(pForex->GetTicker());
-		}
-		pForex->UpdateDayLine(*pvDayLine);
-		pForex->SetUpdateDayLineDB(true);
-		pForex->SetUpdateProfileDB(true);
-		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pForex->GetSymbol().c_str());
-		return;
-	}
-	else {
-		pForex->SetUpdateDayLineDB(false);
-		pForex->SetUpdateProfileDB(false);
-		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pForex->GetSymbol().c_str());
-	}
-	*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,15 +101,16 @@ void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataPtr& pWebData) {
+CDayLinesPtr CProductTiingoForexDayLine::Parse(const string& text) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
 	pvDayLine->reserve(3000);
 
 	string s;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvDayLine;
-	if (!IsValidData(pWebData)) return pvDayLine;
+	if (text.empty()) return pvDayLine;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvDayLine;
+	if (::IsVoidJson(text)) return pvDayLine;
 
 	try {
 		s = js.at("detail"); // 是否有报错信息
@@ -144,8 +142,7 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 			pvDayLine->push_back(dayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
-		string str3 = pWebData->GetDataBuffer();
-		str3 = str3.substr(0, 120);
+		string str3 = text.substr(0, 120);
 		ReportJSonErrorToSystemMessage("Tiingo Forex DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}

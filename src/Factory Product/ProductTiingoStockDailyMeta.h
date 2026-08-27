@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
+#include "TiingoStockDailyMeta.h"
 
 class CTiingoStockDailyMeta;
 
@@ -14,9 +15,12 @@ public:
 	CProductTiingoStockDailyMeta& operator=(const CProductTiingoStockDailyMeta&&) noexcept = delete;
 	~CProductTiingoStockDailyMeta() override = default;
 
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<CTiingoStockDailyMeta> ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData);
+	CTiingoStockDailyMetaPtr Parse(const string& text);
 };
 
 using CProductTiingoStockDailyMetaPtr = shared_ptr<CProductTiingoStockDailyMeta>;

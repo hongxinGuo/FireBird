@@ -37,7 +37,6 @@ CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 	CEastmoneyDayLineDataSource::ConfigureInternetOption();
 	CEastmoneyDayLineDataSource::Reset();
 
-	m_bUsingNewInterface = true;
 }
 
 bool CEastmoneyDayLineDataSource::Reset() {

@@ -471,12 +471,6 @@
     <ClCompile Include="MockTiingoIEXWebSocketTest.cpp">
       <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>
-    <ClCompile Include="InquireEngineTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MockInquireEngineTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
     <ClCompile Include="ProductFinnbhubSECFilingsTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
@@ -634,9 +628,6 @@
     </ClInclude>
     <ClInclude Include="MockTiingoIEXWebSocket.h">
       <Filter>Mock class\WebSocket</Filter>
-    </ClInclude>
-    <ClInclude Include="MockInquireEngine.h">
-      <Filter>Mock class\Data Source</Filter>
     </ClInclude>
     <ClInclude Include="MockTiingoCryptoWebSocket.h">
       <Filter>Mock class\WebSocket</Filter>

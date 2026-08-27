@@ -182,8 +182,7 @@ public:
 	virtual bool Reset() { return true; }
 
 	void Run(const local_seconds& lMarketTime);
-	void Inquire();
-	void Inquire2(const std::stop_token& st);
+	void Inquire(const std::stop_token& st);
 	virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const CWebDataPtr&) {} // 此WebData内容为错误信息？
@@ -231,8 +230,9 @@ public:
 	void SetInquiryFunction(const string& strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
 	string GetInquirySuffix() const noexcept { return m_strSuffix; }
 	void SetInquirySuffix(const string& strSuffix) noexcept { m_strSuffix = strSuffix; }
-	string GetInquiryToken() const noexcept { return m_strInquiryToken; }
-	void SetInquiryToken(const string& strToken) noexcept { m_strInquiryToken = strToken; }
+
+	string GetToken() const noexcept { return m_token; }
+	void SetToken(const string& strToken) noexcept { m_token = strToken; }
 
 	bool IsWebError() const noexcept { return m_dwWebErrorCode != 0; }
 	void SetWebError(bool fFlag) noexcept {
@@ -280,7 +280,7 @@ protected:
 	string m_strInquiryFunction{}; // 查询字符串功能部分
 	string m_strParam{}; // 查询字符串的参数
 	string m_strSuffix{}; // 查询字符串的后缀部分
-	string m_strInquiryToken{}; // 查询字符串令牌
+	string m_token{}; // 查询字符串令牌
 	string m_strHeaders{}; // OpenURL时的headers字符串值
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
@@ -296,8 +296,6 @@ protected:
 	std::atomic_bool m_fEnable{ true }; // 允许执行标识
 	std::atomic_bool m_bWebBusy{ false };
 	bool m_bConcurrentForbid{ false }; // 禁止使用并行申请模式。
-
-	bool m_bUsingNewInterface{ false }; // Todo: 准备使用cpr的新接口，迁移成功后即可删除。
 
 	std::jthread m_runThread; // Run发起的后台线程，用于执行InquireData2函数。此线程在析构函数中自动结束。
 };

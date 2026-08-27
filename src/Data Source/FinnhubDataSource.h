@@ -26,9 +26,6 @@ public:
 	void ConfigureInternetOption() override;
 	void CheckWebData(const CWebDataPtr& pWebData) override;
 
-	string GetToken() const noexcept { return m_token; }
-	void SetToken(const string& s) noexcept { m_token = s; }
-
 	// 可供申请的项目，目前共21项。
 	virtual bool GenerateCountryList();
 	virtual bool GenerateCompanySymbol();
@@ -125,7 +122,6 @@ protected:
 	unique_ptr<CFinnhubFactory> m_pFinnhubFactory;
 
 private:
-	string m_token{ "bv985d748v6ujthqfke0" };
 	bool m_fFinnhubDataInquiryFinished{ false };
 	size_t m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	size_t m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新

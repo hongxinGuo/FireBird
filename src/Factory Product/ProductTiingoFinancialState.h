@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
+#include "TiingoCompanyFinancialState.h"
 
 class CTiingoCompanyFinancialState;
 
@@ -14,9 +15,12 @@ public:
 	CProductTiingoFinancialState& operator=(const CProductTiingoFinancialState&&) noexcept = delete;
 	~CProductTiingoFinancialState() override = default;
 
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<std::vector<shared_ptr<CTiingoCompanyFinancialState>>> ParseTiingoFinancialState(const CWebDataPtr& pWebData);
+	CTiingoCompanyFinancialStatesPtr Parse(const string& text);
 };
 
 using CProductTiingoFinancialStatePtr = shared_ptr<CProductTiingoFinancialState>;

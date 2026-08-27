@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
+#include "TiingoCandleLine.h"
 
 class CTiingoCandleLine;
 
@@ -21,9 +22,12 @@ public:
 	CProductTiingoStockDayLine& operator=(const CProductTiingoStockDayLine&&) noexcept = delete;
 	~CProductTiingoStockDayLine() override = default;
 
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CTiingoCandleLine>> ParseTiingoStockDayLine(const CWebDataPtr& pWebData);
+	CTiingoCandleLinesPtr Parse(const string& text);
 
 	string GetDayLineInquiryParam(const string& strSymbol, local_days lStartDate, local_days lCurrentDate);
 

@@ -57,15 +57,13 @@ CFinnhubDataSource::CFinnhubDataSource() {
 	m_strInquiryFunction = ""; // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
 	m_strSuffix = "&token=";
-	m_strInquiryToken = "";
+	m_token = "bv985d748v6ujthqfke0"; //默认值
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 	m_iMaxNormalInquireTime = 1000;
 
 	CFinnhubDataSource::ConfigureInternetOption();
 
 	CFinnhubDataSource::Reset();
-
-	m_bUsingNewInterface = true; // finnhub使用新接口
 
 	auto s = gl_systemConfiguration.GetFinnhubToken();
 	if (!s.empty()) {

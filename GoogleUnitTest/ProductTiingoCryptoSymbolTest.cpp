@@ -108,7 +108,7 @@ namespace FireBirdTest {
 	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest, TestParseCryptoSymbol) {
-		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
+		m_pvCrypto = m_tiingoCryptoSymbolProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 11: // 格式不对
 			EXPECT_EQ(m_pvCrypto->size(), 0);
@@ -158,7 +158,7 @@ namespace FireBirdTest {
 	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest2, TestParseCryptoSymbol) {
-		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
+		m_pvCrypto = m_tiingoCryptoSymbolProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_lIndex) {
 		case 11: // 格式不对
 			EXPECT_EQ(m_pvCrypto->size(), 0);

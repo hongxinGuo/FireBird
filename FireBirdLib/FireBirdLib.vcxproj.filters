@@ -387,9 +387,6 @@
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h">
       <Filter>Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\InquireEngine.h">
-      <Filter>Data Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h">
       <Filter>Factory-Product\Finnhub</Filter>
     </ClInclude>
@@ -742,9 +739,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp">
       <Filter>Data Source\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Source\InquireEngine.cpp">
-      <Filter>Data Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp">
       <Filter>Data Source</Filter>

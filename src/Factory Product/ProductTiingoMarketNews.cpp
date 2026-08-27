@@ -20,11 +20,46 @@
 #include"simdjsonGetValue.h"
 #include "SystemConfiguration.h"
 #include "WebData.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/news?";
+}
+
+void CProductTiingoMarketNews::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+		}
+
+		const auto pvTiingoMarketNews = Parse(r.text);
+		if (!pvTiingoMarketNews->empty()) {
+			for (const auto& pMarketNews : *pvTiingoMarketNews) {
+				// do nothing
+			}
+		}
+	}
+}
+
+void CProductTiingoMarketNews::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductTiingoMarketNews::CreateMessage() {
@@ -35,14 +70,6 @@ shared_ptr<vector<string>> CProductTiingoMarketNews::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvTiingoMarketNews = ParseTiingoMarketNews(pWebData);
-	if (!pvTiingoMarketNews->empty()) {
-		for (const auto& pMarketNews : *pvTiingoMarketNews) {
-			// do nothing
-		}
-	}
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -72,20 +99,20 @@ void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoMarketNewssPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const CWebDataPtr& pWebData) {
+CTiingoMarketNewssPtr CProductTiingoMarketNews::Parse(const string& text) {
 	auto pvTiingoMarketNews = make_shared<vector<CTiingoMarketNews>>();
 	pvTiingoMarketNews->reserve(1000);
 
 	string s1;
 	int year, month, day, hour, minute, second;
 	float f;
-	if (!IsValidData(pWebData)) return pvTiingoMarketNews;
+	if (::IsVoidJson(text)) return pvTiingoMarketNews;
+	if (IsNoRightToAccess()) return pvTiingoMarketNews;
 
 	try {
 		CTiingoMarketNews marketNews;
-		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJson);
+		const simdjson::padded_string jsonPadded(text);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		int iCount = 0;
@@ -129,6 +156,8 @@ CTiingoMarketNewssPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const CWeb
 
 	return pvTiingoMarketNews;
 }
+
+
 
 void CProductTiingoMarketNews::UpdateSystemStatus() {
 	gl_pTiingoDataSource->SetUpdateMarketNews(false);

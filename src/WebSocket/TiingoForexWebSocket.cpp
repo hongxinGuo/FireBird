@@ -103,7 +103,7 @@ string CTiingoForexWebSocket::CreateMessage(const vector<string>& vSymbol) {
 	vector<string> vSymbol2;
 	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
-	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
+	jsonMessage["authorization"] = gl_pTiingoDataSource->GetToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	for (auto str : vSymbol) {
 		std::ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符

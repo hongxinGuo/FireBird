@@ -4,11 +4,14 @@
 #include "ProductTiingoFinancialState.h"
 
 #include "ContainerTiingoStock.h"
+#include "jsonParse.h"
 #include"simdjsonGetValue.h"
 #include "WebData.h"
 #include "WorldMarket.h"
 #include"TiingoCompanyFinancialState.h"
+#include "TiingoDataSource.h"
 #include "TimeConvert.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
@@ -106,6 +109,46 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals";
 }
 
+void CProductTiingoFinancialState::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+		}
+		const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
+		const auto pvTiingoFinancialState = Parse(r.text);
+
+		pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
+		pTiingoStock->SetUpdateFinancialState(false);
+		pTiingoStock->SetUpdateProfileDB(true);
+		if (!pvTiingoFinancialState->empty()) { // 为空时没有更新的必要。
+			pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
+			pTiingoStock->SetUpdateFinancialStateDB(true);
+		}
+	}
+}
+
+void CProductTiingoFinancialState::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		break;
+	}
+}
+
+void CProductTiingoFinancialState::UpdateSystemStatus() {
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 格式为：https://api.tiingo.com/tiingo/fundamentals/AAPL/statements?startDate=1980-01-01
@@ -121,19 +164,6 @@ shared_ptr<vector<string>> CProductTiingoFinancialState::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
-	const auto pvTiingoFinancialState = ParseTiingoFinancialState(pWebData);
-
-	pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pTiingoStock->SetUpdateFinancialState(false);
-	pTiingoStock->SetUpdateProfileDB(true);
-	if (!pvTiingoFinancialState->empty()) { // 为空时没有更新的必要。
-		pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
-		pTiingoStock->SetUpdateFinancialStateDB(true);
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,19 +199,19 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 有些股票缺乏某些部分的数据，忽略之即可。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
+CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::Parse(const string& text) {
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
 	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_index);
 	string symbol = pStock->GetSymbol();
 	string exchange = "US";
 	string s1;
 
-	if (!IsValidData(pWebData)) return pvTiingoFinancialState;
+	if (::IsVoidJson(text)) return pvTiingoFinancialState;
+	if (IsNoRightToAccess()) return pvTiingoFinancialState;
 
 	try {
-		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJson);
+		const simdjson::padded_string jsonPadded(text);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		for (auto item : doc) {

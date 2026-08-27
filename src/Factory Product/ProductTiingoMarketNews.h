@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
+#include "TiingoMarketNews.h"
 
 class CTiingoMarketNews;
 
@@ -13,11 +14,13 @@ public:
 	CProductTiingoMarketNews& operator=(const CProductTiingoMarketNews&&) noexcept = delete;
 	~CProductTiingoMarketNews() override = default;
 
-	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CTiingoMarketNews>> ParseTiingoMarketNews(const CWebDataPtr& pWebData);
-
+	void InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
 	void UpdateSystemStatus() override;
+
+	shared_ptr<vector<string>> CreateMessage() override;
+	CTiingoMarketNewssPtr Parse(const string& text);
+
 };
 
 using CProductTiingoMarketNewsPtr = shared_ptr<CProductTiingoMarketNews>;

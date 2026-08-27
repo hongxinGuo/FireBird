@@ -36,13 +36,13 @@ public:
 	virtual void WebStatusCheck(cpr::Response&) { ABSL_DCHECK(false); } // cpr新接口的网络状态检查
 
 	virtual shared_ptr<vector<string>> CreateMessage() { return make_shared<vector<string>>(vector<string>{ "" }); }
-	virtual void CalculateTotalDataLength(shared_ptr<vector<shared_ptr<CWebData>>>) {}
 
 	virtual void ParseAndStoreWebData(shared_ptr<CWebData>) { ABSL_DCHECK(0); } // 不允许调用基类该函数。每个Product必须实现自己的数据解析和存储函数。
 	virtual void ParseAndStoreWebData(shared_ptr<vector<shared_ptr<CWebData>>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
 		ABSL_DCHECK(pvWebData->size() == 1);
 		ParseAndStoreWebData(pvWebData->at(0)); // 默认只有一个数据，
 	}
+
 	virtual void AddInaccessibleSymbol() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 	virtual void UpdateSystemStatus() {} // default do nothing
 

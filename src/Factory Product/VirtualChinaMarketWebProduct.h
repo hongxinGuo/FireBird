@@ -19,5 +19,4 @@ public:
 	CVirtualChinaMarketWebProduct& operator=(const CVirtualChinaMarketWebProduct&&) noexcept = delete;
 	~CVirtualChinaMarketWebProduct() override = default;
 
-	void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) final;
 };

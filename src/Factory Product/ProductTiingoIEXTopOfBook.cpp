@@ -24,11 +24,46 @@
 #include "SystemMessage.h"
 #include "TiingoStock.h"
 #include "TimeConvert.h"
+#include"cpr/cpr.h"
 
 using namespace std;
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
 	m_strInquiryFunction = "https://api.tiingo.com/iex?";
+}
+
+void CProductTiingoIEXTopOfBook::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+		}
+
+		int i = 0;
+		const auto pvTiingoIEXTopOFBook = Parse(r.text);
+		auto lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
+		auto st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(lNewestTradeDay, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
+		if (pvTiingoIEXTopOFBook->empty()) return;
+		for (auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
+			if (pIEXTopOFBook->m_timeStamp < st) continue; // 只使用不早于一天的实时数据
+			if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
+			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
+			pTiingoStock->UpdateRTData(pIEXTopOFBook);
+			i++;
+		}
+		if (gl_pWorldMarket->GetMarketTime() < toLocalTime(180500)) { // 18点5分前存储此数据，之后无需存储
+			//gl_pWorldMarket->SetBuildTodayTiingoDayLine(true);
+		}
+	}
+}
+
+void CProductTiingoIEXTopOfBook::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductTiingoIEXTopOfBook::CreateMessage() {
@@ -46,23 +81,7 @@ shared_ptr<vector<string>> CProductTiingoIEXTopOfBook::CreateMessage() {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	int i = 0;
-	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
-	auto lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
-	auto st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(lNewestTradeDay, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
-	if (pvTiingoIEXTopOFBook->empty()) return;
-	for (auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
-		if (pIEXTopOFBook->m_timeStamp < st) continue; // 只使用不早于一天的实时数据
-		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
-		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
-		pTiingoStock->UpdateRTData(pIEXTopOFBook);
-		i++;
-	}
-	if (gl_pWorldMarket->GetMarketTime() < toLocalTime(180500)) { // 18点5分前存储此数据，之后无需存储
-		//gl_pWorldMarket->SetBuildTodayTiingoDayLine(true);
-	}
-}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -108,16 +127,17 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData) {
+CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::Parse(const string& text) {
 	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
-	if (!IsValidData(pWebData)) return pvTiingoIEXLastTopOFBook;
+	
+	if (::IsVoidJson(text)) return pvTiingoIEXLastTopOFBook;
+	if (IsNoRightToAccess()) return pvTiingoIEXLastTopOFBook;
 
 	try {
 		string s1;
 		istringstream ss;
-		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJson);
+		const simdjson::padded_string jsonPadded(text);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		int iCount = 0;

@@ -332,7 +332,7 @@ BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& stat
 BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& state) {
 	CProductTiingoStockProfile p;
 	for (auto _ : state) {
-		auto vData = p.ParseTiingoStockSymbol(pWebData); // 默认测试文件中的股票代码为sh000001.
+		auto vData = p.Parse(pWebData->GetDataBuffer()); // 默认测试文件中的股票代码为sh000001.
 	}
 }
 

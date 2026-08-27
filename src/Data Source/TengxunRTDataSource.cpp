@@ -11,14 +11,13 @@ using namespace std;
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_strInquiryFunction = "http://qt.gtimg.cn/q=";
-	m_strInquiryToken = "";
+	m_token = "";
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 
 	CTengxunRTDataSource::ConfigureInternetOption();
 
 	CTengxunRTDataSource::Reset();
 
-	m_bUsingNewInterface = true;
 }
 
 bool CTengxunRTDataSource::Reset() {

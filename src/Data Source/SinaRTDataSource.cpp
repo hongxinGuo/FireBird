@@ -20,14 +20,13 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	//m_strHeaders = "User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n";
 	m_strHeaders = "Referer:https://finance.sina.com.cn\r\n\r\n";
 	m_strInquiryFunction = "https://hq.sinajs.cn/list="; // 新浪实时数据服务器已使用https格式
-	m_strInquiryToken = "";
+	m_token = "";
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 
 	CSinaRTDataSource::ConfigureInternetOption();
 
 	CSinaRTDataSource::Reset();
 
-	m_bUsingNewInterface = true;
 }
 
 bool CSinaRTDataSource::Reset() {

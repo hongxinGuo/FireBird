@@ -52,7 +52,7 @@ namespace FireBirdTest { namespace {
 	TEST_F(CMockSinaRTDataSourceTest, TestInitialize) {
 		EXPECT_EQ(SinaDataSource.GetHeaders(), "Referer:https://finance.sina.com.cn\r\n\r\n") << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
 		EXPECT_EQ(SinaDataSource.GetInquiryFunction(), "https://hq.sinajs.cn/list=") << "新浪实时数据服务器已使用https";
-		EXPECT_EQ(SinaDataSource.GetInquiryToken(), "");
+		EXPECT_EQ(SinaDataSource.GetToken(), "");
 		EXPECT_EQ(SinaDataSource.GetInquiringNumber(), 850) << "新浪默认值";
 	}
 

@@ -9,7 +9,6 @@
 
 #include"simdjsonGetValue.h"
 #include "TimeConvert.h"
-#include "WebData.h"
 #include "WorldMarket.h"
 
 #include<sqlpp23/sqlpp23.h>
@@ -22,6 +21,7 @@
 #include"dataBaseConnector.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
+#include"cpr/cpr.h"
 
 using std::chrono::local_time;
 using std::istringstream;
@@ -30,6 +30,78 @@ using std::make_shared;
 CProductTiingoStockProfile::CProductTiingoStockProfile() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/meta?";
 }
+
+void CProductTiingoStockProfile::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+		}
+
+		const auto pvTiingoStock = Parse(r.text);
+
+		std::ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) {
+			auto s = pData1->GetSymbol();
+			return s.compare(pData2->GetSymbol()) < 0;
+		});
+
+		gl_dataContainerTiingoDelistedSymbol.Reset();
+		gl_dataContainerTiingoNewSymbol.Reset();
+
+		if (pvTiingoStock->empty()) return;
+
+		// 删除代码集中重复的代码，相同代码的多个活跃股票则保留DailyUpdate最新的那个，其他也都删除。
+		DeleteDuplicatedSymbol(pvTiingoStock);
+
+		for (size_t index = 0; index < m_containerCurrentTiingoSymbols.Size(); index++) {
+			auto pTiingoStock = m_containerCurrentTiingoSymbols.GetStock(index);
+			auto symbol = pTiingoStock->GetSymbol();
+			if (!pTiingoStock->IsActive()) { // 退市股票？
+				if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
+					gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(false);
+					gl_dataContainerTiingoDelistedSymbol.Add(pTiingoStock); // 存入退市代码集中，准备删除其日线数据。
+				}
+			}
+			else if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 已存在代码
+				gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(true);
+				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
+					gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
+				}
+			}
+			else { // 新股票代码
+				pTiingoStock->SetUpdateProfileDB(true);
+				gl_dataContainerTiingoStock.Add(pTiingoStock); // 将此股票存入数据库。
+				gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
+			}
+		}
+		gl_pWorldMarket->SetDeleteTiingoDelistedStock(true); // 设置删除已经退市的股票标志
+		gl_pWorldMarket->DeleteTiingoDelistedStock(std::stop_token{});
+		gl_pWorldMarket->SetDeleteTiingoDelistedStock(false);
+
+		// Note 先在这里存储
+		SaveNewSymbol();
+		SaveDelistedSymbol();
+	}
+}
+
+	void CProductTiingoStockProfile::WebStatusCheck(cpr::Response & r) {
+		switch (r.status_code) {
+		case 0:
+			break;
+		case 403: // forbidden
+			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+			break;
+		default:
+			break;
+		}
+	}
+
 
 shared_ptr<vector<string>> CProductTiingoStockProfile::CreateMessage() {
 	m_strInquiringSymbol = "All";
@@ -45,51 +117,7 @@ shared_ptr<vector<string>> CProductTiingoStockProfile::CreateMessage() {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 
-	std::ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) {
-		auto s = pData1->GetSymbol();
-		return s.compare(pData2->GetSymbol()) < 0;
-	});
-
-	gl_dataContainerTiingoDelistedSymbol.Reset();
-	gl_dataContainerTiingoNewSymbol.Reset();
-
-	if (pvTiingoStock->empty()) return;
-
-	// 删除代码集中重复的代码，相同代码的多个活跃股票则保留DailyUpdate最新的那个，其他也都删除。
-	DeleteDuplicatedSymbol(pvTiingoStock);
-
-	for (size_t index = 0; index < m_containerCurrentTiingoSymbols.Size(); index++) {
-		auto pTiingoStock = m_containerCurrentTiingoSymbols.GetStock(index);
-		auto symbol = pTiingoStock->GetSymbol();
-		if (!pTiingoStock->IsActive()) { // 退市股票？
-			if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
-				gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(false);
-				gl_dataContainerTiingoDelistedSymbol.Add(pTiingoStock); // 存入退市代码集中，准备删除其日线数据。
-			}
-		}
-		else if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 已存在代码
-			gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(true);
-			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
-				gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
-			}
-		}
-		else { // 新股票代码
-			pTiingoStock->SetUpdateProfileDB(true);
-			gl_dataContainerTiingoStock.Add(pTiingoStock); // 将此股票存入数据库。
-			gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
-		}
-	}
-	gl_pWorldMarket->SetDeleteTiingoDelistedStock(true); // 设置删除已经退市的股票标志
-	gl_pWorldMarket->DeleteTiingoDelistedStock(std::stop_token{});
-	gl_pWorldMarket->SetDeleteTiingoDelistedStock(false);
-
-	// Note 先在这里存储
-	SaveNewSymbol();
-	SaveDelistedSymbol();
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -120,19 +148,19 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 使用simdjson解析，速度为Nlohmann-json的三倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
+CTiingoStocksPtr CProductTiingoStockProfile::Parse(const string& text) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ "Field not available for free/evaluation" }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CTiingoStockPtr pStock = nullptr;
 
-	if (!IsValidData(pWebData)) return pvTiingoStock;
+	if (::IsVoidJson(text)) return pvTiingoStock;
+	if (IsNoRightToAccess()) return pvTiingoStock;
 
 	try {
 		string s1;
 		string_view sv;
-		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJson);
+		const simdjson::padded_string jsonPadded(text);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		int iCount = 0;
@@ -224,6 +252,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 	}
 	return pvTiingoStock;
 }
+
 
 void CProductTiingoStockProfile::UpdateSystemStatus() {
 	gl_pTiingoDataSource->SetUpdateStockSymbol(false);

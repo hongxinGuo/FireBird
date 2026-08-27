@@ -194,7 +194,7 @@ namespace FireBirdTest {
 		                         &tiingoStockDailyMeta3, &tiingoStockDailyMeta4, &tiingoStockDailyMeta10));
 
 	TEST_P(ProcessTiingoStockDailyMetaTest2, TestProcessStockDailyMeta) {
-		auto pDailyMeta = m_tiingoStockProduct.ParseTiingoStockDailyMeta(m_pWebData);
+		auto pDailyMeta = m_tiingoStockProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");

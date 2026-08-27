@@ -116,7 +116,7 @@ namespace FireBirdTest {
 		                         &tiingoStockWebData3, &tiingoStockWebData4, &tiingoStockWebData10));
 
 	TEST_P(ParseTiingoStockTest, TestParseStockProfile) {
-		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
+		m_pvStock = m_tiingoStockSymbolProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvStock->size(), 0);

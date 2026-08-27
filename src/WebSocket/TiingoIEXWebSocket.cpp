@@ -24,7 +24,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
 		if (gl_systemConfiguration.IsExitingSystem()) break;
-			gl_pTiingoIEXWebSocket->PushData(msg->str);
+		gl_pTiingoIEXWebSocket->PushData(msg->str);
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_pTiingoIEXWebSocket->SetError(true);
@@ -96,7 +96,7 @@ string CTiingoIEXWebSocket::CreateMessage(const vector<string>& vSymbol) {
 	vector<string> vSymbol2;
 	nlohmannJson jsonMessage;
 	jsonMessage["eventName"] = "subscribe";
-	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
+	jsonMessage["authorization"] = gl_pTiingoDataSource->GetToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 6; //Note threshold0-5需要IEX额外授权，使用6无需授权。
 	for (auto str : vSymbol) {
 		std::ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符

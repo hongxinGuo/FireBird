@@ -46,7 +46,7 @@ CTiingoDataSource::CTiingoDataSource() {
 	m_strInquiryFunction = ""; // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = "";
 	m_strSuffix = "&token=";
-	m_strInquiryToken = "";
+	m_token = "859bd66ca24b2a81a2b5f4de6616e2c408b2a769"; // 默认值
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 
 	CTiingoDataSource::ConfigureInternetOption();

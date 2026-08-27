@@ -148,7 +148,7 @@ namespace FireBirdTest {
 		CTiingoCandleLinesPtr pvDayLine;
 		CTiingoCandleLine dayLine;
 
-		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
+		pvDayLine = m_tiingoStockPriceCandle.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(pvDayLine->size(), 0);

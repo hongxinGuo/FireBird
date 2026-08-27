@@ -7,15 +7,43 @@
 #include "ContainerFinnhubCrypto.h"
 #include "ContainerTiingoCryptoSymbol.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include "FinnhubCrypto.h"
 #include "TiingoCrypto.h"
 #include"DayLine.h"
+#include "TiingoDataSource.h"
+
+#include"cpr/cpr.h"
 
 using namespace std;
 
 CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/crypto/price?";
+}
+
+void CProductTiingoCryptoDayLine::InquireData(const std::stop_token& st, const string& strHeaders, const string& strParams, const string& strSuffix, const string& strInquiryToken) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ s });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+		ABSL_DCHECK(m_index >= 0);
+		const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
+		const CDayLinesPtr pvDayLine = Parse(r.text);
+		pCrypto->SetUpdateDayLine(false);
+	}
+}
+
+void CProductTiingoCryptoDayLine::WebStatusCheck(cpr::Response& r) {
+}
+
+void CProductTiingoCryptoDayLine::UpdateSystemStatus() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -35,32 +63,6 @@ shared_ptr<vector<string>> CProductTiingoCryptoDayLine::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ABSL_DCHECK(m_index >= 0);
-	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
-	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
-	pCrypto->SetUpdateDayLine(false);
-	/*
-	if (!pvDayLine->empty()) {
-		for (const auto& pDayLine2 : *pvDayLine) {
-			pDayLine2->SetExchange(pCrypto->GetExchangeCode());
-			pDayLine2->SetCryptoSymbol(pCrypto->GetSymbol());
-			pDayLine2->SetDisplaySymbol(pCrypto->GetTicker());
-		}
-		pCrypto->UpdateDayLine(*pvDayLine);
-		pCrypto->SetUpdateDayLineDB(true);
-		pCrypto->SetUpdateProfileDB(true);
-		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().c_str());
-		return;
-	}
-	else {
-		pCrypto->SetUpdateDayLineDB(false);
-		pCrypto->SetUpdateProfileDB(false);
-		//ABSL_DLOG(INFO) << std::format("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().c_str());
-	}
-	*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,15 +103,16 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData) {
+CDayLinesPtr CProductTiingoCryptoDayLine::Parse(const string& text) {
 	auto pvDayLine = make_shared<vector<CDayLine>>();
 	pvDayLine->reserve(3000); // 预留空间，避免频繁扩容。
 
 	string s;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvDayLine;
-	if (!IsValidData(pWebData)) return pvDayLine;
+	if (text.empty()) return pvDayLine;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvDayLine;
+	if (::IsVoidJson(text)) return pvDayLine;
 
 	try {
 		s = js.at("detail"); // 是否有报错信息
@@ -141,8 +144,7 @@ CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDat
 			pvDayLine->push_back(dayLine);
 		}
 	} catch (nlohmannJson::exception& e) {
-		string str3 = pWebData->GetDataBuffer();
-		str3 = str3.substr(0, 120);
+		string str3 = text.substr(0, 120);
 		ReportJSonErrorToSystemMessage("Tiingo Crypto DayLine " + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}

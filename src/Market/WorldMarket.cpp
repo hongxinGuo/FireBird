@@ -1233,13 +1233,13 @@ bool CWorldMarket::UpdateToken() {
 	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 
 	if (gl_systemConfiguration.GetFinnhubToken().length() > 5) {
-		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken());
+		gl_pFinnhubDataSource->SetToken(gl_systemConfiguration.GetFinnhubToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage("Finnhub Token Needed");
 	}
 	if (gl_systemConfiguration.GetTiingoToken().length() > 5) {
-		gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken());
+		gl_pTiingoDataSource->SetToken(gl_systemConfiguration.GetTiingoToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage("Tiingo Token Needed");

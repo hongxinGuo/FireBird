@@ -18,13 +18,12 @@ CAccessoryDataSource::CAccessoryDataSource() {
 
 	m_strParam = "";
 	m_strSuffix = "";
-	m_strInquiryToken = "";
+	m_token = "";
 	m_lInquiringNumber = 1; // Accessory实时数据查询数量默认值
 
 	CAccessoryDataSource::ConfigureInternetOption();
 	CAccessoryDataSource::Reset();
 
-	m_bUsingNewInterface = true;
 }
 
 bool CAccessoryDataSource::Reset() {

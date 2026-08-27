@@ -45,7 +45,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataSource.GetHeaders(), "");
 		EXPECT_TRUE(dataSource.GetInquiringString() ==nullptr);
 		EXPECT_EQ(dataSource.GetInquiryFunction(), "");
-		EXPECT_EQ(dataSource.GetInquiryToken(), "");
+		EXPECT_EQ(dataSource.GetToken(), "");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestInquire) {
@@ -108,9 +108,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringSuffix) {
-		dataSource.SetInquiryToken("cdefghigh");
-		EXPECT_EQ(dataSource.GetInquiryToken(), "cdefghigh");
-		dataSource.SetInquiryToken("");
+		dataSource.SetToken("cdefghigh");
+		EXPECT_EQ(dataSource.GetToken(), "cdefghigh");
+		dataSource.SetToken("");
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestCreateTotalInquiringString) {

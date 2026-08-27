@@ -160,7 +160,7 @@ namespace FireBirdTest {
 		                         &tiingoIEXTopOfBook3, &tiingoIEXTopOfBook4, &tiingoIEXTopOfBook10));
 
 	TEST_P(ParseTiingoIEXTopOfBookTest, TestParseTiingoIEXTopOfBook) {
-		m_pvIEXTopOfBook = m_tiingoIEXTopOfBookProduct.ParseTiingoIEXTopOfBook(m_pWebData);
+		m_pvIEXTopOfBook = m_tiingoIEXTopOfBookProduct.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);

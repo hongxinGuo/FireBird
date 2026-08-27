@@ -40,7 +40,6 @@ CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	CTengxunDayLineDataSource::ConfigureInternetOption();
 	CTengxunDayLineDataSource::Reset();
 
-	m_bUsingNewInterface = true;
 }
 
 bool CTengxunDayLineDataSource::Reset() {
