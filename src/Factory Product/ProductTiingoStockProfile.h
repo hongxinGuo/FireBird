@@ -3,7 +3,7 @@
 #include "ContainerTiingoSymbol.h"
 #include"ProductTiingo.h"
 
-#include"TiingoStock.h";
+#include"TiingoStock.h"
 
 using std::shared_ptr;
 using std::vector;

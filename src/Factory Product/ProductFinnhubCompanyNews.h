@@ -8,7 +8,7 @@
 
 #include"ProductFinnhub.h"
 
-#include"FinnhubCompanyNews.h";
+#include"FinnhubCompanyNews.h"
 
 class CProductFinnhubCompanyNews final : public CProductFinnhub {
 public:

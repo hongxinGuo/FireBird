@@ -31,7 +31,7 @@ void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st) 
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString }, cpr::Ssl(cpr::ssl::CaInfo{ "C:/FireBird/cacert.pem" }));
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
 		m_statusCode = r.status_code;
 		m_elapsed = r.elapsed;
 

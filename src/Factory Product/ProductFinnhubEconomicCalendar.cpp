@@ -19,11 +19,54 @@
 #include "SystemConfiguration.h"
 #include "WebData.h"
 #include"EconomicCalendar.h"
+#include"cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/calendar/economic?";
+}
+
+void CProductFinnhubEconomicCalendar::InquireData(const std::stop_token& st) {
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pvEconomicCalendar = Parse(r.text);
+		if (pvEconomicCalendar->empty()) {
+			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		}
+		else {
+			gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
+		}
+	}
+}
+
+void CProductFinnhubEconomicCalendar::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0: //
+		// do nothing
+		break;
+	case 401: // no right to access
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
+	default:
+		string sType = typeid(this).name();
+		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushErrorMessage(s);
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductFinnhubEconomicCalendar::CreateMessage() {
@@ -35,25 +78,17 @@ shared_ptr<vector<string>> CProductFinnhubEconomicCalendar::CreateMessage() {
 	return pInquiry;
 }
 
-void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
-	if (pvEconomicCalendar->empty()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-	}
-	else {
-		gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
-	}
-}
-
-CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {
+CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::Parse(const string& text) {
 	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendar>>();
 	pvEconomicCalendar->reserve(1000);
 
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return pvEconomicCalendar;
-	if (!IsValidData(pWebData)) return pvEconomicCalendar;
+	if (text.empty()) return pvEconomicCalendar;
+	if (!::CreateJsonWithNlohmann(js, text)) return pvEconomicCalendar;
+	if (::IsVoidJson(text)) return pvEconomicCalendar; // 即使为空，也完成了查询。
+	if (IsNoRightToAccess()) return pvEconomicCalendar;
 
 	try {
 		nlohmannJson js2 = jsonGetChild(js, "economicCalendar");

@@ -7,21 +7,60 @@
 #include "ContainerFinnhubStock.h"
 
 #include "ProductFinnhubCompanyProfile.h"
+
+#include "FinnhubDataSource.h"
 #include"FinnhubStock.h"
+#include "SystemMessage.h"
+#include"cpr/cpr.h"
 
 #include "WebData.h"
 
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile?symbol=";
 }
+
 void CProductFinnhubCompanyProfile::InquireData(const std::stop_token& st) {
-	CProductFinnhub::InquireData(st);
+	auto inquireStrings = CreateMessage();
+	for (const auto& inquiry : *inquireStrings) {
+		if (st.stop_requested()) break;
+		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
+		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
+		m_statusCode = r.status_code;
+		m_elapsed = r.elapsed;
+
+		if (m_statusCode != 200) {
+			WebStatusCheck(r);
+			return;
+		}
+
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		pStock->SetUpdateCompanyProfile(false);
+		const bool fSucceed = Parse(r.text, pStock);
+		if (fSucceed || IsVoidJson(r.text) || IsNoRightToAccess()) {
+			pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
+			pStock->SetUpdateProfileDB(true);
+		}
+	}
 }
+
 void CProductFinnhubCompanyProfile::WebStatusCheck(cpr::Response& r) {
-	CProductFinnhub::WebStatusCheck(r);
+	switch (r.status_code) {
+	case 0: //
+		// do nothing
+		break;
+	case 401: // no right to access
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
+	default:
+		string sType = typeid(this).name();
+		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushErrorMessage(s);
+		break;
+	}
 }
+
 void CProductFinnhubCompanyProfile::UpdateSystemStatus() {
-	CProductFinnhub::UpdateSystemStatus();
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyProfile::CreateMessage() {
@@ -32,16 +71,6 @@ shared_ptr<vector<string>> CProductFinnhubCompanyProfile::CreateMessage() {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
-}
-
-void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	pStock->SetUpdateCompanyProfile(false);
-	const bool fSucceed = ParseFinnhubStockProfile(pWebData, pStock);
-	if (fSucceed || pWebData->IsVoidJson() || IsNoRightToAccess()) {
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
-		pStock->SetUpdateProfileDB(true);
-	}
 }
 
 /// <summary>
@@ -78,14 +107,13 @@ void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///  "finnhubIndustry":"Technology"
 ///  }
 /// <returns></returns>
-bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CFinnhubStockPtr pStock) const {
+bool CProductFinnhubCompanyProfile::Parse(const string& text, CFinnhubStockPtr pStock) const {
 	nlohmannJson js;
 
-	if (!pWebData->CreateJson(js)) return false;
-	if (pWebData->IsVoidJson()) return true; // 无数据
-	if (IsNoRightToAccess()) { // 无权访问
-		return true;
-	}
+	if (!::CreateJsonWithNlohmann(js, text)) return false;
+	if (::IsVoidJson(text)) return true;// 无数据
+	if (IsNoRightToAccess()) return true; // 无权访问
+
 	try {
 		string s;
 		double d = 0.0;

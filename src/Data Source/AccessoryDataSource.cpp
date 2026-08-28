@@ -23,12 +23,10 @@ CAccessoryDataSource::CAccessoryDataSource() {
 
 	CAccessoryDataSource::ConfigureInternetOption();
 	CAccessoryDataSource::Reset();
-
 }
 
 bool CAccessoryDataSource::Reset() {
 	m_fAccessoryDataInquiryFinished = false;
-	m_fUpdateIndexNasdaq100Stocks = true;
 	return true;
 }
 
@@ -39,19 +37,7 @@ bool CAccessoryDataSource::GenerateInquiryMessage(const local_seconds& lCurrentT
 
 	ABSL_DCHECK(!IsInquiring());
 
-	if (GenerateIndexNasdaq100Stocks()) return true;
-
 	ABSL_DCHECK(!IsInquiring());
-	return false;
-}
-
-bool CAccessoryDataSource::GenerateIndexNasdaq100Stocks() {
-	ABSL_DCHECK(!IsInquiring());
-	if (IsUpdateIndexNasdaq100Stocks()) {
-		const CVirtualProductWebDataPtr p = m_pAccessoryFactory->CreateProduct(gl_pWorldMarket, ACCESSORY_INDEX_NASDAQ100_STOCKS_);
-		StoreInquiry(p);
-		return true;
-	}
 	return false;
 }
 

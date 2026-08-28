@@ -17,6 +17,14 @@ bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
 	return false;
 }
 
+bool CVirtualWebProduct::IsVoidJson(const string& text) {
+	if (text == "{}" || text == "[]") {
+		m_iReceivedDataStatus = VOID_DATA_;
+		return true;
+	}
+	return false;
+}
+
 void CVirtualWebProduct::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0: //

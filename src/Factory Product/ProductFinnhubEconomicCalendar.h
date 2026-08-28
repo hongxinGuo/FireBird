@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EconomicCalendar.h"
 #include"ProductFinnhub.h"
 
 class CWebData;
@@ -10,11 +11,13 @@ public:
 	CProductFinnhubEconomicCalendar();
 	~CProductFinnhubEconomicCalendar() override = default;
 
-	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(shared_ptr<CWebData> pWebData) override;
-	shared_ptr<vector<CEconomicCalendar>> ParseFinnhubEconomicCalendar(const shared_ptr<CWebData>& pWebData);
-
+	void InquireData(const std::stop_token& st) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
 	void UpdateSystemStatus() override;
+
+	shared_ptr<vector<string>> CreateMessage() override;
+	CEconomicCalendarsPtr Parse(const string& text);
+
 };
 
 using CFinnhubEconomicCalendarPtr = shared_ptr<CProductFinnhubEconomicCalendar>;

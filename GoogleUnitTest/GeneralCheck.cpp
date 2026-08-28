@@ -212,7 +212,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 
 		EXPECT_TRUE(gl_pAccessoryDataSource->IsEnable());
-		EXPECT_TRUE(gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks());
 
 		EXPECT_EQ(gl_pTiingoDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pFinnhubDataSource->InquiryQueueSize(), 0);

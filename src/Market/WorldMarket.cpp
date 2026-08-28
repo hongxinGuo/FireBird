@@ -754,7 +754,7 @@ void CWorldMarket::UpdateSECFilingsDB(std::stop_token st) {
 }
 
 void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate() {
-	if (!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks() || !gl_pTiingoDataSource->IsUpdateDayLine()) {
+	if (!gl_pTiingoDataSource->IsUpdateDayLine()) {
 		AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_, GetNextTime(GetMarketTime(), 0h, 10min, 0s)); // 十分钟继续计算Nasdaq100 200MA比率
 		return;
 	}

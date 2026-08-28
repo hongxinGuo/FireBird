@@ -7,9 +7,12 @@ public:
 	CProductFinnhubStockPriceQuote();
 	~CProductFinnhubStockPriceQuote() override = default;
 
+	void InquireData(const std::stop_token& st) override; // default do nothing
+	void WebStatusCheck(cpr::Response& r) override;
+	void UpdateSystemStatus() override;
+
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	bool ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock);
+	bool Parse(const string& text, const CFinnhubStockPtr& pStock);
 };
 
 using CFinnhubStockPriceQuotePtr = shared_ptr<CProductFinnhubStockPriceQuote>;

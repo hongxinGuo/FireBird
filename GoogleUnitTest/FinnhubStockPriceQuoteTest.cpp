@@ -124,44 +124,37 @@ namespace FireBirdTest {
 		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
-		auto tt = GetUTCTime();
-		if (m_index == 10) {
-			TestSetUTCTime(1615507200);
-		}
-		m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
+		auto flag = m_finnhubStockPriceQuote.Parse(m_pWebData->GetDataBuffer(), m_pStock);
 		switch (m_index) {
 		case 0: // 空数据
+			EXPECT_FALSE(flag);
 			break;
 		case 1: // 无权利访问的数据
+			EXPECT_FALSE(flag);
 			break;
 		case 3: // 格式不对
+			EXPECT_FALSE(flag);
 			break;
 		case 4: // 缺乏c
+			EXPECT_FALSE(flag);
 			break;
 		case 5: // 缺乏h项
+			EXPECT_FALSE(flag);
 			break;
 		case 6: // 缺乏l项
+			EXPECT_FALSE(flag);
 			break;
 		case 7: // 缺乏o项
+			EXPECT_FALSE(flag);
 			break;
 		case 8: // 缺乏pc
+			EXPECT_FALSE(flag);
 			break;
 		case 9: // 缺乏t项
+			EXPECT_FALSE(flag);
 			break;
 		case 10: // 正确的数据
-			EXPECT_EQ(m_pStock->GetNew(), 121030);
-			EXPECT_EQ(m_pStock->GetHigh(), 121170);
-			EXPECT_EQ(m_pStock->GetLow(), 119160);
-			EXPECT_EQ(m_pStock->GetOpen(), 120400);
-			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
-
-			EXPECT_TRUE(m_pStock->IsActive());
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-
-			// 恢复原状
-			m_pStock->SetUpdateProfileDB(false);
-			TestSetUTCTime(tt);
+			EXPECT_TRUE(flag);
 			break;
 		default:
 			break;

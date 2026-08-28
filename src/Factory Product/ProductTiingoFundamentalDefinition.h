@@ -2,7 +2,7 @@
 
 #include"ProductTiingo.h"
 
-#include"TiingoFundamentalDefinition.h";
+#include"TiingoFundamentalDefinition.h"
 
 class CProductTiingoFundamentalDefinition final : public CProductTiingo {
 public:

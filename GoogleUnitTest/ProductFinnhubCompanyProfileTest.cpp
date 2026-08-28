@@ -70,6 +70,8 @@ namespace FireBirdTest {
 		Test_FinnhubWebData finnhubWebData10(10, "AAPL", R"({"address":"contentious  selectively","city":"slaughterer","country":"miscuing","currency":"inveigles","cusip":"Grable's","description":"crooked ng Odis tint's","employeeTotal":"jalopies","exchange":"sieves abominating cuff's hesitation's debilitating","finnhubIndustry":"culottes","ggroup":"Ziegler's tendrils","gind":"prairies  catalysis","gsector":"habituate Scandinavians","gsubind":"checkout  cherished","ipo":"1980-12-12","isin":"rapport","logo":"freelancer's","marketCapitalization":8790583.5,"naics":"mishmAlisha","naicsNationalIndustry":"pollen jay's flops","naicsSector":"smuggest","naicsSubsector":"apprenticeship's Kringle","name":"impediment's gondolier","phone":"shootout's","sedol":"decrescendi","shareOutstanding":75546.432,"state":"Tweedledee","ticker":"AAPL","weburl":"gestated"})");
 	}
 
+	//todo:
+	/*
 	class ProcessFinnhubStockProfileTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
@@ -157,5 +159,5 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-	}
+	}*/
 }

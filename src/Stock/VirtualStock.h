@@ -118,7 +118,7 @@ public:
 	void AddStockSplits(const shared_ptr<vector<shared_ptr<CStockSplit>>>& pvStockSplit) noexcept; // 按日期顺序添加拆股信息
 	void ClearStockSplit() const noexcept { m_pvStockSplit->clear(); }
 
-	virtual void RebuildStockSplitDB(std::stop_token st) {} // 重建拆股数据库
+	virtual void RebuildStockSplitDB(std::stop_token) {} // 重建拆股数据库
 
 	// 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }

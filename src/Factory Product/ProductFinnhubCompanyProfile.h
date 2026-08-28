@@ -7,13 +7,12 @@ public:
 	CProductFinnhubCompanyProfile();
 	~CProductFinnhubCompanyProfile() override = default;
 
-	void InquireData(const std::stop_token& st) override; // default do nothing
+	void InquireData(const std::stop_token& st) override;
 	void WebStatusCheck(cpr::Response& r) override;
 	void UpdateSystemStatus() override;
 
 	shared_ptr<vector<string>> CreateMessage() override;
-	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	bool ParseFinnhubStockProfile(CWebDataPtr pWebData, CFinnhubStockPtr pStock) const;
+	bool Parse(const string& text, CFinnhubStockPtr pStock) const;
 };
 
 using CFinnhubCompanyProfilePtr = shared_ptr<CProductFinnhubCompanyProfile>;

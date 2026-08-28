@@ -151,7 +151,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
-		m_pvEconomicCalendar = m_finnhubEconomicCalendar.ParseFinnhubEconomicCalendar(m_pWebData);
+		m_pvEconomicCalendar = m_finnhubEconomicCalendar.Parse(m_pWebData->GetDataBuffer());
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
@@ -188,60 +188,5 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-	}
-
-	class ProcessFinnhubEconomicCalendarTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCalendar.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubEconomicCalendar.SetIndex(0);
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		int m_index;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubEconomicCalendar m_finnhubEconomicCalendar;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar, ProcessFinnhubEconomicCalendarTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-		                         &finnhubWebData115, &finnhubWebData120));
-
-	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
-		m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
-		switch (m_index) {
-		case 0: // 空数据
-			break;
-		case 1: // 无权利访问的数据
-			break;
-		case 2: // 格式不对
-			break;
-		case 3: // 缺乏economicCalendar
-			break;
-		case 4: // 第一个数据缺actual
-			break;
-		case 5: // 第二个数据缺actual
-			break;
-		case 10:
-			break;
-		default:
-			break;
-		}
-		gl_dataContainerFinnhubEconomicCalendar.Reset();
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 	}
 }

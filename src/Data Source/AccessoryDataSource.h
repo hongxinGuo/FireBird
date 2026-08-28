@@ -19,19 +19,12 @@ public:
 
 	bool GenerateInquiryMessage(const local_seconds& lCurrentTime) override;
 
-	// Accessory factory 更新项目
-	virtual bool GenerateIndexNasdaq100Stocks();
-
 	void ConfigureInternetOption() override;
-
-	bool IsUpdateIndexNasdaq100Stocks() const noexcept { return m_fUpdateIndexNasdaq100Stocks; }
-	virtual void SetUpdateIndexNasdaq100Stocks(bool fFlag) noexcept { m_fUpdateIndexNasdaq100Stocks = fFlag; }
 
 protected:
 	unique_ptr<CAccessoryFactory> m_pAccessoryFactory;
 
 	// 每日更新项目
-	bool m_fUpdateIndexNasdaq100Stocks{ true };
 
 	bool m_fAccessoryDataInquiryFinished{ false };
 };
