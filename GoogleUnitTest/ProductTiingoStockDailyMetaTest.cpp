@@ -88,7 +88,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
+			m_text = pData->m_data;
 		}
 
 		void TearDown() override {
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CProductTiingoStockDailyMeta m_tiingoStockProduct;
 		long long m_llTiingoBandWidthLeft;
 	};
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 		                         &tiingoStockDailyMeta3, &tiingoStockDailyMeta4, &tiingoStockDailyMeta10));
 
 	TEST_P(ProcessTiingoStockDailyMetaTest2, TestProcessStockDailyMeta) {
-		auto pDailyMeta = m_tiingoStockProduct.Parse(m_pWebData->GetDataBuffer());
+		auto pDailyMeta = m_tiingoStockProduct.Parse(m_text);
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(pDailyMeta->m_strCode, "AAPL");

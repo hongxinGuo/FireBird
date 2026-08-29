@@ -100,24 +100,21 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateChosenStockDayLine());
 	}
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData1) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_("abcde"); // 无关紧要
 		auto pProduct = make_shared<CProductDummy>();
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		m_pTiingoDataSource->CheckWebData(pWebData);
+		m_pTiingoDataSource->CheckWebData("abcde");
 		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_NO_ERROR_);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData2) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(R"({"detail":"You do not have permission to access the News API"})"); // 无权申请
+		string s = R"({"detail":"You do not have permission to access the News API"})"; // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // error
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		m_pTiingoDataSource->CheckWebData(pWebData);
+		m_pTiingoDataSource->CheckWebData(s);
 		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_NO_RIGHT_TO_ACCESS_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
@@ -126,14 +123,13 @@ namespace FireBirdTest {
 		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData3) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(R"({"detail":"Please supply a token"})"); // 无权申请
+		string s = R"({"detail":"Please supply a token"})"; // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 403 forbidden
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		m_pTiingoDataSource->CheckWebData(pWebData);
+		m_pTiingoDataSource->CheckWebData(s);
 		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_MISSING_API_KEY_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
@@ -144,14 +140,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData4) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(R"({"detail":"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."})"); // 无权申请
+		string s = R"({"detail":"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."})"; // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		m_pTiingoDataSource->CheckWebData(pWebData);
+		m_pTiingoDataSource->CheckWebData(s);
 		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
@@ -163,14 +158,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData5) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(R"({"detail":"Not handled"})"); // 无权申请
+		string s = R"({"detail":"Not handled"})"; // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA_);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);
 
-		m_pTiingoDataSource->CheckWebData(pWebData);
+		m_pTiingoDataSource->CheckWebData(s);
 		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_NOT_HANDLED_);
 		//EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
@@ -180,8 +174,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData6) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(R"({"detail":"Not found."})"); // 没找到
+		string s = R"({"detail":"Not found."})"; // 没找到
 		m_pTiingoDataSource->SetHTTPStatusCode(404); // not found
 		auto pProduct = make_shared<CProductTiingoStockDailyMeta>();
 		pProduct->SetInquireType(TIINGO_STOCK_DAILY_META_);
@@ -191,7 +184,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_tiingoInaccessibleStock.IsInaccessible(TIINGO_STOCK_DAILY_META_, "TZUP"));
 
-		m_pTiingoDataSource->CheckWebData(pWebData);
+		m_pTiingoDataSource->CheckWebData(s);
 		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_SYMBOL_NOT_FOUND_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
@@ -204,8 +197,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestCheckWebData7) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(R"({"detail":"Error: Ticker 'TZUP' not found"})"); // 没找到
+		string s = R"({"detail":"Error: Ticker 'TZUP' not found"})"; // 没找到
 		m_pTiingoDataSource->SetHTTPStatusCode(404); // not found
 		auto pProduct = make_shared<CProductTiingoStockDayLine>();
 		pProduct->SetInquireType(STOCK_PRICE_CANDLES_);
@@ -215,7 +207,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_tiingoInaccessibleStock.IsInaccessible(STOCK_PRICE_CANDLES_, "TZUP"));
 
-		m_pTiingoDataSource->CheckWebData(pWebData);
+		m_pTiingoDataSource->CheckWebData(s);
 
 		EXPECT_EQ(m_pTiingoDataSource->GetErrorMessage(), ERROR_TIINGO_SYMBOL_NOT_FOUND_);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);

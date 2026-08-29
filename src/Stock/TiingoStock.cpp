@@ -22,10 +22,6 @@
 
 using namespace std;
 
-std::vector<std::string> gl_vCurrent5YearsLow70Percent;
-std::vector<std::string> gl_vCurrent5YearsLow80Percent;
-std::vector<std::string> gl_vCurrent5YearsLow90Percent;
-
 bool IsTiingoStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
 	return typeid(*pStock) == typeid(CTiingoStock);
@@ -606,7 +602,11 @@ void CTiingoStock::ProcessDayLine3(std::stop_token st) {
 }
 
 void CTiingoStock::Find70PercentLow() const {
-	if (GetShareOutstanding() * m_vClose.at(m_vClose.size() - 1) / GetRatio() < 500) return;
+	int marketCapitalization = GetShareOutstanding() * m_vClose.at(m_vClose.size() - 1) / GetRatio();
+	if (marketCapitalization < 500) return;
+	C5YearsLow item;
+	item.m_marketCapitalization = marketCapitalization;
+	item.m_symbol = GetSymbol();
 	ABSL_DCHECK(m_vClose.size() > 300);
 	size_t cutoff = 0;
 	if (m_vClose.size() > 1200) cutoff = m_vClose.size() - 1200;
@@ -615,15 +615,15 @@ void CTiingoStock::Find70PercentLow() const {
 		high5Year = std::max(m_vClose.at(i), high5Year);
 	}
 	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 10)) {
-		gl_vCurrent5YearsLow90Percent.push_back(GetSymbol());
+		gl_vCurrent5YearsLow90Percent.push_back(item);
 		return;
 	}
 	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 5)) {
-		gl_vCurrent5YearsLow80Percent.push_back(GetSymbol());
+		gl_vCurrent5YearsLow80Percent.push_back(item);
 		return;
 	}
 	if (m_vClose.at(m_vClose.size() - 1) < (high5Year / 3.3)) {
-		gl_vCurrent5YearsLow70Percent.push_back(GetSymbol());
+		gl_vCurrent5YearsLow70Percent.push_back(item);
 	}
 }
 

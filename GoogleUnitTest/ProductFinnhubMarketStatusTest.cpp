@@ -63,8 +63,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubMarketStatusProduct.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubMarketStatusProduct.Test_checkAccessRight_(m_text);
 
 			m_pvMarketStatus = nullptr;
 		}
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CMarketStatusPtr m_pMarketStatus;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CMarketStatusesPtr m_pvMarketStatus;
 		CProductFinnhubMarketStatus m_finnhubMarketStatusProduct;
 	};
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubMarketStatus1, ParseFinnhubMarketStatusTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubMarketStatusWebData22));
 
 	TEST_P(ParseFinnhubMarketStatusTest, TestParseFinnhubMarketStatus0) {
-		m_pvMarketStatus = m_finnhubMarketStatusProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvMarketStatus = m_finnhubMarketStatusProduct.Parse(m_text);
 		switch (m_lIndex) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvMarketStatus->size(), 0);
@@ -105,5 +105,4 @@ namespace FireBirdTest {
 			break;
 		}
 	}
-
 }

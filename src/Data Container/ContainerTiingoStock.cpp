@@ -608,9 +608,10 @@ void CContainerTiingoStock::Update5YearLow90PercentStockDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
-	for (auto& symbol : gl_vCurrent5YearsLow90Percent) {
+	for (auto& item : gl_vCurrent5YearsLow90Percent) {
 		db(insert_into(t).set(
-			t.Symbol = symbol,
+			t.Symbol = item.m_symbol,
+			t.MarketCapitalization = item.m_marketCapitalization,
 			t.Date = date
 		));
 	}
@@ -623,9 +624,10 @@ void CContainerTiingoStock::Update5YearLow70PercentStockDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
-	for (auto& symbol : gl_vCurrent5YearsLow70Percent) {
+	for (auto& item : gl_vCurrent5YearsLow70Percent) {
 		db(insert_into(t).set(
-			t.Symbol = symbol,
+			t.Symbol = item.m_symbol,
+			t.MarketCapitalization = item.m_marketCapitalization,
 			t.Date = date
 		));
 	}
@@ -638,9 +640,10 @@ void CContainerTiingoStock::Update5YearLow80PercentStockDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
-	for (auto& symbol : gl_vCurrent5YearsLow80Percent) {
+	for (auto& item : gl_vCurrent5YearsLow80Percent) {
 		db(insert_into(t).set(
-			t.Symbol = symbol,
+			t.Symbol = item.m_symbol,
+			t.MarketCapitalization = item.m_marketCapitalization,
 			t.Date = date
 		));
 	}

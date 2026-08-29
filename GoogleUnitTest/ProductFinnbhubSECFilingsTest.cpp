@@ -74,8 +74,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubSECFilings.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubSECFilings.Test_checkAccessRight_(m_text);
 		}
 
 		void TearDown() override {
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 	public:
 		int m_index{ 0 };
 		CSECFilingsPtr pvSECFilings;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CProductFinnhubSECFilings m_finnhubSECFilings;
 	};
 
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData2, &SECFilings102, &SECFilings103, &SECFilings110));
 
 	TEST_P(ParseFinnhubSECFilingsTest, TestParseFinnhubSECFilings2) {
-		pvSECFilings = m_finnhubSECFilings.Parse(m_pWebData->GetDataBuffer());
+		pvSECFilings = m_finnhubSECFilings.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_TRUE(pvSECFilings->empty());

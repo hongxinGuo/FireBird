@@ -114,7 +114,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
+			m_text = pData->m_data;
 		}
 
 		void TearDown() override {
@@ -126,7 +126,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CTiingoMarketNewssPtr m_pvMarketNews;
 		CProductTiingoMarketNews m_tiingoMarketNewsProduct;
 	};
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 		                         &tiingoMarketNews3, &tiingoMarketNews4, &tiingoMarketNews10));
 
 	TEST_P(ParseTiingoMarketNewsTest, TestParseTiingoMarketNews) {
-		m_pvMarketNews = m_tiingoMarketNewsProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvMarketNews = m_tiingoMarketNewsProduct.Parse(m_text);
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvMarketNews->size(), 1);

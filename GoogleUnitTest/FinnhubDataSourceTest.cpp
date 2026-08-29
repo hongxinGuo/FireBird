@@ -39,7 +39,6 @@
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 #include "ProductFinnhubStockPriceQuote.h"
 #include "ProductFinnhubStockSymbol.h"
-#include "WebData.h"
 
 using namespace testing;
 using namespace std;
@@ -81,29 +80,26 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubDataSourceTest, TestCheckWebData1) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(R"({"error":"You don't have access to this resource."})");
+		string s = R"({"error":"You don't have access to this resource."})";
 
-		m_FinnhubDataSource.CheckWebData(pwd);
+		m_FinnhubDataSource.CheckWebData(s);
 		EXPECT_EQ(ERROR_FINNHUB_NO_RIGHT_TO_ACCESS_, m_FinnhubDataSource.GetErrorMessage());
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_TRUE(pProduct->IsNoRightToAccess());
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestCheckWebData2) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(R"({"error":"Please use an API key."})");
+		string s = R"({"error":"Please use an API key."})";
 
-		m_FinnhubDataSource.CheckWebData(pwd);
+		m_FinnhubDataSource.CheckWebData(s);
 		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY_, m_FinnhubDataSource.GetErrorMessage());
 		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "finnhub missing API key");
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestCheckWebData3) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(R"({"error":"Not Handled"})");
+		string s = R"({"error":"Not Handled"})";
 
-		m_FinnhubDataSource.CheckWebData(pwd);
+		m_FinnhubDataSource.CheckWebData(s);
 		EXPECT_EQ(ERROR_FINNHUB_NOT_HANDLED_, m_FinnhubDataSource.GetErrorMessage());
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "error not processed:Not Handled");
@@ -111,20 +107,18 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestCheckWebData4) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(R"({"no error":"Please use an API key."})");
+		string s = R"({"no error":"Please use an API key."})";
 		EXPECT_EQ(m_FinnhubDataSource.GetHTTPStatusCode(), 200);
 
-		m_FinnhubDataSource.CheckWebData(pwd);
+		m_FinnhubDataSource.CheckWebData(s);
 		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.GetErrorMessage()) << "非错误信息，正常返回";
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestCheckWebData6) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_(R"({"no error":"Please use an API key."})");
+		string s = R"({"no error":"Please use an API key."})";
 		m_FinnhubDataSource.SetHTTPStatusCode(200);
 
-		m_FinnhubDataSource.CheckWebData(pwd);
+		m_FinnhubDataSource.CheckWebData(s);
 		EXPECT_EQ(ERROR_NO_ERROR_, m_FinnhubDataSource.GetErrorMessage()) << "HTTPStatusCode == 200，正常返回";
 
 		// 恢复原状

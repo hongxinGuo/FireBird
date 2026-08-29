@@ -9,7 +9,6 @@
 #include"TimeConvert.h"
 
 #include"ProductTengxunDayLine.h"
-#include "WebData.h"
 #include"DayLineWebData.h"
 #include "SystemData.h"
 #include"ChinaStock.h"

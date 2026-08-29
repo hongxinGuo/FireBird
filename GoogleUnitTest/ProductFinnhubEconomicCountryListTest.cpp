@@ -87,8 +87,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCountryList.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubEconomicCountryList.Test_checkAccessRight_(m_text);
 
 			m_pvCountry = nullptr;
 		}
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CCountriesPtr m_pvCountry;
 		CProductFinnhubEconomicCountryList m_finnhubEconomicCountryList;
 	};
@@ -112,7 +112,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData95, &finnhubWebData96, &finnhubWebData97, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
-		m_pvCountry = m_finnhubEconomicCountryList.Parse(m_pWebData->GetDataBuffer());
+		m_pvCountry = m_finnhubEconomicCountryList.Parse(m_text);
 		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvCountry->size(), 0);

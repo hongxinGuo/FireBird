@@ -8,7 +8,6 @@
 
 #include"ProductFinnhub.h"
 #include"InaccessibleSymbol.h"
-#include "WebData.h"
 
 using std::make_shared;
 
@@ -43,24 +42,20 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess1) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string str = R"({"no error":"You don't have access to this resource."})";
-		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 		finnhubProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_TRUE(finnhubProduct.Test_checkAccessRight_(pWebData)) << "有权读取";
+		EXPECT_TRUE(finnhubProduct.Test_checkAccessRight_(str)) << "有权读取";
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 	}
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess2) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string str = R"({"error":"You don't have access to this resource."})";
-		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_FALSE(finnhubProduct.Test_checkAccessRight_(pWebData)) << "无权读取";
+		EXPECT_FALSE(finnhubProduct.Test_checkAccessRight_(str)) << "无权读取";
 		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess()) << "重置此状态";
 	}
 

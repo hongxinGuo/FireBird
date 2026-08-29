@@ -84,8 +84,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), toLocalDays(19800101));
 			m_pStock->SetUpdateInsiderSentimentDB(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_text);
 
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
 	};
 
@@ -113,7 +113,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
-		auto pv = m_finnhubCompanyInsiderSentiment.Parse(m_pWebData->GetDataBuffer());
+		auto pv = m_finnhubCompanyInsiderSentiment.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(pv->size(), 0);
@@ -147,8 +147,8 @@ namespace FireBirdTest {
 			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
-			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubCompanyInsiderSentiment.Test_checkAccessRight_(m_text);
 
 			m_pvInsiderSentiment = nullptr;
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CInsiderSentimentsPtr m_pvInsiderSentiment;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
 	};
@@ -176,7 +176,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest2, TestParseFinnhubInsiderSentiment0) {
-		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.Parse(m_pWebData->GetDataBuffer());
+		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);

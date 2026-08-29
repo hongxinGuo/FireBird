@@ -52,7 +52,6 @@ void CProductFinnhubCompanyNews::InquireData(const std::stop_token& st) {
 		pStock->SetUpdateCompanyNews(false);
 		pStock->SetUpdateProfileDB(true);
 	}
-
 }
 
 void CProductFinnhubCompanyNews::WebStatusCheck(cpr::Response& r) {
@@ -61,9 +60,11 @@ void CProductFinnhubCompanyNews::WebStatusCheck(cpr::Response& r) {
 	case 0:
 		break;
 	case 302: //redirected, not an error
+		break;
+	case 401:
 	case 403: // forbidden
-		s = std::format("Finnhub company profile concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
 		break;
 	default:
 		s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
@@ -99,7 +100,6 @@ shared_ptr<vector<string>> CProductFinnhubCompanyNews::CreateMessage() {
 	pInquiry->push_back(m_inquiryString);
 	return pInquiry;
 }
-
 
 /// <summary>
 /// 公司新闻，目前只提供北美公司的新闻

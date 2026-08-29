@@ -2,8 +2,6 @@
 
 #include"ProductFinnhub.h"
 
-class CWebData;
-
 class CProductFinnhubCryptoExchange final : public CProductFinnhub {
 public:
 	CProductFinnhubCryptoExchange();

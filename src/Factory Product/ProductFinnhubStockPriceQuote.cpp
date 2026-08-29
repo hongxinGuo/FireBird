@@ -10,7 +10,6 @@
 #include "ContainerFinnhubStock.h"
 #include "FinnhubDataSource.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include"cpr/cpr.h"
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
@@ -49,6 +48,7 @@ void CProductFinnhubStockPriceQuote::WebStatusCheck(cpr::Response& r) {
 		// do nothing
 		break;
 	case 401: // no right to access
+	case 403:
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		CheckInaccessible();
 		break;

@@ -25,12 +25,12 @@
 #include"VirtualWebProduct.h"
 
 #include "TimeConvert.h"
-#include "WebData.h"
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
 #include "FinnhubCrypto.h"
 #include "FinnhubFactory.h"
 #include"FinnhubForex.h"
+#include "JsonParse.h"
 
 using std::exception;
 
@@ -117,12 +117,12 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CFinnhubDataSource::CheckWebData(const CWebDataPtr& pWebData) {
+void CFinnhubDataSource::CheckWebData(const string& text) {
 	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	nlohmannJson js;
-	pWebData->CreateJson(js);
+	CreateJsonWithNlohmann(js, text);
 
 	try {
 		string error = js.at("error");

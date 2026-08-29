@@ -13,8 +13,6 @@
 #include "SystemMessage.h"
 #include"cpr/cpr.h"
 
-#include "WebData.h"
-
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/profile?symbol=";
 }
@@ -49,6 +47,7 @@ void CProductFinnhubCompanyProfile::WebStatusCheck(cpr::Response& r) {
 		// do nothing
 		break;
 	case 401: // no right to access
+	case 403:
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		CheckInaccessible();
 		break;

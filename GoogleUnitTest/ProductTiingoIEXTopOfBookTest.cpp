@@ -92,7 +92,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
+			m_text = pData->m_data;
 		}
 
 		void TearDown() override {
@@ -104,7 +104,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CTiingoIEXTopOfBooksPtr m_pvIEXTopOfBook;
 		CProductTiingoIEXTopOfBook m_tiingoIEXTopOfBookProduct;
 	};
@@ -115,7 +115,7 @@ namespace FireBirdTest {
 		                         &tiingoIEXTopOfBook3, &tiingoIEXTopOfBook4, &tiingoIEXTopOfBook10));
 
 	TEST_P(ParseTiingoIEXTopOfBookTest, TestParseTiingoIEXTopOfBook) {
-		m_pvIEXTopOfBook = m_tiingoIEXTopOfBookProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvIEXTopOfBook = m_tiingoIEXTopOfBookProduct.Parse(m_text);
 		switch (m_index) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);

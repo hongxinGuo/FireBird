@@ -8,7 +8,6 @@
 #include "MockChinaMarket.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include"TimeConvert.h"
 #include"DayLine.h"
 
@@ -148,13 +147,11 @@ namespace FireBirdTest {
 		const string strData = R"(v_sh600000="1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
 v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
 )";
-		const CWebDataPtr pData = make_shared<CWebData>();
-		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
 		}
 
-		ParseTengxunRTData(pData);
+		ParseTengxunRTData(strData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 2);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
@@ -164,13 +161,11 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 		// 无效数据
 		const string strData = R"(v_pv_none_match="1";
 )";
-		const CWebDataPtr pData = make_shared<CWebData>();
-		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
 		}
 
-		ParseTengxunRTData(pData);
+		ParseTengxunRTData(strData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 0);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "GetNextField() out of range";
@@ -181,13 +176,11 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 		const string strData = R"(v_sh600000="1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
 v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";
 )";
-		const CWebDataPtr pData = make_shared<CWebData>();
-		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
 		}
 
-		ParseTengxunRTData(pData);
+		ParseTengxunRTData(strData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 2);
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
@@ -198,13 +191,11 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 	TEST_F(jsonParseTest, TestParseTengxunRTData4) {
 		// 第二个数据不正确
 		const string strData = R"(v_sh600000="1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81";)";
-		const CWebDataPtr pData = make_shared<CWebData>();
-		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
 		}
 
-		ParseTengxunRTData(pData);
+		ParseTengxunRTData(strData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 2);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
@@ -234,14 +225,13 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 	}
 
 	TEST_F(jsonParseTest, TestIsTengxunRTDataInvalid) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(R"(v_pv_none_match="1";
-)"); //Note:这里的回车换行是故意的，为的是插入最后一个回车(\n)字符
+		string s = R"(v_pv_none_match="1";
+)"; //Note:这里的回车换行是故意的，为的是插入最后一个回车(\n)字符
 
-		EXPECT_TRUE(IsTengxunRTDataInvalid(pWebData));
+		EXPECT_TRUE(IsTengxunRTDataInvalid(s));
 
-		pWebData->Test_SetBuffer_("v_v_none_match=\"1\";\n");
+		string s2 = "v_v_none_match=\"1\";\n";
 
-		EXPECT_FALSE(IsTengxunRTDataInvalid(pWebData));
+		EXPECT_FALSE(IsTengxunRTDataInvalid(s2));
 	}
 }

@@ -6,7 +6,6 @@
 #include "ContainerTiingoStock.h"
 #include "jsonParse.h"
 #include"simdjsonGetValue.h"
-#include "WebData.h"
 #include "WorldMarket.h"
 #include"TiingoCompanyFinancialState.h"
 #include "TiingoDataSource.h"

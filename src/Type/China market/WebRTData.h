@@ -136,8 +136,6 @@ using std::shared_ptr;
 using std::string_view;
 using std::string;
 
-class CWebData;
-using CWebDataPtr = std::shared_ptr<CWebData>;
 class CWebRTData;
 using CWebRTDataPtr = std::shared_ptr<CWebRTData>;
 
@@ -153,9 +151,6 @@ public:
 	~CWebRTData() = default;
 
 	void Reset();
-
-	void ParseSinaData(const string_view& svData); // 解析新浪制式数据。开始处为var hq_str_s,结束于字符';'
-	void ParseTengxunData(const string_view& svData); // 解析腾讯制式数据。开始处为v_s,结束于字符';'
 
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
 	long GetDataSource() const noexcept { return m_lDataSource; }

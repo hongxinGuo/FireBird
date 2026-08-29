@@ -7,8 +7,6 @@
 #pragma once
 #include <cpr/response.h>
 
-class CWebData;
-
 using std::string;
 using std::vector;
 
@@ -30,18 +28,15 @@ public:
 	CVirtualWebProduct& operator=(const CVirtualWebProduct&&) noexcept = delete;
 	virtual ~CVirtualWebProduct() = default;
 
-	//Note: 由Product（而不是dataSource)来申请网络数据，使用cpr库。DataSource需要设置使用新接口m_bUsingNewInterface为true，才能使用下面两个函数。
-	// 各继承类必须实现此两个函数。
 	virtual void InquireData(const std::stop_token&) { ABSL_DCHECK(false); } // default do nothing
 	virtual void WebStatusCheck(cpr::Response& r); // cpr新接口的网络状态检查
+	virtual void UpdateSystemStatus() {} // default do nothing
 
 	virtual shared_ptr<vector<string>> CreateMessage() { return make_shared<vector<string>>(vector<string>{ "" }); }
 
 	virtual void AddInaccessibleSymbol() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
-	virtual void UpdateSystemStatus() {} // default do nothing
 
 	bool CheckInaccessible();
-	bool IsVoidJson(const shared_ptr<CWebData>& pWebData);
 	bool IsVoidJson(const string& text);
 
 	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
@@ -70,7 +65,7 @@ public:
 	double GetElapsedTime() const noexcept { return m_elapsed; }
 
 	// 测试用
-	virtual bool Test_checkAccessRight_(shared_ptr<CWebData>) { return true; }  // todo 不再使用，准备删除之
+	virtual bool Test_checkAccessRight_(const string&) { return true; }  // todo 不再使用，准备删除之
 
 protected:
 	string m_strInquiryFunction{};

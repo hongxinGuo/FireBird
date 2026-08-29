@@ -171,9 +171,6 @@
     <ClInclude Include="..\src\Type\China market\StockSection.h">
       <Filter>Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\WebData.h">
-      <Filter>Type\China market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\China market\WebRTData.h">
       <Filter>Type\China market</Filter>
     </ClInclude>
@@ -951,9 +948,6 @@
       <Filter>Type\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\China market\StockSection.cpp">
-      <Filter>Type\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\China market\WebData.cpp">
       <Filter>Type\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp">

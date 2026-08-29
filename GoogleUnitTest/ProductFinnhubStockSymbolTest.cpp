@@ -81,7 +81,7 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCurrency("");
-			m_text = pData->m_pData->GetDataBuffer();
+			m_text = pData->m_data;
 			m_finnhubStockSymbolProduct.SetInquiringExchange("US");
 
 			m_pvStock = nullptr;
@@ -136,60 +136,60 @@ namespace FireBirdTest {
 	}
 
 	//todo:
-/*
-	class ProcessFinnhubStockSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubStockSymbolProduct.Test_checkAccessRight_(m_pWebData);
-
-			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
-			m_finnhubStockSymbolProduct.SetInquiringExchange(gl_dataContainerStockExchange.GetItemExchangeCode(0));
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		long m_lIndex;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubStockSymbol m_finnhubStockSymbolProduct;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData22, &finnhubWebData23,
-		                         &finnhubWebData30));
-	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
-		CFinnhubStockPtr pStock, pStock2;
-		m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
-		switch (m_lIndex) {
-		case 0: // 空数据
-			break;
-		case 1: // 无权利访问的数据
-			break;
-		case 2: // 格式不对
-			break;
-		case 3: // 缺乏currency项
-			break;
-		case 10:
-			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("New Symbol")) << "新增加的代码";
-			pStock = gl_dataContainerFinnhubStock.GetItem("New Symbol");
-			EXPECT_EQ(pStock->GetExchange(), "AD") << "测试数据库的第一个交易所";
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-
-			// 恢复原状
-			gl_dataContainerFinnhubStock.Delete(pStock);
-			break;
-		default:
-			break;
-		}
-	}*/
+	/*
+		class ProcessFinnhubStockSymbolTest : public TestWithParam<Test_FinnhubWebData*> {
+		protected:
+			void SetUp() override {
+				SCOPED_TRACE("");
+				GeneralCheck();
+				const Test_FinnhubWebData* pData = GetParam();
+				m_lIndex = pData->m_index;
+				m_pWebData = pData->m_pData;
+				m_finnhubStockSymbolProduct.Test_checkAccessRight_(m_pWebData);
+	
+				m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
+				m_finnhubStockSymbolProduct.SetInquiringExchange(gl_dataContainerStockExchange.GetItemExchangeCode(0));
+			}
+	
+			void TearDown() override {
+				// clearUp
+				while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+	
+				SCOPED_TRACE("");
+				GeneralCheck();
+			}
+	
+		public:
+			long m_lIndex;
+			CWebDataPtr m_pWebData;
+			CProductFinnhubStockSymbol m_finnhubStockSymbolProduct;
+		};
+	
+		INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData22, &finnhubWebData23,
+			                         &finnhubWebData30));
+		TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
+			CFinnhubStockPtr pStock, pStock2;
+			m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
+			switch (m_lIndex) {
+			case 0: // 空数据
+				break;
+			case 1: // 无权利访问的数据
+				break;
+			case 2: // 格式不对
+				break;
+			case 3: // 缺乏currency项
+				break;
+			case 10:
+				EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("New Symbol")) << "新增加的代码";
+				pStock = gl_dataContainerFinnhubStock.GetItem("New Symbol");
+				EXPECT_EQ(pStock->GetExchange(), "AD") << "测试数据库的第一个交易所";
+				EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+	
+				// 恢复原状
+				gl_dataContainerFinnhubStock.Delete(pStock);
+				break;
+			default:
+				break;
+			}
+		}*/
 }

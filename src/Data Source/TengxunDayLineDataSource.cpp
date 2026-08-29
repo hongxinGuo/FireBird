@@ -21,7 +21,6 @@
 #include "EastmoneyDayLineDataSource.h"
 #include "SystemConfiguration.h"
 #include "TimeConvert.h"
-#include "WebData.h"
 #include"ChinaStock.h"
 
 #include <random>
@@ -39,7 +38,6 @@ CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 
 	CTengxunDayLineDataSource::ConfigureInternetOption();
 	CTengxunDayLineDataSource::Reset();
-
 }
 
 bool CTengxunDayLineDataSource::Reset() {
@@ -188,7 +186,7 @@ void CTengxunDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
+void CTengxunDayLineDataSource::CheckWebData(const string& text) {
 	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
@@ -204,10 +202,6 @@ void CTengxunDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		break;
 	}
-}
-
-void CTengxunDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
-	pData->SetStockCode(GetDownLoadingStockCode());
 }
 
 /// <summary>

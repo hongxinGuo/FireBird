@@ -126,8 +126,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCalendar.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubEconomicCalendar.Test_checkAccessRight_(m_text);
 
 			m_pvEconomicCalendar = nullptr;
 		}
@@ -141,7 +141,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CEconomicCalendarsPtr m_pvEconomicCalendar;
 		CProductFinnhubEconomicCalendar m_finnhubEconomicCalendar;
 	};
@@ -151,7 +151,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
-		m_pvEconomicCalendar = m_finnhubEconomicCalendar.Parse(m_pWebData->GetDataBuffer());
+		m_pvEconomicCalendar = m_finnhubEconomicCalendar.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);

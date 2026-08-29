@@ -3,7 +3,6 @@
 #include"ProductFinnhub.h"
 
 #include"InaccessibleSymbol.h"
-#include "WebData.h"
 
 using std::make_shared;
 using std::exception;
@@ -35,9 +34,8 @@ void CProductFinnhub::AddInaccessibleSymbol() {
 // 目前仅用于测试中。准备删除
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductFinnhub::Test_checkAccessRight_(CWebDataPtr pWebData) {
-	const string s(pWebData->GetStringView());
-	if (s == R"({"error":"You don't have access to this resource."})") {
+bool CProductFinnhub::Test_checkAccessRight_(const string& text) {
+	if (text == R"({"error":"You don't have access to this resource."})") {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}

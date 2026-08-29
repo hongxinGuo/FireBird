@@ -11,7 +11,6 @@
 #include"jsonParse.h"
 #include"simdjsonGetValue.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include"cpr/cpr.h"
 
 using namespace std;
@@ -53,6 +52,7 @@ void CProductFinnhubSECFilings::WebStatusCheck(cpr::Response& r) {
 		// do nothing
 		break;
 	case 401: // no right to access
+	case 403:
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		CheckInaccessible();
 		break;

@@ -5,7 +5,6 @@
 
 #include "ChinaMarket.h"
 #include "SystemConfiguration.h"
-#include "WebData.h"
 
 using namespace std;
 
@@ -17,7 +16,6 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 	CTengxunRTDataSource::ConfigureInternetOption();
 
 	CTengxunRTDataSource::Reset();
-
 }
 
 bool CTengxunRTDataSource::Reset() {
@@ -55,20 +53,4 @@ void CTengxunRTDataSource::ConfigureInternetOption() {
 	m_internetOption.option_data_receive_timeout = 1000;
 	m_internetOption.option_send_timeout = 200;
 	m_internetOption.option_connect_retries = 1;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
-// Note: 该字符串长度为21个字符,包括结尾的换行符。改成Raw string时出现错误，最后的换行符无法识别，故而仍然使用普通字符串。
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunRTDataSource::IsInvalidTengxunRTData(const CWebData& WebDataReceived) {
-	const string_view sv = WebDataReceived.GetStringView(0, 21);
-
-	if (sv == "v_pv_none_match=\"1\";\n") {
-		ABSL_DCHECK(WebDataReceived.GetBufferLength() == 21);
-		return true;
-	}
-	else return false;
 }

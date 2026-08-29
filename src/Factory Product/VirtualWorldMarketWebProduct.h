@@ -16,6 +16,4 @@ public:
 	CVirtualWorldMarketWebProduct(const CVirtualWorldMarketWebProduct&&) noexcept = delete;
 	CVirtualWorldMarketWebProduct& operator=(const CVirtualWorldMarketWebProduct&&) noexcept = delete;
 	~CVirtualWorldMarketWebProduct() override = default;
-
-	bool IsValidData(const CWebDataPtr& pWebData);
 };

@@ -2,8 +2,6 @@
 
 #include"VirtualChinaMarketWebProduct.h"
 
-class CWebData;
-
 using std::string;
 
 class CProductSinaRT final : public CVirtualChinaMarketWebProduct {

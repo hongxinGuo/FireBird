@@ -462,9 +462,6 @@
     <ClCompile Include="simdjsonGetValueTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="WebDataTest.cpp">
-      <Filter>Test源文件\Type\China Market</Filter>
-    </ClCompile>
     <ClCompile Include="MockFinnhubWebSocketTest.cpp">
       <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>

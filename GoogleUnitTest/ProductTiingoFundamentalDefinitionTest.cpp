@@ -97,7 +97,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
+			m_text = pData->m_data;
 		}
 
 		void TearDown() override {
@@ -109,7 +109,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CTiingoFundamentalDefinitionsPtr m_pvFundamentalDefinition;
 		CProductTiingoFundamentalDefinition m_tiingoFundamentalDefinitionProduct;
 	};
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		                         &tiingoFundamentalDefinition3, &tiingoFundamentalDefinition4, &tiingoFundamentalDefinition10));
 
 	TEST_P(ParseTiingoFundamentalDefinitionTest, TestParseTiingoFundamentalDefinition) {
-		m_pvFundamentalDefinition = m_tiingoFundamentalDefinitionProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvFundamentalDefinition = m_tiingoFundamentalDefinitionProduct.Parse(m_text);
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);

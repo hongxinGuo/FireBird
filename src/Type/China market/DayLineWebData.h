@@ -15,7 +15,6 @@ public:
 	void SetStockCode(const std::string& strSymbol) noexcept { m_strStockCode = strSymbol; }
 	std::string GetStockCode() { return m_strStockCode; }
 
-	bool TransferWebDataToBuffer(const CWebDataPtr& pWebData);
 	string GetBuffer() { return m_sDataBuffer; }
 
 	int64_t GetCurrentPos() const noexcept { return m_lCurrentPos; }

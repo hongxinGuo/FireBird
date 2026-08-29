@@ -15,7 +15,6 @@
 #include"AlpacaStock.h"
 #include "SystemData.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include"ContainerAlpacaStockSymbol.h"
 
 #include<cpr/cpr.h>
@@ -89,11 +88,10 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 }
 
 void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
+	string number;
 	nlohmannJson j;
 	string message;
 	switch (r.status_code) {
-	case 200: // good;
-		break;
 	case 400: // one of request parameters is invalid.See the return message for detail.
 		j = nlohmann::json::parse(r.text, nullptr, false);
 		message = "Alpaca stock assert: ";
@@ -101,15 +99,20 @@ void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 		gl_systemMessage.PushErrorMessage(message);
 		break;
 	case 401: // Authentication headers are missing or invalid.
-		break;
 	case 403: // The requested resource is forbidden.
+		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		gl_systemMessage.PushErrorMessage(number);
 		break;
 	case 429: // Too many requests.You hit the rate limit.
+		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		gl_systemMessage.PushErrorMessage(number);
 		break;
 	case 500: // Internal server error.
+		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		gl_systemMessage.PushErrorMessage(number);
 		break;
 	default: // unknown problem
-		string number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
 		gl_systemMessage.PushErrorMessage(number);
 		break;
 	}

@@ -90,7 +90,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
+			m_text = pData->m_data;
 			m_tiingoFinancialStateProduct.SetIndex(m_index);
 		}
 
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CTiingoCompanyFinancialStatesPtr m_pvFinancialState;
 		CProductTiingoFinancialState m_tiingoFinancialStateProduct;
 	};
@@ -114,7 +114,7 @@ namespace FireBirdTest {
 		                         &tiingoFinancialState3, &tiingoFinancialState4, &tiingoFinancialState10));
 
 	TEST_P(ParseTiingoFinancialStateTest, TestParseFinancialState) {
-		m_pvFinancialState = m_tiingoFinancialStateProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvFinancialState = m_tiingoFinancialStateProduct.Parse(m_text);
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvFinancialState->size(), 1);

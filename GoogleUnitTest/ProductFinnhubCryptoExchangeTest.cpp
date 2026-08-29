@@ -84,8 +84,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubCryptoExchange.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubCryptoExchange.Test_checkAccessRight_(m_text);
 
 			m_pvExchange = nullptr;
 		}
@@ -98,7 +98,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		shared_ptr<vector<string>> m_pvExchange;
 		CProductFinnhubCryptoExchange m_finnhubCryptoExchange;
 	};
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
-		m_pvExchange = m_finnhubCryptoExchange.Parse(m_pWebData->GetDataBuffer());
+		m_pvExchange = m_finnhubCryptoExchange.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvExchange->size(), 0);

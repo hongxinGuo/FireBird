@@ -87,8 +87,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubForexExchange.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubForexExchange.Test_checkAccessRight_(m_text);
 
 			m_pvExchange = nullptr;
 		}
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		shared_ptr<vector<string>> m_pvExchange;
 		CProductFinnhubForexExchange m_finnhubForexExchange;
 	};
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData74, &finnhubWebData75, &finnhubWebData80));
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
-		m_pvExchange = m_finnhubForexExchange.Parse(m_pWebData->GetDataBuffer());
+		m_pvExchange = m_finnhubForexExchange.Parse(m_text);
 		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvExchange->size(), 0);

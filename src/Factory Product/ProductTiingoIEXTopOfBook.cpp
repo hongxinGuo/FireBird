@@ -18,7 +18,6 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
-#include "WebData.h"
 #include "WorldMarket.h"
 #include "ContainerTiingoStock.h"
 #include "SystemMessage.h"

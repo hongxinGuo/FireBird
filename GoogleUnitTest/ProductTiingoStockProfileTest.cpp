@@ -93,7 +93,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
+			m_text = pData->m_data;
 		}
 
 		void TearDown() override {
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CTiingoStocksPtr m_pvStock;
 		CProductTiingoStockProfile m_tiingoStockSymbolProduct;
 	};
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 		                         &tiingoStockWebData3, &tiingoStockWebData4, &tiingoStockWebData10));
 
 	TEST_P(ParseTiingoStockTest, TestParseStockProfile) {
-		m_pvStock = m_tiingoStockSymbolProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvStock = m_tiingoStockSymbolProduct.Parse(m_text);
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvStock->size(), 0);
@@ -187,6 +187,4 @@ namespace FireBirdTest {
 			break;
 		}
 	}
-
-	
 }

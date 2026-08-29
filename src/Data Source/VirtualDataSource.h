@@ -185,14 +185,13 @@ public:
 	void Inquire(const std::stop_token& st);
 	virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
-	virtual void CheckWebData(const CWebDataPtr&) {} // 此WebData内容为错误信息？
+	virtual void CheckWebData(const string&) {} // 此WebData内容为错误信息？
 
 	void SetDefaultSessionOption();
 
 	virtual void ConfigureInternetOption() {
 		ABSL_DCHECK(false); // 调用了基类函数ConfigureInternetOption
 	} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-	virtual void UpdateStatus(const CWebDataPtr&) {} //成功接收后更新系统状态。
 
 	void CreateTotalInquiringString(shared_ptr<vector<string>> pInquiryStrings);
 	shared_ptr<vector<string>> GetInquiringString() const noexcept { return m_pInquiryStrings; }

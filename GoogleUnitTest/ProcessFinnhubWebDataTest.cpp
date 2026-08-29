@@ -4,7 +4,6 @@
 
 #include"GeneralCheck.h"
 
-#include"WebData.h"
 #include"SystemData.h"
 
 #include"FinnhubWebSocket.h"
@@ -17,8 +16,7 @@ namespace FireBirdTest {
 		Test_FinnhubWebData(int index, const string& strSymbol, const string& strData) {
 			m_index = index;
 			m_strSymbol = strSymbol;
-			m_pData = std::make_shared<CWebData>();
-			m_pData->Test_SetBuffer_(strData);
+			m_text = strData;
 		}
 
 		~Test_FinnhubWebData() = default;
@@ -26,7 +24,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		string m_strSymbol;
-		CWebDataPtr m_pData;
+		string m_text;
 	};
 
 	struct FinnhubWebSocketData {

@@ -63,8 +63,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubMarketHolidayProduct.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubMarketHolidayProduct.Test_checkAccessRight_(m_text);
 
 			m_pvMarketHoliday = nullptr;
 		}
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		CMarketHolidayPtr m_pMarketHoliday;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CMarketHolidaysPtr m_pvMarketHoliday;
 		CProductFinnhubMarketHoliday m_finnhubMarketHolidayProduct;
 	};
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubMarketHoliday1, ParseFinnhubMarketHolidayTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubMarketHolidayWebData22));
 
 	TEST_P(ParseFinnhubMarketHolidayTest, TestParseFinnhubMarketHoliday0) {
-		m_pvMarketHoliday = m_finnhubMarketHolidayProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvMarketHoliday = m_finnhubMarketHolidayProduct.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvMarketHoliday->size(), 0);

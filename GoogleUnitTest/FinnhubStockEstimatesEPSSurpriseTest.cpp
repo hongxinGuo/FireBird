@@ -80,8 +80,8 @@ namespace FireBirdTest {
 			m_index = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
-			m_pWebData = pData->m_pData;
-			m_finnhubStockEstimatesEPSSurprise.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubStockEstimatesEPSSurprise.Test_checkAccessRight_(m_text);
 
 			m_pvEPSSurprise = nullptr;
 		}
@@ -98,7 +98,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CEPSSurprisesPtr m_pvEPSSurprise;
 		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
 	};
@@ -108,7 +108,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
-		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.Parse(m_pWebData->GetDataBuffer());
+		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvEPSSurprise->size(), 0);

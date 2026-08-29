@@ -169,7 +169,6 @@
     <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
     <ClInclude Include="..\src\Type\China market\MonthLine.h" />
     <ClInclude Include="..\src\Type\China market\StockSection.h" />
-    <ClInclude Include="..\src\Type\China market\WebData.h" />
     <ClInclude Include="..\src\Type\China market\WebRTData.h" />
     <ClInclude Include="..\src\Type\China market\WeekLine.h" />
     <ClInclude Include="..\src\Type\SECFiling.h" />
@@ -345,7 +344,6 @@
     <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp" />
     <ClCompile Include="..\src\Type\China market\MonthLine.cpp" />
     <ClCompile Include="..\src\Type\China market\StockSection.cpp" />
-    <ClCompile Include="..\src\Type\China market\WebData.cpp" />
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\src\Type\SECFiling.cpp" />

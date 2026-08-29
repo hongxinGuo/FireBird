@@ -5,6 +5,7 @@
 #include "ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include"JsonParse.h"
+#include "SystemMessage.h"
 #include "TengxunRTDataSource.h"
 #include"cpr/cpr.h"
 
@@ -33,6 +34,21 @@ void CProductTengxunRT::InquireData(const std::stop_token& st) {
 }
 
 void CProductTengxunRT::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 302: //redirected, not an error
+		break;
+	case 401:
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
+													 static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	}
 }
 
 void CProductTengxunRT::UpdateSystemStatus() {

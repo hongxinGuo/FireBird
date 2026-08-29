@@ -98,10 +98,6 @@ namespace FireBirdTest {
 		Test_FinnhubWebData finnhubWebData135(5, "AAPL", R"({"data":[{"name":"Long Brady K","share":269036,"change":-14236,"filingDate":"2021-03-03","transactionDate":"2021-03-02","transactionCode":"F","transactionPrice":3.68},{"name":"Adamson Keelan","share":221083,"change":-11347,"filingDate" : "2021-03-03","transactionDate" : "2021-03-02","transactionCode" : "F","transactionPrice" : 3.68 }] , "no symbol" : "RIG"})");
 	}
 
-
-
-
-
 	class ParseFinnhubInsiderTransactionTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
@@ -111,8 +107,8 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_index;
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
-			m_pWebData = pData->m_pData;
-			m_finnhubCompanyInsiderTransaction.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubCompanyInsiderTransaction.Test_checkAccessRight_(m_text);
 
 			m_pvInsiderTransaction = nullptr;
 		}
@@ -129,7 +125,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CInsiderTransactionsPtr m_pvInsiderTransaction;
 		CProductFinnhubCompanyInsiderTransaction m_finnhubCompanyInsiderTransaction;
 	};
@@ -138,7 +134,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData135, &finnhubWebData134, &finnhubWebData133));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
-		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.Parse(m_pWebData->GetDataBuffer());
+		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.Parse(m_text);
 		switch (m_lIndex) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);

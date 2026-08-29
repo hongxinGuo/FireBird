@@ -46,6 +46,7 @@ void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st) 
 
 void CProductFinnhubCompanySymbolChange::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
+	case 401:
 	case 403: // no right to access
 		if (r.text == R"({"error":"You don't have access to this resource."})") {
 			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;

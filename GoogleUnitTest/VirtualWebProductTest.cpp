@@ -69,52 +69,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(webProduct.GetInquireType(), -1);
 	}
 
-	TEST_F(CVirtualWebProductTest, TestIsVoidJson1) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{}";
-		pWebData->Test_SetBuffer_(strData);
-
-		EXPECT_TRUE(pWebData->IsVoidJson());
-	}
-
-	TEST_F(CVirtualWebProductTest, TestIsVoidJson2) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "[]";
-		pWebData->Test_SetBuffer_(strData);
-
-		EXPECT_TRUE(pWebData->IsVoidJson());
-	}
-
-	TEST_F(CVirtualWebProductTest, TestIsVoidJson3) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{abcdefg}";
-		pWebData->Test_SetBuffer_(strData);
-
-		EXPECT_FALSE(pWebData->IsVoidJson());
-	}
-
-	TEST_F(CVirtualWebProductTest, TestCheckVoidJson1) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{}";
-		pWebData->Test_SetBuffer_(strData);
-		EXPECT_TRUE(pWebData->IsVoidJson());
-
-		EXPECT_TRUE(webProduct.IsVoidJson(pWebData));
-
-		EXPECT_TRUE(webProduct.IsVoidData());
-	}
-
-	TEST_F(CVirtualWebProductTest, TestCheckVoidJson2) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const string strData = "{abc}";
-		pWebData->Test_SetBuffer_(strData);
-		EXPECT_FALSE(pWebData->IsVoidJson());
-
-		EXPECT_FALSE(webProduct.IsVoidJson(pWebData));
-
-		EXPECT_FALSE(webProduct.IsVoidData());
-	}
-
 	TEST_F(CVirtualWebProductTest, TestGetReceivedDataStatus) {
 		EXPECT_EQ(webProduct.GetReceivedDataStatus(), GOOD_DATA_);
 
@@ -126,27 +80,22 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible1) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
-		finnhubWebProduct.Test_checkAccessRight_(pWebData);
+		finnhubWebProduct.Test_checkAccessRight_("");
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible());
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible2) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string strData = R"({"error1":"You don't have access to this resource."})";
-		pWebData->Test_SetBuffer_(strData);
-		finnhubWebProduct.Test_checkAccessRight_(pWebData);
+		finnhubWebProduct.Test_checkAccessRight_(strData);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible()) << "非拒绝提供信息";
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible3) {
-		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string strData = R"({"error":"You don't have access to this resource."})";
-		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange("US");
-		finnhubWebProduct.Test_checkAccessRight_(pWebData);
+		finnhubWebProduct.Test_checkAccessRight_(strData);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible()) << "US交易所";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
@@ -155,12 +104,10 @@ namespace FireBirdTest {
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible4) {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, "SZ")) << "未加入SZ交易所";
 
-		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string strData = R"({"error":"You don't have access to this resource."})";
-		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange("SZ");
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
-		finnhubWebProduct.Test_checkAccessRight_(pWebData);
+		finnhubWebProduct.Test_checkAccessRight_(strData);
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "将SZ交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
@@ -173,23 +120,21 @@ namespace FireBirdTest {
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible5) {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, "US")) << "未加入US交易所";
 
-		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const string strData = R"({"error":"You don't have access to this resource."})";
-		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange("AD");
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
-		finnhubWebProduct.Test_checkAccessRight_(pWebData);
+		finnhubWebProduct.Test_checkAccessRight_(strData);
 
 		finnhubWebProduct.CheckInaccessible(); // 重置内部静态数据
 
 		finnhubWebProduct.SetInquiringExchange("US");
 
 		for (int i = 0; i < 100; i++) {
-			finnhubWebProduct.Test_checkAccessRight_(pWebData);
+			finnhubWebProduct.Test_checkAccessRight_(strData);
 
 			finnhubWebProduct.CheckInaccessible();
 		}
-		finnhubWebProduct.Test_checkAccessRight_(pWebData);
+		finnhubWebProduct.Test_checkAccessRight_(strData);
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "连续100次后，将US交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());

@@ -2587,6 +2587,11 @@ namespace StockMarket {
       using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
+    struct MarketCapitalization {
+      SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(MarketCapitalization, MarketCapitalization);
+      using data_type = ::sqlpp::integral;
+      using has_default = std::true_type;
+    };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
       using data_type = ::sqlpp::integral;
@@ -2597,6 +2602,7 @@ namespace StockMarket {
     using _table_columns = sqlpp::table_columns<T,
                ID,
                Symbol,
+               MarketCapitalization,
                Date>;
     using _required_insert_columns = sqlpp::detail::type_set<>;
   };
@@ -2613,6 +2619,11 @@ namespace StockMarket {
       using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
+    struct MarketCapitalization {
+      SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(MarketCapitalization, MarketCapitalization);
+      using data_type = ::sqlpp::integral;
+      using has_default = std::true_type;
+    };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
       using data_type = ::sqlpp::integral;
@@ -2623,6 +2634,7 @@ namespace StockMarket {
     using _table_columns = sqlpp::table_columns<T,
                ID,
                Symbol,
+               MarketCapitalization,
                Date>;
     using _required_insert_columns = sqlpp::detail::type_set<>;
   };
@@ -2639,6 +2651,11 @@ namespace StockMarket {
       using data_type = ::sqlpp::text;
       using has_default = std::true_type;
     };
+    struct MarketCapitalization {
+      SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(MarketCapitalization, MarketCapitalization);
+      using data_type = ::sqlpp::integral;
+      using has_default = std::true_type;
+    };
     struct Date {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(Date, Date);
       using data_type = ::sqlpp::integral;
@@ -2649,6 +2666,7 @@ namespace StockMarket {
     using _table_columns = sqlpp::table_columns<T,
                ID,
                Symbol,
+               MarketCapitalization,
                Date>;
     using _required_insert_columns = sqlpp::detail::type_set<>;
   };

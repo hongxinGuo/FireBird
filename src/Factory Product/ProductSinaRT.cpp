@@ -40,6 +40,7 @@ void CProductSinaRT::InquireData(const std::stop_token& st) {
 		ParseSinaRTData(r.text); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 	}
 }
+
 void CProductSinaRT::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0:

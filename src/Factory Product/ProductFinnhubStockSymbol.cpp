@@ -68,9 +68,6 @@ void CProductFinnhubStockSymbol::WebStatusCheck(cpr::Response& r) {
 	case 302://redirected, not an error
 		break;
 	case 401: // no right to access
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		CheckInaccessible();
-		break;
 	case 403: // forbidden
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		CheckInaccessible();

@@ -95,8 +95,8 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry("");
-			m_pWebData = pData->m_pData;
-			m_FinnhubCompanyNews.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_FinnhubCompanyNews.Test_checkAccessRight_(m_text);
 
 			m_FinnhubCompanyNews.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CProductFinnhubCompanyNews m_FinnhubCompanyNews;
 	};
 
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 		                         &finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
 
 	TEST_P(ProcessFinnhubStockCompanyNewsTest, TestProcessStockCompanyNews0) {
-		auto pv = m_FinnhubCompanyNews.Parse(m_pWebData->GetDataBuffer());
+		auto pv = m_FinnhubCompanyNews.Parse(m_text);
 		switch (m_index) {
 		case 2: // 格式不对
 			EXPECT_EQ(pv->size(), 0);

@@ -186,7 +186,6 @@
     <ClCompile Include="StockIndicatorBanchmark.cpp" />
     <ClCompile Include="TiingoStockDayLineBenchmark.cpp" />
     <ClCompile Include="VirtualDataHistoryCandleBenchmark.cpp" />
-    <ClCompile Include="WebRTDataBenchmark.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireBirdLib\FireBirdLib.vcxproj">

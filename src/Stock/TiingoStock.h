@@ -239,6 +239,11 @@ using CTiingoStocksPtr = shared_ptr<vector<CTiingoStockPtr>>;
 
 bool IsTiingoStock(const CVirtualStockPtr& pStock);
 
-extern std::vector<std::string> gl_vCurrent5YearsLow70Percent;
-extern std::vector<std::string> gl_vCurrent5YearsLow80Percent;
-extern std::vector<std::string> gl_vCurrent5YearsLow90Percent;
+struct C5YearsLow {
+	std::string m_symbol;
+	int m_marketCapitalization;
+};
+
+inline std::vector<C5YearsLow> gl_vCurrent5YearsLow70Percent;
+inline std::vector<C5YearsLow> gl_vCurrent5YearsLow80Percent;
+inline std::vector<C5YearsLow> gl_vCurrent5YearsLow90Percent;

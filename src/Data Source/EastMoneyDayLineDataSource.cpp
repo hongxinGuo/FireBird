@@ -20,7 +20,6 @@
 #include "SystemConfiguration.h"
 #include"VirtualWebProduct.h"
 #include "TimeConvert.h"
-#include "WebData.h"
 #include"ChinaStock.h"
 
 using std::make_shared;
@@ -36,7 +35,6 @@ CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 
 	CEastmoneyDayLineDataSource::ConfigureInternetOption();
 	CEastmoneyDayLineDataSource::Reset();
-
 }
 
 bool CEastmoneyDayLineDataSource::Reset() {
@@ -174,7 +172,7 @@ void CEastmoneyDayLineDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
+void CEastmoneyDayLineDataSource::CheckWebData(const string& text) {
 	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
@@ -192,10 +190,6 @@ void CEastmoneyDayLineDataSource::CheckWebData(const CWebDataPtr& pWebData) {
 		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		break;
 	}
-}
-
-void CEastmoneyDayLineDataSource::UpdateStatus(const CWebDataPtr& pData) {
-	pData->SetStockCode(GetDownLoadingStockCode());
 }
 
 /// <summary>

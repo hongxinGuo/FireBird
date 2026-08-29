@@ -95,8 +95,8 @@ namespace FireBirdTest {
 			m_index = pData->m_index;
 			m_pvDayLine = nullptr;
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
-			m_pWebData = pData->m_pData;
-			m_finnhubForexDayLine.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubForexDayLine.Test_checkAccessRight_(m_text);
 		}
 
 		void TearDown() override {
@@ -108,7 +108,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CDayLinesPtr m_pvDayLine;
 		CProductFinnhubForexDayLine m_finnhubForexDayLine;
 	};
@@ -121,7 +121,7 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
 		string strMessage;
 
-		m_pvDayLine = m_finnhubForexDayLine.Parse(m_pWebData->GetDataBuffer());
+		m_pvDayLine = m_finnhubForexDayLine.Parse(m_text);
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);

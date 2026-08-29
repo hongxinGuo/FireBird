@@ -77,8 +77,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubCompanyPeer.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubCompanyPeer.Test_checkAccessRight_(m_text);
 
 			m_jsonPeer.clear();
 		}
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex{ 0 };
 		nlohmannJson m_jsonPeer;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};
 
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer2) {
-		m_jsonPeer = m_finnhubCompanyPeer.Parse(m_pWebData->GetDataBuffer());
+		m_jsonPeer = m_finnhubCompanyPeer.Parse(m_text);
 		switch (m_lIndex) {
 		case 0: // 空数据
 			EXPECT_TRUE(m_jsonPeer.empty());

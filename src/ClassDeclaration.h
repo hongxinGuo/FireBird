@@ -57,10 +57,6 @@ typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
 class CVirtualWebProduct;
 typedef shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 
-// Web data
-class CWebData;
-typedef shared_ptr<CWebData> CWebDataPtr;
-
 class CDayLineWebData;
 typedef shared_ptr<CDayLineWebData> CDayLineWebDataPtr;
 

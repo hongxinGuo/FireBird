@@ -9,7 +9,6 @@
 
 #include"MockSinaRTDataSource.h"
 #include "SystemConfiguration.h"
-#include "WebData.h"
 
 using namespace testing;
 using namespace std;
@@ -82,10 +81,7 @@ namespace FireBirdTest { namespace {
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestCheckWebData1) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("Forbidden");
-
-		SinaDataSource.CheckWebData(pwd);
+		SinaDataSource.CheckWebData("Forbidden");
 		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED_, SinaDataSource.GetErrorMessage());
 
 		// 恢复原状
@@ -93,11 +89,9 @@ namespace FireBirdTest { namespace {
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestCheckWebData2) {
-		CWebDataPtr pwd = make_shared<CWebData>();
-		pwd->Test_SetBuffer_("Forbidden");
 		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 200);
 
-		SinaDataSource.CheckWebData(pwd);
+		SinaDataSource.CheckWebData("Forbidden");
 		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED_, SinaDataSource.GetErrorMessage());
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 

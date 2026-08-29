@@ -11,6 +11,7 @@
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
 #include "FinnhubDataSource.h"
+#include "SystemMessage.h"
 #include "TimeConvert.h"
 #include"cpr/cpr.h"
 
@@ -48,7 +49,22 @@ void CProductFinnhubCompanyInsiderTransaction::InquireData(const std::stop_token
 }
 
 void CProductFinnhubCompanyInsiderTransaction::WebStatusCheck(cpr::Response& r) {
-	CProductFinnhub::WebStatusCheck(r);
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 302: //redirected, not an error
+		break;
+	case 401:
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
+		break;
+	default:
+		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
+		                       static_cast<int>(r.error.code), r.error.message);
+		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyInsiderTransaction::CreateMessage() {

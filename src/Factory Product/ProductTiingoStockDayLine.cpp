@@ -10,7 +10,6 @@
 #include"TiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include"ContainerTiingoStockDayLine.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"

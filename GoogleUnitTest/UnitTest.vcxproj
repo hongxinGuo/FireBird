@@ -250,7 +250,6 @@
     <ClInclude Include="MockDataChinaWeekLine.h" />
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
-    <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />

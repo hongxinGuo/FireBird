@@ -90,8 +90,8 @@ namespace FireBirdTest {
 			m_pStock->SetTransactionTime(0);
 			m_pStock->SetActive(false);
 			m_pStock->SetUpdateProfileDB(false);
-			m_pWebData = pData->m_pData;
-			m_finnhubStockPriceQuote.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubStockPriceQuote.Test_checkAccessRight_(m_text);
 
 			m_finnhubStockPriceQuote.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
@@ -114,7 +114,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		CFinnhubStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CProductFinnhubStockPriceQuote m_finnhubStockPriceQuote;
 	};
 
@@ -124,7 +124,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
-		auto flag = m_finnhubStockPriceQuote.Parse(m_pWebData->GetDataBuffer(), m_pStock);
+		auto flag = m_finnhubStockPriceQuote.Parse(m_text, m_pStock);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_FALSE(flag);

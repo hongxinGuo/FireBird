@@ -16,7 +16,6 @@
 #include"TiingoStock.h"
 #include "SystemData.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include"DayLineWebData.h"
 #include "ProductTiingoStockDayLine.h"
 #include"TiingoCandleLine.h"
@@ -172,8 +171,6 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 	nlohmannJson j;
 	string message;
 	switch (r.status_code) {
-	case 200: // good;
-		break;
 	case 400: // one of request parameters is invalid.See the return message for detail.
 		j = nlohmann::json::parse(r.text, nullptr, false);
 		message = "Alpaca stock dayLine: ";
@@ -181,7 +178,6 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 		gl_systemMessage.PushErrorMessage(message);
 		break;
 	case 401: // Authentication headers are missing or invalid.
-		break;
 	case 403: // The requested resource is forbidden.{"message":"subscription does not permit querying recent SIP data"}
 		j = nlohmann::json::parse(r.text, nullptr, false);
 		message = "Alpaca stock dayLine: ";

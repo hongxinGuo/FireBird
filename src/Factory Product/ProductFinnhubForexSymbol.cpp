@@ -49,6 +49,7 @@ void CProductFinnhubForexSymbol::WebStatusCheck(cpr::Response& r) {
 	case 401: // no right to access
 	case 403: // forbidden
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		CheckInaccessible();
 		break;
 	default:
 		break;

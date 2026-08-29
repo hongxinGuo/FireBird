@@ -75,8 +75,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pWebData = pData->m_pData;
-			m_finnhubCryptoSymbolProduct.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubCryptoSymbolProduct.Test_checkAccessRight_(m_text);
 
 			m_pvCryptoSymbol = nullptr;
 		}
@@ -90,7 +90,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_index;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CFinnhubCryptosPtr m_pvCryptoSymbol;
 		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
 	};
@@ -100,7 +100,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
-		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.Parse(m_pWebData->GetDataBuffer());
+		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.Parse(m_text);
 		switch (m_index) {
 		case 0: // 空数据
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);

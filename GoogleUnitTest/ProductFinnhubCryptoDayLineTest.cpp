@@ -90,8 +90,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
-			m_pWebData = pData->m_pData;
-			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_pWebData);
+			m_text = pData->m_data;
+			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_text);
 
 			m_pvDayLine = nullptr;
 		}
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		CDayLinesPtr m_pvDayLine;
-		CWebDataPtr m_pWebData;
+		string m_text;
 		CProductFinnhubCryptoDayLine m_finnhubCryptoDayLine;
 	};
 
@@ -119,7 +119,7 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
 		string strMessage;
 
-		m_pvDayLine = m_finnhubCryptoDayLine.Parse(m_pWebData->GetDataBuffer());
+		m_pvDayLine = m_finnhubCryptoDayLine.Parse(m_text);
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);

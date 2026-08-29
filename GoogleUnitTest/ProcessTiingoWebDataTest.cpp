@@ -4,8 +4,6 @@
 
 #include"GeneralCheck.h"
 
-#include"WebData.h"
-
 #include "SystemData.h"
 #include "SystemMessage.h"
 #include "TiingoCryptoWebSocket.h"
@@ -21,8 +19,7 @@ namespace FireBirdTest {
 		Test_TiingoWebData(const int index, const string& strSymbol, const string& strData) {
 			m_index = index;
 			m_strSymbol = strSymbol;
-			m_pData = make_shared<CWebData>();
-			m_pData->Test_SetBuffer_(strData);
+			m_data = strData;
 		}
 
 		~Test_TiingoWebData() = default;
@@ -30,7 +27,7 @@ namespace FireBirdTest {
 	public:
 		int m_index;
 		string m_strSymbol;
-		CWebDataPtr m_pData;
+		string m_data;
 	};
 
 	struct TiingoWebSocketData {

@@ -3,18 +3,9 @@
 #include"VirtualWebProduct.h"
 #include"DayLine.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 
 [[nodiscard]] bool CompareDayLineDate(const CDayLine& p1, const CDayLine& p2) {
 	return p1.GetDate() < p2.GetDate();
-}
-
-bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return true;
-	}
-	return false;
 }
 
 bool CVirtualWebProduct::IsVoidJson(const string& text) {

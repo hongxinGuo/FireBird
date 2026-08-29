@@ -5,7 +5,6 @@
 
 #include"ChinaMarket.h"
 #include "SystemConfiguration.h"
-#include "WebData.h"
 
 using std::make_shared;
 using namespace std;
@@ -26,7 +25,6 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	CSinaRTDataSource::ConfigureInternetOption();
 
 	CSinaRTDataSource::Reset();
-
 }
 
 bool CSinaRTDataSource::Reset() {
@@ -71,12 +69,11 @@ void CSinaRTDataSource::CreateCurrentInquireString() {
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CSinaRTDataSource::CheckWebData(const CWebDataPtr& pWebData) {
+void CSinaRTDataSource::CheckWebData(const string& text) {
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 
-	if (pWebData->GetBufferLength() == 9) { // 是字符串"Forbidden"？
-		const string_view s = pWebData->GetStringView(0, 9);
-		if (s == "Forbidden") {
+	if (text.length() == 9) { // 是字符串"Forbidden"？
+		if (text == "Forbidden") {
 			m_eErrorMessageData = ERROR_SINA_HEADER_NEEDED_;
 		}
 	}

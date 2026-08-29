@@ -15,7 +15,6 @@
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
 #include "ProductTiingoStockProfile.h"
-#include"WebData.h"
 
 #include "Thread.h"
 
@@ -253,19 +252,15 @@ public:
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "tiingo_fundamentals.json";
 		LoadFromFile(strFileName, sTiingoSymbol);
-		pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(sTiingoSymbol);
 	}
 
 	void TearDown(const benchmark::State& state) override {
 	}
 
 	string sUSExchangeStockCode;
-	string sv;
 	string sTengxunDayLine;
 	string sFinnhubStockUpdateParameter;
 	string sTiingoSymbol;
-	CWebDataPtr pWebData;
 	bool bError{ false };
 
 	simdjson::padded_string USExchangedStockCode;
@@ -332,7 +327,7 @@ BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& stat
 BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& state) {
 	CProductTiingoStockProfile p;
 	for (auto _ : state) {
-		auto vData = p.Parse(pWebData->GetDataBuffer()); // 默认测试文件中的股票代码为sh000001.
+		auto vData = p.Parse("sh000001"); // 默认测试文件中的股票代码为sh000001.
 	}
 }
 
@@ -342,24 +337,18 @@ public:
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "SinaRTData.dat";
 		LoadFromFile(strFileName, s);
-		pWebData = make_shared<CWebData>();
-		const size_t lStringLength = s.length();
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		pWebData->Resize(lStringLength);
-		pWebData->SetData(s.c_str(), lStringLength);
 	}
 
 	void TearDown(const benchmark::State& state) override {
 	}
 
 	string s;
-	CWebDataPtr pWebData;
 };
 
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool1)(benchmark::State& state) {
 	gl_concurrency_level = 1;
 	for (auto _ : state) {
-		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseSinaRTData(s); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 	gl_concurrency_level = 4;
 }
@@ -367,7 +356,7 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool1)(benchmark::State& stat
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool2)(benchmark::State& state) {
 	gl_concurrency_level = 2;
 	for (auto _ : state) {
-		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseSinaRTData(s); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 	gl_concurrency_level = 4;
 }
@@ -375,14 +364,14 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool2)(benchmark::State& stat
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool4)(benchmark::State& state) {
 	gl_concurrency_level = 4;
 	for (auto _ : state) {
-		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseSinaRTData(s); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 }
 
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool8)(benchmark::State& state) {
 	gl_concurrency_level = 8;
 	for (auto _ : state) {
-		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseSinaRTData(s); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 	gl_concurrency_level = 4;
 }
@@ -392,24 +381,18 @@ public:
 	void SetUp(const benchmark::State& state) override {
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + "TengxunRTData.dat";
 		LoadFromFile(strFileName, s);
-		pWebData = make_shared<CWebData>();
-		const size_t lStringLength = s.length();
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		pWebData->Resize(lStringLength);
-		pWebData->SetData(s.c_str(), lStringLength);
 	}
 
 	void TearDown(const benchmark::State& state) override {
 	}
 
 	string s;
-	CWebDataPtr pWebData;
 };
 
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool1)(benchmark::State& state) {
 	gl_concurrency_level = 1;
 	for (auto _ : state) {
-		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseTengxunRTData(s); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 	gl_concurrency_level = 4;
 }
@@ -417,13 +400,13 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool1)(benchmark::State
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool2)(benchmark::State& state) {
 	gl_concurrency_level = 2;
 	for (auto _ : state) {
-		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseTengxunRTData(s); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 	gl_concurrency_level = 4;
 }
 
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool4)(benchmark::State& state) {
 	for (auto _ : state) {
-		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseTengxunRTData(s); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 }

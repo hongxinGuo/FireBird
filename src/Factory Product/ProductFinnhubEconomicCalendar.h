@@ -3,7 +3,6 @@
 #include "EconomicCalendar.h"
 #include"ProductFinnhub.h"
 
-class CWebData;
 class CEconomicCalendar;
 
 class CProductFinnhubEconomicCalendar final : public CProductFinnhub {
@@ -17,7 +16,6 @@ public:
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	CEconomicCalendarsPtr Parse(const string& text);
-
 };
 
 using CFinnhubEconomicCalendarPtr = shared_ptr<CProductFinnhubEconomicCalendar>;

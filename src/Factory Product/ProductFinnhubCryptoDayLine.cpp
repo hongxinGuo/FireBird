@@ -9,7 +9,6 @@
 
 #include "ContainerFinnhubCrypto.h"
 #include "SystemMessage.h"
-#include "WebData.h"
 #include"DayLine.h"
 #include "FinnhubDataSource.h"
 #include"cpr/cpr.h"
@@ -59,6 +58,7 @@ void CProductFinnhubCryptoDayLine::WebStatusCheck(cpr::Response& r) {
 		// do nothing
 		break;
 	case 401: // no right to access
+	case 403: // forbidden
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		CheckInaccessible();
 		break;
