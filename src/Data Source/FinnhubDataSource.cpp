@@ -202,9 +202,9 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	if (GeneratePeer()) return true;
 	if (GenerateInsiderTransaction()) return true;
 	if (GenerateInsiderSentiment()) return true;
-	if (GenerateCryptoDayLine()) return true; // Crypto dayLine20231127后只限于付费用户使用
-	if (GenerateStockDayLine()) return true; // Stock dayLine20231127后只限于付费用户使用
-	if (GenerateForexDayLine()) return true; // Forex dayLine目前只限于付费用户使用
+	//if (GenerateCryptoDayLine()) return true; // Crypto dayLine20231127后只限于付费用户使用
+	//if (GenerateStockDayLine()) return true; // Stock dayLine20231127后只限于付费用户使用
+	//if (GenerateForexDayLine()) return true; // Forex dayLine目前只限于付费用户使用
 	if (GenerateEPSSurprise()) return true;
 	if (GenerateSECFilings()) return true;
 	if (IsUpdateStockDayLine()) {

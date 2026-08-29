@@ -53,7 +53,18 @@ namespace {
 
 CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 	m_strInquiryFunction = "https://data.alpaca.markets/v2/stocks/bars?";
-	m_currentMarketDate = gl_pWorldMarket->GetMarketDate();
+
+	if (gl_pWorldMarket->GetMarketTime() < chrono::local_seconds{ 16h }) { // 当日交易时间尚未结束
+		if (gl_pWorldMarket->GetWeekDay() == chrono::Saturday || gl_pWorldMarket->GetWeekDay() == chrono::Sunday) {
+			m_currentDayLineEndDate = gl_pWorldMarket->GetCurrentTradeDate(); // 周六和周日使用周五（本交易日）的日期
+		}
+		else {
+			m_currentDayLineEndDate = gl_pWorldMarket->GetLastTradeDate(); //交易日使用前一个交易日的日期
+		}
+	}
+	else { // 当日交易时间已结束
+		m_currentDayLineEndDate = gl_pWorldMarket->GetCurrentTradeDate(); // 皆使用本交易日的日期
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,10 +72,6 @@ CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 /// <summary>
 /// 
 /// </summary>
-/// <param name="strHeaders"></param>
-/// <param name="strParams"></param>
-/// <param name="strSuffix"></param>
-/// <param name="strInquiryToken"></param>
 /// 
 /// 使用cpr库，由本函数申请网络数据。注意：此函数只在使用cpr库时才会被调用。
 /// 
@@ -211,7 +218,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageWi
 
 shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageInternal(string paramAdjust) {
 	chrono::local_days startDate = GetStartInquireDay(GetIndex());
-	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentMarketDate - startDate).count();
+	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - startDate).count();
 	if (totalDays >= 1000) {
 		return InquireOneStock(paramAdjust);
 	}
@@ -224,7 +231,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireOneStock
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	chrono::local_days startDate = GetStartInquireDay(GetIndex());
-	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentMarketDate - startDate).count();
+	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - startDate).count();
 	string symbol = pStock->GetSymbol();
 	int countNumber = totalDays / 1000;
 	for (int i = 0; i < countNumber; ++i) {
@@ -235,7 +242,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireOneStock
 		pInquiry->push_back(m_inquiryString);
 	}
 	string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
-	                            symbol, paramAdjust, startDate + chrono::days(countNumber * 1000), m_currentMarketDate); // Note: 总是多申请一天的日线数据
+	                            symbol, paramAdjust, startDate + chrono::days(countNumber * 1000), m_currentDayLineEndDate); // Note: 总是多申请一天的日线数据
 	pInquiry->push_back(m_strInquiryFunction + sParam);
 	m_vStockSymbols.push_back(symbol);
 
@@ -246,7 +253,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	chrono::local_days startDate = GetStartInquireDay(GetIndex());
-	int stepLength = std::chrono::duration_cast<std::chrono::days>(m_currentMarketDate - startDate).count();
+	int stepLength = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - startDate).count();
 	ABSL_DCHECK(stepLength < 1000);
 	string symbols = pStock->GetSymbol();
 	m_vStockSymbols.push_back(pStock->GetSymbol());
@@ -261,7 +268,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 			continue;
 		}
 		auto currentStartDay = GetStartInquireDay(GetIndex() + pos);
-		int currentDays = std::chrono::duration_cast<std::chrono::days>(m_currentMarketDate - currentStartDay).count();
+		int currentDays = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - currentStartDay).count();
 		ABSL_DCHECK(currentDays > 0);
 		if (currentStartDay < startDate) {
 			if (currentDays * (totalInquiryStocks + 1) >= 1000) break;
@@ -279,7 +286,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 		totalInquiryStocks++;
 	}
 	string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
-	                            symbols, paramAdjust, startDate, m_currentMarketDate); // Note: 总是多申请一天的日线数据
+	                            symbols, paramAdjust, startDate, m_currentDayLineEndDate); // Note: 总是多申请一天的日线数据
 	pInquiry->push_back(m_strInquiryFunction + sParam);
 
 	return pInquiry;

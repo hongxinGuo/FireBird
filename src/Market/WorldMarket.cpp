@@ -887,9 +887,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 			nValues++;
 		}
 	}
-	if (nValues > 0) {
-		db(multi_insert);
-	}
+	if (nValues > 0) db(multi_insert);
 	tx.commit();
 }
 

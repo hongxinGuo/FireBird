@@ -257,7 +257,7 @@ void CContainerChinaStock::TaskUpdateDayLineDB(std::stop_token st) {
 			pStock->SetUpdateDayLineDB(false);
 			gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
 			gl_systemMessage.SetChinaMarketSavingFunction("update dayline");
-			 gl_runtime.thread_executor()->post([pStock] {
+			gl_runtime.thread_executor()->post([pStock] {
 				pStock->UpdateDayLineDB();
 				gl_BackgroundWorkingThread.Release();
 			});
@@ -300,7 +300,6 @@ long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 			iCount++;
 			pStock->SetDayLineEndDate(currentTradeDay);
 			pStock->SetUpdateProfileDB(true);
-
 			multi_insert.add_values(
 				t.Date = toFormattedDate(currentTradeDay),
 				t.Exchange = pStock->GetExchange(),

@@ -55,7 +55,7 @@ public:
 	bool IsDataEnded() const noexcept { return m_bDataEnded; }
 
 protected:
-	std::chrono::local_days m_currentMarketDate;
+	std::chrono::local_days m_currentDayLineEndDate;
 	bool m_bDataEnded{ true };
 
 	vector<string> m_vStockSymbols;
