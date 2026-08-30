@@ -3,11 +3,8 @@
 #include "AccessoryDataSource.h"
 #include"AccessoryFactory.h"
 
-#include "ClassDeclaration.h"
-#include "FinnhubInquiryType.h"
 #include "IXUniquePtr.h"
 #include "SystemConfiguration.h"
-#include "WorldMarket.h"
 
 CAccessoryDataSource::CAccessoryDataSource() {
 	m_pAccessoryFactory = std::make_unique<CAccessoryFactory>();

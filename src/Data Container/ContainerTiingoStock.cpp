@@ -171,6 +171,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		gl_systemMessage.PushErrorMessage(std::format("LoadDB(sqlpp23) failed: {}", ex.what()));
 		return false;
 	}
+	m_bDataLoaded = true;
 	return true;
 }
 

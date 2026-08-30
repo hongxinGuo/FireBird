@@ -119,8 +119,4 @@ namespace FireBirdTest {
 		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(13500));
 		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData());
 	}
-
-	TEST_F(CMockWorldMarketTest, TestUpdateToken) {
-		s_pMockWorldMarket->UpdateToken();
-	}
 }

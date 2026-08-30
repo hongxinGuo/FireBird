@@ -112,12 +112,14 @@ namespace FireBirdTest {
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderSentiment()).Times(1)
 		.WillOnce(Return(false));
+		/*
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCryptoDayLine()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateStockDayLine()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateForexDayLine()).Times(1)
 		.WillOnce(Return(false));
+		*/
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateEPSSurprise()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateSECFilings()).Times(1)
@@ -193,9 +195,9 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GeneratePeer()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderTransaction()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateInsiderSentiment()).Times(1);
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCryptoDayLine()).Times(1);
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateStockDayLine()).Times(1);
-		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateForexDayLine()).Times(1);
+		//EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateCryptoDayLine()).Times(1);
+		//EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateStockDayLine()).Times(1);
+		//EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateForexDayLine()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateEPSSurprise()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateSECFilings()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);

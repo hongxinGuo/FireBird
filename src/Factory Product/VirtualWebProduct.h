@@ -61,13 +61,14 @@ public:
 	void SetInquireType(const int iInquireType) noexcept { m_iInquireType = iInquireType; }
 	int GetInquireType() const noexcept { return m_iInquireType; }
 
-	int GetStatusCode() const noexcept { return m_statusCode; }
-	double GetElapsedTime() const noexcept { return m_elapsed; }
+	int GetStatusCode() const noexcept { return m_r.status_code; }
+	double GetElapsedTime() const noexcept { return m_r.elapsed; }
 
 	// 测试用
 	virtual bool Test_checkAccessRight_(const string&) { return true; }  // todo 不再使用，准备删除之
 
 protected:
+	cpr::Response m_r; // 
 	string m_strInquiryFunction{};
 	string m_inquiryString{};
 	string m_strInquiringExchange{ "ALL" }; // 默认是申请所有的交易所数据。

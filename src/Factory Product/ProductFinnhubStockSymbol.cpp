@@ -24,18 +24,16 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString },
-		                           cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL } // 允许重定向
+		m_r = cpr::Get(cpr::Url{ inquireString },
+		               cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL } // 允许重定向
 		);
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 
-		const auto pvStock = Parse(r.text);
+		const auto pvStock = Parse(m_r.text);
 		const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
 		pExchange->SetUpdateStockSymbol(false);
 

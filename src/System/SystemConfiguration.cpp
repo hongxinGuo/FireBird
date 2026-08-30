@@ -351,9 +351,24 @@ void CSystemConfiguration::Update(shared_ptr<nlohmannJson> pJsonData) {
 		m_fUpdateDB = true;
 	}
 
+	// AlphaVantage.com
 	try {
 		sTemp = pJsonData->at("AlphaVantage").at("Token"); //
 		m_strAlphaVantageToken = sTemp;
+	} catch (nlohmannJson::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+
+	// Alpaca
+	try {
+		sTemp = pJsonData->at("Alpaca").at("ApiKey"); //
+		m_strAlpacaApiKey = sTemp;
+	} catch (nlohmannJson::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
+		sTemp = pJsonData->at("Alpaca").at("SecretKey"); //
+		m_strAlpacaSecretKey = sTemp;
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -496,6 +511,10 @@ void CSystemConfiguration::UpdateJsonData(shared_ptr<nlohmannJson> pJsonData) {
 
 	// AlphaVantage
 	(*pJsonData)["AlphaVantage"]["Token"] = m_strAlphaVantageToken;
+
+	// Alpaca
+	(*pJsonData)["Alpaca"]["ApiKey"] = m_strAlpacaApiKey;
+	(*pJsonData)["Alpaca"]["SecretKey"] = m_strAlpacaSecretKey;
 
 	// Web socket
 	(*pJsonData)["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;

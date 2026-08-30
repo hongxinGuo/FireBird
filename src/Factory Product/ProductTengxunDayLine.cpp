@@ -51,16 +51,14 @@ void CProductTengxunDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquiry });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 
-		const auto pDayLineWebData = ParseTengxunDayLine(r.text, m_stockSymbol);
+		const auto pDayLineWebData = ParseTengxunDayLine(m_r.text, m_stockSymbol);
 		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
 			if (gl_pChinaMarket->IsWorkingDay(pData.GetDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
 				vDayLine.push_back(pData);

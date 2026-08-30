@@ -32,11 +32,10 @@ public:
 	CProductAlpacaStockSymbol& operator=(const CProductAlpacaStockSymbol&&) noexcept = delete;
 	~CProductAlpacaStockSymbol() override = default;
 
-	void InquireData(const std::stop_token& st) override; // default do nothing
+	void InquireData(const std::stop_token& st) override;
 	void WebStatusCheck(cpr::Response& r) override;
 	void UpdateSystemStatus() override;
-
 	shared_ptr<vector<string>> CreateMessage() override;
 
-	shared_ptr<vector<CAlpacaStockPtr>> Parse(const cpr::Response& r);
+	static shared_ptr<vector<CAlpacaStockPtr>> Parse(const string& text);
 };

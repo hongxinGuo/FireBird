@@ -24,14 +24,12 @@ void CProductTiingoFundamentalDefinition::InquireData(const std::stop_token& st)
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ s });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ s });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 		}
-		const auto pvFundamentalDefinition = Parse(r.text);
+		const auto pvFundamentalDefinition = Parse(m_r.text);
 		if (!pvFundamentalDefinition->empty()) {
 			for (auto& definition : *pvFundamentalDefinition) {
 				if (!gl_dataContainerTiingoFundamentalDefinition.HaveDefinition(definition.m_strDataCode)) {

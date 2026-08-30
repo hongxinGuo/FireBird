@@ -67,7 +67,7 @@ namespace FireBirdTest {
 		r.status_code = 200;
 
 		CProductAlpacaStockSymbol product;
-		auto pv = product.Parse(r);
+		auto pv = product.Parse(r.text);
 
 		ASSERT_EQ(pv->size(), 2u);
 		EXPECT_EQ(pv->at(0)->GetSymbol(), "ILLMF");
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 		r.status_code = 200;
 
 		CProductAlpacaStockSymbol product;
-		auto pv = product.Parse(r);
+		auto pv = product.Parse(r.text);
 
 		ASSERT_TRUE(pv->empty());
 

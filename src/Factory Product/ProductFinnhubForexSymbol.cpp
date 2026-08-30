@@ -22,16 +22,14 @@ void CProductFinnhubForexSymbol::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquireString });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 
-		const auto pvForexSymbol = Parse(r.text);
+		const auto pvForexSymbol = Parse(m_r.text);
 		if (pvForexSymbol->empty()) return;
 		for (const auto& pSymbol : *pvForexSymbol) {
 			if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {

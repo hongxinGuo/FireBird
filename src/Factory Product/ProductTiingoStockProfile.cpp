@@ -36,15 +36,13 @@ void CProductTiingoStockProfile::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ s });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ s });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 		}
 
-		const auto pvTiingoStock = Parse(r.text);
+		const auto pvTiingoStock = Parse(m_r.text);
 
 		std::ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) {
 			auto s = pData1->GetSymbol();

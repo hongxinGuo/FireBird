@@ -86,31 +86,25 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
-			ClearUpdateDayLineFlag();
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
-		Parse(pvDayLine, r.text, pTiingoStock->GetSymbol());
+		Parse(pvDayLine, m_r.text, pTiingoStock->GetSymbol());
 	}
 
 	auto inquireStrings2 = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStrings2) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
-			ClearUpdateDayLineFlag();
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
-		Parse(pvDayLineWithSplit, r.text, pTiingoStock->GetSymbol());
+		Parse(pvDayLineWithSplit, m_r.text, pTiingoStock->GetSymbol());
 	}
 
 	if (st.stop_requested()) return;
@@ -123,18 +117,6 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 		auto pos = mapSymbolIndex.at(pvDayLineWithSplit->at(index).m_symbol);
 		UpdateDayLine(pvDayLine->at(pos).m_symbol, pvDayLine->at(pos).m_dayLine, pvDayLineWithSplit->at(pos).m_dayLine);
 	}
-	ClearUpdateDayLineFlag();
-}
-
-void CProductAlpacaStockDayLine::ClearUpdateDayLineFlag() {
-	for (const auto& symbol : m_vStockSymbols) {
-		if (gl_dataContainerTiingoStock.IsSymbol(symbol)) {
-			auto pStock = gl_dataContainerTiingoStock.GetStock(symbol);
-			pStock->SetUpdateDayLine(false);
-			pStock->SetUpdateProfileDB(true);
-		}
-	}
-	m_vStockSymbols.clear();
 }
 
 void CProductAlpacaStockDayLine::UpdateDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit) {
@@ -201,6 +183,22 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 		break;
 	}
 }
+
+void CProductAlpacaStockDayLine::UpdateSystemStatus() {
+	ClearUpdateDayLineFlag();
+}
+
+void CProductAlpacaStockDayLine::ClearUpdateDayLineFlag() {
+	for (const auto& symbol : m_vStockSymbols) {
+		if (gl_dataContainerTiingoStock.IsSymbol(symbol)) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(symbol);
+			pStock->SetUpdateDayLine(false);
+			pStock->SetUpdateProfileDB(true);
+		}
+	}
+	m_vStockSymbols.clear();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///
 /// Alpaca免费账户的日线提供2016年以来的数据。

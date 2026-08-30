@@ -27,17 +27,15 @@ void CProductSinaRT::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry }, gl_pSinaRTDataSource->GetHeader());
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pSinaRTDataSource->GetHeader());
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
-		if (r.text.empty()) return;
+		if (m_r.text.empty()) return;
 		gl_pChinaMarket->IncreaseRTDataCounter();
-		ParseSinaRTData(r.text); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
+		ParseSinaRTData(m_r.text); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 	}
 }
 

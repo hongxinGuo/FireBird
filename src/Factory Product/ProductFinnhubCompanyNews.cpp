@@ -26,16 +26,14 @@ void CProductFinnhubCompanyNews::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquireString });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 
-		auto pvFinnhubCompanyNews = Parse(r.text);
+		auto pvFinnhubCompanyNews = Parse(m_r.text);
 		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 
 		if (!pvFinnhubCompanyNews->empty()) {

@@ -142,6 +142,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 	}
 	tx.commit();
 	Sort();
+	m_bDataLoaded = true;
 
 	return true;
 }

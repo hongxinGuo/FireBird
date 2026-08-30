@@ -9,20 +9,17 @@
 #include"TiingoStock.h"
 #include "ContainerTiingoStock.h"
 #include"ContainerAlpacaStockSymbol.h"
+#include "log.h"
 
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
-
-namespace {
-	auto s_setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
-}
 
 CAlpacaDataSource::CAlpacaDataSource() {
 	m_pAlpacaFactory = std::make_unique<CAlpacaFactory>();
 
 	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = ""; // Alpaca有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
-	m_strHeaders = "APCA-API-KEY-ID:PK3J5QOOORALNDMELW2XS5RDZX\r\nAPCA-API-SECRET-KEY:DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk\r\nConnection:close\r\n\r\n";
+	m_strHeaders = "";
 	m_strParam = "";
 	m_strSuffix = "";
 	m_token = "";
@@ -30,6 +27,23 @@ CAlpacaDataSource::CAlpacaDataSource() {
 
 	CAlpacaDataSource::ConfigureInternetOption();
 	CAlpacaDataSource::Reset();
+
+	auto s = gl_systemConfiguration.GetAlpacaApiKey();
+	if (!s.empty()) {
+		SetApiKey(s);
+	}
+	else {
+		gl_dailyWebLogger->warn("Alpaca missing api key");
+		gl_systemMessage.PushErrorMessage("Alpaca missing api key");
+	}
+	s = gl_systemConfiguration.GetAlpacaSecretKey();
+	if (!s.empty()) {
+		SetSecretKey(s);
+	}
+	else {
+		gl_dailyWebLogger->warn("Alpaca missing secret key");
+		gl_systemMessage.PushErrorMessage("Alpaca missing secret key");
+	}
 }
 
 bool CAlpacaDataSource::Reset() {

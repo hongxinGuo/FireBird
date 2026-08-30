@@ -158,8 +158,6 @@ void CWorldMarket::ResetMarket() {
 
 	Reset();
 
-	UpdateToken();
-
 	gl_dataContainerAlpacaStockSymbol.LoadProfileDB();
 
 	gl_dataContainerFinnhubCountry.LoadDB();
@@ -175,6 +173,8 @@ void CWorldMarket::ResetMarket() {
 	gl_dataContainerTiingoFundamentalDefinition.LoadDB();
 
 	// 各chosenContainer要在装载Finnhub和Tiingo股票之后再加载
+	ABSL_DCHECK(gl_dataContainerTiingoStock.IsDataLoaded());
+	ABSL_DCHECK(gl_dataContainerFinnhubStock.IsDataLoaded());
 	gl_dataContainerTiingoChosenStock.LoadDB();
 	gl_dataContainerChosenWorldCrypto.LoadDB();
 	gl_dataContainerChosenWorldForex.LoadDB();
@@ -1223,25 +1223,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 5min + 10s;
 	ABSL_DCHECK(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB_, lNextTime); // 每五分钟更新一次
-}
-
-bool CWorldMarket::UpdateToken() {
-	ABSL_DCHECK(gl_systemConfiguration.IsInitialized());
-
-	if (gl_systemConfiguration.GetFinnhubToken().length() > 5) {
-		gl_pFinnhubDataSource->SetToken(gl_systemConfiguration.GetFinnhubToken());
-	}
-	else {
-		gl_systemMessage.PushInformationMessage("Finnhub Token Needed");
-	}
-	if (gl_systemConfiguration.GetTiingoToken().length() > 5) {
-		gl_pTiingoDataSource->SetToken(gl_systemConfiguration.GetTiingoToken());
-	}
-	else {
-		gl_systemMessage.PushInformationMessage("Tiingo Token Needed");
-	}
-
-	return true;
 }
 
 bool CWorldMarket::UpdateFinnhubStockDayLineDB(std::stop_token st) {

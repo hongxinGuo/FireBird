@@ -24,18 +24,16 @@ void CProductFinnhubCompanyProfileConcise::InquireData(const std::stop_token& st
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquireString });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 
 		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 		pStock->SetUpdateCompanyProfile(false);
-		const bool fSucceed = Parse(r.text, pStock);
+		const bool fSucceed = Parse(m_r.text, pStock);
 		if (fSucceed) {
 			pStock->SetShareOutstanding(pStock->GetShareOutstanding());
 			if (gl_dataContainerTiingoStock.IsSymbol(pStock->GetSymbol())) { // 同时更新tiingo的股本数据

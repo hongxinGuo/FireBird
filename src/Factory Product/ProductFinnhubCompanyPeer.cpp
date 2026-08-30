@@ -20,16 +20,14 @@ void CProductFinnhubCompanyPeer::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquireString });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-		const nlohmannJson jsonPeer = Parse(r.text);
+		const nlohmannJson jsonPeer = Parse(m_r.text);
 		pStock->SetPeer(jsonPeer);
 		pStock->SetPeerUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdatePeer(false);
@@ -50,7 +48,7 @@ void CProductFinnhubCompanyPeer::WebStatusCheck(cpr::Response& r) {
 		break;
 	default:
 		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
-													 static_cast<int>(r.error.code), r.error.message);
+		                       static_cast<int>(r.error.code), r.error.message);
 		gl_systemMessage.PushInnerSystemInformationMessage(s);
 		break;
 	}

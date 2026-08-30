@@ -36,16 +36,14 @@ void CProductTiingoIEXTopOfBook::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ s });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ s });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 		}
 
 		int i = 0;
-		const auto pvTiingoIEXTopOFBook = Parse(r.text);
+		const auto pvTiingoIEXTopOFBook = Parse(m_r.text);
 		auto lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
 		auto st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(lNewestTradeDay, chrono::local_seconds(chrono::seconds(0)))); // 使用当日数据，无论是否是闭市后的数据。
 		if (pvTiingoIEXTopOFBook->empty()) return;
@@ -80,7 +78,6 @@ shared_ptr<vector<string>> CProductTiingoIEXTopOfBook::CreateMessage() {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -128,7 +125,7 @@ shared_ptr<vector<string>> CProductTiingoIEXTopOfBook::CreateMessage() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::Parse(const string& text) {
 	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
-	
+
 	if (::IsVoidJson(text)) return pvTiingoIEXLastTopOFBook;
 	if (IsNoRightToAccess()) return pvTiingoIEXLastTopOFBook;
 

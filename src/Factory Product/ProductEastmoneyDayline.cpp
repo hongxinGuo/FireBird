@@ -80,12 +80,10 @@ void CProductEastmoneyDayLine::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry;
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString }, gl_pEastmoneyDayLineDataSource->GetHeader(mean));
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquireString }, gl_pEastmoneyDayLineDataSource->GetHeader(mean));
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 
@@ -93,7 +91,7 @@ void CProductEastmoneyDayLine::InquireData(const std::stop_token& st) {
 		const string strSymbol = GetInquiringSymbol();
 		ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
 
-		const shared_ptr<vector<CDayLine>> pvDayLine = Parse(r.text, strSymbol);
+		const shared_ptr<vector<CDayLine>> pvDayLine = Parse(m_r.text, strSymbol);
 		if (pvDayLine->empty()) return; // 如果没有日线，则不处理
 		std::ranges::sort(*pvDayLine, [](const CDayLine& pData1, const CDayLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
 		for (auto& dayLine : *pvDayLine) {

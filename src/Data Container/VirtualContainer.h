@@ -24,7 +24,14 @@ public:
 	string GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber);
 	string GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber);
 
+	bool IsDataLoaded() const noexcept { return m_bDataLoaded; }
+	void SetDataLoaded(bool flag) noexcept { m_bDataLoaded = flag; }
+
+protected:
+	bool m_bDataLoaded{ false };
+
 private:
+
 	size_t m_lSinaRTDataInquiringIndex;
 	size_t m_lTengxunRTDataInquiringIndex;
 };

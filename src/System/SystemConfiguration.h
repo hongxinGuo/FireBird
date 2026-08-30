@@ -174,7 +174,13 @@ public:
 	}
 
 	// Alpha Vantage
-	[[nodiscard]] string GetAlphaVantageToken() noexcept { return m_strAlphaVantageToken; }
+	[[nodiscard]] string GetAlphaVantageToken() const noexcept { return m_strAlphaVantageToken; }
+
+	// Alpaca 
+	string GetAlpacaApiKey() const noexcept { return m_strAlpacaApiKey; }
+	void SetAlpacaApiKey(const string& key) noexcept { m_strAlpacaApiKey = key; }
+	string GetAlpacaSecretKey() const noexcept { return m_strAlpacaSecretKey; }
+	void SetAlpacaSecretKey9(const string& secretKey) { m_strAlpacaSecretKey = secretKey; }
 
 	// WebSocket
 	[[nodiscard]] bool IsUsingFinnhubWebSocket() const noexcept { return m_bUsingFinnhubWebSocket; }
@@ -373,6 +379,10 @@ protected:
 	// AlphaVantage.co
 	string m_strAlphaVantageToken{ "ZXN06FNPO7C23LRS" }; // 
 	string m_strAlphaVantageToken2{ "RPKDBN0TEW83ML5A" }; // 0可能是O
+
+	// Alpaca
+	string m_strAlpacaApiKey{ "PK3J5QOOORALNDMELW2XS5RDZX" };
+	string m_strAlpacaSecretKey{ "DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk" };
 
 	// WebSocket
 	bool m_bUsingFinnhubWebSocket{ true };

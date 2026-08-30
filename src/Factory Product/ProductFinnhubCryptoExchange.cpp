@@ -21,15 +21,13 @@ void CProductFinnhubCryptoExchange::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		cpr::Response r = cpr::Get(cpr::Url{ inquireString });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquireString });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
-		const auto pvCryptoExchange = Parse(r.text);
+		const auto pvCryptoExchange = Parse(m_r.text);
 		for (const auto& str : *pvCryptoExchange) {
 			if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(str)) {
 				gl_dataContainerFinnhubCryptoExchange.Add(str);

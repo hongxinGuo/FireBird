@@ -3,6 +3,7 @@
 #include"VirtualWebProduct.h"
 #include"DayLine.h"
 #include "SystemMessage.h"
+#include"log.h"
 
 [[nodiscard]] bool CompareDayLineDate(const CDayLine& p1, const CDayLine& p2) {
 	return p1.GetDate() < p2.GetDate();
@@ -24,6 +25,7 @@ void CVirtualWebProduct::WebStatusCheck(cpr::Response& r) {
 	default:
 		string sType = typeid(this).name();
 		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_dailyWebLogger->info("{}", s);
 		gl_systemMessage.PushErrorMessage(s);
 		break;
 	}

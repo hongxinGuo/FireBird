@@ -51,6 +51,15 @@ CTiingoDataSource::CTiingoDataSource() {
 
 	CTiingoDataSource::ConfigureInternetOption();
 	CTiingoDataSource::Reset();
+
+	auto s = gl_systemConfiguration.GetTiingoToken();
+	if (!s.empty()) {
+		SetToken(s);
+	}
+	else {
+		gl_systemConfiguration.SetTiingoToken(GetToken()); // 如果SystemConfiguration中的Finnhub token为空的话，则使用自带token。
+	}
+
 }
 
 bool CTiingoDataSource::Reset() {

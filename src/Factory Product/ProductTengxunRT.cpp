@@ -20,16 +20,14 @@ void CProductTengxunRT::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		cpr::Response r = cpr::Get(cpr::Url{ inquiry });
-		m_statusCode = r.status_code;
-		m_elapsed = r.elapsed;
+		m_r = cpr::Get(cpr::Url{ inquiry });
 
-		if (m_statusCode != 200) {
-			WebStatusCheck(r);
+		if (m_r.status_code != 200) {
+			WebStatusCheck(m_r);
 			return;
 		}
 		gl_pChinaMarket->IncreaseRTDataCounter();
-		ParseTengxunRTData(r.text); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
+		ParseTengxunRTData(m_r.text); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 	}
 }
 
@@ -45,7 +43,7 @@ void CProductTengxunRT::WebStatusCheck(cpr::Response& r) {
 		break;
 	default:
 		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
-													 static_cast<int>(r.error.code), r.error.message);
+		                       static_cast<int>(r.error.code), r.error.message);
 		gl_systemMessage.PushInnerSystemInformationMessage(s);
 		break;
 	}

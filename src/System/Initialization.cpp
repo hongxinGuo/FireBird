@@ -289,6 +289,7 @@ void InitializeLogSystem() {
 	// Create a daily logger - a new file is created every day at 2:30 am
 	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/FireBirdDaily.txt", 2, 30);
 	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
+	gl_dailyWebLogger = spdlog::daily_logger_mt("dailyWebLogger", "logs/dailyWeb.txt", 2, 30);
 	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
 	gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
 
@@ -296,6 +297,7 @@ void InitializeLogSystem() {
 	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
 	gl_dailyLogger->flush_on(spdlog::level::info); // 信息等级及以上立刻刷新
 	gl_dailyWebSocketLogger->flush_on(spdlog::level::info);
+	gl_dailyWebLogger->flush_on(spdlog::level::info);
 	gl_errorLogger->flush_on(spdlog::level::info);
 	gl_traceLogger->enable_backtrace(20); // 20个回溯消息
 	gl_traceLogger->flush_on(spdlog::level::info);

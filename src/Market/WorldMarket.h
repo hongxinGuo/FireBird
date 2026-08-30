@@ -87,8 +87,6 @@ public:
 
 	// 各种状态
 
-	static bool UpdateToken();
-
 	// 数据库操作
 	virtual bool UpdateCompanyNewsDB(std::stop_token st);
 	virtual bool UpdateFinnhubStockDayLineDB(std::stop_token st);

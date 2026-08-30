@@ -35,9 +35,14 @@ public:
 	bool IsUpdateStockDayLine() const noexcept { return m_fUpdateStockDayLine; }
 	void SetUpdateStockDayLine(const bool fFlag) noexcept { m_fUpdateStockDayLine = fFlag; }
 
-	std::pair<string, string> GetApiKey() const noexcept { return std::pair{ "APCA-API-KEY-ID", m_api_key }; }
-	std::pair<string, string> GetSecretKey() const noexcept { return std::pair{ "APCA-API-SECRET-KEY", m_secret_key }; }
-	cpr::Header GetHeader() const noexcept { return cpr::Header{ GetApiKey(), GetSecretKey(), { "accept", "application/json" } }; }
+	void SetApiKey(const string& key) noexcept { m_api_key = key; }
+	string GetApiKey() const noexcept { return m_api_key; }
+	void SetSecretKey(const string& secretKey) noexcept { m_secret_key = secretKey; }
+	string GetSecretKey() const noexcept { return m_secret_key; }
+
+	std::pair<string, string> GetApiKeyPair() const noexcept { return std::pair{ "APCA-API-KEY-ID", m_api_key }; }
+	std::pair<string, string> GetSecretKeyPair() const noexcept { return std::pair{ "APCA-API-SECRET-KEY", m_secret_key }; }
+	cpr::Header GetHeader() const noexcept { return cpr::Header{ GetApiKeyPair(), GetSecretKeyPair(), { "accept", "application/json" } }; }
 
 protected:
 	unique_ptr<CAlpacaFactory> m_pAlpacaFactory;
@@ -47,8 +52,8 @@ protected:
 	int m_inquireStockNumber{ 50 }; // 申请日线的天数。默认申请10天的日线数据
 
 	// Alpaca token, 
-	string m_api_key{ "PK3J5QOOORALNDMELW2XS5RDZX" };
-	string m_secret_key{ "DybHyD53p5KCGLaSPd6oa6dKwA1cvtgSM5UGvC73oAfk" };
+	string m_api_key;
+	string m_secret_key;
 
 private:
 	bool m_fAlpacaDataInquiryFinished{ false };

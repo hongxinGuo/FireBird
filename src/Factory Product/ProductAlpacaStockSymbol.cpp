@@ -16,6 +16,7 @@
 #include "SystemData.h"
 #include "SystemMessage.h"
 #include"ContainerAlpacaStockSymbol.h"
+#include "log.h"
 
 #include<cpr/cpr.h>
 
@@ -50,10 +51,6 @@ CProductAlpacaStockSymbol::CProductAlpacaStockSymbol() {
 /// <summary>
 /// 
 /// </summary>
-/// <param name="strHeaders"></param>
-/// <param name="strParams"></param>
-/// <param name="strSuffix"></param>
-/// <param name="strInquiryToken"></param>
 /// 
 /// 使用cpr库，由本函数申请网络数据。注意：此函数只在使用cpr库时才会被调用。
 /// 
@@ -65,15 +62,14 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 
 	auto inquireStrings = CreateMessage();
 	ABSL_DCHECK(inquireStrings->size() == 1);
-	cpr::Response r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader());
+	m_r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader());
 
-	long status = r.status_code;
-	if (status != 200) {
-		WebStatusCheck(r);
+	if (m_r.status_code != 200) {
+		WebStatusCheck(m_r);
 		return;
 	}
 
-	pvStock = Parse(r);
+	pvStock = Parse(m_r.text);
 
 	std::ranges::sort(*pvStock, [](const CAlpacaStockPtr& a, const CAlpacaStockPtr& b) {
 		return a->GetSymbol() < b->GetSymbol();
@@ -96,23 +92,28 @@ void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 		j = nlohmann::json::parse(r.text, nullptr, false);
 		message = "Alpaca stock assert: ";
 		message += j.at("message");
+		gl_dailyWebLogger->warn("{}", message);
 		gl_systemMessage.PushErrorMessage(message);
 		break;
 	case 401: // Authentication headers are missing or invalid.
 	case 403: // The requested resource is forbidden.
-		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_dailyWebLogger->warn("{}", number);
 		gl_systemMessage.PushErrorMessage(number);
 		break;
 	case 429: // Too many requests.You hit the rate limit.
-		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_dailyWebLogger->info("{}", number);
 		gl_systemMessage.PushErrorMessage(number);
 		break;
 	case 500: // Internal server error.
-		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_dailyWebLogger->info("{}", number);
 		gl_systemMessage.PushErrorMessage(number);
 		break;
 	default: // unknown problem
-		number = std::format("Error: Alpaca stock assert {:d}", r.status_code);
+		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
+		gl_dailyWebLogger->info("{}", number);
 		gl_systemMessage.PushErrorMessage(number);
 		break;
 	}
@@ -121,6 +122,7 @@ void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 void CProductAlpacaStockSymbol::UpdateSystemStatus() {
 	gl_pAlpacaDataSource->SetUpdateTradingAsset(false);
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///
 /// 
@@ -176,9 +178,9 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockSymbol::CreateMessage() 
 ///	]
 /// 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CAlpacaStockPtr>> CProductAlpacaStockSymbol::Parse(const cpr::Response& r) {
+shared_ptr<vector<CAlpacaStockPtr>> CProductAlpacaStockSymbol::Parse(const string& text) {
 	shared_ptr<vector<CAlpacaStockPtr>> pvStock = make_shared<vector<CAlpacaStockPtr>>();
-	nlohmannJson j = nlohmann::json::parse(r.text, nullptr, false);
+	nlohmannJson j = nlohmann::json::parse(text, nullptr, false);
 	if (j.is_discarded()) {
 		gl_systemMessage.PushErrorMessage("Alpaca asset parse failed: invalid JSON");
 		return pvStock;
@@ -200,8 +202,10 @@ shared_ptr<vector<CAlpacaStockPtr>> CProductAlpacaStockSymbol::Parse(const cpr::
 			pvStock->push_back(pStock);
 		} catch (const std::exception& ex) {
 			std::string msg = std::format("Alpaca asset parse exception: {}", ex.what());
+			gl_dailyWebLogger->info("{}", msg);
 			gl_systemMessage.PushErrorMessage(msg);
 		} catch (...) {
+			gl_dailyWebLogger->info("Alpaca asset parse unknown exception");
 			gl_systemMessage.PushErrorMessage("Alpaca asset parse unknown exception");
 		}
 	}
