@@ -84,37 +84,22 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 }
 
 void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
-	string number;
-	nlohmannJson j;
-	string message;
 	switch (r.status_code) {
 	case 400: // one of request parameters is invalid.See the return message for detail.
-		j = nlohmann::json::parse(r.text, nullptr, false);
-		message = "Alpaca stock assert: ";
-		message += j.at("message");
-		gl_dailyWebLogger->warn("{}", message);
-		gl_systemMessage.PushErrorMessage(message);
+		WebErrorReport();
 		break;
 	case 401: // Authentication headers are missing or invalid.
 	case 403: // The requested resource is forbidden.
-		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_dailyWebLogger->warn("{}", number);
-		gl_systemMessage.PushErrorMessage(number);
+		WebErrorReport();
 		break;
 	case 429: // Too many requests.You hit the rate limit.
-		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_dailyWebLogger->info("{}", number);
-		gl_systemMessage.PushErrorMessage(number);
+		WebErrorReport();
 		break;
 	case 500: // Internal server error.
-		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_dailyWebLogger->info("{}", number);
-		gl_systemMessage.PushErrorMessage(number);
+		WebErrorReport();
 		break;
 	default: // unknown problem
-		number = std::format("Alpaca stock assert. code:{:d}, errorCode:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_dailyWebLogger->info("{}", number);
-		gl_systemMessage.PushErrorMessage(number);
+		WebErrorReport();
 		break;
 	}
 }

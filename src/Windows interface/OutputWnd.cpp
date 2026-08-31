@@ -41,7 +41,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	if (!m_wndStockMarketInformation.Create(dwStyle, rectDummy, &m_wndTabs, 1) ||
 		!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-		!m_wndChinaMarketInformation.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+		!m_wndWebInformation.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
 		!m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
 		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
 		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
@@ -65,7 +65,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)2);
 	bNameValid = strTabName.LoadString(IDS_CHINA_MARKET_INFORMATION);
 	ABSL_DCHECK(bNameValid);
-	m_wndTabs.AddTab(&m_wndChinaMarketInformation, strTabName, (UINT)3);
+	m_wndTabs.AddTab(&m_wndWebInformation, strTabName, (UINT)3);
 	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
 	ABSL_DCHECK(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)6);
@@ -120,7 +120,7 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
 void COutputWnd::UpdateFonts() {
 	m_wndStockMarketInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
-	m_wndChinaMarketInformation.SetFont(&afxGlobalData.fontRegular);
+	m_wndWebInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputWebSocketInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInnerSystemInformation.SetFont(&afxGlobalData.fontRegular);
@@ -146,6 +146,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		const string sTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 
 		if (m_wndStockMarketInformation.GetCount() > 10000) m_wndStockMarketInformation.TruncateList(1000);
+		fUpdate = false;
 		if (gl_systemMessage.StockMarketInformationSize() > 0) {
 			lCurrentPos = m_wndStockMarketInformation.GetCurSel();
 			if (m_wndStockMarketInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
@@ -157,6 +158,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 		// 如果显示列表超过10000个，则删除前面的1000个。
 		if (m_wndOutputInformation.GetCount() > 10000) m_wndOutputInformation.TruncateList(1000);
+		fUpdate = false;
 		// 将输出信息拷贝到消息队列中。
 		if (gl_systemMessage.InformationSize() > 0) {
 			lCurrentPos = m_wndOutputInformation.GetCurSel();
@@ -167,13 +169,14 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 			}
 		}
 
-		if (m_wndChinaMarketInformation.GetCount() > 10000) m_wndChinaMarketInformation.TruncateList(1000);
-		if (gl_systemMessage.ChinaMarketInformationSize() > 0) {
-			lCurrentPos = m_wndChinaMarketInformation.GetCurSel();
-			if (m_wndChinaMarketInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-			gl_systemMessage.DisplayChinaMarketInformation(&m_wndChinaMarketInformation, sTime);
+		if (m_wndWebInformation.GetCount() > 10000) m_wndWebInformation.TruncateList(1000);
+		fUpdate = false;
+		if (gl_systemMessage.WebInformationSize() > 0) {
+			lCurrentPos = m_wndWebInformation.GetCurSel();
+			if (m_wndWebInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayWebInformation(&m_wndWebInformation, sTime);
 			if (fUpdate) {
-				m_wndChinaMarketInformation.SetCurAtLastLine();
+				m_wndWebInformation.SetCurAtLastLine();
 			}
 		}
 
@@ -207,6 +210,17 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 			gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, sTime);
 			if (fUpdate) {
 				m_wndOutputInnerSystemInformation.SetCurAtLastLine();
+			}
+		}
+
+		if (m_wndWebInformation.GetCount() > 10000) m_wndWebInformation.TruncateList(1000);
+		fUpdate = false;
+		if (gl_systemMessage.ErrorMessageSize() > 0) {
+			lCurrentPos = m_wndWebInformation.GetCurSel();
+			if (m_wndWebInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+			gl_systemMessage.DisplayErrorMessage(&m_wndWebInformation, sTime);
+			if (fUpdate) {
+				m_wndWebInformation.SetCurAtLastLine();
 			}
 		}
 

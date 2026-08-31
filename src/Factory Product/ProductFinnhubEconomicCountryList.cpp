@@ -51,9 +51,7 @@ void CProductFinnhubEconomicCountryList::WebStatusCheck(cpr::Response& r) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
 	default:
-		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
-		                       static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		WebErrorReport();
 		break;
 	}
 }
@@ -103,7 +101,7 @@ CCountriesPtr CProductFinnhubEconomicCountryList::Parse(const std::string& text)
 }
 
 void CProductFinnhubEconomicCountryList::UpdateSystemStatus() {
-	if (m_statusCode != 200) return;
+	if (m_r.status_code != 200) return;
 
 	gl_pFinnhubDataSource->SetUpdateCountryList(false);
 	gl_systemMessage.PushInformationMessage("Finnhub economic country List updated");

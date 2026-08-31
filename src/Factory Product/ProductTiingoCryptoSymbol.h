@@ -21,10 +21,6 @@ public:
 	shared_ptr<vector<shared_ptr<CTiingoCrypto>>> Parse(const string& text);
 
 	void UpdateSystemStatus() override;
-
-	// 测试用
-	long long m_differ1, m_differ2;
-	double m_ratio;
 };
 
 using CProductTiingoCryptoSymbolPtr = shared_ptr<CProductTiingoCryptoSymbol>;

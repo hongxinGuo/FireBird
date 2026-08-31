@@ -43,12 +43,10 @@ void CProductFinnhubCryptoExchange::WebStatusCheck(cpr::Response& r) {
 		break;
 	case 302: //redirected, not an error
 	case 403: // forbidden
-		s = std::format("Finnhub Crypto exchange concise http error {}. code:{} message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		WebErrorReport();
 		break;
 	default:
-		s = std::format("Finnhub Crypto exchange http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		WebErrorReport();
 		break;
 	}
 }

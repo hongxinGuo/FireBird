@@ -10,6 +10,7 @@
 #include "FinnhubCrypto.h"
 #include "TiingoCrypto.h"
 #include"DayLine.h"
+#include "log.h"
 #include "TiingoDataSource.h"
 
 #include"cpr/cpr.h"
@@ -31,7 +32,6 @@ void CProductTiingoCryptoDayLine::InquireData(const std::stop_token& st) {
 			WebStatusCheck(m_r);
 			return;
 		}
-		ABSL_DCHECK(m_index >= 0);
 		const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
 		const CDayLinesPtr pvDayLine = Parse(m_r.text);
 		pCrypto->SetUpdateDayLine(false);
@@ -50,9 +50,7 @@ void CProductTiingoCryptoDayLine::WebStatusCheck(cpr::Response& r) {
 		CheckInaccessible();
 		break;
 	default:
-		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
-		                       static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		WebErrorReport();
 		break;
 	}
 }

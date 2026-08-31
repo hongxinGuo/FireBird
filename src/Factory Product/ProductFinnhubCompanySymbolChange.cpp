@@ -20,6 +20,8 @@
 #include "SystemConfiguration.h"
 #include<cpr/cpr.h>
 
+#include "log.h"
+
 using std::make_shared;
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
@@ -51,6 +53,7 @@ void CProductFinnhubCompanySymbolChange::WebStatusCheck(cpr::Response& r) {
 		}
 		break;
 	default:
+		WebErrorReport();
 		break;
 	}
 }
@@ -92,7 +95,7 @@ CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::Parse(const string&
 }
 
 void CProductFinnhubCompanySymbolChange::UpdateSystemStatus() {
-	if (m_statusCode != 200 && m_statusCode != 403) return;
+	if (m_r.status_code != 200 && m_r.status_code != 403) return;
 
 	gl_pFinnhubDataSource->SetUpdateCompanySymbolChange(false);
 	gl_systemMessage.PushInformationMessage("Finnhub company symbol change updated");

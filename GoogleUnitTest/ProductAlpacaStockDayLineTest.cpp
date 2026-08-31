@@ -60,10 +60,8 @@ namespace FireBirdTest {
       "next_page_token": null
     })";
 
-		auto pv = make_shared<vector<TiingoDayLine>>();
-		bool ok = prod.Parse(pv, r.text, "RIG");
+		auto pv = prod.Parse(r.text, "RIG");
 
-		EXPECT_TRUE(ok);
 		ASSERT_EQ(pv->size(), 2u);
 		EXPECT_EQ(pv->at(0).m_symbol, "AAPL") << "无论在json中的位置先后，解析后总是按symbol排序";
 		ASSERT_EQ(pv->at(0).m_dayLine.size(), 2u);

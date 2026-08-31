@@ -49,6 +49,7 @@ void CProductTiingoFundamentalDefinition::WebStatusCheck(cpr::Response& r) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
 	default:
+		WebErrorReport();
 		break;
 	}
 }

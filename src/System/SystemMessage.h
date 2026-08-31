@@ -114,10 +114,10 @@ public:
 	size_t InformationSize() const { return m_SystemInformation.Size(); }
 	void DisplayInformation(COutputList* pOutputList, const string& strTime) { m_SystemInformation.Display(pOutputList, strTime); }
 
-	void PushChinaMarketInformationMessage(const string& str) { m_ChinaMarketInformation.PushMessage(str); }
-	string PopChinaMarketInformationMessage() { return m_ChinaMarketInformation.PopMessage(); }
-	size_t ChinaMarketInformationSize() const { return m_ChinaMarketInformation.Size(); }
-	void DisplayChinaMarketInformation(COutputList* pOutputList, const string& strTime) { m_ChinaMarketInformation.Display(pOutputList, strTime); }
+	void PushWebInformationMessage(const string& str) { m_WebInformation.PushMessage(str); }
+	string PopWebInformationMessage() { return m_WebInformation.PopMessage(); }
+	size_t WebInformationSize() const { return m_WebInformation.Size(); }
+	void DisplayWebInformation(COutputList* pOutputList, const string& strTime) { m_WebInformation.Display(pOutputList, strTime); }
 
 	void PushDayLineInfoMessage(const string& s) { m_DayLineInformation.PushMessage(s); }
 	string PopDayLineInfoMessage() { return m_DayLineInformation.PopMessage(); }
@@ -192,7 +192,7 @@ protected:
 	// 信息输出队列群
 	CSystemDeque m_StockMarketInformation;
 	CSystemDeque m_SystemInformation;
-	CSystemDeque m_ChinaMarketInformation;
+	CSystemDeque m_WebInformation;
 	CSystemDeque m_DayLineInformation;
 	CSystemDeque m_WebSocketInfo;
 	CSystemDeque m_InnerSystemInformation;

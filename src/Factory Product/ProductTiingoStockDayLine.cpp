@@ -38,7 +38,6 @@ void CProductTiingoStockDayLine::InquireData(const std::stop_token& st) {
 		}
 
 		const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
-
 		auto pvDayLine = Parse(m_r.text);
 		if (!pvDayLine->empty()) {
 			long lastClose = 0;
@@ -72,7 +71,16 @@ void CProductTiingoStockDayLine::WebStatusCheck(cpr::Response& r) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
 	default:
-		break;
+		switch (r.status_code) {
+		case 0:
+			break;
+		case 403: // forbidden
+			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+			break;
+		default:
+			WebErrorReport(m_strInquiringSymbol);
+			break;
+		}	break;
 	}
 }
 

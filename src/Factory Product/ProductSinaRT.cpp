@@ -47,6 +47,7 @@ void CProductSinaRT::WebStatusCheck(cpr::Response& r) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
 	default:
+		WebErrorReport(m_strInquiringSymbol);
 		break;
 	}
 }

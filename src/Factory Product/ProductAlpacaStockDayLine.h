@@ -41,8 +41,8 @@ public:
 	void UpdateSystemStatus() override; // default do nothing
 
 	void ClearUpdateDayLineFlag();
-	void UpdateDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine,
-	                   vector<CTiingoCandleLine>& vDayLineWithSplit);
+	void UpdateOneStockDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine,
+	                           vector<CTiingoCandleLine>& vDayLineWithSplit);
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
@@ -51,14 +51,11 @@ public:
 	shared_ptr<std::vector<std::string>> InquireMultipleStocks(string paramAdjust);
 	local_days GetStartInquireDay(size_t stockIndex) const;
 
-	bool Parse(shared_ptr<vector<TiingoDayLine>> pvDayLine, const string& text, const string& stockSymbol);
+	shared_ptr<vector<TiingoDayLine>> Parse(const string& text, const string& stockSymbol);
 	void CalculateSplitFactor(vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit);
-
-	bool IsDataEnded() const noexcept { return m_bDataEnded; }
 
 protected:
 	std::chrono::local_days m_currentDayLineEndDate;
-	bool m_bDataEnded{ true };
 
 	vector<string> m_vStockSymbols;
 	vector<StockDayLine> m_vStockDayLine; // 每个股票的日线数据

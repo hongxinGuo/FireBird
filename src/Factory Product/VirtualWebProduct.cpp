@@ -59,3 +59,16 @@ bool CVirtualWebProduct::IsUSMarket() const {
 	if (m_strInquiringExchange == "US") return true;
 	return false;
 }
+
+void CVirtualWebProduct::WebErrorReport() {
+	string s = std::format("{} http error {}. code:{} message: {}",
+	                       typeid(this).name(), m_r.status_code, static_cast<int>(m_r.error.code), m_r.error.message);
+	gl_dailyLogger->info("{}", s);
+	gl_systemMessage.PushWebInformationMessage(s);
+}
+void CVirtualWebProduct::WebErrorReport(const string& symbol) {
+	string s = std::format("{} stock:{} http error {}. code:{} message: {}",
+	                       typeid(this).name(), symbol, m_r.status_code, static_cast<int>(m_r.error.code), m_r.error.message);
+	gl_dailyLogger->info("{}", s);
+	gl_systemMessage.PushWebInformationMessage(s);
+}

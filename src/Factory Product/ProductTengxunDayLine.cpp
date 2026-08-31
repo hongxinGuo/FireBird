@@ -83,8 +83,10 @@ void CProductTengxunDayLine::WebStatusCheck(cpr::Response& r) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
 	case 501: // mot implemented
+		WebErrorReport(m_stockSymbol);
 		break;
 	default:
+		WebErrorReport(m_stockSymbol);
 		break;
 	}
 	string s = std::format("Tengxun dayLine update error. http code: {}, error code:{}, message:{}", r.status_code, static_cast<int>(r.error.code), r.error.message);

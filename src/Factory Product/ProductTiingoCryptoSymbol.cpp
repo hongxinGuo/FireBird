@@ -18,9 +18,6 @@ using namespace std;
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/crypto?";
-	m_differ1 = 0;
-	m_differ2 = 0;
-	m_ratio = 3;
 }
 
 void CProductTiingoCryptoSymbol::InquireData(const std::stop_token& st) {
@@ -58,9 +55,7 @@ void CProductTiingoCryptoSymbol::WebStatusCheck(cpr::Response& r) {
 		CheckInaccessible();
 		break;
 	default:
-		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
-		                       static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		WebErrorReport();
 		break;
 	}
 }

@@ -12,12 +12,11 @@ public:
 
 	void InquireData(const std::stop_token& st) override; // default do nothing
 	void WebStatusCheck(cpr::Response& r) override;
-
+	void UpdateSystemStatus() override;
 	shared_ptr<vector<string>> CreateMessage() override;
+
 	static bool IsBadStockSymbol(const string& strStockSymbol, const string& strExchangeCode);
 	CFinnhubStocksPtr Parse(const string& text) const;
-
-	void UpdateSystemStatus() override;
 };
 
 using CProductFinnhubCompanySymbolPtr = shared_ptr<CProductFinnhubStockSymbol>;

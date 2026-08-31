@@ -56,7 +56,7 @@ protected:
 	string m_strDownLoadingStockCode{};
 
 	time_point<steady_clock> m_PrevInquireTimePoint{};
-	int m_InqueringTime{ 10000 }; // 每次查询间隔，单位ms。
+	int m_InquiringTime{ 10000 }; // 每次查询间隔，单位ms。
 };
 
 using CEastmoneyDayLineDataSourcePtr = shared_ptr<CEastmoneyDayLineDataSource>;

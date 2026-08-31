@@ -30,7 +30,7 @@ public:
 	shared_ptr<vector<string>> CreateMessage() override;
 
 	void SetStockIndex(long index) noexcept { m_lCurrentStockPosition = index; }
-	void SetStockSymbol(string symbol) { m_stockSymbol = symbol; }
+	void SetStockSymbol(const string& symbol) { m_stockSymbol = symbol; }
 
 	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
 	int GetInquiryNumber() const { return m_iInquiryNumber; }

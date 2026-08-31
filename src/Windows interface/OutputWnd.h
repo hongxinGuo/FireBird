@@ -51,12 +51,12 @@ protected:
 
 	COutputList m_wndStockMarketInformation;
 	COutputList m_wndOutputInformation;
-	COutputList m_wndChinaMarketInformation;
 	COutputList m_wndOutputDayLineInfo;
 	COutputList m_wndChinaMarketTaskQueue;
 	COutputList m_wndWorldMarketTaskQueue;
 	COutputList m_wndOutputWebSocketInfo;
 	COutputList m_wndOutputInnerSystemInformation;
+	COutputList m_wndWebInformation;
 	COutputList m_wndErrorMessage;
 
 	UINT m_uIdTimer;

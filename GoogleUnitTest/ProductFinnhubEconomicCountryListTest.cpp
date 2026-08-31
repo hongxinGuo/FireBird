@@ -53,6 +53,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
+		countryList.SetStatusCode(200);
 
 		countryList.UpdateSystemStatus();
 

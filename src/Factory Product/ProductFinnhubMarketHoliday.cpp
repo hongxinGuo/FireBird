@@ -50,9 +50,7 @@ void CProductFinnhubMarketHoliday::WebStatusCheck(cpr::Response& r) {
 		CheckInaccessible();
 		break;
 	default:
-		string sType = typeid(this).name();
-		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushErrorMessage(s);
+		WebErrorReport();
 		break;
 	}
 }

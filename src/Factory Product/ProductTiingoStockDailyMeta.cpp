@@ -73,7 +73,16 @@ void CProductTiingoStockDailyMeta::WebStatusCheck(cpr::Response& r) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
 	default:
-		break;
+		switch (r.status_code) {
+		case 0:
+			break;
+		case 403: // forbidden
+			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+			break;
+		default:
+			WebErrorReport(m_strInquiringSymbol);
+			break;
+		}	break;
 	}
 }
 

@@ -61,6 +61,16 @@ void CProductTiingoIEXTopOfBook::InquireData(const std::stop_token& st) {
 }
 
 void CProductTiingoIEXTopOfBook::WebStatusCheck(cpr::Response& r) {
+	switch (r.status_code) {
+	case 0:
+		break;
+	case 403: // forbidden
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		break;
+	default:
+		WebErrorReport();
+		break;
+	}
 }
 
 shared_ptr<vector<string>> CProductTiingoIEXTopOfBook::CreateMessage() {

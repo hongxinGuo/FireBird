@@ -59,7 +59,6 @@ bool CTengxunDayLineDataSource::Reset() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& currentTime) {
 	static int s_iSleep = 0;
-	static int s_number = 0;
 	const auto llTickCount = GetTickCount();
 
 	std::random_device r;

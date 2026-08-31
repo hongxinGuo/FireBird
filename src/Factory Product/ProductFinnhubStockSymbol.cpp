@@ -9,6 +9,7 @@
 #include "ContainerFinnhubStock.h"
 #include "ContainerStockExchange.h"
 #include "FinnhubDataSource.h"
+#include "log.h"
 #include "SystemMessage.h"
 
 #include"cpr/cpr.h"
@@ -71,8 +72,7 @@ void CProductFinnhubStockSymbol::WebStatusCheck(cpr::Response& r) {
 		CheckInaccessible();
 		break;
 	default:
-		s = std::format("Finnhub stock symbol concise http error {}. code:{} message: {}", r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		WebErrorReport();
 		break;
 	}
 }

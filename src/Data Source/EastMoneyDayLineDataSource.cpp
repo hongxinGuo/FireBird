@@ -67,7 +67,7 @@ bool CEastmoneyDayLineDataSource::GenerateInquiryMessage(const local_seconds& cu
 		ABSL_DLOG(INFO) << std::format("Eastmoney DayLine server suspended %d seconds\n", time / 1000);
 	}
 	const auto llTickCount = GetTickCount();
-	if (llTickCount < m_PrevInquireTimePoint + milliseconds(m_InqueringTime + mean)) return false;
+	if (llTickCount < m_PrevInquireTimePoint + milliseconds(m_InquiringTime + mean)) return false;
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {
 		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
@@ -180,7 +180,7 @@ void CEastmoneyDayLineDataSource::CheckWebData(const string& text) {
 	switch (m_dwHTTPStatusCode) {
 	case 501://请求功能尚未实现，实际是服务器正处于维护状态
 		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
-		m_InqueringTime += 2000; // 每次出现拒绝访问时都将查询间隔时间延长2秒。
+		m_InquiringTime += 2000; // 每次出现拒绝访问时都将查询间隔时间延长2秒。
 		break;
 	case 200:
 		// everything is OK

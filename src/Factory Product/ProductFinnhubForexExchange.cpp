@@ -49,9 +49,7 @@ void CProductFinnhubForexExchange::WebStatusCheck(cpr::Response& r) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
 	default:
-		string s = std::format("Finnhub company profile concise http error {}. code:{} message: {}", r.status_code,
-		                       static_cast<int>(r.error.code), r.error.message);
-		gl_systemMessage.PushInnerSystemInformationMessage(s);
+		WebErrorReport();
 		break;
 	}
 }

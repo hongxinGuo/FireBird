@@ -64,8 +64,11 @@ public:
 	int GetStatusCode() const noexcept { return m_r.status_code; }
 	double GetElapsedTime() const noexcept { return m_r.elapsed; }
 
+	void WebErrorReport(); // 
+	void WebErrorReport(const string& symbol); // 
 	// 测试用
 	virtual bool Test_checkAccessRight_(const string&) { return true; }  // todo 不再使用，准备删除之
+	void SetStatusCode(int code) noexcept { m_r.status_code = code; }
 
 protected:
 	cpr::Response m_r; // 
@@ -76,8 +79,6 @@ protected:
 	size_t m_index{ 0 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界
 	int m_iInquireType{ -1 }; // product索引，Finnhub申请的索引，如SYMBOL_LOOKUP_等。 预先设置为越界
 	int m_iReceivedDataStatus{ GOOD_DATA_ }; // 1:有效数据；2:void data(只有{}或[]两个数据); 3:没有权利申请
-	int m_statusCode{ 200 }; // 网络状态码
-	double m_elapsed{ 0 }; // 申请网络数据所花费的时间。单位:秒
 };
 
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;
