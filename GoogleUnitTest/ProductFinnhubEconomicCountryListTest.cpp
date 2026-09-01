@@ -4,7 +4,6 @@
 
 #include"SystemMessage.h"
 
-#include "ContainerFinnhubCountry.h"
 #include"GeneralCheck.h"
 #include"Country.h"
 #include "FinnhubDataSource.h"

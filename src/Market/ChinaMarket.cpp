@@ -263,6 +263,14 @@ int CChinaMarket::ProcessTask() {
 		case CHINA_MARKET_UPDATE_DAY_LINE_DB_:
 			TaskProcessAndUpdateDayLineDB();
 			break;
+		case CHINA_MARKET_START_DOWN_LOAD_DAYLINE:
+			if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) {
+				gl_pTengxunDayLineDataSource->Enable(true);
+			}
+			else {
+				gl_pEastmoneyDayLineDataSource->Enable(true);
+			}
+			break;
 		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_:
 			TaskAccessoryPerMinuteTask();
 			break;

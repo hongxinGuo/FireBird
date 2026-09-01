@@ -1,15 +1,8 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"ChinaStockCodeConverter.h"
 
-#include"jsonParse.h"
 #include"WebRTData.h"
-
-#include "CharSetTransfer.h"
-#include "ChinaMarket.h"
-
-#include<spanstream>
 
 using namespace std;
 

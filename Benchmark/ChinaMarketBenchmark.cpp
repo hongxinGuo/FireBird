@@ -4,7 +4,6 @@
 
 #include"ChinaStockCodeConverter.h"
 #include"ChinaMarket.h"
-#include"ContainerTiingoStockDayLine.h"
 
 #include"TiingoStock.h"
 

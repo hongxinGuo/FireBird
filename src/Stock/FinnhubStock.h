@@ -27,11 +27,11 @@ public:
 	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
-	void CheckUpdateStatus(local_days todayDate);
+	void CheckUpdateStatus(local_days currentDate);
 	void CheckProfileUpdateStatus(local_days todayDate);
 	bool CheckCompanyNewsUpdateStatus(local_days todayDate);
 	bool CheckBasicFinancialUpdateStatus(local_days todayDate);
-	bool CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday lDayOfWeek);
+	bool CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday dayOfWeek);
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();

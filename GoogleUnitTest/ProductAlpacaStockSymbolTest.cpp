@@ -4,7 +4,6 @@
 
 #include "GeneralCheck.h"
 #include "ProductAlpacaStockSymbol.h"
-#include "TiingoCandleLine.h"
 #include "TiingoStock.h"
 #include <cpr/response.h>
 

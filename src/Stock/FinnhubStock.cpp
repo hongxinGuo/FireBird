@@ -57,16 +57,16 @@ void CFinnhubStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
 }
 
-void CFinnhubStock::CheckUpdateStatus(local_days todayDate) {
-	CheckProfileUpdateStatus(todayDate);
-	CheckBasicFinancialUpdateStatus(todayDate);
-	CheckCompanyNewsUpdateStatus(todayDate);
-	CheckDayLineUpdateStatus(todayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetWeekDay());
-	CheckEPSSurpriseStatus(todayDate);
-	CheckSECFilingsStatus(todayDate);
-	CheckPeerStatus(todayDate);
-	CheckInsiderTransactionStatus(todayDate);
-	CheckInsiderSentimentStatus(todayDate);
+void CFinnhubStock::CheckUpdateStatus(local_days currentDate) {
+	CheckProfileUpdateStatus(currentDate);
+	CheckBasicFinancialUpdateStatus(currentDate);
+	CheckCompanyNewsUpdateStatus(currentDate);
+	CheckDayLineUpdateStatus(currentDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetWeekDay());
+	CheckEPSSurpriseStatus(currentDate);
+	CheckSECFilingsStatus(currentDate);
+	CheckPeerStatus(currentDate);
+	CheckInsiderTransactionStatus(currentDate);
+	CheckInsiderSentimentStatus(currentDate);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,10 +86,10 @@ void CFinnhubStock::CheckProfileUpdateStatus(local_days todayDate) {
 ///
 /// 默认状态为每周更新一次
 ///
-bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
+bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days currentDate) {
 	ABSL_DCHECK(m_fUpdateCompanyNews);
 	if (GetShareOutstanding() > 0 && GetMarketCapitalization() > 0) {
-		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
+		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), currentDate, 6)) {
 			// 每星期更新一次公司新闻
 			m_fUpdateCompanyNews = false;
 		}
@@ -97,7 +97,7 @@ bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
 	}
 	else {
 		// 未上市股票或无市值股票，每月更新一次公司新闻
-		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 30)) {
+		if (!IsEarlyThen(GetCompanyNewsUpdateDate(), currentDate, 30)) {
 			m_fUpdateCompanyNews = false;
 		}
 		else m_fUpdateCompanyNews = true;
@@ -109,12 +109,12 @@ bool CFinnhubStock::CheckCompanyNewsUpdateStatus(local_days lTodayDate) {
 /// <summary>
 /// 系统每季更新一次数据，故查询两次即可满足。所以设定45天查询一次
 /// </summary>
-/// <param name="lTodayDate"></param>
+/// <param name="currentDate"></param>
 /// <returns></returns>
-bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
+bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days currentDate) {
 	ABSL_DCHECK(m_fUpdateBasicFinancial);
 	if (GetShareOutstanding() > 0 && GetMarketCapitalization() > 0) {
-		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
+		if (IsEarlyThen(GetBasicFinancialUpdateDate(), currentDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
 			// 系统每季更新一次数据，故查询两次即可。
 			m_fUpdateBasicFinancial = true;
 		}
@@ -122,7 +122,7 @@ bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
 	}
 	else {
 		// 未上市股票或无市值股票，每半年更新一次数据，故查询四次即可。
-		if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate() * 2)) {
+		if (IsEarlyThen(GetBasicFinancialUpdateDate(), currentDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate() * 2)) {
 			m_fUpdateBasicFinancial = true;
 		}
 		else { m_fUpdateBasicFinancial = false; }
@@ -138,16 +138,16 @@ bool CFinnhubStock::CheckBasicFinancialUpdateStatus(local_days lTodayDate) {
 /// <param name="lTodayDate"></param>
 /// <param name="lLastTradeDate"></param>
 /// <param name="lTime"></param>
-/// <param name="lDayOfWeek"></param>
+/// <param name="dayOfWeek"></param>
 /// <returns></returns>
-bool CFinnhubStock::CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday lDayOfWeek) {
+bool CFinnhubStock::CheckDayLineUpdateStatus(local_days todayDate, local_days lLastTradeDate, local_seconds lTime, weekday dayOfWeek) {
 	ABSL_DCHECK(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 
 	if (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100)) {
 		SetUpdateDayLine(false);
 		return m_fUpdateDayLine;
 	}
-	else if (lDayOfWeek != Sunday && lDayOfWeek != Saturday) {
+	else if (dayOfWeek != Sunday && dayOfWeek != Saturday) {
 		// 周一至周五
 		if (lTime > toLocalTime(170000)) {
 			if (todayDate <= GetDayLineEndDate()) {
@@ -315,11 +315,9 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 		cutoffDateTime = row.DateTime;
 	}
 
-	size_t iIndex = 0;
-	while (m_vCompanyNews.at(iIndex).m_DateTime.time_since_epoch().count() <= cutoffDateTime) iIndex++;
-
-	for (size_t i = iIndex; i < m_vCompanyNews.size(); i++) {
+	for (size_t i = 0; i < m_vCompanyNews.size(); i++) {
 		auto& companyNews = m_vCompanyNews.at(i);
+		if (companyNews.m_DateTime.time_since_epoch().count() <= cutoffDateTime) continue;
 		multi_insert.add_values(
 			t.Symbol = companyNews.m_strCompanySymbol,
 			t.Category = companyNews.m_strCategory,
@@ -514,7 +512,7 @@ void CFinnhubStock::ClearCompanyNews() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubStock::CheckEPSSurpriseStatus(local_days lCurrentDate) {
 	const local_days lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
-	if ((lLastEPSSurpriseUpdateDate == local_days(1970y / 01 / 01)) || (lLastEPSSurpriseUpdateDate == local_days(1980y / 01 / 01))) { // 没有数据？
+	if (lLastEPSSurpriseUpdateDate == local_days(1970y / 01 / 01) || lLastEPSSurpriseUpdateDate == local_days(1980y / 01 / 01)) { // 没有数据？
 		m_fUpdateEPSSurprise = false;
 	}
 	else if (IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate() * 10) && (lLastEPSSurpriseUpdateDate != local_days(1980y / 01 / 01))) {// 有早于900天的数据？即已经不更新了

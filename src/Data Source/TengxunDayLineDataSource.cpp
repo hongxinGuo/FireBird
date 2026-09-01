@@ -104,7 +104,7 @@ bool CTengxunDayLineDataSource::GenerateInquireDayLine() {
 		}
 		if (fFound) {
 			const auto product = make_shared<CProductTengxunDayLine>();
-			product->SetStockSymbol(pStock->GetSymbol());
+			product->SetInquiringSymbol(pStock->GetSymbol());
 			StoreInquiry(product);
 			SetDownLoadingStockCode(pStock->GetSymbol());
 			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());

@@ -2,7 +2,7 @@
 
 #include"ProductFinnhub.h"
 
-#include"InsiderTransaction.h";
+#include"InsiderTransaction.h"
 
 using std::shared_ptr;
 using std::vector;

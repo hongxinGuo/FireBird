@@ -10,7 +10,6 @@
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
-#include "TiingoFactory.h"
 #include"TiingoStock.h"
 
 #include"ProductDummy.h"
@@ -20,7 +19,6 @@
 #include "ProductTiingoStockDailyMeta.h"
 #include "ProductTiingoStockDayLine.h"
 #include "ProductTiingoStockProfile.h"
-#include"TestWebData.h"
 #include "InaccessibleSymbol.h"
 #include "SystemConfiguration.h"
 #include"FinnhubStock.h"

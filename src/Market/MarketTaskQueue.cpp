@@ -71,6 +71,7 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_STOCK_SECTION_DB_] = "更新全段股票数据库";
 
 	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_DAY_LINE_DB_] = "更新日线历史数据";
+	gl_mapMarketMapIndex[CHINA_MARKET_START_DOWN_LOAD_DAYLINE] = "下载日线";
 	gl_mapMarketMapIndex[CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_] = "系统状态监测";
 	gl_mapMarketMapIndex[CHINA_MARKET_PREPARING_MARKET_OPEN_] = "开市准备";
 

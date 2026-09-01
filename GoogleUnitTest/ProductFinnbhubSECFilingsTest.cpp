@@ -7,7 +7,6 @@
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
 #include"FinnhubStock.h"
-#include"TimeConvert.h"
 
 #include"ProductFinnhubSECFilings.h"
 #include"SECFiling.h"

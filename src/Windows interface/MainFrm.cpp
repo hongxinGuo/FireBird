@@ -4,7 +4,6 @@
 #include"SystemPublicDeclaration.h"
 #include"SystemMessage.h"
 
-#include"Thread.h"
 #include "log.h"
 
 #include "FireBird.h"

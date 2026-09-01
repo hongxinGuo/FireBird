@@ -5,7 +5,6 @@
 #include "ChinaMarket.h"
 #include"GeneralCheck.h"
 #include"ProductTengxunRT.h"
-#include "SystemData.h"
 
 using namespace testing;
 using std::make_shared;

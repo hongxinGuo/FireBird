@@ -2,19 +2,15 @@
 
 #include <gtest/gtest.h>
 
-#include "ContainerTiingoStock.h"
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
-#include "TiingoStock.h"
 #include"FinnhubStock.h"
 
 #include"ProductFinnhubCompanyProfileConcise.h"
-#include "SystemMessage.h"
 
 #include"TestWebData.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 

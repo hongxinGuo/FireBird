@@ -41,13 +41,13 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	if (!m_wndStockMarketInformation.Create(dwStyle, rectDummy, &m_wndTabs, 1) ||
 		!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-		!m_wndWebInformation.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
 		!m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
 		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
 		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
 		!m_wndChinaMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 9) ||
 		!m_wndWorldMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 10) ||
-		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 11)) {
+		!m_wndWebInformation.Create(dwStyle, rectDummy, &m_wndTabs, 11) ||
+		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 12)) {
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
 	}
@@ -63,9 +63,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
 	ABSL_DCHECK(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)2);
-	bNameValid = strTabName.LoadString(IDS_CHINA_MARKET_INFORMATION);
-	ABSL_DCHECK(bNameValid);
-	m_wndTabs.AddTab(&m_wndWebInformation, strTabName, (UINT)3);
 	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
 	ABSL_DCHECK(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)6);
@@ -81,9 +78,12 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2); // WebSocket消息
 	ABSL_DCHECK(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)10); // 软件系统消息
+	bNameValid = strTabName.LoadString(IDS_WEB_INFORMATION);
+	ABSL_DCHECK(bNameValid);
+	m_wndTabs.AddTab(&m_wndWebInformation, strTabName, (UINT)11);
 	bNameValid = strTabName.LoadString(IDS_ERROR_MESSAGE);
 	ABSL_DCHECK(bNameValid);
-	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)11);  // 错误消息
+	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)12);  // 错误消息
 
 	// 设置500毫秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 500, nullptr);

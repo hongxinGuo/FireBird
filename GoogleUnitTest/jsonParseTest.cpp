@@ -71,6 +71,44 @@ namespace FireBirdTest {
 		//EXPECT_EQ(StrToDecimal2(""), );
 	}
 
+	TEST_F(jsonParseTest, ParsesMultipleFieldsAndThrowsAtEnd) {
+		std::string s = "one,two,three,";
+		size_t pos = 0;
+
+		auto f1 = GetNextField(s, pos, ',');
+		EXPECT_EQ(std::string(f1), "one");
+		EXPECT_EQ(pos, 4u);
+
+		auto f2 = GetNextField(s, pos, ',');
+		EXPECT_EQ(std::string(f2), "two");
+		EXPECT_EQ(pos, 8u);
+
+		auto f3 = GetNextField(s, pos, ',');
+		EXPECT_EQ(std::string(f3), "three");
+		EXPECT_EQ(pos, s.size());
+
+		// No more fields (substr is empty) -> function throws
+		EXPECT_THROW(GetNextField(s, pos, ','), std::range_error);
+	}
+
+	TEST_F(jsonParseTest, EmptyFirstField) {
+		std::string s = ",start,";
+		size_t pos = 0;
+
+		auto f1 = GetNextField(s, pos, ',');
+		EXPECT_EQ(f1.size(), 0u);
+		EXPECT_EQ(pos, 1u);
+
+		auto f2 = GetNextField(s, pos, ',');
+		EXPECT_EQ(std::string(f2), "start");
+	}
+
+	TEST_F(jsonParseTest, ThrowsWhenNoDelimiterPresent) {
+		std::string s = "single";
+		size_t pos = 0;
+		EXPECT_THROW(GetNextField(s, pos, ','), std::range_error);
+	}
+
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann1) {
 		nlohmannJson js;
 		string s{ R"({"eventName":"subscribe","authorization":"tested"})" };
@@ -226,7 +264,7 @@ v_sh600001="1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~9
 
 	TEST_F(jsonParseTest, TestIsTengxunRTDataInvalid) {
 		string s = R"(v_pv_none_match="1";
-)"; //Note:这里的回车换行是故意的，为的是插入最后一个回车(\n)字符
+)"; //Note: 这里的回车换行是故意的，为的是插入最后一个回车(\n)字符
 
 		EXPECT_TRUE(IsTengxunRTDataInvalid(s));
 

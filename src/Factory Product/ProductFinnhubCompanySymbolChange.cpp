@@ -20,8 +20,6 @@
 #include "SystemConfiguration.h"
 #include<cpr/cpr.h>
 
-#include "log.h"
-
 using std::make_shared;
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {

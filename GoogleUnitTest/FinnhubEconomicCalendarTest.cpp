@@ -4,9 +4,7 @@
 
 #include"SystemMessage.h"
 
-#include "ContainerFinnhubEconomicCalendar.h"
 #include"GeneralCheck.h"
-#include"WorldMarket.h"
 #include"FinnhubDataSource.h"
 
 #include"ProductFinnhubEconomicCalendar.h"

@@ -5,14 +5,11 @@
 
 #include"SystemMessage.h"
 
-#include "ContainerTiingoStock.h"
-#include "TiingoStock.h"
 #include"TiingoDataSource.h"
 #include "TiingoIEXTopOFBook.h"
 
 #include"ProductTiingoIEXTopOfBook.h"
 #include"TestWebData.h"
-#include "TimeConvert.h"
 #include "WorldMarket.h"
 
 using namespace testing;

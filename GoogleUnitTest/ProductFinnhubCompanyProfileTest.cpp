@@ -6,10 +6,8 @@
 
 #include"WorldMarket.h"
 #include "ContainerFinnhubStock.h"
-#include"TimeConvert.h"
 
 #include"ProductFinnhubCompanyProfile.h"
-#include "SystemMessage.h"
 
 #include"TestWebData.h"
 #include"FinnhubStock.h"

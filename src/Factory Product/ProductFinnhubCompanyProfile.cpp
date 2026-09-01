@@ -10,7 +10,6 @@
 
 #include "FinnhubDataSource.h"
 #include"FinnhubStock.h"
-#include "SystemMessage.h"
 #include"cpr/cpr.h"
 
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {

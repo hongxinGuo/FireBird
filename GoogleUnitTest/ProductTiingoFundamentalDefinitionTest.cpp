@@ -5,7 +5,6 @@
 
 #include"SystemMessage.h"
 
-#include "ContainerTiingoFundamentalDefinition.h"
 #include"TiingoDataSource.h"
 #include"ProductTiingoFundamentalDefinition.h"
 #include"TestWebData.h"

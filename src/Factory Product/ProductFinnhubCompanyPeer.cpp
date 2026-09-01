@@ -8,7 +8,6 @@
 
 #include "FinnhubDataSource.h"
 #include "jsonParse.h"
-#include "SystemMessage.h"
 #include"cpr/cpr.h"
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {

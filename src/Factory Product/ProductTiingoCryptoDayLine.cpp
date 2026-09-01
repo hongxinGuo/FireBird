@@ -10,7 +10,6 @@
 #include "FinnhubCrypto.h"
 #include "TiingoCrypto.h"
 #include"DayLine.h"
-#include "log.h"
 #include "TiingoDataSource.h"
 
 #include"cpr/cpr.h"

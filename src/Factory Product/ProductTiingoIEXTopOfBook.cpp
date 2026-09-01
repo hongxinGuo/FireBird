@@ -13,7 +13,6 @@
 
 #include "ProductTiingoIEXTopOFBook.h"
 #include "TiingoIEXTopOFBook.h"
-#include"ContainerTiingoStockDayLine.h"
 
 #include "TiingoDataSource.h"
 

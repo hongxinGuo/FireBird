@@ -9,8 +9,6 @@
 #include"ChinaMarket.h"
 #include"TimeConvert.h"
 
-#include"TestWebData.h"
-
 using namespace testing;
 using std::make_shared;
 

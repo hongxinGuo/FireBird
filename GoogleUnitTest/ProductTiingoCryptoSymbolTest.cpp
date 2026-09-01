@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include "ContainerTiingoCryptoSymbol.h"
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"

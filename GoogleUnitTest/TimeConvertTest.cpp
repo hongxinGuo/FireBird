@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include"WorldMarket.h"
 #include"ChinaMarket.h"
 
 #include"GeneralCheck.h"

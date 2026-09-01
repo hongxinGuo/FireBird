@@ -32,6 +32,7 @@ enum {
 	CHINA_MARKET_UPDATE_STOCK_SECTION_DB_, // 更新全段股票数据库
 
 	CHINA_MARKET_UPDATE_DAY_LINE_DB_, // 每十秒钟检查一次，有待处理的日线历史数据就处理
+	CHINA_MARKET_START_DOWN_LOAD_DAYLINE, // 开始下载日线数据
 
 	CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_, // 每分钟重复执行的辅助任务（如确定工作时间与否、是否快速接收数据等等）
 	CHINA_MARKET_PREPARING_MARKET_OPEN_, // 在股市开盘（092959）前做必要的准备

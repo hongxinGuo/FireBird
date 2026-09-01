@@ -6,7 +6,6 @@
 #include "ContainerTiingoStock.h"
 #include "TiingoStock.h"
 
-#include"WorldMarket.h"
 #include "TiingoStockDailyMeta.h"
 
 #include"ProductTiingoStockDailyMeta.h"

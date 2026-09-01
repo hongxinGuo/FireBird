@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include "ContainerFinnhubCrypto.h"
 #include "ContainerFinnhubCryptoExchange.h"
 #include"GeneralCheck.h"
 #include"ProductFinnhubCryptoSymbol.h"
@@ -129,6 +128,4 @@ namespace FireBirdTest {
 			break;
 		}
 	}
-
-	
 }

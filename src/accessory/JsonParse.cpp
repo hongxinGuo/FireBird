@@ -25,6 +25,7 @@
 
 #include"NlohmannJsonDeclaration.h"
 #include "ContainerChinaStock.h"
+#include "log.h"
 #include "SystemData.h"
 
 #include"concurrencpp/concurrencpp.h"
@@ -132,7 +133,11 @@ long Str2Long(const std::string_view& svData, const size_t power) {
 string_view GetNextField(const string_view& svData, size_t& lCurrentPos, const char delimiter) {
 	const string_view sv = svData.substr(lCurrentPos);
 	const auto lEnd = sv.find_first_of(delimiter);
-	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
+	if (lEnd > sv.length()) {
+		string s = "GetNextField() out of range: ";
+		s += svData;
+		throw std::range_error(s); // 没找到的话抛出异常
+	}
 	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
 	return string_view{ sv.data(), lEnd };
 }
@@ -205,81 +210,85 @@ CWebRTDataPtr ParseSinaOneData(const string_view& svData) {
 		pData->SetDataSource(SINA_RT_WEB_DATA_);
 		return pData;
 	}
-	lCurrentPos += 10; // 跨过字符串： sh601006="
-	// 读入证券名称
-	auto sv = GetNextField(svData, lCurrentPos, ',');
-	string s(sv.data(), sv.length());
-	pData->SetStockName(Gbk2Utf8(s)); //Note 新浪实时数据的字符集为GBK18030，需要转换为UTF-8。
-	// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetOpen(Str2Long(sv, 3));
-	// 读入前收盘价
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetLastClose(Str2Long(sv, 3));
-	// 读入当前价
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetNew(Str2Long(sv, 3));
-	// 读入最高价
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetHigh(Str2Long(sv, 3));
-	// 读入最低价
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetLow(Str2Long(sv, 3));
-	// 读入竞买价
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetBuy(Str2Long(sv, 3));
-	// 读入竞卖价
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetSell(Str2Long(sv, 3));
-	// 读入成交股数。成交股数存储实际值
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetVolume(atoll(sv.data()));
-	// 读入成交金额
-	sv = GetNextField(svData, lCurrentPos, ',');
-	pData->SetAmount(atoll(sv.data()));
-	// 读入买一--买五的股数和价格
-	for (int j = 0; j < 5; j++) {
-		// 读入数量
+	try {
+		lCurrentPos += 10; // 跨过字符串： sh601006="
+		// 读入证券名称
+		auto sv = GetNextField(svData, lCurrentPos, ',');
+		string s(sv.data(), sv.length());
+		pData->SetStockName(Gbk2Utf8(s)); //Note 新浪实时数据的字符集为GBK18030，需要转换为UTF-8。
+		// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pData->SetVBuy(j, atol(sv.data()));
-		// 读入价格
+		pData->SetOpen(Str2Long(sv, 3));
+		// 读入前收盘价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pData->SetPBuy(j, Str2Long(sv, 3));
-	}
-	// 读入卖一--卖五的股数和价格
-	for (int j = 0; j < 5; j++) {
-		// 读入数量
+		pData->SetLastClose(Str2Long(sv, 3));
+		// 读入当前价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pData->SetVSell(j, atol(sv.data()));
-		// 读入价格
+		pData->SetNew(Str2Long(sv, 3));
+		// 读入最高价
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pData->SetPSell(j, Str2Long(sv, 3));
-	}
-	// 读入成交日期和时间。此时间为东八区（北京标准时间）。
+		pData->SetHigh(Str2Long(sv, 3));
+		// 读入最低价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pData->SetLow(Str2Long(sv, 3));
+		// 读入竞买价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pData->SetBuy(Str2Long(sv, 3));
+		// 读入竞卖价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pData->SetSell(Str2Long(sv, 3));
+		// 读入成交股数。成交股数存储实际值
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pData->SetVolume(atoll(sv.data()));
+		// 读入成交金额
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pData->SetAmount(atoll(sv.data()));
+		// 读入买一--买五的股数和价格
+		for (int j = 0; j < 5; j++) {
+			// 读入数量
+			sv = GetNextField(svData, lCurrentPos, ',');
+			pData->SetVBuy(j, atol(sv.data()));
+			// 读入价格
+			sv = GetNextField(svData, lCurrentPos, ',');
+			pData->SetPBuy(j, Str2Long(sv, 3));
+		}
+		// 读入卖一--卖五的股数和价格
+		for (int j = 0; j < 5; j++) {
+			// 读入数量
+			sv = GetNextField(svData, lCurrentPos, ',');
+			pData->SetVSell(j, atol(sv.data()));
+			// 读入价格
+			sv = GetNextField(svData, lCurrentPos, ',');
+			pData->SetPSell(j, Str2Long(sv, 3));
+		}
+		// 读入成交日期和时间。此时间为东八区（北京标准时间）。
 
-	sv = GetNextField(svData, lCurrentPos, ',');
-	string_view sv2 = GetNextField(svData, lCurrentPos, ',');
-	std::stringstream oss;
-	oss << sv << ' ' << sv2;
-	std::chrono::local_seconds lt;
-	oss >> std::chrono::parse("%Y-%m-%d %H:%M:%S", lt);
-	pData->SetTime(gl_pChinaMarket->ToUTCTime(lt));
-	/*
-	string sTime(sv.data(), sv.size());
-	sTime += ' '; //添加一个空格，以利于下面的转换
-	const string_view svTime = GetNextField(svData, lCurrentPos, ',');
-	sTime.append(svTime.data(), svTime.size());
-	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
-	auto time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str(), -gl_pChinaMarket->GetTimeZoneOffset().count());	//转成UTC时间。
-	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(time));
-	*/
-	// 后面的数据为字符串"00",无效数据，不再处理
-	// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
-	// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
-	// 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
-	pData->CheckSinaRTDataActive();
-	pData->SetDataSource(SINA_RT_WEB_DATA_);
-
+		sv = GetNextField(svData, lCurrentPos, ',');
+		string_view sv2 = GetNextField(svData, lCurrentPos, ',');
+		std::stringstream oss;
+		oss << sv << ' ' << sv2;
+		std::chrono::local_seconds lt;
+		oss >> std::chrono::parse("%Y-%m-%d %H:%M:%S", lt);
+		pData->SetTime(gl_pChinaMarket->ToUTCTime(lt));
+		/*
+		string sTime(sv.data(), sv.size());
+		sTime += ' '; //添加一个空格，以利于下面的转换
+		const string_view svTime = GetNextField(svData, lCurrentPos, ',');
+		sTime.append(svTime.data(), svTime.size());
+		// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
+		auto time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str(), -gl_pChinaMarket->GetTimeZoneOffset().count());	//转成UTC时间。
+		m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(time));
+		*/
+		// 后面的数据为字符串"00",无效数据，不再处理
+		// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
+		// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
+		// 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
+		pData->CheckSinaRTDataActive();
+		pData->SetDataSource(SINA_RT_WEB_DATA_);
+	} catch (std::exception& e) {
+		gl_dailyLogger->error("Sina RT data parse error: {}", e.what());
+		return nullptr;
+	}
 	return pData;
 }
 
@@ -309,7 +318,10 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 		chunk_end = min(chunk_end, DataSize);
 		auto result = gl_runtime.thread_pool_executor()->submit([pvStringView, chunk_begin, chunk_end] {
 			for (auto j = chunk_begin; j < chunk_end; j++) {
-				gl_qChinaMarketRTData.enqueue(ParseSinaOneData(pvStringView->at(j))); // Note: 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
+				auto pData = ParseSinaOneData(pvStringView->at(j));
+				if (pData != nullptr) {
+					gl_qChinaMarketRTData.enqueue(pData); // Note: 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
+				}
 			}
 			return true;
 		});
@@ -426,136 +438,143 @@ CWebRTDataPtr ParseOneTengxunData(const string_view& svData) {
 	CWebRTDataPtr pData = make_shared<CWebRTData>();
 	long lTemp;
 	float fTemp = 0.0;
-	size_t lCurrentPos = 12;
-	string stockName;
-	string symbol;
 	pData->SetActive(false); // 初始状态为无效数据
-	// 市场标识代码（51为深市，1为沪市）
-	string_view sv = GetNextField(svData, lCurrentPos, '~'); //
-	const long lMarket = atol(sv.data());
+	try {
+		string symbol;
+		string stockName;
+		size_t lCurrentPos = 12;
+		// 市场标识代码（51为深市，1为沪市）
+		string_view sv = GetNextField(svData, lCurrentPos, '~'); //
+		const long lMarket = atol(sv.data());
 
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	stockName.append(sv.data(), sv.size()); // 设置股票名称
-	pData->SetStockName(stockName);
-
-	// 六位股票代码
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	symbol.append(sv.data(), sv.size());
-	switch (lMarket) {
-	case 1: // 上海市场
-		symbol += ".SS";
-		break;
-	case 51: // 深圳市场
-		symbol += ".SZ";
-		break;
-	default:
-		string s = "bad market: ";
-		s.append(svData.data(), svData.length());
-		throw exception(s.c_str());
-	}
-	pData->SetSymbol(symbol);
-	// 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	pData->SetNew(Str2Long(sv, 3));
-	// 前收盘价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	pData->SetLastClose(Str2Long(sv, 3));
-	// 开盘价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	pData->SetOpen(Str2Long(sv, 3));
-	// 成交手数。成交股数存储实际值
-	// 不使用此处的成交量，而是使用第三十五项处的成交量。
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 外盘
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 内盘
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 读入买一至买五的价格和手数
-	for (int j = 0; j < 5; j++) {
-		// 买盘价格
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		pData->SetPBuy(j, Str2Long(sv, 3));
-		// 买盘数量（手）
+		stockName.append(sv.data(), sv.size()); // 设置股票名称
+		pData->SetStockName(stockName);
+
+		// 六位股票代码
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		symbol.append(sv.data(), sv.size());
+		switch (lMarket) {
+		case 1: // 上海市场
+			symbol += ".SS";
+			break;
+		case 51: // 深圳市场
+			symbol += ".SZ";
+			break;
+		default:
+			string s = "bad market: ";
+			s.append(svData.data(), svData.length());
+			throw exception(s.c_str());
+		}
+		pData->SetSymbol(symbol);
+		// 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		pData->SetNew(Str2Long(sv, 3));
+		// 前收盘价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		pData->SetLastClose(Str2Long(sv, 3));
+		// 开盘价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		pData->SetOpen(Str2Long(sv, 3));
+		// 成交手数。成交股数存储实际值
+		// 不使用此处的成交量，而是使用第三十五项处的成交量。
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 外盘
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 内盘
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 读入买一至买五的价格和手数
+		for (int j = 0; j < 5; j++) {
+			// 买盘价格
+			sv = GetNextField(svData, lCurrentPos, '~'); //
+			pData->SetPBuy(j, Str2Long(sv, 3));
+			// 买盘数量（手）
+			sv = GetNextField(svData, lCurrentPos, '~'); //
+			lTemp = atol(sv.data());
+			pData->SetVBuy(j, lTemp * 100);
+		}
+		// 读入卖一至卖五的价格和手数
+		for (int j = 0; j < 5; j++) {
+			//读入卖盘价格
+			sv = GetNextField(svData, lCurrentPos, '~'); //
+			pData->SetPSell(j, Str2Long(sv, 3));
+			// 卖盘数量（手）
+			sv = GetNextField(svData, lCurrentPos, '~'); //
+			lTemp = atol(sv.data());
+			pData->SetVSell(j, lTemp * 100);
+		}
+		// 最近逐笔成交
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		lTemp = atol(sv.data());
-		pData->SetVBuy(j, lTemp * 100);
-	}
-	// 读入卖一至卖五的价格和手数
-	for (int j = 0; j < 5; j++) {
-		//读入卖盘价格
+		// 30 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
+		// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		pData->SetPSell(j, Str2Long(sv, 3));
-		// 卖盘数量（手）
+		std::ispanstream ss(sv);
+		std::chrono::local_seconds lt;
+		ss >> std::chrono::parse("%Y%m%d%H%M%S", lt);
+		pData->SetTime(gl_pChinaMarket->ToUTCTime(lt));
+
+		// 涨跌
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		lTemp = atol(sv.data());
-		pData->SetVSell(j, lTemp * 100);
+		// 涨跌率
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 最高价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		pData->SetHigh(Str2Long(sv, 3));
+		// 最低价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		pData->SetLow(Str2Long(sv, 3));
+		// 35 成交价/成交量（手）/成交金额（元）
+		// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		string str(sv.data(), sv.size());
+		int64_t amount;
+		sscanf_s(str.c_str(), "%f/%d/%I64d", &fTemp, &lTemp, &amount);
+		pData->SetVolume(static_cast<int64_t>(lTemp) * 100); // 腾讯成交量数据单位为手（100股）。
+		pData->SetAmount(amount);
+		// 成交手数
+		// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 成交金额（万元）
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 换手率
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 市盈率
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 40 无名
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 最高价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 最低价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 振幅
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 流通市值（单位为：亿元）
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		int64_t lTemp2 = StrToDecimal(sv, 3);
+		pData->SetCurrentValue(lTemp2 * 100000); // 这里需要两次乘以100000
+		// 总市值（单位为：亿元）
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		lTemp2 = StrToDecimal(sv, 3);
+		pData->SetTotalValue(lTemp2 * 100000); // 这里需要两次乘以100000
+		// 市净率
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		// 涨停价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		pData->SetHighLimitFromTengxun(Str2Long(sv, 3));
+		// 48 跌停价
+		sv = GetNextField(svData, lCurrentPos, '~'); //
+		pData->SetLowLimitFromTengxun(Str2Long(sv, 3));
+
+		// 后面的数据具体内容不清楚，暂时放弃解码。
+		pData->CheckTengxunRTDataActive();
+		pData->SetDataSource(TENGXUN_RT_WEB_DATA_);
+	} catch (std::exception& e) {
+		string s = std::format("Tengxun RT data parse Error: {}", e.what());
+		gl_dailyLogger->error("", s);
+		gl_systemMessage.PushErrorMessage(s);
+		return nullptr;
 	}
-	// 最近逐笔成交
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	lTemp = atol(sv.data());
-	// 30 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
-	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	std::ispanstream ss(sv);
-	std::chrono::local_seconds lt;
-	ss >> std::chrono::parse("%Y%m%d%H%M%S", lt);
-	pData->SetTime(gl_pChinaMarket->ToUTCTime(lt));
-
-	// 涨跌
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 涨跌率
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 最高价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	pData->SetHigh(Str2Long(sv, 3));
-	// 最低价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	pData->SetLow(Str2Long(sv, 3));
-	// 35 成交价/成交量（手）/成交金额（元）
-	// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	string str(sv.data(), sv.size());
-	int64_t amount;
-	sscanf_s(str.c_str(), "%f/%d/%I64d", &fTemp, &lTemp, &amount);
-	pData->SetVolume(static_cast<int64_t>(lTemp) * 100); // 腾讯成交量数据单位为手（100股）。
-	pData->SetAmount(amount);
-	// 成交手数
-	// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 成交金额（万元）
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 换手率
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 市盈率
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 40 无名
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 最高价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 最低价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 振幅
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 流通市值（单位为：亿元）
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	int64_t lTemp2 = StrToDecimal(sv, 3);
-	pData->SetCurrentValue(lTemp2 * 100000); // 这里需要两次乘以100000
-	// 总市值（单位为：亿元）
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	lTemp2 = StrToDecimal(sv, 3);
-	pData->SetTotalValue(lTemp2 * 100000); // 这里需要两次乘以100000
-	// 市净率
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	// 涨停价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	pData->SetHighLimitFromTengxun(Str2Long(sv, 3));
-	// 48 跌停价
-	sv = GetNextField(svData, lCurrentPos, '~'); //
-	pData->SetLowLimitFromTengxun(Str2Long(sv, 3));
-
-	// 后面的数据具体内容不清楚，暂时放弃解码。
-	pData->CheckTengxunRTDataActive();
-	pData->SetDataSource(TENGXUN_RT_WEB_DATA_);
 	return pData;
 }
 
@@ -587,7 +606,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 				for (auto j = chunk_begin; j < chunk_end; j++) {
 					const string_view sv = pvStringView->at(j);
 					auto pRTData = ParseOneTengxunData(sv);
-					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
+					if (pRTData != nullptr) gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
 				}
 			} catch (exception& e) {
 				ReportErrorToSystemMessage("ParseSinaData异常 ", e);

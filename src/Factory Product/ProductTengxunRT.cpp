@@ -5,8 +5,6 @@
 #include "ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include"JsonParse.h"
-#include "log.h"
-#include "SystemMessage.h"
 #include "TengxunRTDataSource.h"
 #include"cpr/cpr.h"
 

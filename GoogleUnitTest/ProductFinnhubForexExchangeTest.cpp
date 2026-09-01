@@ -4,7 +4,6 @@
 
 #include"SystemMessage.h"
 
-#include "ContainerFinnhubForexExchange.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include"FinnhubDataSource.h"

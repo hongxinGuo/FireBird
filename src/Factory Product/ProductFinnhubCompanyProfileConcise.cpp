@@ -12,7 +12,6 @@
 #include "FinnhubDataSource.h"
 #include "TiingoStock.h"
 #include"FinnhubStock.h"
-#include "SystemMessage.h"
 
 #include"cpr/cpr.h"
 

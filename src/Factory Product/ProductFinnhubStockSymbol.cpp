@@ -9,7 +9,6 @@
 #include "ContainerFinnhubStock.h"
 #include "ContainerStockExchange.h"
 #include "FinnhubDataSource.h"
-#include "log.h"
 #include "SystemMessage.h"
 
 #include"cpr/cpr.h"

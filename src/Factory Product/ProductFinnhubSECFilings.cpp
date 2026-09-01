@@ -10,7 +10,6 @@
 #include "FinnhubDataSource.h"
 #include"jsonParse.h"
 #include"simdjsonGetValue.h"
-#include "SystemMessage.h"
 #include"cpr/cpr.h"
 
 using namespace std;

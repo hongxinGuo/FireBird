@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 #include"GeneralCheck.h"
 
-#include "ContainerTiingoStock.h"
 #include"WorldMarket.h"
 #include"TiingoDataSource.h"
 #include"TiingoStock.h"

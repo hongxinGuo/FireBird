@@ -9,7 +9,6 @@
 
 #include "ContainerFinnhubStock.h"
 #include "FinnhubDataSource.h"
-#include "SystemMessage.h"
 #include"cpr/cpr.h"
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {

@@ -7,16 +7,15 @@
 #include"TiingoStock.h"
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
-#include"ContainerTiingoStockDayLine.h"
-#include<sqlpp23/sqlpp23.h>
+#include "SystemMessage.h"
 
 #include "ChinaStock.h"
 #include"StockSplit.h"
 
-#include"StockMarketSQLTable.h"
-#include "SystemMessage.h"
-
+#include<sqlpp23/sqlpp23.h>
 #include"dataBaseConnector.h"
+#include"StockMarketSQLTable.h"
+
 #include "FinnhubStock.h"
 #include "TiingoCandleLine.h"
 #include "TimeConvert.h"

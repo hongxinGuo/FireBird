@@ -2,10 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include "ContainerFinnhubCryptoExchange.h"
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
 #include"FinnhubDataSource.h"
 
 #include"ProductFinnhubCryptoExchange.h"

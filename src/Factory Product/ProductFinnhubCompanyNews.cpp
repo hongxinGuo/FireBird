@@ -12,7 +12,6 @@
 #include "ProductFinnhubCompanyNews.h"
 
 #include "FinnhubDataSource.h"
-#include "SystemMessage.h"
 #include "cpr/cpr.h"
 
 using std::make_shared;

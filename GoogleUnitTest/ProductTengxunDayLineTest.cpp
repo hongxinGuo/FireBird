@@ -3,15 +3,8 @@
 #include <gtest/gtest.h>
 
 #include"GeneralCheck.h"
-
 #include"ChinaMarket.h"
-#include "ContainerChinaStock.h"
-#include"TimeConvert.h"
-
 #include"ProductTengxunDayLine.h"
-#include"DayLineWebData.h"
-#include "SystemData.h"
-#include"ChinaStock.h"
 
 using namespace testing;
 using std::make_shared;
@@ -46,6 +39,6 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTengxunDayLineTest, TestInitialize) {
-		EXPECT_EQ(tengxunDayLine.GetInquiryFunction(), "");
+		EXPECT_EQ(tengxunDayLine.GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
 	}
 }

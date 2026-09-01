@@ -7,7 +7,6 @@
 #include "FinnhubCrypto.h"
 #include"StockMarketSQLTable.h"
 #include"VirtualHistoryCandle.h"
-#include"DayLine.h"
 
 #include"TimeConvert.h"
 

@@ -8,7 +8,6 @@
 
 #include "ContainerStockExchange.h"
 #include "FinnhubDataSource.h"
-#include "SystemMessage.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 #include"cpr/cpr.h"

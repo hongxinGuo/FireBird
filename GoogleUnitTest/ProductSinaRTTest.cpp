@@ -3,13 +3,10 @@
 #include <gtest/gtest.h>
 
 #include"GeneralCheck.h"
-#include"CharSetTransfer.h"
 
 #include "ChinaMarket.h"
 
 #include"ProductSinaRT.h"
-#include "SystemData.h"
-#include"WebRTData.h"
 
 using namespace testing;
 using std::make_shared;

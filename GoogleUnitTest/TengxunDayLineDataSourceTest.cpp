@@ -3,8 +3,6 @@
 #include <gtest/gtest.h>
 #include"GeneralCheck.h"
 
-#include"SystemMessage.h"
-
 #include"TengxunDayLineDataSource.h"
 #include"TimeConvert.h"
 

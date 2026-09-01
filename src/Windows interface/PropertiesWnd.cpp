@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include"log.h"
-
 #include"SystemMessage.h"
 
 #include "framework.h"
@@ -25,7 +23,6 @@
 #include "TiingoDataSource.h"
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
-#include "WorldMarket.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

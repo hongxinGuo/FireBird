@@ -8,7 +8,6 @@
 #include"GeneralCheck.h"
 #include "ProductFinnhub.h"
 #include"VirtualWebProduct.h"
-#include"TestWebData.h"
 #include"DayLine.h"
 
 using namespace testing;

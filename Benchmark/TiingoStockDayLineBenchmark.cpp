@@ -3,7 +3,6 @@
 #include<benchmark/benchmark.h>
 
 #include "TiingoStock.h"
-#include"ContainerTiingoStockDayLine.h"
 
 using namespace std;
 
