@@ -608,6 +608,7 @@ void CContainerTiingoStock::Update5YearLow90PercentStockDB() {
 	const auto& t = TiingoStock5yearsLow90Percent{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	db(delete_from(t)); // 先删除原有数据
 	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
 	for (auto& item : gl_vCurrent5YearsLow90Percent) {
 		db(insert_into(t).set(
@@ -624,6 +625,7 @@ void CContainerTiingoStock::Update5YearLow70PercentStockDB() {
 	const auto& t = TiingoStock5yearsLow70Percent{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	db(delete_from(t)); // 先删除原有数据
 	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
 	for (auto& item : gl_vCurrent5YearsLow70Percent) {
 		db(insert_into(t).set(
@@ -640,6 +642,7 @@ void CContainerTiingoStock::Update5YearLow80PercentStockDB() {
 	const auto& t = TiingoStock5yearsLow80Percent{};
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
+	db(delete_from(t)); // 先删除原有数据
 	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
 	for (auto& item : gl_vCurrent5YearsLow80Percent) {
 		db(insert_into(t).set(
