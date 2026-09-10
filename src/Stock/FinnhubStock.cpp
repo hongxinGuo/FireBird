@@ -18,6 +18,7 @@
 #include "SystemMessage.h"
 
 #include"dataBaseConnector.h"
+#include "log.h"
 #include "SystemConfiguration.h"
 
 using std::chrono::year_month_day;
@@ -237,9 +238,7 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 				}
 			}
 		}
-		if (nValues > 0) {
-			db(multi_insert);
-		}
+		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (CException& e) {
 		ReportInformation(e);
@@ -315,24 +314,27 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 		cutoffDateTime = row.DateTime;
 	}
 
-	for (size_t i = 0; i < m_vCompanyNews.size(); i++) {
-		auto& companyNews = m_vCompanyNews.at(i);
-		if (companyNews.m_DateTime.time_since_epoch().count() <= cutoffDateTime) continue;
-		multi_insert.add_values(
-			t.Symbol = companyNews.m_strCompanySymbol,
-			t.Category = companyNews.m_strCategory,
-			t.DateTime = companyNews.m_DateTime.time_since_epoch().count(),
-			t.Headline = companyNews.m_strHeadLine,
-			t.NewsID = companyNews.m_iNewsID,
-			t.Image = companyNews.m_strImage,
-			t.RelatedSymbol = companyNews.m_strRelatedSymbol,
-			t.Source = companyNews.m_strSource,
-			t.Summary = companyNews.m_strSummary,
-			t.URL = companyNews.m_strURL
-		);
-	}
-	if (!m_vCompanyNews.empty()) {
-		db(multi_insert);
+	try {
+		int iCount = 0;
+		for (auto& companyNews : m_vCompanyNews) {
+			if (companyNews.m_DateTime.time_since_epoch().count() <= cutoffDateTime) continue;
+			multi_insert.add_values(
+				t.Symbol = companyNews.m_strCompanySymbol,
+				t.Category = companyNews.m_strCategory,
+				t.DateTime = companyNews.m_DateTime.time_since_epoch().count(),
+				t.Headline = companyNews.m_strHeadLine,
+				t.NewsID = companyNews.m_iNewsID,
+				t.Image = companyNews.m_strImage,
+				t.RelatedSymbol = companyNews.m_strRelatedSymbol,
+				t.Source = companyNews.m_strSource,
+				t.Summary = companyNews.m_strSummary,
+				t.URL = companyNews.m_strURL
+			);
+			iCount++;
+		}
+		if (iCount > 0) db(multi_insert);
+	} catch (sqlpp::mysql::exception& e) {
+		gl_dailyWebLogger->info("Update company news error: {}", e.what());
 	}
 	tx.commit();
 	return true;
@@ -350,6 +352,7 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	auto db = gl_dbStockMarket.get();
 	auto tx = sqlpp::start_transaction(db);
 	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date, t.Actual, t.Estimate);
+	int iCount = 0;
 	for (const auto& EPSSurprise : m_vEPSSurprise) {
 		if (EPSSurprise.m_lDate > lastEpsSurpriseUpdateDate) {
 			multi_insert.add_values(
@@ -358,11 +361,10 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 				t.Actual = EPSSurprise.m_dActual,
 				t.Estimate = EPSSurprise.m_dEstimate
 			);
+			iCount++;
 		}
 	}
-	if (!m_vEPSSurprise.empty()) {
-		db(multi_insert);
-	}
+	if (iCount > 0) db(multi_insert);
 	tx.commit();
 	SetLastEPSSurpriseUpdateDate(m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate);
 
@@ -423,11 +425,10 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 			);
 			count++;
 		}
-		if (count > 0) {
-			db(multi_insert);
-		}
+		if (count > 0) db(multi_insert);
 	} catch (sqlpp::mysql::exception& e) {
 		string s = std::format("Finnhub stock SECFilings error. message : {}", e.what());
+		gl_dailyWebLogger->info(s);
 		gl_systemMessage.PushErrorMessage(s);
 	}
 	tx.commit();

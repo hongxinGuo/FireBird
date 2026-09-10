@@ -36,7 +36,6 @@ CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	m_strSuffix = ",2000,,";
 	m_iMaxNormalInquireTime = 500;
 
-	CTengxunDayLineDataSource::ConfigureInternetOption();
 	CTengxunDayLineDataSource::Reset();
 }
 
@@ -175,14 +174,6 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 ////////////////////////////////////////////////////////////////////////////////
 void CTengxunDayLineDataSource::CreateCurrentInquireString() {
 	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
-}
-
-void CTengxunDayLineDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 10000;
-	m_internetOption.option_receive_timeout = 30000;
-	m_internetOption.option_data_receive_timeout = 30000;
-	m_internetOption.option_send_timeout = 5000;
-	m_internetOption.option_connect_retries = 1;
 }
 
 void CTengxunDayLineDataSource::CheckWebData(const string& text) {

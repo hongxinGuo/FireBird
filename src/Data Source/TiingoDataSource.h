@@ -19,7 +19,6 @@ public:
 
 	bool Reset() override;
 
-	void ConfigureInternetOption() override; // 配置internet参数。
 	void CheckWebData(const string& text) override;
 
 	bool GenerateInquiryMessage(const local_seconds& currentTime) override;

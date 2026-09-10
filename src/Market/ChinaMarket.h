@@ -62,7 +62,6 @@ public:
 	bool IsSavingDayLineDBTaskFinished();
 	void EnableDayLineDataSource();
 	bool CheckFastReceivingData();
-	static bool IsWebBusy();
 	long long GetHTTPStatus();
 	long long GetDayLineHTTPStatus();
 	bool IsWebReaTimeDataError();

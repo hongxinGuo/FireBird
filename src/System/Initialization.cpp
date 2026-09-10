@@ -407,7 +407,7 @@ void TaskSchedulePer100ms() {
 /////////////////////////////////////////////////////////////////////////////////////////////
 void TaskSchedulePerSecond() {
 	try {
-		gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
+		CVirtualDataSource::CalcTotalBytePerSecond(); // 计算每秒读取的数据量
 		gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
 	} catch (std::exception* e) {	// 此处截获本体指针，以备处理完后删除之。
 		string str1 = "TaskSchedulePerSecond unhandled exception founded : ";

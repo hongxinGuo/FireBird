@@ -22,8 +22,6 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	m_token = "";
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 
-	CSinaRTDataSource::ConfigureInternetOption();
-
 	CSinaRTDataSource::Reset();
 }
 
@@ -87,17 +85,4 @@ void CSinaRTDataSource::CheckWebData(const string& text) {
 		ABSL_DCHECK(0);
 		break;
 	}
-}
-
-/// <summary>
-/// 
-/// 调整Session的选项可能会改善接收情况。
-///
-/// </summary>
-void CSinaRTDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 2000;
-	m_internetOption.option_receive_timeout = 2000;
-	m_internetOption.option_data_receive_timeout = 2000;
-	m_internetOption.option_send_timeout = 2000;
-	m_internetOption.option_connect_retries = 1;
 }

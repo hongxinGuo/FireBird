@@ -33,7 +33,6 @@ CEastmoneyDayLineDataSource::CEastmoneyDayLineDataSource() {
 	m_strSuffix = "";
 	m_iMaxNormalInquireTime = 500;
 
-	CEastmoneyDayLineDataSource::ConfigureInternetOption();
 	CEastmoneyDayLineDataSource::Reset();
 }
 
@@ -164,13 +163,6 @@ void CEastmoneyDayLineDataSource::CreateCurrentInquireString() {
 	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();
 }
 
-void CEastmoneyDayLineDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 10000;
-	m_internetOption.option_receive_timeout = 30000;
-	m_internetOption.option_data_receive_timeout = 30000;
-	m_internetOption.option_send_timeout = 5000;
-	m_internetOption.option_connect_retries = 1;
-}
 
 void CEastmoneyDayLineDataSource::CheckWebData(const string& text) {
 	ABSL_DCHECK(m_pCurrentProduct != nullptr);

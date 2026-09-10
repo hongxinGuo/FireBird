@@ -25,7 +25,6 @@ CAlpacaDataSource::CAlpacaDataSource() {
 	m_token = "";
 	m_lInquiringNumber = 1; // Alpaca实时数据查询数量默认值
 
-	CAlpacaDataSource::ConfigureInternetOption();
 	CAlpacaDataSource::Reset();
 
 	auto s = gl_systemConfiguration.GetAlpacaApiKey();
@@ -121,12 +120,4 @@ bool CAlpacaDataSource::GenerateStockDayLine() {
 		}
 	}
 	return haveInquiry;
-}
-
-void CAlpacaDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 120000;
-	m_internetOption.option_receive_timeout = 120000;
-	m_internetOption.option_data_receive_timeout = 100000;
-	m_internetOption.option_send_timeout = 2000;
-	m_internetOption.option_connect_retries = 1;
 }

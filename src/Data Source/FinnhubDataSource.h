@@ -23,7 +23,6 @@ public:
 	bool Reset() override;
 	bool GenerateInquiryMessage(const local_seconds& currentTime) override;
 
-	void ConfigureInternetOption() override;
 	void CheckWebData(const string& text) override;
 
 	// 可供申请的项目，目前共21项。

@@ -49,7 +49,6 @@ CTiingoDataSource::CTiingoDataSource() {
 	m_token = "859bd66ca24b2a81a2b5f4de6616e2c408b2a769"; // 默认值
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 
-	CTiingoDataSource::ConfigureInternetOption();
 	CTiingoDataSource::Reset();
 
 	auto s = gl_systemConfiguration.GetTiingoToken();
@@ -59,7 +58,6 @@ CTiingoDataSource::CTiingoDataSource() {
 	else {
 		gl_systemConfiguration.SetTiingoToken(GetToken()); // 如果SystemConfiguration中的Finnhub token为空的话，则使用自带token。
 	}
-
 }
 
 bool CTiingoDataSource::Reset() {
@@ -77,14 +75,6 @@ bool CTiingoDataSource::Reset() {
 	m_fTiingoDataInquiryFinished = false;
 
 	return true;
-}
-
-void CTiingoDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 12000;
-	m_internetOption.option_receive_timeout = 12000;
-	m_internetOption.option_data_receive_timeout = 12000;
-	m_internetOption.option_send_timeout = 2000;
-	m_internetOption.option_connect_retries = 1;
 }
 
 void CTiingoDataSource::CheckWebData(const string& text) {

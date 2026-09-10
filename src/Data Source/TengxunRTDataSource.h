@@ -15,7 +15,6 @@ public:
 
 	bool GenerateInquiryMessage(const local_seconds& currentTime) override;
 
-	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置Tengxun RT的m_pSession状态。
 	void CreateCurrentInquireString() override;
 
 	// 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n

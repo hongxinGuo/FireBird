@@ -560,7 +560,6 @@ void CChinaMarket::TaskExitSystem() {
 }
 
 void CChinaMarket::TaskPerSecond() {
-	IsWebBusy();
 }
 
 void CChinaMarket::TaskAccessoryPerMinuteTask() {
@@ -692,33 +691,6 @@ bool CChinaMarket::CheckFastReceivingData() {
 	return m_fFastReceivingRTData;
 }
 
-bool CChinaMarket::IsWebBusy() {
-	static std::atomic_bool s_bWebBusy = false;
-	bool bWebBusy = false;
-	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case SinaRealTime_: // 新浪实时数据
-		bWebBusy = gl_pSinaRTDataSource->IsWebBusy();
-		break;
-	case TengxunRealTime_: // 更新腾讯实时数据读取时间
-		bWebBusy = gl_pTengxunRTDataSource->IsWebBusy();
-		break;
-	default: // error
-		ABSL_DCHECK(0);
-		break;
-	}
-	if (bWebBusy) {
-		if (!s_bWebBusy) {
-			gl_dailyLogger->warn("Web busy");
-		}
-	}
-	else {
-		if (s_bWebBusy) {
-			gl_dailyLogger->info("Web busy resolved");
-		}
-	}
-	s_bWebBusy = bWebBusy;
-	return bWebBusy;
-}
 
 long long CChinaMarket::GetHTTPStatus() {
 	long long httpStatus = 200;

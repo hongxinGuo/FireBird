@@ -187,12 +187,6 @@ public:
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const string&) {} // 此WebData内容为错误信息？
 
-	void SetDefaultSessionOption();
-
-	virtual void ConfigureInternetOption() {
-		ABSL_DCHECK(false); // 调用了基类函数ConfigureInternetOption
-	} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-
 	void CreateTotalInquiringString(shared_ptr<vector<string>> pInquiryStrings);
 	shared_ptr<vector<string>> GetInquiringString() const noexcept { return m_pInquiryStrings; }
 	void SetInquiringString(const string& str) noexcept { m_pInquiryStrings = make_shared<vector<string>>(vector<string>{ str }); }
@@ -256,9 +250,6 @@ public:
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	virtual time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime.load(); }
 
-	void SetWebBusy(bool busy) noexcept { m_bWebBusy = busy; }
-	bool IsWebBusy() const noexcept { return m_bWebBusy.load(); }
-
 	virtual void ReportErrorNotHandled(const string& sError);
 
 	void SetErrorMessage(enum_ErrorMessageData error) { m_eErrorMessageData = error; }
@@ -274,7 +265,6 @@ protected:
 	std::atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码，默认为0，无错误。
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR_ };
 
-	InternetOption m_internetOption;
 	shared_ptr<vector<string>> m_pInquiryStrings{ nullptr }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
 	string m_strInquiryFunction{}; // 查询字符串功能部分
 	string m_strParam{}; // 查询字符串的参数
@@ -293,8 +283,6 @@ protected:
 
 	std::atomic_bool m_fInquiring{ false };
 	std::atomic_bool m_fEnable{ true }; // 允许执行标识
-	std::atomic_bool m_bWebBusy{ false };
-	bool m_bConcurrentForbid{ false }; // 禁止使用并行申请模式。
 
 	std::jthread m_runThread; // Run发起的后台线程，用于执行InquireData2函数。此线程在析构函数中自动结束。
 };

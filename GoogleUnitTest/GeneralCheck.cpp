@@ -106,7 +106,6 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
 			EXPECT_TRUE(gl_pChinaMarket->IsUpdateTempDataDB());
 			EXPECT_FALSE(gl_pChinaMarket->IsUpdateOptionDB());
-			EXPECT_FALSE(gl_pChinaMarket->IsWebBusy());
 			EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 			EXPECT_FALSE(gl_pChinaMarket->IsResetting());

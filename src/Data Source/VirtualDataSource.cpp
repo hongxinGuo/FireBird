@@ -22,14 +22,10 @@ atomic<int64_t> CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic<int64_t> CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
-	SetDefaultSessionOption();
 }
 
 CVirtualDataSource::~CVirtualDataSource() {
-	if (m_runThread.joinable()) { // Close thread.
-		m_runThread.request_stop();
-		m_runThread.join();
-	}
+	StopThread();
 }
 
 void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
@@ -98,14 +94,6 @@ void CVirtualDataSource::Inquire(const std::stop_token& st) {
 	SetCurrentInquiryTime(m_pCurrentProduct->GetElapsedTime() * 1000);
 	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
-}
-
-void CVirtualDataSource::SetDefaultSessionOption() {
-	m_internetOption.option_connect_timeout = 120000;
-	m_internetOption.option_receive_timeout = 120000;
-	m_internetOption.option_data_receive_timeout = 120000;
-	m_internetOption.option_send_timeout = 2000;
-	m_internetOption.option_connect_retries = 1;
 }
 
 void CVirtualDataSource::CreateCurrentInquireString() {

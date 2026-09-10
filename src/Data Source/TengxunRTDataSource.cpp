@@ -13,8 +13,6 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_token = "";
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 
-	CTengxunRTDataSource::ConfigureInternetOption();
-
 	CTengxunRTDataSource::Reset();
 }
 
@@ -45,12 +43,4 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const local_seconds& currentTi
 
 void CTengxunRTDataSource::CreateCurrentInquireString() {
 	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();
-}
-
-void CTengxunRTDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 1000;
-	m_internetOption.option_receive_timeout = 1000;
-	m_internetOption.option_data_receive_timeout = 1000;
-	m_internetOption.option_send_timeout = 200;
-	m_internetOption.option_connect_retries = 1;
 }

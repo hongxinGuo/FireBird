@@ -106,7 +106,6 @@ namespace FireBirdTest {
 
 	TEST_F(CMockWorldMarketTest, TestIsReadyToInquireWebData1) {
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认新浪实时数据服务器";
-		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebBusy()) << "默认值";
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
 		.WillRepeatedly(Return(toLocalTime(13000)));
 

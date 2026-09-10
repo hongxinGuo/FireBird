@@ -19,8 +19,6 @@ public:
 
 	bool GenerateInquiryMessage(const local_seconds& lCurrentTime) override;
 
-	void ConfigureInternetOption() override;
-
 protected:
 	unique_ptr<CAccessoryFactory> m_pAccessoryFactory;
 

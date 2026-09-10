@@ -25,8 +25,6 @@ public:
 	virtual bool GenerateTradingAsset();
 	virtual bool GenerateStockDayLine();
 
-	void ConfigureInternetOption() override;
-
 	void SetInquireStockNumber(int number) noexcept { m_inquireStockNumber = number; }
 	int GetInquireStockNumber() const noexcept { return m_inquireStockNumber; }
 
