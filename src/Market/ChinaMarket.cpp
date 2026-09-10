@@ -691,7 +691,6 @@ bool CChinaMarket::CheckFastReceivingData() {
 	return m_fFastReceivingRTData;
 }
 
-
 long long CChinaMarket::GetHTTPStatus() {
 	long long httpStatus = 200;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
@@ -974,6 +973,8 @@ void CChinaMarket::UpdateOptionDB() {
 			));
 		}
 		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Option DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -1037,6 +1038,8 @@ void CChinaMarket::AppendChosenStockDB() {
 			}
 		}
 		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Append Chosen Stock DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}

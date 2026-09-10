@@ -7,6 +7,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 CContainerStockSymbol::CContainerStockSymbol() {
@@ -137,38 +138,42 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 	using namespace StockMarket;
 	const auto& t = ChinaStockSymbolSection{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(sqlpp::select(all_of(t)).from(t));
-	auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.Market, t.IndexNumber, t.Comment);
-	int rows = result.size();
-	if (rows == 0) {
-		for (int i = 0; i < 2000; i++) {
-			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
-			multi_insert.add_values(
-				t.ID = i,
-				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.Market = static_cast<int>(pStockSection->GetMarket()),
-				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
-				t.Comment = pStockSection->GetComment()
-			);
+		auto result = db(sqlpp::select(all_of(t)).from(t));
+		auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.Market, t.IndexNumber, t.Comment);
+		int rows = result.size();
+		if (rows == 0) {
+			for (int i = 0; i < 2000; i++) {
+				const CStockSectionPtr pStockSection = m_vStockSection.at(i);
+				multi_insert.add_values(
+					t.ID = i,
+					t.Active = pStockSection->IsActive() ? 1 : 0,
+					t.Market = static_cast<int>(pStockSection->GetMarket()),
+					t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
+					t.Comment = pStockSection->GetComment()
+				);
+			}
+			db(multi_insert);
 		}
-		db(multi_insert);
-	}
-	else {// 表已存在
-		for (int i = 0; i < 2000; i++) {
-			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
-			db(update(t).set(
-				t.ID = i,
-				t.Active = pStockSection->IsActive() ? 1 : 0,
-				t.Market = static_cast<int>(pStockSection->GetMarket()),
-				t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
-				t.Comment = pStockSection->GetComment()
-			).where(t.ID == i));
+		else {// 表已存在
+			for (int i = 0; i < 2000; i++) {
+				const CStockSectionPtr pStockSection = m_vStockSection.at(i);
+				db(update(t).set(
+					t.ID = i,
+					t.Active = pStockSection->IsActive() ? 1 : 0,
+					t.Market = static_cast<int>(pStockSection->GetMarket()),
+					t.IndexNumber = static_cast<int>(pStockSection->GetIndexNumber()),
+					t.Comment = pStockSection->GetComment()
+				).where(t.ID == i));
+			}
 		}
-	}
-	tx.commit();
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Stock Section", e);
+	} 
 
 	m_fUpdateStockSection = false;
 }

@@ -27,7 +27,7 @@ public:
 	CTiingoStocksPtr Parse(const string& text);
 
 	void DeleteDuplicatedSymbol(const shared_ptr<vector<shared_ptr<CTiingoStock>>>& pvTiingoStock);
-	static void SaveNewSymbol();
+	void SaveNewSymbol();
 	void SaveDelistedSymbol();
 
 protected:

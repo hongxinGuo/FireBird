@@ -7,6 +7,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 using std::make_shared;
@@ -30,21 +31,26 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 	size_t rows = result.size();
 	Reserve(rows + 10);
-	for (const auto& row : result) {
-		const std::string symbol = string{ row.Symbol };
-		if (!IsSymbol(symbol)) {
-			const auto pSymbol = make_shared<CFinnhubForex>();
-			pSymbol->SetSymbol(row.Symbol);
-			pSymbol->SetDescription(row.Description);
-			pSymbol->SetExchange(row.Exchange);
-			pSymbol->SetDisplaySymbol(row.DisplaySymbol);
-			pSymbol->LoadUpdateDate(string{ row.UpdateDate });
-			pSymbol->SetCheckingDayLineStatus();
-			Add(pSymbol);
+	try {
+		for (const auto& row : result) {
+			const std::string symbol = string{ row.Symbol };
+			if (!IsSymbol(symbol)) {
+				const auto pSymbol = make_shared<CFinnhubForex>();
+				pSymbol->SetSymbol(row.Symbol);
+				pSymbol->SetDescription(row.Description);
+				pSymbol->SetExchange(row.Exchange);
+				pSymbol->SetDisplaySymbol(row.DisplaySymbol);
+				pSymbol->LoadUpdateDate(string{ row.UpdateDate });
+				pSymbol->SetCheckingDayLineStatus();
+				Add(pSymbol);
+			}
+			else {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			}
 		}
-		else {
-			db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
-		}
+	}
+	catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
 	}
 	tx.commit();
 	Sort();
@@ -61,9 +67,8 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB(std::stop_token st) {
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
 
-			for (size_t i = 0; i < m_vStock.size(); ++i) {
+			for (const auto& pStock : m_vStock) {
 				if (st.stop_requested()) break;
-				const auto& pStock = m_vStock[i];
 				if (pStock->IsUpdateProfileDB()) {
 					pStock->UpdateJsonUpdateDate();
 					if (pStock->IsNewStock()) {//插入新股票代码
@@ -89,8 +94,8 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB(std::stop_token st) {
 				}
 			}
 			tx.commit();
-		} catch (CException& e) {
-			ReportInformation(e);
+		} catch (sqlpp::mysql::exception& e) {
+			logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
 		}
 	}
 }

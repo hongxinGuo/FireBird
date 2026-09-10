@@ -240,6 +240,8 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		}
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Insider Transaction DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -334,7 +336,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 		}
 		if (iCount > 0) db(multi_insert);
 	} catch (sqlpp::mysql::exception& e) {
-		gl_dailyWebLogger->info("Update company news error: {}", e.what());
+		logInfoDatabaseException(typeid(this).name(), "Update Company News DB", e);
 	}
 	tx.commit();
 	return true;
@@ -347,25 +349,29 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate > lastEpsSurpriseUpdateDate) { SetUpdateProfileDB(true); }
 	else return false; // 没有新数据则返回
 
-	using namespace StockMarket;
-	const auto& t = FinnhubStockEstimatesEpsSurprise{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date, t.Actual, t.Estimate);
-	int iCount = 0;
-	for (const auto& EPSSurprise : m_vEPSSurprise) {
-		if (EPSSurprise.m_lDate > lastEpsSurpriseUpdateDate) {
-			multi_insert.add_values(
-				t.Symbol = EPSSurprise.m_strSymbol,
-				t.Date = toFormattedDate(EPSSurprise.m_lDate),
-				t.Actual = EPSSurprise.m_dActual,
-				t.Estimate = EPSSurprise.m_dEstimate
-			);
-			iCount++;
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubStockEstimatesEpsSurprise{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Symbol, t.Date, t.Actual, t.Estimate);
+		int iCount = 0;
+		for (const auto& EPSSurprise : m_vEPSSurprise) {
+			if (EPSSurprise.m_lDate > lastEpsSurpriseUpdateDate) {
+				multi_insert.add_values(
+					t.Symbol = EPSSurprise.m_strSymbol,
+					t.Date = toFormattedDate(EPSSurprise.m_lDate),
+					t.Actual = EPSSurprise.m_dActual,
+					t.Estimate = EPSSurprise.m_dEstimate
+				);
+				iCount++;
+			}
 		}
+		if (iCount > 0) db(multi_insert);
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update EPS Surprise DB", e);
 	}
-	if (iCount > 0) db(multi_insert);
-	tx.commit();
 	SetLastEPSSurpriseUpdateDate(m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate);
 
 	return true;
@@ -383,20 +389,38 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 	const size_t size = m_pvSECFilings->size();
 	size_t currentPos = 0;
 	CSECFiling SECFilings;
-	using namespace StockMarket;
-	const auto& t = FinnhubStockSecFilings{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.symbol, t.accessNumber, t.cik, t.filedDate,
-	                                           t.acceptedDate, t.filingURL, t.reportURL, t.form);
 
-	auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
 	try {
-		int count = 0;
-		for (const auto& row : result) {
-			SECFilings = m_pvSECFilings->at(currentPos);
-			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) > 0) continue;
-			if (SECFilings.m_strAccessNumber.compare(row.accessNumber) < 0) {	// 没有这个AccessNumber的SEC Filings？
+		using namespace StockMarket;
+		const auto& t = FinnhubStockSecFilings{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.symbol, t.accessNumber, t.cik, t.filedDate,
+		                                           t.acceptedDate, t.filingURL, t.reportURL, t.form);
+
+		auto result = db(select(all_of(t)).from(t).where(t.symbol == m_strSymbol.c_str()).order_by(t.accessNumber.asc()));
+		try {
+			int count = 0;
+			for (const auto& row : result) {
+				SECFilings = m_pvSECFilings->at(currentPos);
+				if (SECFilings.m_strAccessNumber.compare(row.accessNumber) > 0) continue;
+				if (SECFilings.m_strAccessNumber.compare(row.accessNumber) < 0) {	// 没有这个AccessNumber的SEC Filings？
+					multi_insert.add_values(
+						t.symbol = m_strSymbol.substr(0, 45),
+						t.accessNumber = SECFilings.m_strAccessNumber.substr(0, 100),
+						t.cik = SECFilings.m_iCIK,
+						t.filedDate = static_cast<int>(SECFilings.m_iFiledDate),
+						t.acceptedDate = static_cast<int>(SECFilings.m_iAcceptedDate),
+						t.filingURL = SECFilings.m_strFilingURL.substr(0, 400),
+						t.reportURL = SECFilings.m_strReportURL.substr(0, 400),
+						t.form = SECFilings.m_strForm.substr(0, 200)
+					);
+					count++;
+				}
+				if (++currentPos == size) break;
+			}
+			for (size_t i = currentPos; i < size; i++) {
+				SECFilings = m_pvSECFilings->at(i);
 				multi_insert.add_values(
 					t.symbol = m_strSymbol.substr(0, 45),
 					t.accessNumber = SECFilings.m_strAccessNumber.substr(0, 100),
@@ -409,29 +433,16 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 				);
 				count++;
 			}
-			if (++currentPos == size) break;
+			if (count > 0) db(multi_insert);
+		} catch (sqlpp::mysql::exception& e) {
+			string s = std::format("Finnhub stock SECFilings error. message : {}", e.what());
+			gl_dailyWebLogger->info(s);
+			gl_systemMessage.PushErrorMessage(s);
 		}
-		for (size_t i = currentPos; i < size; i++) {
-			SECFilings = m_pvSECFilings->at(i);
-			multi_insert.add_values(
-				t.symbol = m_strSymbol.substr(0, 45),
-				t.accessNumber = SECFilings.m_strAccessNumber.substr(0, 100),
-				t.cik = SECFilings.m_iCIK,
-				t.filedDate = static_cast<int>(SECFilings.m_iFiledDate),
-				t.acceptedDate = static_cast<int>(SECFilings.m_iAcceptedDate),
-				t.filingURL = SECFilings.m_strFilingURL.substr(0, 400),
-				t.reportURL = SECFilings.m_strReportURL.substr(0, 400),
-				t.form = SECFilings.m_strForm.substr(0, 200)
-			);
-			count++;
-		}
-		if (count > 0) db(multi_insert);
+		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		string s = std::format("Finnhub stock SECFilings error. message : {}", e.what());
-		gl_dailyWebLogger->info(s);
-		gl_systemMessage.PushErrorMessage(s);
+		logInfoDatabaseException(typeid(this).name(), "Update SEC Filings DB", e);
 	}
-	tx.commit();
 	return true;
 }
 

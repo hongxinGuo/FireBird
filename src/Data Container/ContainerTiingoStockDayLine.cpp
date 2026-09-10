@@ -8,6 +8,7 @@
 #include "TiingoCandleLine.h"
 
 #include"TimeConvert.h"
+#include"log.h"
 
 using std::make_shared;
 
@@ -56,11 +57,15 @@ void CContainerTiingoStockDayLine::SaveDB(const string& strSymbol) {
 	};
 
 	auto lSize = Size();
-	for (size_t i = 0; i < lSize; ++i) {
-		const CTiingoCandleLine* pHistoryCandle = GetData(i);
-		insertCandle(pHistoryCandle);
+	try {
+		for (size_t i = 0; i < lSize; ++i) {
+			const CTiingoCandleLine* pHistoryCandle = GetData(i);
+			insertCandle(pHistoryCandle);
+		}
+		if (lSize > 0) db(multi_insert);
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Save Day Line DB", e);
 	}
-	if (lSize > 0) db(multi_insert);
 	tx.commit();
 }
 
@@ -99,8 +104,6 @@ void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	}
 	tx.commit();
 	m_fDataLoaded = true;
-	//AddLastClose();
-	//SplitAdjust();
 }
 
 void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStockSymbol) const noexcept {
@@ -155,11 +158,16 @@ void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 		db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(GetData(0)->GetDate())));
 	}
 
-	for (size_t i = 0; i < lSize; ++i) {
-		const CTiingoCandleLine* pHistoryCandle = GetData(i);
-		insertCandle(pHistoryCandle);
+	try {
+		for (size_t i = 0; i < lSize; ++i) {
+			const CTiingoCandleLine* pHistoryCandle = GetData(i);
+			insertCandle(pHistoryCandle);
+		}
+		if (lSize > 0) db(multi_insert);
 	}
-	if (lSize > 0) db(multi_insert);
+	catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Day Line DB", e);
+	}
 	tx.commit();
 }
 

@@ -243,7 +243,7 @@ void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 					).where(t.Symbol == pStock->GetSymbol()));
 				}
 			} catch (sqlpp::mysql::exception& e) {
-				gl_errorLogger->warn("Finnhub stock profile update error: {}", e.what());
+				logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
 			}
 			pStock->SetUpdateProfileDB(false);
 		}

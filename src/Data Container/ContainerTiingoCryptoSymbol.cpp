@@ -7,6 +7,7 @@
 
 #include "ContainerVirtualStock.h"
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 #include "TiingoCrypto.h"
 
@@ -150,6 +151,8 @@ void CContainerTiingoCryptoSymbol::UpdateDB(std::stop_token st) {
 		}
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Crypto Symbol", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	} catch (std::exception& e) {

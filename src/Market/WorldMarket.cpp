@@ -48,6 +48,7 @@
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 
@@ -880,13 +881,19 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 	}
 
 	int nValues = 0;
-	for (auto upDownRate : vUpDownRate) {
-		if (upDownRate.lDate > lCurrentDate) {
-			multi_insert.add_values(t.Date = toFormattedDate(upDownRate.lDate), t.Rate = upDownRate.Rate);
-			nValues++;
+	try {
+		for (auto upDownRate : vUpDownRate) {
+			if (upDownRate.lDate > lCurrentDate) {
+				multi_insert.add_values(t.Date = toFormattedDate(upDownRate.lDate), t.Rate = upDownRate.Rate);
+				nValues++;
+			}
 		}
+		if (nValues > 0) db(multi_insert);
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "calculateNasdaq100MA200UpDownRate", e);
+	} catch (const std::exception& e) {
+		gl_systemMessage.PushInnerSystemInformationMessage("calculateNasdaq100MA200UpDownRate: " + string(e.what()));
 	}
-	if (nValues > 0) db(multi_insert);
 	tx.commit();
 }
 

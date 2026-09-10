@@ -19,6 +19,7 @@
 #include"StockMarketSQLTable.h"
 
 #include"dataBaseConnector.h"
+#include "log.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 #include"cpr/cpr.h"
@@ -307,15 +308,20 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 
 	db(sqlpp::delete_from(t));
 	int nValues = 0;
-	for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
-		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
-		multi_insert.add_values(
-			t.Symbol = pStock->GetSymbol(),
-			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate())
-		);
-		++nValues;
+	try {
+		for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
+			auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
+			multi_insert.add_values(
+				t.Symbol = pStock->GetSymbol(),
+				t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate())
+			);
+			++nValues;
+		}
+		if (nValues > 0) db(multi_insert);
 	}
-	if (nValues > 0) db(multi_insert);
+	catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Save New Symbol", e);
+	}
 	tx.commit();
 }
 
@@ -328,11 +334,16 @@ void CProductTiingoStockProfile::SaveDelistedSymbol() {
 
 	db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate())));
 	int nValues = 0;
-	for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
-		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
-		multi_insert.add_values(t.Symbol = pStock->GetSymbol(), t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()));
-		++nValues;
+	try {
+		for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
+			auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
+			multi_insert.add_values(t.Symbol = pStock->GetSymbol(), t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()));
+			++nValues;
+		}
+		if (nValues > 0) db(multi_insert);
 	}
-	if (nValues > 0) db(multi_insert);
+	catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Save Delisted Symbol", e);
+	}
 	tx.commit();
 }

@@ -5,6 +5,7 @@
 
 #include "ContainerFinnhubEconomicCalendar.h"
 
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
@@ -64,20 +65,24 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 
 	if (m_lLastTotalEconomicCalendar >= m_vEconomicCalendar.size()) return false;
 	int nValues = 0;
-	for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-		multi_insert.add_values(
-			t.Time = m_vEconomicCalendar.at(l).m_strTime,
-			t.Country = m_vEconomicCalendar.at(l).m_strCountry.c_str(),
-			t.Event = m_vEconomicCalendar.at(l).m_strEvent.c_str(),
-			t.Impact = m_vEconomicCalendar.at(l).m_strImpact.c_str(),
-			t.Actual = m_vEconomicCalendar.at(l).m_dActual,
-			t.Estimate = m_vEconomicCalendar.at(l).m_dEstimate,
-			t.Prev = m_vEconomicCalendar.at(l).m_dPrev,
-			t.Unit = m_vEconomicCalendar.at(l).m_strUnit.c_str()
-		);
-		nValues++;
+	try {
+		for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
+			multi_insert.add_values(
+				t.Time = m_vEconomicCalendar.at(l).m_strTime,
+				t.Country = m_vEconomicCalendar.at(l).m_strCountry.c_str(),
+				t.Event = m_vEconomicCalendar.at(l).m_strEvent.c_str(),
+				t.Impact = m_vEconomicCalendar.at(l).m_strImpact.c_str(),
+				t.Actual = m_vEconomicCalendar.at(l).m_dActual,
+				t.Estimate = m_vEconomicCalendar.at(l).m_dEstimate,
+				t.Prev = m_vEconomicCalendar.at(l).m_dPrev,
+				t.Unit = m_vEconomicCalendar.at(l).m_strUnit.c_str()
+			);
+			nValues++;
+		}
+		if (nValues > 0) db(multi_insert);
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update DB", e);
 	}
-	if (nValues > 0) db(multi_insert);
 	tx.commit();
 
 	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();

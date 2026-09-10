@@ -6,6 +6,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
@@ -79,8 +80,8 @@ bool CContainerFinnhubForexExchange::UpdateDB() {
 			if (nValues > 0) db(multi_insert);
 			tx.commit();
 			m_llLastTotalForexExchange = m_vForexExchange.size();
-		} catch (CException& e) {
-			ReportInformation(e);
+		} catch (sqlpp::mysql::exception& e) {
+			logInfoDatabaseException(typeid(this).name(), "Update DB", e);
 		}
 		return true;
 	}

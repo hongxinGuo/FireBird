@@ -14,6 +14,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 #include "SystemMessage.h"
 
@@ -98,32 +99,36 @@ void CContainerChinaStock::UpdateProfileDB(std::stop_token st) {
 
 		auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange, t.DisplaySymbol, t.UpdateDate);
 
-		for (size_t i = 0; i < m_vStock.size(); ++i) {
-			if (st.stop_requested()) break;
-			const auto& pStock = m_vStock[i];
-			if (pStock->IsUpdateProfileDB()) {
-				pStock->UpdateJsonUpdateDate();
-				if (pStock->IsNewStock()) {	// 插入新股票代码
-					db(sqlpp::insert_into(t).set(
-						t.Symbol = pStock->GetSymbol(),
-						t.Description = pStock->GetDescription(),
-						t.Exchange = pStock->GetExchange(),
-						t.DisplaySymbol = pStock->GetDisplaySymbol(),
-						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-					));
-					pStock->SetNewStock(false);
+		try {
+			for (size_t i = 0; i < m_vStock.size(); ++i) {
+				if (st.stop_requested()) break;
+				const auto& pStock = m_vStock[i];
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->UpdateJsonUpdateDate();
+					if (pStock->IsNewStock()) {	// 插入新股票代码
+						db(sqlpp::insert_into(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchange(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						));
+						pStock->SetNewStock(false);
+					}
+					else {// 更新现有股票代码
+						db(sqlpp::update(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchange(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						).where(t.Symbol == pStock->GetSymbol()));
+					}
+					pStock->SetUpdateProfileDB(false);
 				}
-				else {// 更新现有股票代码
-					db(sqlpp::update(t).set(
-						t.Symbol = pStock->GetSymbol(),
-						t.Description = pStock->GetDescription(),
-						t.Exchange = pStock->GetExchange(),
-						t.DisplaySymbol = pStock->GetDisplaySymbol(),
-						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-					).where(t.Symbol == pStock->GetSymbol()));
-				}
-				pStock->SetUpdateProfileDB(false);
 			}
+		}	catch (sqlpp::mysql::exception& e) {
+			logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
 		}
 		tx.commit();
 		m_lLoadedStock = m_vStock.size();
@@ -294,31 +299,35 @@ long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 	                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
 	size_t lSize = m_vStock.size();
 	int nValue = 0;
-	for (size_t l = 0; l < lSize; l++) {
-		const CChinaStockPtr pStock = GetStock(l);
-		if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
-			iCount++;
-			pStock->SetDayLineEndDate(currentTradeDay);
-			pStock->SetUpdateProfileDB(true);
-			multi_insert.add_values(
-				t.Date = toFormattedDate(currentTradeDay),
-				t.Exchange = pStock->GetExchange(),
-				t.Symbol = pStock->GetSymbol(),
-				t.LastClose = static_cast<double>(pStock->GetLastClose()) / ratio,
-				t.Open = static_cast<double>(pStock->GetOpen()) / ratio,
-				t.High = static_cast<double>(pStock->GetHigh()) / ratio,
-				t.Low = static_cast<double>(pStock->GetLow()) / ratio,
-				t.Close = static_cast<double>(pStock->GetNew()) / ratio,
-				t.Volume = static_cast<double>(pStock->GetVolume()),
-				t.Amount = static_cast<double>(pStock->GetAmount()),
-				t.UpAndDown = static_cast<double>(pStock->GetUpDown()) / ratio,
-				t.UpDownRate = pStock->GetUpDownRate() / ratio,
-				t.ChangeHandRate = 0.0,
-				t.CurrentValue = static_cast<double>(pStock->GetCurrentValue()),
-				t.TotalValue = static_cast<double>(pStock->GetTotalValue())
-			);
-			nValue++;
+	try {
+		for (size_t l = 0; l < lSize; l++) {
+			const CChinaStockPtr pStock = GetStock(l);
+			if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
+				iCount++;
+				pStock->SetDayLineEndDate(currentTradeDay);
+				pStock->SetUpdateProfileDB(true);
+				multi_insert.add_values(
+					t.Date = toFormattedDate(currentTradeDay),
+					t.Exchange = pStock->GetExchange(),
+					t.Symbol = pStock->GetSymbol(),
+					t.LastClose = static_cast<double>(pStock->GetLastClose()) / ratio,
+					t.Open = static_cast<double>(pStock->GetOpen()) / ratio,
+					t.High = static_cast<double>(pStock->GetHigh()) / ratio,
+					t.Low = static_cast<double>(pStock->GetLow()) / ratio,
+					t.Close = static_cast<double>(pStock->GetNew()) / ratio,
+					t.Volume = static_cast<double>(pStock->GetVolume()),
+					t.Amount = static_cast<double>(pStock->GetAmount()),
+					t.UpAndDown = static_cast<double>(pStock->GetUpDown()) / ratio,
+					t.UpDownRate = pStock->GetUpDownRate() / ratio,
+					t.ChangeHandRate = 0.0,
+					t.CurrentValue = static_cast<double>(pStock->GetCurrentValue()),
+					t.TotalValue = static_cast<double>(pStock->GetTotalValue())
+				);
+				nValue++;
+			}
 		}
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Build dayLine", e);
 	}
 	if (nValue > 0) db(multi_insert);
 	tx.commit();

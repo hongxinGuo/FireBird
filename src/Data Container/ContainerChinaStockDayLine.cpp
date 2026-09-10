@@ -8,6 +8,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 namespace {
@@ -51,11 +52,15 @@ void CContainerChinaStockDayLine::SaveDB(const string& strStockSymbol) {
 	};
 
 	size_t lSize = Size();
-	for (size_t i = 0; i < lSize; ++i) {
-		auto pCandle = GetData(i);
-		insertCandle(pCandle);
+	try {
+		for (size_t i = 0; i < lSize; ++i) {
+			auto pCandle = GetData(i);
+			insertCandle(pCandle);
+		}
+		if (lSize > 0) db(multi_insert);
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Save DB", e);
 	}
-	if (lSize > 0) db(multi_insert);
 	tx.commit();
 }
 

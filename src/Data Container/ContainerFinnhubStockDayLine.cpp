@@ -8,6 +8,7 @@
 #include"StockMarketSQLTable.h"
 #include"TimeConvert.h"
 #include"DayLine.h"
+#include "log.h"
 
 namespace {
 	CFinnhubStock s_stockContainerFinnhubStockDayLine;
@@ -50,11 +51,15 @@ void CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 	};
 
 	auto lSize = Size();
-	for (size_t i = 0; i < lSize; i++) {
-		auto pCandle = GetData(i);
-		insertCandle(pCandle);
+	try {
+		for (size_t i = 0; i < lSize; i++) {
+			auto pCandle = GetData(i);
+			insertCandle(pCandle);
+		}
+		if (lSize > 0) db(multi_insert);
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Save DB", e);
 	}
-	if (lSize > 0) db(multi_insert);
 	tx.commit();
 }
 

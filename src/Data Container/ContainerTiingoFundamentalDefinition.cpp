@@ -4,6 +4,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 using std::map;
@@ -60,31 +61,36 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB(std::stop_token st) {
 	map<string, size_t> mapDefinition;
 	using namespace StockMarket;
 	const auto& t = TiingoFundamentalDefinitions{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	auto multi_insert = insert_into(t).columns(t.dataCode, t.name, t.description, t.statementType, t.units);
-	for (const auto& row : result) {
-		mapDefinition[string{ row.dataCode }] = mapDefinition.size();
-	}
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
 
-	int nValues = 0;
-	for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
-		if (st.stop_requested()) break;
-		if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
-			multi_insert.add_values(
-				t.dataCode = tiingoFundamentalDefinition.m_strDataCode,
-				t.name = tiingoFundamentalDefinition.m_strName.c_str(),
-				t.description = tiingoFundamentalDefinition.m_strDescription.c_str(),
-				t.statementType = tiingoFundamentalDefinition.m_strStatementType.c_str(),
-				t.units = tiingoFundamentalDefinition.m_strUnits.c_str()
-			);
-			nValues++;
+		auto result = db(select(all_of(t)).from(t));
+		auto multi_insert = insert_into(t).columns(t.dataCode, t.name, t.description, t.statementType, t.units);
+		for (const auto& row : result) {
+			mapDefinition[string{ row.dataCode }] = mapDefinition.size();
 		}
+
+		int nValues = 0;
+		for (auto& tiingoFundamentalDefinition : m_vTiingoFundamentalDefinition) {
+			if (st.stop_requested()) break;
+			if (!mapDefinition.contains(tiingoFundamentalDefinition.m_strDataCode)) { // 只添加新增的项目。
+				multi_insert.add_values(
+					t.dataCode = tiingoFundamentalDefinition.m_strDataCode,
+					t.name = tiingoFundamentalDefinition.m_strName.c_str(),
+					t.description = tiingoFundamentalDefinition.m_strDescription.c_str(),
+					t.statementType = tiingoFundamentalDefinition.m_strStatementType.c_str(),
+					t.units = tiingoFundamentalDefinition.m_strUnits.c_str()
+				);
+				nValues++;
+			}
+		}
+		if (nValues > 0) db(multi_insert);
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Fundamental Definition", e);
 	}
-	if (nValues > 0) db(multi_insert);
-	tx.commit();
 	m_fUpdated = false;
 
 	return true;

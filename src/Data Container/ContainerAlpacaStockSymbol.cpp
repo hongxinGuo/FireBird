@@ -8,6 +8,8 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 
+#include"log.h"
+
 using std::make_shared;
 
 CContainerAlpacaStockSymbol::CContainerAlpacaStockSymbol() {
@@ -58,20 +60,24 @@ void CContainerAlpacaStockSymbol::UpdateProfileDB(std::stop_token st) {
 			auto tx = sqlpp::start_transaction(db);
 			size_t stockSize = m_vStock.size();
 
-			for (size_t i = 0; i < stockSize; ++i) {
-				if (st.stop_requested()) break;
-				const auto& pStock = GetItem(i);
-				if (pStock->IsUpdateProfileDB()) {
-					if (pStock->IsNewStock()) {//插入新股票代码
-						db(sqlpp::insert_into(t).set(
-							t.Symbol = pStock->GetSymbol(),
-							t.Exchange = pStock->GetExchange(),
-							t.Name = pStock->GetDisplaySymbol()
-						));
-						pStock->SetNewStock(false);
+			try {
+				for (size_t i = 0; i < stockSize; ++i) {
+					if (st.stop_requested()) break;
+					const auto& pStock = GetItem(i);
+					if (pStock->IsUpdateProfileDB()) {
+						if (pStock->IsNewStock()) {//插入新股票代码
+							db(sqlpp::insert_into(t).set(
+								t.Symbol = pStock->GetSymbol(),
+								t.Exchange = pStock->GetExchange(),
+								t.Name = pStock->GetDisplaySymbol()
+							));
+							pStock->SetNewStock(false);
+						}
+						pStock->SetUpdateProfileDB(false);
 					}
-					pStock->SetUpdateProfileDB(false);
 				}
+			}catch (sqlpp::mysql::exception& e) {
+				logInfoDatabaseException(typeid(this).name(),"Update profile DB", e);
 			}
 			tx.commit();
 		} catch (CException& e) {

@@ -5,6 +5,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
@@ -50,20 +51,24 @@ void CContainerFinnhubCountry::UpdateDB(std::stop_token st) const {
 		auto multi_insert = insert_into(t).columns(t.Code2, t.Code3, t.CodeNo,
 		                                           t.Country, t.Currency, t.CurrencyCode);
 		int nValues = 0;
-		for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
-			if (st.stop_requested()) break;
-			const CCountry& country = m_vCountry.at(l);
-			multi_insert.add_values(
-				t.Code2 = country.m_strCode2,
-				t.Code3 = country.m_strCode3,
-				t.CodeNo = country.m_strCodeNo,
-				t.Country = country.m_strCountry,
-				t.Currency = country.m_strCurrency,
-				t.CurrencyCode = country.m_strCurrencyCode
-			);
-			nValues++;
+		try {
+			for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
+				if (st.stop_requested()) break;
+				const CCountry& country = m_vCountry.at(l);
+				multi_insert.add_values(
+					t.Code2 = country.m_strCode2,
+					t.Code3 = country.m_strCode3,
+					t.CodeNo = country.m_strCodeNo,
+					t.Country = country.m_strCountry,
+					t.Currency = country.m_strCurrency,
+					t.CurrencyCode = country.m_strCurrencyCode
+				);
+				nValues++;
+			}
+			if (nValues > 0) db(multi_insert);
+		} catch (sqlpp::mysql::exception& e) {
+			logInfoDatabaseException(typeid(this).name(), "Update DB", e);
 		}
-		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	}
 }

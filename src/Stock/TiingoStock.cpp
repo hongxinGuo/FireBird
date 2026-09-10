@@ -17,6 +17,7 @@
 #include "TiingoIEXTopOFBook.h"
 
 #include"dataBaseConnector.h"
+#include "log.h"
 #include "StockSplit.h"
 #include "SystemConfiguration.h"
 
@@ -84,111 +85,116 @@ void CTiingoStock::UpdateDayLine(vector<CTiingoCandleLine>& vTempDayLine) {
 void CTiingoStock::UpdateFinancialStateDB() {
 	using namespace StockMarket;
 	const auto& t = TiingoCompanyFinancialState{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).where(t.Symbol == m_strSymbol).order_by(t.YearQuarter.desc()));
-	size_t rows = result.size();
-	if (rows > 0) {
-		auto& row = result.front();
-		if (row.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter) {
-			db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter));
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == m_strSymbol).order_by(t.YearQuarter.desc()));
+		size_t rows = result.size();
+		if (rows > 0) {
+			auto& row = result.front();
+			if (row.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter) {
+				db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.YearQuarter >= m_pvFinancialState->at(0)->m_yearQuarter));
+			}
 		}
-	}
 
-	for (auto& p : *m_pvFinancialState) {
-		db(sqlpp::insert_into(t).set(
-			t.Symbol = m_strSymbol,
-			t.Exchange = p->m_exchange,
-			t.YearQuarter = p->m_yearQuarter,
-			t.accoci = p->m_accoci,
-			t.acctPay = p->m_acctPay,
-			t.acctRec = p->m_acctRec,
-			t.assetsCurrent = p->m_assetsCurrent,
-			t.assetsNonCurrent = p->m_assetsNonCurrent,
-			t.assetTurnover = p->m_assetTurnover,
-			t.bookVal = p->m_bookVal,
-			t.businessAcqDisposals = p->m_businessAcqDisposals,
-			t.bvps = p->m_bvps,
-			t.capex = p->m_capex,
-			t.cashAndEq = p->m_cashAndEq,
-			t.consolidatedIncome = p->m_consolidatedIncome,
-			t.costRev = p->m_costRev,
-			t.currentRatio = p->m_currentRatio,
-			t.debt = p->m_debt,
-			t.debtCurrent = p->m_debtCurrent,
-			t.debtEquity = p->m_debtEquity,
-			t.debtNonCurrent = p->m_debtNonCurrent,
-			t.deferredRev = p->m_deferredRev,
-			t.depamor = p->m_depamor,
-			t.deposits = p->m_deposits,
-			t.ebit = p->m_ebit,
-			t.ebitda = p->m_ebitda,
-			t.ebt = p->m_ebt,
-			t.enterpriseVal = p->m_enterpriseVal,
-			t.eps = p->m_eps,
-			t.epsDil = p->m_epsDil,
-			t.epsQoQ = p->m_epsQoQ,
-			t.equity = p->m_equity,
-			t.freeCashFlow = p->m_freeCashFlow,
-			t.fxRate = p->m_fxRate,
-			t.grossMargin = p->m_grossMargin,
-			t.grossProfit = p->m_grossProfit,
-			t.intangibles = p->m_intangibles,
-			t.intexp = p->m_intexp,
-			t.inventory = p->m_inventory,
-			t.investments = p->m_investments,
-			t.investmentsAcqDisposals = p->m_investmentsAcqDisposals,
-			t.investmentsCurrent = p->m_investmentsCurrent,
-			t.investmentsNonCurrent = p->m_investmentsNonCurrent,
-			t.issrepayDebt = p->m_issrepayDebt,
-			t.issrepayEquity = p->m_issrepayEquity,
-			t.liabilitiesCurrent = p->m_liabilitiesCurrent,
-			t.liabilitiesNonCurrent = p->m_liabilitiesNonCurrent,
-			t.longTermDebtEquity = p->m_longTermDebtEquity,
-			t.marketCap = p->m_marketCap,
-			t.ncf = p->m_ncf,
-			t.ncff = p->m_ncff,
-			t.ncfi = p->m_ncfi,
-			t.ncfo = p->m_ncfo,
-			t.ncfx = p->m_ncfx,
-			t.netinc = p->m_netinc,
-			t.netIncComStock = p->m_netIncComStock,
-			t.netIncDiscOps = p->m_netIncDiscOps,
-			t.netMargin = p->m_netMargin,
-			t.nonControllingInterests = p->m_nonControllingInterests,
-			t.opex = p->m_opex,
-			t.opinc = p->m_opinc,
-			t.opMargin = p->m_opMargin,
-			t.payDiv = p->m_payDiv,
-			t.pbRatio = p->m_pbRatio,
-			t.peRatio = p->m_peRatio,
-			t.piotroskiFScore = p->m_piotroskiFScore,
-			t.ppeq = p->m_ppeq,
-			t.prefDVDs = p->m_prefDVDs,
-			t.profitMargin = p->m_profitMargin,
-			t.retainedEarnings = p->m_retainedEarnings,
-			t.revenue = p->m_revenue,
-			t.revenueQoQ = p->m_revenueQoQ,
-			t.rnd = p->m_rnd,
-			t.roa = p->m_roa,
-			t.roe = p->m_roe,
-			t.rps = p->m_rps,
-			t.sbcomp = p->m_sbcomp,
-			t.sga = p->m_sga,
-			t.shareFactor = p->m_shareFactor,
-			t.sharesBasic = p->m_sharesBasic,
-			t.shareswa = p->m_shareswa,
-			t.shareswaDil = p->m_shareswaDil,
-			t.taxAssets = p->m_taxAssets,
-			t.taxExp = p->m_taxExp,
-			t.taxLiabilities = p->m_taxLiabilities,
-			t.totalAssets = p->m_totalAssets,
-			t.totalLiabilities = p->m_totalLiabilities,
-			t.trailingPEG1Y = p->m_trailingPEG1Y
-		));
+		for (auto& p : *m_pvFinancialState) {
+			db(sqlpp::insert_into(t).set(
+				t.Symbol = m_strSymbol,
+				t.Exchange = p->m_exchange,
+				t.YearQuarter = p->m_yearQuarter,
+				t.accoci = p->m_accoci,
+				t.acctPay = p->m_acctPay,
+				t.acctRec = p->m_acctRec,
+				t.assetsCurrent = p->m_assetsCurrent,
+				t.assetsNonCurrent = p->m_assetsNonCurrent,
+				t.assetTurnover = p->m_assetTurnover,
+				t.bookVal = p->m_bookVal,
+				t.businessAcqDisposals = p->m_businessAcqDisposals,
+				t.bvps = p->m_bvps,
+				t.capex = p->m_capex,
+				t.cashAndEq = p->m_cashAndEq,
+				t.consolidatedIncome = p->m_consolidatedIncome,
+				t.costRev = p->m_costRev,
+				t.currentRatio = p->m_currentRatio,
+				t.debt = p->m_debt,
+				t.debtCurrent = p->m_debtCurrent,
+				t.debtEquity = p->m_debtEquity,
+				t.debtNonCurrent = p->m_debtNonCurrent,
+				t.deferredRev = p->m_deferredRev,
+				t.depamor = p->m_depamor,
+				t.deposits = p->m_deposits,
+				t.ebit = p->m_ebit,
+				t.ebitda = p->m_ebitda,
+				t.ebt = p->m_ebt,
+				t.enterpriseVal = p->m_enterpriseVal,
+				t.eps = p->m_eps,
+				t.epsDil = p->m_epsDil,
+				t.epsQoQ = p->m_epsQoQ,
+				t.equity = p->m_equity,
+				t.freeCashFlow = p->m_freeCashFlow,
+				t.fxRate = p->m_fxRate,
+				t.grossMargin = p->m_grossMargin,
+				t.grossProfit = p->m_grossProfit,
+				t.intangibles = p->m_intangibles,
+				t.intexp = p->m_intexp,
+				t.inventory = p->m_inventory,
+				t.investments = p->m_investments,
+				t.investmentsAcqDisposals = p->m_investmentsAcqDisposals,
+				t.investmentsCurrent = p->m_investmentsCurrent,
+				t.investmentsNonCurrent = p->m_investmentsNonCurrent,
+				t.issrepayDebt = p->m_issrepayDebt,
+				t.issrepayEquity = p->m_issrepayEquity,
+				t.liabilitiesCurrent = p->m_liabilitiesCurrent,
+				t.liabilitiesNonCurrent = p->m_liabilitiesNonCurrent,
+				t.longTermDebtEquity = p->m_longTermDebtEquity,
+				t.marketCap = p->m_marketCap,
+				t.ncf = p->m_ncf,
+				t.ncff = p->m_ncff,
+				t.ncfi = p->m_ncfi,
+				t.ncfo = p->m_ncfo,
+				t.ncfx = p->m_ncfx,
+				t.netinc = p->m_netinc,
+				t.netIncComStock = p->m_netIncComStock,
+				t.netIncDiscOps = p->m_netIncDiscOps,
+				t.netMargin = p->m_netMargin,
+				t.nonControllingInterests = p->m_nonControllingInterests,
+				t.opex = p->m_opex,
+				t.opinc = p->m_opinc,
+				t.opMargin = p->m_opMargin,
+				t.payDiv = p->m_payDiv,
+				t.pbRatio = p->m_pbRatio,
+				t.peRatio = p->m_peRatio,
+				t.piotroskiFScore = p->m_piotroskiFScore,
+				t.ppeq = p->m_ppeq,
+				t.prefDVDs = p->m_prefDVDs,
+				t.profitMargin = p->m_profitMargin,
+				t.retainedEarnings = p->m_retainedEarnings,
+				t.revenue = p->m_revenue,
+				t.revenueQoQ = p->m_revenueQoQ,
+				t.rnd = p->m_rnd,
+				t.roa = p->m_roa,
+				t.roe = p->m_roe,
+				t.rps = p->m_rps,
+				t.sbcomp = p->m_sbcomp,
+				t.sga = p->m_sga,
+				t.shareFactor = p->m_shareFactor,
+				t.sharesBasic = p->m_sharesBasic,
+				t.shareswa = p->m_shareswa,
+				t.shareswaDil = p->m_shareswaDil,
+				t.taxAssets = p->m_taxAssets,
+				t.taxExp = p->m_taxExp,
+				t.taxLiabilities = p->m_taxLiabilities,
+				t.totalAssets = p->m_totalAssets,
+				t.totalLiabilities = p->m_totalLiabilities,
+				t.trailingPEG1Y = p->m_trailingPEG1Y
+			));
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Financial State DB", e);
 	}
-	tx.commit();
 }
 
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {

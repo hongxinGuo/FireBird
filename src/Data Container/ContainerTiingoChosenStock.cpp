@@ -7,6 +7,7 @@
 
 #include "ContainerTiingoStock.h"
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 CContainerTiingoChosenStock::CContainerTiingoChosenStock() {
@@ -51,21 +52,25 @@ void CContainerTiingoChosenStock::UpdateDB(std::stop_token st) const {
 	auto result = db(select(all_of(t)).from(t));
 	size_t rows = result.size();
 	vSymbol.reserve(rows);
-	for (const auto& row : result) {
-		if (st.stop_requested()) break;
-		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
-			vSymbol.push_back(string{ row.Symbol });
+	try {
+		for (const auto& row : result) {
+			if (st.stop_requested()) break;
+			if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
+				vSymbol.push_back(string{ row.Symbol });
+			}
 		}
-	}
 
-	for (size_t i = 0; i < m_vStock.size(); i++) {
-		if (st.stop_requested()) break;
-		string symbol = m_vStock.at(i)->GetSymbol();
-		if (std::ranges::find(vSymbol, symbol) == vSymbol.end()) {
-			db(sqlpp::insert_into(t).set(
-				t.Symbol = symbol
-			));
+		for (size_t i = 0; i < m_vStock.size(); i++) {
+			if (st.stop_requested()) break;
+			string symbol = m_vStock.at(i)->GetSymbol();
+			if (std::ranges::find(vSymbol, symbol) == vSymbol.end()) {
+				db(sqlpp::insert_into(t).set(
+					t.Symbol = symbol
+				));
+			}
 		}
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Chosen Stock", e);
 	}
 	tx.commit();
 }

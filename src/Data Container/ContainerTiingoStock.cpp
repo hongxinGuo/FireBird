@@ -3,6 +3,8 @@
 #include "ContainerTiingoStock.h"
 
 #include <set>
+
+#include "log.h"
 using std::set;
 
 #include "Thread.h"
@@ -61,65 +63,70 @@ void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 
 	using namespace StockMarket;
 	const auto& t = TiingoStockProfile{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
 
-	for (const auto& row : db(select(all_of(t)).from(t))) {
-		setExistingSymbols.insert(string{ row.Symbol.value() });
-	}
-	size_t vectorSize = m_vStock.size();
-	for (size_t l = 0; l < vectorSize; l++) {
-		if (st.stop_requested()) break;
-		const CTiingoStockPtr pStock = GetStock(l);
-		ABSL_DCHECK(pStock != nullptr);
-		if (pStock->IsUpdateProfileDB()) {
-			int IsActive = pStock->IsActive() ? 1 : 0;
-			int IsADR = pStock->IsADR() ? 1 : 0;
-			if (setExistingSymbols.contains(pStock->GetSymbol())) { // 如果是原有的代码，则更新；如果是新代码，则插入。
-				pStock->UpdateJsonUpdateDate();
-				db(update(t).set(
-					t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
-					t.Name = pStock->GetName(),
-					t.IsActive = IsActive,
-					t.IsADR = IsADR,
-					t.SICCode = pStock->GetSicCode(),
-					t.SICIndustry = pStock->GetSicIndustry(),
-					t.SICSector = pStock->GetSicSector(),
-					t.TiingoIndustry = pStock->GetTiingoIndustry(),
-					t.TiingoSector = pStock->GetTiingoSector(),
-					t.ReportingCurrency = pStock->GetReportingCurrency(),
-					t.Location = pStock->GetLocation(),
-					t.CompanyWebSite = pStock->GetCompanyWebSite(),
-					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
-					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-				).where(t.Symbol == pStock->GetSymbol()));
-			}
-			else { // 新代码，插入。
-				pStock->UpdateJsonUpdateDate();
-				string sUpdateDate = pStock->GetJsonUpdateDate().dump();
-				db(insert_into(t).set(
-					t.Symbol = pStock->GetSymbol(),
-					t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
-					t.Name = pStock->GetName(),
-					t.IsActive = IsActive,
-					t.IsADR = IsADR,
-					t.SICCode = pStock->GetSicCode(),
-					t.SICIndustry = pStock->GetSicIndustry(),
-					t.SICSector = pStock->GetSicSector(),
-					t.TiingoIndustry = pStock->GetTiingoIndustry(),
-					t.TiingoSector = pStock->GetTiingoSector(),
-					t.ReportingCurrency = pStock->GetReportingCurrency(),
-					t.Location = pStock->GetLocation(),
-					t.CompanyWebSite = pStock->GetCompanyWebSite(),
-					t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
-					t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-				));
-				pStock->SetNewStock(false);
-			}
-			pStock->SetUpdateProfileDB(false);
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		for (const auto& row : db(select(all_of(t)).from(t))) {
+			setExistingSymbols.insert(string{ row.Symbol.value() });
 		}
+		size_t vectorSize = m_vStock.size();
+		for (size_t l = 0; l < vectorSize; l++) {
+			if (st.stop_requested()) break;
+			const CTiingoStockPtr pStock = GetStock(l);
+			ABSL_DCHECK(pStock != nullptr);
+			if (pStock->IsUpdateProfileDB()) {
+				int IsActive = pStock->IsActive() ? 1 : 0;
+				int IsADR = pStock->IsADR() ? 1 : 0;
+				if (setExistingSymbols.contains(pStock->GetSymbol())) { // 如果是原有的代码，则更新；如果是新代码，则插入。
+					pStock->UpdateJsonUpdateDate();
+					db(update(t).set(
+						t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
+						t.Name = pStock->GetName(),
+						t.IsActive = IsActive,
+						t.IsADR = IsADR,
+						t.SICCode = pStock->GetSicCode(),
+						t.SICIndustry = pStock->GetSicIndustry(),
+						t.SICSector = pStock->GetSicSector(),
+						t.TiingoIndustry = pStock->GetTiingoIndustry(),
+						t.TiingoSector = pStock->GetTiingoSector(),
+						t.ReportingCurrency = pStock->GetReportingCurrency(),
+						t.Location = pStock->GetLocation(),
+						t.CompanyWebSite = pStock->GetCompanyWebSite(),
+						t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					).where(t.Symbol == pStock->GetSymbol()));
+				}
+				else { // 新代码，插入。
+					pStock->UpdateJsonUpdateDate();
+					string sUpdateDate = pStock->GetJsonUpdateDate().dump();
+					db(insert_into(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.TiingoPermaTicker = pStock->GetTiingoPermaTicker(),
+						t.Name = pStock->GetName(),
+						t.IsActive = IsActive,
+						t.IsADR = IsADR,
+						t.SICCode = pStock->GetSicCode(),
+						t.SICIndustry = pStock->GetSicIndustry(),
+						t.SICSector = pStock->GetSicSector(),
+						t.TiingoIndustry = pStock->GetTiingoIndustry(),
+						t.TiingoSector = pStock->GetTiingoSector(),
+						t.ReportingCurrency = pStock->GetReportingCurrency(),
+						t.Location = pStock->GetLocation(),
+						t.CompanyWebSite = pStock->GetCompanyWebSite(),
+						t.SECFilingWebSite = pStock->GetSECFilingWebSite(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					));
+					pStock->SetNewStock(false);
+				}
+				pStock->SetUpdateProfileDB(false);
+			}
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
 	}
-	tx.commit();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -167,6 +174,8 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		}
 		tx.commit();
 		Sort();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Load Profile DB", e);
 	} catch (const std::exception& ex) {
 		gl_systemMessage.PushErrorMessage(std::format("LoadDB(sqlpp23) failed: {}", ex.what()));
 		return false;
@@ -255,9 +264,8 @@ void CContainerTiingoStock::BuildDayLine(std::stop_token ststopToken, local_days
 		}
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
-	} catch (const std::exception& ex) {
-		gl_systemMessage.PushErrorMessage(std::format("BuildDayLine(sqlpp11) failed: {}", ex.what()));
-		return;
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Build Day Line", e);
 	}
 
 	gl_systemMessage.PushDayLineInfoMessage("Tiingo IEX book of day saved");
@@ -301,8 +309,8 @@ void CContainerTiingoStock::LoadDayLine(local_days date) {
 			}
 		}
 		tx.commit();
-	} catch (const std::exception& ex) {
-		gl_systemMessage.PushErrorMessage(std::format("LoadDayLine(sqlpp11) failed: {}", ex.what()));
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Load Day Line", e);
 	}
 }
 
@@ -344,24 +352,29 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 
 	using namespace StockMarket;
 	const auto& t = TiingoStock52WeekHigh{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
 
-	for (size_t i = 0; i < lSize; i++) {
-		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
-		const CTiingoStockPtr pStock = GetStock(i);
-		if (pStock->IsUpdate52WeekHighLowDB()) {
-			auto Size = pStock->Get52WeekHighSize();
-			for (size_t index = 0; index < Size; index++) {
-				db(insert_into(t).set(
-					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchange(),
-					t.Date = toFormattedDate(pStock->Get52WeekHighDate(index))
-				));
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+
+		for (size_t i = 0; i < lSize; i++) {
+			if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
+			const CTiingoStockPtr pStock = GetStock(i);
+			if (pStock->IsUpdate52WeekHighLowDB()) {
+				auto Size = pStock->Get52WeekHighSize();
+				for (size_t index = 0; index < Size; index++) {
+					db(insert_into(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.Exchange = pStock->GetExchange(),
+						t.Date = toFormattedDate(pStock->Get52WeekHighDate(index))
+					));
+				}
 			}
 		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update 52 Week High DB", e);
 	}
-	tx.commit();
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
 	gl_systemMessage.PushInnerSystemInformationMessage("tiingo 52 week high calculated");
@@ -374,28 +387,33 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 
 	using namespace StockMarket;
 	const auto& t = TiingoStock52WeekLow{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Symbol, t.Exchange, t.Date);
 
-	int Values = 0;
-	for (size_t i = 0; i < lSize; i++) {
-		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
-		const CTiingoStockPtr pStock = GetStock(i);
-		if (pStock->IsUpdate52WeekHighLowDB()) {
-			auto Size = pStock->Get52WeekLowSize();
-			for (size_t index = 0; index < Size; index++) {
-				multi_insert.add_values(
-					t.Symbol = pStock->GetSymbol(),
-					t.Exchange = pStock->GetExchange(),
-					t.Date = toFormattedDate(pStock->Get52WeekLowDate(index))
-				);
-				Values++;
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Symbol, t.Exchange, t.Date);
+
+		int Values = 0;
+		for (size_t i = 0; i < lSize; i++) {
+			if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
+			const CTiingoStockPtr pStock = GetStock(i);
+			if (pStock->IsUpdate52WeekHighLowDB()) {
+				auto Size = pStock->Get52WeekLowSize();
+				for (size_t index = 0; index < Size; index++) {
+					multi_insert.add_values(
+						t.Symbol = pStock->GetSymbol(),
+						t.Exchange = pStock->GetExchange(),
+						t.Date = toFormattedDate(pStock->Get52WeekLowDate(index))
+					);
+					Values++;
+				}
 			}
 		}
+		if (Values > 0) db(multi_insert);
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
 	}
-	if (Values > 0) db(multi_insert);
-	tx.commit();
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
 	gl_systemMessage.PushInnerSystemInformationMessage("tiingo 52 week low calculated");
@@ -421,22 +439,27 @@ void CContainerTiingoStock::TaskCalculate() {
 
 	using namespace StockMarket;
 	const auto& t = TiingoStockCurrentTrace{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Date, t.Symbol, t.SICCode);
 
-	db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Date, t.Symbol, t.SICCode);
 
-	for (size_t index = 0; index < vPos.size(); index++) {
-		auto pStock = GetStock(vPos.at(index));
-		multi_insert.add_values(
-			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
-			t.Symbol = pStock->GetSymbol(),
-			t.SICCode = pStock->GetSicCode()
-		);
+		db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
+
+		for (size_t index = 0; index < vPos.size(); index++) {
+			auto pStock = GetStock(vPos.at(index));
+			multi_insert.add_values(
+				t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
+				t.Symbol = pStock->GetSymbol(),
+				t.SICCode = pStock->GetSicCode()
+			);
+		}
+		if (!vPos.empty()) db(multi_insert);
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logInfoDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
 	}
-	if (!vPos.empty()) db(multi_insert);
-	tx.commit();
 
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");

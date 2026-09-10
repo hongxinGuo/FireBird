@@ -12,6 +12,7 @@ using std::make_shared;
 
 namespace FireBirdTest {
 	class jsonGetValueTest : public ::testing::Test {
+	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();

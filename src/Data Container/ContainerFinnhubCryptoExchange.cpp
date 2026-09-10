@@ -5,6 +5,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
@@ -67,10 +68,14 @@ bool CContainerFinnhubCryptoExchange::UpdateDB() {
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
-		for (auto l = m_lastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
-			db(sqlpp::insert_into(t).set(
-				t.code = m_vCryptoExchange.at(l)
-			));
+		try {
+			for (auto l = m_lastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
+				db(sqlpp::insert_into(t).set(
+					t.code = m_vCryptoExchange.at(l)
+				));
+			}
+		} catch (sqlpp::mysql::exception& e) {
+			logInfoDatabaseException(typeid(this).name(), "Update DB", e);
 		}
 		tx.commit();
 		m_lastTotalCryptoExchange = m_vCryptoExchange.size();
