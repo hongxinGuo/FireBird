@@ -24,151 +24,156 @@ void CContainerTiingoStockDayLine::SaveDB(const string& strSymbol) {
 	ABSL_DCHECK(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
 
-	using namespace StockMarket;
-	const auto& t = TiingoStockDayline{};
-
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
-	                                           t.LastClose, t.Open, t.High, t.Low, t.Close, t.Dividend, t.SplitFactor,
-	                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
-
-	// helper to insert one CTiingoCandleLine into DB via sqlpp11
-	auto insertCandle = [&](const CTiingoCandleLine* pC) {
-		multi_insert.add_values(
-			t.Date = toFormattedDate(pC->GetDate()),
-			t.Exchange = pC->GetExchange(),
-			t.Symbol = pC->GetStockSymbol(),
-			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
-			t.Open = static_cast<double>(pC->GetOpen()) / ratio,
-			t.High = static_cast<double>(pC->GetHigh()) / ratio,
-			t.Low = static_cast<double>(pC->GetLow()) / ratio,
-			t.Close = static_cast<double>(pC->GetClose()) / ratio,
-			t.Dividend = pC->GetDividend(),
-			t.SplitFactor = pC->GetSplitFactor(),
-			t.Volume = static_cast<double>(pC->GetVolume()),
-			t.Amount = static_cast<double>(pC->GetAmount()),
-			t.UpAndDown = pC->GetUpDown(), // note: field name in DB was UpAndDown in original; match whatever sqlpp table defines
-			t.UpDownRate = pC->GetUpDownRate(),
-			t.ChangeHandRate = pC->GetChangeHandRate(),
-			t.TotalValue = static_cast<double>(pC->GetTotalValue()),
-			t.CurrentValue = static_cast<double>(pC->GetCurrentValue())
-		);
-	};
-
-	auto lSize = Size();
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
+		                                           t.LastClose, t.Open, t.High, t.Low, t.Close, t.Dividend, t.SplitFactor,
+		                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
+
+		// helper to insert one CTiingoCandleLine into DB via sqlpp11
+		auto insertCandle = [&](const CTiingoCandleLine* pC) {
+			multi_insert.add_values(
+				t.Date = toFormattedDate(pC->GetDate()),
+				t.Exchange = pC->GetExchange(),
+				t.Symbol = pC->GetStockSymbol(),
+				t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
+				t.Open = static_cast<double>(pC->GetOpen()) / ratio,
+				t.High = static_cast<double>(pC->GetHigh()) / ratio,
+				t.Low = static_cast<double>(pC->GetLow()) / ratio,
+				t.Close = static_cast<double>(pC->GetClose()) / ratio,
+				t.Dividend = pC->GetDividend(),
+				t.SplitFactor = pC->GetSplitFactor(),
+				t.Volume = static_cast<double>(pC->GetVolume()),
+				t.Amount = static_cast<double>(pC->GetAmount()),
+				t.UpAndDown = pC->GetUpDown(), // note: field name in DB was UpAndDown in original; match whatever sqlpp table defines
+				t.UpDownRate = pC->GetUpDownRate(),
+				t.ChangeHandRate = pC->GetChangeHandRate(),
+				t.TotalValue = static_cast<double>(pC->GetTotalValue()),
+				t.CurrentValue = static_cast<double>(pC->GetCurrentValue())
+			);
+		};
+
+		auto lSize = Size();
 		for (size_t i = 0; i < lSize; ++i) {
 			const CTiingoCandleLine* pHistoryCandle = GetData(i);
 			insertCandle(pHistoryCandle);
 		}
 		if (lSize > 0) db(multi_insert);
+		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Save Day Line DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Save Day Line DB", e);
 	}
-	tx.commit();
 }
 
 void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	Unload(); // 卸载之前的日线
 
-	using namespace StockMarket;
-	const auto& t = TiingoStockDayline{};
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol).order_by(t.Date.asc()));
+		Reserve(result.size() + 2);
+		for (const auto& row : result) {
+			CTiingoCandleLine candle;
+			auto ratio = GetRatio();
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strStockSymbol).order_by(t.Date.asc()));
-	Reserve(result.size() + 2);
-	for (const auto& row : result) {
-		CTiingoCandleLine candle;
-		auto ratio = GetRatio();
-
-		candle.SetDate(row.Date);
-		candle.SetExchange(row.Exchange);
-		candle.SetStockSymbol(row.Symbol);
-		candle.SetLastClose(row.LastClose * ratio);
-		candle.SetOpen(row.Open * ratio);
-		candle.SetHigh(row.High * ratio);
-		candle.SetLow(row.Low * ratio);
-		candle.SetClose(row.Close * ratio);
-		candle.SetSplitFactor(row.SplitFactor);
-		candle.SetDividend(row.Dividend);
-		candle.SetUpDown(row.UpAndDown);
-		candle.SetVolume(row.Volume);
-		candle.SetAmount(row.Amount);
-		candle.SetUpDownRate(row.UpDownRate);
-		candle.SetChangeHandRate(row.ChangeHandRate);
-		candle.SetTotalValue(row.TotalValue);
-		candle.SetCurrentValue(row.CurrentValue);
-		Add(candle);
+			candle.SetDate(row.Date);
+			candle.SetExchange(row.Exchange);
+			candle.SetStockSymbol(row.Symbol);
+			candle.SetLastClose(row.LastClose * ratio);
+			candle.SetOpen(row.Open * ratio);
+			candle.SetHigh(row.High * ratio);
+			candle.SetLow(row.Low * ratio);
+			candle.SetClose(row.Close * ratio);
+			candle.SetSplitFactor(row.SplitFactor);
+			candle.SetDividend(row.Dividend);
+			candle.SetUpDown(row.UpAndDown);
+			candle.SetVolume(row.Volume);
+			candle.SetAmount(row.Amount);
+			candle.SetUpDownRate(row.UpDownRate);
+			candle.SetChangeHandRate(row.ChangeHandRate);
+			candle.SetTotalValue(row.TotalValue);
+			candle.SetCurrentValue(row.CurrentValue);
+			Add(candle);
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load Day Line DB", e);
 	}
-	tx.commit();
 	m_fDataLoaded = true;
 }
 
 void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStockSymbol) const noexcept {
 	if (m_vHistoryData.empty()) return;
-	using namespace StockMarket;
-	const auto& t = TiingoStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(m_vHistoryData.at(0).GetDate())));
-	tx.commit();
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(m_vHistoryData.at(0).GetDate())));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated Day Line DB", e);
+	}
 }
 
 void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 	//	ABSL_DCHECK(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
 
-	using namespace StockMarket;
-	const auto& t = TiingoStockDayline{};
-
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
-	                                           t.LastClose, t.Open, t.High, t.Low, t.Close, t.Dividend, t.SplitFactor,
-	                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
-
-	// helper to insert one CTiingoCandleLine into DB via sqlpp11
-	auto insertCandle = [&](const CTiingoCandleLine* pC) {
-		multi_insert.add_values(
-			t.Date = toFormattedDate(pC->GetDate()),
-			t.Exchange = pC->GetExchange(),
-			t.Symbol = pC->GetStockSymbol(),
-			t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
-			t.Open = static_cast<double>(pC->GetOpen()) / ratio,
-			t.High = static_cast<double>(pC->GetHigh()) / ratio,
-			t.Low = static_cast<double>(pC->GetLow()) / ratio,
-			t.Close = static_cast<double>(pC->GetClose()) / ratio,
-			t.Dividend = pC->GetDividend(),
-			t.SplitFactor = pC->GetSplitFactor(),
-			t.Volume = static_cast<double>(pC->GetVolume()),
-			t.Amount = static_cast<double>(pC->GetAmount()),
-			t.UpAndDown = pC->GetUpDown(), // note: field name in DB was UpAndDown in original; match whatever sqlpp table defines
-			t.UpDownRate = pC->GetUpDownRate(),
-			t.ChangeHandRate = pC->GetChangeHandRate(),
-			t.TotalValue = static_cast<double>(pC->GetTotalValue()),
-			t.CurrentValue = static_cast<double>(pC->GetCurrentValue())
-		);
-	};
-
-	auto lSize = Size();
-	if (Size() > 0) {
-		db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(GetData(0)->GetDate())));
-	}
-
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
+		                                           t.LastClose, t.Open, t.High, t.Low, t.Close, t.Dividend, t.SplitFactor,
+		                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.TotalValue, t.CurrentValue);
+
+		// helper to insert one CTiingoCandleLine into DB via sqlpp11
+		auto insertCandle = [&](const CTiingoCandleLine* pC) {
+			multi_insert.add_values(
+				t.Date = toFormattedDate(pC->GetDate()),
+				t.Exchange = pC->GetExchange(),
+				t.Symbol = pC->GetStockSymbol(),
+				t.LastClose = static_cast<double>(pC->GetLastClose()) / ratio,
+				t.Open = static_cast<double>(pC->GetOpen()) / ratio,
+				t.High = static_cast<double>(pC->GetHigh()) / ratio,
+				t.Low = static_cast<double>(pC->GetLow()) / ratio,
+				t.Close = static_cast<double>(pC->GetClose()) / ratio,
+				t.Dividend = pC->GetDividend(),
+				t.SplitFactor = pC->GetSplitFactor(),
+				t.Volume = static_cast<double>(pC->GetVolume()),
+				t.Amount = static_cast<double>(pC->GetAmount()),
+				t.UpAndDown = pC->GetUpDown(), // note: field name in DB was UpAndDown in original; match whatever sqlpp table defines
+				t.UpDownRate = pC->GetUpDownRate(),
+				t.ChangeHandRate = pC->GetChangeHandRate(),
+				t.TotalValue = static_cast<double>(pC->GetTotalValue()),
+				t.CurrentValue = static_cast<double>(pC->GetCurrentValue())
+			);
+		};
+
+		auto lSize = Size();
+		if (Size() > 0) {
+			db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(GetData(0)->GetDate())));
+		}
+
 		for (size_t i = 0; i < lSize; ++i) {
 			const CTiingoCandleLine* pHistoryCandle = GetData(i);
 			insertCandle(pHistoryCandle);
 		}
 		if (lSize > 0) db(multi_insert);
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update Day Line DB", e);
 	}
-	catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Day Line DB", e);
-	}
-	tx.commit();
 }
 
 void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine) {

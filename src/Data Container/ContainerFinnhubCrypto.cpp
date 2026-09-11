@@ -24,15 +24,15 @@ void CContainerFinnhubCrypto::Reset() {
 }
 
 bool CContainerFinnhubCrypto::LoadProfileDB() {
-	using namespace StockMarket;
-	const auto& t = FinnhubCryptoSymbol{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
-	size_t rows = result.size();
-	Reserve(rows + 10);
 	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubCryptoSymbol{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
+		size_t rows = result.size();
+		Reserve(rows + 10);
 		for (const auto& row : result) {
 			const std::string symbol = string{ row.Symbol };
 			if (!IsSymbol(symbol)) {
@@ -49,10 +49,10 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 			}
 		}
+		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
 	}
-	tx.commit();
 	Sort();
 	m_llLastTotalSymbol = m_vStock.size();
 
@@ -67,37 +67,35 @@ void CContainerFinnhubCrypto::UpdateProfileDB(std::stop_token st) {
 			auto db = gl_dbStockMarket.get();
 			auto tx = sqlpp::start_transaction(db);
 
-			try {
-				for (const auto& pStock : m_vStock) {
-					if (st.stop_requested()) break;
-					if (pStock->IsUpdateProfileDB()) {
-						pStock->UpdateJsonUpdateDate();
-						if (pStock->IsNewStock()) {//插入新股票代码
-							db(sqlpp::insert_into(t).set(
-								t.Symbol = pStock->GetSymbol(),
-								t.Description = pStock->GetDescription(),
-								t.Exchange = pStock->GetExchange(),
-								t.DisplaySymbol = pStock->GetDisplaySymbol(),
-								t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-							));
-							pStock->SetNewStock(false);
-						}
-						else {//更新现有股票代码
-							db(sqlpp::update(t).set(
-								t.Symbol = pStock->GetSymbol(),
-								t.Description = pStock->GetDescription(),
-								t.Exchange = pStock->GetExchange(),
-								t.DisplaySymbol = pStock->GetDisplaySymbol(),
-								t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-							).where(t.Symbol == pStock->GetSymbol()));
-						}
-						pStock->SetUpdateProfileDB(false);
+			for (const auto& pStock : m_vStock) {
+				if (st.stop_requested()) break;
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->UpdateJsonUpdateDate();
+					if (pStock->IsNewStock()) {//插入新股票代码
+						db(sqlpp::insert_into(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchange(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						));
+						pStock->SetNewStock(false);
 					}
+					else {//更新现有股票代码
+						db(sqlpp::update(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Description = pStock->GetDescription(),
+							t.Exchange = pStock->GetExchange(),
+							t.DisplaySymbol = pStock->GetDisplaySymbol(),
+							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+						).where(t.Symbol == pStock->GetSymbol()));
+					}
+					pStock->SetUpdateProfileDB(false);
 				}
-			} catch (sqlpp::mysql::exception& e) {
-				logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
 			}
 			tx.commit();
+		} catch (sqlpp::mysql::exception& e) {
+			logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
 		} catch (CException& e) {
 			ReportInformation(e);
 		}

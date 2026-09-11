@@ -44,14 +44,14 @@ bool CContainerFinnhubCountry::Delete(const CCountry& country) {
 //////////////////////////////////////////////////////////////////////////
 void CContainerFinnhubCountry::UpdateDB(std::stop_token st) const {
 	if (m_llLastTotalCountry < m_vCountry.size()) {
-		using namespace StockMarket;
-		const auto& t = FinnhubCountryList{};
-		auto db = GetStockMarketDB();
-		auto tx = sqlpp::start_transaction(db);
-		auto multi_insert = insert_into(t).columns(t.Code2, t.Code3, t.CodeNo,
-		                                           t.Country, t.Currency, t.CurrencyCode);
-		int nValues = 0;
 		try {
+			using namespace StockMarket;
+			const auto& t = FinnhubCountryList{};
+			auto db = GetStockMarketDB();
+			auto tx = sqlpp::start_transaction(db);
+			auto multi_insert = insert_into(t).columns(t.Code2, t.Code3, t.CodeNo,
+			                                           t.Country, t.Currency, t.CurrencyCode);
+			int nValues = 0;
 			for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
 				if (st.stop_requested()) break;
 				const CCountry& country = m_vCountry.at(l);
@@ -66,36 +66,41 @@ void CContainerFinnhubCountry::UpdateDB(std::stop_token st) const {
 				nValues++;
 			}
 			if (nValues > 0) db(multi_insert);
+			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logInfoDatabaseException(typeid(this).name(), "Update DB", e);
+			logErrorDatabaseException(typeid(this).name(), "Update DB", e);
 		}
-		tx.commit();
 	}
 }
 
 bool CContainerFinnhubCountry::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = FinnhubCountryList{};
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubCountryList{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).order_by(t.Country.asc()));
-	Reserve(result.size());
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).order_by(t.Country.asc()));
+		Reserve(result.size());
 
-	int counter = 0;
-	for (const auto& row : result) {
-		CCountry country;
-		country.m_strCode2 = row.Code2;
-		country.m_strCode3 = row.Code3;
-		country.m_strCodeNo = row.CodeNo;
-		country.m_strCountry = row.Country;
-		country.m_strCurrency = row.Currency;
-		country.m_strCurrencyCode = row.CurrencyCode;
-		m_mapCountry[country.m_strCountry] = counter;
-		counter++;
-		m_vCountry.push_back(country);
+		int counter = 0;
+		for (const auto& row : result) {
+			CCountry country;
+			country.m_strCode2 = row.Code2;
+			country.m_strCode3 = row.Code3;
+			country.m_strCodeNo = row.CodeNo;
+			country.m_strCountry = row.Country;
+			country.m_strCurrency = row.Currency;
+			country.m_strCurrencyCode = row.CurrencyCode;
+			m_mapCountry[country.m_strCountry] = counter;
+			counter++;
+			m_vCountry.push_back(country);
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		return false;
 	}
-	tx.commit();
 	m_llLastTotalCountry = m_vCountry.size();
 
 	return true;

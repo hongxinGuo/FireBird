@@ -114,31 +114,34 @@ size_t CContainerStockSymbol::Size() {
 }
 
 void CContainerStockSymbol::LoadStockSectionDB() {
-	using namespace StockMarket;
-	const auto& t = ChinaStockSymbolSection{};
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockSymbolSection{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(sqlpp::select(all_of(t)).from(t));
-	for (const auto& row : result) {
-		if (!m_vStockSection.at(row.IndexNumber)->IsActive()) {
-			m_vStockSection.at(row.IndexNumber)->SetActive(row.Active);
-			m_vStockSection.at(row.IndexNumber)->SetMarket(row.Market);
-			m_vStockSection.at(row.IndexNumber)->SetIndexNumber(row.IndexNumber);
-			m_vStockSection.at(row.IndexNumber)->SetComment(string{ row.Comment });
+		auto result = db(sqlpp::select(all_of(t)).from(t));
+		for (const auto& row : result) {
+			if (!m_vStockSection.at(row.IndexNumber)->IsActive()) {
+				m_vStockSection.at(row.IndexNumber)->SetActive(row.Active);
+				m_vStockSection.at(row.IndexNumber)->SetMarket(row.Market);
+				m_vStockSection.at(row.IndexNumber)->SetIndexNumber(row.IndexNumber);
+				m_vStockSection.at(row.IndexNumber)->SetComment(string{ row.Comment });
+			}
 		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load Stock Section DB", e);
 	}
-	tx.commit();
-
 	m_fDBLoaded = true;
 }
 
 void CContainerStockSymbol::UpdateStockSectionDB() {
-	using namespace StockMarket;
-	const auto& t = ChinaStockSymbolSection{};
-
 	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockSymbolSection{};
+
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
@@ -172,8 +175,8 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Stock Section", e);
-	} 
+		logErrorDatabaseException(typeid(this).name(), "Update Stock Section", e);
+	}
 
 	m_fUpdateStockSection = false;
 }

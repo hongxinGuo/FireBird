@@ -83,10 +83,10 @@ void CTiingoStock::UpdateDayLine(vector<CTiingoCandleLine>& vTempDayLine) {
 }
 
 void CTiingoStock::UpdateFinancialStateDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoCompanyFinancialState{};
-
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoCompanyFinancialState{};
+
 		auto db = gl_dbStockMarket.get();
 		auto tx = sqlpp::start_transaction(db);
 
@@ -193,7 +193,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Financial State DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update Financial State DB", e);
 	}
 }
 
@@ -302,13 +302,17 @@ bool CTiingoStock::IsDayLineDuplicated() noexcept {
 
 void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
 	if (m_dataDayLine.Empty()) return;
-	using namespace StockMarket;
-	const auto& t = TiingoStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated DayLine", e);
+	}
 }
 
 void CTiingoStock::LoadDayLineDB() {
@@ -458,25 +462,31 @@ void CTiingoStock::Delete52WeekHighDate(chrono::local_days lDate) {
 }
 
 void CTiingoStock::Delete52WeekHighDB() const {
-	using namespace StockMarket;
-	const auto& t = TiingoStock52WeekHigh{};
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock52WeekHigh{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week High DB", e);
+	}
 }
 
 void CTiingoStock::Delete52WeekLowDB() const {
-	using namespace StockMarket;
-	const auto& t = TiingoStock52WeekLow{};
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock52WeekLow{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week Low DB", e);
+	}
 }
 
 bool CTiingoStock::IsEnough52WeekLow() {
@@ -494,18 +504,22 @@ bool CTiingoStock::IsEnough52WeekLow() {
 void CTiingoStock::Load52WeekLowDB() {
 	if (!m_v52WeekLowDate.empty()) return; // 如果已经装入了， 直接返回。
 
-	using namespace StockMarket;
-	const auto& t = TiingoStock52WeekLow{};
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock52WeekLow{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).where(t.Symbol == GetSymbol()).order_by(t.Date.asc()));
-	m_v52WeekLowDate.reserve(result.size<>());
-	for (const auto& row : result) {
-		m_v52WeekLowDate.push_back(toLocalDays(row.Date));
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == GetSymbol()).order_by(t.Date.asc()));
+		m_v52WeekLowDate.reserve(result.size<>());
+		for (const auto& row : result) {
+			m_v52WeekLowDate.push_back(toLocalDays(row.Date));
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load 52 Week Low DB", e);
 	}
-	tx.commit();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

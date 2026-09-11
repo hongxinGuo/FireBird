@@ -58,11 +58,12 @@ bool CContainerTiingoFundamentalDefinition::Delete(const string& strDataCode) {
 
 bool CContainerTiingoFundamentalDefinition::UpdateDB(std::stop_token st) {
 	ABSL_DCHECK(m_fUpdated);
-	map<string, size_t> mapDefinition;
-	using namespace StockMarket;
-	const auto& t = TiingoFundamentalDefinitions{};
 
 	try {
+		map<string, size_t> mapDefinition;
+		using namespace StockMarket;
+		const auto& t = TiingoFundamentalDefinitions{};
+
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
@@ -89,7 +90,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB(std::stop_token st) {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Fundamental Definition", e);
+		logErrorDatabaseException(typeid(this).name(), "Update Fundamental Definition", e);
 	}
 	m_fUpdated = false;
 
@@ -97,24 +98,29 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB(std::stop_token st) {
 }
 
 bool CContainerTiingoFundamentalDefinition::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoFundamentalDefinitions{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoFundamentalDefinitions{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
-	Reserve(rows);
-	for (const auto& row : result) {
-		CTiingoFundamentalDefinition tiingoFundamentalDefinition;
-		tiingoFundamentalDefinition.m_strDataCode = string{ row.dataCode };
-		tiingoFundamentalDefinition.m_strName = string{ row.name };
-		tiingoFundamentalDefinition.m_strDescription = string{ row.description };
-		tiingoFundamentalDefinition.m_strStatementType = string{ row.statementType };
-		tiingoFundamentalDefinition.m_strUnits = string{ row.units };
-		Add(tiingoFundamentalDefinition);
+		auto result = db(select(all_of(t)).from(t));
+		size_t rows = result.size();
+		Reserve(rows);
+		for (const auto& row : result) {
+			CTiingoFundamentalDefinition tiingoFundamentalDefinition;
+			tiingoFundamentalDefinition.m_strDataCode = string{ row.dataCode };
+			tiingoFundamentalDefinition.m_strName = string{ row.name };
+			tiingoFundamentalDefinition.m_strDescription = string{ row.description };
+			tiingoFundamentalDefinition.m_strStatementType = string{ row.statementType };
+			tiingoFundamentalDefinition.m_strUnits = string{ row.units };
+			Add(tiingoFundamentalDefinition);
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load Fundamental Definition", e);
+		return false;
 	}
-	tx.commit();
 	m_fUpdated = false;
 
 	return true;

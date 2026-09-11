@@ -106,7 +106,8 @@ void CProductTiingoStockProfile::WebStatusCheck(cpr::Response& r) {
 		default:
 			WebErrorReport(m_strInquiringSymbol);
 			break;
-		}	break;
+		}
+		break;
 	}
 }
 
@@ -300,15 +301,15 @@ void CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiingoStocksPtr& 
 }
 
 void CProductTiingoStockProfile::SaveNewSymbol() {
-	using namespace StockMarket;
-	const auto& t = TiingoStockNewSymbol{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
-
-	db(sqlpp::delete_from(t));
-	int nValues = 0;
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockNewSymbol{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
+
+		db(sqlpp::delete_from(t));
+		int nValues = 0;
 		for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
 			auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
 			multi_insert.add_values(
@@ -318,32 +319,30 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 			++nValues;
 		}
 		if (nValues > 0) db(multi_insert);
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Save New Symbol", e);
 	}
-	catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Save New Symbol", e);
-	}
-	tx.commit();
 }
 
 void CProductTiingoStockProfile::SaveDelistedSymbol() {
-	using namespace StockMarket;
-	const auto& t = TiingoStockDelistedSymbol{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
-
-	db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate())));
-	int nValues = 0;
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDelistedSymbol{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Symbol, t.Date);
+
+		db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate())));
+		int nValues = 0;
 		for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
 			auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
 			multi_insert.add_values(t.Symbol = pStock->GetSymbol(), t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()));
 			++nValues;
 		}
 		if (nValues > 0) db(multi_insert);
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Save Delisted Symbol", e);
 	}
-	catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Save Delisted Symbol", e);
-	}
-	tx.commit();
 }

@@ -84,8 +84,8 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 
 		// helper to insert one CTiingoCandleLine into DB via sqlpp11
 		auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol, t.LastClose, t.Open,
-																							 t.High, t.Low, t.Close, t.Volume, t.Amount, t.Dividend, t.SplitFactor,
-																							 t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
+		                                           t.High, t.Low, t.Close, t.Volume, t.Amount, t.Dividend, t.SplitFactor,
+		                                           t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
 		auto insertCandle = [&](const CVirtualHistoryCandle* pC) {
 			multi_insert.add_values(
 				t.Date = toFormattedDate(pC->GetDate()),
@@ -106,7 +106,7 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 				t.CurrentValue = static_cast<double>(pC->GetCurrentValue()),
 				t.TotalValue = static_cast<double>(pC->GetTotalValue())
 			);
-			};
+		};
 
 		const size_t lSize = Size();
 		int nValues = 0;
@@ -153,42 +153,46 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Save DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Save DB", e);
 	}
 }
 
 void CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
-	using namespace StockMarket;
-	const auto& t = FinnhubForexDayline{};
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubForexDayline{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).where(t.Symbol == strCryptoSymbol).order_by(t.Date.asc()));
-	Reserve(result.size() + 2);
-	for (const auto& row : result) {
-		CVirtualHistoryCandle candle;
-		auto ratio = GetRatio();
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).where(t.Symbol == strCryptoSymbol).order_by(t.Date.asc()));
+		Reserve(result.size() + 2);
+		for (const auto& row : result) {
+			CVirtualHistoryCandle candle;
+			auto ratio = GetRatio();
 
-		candle.SetRatio(ratio);
-		candle.SetDate(row.Date);
-		candle.SetExchange(row.Exchange);
-		candle.SetStockSymbol(row.Symbol);
-		candle.SetLastClose(row.LastClose * ratio);
-		candle.SetOpen(row.Open * ratio);
-		candle.SetHigh(row.High * ratio);
-		candle.SetLow(row.Low * ratio);
-		candle.SetClose(row.Close * ratio);
-		candle.SetSplitFactor(row.SplitFactor);
-		candle.SetDividend(row.Dividend);
-		candle.SetUpDown(row.UpAndDown);
-		candle.SetVolume(row.Volume);
-		candle.SetAmount(row.Amount);
-		candle.SetUpDownRate(row.UpDownRate);
-		candle.SetChangeHandRate(row.ChangeHandRate);
-		candle.SetTotalValue(row.TotalValue);
-		candle.SetCurrentValue(row.CurrentValue);
-		Add(candle);
+			candle.SetRatio(ratio);
+			candle.SetDate(row.Date);
+			candle.SetExchange(row.Exchange);
+			candle.SetStockSymbol(row.Symbol);
+			candle.SetLastClose(row.LastClose * ratio);
+			candle.SetOpen(row.Open * ratio);
+			candle.SetHigh(row.High * ratio);
+			candle.SetLow(row.Low * ratio);
+			candle.SetClose(row.Close * ratio);
+			candle.SetSplitFactor(row.SplitFactor);
+			candle.SetDividend(row.Dividend);
+			candle.SetUpDown(row.UpAndDown);
+			candle.SetVolume(row.Volume);
+			candle.SetAmount(row.Amount);
+			candle.SetUpDownRate(row.UpDownRate);
+			candle.SetChangeHandRate(row.ChangeHandRate);
+			candle.SetTotalValue(row.TotalValue);
+			candle.SetCurrentValue(row.CurrentValue);
+			Add(candle);
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
 	}
-	tx.commit();
 	m_fDataLoaded = true;
 }

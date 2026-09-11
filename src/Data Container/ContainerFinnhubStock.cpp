@@ -79,68 +79,73 @@ void CContainerFinnhubStock::ResetDayLine() {
 }
 
 bool CContainerFinnhubStock::LoadProfileDB() {
-	using namespace StockMarket;
-	const auto& t = FinnhubStockProfile{};
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubStockProfile{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).order_by(t.Symbol.asc()));
-	auto rowCount = result.size();
-	Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
-	CFinnhubStockPtr pFinnhubStock = nullptr;
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).order_by(t.Symbol.asc()));
+		auto rowCount = result.size();
+		Reserve(rowCount + 10); // 预留一些空间，避免后续添加新股票时频繁扩容
+		CFinnhubStockPtr pFinnhubStock = nullptr;
 
-	for (const auto& row : result) {
-		pFinnhubStock = make_shared<CFinnhubStock>();
-		pFinnhubStock->SetSymbol(row.Symbol);
-		pFinnhubStock->SetExchange(row.Exchange);
-		pFinnhubStock->SetDescription(row.Description);
-		pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol);
-		pFinnhubStock->SetType(string{ row.Type });
-		pFinnhubStock->SetMic(string{ row.Mic });
-		pFinnhubStock->SetFigi(string{ row.Figi });
-		pFinnhubStock->SetCurrency(string{ row.Currency });
-		pFinnhubStock->SetAddress(string{ row.Address });
-		pFinnhubStock->SetCity(string{ row.City });
-		pFinnhubStock->SetCountry(string{ row.Country });
-		pFinnhubStock->SetCusip(string{ row.cusip });
-		pFinnhubStock->SetSedol(string{ row.sedol });
-		pFinnhubStock->SetEmployeeTotal(row.EmployeeTotal);
-		pFinnhubStock->SetGgroup(string{ row.ggroup });
-		pFinnhubStock->SetGind(string{ row.gind });
-		pFinnhubStock->SetGsector(string{ row.gsector });
-		pFinnhubStock->SetGsubind(string{ row.gsubind });
-		pFinnhubStock->SetIPODate(string{ row.IPODate });
-		pFinnhubStock->SetIsin(string{ row.isin });
-		pFinnhubStock->SetMarketCapitalization(row.MarketCapitalization);
-		pFinnhubStock->SetNaics(string{ row.naics });
-		pFinnhubStock->SetNaicsNationalIndustry(string{ row.naicsNationalIndustry });
-		pFinnhubStock->SetNaicsSector(string{ row.naicsSector });
-		pFinnhubStock->SetNaicsSubsector(string{ row.naicsSubsector });
-		pFinnhubStock->SetName(string{ row.Name });
-		pFinnhubStock->SetPhone(string{ row.Phone });
-		pFinnhubStock->SetShareOutstanding(row.ShareOutstanding);
-		pFinnhubStock->SetState(string{ row.state });
-		pFinnhubStock->SetTicker(string{ row.Ticker });
-		pFinnhubStock->SetWebURL(string{ row.WebURL });
-		pFinnhubStock->SetLogo(string{ row.Logo });
-		pFinnhubStock->SetFinnhubIndustry(string{ row.FinnhubIndustry });
-		string str = string{ row.Peer };
-		if (str.length() > 2) {
-			nlohmannJson js;
-			CreateJsonWithNlohmann(js, str);
-			pFinnhubStock->SetPeer(js);
+		for (const auto& row : result) {
+			pFinnhubStock = make_shared<CFinnhubStock>();
+			pFinnhubStock->SetSymbol(row.Symbol);
+			pFinnhubStock->SetExchange(row.Exchange);
+			pFinnhubStock->SetDescription(row.Description);
+			pFinnhubStock->SetDisplaySymbol(row.DisplaySymbol);
+			pFinnhubStock->SetType(string{ row.Type });
+			pFinnhubStock->SetMic(string{ row.Mic });
+			pFinnhubStock->SetFigi(string{ row.Figi });
+			pFinnhubStock->SetCurrency(string{ row.Currency });
+			pFinnhubStock->SetAddress(string{ row.Address });
+			pFinnhubStock->SetCity(string{ row.City });
+			pFinnhubStock->SetCountry(string{ row.Country });
+			pFinnhubStock->SetCusip(string{ row.cusip });
+			pFinnhubStock->SetSedol(string{ row.sedol });
+			pFinnhubStock->SetEmployeeTotal(row.EmployeeTotal);
+			pFinnhubStock->SetGgroup(string{ row.ggroup });
+			pFinnhubStock->SetGind(string{ row.gind });
+			pFinnhubStock->SetGsector(string{ row.gsector });
+			pFinnhubStock->SetGsubind(string{ row.gsubind });
+			pFinnhubStock->SetIPODate(string{ row.IPODate });
+			pFinnhubStock->SetIsin(string{ row.isin });
+			pFinnhubStock->SetMarketCapitalization(row.MarketCapitalization);
+			pFinnhubStock->SetNaics(string{ row.naics });
+			pFinnhubStock->SetNaicsNationalIndustry(string{ row.naicsNationalIndustry });
+			pFinnhubStock->SetNaicsSector(string{ row.naicsSector });
+			pFinnhubStock->SetNaicsSubsector(string{ row.naicsSubsector });
+			pFinnhubStock->SetName(string{ row.Name });
+			pFinnhubStock->SetPhone(string{ row.Phone });
+			pFinnhubStock->SetShareOutstanding(row.ShareOutstanding);
+			pFinnhubStock->SetState(string{ row.state });
+			pFinnhubStock->SetTicker(string{ row.Ticker });
+			pFinnhubStock->SetWebURL(string{ row.WebURL });
+			pFinnhubStock->SetLogo(string{ row.Logo });
+			pFinnhubStock->SetFinnhubIndustry(string{ row.FinnhubIndustry });
+			string str = string{ row.Peer };
+			if (str.length() > 2) {
+				nlohmannJson js;
+				CreateJsonWithNlohmann(js, str);
+				pFinnhubStock->SetPeer(js);
+			}
+			pFinnhubStock->LoadUpdateDate(string{ row.UpdateDate });
+			if (!IsSymbol(pFinnhubStock->GetSymbol())) {
+				pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+				Add(pFinnhubStock);
+				ABSL_DCHECK(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
+			}
+			else {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			}
 		}
-		pFinnhubStock->LoadUpdateDate(string{ row.UpdateDate });
-		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
-			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-			Add(pFinnhubStock);
-			ABSL_DCHECK(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
-		}
-		else {
-			db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
-		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load Profile DB", e);
+		return false;
 	}
-	tx.commit();
 	Sort();
 	m_bDataLoaded = true;
 
@@ -150,19 +155,19 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 	ABSL_DCHECK(IsUpdateProfileDB());
 
-	using namespace StockMarket;
-	const auto& t = FinnhubStockProfile{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto stockSize = m_vStock.size();
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubStockProfile{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto stockSize = m_vStock.size();
 
-	for (size_t l = 0; l < stockSize; l++) {
-		if (st.stop_requested()) break;
-		const CFinnhubStockPtr pStock = GetItem(l);
-		ABSL_DCHECK(pStock != nullptr);
-		if (pStock->IsUpdateProfileDB()) {
-			pStock->UpdateJsonUpdateDate();
-			try {
+		for (size_t l = 0; l < stockSize; l++) {
+			if (st.stop_requested()) break;
+			const CFinnhubStockPtr pStock = GetItem(l);
+			ABSL_DCHECK(pStock != nullptr);
+			if (pStock->IsUpdateProfileDB()) {
+				pStock->UpdateJsonUpdateDate();
 				if (pStock->IsNewStock()) {// 新代码，插入。
 					db(insert_into(t).set(
 						t.Symbol = pStock->GetSymbol().substr(0, 20),
@@ -242,13 +247,13 @@ void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
 					).where(t.Symbol == pStock->GetSymbol()));
 				}
-			} catch (sqlpp::mysql::exception& e) {
-				logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
+				pStock->SetUpdateProfileDB(false);
 			}
-			pStock->SetUpdateProfileDB(false);
 		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
 	}
-	tx.commit();
 }
 
 void CContainerFinnhubStock::UpdateInsiderTransactionDB(std::stop_token st) {

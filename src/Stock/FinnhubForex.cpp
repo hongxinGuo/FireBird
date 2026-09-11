@@ -8,6 +8,7 @@
 #include"TimeConvert.h"
 
 #include"dataBaseConnector.h"
+#include "log.h"
 
 using namespace std;
 
@@ -65,13 +66,17 @@ bool CFinnhubForex::IsDayLineDuplicated() noexcept {
 
 void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
 	ABSL_DCHECK(!m_dataDayLines.Empty());
-	using namespace StockMarket;
-	const auto& t = FinnhubForexDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubForexDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLines.GetData(0)->GetDate())));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLines.GetData(0)->GetDate())));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated DayLine DB", e);
+	}
 }
 
 void CFinnhubForex::UpdateDayLineStartEndDate() {

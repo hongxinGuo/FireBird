@@ -9,6 +9,7 @@
 #include"TimeConvert.h"
 
 #include"dataBaseConnector.h"
+#include "log.h"
 
 using namespace std;
 
@@ -91,11 +92,15 @@ bool CFinnhubCrypto::IsDayLineDuplicated() noexcept {
 
 void CFinnhubCrypto::DeleteDuplicatedDayLine() noexcept {
 	ABSL_DCHECK(!m_pDayLines->Empty());
-	using namespace StockMarket;
-	const auto& t = FinnhubCryptoDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubCryptoDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_pDayLines->GetData(0)->GetDate())));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_pDayLines->GetData(0)->GetDate())));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete duplicated dayline DB", e);
+	}
 }

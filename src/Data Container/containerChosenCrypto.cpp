@@ -7,6 +7,7 @@
 #include "dataBaseConnector.h"
 #include"StockMarketSQLTable.h"
 #include "FinnhubCrypto.h"
+#include "log.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();
@@ -17,26 +18,30 @@ void CContainerChosenCrypto::Reset() {
 }
 
 bool CContainerChosenCrypto::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = WorldChoiceCrypto{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = WorldChoiceCrypto{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
-	Reserve(rows + 10);
-	for (const auto& row : result) {
-		if (gl_dataFinnhubCryptoSymbol.IsSymbol(string{ row.Symbol })) {
-			auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(string{ row.Symbol });
-			m_mapSymbol[string{ row.Symbol }] = m_mapSymbol.size();
-			m_vStock.push_back(pStock);
+		auto result = db(select(all_of(t)).from(t));
+		size_t rows = result.size();
+		Reserve(rows + 10);
+		for (const auto& row : result) {
+			if (gl_dataFinnhubCryptoSymbol.IsSymbol(string{ row.Symbol })) {
+				auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(string{ row.Symbol });
+				m_mapSymbol[string{ row.Symbol }] = m_mapSymbol.size();
+				m_vStock.push_back(pStock);
+			}
+			else {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID));
+			}
 		}
-		else {
-			db(sqlpp::delete_from(t).where(t.ID == row.ID));
-		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		return false;
 	}
-	tx.commit();
-
 	return true;
 }
 

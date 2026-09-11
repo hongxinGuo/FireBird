@@ -773,23 +773,28 @@ void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate() {
 }
 
 concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine(std::stop_token st) {
-	m_vNasdaq100TiingoStock.clear();
-	using namespace StockMarket;
-	const auto& t = IndexNasdaq100{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto rows = db(select(all_of(t)).from(t));
-	for (const auto& row : rows) {
-		if (st.stop_requested()) break;
-		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
-			auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol });
-			m_vNasdaq100TiingoStock.push_back(pStock);
+	try {
+		m_vNasdaq100TiingoStock.clear();
+		using namespace StockMarket;
+		const auto& t = IndexNasdaq100{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto rows = db(select(all_of(t)).from(t));
+		for (const auto& row : rows) {
+			if (st.stop_requested()) break;
+			if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
+				auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol });
+				m_vNasdaq100TiingoStock.push_back(pStock);
+			}
 		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "LoadNasdaq100StocksDayLine", e);
+	} catch (const std::exception& e) {
+		gl_systemMessage.PushInnerSystemInformationMessage("LoadNasdaq100StocksDayLine: " + string(e.what()));
 	}
-	tx.commit();
 
 	vector<result<bool>> results;
-
 	bool succeed = true;
 
 	for (auto& pStock : m_vNasdaq100TiingoStock) {
@@ -864,24 +869,24 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 		gl_systemMessage.PushStockMarketInformationMessage(str);
 	}
 
-	using namespace StockMarket;
-	const auto& t = IndexNasdaq100_200MaUpdownRate{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Date, t.Rate);
-
-	auto result = db(select(all_of(t)).from(t));
-	int rows = result.size();
-	if (rows > 0) {
-		for (int i = 0; i < rows - 1; i++) {
-			result.pop_front();
-		}
-		auto& row = result.front();
-		lCurrentDate = toLocalDays(row.Date);
-	}
-
-	int nValues = 0;
 	try {
+		using namespace StockMarket;
+		const auto& t = IndexNasdaq100_200MaUpdownRate{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Date, t.Rate);
+
+		auto result = db(select(all_of(t)).from(t));
+		int rows = result.size();
+		if (rows > 0) {
+			for (int i = 0; i < rows - 1; i++) {
+				result.pop_front();
+			}
+			auto& row = result.front();
+			lCurrentDate = toLocalDays(row.Date);
+		}
+
+		int nValues = 0;
 		for (auto upDownRate : vUpDownRate) {
 			if (upDownRate.lDate > lCurrentDate) {
 				multi_insert.add_values(t.Date = toFormattedDate(upDownRate.lDate), t.Rate = upDownRate.Rate);
@@ -889,12 +894,12 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 			}
 		}
 		if (nValues > 0) db(multi_insert);
+		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "calculateNasdaq100MA200UpDownRate", e);
+		logErrorDatabaseException(typeid(this).name(), "calculateNasdaq100MA200UpDownRate", e);
 	} catch (const std::exception& e) {
 		gl_systemMessage.PushInnerSystemInformationMessage("calculateNasdaq100MA200UpDownRate: " + string(e.what()));
 	}
-	tx.commit();
 }
 
 void CWorldMarket::calculateStockYearHigherRate() {
@@ -1655,24 +1660,32 @@ void CWorldMarket::DeleteTiingoDelistedStock(std::stop_token st) {
 }
 
 void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
-	using namespace StockMarket;
-	const auto& t = TiingoStockDayline{};
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
 
-	db(delete_from(t).where(t.Symbol == pStock->GetSymbol()));
-	tx.commit();
+		db(delete_from(t).where(t.Symbol == pStock->GetSymbol()));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Tiingo Day Line", e);
+	}
 }
 
 void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {
-	using namespace StockMarket;
-	const auto& t = TiingoCompanyFinancialState{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoCompanyFinancialState{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == pStock->GetSymbol()));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Symbol == pStock->GetSymbol()));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Tiingo Financial Statement", e);
+	}
 }
 
 void CWorldMarket::ChangeToPrevStock() {

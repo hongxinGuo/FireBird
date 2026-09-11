@@ -11,11 +11,21 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "dataBaseConnector.h"
+#include "log.h"
 #include"StockMarketSQLTable.h"
 
 using namespace std;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// Note: 此数据使用stock_market数据库中的finnhub_stock_exchange表，且必须第一个装载，以初始化sqlpp的连接池。
+///
+///
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////
 CContainerStockExchange::CContainerStockExchange() {
+	InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market");
+
 	LoadDB(); // 生成时即装载数据库。
 }
 
@@ -47,39 +57,43 @@ CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymb
 bool CContainerStockExchange::LoadDB() {
 	if (m_vStockExchange.empty()) {
 		// 交易所信息永远使用工作数据库。
-		InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market");
-		using namespace StockMarket;
-		const auto& t = FinnhubStockExchange{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
+		try {
+			using namespace StockMarket;
+			const auto& t = FinnhubStockExchange{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
 
-		auto result = db(select(all_of(t)).from(t).order_by(t.code.asc()));
-		auto rows = result.size();
-		Reserve(rows);
+			auto result = db(select(all_of(t)).from(t).order_by(t.code.asc()));
+			auto rows = result.size();
+			Reserve(rows);
 
-		for (const auto& row : result) {
-			CStockExchangePtr pExchange;
-			pExchange = make_shared<CStockExchange>();
-			pExchange->SetExchangeCode(string{ row.code });
-			pExchange->m_strName = string{ row.name };
-			pExchange->m_strMic = string{ row.mic };
-			pExchange->m_strTimeZone = string{ row.timezone };
-			pExchange->m_strPreMarket = string{ row.preMarket };
-			pExchange->m_strHour = string{ row.hour };
-			pExchange->m_strPostMarket = string{ row.postMarket };
-			pExchange->m_strCloseDate = string{ row.closeDate };
-			pExchange->m_strCountry = string{ row.country };
-			pExchange->m_strCountryName = string{ row.countryName };
-			pExchange->m_strSource = string{ row.source };
+			for (const auto& row : result) {
+				CStockExchangePtr pExchange;
+				pExchange = make_shared<CStockExchange>();
+				pExchange->SetExchangeCode(string{ row.code });
+				pExchange->m_strName = string{ row.name };
+				pExchange->m_strMic = string{ row.mic };
+				pExchange->m_strTimeZone = string{ row.timezone };
+				pExchange->m_strPreMarket = string{ row.preMarket };
+				pExchange->m_strHour = string{ row.hour };
+				pExchange->m_strPostMarket = string{ row.postMarket };
+				pExchange->m_strCloseDate = string{ row.closeDate };
+				pExchange->m_strCountry = string{ row.country };
+				pExchange->m_strCountryName = string{ row.countryName };
+				pExchange->m_strSource = string{ row.source };
 
-			int openHour, openMinute, endHour, endMinute;
-			sscanf_s(pExchange->m_strHour.c_str(), "%2d:%2d-%2d:%2d", &openHour, &openMinute, &endHour, &endMinute);
-			pExchange->m_marketOpenTime = chrono::local_seconds(chrono::hours(openHour) + chrono::minutes(openMinute));
-			pExchange->m_marketCloseTime = chrono::local_seconds(chrono::hours(endHour) + chrono::minutes(endMinute));
-			m_vStockExchange.push_back(pExchange);
-			m_mapStockExchange[pExchange->GetExchangeCode()] = m_vStockExchange.size();
+				int openHour, openMinute, endHour, endMinute;
+				sscanf_s(pExchange->m_strHour.c_str(), "%2d:%2d-%2d:%2d", &openHour, &openMinute, &endHour, &endMinute);
+				pExchange->m_marketOpenTime = chrono::local_seconds(chrono::hours(openHour) + chrono::minutes(openMinute));
+				pExchange->m_marketCloseTime = chrono::local_seconds(chrono::hours(endHour) + chrono::minutes(endMinute));
+				m_vStockExchange.push_back(pExchange);
+				m_mapStockExchange[pExchange->GetExchangeCode()] = m_vStockExchange.size();
+			}
+			tx.commit();
+		} catch (sqlpp::mysql::exception& e) {
+			logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+			return false;
 		}
-		tx.commit();
 	}
 	return true;
 }

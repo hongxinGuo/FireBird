@@ -42,21 +42,26 @@ void CContainerFinnhubForexExchange::Add(const string& strForexExchange) {
 }
 
 bool CContainerFinnhubForexExchange::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = FinnhubForexExchange{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubForexExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	auto rows = result.size();
-	Reserve(rows);
-	int i = 0;
-	for (const auto& row : result) {
-		string str = string{ row.code };
-		m_vForexExchange.push_back(str);
-		m_mapForexExchange[str] = i++;
+		auto result = db(select(all_of(t)).from(t));
+		auto rows = result.size();
+		Reserve(rows);
+		int i = 0;
+		for (const auto& row : result) {
+			string str = string{ row.code };
+			m_vForexExchange.push_back(str);
+			m_mapForexExchange[str] = i++;
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		return false;
 	}
-	tx.commit();
 	m_llLastTotalForexExchange = m_vForexExchange.size();
 
 	return true;
@@ -81,7 +86,8 @@ bool CContainerFinnhubForexExchange::UpdateDB() {
 			tx.commit();
 			m_llLastTotalForexExchange = m_vForexExchange.size();
 		} catch (sqlpp::mysql::exception& e) {
-			logInfoDatabaseException(typeid(this).name(), "Update DB", e);
+			logErrorDatabaseException(typeid(this).name(), "Update DB", e);
+			return false;
 		}
 		return true;
 	}

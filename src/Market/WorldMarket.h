@@ -127,8 +127,8 @@ public:
 	void UpdateMarketHoliday(const shared_ptr<vector<CMarketHoliday>>& pv) const;
 
 	void DeleteTiingoDelistedStock(std::stop_token st);
-	static void DeleteTiingoDayLine(const shared_ptr<CTiingoStock>& pStock);
-	static void DeleteTiingoFinancialStatement(const shared_ptr<CTiingoStock>& pStock);
+	void DeleteTiingoDayLine(const shared_ptr<CTiingoStock>& pStock);
+	void DeleteTiingoFinancialStatement(const shared_ptr<CTiingoStock>& pStock);
 
 	bool IsReadyToInquireWebData() override { return !IsResetTime(); }
 

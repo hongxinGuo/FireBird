@@ -23,15 +23,15 @@ void CContainerFinnhubForexSymbol::Reset() {
 }
 
 bool CContainerFinnhubForexSymbol::LoadProfileDB() {
-	using namespace StockMarket;
-	const auto& t = FinnhubForexSymbol{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
-	size_t rows = result.size();
-	Reserve(rows + 10);
 	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubForexSymbol{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
+		size_t rows = result.size();
+		Reserve(rows + 10);
 		for (const auto& row : result) {
 			const std::string symbol = string{ row.Symbol };
 			if (!IsSymbol(symbol)) {
@@ -48,11 +48,11 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 			}
 		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		return false;
 	}
-	catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
-	}
-	tx.commit();
 	Sort();
 	m_lastTotalSymbol = m_vStock.size();
 
@@ -95,7 +95,7 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB(std::stop_token st) {
 			}
 			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
+			logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
 		}
 	}
 }

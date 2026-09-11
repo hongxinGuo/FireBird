@@ -41,21 +41,26 @@ void CContainerFinnhubCryptoExchange::Add(const string& sCryptoExchange) {
 }
 
 bool CContainerFinnhubCryptoExchange::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = FinnhubCryptoExchange{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubCryptoExchange{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	auto rows = result.size();
-	Reserve(rows);
-	int i = 0;
-	for (const auto& row : result) {
-		string str = string{ row.code };
-		m_vCryptoExchange.push_back(str);
-		m_mapCryptoExchange[str] = i++;
+		auto result = db(select(all_of(t)).from(t));
+		auto rows = result.size();
+		Reserve(rows);
+		int i = 0;
+		for (const auto& row : result) {
+			string str = string{ row.code };
+			m_vCryptoExchange.push_back(str);
+			m_mapCryptoExchange[str] = i++;
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		return false;
 	}
-	tx.commit();
 	m_lastTotalCryptoExchange = m_vCryptoExchange.size();
 
 	return true;
@@ -63,21 +68,22 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 
 bool CContainerFinnhubCryptoExchange::UpdateDB() {
 	if (m_lastTotalCryptoExchange < m_vCryptoExchange.size()) {
-		using namespace StockMarket;
-		const auto& t = FinnhubCryptoExchange{};
-		auto db = gl_dbStockMarket.get();
-		auto tx = sqlpp::start_transaction(db);
-
 		try {
+			using namespace StockMarket;
+			const auto& t = FinnhubCryptoExchange{};
+			auto db = gl_dbStockMarket.get();
+			auto tx = sqlpp::start_transaction(db);
+
 			for (auto l = m_lastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
 				db(sqlpp::insert_into(t).set(
 					t.code = m_vCryptoExchange.at(l)
 				));
 			}
+			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logInfoDatabaseException(typeid(this).name(), "Update DB", e);
+			logErrorDatabaseException(typeid(this).name(), "Update DB", e);
+			return false;
 		}
-		tx.commit();
 		m_lastTotalCryptoExchange = m_vCryptoExchange.size();
 		return true;
 	}

@@ -59,12 +59,11 @@ void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 	ABSL_DCHECK(IsUpdateProfileDB());
 
-	set<string> setExistingSymbols;
-
-	using namespace StockMarket;
-	const auto& t = TiingoStockProfile{};
-
 	try {
+		set<string> setExistingSymbols;
+		using namespace StockMarket;
+		const auto& t = TiingoStockProfile{};
+
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
@@ -125,7 +124,7 @@ void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
 	}
 }
 
@@ -136,7 +135,6 @@ void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerTiingoStock::LoadProfileDB() {
-	// Use sqlpp11 typed query API to load profile data
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockProfile{};
@@ -173,13 +171,13 @@ bool CContainerTiingoStock::LoadProfileDB() {
 			}
 		}
 		tx.commit();
-		Sort();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Load Profile DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Load Profile DB", e);
 	} catch (const std::exception& ex) {
 		gl_systemMessage.PushErrorMessage(std::format("LoadDB(sqlpp23) failed: {}", ex.what()));
 		return false;
 	}
+	Sort();
 	m_bDataLoaded = true;
 	return true;
 }
@@ -193,11 +191,15 @@ bool CContainerTiingoStock::LoadProfileDB() {
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::DeleteDuplicatedSymbolFromDB() {
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
-	db("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
-	tx.commit();
+	try {
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		// Use execute(string) to run raw SQL text (operator() requires a sqlpp statement)
+		db("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated Symbol From DB", e);
+	}
 }
 
 void CContainerTiingoStock::ResetDayLineStartEndDate() {
@@ -265,7 +267,7 @@ void CContainerTiingoStock::BuildDayLine(std::stop_token ststopToken, local_days
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Build Day Line", e);
+		logErrorDatabaseException(typeid(this).name(), "Build Day Line", e);
 	}
 
 	gl_systemMessage.PushDayLineInfoMessage("Tiingo IEX book of day saved");
@@ -310,19 +312,23 @@ void CContainerTiingoStock::LoadDayLine(local_days date) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Load Day Line", e);
+		logErrorDatabaseException(typeid(this).name(), "Load Day Line", e);
 	}
 }
 
 void CContainerTiingoStock::DeleteDayLine(local_days date) {
-	using namespace StockMarket;
-	const auto& t = TiingoStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
 
-	// Delete all rows for the given trade date in one statement
-	db(delete_from(t).where(t.Date == toFormattedDate(date)));
-	tx.commit();
+		// Delete all rows for the given trade date in one statement
+		db(delete_from(t).where(t.Date == toFormattedDate(date)));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Day Line", e);
+	}
 }
 
 long CContainerTiingoStock::GetTotalActiveStocks() {
@@ -350,10 +356,9 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 	Delete52WeekHighDB();
 	auto lSize = Size();
 
-	using namespace StockMarket;
-	const auto& t = TiingoStock52WeekHigh{};
-
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock52WeekHigh{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
@@ -373,7 +378,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update 52 Week High DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update 52 Week High DB", e);
 	}
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
@@ -385,10 +390,9 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 	Delete52WeekLowDB();
 	auto lSize = Size();
 
-	using namespace StockMarket;
-	const auto& t = TiingoStock52WeekLow{};
-
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock52WeekLow{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 		auto multi_insert = insert_into(t).columns(t.Symbol, t.Exchange, t.Date);
@@ -412,7 +416,7 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 		if (Values > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
 	}
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
@@ -437,10 +441,9 @@ void CContainerTiingoStock::TaskCalculate() {
 		if (fFound) vPos.push_back(index); // vPos中存储找到的位置。
 	}
 
-	using namespace StockMarket;
-	const auto& t = TiingoStockCurrentTrace{};
-
 	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockCurrentTrace{};
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 		auto multi_insert = insert_into(t).columns(t.Date, t.Symbol, t.SICCode);
@@ -458,7 +461,7 @@ void CContainerTiingoStock::TaskCalculate() {
 		if (!vPos.empty()) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
 	}
 
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
@@ -501,43 +504,55 @@ void CContainerTiingoStock::TaskCalculate2(std::stop_token st) {
 		}
 	}
 
-	using namespace StockMarket;
-	const auto& t = TiingoStockCurrentTrace{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStockCurrentTrace{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		db(delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate()))); // 先删除原有数据
 
-	for (size_t index = 0; index < vPos.size(); index++) {
-		if (st.stop_requested()) break;
-		auto pStock = GetStock(vPos.at(index));
-		db(sqlpp::insert_into(t).set(
-			t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
-			t.Symbol = pStock->GetSymbol(),
-			t.SICCode = pStock->GetSicCode()
-		));
+		for (size_t index = 0; index < vPos.size(); index++) {
+			if (st.stop_requested()) break;
+			auto pStock = GetStock(vPos.at(index));
+			db(sqlpp::insert_into(t).set(
+				t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()),
+				t.Symbol = pStock->GetSymbol(),
+				t.SICCode = pStock->GetSicCode()
+			));
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
 	}
-	tx.commit();
 
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 }
 
 void CContainerTiingoStock::Delete52WeekHighDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoStock52WeekHigh{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock52WeekHigh{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
 
-	db(sqlpp::delete_from(t));
-	tx.commit();
+		db(sqlpp::delete_from(t));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week High DB", e);
+	}
 }
 
 void CContainerTiingoStock::Delete52WeekLowDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoStock52WeekLow{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	db(sqlpp::delete_from(t));
-	tx.commit();
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock52WeekLow{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		db(sqlpp::delete_from(t));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week Low DB", e);
+	}
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
@@ -627,54 +642,66 @@ void CContainerTiingoStock::ReportHighHigherRate() {
 }
 
 void CContainerTiingoStock::Update5YearLow90PercentStockDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoStock5yearsLow90Percent{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	db(delete_from(t)); // 先删除原有数据
-	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
-	for (auto& item : gl_vCurrent5YearsLow90Percent) {
-		db(insert_into(t).set(
-			t.Symbol = item.m_symbol,
-			t.MarketCapitalization = item.m_marketCapitalization,
-			t.Date = date
-		));
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock5yearsLow90Percent{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(delete_from(t)); // 先删除原有数据
+		auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+		for (auto& item : gl_vCurrent5YearsLow90Percent) {
+			db(insert_into(t).set(
+				t.Symbol = item.m_symbol,
+				t.MarketCapitalization = item.m_marketCapitalization,
+				t.Date = date
+			));
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update 5 Year Low 90 Percent Stock DB", e);
 	}
-	tx.commit();
 }
 
 void CContainerTiingoStock::Update5YearLow70PercentStockDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoStock5yearsLow70Percent{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	db(delete_from(t)); // 先删除原有数据
-	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
-	for (auto& item : gl_vCurrent5YearsLow70Percent) {
-		db(insert_into(t).set(
-			t.Symbol = item.m_symbol,
-			t.MarketCapitalization = item.m_marketCapitalization,
-			t.Date = date
-		));
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock5yearsLow70Percent{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(delete_from(t)); // 先删除原有数据
+		auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+		for (auto& item : gl_vCurrent5YearsLow70Percent) {
+			db(insert_into(t).set(
+				t.Symbol = item.m_symbol,
+				t.MarketCapitalization = item.m_marketCapitalization,
+				t.Date = date
+			));
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update 5 Year Low 70 Percent Stock DB", e);
 	}
-	tx.commit();
 }
 
 void CContainerTiingoStock::Update5YearLow80PercentStockDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoStock5yearsLow80Percent{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	db(delete_from(t)); // 先删除原有数据
-	auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
-	for (auto& item : gl_vCurrent5YearsLow80Percent) {
-		db(insert_into(t).set(
-			t.Symbol = item.m_symbol,
-			t.MarketCapitalization = item.m_marketCapitalization,
-			t.Date = date
-		));
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoStock5yearsLow80Percent{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		db(delete_from(t)); // 先删除原有数据
+		auto date = toFormattedDate(gl_pWorldMarket->GetMarketDate());
+		for (auto& item : gl_vCurrent5YearsLow80Percent) {
+			db(insert_into(t).set(
+				t.Symbol = item.m_symbol,
+				t.MarketCapitalization = item.m_marketCapitalization,
+				t.Date = date
+			));
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update 5 Year Low 80 Percent Stock DB", e);
 	}
-	tx.commit();
 }
 
 void CContainerTiingoStock::Update5YearLowStockDB() {

@@ -12,6 +12,7 @@
 #include "WebRTData.h"
 
 #include"dataBaseConnector.h"
+#include "log.h"
 
 using namespace std;
 
@@ -173,13 +174,17 @@ bool CChinaStock::IsDayLineDuplicated() noexcept {
 
 void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 	ABSL_DCHECK(!m_dataDayLine.Empty());
-	using namespace StockMarket;
-	const auto& t = ChinaStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete China Day Line", e);
+	}
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandlePtr& pBeUpdated) const {

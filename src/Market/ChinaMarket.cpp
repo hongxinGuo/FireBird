@@ -935,13 +935,17 @@ void CChinaMarket::UpdateAllStockDayLine() {
 }
 
 void CChinaMarket::DeleteDayLine(local_days lDate) const {
-	using namespace StockMarket;
-	const auto& t = ChinaStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(lDate)));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(lDate)));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete Day Line", e);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -974,33 +978,36 @@ void CChinaMarket::UpdateOptionDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Option DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update Option DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
 }
 
 void CChinaMarket::LoadOptionDB() {
-	using namespace StockMarket;
-	const auto& t = ChinaMarketOptions{};
-
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t));
-	if (result.begin() == result.end()) {
-		SetLastLoginDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
-	}
-	else {
-		const auto& row = result.front();
-		if (static_cast<int>(row.LastLoginDate) == 0) {
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaMarketOptions{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto result = db(select(all_of(t)).from(t));
+		if (result.begin() == result.end()) {
 			SetLastLoginDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 		}
 		else {
-			SetLastLoginDate(toLocalDays(row.LastLoginDate));
+			const auto& row = result.front();
+			if (static_cast<int>(row.LastLoginDate) == 0) {
+				SetLastLoginDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
+			}
+			else {
+				SetLastLoginDate(toLocalDays(row.LastLoginDate));
+			}
+			SetLastLoginTime(toLocalTime(row.LastLoginTime));
 		}
-		SetLastLoginTime(toLocalTime(row.LastLoginTime));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load Option DB", e);
 	}
-	tx.commit();
 }
 
 void CChinaMarket::UpdateChosenStockDB() const {
@@ -1018,8 +1025,8 @@ void CChinaMarket::UpdateChosenStockDB() const {
 			));
 		}
 		tx.commit();
-	} catch (CException& e) {
-		ReportInformation(e);
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update Chosen Stock DB", e);
 	}
 }
 
@@ -1039,33 +1046,37 @@ void CChinaMarket::AppendChosenStockDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Append Chosen Stock DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Append Chosen Stock DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
 }
 
 void CChinaMarket::LoadChosenStockDB() {
-	using namespace StockMarket;
-	const auto& t = ChinaChoiceStock{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaChoiceStock{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	auto rows = result.size();
+		auto result = db(select(all_of(t)).from(t));
+		auto rows = result.size();
 
-	for (const auto& row : result) {
-		CChinaStockPtr pStock = nullptr;
-		if (gl_dataContainerChinaStock.IsSymbol(string{ row.Symbol })) {
-			pStock = gl_dataContainerChinaStock.GetStock(string{ row.Symbol });
-			if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
-				m_avChosenStock.at(0).push_back(pStock);
+		for (const auto& row : result) {
+			CChinaStockPtr pStock = nullptr;
+			if (gl_dataContainerChinaStock.IsSymbol(string{ row.Symbol })) {
+				pStock = gl_dataContainerChinaStock.GetStock(string{ row.Symbol });
+				if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
+					m_avChosenStock.at(0).push_back(pStock);
+				}
+				pStock->SetChosen(true);
+				pStock->SetUpdateChosenStockDB(true);
 			}
-			pStock->SetChosen(true);
-			pStock->SetUpdateChosenStockDB(true);
 		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load Chosen Stock DB", e);
 	}
-	tx.commit();
 }
 
 void CChinaMarket::ResetEffectiveRTDataRatio() {

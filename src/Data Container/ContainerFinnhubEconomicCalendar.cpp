@@ -26,46 +26,49 @@ void CContainerFinnhubEconomicCalendar::Reserve(size_t lSize) {
 }
 
 bool CContainerFinnhubEconomicCalendar::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = FinnhubEconomicCalendar{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubEconomicCalendar{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	auto rows = result.size();
-	Reserve(rows + 2);
-	for (const auto& row : result) {
-		CEconomicCalendar economicCalendar;
-		economicCalendar.m_strTime = row.Time;
-		economicCalendar.m_strCountry = row.Country;
-		economicCalendar.m_strEvent = row.Event;
-		economicCalendar.m_strImpact = row.Impact;
-		economicCalendar.m_dActual = row.Actual;
-		economicCalendar.m_dEstimate = row.Estimate;
-		economicCalendar.m_dPrev = row.Prev;
-		economicCalendar.m_strUnit = row.Unit;
-		std::string strSymbol = economicCalendar.m_strCountry + economicCalendar.m_strEvent + economicCalendar.m_strTime;
-		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
-		m_vEconomicCalendar.push_back(economicCalendar);
+		auto result = db(select(all_of(t)).from(t));
+		auto rows = result.size();
+		Reserve(rows + 2);
+		for (const auto& row : result) {
+			CEconomicCalendar economicCalendar;
+			economicCalendar.m_strTime = row.Time;
+			economicCalendar.m_strCountry = row.Country;
+			economicCalendar.m_strEvent = row.Event;
+			economicCalendar.m_strImpact = row.Impact;
+			economicCalendar.m_dActual = row.Actual;
+			economicCalendar.m_dEstimate = row.Estimate;
+			economicCalendar.m_dPrev = row.Prev;
+			economicCalendar.m_strUnit = row.Unit;
+			std::string strSymbol = economicCalendar.m_strCountry + economicCalendar.m_strEvent + economicCalendar.m_strTime;
+			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
+			m_vEconomicCalendar.push_back(economicCalendar);
+		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		return false;
 	}
-	tx.commit();
-
 	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 	return true;
 }
 
 bool CContainerFinnhubEconomicCalendar::UpdateDB() {
-	//return true; //Todo: 经济数据中有非法字符，暂时不存储了。
-	using namespace StockMarket;
-	const auto& t = FinnhubEconomicCalendar{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-	auto multi_insert = insert_into(t).columns(t.Time, t.Country, t.Event,
-	                                           t.Impact, t.Actual, t.Estimate, t.Prev, t.Unit);
-
-	if (m_lLastTotalEconomicCalendar >= m_vEconomicCalendar.size()) return false;
-	int nValues = 0;
 	try {
+		using namespace StockMarket;
+		const auto& t = FinnhubEconomicCalendar{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+		auto multi_insert = insert_into(t).columns(t.Time, t.Country, t.Event,
+		                                           t.Impact, t.Actual, t.Estimate, t.Prev, t.Unit);
+
+		if (m_lLastTotalEconomicCalendar >= m_vEconomicCalendar.size()) return false;
+		int nValues = 0;
 		for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
 			multi_insert.add_values(
 				t.Time = m_vEconomicCalendar.at(l).m_strTime,
@@ -80,10 +83,11 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 			nValues++;
 		}
 		if (nValues > 0) db(multi_insert);
+		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update DB", e);
+		logErrorDatabaseException(typeid(this).name(), "Update DB", e);
+		return false;
 	}
-	tx.commit();
 
 	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 	return true;

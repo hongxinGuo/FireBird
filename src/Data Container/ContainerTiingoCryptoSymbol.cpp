@@ -30,28 +30,32 @@ CTiingoCryptoPtr CContainerTiingoCryptoSymbol::GetCrypto(const string& strCrypto
 }
 
 bool CContainerTiingoCryptoSymbol::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = TiingoCryptoSymbol{};
+	try {
+		using namespace StockMarket;
+		const auto& t = TiingoCryptoSymbol{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
-	Reserve(result.size() + 2);
-	for (const auto& row : result) {
-		if (!IsSymbol(string{ row.Symbol })) {
-			const auto pSymbol = make_shared<CTiingoCrypto>();
-			pSymbol->SetSymbol(row.Symbol);
-			pSymbol->m_strName = string{ row.Name };
-			pSymbol->SetDescription(row.Description);
-			pSymbol->m_strBaseCurrency = string{ row.BaseCurrency };
-			pSymbol->m_strQuoteCurrency = string{ row.QuoteCurrency };
-			Add(pSymbol);
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
+		Reserve(result.size() + 2);
+		for (const auto& row : result) {
+			if (!IsSymbol(string{ row.Symbol })) {
+				const auto pSymbol = make_shared<CTiingoCrypto>();
+				pSymbol->SetSymbol(row.Symbol);
+				pSymbol->m_strName = string{ row.Name };
+				pSymbol->SetDescription(row.Description);
+				pSymbol->m_strBaseCurrency = string{ row.BaseCurrency };
+				pSymbol->m_strQuoteCurrency = string{ row.QuoteCurrency };
+				Add(pSymbol);
+			}
+			else {
+				db(delete_from(t).where(t.ID == row.ID));
+			}
 		}
-		else {
-			db(delete_from(t).where(t.ID == row.ID));
-		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load Crypto Symbol DB", e);
 	}
-	tx.commit();
 	Sort();
 	return true;
 }
@@ -152,7 +156,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB(std::stop_token st) {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Crypto Symbol", e);
+		logErrorDatabaseException(typeid(this).name(), "Update Crypto Symbol", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	} catch (std::exception& e) {

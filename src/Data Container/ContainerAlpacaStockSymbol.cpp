@@ -23,28 +23,33 @@ void CContainerAlpacaStockSymbol::Reset() {
 }
 
 bool CContainerAlpacaStockSymbol::LoadProfileDB() {
-	using namespace StockMarket;
-	const auto& t = AlpacaStockSymbol{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = AlpacaStockSymbol{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
-	size_t rows = result.size();
-	Reserve(rows + 10);
-	for (const auto& row : result) {
-		const std::string symbol = string{ row.Symbol };
-		if (!IsSymbol(symbol)) {
-			const auto pSymbol = make_shared<CAlpacaStock>();
-			pSymbol->SetSymbol(row.Symbol);
-			pSymbol->SetExchange(row.Exchange);
-			pSymbol->SetDisplaySymbol(row.Name);
-			Add(pSymbol);
+		auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
+		size_t rows = result.size();
+		Reserve(rows + 10);
+		for (const auto& row : result) {
+			const std::string symbol = string{ row.Symbol };
+			if (!IsSymbol(symbol)) {
+				const auto pSymbol = make_shared<CAlpacaStock>();
+				pSymbol->SetSymbol(row.Symbol);
+				pSymbol->SetExchange(row.Exchange);
+				pSymbol->SetDisplaySymbol(row.Name);
+				Add(pSymbol);
+			}
+			else {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			}
 		}
-		else {
-			db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
-		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		return false;
 	}
-	tx.commit();
 	Sort();
 	m_lastTotalSymbol = m_vStock.size();
 
@@ -60,28 +65,24 @@ void CContainerAlpacaStockSymbol::UpdateProfileDB(std::stop_token st) {
 			auto tx = sqlpp::start_transaction(db);
 			size_t stockSize = m_vStock.size();
 
-			try {
-				for (size_t i = 0; i < stockSize; ++i) {
-					if (st.stop_requested()) break;
-					const auto& pStock = GetItem(i);
-					if (pStock->IsUpdateProfileDB()) {
-						if (pStock->IsNewStock()) {//插入新股票代码
-							db(sqlpp::insert_into(t).set(
-								t.Symbol = pStock->GetSymbol(),
-								t.Exchange = pStock->GetExchange(),
-								t.Name = pStock->GetDisplaySymbol()
-							));
-							pStock->SetNewStock(false);
-						}
-						pStock->SetUpdateProfileDB(false);
+			for (size_t i = 0; i < stockSize; ++i) {
+				if (st.stop_requested()) break;
+				const auto& pStock = GetItem(i);
+				if (pStock->IsUpdateProfileDB()) {
+					if (pStock->IsNewStock()) {//插入新股票代码
+						db(sqlpp::insert_into(t).set(
+							t.Symbol = pStock->GetSymbol(),
+							t.Exchange = pStock->GetExchange(),
+							t.Name = pStock->GetDisplaySymbol()
+						));
+						pStock->SetNewStock(false);
 					}
+					pStock->SetUpdateProfileDB(false);
 				}
-			}catch (sqlpp::mysql::exception& e) {
-				logInfoDatabaseException(typeid(this).name(),"Update profile DB", e);
 			}
 			tx.commit();
-		} catch (CException& e) {
-			ReportInformation(e);
+		} catch (sqlpp::mysql::exception& e) {
+			logErrorDatabaseException(typeid(this).name(), "Update profile DB", e);
 		}
 	}
 }

@@ -49,34 +49,39 @@ CChinaStockPtr CContainerChinaStock::GetStock(size_t lIndex) {
 
 long CContainerChinaStock::LoadProfileDB() {
 	long lDayLineNeedCheck = 0;
-	using namespace StockMarket;
-	const auto& t = ChinaStockProfile{};
 
-	auto db = gl_dbStockMarket.get();
-	auto tx = start_transaction(db);
-	auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
-	auto rowCount = result.size();
-	Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
-	for (const auto& row : result) {
-		// 装入股票代码数据库
-		const auto pStock = make_shared<CChinaStock>();
-		string str = string{ row.Symbol };
-		if (IsSymbol(str)) {
-			db(sqlpp::delete_from(t).where(t.ID == row.ID));
-		}
-		else {
-			pStock->SetSymbol(row.Symbol);
-			pStock->SetDisplaySymbol(row.DisplaySymbol);
-			pStock->SetDescription(row.Description);
-			pStock->SetExchange(row.Exchange);
-			pStock->LoadUpdateDate(string{ row.UpdateDate });
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockProfile{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = start_transaction(db);
+		auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
+		auto rowCount = result.size();
+		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
+		for (const auto& row : result) {
+			// 装入股票代码数据库
+			const auto pStock = make_shared<CChinaStock>();
+			string str = string{ row.Symbol };
+			if (IsSymbol(str)) {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID));
+			}
+			else {
+				pStock->SetSymbol(row.Symbol);
+				pStock->SetDisplaySymbol(row.DisplaySymbol);
+				pStock->SetDescription(row.Description);
+				pStock->SetExchange(row.Exchange);
+				pStock->LoadUpdateDate(string{ row.UpdateDate });
 
-			pStock->CheckNeedProcessRTData();
-			pStock->CheckDayLineStatus();
-			Add(pStock);
+				pStock->CheckNeedProcessRTData();
+				pStock->CheckDayLineStatus();
+				Add(pStock);
+			}
 		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		return 0;
 	}
-	tx.commit();
 	Sort();
 
 	if (IsUpdateDayLine()) {
@@ -99,39 +104,37 @@ void CContainerChinaStock::UpdateProfileDB(std::stop_token st) {
 
 		auto multi_insert = insert_into(t).columns(t.Symbol, t.Description, t.Exchange, t.DisplaySymbol, t.UpdateDate);
 
-		try {
-			for (size_t i = 0; i < m_vStock.size(); ++i) {
-				if (st.stop_requested()) break;
-				const auto& pStock = m_vStock[i];
-				if (pStock->IsUpdateProfileDB()) {
-					pStock->UpdateJsonUpdateDate();
-					if (pStock->IsNewStock()) {	// 插入新股票代码
-						db(sqlpp::insert_into(t).set(
-							t.Symbol = pStock->GetSymbol(),
-							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchange(),
-							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-						));
-						pStock->SetNewStock(false);
-					}
-					else {// 更新现有股票代码
-						db(sqlpp::update(t).set(
-							t.Symbol = pStock->GetSymbol(),
-							t.Description = pStock->GetDescription(),
-							t.Exchange = pStock->GetExchange(),
-							t.DisplaySymbol = pStock->GetDisplaySymbol(),
-							t.UpdateDate = pStock->GetJsonUpdateDate().dump()
-						).where(t.Symbol == pStock->GetSymbol()));
-					}
-					pStock->SetUpdateProfileDB(false);
+		for (size_t i = 0; i < m_vStock.size(); ++i) {
+			if (st.stop_requested()) break;
+			const auto& pStock = m_vStock[i];
+			if (pStock->IsUpdateProfileDB()) {
+				pStock->UpdateJsonUpdateDate();
+				if (pStock->IsNewStock()) {	// 插入新股票代码
+					db(sqlpp::insert_into(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.Description = pStock->GetDescription(),
+						t.Exchange = pStock->GetExchange(),
+						t.DisplaySymbol = pStock->GetDisplaySymbol(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					));
+					pStock->SetNewStock(false);
 				}
+				else {// 更新现有股票代码
+					db(sqlpp::update(t).set(
+						t.Symbol = pStock->GetSymbol(),
+						t.Description = pStock->GetDescription(),
+						t.Exchange = pStock->GetExchange(),
+						t.DisplaySymbol = pStock->GetDisplaySymbol(),
+						t.UpdateDate = pStock->GetJsonUpdateDate().dump()
+					).where(t.Symbol == pStock->GetSymbol()));
+				}
+				pStock->SetUpdateProfileDB(false);
 			}
-		}	catch (sqlpp::mysql::exception& e) {
-			logInfoDatabaseException(typeid(this).name(), "Update Profile DB", e);
 		}
 		tx.commit();
 		m_lLoadedStock = m_vStock.size();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -289,17 +292,17 @@ long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 	DeleteDayLine(currentTradeDay);
 
 	// 存储当前交易日的数据
-	using namespace StockMarket;
-	const auto& t = ChinaStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
-	                                           t.LastClose, t.Open, t.High, t.Low, t.Close,
-	                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
-	size_t lSize = m_vStock.size();
-	int nValue = 0;
 	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto multi_insert = insert_into(t).columns(t.Date, t.Exchange, t.Symbol,
+		                                           t.LastClose, t.Open, t.High, t.Low, t.Close,
+		                                           t.Volume, t.Amount, t.UpAndDown, t.UpDownRate, t.ChangeHandRate, t.CurrentValue, t.TotalValue);
+		size_t lSize = m_vStock.size();
+		int nValue = 0;
 		for (size_t l = 0; l < lSize; l++) {
 			const CChinaStockPtr pStock = GetStock(l);
 			if (pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
@@ -326,11 +329,11 @@ long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 				nValue++;
 			}
 		}
+		if (nValue > 0) db(multi_insert);
+		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Build dayLine", e);
+		logErrorDatabaseException(typeid(this).name(), "Build dayLine", e);
 	}
-	if (nValue > 0) db(multi_insert);
-	tx.commit();
 
 	s = std::format("{:%F} 的日线数据已生成", currentTradeDay);
 	gl_systemMessage.PushInformationMessage(s);
@@ -342,13 +345,17 @@ long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 }
 
 void CContainerChinaStock::DeleteDayLine(local_days date) {
-	using namespace StockMarket;
-	const auto& t = ChinaStockDayline{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = ChinaStockDayline{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(date)));
-	tx.commit();
+		db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(date)));
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Delete dayLine", e);
+	}
 }
 
 double CContainerChinaStock::GetUpDownRate(const string& strClose, const string& strLastClose) noexcept {

@@ -19,44 +19,48 @@ void CContainerTiingoChosenStock::Reset() {
 }
 
 bool CContainerTiingoChosenStock::LoadDB() {
-	using namespace StockMarket;
-	const auto& t = WorldChoiceStock{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
+	try {
+		using namespace StockMarket;
+		const auto& t = WorldChoiceStock{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
 
-	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
-	Reserve(rows + 10);
-	for (const auto& row : result) {
-		if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
-			auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol });
-			m_mapSymbol[string{ row.Symbol }] = m_mapSymbol.size();
-			m_vStock.push_back(pStock);
+		auto result = db(select(all_of(t)).from(t));
+		size_t rows = result.size();
+		Reserve(rows + 10);
+		for (const auto& row : result) {
+			if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
+				auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol });
+				m_mapSymbol[string{ row.Symbol }] = m_mapSymbol.size();
+				m_vStock.push_back(pStock);
+			}
+			else {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID));
+			}
 		}
-		else {
-			db(sqlpp::delete_from(t).where(t.ID == row.ID));
-		}
+		tx.commit();
+	} catch (sqlpp::mysql::exception& e) {
+		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		return false;
 	}
-	tx.commit();
-
 	return true;
 }
 
 void CContainerTiingoChosenStock::UpdateDB(std::stop_token st) const {
-	vector<string> vSymbol;
-	using namespace StockMarket;
-	const auto& t = WorldChoiceStock{};
-	auto db = gl_dbStockMarket.get();
-	auto tx = sqlpp::start_transaction(db);
-
-	auto result = db(select(all_of(t)).from(t));
-	size_t rows = result.size();
-	vSymbol.reserve(rows);
 	try {
+		vector<string> vSymbol;
+		using namespace StockMarket;
+		const auto& t = WorldChoiceStock{};
+		auto db = gl_dbStockMarket.get();
+		auto tx = sqlpp::start_transaction(db);
+
+		auto result = db(select(all_of(t)).from(t));
+		size_t rows = result.size();
+		vSymbol.reserve(rows);
 		for (const auto& row : result) {
 			if (st.stop_requested()) break;
 			if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
-				vSymbol.push_back(string{ row.Symbol });
+				vSymbol.emplace_back(string{ row.Symbol });
 			}
 		}
 
@@ -69,10 +73,10 @@ void CContainerTiingoChosenStock::UpdateDB(std::stop_token st) const {
 				));
 			}
 		}
+		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logInfoDatabaseException(typeid(this).name(), "Update Chosen Stock", e);
+		logErrorDatabaseException(typeid(this).name(), "Update Chosen Stock", e);
 	}
-	tx.commit();
 }
 
 CTiingoStockPtr CContainerTiingoChosenStock::GetStock(size_t lIndex) {
