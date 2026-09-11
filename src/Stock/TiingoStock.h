@@ -110,9 +110,9 @@ public:
 
 	void UpdateDayLineStartEndDate();
 	size_t GetDayLineSize() const noexcept;
-	bool HaveDayLine(const local_days lDate) noexcept;
-	CTiingoCandleLine* GetDayLine(const size_t lIndex);
-	CTiingoCandleLine* GetDayLineAtDate(const local_days lDate);
+	bool HaveDayLine(local_days lDate) noexcept;
+	CTiingoCandleLine* GetDayLine(size_t lIndex);
+	CTiingoCandleLine* GetDayLineAtDate(local_days lDate);
 
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandle* DayLine() noexcept final;
@@ -124,7 +124,7 @@ public:
 	void DeleteDuplicatedDayLine() noexcept final;
 	void LoadDayLineDB() override;
 
-	void CalculateDayLineMA(const int length);
+	void CalculateDayLineMA(int length);
 
 	void RebuildStockSplitDB(std::stop_token st) override;
 
@@ -208,9 +208,9 @@ protected:
 	double m_fDividend{ 0 };
 	double m_fSplitFactor{ 1 };
 	bool m_fIsADR{ false };
+	INT32 m_iSicCode{ 0 };
 	string m_strTiingoSector{ " " };
 	string m_strTiingoIndustry{ " " };
-	INT32 m_iSicCode{ 0 };
 	string m_strSicSector{ " " };
 	string m_strSicIndustry{ " " };
 	string m_strReportingCurrency{ " " };

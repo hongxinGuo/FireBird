@@ -14,8 +14,6 @@
 
 extern std::vector<std::string> gl_vNasdaq100Stocks;
 
-#include"ClassDeclaration.h"
-
 #define UNICODE_LITERALS_FOR_TEST_NAMES
 
 #define MAX_BACKGROUND_WORKING_THREAD_ 32

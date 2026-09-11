@@ -101,7 +101,7 @@ shared_ptr<vector<string>> CProductFinnhubCompanyProfile::CreateMessage() {
 ///  "finnhubIndustry":"Technology"
 ///  }
 /// <returns></returns>
-bool CProductFinnhubCompanyProfile::Parse(const string& text, CFinnhubStockPtr pStock) const {
+bool CProductFinnhubCompanyProfile::Parse(const string& text, const CFinnhubStockPtr& pStock) const {
 	nlohmannJson js;
 
 	if (!::CreateJsonWithNlohmann(js, text)) return false;

@@ -10,6 +10,8 @@
 
 #include <queue>
 using std::queue;
+using std::shared_ptr;
+
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
 
@@ -18,10 +20,12 @@ class CFinnhubWebSocket;
 class CTiingoIEXSocket;
 class CTiingoCryptoSocket;
 class CTiingoForexSocket;
+class CWebRTData;
+class CDayLineWebData;
 
 // 处理后的各种数据
-extern ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
-extern ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine; // 日线数据
+extern ConcurrentQueue<shared_ptr<CWebRTData>> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
+extern ConcurrentQueue<shared_ptr<CDayLineWebData>> gl_qDayLine; // 日线数据
 
 class CSystemData final {
 public:
@@ -75,14 +79,14 @@ public:
 
 	void ClearChinaMarketRTDataQueue() {
 		bool succeed = true;
-		CWebRTDataPtr pRTData;
+		shared_ptr<CWebRTData> pRTData;
 		while (succeed) succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	}
 
 	void ClearDataQueue() {
 		ClearChinaMarketRTDataQueue();
 		bool succeed = true;
-		CDayLineWebDataPtr pData;
+		shared_ptr<CDayLineWebData> pData;
 		while (succeed) succeed = gl_qDayLine.try_dequeue(pData);
 	}
 

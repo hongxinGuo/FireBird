@@ -6,6 +6,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+using std::shared_ptr;
+
+class CVirtualMarket;
+class CVirtualWebProduct;
+
 class CVirtualDataFactory {
 public:
 	CVirtualDataFactory() = default;
@@ -16,5 +21,5 @@ public:
 	CVirtualDataFactory& operator=(const CVirtualDataFactory&&) noexcept = delete;
 	virtual ~CVirtualDataFactory() = default;
 
-	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) = 0;
+	virtual shared_ptr<CVirtualWebProduct> CreateProduct(shared_ptr<CVirtualMarket> pMarket, int iInquireType) = 0;
 };

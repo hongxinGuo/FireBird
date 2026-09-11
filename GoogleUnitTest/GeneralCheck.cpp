@@ -22,6 +22,7 @@
 #include "ContainerFinnhubCryptoExchange.h"
 #include "ContainerFinnhubForexExchange.h"
 #include "ContainerTiingoStock.h"
+#include "DayLineWebData.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "FinnhubWebSocket.h"
 #include "InaccessibleSymbol.h"
@@ -35,6 +36,7 @@
 #include"FinnhubStock.h"
 #include "TiingoStock.h"
 #include "TimeConvert.h"
+#include "WebRTData.h"
 
 using namespace testing;
 

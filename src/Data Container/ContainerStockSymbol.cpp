@@ -4,11 +4,13 @@
 #include "ContainerStockSymbol.h"
 
 #include "SystemConstantChinaMarket.h"
-#include<sqlpp23/sqlpp23.h>
 
+#include<sqlpp23/sqlpp23.h>
 #include "dataBaseConnector.h"
-#include "log.h"
 #include"StockMarketSQLTable.h"
+
+#include "ChinaStock.h"
+#include "log.h"
 
 CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSymbol.resize(0);

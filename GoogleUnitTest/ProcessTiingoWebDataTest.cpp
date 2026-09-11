@@ -9,6 +9,7 @@
 #include "TiingoCryptoWebSocket.h"
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
+#include"FinnhubStock.h"
 
 using std::make_shared;
 

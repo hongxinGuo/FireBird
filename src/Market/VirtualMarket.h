@@ -4,7 +4,9 @@
 #include"MarketTaskQueue.h"
 
 class CStockExchange;
+class CVirtualDataSource;
 
+using std::shared_ptr;
 using std::chrono::sys_seconds;
 using std::chrono::weekday;
 using std::chrono::time_zone;
@@ -130,7 +132,7 @@ public:
 	virtual void PrepareToCloseMarket() {} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
-	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }
+	void StoreDataSource(const shared_ptr<CVirtualDataSource>& pDataSource) { m_vDataSource.push_back(pDataSource); }
 
 protected:
 	string m_strMarketId{ "Warning: CVirtualMarket Called." }; // 该市场标识字符串,即交易所的代码。中国为SS,美国为US....
@@ -140,7 +142,7 @@ protected:
 	moodycamel::ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask{ 32 * 4 }; // 当前任务显示队列
 	size_t m_lLastQueueLength{ 0 };
 
-	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的各网络数据源。
+	vector<shared_ptr<CVirtualDataSource>> m_vDataSource; // 本市场中的各网络数据源。
 
 	// Finnhub.io提供的信息
 	string m_strCode;
@@ -166,6 +168,6 @@ private:
 	bool m_fResetMarket{ true }; // 重启系统标识
 };
 
-using CVirtualMarketWeakPtr = weak_ptr<CVirtualMarket>;
+using CVirtualMarketWeakPtr = std::weak_ptr<CVirtualMarket>;
 using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;
 extern vector<CVirtualMarketPtr> gl_vMarket; // 各市场指针的容器，只用于执行各市场的ScheduleTask

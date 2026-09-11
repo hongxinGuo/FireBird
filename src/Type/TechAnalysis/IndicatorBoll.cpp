@@ -34,7 +34,7 @@ std::vector<CBoll> CIndicatorBoll::Compute(const std::vector<CVirtualHistoryCand
 		sumsq += price * price;
 
 		// remove old if over window
-		if ((int)window.size() > period) {
+		if (static_cast<int>(window.size()) > period) {
 			double old = window.front();
 			window.pop_front();
 			sum -= old;
@@ -42,7 +42,7 @@ std::vector<CBoll> CIndicatorBoll::Compute(const std::vector<CVirtualHistoryCand
 		}
 
 		// only compute when we have enough data
-		if ((int)window.size() == period) {
+		if (static_cast<int>(window.size()) == period) {
 			double mean = sum / period;
 			// population variance (divide by period). Use max to avoid small negative due to FP.
 			double var = (sumsq - (sum * sum) / period) / period;

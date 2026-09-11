@@ -7,8 +7,11 @@
 #pragma once
 #include <cpr/response.h>
 
+using std::shared_ptr;
 using std::string;
 using std::vector;
+
+class CDayLine;
 
 enum {
 	GOOD_DATA_ = 1,

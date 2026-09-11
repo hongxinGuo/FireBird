@@ -1,13 +1,12 @@
 #pragma once
 
-//#include"VirtualDataHistoryCandle.h"
-
 class CVirtualHistoryCandle;
 class CVirtualDataHistoryCandle;
 
 using std::chrono::local_days;
 using std::chrono::days;
 using std::vector;
+using std::shared_ptr;
 
 struct CBoll {
 	local_days Date{ local_days(days(0)) };        // candle date
@@ -50,7 +49,7 @@ public:
 	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
 
 protected:
-	int m_Period{ 6 }; // 默认九天为一个周期
+	int m_Period{ 9 }; // 默认九天为一个周期
 
 	shared_ptr<CVirtualDataHistoryCandle> m_pvCandle{ nullptr };
 	vector<CBoll> m_vBoll;

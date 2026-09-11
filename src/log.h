@@ -1,6 +1,5 @@
 #pragma once
 
-#include "log.h"
 #include "spdlog/spdlog.h"
 
 using std::shared_ptr;

@@ -2,6 +2,8 @@
 
 #include"VirtualDataFactory.h"
 
+class CVirtualMarket;
+
 class CAccessoryFactory final : public CVirtualDataFactory {
 public:
 	CAccessoryFactory() = default;
@@ -11,5 +13,5 @@ public:
 	CAccessoryFactory& operator=(const CAccessoryFactory&&) noexcept = delete;
 	~CAccessoryFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) override;
+	shared_ptr<CVirtualWebProduct> CreateProduct(shared_ptr<CVirtualMarket> pMarket, int iInquireType) override;
 };

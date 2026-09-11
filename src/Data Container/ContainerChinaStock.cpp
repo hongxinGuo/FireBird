@@ -12,10 +12,10 @@
 #include"Thread.h"
 
 #include<sqlpp23/sqlpp23.h>
-
 #include "dataBaseConnector.h"
-#include "log.h"
 #include"StockMarketSQLTable.h"
+
+#include "log.h"
 #include "SystemMessage.h"
 
 using std::chrono::Monday;

@@ -29,9 +29,9 @@
 
 #include "AccessoryDataSource.h"
 #include "AlpacaDataSource.h"
+#include "ChinaMarket.h"
 
 #include "containerChosenCrypto.h"
-
 #include "ContainerAlpacaStockSymbol.h"
 #include "ContainerChinaStock.h"
 #include "ContainerChosenForex.h"
@@ -49,8 +49,12 @@
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerTiingoSymbol.h"
+#include "DayLineWebData.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "SystemConfiguration.h"
+
+#include"WebRTData.h"
+
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
@@ -116,8 +120,8 @@ CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
 CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
 
 // 处理后的数据
-ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(100000); // 中国市场新浪实时数据队列。
-ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
+ConcurrentQueue<shared_ptr<CWebRTData>> gl_qChinaMarketRTData(100000); // 中国市场新浪实时数据队列。
+ConcurrentQueue<shared_ptr<CDayLineWebData>> gl_qDayLine(1000); // 日线数据
 
 // ChinaMarket处理的数据
 CContainerChinaStock gl_dataContainerChinaStock;

@@ -2,14 +2,15 @@
 
 #include "AccessoryFactory.h"
 
-#include "ClassDeclaration.h"
 #include "ProductDummy.h"
 #include "SystemMessage.h"
+#include "VirtualMarket.h"
+#include"VirtualWebProduct.h"
 
 using std::make_shared;
 
-CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
-	CVirtualProductWebDataPtr p = nullptr;
+CVirtualWebProductPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
+	CVirtualWebProductPtr p = nullptr;
 
 	switch (iInquireType) {
 	default:

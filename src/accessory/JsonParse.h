@@ -6,6 +6,8 @@ using std::string;
 using std::string_view;
 
 class CDayLine;
+class CWebRTData;
+class CDayLineWebData;
 
 long long StrToDecimal(const string_view& svData, size_t power);
 long long StrToDecimal2(const string_view& svData, size_t power);
@@ -18,10 +20,10 @@ void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWh
 void ParseSinaRTData(const string& text);
 void ParseTengxunRTData(const string& text);
 
-CWebRTDataPtr ParseSinaOneData(const string_view& svData);
-CWebRTDataPtr ParseOneTengxunData(const string_view& svData);
+shared_ptr<CWebRTData> ParseSinaOneData(const string_view& svData);
+shared_ptr<CWebRTData> ParseOneTengxunData(const string_view& svData);
 
-CDayLineWebDataPtr ParseTengxunDayLine(const string& text, const string& stockSymbol);
+shared_ptr<CDayLineWebData> ParseTengxunDayLine(const string& text, const string& stockSymbol);
 shared_ptr<std::vector<CDayLine>> ParseTengxunDayLineImp(const string& text, const string& strStockCode);
 inline bool IsTengxunRTDataInvalid(const string& text) noexcept { return text == "v_pv_none_match=\"1\";\n"; }
 

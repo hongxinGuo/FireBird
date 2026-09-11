@@ -1,6 +1,9 @@
 #include"pch.h"
 
 #include<sqlpp23/sqlpp23.h>
+#include "dataBaseConnector.h"
+#include"StockMarketSQLTable.h"
+
 #include"SystemMessage.h"
 
 #include"TimeConvert.h"
@@ -21,12 +24,12 @@
 #include"DayLineWebData.h"
 #include "WebRTData.h"
 
+#include"VirtualDataSource.h"
+
 #include "ContainerChinaStock.h"
 #include "ContainerStockExchange.h"
 #include "ContainerStockSymbol.h"
-#include "dataBaseConnector.h"
 #include "log.h"
-#include"StockMarketSQLTable.h"
 
 using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
@@ -596,7 +599,7 @@ bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
 	return false;
 }
 
-bool CChinaMarket::DeleteChosenStock(const CChinaStockPtr& pStock) {
+bool CChinaMarket::DeleteChosenStock(const std::shared_ptr<CChinaStock>& pStock) {
 	const auto it = std::ranges::find(m_avChosenStock.at(0).cbegin(), m_avChosenStock.at(0).cend(), pStock);
 	if (it == m_avChosenStock.at(0).end()) { return false; }
 	(*it)->SetChosen(false);

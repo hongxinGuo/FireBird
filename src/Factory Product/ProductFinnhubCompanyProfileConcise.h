@@ -2,6 +2,8 @@
 
 #include"ProductFinnhub.h"
 
+class CFinnhubStock;
+
 class CProductFinnhubCompanyProfileConcise final : public CProductFinnhub {
 public:
 	CProductFinnhubCompanyProfileConcise();
@@ -12,8 +14,7 @@ public:
 	void UpdateSystemStatus() override;
 
 	shared_ptr<vector<string>> CreateMessage() override;
-	bool Parse(const string& text, const CFinnhubStockPtr& pStock) const;
-
+	bool Parse(const string& text, const shared_ptr<CFinnhubStock>& pStock) const;
 };
 
 using CFinnhubCompanyProfileConcisePtr = shared_ptr<CProductFinnhubCompanyProfileConcise>;

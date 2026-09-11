@@ -5,6 +5,7 @@
 #include"VirtualDataSource.h"
 
 class CVirtualWebProduct;
+class CChinaStock;
 
 inline vector<string> UAList{
 	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
@@ -31,7 +32,7 @@ public:
 	void CreateCurrentInquireString() override;
 
 	bool GenerateDayLine();
-	shared_ptr<CVirtualWebProduct> CreateProduct(const CChinaStockPtr& pStock) const;
+	shared_ptr<CVirtualWebProduct> CreateProduct(const shared_ptr<CChinaStock>& pStock) const;
 
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }

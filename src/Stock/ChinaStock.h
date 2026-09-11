@@ -8,6 +8,8 @@ constexpr auto CHINA_MARKET_BEGIN_DATE_ = 19900101;// 中国股票市场起始�
 #include<concurrentqueue/moodycamel/concurrentqueue.h>
 using namespace moodycamel;
 
+class CWebRTData;
+
 using std::array;
 using std::shared_ptr;
 
@@ -28,8 +30,8 @@ public:
 	int GetRatio() const final { return 1000; }
 
 public:
-	void UpdateRTData(const CWebRTDataPtr& pRTData);
-	void UpdateStatus(const CWebRTDataPtr& pRTData);
+	void UpdateRTData(const shared_ptr<CWebRTData>& pRTData);
+	void UpdateStatus(const shared_ptr<CWebRTData>& pRTData);
 
 	// 本股票各变量状态
 	long GetHighLimitFromTengxun() const noexcept { return m_lHighLimitFromTengxun; }
@@ -94,9 +96,9 @@ public:
 	void CheckNeedProcessRTData();
 	bool CheckDayLineStatus();
 
-	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.enqueue(pData); }
-	CWebRTDataPtr PopRTData() {
-		CWebRTDataPtr pData = nullptr;
+	void PushRTData(const shared_ptr<CWebRTData>& pData) { m_qRTData.enqueue(pData); }
+	shared_ptr<CWebRTData> PopRTData() {
+		shared_ptr<CWebRTData> pData = nullptr;
 		m_qRTData.try_dequeue(pData);
 		return pData;
 	}
@@ -152,9 +154,9 @@ protected:
 	bool m_fMinLineUpdated{ false }; // 今天的分钟资料是否更新过.
 
 	// 挂单的具体情况。
-	CWebRTDataPtr m_pLastRTData{ nullptr }; // 从m_qRTData读出的上一个实时数据。
+	shared_ptr<CWebRTData> m_pLastRTData{ nullptr }; // 从m_qRTData读出的上一个实时数据。
 
-	ConcurrentQueue<CWebRTDataPtr> m_qRTData{ 32 }; // 采用优先队列存储实时数据，这样可以保证多源。
+	ConcurrentQueue<shared_ptr<CWebRTData>> m_qRTData{ 32 }; // 采用优先队列存储实时数据，这样可以保证多源。
 
 	CContainerChinaStockDayLine m_dataDayLine;	// 日线容器
 

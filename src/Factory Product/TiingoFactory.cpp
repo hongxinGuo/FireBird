@@ -16,11 +16,12 @@
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
 #include "SystemMessage.h"
+#include "VirtualMarket.h"
 
 using namespace std;
 
-CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
-	CVirtualProductWebDataPtr p = nullptr;
+CVirtualWebProductPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
+	CVirtualWebProductPtr p = nullptr;
 
 	switch (iInquireType) {
 	case STOCK_SYMBOLS_:

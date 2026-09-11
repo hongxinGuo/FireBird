@@ -552,9 +552,6 @@
     <ClInclude Include="..\src\CharSetTransfer.h">
       <Filter>Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ClassDeclaration.h">
-      <Filter>Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\dataBaseConnector.h">
       <Filter>Accessory</Filter>
     </ClInclude>

@@ -102,7 +102,7 @@ bool CEastmoneyDayLineDataSource::GenerateDayLine() {
 			break;
 		}
 		if (fFound) {
-			const CVirtualProductWebDataPtr product = CreateProduct(pStock);
+			const CVirtualWebProductPtr product = CreateProduct(pStock);
 			StoreInquiry(product);
 			SetDownLoadingStockCode(pStock->GetSymbol());
 			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());

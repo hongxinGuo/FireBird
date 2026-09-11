@@ -2,6 +2,9 @@
 
 #include"VirtualDataFactory.h"
 
+class CVirtualMarket;
+class CVirtualWebProduct;
+
 class CTiingoFactory final : public CVirtualDataFactory {
 public:
 	CTiingoFactory() = default;
@@ -11,5 +14,5 @@ public:
 	CTiingoFactory& operator=(const CTiingoFactory&&) noexcept = delete;
 	~CTiingoFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) override;
+	shared_ptr<CVirtualWebProduct> CreateProduct(shared_ptr<CVirtualMarket> pMarket, int iInquireType) override;
 };

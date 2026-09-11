@@ -8,11 +8,12 @@
 
 #include "ProductAlpacaStockSymbol.h"
 #include "ProductAlpacaStockDayLine.h"
+#include "VirtualMarket.h"
 
 using std::make_shared;
 
-CVirtualProductWebDataPtr CAlpacaFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
-	CVirtualProductWebDataPtr p = nullptr;
+CVirtualWebProductPtr CAlpacaFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
+	CVirtualWebProductPtr p = nullptr;
 
 	switch (iInquireType) {
 	case ALPACA_TRADING_ASSET_:

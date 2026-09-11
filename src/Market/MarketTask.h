@@ -3,6 +3,7 @@
 
 #include <concurrencpp/timers/timer.h>
 
+using std::shared_ptr;
 using std::chrono::local_seconds;
 using std::chrono::hh_mm_ss;
 using std::chrono::seconds;

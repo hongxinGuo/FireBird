@@ -28,7 +28,7 @@ public:
 
 	void UpdateInsiderTransactionDB(std::stop_token st);
 
-	static bool ValidateStockSymbol(const CFinnhubStockPtr& pStock);
+	static bool ValidateStockSymbol(const shared_ptr<CFinnhubStock>& pStock);
 
 	bool IsUpdateCompanyNewsDB();
 	bool IsUpdateBasicFinancialDB();

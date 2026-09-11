@@ -266,15 +266,15 @@ size_t CTiingoStock::GetDayLineSize() const noexcept {
 	return m_dataDayLine.Size();
 }
 
-bool CTiingoStock::HaveDayLine(const local_days lDate) noexcept {
+bool CTiingoStock::HaveDayLine(local_days lDate) noexcept {
 	return m_dataDayLine.HaveDayLine(lDate);
 }
 
-CTiingoCandleLine* CTiingoStock::GetDayLine(const size_t lIndex) {
+CTiingoCandleLine* CTiingoStock::GetDayLine(size_t lIndex) {
 	return m_dataDayLine.GetData(lIndex);
 }
 
-CTiingoCandleLine* CTiingoStock::GetDayLineAtDate(const local_days lDate) {
+CTiingoCandleLine* CTiingoStock::GetDayLineAtDate(local_days lDate) {
 	return m_dataDayLine.GetDayLine(lDate);
 }
 
@@ -319,7 +319,7 @@ void CTiingoStock::LoadDayLineDB() {
 	m_dataDayLine.LoadDB(m_strSymbol);
 }
 
-void CTiingoStock::CalculateDayLineMA(const int length) {
+void CTiingoStock::CalculateDayLineMA(int length) {
 	m_dataDayLine.CalculateMA(length);
 }
 
