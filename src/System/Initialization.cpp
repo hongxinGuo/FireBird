@@ -25,6 +25,7 @@
 
 #include "FinnhubWebSocket.h"
 #include"log.h"
+#include "MarketTask.h"
 #include "SystemConfiguration.h"
 #include "TiingoCryptoWebSocket.h"
 #include "TiingoForexWebSocket.h"

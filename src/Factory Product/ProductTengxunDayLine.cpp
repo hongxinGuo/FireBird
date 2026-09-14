@@ -11,6 +11,7 @@
 #include "TengxunDayLineDataSource.h"
 #include "DayLineWebData.h"
 #include"DayLine.h"
+#include "MarketTask.h"
 #include "TimeConvert.h"
 
 #include"cpr/cpr.h"

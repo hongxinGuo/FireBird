@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 #include"GeneralCheck.h"
+#include "MarketTask.h"
 
 #include"MarketTaskQueue.h"
 #include"TimeConvert.h"

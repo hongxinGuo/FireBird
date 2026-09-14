@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"PriorityQueueWebRTData.h"
+#include "WebRTData.h"
 
 using namespace std;
 using namespace testing;

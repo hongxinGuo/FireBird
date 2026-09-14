@@ -49,6 +49,7 @@
 #include "ContainerTiingoSymbol.h"
 #include "dataBaseConnector.h"
 #include "log.h"
+#include "MarketTask.h"
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 
@@ -1686,32 +1687,6 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 	} catch (sqlpp::mysql::exception& e) {
 		logErrorDatabaseException(typeid(this).name(), "Delete Tiingo Financial Statement", e);
 	}
-}
-
-void CWorldMarket::ChangeToPrevStock() {
-	ABSL_DCHECK(gl_pCurrentStock != nullptr);
-	size_t lIndex = 0;
-	if (gl_dataContainerTiingoChosenStock.IsSymbol(gl_pCurrentStock)) {
-		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(gl_pCurrentStock);
-	}
-
-	if (lIndex-- == 0) {
-		lIndex = gl_dataContainerTiingoChosenStock.Size() - 1;
-	}
-	gl_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
-}
-
-void CWorldMarket::ChangeToNextStock() {
-	ABSL_DCHECK(gl_pCurrentStock != nullptr);
-	size_t lIndex = 0;
-	if (gl_dataContainerTiingoChosenStock.IsSymbol(gl_pCurrentStock)) {
-		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(gl_pCurrentStock);
-	}
-
-	if (lIndex++ == gl_dataContainerTiingoChosenStock.Size() - 1) {
-		lIndex = 0;
-	}
-	gl_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
 }
 
 bool CWorldMarket::IsTimeToResetSystem(local_seconds ls) {

@@ -23,7 +23,6 @@
 
 #include"SystemMessage.h"
 
-#include"NlohmannJsonDeclaration.h"
 #include "ContainerChinaStock.h"
 #include "log.h"
 #include "SystemData.h"
@@ -36,6 +35,8 @@ using namespace concurrencpp;
 using std::istringstream;
 using std::make_shared;
 using std::min;
+
+using namespace simdjson;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //

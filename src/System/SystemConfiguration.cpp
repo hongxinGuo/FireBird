@@ -4,21 +4,16 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
-
 #include"SystemConfiguration.h"
 
 #include "SinaRTDataSource.h"
+#include "TengxunRTDataSource.h"
 #include"TimeConvert.h"
+#include "FinnhubDataSource.h"
 
 #include <fstream>
-
-#include "FinnhubDataSource.h"
 using std::fstream;
-
 using namespace std;
-
-#include "TengxunRTDataSource.h"
 
 bool CSystemConfiguration::sm_bInitialized = false;
 

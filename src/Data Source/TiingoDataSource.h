@@ -1,7 +1,6 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-//#include"TiingoFactory.h"
 
 class CTiingoFactory;
 

@@ -56,7 +56,6 @@ public:
 	void TaskPerSecond(); // 每秒一次的辅助任务
 	void TaskAccessoryPerMinuteTask(); // 每分钟重复执行的辅助任务
 	void TaskPreparingMarketOpen();
-	void TaskSetCurrentStock();
 
 	bool SetCheckActiveStockFlag();
 	bool TaskProcessTodayStock();

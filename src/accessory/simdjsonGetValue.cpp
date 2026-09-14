@@ -14,6 +14,8 @@
 using std::string_view;
 using std::string;
 
+using namespace simdjson;
+
 void CreateSimdjsonEmptyArray() {
 	static ondemand::parser s_parserEmptyArray;
 	static auto s_jsonEmptyArray = "[]"_padded; // The _padded suffix creates a simdjson::padded_string instance

@@ -498,9 +498,9 @@ void CMainFrame::UpdateStatus() {
 		SetCurrentEditStockChanged(false);
 	}
 	// 显示股票代码和名称
-	if (gl_pCurrentStock != nullptr) {
-		SysCallSetPaneText(2, gl_pCurrentStock->GetSymbol());
-		SysCallSetPaneText(3, gl_pCurrentStock->GetDisplaySymbol());//Note 股票名称已经是UTF8编码，直接调用SysCallSetPaneText()就可以。
+	if (m_pCurrentStock != nullptr) {
+		SysCallSetPaneText(2, m_pCurrentStock->GetSymbol());
+		SysCallSetPaneText(3, m_pCurrentStock->GetDisplaySymbol());//Note 股票名称已经是UTF8编码，直接调用SysCallSetPaneText()就可以。
 	}
 
 	// 显示当前选择的股票
@@ -611,14 +611,14 @@ void CMainFrame::UpdateInnerSystemStatus() {
 
 void CMainFrame::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) {
-		gl_pCurrentStock = nullptr;
+		m_pCurrentStock = nullptr;
 		return;
 	}
-	if (gl_pCurrentStock != nullptr) {
-		gl_pCurrentStock->SetSelected(false);
+	if (m_pCurrentStock != nullptr) {
+		m_pCurrentStock->SetSelected(false);
 	}
-	gl_pCurrentStock = pStock;
-	gl_pCurrentStock->SetSelected(true);
+	m_pCurrentStock = pStock;
+	m_pCurrentStock->SetSelected(true);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -665,6 +665,32 @@ void CMainFrame::ProcessChinaMarketStock() {
 	ABSL_DLOG(INFO) << "China market Process today stock\n";
 	gl_pChinaMarket->TaskProcessTodayStock();
 	ABSL_DLOG(INFO) << "China market Processed today stock\n";
+}
+
+void CMainFrame::ChangeToPrevStock() {
+	ABSL_DCHECK(m_pCurrentStock != nullptr);
+	size_t lIndex = 0;
+	if (gl_dataContainerTiingoChosenStock.IsSymbol(m_pCurrentStock)) {
+		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(m_pCurrentStock);
+	}
+
+	if (lIndex-- == 0) {
+		lIndex = gl_dataContainerTiingoChosenStock.Size() - 1;
+	}
+	m_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
+}
+
+void CMainFrame::ChangeToNextStock() {
+	ABSL_DCHECK(m_pCurrentStock != nullptr);
+	size_t lIndex = 0;
+	if (gl_dataContainerTiingoChosenStock.IsSymbol(m_pCurrentStock)) {
+		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(m_pCurrentStock);
+	}
+
+	if (lIndex++ == gl_dataContainerTiingoChosenStock.Size() - 1) {
+		lIndex = 0;
+	}
+	m_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
@@ -762,23 +788,23 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	CChinaStockPtr pStock;
 	CFireBirdView* pView = nullptr;
 
-	if (gl_pCurrentStock != nullptr) {
+	if (m_pCurrentStock != nullptr) {
 		switch (nChar) {
 		case 33: // PAGE UP
 			// last stock
-			if (gl_pCurrentStock != nullptr) {
-				if (IsTiingoStock(gl_pCurrentStock)) {
-					gl_pWorldMarket->ChangeToPrevStock();
-					GetCurrentDoc()->SetCurrentStock(gl_pCurrentStock);
+			if (m_pCurrentStock != nullptr) {
+				if (IsTiingoStock(m_pCurrentStock)) {
+					ChangeToPrevStock();
+					GetCurrentDoc()->SetCurrentStock(m_pCurrentStock);
 				}
 			}
 			break;
 		case 34: // PAGE DOWN
 			// next stock
-			if (gl_pCurrentStock != nullptr) {
-				if (IsTiingoStock(gl_pCurrentStock)) {
-					gl_pWorldMarket->ChangeToNextStock();
-					GetCurrentDoc()->SetCurrentStock(gl_pCurrentStock);
+			if (m_pCurrentStock != nullptr) {
+				if (IsTiingoStock(m_pCurrentStock)) {
+					ChangeToNextStock();
+					GetCurrentDoc()->SetCurrentStock(m_pCurrentStock);
 				}
 			}
 			break;
@@ -796,19 +822,19 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			}
 			break;
 		case 45: // Ins, 加入自选股票
-			if (gl_pCurrentStock != nullptr) {
-				gl_pCurrentStock->SetSelected(true);
-				if (IsTiingoStock(gl_pCurrentStock)) {
-					gl_dataContainerTiingoChosenStock.Add(gl_pCurrentStock);
+			if (m_pCurrentStock != nullptr) {
+				m_pCurrentStock->SetSelected(true);
+				if (IsTiingoStock(m_pCurrentStock)) {
+					gl_dataContainerTiingoChosenStock.Add(m_pCurrentStock);
 					gl_dataContainerTiingoChosenStock.SetUpdateDB(true);
 				}
 			}
 			break;
 		case 46: // delete,从自选股票池中删除
-			if (gl_pCurrentStock != nullptr) {
-				gl_pCurrentStock->SetSelected(true);
-				if (IsTiingoStock(gl_pCurrentStock)) {
-					gl_dataContainerTiingoChosenStock.Delete(gl_pCurrentStock);
+			if (m_pCurrentStock != nullptr) {
+				m_pCurrentStock->SetSelected(true);
+				if (IsTiingoStock(m_pCurrentStock)) {
+					gl_dataContainerTiingoChosenStock.Delete(m_pCurrentStock);
 					gl_dataContainerTiingoChosenStock.SetUpdateDB(true);
 				}
 			}

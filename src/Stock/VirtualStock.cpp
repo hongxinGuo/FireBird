@@ -10,8 +10,6 @@
 
 using namespace std;
 
-shared_ptr<CVirtualStock> gl_pCurrentStock{ nullptr };
-
 CVirtualStock::CVirtualStock() {
 	CVirtualStock::ResetAllUpdateDate();
 }

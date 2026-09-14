@@ -1,5 +1,7 @@
 #pragma once
 
+#include"concurrencpp/concurrencpp.h"
+
 #include"VirtualMarket.h"
 
 class CTiingoIEXSocket;
@@ -14,6 +16,7 @@ using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 using std::literals::chrono_literals::operator ""s;
 
+using std::array;
 using std::atomic_int;
 
 class CWorldMarket : public CVirtualMarket {
@@ -139,9 +142,6 @@ public:
 	void SetBuildTodayTiingoDayLine(bool fFlag) noexcept { m_bBuildTodayTiingoDayLine = fFlag; }
 	bool IsDeleteTiingoDelistedStock() const noexcept { return m_bDeleteTiingoDelistedStock; }
 	void SetDeleteTiingoDelistedStock(bool fFlag) noexcept { m_bDeleteTiingoDelistedStock = fFlag; }
-
-	void ChangeToPrevStock();
-	void ChangeToNextStock();
 
 protected:
 	long m_lCurrentUpdateDayLinePos{ 0 };

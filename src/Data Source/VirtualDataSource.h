@@ -3,6 +3,8 @@
 #include <queue>
 #include"absl/log/absl_check.h"
 
+#include"StockExchange.h" //todo template函数需要。将该函数实现移至cpp文件中即可删除此头文件引用。
+
 using std::shared_ptr;
 using std::vector;
 using std::chrono::milliseconds;

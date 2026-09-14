@@ -1,7 +1,8 @@
 #pragma once
 
-#include"StockExchange.h"
+class CStockExchange;
 
+using std::shared_ptr;
 using std::string;
 using std::vector;
 
@@ -17,15 +18,15 @@ public:
 	void Reset();
 	void Reserve(size_t size);
 
-	CStockExchangePtr GetItem(const size_t lIndex) const { return m_vStockExchange.at(lIndex); }
-	CStockExchangePtr GetItem(const string& strExchangeSymbol) const;
-	string GetItemExchangeCode(const size_t lIndex) const { return m_vStockExchange.at(lIndex)->GetExchangeCode(); }
+	shared_ptr<CStockExchange> GetItem(const size_t lIndex) const { return m_vStockExchange.at(lIndex); }
+	shared_ptr<CStockExchange> GetItem(const string& strExchangeSymbol) const;
+	string GetItemExchangeCode(const size_t lIndex) const;
 	auto Size() const noexcept { return m_mapStockExchange.size(); }
 
 	bool LoadDB();
 
 protected:
-	vector<CStockExchangePtr> m_vStockExchange;
+	vector<shared_ptr<CStockExchange>> m_vStockExchange;
 	std::unordered_map<string, size_t> m_mapStockExchange;
 };
 

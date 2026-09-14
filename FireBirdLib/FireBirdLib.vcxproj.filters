@@ -480,9 +480,6 @@
     <ClInclude Include="..\src\Factory Product\TestWebData.h">
       <Filter>Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\InternetOption.h">
-      <Filter>Data Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\AccessoryDataSource.h">
       <Filter>Data Source\Accessory</Filter>
     </ClInclude>
@@ -562,9 +559,6 @@
       <Filter>Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\src\log.h">
-      <Filter>Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\nlohmannJsonDeclaration.h">
       <Filter>Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\src\pch.h">

@@ -4,6 +4,7 @@
 #include "VirtualMarket.h"
 
 #include "ContainerStockExchange.h"
+#include "MarketTask.h"
 #include "SystemConfiguration.h"
 #include"VirtualDataSource.h"
 

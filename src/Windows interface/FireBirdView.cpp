@@ -573,7 +573,7 @@ void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
-	gl_pCurrentStock = GetDocument()->GetCurrentStock(); // 设置当前被选中的股票
+	dynamic_cast<CMainFrame*>(AfxGetMainWnd())->SetCurrentStock(GetDocument()->GetCurrentStock());
 
 	CView::OnSetFocus(pOldWnd);
 }

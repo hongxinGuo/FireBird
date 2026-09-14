@@ -13,6 +13,7 @@
 #include"cpr/cpr.h"
 
 using namespace std;
+using namespace simdjson;
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/filings?symbol=";

@@ -5,7 +5,7 @@ using namespace simdjson;
 
 using std::string_view;
 
-inline ondemand::array gl_simdjsonEmptyArray;
+inline simdjson::ondemand::array gl_simdjsonEmptyArray;
 
 void CreateSimdjsonEmptyArray();
 
@@ -29,10 +29,10 @@ void CreateSimdjsonEmptyArray();
 [[nodiscard]] string_view simdjsonGetStringView(ondemand::document& document, const string_view& key, string_view defaultValue = "");
 [[nodiscard]] string_view simdjsonGetStringView(ondemand::value& value);
 
-[[nodiscard]] ondemand::array simdjsonGetArray(ondemand::value& value, const string_view& key, const ondemand::array& defaultValue = gl_simdjsonEmptyArray);
-[[nodiscard]] ondemand::array simdjsonGetArray(ondemand::object& object, const string_view& key, const ondemand::array& defaultValue = gl_simdjsonEmptyArray);
-[[nodiscard]] ondemand::array simdjsonGetArray(ondemand::document& document, const string_view& key, const ondemand::array& defaultValue = gl_simdjsonEmptyArray);
-[[nodiscard]] ondemand::array simdjsonGetArray(ondemand::value& value);
+[[nodiscard]] ondemand::array simdjsonGetArray(ondemand::value& value, const string_view& key, const simdjson::ondemand::array& defaultValue = gl_simdjsonEmptyArray);
+[[nodiscard]] simdjson::ondemand::array simdjsonGetArray(ondemand::object& object, const string_view& key, const simdjson::ondemand::array& defaultValue = gl_simdjsonEmptyArray);
+[[nodiscard]] simdjson::ondemand::array simdjsonGetArray(ondemand::document& document, const string_view& key, const simdjson::ondemand::array& defaultValue = gl_simdjsonEmptyArray);
+[[nodiscard]] simdjson::ondemand::array simdjsonGetArray(ondemand::value& value);
 
 [[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::value& value, const string_view& key);
 [[nodiscard]] string_view simdjsonGetRawJsonToken(ondemand::object& object, const string_view& key);

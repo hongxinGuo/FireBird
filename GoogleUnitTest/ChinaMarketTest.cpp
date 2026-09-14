@@ -20,6 +20,7 @@
 #include "ContainerChinaStock.h"
 #include "dataBaseConnector.h"
 #include"DayLineWebData.h"
+#include "MarketTask.h"
 #include "SystemConfiguration.h"
 #include "SystemData.h"
 
@@ -1484,14 +1485,14 @@ namespace FireBirdTest {
 	// New test: verify DeleteTask removes all tasks with the specified type
 	TEST_F(CChinaMarketTest, TestDeleteTask) {
 		// Add two tasks of the same type and one of a different type
-		marketTaskQueue.AddTask(CHINA_MARKET_UPDATE_CURRENT_STOCK_, toLocalTime(5));
-		marketTaskQueue.AddTask(CHINA_MARKET_UPDATE_CURRENT_STOCK_, toLocalTime(10));
+		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, toLocalTime(5));
+		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, toLocalTime(10));
 		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, toLocalTime(7));
 
 		EXPECT_EQ(marketTaskQueue.Size(), 3);
 
-		// Delete all tasks of type CHINA_MARKET_UPDATE_CURRENT_STOCK__
-		marketTaskQueue.DeleteTask(CHINA_MARKET_UPDATE_CURRENT_STOCK_);
+		// Delete all tasks of type CHINA_MARKET_CHECK_SYSTEM_READY_
+		marketTaskQueue.DeleteTask(CHINA_MARKET_CHECK_SYSTEM_READY_);
 
 		// After deletion only the other task should remain
 		EXPECT_EQ(marketTaskQueue.Size(), 1);
@@ -1502,7 +1503,7 @@ namespace FireBirdTest {
 
 		// Ensure no remaining task has the deleted type
 		for (const auto& t : remaining) {
-			EXPECT_NE(t->GetType(), CHINA_MARKET_UPDATE_CURRENT_STOCK_);
+			EXPECT_NE(t->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
 		}
 	}
 }

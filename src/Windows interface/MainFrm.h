@@ -34,10 +34,6 @@ public:
 	void UpdateStatus();
 	void UpdateInnerSystemStatus();
 
-	void SetCurrentStock(const CVirtualStockPtr& pStock);
-	bool IsCurrentEditStockChanged() const noexcept { return m_fCurrentEditStockChanged; }
-	void SetCurrentEditStockChanged(const bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
-
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
 	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CMDIFrameWndEx::OnTimer(nIDEvent); }
 	virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndStatusBar.SetPaneText(iIndex, lpszNewText); }
@@ -58,6 +54,14 @@ public:
 
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
 
+	CVirtualStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
+	void SetCurrentStock(const CVirtualStockPtr& pStock);
+	bool IsCurrentEditStockChanged() const noexcept { return m_fCurrentEditStockChanged; }
+	void SetCurrentEditStockChanged(const bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
+
+	void ChangeToPrevStock();
+	void ChangeToNextStock();
+
 	// 重写
 	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL) override;
@@ -70,6 +74,8 @@ protected:
 	bool m_fCurrentEditStockChanged{ false };
 
 	static bool sm_fGlobeInit;
+
+	CVirtualStockPtr m_pCurrentStock{ nullptr };
 
 	// 控件条嵌入成员
 	CMFCMenuBar m_wndMenuBar;

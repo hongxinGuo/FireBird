@@ -1,13 +1,14 @@
 #include"pch.h"
 
+#include"MarketTask.h"
 #include"WorldMarket.h"
 #include "FinnhubForex.h"
 
-#include<sqlpp23/sqlpp23.h>
-#include"StockMarketSQLTable.h"
 #include"TimeConvert.h"
 
+#include<sqlpp23/sqlpp23.h>
 #include"dataBaseConnector.h"
+#include"StockMarketSQLTable.h"
 #include "log.h"
 
 using namespace std;

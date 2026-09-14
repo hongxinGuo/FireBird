@@ -1,6 +1,7 @@
 #pragma once
 
-#include"nlohmannJsonDeclaration.h"
+#include"nlohmann/json_fwd.hpp"
+using nlohmannJson = nlohmann::ordered_json;
 
 [[nodiscard]] nlohmannJson jsonGetChild(nlohmannJson* pjs, const char* szKey);
 [[nodiscard]] std::string jsonGetString(const nlohmannJson* pjs, const char* szKey, const char* szDefault = "");

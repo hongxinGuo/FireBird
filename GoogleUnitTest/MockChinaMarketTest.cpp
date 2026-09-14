@@ -14,6 +14,7 @@
 #include"MockChinaMarket.h"
 
 #include"GeneralCheck.h"
+#include "MarketTask.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 

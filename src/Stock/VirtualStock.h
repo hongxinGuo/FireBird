@@ -1,14 +1,15 @@
 #pragma once
 
-#include "nlohmannJsonDeclaration.h"
-
+using std::shared_ptr;
 using std::string;
 using std::string_view;
 using std::atomic_bool;
 using std::vector;
 using std::chrono::local_days;
-
 using std::literals::chrono_literals::operator ""y;
+
+#include"nlohmann/json_fwd.hpp"
+using nlohmannJson = nlohmann::ordered_json;
 
 class CStockSplit;
 class CVirtualDataHistoryCandle;
@@ -198,5 +199,3 @@ protected:
 };
 
 using CVirtualStockPtr = shared_ptr<CVirtualStock>;
-
-extern shared_ptr<CVirtualStock> gl_pCurrentStock;

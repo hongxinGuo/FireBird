@@ -25,6 +25,7 @@
 #include "ContainerTiingoStock.h"
 #include "dataBaseConnector.h"
 #include "EconomicCalendar.h"
+#include "MarketTask.h"
 #include"StockMarketSQLTable.h"
 #include "SystemConfiguration.h"
 #include "TiingoStock.h"

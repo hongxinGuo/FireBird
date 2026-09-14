@@ -6,6 +6,8 @@
 #include"VirtualMarket.h"
 #include"TimeConvert.h"
 
+#include"MarketTask.h"
+
 using namespace std;
 
 namespace FireBirdTest {

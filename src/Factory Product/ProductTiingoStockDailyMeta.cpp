@@ -23,6 +23,7 @@
 #include"cpr/cpr.h"
 
 using namespace std;
+using namespace simdjson;
 
 CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
@@ -82,7 +83,8 @@ void CProductTiingoStockDailyMeta::WebStatusCheck(cpr::Response& r) {
 		default:
 			WebErrorReport(m_strInquiringSymbol);
 			break;
-		}	break;
+		}
+		break;
 	}
 }
 

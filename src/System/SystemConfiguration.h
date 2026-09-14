@@ -11,8 +11,12 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+#include"nlohmann/json_fwd.hpp"
+using nlohmannJson = nlohmann::ordered_json; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+
 #include"spdlog/spdlog.h"
+
+using std::shared_ptr;
 using std::string;
 using std::chrono::microseconds;
 using std::chrono::milliseconds;

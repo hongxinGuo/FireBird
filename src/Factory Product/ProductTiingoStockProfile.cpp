@@ -28,6 +28,8 @@ using std::chrono::local_time;
 using std::istringstream;
 using std::make_shared;
 
+using namespace simdjson;
+
 CProductTiingoStockProfile::CProductTiingoStockProfile() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals/meta?";
 }

@@ -12,6 +12,7 @@
 
 #include "dataBaseConnector.h"
 #include "log.h"
+#include "StockExchange.h"
 #include"StockMarketSQLTable.h"
 
 using namespace std;
@@ -52,6 +53,10 @@ CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymb
 	}
 	ABSL_DCHECK(false);
 	return nullptr;
+}
+
+string CContainerStockExchange::GetItemExchangeCode(const size_t lIndex) const {
+	return m_vStockExchange.at(lIndex)->GetExchangeCode();
 }
 
 bool CContainerStockExchange::LoadDB() {

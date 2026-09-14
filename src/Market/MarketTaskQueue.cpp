@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "MarketTaskQueue.h"
+#include "MarketTask.h"
 
 using std::make_shared;
 
@@ -53,6 +54,12 @@ vector<CMarketTaskPtr> CMarketTaskQueue::GetTasks() {
 	return vTask;
 }
 
+bool CMarketTaskQueue::cmpMarketTaskData::operator()(const shared_ptr<CMarketTask>& p1, const shared_ptr<CMarketTask>& p2) const noexcept {
+	// 有优先级的队列默认排列顺序是从大到小，故而从小到大排列需要使用 > 符号。
+	// 相同时间的数据，先放入的数据位于后放入的数据前面。不同时间的数据，时间较早的数据位于时间较晚的数据前面。
+	return (p1->GetTime() > p2->GetTime());
+}
+
 void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CHINA_MARKET_CREATE_TASK_] = "生成明日各项任务";
 	gl_mapMarketMapIndex[WORLD_MARKET_CREATE_TASK_] = "生成明日各项任务";
@@ -76,8 +83,6 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CHINA_MARKET_PREPARING_MARKET_OPEN_] = "开市准备";
 
 	//即时任务
-	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_CURRENT_STOCK_] = "即时：更新当前股票";
-
 	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM_READY_] = "系统初始化检查";
 	gl_mapMarketMapIndex[WORLD_MARKET_RESET_] = "市场重置";
 	gl_mapMarketMapIndex[WORLD_MARKET_UPDATE_DB_] = "更新各数据库";
@@ -92,3 +97,5 @@ void CMarketTaskQueue::CreateIndexMap() {
 
 	gl_mapMarketMapIndex[WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_] = "查询Alpaca股票日线历史数据";
 }
+
+

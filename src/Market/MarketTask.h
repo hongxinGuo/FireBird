@@ -40,7 +40,6 @@ enum {
 
 	// China market即时任务
 	CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB_, //Note 即时任务。 更新自选股数据库
-	CHINA_MARKET_UPDATE_CURRENT_STOCK_, //Note 即时任务。更新当前股票。
 
 	// World market
 	WORLD_MARKET_CREATE_TASK_, // 生成其他任务的初始任务。每日240000

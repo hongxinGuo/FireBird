@@ -1,9 +1,11 @@
 #pragma once
 
-#include "nlohmannJsonDeclaration.h"
-
+using std::shared_ptr;
 using std::string;
 using std::string_view;
+
+#include"nlohmann/json_fwd.hpp"
+using nlohmannJson = nlohmann::ordered_json;
 
 class CDayLine;
 class CWebRTData;

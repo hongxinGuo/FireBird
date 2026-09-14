@@ -2,8 +2,10 @@
 
 #include <gtest/gtest.h>
 
+#include"nlohmann/json_fwd.hpp"
+using nlohmannJson = nlohmann::ordered_json;
+
 #include"GeneralCheck.h"
-#include "nlohmannJsonDeclaration.h"
 
 #include"TiingoIEXWebSocket.h"
 

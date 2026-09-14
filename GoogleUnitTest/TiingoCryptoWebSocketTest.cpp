@@ -2,9 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include"GeneralCheck.h"
-#include "nlohmannJsonDeclaration.h"
+#include"nlohmann/json_fwd.hpp"
+using nlohmannJson = nlohmann::ordered_json;
 
+#include"GeneralCheck.h"
 #include"TiingoCryptoWebSocket.h"
 
 using namespace testing;

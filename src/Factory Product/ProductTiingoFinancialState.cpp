@@ -13,6 +13,7 @@
 #include"cpr/cpr.h"
 
 using namespace std;
+using namespace simdjson;
 
 namespace {
 	map<string, int> s_mapItem{

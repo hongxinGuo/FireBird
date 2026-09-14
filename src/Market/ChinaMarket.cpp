@@ -30,6 +30,7 @@
 #include "ContainerStockExchange.h"
 #include "ContainerStockSymbol.h"
 #include "log.h"
+#include "MarketTask.h"
 
 using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
@@ -68,17 +69,6 @@ CChinaMarket::CChinaMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
-	if (gl_pCurrentStock == nullptr) {
-		if (!gl_systemConfiguration.GetCurrentStock().empty()) {
-			gl_systemConfiguration.SetCurrentStock("");
-			gl_systemConfiguration.SetUpdateDB(true);
-		}
-	}
-	else if (gl_pCurrentStock->GetSymbol() != gl_systemConfiguration.GetCurrentStock()) {
-		gl_systemConfiguration.SetCurrentStock(gl_pCurrentStock->GetSymbol());
-		gl_systemConfiguration.SetUpdateDB(true);
-	}
-
 	CloseAllThread();
 }
 
@@ -124,10 +114,6 @@ void CChinaMarket::ResetMarket() {
 	gl_dataContainerChinaStock.LoadProfileDB();
 	LoadOptionDB();
 	LoadChosenStockDB();
-
-	if (!gl_systemConfiguration.GetCurrentStock().empty()) {
-		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK_);
-	}
 
 	gl_ProcessChinaMarketRTData.release();
 	m_fResettingMarket = false;
@@ -299,9 +285,6 @@ int CChinaMarket::ProcessCurrentImmediateTask() {
 	case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB_:
 		TaskUpdateChosenStockDB();
 		break;
-	case CHINA_MARKET_UPDATE_CURRENT_STOCK_: // 
-		TaskSetCurrentStock();
-		break;
 	default:
 		ABSL_DCHECK(0); // 错误的任务号
 		break;
@@ -428,15 +411,6 @@ string CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTota
 	return gl_dataContainerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 }
 
-void CChinaMarket::TaskSetCurrentStock() {
-	if (!gl_systemConfiguration.GetCurrentStock().empty()) { // 当前有选择股票
-		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock())) {
-			auto pStock = gl_dataContainerChinaStock.GetStock(gl_systemConfiguration.GetCurrentStock());
-			pStock->SetSelected(true);
-			gl_pCurrentStock = pStock;
-		}
-	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //

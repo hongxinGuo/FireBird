@@ -11,7 +11,9 @@
 #include"TimeConvert.h"
 #include"DayLine.h"
 
-#include"nlohmannJsonDeclaration.h"
+#include"nlohmann/json_fwd.hpp"
+using nlohmannJson = nlohmann::ordered_json;
+
 #include "SystemData.h"
 #include "WebRTData.h"
 

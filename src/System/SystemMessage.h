@@ -67,8 +67,6 @@ enum NET_ERROR {
 	NET_ERROR_HTTP_REDIRECT_FAILED = 12156
 };
 
-#include<map>
-
 extern std::map<long, std::string> gl_mapHTTPStatusCode;
 extern std::map<long, std::string> gl_mapNetError;
 

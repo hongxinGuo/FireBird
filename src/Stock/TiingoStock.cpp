@@ -557,6 +557,7 @@ void CTiingoStock::ProcessDayLine(std::stop_token st) {
 
 	// 计算三个月内再创新高的几率
 	CalculateNewHighHigher();
+	CalculateNewLowLower();
 
 	// 计算是否符合五年低
 	Find70PercentLow();
@@ -584,6 +585,10 @@ void CTiingoStock::ProcessDayLine2(std::stop_token st) {
 	AdjustedStockCloseValue(dSplitFactor, 0, endPos);
 	FindHighLow2(endPos);
 
+	// 计算三个月内再创新高的几率
+	CalculateNewHighHigher();
+	CalculateNewLowLower();
+
 	// 计算是否符合五年低
 	Find70PercentLow();
 
@@ -609,7 +614,6 @@ void CTiingoStock::ProcessDayLine3(std::stop_token st) {
 	double dSplitFactor = CalculateSplitFactor(0, endPos);
 	AdjustedStockCloseValue(dSplitFactor, 0, endPos);
 	FindHighLow3(endPos);
-	SetUpdate52WeekHighLowDB(true);
 
 	// 计算三个月内再创新高的几率
 	CalculateNewHighHigher();
@@ -619,6 +623,7 @@ void CTiingoStock::ProcessDayLine3(std::stop_token st) {
 	Find70PercentLow();
 
 	m_dataDayLine.Unload();
+	SetUpdate52WeekHighLowDB(true);
 }
 
 void CTiingoStock::Find70PercentLow() const {
