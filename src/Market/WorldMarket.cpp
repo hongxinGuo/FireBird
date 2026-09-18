@@ -111,6 +111,9 @@ CWorldMarket::~CWorldMarket() {
 }
 
 void CWorldMarket::Reset() {
+	if (gl_systemConfiguration.IsWorkingMode()) {
+		ABSL_DCHECK(IsResetTime());
+	}
 	ResetFinnhub();
 	ResetTiingo();
 	ResetDataContainer();
@@ -189,6 +192,11 @@ void CWorldMarket::ResetMarket() {
 
 	m_fResettingMarket = false;
 }
+
+bool CWorldMarket::IsResetTime() {
+	return GetMarketTime() > GetPrevTime(GetResetTime(), 0h, 10min, 0s) && GetMarketTime() < GetNextTime(GetResetTime(), 0h, 5min, 0s);
+}
+
 chrono::local_seconds CWorldMarket::GetResetTime() {
 	return toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime());
 }

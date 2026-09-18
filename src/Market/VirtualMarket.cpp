@@ -83,10 +83,6 @@ void CVirtualMarket::ResetMarket() {
 	ABSL_DCHECK(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }
 
-bool CVirtualMarket::IsResetTime() {
-	return GetMarketTime() > GetPrevTime(GetResetTime(), 0h, 10min, 0s) && GetMarketTime() < GetNextTime(GetResetTime(), 0h, 5min, 0s);
-}
-
 chrono::local_seconds CVirtualMarket::GetResetTime() {
 	if (gl_systemConfiguration.IsWorkingMode()) // 不允许在运行状态时调用此函数
 		ABSL_DCHECK(0);

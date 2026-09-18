@@ -140,6 +140,29 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_dataContainerChinaStock.GetTengxunRTDataInquiringIndex(), 0);
 	}
 
+	TEST_F(CChinaMarketTest, TestGetResetTime) {
+		EXPECT_TRUE(gl_pChinaMarket->GetResetTime() == toLocalTime(91300));
+	}
+
+	TEST_F(CChinaMarketTest, TestIsResetTime) {
+		auto tt = gl_pChinaMarket->GetMarketTime();
+		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91159));
+		EXPECT_FALSE(gl_pChinaMarket->IsResetTime());
+		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91200));
+		EXPECT_FALSE(gl_pChinaMarket->IsResetTime());
+		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91201));
+		EXPECT_TRUE(gl_pChinaMarket->IsResetTime());
+		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91400));
+		EXPECT_TRUE(gl_pChinaMarket->IsResetTime());
+		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91459));
+		EXPECT_TRUE(gl_pChinaMarket->IsResetTime());
+		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91500));
+		EXPECT_FALSE(gl_pChinaMarket->IsResetTime());
+
+		//恢复原状
+		gl_pChinaMarket->TEST_SetMarketTime(tt);
+	}
+
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask1) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
@@ -757,20 +780,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), 10);
 
 		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
-	}
-
-	TEST_F(CChinaMarketTest, TestIsChosen10RSStrongStockSet) {
-		gl_pChinaMarket->SetChosen10RSStrongStockSet(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsChosen10RSStrongStockSet());
-		gl_pChinaMarket->SetChosen10RSStrongStockSet(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrongStockSet());
-	}
-
-	TEST_F(CChinaMarketTest, TestIsChosen10RSStrong1StockSet) {
-		gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
-		gl_pChinaMarket->SetChosen10RSStrong1StockSet(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
 	}
 
 	TEST_F(CChinaMarketTest, TestIsUpdateDayLineDB) {

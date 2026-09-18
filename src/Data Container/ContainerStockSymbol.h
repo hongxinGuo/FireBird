@@ -24,11 +24,7 @@ public:
 	size_t Size() override;
 
 	[[nodiscard]] size_t GetIndex(const string& strSymbol) const { return m_mapStockSymbol.at(strSymbol); }
-
-	[[nodiscard]] bool IsStockSymbol(const string& strSymbol) const {
-		if (m_mapStockSymbol.contains(strSymbol)) return true;
-		return false;
-	}
+	[[nodiscard]] bool IsSymbol(const string& strSymbol) const { return m_mapStockSymbol.contains(strSymbol); }
 
 	bool Delete(const string& strSymbol);
 	void Add(const string& strSymbol);
@@ -53,9 +49,6 @@ protected:
 	vector<string> m_vCurrentSectionStockCode; // 当前股票集的第一个代码。字符串的格式为600000.SS、sz000001
 	vector<shared_ptr<CStockSection>> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
 	bool m_fUpdateStockSection; // 更新StockSection标识
-
-private:
-	bool m_fDBLoaded{ false };
 };
 
 using CContainerStockSymbolPtr = shared_ptr<CContainerStockSymbol>;

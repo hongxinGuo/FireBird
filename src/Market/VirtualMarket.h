@@ -46,8 +46,7 @@ public:
 	}
 
 	virtual void ResetMarket();
-	bool IsResetTime();
-
+	virtual bool IsResetTime() { return false; }
 	virtual local_seconds GetResetTime();
 
 	bool IsResetting() const noexcept { return m_fResettingMarket; }

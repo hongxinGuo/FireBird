@@ -135,17 +135,21 @@ namespace FireBirdTest {
 		vector<CDayLine> vDayLine;
 		CTiingoCandleLinesPtr dayLinesPtr = make_shared<vector<CTiingoCandleLine>>();
 
+		string s = "Test";
 		CTiingoCandleLine dayLine;
 		dayLine.SetDate(20241103); // 测试库中没有，插入
 		dayLine.SetStockSymbol(string_view("A"));
+		dayLine.SetExchange(s); // 用于删除标识
 		dayLine.SetClose(100);
 		dayLinesPtr->push_back(dayLine);
 		dayLine.SetDate(20241107); // 测试库中有
 		dayLine.SetStockSymbol(string_view("A"));
+		dayLine.SetExchange(s); // 用于删除标识
 		dayLine.SetClose(100);
 		dayLinesPtr->push_back(dayLine);
 		dayLine.SetDate(20241111); // 测试库中的数据最新日期为20241108，此日期位于其后
 		dayLine.SetStockSymbol(string_view("A"));
+		dayLine.SetExchange(s); // 用于删除标识
 		dayLine.SetClose(100);
 		dayLinesPtr->push_back(dayLine);
 		m_dataTiingoStockDayLine.UpdateData(dayLinesPtr);
@@ -163,8 +167,7 @@ namespace FireBirdTest {
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);
 
-		db(delete_from(t).where(t.Symbol == "A" && t.Date == 20241103));
-		db(delete_from(t).where(t.Symbol == "A" && t.Date == 20241111));
+		db(delete_from(t).where(t.Symbol == "A" && t.Exchange == "Test"));
 
 		tx.commit();
 	}

@@ -96,14 +96,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestIsStockSymbol) {
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("600000.SS"));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("900000.SS"));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("688000.SS"));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("000000.SZ"));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("002000.SZ"));
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("001000.SZ"));
-		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("60000.SS"));
-		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("00000.SZ"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsSymbol("600000.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsSymbol("900000.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsSymbol("688000.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsSymbol("000000.SZ"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsSymbol("002000.SZ"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsSymbol("001000.SZ"));
+		EXPECT_FALSE(s_pDataStockSymbol->IsSymbol("60000.SS"));
+		EXPECT_FALSE(s_pDataStockSymbol->IsSymbol("00000.SZ"));
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextIndex) {
@@ -122,9 +122,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestAdd) {
-		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("800800.SS")) << "没有这个数据段的股票代码";
+		EXPECT_FALSE(s_pDataStockSymbol->IsSymbol("800800.SS")) << "没有这个数据段的股票代码";
 		s_pDataStockSymbol->Add("800800.SS");
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("800800.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsSymbol("800800.SS"));
 
 		// 恢复原状
 		EXPECT_TRUE(s_pDataStockSymbol->Delete("800800.SS"));

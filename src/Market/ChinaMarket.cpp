@@ -119,11 +119,27 @@ void CChinaMarket::ResetMarket() {
 	m_fResettingMarket = false;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 九点十二分至九点十五分之间不允许接受网络数据。
+///
+/////////////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::IsResetTime() {
+	return GetMarketTime() > GetPrevTime(GetResetTime(), 0h, 1min, 0s) && GetMarketTime() < GetNextTime(GetResetTime(), 0h, 2min, 0s);
+}
+
+/// <summary>
+/// 中国市场重置时间薇九点十三分。
+/// </summary>
+/// <returns></returns>
 local_seconds CChinaMarket::GetResetTime() {
-	return toLocalTime(30000);
+	return toLocalTime(91300);
 }
 
 void CChinaMarket::Reset() {
+	if (gl_systemConfiguration.IsWorkingMode()) {
+		ABSL_DCHECK(IsResetTime());
+	}
 	CalculateTime(); // 初始化市场时间
 	SetSystemReady(false); // 市场初始状态为未设置好。
 
@@ -133,9 +149,6 @@ void CChinaMarket::Reset() {
 	m_lCurrentSelectedPosition = 0;
 	m_lCurrentRSStrongIndex = 0;
 	m_lCurrentSelectedStockSet = -1; // 选择使用全体股票集、
-	m_fChosen10RSStrong1StockSet = false;
-	m_fChosen10RSStrongStockSet = false;
-	m_fCalculateChosen10RS = false;
 
 	m_iCurrentDayRTDataCounter = 0;
 	m_llRTDataReceived = 0;
@@ -166,10 +179,6 @@ void CChinaMarket::Reset() {
 	m_fMarketOpened = false;
 
 	m_fUpdateChosenStockDB = false;
-
-	for (const auto& pDataSource : m_vDataSource) {
-		pDataSource->Reset();
-	}
 }
 
 void CChinaMarket::PrepareToCloseMarket() {
@@ -404,13 +413,14 @@ void CChinaMarket::EnableRealTimeDataSource(bool fEnable) noexcept {
 // 生成每次查询新浪实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-string CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet) {
+string CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet) { //todo: 总出问题
 	if (fUsingTotalStockSet) {
+		ABSL_DCHECK(gl_dataContainerChinaStockSymbol.IsDataLoaded());
 		return gl_dataContainerChinaStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 	}
+	ABSL_DCHECK(gl_dataContainerChinaStock.IsDataLoaded());
 	return gl_dataContainerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -486,8 +496,8 @@ void CChinaMarket::TaskCreateTask() {
 	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_, GetNextTime(GetMarketTime(), 0h, 1min, -seconds));
 
 	// 市场重置
-	if (GetMarketTime() < toLocalTime(91300)) {
-		AddTask(CHINA_MARKET_RESET_, toLocalTime(91300)); // 执行时间为：91300
+	if (GetMarketTime() < GetResetTime()) {
+		AddTask(CHINA_MARKET_RESET_, GetResetTime()); // 执行时间为：91300
 	}
 
 	// 第一次系统检查

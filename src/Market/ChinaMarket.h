@@ -29,6 +29,7 @@ public:
 
 	void CloseAllThread();
 	void ResetMarket() final;
+	bool IsResetTime() override;
 	local_seconds GetResetTime() final; // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
 	void Reset();
 
@@ -100,13 +101,6 @@ public:
 	auto GetCurrentSelectedStockSet() const noexcept { return m_lCurrentSelectedStockSet; }
 	void SetCurrentSelectedStockSet(const long lIndex) noexcept { m_lCurrentSelectedStockSet = lIndex; }
 	shared_ptr<CChinaStock> GetCurrentSelectedStock();
-
-	bool IsChosen10RSStrong1StockSet() const noexcept { return m_fChosen10RSStrong1StockSet; }
-	void SetChosen10RSStrong1StockSet(const bool fFlag) noexcept { m_fChosen10RSStrong1StockSet = fFlag; }
-	bool IsChosen10RSStrongStockSet() const noexcept { return m_fChosen10RSStrongStockSet; }
-	void SetChosen10RSStrongStockSet(const bool fFlag) noexcept { m_fChosen10RSStrongStockSet = fFlag; }
-	bool IsCalculateChosen10RS() const noexcept { return m_fCalculateChosen10RS; }
-	void SetCalculateChosen10RS(const bool fFlag) noexcept { m_fCalculateChosen10RS = fFlag; }
 
 	// 数据库读取存储操作
 
@@ -219,9 +213,6 @@ protected:
 	long m_lCurrentSelectedPosition; // 当前股票集的位置
 	long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
 	long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。
-	bool m_fChosen10RSStrong1StockSet; // 本日的10日强势股票集已计算完成
-	bool m_fChosen10RSStrongStockSet; // 本日的10日强势股票集已计算完成
-	bool m_fCalculateChosen10RS;
 
 	atomic_int64_t m_llRTDataReceived; // 接收到的实时数据数量
 	atomic_int m_iCurrentDayRTDataCounter{ 0 };

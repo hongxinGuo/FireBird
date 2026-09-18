@@ -100,7 +100,6 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
 			EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 
-			EXPECT_FALSE(gl_pChinaMarket->IsCalculateChosen10RS());
 			EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
 			EXPECT_FALSE(gl_systemConfiguration.IsFastInquiringRTData()) << "DEBUG模式时默认为假";
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());

@@ -46,15 +46,31 @@ namespace ix
         stop();
     }
 
+    void SocketServer::setLogCallback(const LogCallback& callback)
+    {
+        std::lock_guard<std::mutex> lock(_logMutex);
+        _logCallback = callback;
+    }
+
     void SocketServer::logError(const std::string& str)
     {
         std::lock_guard<std::mutex> lock(_logMutex);
+        if (_logCallback)
+        {
+            _logCallback(LogLevel::Error, str);
+            return;
+        }
         fprintf(stderr, "%s\n", str.c_str());
     }
 
     void SocketServer::logInfo(const std::string& str)
     {
         std::lock_guard<std::mutex> lock(_logMutex);
+        if (_logCallback)
+        {
+            _logCallback(LogLevel::Info, str);
+            return;
+        }
         fprintf(stdout, "%s\n", str.c_str());
     }
 
@@ -84,6 +100,20 @@ namespace ix
             ss << "SocketServer::listen() error creating socket): " << strerror(Socket::getErrno());
 
             return std::make_pair(false, ss.str());
+        }
+
+        if (_closeOnExec)
+        {
+            if (!Socket::setCloseOnExec(_serverFd))
+            {
+                std::stringstream ss;
+                ss << "SocketServer::listen() error setting close on exec: "
+                   << strerror(Socket::getErrno());
+
+                Socket::closeSocket(_serverFd);
+                _serverFd = -1;
+                return std::make_pair(false, ss.str());
+            }
         }
 
         // Make that socket reusable. (allow restarting this server at will)
@@ -357,6 +387,22 @@ namespace ix
                 continue;
             }
 
+            if (_closeOnExec)
+            {
+                if (!Socket::setCloseOnExec(clientFd))
+                {
+                    int err = Socket::getErrno();
+                    std::stringstream ss;
+                    ss << "SocketServer::run() error setting close on exec: " << err << ", "
+                       << strerror(err);
+                    logError(ss.str());
+
+                    Socket::closeSocket(clientFd);
+
+                    continue;
+                }
+            }
+
             // Retrieve connection info, the ip address of the remote peer/client)
             std::string remoteIp;
             int remotePort;
@@ -421,7 +467,8 @@ namespace ix
 
             if (socket == nullptr)
             {
-                logError("SocketServer::run() cannot create socket: " + errorMsg);
+                logError("SocketServer::run() cannot create socket for client " + remoteIp + ":" +
+                         std::to_string(remotePort) + ": " + errorMsg);
                 Socket::closeSocket(clientFd);
                 continue;
             }
@@ -431,7 +478,8 @@ namespace ix
 
             if (!socket->accept(errorMsg))
             {
-                logError("SocketServer::run() tls accept failed: " + errorMsg);
+                logError("SocketServer::run() tls accept failed for client " + remoteIp + ":" +
+                         std::to_string(remotePort) + ": " + errorMsg);
                 Socket::closeSocket(clientFd);
                 continue;
             }

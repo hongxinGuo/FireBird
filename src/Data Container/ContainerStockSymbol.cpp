@@ -136,7 +136,7 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 	} catch (sqlpp::mysql::exception& e) {
 		logErrorDatabaseException(typeid(this).name(), "Load Stock Section DB", e);
 	}
-	m_fDBLoaded = true;
+	SetDataLoaded(true);
 }
 
 void CContainerStockSymbol::UpdateStockSectionDB() {
@@ -149,7 +149,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 
 		auto result = db(sqlpp::select(all_of(t)).from(t));
 		auto multi_insert = insert_into(t).columns(t.ID, t.Active, t.Market, t.IndexNumber, t.Comment);
-		int rows = result.size();
+		auto rows = result.size();
 		if (rows == 0) {
 			for (int i = 0; i < 2000; i++) {
 				const CStockSectionPtr pStockSection = m_vStockSection.at(i);
@@ -233,7 +233,7 @@ bool CContainerStockSymbol::UpdateStockSection(const size_t lIndex) const {
 }
 
 bool CContainerStockSymbol::Delete(const string& strSymbol) {
-	if (!IsStockSymbol(strSymbol)) return false;
+	if (!IsSymbol(strSymbol)) return false;
 
 	m_vStockSymbol.erase(m_vStockSymbol.begin() + m_mapStockSymbol.at(strSymbol));
 	m_mapStockSymbol.erase(strSymbol);

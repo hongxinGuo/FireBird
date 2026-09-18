@@ -126,18 +126,18 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask2) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET_, toLocalTime(91300));
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET_, gl_pChinaMarket->GetResetTime());
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket()).Times(1);
 
-		s_pMockChinaMarket->TEST_SetMarketTime(toLocalTime(91300));
+		s_pMockChinaMarket->TEST_SetMarketTime(gl_pChinaMarket->GetResetTime());
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask());
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask3) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET_, toLocalTime(92600));
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET_, gl_pChinaMarket->GetResetTime());
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket()).Times(1);
 

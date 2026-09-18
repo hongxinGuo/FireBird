@@ -82,6 +82,7 @@ long CContainerChinaStock::LoadProfileDB() {
 		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
 		return 0;
 	}
+	SetDataLoaded(true);
 	Sort();
 
 	if (IsUpdateDayLine()) {

@@ -38,6 +38,10 @@ namespace FireBirdTest {
 		CVirtualMarket virtualMarket;
 	};
 
+	TEST_F(CVirtualMarketTest, TestIsResetTime) {
+		EXPECT_FALSE(virtualMarket.IsResetTime()) << "永远为假";
+	}
+
 	TEST_F(CVirtualMarketTest, TestAddTask) {
 		virtualMarket.DiscardAllMarketTask();
 

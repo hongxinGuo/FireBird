@@ -30,6 +30,7 @@ public:
 	~CWorldMarket() override;
 
 	void ResetMarket() final;
+	bool IsResetTime() override;
 	local_seconds GetResetTime() override;
 
 	void PrepareToCloseMarket() final;
