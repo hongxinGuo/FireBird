@@ -98,12 +98,6 @@ public:
 	local_days GetCurrentTradeDate() const;// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
 	local_days GetNextTradeDate() const;// 下一个交易日（从次日开市时间至后日开市时间）
 
-	string GetStringOfLocalTime() const; // 得到本地时间的字符串
-	string GetStringOfMarketTime() const; // 得到本市场时间的字符串
-	string GetStringOfMarketDate() const;
-	string GetStringOfMarketDateTime() const;
-	string GetStringOfLocalDateTime() const;
-
 	local_seconds ToLocalTime(const sys_seconds& sysTime) const { return m_marketTimeZone->to_local(sysTime); } // 将UTC时间转化为本市场的当地时间
 	sys_seconds ToUTCTime(const local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
 	sys_seconds ConvertToUTCTime(int marketDate, long lMarketTime) const; // 将市场时间转化为UTC时间

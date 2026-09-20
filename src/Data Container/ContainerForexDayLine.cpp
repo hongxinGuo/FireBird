@@ -153,7 +153,7 @@ void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Save DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Save DB", e);
 	}
 }
 
@@ -192,7 +192,7 @@ void CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load DB", e);
 	}
 	m_fDataLoaded = true;
 }

@@ -192,6 +192,7 @@
     </ClCompile>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
+    <ClCompile Include="..\src\accessory\log.cpp" />
     <ClCompile Include="..\src\accessory\nlohmannJsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\JsonParse.cpp" />
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />

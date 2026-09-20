@@ -79,7 +79,7 @@ long CContainerChinaStock::LoadProfileDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load profile DB", e);
 		return 0;
 	}
 	SetDataLoaded(true);
@@ -135,7 +135,7 @@ void CContainerChinaStock::UpdateProfileDB(std::stop_token st) {
 		tx.commit();
 		m_lLoadedStock = m_vStock.size();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Profile DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -333,7 +333,7 @@ long CContainerChinaStock::BuildDayLine(local_days currentTradeDay) {
 		if (nValue > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Build dayLine", e);
+		logErrorDatabaseException(typeid(*this).name(), "Build dayLine", e);
 	}
 
 	s = std::format("{:%F} 的日线数据已生成", currentTradeDay);
@@ -355,7 +355,7 @@ void CContainerChinaStock::DeleteDayLine(local_days date) {
 		db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(date)));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete dayLine", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete dayLine", e);
 	}
 }
 

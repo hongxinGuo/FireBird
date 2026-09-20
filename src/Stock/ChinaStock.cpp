@@ -183,7 +183,7 @@ void CChinaStock::DeleteDuplicatedDayLine() noexcept {
 		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete China Day Line", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete China Day Line", e);
 	}
 }
 

@@ -51,7 +51,7 @@ bool CContainerFinnhubCrypto::LoadProfileDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Profile DB", e);
 	}
 	Sort();
 	m_llLastTotalSymbol = m_vStock.size();
@@ -95,7 +95,7 @@ void CContainerFinnhubCrypto::UpdateProfileDB(std::stop_token st) {
 			}
 			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+			logErrorDatabaseException(typeid(*this).name(), "Update Profile DB", e);
 		} catch (CException& e) {
 			ReportInformation(e);
 		}

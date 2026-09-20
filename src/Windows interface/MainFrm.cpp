@@ -541,7 +541,7 @@ void CMainFrame::UpdateStatus() {
 	//SysCallSetPaneText(13, s.c_str());
 
 	//更新当地时间的显示
-	SysCallSetPaneText(14, gl_pChinaMarket->GetStringOfLocalTime());
+	SysCallSetPaneText(14, std::format("{:%T}", gl_pTimeZoneLocal->to_local(gl_tpNow)));;
 }
 
 void CMainFrame::UpdateInnerSystemStatus() {
@@ -746,7 +746,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			pStock = gl_dataContainerTiingoStock.GetStock(strTemp);
 		}
 		SetCurrentStock(pStock);
-		CreateDocumentViewIfNeeded();
+		CreateDocumentViewIfNeeded(); // 如果是空的MainFrame,则创建第一个Document-View.
 		SetCurrentDocumentStock(pStock);
 		SysCallInvalidate();
 		m_aStockCodeTemp[0] = 0x000;

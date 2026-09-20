@@ -248,28 +248,6 @@ chrono::local_days CVirtualMarket::GetLastTradeDate() const {
 	return GetMarketDate() - day;
 }
 
-string CVirtualMarket::GetStringOfMarketDate() const {
-	return std::format("{:%F}", GetMarketDate());
-}
-
-string CVirtualMarket::GetStringOfLocalTime() const {
-	auto localTime = gl_pTimeZoneLocal->to_local(gl_tpNow);
-	return std::format("{:%T}", localTime);
-}
-
-string CVirtualMarket::GetStringOfLocalDateTime() const {
-	auto localTime = gl_pTimeZoneLocal->to_local(gl_tpNow);
-	return std::format("{:%F %T}", localTime);
-}
-
-string CVirtualMarket::GetStringOfMarketTime() const {
-	return std::format("{:%T}", m_marketClock);
-}
-
-string CVirtualMarket::GetStringOfMarketDateTime() const {
-	return std::format("{:%F %T}", m_marketClock);
-}
-
 chrono::sys_seconds CVirtualMarket::ConvertToUTCTime(int marketDate, long lMarketTime) const {
 	int year = marketDate / 10000;
 	int month = marketDate / 100 - year * 100;

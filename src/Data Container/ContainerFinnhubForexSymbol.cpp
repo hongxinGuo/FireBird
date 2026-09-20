@@ -50,7 +50,7 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Profile DB", e);
 		return false;
 	}
 	Sort();
@@ -95,7 +95,7 @@ void CContainerFinnhubForexSymbol::UpdateProfileDB(std::stop_token st) {
 			}
 			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+			logErrorDatabaseException(typeid(*this).name(), "Update Profile DB", e);
 		}
 	}
 }

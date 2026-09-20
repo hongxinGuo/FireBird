@@ -143,7 +143,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 		long lCurrentPos;
 		bool fUpdate = false;
-		const string sTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
+		const string sTime = std::format("{:%F %T}", gl_pTimeZoneLocal->to_local(gl_tpNow)); // 消息的前缀，使用当地时间
 
 		if (m_wndStockMarketInformation.GetCount() > 10000) m_wndStockMarketInformation.TruncateList(1000);
 		fUpdate = false;

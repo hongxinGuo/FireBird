@@ -58,7 +58,7 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load DB", e);
 		return false;
 	}
 	m_lastTotalCryptoExchange = m_vCryptoExchange.size();
@@ -81,7 +81,7 @@ bool CContainerFinnhubCryptoExchange::UpdateDB() {
 			}
 			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logErrorDatabaseException(typeid(this).name(), "Update DB", e);
+			logErrorDatabaseException(typeid(*this).name(), "Update DB", e);
 			return false;
 		}
 		m_lastTotalCryptoExchange = m_vCryptoExchange.size();

@@ -22,6 +22,7 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CMDIChildWndEx::PreCreateWindow(cs))
 		return FALSE;
 
+	//cs.style &= ~FWS_ADDTOTITLE; // 不自动显示标题
 	return TRUE;
 }
 

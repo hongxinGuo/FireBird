@@ -59,7 +59,7 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load DB", e);
 		return false;
 	}
 	m_llLastTotalForexExchange = m_vForexExchange.size();
@@ -86,7 +86,7 @@ bool CContainerFinnhubForexExchange::UpdateDB() {
 			tx.commit();
 			m_llLastTotalForexExchange = m_vForexExchange.size();
 		} catch (sqlpp::mysql::exception& e) {
-			logErrorDatabaseException(typeid(this).name(), "Update DB", e);
+			logErrorDatabaseException(typeid(*this).name(), "Update DB", e);
 			return false;
 		}
 		return true;

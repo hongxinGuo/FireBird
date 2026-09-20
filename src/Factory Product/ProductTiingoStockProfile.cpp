@@ -323,7 +323,7 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Save New Symbol", e);
+		logErrorDatabaseException(typeid(*this).name(), "Save New Symbol", e);
 	}
 }
 
@@ -345,6 +345,6 @@ void CProductTiingoStockProfile::SaveDelistedSymbol() {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Save Delisted Symbol", e);
+		logErrorDatabaseException(typeid(*this).name(), "Save Delisted Symbol", e);
 	}
 }

@@ -193,7 +193,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Financial State DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Financial State DB", e);
 	}
 }
 
@@ -311,7 +311,7 @@ void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
 		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLine.GetData(0)->GetDate())));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated DayLine", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Duplicated DayLine", e);
 	}
 }
 
@@ -471,7 +471,7 @@ void CTiingoStock::Delete52WeekHighDB() const {
 		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week High DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete 52 Week High DB", e);
 	}
 }
 
@@ -485,7 +485,7 @@ void CTiingoStock::Delete52WeekLowDB() const {
 		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol()));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete 52 Week Low DB", e);
 	}
 }
 
@@ -518,7 +518,7 @@ void CTiingoStock::Load52WeekLowDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load 52 Week Low DB", e);
 	}
 }
 

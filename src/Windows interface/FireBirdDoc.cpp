@@ -19,6 +19,8 @@
 #include "TiingoStock.h"
 #include <VirtualDataHistoryCandle.h>
 
+#include "CharSetTransfer.h"
+
 using namespace std;
 
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
@@ -31,6 +33,9 @@ CFireBirdDoc::CFireBirdDoc() = default;
 
 void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	if (m_pCurrentStock == nullptr || !m_pCurrentStock->IsSameStock(pStock)) m_bRefreshView = true;
+	string s = pStock->GetSymbol();
+	wstring sw = Utf8ToW(s);
+	SetTitle(sw.c_str());
 	m_pCurrentStock = pStock;
 	if (pStock == nullptr) return;
 		m_bDataReady = false;

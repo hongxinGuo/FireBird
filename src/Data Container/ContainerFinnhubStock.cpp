@@ -143,7 +143,7 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Profile DB", e);
 		return false;
 	}
 	Sort();
@@ -252,7 +252,7 @@ void CContainerFinnhubStock::UpdateProfileDB(std::stop_token st) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Profile DB", e);
 	}
 }
 

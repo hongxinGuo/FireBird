@@ -40,7 +40,7 @@ bool CContainerTiingoChosenStock::LoadDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load profile DB", e);
 		return false;
 	}
 	return true;
@@ -75,7 +75,7 @@ void CContainerTiingoChosenStock::UpdateDB(std::stop_token st) const {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Chosen Stock", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Chosen Stock", e);
 	}
 }
 

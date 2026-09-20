@@ -54,7 +54,7 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Crypto Symbol DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Crypto Symbol DB", e);
 	}
 	Sort();
 	return true;
@@ -156,7 +156,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB(std::stop_token st) {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Crypto Symbol", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Crypto Symbol", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	} catch (std::exception& e) {

@@ -64,7 +64,7 @@ void CContainerTiingoStockDayLine::SaveDB(const string& strSymbol) {
 		if (lSize > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Save Day Line DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Save Day Line DB", e);
 	}
 }
 
@@ -103,7 +103,7 @@ void CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Day Line DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Day Line DB", e);
 	}
 	m_fDataLoaded = true;
 }
@@ -120,14 +120,17 @@ void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStoc
 		db(sqlpp::delete_from(t).where(t.Symbol == strStockSymbol && t.Date >= toFormattedDate(m_vHistoryData.at(0).GetDate())));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated Day Line DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Duplicated Day Line DB", e);
 	}
 }
 
 void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 	//	ABSL_DCHECK(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
+	static bool s_bRunning = false;
 
+	if (s_bRunning) return;
+	s_bRunning = true;
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
@@ -172,8 +175,9 @@ void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 		if (lSize > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Day Line DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Day Line DB", e);
 	}
+	s_bRunning = false;
 }
 
 void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine) {

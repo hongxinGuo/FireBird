@@ -68,7 +68,7 @@ void CContainerFinnhubCountry::UpdateDB(std::stop_token st) const {
 			if (nValues > 0) db(multi_insert);
 			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logErrorDatabaseException(typeid(this).name(), "Update DB", e);
+			logErrorDatabaseException(typeid(*this).name(), "Update DB", e);
 		}
 	}
 }
@@ -98,7 +98,7 @@ bool CContainerFinnhubCountry::LoadDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load profile DB", e);
 		return false;
 	}
 	m_llLastTotalCountry = m_vCountry.size();

@@ -135,11 +135,6 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 	default:
 		break;
 	}
-
-	// 显示鼠标位置的价格线
-	if (m_rectCandle.PtInRect(m_ptMouse)) {
-		ShowCross(pDC, m_ptMouse);
-	}
 }
 
 void CFireBirdView::ShowCross(CDC* pDC, CPoint ptCurrent) const {
@@ -602,24 +597,26 @@ BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
 void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
 	m_ptMouse = point;
 	if (GetDocument()->GetCurrentStock() != nullptr) {
-		CDC* pDC = GetDC();
-		// 擦除旧的十字线
-		if (m_bNeedErase) {
-			ShowCross(pDC, m_ptMouseOld);
-			m_bNeedErase = false;
+		if (GetDocument()->IsDataReady()) {
+			CDC* pDC = GetDC();
+			// 擦除旧的十字线
+			if (m_bNeedErase) {
+				ShowCross(pDC, m_ptMouseOld);
+				m_bNeedErase = false;
+			}
+			// 画新的十字线
+			if (m_rectCandle.PtInRect(point)) {
+				ABSL_DCHECK(!m_bNeedErase);
+				ShowCross(pDC, point);
+				m_bNeedErase = true;
+				m_ptMouseOld = point;
+			}
+			else {
+				m_ptMouseOld.x = -1;
+				m_ptMouseOld.y = -1;
+			}
+			ReleaseDC(pDC);
 		}
-		// 画新的十字线
-		if (m_rectCandle.PtInRect(point)) {
-			ABSL_DCHECK(!m_bNeedErase);
-			ShowCross(pDC, point);
-			m_bNeedErase = true;
-			m_ptMouseOld = point;
-		}
-		else {
-			m_ptMouseOld.x = -1;
-			m_ptMouseOld.y = -1;
-		}
-		ReleaseDC(pDC);
 	}
 
 	CView::OnMouseMove(nFlags, point);

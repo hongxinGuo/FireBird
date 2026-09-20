@@ -105,7 +105,7 @@ void CChinaMarket::CloseAllThread() {
 
 void CChinaMarket::ResetMarket() {
 	m_fResettingMarket = true;
-	string s = "重置中国股市于北京标准时间：" + GetStringOfMarketTime();
+	string s = "重置中国股市于北京标准时间：" + std::format("{:%T}", m_marketClock);
 	gl_systemMessage.PushInformationMessage(s);
 	gl_ProcessChinaMarketRTData.acquire();
 
@@ -137,9 +137,6 @@ local_seconds CChinaMarket::GetResetTime() {
 }
 
 void CChinaMarket::Reset() {
-	if (gl_systemConfiguration.IsWorkingMode()) {
-		ABSL_DCHECK(IsResetTime());
-	}
 	CalculateTime(); // 初始化市场时间
 	SetSystemReady(false); // 市场初始状态为未设置好。
 
@@ -931,7 +928,7 @@ void CChinaMarket::DeleteDayLine(local_days lDate) const {
 		db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(lDate)));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Day Line", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Day Line", e);
 	}
 }
 
@@ -965,7 +962,7 @@ void CChinaMarket::UpdateOptionDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Option DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Option DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -993,7 +990,7 @@ void CChinaMarket::LoadOptionDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Option DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Option DB", e);
 	}
 }
 
@@ -1013,7 +1010,7 @@ void CChinaMarket::UpdateChosenStockDB() const {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Chosen Stock DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Chosen Stock DB", e);
 	}
 }
 
@@ -1033,7 +1030,7 @@ void CChinaMarket::AppendChosenStockDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Append Chosen Stock DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Append Chosen Stock DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -1062,7 +1059,7 @@ void CChinaMarket::LoadChosenStockDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Chosen Stock DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Chosen Stock DB", e);
 	}
 }
 

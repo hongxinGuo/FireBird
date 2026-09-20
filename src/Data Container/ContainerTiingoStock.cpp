@@ -124,7 +124,7 @@ void CContainerTiingoStock::UpdateProfileDB(std::stop_token st) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Profile DB", e);
 	}
 }
 
@@ -172,7 +172,7 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Profile DB", e);
 	} catch (const std::exception& ex) {
 		gl_systemMessage.PushErrorMessage(std::format("LoadDB(sqlpp23) failed: {}", ex.what()));
 		return false;
@@ -198,7 +198,7 @@ void CContainerTiingoStock::DeleteDuplicatedSymbolFromDB() {
 		db("DELETE t1 FROM tiingo_stock_profile t1 INNER JOIN tiingo_stock_profile t2 ON t1.Symbol = t2.Symbol AND t1.ID > t2.ID");
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated Symbol From DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Duplicated Symbol From DB", e);
 	}
 }
 
@@ -267,7 +267,7 @@ void CContainerTiingoStock::BuildDayLine(std::stop_token ststopToken, local_days
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Build Day Line", e);
+		logErrorDatabaseException(typeid(*this).name(), "Build Day Line", e);
 	}
 
 	gl_systemMessage.PushDayLineInfoMessage("Tiingo IEX book of day saved");
@@ -312,7 +312,7 @@ void CContainerTiingoStock::LoadDayLine(local_days date) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Day Line", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Day Line", e);
 	}
 }
 
@@ -327,7 +327,7 @@ void CContainerTiingoStock::DeleteDayLine(local_days date) {
 		db(delete_from(t).where(t.Date == toFormattedDate(date)));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Day Line", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Day Line", e);
 	}
 }
 
@@ -378,7 +378,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update 52 Week High DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update 52 Week High DB", e);
 	}
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
@@ -416,7 +416,7 @@ void CContainerTiingoStock::TaskUpdate52WeekLowDB() {
 		if (Values > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update 52 Week Low DB", e);
 	}
 
 	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
@@ -461,7 +461,7 @@ void CContainerTiingoStock::TaskCalculate() {
 		if (!vPos.empty()) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update 52 Week Low DB", e);
 	}
 
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
@@ -522,7 +522,7 @@ void CContainerTiingoStock::TaskCalculate2(std::stop_token st) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update 52 Week Low DB", e);
 	}
 
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
@@ -538,7 +538,7 @@ void CContainerTiingoStock::Delete52WeekHighDB() {
 		db(sqlpp::delete_from(t));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week High DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete 52 Week High DB", e);
 	}
 }
 
@@ -551,7 +551,7 @@ void CContainerTiingoStock::Delete52WeekLowDB() {
 		db(sqlpp::delete_from(t));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete 52 Week Low DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete 52 Week Low DB", e);
 	}
 }
 
@@ -658,7 +658,7 @@ void CContainerTiingoStock::Update5YearLow90PercentStockDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update 5 Year Low 90 Percent Stock DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update 5 Year Low 90 Percent Stock DB", e);
 	}
 }
 
@@ -679,7 +679,7 @@ void CContainerTiingoStock::Update5YearLow70PercentStockDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update 5 Year Low 70 Percent Stock DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update 5 Year Low 70 Percent Stock DB", e);
 	}
 }
 
@@ -700,7 +700,7 @@ void CContainerTiingoStock::Update5YearLow80PercentStockDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update 5 Year Low 80 Percent Stock DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update 5 Year Low 80 Percent Stock DB", e);
 	}
 }
 

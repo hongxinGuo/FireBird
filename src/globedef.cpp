@@ -62,13 +62,6 @@ using namespace concurrencpp;
 
 HANDLE gl_hFireBirdMutex{ nullptr };
 
-shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
-shared_ptr<spdlog::logger> gl_traceLogger; // 跟踪日志，用于系统调试
-shared_ptr<spdlog::logger> gl_errorLogger; // 错误跟踪日志，用于系统调试，默认日志。
-shared_ptr<spdlog::logger> gl_dailyWebSocketLogger = nullptr;
-shared_ptr<spdlog::logger> gl_dailyWebLogger = nullptr; // 网络信息
-shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger = nullptr;
-
 // 以下变量皆为唯一实例
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。

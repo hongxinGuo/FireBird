@@ -59,7 +59,7 @@ void CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 		if (lSize > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Save DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Save DB", e);
 	}
 }
 
@@ -98,7 +98,7 @@ void CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load DB", e);
 	}
 	m_fDataLoaded = true;
 }

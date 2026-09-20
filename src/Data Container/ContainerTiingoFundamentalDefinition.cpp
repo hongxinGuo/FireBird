@@ -90,7 +90,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB(std::stop_token st) {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Fundamental Definition", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Fundamental Definition", e);
 	}
 	m_fUpdated = false;
 
@@ -118,7 +118,7 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Fundamental Definition", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Fundamental Definition", e);
 		return false;
 	}
 	m_fUpdated = false;

@@ -111,9 +111,6 @@ CWorldMarket::~CWorldMarket() {
 }
 
 void CWorldMarket::Reset() {
-	if (gl_systemConfiguration.IsWorkingMode()) {
-		ABSL_DCHECK(IsResetTime());
-	}
 	ResetFinnhub();
 	ResetTiingo();
 	ResetDataContainer();
@@ -187,7 +184,7 @@ void CWorldMarket::ResetMarket() {
 		pDataSource->Reset();
 	}
 
-	string s = "重置World Market于美东标准时间：" + GetStringOfMarketTime();
+	string s = "重置World Market于美东标准时间：" + std::format("{:%T}", m_marketClock);
 	gl_systemMessage.PushInformationMessage(s);
 
 	m_fResettingMarket = false;
@@ -798,7 +795,7 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine(std::stop_to
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "LoadNasdaq100StocksDayLine", e);
+		logErrorDatabaseException(typeid(*this).name(), "LoadNasdaq100StocksDayLine", e);
 	} catch (const std::exception& e) {
 		gl_systemMessage.PushInnerSystemInformationMessage("LoadNasdaq100StocksDayLine: " + string(e.what()));
 	}
@@ -905,7 +902,7 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "calculateNasdaq100MA200UpDownRate", e);
+		logErrorDatabaseException(typeid(*this).name(), "calculateNasdaq100MA200UpDownRate", e);
 	} catch (const std::exception& e) {
 		gl_systemMessage.PushInnerSystemInformationMessage("calculateNasdaq100MA200UpDownRate: " + string(e.what()));
 	}
@@ -1679,7 +1676,7 @@ void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 		db(delete_from(t).where(t.Symbol == pStock->GetSymbol()));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Tiingo Day Line", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Tiingo Day Line", e);
 	}
 }
 
@@ -1693,7 +1690,7 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 		db(sqlpp::delete_from(t).where(t.Symbol == pStock->GetSymbol()));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Tiingo Financial Statement", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Tiingo Financial Statement", e);
 	}
 }
 

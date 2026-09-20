@@ -22,11 +22,10 @@ void CVirtualWebProduct::WebStatusCheck(cpr::Response& r) {
 	case 0: //
 		// do nothing
 		break;
+	case 200: // OK
+		break;
 	default:
-		string sType = typeid(this).name();
-		string s = std::format("{} error. http code: {}, error code:{}, message:{}", sType, r.status_code, static_cast<int>(r.error.code), r.error.message);
-		gl_dailyWebLogger->info("{}", s);
-		gl_systemMessage.PushErrorMessage(s);
+		WebErrorReport();
 		break;
 	}
 }
@@ -60,15 +59,26 @@ bool CVirtualWebProduct::IsUSMarket() const {
 	return false;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 需要使用typeid(*this).name()来获取实际调用的派生类名，因为此函数是虚函数，可能会被派生类覆盖。
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualWebProduct::WebErrorReport() {
-	string s = std::format("{} http error {}. code:{} message: {}",
-	                       typeid(this).name(), m_r.status_code, static_cast<int>(m_r.error.code), m_r.error.message);
+	string s = std::format("{} http code:{}, error code:{} erro message: {}",
+	                       typeid(*this).name(), m_r.status_code, static_cast<int>(m_r.error.code), m_r.error.message);
 	gl_dailyLogger->info("{}", s);
 	gl_systemMessage.PushWebInformationMessage(s);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 需要使用typeid(*this).name()来获取实际调用的派生类名，因为此函数是虚函数，可能会被派生类覆盖。
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualWebProduct::WebErrorReport(const string& symbol) {
-	string s = std::format("{} stock:{} http error {}. code:{} message: {}",
-	                       typeid(this).name(), symbol, m_r.status_code, static_cast<int>(m_r.error.code), m_r.error.message);
+	string s = std::format("{} stock:{} http code:{}, error code:{} error message: {}",
+	                       typeid(*this).name(), symbol, m_r.status_code, static_cast<int>(m_r.error.code), m_r.error.message);
 	gl_dailyLogger->info("{}", s);
 	gl_systemMessage.PushWebInformationMessage(s);
 }

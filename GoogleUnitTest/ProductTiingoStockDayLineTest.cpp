@@ -69,7 +69,6 @@ namespace FireBirdTest {
 		const string strMessage = stockPriceCandle.CreateMessage()->front();
 		const chrono::local_days lMarketDate = gl_pWorldMarket->GetMarketDate();
 		string sEndDate = std::format("{:%F}", lMarketDate);
-		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		const string sTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-01-01&endDate=" + sEndDate;
 
 		EXPECT_TRUE(strMessage == sTest) << "使用之前的结束日期为申请数据的起始日期";
@@ -84,7 +83,6 @@ namespace FireBirdTest {
 		const chrono::local_days lMarketDate = gl_pWorldMarket->GetMarketDate();
 		string sStartDate = std::format("{:%F}", lStartMarketDate);
 		string sEndDate = std::format("{:%F}", lMarketDate);
-		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		string strTest = "https://api.tiingo.com/tiingo/daily/A/prices?&startDate=" + sStartDate + "&endDate=" + sEndDate;
 		EXPECT_TRUE(strMessage == strTest);
 	}

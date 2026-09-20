@@ -241,7 +241,7 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Insider Transaction DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Insider Transaction DB", e);
 	} catch (CException& e) {
 		ReportInformation(e);
 	}
@@ -337,7 +337,7 @@ bool CFinnhubStock::UpdateCompanyNewsDB() {
 		if (iCount > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Company News DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Company News DB", e);
 	}
 	return true;
 }
@@ -370,7 +370,7 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 		if (iCount > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update EPS Surprise DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update EPS Surprise DB", e);
 	}
 	SetLastEPSSurpriseUpdateDate(m_vEPSSurprise.at(m_vEPSSurprise.size() - 1).m_lDate);
 
@@ -435,7 +435,7 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		if (count > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update SEC Filings DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update SEC Filings DB", e);
 	}
 	return true;
 }

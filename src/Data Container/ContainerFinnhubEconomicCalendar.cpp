@@ -51,7 +51,7 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load DB", e);
 		return false;
 	}
 	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
@@ -85,7 +85,7 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 		if (nValues > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update DB", e);
 		return false;
 	}
 

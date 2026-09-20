@@ -96,7 +96,7 @@ bool CContainerStockExchange::LoadDB() {
 			}
 			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+			logErrorDatabaseException(typeid(*this).name(), "Load profile DB", e);
 			return false;
 		}
 	}

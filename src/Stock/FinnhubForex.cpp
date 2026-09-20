@@ -76,7 +76,7 @@ void CFinnhubForex::DeleteDuplicatedDayLine() noexcept {
 		db(sqlpp::delete_from(t).where(t.Symbol == GetSymbol() && t.Date >= toFormattedDate(m_dataDayLines.GetData(0)->GetDate())));
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Delete Duplicated DayLine DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Delete Duplicated DayLine DB", e);
 	}
 }
 

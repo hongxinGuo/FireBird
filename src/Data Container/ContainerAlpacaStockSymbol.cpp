@@ -47,7 +47,7 @@ bool CContainerAlpacaStockSymbol::LoadProfileDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load profile DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load profile DB", e);
 		return false;
 	}
 	Sort();
@@ -82,7 +82,7 @@ void CContainerAlpacaStockSymbol::UpdateProfileDB(std::stop_token st) {
 			}
 			tx.commit();
 		} catch (sqlpp::mysql::exception& e) {
-			logErrorDatabaseException(typeid(this).name(), "Update profile DB", e);
+			logErrorDatabaseException(typeid(*this).name(), "Update profile DB", e);
 		}
 	}
 }

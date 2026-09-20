@@ -1049,5 +1049,8 @@
     <ClCompile Include="..\src\Factory Product\ProductAlpacaStockSymbol.cpp">
       <Filter>Factory-Product\Alpaca</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\accessory\log.cpp">
+      <Filter>Accessory</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -214,10 +214,4 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(virtualMarket.GetLastTradeDate(), toLocalDays(LastTradeDate));
 	}
-
-	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
-		const chrono::local_days lDate = virtualMarket.GetMarketDate();
-		string s = "1970-01-01";
-		EXPECT_EQ(virtualMarket.GetStringOfMarketDate(), s);
-	}
 }

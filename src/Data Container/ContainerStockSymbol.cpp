@@ -134,7 +134,7 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Load Stock Section DB", e);
+		logErrorDatabaseException(typeid(*this).name(), "Load Stock Section DB", e);
 	}
 	SetDataLoaded(true);
 }
@@ -177,7 +177,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(this).name(), "Update Stock Section", e);
+		logErrorDatabaseException(typeid(*this).name(), "Update Stock Section", e);
 	}
 
 	m_fUpdateStockSection = false;
