@@ -86,11 +86,11 @@ void CProductTengxunDayLine::WebStatusCheck(cpr::Response& r) {
 	case 403: // forbidden
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
-	case 501: // mot implemented.腾讯日线服务器暂时关闭了。
-		WebErrorReport(m_strInquiringSymbol);
+	case 501: // not implemented.腾讯日线服务器暂时关闭了。实际情况是申请的速度过快导致服务器不响应了
+		ReportWebError(m_strInquiringSymbol);
 		break;
 	default:
-		WebErrorReport(m_strInquiringSymbol);
+		ReportWebError(m_strInquiringSymbol);
 		break;
 	}
 }

@@ -86,20 +86,20 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 400: // one of request parameters is invalid.See the return message for detail.
-		WebErrorReport();
+		ReportWebError();
 		break;
 	case 401: // Authentication headers are missing or invalid.
 	case 403: // The requested resource is forbidden.
-		WebErrorReport();
+		ReportWebError();
 		break;
 	case 429: // Too many requests.You hit the rate limit.
-		WebErrorReport();
+		ReportWebError();
 		break;
 	case 500: // Internal server error.
-		WebErrorReport();
+		ReportWebError();
 		break;
 	default: // unknown problem
-		WebErrorReport();
+		ReportWebError();
 		break;
 	}
 }

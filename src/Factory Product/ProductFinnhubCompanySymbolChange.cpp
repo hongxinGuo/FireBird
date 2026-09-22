@@ -51,7 +51,7 @@ void CProductFinnhubCompanySymbolChange::WebStatusCheck(cpr::Response& r) {
 		}
 		break;
 	default:
-		WebErrorReport();
+		ReportWebError();
 		break;
 	}
 }

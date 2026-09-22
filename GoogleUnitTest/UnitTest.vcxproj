@@ -134,6 +134,7 @@
     <ClCompile Include="InaccessibleTest.cpp" />
     <ClCompile Include="IndicatorKDJTest.cpp" />
     <ClCompile Include="IndicatorMACDTest.cpp" />
+    <ClCompile Include="logTest.cpp" />
     <ClCompile Include="MarketTaskQueueTest.cpp" />
     <ClCompile Include="MarketTaskTest.cpp" />
     <ClCompile Include="MockContainerChinaStockTest.cpp" />

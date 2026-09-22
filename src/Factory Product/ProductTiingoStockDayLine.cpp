@@ -78,7 +78,7 @@ void CProductTiingoStockDayLine::WebStatusCheck(cpr::Response& r) {
 			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 			break;
 		default:
-			WebErrorReport(m_strInquiringSymbol);
+			ReportWebError(m_strInquiringSymbol);
 			break;
 		}	break;
 	}

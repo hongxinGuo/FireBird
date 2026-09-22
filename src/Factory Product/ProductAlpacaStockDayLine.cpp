@@ -161,6 +161,9 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 	nlohmannJson j;
 	string message;
 	switch (r.status_code) {
+	case 0: // 请求超时，网络连接失败，或者其他网络错误。
+		ReportWebError();
+		break;
 	case 400: // one of request parameters is invalid.See the return message for detail.
 		j = nlohmann::json::parse(r.text, nullptr, false);
 		message = "Alpaca stock dayLine: ";
@@ -177,13 +180,13 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 		gl_systemMessage.PushErrorMessage(message);
 		break;
 	case 429: // Too many requests.You hit the rate limit.
-		WebErrorReport(m_strInquiringSymbol);
+		ReportWebError(m_strInquiringSymbol);
 		break;
 	case 500: // Internal server error.
-		WebErrorReport(m_strInquiringSymbol);
+		ReportWebError(m_strInquiringSymbol);
 		break;
 	default: // unknown problem
-		WebErrorReport(m_strInquiringSymbol);
+		ReportWebError(m_strInquiringSymbol);
 		break;
 	}
 }
@@ -218,7 +221,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageWi
 	return CreateMessageInternal("&adjustment=split");
 }
 
-shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageInternal(string paramAdjust) {
+shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageInternal(const string& paramAdjust) {
 	chrono::local_days startDate = GetStartInquireDay(GetIndex());
 	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - startDate).count();
 	if (totalDays >= 1000) {
@@ -229,29 +232,29 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageIn
 	}
 }
 
-shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireOneStock(string paramAdjust) {
+shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireOneStock(const string& paramAdjust) {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	chrono::local_days startDate = GetStartInquireDay(GetIndex());
 	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - startDate).count();
-	string symbol = pStock->GetSymbol();
+	m_strInquiringSymbol = pStock->GetSymbol();
 	int countNumber = totalDays / 1000;
 	for (int i = 0; i < countNumber; ++i) {
 		string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
-		                            symbol, paramAdjust, startDate + chrono::days(i * 1000), startDate + chrono::days((i + 1) * 1000 - 1)); // Note: 总是多申请一天的日线数据
+		                            m_strInquiringSymbol, paramAdjust, startDate + chrono::days(i * 1000), startDate + chrono::days((i + 1) * 1000 - 1)); // Note: 总是多申请一天的日线数据
 
 		m_inquiryString = m_strInquiryFunction + sParam;
 		pInquiry->push_back(m_inquiryString);
 	}
 	string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
-	                            symbol, paramAdjust, startDate + chrono::days(countNumber * 1000), m_currentDayLineEndDate); // Note: 总是多申请一天的日线数据
+	                            m_strInquiringSymbol, paramAdjust, startDate + chrono::days(countNumber * 1000), m_currentDayLineEndDate); // Note: 总是多申请一天的日线数据
 	pInquiry->push_back(m_strInquiryFunction + sParam);
-	m_vStockSymbols.push_back(symbol);
+	m_vStockSymbols.push_back(m_strInquiringSymbol);
 
 	return pInquiry;
 }
 
-shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultipleStocks(string paramAdjust) {
+shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultipleStocks(const string& paramAdjust) {
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	chrono::local_days startDate = GetStartInquireDay(GetIndex());
@@ -259,6 +262,7 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 	ABSL_DCHECK(stepLength < 1000);
 	string symbols = pStock->GetSymbol();
 	m_vStockSymbols.push_back(pStock->GetSymbol());
+	m_strInquiringSymbol = pStock->GetSymbol();
 	int totalInquiryStocks = 1;
 	size_t pos = 1;
 	while (true) {

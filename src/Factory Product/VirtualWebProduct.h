@@ -67,8 +67,8 @@ public:
 	int GetStatusCode() const noexcept { return m_r.status_code; }
 	double GetElapsedTime() const noexcept { return m_r.elapsed; }
 
-	void WebErrorReport(); // 
-	void WebErrorReport(const string& symbol); // 
+	void ReportWebError(); // 
+	void ReportWebError(const string& symbol); // 
 	// 测试用
 	virtual bool Test_checkAccessRight_(const string&) { return true; }  // todo 不再使用，准备删除之
 	void SetStatusCode(int code) noexcept { m_r.status_code = code; }

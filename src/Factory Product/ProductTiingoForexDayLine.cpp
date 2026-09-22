@@ -41,7 +41,7 @@ void CProductTiingoForexDayLine::WebStatusCheck(cpr::Response& r) {
 
 		break;
 	default:
-		WebErrorReport();
+		ReportWebError();
 		break;
 	}
 }

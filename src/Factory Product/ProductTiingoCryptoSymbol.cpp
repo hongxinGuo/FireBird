@@ -55,7 +55,7 @@ void CProductTiingoCryptoSymbol::WebStatusCheck(cpr::Response& r) {
 		CheckInaccessible();
 		break;
 	default:
-		WebErrorReport();
+		ReportWebError();
 		break;
 	}
 }

@@ -40,10 +40,10 @@ void CProductTengxunRT::WebStatusCheck(cpr::Response& r) {
 	case 401:
 	case 403: // forbidden
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		WebErrorReport(m_strInquiringSymbol);
+		ReportWebError(m_strInquiringSymbol);
 		break;
 	default:
-		WebErrorReport(m_strInquiringSymbol);
+		ReportWebError(m_strInquiringSymbol);
 		break;
 	}
 }

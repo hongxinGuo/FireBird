@@ -46,9 +46,9 @@ public:
 
 	shared_ptr<vector<string>> CreateMessage() override;
 	shared_ptr<std::vector<std::string>> CreateMessageWithSplit();
-	shared_ptr<std::vector<std::string>> CreateMessageInternal(string paramAdjust);
-	shared_ptr<std::vector<std::string>> InquireOneStock(string paramAdjust);
-	shared_ptr<std::vector<std::string>> InquireMultipleStocks(string paramAdjust);
+	shared_ptr<std::vector<std::string>> CreateMessageInternal(const string& paramAdjust);
+	shared_ptr<std::vector<std::string>> InquireOneStock(const string& paramAdjust);
+	shared_ptr<std::vector<std::string>> InquireMultipleStocks(const string& paramAdjust);
 	local_days GetStartInquireDay(size_t stockIndex) const;
 
 	shared_ptr<vector<TiingoDayLine>> Parse(const string& text, const string& stockSymbol);

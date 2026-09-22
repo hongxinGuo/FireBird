@@ -55,10 +55,10 @@ void CProductFinnhubCompanyProfileConcise::WebStatusCheck(cpr::Response& r) {
 		break;
 	case 302: //redirected, not an error
 	case 403: // forbidden
-		WebErrorReport();
+		ReportWebError();
 		break;
 	default:
-		WebErrorReport();
+		ReportWebError();
 		break;
 	}
 }
