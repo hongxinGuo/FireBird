@@ -67,6 +67,9 @@ public:
 	int GetStatusCode() const noexcept { return m_r.status_code; }
 	double GetElapsedTime() const noexcept { return m_r.elapsed; }
 
+	bool SucceedProcessed() const noexcept { return m_bSucceedProcessed; }
+	void SetSucceedProcessed(bool flag) noexcept { m_bSucceedProcessed = flag; }
+
 	void ReportWebError(); // 
 	void ReportWebError(const string& symbol); // 
 	// 测试用
@@ -82,6 +85,7 @@ protected:
 	size_t m_index{ 0 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界
 	int m_iInquireType{ -1 }; // product索引，Finnhub申请的索引，如SYMBOL_LOOKUP_等。 预先设置为越界
 	int m_iReceivedDataStatus{ GOOD_DATA_ }; // 1:有效数据；2:void data(只有{}或[]两个数据); 3:没有权利申请
+	bool m_bSucceedProcessed{ false };
 };
 
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;

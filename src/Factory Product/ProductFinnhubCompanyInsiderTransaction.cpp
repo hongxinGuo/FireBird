@@ -27,7 +27,7 @@ void CProductFinnhubCompanyInsiderTransaction::InquireData(const std::stop_token
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString });
 
-		if (m_r.status_code != 200) {
+		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
 			return;
 		}

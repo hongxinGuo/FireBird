@@ -28,7 +28,7 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 		               cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL } // 允许重定向
 		);
 
-		if (m_r.status_code != 200) {
+		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
 			return;
 		}

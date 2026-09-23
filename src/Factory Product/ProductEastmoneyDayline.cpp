@@ -82,7 +82,7 @@ void CProductEastmoneyDayLine::InquireData(const std::stop_token& st) {
 		string inquireString = inquiry;
 		m_r = cpr::Get(cpr::Url{ inquireString }, gl_pEastmoneyDayLineDataSource->GetHeader(mean));
 
-		if (m_r.status_code != 200) {
+		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
 			return;
 		}

@@ -65,8 +65,12 @@ bool CVirtualWebProduct::IsUSMarket() const {
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualWebProduct::ReportWebError() {
-	string s = std::format("{} http code:{}, CPR error code:{} CPR message: {}",
-	                       typeid(*this).name(), m_r.status_code, static_cast<int>(m_r.error.code), m_r.error.message);
+	string httpCode;
+	if (gl_mapHTTPStatusCode.contains(m_r.status_code)) {
+		httpCode = gl_mapHTTPStatusCode.at(m_r.status_code);
+	}
+	string s = std::format("{} http code:{}({}), CPR error code:{} CPR message: {}",
+	                       typeid(*this).name(), m_r.status_code, httpCode, static_cast<int>(m_r.error.code), m_r.error.message);
 	gl_dailyLogger->info("{}", s);
 	gl_systemMessage.PushWebInformationMessage(s);
 }

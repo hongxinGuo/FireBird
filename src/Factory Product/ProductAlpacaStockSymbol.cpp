@@ -64,7 +64,7 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 	ABSL_DCHECK(inquireStrings->size() == 1);
 	m_r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader());
 
-	if (m_r.status_code != 200) {
+	if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 		WebStatusCheck(m_r);
 		return;
 	}

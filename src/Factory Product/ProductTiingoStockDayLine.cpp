@@ -33,7 +33,7 @@ void CProductTiingoStockDayLine::InquireData(const std::stop_token& st) {
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ s });
 
-		if (m_r.status_code != 200) {
+		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
 		}
 
@@ -70,17 +70,11 @@ void CProductTiingoStockDayLine::WebStatusCheck(cpr::Response& r) {
 	case 403: // forbidden
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		break;
+	case 429: // Too Many Requests
+		break;
 	default:
-		switch (r.status_code) {
-		case 0:
-			break;
-		case 403: // forbidden
-			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-			break;
-		default:
-			ReportWebError(m_strInquiringSymbol);
-			break;
-		}	break;
+		ReportWebError(m_strInquiringSymbol);
+		break;
 	}
 }
 

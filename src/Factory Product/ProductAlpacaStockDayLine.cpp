@@ -87,9 +87,10 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader(),
+		               cpr::Timeout{ std::chrono::seconds(30) });
 
-		if (m_r.status_code != 200) {
+		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -99,9 +100,10 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStringsSplit = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStringsSplit) {
 		if (st.stop_requested()) break;
-		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader(),
+		               cpr::Timeout{ std::chrono::seconds(30) });
 
-		if (m_r.status_code != 200) {
+		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -148,6 +150,7 @@ void CProductAlpacaStockDayLine::UpdateOneStockDayLine(const string& stockSymbol
 		}
 		pTiingoStock->UpdateDayLine(vDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);
+		//ABSL_LOG(INFO) << "update tiingo stock dayLine" << pTiingoStock->GetSymbol();
 	}
 	// 清除当前股票的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);

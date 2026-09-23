@@ -127,10 +127,7 @@ void CContainerTiingoStockDayLine::DeleteDuplicatedDayLine(const string& strStoc
 void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 	//	ABSL_DCHECK(!IsSplitAdjusted()); // 拆分调整后的数据不允许更新到数据库中，因为拆分调整后的数据可能会改变原始数据的价格和成交量，导致数据库中的数据不一致。
 	auto ratio = GetRatio();
-	static bool s_bRunning = false;
 
-	if (s_bRunning) return;
-	s_bRunning = true;
 	try {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
@@ -177,7 +174,7 @@ void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 	} catch (sqlpp::mysql::exception& e) {
 		logErrorDatabaseException(typeid(*this).name(), "Update Day Line DB", e);
 	}
-	s_bRunning = false;
+	//ABSL_DLOG(INFO) << "Update Day Line DB for " << strStockSymbol << " completed.";
 }
 
 void CContainerTiingoStockDayLine::UpdateData(const CTiingoCandleLinesPtr& pvTempDayLine) {

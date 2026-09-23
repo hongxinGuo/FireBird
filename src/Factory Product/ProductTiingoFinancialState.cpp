@@ -115,7 +115,7 @@ void CProductTiingoFinancialState::InquireData(const std::stop_token& st) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ s });
-		if (m_r.status_code != 200) {
+		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
 		}
 		const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
