@@ -172,7 +172,8 @@ void CContainerTiingoStockDayLine::UpdateDB(const string& strStockSymbol) {
 		if (lSize > 0) db(multi_insert);
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {
-		logErrorDatabaseException(typeid(*this).name(), "Update Day Line DB", e);
+		string msg = "Update Day Line DB for " + strStockSymbol + " failed: ";
+		logErrorDatabaseException(typeid(*this).name(), msg, e);
 	}
 	//ABSL_DLOG(INFO) << "Update Day Line DB for " << strStockSymbol << " completed.";
 }
@@ -213,7 +214,7 @@ void CContainerTiingoStockDayLine::SplitAdjust() {
 	vector<shared_ptr<CSplitFactor>> vpSplitFactor;
 	double dTotalFactor = 1.0;
 	// 找出所有的拆分因子，并计算累计拆分因子。注意，拆分因子是从后向前计算的。
-	for (long i = m_vHistoryData.size() - 1; i >= 0; i--) {
+	for (int i = m_vHistoryData.size() - 1; i >= 0; i--) {
 		auto data = m_vHistoryData.at(i);
 		if (std::abs(data.GetSplitFactor() - 1.0) > EPSILON) {
 			dTotalFactor *= data.GetSplitFactor();

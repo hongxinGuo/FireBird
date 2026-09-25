@@ -66,6 +66,7 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_AV250, &CFireBirdView::OnUpdateShowAv250)
 	ON_COMMAND(ID_SHOW_INDICATOR_BOLLING, &CFireBirdView::OnShowIndicatorBolling)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_INDICATOR_BOLLING, &CFireBirdView::OnUpdateShowIndicatorBolling)
+	ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 // CFireBirdView 构造/析构
@@ -134,6 +135,13 @@ void CFireBirdView::ShowCandleData(CDC* pDC, CRect rectDrawArea) {
 		break;
 	default:
 		break;
+	}
+
+	// 显示鼠标位置的价格线
+	if (m_rectCandle.PtInRect(m_ptMouse)) {
+		ShowCross(pDC, m_ptMouse);
+		m_ptMouseOld = m_ptMouse;
+		m_bNeedErase = true;
 	}
 }
 
@@ -569,7 +577,7 @@ void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
 
 void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
 	dynamic_cast<CMainFrame*>(AfxGetMainWnd())->SetCurrentStock(GetDocument()->GetCurrentStock());
-
+	ABSL_DLOG(INFO) << "Set Focus";
 	CView::OnSetFocus(pOldWnd);
 }
 
@@ -595,6 +603,14 @@ BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
 }
 
 void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
+	if (!m_bTracking) {
+		TRACKMOUSEEVENT tme = {};
+		tme.cbSize = sizeof(tme);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = m_hWnd;
+		TrackMouseEvent(&tme);
+		m_bTracking = true;
+	}
 	m_ptMouse = point;
 	if (GetDocument()->GetCurrentStock() != nullptr) {
 		if (GetDocument()->IsDataReady()) {
@@ -611,14 +627,10 @@ void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
 				m_bNeedErase = true;
 				m_ptMouseOld = point;
 			}
-			else {
-				m_ptMouseOld.x = -1;
-				m_ptMouseOld.y = -1;
-			}
 			ReleaseDC(pDC);
 		}
 	}
-
+	//ABSL_DLOG(INFO) << "Mouse Move: " << point.x << ", " << point.y;
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -725,4 +737,17 @@ void CFireBirdView::OnShowAv250() {
 void CFireBirdView::OnUpdateShowAv250(CCmdUI* pCmdUI) {
 	if (m_fShow250Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnMouseLeave() {
+	m_bTracking = false;
+
+	if (m_bNeedErase) {
+		CDC* pDC = GetDC();
+		ShowCross(pDC, m_ptMouseOld);
+		m_bNeedErase = false;
+		ReleaseDC(pDC);
+	}
+
+	CView::OnMouseLeave();
 }

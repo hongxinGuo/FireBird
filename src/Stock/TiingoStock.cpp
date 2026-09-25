@@ -262,38 +262,6 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-size_t CTiingoStock::GetDayLineSize() const noexcept {
-	return m_dataDayLine.Size();
-}
-
-bool CTiingoStock::HaveDayLine(local_days lDate) noexcept {
-	return m_dataDayLine.HaveDayLine(lDate);
-}
-
-CTiingoCandleLine* CTiingoStock::GetDayLine(size_t lIndex) {
-	return m_dataDayLine.GetData(lIndex);
-}
-
-CTiingoCandleLine* CTiingoStock::GetDayLineAtDate(local_days lDate) {
-	return m_dataDayLine.GetDayLine(lDate);
-}
-
-CVirtualDataHistoryCandle* CTiingoStock::DayLine() noexcept {
-	return &m_dataDayLine;
-}
-
-void CTiingoStock::UnloadDayLine() {
-	m_dataDayLine.Unload();
-}
-
-void CTiingoStock::UpdateDayLineDB() {
-	m_dataDayLine.UpdateDB(m_strSymbol);
-}
-
-void CTiingoStock::SaveDayLineDB() {
-	m_dataDayLine.SaveDB(m_strSymbol);
-}
-
 bool CTiingoStock::IsDayLineDuplicated() noexcept {
 	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(0)->GetDate() > GetDayLineEndDate()) return false;
@@ -313,14 +281,6 @@ void CTiingoStock::DeleteDuplicatedDayLine() noexcept {
 	} catch (sqlpp::mysql::exception& e) {
 		logErrorDatabaseException(typeid(*this).name(), "Delete Duplicated DayLine", e);
 	}
-}
-
-void CTiingoStock::LoadDayLineDB() {
-	m_dataDayLine.LoadDB(m_strSymbol);
-}
-
-void CTiingoStock::CalculateDayLineMA(int length) {
-	m_dataDayLine.CalculateMA(length);
 }
 
 void CTiingoStock::RebuildStockSplitDB(std::stop_token st) {

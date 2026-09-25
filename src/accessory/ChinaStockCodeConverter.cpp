@@ -33,7 +33,7 @@ string XferSinaToStandard(const string_view& svSina) {
 	throw std::exception("XferSinaToStandard bad header");
 }
 
-string XferStandardToSina(const string& strStandard) {
+string XferStandardToSina(string strStandard) {
 	const string strSymbol = strStandard.substr(0, 6);
 	if (strStandard.at(strStandard.length() - 2) == 'S') {
 		switch (strStandard.at(strStandard.length() - 1)) {

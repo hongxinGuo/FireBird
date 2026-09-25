@@ -109,22 +109,22 @@ public:
 	void UpdateDailyMeta(const shared_ptr<CTiingoStockDailyMeta>& pMeta);
 
 	void UpdateDayLineStartEndDate();
-	size_t GetDayLineSize() const noexcept;
-	bool HaveDayLine(local_days lDate) noexcept;
-	CTiingoCandleLine* GetDayLine(size_t lIndex);
-	CTiingoCandleLine* GetDayLineAtDate(local_days lDate);
+	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	bool HaveDayLine(local_days lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
+	CTiingoCandleLine* GetDayLine(size_t lIndex) { return m_dataDayLine.GetData(lIndex); }
+	CTiingoCandleLine* GetDayLineAtDate(local_days lDate) { return m_dataDayLine.GetDayLine(lDate); }
 
 	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandle* DayLine() noexcept final;
+	CVirtualDataHistoryCandle* DayLine() noexcept final { return &m_dataDayLine; }
 
-	void UnloadDayLine();
-	void UpdateDayLineDB();// 先删除数据库中重复数据，再存储
-	void SaveDayLineDB(); // 直接存储，
+	void UnloadDayLine() { m_dataDayLine.Unload(); };
+	void UpdateDayLineDB() { m_dataDayLine.UpdateDB(m_strSymbol); };// 先删除数据库中重复数据，再存储
+	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }; // 直接存储，
 	bool IsDayLineDuplicated() noexcept final;
 	void DeleteDuplicatedDayLine() noexcept final;
-	void LoadDayLineDB() override;
+	void LoadDayLineDB() override { m_dataDayLine.LoadDB(m_strSymbol); };
 
-	void CalculateDayLineMA(int length);
+	void CalculateDayLineMA(int length) { m_dataDayLine.CalculateMA(length); };
 
 	void RebuildStockSplitDB(std::stop_token st) override;
 

@@ -20,7 +20,7 @@ public:
 	[[nodiscard]] auto GetTengxunRTDataInquiringIndex() const noexcept { return m_lTengxunRTDataInquiringIndex; }
 
 	// todo 以下函数只用于申请Sina、Tengxun实时数据，为了方便将其放在此基类中。感觉还是改为独立函数为好
-	string GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber, string (*StockCodeTransfer)(const string& str));
+	string GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber);
 	string GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber);
 	string GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber);
 
@@ -31,7 +31,6 @@ protected:
 	bool m_bDataLoaded{ false };
 
 private:
-
 	size_t m_lSinaRTDataInquiringIndex;
 	size_t m_lTengxunRTDataInquiringIndex;
 };

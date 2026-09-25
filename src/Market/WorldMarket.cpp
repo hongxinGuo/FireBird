@@ -547,7 +547,7 @@ bool CWorldMarket::TaskRebuildTiingoIndustryRS() {
 // 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
 // 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
 // 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
-//
+// Note:使用并行线程模式时，mySQL有时报告出现锁竞争，导致存储失败，故而暂时不使用并行线程模式。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 int CWorldMarket::TaskUpdateTiingoStockDayLineDB(std::stop_token st) {
@@ -558,18 +558,15 @@ int CWorldMarket::TaskUpdateTiingoStockDayLineDB(std::stop_token st) {
 		if (st.stop_requested()) break;
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
-			gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
-			gl_runtime.thread_executor()->post([pTiingoStock] {
-				pTiingoStock->UpdateDayLineStartEndDate();
-				pTiingoStock->SetUpdateDayLineDB(false); // 先设置标识，防止重入时重复更新。
-				pTiingoStock->SetUpdateProfileDB(true);
-				pTiingoStock->UpdateDayLineDB();
-				pTiingoStock->UnloadDayLine();
-				//string str = pTiingoStock->GetSymbol();
-				//str += "日线资料存储完成";
-				//gl_systemMessage.PushDayLineInfoMessage(str);
-				gl_BackgroundWorkingThread.Release();
-			});
+			//gl_BackgroundWorkingThread.Acquire(); // 最多允许GetMaxBackGroundWorkingThreadNumber()个线程同时执行更新日线数据库的任务。
+			//gl_runtime.thread_executor()->post([pTiingoStock] {
+			pTiingoStock->UpdateDayLineStartEndDate();
+			pTiingoStock->SetUpdateDayLineDB(false); // 先设置标识，防止重入时重复更新。
+			pTiingoStock->SetUpdateProfileDB(true);
+			pTiingoStock->UpdateDayLineDB();
+			pTiingoStock->UnloadDayLine();
+			//gl_BackgroundWorkingThread.Release();
+			//});
 			iUpdatedCount++;
 		}
 	}

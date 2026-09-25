@@ -87,8 +87,7 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader(),
-		               cpr::Timeout{ std::chrono::seconds(30) });
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
 
 		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);
@@ -100,8 +99,7 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStringsSplit = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStringsSplit) {
 		if (st.stop_requested()) break;
-		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader(),
-		               cpr::Timeout{ std::chrono::seconds(30) });
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
 
 		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
 			WebStatusCheck(m_r);

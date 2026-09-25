@@ -48,7 +48,6 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
-bool CMainFrame::sm_fGlobeInit = false;
 constexpr int iMaxUserToolbars = 10;
 constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
@@ -162,8 +161,6 @@ namespace {
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() {
-	ABSL_DCHECK(!sm_fGlobeInit);
-	sm_fGlobeInit = true;
 	ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
 
 	// 默认下后台工作线程数为32，使用系统配置降低至实际数量。
@@ -187,8 +184,6 @@ CMainFrame::~CMainFrame() {
 		gl_hFireBirdMutex = nullptr;
 	}
 
-	ABSL_DCHECK(sm_fGlobeInit);
-	sm_fGlobeInit = false;
 	ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
 
 	if (gl_pChinaMarket->IsUpdateOptionDB()) {
@@ -715,11 +710,13 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 	return SysCallPreTranslateMessage(pMsg);
 }
 
-void CMainFrame::CreateDocumentViewIfNeeded() {
+bool CMainFrame::CreateDocumentViewIfNeeded() {
 	auto pDoc = dynamic_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
 	if (pDoc == nullptr) {
 		CreateNewView();
+		return true;
 	}
+	return false;
 }
 
 void CMainFrame::CreateNewView() {
@@ -746,7 +743,10 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			pStock = gl_dataContainerTiingoStock.GetStock(strTemp);
 		}
 		SetCurrentStock(pStock);
-		CreateDocumentViewIfNeeded(); // 如果是空的MainFrame,则创建第一个Document-View.
+		if (!CreateDocumentViewIfNeeded()) { // 如果是空的MainFrame,则创建第一个Document-View.
+			auto pView = dynamic_cast<CFireBirdView*>(GetActiveFrame()->GetActiveView());
+			pView->SetCrossNeedErase(false);
+		}
 		SetCurrentDocumentStock(pStock);
 		SysCallInvalidate();
 		m_aStockCodeTemp[0] = 0x000;

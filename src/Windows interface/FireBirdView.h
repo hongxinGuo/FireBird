@@ -47,6 +47,8 @@ public:
 	bool IsShow250Days() const noexcept { return m_fShow250Days; }
 	bool IsShowBollingLine() const noexcept { return m_bShowBollingLine; }
 
+	void SetCrossNeedErase(bool flag) noexcept { m_bNeedErase = flag; }
+
 	// 操作
 public:
 	void Show(CDC* pdc);
@@ -126,6 +128,8 @@ protected:
 	bool m_fShow120Days;
 	bool m_fShow250Days;
 
+	bool m_bTracking{ false };
+
 	// 生成的消息映射函数
 public:
 	DECLARE_MESSAGE_MAP()
@@ -175,6 +179,7 @@ public:
 	afx_msg void OnUpdateShowAv250(CCmdUI* pCmdUI);
 	afx_msg void OnShowIndicatorBolling();
 	afx_msg void OnUpdateShowIndicatorBolling(CCmdUI* pCmdUI);
+	afx_msg void OnMouseLeave();
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

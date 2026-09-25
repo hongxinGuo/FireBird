@@ -18,12 +18,12 @@ size_t CVirtualContainer::GetNextIndex(size_t lIndex) {
 	return lIndex;
 }
 
-string CVirtualContainer::GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber, string (*StockCodeTransfer)(const string& str)) {
-	if (IsEmpty()) return StockCodeTransfer("600000.SH"); // 当没有证券可查询时，返回一个有效字符串
+string CVirtualContainer::GetNextStockInquiringMiddleStr(size_t& iStockIndex, const string& strDelimiter, size_t lTotalNumber) {
+	if (IsEmpty()) return XferStandardToSina("600000.SH"); // 当没有证券可查询时，返回一个有效字符串
 	string strReturn;
 	size_t iCount = 0;
 	while ((iStockIndex < Size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		strReturn += StockCodeTransfer(GetItemSymbol(iStockIndex));
+		strReturn += XferStandardToSina(GetItemSymbol(iStockIndex));
 		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
 			strReturn += strDelimiter;
 		}
@@ -34,9 +34,9 @@ string CVirtualContainer::GetNextStockInquiringMiddleStr(size_t& iStockIndex, co
 }
 
 string CVirtualContainer::GetNextSinaStockInquiringMiddleStr(const size_t lTotalNumber) {
-	return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina);
+	return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, ",", lTotalNumber);
 }
 
 string CVirtualContainer::GetNextTengxunStockInquiringMiddleStr(const size_t lTotalNumber) {
-	return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, ",", lTotalNumber, XferStandardToSina);
+	return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, ",", lTotalNumber);
 }

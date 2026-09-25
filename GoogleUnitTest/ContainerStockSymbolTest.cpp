@@ -146,11 +146,11 @@ namespace FireBirdTest {
 
 	TEST_F(CDataStockSymbolTest, TestGetNextStockInquiringMiddleStr) {
 		size_t i = 0;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i,",", 2, XferStandardToSina), "sh000000,sh000001");
+		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i,",", 2), "sh000000,sh000001");
 		EXPECT_EQ(i, 2);
 
 		i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i, ".", 3, XferStandardToSina), "sh000002.sh000003.sh000004");
+		EXPECT_EQ(s_pDataStockSymbol->GetNextStockInquiringMiddleStr(i, ".", 3), "sh000002.sh000003.sh000004");
 		EXPECT_EQ(i, 5);
 	}
 

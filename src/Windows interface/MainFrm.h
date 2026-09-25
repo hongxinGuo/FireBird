@@ -24,7 +24,7 @@ public:
 	// 特性
 
 	// 操作
-	void CreateDocumentViewIfNeeded();
+	bool CreateDocumentViewIfNeeded();
 	void CreateNewView();
 
 	CFireBirdDoc* GetCurrentDoc() { return dynamic_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument()); }
@@ -72,8 +72,6 @@ protected:
 
 	char m_aStockCodeTemp[30]{};
 	bool m_fCurrentEditStockChanged{ false };
-
-	static bool sm_fGlobeInit;
 
 	CVirtualStockPtr m_pCurrentStock{ nullptr };
 
