@@ -149,8 +149,8 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualDataSourceTest, TestGetCurrentInquiryTime) {
 		EXPECT_EQ(dataSource.GetCurrentInquiryTime(), 0);
-		dataSource.SetCurrentInquiryTime(10102020);
-		EXPECT_EQ(dataSource.GetCurrentInquiryTime(), 10102020);
+		dataSource.SetCurrentInquiryTime(1010.2020);
+		EXPECT_DOUBLE_EQ(dataSource.GetCurrentInquiryTime(), 1010.2020);
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestDiscardProduct) {

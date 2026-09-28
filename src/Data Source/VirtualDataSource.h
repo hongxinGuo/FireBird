@@ -251,8 +251,8 @@ public:
 	static auto GetTotalByteReadPerSecond() noexcept { return sm_lTotalByteReadPerSecond.load(); }
 	static void CalcTotalBytePerSecond() { sm_lTotalByteReadPerSecond = sm_lTotalByteRead.exchange(0); }
 
-	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
-	virtual time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime.load(); }
+	void SetCurrentInquiryTime(const double tt) noexcept { m_dCurrentInquiryTime = tt; }
+	virtual double GetCurrentInquiryTime() const noexcept { return m_dCurrentInquiryTime.load(); }
 
 	virtual void ReportErrorNotHandled(const string& sError);
 
@@ -279,7 +279,7 @@ protected:
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
 	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）
 	std::atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
-
+	std::atomic<double> m_dCurrentInquiryTime{ 0.0 }; // 平均接收数据所需时间（以毫秒计）
 	static std::atomic<int64_t> sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 	static std::atomic<int64_t> sm_lTotalByteReadPerSecond; // 
 

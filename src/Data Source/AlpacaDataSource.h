@@ -42,6 +42,9 @@ public:
 	std::pair<string, string> GetSecretKeyPair() const noexcept { return std::pair{ "APCA-API-SECRET-KEY", m_secret_key }; }
 	cpr::Header GetHeader() const noexcept { return cpr::Header{ GetApiKeyPair(), GetSecretKeyPair(), { "accept", "application/json" } }; }
 
+	void SetDayLineInquired(int number) noexcept { m_iDayLineInquired = number; }
+	int GetDayLineInquired() const noexcept { return m_iDayLineInquired; }
+
 protected:
 	unique_ptr<CAlpacaFactory> m_pAlpacaFactory;
 
@@ -52,6 +55,9 @@ protected:
 	// Alpaca token, 
 	string m_api_key;
 	string m_secret_key;
+
+	// 各任务执行状态
+	int m_iDayLineInquired{ 0 };
 
 private:
 	bool m_fAlpacaDataInquiryFinished{ false };

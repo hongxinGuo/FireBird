@@ -193,6 +193,7 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 }
 
 void CProductAlpacaStockDayLine::UpdateSystemStatus() {
+	gl_pAlpacaDataSource->SetDayLineInquired(gl_pAlpacaDataSource->GetDayLineInquired() + m_vStockSymbols.size());
 	ClearUpdateDayLineFlag();
 }
 

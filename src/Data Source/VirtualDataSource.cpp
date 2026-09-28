@@ -91,7 +91,7 @@ void CVirtualDataSource::Inquire(const std::stop_token& st) {
 		m_pCurrentProduct->UpdateSystemStatus();
 	}
 	SetHTTPStatusCode(m_pCurrentProduct->GetStatusCode());
-	SetCurrentInquiryTime(m_pCurrentProduct->GetElapsedTime() * 1000);
+	SetCurrentInquiryTime(m_pCurrentProduct->GetElapsedTime());
 	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }

@@ -111,6 +111,8 @@ CWorldMarket::~CWorldMarket() {
 }
 
 void CWorldMarket::Reset() {
+	m_iDayLineSaved = 0;
+
 	ResetFinnhub();
 	ResetTiingo();
 	ResetDataContainer();
@@ -1151,6 +1153,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 			gl_systemMessage.SetWorldMarketSavingFunction("T stock dayline");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			auto iUpdatedCount = TaskUpdateTiingoStockDayLineDB(st);
+			SetDayLineSaved(GetDayLineSaved() + iUpdatedCount);
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = std::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());

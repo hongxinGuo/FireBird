@@ -577,7 +577,7 @@ void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
 
 void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
 	dynamic_cast<CMainFrame*>(AfxGetMainWnd())->SetCurrentStock(GetDocument()->GetCurrentStock());
-	ABSL_DLOG(INFO) << "Set Focus";
+	//ABSL_DLOG(INFO) << "Set Focus";
 	CView::OnSetFocus(pOldWnd);
 }
 
@@ -603,7 +603,7 @@ BOOL CFireBirdView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
 }
 
 void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
-	if (!m_bTracking) {
+	if (!m_bTracking) { // 第一次鼠标移动，注册鼠标离开事件
 		TRACKMOUSEEVENT tme = {};
 		tme.cbSize = sizeof(tme);
 		tme.dwFlags = TME_LEAVE;
@@ -611,6 +611,7 @@ void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
 		TrackMouseEvent(&tme);
 		m_bTracking = true;
 	}
+
 	m_ptMouse = point;
 	if (GetDocument()->GetCurrentStock() != nullptr) {
 		if (GetDocument()->IsDataReady()) {
@@ -632,6 +633,19 @@ void CFireBirdView::OnMouseMove(UINT nFlags, CPoint point) {
 	}
 	//ABSL_DLOG(INFO) << "Mouse Move: " << point.x << ", " << point.y;
 	CView::OnMouseMove(nFlags, point);
+}
+
+void CFireBirdView::OnMouseLeave() {
+	m_bTracking = false; // 鼠标离开，重置标志
+
+	if (m_bNeedErase) { // 如果需要擦除十字线，擦除它
+		CDC* pDC = GetDC();
+		ShowCross(pDC, m_ptMouseOld);
+		m_bNeedErase = false;
+		ReleaseDC(pDC);
+	}
+
+	CView::OnMouseLeave();
 }
 
 void CFireBirdView::OnShowIndicatorKdj() {
@@ -737,17 +751,4 @@ void CFireBirdView::OnShowAv250() {
 void CFireBirdView::OnUpdateShowAv250(CCmdUI* pCmdUI) {
 	if (m_fShow250Days) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
-}
-
-void CFireBirdView::OnMouseLeave() {
-	m_bTracking = false;
-
-	if (m_bNeedErase) {
-		CDC* pDC = GetDC();
-		ShowCross(pDC, m_ptMouseOld);
-		m_bNeedErase = false;
-		ReleaseDC(pDC);
-	}
-
-	CView::OnMouseLeave();
 }

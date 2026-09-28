@@ -144,6 +144,10 @@ public:
 	bool IsDeleteTiingoDelistedStock() const noexcept { return m_bDeleteTiingoDelistedStock; }
 	void SetDeleteTiingoDelistedStock(bool fFlag) noexcept { m_bDeleteTiingoDelistedStock = fFlag; }
 
+	// 各种状态
+	void SetDayLineSaved(int number) noexcept { m_iDayLineSaved = number; }
+	int GetDayLineSaved() const noexcept { return m_iDayLineSaved; }
+
 protected:
 	long m_lCurrentUpdateDayLinePos{ 0 };
 	long m_lCurrentUpdateEPSSurprisePos{ 0 };
@@ -162,6 +166,8 @@ protected:
 	atomic_int m_iNoNewHighHigher{ 0 };
 
 	array<vector<shared_ptr<CTiingoStock>>, 1000> m_aTiingoIndustryCode; // 行业代码，SIC三位代码共1000个
+
+	int m_iDayLineSaved{ 0 };
 
 private:
 	// 各thread的std::jthread变量，用于自动结束线程。

@@ -536,7 +536,7 @@ void CMainFrame::UpdateStatus() {
 	//SysCallSetPaneText(13, s.c_str());
 
 	//更新当地时间的显示
-	SysCallSetPaneText(14, std::format("{:%T}", gl_pTimeZoneLocal->to_local(gl_tpNow)));;
+	SysCallSetPaneText(14, std::format("{:%T}", gl_pTimeZoneLocal->to_local(gl_tpNow)));
 }
 
 void CMainFrame::UpdateInnerSystemStatus() {
@@ -544,10 +544,10 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	// 更新实时数据读取时间
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case SinaRealTime_: // 新浪实时数据
-		s = std::format("{:5Ld}", gl_pSinaRTDataSource->GetCurrentInquiryTime());
+		s = std::format("{:5.3f}", gl_pSinaRTDataSource->GetCurrentInquiryTime());
 		break;
 	case TengxunRealTime_: // 更新腾讯实时数据读取时间
-		s = std::format("{:5Ld}", gl_pTengxunRTDataSource->GetCurrentInquiryTime());
+		s = std::format("{:5.3f}", gl_pTengxunRTDataSource->GetCurrentInquiryTime());
 		break;
 	default: // error
 		break;
@@ -555,28 +555,27 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(1, s);
 
 	// 更新实时数据分配及处理时间
-	s = std::format("{:8Ld}", gl_pChinaMarket->m_ttDistributeAndCalculateTime.load());
+	s = std::format("{:7.3f}", static_cast<double>(gl_pChinaMarket->m_ttDistributeAndCalculateTime.load()) / 1000);
 	SysCallSetInnerSystemPaneText(2, s);
 
 	// 更新TaskSchedulePer100ms()处理时间
-	const long time = gl_systemMessage.GetScheduleTaskTimePerSecond() / 1000;
-	s = std::format("{:5Ld}", time);
+	s = std::format("{:6.3f}", static_cast<double>(gl_systemMessage.GetScheduleTaskTimePerSecond()) / 1000);
 	SysCallSetInnerSystemPaneText(3, s);
 
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingEastmoneyDayLineServer()) { // 网易日线服务器
-		s = std::format("{:5Ld}", gl_pEastmoneyDayLineDataSource->GetCurrentInquiryTime());
+		s = std::format("{:5.3f}", gl_pEastmoneyDayLineDataSource->GetCurrentInquiryTime());
 	}
 	else if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { // 腾讯日线服务器
-		s = std::format("{:5Ld}", gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
+		s = std::format("{:5.3f}", gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
 	}
 	SysCallSetInnerSystemPaneText(4, s);
 
 	// 更新Finnhub数据读取时间
-	s = std::format("{:5Ld}", gl_pFinnhubDataSource->GetCurrentInquiryTime());
+	s = std::format("{:5.3f}", gl_pFinnhubDataSource->GetCurrentInquiryTime());
 	SysCallSetInnerSystemPaneText(5, s);
 	// 更新Tiingo数据读取时间
-	s = std::format("{:6Ld}", gl_pTiingoDataSource->GetCurrentInquiryTime());
+	s = std::format("{:6.3f}", gl_pTiingoDataSource->GetCurrentInquiryTime());
 	SysCallSetInnerSystemPaneText(6, s);
 
 	if (gl_systemMessage.GetProcessedFinnhubWebSocket() > 0) {
@@ -786,9 +785,9 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	CChinaStockPtr pStock;
-	CFireBirdView* pView = nullptr;
 
 	if (m_pCurrentStock != nullptr) {
+		CFireBirdView* pView;
 		switch (nChar) {
 		case 33: // PAGE UP
 			// last stock

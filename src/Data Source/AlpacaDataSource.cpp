@@ -49,6 +49,9 @@ bool CAlpacaDataSource::Reset() {
 	m_bUpdateTradingAsset = true;
 	m_fUpdateStockDayLine = false;// 更新日线时间由任务决定
 	m_fAlpacaDataInquiryFinished = false;
+
+	m_iDayLineInquired = 0;
+
 	return true;
 }
 
@@ -115,7 +118,8 @@ bool CAlpacaDataSource::GenerateStockDayLine() {
 		}
 		else {
 			SetUpdateStockDayLine(false);
-			ReportFinishedMsg("Alpaca dayline updated");
+			string msg = std::format("Alpaca dayline updated, inquired number:{:d}, saved number:{:d}", GetDayLineInquired(), gl_pWorldMarket->GetDayLineSaved());
+			ReportFinishedMsg(msg);
 			haveInquiry = false;
 		}
 	}
