@@ -1010,7 +1010,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_dataContainerFinnhubStock.UpdateInsiderTransactionDB(st);
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			if ((end - start).count() > 2000) {
+			if ((end - start).count() > 5000) {
 				string s = std::format("Finnhub insider transaction Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
@@ -1095,7 +1095,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				gl_dataContainerTiingoStock.UpdateProfileDB(st);
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-				if ((end - start).count() > 2000) {
+				if ((end - start).count() > 5000) {
 					string s = std::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
 					gl_systemMessage.PushInnerSystemInformationMessage(s);
 				}
@@ -1135,7 +1135,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_dataContainerTiingoStock.UpdateFinancialStateDB(st);
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			if ((end - start).count() > 2000) {
+			if ((end - start).count() > 5000) {
 				string s = std::format("Tiingo Financial statement Saving time: {:Ld}ms", (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
@@ -1155,7 +1155,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB() {
 			auto iUpdatedCount = TaskUpdateTiingoStockDayLineDB(st);
 			SetDayLineSaved(GetDayLineSaved() + iUpdatedCount);
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			if ((end - start).count() > 2000) {
+			if ((end - start).count() > 5000) {
 				string s = std::format("{:d} Tiingo Stock dayLine Saving time: {:Ld}ms", iUpdatedCount, (end - start).count());
 				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}

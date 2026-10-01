@@ -3,6 +3,7 @@
 using std::string;
 using std::vector;
 using std::shared_ptr;
+using std::chrono::system_clock;
 
 class CTiingoMarketNews final {
 public:
@@ -24,8 +25,8 @@ public:
 	string m_strSource;
 	string m_strDescription;
 	string m_strUrl;
-	long long m_llCrawlDate;
-	long long m_LLPublishDate;
+	system_clock::time_point m_tpCrawlDate;
+	system_clock::time_point m_tpPublishDate;
 	// 无需存储数据区
 };
 

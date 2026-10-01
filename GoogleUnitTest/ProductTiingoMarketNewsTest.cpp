@@ -141,18 +141,29 @@ namespace FireBirdTest {
 		switch (m_index) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvMarketNews->size(), 1);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpCrawlDate.time_since_epoch().count(), 15488004016960000);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpPublishDate.time_since_epoch().count(), 15488002200000000);
+
 			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvMarketNews->size(), 1);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpCrawlDate.time_since_epoch().count(), 15488004016960000);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpPublishDate.time_since_epoch().count(), 15488002200000000);
 			break;
 		case 3: // 缺乏address项
 			EXPECT_EQ(m_pvMarketNews->size(), 1);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpCrawlDate.time_since_epoch().count(), 15488004016960000);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpPublishDate.time_since_epoch().count(), 15488002200000000);
 			break;
 		case 4:
 			EXPECT_EQ(m_pvMarketNews->size(), 1);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpCrawlDate.time_since_epoch().count(), 15488004016960000);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpPublishDate.time_since_epoch().count(), 15488002200000000);
 			break;
 		case 10:
 			EXPECT_EQ(m_pvMarketNews->size(), 1);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpCrawlDate.time_since_epoch().count(), 15488004016960000);
+			EXPECT_EQ(m_pvMarketNews->at(0).m_tpPublishDate.time_since_epoch().count(), 15488002200000000);
 			break;
 		default:
 			break;

@@ -10,8 +10,6 @@
 #include "ContainerTiingoStock.h"
 #include "TiingoStock.h"
 
-#include"Thread.h"
-
 #include"MockWorldMarket.h"
 
 #include"FinnhubDataSource.h"

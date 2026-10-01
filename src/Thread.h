@@ -18,6 +18,3 @@ extern concurrencpp::runtime gl_runtime;
 extern concurrencpp::thread_pool_executor gl_webInquiryExecutor; // 网络申请线程池工作线程运行调度器
 
 extern long gl_concurrency_level; // 并行计算允许最大数量
-
-// 装载当前股票日线
-UINT TaskLoadSelectedStockHistoryData(); // 此线程返回值为111

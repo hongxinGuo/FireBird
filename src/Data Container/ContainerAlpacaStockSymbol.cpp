@@ -2,7 +2,6 @@
 
 #include"containerAlpacaStockSymbol.h"
 #include "AlpacaStock.h"
-#include "InfoReport.h"
 
 #include<sqlpp23/sqlpp23.h>
 #include "dataBaseConnector.h"

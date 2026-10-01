@@ -10,7 +10,6 @@
 #include "FireBirdDoc.h"
 
 #include "ContainerTiingoStockMonthLine.h"
-#include "Thread.h"
 
 #include"ChinaStock.h"
 #include "ContainerChinaStockMonthLine.h"

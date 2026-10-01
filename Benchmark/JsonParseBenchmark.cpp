@@ -15,11 +15,11 @@
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
 #include "ProductTiingoStockProfile.h"
-
 #include "Thread.h"
 
-#include"simdjson.h"
 #include "SystemConfiguration.h"
+#include"simdjson.h"
+
 using namespace simdjson;
 using namespace std;
 

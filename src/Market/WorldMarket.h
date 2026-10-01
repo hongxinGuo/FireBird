@@ -134,8 +134,6 @@ public:
 	void DeleteTiingoDayLine(const shared_ptr<CTiingoStock>& pStock);
 	void DeleteTiingoFinancialStatement(const shared_ptr<CTiingoStock>& pStock);
 
-	bool IsReadyToInquireWebData() override { return !IsResetTime(); }
-
 	void SetPermitUpdateTiingoFundamentalDefinitionDB(bool fFlag) noexcept { m_fPermitUpdateTiingoFundamentalDefinitionDB = fFlag; }
 	bool IsPermitUpdateTiingoFundamentalDefinitionDB() const noexcept { return m_fPermitUpdateTiingoFundamentalDefinitionDB; }
 

@@ -18,7 +18,6 @@
 #include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
 #include "TengxunRTDataSource.h"
-#include "Thread.h"
 #include "TiingoCryptoWebSocket.h"
 #include "TiingoDataSource.h"
 #include "TiingoForexWebSocket.h"

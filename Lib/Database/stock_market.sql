@@ -471,8 +471,8 @@ CREATE TABLE `tiingo_market_news` (
   `tags` varchar(400) NOT NULL DEFAULT '‘ ’',
   `tickers` varchar(200) NOT NULL DEFAULT '‘ ’',
   `title` varchar(100) NOT NULL DEFAULT '‘ ’',
-  `crawlDate` varchar(100) NOT NULL DEFAULT '‘ ’',
-  `publishedDate` varchar(100) NOT NULL DEFAULT '‘ ’'
+  `crawlDate` datetime NOT NULL,
+  `publishedDate` datetime NOT NULL
 );
 
 CREATE TABLE `tiingo_stock_52week_high` (

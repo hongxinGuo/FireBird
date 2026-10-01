@@ -119,7 +119,7 @@ public:
 
 	bool IsMarketClosed() const { return GetMarketTime() > GetMarketCloseTime(); }
 
-	virtual bool IsReadyToInquireWebData() { return true; }
+	virtual bool IsReadyToInquireWebData() { return !IsResetTime(); }
 
 	virtual bool IsTimeToResetSystem(local_seconds) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }

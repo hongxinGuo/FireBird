@@ -2487,13 +2487,13 @@ namespace StockMarket {
     };
     struct CrawlDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(crawlDate, crawlDate);
-      using data_type = ::sqlpp::text;
-      using has_default = std::true_type;
+      using data_type = ::sqlpp::timestamp;
+      using has_default = std::false_type;
     };
     struct PublishedDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(publishedDate, publishedDate);
-      using data_type = ::sqlpp::text;
-      using has_default = std::true_type;
+      using data_type = ::sqlpp::timestamp;
+      using has_default = std::false_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(tiingo_market_news, tiingoMarketNews);
     template<typename T>
@@ -2508,7 +2508,9 @@ namespace StockMarket {
                Title,
                CrawlDate,
                PublishedDate>;
-    using _required_insert_columns = sqlpp::detail::type_set<>;
+    using _required_insert_columns = sqlpp::detail::type_set<
+               sqlpp::column_t<sqlpp::table_t<TiingoMarketNews_>, CrawlDate>,
+               sqlpp::column_t<sqlpp::table_t<TiingoMarketNews_>, PublishedDate>>;
   };
   using TiingoMarketNews = ::sqlpp::table_t<TiingoMarketNews_>;
 

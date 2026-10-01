@@ -22,14 +22,17 @@ string CVirtualContainer::GetNextStockInquiringMiddleStr(size_t& iStockIndex, co
 	if (IsEmpty()) return XferStandardToSina("600000.SH"); // 当没有证券可查询时，返回一个有效字符串
 	string strReturn;
 	size_t iCount = 0;
-	while ((iStockIndex < Size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		strReturn += XferStandardToSina(GetItemSymbol(iStockIndex));
+	size_t size = Size();
+	while ((iStockIndex < size) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+		auto symbol = GetItemSymbol(iStockIndex);
+		ABSL_DCHECK(!symbol.empty());
+		strReturn += XferStandardToSina(symbol);
 		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
 			strReturn += strDelimiter;
 		}
+		ABSL_DCHECK(strReturn.size() < 10485760);
 		iStockIndex = GetNextIndex(iStockIndex);
 	}
-
 	return strReturn;
 }
 

@@ -30,7 +30,7 @@ public:
 	void CloseAllThread();
 	void ResetMarket() final;
 	bool IsResetTime() override;
-	local_seconds GetResetTime() final; // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
+	local_seconds GetResetTime() final; // chinaMarket重置时间为每日91300。
 	void Reset();
 
 	void PrepareToCloseMarket() final;
