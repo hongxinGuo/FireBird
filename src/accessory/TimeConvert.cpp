@@ -6,9 +6,6 @@ using std::istringstream;
 using std::chrono::weekday;
 
 local_days XferToLocalDays(const string& sDate) {
-	year_month_day ymd;
-	istringstream ss(sDate);
-	from_stream(ss, "%F", ymd);
 	istringstream ss2(sDate);
 	local_days ls;
 	ss2 >> parse("%F", ls);

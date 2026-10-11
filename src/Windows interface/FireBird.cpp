@@ -166,8 +166,6 @@ int CFireBirdApp::ExitInstance() {
 	if (gl_hFireBirdMutex != nullptr) ::CloseHandle(gl_hFireBirdMutex);
 
 	gl_dailyLogger->info("FireBird App exit");
-	//无论跟踪到了什么都在退出时存储之。
-	gl_traceLogger->dump_backtrace();
 
 	// Under VisualStudio, this must be called before main finishes to work around a known VS issue
 	spdlog::drop_all();

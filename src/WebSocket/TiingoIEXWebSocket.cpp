@@ -152,8 +152,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				pIEXData->m_sDateTime = jsonGetString(it);
 				ss.clear();
 				ss.str(pIEXData->m_sDateTime);
-				from_stream(ss, "%FT%H:%M:%12S%Ez", tpTime, &sString, &Minutes);
-				pIEXData->m_tpTime = time_point_cast<seconds>(tpTime);
+				ss >> std::chrono::parse("%FT%T%Ez", pIEXData->m_tpTime);
 				pIEXData->m_sSymbol = jsonGetString(++it);
 				pIEXData->m_dLastPrice = jsonGetDouble(++it);
 				gl_SystemData.PushTiingoIEXSocket(pIEXData);

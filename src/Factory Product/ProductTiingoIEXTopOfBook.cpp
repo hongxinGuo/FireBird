@@ -154,17 +154,14 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::Parse(const string& text) {
 				s1 = simdjsonGetStringView(itemValue, "ticker");
 				IEXLastTopOFBook->m_strTicker = s1;
 				s1 = simdjsonGetStringView(itemValue, "timestamp");
-				ss.clear();
-				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%Ez", IEXLastTopOFBook->m_timeStamp);
+				istringstream ss1(s1);
+				ss1 >> chrono::parse("%FT%T%Ez", IEXLastTopOFBook->m_timeStamp);
 				s1 = simdjsonGetStringView(itemValue, "lastSaleTimestamp");
-				ss.clear();
-				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook->m_lastSale);
+				istringstream ss2(s1);
+				ss2 >> chrono::parse("%FT%T%0z", IEXLastTopOFBook->m_lastSale);
 				s1 = simdjsonGetStringView(itemValue, "quoteTimestamp");
-				ss.clear();
-				ss.str(s1);
-				chrono::from_stream(ss, "%FT%T%0z", IEXLastTopOFBook->m_quote);
+				istringstream ss3(s1);
+				ss3 >> chrono::parse("%FT%T%0z", IEXLastTopOFBook->m_quote);
 			} catch (simdjson_error& error) {
 				ReportJSonErrorToSystemMessage("Tiingo IEX Top of Book ", error.what());
 			}

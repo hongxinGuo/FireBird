@@ -187,8 +187,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 				sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 				ss.clear();
 				ss.str(pForexData->m_sDateTime);
-				from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
-				pForexData->m_tpTime = time_point_cast<seconds>(tpTime);
+				ss >> std::chrono::parse("%FT%T%Ez", pForexData->m_tpTime);
 				pForexData->m_dBidSize = jsonGetDouble(++it); // 买价数量
 				pForexData->m_dBidPrice = jsonGetDouble(++it); // 买价
 				pForexData->m_dMidPrice = jsonGetDouble(++it); // 中间价 （BidPrice + AskPrice)/2

@@ -321,7 +321,7 @@ local_days CProductAlpacaStockDayLine::GetStartInquireDay(size_t stockIndex) con
 ///				"l" : 5.095,
 ///				"n" : 2736,
 ///				"o" : 5.195,
-///				"t" : "2026-08-03T04:00:00Z",
+///				"t" : "2026-08-03T04:00:00Z", 这里使用的是utc时间。美股的时间要晚于伦敦时间4小时，故是T04:00:00Z
 ///				"v" : 1398585,
 ///				"vw" : 5.172631
 ///		},
@@ -348,20 +348,20 @@ local_days CProductAlpacaStockDayLine::GetStartInquireDay(size_t stockIndex) con
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<TiingoDayLine>> CProductAlpacaStockDayLine::Parse(const string& text, const string& stockSymbol) {
 	auto pvDayLine = make_shared<vector<TiingoDayLine>>();
-	CTiingoStock stock;
 	TiingoDayLine tiingoDayLine;
 	nlohmannJson j = nlohmann::json::parse(text, nullptr, false);
+	auto bars_data = j.at("bars").get<std::map<std::string, std::vector<Bar>>>();
 
 	if (!j.at("next_page_token").is_null()) {
 		ABSL_DCHECK(false) << stockSymbol;
-		gl_dailyWebLogger->info("Alpaca stock dayLine Parse parse error: next page not null");
+		gl_dailyWebLogger->info("Alpaca stock {} dayLine Parse parse error: next page not null", stockSymbol);
 		return pvDayLine;
 	}
 
-	auto bars_data = j.at("bars").get<std::map<std::string, std::vector<Bar>>>();
 	for (const auto& [symbol, bars] : bars_data) {
 		tiingoDayLine.m_symbol = symbol;
 		for (const auto& bar : bars) {
+			CTiingoStock stock;
 			CTiingoCandleLine dayLine;
 			chrono::sys_seconds utc_tp;
 			istringstream ss(bar.timeStamp);

@@ -944,4 +944,5 @@ namespace FireBirdTest {
 		EXPECT_EQ(vString.at(8), "BINANCE:MDAETH");
 		EXPECT_EQ(vString.at(9), "BINANCE:OCEANBTC");
 	}
+
 }
