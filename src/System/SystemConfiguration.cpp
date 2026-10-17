@@ -389,6 +389,11 @@ void CSystemConfiguration::Update(shared_ptr<nlohmannJson> pJsonData) {
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
+	try {
+		m_bUsingAlpacaIEXWebSocket = pJsonData->at("WebSocket").at("UsingAlpacaIEXWebSocket"); // 是否使用Alpaca的WebSocket
+	} catch (nlohmannJson::out_of_range&) {
+		m_fUpdateDB = true;
+	}
 
 	// Financial Data Update Rate
 	try {
@@ -516,6 +521,7 @@ void CSystemConfiguration::UpdateJsonData(shared_ptr<nlohmannJson> pJsonData) {
 	(*pJsonData)["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
 	(*pJsonData)["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
 	(*pJsonData)["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
+	(*pJsonData)["WebSocket"]["UsingAlpacaIEXWebSocket"] = m_bUsingAlpacaIEXWebSocket;
 
 	(*pJsonData)["FinancialDataUpdateRate"]["StockProfile"] = m_iStockProfileUpdateRate;
 	(*pJsonData)["FinancialDataUpdateRate"]["StockBasicFinancial"] = m_iStockBasicFinancialUpdateRate;

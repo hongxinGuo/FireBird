@@ -594,6 +594,9 @@
     <ClInclude Include="..\src\Factory Product\ProductAlpacaStockSymbol.h">
       <Filter>Factory-Product\Alpaca</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\WebSocket\AlpacaIEXWebSocket.h">
+      <Filter>Web Socket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1051,6 +1054,9 @@
     </ClCompile>
     <ClCompile Include="..\src\accessory\log.cpp">
       <Filter>Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\AlpacaIEXWebSocket.cpp">
+      <Filter>Web Socket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include "PropertiesWnd.h"
 
 #include "AlpacaDataSource.h"
+#include "AlpacaIEXWebSocket.h"
 #include "ChinaMarket.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "FinnhubDataSource.h"
@@ -407,6 +408,9 @@ void CPropertiesWnd::InitPropList() {
 	m_pPropTiingoCryptoWebSocket = new CGridProperty(_T("TiingoCrypto"), _T("Closed"));
 	m_pPropTiingoCryptoWebSocket->Enable(false);
 	pGroup6->AddSubItem(m_pPropTiingoCryptoWebSocket);
+	m_pPropAlpacaIEXWebSocket = new CGridProperty(_T("AlpacaIEX"), _T("Closed"));
+	m_pPropAlpacaIEXWebSocket->Enable(false);
+	pGroup6->AddSubItem(m_pPropAlpacaIEXWebSocket);
 	m_wndPropList.AddProperty(pGroup6);
 }
 
@@ -618,6 +622,22 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		break;
 	}
 	m_pPropTiingoCryptoWebSocket->SetValue(str);
+
+	switch (gl_pAlpacaIEXWebSocket->GetState()) {
+	case ix::ReadyState::Closed:
+		str = "Closed";
+		break;
+	case ix::ReadyState::Closing:
+		str = "Closing";
+		break;
+	case ix::ReadyState::Connecting:
+		str = "Connecting";
+		break;
+	case ix::ReadyState::Open:
+		str = "Open";
+		break;
+	}
+	m_pPropAlpacaIEXWebSocket->SetValue(str);
 
 	CDockablePane::OnTimer(nIDEvent);
 }

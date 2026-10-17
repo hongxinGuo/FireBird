@@ -68,4 +68,4 @@ protected:
 
 using CTiingoIEXWebSocketPtr = shared_ptr<CTiingoIEXWebSocket>;
 
-extern CTiingoIEXWebSocketPtr gl_pTiingoIEXWebSocket;
+inline CTiingoIEXWebSocketPtr gl_pTiingoIEXWebSocket;

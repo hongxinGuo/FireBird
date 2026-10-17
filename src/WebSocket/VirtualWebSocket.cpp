@@ -20,7 +20,7 @@ CVirtualWebSocket::CVirtualWebSocket() {
 }
 
 CVirtualWebSocket::~CVirtualWebSocket() {
-	Disconnect();
+	if (IsOpen()) Disconnect();
 }
 
 void CVirtualWebSocket::Reset() {

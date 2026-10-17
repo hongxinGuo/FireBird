@@ -189,6 +189,8 @@
 #define ID_TIINGO_MAINTAIN_DAYLINE_DB   32987
 #define ID_BUILD_32988                  32988
 #define ID_DO_PROCESS_TODAY_STOCK       32989
+#define ID_32990                        32990
+#define ID_RECORD_ALPACA_IEX_WEB_SOCKET 32991
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -232,7 +234,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        326
-#define _APS_NEXT_COMMAND_VALUE         32990
+#define _APS_NEXT_COMMAND_VALUE         32992
 #define _APS_NEXT_CONTROL_VALUE         1022
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

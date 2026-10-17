@@ -122,6 +122,7 @@ public:
 	static void ProcessTiingoIEXWebSocketData();
 	static void ProcessTiingoCryptoWebSocketData();
 	static void ProcessTiingoForexWebSocketData();
+	static void ProcessAlpacaIEXWebSocketData();
 
 	void UpdateFinnhubStockFromWebSocket();
 	void UpdateFinnhubStockFromTiingoIEXSocket(const shared_ptr<CTiingoIEXSocket>& pTiingoIEXbData);

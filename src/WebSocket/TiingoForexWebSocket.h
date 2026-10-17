@@ -58,4 +58,4 @@ protected:
 
 using CTiingoForexWebSocketPtr = shared_ptr<CTiingoForexWebSocket>;
 
-extern CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
+inline CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;

@@ -83,6 +83,9 @@ public:
 	int GetProcessedTiingoForexWebSocket() const noexcept { return m_iProcessedTiingoForexWebSocket; }
 	void SetProcessedTiingoForexWebSocket(const int iValue) noexcept { m_iProcessedTiingoForexWebSocket = iValue; }
 	void ClearProcessedTiingoForexWebSocket() noexcept { m_iProcessedTiingoForexWebSocket = 0; }
+	int GetProcessedAlpacaIEXWebSocket() const noexcept { return m_iProcessedAlpacaIEXWebSocket; }
+	void SetProcessedAlpacaIEXWebSocket(const int iValue) noexcept { m_iProcessedAlpacaIEXWebSocket = iValue; }
+	void ClearProcessedAlpacaIEXWebSocket() noexcept { m_iProcessedAlpacaIEXWebSocket = 0; }
 
 	void SetStockCodeForInquiringRTData(const string& strStockCode);
 	string GetStockCodeForInquiringRTData() const;
@@ -131,6 +134,7 @@ protected:
 	int m_iProcessedTiingoCryptoWebSocket;
 	int m_iProcessedTiingoForexWebSocket;
 	int m_iProcessedTiingoIEXWebSocket;
+	int m_iProcessedAlpacaIEXWebSocket;
 
 	string m_sStockCodeForInquiringRTData;
 	string m_sStockCodeForInquiryDayLine;

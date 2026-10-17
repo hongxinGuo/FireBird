@@ -208,6 +208,12 @@ public:
 		m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket;
 	}
 
+	[[nodiscard]] bool IsUsingAlpacaIEXWebSocket() const noexcept { return m_bUsingAlpacaIEXWebSocket; }
+	void SetUsingAlpacaIEXWebSocket(const bool bUsingAlpacaIEXWebSocket) noexcept {
+		m_fUpdateDB = true;
+		m_bUsingAlpacaIEXWebSocket = bUsingAlpacaIEXWebSocket;
+	}
+
 	// ChinaMarket
 	[[nodiscard]] int GetSavingChinaMarketStockDayLineThread() const noexcept { return m_iSavingChinaMarketStockDayLineThread; }
 	void SetSavingChinaMarketStockDayLineThread(const int iSavingChinaMarketStockDayLineThread) noexcept {
@@ -393,6 +399,7 @@ protected:
 	bool m_bUsingTiingoIEXWebSocket{ true };
 	bool m_bUsingTiingoCryptoWebSocket{ true };
 	bool m_bUsingTiingoForexWebSocket{ true };
+	bool m_bUsingAlpacaIEXWebSocket{ true };
 
 	// ChinaMarket
 	int m_iSavingChinaMarketStockDayLineThread{ 4 }; // 存储日线历史数据时的并发线程数。

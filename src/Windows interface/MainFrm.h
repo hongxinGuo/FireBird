@@ -158,4 +158,6 @@ public:
 	afx_msg void OnUpdateTiingoMaintainDaylineDb(CCmdUI* pCmdUI);
 	afx_msg void OnDoProcessTodayStock();
 	afx_msg void OnUpdateDoProcessTodayStock(CCmdUI* pCmdUI);
+	afx_msg void OnRecordAlpacaIexWebSocket();
+	afx_msg void OnUpdateRecordAlpacaIexWebSocket(CCmdUI* pCmdUI);
 };

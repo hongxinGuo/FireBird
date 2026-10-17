@@ -46,4 +46,4 @@ protected:
 
 using CFinnhubWebSocketPtr = shared_ptr<CFinnhubWebSocket>;
 
-extern CFinnhubWebSocketPtr gl_pFinnhubWebSocket;
+inline CFinnhubWebSocketPtr gl_pFinnhubWebSocket;

@@ -118,6 +118,7 @@ protected:
 	CGridProperty* m_pPropTiingoIEXWebSocket{ nullptr };
 	CGridProperty* m_pPropTiingoForexWebSocket{ nullptr };
 	CGridProperty* m_pPropTiingoCryptoWebSocket{ nullptr };
+	CGridProperty* m_pPropAlpacaIEXWebSocket{ nullptr };
 
 	// chinaMarket realtime group
 

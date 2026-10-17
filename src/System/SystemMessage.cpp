@@ -189,4 +189,5 @@ CSystemMessage::CSystemMessage() {
 	m_iProcessedTiingoIEXWebSocket = 0;
 	m_iProcessedTiingoCryptoWebSocket = 0;
 	m_iProcessedTiingoForexWebSocket = 0;
+	m_iProcessedAlpacaIEXWebSocket = 0;
 }

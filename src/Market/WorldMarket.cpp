@@ -31,6 +31,7 @@
 #include<sqlpp23/sqlpp23.h>
 
 #include "AlpacaDataSource.h"
+#include "AlpacaIEXWebSocket.h"
 #include "containerAlpacaStockSymbol.h"
 #include "ContainerFinnhubStock.h"
 #include "containerChosenCrypto.h"
@@ -105,8 +106,6 @@ CWorldMarket::CWorldMarket() {
 }
 
 CWorldMarket::~CWorldMarket() {
-	PrepareToCloseMarket();
-
 	CloseAllThread();
 }
 
@@ -427,8 +426,8 @@ void CWorldMarket::TaskCreateTask() {
 	AddTask(WORLD_MARKET_UPDATE_DB_, GetNextTime(GetMarketTime(), 0h, 0min, 40s - seconds));// 更新股票简介数据库的任务
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA_, GetMarketTime());
 	AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 0h, 0min, 25s)); // 开始下载日线历史数据
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // Note:测试完后再允许
-	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_, GetNextTime(GetMarketTime(), 0h, 0min, 10s - seconds)); // Note:测试完后再允许
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // 两分钟后开始监测WebSocket
 	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_, GetNextTime(GetMarketTime(), 0h, 3min, 0s - seconds)); // 三分钟计算Nasdaq100 200MA比率
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 1h, 0min, 20s)); // 开始下载日线历史数据
 	//AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE_, GetNextTime(GetMarketTime(), 1h, 0min, 0s - seconds)); //todo: 一小时后处理Tiingo日线数据
@@ -448,6 +447,8 @@ void CWorldMarket::TaskProcessWebSocketData() {
 
 void CWorldMarket::TaskMonitorWebSocket() {
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
+	gl_pAlpacaIEXWebSocket->MonitorWebSocket(gl_dataContainerTiingoChosenStock.GetSymbols());
+
 	if (!IsSystemReady()) return;
 
 	gl_pFinnhubWebSocket->MonitorWebSocket(GetFinnhubWebSocketSymbols());
@@ -1475,10 +1476,12 @@ vector<string> CWorldMarket::GetFinnhubWebSocketSymbols() {
 void CWorldMarket::DisconnectAllWebSocket() {
 	//本函数只在系统退出时调用
 	//ABSL_DCHECK(gl_systemConfiguration.IsExitingSystem()); 
-	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_pFinnhubWebSocket->Disconnect();
-	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_pTiingoIEXWebSocket->Disconnect();
-	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_pTiingoCryptoWebSocket->Disconnect();
-	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) gl_pTiingoForexWebSocket->Disconnect();
+	if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && gl_pFinnhubWebSocket) gl_pFinnhubWebSocket->Disconnect();
+	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && gl_pTiingoIEXWebSocket) gl_pTiingoIEXWebSocket->Disconnect();
+	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && gl_pTiingoCryptoWebSocket) gl_pTiingoCryptoWebSocket->Disconnect();
+	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && gl_pTiingoForexWebSocket) gl_pTiingoForexWebSocket->Disconnect();
+	ABSL_DCHECK(gl_pAlpacaIEXWebSocket && gl_pAlpacaIEXWebSocket->IsOpen());
+	if (gl_systemConfiguration.IsUsingAlpacaIEXWebSocket() && gl_pAlpacaIEXWebSocket) gl_pAlpacaIEXWebSocket->Disconnect();
 }
 
 void CWorldMarket::ProcessWebSocketData() {
@@ -1486,6 +1489,7 @@ void CWorldMarket::ProcessWebSocketData() {
 	if (gl_pTiingoIEXWebSocket->DataSize() > 0) ProcessTiingoIEXWebSocketData();
 	if (gl_pTiingoCryptoWebSocket->DataSize() > 0) ProcessTiingoCryptoWebSocketData();
 	if (gl_pTiingoForexWebSocket->DataSize() > 0) ProcessTiingoForexWebSocketData();
+	if (gl_pAlpacaIEXWebSocket->DataSize() > 0) ProcessAlpacaIEXWebSocketData();
 }
 
 /*
@@ -1575,6 +1579,14 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 		gl_pTiingoForexWebSocket,
 		"Tiingo Forex: ",
 		[](const size_t size) { gl_systemMessage.SetProcessedTiingoForexWebSocket(size); }
+	);
+}
+
+void CWorldMarket::ProcessAlpacaIEXWebSocketData() {
+	ProcessWebSocketDataGeneric(
+		gl_pAlpacaIEXWebSocket,
+		"Alpaca IEX: ",
+		[](const size_t size) { gl_systemMessage.SetProcessedAlpacaIEXWebSocket(size); }
 	);
 }
 

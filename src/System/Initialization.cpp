@@ -7,6 +7,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 #include "AlpacaDataSource.h"
+#include "AlpacaIEXWebSocket.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"TengxunDayLineDataSource.h"
@@ -107,6 +108,7 @@ namespace {
 		gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
 		gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
 		gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
+		gl_pAlpacaIEXWebSocket = make_shared<CAlpacaIEXWebSocket>();
 	}
 
 	void CreateMarket() {
@@ -125,6 +127,7 @@ namespace {
 		ABSL_DCHECK(gl_pTiingoIEXWebSocket != nullptr);
 		ABSL_DCHECK(gl_pTiingoCryptoWebSocket != nullptr);
 		ABSL_DCHECK(gl_pTiingoForexWebSocket != nullptr);
+		ABSL_DCHECK(gl_pAlpacaIEXWebSocket != nullptr);
 
 		ABSL_DCHECK(gl_pChinaMarket == nullptr);
 		ABSL_DCHECK(gl_pWorldMarket == nullptr);
@@ -217,6 +220,8 @@ void SystemShutdown() {
 	gl_pTiingoCryptoWebSocket = nullptr;
 	gl_pTiingoForexWebSocket = nullptr;
 	gl_pTiingoIEXWebSocket = nullptr;
+	ABSL_DCHECK(gl_pAlpacaIEXWebSocket && gl_pAlpacaIEXWebSocket->IsClosed());
+	gl_pAlpacaIEXWebSocket = nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

@@ -178,6 +178,7 @@
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandle.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandle.h" />
+    <ClInclude Include="..\src\WebSocket\AlpacaIEXWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h" />
@@ -353,6 +354,7 @@
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandle.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandle.cpp" />
+    <ClCompile Include="..\src\WebSocket\AlpacaIEXWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\TiingoCryptoWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\TiingoForexWebSocket.cpp" />

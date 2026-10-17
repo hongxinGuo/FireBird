@@ -106,12 +106,6 @@ CAlpacaDataSourcePtr gl_pAlpacaDataSource = nullptr;
 CAccessoryDataSourcePtr gl_pAccessoryDataSource = nullptr;
 vector<CVirtualDataSourcePtr> gl_vDataSource; // 各数据源，用于主动结束线程时使用。
 
-// Web socket， 皆为唯一实例。
-CFinnhubWebSocketPtr gl_pFinnhubWebSocket;
-CTiingoIEXWebSocketPtr gl_pTiingoIEXWebSocket;
-CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
-CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
-
 // 处理后的数据
 ConcurrentQueue<shared_ptr<CWebRTData>> gl_qChinaMarketRTData(100000); // 中国市场新浪实时数据队列。
 ConcurrentQueue<shared_ptr<CDayLineWebData>> gl_qDayLine(1000); // 日线数据

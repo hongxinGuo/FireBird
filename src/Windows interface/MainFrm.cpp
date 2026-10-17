@@ -24,6 +24,7 @@
 #include <ixwebsocket/IXNetSystem.h>
 
 #include "AlpacaDataSource.h"
+#include "AlpacaIEXWebSocket.h"
 #include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
@@ -112,6 +113,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_TIINGO_MAINTAIN_DAYLINE_DB, &CMainFrame::OnUpdateTiingoMaintainDaylineDb)
 	ON_COMMAND(ID_DO_PROCESS_TODAY_STOCK, &CMainFrame::OnDoProcessTodayStock)
 	ON_UPDATE_COMMAND_UI(ID_DO_PROCESS_TODAY_STOCK, &CMainFrame::OnUpdateDoProcessTodayStock)
+	ON_COMMAND(ID_RECORD_ALPACA_IEX_WEB_SOCKET, &CMainFrame::OnRecordAlpacaIexWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_ALPACA_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordAlpacaIexWebSocket)
 END_MESSAGE_MAP()
 
 namespace {
@@ -996,6 +999,28 @@ void CMainFrame::OnUpdateRecordTiingoIEXWebSocket(CCmdUI* pCmdUI) {
 	}
 }
 
+void CMainFrame::OnRecordAlpacaIexWebSocket() {
+	if (gl_systemConfiguration.IsUsingAlpacaIEXWebSocket()) {
+		gl_systemConfiguration.SetUsingAlpacaIEXWebSocket(false);
+		if (gl_pWorldMarket->IsSystemReady()) gl_pAlpacaIEXWebSocket->TaskDisconnect();
+	}
+	else {
+		gl_systemConfiguration.SetUsingAlpacaIEXWebSocket(true);
+		if (gl_pWorldMarket->IsSystemReady()) {
+			gl_pAlpacaIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerTiingoChosenStock.GetSymbols());
+		}
+	}
+}
+
+void CMainFrame::OnUpdateRecordAlpacaIexWebSocket(CCmdUI* pCmdUI){
+	if (gl_systemConfiguration.IsUsingAlpacaIEXWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
+}
+
 void CMainFrame::OnRebuildStockProfile() {
 	gl_pWorldMarket->RebuildFinnhubStockProfile();
 }
@@ -1204,3 +1229,5 @@ void CMainFrame::OnUpdateDoProcessTodayStock(CCmdUI* pCmdUI) {
 		pCmdUI->SetCheck(false);
 	}
 }
+
+

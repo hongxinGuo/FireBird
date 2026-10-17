@@ -62,4 +62,4 @@ protected:
 
 using CTiingoCryptoWebSocketPtr = shared_ptr<CTiingoCryptoWebSocket>;
 
-extern CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
+inline CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
