@@ -29,9 +29,9 @@ CVirtualMarket::CVirtualMarket() {
 void CVirtualMarket::ScheduleTask() {
 	CalculateTime();
 
-	if (GetMarketTime() < toLocalTime(100)) { // 每日最初的一分钟内。保证每日执行一次
+	if (GetMarketTime() < local_seconds{ 100s }) { // 每日最初的一分钟内。保证每日执行一次
 		if (!m_marketTask.Empty()) {
-			if (m_marketTask.GetTask()->GetTime() >= toLocalTime(240000)) { // 当任务队列中都是明日的时间时，将时间调减24小时
+			if (m_marketTask.GetTask()->GetTime() >= local_seconds{ 24h }) { // 当任务队列中都是明日的时间时，将时间调减24小时
 				AdjustTaskTime();
 			}
 		}
@@ -103,13 +103,6 @@ void CVirtualMarket::DeleteTask(long lTaskType) {
 	m_marketTask.DeleteTask(lTaskType);
 }
 
-void CVirtualMarket::AddTask(const long lTaskType, const long lExecuteTime) {
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(lTaskType);
-	pTask->SetTime(lExecuteTime);
-	AddTask(pTask);
-}
-
 void CVirtualMarket::AddTask(const long lTaskType, const chrono::local_seconds executeTime) {
 	const auto pTask = make_shared<CMarketTask>();
 	pTask->SetType(lTaskType);
@@ -130,7 +123,7 @@ void CVirtualMarket::AdjustTaskTime() {
 	}
 	ABSL_DCHECK(m_marketTask.Empty());
 	for (const auto& pMarketTask : vTask) {
-		ABSL_DCHECK(pMarketTask->GetTime() >= toLocalTime(240000));
+		ABSL_DCHECK(pMarketTask->GetTime() >= local_seconds{ 24h });
 		pMarketTask->SetTime(pMarketTask->GetTime() - 24h);
 		m_marketTask.AddTask(pMarketTask);
 	}
@@ -143,7 +136,7 @@ void CVirtualMarket::AddImmediateTask(const CMarketTaskPtr& pTask) {
 void CVirtualMarket::AddImmediateTask(const long lTaskType) {
 	const auto pTask = make_shared<CMarketTask>();
 	pTask->SetType(lTaskType);
-	pTask->SetTime(0);
+	pTask->SetTime(local_seconds{ 0s });
 	AddImmediateTask(pTask);
 }
 

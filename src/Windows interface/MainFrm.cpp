@@ -885,7 +885,7 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);
-	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION_DB_, 1);
+	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION_DB_, local_seconds(1s));
 }
 
 void CMainFrame::OnUpdateStockProfile() {
@@ -1012,7 +1012,7 @@ void CMainFrame::OnRecordAlpacaIexWebSocket() {
 	}
 }
 
-void CMainFrame::OnUpdateRecordAlpacaIexWebSocket(CCmdUI* pCmdUI){
+void CMainFrame::OnUpdateRecordAlpacaIexWebSocket(CCmdUI* pCmdUI) {
 	if (gl_systemConfiguration.IsUsingAlpacaIEXWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1229,5 +1229,3 @@ void CMainFrame::OnUpdateDoProcessTodayStock(CCmdUI* pCmdUI) {
 		pCmdUI->SetCheck(false);
 	}
 }
-
-

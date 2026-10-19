@@ -36,6 +36,7 @@ using std::literals::chrono_literals::operator ""h;
 using std::literals::chrono_literals::operator ""min;
 using std::literals::chrono_literals::operator ""s;
 using std::chrono::Sunday;
+using std::chrono::seconds;
 
 using std::make_shared;
 
@@ -59,7 +60,7 @@ CChinaMarket::CChinaMarket() {
 
 	Reset();
 
-	AddTask(CHINA_MARKET_CREATE_TASK_, 1);
+	AddTask(CHINA_MARKET_CREATE_TASK_, local_seconds{ 1s });
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +134,7 @@ bool CChinaMarket::IsResetTime() {
 /// </summary>
 /// <returns></returns>
 local_seconds CChinaMarket::GetResetTime() {
-	return toLocalTime(91300);
+	return local_seconds{ 9h + 13min + 0s };
 }
 
 void CChinaMarket::Reset() {
@@ -164,7 +165,7 @@ void CChinaMarket::Reset() {
 
 	m_iCountDownTengxunNumber = 10;
 
-	m_lLastLoginTime = toLocalTime(0);
+	m_lLastLoginTime = local_seconds{ 0s };
 
 	m_fSelectedStockLoaded = false;
 
@@ -485,9 +486,9 @@ void CChinaMarket::TaskCreateTask() {
 	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
 	// 系统初始化检查
-	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, 1);
+	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, local_seconds{ 1s });
 	// 每秒一次分配实时数据
-	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, 1); // 开始执行时间为：1
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, local_seconds{ 1s }); // 开始执行时间为：1
 
 	// 辅助任务。在随后的正点分钟执行。
 	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_, GetNextTime(GetMarketTime(), 0h, 1min, -seconds));
@@ -498,17 +499,17 @@ void CChinaMarket::TaskCreateTask() {
 	}
 
 	// 第一次系统检查
-	if (GetMarketTime() < toLocalTime(91800)) {
-		AddTask(CHINA_MARKET_CHECK_SYSTEM, toLocalTime(91800)); // 执行时间为：91800
+	if (GetMarketTime() < local_seconds{ 9h + 18min + 0s }) {
+		AddTask(CHINA_MARKET_CHECK_SYSTEM, local_seconds{ 9h + 18min + 0s }); // 执行时间为：91800
 	}
 
 	// 准备开市任务。每日执行一次，于92959执行。
-	if (GetMarketTime() < toLocalTime(92959)) {
-		AddTask(CHINA_MARKET_PREPARING_MARKET_OPEN_, 92959);
+	if (GetMarketTime() < local_seconds{ 9h + 29min + 59s }) {
+		AddTask(CHINA_MARKET_PREPARING_MARKET_OPEN_, local_seconds{ 9h + 29min + 59s });
 	}
 
 	// 每十秒钟存储一次日线历史数据。
-	AddTask(CHINA_MARKET_UPDATE_DAY_LINE_DB_, 93000); // 中午休市时开始更新日线历史数据。
+	AddTask(CHINA_MARKET_UPDATE_DAY_LINE_DB_, local_seconds{ 9h + 30min + 0s }); // 中午休市时开始更新日线历史数据。
 
 	// 每五分钟存储一次系统选项数据库
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB_, GetNextTime(GetMarketTime(), 0h, 3min, 5s - seconds)); // 开始执行时间为启动之后的三分钟。
@@ -516,17 +517,17 @@ void CChinaMarket::TaskCreateTask() {
 	// 每五分钟存储一次股票简要数据库
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_, GetNextTime(GetMarketTime(), 0h, 4min, 10s - seconds)); // 开始执行时间为启动之后的四分钟。
 
-	if (IsWorkingDay() && GetMarketTime() < toLocalTime(150300)) {
+	if (IsWorkingDay() && GetMarketTime() < local_seconds{ 15h + 3min + 0s }) {
 		// 生成本日历史数据
-		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, 150530); // 开始执行时间为：150530
+		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, local_seconds{ 15h + 5min + 30s }); // 开始执行时间为：150530
 	}
 
 	// 如果设定为周期性重启系统，则在星期天晚上9时重启。
-	if (gl_systemConfiguration.IsReloadSystem() && (GetWeekDay() == Sunday) && (GetMarketTime() < toLocalTime(210000))) {
-		AddTask(RELOAD_SYSTEM_, toLocalTime(210000));
+	if (gl_systemConfiguration.IsReloadSystem() && (GetWeekDay() == Sunday) && (GetMarketTime() < local_seconds{ 21h })) {
+		AddTask(RELOAD_SYSTEM_, local_seconds{ 21h });
 	}
 
-	AddTask(CHINA_MARKET_CREATE_TASK_, toLocalTime(240000)); // 重启市场任务的任务于每日零时执行
+	AddTask(CHINA_MARKET_CREATE_TASK_, local_seconds{ 24h }); // 重启市场任务的任务于每日零时执行
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -567,7 +568,7 @@ void CChinaMarket::TaskAccessoryPerMinuteTask() {
 }
 
 void CChinaMarket::TaskPreparingMarketOpen() {
-	ABSL_DCHECK(GetMarketTime() == toLocalTime(92959)); // 每日执行一次
+	ABSL_DCHECK(GetMarketTime() == local_seconds{ 9h + 29min + 59s }); // 每日执行一次
 	// 目前尚未有需执行的任务
 }
 
@@ -594,9 +595,9 @@ bool CChinaMarket::SetCheckActiveStockFlag() {
 		m_fCheckActiveStock = true;
 		return true;
 	}
-	if (((GetMarketTime() > toLocalTime(91459)) && (GetMarketTime() < toLocalTime(92700)))
-		|| ((GetMarketTime() > toLocalTime(113259)) && (GetMarketTime() < toLocalTime(125900)))
-		|| (GetMarketTime() > toLocalTime(150300))) {
+	if (((GetMarketTime() > local_seconds{ 9h + 14min + 59s }) && (GetMarketTime() < local_seconds{ 9h + 27min + 0s }))
+		|| ((GetMarketTime() > local_seconds{ 11h + 32min + 59s }) && (GetMarketTime() < local_seconds{ 12h + 59min + 0s }))
+		|| (GetMarketTime() > local_seconds{ 15h + 3min + 0s })) {
 		m_fCheckActiveStock = true;
 		return true;
 	}
@@ -740,7 +741,7 @@ long long CChinaMarket::GetWebDayLineDataErrorCode() {
 }
 
 bool CChinaMarket::CheckMarketOpen() {
-	if (IsWorkingDay() && (GetMarketTime() > toLocalTime(92759) && GetMarketTime() < toLocalTime(150600))) {	// 市场结束接收数据的时间，皆定为150600（与停止存储临时数据的时间一样）
+	if (IsWorkingDay() && (GetMarketTime() > local_seconds(9h + 27min + 59s) && GetMarketTime() < local_seconds(15h + 6min + 0s))) {	// 市场结束接收数据的时间，皆定为150600（与停止存储临时数据的时间一样）
 		m_fMarketOpened = true;
 	}
 	else m_fMarketOpened = false;
@@ -948,16 +949,20 @@ void CChinaMarket::UpdateOptionDB() {
 		auto tx = start_transaction(db);
 
 		auto result = db(select(all_of(t)).from(t));
+		std::chrono::sys_days sd{ GetMarketDate().time_since_epoch() };
+		auto time_of_day = GetMarketTime() - floor<std::chrono::days>(GetMarketTime());
+		auto time_of_sql = std::chrono::duration_cast<microseconds>(time_of_day);
 		if (result.size() == 0) {
 			db(sqlpp::insert_into(t).set(
-				t.LastLoginDate = toFormattedDate(GetMarketDate()),
-				t.LastLoginTime = toFormattedTime(GetMarketTime())
+				t.ID = 1,
+				t.LastLoginDate = sd,
+				t.LastLoginTime = time_of_sql
 			));
 		}
 		else {
 			db(update(t).set(
-				t.LastLoginDate = toFormattedDate(GetMarketDate()),
-				t.LastLoginTime = toFormattedTime(GetMarketTime())
+				t.LastLoginDate = sd,
+				t.LastLoginTime = time_of_sql
 			));
 		}
 		tx.commit();
@@ -980,13 +985,11 @@ void CChinaMarket::LoadOptionDB() {
 		}
 		else {
 			const auto& row = result.front();
-			if (static_cast<int>(row.LastLoginDate) == 0) {
-				SetLastLoginDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
-			}
-			else {
-				SetLastLoginDate(toLocalDays(row.LastLoginDate));
-			}
-			SetLastLoginTime(toLocalTime(row.LastLoginTime));
+			auto day = row.LastLoginDate.time_since_epoch().count();
+			auto duration = row.LastLoginTime;
+			auto time_of_sql = std::chrono::duration_cast<seconds>(duration);
+			SetLastLoginDate(local_days(days(day)));
+			SetLastLoginTime(local_seconds(time_of_sql));
 		}
 		tx.commit();
 	} catch (sqlpp::mysql::exception& e) {

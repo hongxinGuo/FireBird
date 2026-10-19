@@ -102,7 +102,7 @@ CWorldMarket::CWorldMarket() {
 
 	Reset();
 
-	AddTask(WORLD_MARKET_CREATE_TASK_, 1);
+	AddTask(WORLD_MARKET_CREATE_TASK_, local_seconds(1s));
 }
 
 CWorldMarket::~CWorldMarket() {
@@ -196,7 +196,7 @@ bool CWorldMarket::IsResetTime() {
 }
 
 chrono::local_seconds CWorldMarket::GetResetTime() {
-	return toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime());
+	return gl_systemConfiguration.GetWorldMarketResettingTime();
 }
 
 void CWorldMarket::PrepareToCloseMarket() {
@@ -357,8 +357,8 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(200000)) {
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, 200000);
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < local_seconds(20h)) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, local_seconds(20h));
 			}
 			else { // 当日20时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateStockDailyMeta(true);
@@ -375,8 +375,8 @@ int CWorldMarket::ProcessTask() {
 			}
 			break;
 		case WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_:
-			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < toLocalTime(190000)) {
-				AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, 190000);
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && GetMarketTime() < local_seconds(19h)) {
+				AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, local_seconds(19h));
 			}
 			else { // 当日19时之后或者第二日交易时间前
 				if (gl_pTiingoDataSource->IsUpdateStockSymbol()) {
@@ -416,22 +416,22 @@ void CWorldMarket::TaskCreateTask() {
 	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
 	// 系统初始化检查
-	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY_, 1);
+	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY_, local_seconds(1s));
 
 	// 市场重置
-	if (GetMarketTime() < toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime())) {
+	if (GetMarketTime() < gl_systemConfiguration.GetWorldMarketResettingTime()) {
 		AddTask(WORLD_MARKET_RESET_, gl_systemConfiguration.GetWorldMarketResettingTime()); // 执行时间为170000之后
 	}
 
 	AddTask(WORLD_MARKET_UPDATE_DB_, GetNextTime(GetMarketTime(), 0h, 0min, 40s - seconds));// 更新股票简介数据库的任务
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA_, GetMarketTime());
 	AddTask(WORLD_MARKET_ALPACA_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 0h, 0min, 25s)); // 开始下载日线历史数据
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_, GetNextTime(GetMarketTime(), 0h, 0min, 10s - seconds)); // Note:测试完后再允许
-	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // 两分钟后开始监测WebSocket
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK_, GetNextTime(GetMarketTime(), 0h, 1min, 0s - seconds)); // Note:测试完后再允许
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 2min, 0s - seconds)); // 两分钟后开始监测WebSocket
 	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE_, GetNextTime(GetMarketTime(), 0h, 3min, 0s - seconds)); // 三分钟计算Nasdaq100 200MA比率
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE_, GetNextTime(GetMarketTime(), 1h, 0min, 20s)); // 开始下载日线历史数据
 	//AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE_, GetNextTime(GetMarketTime(), 1h, 0min, 0s - seconds)); //todo: 一小时后处理Tiingo日线数据
-	AddTask(WORLD_MARKET_CREATE_TASK_, 240000); // 重启市场任务的任务于每日零时执行
+	AddTask(WORLD_MARKET_CREATE_TASK_, local_seconds(24h)); // 重启市场任务的任务于每日零时执行
 }
 
 void CWorldMarket::TaskProcessWebSocketData() {
@@ -1480,7 +1480,6 @@ void CWorldMarket::DisconnectAllWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && gl_pTiingoIEXWebSocket) gl_pTiingoIEXWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && gl_pTiingoCryptoWebSocket) gl_pTiingoCryptoWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && gl_pTiingoForexWebSocket) gl_pTiingoForexWebSocket->Disconnect();
-	ABSL_DCHECK(gl_pAlpacaIEXWebSocket && gl_pAlpacaIEXWebSocket->IsOpen());
 	if (gl_systemConfiguration.IsUsingAlpacaIEXWebSocket() && gl_pAlpacaIEXWebSocket) gl_pAlpacaIEXWebSocket->Disconnect();
 }
 

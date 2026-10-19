@@ -567,6 +567,9 @@
     <ClCompile Include="logTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
+    <ClCompile Include="AlpacaWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneralCheck.h">

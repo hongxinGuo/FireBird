@@ -4,7 +4,10 @@
 
 #include"GeneralCheck.h"
 #include"MarketTask.h"
-#include"TimeConvert.h"
+
+using std::literals::chrono_literals::operator ""s;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""h;
 
 namespace FireBirdTest {
 	class CMarketTaskTest : public testing::Test {
@@ -23,19 +26,19 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMarketTaskTest, TestInitialize) {
-		EXPECT_EQ(marketTask.GetTime(), toLocalTime(0));
+		EXPECT_EQ(marketTask.GetTime(), local_seconds( 0s ));
 		EXPECT_EQ(marketTask.GetType(), 0);
 
-		const CMarketTask task2(CHINA_MARKET_BUILD_TODAY_DATABASE_, toLocalTime(1010));
-		EXPECT_EQ(task2.GetTime(), toLocalTime(1010));
+		const CMarketTask task2(CHINA_MARKET_BUILD_TODAY_DATABASE_, local_seconds(10min + 10s));
+		EXPECT_EQ(task2.GetTime(), local_seconds(10min + 10s));
 		EXPECT_EQ(task2.GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
 	}
 
 	TEST_F(CMarketTaskTest, TestGetTime) {
-		EXPECT_EQ(marketTask.GetTime(), toLocalTime(0));
+		EXPECT_EQ(marketTask.GetTime(), local_seconds( 0s ));
 
-		marketTask.SetTime(toLocalTime(100101));
-		EXPECT_EQ(marketTask.GetTime(), toLocalTime(100101));
+		marketTask.SetTime(local_seconds(10h + 01min + 01s));
+		EXPECT_EQ(marketTask.GetTime(), local_seconds(10h + 01min + 01s));
 	}
 
 	TEST_F(CMarketTaskTest, TestGetType) {

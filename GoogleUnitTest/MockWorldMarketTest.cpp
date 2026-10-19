@@ -88,16 +88,16 @@ namespace FireBirdTest {
 	TEST_F(CMockWorldMarketTest, TestIsResetTime) {
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
-		.WillRepeatedly(Return(toLocalTime(13000)));
+		.WillRepeatedly(Return(local_seconds{ 1h + 30min + 0s }));
 
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(12000));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 20min + 0s));
 		EXPECT_FALSE(s_pMockWorldMarket->IsResetTime());
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(12001));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 20min + 1s));
 
 		EXPECT_TRUE(s_pMockWorldMarket->IsResetTime());
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(13459));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 34min + 59s));
 		EXPECT_TRUE(s_pMockWorldMarket->IsResetTime());
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(13500));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 35min + 0s));
 		EXPECT_FALSE(s_pMockWorldMarket->IsResetTime());
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 	}
@@ -105,15 +105,15 @@ namespace FireBirdTest {
 	TEST_F(CMockWorldMarketTest, TestIsReadyToInquireWebData1) {
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认新浪实时数据服务器";
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
-		.WillRepeatedly(Return(toLocalTime(13000)));
+		.WillRepeatedly(Return(local_seconds(1h + 30min + 0s)));
 
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(12000));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 20min + 0s));
 		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData());
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(12001));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 20min + 1s));
 		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData());
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(13459));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 34min + 59s));
 		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData());
-		s_pMockWorldMarket->TEST_SetMarketTime(toLocalTime(13500));
+		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 35min + 0s));
 		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData());
 	}
 }

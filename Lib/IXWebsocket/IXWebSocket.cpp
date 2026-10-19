@@ -186,14 +186,23 @@ namespace ix
 
     void WebSocket::stop(uint16_t code, const std::string& reason)
     {
+        const bool isJoinable = _thread.joinable();
+
+        if(isJoinable)
+        {
+            // we need to set _stop before close()
+            // otherwise automatic reconnection might restart the connection before _stop has a chance to get set
+            // this can happen during high CPU load => _thread.join() below blocks indefinitely
+            _stop = true;
+            _sleepCondition.notify_one();
+        }
+
         close(code, reason);
 
-        if (_thread.joinable())
+        if (isJoinable)
         {
             // wait until working thread will exit
             // it will exit after close operation is finished
-            _stop = true;
-            _sleepCondition.notify_one();
             _thread.join();
             _stop = false;
         }
@@ -201,6 +210,12 @@ namespace ix
 
     WebSocketInitResult WebSocket::connect(int timeoutSecs)
     {
+        // Finish any in-flight send before discarding the previous connection's state.
+        std::unique_lock<std::mutex> writeLock(_writeMutex, std::defer_lock);
+        if (!waitForWriteLock(writeLock))
+        {
+            return WebSocketInitResult(false, 0, "Connection cancelled while waiting for a send");
+        }
         {
             std::lock_guard<std::mutex> lock(_configMutex);
             _ws.configure(
@@ -231,6 +246,7 @@ namespace ix
         }
 
         WebSocketInitResult status = _ws.connectToUrl(_url, headers, timeoutSecs);
+        writeLock.unlock();
         if (!status.success)
         {
             return status;
@@ -259,6 +275,11 @@ namespace ix
                                                    HttpRequestPtr request,
                                                    int sendTimeoutSecs)
     {
+        std::unique_lock<std::mutex> writeLock(_writeMutex, std::defer_lock);
+        if (!waitForWriteLock(writeLock))
+        {
+            return WebSocketInitResult(false, 0, "Connection cancelled while waiting for a send");
+        }
         {
             std::lock_guard<std::mutex> lock(_configMutex);
             _ws.configure(
@@ -267,6 +288,7 @@ namespace ix
 
         WebSocketInitResult status = _ws.connectToSocket(
             std::move(socket), timeoutSecs, enablePerMessageDeflate, request, sendTimeoutSecs);
+        writeLock.unlock();
         if (!status.success)
         {
             return status;
@@ -287,6 +309,22 @@ namespace ix
         }
 
         return status;
+    }
+
+    bool WebSocket::waitForWriteLock(std::unique_lock<std::mutex>& lock)
+    {
+        while (!lock.try_lock())
+        {
+            // A progress callback can call stop() while holding _writeMutex. Let the
+            // background thread exit so stop() can join it without waiting for that send.
+            std::unique_lock<std::mutex> sleepLock(_sleepMutex);
+            if (_sleepCondition.wait_for(
+                    sleepLock, std::chrono::milliseconds(10), [this] { return _stop.load(); }))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     bool WebSocket::isConnected() const

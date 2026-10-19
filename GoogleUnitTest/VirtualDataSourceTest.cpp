@@ -9,6 +9,9 @@
 #include"TimeConvert.h"
 
 using std::make_shared;
+using std::literals::chrono_literals::operator ""h;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""s;
 
 using namespace testing;
 
@@ -49,7 +52,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestInquire) {
-		EXPECT_TRUE(dataSource.GenerateInquiryMessage(toLocalTime(10101010)));
+		EXPECT_TRUE(dataSource.GenerateInquiryMessage(local_seconds(10h + 10min + 10s)));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestEnable) {

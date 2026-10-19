@@ -12,6 +12,9 @@
 
 using namespace testing;
 using std::make_shared;
+using std::literals::chrono_literals::operator ""s;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""h;
 
 namespace {
 	CMockTengxunDayLineDataSourcePtr s_pMockTengxunDayLineDataSource; // 网易日线历史数据
@@ -67,7 +70,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GenerateInquireDayLine).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
 
-		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(toLocalTime(120000))) << "WebBusy时，不申请数据";
+		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(local_seconds(12h))) << "WebBusy时，不申请数据";
 
 		gl_pSinaRTDataSource->SetWebError(false);
 	}
@@ -77,7 +80,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GenerateInquireDayLine).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
 
-		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(toLocalTime(120000))) << "WebBusy时，不申请数据";
+		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(local_seconds(12h))) << "WebBusy时，不申请数据";
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage3) {
@@ -85,11 +88,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(120000)); // dummy time and > 114500
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(12h)); // dummy time and > 114500
 		s_pMockTengxunDayLineDataSource->SetInquiring(true);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GenerateInquireDayLine).Times(0);
 		EXPECT_CALL(*s_pMockTengxunDayLineDataSource, GetTickCount()).Times(1);
 
-		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(toLocalTime(120000) )) << "有查询申请时，不申请数据";
+		EXPECT_FALSE(s_pMockTengxunDayLineDataSource->GenerateInquiryMessage(local_seconds(12h))) << "有查询申请时，不申请数据";
 	}
 }

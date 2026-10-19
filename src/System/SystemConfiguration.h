@@ -21,7 +21,9 @@ using std::string;
 using std::chrono::microseconds;
 using std::chrono::milliseconds;
 using std::chrono::local_days;
+using std::chrono::local_seconds;
 using std::literals::chrono_literals::operator ""y;
+using std::literals::chrono_literals::operator ""h;
 
 enum EChinaMarketDataSourceServer : int {
 	SinaRealTime_ = 0,
@@ -96,7 +98,7 @@ public:
 	}
 
 	// World market
-	unsigned GetWorldMarketResettingTime() const noexcept { return m_lMarketResettingTime; }
+	local_seconds GetWorldMarketResettingTime() const noexcept { return m_lsMarketResettingTime; }
 	[[nodiscard]] string GetFinnhubToken() noexcept { return m_strFinnhubToken; }
 	void SetFinnhubToken(const string& s) noexcept { m_strFinnhubToken = s; }
 	[[nodiscard]] auto GetWorldMarketFinnhubInquiryTime() const noexcept { return m_worldMarketFinnhubInquiryTime; } // 单位为毫秒
@@ -364,7 +366,7 @@ protected:
 	milliseconds m_chinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market
-	unsigned m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
+	local_seconds m_lsMarketResettingTime{ 17h }; // 默认市场重置时间为170000
 	string m_strFinnhubToken{ "" }; // 令牌
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
 	milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。

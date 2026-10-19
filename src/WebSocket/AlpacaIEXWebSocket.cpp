@@ -124,13 +124,15 @@ map<string, int> s_alpacaWebType{
 // [{"T":"success","msg":"authenticated"}]
 // [{"T":"subscription","trades":["FSK","RIG"],"quotes":["FSK"],"bars":["FSK"]}]
 // [{"T":"q","S":"FSK","bx":"O","bp":133.85,"bs":4,"ax":"R","ap":135.77,"as":5,"c":["R"],"z":"A","t":"2024-07-24T07:56:53.639713735Z"}]
-// [{"T":"b","S":"FSK","o":132.65,"h":136,"l":132.12,"c":134.65,"v":205,"t":"2024-07-24T07:56:00Z","n":16,"vw":133.7}]
 // [{"T": "t","i" : 96921,"S" : "AAPL","x" : "D","p" : 126.55,"s" : 1,"t" : "2021-02-22T15:51:44.208Z","c" : ["@", "I"] ,"z" : "C"}]
+// [{"T":"b","S":"FSK","o":132.65,"h":136,"l":132.12,"c":134.65,"v":205,"t":"2024-07-24T07:56:00Z","n":16,"vw":133.7}]
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CAlpacaIEXWebSocket::ParseAlpacaIEXWebSocketData(shared_ptr<string> pData) {
-	CAlpacaIEXSocketPtr pIEXData = nullptr;
+	CAlpacaIEXSocketQuotePtr pIEXQuote = nullptr;
+	CAlpacaIEXSocketTradePtr pIEXTrade = nullptr;
+	CAlpacaIEXSocketBarPtr pIEXBar = nullptr;
 	minutes Minutes;
 	string sString;
 	try {
@@ -169,20 +171,36 @@ bool CAlpacaIEXWebSocket::ParseAlpacaIEXWebSocketData(shared_ptr<string> pData) 
 						}
 						break;
 					case 2: // quotes
-						pIEXData = make_shared<CAlpacaIEXSocket>();
-						pIEXData->m_sSymbol = jsonGetString(item, "S", "");
-						pIEXData->m_dBidPrice = jsonGetDouble(item, "bp", 0.0);
-						pIEXData->m_dBidSize = jsonGetDouble(item, "bs", 0.0);
-						pIEXData->m_dAskPrice = jsonGetDouble(item, "ap", 0.0);
-						pIEXData->m_dAskSize = jsonGetDouble(item, "as", 0.0);
+						pIEXQuote = make_shared<CAlpacaIEXSocketQuote>();
+						pIEXQuote->m_sSymbol = jsonGetString(item, "S", "");
+						pIEXQuote->m_dBidPrice = jsonGetDouble(item, "bp", 0.0);
+						pIEXQuote->m_dBidSize = jsonGetInt(item, "bs", 0);
+						pIEXQuote->m_dAskPrice = jsonGetInt(item, "ap", 0);
+						pIEXQuote->m_dAskSize = jsonGetDouble(item, "as", 0.0);
 						sString = jsonGetString(item, "t", "");
 						ss.str(sString);
-						ss >> std::chrono::parse("%FT%T%Z", pIEXData->m_tpTime);
+						ss >> std::chrono::parse("%FT%T%Z", pIEXQuote->m_tpTime);
 						break;
 					case 3: // trades
-
+						pIEXTrade = make_shared<CAlpacaIEXSocketTrade>();
+						pIEXTrade->m_sSymbol = jsonGetString(item, "S", "");
+						pIEXTrade->m_dPrice = jsonGetDouble(item, "bp", 0.0);
+						pIEXTrade->m_dSize = jsonGetInt(item, "bs", 0);
+						sString = jsonGetString(item, "t", "");
+						ss.str(sString);
+						ss >> std::chrono::parse("%FT%T%Z", pIEXTrade->m_tpTime);
 						break;
 					case 4: // bars
+						pIEXBar = make_shared<CAlpacaIEXSocketBar>();
+						pIEXBar->m_sSymbol = jsonGetString(item, "S", "");
+						pIEXBar->m_dOpen = jsonGetDouble(item, "o", 0.0);
+						pIEXBar->m_dHigh = jsonGetDouble(item, "h", 0.0);
+						pIEXBar->m_dLow = jsonGetDouble(item, "l", 0.0);
+						pIEXBar->m_dClose = jsonGetDouble(item, "c", 0.0);
+						pIEXBar->m_iVolume = jsonGetInt(item, "v", 0);
+						sString = jsonGetString(item, "t", "");
+						ss.str(sString);
+						ss >> std::chrono::parse("%FT%T%Z", pIEXBar->m_tpTime);
 						break;
 					default:
 						break;

@@ -67,22 +67,29 @@ namespace StockMarket {
   using ChinaChoiceStock = ::sqlpp::table_t<ChinaChoiceStock_>;
 
   struct ChinaMarketOptions_ {
+    struct ID {
+      SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(ID, ID);
+      using data_type = ::sqlpp::integral;
+      using has_default = std::false_type;
+    };
     struct LastLoginDate {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(LastLoginDate, LastLoginDate);
-      using data_type = ::sqlpp::integral;
+      using data_type = ::sqlpp::date;
       using has_default = std::true_type;
     };
     struct LastLoginTime {
       SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(LastLoginTime, LastLoginTime);
-      using data_type = ::sqlpp::integral;
+      using data_type = ::sqlpp::time;
       using has_default = std::true_type;
     };
     SQLPP_CREATE_NAME_TAG_FOR_SQL_AND_CPP(china_market_options, chinaMarketOptions);
     template<typename T>
     using _table_columns = sqlpp::table_columns<T,
+               ID,
                LastLoginDate,
                LastLoginTime>;
-    using _required_insert_columns = sqlpp::detail::type_set<>;
+    using _required_insert_columns = sqlpp::detail::type_set<
+               sqlpp::column_t<sqlpp::table_t<ChinaMarketOptions_>, ID>>;
   };
   using ChinaMarketOptions = ::sqlpp::table_t<ChinaMarketOptions_>;
 

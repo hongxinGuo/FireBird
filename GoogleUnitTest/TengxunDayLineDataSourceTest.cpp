@@ -44,7 +44,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		chrono::local_seconds marketDateTime{ toLocalTime(0) };
+		chrono::local_seconds marketDateTime{ local_seconds(0s) };
 		CTengxunDayLineDataSource TengxunDayLineDataSource;
 	};
 

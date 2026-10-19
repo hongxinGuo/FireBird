@@ -259,7 +259,7 @@ void CSystemConfiguration::Update(shared_ptr<nlohmannJson> pJsonData) {
 
 	// WorldMarket
 	try {
-		m_lMarketResettingTime = pJsonData->at("WorldMarket").at("MarketResettingTime"); // 市场重置时间
+		m_lsMarketResettingTime = toLocalTime(pJsonData->at("WorldMarket").at("MarketResettingTime")); // 市场重置时间
 	} catch (nlohmannJson::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -489,7 +489,7 @@ void CSystemConfiguration::UpdateJsonData(shared_ptr<nlohmannJson> pJsonData) {
 	(*pJsonData)["ChinaMarket"]["CurrentStock"] = m_strCurrentStock;
 
 	// World market
-	(*pJsonData)["WorldMarket"]["MarketResettingTime"] = m_lMarketResettingTime;
+	(*pJsonData)["WorldMarket"]["MarketResettingTime"] = toFormattedTime(m_lsMarketResettingTime);
 	(*pJsonData)["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
 	(*pJsonData)["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
 	(*pJsonData)["WorldMarket"]["FinnhubInquiryTime"] = m_worldMarketFinnhubInquiryTime.count();

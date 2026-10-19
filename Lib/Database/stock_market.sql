@@ -17,8 +17,9 @@ CREATE TABLE `china_choice_stock` (
 );
 
 CREATE TABLE `china_market_options` (
-  `LastLoginDate` int NOT NULL DEFAULT '19900101',
-  `LastLoginTime` int NOT NULL DEFAULT '0'
+  `ID` int NOT NULL,
+  `LastLoginDate` date NOT NULL DEFAULT '1990-01-01',
+  `LastLoginTime` time NOT NULL DEFAULT '12:00:00'
 );
 
 CREATE TABLE `china_stock_dayline` (

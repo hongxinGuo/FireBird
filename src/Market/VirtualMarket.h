@@ -56,7 +56,6 @@ public:
 	// MarketTask
 	bool IsMarketTaskEmpty() const { return m_marketTask.Empty(); }
 	void AddTask(const CMarketTaskPtr& pTask);
-	void AddTask(long lTaskType, long lExecuteTime);
 	void AddTask(long lTaskType, local_seconds executeTime);
 	void DeleteTask(long lTaskType);
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }

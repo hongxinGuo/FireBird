@@ -85,7 +85,6 @@ public:
 
 	local_seconds GetTime() const { return m_time; }
 	void SetTime(const hh_mm_ss<seconds>& hhmmss);
-	void SetTime(long lTime);
 	void SetTime(local_seconds ls) { m_time = ls; }
 
 	long GetType() const { return m_lType; }

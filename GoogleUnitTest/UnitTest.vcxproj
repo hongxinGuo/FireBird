@@ -113,6 +113,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="AlpacaWebSocketTest.cpp" />
     <ClCompile Include="CharSetTransferTest.cpp" />
     <ClCompile Include="CompanyNewsTest.cpp" />
     <ClCompile Include="ContainerAlpacaStockSymbolTest.cpp" />

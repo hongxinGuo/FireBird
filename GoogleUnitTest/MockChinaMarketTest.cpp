@@ -20,6 +20,9 @@
 using namespace testing;
 #include<memory>
 using std::make_shared;
+using std::literals::chrono_literals::operator ""s;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""h;
 
 namespace {
 	CMockChinaMarketPtr s_pMockChinaMarket;
@@ -113,7 +116,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask1) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_CREATE_TASK_, 10000);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_CREATE_TASK_, local_seconds(1h));
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskCreateTask()).Times(1);
 
@@ -140,7 +143,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket()).Times(1);
 
-		s_pMockChinaMarket->TEST_SetMarketTime(toLocalTime(92700));
+		s_pMockChinaMarket->TEST_SetMarketTime(local_seconds(9h + 27min + 0s));
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask());
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
@@ -148,27 +151,27 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask4) {
-		s_pMockChinaMarket->AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, toLocalTime(91500));
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, local_seconds(9h + 15min + 00s));
 
-		s_pMockChinaMarket->TEST_SetMarketTime(toLocalTime(93000));
+		s_pMockChinaMarket->TEST_SetMarketTime(local_seconds(9h + 30min + 00s));
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask());
 
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93001)) << "每秒一次";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 01s)) << "每秒一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask9) {
-		s_pMockChinaMarket->AddTask(RELOAD_SYSTEM_, toLocalTime(210000));
+		s_pMockChinaMarket->AddTask(RELOAD_SYSTEM_, local_seconds(21h));
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskExitSystem()).Times(1);
 
-		s_pMockChinaMarket->TEST_SetMarketTime(toLocalTime(210000));
+		s_pMockChinaMarket->TEST_SetMarketTime(local_seconds(21h));
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask());
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
@@ -180,27 +183,27 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaMarketTest, TestTaskAccessoryPerMinuteTask) {
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 
-		s_pMockChinaMarket->TEST_SetMarketTime(toLocalTime(10000));
+		s_pMockChinaMarket->TEST_SetMarketTime(local_seconds(1h + 0min + 0s));
 		s_pMockChinaMarket->TaskAccessoryPerMinuteTask();
 
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10100)) << "每一分钟一次";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1h + 1min + 00s)) << "每一分钟一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskDistributeAndCalculateRTData) {
-		s_pMockChinaMarket->TEST_SetMarketTime(toLocalTime(100000));
+		s_pMockChinaMarket->TEST_SetMarketTime(local_seconds(10h));
 		s_pMockChinaMarket->TaskDistributeAndCalculateRTData();
 
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(100001)) << "每秒一次";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(10h + 00min + 01s)) << "每秒一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());

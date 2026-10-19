@@ -25,7 +25,10 @@
 #include "SystemData.h"
 
 using namespace std;
-
+using std::literals::chrono_literals::operator ""d;
+using std::literals::chrono_literals::operator ""h;
+using std::literals::chrono_literals::operator ""y;
+using namespace StockMarket;
 using namespace testing;
 
 namespace FireBirdTest {
@@ -141,22 +144,22 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetResetTime) {
-		EXPECT_TRUE(gl_pChinaMarket->GetResetTime() == toLocalTime(91300));
+		EXPECT_TRUE(gl_pChinaMarket->GetResetTime() == local_seconds(9h + 13min + 00s));
 	}
 
 	TEST_F(CChinaMarketTest, TestIsResetTime) {
 		auto tt = gl_pChinaMarket->GetMarketTime();
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91159));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 11min + 59s));
 		EXPECT_FALSE(gl_pChinaMarket->IsResetTime());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91200));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 12min + 00s));
 		EXPECT_FALSE(gl_pChinaMarket->IsResetTime());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91201));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 12min + 01s));
 		EXPECT_TRUE(gl_pChinaMarket->IsResetTime());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91400));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 14min + 00s));
 		EXPECT_TRUE(gl_pChinaMarket->IsResetTime());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91459));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 14min + 59s));
 		EXPECT_TRUE(gl_pChinaMarket->IsResetTime());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91500));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 15min + 00s));
 		EXPECT_FALSE(gl_pChinaMarket->IsResetTime());
 
 		//恢复原状
@@ -166,28 +169,28 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask1) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(101010));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(10h + 10min + 10s));
 		EXPECT_FALSE(gl_pChinaMarket->ProcessTask()) << "没有任务可执行";
 	}
 
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(101010));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(10h + 10min + 10s));
 
 		EXPECT_FALSE(gl_pChinaMarket->ProcessTask()) << "没有任务可执行";
 
-		gl_pChinaMarket->AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE_, 100101); // Note 这个任务尚未实现，可以使用
-		gl_pChinaMarket->AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE_, 110101);
+		gl_pChinaMarket->AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE_, local_seconds(10h + 1min + 1s)); // Note 这个任务尚未实现，可以使用
+		gl_pChinaMarket->AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE_, local_seconds(11h + 1min + 1s));
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(100001));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(10h + 0min + 1s));
 		EXPECT_FALSE(gl_pChinaMarket->ProcessTask()) << "有任务需要执行，但时间未到";
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(101002));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(10h + 10min + 2s));
 		EXPECT_TRUE(gl_pChinaMarket->ProcessTask()) << "时间到, 执行第一个任务";
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(111002));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(11h + 10min + 2s));
 		EXPECT_TRUE(gl_pChinaMarket->ProcessTask()) << "时间到, 执行第二个任务";
 
 		// 恢复原状
@@ -197,7 +200,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestTaskCreateTask1) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(10000));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(1h + 0min + 0s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -205,17 +208,17 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10100));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1h + 1min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -228,34 +231,34 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(91300));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 13min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(91800));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 18min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PREPARING_MARKET_OPEN_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(92959));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 29min + 59s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
-			EXPECT_EQ(pTask->GetTime(), toLocalTime(150530));
+			EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 5min + 30s));
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
@@ -263,7 +266,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestTaskCreateTask2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91500));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 15min + 0s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -271,22 +274,22 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(91600));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 16min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(91800));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 18min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -299,24 +302,24 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PREPARING_MARKET_OPEN_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(92959));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 29min + 59s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
-			EXPECT_EQ(pTask->GetTime(), toLocalTime(150530));
+			EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 5min + 30s));
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
@@ -324,7 +327,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestTaskCreateTask3) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(93000));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 30min + 0s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -332,44 +335,44 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93100));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 31min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93305));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 33min + 5s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93410));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 34min + 10s));
 
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
-			EXPECT_EQ(pTask->GetTime(), toLocalTime(150530));
+			EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 5min + 30s));
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
@@ -384,7 +387,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(150601));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(15h + 6min + 1s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -392,37 +395,37 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(150700));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 7min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(150905));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 9min + 5s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(151010));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 10min + 10s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 
@@ -441,7 +444,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(150601));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(15h + 6min + 1s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -449,22 +452,22 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(150700));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 7min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -477,7 +480,7 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 
@@ -497,7 +500,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem()); // 不自动重启系统
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(150601));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(15h + 6min + 1s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -505,22 +508,22 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(150700));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 7min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -533,7 +536,7 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 
@@ -554,7 +557,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem()); // 不自动重启系统
 		gl_systemConfiguration.SetReloadSystem(true); // 每周星期日自动重启系统
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(150601));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(15h + 6min + 1s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -562,22 +565,22 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(150700));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 7min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -590,7 +593,7 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 		gl_systemConfiguration.SetReloadSystem(false);
@@ -612,7 +615,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem()); // 不自动重启系统
 		gl_systemConfiguration.SetReloadSystem(true); // 每周星期日自动重启系统
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(150601));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(15h + 6min + 1s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -620,42 +623,42 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(150700));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 7min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(150905));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 9min + 5s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(151010));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(15h + 10min + 10s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), RELOAD_SYSTEM_) << "当前时间小于210000时，星期日自动重启系统";
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(210000)) << "重启系统于晚上9点";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(21h + 0min + 0s)) << "重启系统于晚上9点";
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 
@@ -677,7 +680,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem()); // 不自动重启系统
 		gl_systemConfiguration.SetReloadSystem(true); // 每周星期日自动重启系统
 
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(210000));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(21h + 0min + 0s));
 		gl_pChinaMarket->TaskCreateTask();
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -685,37 +688,37 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_DAY_LINE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(93000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(9h + 30min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(210100));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(21h + 1min + 0s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(210305));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(21h + 3min + 5s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(210410));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(21h + 4min + 10s));
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CREATE_TASK_) << "当前时间不早于210000，不设置重启系统任务";
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(240000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(24h + 0min + 0s));
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 
@@ -903,7 +906,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestSetCheckActiveStockFlag1) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady()) << "单元测试时，系统状态永远为准备好了";
 		gl_pChinaMarket->SetSystemReady(false);
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(93500));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 35min + 0s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock()) << "当系统尚未准备好时，检测活跃股票的标识永远为真";
 		gl_pChinaMarket->SetSystemReady(true);
@@ -912,30 +915,30 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestSetCheckActiveStockFlag2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91459));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 14min + 59s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_FALSE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(91500));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 15min + 0s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(92659));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 26min + 59s));
 		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(92700));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(9h + 27min + 0s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_FALSE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(113059));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(11h + 30min + 59s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_FALSE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(113300));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(11h + 33min + 0s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(125859));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(12h + 58min + 59s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(125900));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(12h + 59min + 0s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_FALSE(gl_pChinaMarket->IsCheckingActiveStock());
-		gl_pChinaMarket->TEST_SetMarketTime(toLocalTime(150000));
+		gl_pChinaMarket->TEST_SetMarketTime(local_seconds(15h + 0min + 0s));
 		gl_pChinaMarket->SetCheckActiveStockFlag();
 		EXPECT_FALSE(gl_pChinaMarket->IsCheckingActiveStock());
 
@@ -1004,83 +1007,83 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIsTimeToResetSystem) {
-		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(91259)));
-		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(91300)));
-		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(91400)));
-		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(91401)));
-		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(92459)));
-		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(92500)));
-		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(92700)));
-		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(92701)));
-		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(toLocalTime(93000)));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 12min + 59s)));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 13min)));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 14min)));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 14min + 1s)));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 24min + 59s)));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 25min)));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 27min + 0s)));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 27min + 1s)));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(local_seconds(9h + 30min)));
 	}
 
 	TEST_F(CChinaMarketTest, TestIsOrdinaryTradeTime) {
 		if (gl_pChinaMarket->IsWorkingDay()) {
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(92959)));
-			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(93000)));
-			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(113000)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(113001)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(125959)));
-			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(130000)));
-			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(150000)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(150001)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(9h + 29min + 59s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(9h + 30min)));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(11h + 30min)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(11h + 30min + 1s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(12h + 59min + 59s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(13h + 0min + 0s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(15h + 0min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(15h + 0min + 1s)));
 		}
 		else {
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(92959)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(93000)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(113000)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(113001)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(125959)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(130000)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(150000)));
-			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(toLocalTime(150001)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(9h + 29min + 59s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(9h + 30min)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(11h + 30min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(11h + 30min + 1s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(12h + 59min + 59s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(13h + 0min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(15h + 0min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(local_seconds(15h + 0min + 1s)));
 		}
 	}
 
 	TEST_F(CChinaMarketTest, TestIsWorkingTime) {
 		if (gl_pChinaMarket->IsWorkingDay()) {
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(91159)));
-			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(toLocalTime(91200)));
-			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(toLocalTime(114500)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(114501)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(124459)));
-			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(toLocalTime(124500)));
-			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(toLocalTime(150630)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(150631)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(9h + 11min + 59s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(local_seconds(9h + 12min + 0s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(local_seconds(11h + 45min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(11h + 45min + 1s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(12h + 44min + 59s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(local_seconds(12h + 45min + 0s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(local_seconds(15h + 6min + 30s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(15h + 6min + 31s)));
 		}
 		else {
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(91159)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(91200)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(114500)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(114501)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(124459)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(124500)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(150630)));
-			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(toLocalTime(150631)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(9h + 11min + 59s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(9h + 12min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(11h + 45min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(11h + 45min + 1s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(12h + 44min + 59s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(12h + 45min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(15h + 6min + 30s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(local_seconds(15h + 6min + 31s)));
 		}
 	}
 
 	TEST_F(CChinaMarketTest, TestIsDummyTime) {
 		if (gl_pChinaMarket->IsWorkingDay()) {
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(91159)));
-			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(toLocalTime(91200)));
-			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(toLocalTime(114500)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(114501)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(124459)));
-			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(toLocalTime(124500)));
-			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(toLocalTime(150630)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(150631)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(9h + 11min + 59s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(local_seconds(9h + 12min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(local_seconds(11h + 45min + 0s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(11h + 45min + 1s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(12h + 44min + 59s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(local_seconds(12h + 45min + 0s)));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(local_seconds(15h + 6min + 30s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(15h + 6min + 31s)));
 		}
 		else {
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(91159)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(91200)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(114500)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(114501)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(124459)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(124500)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(150630)));
-			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(toLocalTime(150631)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(9h + 11min + 59s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(9h + 12min + 0s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(11h + 45min + 0s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(11h + 45min + 1s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(12h + 44min + 59s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(12h + 45min + 0s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(15h + 6min + 30s)));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(local_seconds(15h + 6min + 31s)));
 		}
 	}
 
@@ -1448,55 +1451,55 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetSet) {
-		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, toLocalTime(101010));
-		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, toLocalTime(10000));
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, local_seconds(10h + 10min + 10s));
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, local_seconds(1h + 0min + 0s));
 
-		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, toLocalTime(1));
-		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM, toLocalTime(1));
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, local_seconds(1s));
+		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM, local_seconds(1s));
 
 		EXPECT_EQ(marketTaskQueue.Size(), 4);
 		EXPECT_FALSE(marketTaskQueue.Empty());
 
 		auto pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardCurrentTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1)) << "任务按时间顺序排列,较早的排在前面";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s)) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
 		pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardCurrentTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s));
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM) << "相同时间的任务，排列顺序按入列先后";
 		pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardCurrentTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "任务按时间顺序排列,较早的排在前面";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1h)) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
 		pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardCurrentTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(101010)) << "任务按时间顺序排列,较早的排在前面";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(10h + 10min + 10s)) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
 		EXPECT_EQ(marketTaskQueue.Size(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestGetTasks) {
-		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, toLocalTime(1));
-		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, toLocalTime(3));
-		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, toLocalTime(2));
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, local_seconds(1s));
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, local_seconds(3s));
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_, local_seconds(2s));
 
 		const auto vTask = marketTaskQueue.GetTasks();
 
-		EXPECT_EQ(vTask.at(0)->GetTime(), toLocalTime(1));
+		EXPECT_EQ(vTask.at(0)->GetTime(), local_seconds(1s));
 		EXPECT_EQ(vTask.at(0)->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE_);
-		EXPECT_EQ(vTask.at(1)->GetTime(), toLocalTime(2));
+		EXPECT_EQ(vTask.at(1)->GetTime(), local_seconds(2s));
 		EXPECT_EQ(vTask.at(1)->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
-		EXPECT_EQ(vTask.at(2)->GetTime(), toLocalTime(3));
+		EXPECT_EQ(vTask.at(2)->GetTime(), local_seconds(3s));
 		EXPECT_EQ(vTask.at(2)->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA_);
 	}
 
 	// New test: verify DeleteTask removes all tasks with the specified type
 	TEST_F(CChinaMarketTest, TestDeleteTask) {
 		// Add two tasks of the same type and one of a different type
-		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, toLocalTime(5));
-		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, toLocalTime(10));
-		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, toLocalTime(7));
+		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, local_seconds(5s));
+		marketTaskQueue.AddTask(CHINA_MARKET_CHECK_SYSTEM_READY_, local_seconds(10s));
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, local_seconds(7s));
 
 		EXPECT_EQ(marketTaskQueue.Size(), 3);
 
@@ -1514,5 +1517,49 @@ namespace FireBirdTest {
 		for (const auto& t : remaining) {
 			EXPECT_NE(t->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY_);
 		}
+	}
+
+	TEST_F(CChinaMarketTest, EmptyTableSetsBeginDate) {
+		// Ensure table exists and is emptied.
+		{
+			auto db = gl_dbStockMarket.get();
+			const auto& t = ChinaMarketOptions{};
+			auto tx = sqlpp::start_transaction(db);
+			// delete any existing rows
+			db(sqlpp::delete_from(t));
+			tx.commit();
+		}
+
+		// Construct market and call LoadOptionDB
+		gl_pChinaMarket->LoadOptionDB();
+
+		// When table is empty, LoadOptionDB should set last login date to CHINA_MARKET_BEGIN_DATE_
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), toLocalDays(CHINA_MARKET_BEGIN_DATE_));
+	}
+
+	TEST_F(CChinaMarketTest, PopulatedTableLoadsValues) {
+		// Prepare a known date/time row in database
+		constexpr chrono::sys_days expectedDate = chrono::sys_days{ days(2024) };
+		constexpr microseconds expectedTime = std::chrono::duration_cast<microseconds>(9h + 15min);
+
+		{
+			auto db = gl_dbStockMarket.get();
+			const auto& t = ChinaMarketOptions{};
+			auto tx = sqlpp::start_transaction(db);
+			db(sqlpp::delete_from(t));
+			db(sqlpp::insert_into(t).set(
+				t.ID = 1,
+				t.LastLoginDate = expectedDate,
+				t.LastLoginTime = expectedTime
+			));
+			tx.commit();
+		}
+
+		// Construct market and call LoadOptionDB
+		gl_pChinaMarket->LoadOptionDB();
+
+		// Verify date loaded into market
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate().time_since_epoch().count(), expectedDate.time_since_epoch().count());
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginTime().time_since_epoch().count(), std::chrono::duration_cast<std::chrono::seconds>(expectedTime).count());
 	}
 }

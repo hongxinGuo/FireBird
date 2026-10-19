@@ -64,7 +64,7 @@ namespace FireBirdTest {
 		.WillOnce(Return(timePoint + 1ms));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(0);
 
-		EXPECT_FALSE(s_pMockFinnhubDataSource->GenerateInquiryMessage(toLocalTime(120000))) << "网络报错，不申请数据";
+		EXPECT_FALSE(s_pMockFinnhubDataSource->GenerateInquiryMessage(local_seconds(12h))) << "网络报错，不申请数据";
 		EXPECT_FALSE(s_pMockFinnhubDataSource->IsInquiring());
 
 		// 恢复原状
@@ -129,10 +129,10 @@ namespace FireBirdTest {
 		}, Return(true)));
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);
 
-		EXPECT_FALSE(s_pMockFinnhubDataSource->GenerateInquiryMessage(toLocalTime(120500))) << "时间未到，继续等待";
+		EXPECT_FALSE(s_pMockFinnhubDataSource->GenerateInquiryMessage(local_seconds(12h + 05min + 00s))) << "时间未到，继续等待";
 		EXPECT_FALSE(s_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_FALSE(s_pMockFinnhubDataSource->HaveInquiry());
-		EXPECT_TRUE(s_pMockFinnhubDataSource->GenerateInquiryMessage(toLocalTime(120500))) << "申请数据";
+		EXPECT_TRUE(s_pMockFinnhubDataSource->GenerateInquiryMessage(local_seconds(12h + 05min + 00s))) << "申请数据";
 
 		EXPECT_TRUE(s_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(s_pMockFinnhubDataSource->HaveInquiry());
@@ -169,7 +169,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateSECFilings()).Times(0);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);
 
-		s_pMockFinnhubDataSource->GenerateInquiryMessage(toLocalTime(120000));
+		s_pMockFinnhubDataSource->GenerateInquiryMessage(local_seconds(12h));
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub3) {
@@ -202,7 +202,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateSECFilings()).Times(1);
 		EXPECT_CALL(*s_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);
 
-		s_pMockFinnhubDataSource->GenerateInquiryMessage(toLocalTime(120000));
+		s_pMockFinnhubDataSource->GenerateInquiryMessage(local_seconds(12h));
 
 		const string str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(str, "finnhub data inquiry finished");

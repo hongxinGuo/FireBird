@@ -121,7 +121,7 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 }
 
 void CProductAlpacaStockDayLine::UpdateOneStockDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit) {
-	ABSL_DCHECK(vDayLineWithSplit.size() == vDayLine.size());
+	ABSL_DCHECK(vDayLineWithSplit.size() == vDayLine.size()); //todo: 当申请时间跨越午夜时，此断言可能会失败
 	ABSL_DCHECK(gl_dataContainerTiingoStock.IsSymbol(stockSymbol));
 	auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(stockSymbol);
 	if (!vDayLine.empty()) {

@@ -530,7 +530,7 @@ namespace FireBirdTest {
 		stock.SetActive(false);
 		chrono::weekday i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(chrono::local_days(chrono::days(0)), chrono::local_days(chrono::days(0)), toLocalTime(0), i)) << L"非活跃股票工作日不更新日线\n";
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(chrono::local_days(chrono::days(0)), chrono::local_days(chrono::days(0)), local_seconds(0s), i)) << L"非活跃股票工作日不更新日线\n";
 			stock.SetUpdateDayLine(true);
 			++i;
 		}
@@ -540,9 +540,9 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
-		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), toLocalTime(0), chrono::Monday));
+		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), local_seconds(0s), chrono::Monday));
 		stock.SetDayLineEndDate(GetPrevDay(stock.GetDayLineEndDate()));
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), toLocalTime(0), chrono::Monday)) << "早于100天的股票不再更新日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), local_seconds(0s), chrono::Monday)) << "早于100天的股票不再更新日线";
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus5) {
@@ -554,14 +554,14 @@ namespace FireBirdTest {
 		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
 		chrono::weekday i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, toLocalTime(170001), i)) << "时间晚于17时后，检查当天日线";
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, local_seconds(17h) + 1s, i)) << "时间晚于17时后，检查当天日线";
 			stock.SetUpdateDayLine(true); // 重置状态
 			++i;
 		}
 		stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
 		i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, toLocalTime(170001), i)) << "时间晚于17时后，检查当天日线";
+			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, local_seconds(17h) + 1s, i)) << "时间晚于17时后，检查当天日线";
 			++i;
 		}
 	}
@@ -575,14 +575,14 @@ namespace FireBirdTest {
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
 		chrono::weekday i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus((lCurrentDay), (lPrevDay), toLocalTime(170000), i)) << "时间不晚于17时，检查上一交易日日线 " << i;
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus((lCurrentDay), (lPrevDay), local_seconds(17h), i)) << "时间不晚于17时，检查上一交易日日线 " << i;
 			stock.SetUpdateDayLine(true); // 重置之
 			++i;
 		}
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
 		i = chrono::Monday;
 		while (i != chrono::Saturday) {
-			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, toLocalTime(170000), i)) << "时间不晚于17时，检查上一交易日日线";
+			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, local_seconds(17h), i)) << "时间不晚于17时，检查上一交易日日线";
 			++i;
 		}
 	}
@@ -594,9 +594,9 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), toLocalTime(170000), chrono::Saturday)) << "周六，检查上一交易日日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), local_seconds(17h), chrono::Saturday)) << "周六，检查上一交易日日线";
 		stock.SetUpdateDayLine(true); // 重置之
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), toLocalTime(170000), chrono::Sunday)) << "周日，检查上一交易日日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), local_seconds(17h), chrono::Sunday)) << "周日，检查上一交易日日线";
 	}
 
 	TEST_F(CFinnhubStockTest, TestCheckEPSSurpriseStatus) {
@@ -1219,7 +1219,6 @@ namespace FireBirdTest {
 		}
 
 		// Prepare a CFinnhubStock with one SEC filing
-		CFinnhubStock stock;
 		string symbol = "TEST";
 		stock.SetSymbol(symbol);
 

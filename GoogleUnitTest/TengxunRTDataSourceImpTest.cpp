@@ -7,10 +7,12 @@
 #include"VirtualWebProduct.h"
 #include"tengxunRTDataSource.h"
 #include"ChinaMarket.h"
-#include"TimeConvert.h"
 
 using namespace testing;
 using std::make_shared;
+using std::literals::chrono_literals::operator ""s;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""h;
 
 namespace FireBirdTest {
 	class CTengxunRTDataSourceTest : public ::testing::Test {
@@ -50,7 +52,7 @@ namespace FireBirdTest {
 	TEST_F(CTengxunRTDataSourceTest, TestGenerateInquiryMessage1) {
 		tengxunRTDataSource.SetInquiring(true);
 
-		tengxunRTDataSource.GenerateInquiryMessage(toLocalTime(0));
+		tengxunRTDataSource.GenerateInquiryMessage(local_seconds(0s));
 
 		EXPECT_FALSE(tengxunRTDataSource.HaveInquiry());
 	}
@@ -58,7 +60,7 @@ namespace FireBirdTest {
 	TEST_F(CTengxunRTDataSourceTest, TestGenerateInquiryMessage2) {
 		tengxunRTDataSource.SetInquiring(false);
 
-		tengxunRTDataSource.GenerateInquiryMessage(toLocalTime(0));
+		tengxunRTDataSource.GenerateInquiryMessage(local_seconds(0s));
 
 		EXPECT_TRUE(tengxunRTDataSource.HaveInquiry());
 		EXPECT_EQ(tengxunRTDataSource.InquiryQueueSize(), 1);

@@ -150,7 +150,7 @@ bool CFinnhubStock::CheckDayLineUpdateStatus(local_days todayDate, local_days lL
 	}
 	else if (dayOfWeek != Sunday && dayOfWeek != Saturday) {
 		// 周一至周五
-		if (lTime > toLocalTime(170000)) {
+		if (lTime > local_seconds{ 17h }) {
 			if (todayDate <= GetDayLineEndDate()) {
 				// 最新日线数据为今日的数据，而当前时间为下午五时之后
 				SetUpdateDayLine(false); // 日线数据不需要更新

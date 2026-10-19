@@ -14,32 +14,56 @@
 
 void ProcessAlpacaIEXWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CAlpacaIEXSocket final {
+class CAlpacaIEXSocketQuote final {
 public:
-	CAlpacaIEXSocket() {
+	CAlpacaIEXSocketQuote() {
 		m_sSymbol = "";
-		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = m_dLastPrice = m_dLastSize = 0;
-		m_iAfterHour = m_iHalted = m_iISO = m_iOddlot = m_iNMSRule611 = 0;
+		m_dBidSize = m_dBidPrice = m_dAskPrice = m_dAskSize = 0;
 	}
 
-public:
 	std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> m_tpTime;
 	string m_sSymbol;
-	double m_dBidSize;
+	int m_dBidSize;
 	double m_dBidPrice;
-	double m_dMidPrice;
-	double m_dAskPrice;
+	int m_dAskPrice;
 	double m_dAskSize;
-	double m_dLastPrice;
-	double m_dLastSize;
-	int m_iHalted; // 1 for halted, 0 for not halted
-	int m_iAfterHour; // 1 for after hour, 0 for market hours
-	int m_iISO; // 1 for intermarket sweep order, 0 for non-ISO order
-	int m_iOddlot; // 1 for trade is an odd lot, 0 for trade is round or mix lot. Only available for Trade updates, null otherwise
-	int m_iNMSRule611; // 1 if the trade is not subject to NMS Rule 611 (trade through), 0 if the trade is subject to Rule NMS 611. Only available for Trade updates, null otherwise.
 };
 
-using CAlpacaIEXSocketPtr = shared_ptr<CAlpacaIEXSocket>;
+using CAlpacaIEXSocketQuotePtr = shared_ptr<CAlpacaIEXSocketQuote>;
+
+class CAlpacaIEXSocketTrade final {
+public:
+	CAlpacaIEXSocketTrade() {
+		m_sSymbol = "";
+		m_dSize = m_dPrice = 0;
+	}
+
+	std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> m_tpTime;
+	string m_sSymbol;
+	int m_dSize;
+	double m_dPrice;
+};
+
+using CAlpacaIEXSocketTradePtr = shared_ptr<CAlpacaIEXSocketTrade>;
+
+class CAlpacaIEXSocketBar final {
+public:
+	CAlpacaIEXSocketBar() {
+		m_sSymbol = "";
+		m_dOpen = m_dHigh = m_dLow = m_dClose = 0;
+		m_iVolume = 0;
+	}
+
+	std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> m_tpTime;
+	string m_sSymbol;
+	double m_dOpen;
+	double m_dHigh;
+	double m_dLow;
+	double m_dClose;
+	int m_iVolume;
+};
+
+using CAlpacaIEXSocketBarPtr = shared_ptr<CAlpacaIEXSocketBar>;
 
 class CAlpacaIEXWebSocket : public CVirtualWebSocket {
 public:

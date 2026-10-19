@@ -57,7 +57,6 @@ inline local_seconds toLocalTime(const hh_mm_ss<seconds>& time) { return local_s
 inline local_seconds toLocalTime(unsigned time) { return local_seconds{ seconds{ (time / 10000) * 3600 + ((time % 10000) / 100) * 60 + (time % 100) } }; }
 
 inline year_month_day toYearMonthDay(local_days ld) { return year_month_day{ ld }; }
-inline year_month_day toYearMonthDay(unsigned date) { return year_month_day{ year{ static_cast<int>(date) / 10000 } / month{ (date % 10000) / 100 } / day{ date % 100 } }; }
 
 inline hh_mm_ss<seconds> toTodayClock(local_seconds ls) { return hh_mm_ss{ ls - floor<days>(ls) }; }
 

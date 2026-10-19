@@ -136,30 +136,30 @@ namespace FireBirdTest {
 		EXPECT_EQ(toFormattedTime(next2), 0u) << "自动减去了一天";
 
 		// local_seconds overload
-		auto ls = toLocalTime(235958u);
+		auto ls = local_seconds{ 23h + 59min + 58s };
 		EXPECT_EQ(toFormattedTime(GetNextSecond(ls)), 235959u);
-		EXPECT_EQ(toFormattedTime(GetNextSecond(toLocalTime(235959u))), 0u) << "自动减去了一天";
+		EXPECT_EQ(toFormattedTime(GetNextSecond(local_seconds{ 23h + 59min + 59s })), 0u) << "自动减去了一天";
 	}
 
 	TEST_F(CTimeConvertTest, GetNextTime_And_GetPrevTime_HHMMSSOverload) {
 		// Prepare hh_mm_ss from an unsigned time using helpers
-		auto h = toTodayClock(toLocalTime(112158)); // 11:21:58
+		auto h = toTodayClock(local_seconds(11h + 21min + 58s)); // 11:21:58
 		auto next = GetNextTime(h, chrono::hours{ 1 }, chrono::minutes{ 1 }, chrono::seconds{ 6 });
 		EXPECT_EQ(toFormattedTime(next), 122304u); // 12:23:04
 
-		auto h2 = toTodayClock(toLocalTime(115800)); // 11:58:00
+		auto h2 = toTodayClock(local_seconds(11h + 58min + 00s)); // 11:58:00
 		auto next2 = GetNextTime(h2, chrono::hours{ 0 }, chrono::minutes{ 14 }, chrono::seconds{ 12 });
 		EXPECT_EQ(toFormattedTime(next2), 121212u); // 12:12:12
 
 		// Prev time via hh_mm_ss
-		auto hp = toTodayClock(toLocalTime(112158));
+		auto hp = toTodayClock(local_seconds(11h + 21min + 58s));
 		auto prev = GetPrevTime(hp, chrono::hours{ 1 }, chrono::minutes{ 1 }, chrono::seconds{ 6 });
 		EXPECT_EQ(toFormattedTime(prev), 102052u); // 10:20:52
 	}
 
 	TEST_F(CTimeConvertTest, GetNextTime_And_GetPrevTime_LocalSecondsOverload) {
 		// local_seconds overload (already covered in other tests, but ensure hh vs local_seconds parity)
-		auto t = toLocalTime(112158u);
+		auto t = local_seconds(11h + 21min + 58s);
 		auto next = GetNextTime(t, chrono::hours{ 1 }, chrono::minutes{ 1 }, chrono::seconds{ 6 });
 		EXPECT_EQ(toFormattedTime(next), 122304u);
 
@@ -255,30 +255,31 @@ namespace FireBirdTest {
 		EXPECT_EQ(toLocalDays(20200713), GetCurrentMonday(toLocalDays(20200718)));
 		EXPECT_EQ(toLocalDays(20200713), GetCurrentMonday(toLocalDays(20200719)));
 	}
+
 	TEST_F(CTimeConvertTest, TestGetNextSecond) {
-		EXPECT_EQ(toLocalTime(1), GetNextSecond(toLocalTime(0)));
-		EXPECT_EQ(toLocalTime(59), GetNextSecond(toLocalTime(58)));
-		EXPECT_EQ(toLocalTime(100), GetNextSecond(toLocalTime(59)));
-		EXPECT_EQ(toLocalTime(159), GetNextSecond(toLocalTime(158)));
-		EXPECT_EQ(toLocalTime(200), GetNextSecond(toLocalTime(159)));
-		EXPECT_EQ(toLocalTime(10100), GetNextSecond(toLocalTime(10059)));
-		EXPECT_EQ(toLocalTime(20000), GetNextSecond(toLocalTime(15959)));
-		EXPECT_EQ(toLocalTime(20059), GetNextSecond(toLocalTime(20058)));
-		EXPECT_EQ(toLocalTime(20200), GetNextSecond(toLocalTime(20159)));
-		EXPECT_EQ(toLocalTime(235959), GetNextSecond(toLocalTime(235958)));
-		EXPECT_EQ(toLocalTime(240000), GetNextSecond(toLocalTime(235959)));
+		EXPECT_EQ(local_seconds(1s), GetNextSecond(local_seconds(0s)));
+		EXPECT_EQ(local_seconds(59s), GetNextSecond(local_seconds(58s)));
+		EXPECT_EQ(local_seconds(1min), GetNextSecond(local_seconds(59s)));
+		EXPECT_EQ(local_seconds(1min + 59s), GetNextSecond(local_seconds(1min+58s)));
+		EXPECT_EQ(local_seconds(2min), GetNextSecond(local_seconds(1min + 59s)));
+		EXPECT_EQ(local_seconds(1h +01min +00s), GetNextSecond(local_seconds(1h + 59s)));
+		EXPECT_EQ(local_seconds(2h), GetNextSecond(local_seconds(1h + 59min + 59s)));
+		EXPECT_EQ(local_seconds(2h + 59s), GetNextSecond(local_seconds(2h + 58s)));
+		EXPECT_EQ(local_seconds(2h + 2min + 00s), GetNextSecond(local_seconds(2h + 1min + 59s)));
+		EXPECT_EQ(local_seconds(23h + 59min + 59s), GetNextSecond(local_seconds(23h + 59min + 58s)));
+		EXPECT_EQ(local_seconds(24h), GetNextSecond(local_seconds(23h + 59min + 59s)));
 	}
 
 	TEST_F(CTimeConvertTest, TestGetNextTime) {
-		EXPECT_EQ(toLocalTime(122304), GetNextTime(toLocalTime(112158), 1h, 1min, 6s));
-		EXPECT_EQ(toLocalTime(121212), GetNextTime(toLocalTime(115800), 0h, 14min, 12s));
-		EXPECT_EQ(toLocalTime(261202), GetNextTime(toLocalTime(221200), 4h, 0min, 2s));
+		EXPECT_EQ(local_seconds(12h + 23min + 04s), GetNextTime(local_seconds(11h + 21min + 58s), 1h, 1min, 6s));
+		EXPECT_EQ(local_seconds(12h + 12min + 12s), GetNextTime(local_seconds(11h + 58min + 00s), 0h, 14min, 12s));
+		EXPECT_EQ(local_seconds(26h + 12min + 02s), GetNextTime(local_seconds(22h + 12min + 00s), 4h, 0min, 2s));
 	}
 
 	TEST_F(CTimeConvertTest, TestGetPrevTime) {
-		EXPECT_EQ(toLocalTime(102052), GetPrevTime(toLocalTime(112158), 1h, 1min, 6s));
-		EXPECT_EQ(toLocalTime(105548), GetPrevTime(toLocalTime(115000), 0h, 54min, 12s));
-		EXPECT_EQ(toLocalTime(181158), GetPrevTime(toLocalTime(221200), 4h, 0min, 2s));
+		EXPECT_EQ(local_seconds(10h + 20min + 52s), GetPrevTime(local_seconds(11h + 21min + 58s), 1h, 1min, 6s));
+		EXPECT_EQ(local_seconds(10h + 55min + 48s), GetPrevTime(local_seconds(11h + 50min + 00s), 0h, 54min, 12s));
+		EXPECT_EQ(local_seconds(18h + 11min + 58s), GetPrevTime(local_seconds(22h + 12min + 00s), 4h, 0min, 2s));
 	}
 
 	TEST_F(CTimeConvertTest, TestToLocalDays) {
@@ -337,7 +338,7 @@ namespace FireBirdTest {
 		using namespace std::chrono;
 
 		unsigned input = 235959u;
-		local_seconds ls = toLocalTime(input);
+		local_seconds ls = local_seconds{ 23h + 59min + 59s };
 
 		// Expect round-trip to unsigned time to match
 		EXPECT_EQ(toFormattedTime(ls), input);
@@ -358,28 +359,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(static_cast<int>(ymd.year()), 2026);
 		EXPECT_EQ(static_cast<unsigned>(ymd.month()), 6u);
 		EXPECT_EQ(static_cast<unsigned>(ymd.day()), 18u);
-	}
-
-	TEST(TimeConvert_ToYearMonthDay_Unsigned, BasicDate) {
-		using namespace std::chrono;
-
-		unsigned input = 20260618u;
-		year_month_day ymd = toYearMonthDay(input);
-
-		EXPECT_EQ(static_cast<int>(ymd.year()), 2026);
-		EXPECT_EQ(static_cast<unsigned>(ymd.month()), 6u);
-		EXPECT_EQ(static_cast<unsigned>(ymd.day()), 18u);
-	}
-
-	TEST(TimeConvert_ToYearMonthDay_Unsigned, LeapDay) {
-		using namespace std::chrono;
-
-		unsigned input = 20200229u;
-		year_month_day ymd = toYearMonthDay(input);
-
-		EXPECT_EQ(static_cast<int>(ymd.year()), 2020);
-		EXPECT_EQ(static_cast<unsigned>(ymd.month()), 2u);
-		EXPECT_EQ(static_cast<unsigned>(ymd.day()), 29u);
 	}
 
 	TEST(TimeConvert_ToTodayClock, RoundTripFromHhMmSs) {

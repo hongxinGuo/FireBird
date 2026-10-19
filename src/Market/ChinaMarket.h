@@ -128,6 +128,7 @@ public:
 
 	local_days GetLastLoginDate() const noexcept { return m_lLastLoginDate; }
 	void SetLastLoginDate(const local_days lDate) noexcept { m_lLastLoginDate = lDate; }
+	local_seconds GetLastLoginTime() const noexcept { return m_lLastLoginTime; }
 	void SetLastLoginTime(const local_seconds lTime) noexcept { m_lLastLoginTime = lTime; }
 
 	//处理实时股票变化等

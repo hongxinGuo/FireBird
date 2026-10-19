@@ -9,6 +9,9 @@
 #include"MarketTask.h"
 
 using namespace std;
+using std::literals::chrono_literals::operator ""s;
+using std::literals::chrono_literals::operator ""min;
+using std::literals::chrono_literals::operator ""h;
 
 namespace FireBirdTest {
 	class CVirtualMarketTest : public testing::Test {
@@ -45,36 +48,36 @@ namespace FireBirdTest {
 	TEST_F(CVirtualMarketTest, TestAddTask) {
 		virtualMarket.DiscardAllMarketTask();
 
-		virtualMarket.AddTask(3, 10000);
-		virtualMarket.AddTask(3, 20000);
-		virtualMarket.AddTask(4, 10000);
-		virtualMarket.AddTask(1, 10000);
-		virtualMarket.AddTask(6, 1);
-		virtualMarket.AddTask(5, 1);
+		virtualMarket.AddTask(3, local_seconds(1h + 0min + 0s));
+		virtualMarket.AddTask(3, local_seconds(2h + 0min + 0s));
+		virtualMarket.AddTask(4, local_seconds(1h + 0min + 0s));
+		virtualMarket.AddTask(1, local_seconds(1h + 0min + 0s));
+		virtualMarket.AddTask(6, local_seconds(1s));
+		virtualMarket.AddTask(5, local_seconds(1s));
 
 		auto pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(1)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1s)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1h)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1h)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(10000)) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(1h)) << "相同时间的任务，随机排列";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), 3);
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(20000));
+		EXPECT_EQ(pTask->GetTime(), local_seconds(2h));
 		virtualMarket.DiscardCurrentMarketTask();
 
 		EXPECT_TRUE(virtualMarket.IsMarketTaskEmpty()) << virtualMarket.GetMarketTask()->GetTime();
@@ -82,25 +85,25 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualMarketTest, TestRectifyTaskTime) {
 		auto pTask = make_shared<CMarketTask>();
-		pTask->SetTime(240350);
+		pTask->SetTime(local_seconds(24h + 03min + 50s));
 		virtualMarket.AddTask(pTask);
 		pTask = make_shared<CMarketTask>();
-		pTask->SetTime(300000);
+		pTask->SetTime(local_seconds(30h));
 		virtualMarket.AddTask(pTask);
 		pTask = make_shared<CMarketTask>();
-		pTask->SetTime(274010);
+		pTask->SetTime(local_seconds(27h + 40min + 10s));
 		virtualMarket.AddTask(pTask);
 
 		virtualMarket.AdjustTaskTime();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(350)) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(3min + 50s)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(34010)) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(3h + 40min + 10s)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), toLocalTime(60000)) << "所有的时间皆大于240000，故而皆减去240000";
+		EXPECT_EQ(pTask->GetTime(), local_seconds(6h)) << "所有的时间皆大于240000，故而皆减去240000";
 		virtualMarket.DiscardCurrentMarketTask();
 	}
 
@@ -109,8 +112,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime2) {
-		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toLocalTime(0)));
-		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(toLocalTime(100)));
+		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(local_seconds(0s)));
+		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(local_seconds(1min)));
 		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime(virtualMarket.GetMarketTime()));
 	}
 
@@ -119,8 +122,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsWorkingTime2) {
-		EXPECT_TRUE(virtualMarket.IsWorkingTime(toLocalTime(0)));
-		EXPECT_TRUE(virtualMarket.IsWorkingTime(toLocalTime(100)));
+		EXPECT_TRUE(virtualMarket.IsWorkingTime(local_seconds(0s)));
+		EXPECT_TRUE(virtualMarket.IsWorkingTime(local_seconds(1min)));
 		EXPECT_TRUE(virtualMarket.IsWorkingTime(virtualMarket.GetMarketTime()));
 	}
 
@@ -129,14 +132,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsDummyTime2) {
-		EXPECT_FALSE(virtualMarket.IsDummyTime(toLocalTime(0)));
-		EXPECT_FALSE(virtualMarket.IsDummyTime(toLocalTime(100)));
+		EXPECT_FALSE(virtualMarket.IsDummyTime(local_seconds(0s)));
+		EXPECT_FALSE(virtualMarket.IsDummyTime(local_seconds(1min)));
 		EXPECT_FALSE(virtualMarket.IsDummyTime(virtualMarket.GetMarketTime()));
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsTimeToResetSystem) {
-		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toLocalTime(0)));
-		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(toLocalTime(1000)));
+		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(local_seconds(0s)));
+		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(local_seconds(10min)));
 		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(virtualMarket.GetMarketTime()));
 	}
 

@@ -18,7 +18,3 @@ CMarketTask::CMarketTask(long lType, local_seconds time) {
 void CMarketTask::SetTime(const hh_mm_ss<seconds>& hhmmss) {
 	m_time = toLocalTime(hhmmss);
 }
-
-void CMarketTask::SetTime(long lTime) {
-	m_time = toLocalTime(lTime);
-}

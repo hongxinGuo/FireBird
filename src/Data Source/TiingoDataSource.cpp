@@ -280,8 +280,8 @@ bool CTiingoDataSource::GenerateInquiryMessage(const chrono::local_seconds& curr
 	m_PrevInquireTimePoint = llTickCount;
 	ABSL_DCHECK(!IsInquiring());
 	// Ensure we are not in the market reset window before proceeding
-	ABSL_DCHECK(currentTime <= GetPrevTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 10min, 0s)
-		|| currentTime >= GetNextTime(toLocalTime(gl_systemConfiguration.GetWorldMarketResettingTime()), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
+	ABSL_DCHECK(currentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0h, 10min, 0s)
+		|| currentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0h, 5min, 0s)); // 重启市场时不允许接收网络信息。
 	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;

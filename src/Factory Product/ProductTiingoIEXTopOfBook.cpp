@@ -53,7 +53,7 @@ void CProductTiingoIEXTopOfBook::InquireData(const std::stop_token& st) {
 			pTiingoStock->UpdateRTData(pIEXTopOFBook);
 			i++;
 		}
-		if (gl_pWorldMarket->GetMarketTime() < toLocalTime(180500)) { // 18点5分前存储此数据，之后无需存储
+		if (gl_pWorldMarket->GetMarketTime() < local_seconds{ 18h + 5min + 0s }) { // 18点5分前存储此数据，之后无需存储
 			//gl_pWorldMarket->SetBuildTodayTiingoDayLine(true);
 		}
 	}

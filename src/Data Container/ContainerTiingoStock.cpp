@@ -280,7 +280,7 @@ void CContainerTiingoStock::LoadDayLine(local_days date) {
 		using namespace StockMarket;
 		const auto& t = TiingoStockDayline{};
 
-		auto st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(date, toLocalTime(170000)));
+		auto st = gl_pWorldMarket->ToUTCTime(toLocalDateTime(date, local_seconds(17h)));
 
 		auto db = gl_dbStockMarket.get();
 		auto tx = start_transaction(db);

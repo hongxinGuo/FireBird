@@ -264,7 +264,7 @@ int WINAPI wWinMain(HINSTANCE HInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	::InitGoogleTest(&argc, argv);
 
 	//Note: 使用测试环境的数据库连接池，避免对正式环境的数据库造成影响。测试环境的数据库连接池在测试结束时会自动析构。
-	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test"); // Note:: 连接测试环境的数据库
+	InitSqlppMySQLConnectionPool("Test", "test", "stock_market_test");
 
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
