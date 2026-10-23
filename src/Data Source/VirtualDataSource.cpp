@@ -36,9 +36,6 @@ void CVirtualDataSource::ReportFinishedMsg(const std::string& msg) {
 ///<summary>
 /// DataSource的顶层函数。
 ///
-/// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，否则thread_pool_executor所生成线程的返回值无法读取，原因待查。
-///
-/// Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。原因不明。
 ///
 ///</summary>
 ///
@@ -74,12 +71,6 @@ namespace {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 数据的申请和处理皆位于此处。
-// 由于待申请的数据可能有多个，故而生成多个线程来申请，并且等待所有的线程完成。
-// 需要多个申请的数据源有：腾讯日线数据。
-//
-//Note 只能使用thread_pool_executor或者background_executor，不能使用thread_executor。
-//Note 20250227, 现在似乎可以使用thread_executor了，原因不明。
-//
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Inquire(const std::stop_token& st) {
@@ -89,9 +80,9 @@ void CVirtualDataSource::Inquire(const std::stop_token& st) {
 		GetCurrentProduct();
 		m_pCurrentProduct->InquireData(st);
 		m_pCurrentProduct->UpdateSystemStatus();
+		SetHTTPStatusCode(m_pCurrentProduct->GetStatusCode());
+		SetCurrentInquiryTime(m_pCurrentProduct->GetElapsedTime());
 	}
-	SetHTTPStatusCode(m_pCurrentProduct->GetStatusCode());
-	SetCurrentInquiryTime(m_pCurrentProduct->GetElapsedTime());
 	ABSL_DCHECK(IsInquiring());  //至此尚未重置此标识
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
@@ -102,9 +93,9 @@ void CVirtualDataSource::CreateCurrentInquireString() {
 	CreateTotalInquiringString(pInquiryStrings);
 }
 
-void CVirtualDataSource::CreateTotalInquiringString(shared_ptr<vector<string>> pInquiryStrings) {
-	for (size_t i = 0; i < pInquiryStrings->size(); i++) {
-		pInquiryStrings->at(i) += m_strParam + m_strSuffix + m_token;
+void CVirtualDataSource::CreateTotalInquiringString(const shared_ptr<vector<string>>& pInquiryStrings) {
+	for (auto& i : *pInquiryStrings) {
+		i += m_strParam + m_strSuffix + m_token;
 	}
 	m_pInquiryStrings = pInquiryStrings;
 }

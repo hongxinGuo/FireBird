@@ -36,7 +36,7 @@ public:
 
 	virtual void TaskConnectAndSendMessage(const vector<string>& vSymbol);
 	virtual void TaskDisconnect();
-	bool ConnectAndSendMessage(std::stop_token st, const vector<string>& vSymbol);
+	void ConnectAndSendMessage(const vector<string>& vSymbol);
 	void Disconnect();
 
 	virtual bool ParseWebSocketData(std::shared_ptr<string>) { return true; }

@@ -70,11 +70,11 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		break;
 	case ix::WebSocketMessageType::Ping:
 		s_bWebSocketClosing = false;
-		gl_pFinnhubWebSocket->SetHeartbeatTime(GetUTCTime());
 		gl_systemMessage.PushWebSocketInfoMessage("Finnhub WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
 		s_bWebSocketClosing = false;
+		gl_pFinnhubWebSocket->SetHeartbeatTime(GetUTCTime());
 		gl_systemMessage.PushWebSocketInfoMessage("Finnhub WebSocket Pong");
 		break;
 	default: // error, all branch are covered

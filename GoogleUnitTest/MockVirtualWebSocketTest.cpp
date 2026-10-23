@@ -47,52 +47,6 @@ namespace FireBirdTest {
 		vector<string> vSymbol;
 	};
 
-	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage1) {
-		EXPECT_CALL(*s_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Open)); // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Connect).Times(1);
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(vSymbol)).Times(1);
-
-		EXPECT_TRUE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
-	}
-
-	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage2) {
-		EXPECT_CALL(*s_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Open)); // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Connect).Times(1);
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(vSymbol)).Times(1);
-
-		EXPECT_TRUE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
-	}
-
-	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage3) {
-		exception e("Test Message");
-
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Connect).Times(1)
-		.WillOnce(Throw(e));
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(_)).Times(0);
-
-		EXPECT_FALSE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Test Message");
-	}
-
-	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage5) {
-		exception e("Test Message");
-
-		EXPECT_CALL(*s_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Open)); // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Connect).Times(1);
-		EXPECT_CALL(*s_pMockVirtualWebSocket, Send(vSymbol)).Times(1)
-		.WillOnce(Throw(e));
-
-		EXPECT_FALSE(s_pMockVirtualWebSocket->ConnectAndSendMessage(std::stop_token{}, vSymbol));
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Test Message");
-	}
-
 	TEST_F(CMockVirtualWebSocketTest, TestMonitorWebSocket1) {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 

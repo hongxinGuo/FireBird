@@ -42,6 +42,7 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Forex WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
+		gl_pTiingoForexWebSocket->SetHeartbeatTime(GetUTCTime());
 		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Forex WebSocket Pong");
 		break;
 	default: // error

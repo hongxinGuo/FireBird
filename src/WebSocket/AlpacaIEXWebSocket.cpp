@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"SystemData.h"
 #include"SystemMessage.h"
 
 #include"JsonParse.h"
@@ -43,6 +42,7 @@ void ProcessAlpacaIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage("Alpaca IEX WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
+		gl_pAlpacaIEXWebSocket->SetHeartbeatTime(GetUTCTime());
 		gl_systemMessage.PushWebSocketInfoMessage("Alpaca IEX WebSocket Pong");
 		break;
 	default: // error
@@ -56,13 +56,11 @@ CAlpacaIEXWebSocket::CAlpacaIEXWebSocket() {
 }
 
 /// <summary>
-/// Alpaca IEX的数据源格式：wss://api.tiingo.com/iex，其密钥是随后发送的。
+/// Alpaca IEX的数据源格式：wss://stream.data.alpaca.markets/v2/iex
 /// </summary>
 /// 
 /// <returns></returns>
 void CAlpacaIEXWebSocket::Connect() {
-	string sTestURL = "wss://stream.data.sandbox.alpaca.markets/v2/test";
-	//Connecting(sTestURL, ProcessAlpacaIEXWebSocket);
 	string sAuth = gl_systemConfiguration.GetAlpacaApiKey();
 	string sSecretKey = gl_systemConfiguration.GetAlpacaSecretKey();
 
@@ -70,7 +68,7 @@ void CAlpacaIEXWebSocket::Connect() {
 	headers["APCA-API-KEY-ID"] = sAuth;
 	headers["APCA-API-SECRET-KEY"] = sSecretKey;
 
-	m_webSocket.setExtraHeaders(headers);
+	m_webSocket.setExtraHeaders(headers); // 密匙在这里设置
 	Connecting(m_url, ProcessAlpacaIEXWebSocket);
 }
 

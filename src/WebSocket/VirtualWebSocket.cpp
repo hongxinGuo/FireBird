@@ -38,8 +38,9 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol)
 	if (m_jtConnectAndSendMessage.joinable()) {
 		m_jtConnectAndSendMessage.join();
 	}
-	m_jtConnectAndSendMessage = std::jthread([this, vSymbol](std::stop_token st) {
-		this->GetShared()->ConnectAndSendMessage(st, vSymbol);
+	m_jtConnectAndSendMessage = std::jthread([this, vSymbol]() {
+		//this->GetShared()->ConnectAndSendMessage(st, vSymbol);
+		ConnectAndSendMessage(vSymbol);
 	});
 }
 
@@ -50,23 +51,14 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol)
 // 
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualWebSocket::ConnectAndSendMessage(std::stop_token st, const vector<string>& vSymbol) {
-	//ABSL_DCHECK(IsClosed());
-	try {
-		AppendSymbol(vSymbol);
-		Connect();
-		//ABSL_DCHECK(!IsOpen()); // Connect调用Connecting,是异步的。
-		while (!IsOpen()) {
-			if (st.stop_requested()) return false;
-			Sleep(1);
-		}
-		Send(m_vSymbol);
-	} catch (exception& e) {
-		string sError = e.what();
-		gl_systemMessage.PushInnerSystemInformationMessage(sError);
-		return false;
+void CVirtualWebSocket::ConnectAndSendMessage(const vector<string>& vSymbol) {
+	AppendSymbol(vSymbol);
+	Connect();
+	//ABSL_DCHECK(!IsOpen()); // Connect调用Connecting,是异步的。
+	while (!IsOpen()) {
+		Sleep(1);
 	}
-	return true;
+	Send(m_vSymbol);
 }
 
 void CVirtualWebSocket::AppendSymbol(const vector<string>& vSymbol) {

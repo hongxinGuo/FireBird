@@ -87,7 +87,7 @@ void CTiingoDataSource::CheckWebData(const string& text) {
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误
-	switch (m_dwHTTPStatusCode) {
+	switch (m_lHTTPStatusCode) {
 	case 200:
 		if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) return; // 付费账户直接返回
 		if (text.length() == 137) { // 此项为非json格式数据
@@ -239,7 +239,7 @@ void CTiingoDataSource::CheckWebData(const string& text) {
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			break;
 		case ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_: // 用尽了每月数据使用量 HTTP status code: 429
-			ABSL_DCHECK(m_dwHTTPStatusCode == 429);
+			ABSL_DCHECK(m_lHTTPStatusCode == 429);
 			gl_systemMessage.PushErrorMessage("Tiingo run over monthly bandwidth allocation");
 			m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT_);
 			break;
@@ -259,7 +259,7 @@ void CTiingoDataSource::CheckWebData(const string& text) {
 			else iStringViewLength = text.length();
 			sView = text.substr(0, iStringViewLength);
 			s2 = sView;
-			statusCode = m_dwHTTPStatusCode.load();
+			statusCode = m_lHTTPStatusCode.load();
 			gl_errorLogger->warn("TiingoDataSource Error status not handled http status code = {} message = {}", statusCode, s2);
 			ReportErrorNotHandled(error);
 			break;

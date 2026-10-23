@@ -85,6 +85,9 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 
 void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
+	case 0:
+		ReportWebError();
+		break;
 	case 400: // one of request parameters is invalid.See the return message for detail.
 		ReportWebError();
 		break;

@@ -19,12 +19,6 @@
 #include"TengxunDayLineDataSource.h"
 #include"TiingoDataSource.h"
 
-#include"FinnhubWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-#include"TiingoForexWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-
-//#include "ChinaMarket.h"
 #include "WorldMarket.h"
 
 #include "AccessoryDataSource.h"

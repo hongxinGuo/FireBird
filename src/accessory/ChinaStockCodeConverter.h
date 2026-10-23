@@ -16,7 +16,7 @@ using std::string_view;
 [[nodiscard]] string XferSinaToStandard(const string& strSina);
 [[nodiscard]] string XferSinaToStandard(const string_view& svSina);
 [[nodiscard]] inline string XferTengxunToStandard(const string& strTengxun) { return XferSinaToStandard(strTengxun); }
-[[nodiscard]] string XferStandardToSina(string strStandard);
+[[nodiscard]] string XferStandardToSina(const string& strStandard);
 [[nodiscard]] inline string XferStandardToTengxun(const string& strStandardCode) { return XferStandardToSina(strStandardCode); }
 [[nodiscard]] string XferStandardToEastmoney(const string& strStandardCode);
 [[nodiscard]] string XferEastmoneyToStandard(const string& strEastmoneyCode);

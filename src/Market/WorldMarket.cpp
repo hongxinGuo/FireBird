@@ -447,7 +447,6 @@ void CWorldMarket::TaskProcessWebSocketData() {
 
 void CWorldMarket::TaskMonitorWebSocket() {
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET_, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
-	gl_pAlpacaIEXWebSocket->MonitorWebSocket(gl_dataContainerTiingoChosenStock.GetSymbols());
 
 	if (!IsSystemReady()) return;
 
@@ -455,6 +454,7 @@ void CWorldMarket::TaskMonitorWebSocket() {
 	gl_pTiingoCryptoWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldCrypto.GetSymbols());
 	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerTiingoChosenStock.GetSymbols());
 	gl_pTiingoForexWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldForex.GetSymbols());
+	gl_pAlpacaIEXWebSocket->MonitorWebSocket(gl_dataContainerTiingoChosenStock.GetSymbols());
 }
 
 void CWorldMarket::TaskResetMarket() {

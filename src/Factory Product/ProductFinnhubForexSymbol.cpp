@@ -43,6 +43,7 @@ void CProductFinnhubForexSymbol::InquireData(const std::stop_token& st) {
 void CProductFinnhubForexSymbol::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0:
+		ReportWebError();
 		break;
 	case 401: // no right to access
 	case 403: // forbidden

@@ -191,7 +191,7 @@ public:
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const string&) {} // 此WebData内容为错误信息？
 
-	void CreateTotalInquiringString(shared_ptr<vector<string>> pInquiryStrings);
+	void CreateTotalInquiringString(const shared_ptr<vector<string>>& pInquiryStrings);
 	shared_ptr<vector<string>> GetInquiringString() const noexcept { return m_pInquiryStrings; }
 	void SetInquiringString(const string& str) noexcept { m_pInquiryStrings = make_shared<vector<string>>(vector<string>{ str }); }
 	void AppendInquiringString(const string& str) const noexcept { m_pInquiryStrings->push_back(str); }
@@ -239,8 +239,8 @@ public:
 	auto GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
 	void SetWebErrorCode(int64_t dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
-	auto GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode.load(); }
-	void SetHTTPStatusCode(int64_t dwStatusCode) noexcept { m_dwHTTPStatusCode = dwStatusCode; }
+	auto GetHTTPStatusCode() const noexcept { return m_lHTTPStatusCode.load(); }
+	void SetHTTPStatusCode(long lStatusCode) noexcept { m_lHTTPStatusCode = lStatusCode; }
 
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
@@ -265,7 +265,7 @@ protected:
 	queue<shared_ptr<CVirtualWebProduct>> m_qProduct; // 网络查询命令队列
 	shared_ptr<CVirtualWebProduct> m_pCurrentProduct{ nullptr };
 
-	std::atomic_int64_t m_dwHTTPStatusCode{ 200 }; // 网络状态码， 默认为200，表示正常。
+	std::atomic_long m_lHTTPStatusCode{ 200 }; // 网络状态码， 默认为200，表示正常。
 	std::atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码，默认为0，无错误。
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR_ };
 

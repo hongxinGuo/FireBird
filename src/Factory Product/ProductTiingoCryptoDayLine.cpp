@@ -40,6 +40,7 @@ void CProductTiingoCryptoDayLine::InquireData(const std::stop_token& st) {
 void CProductTiingoCryptoDayLine::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0:
+		ReportWebError();
 		break;
 	case 302: //redirected, not an error
 		break;

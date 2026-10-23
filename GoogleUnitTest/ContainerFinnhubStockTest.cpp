@@ -153,11 +153,11 @@ namespace FireBirdTest {
 			auto db = gl_dbStockMarket.get();
 			auto tx = start_transaction(db);
 
-			db(sqlpp::insert_into(t).set(t.Symbol = "BVDRF", t.Exchange = "Test")); // 重复代码，用于测试，此时代码总数是5702
+			db(sqlpp::insert_into(t).set(t.Symbol = "BVDRF", t.Exchange = "Test")); // 重复代码，用于测试，此时代码总数是4848
 			tx.commit();
 		}
 		m_containerFinnhubStock.LoadProfileDB();
-		EXPECT_EQ(m_containerFinnhubStock.Size(), 4847); // 2024-06-01Tiingo股票总共有7183只股票。如果数据库中有重复的股票代码，则会被删除，所以最终装载的股票数应该是5701。
+		EXPECT_EQ(m_containerFinnhubStock.Size(), 4847);
 		{
 			auto db = gl_dbStockMarket.get();
 			auto tx = start_transaction(db);
@@ -168,7 +168,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(rows, 1) << "数据库中应该只有一条BVDRF的记录";
 			auto& row = result.front();
 			EXPECT_EQ(row.Symbol, "BVDRF");
-			EXPECT_EQ(row.ID, 32525);
+			EXPECT_EQ(row.Exchange, "US");
+			EXPECT_EQ(row.ID, 321925);
 		}
 		m_containerFinnhubStock.Reset();
 	}

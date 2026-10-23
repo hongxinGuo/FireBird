@@ -46,6 +46,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::WebStatusCheck(cpr::Response& r) 
 	string s;
 	switch (r.status_code) {
 	case 0:
+		ReportWebError();
 		break;
 	case 302: //redirected, not an error
 	case 403: // forbidden

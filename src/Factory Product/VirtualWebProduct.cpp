@@ -20,7 +20,7 @@ bool CVirtualWebProduct::IsVoidJson(const string& text) {
 void CVirtualWebProduct::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0: //
-		// do nothing
+		ReportWebError();
 		break;
 	case 200: // OK
 		break;

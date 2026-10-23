@@ -42,6 +42,7 @@ void CProductFinnhubCryptoSymbol::InquireData(const std::stop_token& st) {
 void CProductFinnhubCryptoSymbol::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0:
+		ReportWebError();
 		break;
 	case 302: //redirected, not an error
 		break;

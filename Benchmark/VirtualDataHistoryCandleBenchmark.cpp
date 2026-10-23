@@ -13,9 +13,6 @@ using namespace std;
 class CVirtualDataHistoryCandleBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		using namespace StockMarket;
-		const auto& t = TiingoStockDayline{};
-
 		pStock = make_shared<CTiingoStock>();
 		pStock->SetSymbol(string_view("AAPL"));
 		pStock->LoadDayLineDB();

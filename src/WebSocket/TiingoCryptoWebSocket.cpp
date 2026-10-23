@@ -42,6 +42,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Crypto WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
+		gl_pTiingoCryptoWebSocket->SetHeartbeatTime(GetUTCTime());
 		gl_systemMessage.PushWebSocketInfoMessage("Tiingo Crypto WebSocket Pong");
 		break;
 	default: // error

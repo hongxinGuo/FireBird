@@ -64,7 +64,7 @@ public:
 	void SetInquireType(const int iInquireType) noexcept { m_iInquireType = iInquireType; }
 	int GetInquireType() const noexcept { return m_iInquireType; }
 
-	int GetStatusCode() const noexcept { return m_r.status_code; }
+	auto GetStatusCode() const noexcept { return m_r.status_code; }
 	double GetElapsedTime() const noexcept { return m_r.elapsed; }
 
 	bool SucceedProcessed() const noexcept { return m_bSucceedProcessed; }

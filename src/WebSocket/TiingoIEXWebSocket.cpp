@@ -43,6 +43,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage("Tiingo IEX WebSocket Ping");
 		break;
 	case ix::WebSocketMessageType::Pong:
+		gl_pTiingoIEXWebSocket->SetHeartbeatTime(GetUTCTime());
 		gl_systemMessage.PushWebSocketInfoMessage("Tiingo IEX WebSocket Pong");
 		break;
 	default: // error

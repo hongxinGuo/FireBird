@@ -53,7 +53,7 @@ void CProductFinnhubCryptoDayLine::InquireData(const std::stop_token& st) {
 void CProductFinnhubCryptoDayLine::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0: //
-		// do nothing
+		ReportWebError();
 		break;
 	case 401: // no right to access
 	case 403: // forbidden

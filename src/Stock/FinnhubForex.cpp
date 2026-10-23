@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"MarketTask.h"
 #include"WorldMarket.h"
 #include "FinnhubForex.h"
 

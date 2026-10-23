@@ -94,6 +94,7 @@ void CProductTiingoStockProfile::InquireData(const std::stop_token& st) {
 void CProductTiingoStockProfile::WebStatusCheck(cpr::Response& r) {
 	switch (r.status_code) {
 	case 0:
+		ReportWebError();
 		break;
 	case 403: // forbidden
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;

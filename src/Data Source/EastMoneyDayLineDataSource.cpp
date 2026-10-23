@@ -163,13 +163,12 @@ void CEastmoneyDayLineDataSource::CreateCurrentInquireString() {
 	m_pInquiryStrings = m_pCurrentProduct->CreateMessage();
 }
 
-
 void CEastmoneyDayLineDataSource::CheckWebData(const string& text) {
 	ABSL_DCHECK(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR_;
 	// 第一次switch处理非json数据格式的错误
-	switch (m_dwHTTPStatusCode) {
+	switch (m_lHTTPStatusCode) {
 	case 501://请求功能尚未实现，实际是服务器正处于维护状态
 		m_PrevInquireTimePoint += seconds(1800); // 半小时后再查。
 		m_InquiringTime += 2000; // 每次出现拒绝访问时都将查询间隔时间延长2秒。
