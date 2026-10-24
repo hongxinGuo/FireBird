@@ -28,7 +28,7 @@ void CVirtualWebSocket::Reset() {
 }
 
 void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol) {
-	if (IsConnecting()) { // 如果正在连接，则不再生成第二个连接
+	if (!IsClosed()) { // 如果没有关闭，正处于其他状态中，则不再生成第二个连接
 		ABSL_DLOG(INFO) << "WebSocket正在连接中，不再生成第二个连接\n";
 		gl_dailyWebSocketLogger->info("{} WebSocket正在连接中，不再生成第二个连接", m_url);
 		return;
@@ -39,7 +39,6 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(const vector<string>& vSymbol)
 		m_jtConnectAndSendMessage.join();
 	}
 	m_jtConnectAndSendMessage = std::jthread([this, vSymbol]() {
-		//this->GetShared()->ConnectAndSendMessage(st, vSymbol);
 		ConnectAndSendMessage(vSymbol);
 	});
 }

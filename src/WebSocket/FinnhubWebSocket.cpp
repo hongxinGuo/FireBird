@@ -101,7 +101,7 @@ void CFinnhubWebSocket::Connect() {
 
 void CFinnhubWebSocket::Send(const vector<string>& vSymbol) {
 	ABSL_DCHECK(IsOpen());
-	for (long l = 0; l < vSymbol.size(); l++) {
+	for (size_t l = 0; l < vSymbol.size(); l++) {
 		if (l >= 49) break; // note 免费账户只支持最多50个证券名称
 		string strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
 		ix::WebSocketSendInfo info = m_webSocket.send(strMessage);

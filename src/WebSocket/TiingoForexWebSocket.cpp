@@ -153,17 +153,19 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(const shared_ptr<strin
 			switch (chType) {
 			case 'I': // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(js, "data");
-				try {
-					string strSymbol;
-					// {"data":{"tickers": ["*", "uso", "msft", "tnk"] , "thresholdLevel" : "0"}, "messageType" : "I", "response" : {"code":200, "message" : "Success"}}
-					js3 = js2.at("tickers");
+				if (js2.contains("tickers")) {	// {"data":{"tickers": ["*", "uso", "msft", "tnk"] , "thresholdLevel" : "0"}, "messageType" : "I", "response" : {"code":200, "message" : "Success"}}
+						string strSymbol;
+				js3 = js2.at("tickers");
 					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
 						strSymbol = jsonGetString(it3);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
-				} catch (nlohmannJson::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-					ABSL_DCHECK(GetSubscriptionId() == 0);
+				} 
+				else if (js2.contains("subscriptionId")) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
+				}
+				else {// error
+					gl_systemMessage.PushErrorMessage("Tiingo Forex WebSocket type I Error");
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}

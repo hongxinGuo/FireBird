@@ -161,17 +161,21 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				break;
 			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(js, "data");
-				try {
+				if (js2.contains("tickers")) {
 					string strSymbol;
 					// {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
-					js3 = js2.at("tickers");
+					js3 = jsonGetChild(js2, "tickers");
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
-				} catch (nlohmannJson::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
+				}
+				else if (js2.contains("subscriptionId")) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 					ABSL_DCHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
+				}
+				else {// error, 
+					//do nothing
 				}
 				break;
 			case 'H': //Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}

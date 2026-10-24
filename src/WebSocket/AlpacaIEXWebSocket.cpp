@@ -132,16 +132,15 @@ bool CAlpacaIEXWebSocket::ParseAlpacaIEXWebSocketData(shared_ptr<string> pData) 
 	CAlpacaIEXSocketTradePtr pIEXTrade = nullptr;
 	CAlpacaIEXSocketBarPtr pIEXBar = nullptr;
 	minutes Minutes;
-	string sString;
 	try {
 		if (nlohmannJson js; CreateJsonWithNlohmann(js, *pData)) {
+			string sString;
 			time_point<system_clock, nanoseconds> tpTime;
 			istringstream ss;
 			string sMessageType;
 			string sService;
 			string sType;
 			string sMsg;
-			nlohmannJson js2, js3, js4;
 			nlohmannJson::iterator it;
 
 			for (const auto& item : js) {
@@ -159,12 +158,15 @@ bool CAlpacaIEXWebSocket::ParseAlpacaIEXWebSocketData(shared_ptr<string> pData) 
 						break;
 					case 1: // "subscription"
 						if (item.contains("quotes")) {
+							nlohmannJson js2;
 							js2 = item["quotes"];
 						}
 						if (item.contains("trades")) {
+							nlohmannJson js3;
 							js3 = item["trades"];
 						}
 						if (item.contains("bars")) {
+							nlohmannJson js4;
 							js4 = item["bars"];
 						}
 						break;

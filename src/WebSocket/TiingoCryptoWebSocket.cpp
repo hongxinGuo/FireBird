@@ -153,17 +153,20 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			switch (chType) {
 			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(js, "data");
-				try {
+				if (js2.contains("tickers")) {	//{"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 					string strSymbol;
-					//{"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 					js3 = js2.at("tickers");
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) { // 是代码："data":{"tickers":["*","uso","msft","tnk"]
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
-				} catch (nlohmannJson::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+				}
+				else if (js2.contains("subscriptionId")) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 					ABSL_DCHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
+				}
+				else {
+					gl_systemMessage.PushErrorMessage("Tiingo Crypto WebSocket type I Error");
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
