@@ -69,6 +69,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestUpdateSystemStatus) {
+		companyInsiderTransaction.SetStatusCode(200);
+		companyInsiderTransaction.SetErrorCode(cpr::ErrorCode::OK);
+
 		auto date = gl_pWorldMarket->GetMarketDate();
 		companyInsiderTransaction.SetIndex(gl_dataContainerFinnhubStock.GetOffset("A"));
 

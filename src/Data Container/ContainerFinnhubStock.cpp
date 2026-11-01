@@ -132,13 +132,13 @@ bool CContainerFinnhubStock::LoadProfileDB() {
 				pFinnhubStock->SetPeer(js);
 			}
 			pFinnhubStock->LoadUpdateDate(string{ row.UpdateDate });
-			if (!IsSymbol(pFinnhubStock->GetSymbol())) {
+			if (IsSymbol(pFinnhubStock->GetSymbol())) {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			}
+			else {
 				pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 				Add(pFinnhubStock);
 				ABSL_DCHECK(pFinnhubStock->GetSymbol().length() < 12);// 目前WorldMarket数据库的股票代码长度限制为12个字符
-			}
-			else {
-				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 			}
 		}
 		tx.commit();

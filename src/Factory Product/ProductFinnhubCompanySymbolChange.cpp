@@ -20,10 +20,13 @@
 #include "SystemConfiguration.h"
 #include<cpr/cpr.h>
 
+#include "TimeConvert.h"
+#include "worldMarket.h"
+
 using std::make_shared;
 
 CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
-	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?from=2020-01-01&to=2025-12-31";
+	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?";
 }
 
 void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st) {
@@ -31,9 +34,12 @@ void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st) 
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		m_r = cpr::Get(cpr::Url{ inquireString });
+		m_r = cpr::Get(cpr::Url{ inquireString },
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -60,7 +66,8 @@ void CProductFinnhubCompanySymbolChange::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanySymbolChange::CreateMessage() {
-	m_inquiryString = m_strInquiryFunction;
+	string date = std::format("from={:%F}&to={:%F}", GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100), gl_pWorldMarket->GetMarketDate());
+	m_inquiryString = m_strInquiryFunction + date;
 	ABSL_DCHECK(m_strInquiringExchange == "ALL");
 	m_strInquiringExchange = "ALL"; // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
@@ -96,7 +103,8 @@ CCompanySymbolChangesPtr CProductFinnhubCompanySymbolChange::Parse(const string&
 }
 
 void CProductFinnhubCompanySymbolChange::UpdateSystemStatus() {
-	if (m_r.status_code != 200 && m_r.status_code != 403) return;
+	//Note: 这里时判断账户类型的地方，WebError()为真时表明时免费账户。
+	if (m_r.status_code != 403 && m_r.status_code != 200) return;
 
 	gl_pFinnhubDataSource->SetUpdateCompanySymbolChange(false);
 	gl_systemMessage.PushInformationMessage("Finnhub company symbol change updated");

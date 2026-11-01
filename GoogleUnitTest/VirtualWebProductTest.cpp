@@ -143,4 +143,17 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.GetInaccessible(STOCK_PRICE_CANDLES_)->DeleteSymbol("US");
 		gl_finnhubInaccessibleExchange.GetInaccessible(STOCK_PRICE_CANDLES_)->DeleteSymbol("AD");
 	}
+	TEST_F(CVirtualWebProductTest, TestNoWebError) {
+		webProduct.SetStatusCode(200);
+		webProduct.SetErrorCode(cpr::ErrorCode::OK);
+		EXPECT_TRUE(webProduct.NoWebError());
+
+		webProduct.SetStatusCode(404);
+		webProduct.SetErrorCode(cpr::ErrorCode::OK);
+		EXPECT_FALSE(webProduct.NoWebError());
+
+		webProduct.SetStatusCode(200);
+		webProduct.SetErrorCode(cpr::ErrorCode::REMOTE_ACCESS_DENIED);
+		EXPECT_FALSE(webProduct.NoWebError());
+	}
 }

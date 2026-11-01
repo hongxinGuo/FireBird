@@ -11,12 +11,12 @@
 #include "TiingoCandleLine.h"
 #include"TimeConvert.h"
 
-namespace {
+namespace ContainerForexDayLine {
 	CFinnhubForex s_stock;
 }
 
 CContainerForexDayLine::CContainerForexDayLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = ContainerForexDayLine::s_stock.GetRatio();
 }
 
 void CContainerForexDayLine::SaveDB(const string& strForexSymbol) {

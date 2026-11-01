@@ -62,9 +62,12 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 
 	auto inquireStrings = CreateMessage();
 	ABSL_DCHECK(inquireStrings->size() == 1);
-	m_r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader());
+	m_r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader(),
+	               cpr::Timeout{ 60000 },       // 60s
+	               cpr::ConnectTimeout{ 60000 } // 60s
+	);
 
-	if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+	if (WebError()) {
 		WebStatusCheck(m_r);
 		return;
 	}
@@ -108,7 +111,9 @@ void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 }
 
 void CProductAlpacaStockSymbol::UpdateSystemStatus() {
-	gl_pAlpacaDataSource->SetUpdateTradingAsset(false);
+	if (NoWebError()) {
+		gl_pAlpacaDataSource->SetUpdateTradingAsset(false);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

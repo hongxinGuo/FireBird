@@ -34,7 +34,10 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 		Reserve(rows + 10);
 		for (const auto& row : result) {
 			const std::string symbol = string{ row.Symbol };
-			if (!IsSymbol(symbol)) {
+			if (IsSymbol(symbol)) {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			}
+			else {
 				const auto pSymbol = make_shared<CFinnhubForex>();
 				pSymbol->SetSymbol(row.Symbol);
 				pSymbol->SetDescription(row.Description);
@@ -43,9 +46,6 @@ bool CContainerFinnhubForexSymbol::LoadProfileDB() {
 				pSymbol->LoadUpdateDate(string{ row.UpdateDate });
 				pSymbol->SetCheckingDayLineStatus();
 				Add(pSymbol);
-			}
-			else {
-				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 			}
 		}
 		tx.commit();

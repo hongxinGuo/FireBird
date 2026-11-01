@@ -54,6 +54,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestUpdateDataSourceStatus) {
+		forexExchange.SetStatusCode(200);
+		forexExchange.SetErrorCode(cpr::ErrorCode::OK);
+
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 
 		forexExchange.UpdateSystemStatus();

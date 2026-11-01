@@ -12,12 +12,12 @@
 
 using std::make_shared;
 
-namespace {
+namespace ContainerTiingoStockDayLine {
 	CTiingoStock s_stock;
 }
 
 CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = ContainerTiingoStockDayLine::s_stock.GetRatio();
 }
 
 void CContainerTiingoStockDayLine::SaveDB(const string& strSymbol) {

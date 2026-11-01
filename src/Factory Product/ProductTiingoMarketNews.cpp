@@ -32,9 +32,12 @@ void CProductTiingoMarketNews::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
-		m_r = cpr::Get(cpr::Url{ inquireString });
+		m_r = cpr::Get(cpr::Url{ inquireString },
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 		}
 
@@ -160,6 +163,8 @@ CTiingoMarketNewssPtr CProductTiingoMarketNews::Parse(const string& text) {
 }
 
 void CProductTiingoMarketNews::UpdateSystemStatus() {
+	if (m_r.status_code != 403 && m_r.status_code != 200) return;
+
 	gl_pTiingoDataSource->SetUpdateMarketNews(false);
 	gl_systemMessage.PushInformationMessage("Tiingo market news updated");
 

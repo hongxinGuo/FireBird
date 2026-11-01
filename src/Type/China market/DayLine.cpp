@@ -3,10 +3,10 @@
 #include "DayLine.h"
 #include "ChinaStock.h"
 
-namespace {
-	CChinaStock s_stock;
+namespace ChinaStockDayLine {
+	static CChinaStock s_stock;
 }
 
 CDayLine::CDayLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = ChinaStockDayLine::s_stock.GetRatio();
 }

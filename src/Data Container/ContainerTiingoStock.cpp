@@ -146,7 +146,10 @@ bool CContainerTiingoStock::LoadProfileDB() {
 		Reserve(rowCount + 100); // 预留一些空间，避免后续添加新股票时频繁扩容
 		for (const auto& row : result) {
 			const std::string symbol = string{ row.Symbol.value() };
-			if (!IsSymbol(symbol)) {
+			if (IsSymbol(symbol)) {
+				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			}
+			else {
 				const auto pTiingoStock = make_shared<CTiingoStock>();
 				pTiingoStock->SetTiingoPermaTicker(string{ row.TiingoPermaTicker.value() });
 				pTiingoStock->SetSymbol(symbol);
@@ -165,9 +168,6 @@ bool CContainerTiingoStock::LoadProfileDB() {
 				pTiingoStock->LoadUpdateDate(string{ row.UpdateDate.value() });
 				pTiingoStock->CheckUpdateStatus(currentTradeDate);
 				Add(pTiingoStock);
-			}
-			else {
-				db(sqlpp::delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
 			}
 		}
 		tx.commit();

@@ -87,9 +87,12 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader(),
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -99,9 +102,12 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	auto inquireStringsSplit = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStringsSplit) {
 		if (st.stop_requested()) break;
-		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader());
+		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader(),
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -193,8 +199,10 @@ void CProductAlpacaStockDayLine::WebStatusCheck(cpr::Response& r) {
 }
 
 void CProductAlpacaStockDayLine::UpdateSystemStatus() {
-	gl_pAlpacaDataSource->SetDayLineInquired(gl_pAlpacaDataSource->GetDayLineInquired() + m_vStockSymbols.size());
-	ClearUpdateDayLineFlag();
+	if (NoWebError()) {
+		gl_pAlpacaDataSource->SetDayLineInquired(gl_pAlpacaDataSource->GetDayLineInquired() + m_vStockSymbols.size());
+		ClearUpdateDayLineFlag();
+	}
 }
 
 void CProductAlpacaStockDayLine::ClearUpdateDayLineFlag() {

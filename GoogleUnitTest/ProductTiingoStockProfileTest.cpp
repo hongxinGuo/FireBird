@@ -56,6 +56,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoStockProfileTest, TestUpdateDataSourceStatus) {
+		stockSymbol.SetStatusCode(200);
+		stockSymbol.SetErrorCode(cpr::ErrorCode::OK);
+
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 
 		stockSymbol.UpdateSystemStatus();

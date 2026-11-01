@@ -34,21 +34,21 @@ public:
 	void UpdateStatus(const shared_ptr<CWebRTData>& pRTData);
 
 	// 本股票各变量状态
-	long GetHighLimitFromTengxun() const noexcept { return m_lHighLimitFromTengxun; }
-	void SetHighLimitFromTengxun(const long lValue) noexcept { m_lHighLimitFromTengxun = lValue; }
-	long GetLowLimitFromTengxun() const noexcept { return m_lLowLimitFromTengxun; }
-	void SetLowLimitFromTengxun(const long lValue) noexcept { m_lLowLimitFromTengxun = lValue; }
-	long GetHighLimit() const noexcept { return m_lHighLimit; }
-	void SetHighLimit(const long lValue) noexcept { m_lHighLimit = lValue; }
-	long GetLowLimit() const noexcept { return m_lLowLimit; }
-	void SetLowLimit(const long lValue) noexcept { m_lLowLimit = lValue; }
-	long GetPBuy(const int iIndex) const { return m_lPBuy.at(iIndex); }
-	long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
-	long GetPSell(const int iIndex) const { return m_lPSell.at(iIndex); }
+	long GetHighLimitFromTengxun() const noexcept { return m_iHighLimitFromTengxun; }
+	void SetHighLimitFromTengxun(const long lValue) noexcept { m_iHighLimitFromTengxun = lValue; }
+	long GetLowLimitFromTengxun() const noexcept { return m_iLowLimitFromTengxun; }
+	void SetLowLimitFromTengxun(const long lValue) noexcept { m_iLowLimitFromTengxun = lValue; }
+	long GetHighLimit() const noexcept { return m_iHighLimit; }
+	void SetHighLimit(const long lValue) noexcept { m_iHighLimit = lValue; }
+	long GetLowLimit() const noexcept { return m_iLowLimit; }
+	void SetLowLimit(const long lValue) noexcept { m_iLowLimit = lValue; }
+	long GetPBuy(const int iIndex) const { return m_iPBuy.at(iIndex); }
+	long GetVBuy(const int iIndex) const { return m_iVBuy.at(iIndex); }
+	long GetPSell(const int iIndex) const { return m_iPSell.at(iIndex); }
 	long GetVSell(const int iIndex) const { return m_lVSell.at(iIndex); }
-	void SetPBuy(const int iIndex, const long value) { m_lPBuy.at(iIndex) = value; }
-	void SetVBuy(const int iIndex, const long value) { m_lVBuy.at(iIndex) = value; }
-	void SetPSell(const int iIndex, const long value) { m_lPSell.at(iIndex) = value; }
+	void SetPBuy(const int iIndex, const long value) { m_iPBuy.at(iIndex) = value; }
+	void SetVBuy(const int iIndex, const long value) { m_iVBuy.at(iIndex) = value; }
+	void SetPSell(const int iIndex, const long value) { m_iPSell.at(iIndex) = value; }
 	void SetVSell(const int iIndex, const long value) { m_lVSell.at(iIndex) = value; }
 	double GetRS() const noexcept { return m_dRealtimeRS; }
 	void SetRS(const double value) noexcept { m_dRealtimeRS = value; }
@@ -130,16 +130,16 @@ public:
 	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
 
 protected:
-	short m_nHand{ 100 }; // 每手股数
+	int m_nHand{ 100 }; // 每手股数
 
-	long m_lHighLimitFromTengxun{ 0 }; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lLowLimitFromTengxun{ 0 }; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lHighLimit{ 0 }; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
-	long m_lLowLimit{ 0 }; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
-	array<long, 5> m_lPBuy; // 买盘价。单位：0.001元
-	array<long, 5> m_lVBuy; // 买盘量。单位：股
-	array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
-	array<long, 5> m_lVSell; // 卖盘量。单位：股
+	int m_iHighLimitFromTengxun{ 0 }; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+	int m_iLowLimitFromTengxun{ 0 }; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+	int m_iHighLimit{ 0 }; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+	int m_iLowLimit{ 0 }; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+	array<int, 5> m_iPBuy{ 0, 0, 0, 0, 0 }; // 买盘价。单位：0.001元
+	array<int, 5> m_iVBuy{ 0, 0, 0, 0, 0 }; // 买盘量。单位：股
+	array<int, 5> m_iPSell{ 0, 0, 0, 0, 0 }; // 卖盘价。单位：0.001元
+	array<int, 5> m_lVSell{ 0, 0, 0, 0, 0 }; // 卖盘量。单位：股
 	double m_dRealtimeRS{ 0 }; // 当日实时相对强度 单位：1%
 	double m_dRealtimeRSIndex{ 0 }; // 当日实时相对强度（相对于指数）单位：1%
 

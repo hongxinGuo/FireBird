@@ -48,32 +48,14 @@ bool IsChinaStock(const CVirtualStockPtr& pStock) {
 
 CChinaStock::CChinaStock() {
 	for (int i = 0; i < 5; i++) {
-		m_lPBuy.at(i) = m_lPSell.at(i) = 0;
-		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
+		m_iPBuy.at(i) = m_iPSell.at(i) = 0;
+		m_iVBuy.at(i) = m_lVSell.at(i) = 0;
 	}
 
-	m_nHand = 100;
-
-	m_lHighLimitFromTengxun = m_lLowLimitFromTengxun = 0;
-	m_lHighLimit = m_lLowLimit = 0;
 	for (int i = 0; i < 5; i++) {
-		m_lPBuy.at(i) = m_lPSell.at(i) = 0;
-		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
+		m_iPBuy.at(i) = m_iPSell.at(i) = 0;
+		m_iVBuy.at(i) = m_lVSell.at(i) = 0;
 	}
-	m_dRealtimeRS = 0;
-	m_dRealtimeRSIndex = 0;
-
-	m_llLastSavedVolume = 0;
-
-	m_fChosen = false;
-	m_fUpdateChosenStockDB = false;
-
-	m_fDayLineDBUpdated = false;
-
-	m_fHaveFirstRTData = false; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
-	m_fNeedProcessRTData = true;
-	m_fRTDataCalculated = false;
-	m_pLastRTData = nullptr;
 
 	ClearRTDataDeque();
 }

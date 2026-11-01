@@ -19,9 +19,12 @@ void CProductTengxunRT::InquireData(const std::stop_token& st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
-		m_r = cpr::Get(cpr::Url{ inquiry });
+		m_r = cpr::Get(cpr::Url{ inquiry },
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}

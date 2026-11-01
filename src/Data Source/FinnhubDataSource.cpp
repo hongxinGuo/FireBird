@@ -160,7 +160,12 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const local_seconds& currentTime
 	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
-	if (llTickCount <= m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
+	if (GetHTTPStatusCode() == 0) { // 服务器不通时，推迟60秒后再去查询。
+		if (llTickCount <= m_PrevInquireTimePoint + 60000ms + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
+	}
+	else {
+		if (llTickCount <= m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
+	}
 
 	m_PrevInquireTimePoint = llTickCount;
 	ABSL_DCHECK(!IsInquiring());

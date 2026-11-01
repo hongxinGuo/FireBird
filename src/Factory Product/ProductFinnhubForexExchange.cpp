@@ -23,8 +23,11 @@ void CProductFinnhubForexExchange::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		m_r = cpr::Get(cpr::Url{ inquireString });
-		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+		m_r = cpr::Get(cpr::Url{ inquireString },
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -85,6 +88,8 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::Parse(const string& tex
 }
 
 void CProductFinnhubForexExchange::UpdateSystemStatus() {
-	gl_pFinnhubDataSource->SetUpdateForexExchange(false);
-	gl_systemMessage.PushInformationMessage("Finnhub forex exchange updated");
+	if (NoWebError()) {
+		gl_pFinnhubDataSource->SetUpdateForexExchange(false);
+		gl_systemMessage.PushInformationMessage("Finnhub forex exchange updated");
+	}
 }

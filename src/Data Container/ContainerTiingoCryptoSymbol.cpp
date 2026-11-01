@@ -39,7 +39,10 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 		auto result = db(select(all_of(t)).from(t).order_by(t.ID.asc()));
 		Reserve(result.size() + 2);
 		for (const auto& row : result) {
-			if (!IsSymbol(string{ row.Symbol })) {
+			if (IsSymbol(string{ row.Symbol })) {
+				db(delete_from(t).where(t.ID == row.ID)); // 如果数据库中存在重复的股票代码，则删除重复的记录。
+			}
+			else {
 				const auto pSymbol = make_shared<CTiingoCrypto>();
 				pSymbol->SetSymbol(row.Symbol);
 				pSymbol->m_strName = string{ row.Name };
@@ -47,9 +50,6 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 				pSymbol->m_strBaseCurrency = string{ row.BaseCurrency };
 				pSymbol->m_strQuoteCurrency = string{ row.QuoteCurrency };
 				Add(pSymbol);
-			}
-			else {
-				db(delete_from(t).where(t.ID == row.ID));
 			}
 		}
 		tx.commit();

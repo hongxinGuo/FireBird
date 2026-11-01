@@ -24,9 +24,12 @@ void CProductFinnhubEconomicCountryList::InquireData(const std::stop_token& st) 
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		m_r = cpr::Get(cpr::Url{ inquireString });
+		m_r = cpr::Get(cpr::Url{ inquireString },
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -102,8 +105,8 @@ CCountriesPtr CProductFinnhubEconomicCountryList::Parse(const std::string& text)
 }
 
 void CProductFinnhubEconomicCountryList::UpdateSystemStatus() {
-	if (m_r.status_code != 200) return;
-
-	gl_pFinnhubDataSource->SetUpdateCountryList(false);
-	gl_systemMessage.PushInformationMessage("Finnhub economic country List updated");
+	if (NoWebError()) {
+		gl_pFinnhubDataSource->SetUpdateCountryList(false);
+		gl_systemMessage.PushInformationMessage("Finnhub economic country List updated");
+	}
 }

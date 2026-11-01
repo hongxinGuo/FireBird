@@ -25,9 +25,12 @@ void CProductFinnhubCompanyInsiderSentiment::InquireData(const std::stop_token& 
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		m_r = cpr::Get(cpr::Url{ inquireString });
+		m_r = cpr::Get(cpr::Url{ inquireString },
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -72,10 +75,12 @@ shared_ptr<vector<string>> CProductFinnhubCompanyInsiderSentiment::CreateMessage
 }
 
 void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
-	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
-	pStock->SetInsiderSentimentUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pStock->SetUpdateInsiderSentiment(false);
-	pStock->SetUpdateProfileDB(true);
+	if (NoWebError()) {
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		pStock->SetInsiderSentimentUpdateDate(gl_pWorldMarket->GetMarketDate());
+		pStock->SetUpdateInsiderSentiment(false);
+		pStock->SetUpdateProfileDB(true);
+	}
 }
 
 ////////

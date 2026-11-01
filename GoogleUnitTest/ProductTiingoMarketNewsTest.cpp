@@ -56,6 +56,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoMarketNewsTest, TestUpdateDataSourceStatus1) {
+		marketNews.SetStatusCode(200);
+		marketNews.SetErrorCode(cpr::ErrorCode::OK);
+
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
 		marketNews.UpdateSystemStatus();
@@ -75,6 +78,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoMarketNewsTest, TestUpdateDataSourceStatus2) {
+		marketNews.SetStatusCode(200);
+		marketNews.SetErrorCode(cpr::ErrorCode::OK);
+
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
 		marketNews.UpdateSystemStatus();

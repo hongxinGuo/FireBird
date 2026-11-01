@@ -31,9 +31,12 @@ void CProductFinnhubEconomicCalendar::InquireData(const std::stop_token& st) {
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
-		m_r = cpr::Get(cpr::Url{ inquireString });
+		m_r = cpr::Get(cpr::Url{ inquireString },
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
+		);
 
-		if (m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK) {
+		if (WebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -110,14 +113,16 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::Parse(const string& text)
 	return pvEconomicCalendar;
 }
 void CProductFinnhubEconomicCalendar::UpdateSystemStatus() {
-	gl_pFinnhubDataSource->SetUpdateEconomicCalendar(false);
-	gl_systemMessage.PushInformationMessage("Finnhub economic calendar updated");
-	if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型
-		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
-		gl_systemMessage.PushStockMarketInformationMessage("free finnhub account");
-	}
-	else {
-		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
-		gl_systemMessage.PushStockMarketInformationMessage("paid finnhub account");
+	if (NoWebError()) {
+		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(false);
+		gl_systemMessage.PushInformationMessage("Finnhub economic calendar updated");
+		if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型
+			gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
+			gl_systemMessage.PushStockMarketInformationMessage("free finnhub account");
+		}
+		else {
+			gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
+			gl_systemMessage.PushStockMarketInformationMessage("paid finnhub account");
+		}
 	}
 }

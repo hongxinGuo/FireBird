@@ -6,6 +6,7 @@ using std::string;
 
 namespace {
 	template <typename T>
+	// ReSharper disable once CppNotAllPathsReturnValue
 	T jsonGetValue(const nlohmannJson& js, const char* szKey, T defaultValue) {
 		const auto& val = js.at(szKey);
 		if constexpr (std::is_same_v<T, double>) {
@@ -23,10 +24,10 @@ namespace {
 		else if constexpr (std::is_same_v<T, std::string>) {
 			return val.is_string() ? val.get<std::string>() : defaultValue;
 		}
-		return defaultValue;
 	}
 
 	template <typename T>
+	// ReSharper disable once CppNotAllPathsReturnValue
 	T jsonGetValue(const nlohmannJson* pjs, const char* szKey, T defaultValue) {
 		const auto& val = pjs->at(szKey);
 		if constexpr (std::is_same_v<T, double>) {
@@ -44,10 +45,10 @@ namespace {
 		else if constexpr (std::is_same_v<T, std::string>) {
 			return val.is_string() ? val.get<std::string>() : defaultValue;
 		}
-		return defaultValue;
 	}
 
 	template <typename T>
+	// ReSharper disable once CppNotAllPathsReturnValue
 	T jsonGetValue(const nlohmannJson::iterator& it, const char* szKey, T defaultValue) {
 		const auto& val = it->at(szKey);
 		if constexpr (std::is_same_v<T, double>) {
@@ -65,10 +66,10 @@ namespace {
 		else if constexpr (std::is_same_v<T, std::string>) {
 			return val.is_string() ? val.get<std::string>() : defaultValue;
 		}
-		return defaultValue;
 	}
 
 	template <typename T>
+	// ReSharper disable once CppNotAllPathsReturnValue
 	T jsonGetValue(const nlohmannJson::iterator& it, T defaultValue) {
 		const auto& val = *it;
 		if constexpr (std::is_same_v<T, double>) {
@@ -86,7 +87,6 @@ namespace {
 		else if constexpr (std::is_same_v<T, std::string>) {
 			return val.is_string() ? val.get<std::string>() : defaultValue;
 		}
-		return defaultValue;
 	}
 }
 

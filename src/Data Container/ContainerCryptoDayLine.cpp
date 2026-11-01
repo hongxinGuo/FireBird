@@ -11,12 +11,12 @@
 
 #include"TimeConvert.h"
 
-namespace {
+namespace ContainerCryptoDayLine {
 	CFinnhubCrypto s_stock;
 }
 
 CContainerCryptoDayLine::CContainerCryptoDayLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = ContainerCryptoDayLine::s_stock.GetRatio();
 }
 
 void CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {

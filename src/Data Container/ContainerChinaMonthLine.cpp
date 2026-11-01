@@ -4,12 +4,12 @@
 #include "ChinaStock.h"
 #include"MonthLine.h"
 
-namespace {
+namespace ChinaStockMonthLine {
 	CChinaStock s_stock;
 }
 
 CContainerChinaStockMonthLine::CContainerChinaStockMonthLine() {
-	m_ratio = s_stock.GetRatio();
+	m_ratio = ChinaStockMonthLine::s_stock.GetRatio();
 }
 
 CMonthLine* CContainerChinaStockMonthLine::GetData(size_t lIndex) {
