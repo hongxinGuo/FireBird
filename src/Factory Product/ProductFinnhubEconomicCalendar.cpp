@@ -36,7 +36,7 @@ void CProductFinnhubEconomicCalendar::InquireData(const std::stop_token& st) {
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -113,7 +113,7 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::Parse(const string& text)
 	return pvEconomicCalendar;
 }
 void CProductFinnhubEconomicCalendar::UpdateSystemStatus() {
-	if (NoWebError()) {
+	if (!IsWebError()) {
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(false);
 		gl_systemMessage.PushInformationMessage("Finnhub economic calendar updated");
 		if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型

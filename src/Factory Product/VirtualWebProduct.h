@@ -73,8 +73,7 @@ public:
 	void ReportWebError(); // 
 	void ReportWebError(const string& symbol); // 
 
-	bool WebError() const noexcept { return m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK; }
-	bool NoWebError() const noexcept { return m_r.status_code == 200 && m_r.error.code == cpr::ErrorCode::OK; }
+	bool IsWebError() const noexcept { return m_r.status_code != 200 || m_r.error.code != cpr::ErrorCode::OK; }
 
 	// 测试用
 	virtual bool Test_checkAccessRight_(const string&) { return true; }  // todo 不再使用，准备删除之

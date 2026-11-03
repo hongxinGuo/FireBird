@@ -24,7 +24,7 @@ void CProductTengxunRT::InquireData(const std::stop_token& st) {
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}

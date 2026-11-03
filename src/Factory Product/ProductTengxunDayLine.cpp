@@ -11,7 +11,6 @@
 #include "TengxunDayLineDataSource.h"
 #include "DayLineWebData.h"
 #include"DayLine.h"
-#include "MarketTask.h"
 #include "TimeConvert.h"
 
 #include"cpr/cpr.h"
@@ -60,7 +59,7 @@ void CProductTengxunDayLine::InquireData(const std::stop_token& st) {
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -100,11 +99,7 @@ void CProductTengxunDayLine::WebStatusCheck(cpr::Response& r) {
 }
 
 void CProductTengxunDayLine::UpdateSystemStatus() {
-	if (m_r.status_code == 501) { // 服务器暂时关闭了
-		gl_pTengxunDayLineDataSource->Enable(false);
-		gl_pChinaMarket->AddTask(CHINA_MARKET_START_DOWN_LOAD_DAYLINE, GetNextTime(gl_pChinaMarket->GetMarketTime(), 1h, 0min, 0s));
-	}
-	if (WebError()) return;
+	if (IsWebError()) return;
 	gl_dataContainerChinaStock.GetStock(m_strInquiringSymbol)->SetUpdateDayLine(false);
 }
 

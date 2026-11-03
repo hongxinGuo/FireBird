@@ -67,7 +67,7 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 	               cpr::ConnectTimeout{ 60000 } // 60s
 	);
 
-	if (WebError()) {
+	if (IsWebError()) {
 		WebStatusCheck(m_r);
 		return;
 	}
@@ -111,7 +111,7 @@ void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 }
 
 void CProductAlpacaStockSymbol::UpdateSystemStatus() {
-	if (NoWebError()) {
+	if (!IsWebError()) {
 		gl_pAlpacaDataSource->SetUpdateTradingAsset(false);
 	}
 }

@@ -36,7 +36,7 @@ void CProductTiingoStockDailyMeta::InquireData(const std::stop_token& st) {
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ s });
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 		}
 

@@ -19,6 +19,7 @@
 #include "FinnhubStock.h"
 #include "TiingoCandleLine.h"
 #include "TimeConvert.h"
+#include "WorldMarket.h"
 
 using namespace std;
 
@@ -285,6 +286,54 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(false);
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+	}
+
+	TEST_F(CTiingoStockTest, TestCheckDayLineUpdateStatus) {
+		const auto currentDate = gl_pWorldMarket->GetMarketDate();
+		gl_pWorldMarket->TEST_SetMarketDate(toLocalDays(20261104)); // 星期三
+
+		// 日线已经更新到当前交易日：不需要更新。
+		stock.SetDayLineEndDate(toLocalDays(20261104));
+		stock.SetUpdateDayLine(true);
+		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
+		EXPECT_FALSE(stock.IsUpdateDayLine());
+
+		// 只落后一个交易日，并且当前市场时间早于18:00：暂不更新。
+		stock.SetDayLineEndDate(toLocalDays(20261103));
+		stock.SetUpdateDayLine(true);
+		gl_pWorldMarket->TEST_SetMarketTime(
+			std::chrono::local_seconds{ std::chrono::hours{ 17 } });
+		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
+		EXPECT_FALSE(stock.IsUpdateDayLine());
+
+		// 日线落后超过一天：需要更新。
+		stock.SetDayLineEndDate(toLocalDays(20261102));
+		stock.SetUpdateDayLine(true);
+		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
+		EXPECT_TRUE(stock.IsUpdateDayLine());
+
+		// 非活跃股票：周一以外的日期不更新。
+		stock.SetDayLineEndDate(toLocalDays(20260601));
+		stock.SetUpdateDayLine(true);
+		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
+		EXPECT_FALSE(stock.IsUpdateDayLine());// 非活跃股票：周一以外的日期不更新。
+
+		// 非活跃股票，从未更新过的需要更新。
+		stock.SetDayLineEndDate(toLocalDays(19800101));
+		stock.SetUpdateDayLine(true);
+		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
+		EXPECT_TRUE(stock.IsUpdateDayLine());
+
+		// 非活跃股票：周一允许复查日线数据。
+		gl_pWorldMarket->TEST_SetMarketDate(toLocalDays(20261102)); // 星期一
+		EXPECT_TRUE(gl_pWorldMarket->GetWeekDay() == chrono::Monday);
+		stock.SetDayLineEndDate(toLocalDays(20260601));
+		stock.SetUpdateDayLine(true);
+		stock.CheckDayLineUpdateStatus(toLocalDays(20261102));
+		EXPECT_TRUE(stock.IsUpdateDayLine());
+
+		// 恢复市场时间
+		gl_pWorldMarket->TEST_SetMarketDate(currentDate);
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateDayLineStartEndDate) {

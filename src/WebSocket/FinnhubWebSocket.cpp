@@ -17,6 +17,7 @@
 #include "WorldMarket.h"
 
 using namespace std;
+using namespace simdjson;
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	string str;

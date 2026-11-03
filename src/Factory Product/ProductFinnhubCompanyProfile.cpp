@@ -23,7 +23,7 @@ void CProductFinnhubCompanyProfile::InquireData(const std::stop_token& st) {
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString });
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}

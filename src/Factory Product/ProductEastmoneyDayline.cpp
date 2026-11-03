@@ -82,11 +82,11 @@ void CProductEastmoneyDayLine::InquireData(const std::stop_token& st) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry;
 		m_r = cpr::Get(cpr::Url{ inquireString }, gl_pEastmoneyDayLineDataSource->GetHeader(mean),
-			cpr::Timeout{ 60000 },       // 60s
-			cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::Timeout{ 60000 },       // 60s
+		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}

@@ -1,6 +1,10 @@
 #pragma once
 
-#include"TiingoIndustry.h"
+class CTiingoIndustryPtr;
+
+using std::vector;
+using std::string;
+using std::map;
 
 class CContainerTiingoIndustry {
 public:

@@ -118,7 +118,7 @@ void CProductTiingoFinancialState::InquireData(const std::stop_token& st) {
 		               cpr::Timeout{ 60000 },       // 60s
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 		}
 		const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);

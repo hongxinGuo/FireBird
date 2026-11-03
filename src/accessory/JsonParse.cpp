@@ -673,6 +673,7 @@ CDayLinesPtr ParseTengxunDayLineImp(const string& text, const string& strStockCo
 		auto a3 = a2["day"];
 		auto a4 = a3.get_array();
 		auto dayArray = a4.value();
+
 		//ondemand::array dayArray = doc["data"][strStockCode]["day"].get_array().value(); // 使用索引strStockCode找到日线数组
 		// 以下为不使用索引strStockCode找到日线数组的方法
 		//ondemand::value data = doc["data"];

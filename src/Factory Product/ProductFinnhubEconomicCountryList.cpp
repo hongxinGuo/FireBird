@@ -29,7 +29,7 @@ void CProductFinnhubEconomicCountryList::InquireData(const std::stop_token& st) 
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -105,7 +105,7 @@ CCountriesPtr CProductFinnhubEconomicCountryList::Parse(const std::string& text)
 }
 
 void CProductFinnhubEconomicCountryList::UpdateSystemStatus() {
-	if (NoWebError()) {
+	if (!IsWebError()) {
 		gl_pFinnhubDataSource->SetUpdateCountryList(false);
 		gl_systemMessage.PushInformationMessage("Finnhub economic country List updated");
 	}

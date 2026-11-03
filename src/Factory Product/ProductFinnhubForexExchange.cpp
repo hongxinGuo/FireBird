@@ -27,7 +27,7 @@ void CProductFinnhubForexExchange::InquireData(const std::stop_token& st) {
 		               cpr::Timeout{ 60000 },       // 60s
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -88,7 +88,7 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::Parse(const string& tex
 }
 
 void CProductFinnhubForexExchange::UpdateSystemStatus() {
-	if (NoWebError()) {
+	if (!IsWebError()) {
 		gl_pFinnhubDataSource->SetUpdateForexExchange(false);
 		gl_systemMessage.PushInformationMessage("Finnhub forex exchange updated");
 	}

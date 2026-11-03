@@ -65,7 +65,12 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 	std::default_random_engine e1(r());
 	uniform_int_distribution<int> uniform_dist(1, 4000);
 	int mean = uniform_dist(e1);
-	if (llTickCount < m_PrevInquireTimePoint + milliseconds(2000 + mean)) return false;
+	if (GetHTTPStatusCode() == 501) {
+		if (llTickCount < m_PrevInquireTimePoint + milliseconds(60000 + mean)) return false; // 如果腾讯日线服务器拒绝服务，则延长申请间隔时间，一分钟后再申请。
+	}
+	else {
+		if (llTickCount < m_PrevInquireTimePoint + milliseconds(2000 + mean)) return false;
+	}
 
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
 	if (!IsInquiring()) {

@@ -25,6 +25,7 @@
 #include"cpr/cpr.h"
 
 using namespace std;
+using namespace simdjson;
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
 	m_strInquiryFunction = "https://api.tiingo.com/iex?";
@@ -40,7 +41,7 @@ void CProductTiingoIEXTopOfBook::InquireData(const std::stop_token& st) {
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 		}
 

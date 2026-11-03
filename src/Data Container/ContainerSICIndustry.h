@@ -2,6 +2,8 @@
 
 #include"SicIndustry.h"
 
+using std::map;
+
 class CContainerSicIndustry {
 public:
 	CContainerSicIndustry();

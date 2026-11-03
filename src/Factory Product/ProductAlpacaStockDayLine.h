@@ -11,8 +11,6 @@
 #include "TiingoCandleLine.h"
 #include"VirtualChinaMarketWebProduct.h"
 
-class CDayLine;
-
 struct TiingoDayLine {
 	string m_symbol;
 	vector<CTiingoCandleLine> m_dayLine;
@@ -57,7 +55,8 @@ public:
 protected:
 	std::chrono::local_days m_currentDayLineEndDate;
 
-	vector<string> m_vStockSymbols;
+	vector<string> m_vInquiredStockSymbols;
+	vector<string> m_vReceivedStockSymbols;
 	vector<StockDayLine> m_vStockDayLine; // 每个股票的日线数据
 	unordered_map<string, size_t> m_mapStockDayLine;
 	vector<StockDayLine> m_vStockDayLineSplit; // 每个股票的日线数据

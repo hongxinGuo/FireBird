@@ -30,7 +30,7 @@ void CProductFinnhubCompanyInsiderTransaction::InquireData(const std::stop_token
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}
@@ -77,7 +77,7 @@ shared_ptr<vector<string>> CProductFinnhubCompanyInsiderTransaction::CreateMessa
 }
 
 void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus() {
-	if (NoWebError()) {
+	if (!IsWebError()) {
 		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
 		pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateInsiderTransaction(false);

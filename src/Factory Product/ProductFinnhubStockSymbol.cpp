@@ -30,7 +30,7 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 		               cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL } // 允许重定向
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
 		}

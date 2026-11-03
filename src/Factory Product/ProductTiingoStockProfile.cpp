@@ -44,7 +44,7 @@ void CProductTiingoStockProfile::InquireData(const std::stop_token& st) {
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 		}
 
@@ -267,7 +267,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::Parse(const string& text) {
 }
 
 void CProductTiingoStockProfile::UpdateSystemStatus() {
-	if (NoWebError()) {
+	if (!IsWebError()) {
 		gl_pTiingoDataSource->SetUpdateStockSymbol(false);
 		gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(gl_pWorldMarket->GetMarketDate());
 		gl_systemMessage.PushInformationMessage("Tiingo stock symbol updated");

@@ -13,6 +13,8 @@
 
 #include"cpr/cpr.h"
 
+using namespace simdjson;
+
 using std::make_shared;
 
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
@@ -29,7 +31,7 @@ void CProductTiingoFundamentalDefinition::InquireData(const std::stop_token& st)
 		               cpr::ConnectTimeout{ 60000 } // 60s
 		);
 
-		if (WebError()) {
+		if (IsWebError()) {
 			WebStatusCheck(m_r);
 		}
 		const auto pvFundamentalDefinition = Parse(m_r.text);
