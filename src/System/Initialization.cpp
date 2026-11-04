@@ -359,6 +359,7 @@ void CloseDataSourceBackgroundThread() {
 /////////////////////////////////////////////////////////////////////////////////////////////
 void TaskSchedulePer100ms() {
 	static bool s_Processing = false;
+	static int s_iError = 0;
 	if (IsMarketResetting()) return;// 市场重启需要较长时间，无法并行工作，故而暂停调度。
 	if (s_Processing) {
 		gl_dailyLogger->warn("TaskSchedulePer100ms()发生重入");
@@ -377,18 +378,18 @@ void TaskSchedulePer100ms() {
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 		//Todo: 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
 	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
+		s_Processing = false;
+		s_iError = 1;
 		string str = "ScheduleMarketTask unhandled exception founded : ";
 		str += e->what();
-		gl_systemMessage.PushInformationMessage(str);
-		gl_systemMessage.PushErrorMessage(str);
+		gl_dailyLogger->warn(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	} catch (CException* e) {
-		WCHAR buffer[1000];
-		wstring str = L"ScheduleMarketTask unhandled CException founded : ";
-		e->GetErrorMessage(buffer, 1);
-		str += buffer;
-		gl_systemMessage.PushInformationMessage(W2Utf8(str));
-		gl_systemMessage.PushErrorMessage(W2Utf8(str));
+		s_Processing = false;
+		s_iError = 2;
+		CHAR buffer[1000];
+		string str = "ScheduleMarketTask unhandled CException founded : ";
+		gl_dailyLogger->warn(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	auto end = time_point_cast<milliseconds>(steady_clock::now());

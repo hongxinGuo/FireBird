@@ -8,6 +8,8 @@
 
 #include <cpr/response.h>
 
+#include<set>
+
 #include "TiingoCandleLine.h"
 #include"VirtualChinaMarketWebProduct.h"
 
@@ -56,7 +58,9 @@ protected:
 	std::chrono::local_days m_currentDayLineEndDate;
 
 	vector<string> m_vInquiredStockSymbols;
+	unordered_map<string, size_t> m_mapInquiredStockSymbol;
 	vector<string> m_vReceivedStockSymbols;
+	bool m_bInquireSingleStock{ false };
 	vector<StockDayLine> m_vStockDayLine; // 每个股票的日线数据
 	unordered_map<string, size_t> m_mapStockDayLine;
 	vector<StockDayLine> m_vStockDayLineSplit; // 每个股票的日线数据

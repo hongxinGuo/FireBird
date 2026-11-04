@@ -332,7 +332,8 @@ void CTiingoStock::CheckDayLineUpdateStatus(chrono::local_days currentTradeDate)
 		return;
 	}
 	if (gl_pWorldMarket->GetLastTradeDate() > GetDayLineEndDate() + chrono::days(60)) {// 非活跃股票每星期一复查日线数据
-		if (gl_pWorldMarket->GetWeekDay() != chrono::Monday && GetDayLineEndDate() != toLocalDays(1980y / 01 / 01)) {
+		//if (gl_pWorldMarket->GetWeekDay() != chrono::Monday && GetDayLineEndDate() != toLocalDays(1980y / 01 / 01)) {
+		if (gl_pWorldMarket->GetWeekDay() != chrono::Monday) {
 			SetUpdateDayLine(false);
 			return;
 		}

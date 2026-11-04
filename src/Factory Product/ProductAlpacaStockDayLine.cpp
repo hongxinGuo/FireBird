@@ -101,6 +101,14 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 		}
 		pvDayLine = Parse(m_r.text, pTiingoStock->GetSymbol());
 	}
+	if (m_bInquireSingleStock && pvDayLine->size() > 1) {
+		for (size_t i = 1; i < pvDayLine->size(); i++) {
+			for (size_t j = 0; j < pvDayLine->at(i).m_dayLine.size(); j++) {
+				pvDayLine->at(0).m_dayLine.push_back(pvDayLine->at(i).m_dayLine.at(j));
+			}
+		}
+		pvDayLine->resize(1); // 只保留第一个股票的日线数据，其他股票的日线数据已经被合并到第一个股票的日线数据中。
+	}
 
 	auto inquireStringsSplit = CreateMessageWithSplit();
 	for (const auto& inquiry : *inquireStringsSplit) {
@@ -116,6 +124,15 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 		}
 		pvDayLineWithSplit = Parse(m_r.text, pTiingoStock->GetSymbol());
 	}
+	if (m_bInquireSingleStock && pvDayLineWithSplit->size() > 1) {
+		for (size_t i = 1; i < pvDayLineWithSplit->size(); i++) {
+			for (size_t j = 0; j < pvDayLineWithSplit->at(i).m_dayLine.size(); j++) {
+				pvDayLineWithSplit->at(0).m_dayLine.push_back(pvDayLineWithSplit->at(i).m_dayLine.at(j));
+			}
+		}
+		pvDayLineWithSplit->resize(1); // 只保留第一个股票的日线数据，其他股票的日线数据已经被合并到第一个股票的日线数据中。
+	}
+
 	ABSL_DCHECK(pvDayLineWithSplit->size() == pvDayLine->size());
 	for (size_t i = 0; i < pvDayLine->size(); i++) {
 		ABSL_DCHECK(pvDayLine->at(i).m_symbol == pvDayLineWithSplit->at(i).m_symbol);
@@ -133,18 +150,34 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 	}
 	time_point<system_clock, milliseconds> scEnd = time_point_cast<milliseconds>(system_clock::now());
 
+#ifdef _DEBUG
 	string symbols = " ";
-	for (size_t i = 0; i < m_vInquiredStockSymbols.size(); i++) {
-		symbols += m_vInquiredStockSymbols.at(i) + ", ";
-		if (i > 5) break;
+	if (m_vInquiredStockSymbols.size() >= 4) {
+		for (size_t i = 0; i < 2; i++) {
+			symbols += m_vInquiredStockSymbols.at(i) + ", ";
+		}
+		symbols += ",,,";
+		for (size_t i = m_vInquiredStockSymbols.size() - 2; i < m_vInquiredStockSymbols.size(); i++) {
+			symbols += m_vInquiredStockSymbols.at(i) + ", ";
+		}
+	}
+	else {
+		for (size_t i = 0; i < m_vInquiredStockSymbols.size(); i++) {
+			symbols += m_vInquiredStockSymbols.at(i) + ", ";
+		}
 	}
 	ABSL_DLOG(INFO) << symbols << "  duration: " << scEnd - scStart << " Inquired:  " << m_vInquiredStockSymbols.size() << " Received: " << pvDayLine->size();
+#endif
 }
 
 void CProductAlpacaStockDayLine::UpdateOneStockDayLine(const string& stockSymbol, vector<CTiingoCandleLine>& vDayLine, vector<CTiingoCandleLine>& vDayLineWithSplit) {
 	ABSL_DCHECK(vDayLineWithSplit.size() == vDayLine.size()); //todo: 当申请时间跨越午夜时，此断言可能会失败
 	ABSL_DCHECK(gl_dataContainerTiingoStock.IsSymbol(stockSymbol));
 	auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(stockSymbol);
+
+	std::ranges::sort(vDayLine, [](const CTiingoCandleLine& pData1, const CTiingoCandleLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
+	std::ranges::sort(vDayLineWithSplit, [](const CTiingoCandleLine& pData1, const CTiingoCandleLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });
+
 	if (!vDayLine.empty()) {
 		ABSL_DCHECK(vDayLine.at(0).GetDate() == vDayLineWithSplit.at(0).GetDate());
 		ABSL_DCHECK(vDayLine.at(vDayLine.size() - 1).GetDate() == vDayLineWithSplit.at(vDayLineWithSplit.size() - 1).GetDate());
@@ -218,7 +251,6 @@ void CProductAlpacaStockDayLine::UpdateSystemStatus() {
 		gl_pAlpacaDataSource->SetDayLineInquired(gl_pAlpacaDataSource->GetDayLineInquired() + m_vInquiredStockSymbols.size());
 		ClearUpdateDayLineFlag();
 	}
-	m_vInquiredStockSymbols.clear();
 }
 
 void CProductAlpacaStockDayLine::ClearUpdateDayLineFlag() {
@@ -250,9 +282,11 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::CreateMessageIn
 	chrono::local_days startDate = GetStartInquireDay(GetIndex());
 	int totalDays = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - startDate).count();
 	if (totalDays >= 1000) {
+		m_bInquireSingleStock = true;
 		return InquireOneStock(paramAdjust);
 	}
 	else {
+		m_bInquireSingleStock = false;
 		return InquireMultipleStocks(paramAdjust);
 	}
 }
@@ -274,7 +308,10 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireOneStock
 	string sParam = std::format("symbols={}&timeframe=1D&limit=1000{}&sort=asc&start={:%F}&end={:%F}T16:00:00Z",
 	                            m_strInquiringSymbol, paramAdjust, startDate + chrono::days(countNumber * 1000), m_currentDayLineEndDate); // Note: 总是多申请一天的日线数据
 	pInquiry->push_back(m_strInquiryFunction + sParam);
-	m_vInquiredStockSymbols.push_back(m_strInquiringSymbol);
+	if (!m_mapInquiredStockSymbol.contains(m_strInquiringSymbol)) {
+		m_vInquiredStockSymbols.push_back(m_strInquiringSymbol);
+		m_mapInquiredStockSymbol[m_strInquiringSymbol] = m_mapInquiredStockSymbol.size();
+	}
 
 	return pInquiry;
 }
@@ -286,8 +323,11 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 	int stepLength = std::chrono::duration_cast<std::chrono::days>(m_currentDayLineEndDate - startDate).count();
 	ABSL_DCHECK(stepLength < 1000);
 	string symbols = pStock->GetSymbol();
-	m_vInquiredStockSymbols.push_back(pStock->GetSymbol());
 	m_strInquiringSymbol = pStock->GetSymbol();
+	if (!m_mapInquiredStockSymbol.contains(m_strInquiringSymbol)) {
+		m_vInquiredStockSymbols.push_back(m_strInquiringSymbol);
+		m_mapInquiredStockSymbol[m_strInquiringSymbol] = m_mapInquiredStockSymbol.size();
+	}
 	int totalInquiryStocks = 1;
 	size_t pos = 1;
 	while (true) {
@@ -312,7 +352,10 @@ shared_ptr<std::vector<std::string>> CProductAlpacaStockDayLine::InquireMultiple
 
 		symbols += ",";
 		symbols += pStock->GetSymbol();
-		m_vInquiredStockSymbols.push_back(pStock->GetSymbol());
+		if (!m_mapInquiredStockSymbol.contains(pStock->GetSymbol())) {
+			m_vInquiredStockSymbols.push_back(pStock->GetSymbol());
+			m_mapInquiredStockSymbol[pStock->GetSymbol()] = m_mapInquiredStockSymbol.size();
+		}
 		pos++;
 		totalInquiryStocks++;
 	}

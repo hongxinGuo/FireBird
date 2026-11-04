@@ -318,12 +318,6 @@ namespace FireBirdTest {
 		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
 		EXPECT_FALSE(stock.IsUpdateDayLine());// 非活跃股票：周一以外的日期不更新。
 
-		// 非活跃股票，从未更新过的需要更新。
-		stock.SetDayLineEndDate(toLocalDays(19800101));
-		stock.SetUpdateDayLine(true);
-		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
-		EXPECT_TRUE(stock.IsUpdateDayLine());
-
 		// 非活跃股票：周一允许复查日线数据。
 		gl_pWorldMarket->TEST_SetMarketDate(toLocalDays(20261102)); // 星期一
 		EXPECT_TRUE(gl_pWorldMarket->GetWeekDay() == chrono::Monday);
