@@ -18,3 +18,7 @@ extern concurrencpp::runtime gl_runtime;
 extern concurrencpp::thread_pool_executor gl_webInquiryExecutor; // 网络申请线程池工作线程运行调度器
 
 extern long gl_concurrency_level; // 并行计算允许最大数量
+
+void TaskSchedulePer100ms(); // 主任务调度函数，由定时timer gl_timerMainSchedule发起，其他任务皆由此生成
+void TaskSchedulePerSecond(); // 每秒执行一次的各辅助任务。
+void TaskExitSystem();
