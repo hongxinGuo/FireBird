@@ -142,8 +142,8 @@
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h" />
     <ClInclude Include="..\src\System\SystemData.h" />
     <ClInclude Include="..\src\System\SystemMessage.h" />
+    <ClInclude Include="..\src\System\Thread.h" />
     <ClInclude Include="..\src\targetver.h" />
-    <ClInclude Include="..\src\Thread.h" />
     <ClInclude Include="..\src\Type\America market\Country.h" />
     <ClInclude Include="..\src\Type\America market\EconomicCalendar.h" />
     <ClInclude Include="..\src\Type\America market\EPSSurprise.h" />
@@ -323,6 +323,7 @@
     <ClCompile Include="..\src\System\Initialization.cpp" />
     <ClCompile Include="..\src\System\SystemConfiguration.cpp" />
     <ClCompile Include="..\src\System\SystemMessage.cpp" />
+    <ClCompile Include="..\src\System\Thread.cpp" />
     <ClCompile Include="..\src\Type\America market\Country.cpp" />
     <ClCompile Include="..\src\Type\America market\EconomicCalendar.cpp" />
     <ClCompile Include="..\src\Type\America market\EPSSurprise.cpp" />

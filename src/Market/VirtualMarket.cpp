@@ -9,6 +9,7 @@
 #include"VirtualDataSource.h"
 
 #include "StockExchange.h"
+#include "WatchdogQT/WatchdogQT.h"
 
 using namespace std;
 
@@ -27,53 +28,58 @@ CVirtualMarket::CVirtualMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualMarket::ScheduleTask() {
-	CalculateTime();
+	try {
+		CalculateTime();
 
-	if (GetMarketTime() < local_seconds{ 100s }) { // 每日最初的一分钟内。保证每日执行一次
-		if (!m_marketTask.Empty()) {
-			if (m_marketTask.GetTask()->GetTime() >= local_seconds{ 24h }) { // 当任务队列中都是明日的时间时，将时间调减24小时
-				AdjustTaskTime();
+		if (GetMarketTime() < local_seconds{ 100s }) { // 每日最初的一分钟内。保证每日执行一次
+			if (!m_marketTask.Empty()) {
+				if (m_marketTask.GetTask()->GetTime() >= local_seconds{ 24h }) { // 当任务队列中都是明日的时间时，将时间调减24小时
+					AdjustTaskTime();
+				}
 			}
 		}
-	}
 
-	// 调用本市场的各data source，进行网络数据的接收和处理。在市场重置时间内暂停
-	if (IsReadyToInquireWebData()) {
-		RunDataSource();
-	}
-
-	// 执行本市场各项定时任务。
-	if (IsResetting()) return; // 当市场正在重置时暂停
-
-	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-	int taskType = ProcessTask(); // 执行定时任务
-	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-#ifdef _TRACE_SCHEDULE_TASK___
-	if (taskType != 0) gl_traceLogger->trace("{} ms {}", gl_mapMarketMapIndex.at(taskType), (end - start).count());
-#endif
-
-	auto immediateTaskSize = m_marketImmediateTask.Size();
-	vector<int> vTaskType;
-	for (size_t i = 0; i < immediateTaskSize; i++) {
-		auto pTask = m_marketImmediateTask.GetTask();
-		vTaskType.push_back(ProcessCurrentImmediateTask());// 执行所有即时任务
-	}
-	ABSL_DCHECK(vTaskType.size() == immediateTaskSize);
-#ifdef _TRACE_SCHEDULE_TASK___
-	if (immediateTaskSize > 0) {
-		for (size_t i = 0; i < immediateTaskSize; i++) {
-			gl_traceLogger->trace("{}", gl_mapMarketMapIndex.at(vTaskType.at(i)));
+		// 调用本市场的各data source，进行网络数据的接收和处理。在市场重置时间内暂停
+		if (IsReadyToInquireWebData()) {
+			RunDataSource();
 		}
-		gl_traceLogger->trace("{}ms", (end - start).count());
+
+		// 执行本市场各项定时任务。
+		if (IsResetting()) return; // 当市场正在重置时暂停
+
+		auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+
+		try {
+			int taskType = ProcessTask(); // 执行定时任务
+		} catch (...) {
+			string msg = m_strMarketId + "ProcessTask exception";
+			gl_dailyLogger->warn(msg);
+		}
+		auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+
+		auto immediateTaskSize = m_marketImmediateTask.Size();
+		vector<int> vTaskType;
+		for (size_t i = 0; i < immediateTaskSize; i++) {
+			auto pTask = m_marketImmediateTask.GetTask();
+			vTaskType.push_back(ProcessCurrentImmediateTask());// 执行所有即时任务
+		}
+		ABSL_DCHECK(vTaskType.size() == immediateTaskSize);
+	} catch (...) {
+		string msg = m_strMarketId + "ScheduleTask exception";
+		gl_dailyLogger->warn(msg);
 	}
-#endif
 }
 
 void CVirtualMarket::RunDataSource() const {
 	for (const auto& pDataSource : m_vDataSource) {
 		if (pDataSource->IsEnable()) {
 			if (!pDataSource->IsInquiring()) {
-				pDataSource->Run(GetMarketTime());
+				try {
+					pDataSource->Run(GetMarketTime());
+				} catch (...) {
+					string msg = m_strMarketId + "DataSource exception";
+					gl_dailyLogger->warn(msg);
+				}
 			}
 		}
 	}

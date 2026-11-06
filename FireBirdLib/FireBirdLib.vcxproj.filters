@@ -573,9 +573,6 @@
     <ClInclude Include="..\src\targetver.h">
       <Filter>Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Thread.h">
-      <Filter>Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\Initialization.h">
       <Filter>System</Filter>
     </ClInclude>
@@ -596,6 +593,9 @@
     </ClInclude>
     <ClInclude Include="..\src\WebSocket\AlpacaIEXWebSocket.h">
       <Filter>Web Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\System\Thread.h">
+      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1057,6 +1057,9 @@
     </ClCompile>
     <ClCompile Include="..\src\WebSocket\AlpacaIEXWebSocket.cpp">
       <Filter>Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\Thread.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

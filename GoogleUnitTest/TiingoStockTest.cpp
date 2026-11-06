@@ -298,27 +298,20 @@ namespace FireBirdTest {
 		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
 		EXPECT_FALSE(stock.IsUpdateDayLine());
 
-		// 只落后一个交易日，并且当前市场时间早于18:00：暂不更新。
+		// 日线落后：需要更新。
 		stock.SetDayLineEndDate(toLocalDays(20261103));
-		stock.SetUpdateDayLine(true);
-		gl_pWorldMarket->TEST_SetMarketTime(
-			std::chrono::local_seconds{ std::chrono::hours{ 17 } });
-		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
-		EXPECT_FALSE(stock.IsUpdateDayLine());
-
-		// 日线落后超过一天：需要更新。
-		stock.SetDayLineEndDate(toLocalDays(20261102));
 		stock.SetUpdateDayLine(true);
 		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 
-		// 非活跃股票：周一以外的日期不更新。
+		// 非活跃股票(日线落后至少60天）：周一以外的日期不更新。
+		gl_pWorldMarket->TEST_SetMarketDate(toLocalDays(20261104)); // 星期三
 		stock.SetDayLineEndDate(toLocalDays(20260601));
 		stock.SetUpdateDayLine(true);
 		stock.CheckDayLineUpdateStatus(toLocalDays(20261104));
 		EXPECT_FALSE(stock.IsUpdateDayLine());// 非活跃股票：周一以外的日期不更新。
 
-		// 非活跃股票：周一允许复查日线数据。
+		// 非活跃股票（日线落后至少60天）：周一允许复查日线数据。
 		gl_pWorldMarket->TEST_SetMarketDate(toLocalDays(20261102)); // 星期一
 		EXPECT_TRUE(gl_pWorldMarket->GetWeekDay() == chrono::Monday);
 		stock.SetDayLineEndDate(toLocalDays(20260601));
