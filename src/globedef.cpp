@@ -19,30 +19,10 @@
 #include"TengxunDayLineDataSource.h"
 #include"TiingoDataSource.h"
 
-#include "WorldMarket.h"
-
 #include "AccessoryDataSource.h"
 #include "AlpacaDataSource.h"
 #include "ChinaMarket.h"
 
-#include "containerChosenCrypto.h"
-#include "ContainerAlpacaStockSymbol.h"
-#include "ContainerChinaStock.h"
-#include "ContainerChosenForex.h"
-#include "ContainerFinnhubCountry.h"
-#include "ContainerFinnhubCrypto.h"
-#include "ContainerFinnhubCryptoExchange.h"
-#include "ContainerFinnhubEconomicCalendar.h"
-#include "ContainerFinnhubForexExchange.h"
-#include "containerFinnhubForexSymbol.h"
-#include "ContainerStockExchange.h"
-#include "ContainerFinnhubStock.h"
-#include "ContainerStockSymbol.h"
-#include "ContainerTiingoChosenStock.h"
-#include "ContainerTiingoCryptoSymbol.h"
-#include "ContainerTiingoFundamentalDefinition.h"
-#include "ContainerTiingoStock.h"
-#include "ContainerTiingoSymbol.h"
 #include "DayLineWebData.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "SystemConfiguration.h"
@@ -69,13 +49,8 @@ std::chrono::sys_seconds gl_tpNow; // 当前系统时钟的时间戳， 所有�
 const std::chrono::time_zone* gl_pTimeZoneLocal; // 软件运行所在的当地时区
 
 // 为了事先初始化，信号量必须声明为全局变量
-std::binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // 当处理中国市场的实时数据时，不允许同时存储之。
 CCountableSemaphore gl_BackgroundWorkingThread; // 最多后台工作线程允许数量，使用系统配置设定为实际大小
 
-concurrencpp::runtime gl_runtime; // 工作线程运行调度器
-concurrencpp::thread_pool_executor gl_webInquiryExecutor{ "WebInquiry", 4, 100ms }; // 线程池工作线程运行调度器
-
-long gl_concurrency_level = 4; // 并行计算允许最大数量。默认为四个协程。目前八核状态下，更多的协程并不能提升效率。
 array<timer, TASK_END_> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
 
 int64_t gl_TiingoTotalData = 0;
@@ -103,36 +78,5 @@ vector<CVirtualDataSourcePtr> gl_vDataSource; // 各数据源，用于主动结�
 // 处理后的数据
 ConcurrentQueue<shared_ptr<CWebRTData>> gl_qChinaMarketRTData(100000); // 中国市场新浪实时数据队列。
 ConcurrentQueue<shared_ptr<CDayLineWebData>> gl_qDayLine(1000); // 日线数据
-
-// ChinaMarket处理的数据
-CContainerChinaStock gl_dataContainerChinaStock;
-CContainerStockSymbol gl_dataContainerChinaStockSymbol;
-
-// World market处理的数据
-CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
-CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;
-CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
-CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
-
-CContainerStockExchange gl_dataContainerStockExchange; // 直接装入预存交易所数据，
-CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;
-CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
-
-CContainerFinnhubStock gl_dataContainerFinnhubStock;
-CContainerTiingoStock gl_dataContainerTiingoStock;
-CContainerTiingoSymbol gl_dataContainerTiingoNewSymbol; // 存储每日查询后新增的股票指针
-CContainerTiingoSymbol gl_dataContainerTiingoDelistedSymbol; // 存储已退市的股票指针
-CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
-CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;
-
-CContainerTiingoChosenStock gl_dataContainerTiingoChosenStock;
-CContainerChosenForex gl_dataContainerChosenWorldForex;
-CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
-
-CContainerAlpacaStockSymbol gl_dataContainerAlpacaStockSymbol;
-
-// 各市场。皆为唯一实例。为最后声明的变量。
-CWorldMarketPtr gl_pWorldMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//
-CChinaMarketPtr gl_pChinaMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//
 
 vector<CVirtualMarketPtr> gl_vMarket{}; // 各市场指针的容器，只用于执行各市场的ScheduleTask

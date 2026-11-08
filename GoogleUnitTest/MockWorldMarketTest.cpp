@@ -32,7 +32,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			//EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
 
 			s_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，
 			s_pMockWorldMarket->ResetMarket();
@@ -45,13 +45,13 @@ namespace FireBirdTest {
 
 			while (!s_pMockWorldMarket->IsMarketTaskEmpty()) s_pMockWorldMarket->DiscardCurrentMarketTask();
 
-			for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-				auto pStock = gl_dataContainerTiingoStock.GetStock(i);
+			for (int i = 0; i < gl_pDataContainerTiingoStock->Size(); i++) {
+				auto pStock = gl_pDataContainerTiingoStock->GetStock(i);
 				pStock->SetUpdateProfileDB(false);
 				pStock->SetUpdateDayLine(true);
 				pStock->SetUpdateDayLineDB(false);
 			}
-			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+			EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 		}
 
 		static void TearDownTestSuite() {
@@ -62,7 +62,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp() override {
-			//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			//EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
 			SCOPED_TRACE("");
 			GeneralCheck();
 			gl_systemConfiguration.SetExitingSystem(false);
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
 			EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 
-			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+			EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockWorldMarketTest, TestIsResetTime) {
-		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+		EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
 		.WillRepeatedly(Return(local_seconds{ 1h + 30min + 0s }));
 
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockWorldMarket->IsResetTime());
 		s_pMockWorldMarket->TEST_SetMarketTime(local_seconds(1h + 35min + 0s));
 		EXPECT_FALSE(s_pMockWorldMarket->IsResetTime());
-		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+		EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestIsReadyToInquireWebData1) {

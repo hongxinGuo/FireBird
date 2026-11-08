@@ -34,7 +34,7 @@ void CProductFinnhubCryptoDayLine::InquireData(const std::stop_token& st) {
 			return;
 		}
 
-		const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
+		const auto pCryptoSymbol = gl_pDataFinnhubCryptoSymbol->GetItem(m_index);
 		const auto pvDayLine = Parse(m_r.text);
 		pCryptoSymbol->SetUpdateDayLine(false);
 		if (!pvDayLine->empty()) {
@@ -73,7 +73,7 @@ void CProductFinnhubCryptoDayLine::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCryptoDayLine::CreateMessage() {
-	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
+	const auto pCryptoSymbol = gl_pDataFinnhubCryptoSymbol->GetItem(m_index);
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchange();

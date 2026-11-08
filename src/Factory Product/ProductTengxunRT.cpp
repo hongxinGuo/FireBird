@@ -59,7 +59,7 @@ shared_ptr<vector<string>> CProductTengxunRT::CreateMessage() {
 	// 申请下一批次股票实时数据。
 	// 申请腾讯实时数据时，如果遇到不存在的股票代码，服务器会返回v_pv_none_match="1";，导致系统故障，
 	// 故而现在只使用有效股票代码。
-	const string strStocks = gl_dataContainerChinaStock.GetNextTengxunStockInquiringMiddleStr(gl_pTengxunRTDataSource->GetInquiringNumber()); // 使用活跃股票池
+	const string strStocks = gl_pDataContainerChinaStock->GetNextTengxunStockInquiringMiddleStr(gl_pTengxunRTDataSource->GetInquiringNumber()); // 使用活跃股票池
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_strInquiryFunction + strStocks);
 	return pInquiry;

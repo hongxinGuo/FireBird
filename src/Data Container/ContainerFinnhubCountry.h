@@ -37,4 +37,5 @@ protected:
 	size_t m_llLastTotalCountry;
 };
 
-extern CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
+using CContainerFinnhubCountryPtr = shared_ptr<CContainerFinnhubCountry>;
+inline CContainerFinnhubCountryPtr gl_pDataContainerFinnhubCountry = nullptr;

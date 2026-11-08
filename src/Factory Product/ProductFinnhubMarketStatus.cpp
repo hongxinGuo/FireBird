@@ -33,7 +33,7 @@ void CProductFinnhubMarketStatus::InquireData(const std::stop_token& st) {
 			return;
 		}
 		const auto pvMarketStatus = Parse(m_r.text);
-		const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
+		const auto pExchange = gl_pDataContainerStockExchange->GetItem(m_index);
 		pExchange->SetUpdateMarketStatus(false);
 
 		if (!pvMarketStatus->empty()) {
@@ -62,7 +62,7 @@ void CProductFinnhubMarketStatus::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubMarketStatus::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
+	m_strInquiringExchange = gl_pDataContainerStockExchange->GetItemExchangeCode(m_index);
 	m_inquiryString = m_strInquiryFunction + m_strInquiringExchange;
 
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();

@@ -7,6 +7,7 @@
 inline sqlpp::mysql::connection_pool gl_dbStockMarket(std::make_shared<sqlpp::mysql::connection_config>(), 20);
 inline auto GetStockMarketDB() { return gl_dbStockMarket.get(); }
 
+inline bool gl_bDatabaseInitialized = false;
 // Initialize the global sqlpp11 MySQL connection pool. This will call
 // sqlpp::mysql::global_library_init() once and construct the pool.
 inline void InitSqlppMySQLConnectionPool(const std::string& user,
@@ -19,6 +20,7 @@ inline void InitSqlppMySQLConnectionPool(const std::string& user,
 	std::call_once(g_sqlppInitFlag, [] {
 		try {
 			sqlpp::mysql::global_library_init();
+			gl_bDatabaseInitialized = true;
 		} catch (...) {
 			// ignore
 		}

@@ -48,8 +48,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerFinnhubStockTest, TestResetStockProfile) {
-		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
+		for (size_t l = 0; l < gl_pDataContainerFinnhubStock->Size(); l++) {
+			const auto pStock = gl_pDataContainerFinnhubStock->GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			EXPECT_EQ(pStock->GetProfileUpdateDate(), toLocalDays(19800101));
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
@@ -59,10 +59,10 @@ namespace FireBirdTest {
 			pStock->SetProfileUpdateDate(toLocalDays(20000101));
 		}
 
-		gl_dataContainerFinnhubStock.ResetStockProfile();
+		gl_pDataContainerFinnhubStock->ResetStockProfile();
 
-		for (size_t l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
+		for (size_t l = 0; l < gl_pDataContainerFinnhubStock->Size(); l++) {
+			const auto pStock = gl_pDataContainerFinnhubStock->GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			EXPECT_EQ(pStock->GetProfileUpdateDate(), toLocalDays(19800101));
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(string_view("AAPL"));
 		pStock->SetExchange(string_view("US"));
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->ValidateStockSymbol(pStock));
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol2) {
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(string_view("600601.SS"));
 		pStock->SetExchange(string_view("SS"));
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->ValidateStockSymbol(pStock));
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol3) {
@@ -93,57 +93,57 @@ namespace FireBirdTest {
 		pStock->SetSymbol(string_view("600601SS"));
 		pStock->SetExchange(string_view("SS"));
 
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->ValidateStockSymbol(pStock));
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsNeedSaveDayLine) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateDayLineDB());
-		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(true);
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->IsUpdateDayLineDB());
+		gl_pDataContainerFinnhubStock->Get(0)->SetUpdateDayLineDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateDayLineDB());
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->IsUpdateDayLineDB());
 
 		// 恢复原状
-		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(false);
+		gl_pDataContainerFinnhubStock->Get(0)->SetUpdateDayLineDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsUpdateInsiderTransactionDB) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderTransactionDB(true);
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->IsUpdateInsiderTransactionDB());
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateInsiderTransactionDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->IsUpdateInsiderTransactionDB());
 
 		// 恢复原状
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderTransactionDB(false);
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateInsiderTransactionDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsSaveInsiderSentiment) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderSentimentDB(true);
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->IsUpdateInsiderSentimentDB());
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateInsiderSentimentDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->IsUpdateInsiderSentimentDB());
 
 		// 恢复原状
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderSentimentDB(false);
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateInsiderSentimentDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsUpdateBasicFinancialDB) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB());
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateBasicFinancialDB(true);
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->IsUpdateBasicFinancialDB());
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateBasicFinancialDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB());
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->IsUpdateBasicFinancialDB());
 
 		// 恢复原状
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateBasicFinancialDB(false);
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateBasicFinancialDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsUpdateCompanyNewsDB) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB());
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateCompanyNewsDB(true);
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->IsUpdateCompanyNewsDB());
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateCompanyNewsDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB());
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->IsUpdateCompanyNewsDB());
 
 		// 恢复原状
-		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateCompanyNewsDB(false);
+		gl_pDataContainerFinnhubStock->GetItem(0)->SetUpdateCompanyNewsDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestLoadProfileDB) {
@@ -195,12 +195,12 @@ namespace FireBirdTest {
 		pNewStock->SetExchange(string_view("Test"));
 		pNewStock->SetNewStock(true);
 		pNewStock->SetUpdateProfileDB(true);
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(newSymbol));
-		gl_dataContainerFinnhubStock.Add(pNewStock);
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(newSymbol));
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->IsSymbol(newSymbol));
+		gl_pDataContainerFinnhubStock->Add(pNewStock);
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->IsSymbol(newSymbol));
 
 		// Modify an existing stock in-memory and mark it for update
-		auto pExistStock = gl_dataContainerFinnhubStock.GetItem(existingSymbol);
+		auto pExistStock = gl_pDataContainerFinnhubStock->GetItem(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
 		auto exchange = pExistStock->GetExchange();
 		pExistStock->SetExchange(string_view("CN"));
@@ -209,7 +209,7 @@ namespace FireBirdTest {
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
-		gl_dataContainerFinnhubStock.UpdateProfileDB(std::stop_token{});
+		gl_pDataContainerFinnhubStock->UpdateProfileDB(std::stop_token{});
 
 		// Verify DB: existing stock updated
 		{
@@ -244,9 +244,9 @@ namespace FireBirdTest {
 		}
 
 		// Cleanup in-memory container
-		auto pRetrievedNew = gl_dataContainerFinnhubStock.GetItem(newSymbol);
+		auto pRetrievedNew = gl_pDataContainerFinnhubStock->GetItem(newSymbol);
 		ASSERT_NE(pRetrievedNew, nullptr);
-		gl_dataContainerFinnhubStock.Delete(pRetrievedNew);
+		gl_pDataContainerFinnhubStock->Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
 		pExistStock->SetDayLineEndDate(toLocalDays(19800101));
@@ -254,6 +254,6 @@ namespace FireBirdTest {
 
 		//gl_dataContainerFinnhubStock.UpdateProfileDB();
 		// Final assertions: flags cleared
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
+		EXPECT_FALSE(gl_pDataContainerFinnhubStock->IsUpdateProfileDB());
 	}
 }

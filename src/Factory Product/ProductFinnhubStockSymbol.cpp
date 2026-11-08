@@ -25,8 +25,8 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString },
-		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 }, // 60s
+		               cpr::Timeout{ 600000 },       // 600s
+		               cpr::ConnectTimeout{ 600000 }, // 600s
 		               cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL } // 允许重定向
 		);
 
@@ -36,7 +36,7 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 		}
 
 		const auto pvStock = Parse(m_r.text);
-		const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
+		const auto pExchange = gl_pDataContainerStockExchange->GetItem(m_index);
 		pExchange->SetUpdateStockSymbol(false);
 
 		//检查合法性：只有美国股票代码无须加上交易所后缀。
@@ -51,10 +51,10 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 			}
 		}
 		for (const auto& pStock : *pvStock) {
-			if (!gl_dataContainerFinnhubStock.IsSymbol(pStock)) {
+			if (!gl_pDataContainerFinnhubStock->IsSymbol(pStock)) {
 				pStock->SetNewStock(true);
 				pStock->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
-				gl_dataContainerFinnhubStock.Add(pStock);
+				gl_pDataContainerFinnhubStock->Add(pStock);
 			}
 		}
 	}
@@ -80,7 +80,7 @@ void CProductFinnhubStockSymbol::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockSymbol::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
+	m_strInquiringExchange = gl_pDataContainerStockExchange->GetItemExchangeCode(m_index);
 
 	m_inquiryString = m_strInquiryFunction + m_strInquiringExchange;
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();

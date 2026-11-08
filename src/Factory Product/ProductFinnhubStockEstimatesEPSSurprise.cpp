@@ -33,7 +33,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::InquireData(const std::stop_token
 			WebStatusCheck(m_r);
 			return;
 		}
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		const auto pvEPSSurprise = Parse(m_r.text);
 		if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(pvEPSSurprise); }
 		else {
@@ -65,7 +65,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchange();

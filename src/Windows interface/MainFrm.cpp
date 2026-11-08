@@ -199,8 +199,8 @@ CMainFrame::~CMainFrame() {
 
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
-		gl_dataContainerChinaStock.UpdateProfileDB(std::stop_token()); // 这里直接调用存储函数，不采用工作线程的模式。
+	if (gl_pDataContainerChinaStock->IsUpdateProfileDB()) {
+		gl_pDataContainerChinaStock->UpdateProfileDB(std::stop_token()); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
 	CloseAllBackgroundThread();
@@ -513,7 +513,7 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(6, gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
-	s = std::format("{:Ld}", gl_dataContainerChinaStock.GetActiveStockSize());
+	s = std::format("{:Ld}", gl_pDataContainerChinaStock->GetActiveStockSize());
 	SysCallSetPaneText(7, s);
 
 	// 显示当前读取网易日线历史的股票代码
@@ -667,27 +667,27 @@ void CMainFrame::ProcessChinaMarketStock() {
 void CMainFrame::ChangeToPrevStock() {
 	ABSL_DCHECK(m_pCurrentStock != nullptr);
 	size_t lIndex = 0;
-	if (gl_dataContainerTiingoChosenStock.IsSymbol(m_pCurrentStock)) {
-		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(m_pCurrentStock);
+	if (gl_pDataContainerTiingoChosenStock->IsSymbol(m_pCurrentStock)) {
+		lIndex = gl_pDataContainerTiingoChosenStock->GetOffset(m_pCurrentStock);
 	}
 
 	if (lIndex-- == 0) {
-		lIndex = gl_dataContainerTiingoChosenStock.Size() - 1;
+		lIndex = gl_pDataContainerTiingoChosenStock->Size() - 1;
 	}
-	m_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
+	m_pCurrentStock = gl_pDataContainerTiingoChosenStock->GetStock(lIndex);
 }
 
 void CMainFrame::ChangeToNextStock() {
 	ABSL_DCHECK(m_pCurrentStock != nullptr);
 	size_t lIndex = 0;
-	if (gl_dataContainerTiingoChosenStock.IsSymbol(m_pCurrentStock)) {
-		lIndex = gl_dataContainerTiingoChosenStock.GetOffset(m_pCurrentStock);
+	if (gl_pDataContainerTiingoChosenStock->IsSymbol(m_pCurrentStock)) {
+		lIndex = gl_pDataContainerTiingoChosenStock->GetOffset(m_pCurrentStock);
 	}
 
-	if (lIndex++ == gl_dataContainerTiingoChosenStock.Size() - 1) {
+	if (lIndex++ == gl_pDataContainerTiingoChosenStock->Size() - 1) {
 		lIndex = 0;
 	}
-	m_pCurrentStock = gl_dataContainerTiingoChosenStock.GetStock(lIndex);
+	m_pCurrentStock = gl_pDataContainerTiingoChosenStock->GetStock(lIndex);
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
@@ -738,11 +738,11 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	switch (nChar) {
 	case 0x00d: // 回车
 		strTemp = m_aStockCodeTemp;
-		if (gl_dataContainerChinaStock.IsSymbol(strTemp)) { // 中国市场股票
-			pStock = gl_dataContainerChinaStock.GetStock(strTemp);
+		if (gl_pDataContainerChinaStock->IsSymbol(strTemp)) { // 中国市场股票
+			pStock = gl_pDataContainerChinaStock->GetStock(strTemp);
 		}
-		else if (gl_dataContainerTiingoStock.IsSymbol(strTemp)) { // Tiingo股票
-			pStock = gl_dataContainerTiingoStock.GetStock(strTemp);
+		else if (gl_pDataContainerTiingoStock->IsSymbol(strTemp)) { // Tiingo股票
+			pStock = gl_pDataContainerTiingoStock->GetStock(strTemp);
 		}
 		SetCurrentStock(pStock);
 		if (!CreateDocumentViewIfNeeded()) { // 如果是空的MainFrame,则创建第一个Document-View.
@@ -827,8 +827,8 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			if (m_pCurrentStock != nullptr) {
 				m_pCurrentStock->SetSelected(true);
 				if (IsTiingoStock(m_pCurrentStock)) {
-					gl_dataContainerTiingoChosenStock.Add(m_pCurrentStock);
-					gl_dataContainerTiingoChosenStock.SetUpdateDB(true);
+					gl_pDataContainerTiingoChosenStock->Add(m_pCurrentStock);
+					gl_pDataContainerTiingoChosenStock->SetUpdateDB(true);
 				}
 			}
 			break;
@@ -836,8 +836,8 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			if (m_pCurrentStock != nullptr) {
 				m_pCurrentStock->SetSelected(true);
 				if (IsTiingoStock(m_pCurrentStock)) {
-					gl_dataContainerTiingoChosenStock.Delete(m_pCurrentStock);
-					gl_dataContainerTiingoChosenStock.SetUpdateDB(true);
+					gl_pDataContainerTiingoChosenStock->Delete(m_pCurrentStock);
+					gl_pDataContainerTiingoChosenStock->SetUpdateDB(true);
 				}
 			}
 			break;
@@ -850,7 +850,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnStopUpdateDayLine() {
-	gl_dataContainerChinaStock.ClearDayLineNeedUpdateStatus();
+	gl_pDataContainerChinaStock->ClearDayLineNeedUpdateStatus();
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
@@ -884,7 +884,7 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUpdateStockSection() {
-	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);
+	gl_pDataContainerChinaStockSymbol->SetUpdateStockSection(true);
 	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION_DB_, local_seconds(1s));
 }
 
@@ -895,7 +895,7 @@ void CMainFrame::OnUpdateStockProfile() {
 	}
 	m_jtUpdateChinaStockProfileDB = std::jthread([this](std::stop_token st) {
 		gl_systemMessage.SetChinaMarketSavingFunction("update china stock profile");
-		gl_dataContainerChinaStock.UpdateProfileDB(st);
+		gl_pDataContainerChinaStock->UpdateProfileDB(st);
 	});
 }
 
@@ -941,7 +941,7 @@ void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pTiingoCryptoWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbols());
+			gl_pTiingoCryptoWebSocket->TaskConnectAndSendMessage(gl_pDataContainerChosenWorldCrypto->GetSymbols());
 		}
 	}
 }
@@ -963,7 +963,7 @@ void CMainFrame::OnRecordTiingoForexWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pTiingoForexWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbols());
+			gl_pTiingoForexWebSocket->TaskConnectAndSendMessage(gl_pDataContainerChosenWorldForex->GetSymbols());
 		}
 	}
 }
@@ -985,7 +985,7 @@ void CMainFrame::OnRecordTiingoIEXWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerTiingoChosenStock.GetSymbols());
+			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_pDataContainerTiingoChosenStock->GetSymbols());
 		}
 	}
 }
@@ -1007,7 +1007,7 @@ void CMainFrame::OnRecordAlpacaIexWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingAlpacaIEXWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pAlpacaIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerTiingoChosenStock.GetSymbols());
+			gl_pAlpacaIEXWebSocket->TaskConnectAndSendMessage(gl_pDataContainerTiingoChosenStock->GetSymbols());
 		}
 	}
 }
@@ -1026,7 +1026,7 @@ void CMainFrame::OnRebuildStockProfile() {
 }
 
 void CMainFrame::OnMaintainChinaMarketStockDayLine() {
-	gl_dataContainerChinaStock.SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
+	gl_pDataContainerChinaStock->SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -1095,7 +1095,7 @@ void CMainFrame::OnUpdateTiingoFundamentalDefinition() {
 }
 
 void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
-	if (gl_dataContainerTiingoFundamentalDefinition.IsUpdateDB()) {
+	if (gl_pDataContainerTiingoFundamentalDefinition->IsUpdateDB()) {
 		pCmdUI->Enable(true);
 	}
 	else {
@@ -1104,7 +1104,7 @@ void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnResetTiingoDayLineDate() {
-	gl_dataContainerTiingoStock.ResetDayLineStartEndDate();
+	gl_pDataContainerTiingoStock->ResetDayLineStartEndDate();
 }
 
 void CMainFrame::OnCreateTiingoTradeDayDayLine() {
@@ -1114,7 +1114,7 @@ void CMainFrame::OnCreateTiingoTradeDayDayLine() {
 	}
 	m_jtCreateTiingoTradeDayDayLineDB = std::jthread([](std::stop_token st) {
 		gl_systemMessage.SetWorldMarketSavingFunction("T create dayLine");
-		gl_dataContainerTiingoStock.BuildDayLine(st, gl_pWorldMarket->GetCurrentTradeDate());
+		gl_pDataContainerTiingoStock->BuildDayLine(st, gl_pWorldMarket->GetCurrentTradeDate());
 	});
 }
 
@@ -1146,7 +1146,7 @@ void CMainFrame::OnCalculateNewLowFiveTimes() {
 		m_jtCalculateNewLowFiveTimes.join();
 	}
 	m_jtCalculateNewLowFiveTimes = std::jthread([](std::stop_token st) {
-		gl_dataContainerTiingoStock.TaskCalculate2(st);
+		gl_pDataContainerTiingoStock->TaskCalculate2(st);
 	});
 }
 

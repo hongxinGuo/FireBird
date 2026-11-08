@@ -25,4 +25,5 @@ public:
 protected:
 };
 
-extern CContainerTiingoChosenStock gl_dataContainerTiingoChosenStock;
+using CContainerTiingoChosenStockPtr = shared_ptr<CContainerTiingoChosenStock>;
+inline CContainerTiingoChosenStockPtr gl_pDataContainerTiingoChosenStock = nullptr;

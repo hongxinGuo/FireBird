@@ -37,9 +37,9 @@ void CProductTiingoFundamentalDefinition::InquireData(const std::stop_token& st)
 		const auto pvFundamentalDefinition = Parse(m_r.text);
 		if (!pvFundamentalDefinition->empty()) {
 			for (auto& definition : *pvFundamentalDefinition) {
-				if (!gl_dataContainerTiingoFundamentalDefinition.HaveDefinition(definition.m_strDataCode)) {
-					gl_dataContainerTiingoFundamentalDefinition.Add(definition);
-					gl_dataContainerTiingoFundamentalDefinition.SetUpdateDB(true);
+				if (!gl_pDataContainerTiingoFundamentalDefinition->HaveDefinition(definition.m_strDataCode)) {
+					gl_pDataContainerTiingoFundamentalDefinition->Add(definition);
+					gl_pDataContainerTiingoFundamentalDefinition->SetUpdateDB(true);
 				}
 			}
 		}

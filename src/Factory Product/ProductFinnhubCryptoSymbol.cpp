@@ -24,8 +24,8 @@ void CProductFinnhubCryptoSymbol::InquireData(const std::stop_token& st) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString },
-		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::Timeout{ 600000 },       // 600s
+		               cpr::ConnectTimeout{ 600000 } // 600s
 		);
 
 		if (IsWebError()) {
@@ -35,9 +35,9 @@ void CProductFinnhubCryptoSymbol::InquireData(const std::stop_token& st) {
 
 		const auto pvCryptoSymbol = Parse(m_r.text);
 		for (const auto& pSymbol : *pvCryptoSymbol) {
-			if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
-				pSymbol->SetExchange(gl_dataContainerFinnhubCryptoExchange.GetItem(m_index));
-				gl_dataFinnhubCryptoSymbol.Add(pSymbol);
+			if (!gl_pDataFinnhubCryptoSymbol->IsSymbol(pSymbol->GetSymbol())) {
+				pSymbol->SetExchange(gl_pDataContainerFinnhubCryptoExchange->GetItem(m_index));
+				gl_pDataFinnhubCryptoSymbol->Add(pSymbol);
 			}
 		}
 	}
@@ -64,7 +64,7 @@ void CProductFinnhubCryptoSymbol::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCryptoSymbol::CreateMessage() {
-	const string strParam = gl_dataContainerFinnhubCryptoExchange.GetItem(m_index);
+	const string strParam = gl_pDataContainerFinnhubCryptoExchange->GetItem(m_index);
 
 	m_strInquiringExchange = strParam;
 	m_inquiryString = m_strInquiryFunction + strParam;

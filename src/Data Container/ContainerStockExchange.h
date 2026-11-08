@@ -30,4 +30,6 @@ protected:
 	std::unordered_map<string, size_t> m_mapStockExchange;
 };
 
-extern CContainerStockExchange gl_dataContainerStockExchange;
+using CContainerStockExchangePtr = shared_ptr<CContainerStockExchange>;
+
+inline CContainerStockExchangePtr gl_pDataContainerStockExchange = nullptr;;

@@ -30,7 +30,7 @@ void CProductFinnhubStockPriceQuote::InquireData(const std::stop_token& st) {
 			return;
 		}
 
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		if (Parse(m_r.text, pStock)) {
 			if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) {
 				// 交易时间不早于12小时，则设置此股票为活跃股票
@@ -60,7 +60,7 @@ void CProductFinnhubStockPriceQuote::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockPriceQuote::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchange();

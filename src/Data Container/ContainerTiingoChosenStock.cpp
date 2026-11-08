@@ -29,8 +29,8 @@ bool CContainerTiingoChosenStock::LoadDB() {
 		size_t rows = result.size();
 		Reserve(rows + 10);
 		for (const auto& row : result) {
-			if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
-				auto pStock = gl_dataContainerTiingoStock.GetStock(string{ row.Symbol });
+			if (gl_pDataContainerTiingoStock->IsSymbol(string{ row.Symbol })) {
+				auto pStock = gl_pDataContainerTiingoStock->GetStock(string{ row.Symbol });
 				m_mapSymbol[string{ row.Symbol }] = m_mapSymbol.size();
 				m_vStock.push_back(pStock);
 			}
@@ -59,7 +59,7 @@ void CContainerTiingoChosenStock::UpdateDB(std::stop_token st) const {
 		vSymbol.reserve(rows);
 		for (const auto& row : result) {
 			if (st.stop_requested()) break;
-			if (gl_dataContainerTiingoStock.IsSymbol(string{ row.Symbol })) {
+			if (gl_pDataContainerTiingoStock->IsSymbol(string{ row.Symbol })) {
 				vSymbol.emplace_back(string{ row.Symbol });
 			}
 		}

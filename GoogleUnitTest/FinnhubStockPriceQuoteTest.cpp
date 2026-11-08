@@ -47,7 +47,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
 		stockPriceQuote.SetIndex(1);
-		EXPECT_TRUE(stockPriceQuote.CreateMessage()->front() == stockPriceQuote.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
+		EXPECT_TRUE(stockPriceQuote.CreateMessage()->front() == stockPriceQuote.GetInquiryFunction() + gl_pDataContainerFinnhubStock->GetItem(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestProcessWebData) {
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
+			m_pStock = gl_pDataContainerFinnhubStock->GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetNew(0);
 			m_pStock->SetHigh(0);
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 			m_text = pData->m_data;
 			m_finnhubStockPriceQuote.Test_checkAccessRight_(m_text);
 
-			m_finnhubStockPriceQuote.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
+			m_finnhubStockPriceQuote.SetIndex(gl_pDataContainerFinnhubStock->GetOffset(pData->m_strSymbol));
 		}
 
 		void TearDown() override {

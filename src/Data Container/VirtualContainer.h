@@ -33,4 +33,5 @@ protected:
 private:
 	size_t m_lSinaRTDataInquiringIndex;
 	size_t m_lTengxunRTDataInquiringIndex;
+
 };

@@ -46,7 +46,7 @@ void CProductFinnhubEconomicCalendar::InquireData(const std::stop_token& st) {
 			m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		}
 		else {
-			gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
+			gl_pDataContainerFinnhubEconomicCalendar->Update(*pvEconomicCalendar);
 		}
 	}
 }

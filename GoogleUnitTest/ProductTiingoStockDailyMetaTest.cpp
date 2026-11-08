@@ -72,7 +72,7 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			auto pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
+			auto pStock = gl_pDataContainerTiingoStock->GetStock("AAPL");
 			pStock->SetHistoryDayLineStartDate(toLocalDays(19000101));
 			pStock->SetHistoryDayLineEndDate(toLocalDays(19000101));
 		}

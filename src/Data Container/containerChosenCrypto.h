@@ -23,4 +23,6 @@ public:
 protected:
 };
 
-extern CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
+using CContainerChosenCryptoPtr = shared_ptr<CContainerChosenCrypto>;
+
+inline CContainerChosenCryptoPtr gl_pDataContainerChosenWorldCrypto = nullptr;

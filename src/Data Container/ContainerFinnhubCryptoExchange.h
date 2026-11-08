@@ -3,6 +3,7 @@
 using std::unordered_map;
 using std::string;
 using std::vector;
+using std::shared_ptr;
 
 class CContainerFinnhubCryptoExchange final {
 public:
@@ -35,4 +36,5 @@ protected:
 	size_t m_lastTotalCryptoExchange{ 0 };
 };
 
-extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
+using CContainerFinnhubCryptoExchangePtr = shared_ptr<CContainerFinnhubCryptoExchange>;
+inline CContainerFinnhubCryptoExchangePtr gl_pDataContainerFinnhubCryptoExchange = nullptr;

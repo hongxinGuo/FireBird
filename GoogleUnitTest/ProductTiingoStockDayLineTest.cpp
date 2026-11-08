@@ -64,7 +64,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为A
-		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
+		const auto pStock = gl_pDataContainerTiingoStock->GetStock(gl_pDataContainerTiingoStock->GetStock(0)->GetSymbol());
 		pStock->SetDayLineEndDate(chrono::local_days(chrono::days(0))); // 早于20180101
 		const string strMessage = stockPriceCandle.CreateMessage()->front();
 		const chrono::local_days lMarketDate = gl_pWorldMarket->GetMarketDate();
@@ -76,7 +76,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为A
-		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
+		const auto pStock = gl_pDataContainerTiingoStock->GetStock(gl_pDataContainerTiingoStock->GetStock(0)->GetSymbol());
 		pStock->SetDayLineEndDate(gl_pWorldMarket->GetMarketDate() - chrono::days(5));
 		const string strMessage = stockPriceCandle.CreateMessage()->front();
 		const chrono::local_days lStartMarketDate = gl_pWorldMarket->GetMarketDate() - chrono::days(5 + needMoreDayLineData_); // 再减去10天

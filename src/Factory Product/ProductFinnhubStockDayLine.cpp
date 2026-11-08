@@ -34,7 +34,7 @@ void CProductFinnhubStockDayLine::InquireData(const std::stop_token& st) {
 			return;
 		}
 
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		const auto pvDayLine = Parse(m_r.text);
 		pStock->SetUpdateDayLine(false);
 		long lastClose = 0;
@@ -75,7 +75,7 @@ void CProductFinnhubStockDayLine::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubStockDayLine::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchange();

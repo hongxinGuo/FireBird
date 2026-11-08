@@ -42,4 +42,6 @@ protected:
 	bool m_fUpdated{ false };
 };
 
-extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;
+using CContainerTiingoFundamentalDefinitionPtr = std::shared_ptr<CContainerTiingoFundamentalDefinition>;
+
+inline CContainerTiingoFundamentalDefinitionPtr gl_pDataContainerTiingoFundamentalDefinition;

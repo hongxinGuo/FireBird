@@ -33,7 +33,7 @@ void CProductFinnhubSECFilings::InquireData(const std::stop_token& st) {
 			WebStatusCheck(m_r);
 			return;
 		}
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		auto pvSECFilings = Parse(m_r.text);
 		auto size = pvSECFilings->size();
 		pStock->SetUpdateSECFilings(false);
@@ -67,7 +67,7 @@ void CProductFinnhubSECFilings::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubSECFilings::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_inquiryString = m_strInquiryFunction + pStock->GetSymbol();

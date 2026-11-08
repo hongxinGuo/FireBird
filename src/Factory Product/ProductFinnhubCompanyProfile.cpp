@@ -28,7 +28,7 @@ void CProductFinnhubCompanyProfile::InquireData(const std::stop_token& st) {
 			return;
 		}
 
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		pStock->SetUpdateCompanyProfile(false);
 		const bool fSucceed = Parse(m_r.text, pStock);
 		if (fSucceed || IsVoidJson(m_r.text) || IsNoRightToAccess()) {
@@ -58,7 +58,7 @@ void CProductFinnhubCompanyProfile::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyProfile::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_inquiryString = m_strInquiryFunction + pStock->GetSymbol();

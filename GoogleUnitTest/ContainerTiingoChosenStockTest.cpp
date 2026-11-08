@@ -57,10 +57,10 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoChosenStockTest, LoadDB_LoadsValidAndRemovesInvalid) {
 		// Need at least one Tiingo stock in global container
-		ASSERT_GE(gl_dataContainerTiingoStock.Size(), 1u);
+		ASSERT_GE(gl_pDataContainerTiingoStock->Size(), 1u);
 
 		// Pick an existing Tiingo stock symbol
-		auto pValid = gl_dataContainerTiingoStock.GetStock("RIG");
+		auto pValid = gl_pDataContainerTiingoStock->GetStock("RIG");
 		ASSERT_NE(pValid, nullptr);
 		const std::string validSymbol = pValid->GetSymbol();
 
@@ -110,11 +110,11 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoChosenStockTest, UpdateDB_InsertsMissingSymbols) {
 		// Ensure there are at least two Tiingo stocks available in global container
-		ASSERT_GE(gl_dataContainerTiingoStock.Size(), 2u);
+		ASSERT_GE(gl_pDataContainerTiingoStock->Size(), 2u);
 
 		// Pick two existing Tiingo stocks
-		auto pStock1 = gl_dataContainerTiingoStock.GetStock("RIG");
-		auto pStock2 = gl_dataContainerTiingoStock.GetStock("BAX");
+		auto pStock1 = gl_pDataContainerTiingoStock->GetStock("RIG");
+		auto pStock2 = gl_pDataContainerTiingoStock->GetStock("BAX");
 		ASSERT_NE(pStock1, nullptr);
 		ASSERT_NE(pStock2, nullptr);
 

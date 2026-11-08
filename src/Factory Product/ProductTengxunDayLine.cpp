@@ -100,12 +100,12 @@ void CProductTengxunDayLine::WebStatusCheck(cpr::Response& r) {
 
 void CProductTengxunDayLine::UpdateSystemStatus() {
 	if (IsWebError()) return;
-	gl_dataContainerChinaStock.GetStock(m_strInquiringSymbol)->SetUpdateDayLine(false);
+	gl_pDataContainerChinaStock->GetStock(m_strInquiringSymbol)->SetUpdateDayLine(false);
 }
 
 shared_ptr<vector<string>> CProductTengxunDayLine::CreateMessage() {
 	shared_ptr<vector<string>> pvInquireStrings = make_shared<vector<string>>();
-	auto pStock = gl_dataContainerChinaStock.GetStock(m_strInquiringSymbol);
+	auto pStock = gl_pDataContainerChinaStock->GetStock(m_strInquiringSymbol);
 	long lStartDate = toFormattedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = toFormattedDate(gl_pChinaMarket->GetMarketDate());
 	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;

@@ -46,7 +46,7 @@ CChinaMarket::CChinaMarket() {
 		ABSL_DLOG(INFO) << "ChinaMarket市场变量只允许存在一个实例\n";
 	}
 	m_strMarketId = "SS";
-	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
+	m_exchange = gl_pDataContainerStockExchange->GetItem(m_strMarketId);
 	ABSL_DCHECK(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = "Asia/Shanghai";
 	CreateLocalTimeZone(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
@@ -112,7 +112,7 @@ void CChinaMarket::ResetMarket() {
 
 	Reset();
 
-	gl_dataContainerChinaStock.LoadProfileDB();
+	gl_pDataContainerChinaStock->LoadProfileDB();
 	LoadOptionDB();
 	LoadChosenStockDB();
 
@@ -141,8 +141,8 @@ void CChinaMarket::Reset() {
 	CalculateTime(); // 初始化市场时间
 	SetSystemReady(false); // 市场初始状态为未设置好。
 
-	gl_dataContainerChinaStock.Reset();
-	gl_dataContainerChinaStockSymbol.Reset();
+	gl_pDataContainerChinaStock->Reset();
+	gl_pDataContainerChinaStockSymbol->Reset();
 
 	m_lCurrentSelectedPosition = 0;
 	m_lCurrentRSStrongIndex = 0;
@@ -301,7 +301,7 @@ int CChinaMarket::ProcessCurrentImmediateTask() {
 
 bool CChinaMarket::TaskCheckMarketReady() {
 	if (!IsSystemReady()) {
-		const auto lMax = gl_dataContainerChinaStock.Size() > 12000 ? gl_dataContainerChinaStock.Size() * 2 : 24000;
+		const auto lMax = gl_pDataContainerChinaStock->Size() > 12000 ? gl_pDataContainerChinaStock->Size() * 2 : 24000;
 		if (m_llRTDataReceived > lMax) {
 			SetSystemReady(true);
 			gl_systemMessage.PushInformationMessage("中国股票市场初始化完毕");
@@ -313,7 +313,7 @@ bool CChinaMarket::TaskCheckMarketReady() {
 }
 
 size_t CChinaMarket::GetCurrentStockSetSize() const {
-	if (IsTotalStockSetSelected()) return gl_dataContainerChinaStock.Size();
+	if (IsTotalStockSetSelected()) return gl_pDataContainerChinaStock->Size();
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
 }
 
@@ -326,7 +326,7 @@ void CChinaMarket::CreateStock(const string& strStockCode, const string& strStoc
 	pStock->SetDayLineStartDate(toLocalDays(CHINA_MARKET_BEGIN_DATE_));
 	pStock->SetUpdateProfileDB(true);
 	pStock->SetNeedProcessRTData(fProcessRTData);
-	gl_dataContainerChinaStock.Add(pStock);
+	gl_pDataContainerChinaStock->Add(pStock);
 	ABSL_DCHECK(pStock->IsUpdateDayLine());
 	string str = "china Market生成新代码";
 	str += pStock->GetSymbol();
@@ -351,13 +351,13 @@ size_t CChinaMarket::IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosi
 bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	const string strSymbol = pRTData->GetSymbol();
 	if (IsCheckingActiveStock()) {
-		if (!gl_dataContainerChinaStock.IsSymbol(strSymbol) && pRTData->HaveName()) {
+		if (!gl_pDataContainerChinaStock->IsSymbol(strSymbol) && pRTData->HaveName()) {
 			//Note： 有股票代码和名称，则该股票已经上市了，现状（退市等）不明。
 			ABSL_DCHECK(strSymbol.length() == 9);
 			CreateStock(strSymbol, pRTData->GetStockName(), true);
 		}
 	}
-	else if (!gl_dataContainerChinaStock.IsSymbol(strSymbol)) {
+	else if (!gl_pDataContainerChinaStock->IsSymbol(strSymbol)) {
 		return false;
 	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
@@ -365,7 +365,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 		if (m_tpNewTransactionTime < pRTData->GetTime()) {
 			m_tpNewTransactionTime = pRTData->GetTime();
 		}
-		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
+		const auto pStock = gl_pDataContainerChinaStock->GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
 			if (pRTData->IsValidTime(14)) {
 				pStock->UpdateStatus(pRTData);
@@ -413,11 +413,11 @@ void CChinaMarket::EnableRealTimeDataSource(bool fEnable) noexcept {
 //////////////////////////////////////////////////////////////////////////////////////////
 string CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet) { //todo: 总出问题
 	if (fUsingTotalStockSet) {
-		ABSL_DCHECK(gl_dataContainerChinaStockSymbol.IsDataLoaded());
-		return gl_dataContainerChinaStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
+		ABSL_DCHECK(gl_pDataContainerChinaStockSymbol->IsDataLoaded());
+		return gl_pDataContainerChinaStockSymbol->GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 	}
-	ABSL_DCHECK(gl_dataContainerChinaStock.IsDataLoaded());
-	return gl_dataContainerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
+	ABSL_DCHECK(gl_pDataContainerChinaStock->IsDataLoaded());
+	return gl_pDataContainerChinaStock->GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,7 +475,7 @@ void CChinaMarket::DistributeRTData() {
 
 void CChinaMarket::CalculateRTData() {
 	if (IsSystemReady() && IsRTDataNeedCalculate()) {
-		gl_dataContainerChinaStock.ProcessRTData();
+		gl_pDataContainerChinaStock->ProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
 }
@@ -623,8 +623,8 @@ bool CChinaMarket::TaskProcessTodayStock() {
 void CChinaMarket::ProcessTodayStock(std::stop_token st) {
 	ABSL_DCHECK(IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
-	gl_dataContainerChinaStock.BuildDayLine(GetMarketDate());
-	gl_dataContainerChinaStock.UpdateProfileDB(st);
+	gl_pDataContainerChinaStock->BuildDayLine(GetMarketDate());
+	gl_pDataContainerChinaStock->UpdateProfileDB(st);
 	if (GetMarketTimeHMS().to_duration() > 15h + 04min) {	// 如果中国股市闭市了
 		SetUpdateOptionDB(true); // 更新状态
 	}
@@ -635,18 +635,18 @@ void CChinaMarket::ProcessTodayStock(std::stop_token st) {
 bool CChinaMarket::IsSavingDayLineDBTaskFinished() {
 	static atomic_bool s_bTaskOfSavingDayLineFinished = false;
 	if (s_bTaskOfSavingDayLineFinished) {
-		if ((!gl_dataContainerChinaStock.IsUpdateDayLineDB()) && (!gl_dataContainerChinaStock.IsUpdateDayLine()) && (!IsDayLineNeedProcess())) {
+		if ((!gl_pDataContainerChinaStock->IsUpdateDayLineDB()) && (!gl_pDataContainerChinaStock->IsUpdateDayLine()) && (!IsDayLineNeedProcess())) {
 			s_bTaskOfSavingDayLineFinished = false;
 			const string str = "中国市场日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
-			if (gl_dataContainerChinaStock.IsDayLineDBUpdated()) { // 更新股票池数据库
-				gl_dataContainerChinaStock.ClearDayLineDBUpdatedFlag();
+			if (gl_pDataContainerChinaStock->IsDayLineDBUpdated()) { // 更新股票池数据库
+				gl_pDataContainerChinaStock->ClearDayLineDBUpdatedFlag();
 			}
 			return true;
 		}
 	}
 	else {
-		if (gl_dataContainerChinaStock.IsUpdateDayLine() || IsDayLineNeedProcess() || gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
+		if (gl_pDataContainerChinaStock->IsUpdateDayLine() || IsDayLineNeedProcess() || gl_pDataContainerChinaStock->IsUpdateDayLineDB()) {
 			s_bTaskOfSavingDayLineFinished = true;
 		}
 	}
@@ -781,14 +781,14 @@ bool CChinaMarket::TaskCheckSystem() {
 bool CChinaMarket::TaskUpdateStockProfileDB() {
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB_, GetNextTime(GetMarketTime(), 0h, 5min, 0s));
 
-	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
+	if (gl_pDataContainerChinaStock->IsUpdateProfileDB()) {
 		if (m_jtUpdateStockProfileDB.joinable()) {
 			m_jtUpdateStockProfileDB.request_stop();
 			m_jtUpdateStockProfileDB.join();
 		}
 		m_jtUpdateStockProfileDB = std::jthread([this](std::stop_token st) {
 			gl_systemMessage.SetChinaMarketSavingFunction("update china stock profile");
-			gl_dataContainerChinaStock.UpdateProfileDB(st);
+			gl_pDataContainerChinaStock->UpdateProfileDB(st);
 		});
 		return true;
 	}
@@ -825,16 +825,16 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 }
 
 bool CChinaMarket::TaskUpdateStockSection() {
-	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
+	if (gl_pDataContainerChinaStockSymbol->IsUpdateStockSection()) {
 		if (m_jtUpdateStockSectionDB.joinable()) {
 			m_jtUpdateStockSectionDB.request_stop();
 			m_jtUpdateStockSectionDB.join();
 		}
 		m_jtUpdateStockSectionDB = std::jthread([](std::stop_token st) {
 			gl_systemMessage.SetChinaMarketSavingFunction("update stockSection");
-			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
+			gl_pDataContainerChinaStockSymbol->UpdateStockSectionDB();
 		});
-		gl_dataContainerChinaStockSymbol.SetUpdateStockSection(false);
+		gl_pDataContainerChinaStockSymbol->SetUpdateStockSection(false);
 		return true;
 	}
 	return false;
@@ -851,8 +851,8 @@ void CChinaMarket::TaskProcessAndUpdateDayLineDB() {
 		}
 		if (st.stop_requested()) return;
 		// 判断是否存储日线库和股票代码库
-		if (gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
-			gl_dataContainerChinaStock.TaskUpdateDayLineDB(st);
+		if (gl_pDataContainerChinaStock->IsUpdateDayLineDB()) {
+			gl_pDataContainerChinaStock->TaskUpdateDayLineDB(st);
 		}
 	});
 
@@ -880,15 +880,15 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock() {
 	if (m_lCurrentSelectedStockSet >= 0) {
 		return m_avChosenStock.at(m_lCurrentSelectedStockSet).at(0);
 	}
-	return gl_dataContainerChinaStock.GetStock(0);
+	return gl_pDataContainerChinaStock->GetStock(0);
 }
 
 bool CChinaMarket::ProcessDayLine() {
 	CDayLineWebDataPtr pData;
 	bool succeed = gl_qDayLine.try_dequeue(pData);
 	while (succeed) {
-		ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(pData->GetStockCode()));
-		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(pData->GetStockCode());
+		ABSL_DCHECK(gl_pDataContainerChinaStock->IsSymbol(pData->GetStockCode()));
+		const CChinaStockPtr pStock = gl_pDataContainerChinaStock->GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine()); // pData的日线数据是正序的，最新日期的在最后面。
 
 		pStock->SetDayLineLoaded(true);
@@ -900,8 +900,8 @@ bool CChinaMarket::ProcessDayLine() {
 }
 
 void CChinaMarket::UpdateOneYearStockDayLine(local_days date) {
-	for (size_t index = 0; index < gl_dataContainerChinaStock.Size(); index++) {
-		auto pStock = gl_dataContainerChinaStock.GetStock(index);
+	for (size_t index = 0; index < gl_pDataContainerChinaStock->Size(); index++) {
+		auto pStock = gl_pDataContainerChinaStock->GetStock(index);
 		auto d = pStock->GetDayLineEndDate();
 		if (pStock->GetDayLineEndDate() > date) {
 			pStock->SetDayLineEndDate(date);
@@ -914,7 +914,7 @@ void CChinaMarket::UpdateOneYearStockDayLine(local_days date) {
 }
 
 void CChinaMarket::UpdateAllStockDayLine() {
-	gl_dataContainerChinaStock.SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
+	gl_pDataContainerChinaStock->SetDayLineNeedMaintain(CHINA_MARKET_BEGIN_DATE_);
 	gl_pTengxunDayLineDataSource->SetUpdateDayLine(true); // 启动数据源的日线数据更新任务
 	AddTask(CHINA_MARKET_UPDATE_DAY_LINE_DB_, GetNextTime(GetMarketTime(), 0h, 1min, 0s));
 }
@@ -1051,8 +1051,8 @@ void CChinaMarket::LoadChosenStockDB() {
 
 		for (const auto& row : result) {
 			CChinaStockPtr pStock = nullptr;
-			if (gl_dataContainerChinaStock.IsSymbol(string{ row.Symbol })) {
-				pStock = gl_dataContainerChinaStock.GetStock(string{ row.Symbol });
+			if (gl_pDataContainerChinaStock->IsSymbol(string{ row.Symbol })) {
+				pStock = gl_pDataContainerChinaStock->GetStock(string{ row.Symbol });
 				if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 					m_avChosenStock.at(0).push_back(pStock);
 				}

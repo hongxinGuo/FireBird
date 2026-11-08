@@ -16,6 +16,24 @@
 #include"TiingoDataSource.h"
 
 #include"ChinaMarket.h"
+#include "ContainerAlpacaStockSymbol.h"
+#include "ContainerChinaStock.h"
+#include "containerChosenCrypto.h"
+#include "containerChosenForex.h"
+#include "ContainerFinnhubCountry.h"
+#include "ContainerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubEconomicCalendar.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "ContainerFinnhubForexSymbol.h"
+#include "ContainerFinnhubStock.h"
+#include "ContainerStockExchange.h"
+#include "ContainerStockSymbol.h"
+#include "containerTiingoChosenStock.h"
+#include "ContainerTiingoCryptoSymbol.h"
+#include "ContainerTiingoFundamentalDefinition.h"
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
 #include "EastmoneyDayLineDataSource.h"
 #include "InaccessibleSymbol.h"
 #include "FinnhubInquiryType.h"
@@ -32,7 +50,6 @@
 #include "TiingoForexWebSocket.h"
 #include "TiingoIEXWebSocket.h"
 using namespace spdlog;
-
 
 #include "AccessoryDataSource.h"
 #include<sqlpp23/sqlpp23.h>
@@ -76,6 +93,55 @@ namespace {
 		gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
 	}
 
+	void CreateWebSocket() {
+		// WebSocket要在gl_pWorldMarket之前生成
+		ABSL_DCHECK(gl_pWorldMarket == nullptr);
+		gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
+		gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
+		gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
+		gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
+		gl_pAlpacaIEXWebSocket = make_shared<CAlpacaIEXWebSocket>();
+	}
+
+	void CreateDataContainers() {
+		// 数据容器要在DataSource之前生成
+		ABSL_DCHECK(gl_pAlpacaDataSource == nullptr);
+		ABSL_DCHECK(gl_pTiingoDataSource == nullptr);
+		ABSL_DCHECK(gl_pFinnhubDataSource == nullptr);
+		ABSL_DCHECK(gl_pAccessoryDataSource == nullptr);
+		ABSL_DCHECK(gl_pSinaRTDataSource == nullptr);
+		ABSL_DCHECK(gl_pTengxunRTDataSource == nullptr);
+		ABSL_DCHECK(gl_pTengxunDayLineDataSource == nullptr);
+		ABSL_DCHECK(gl_pEastmoneyDayLineDataSource == nullptr);
+
+		// ChinaMarket处理的数据
+		gl_pDataContainerChinaStock = make_shared<CContainerChinaStock>();
+		gl_pDataContainerChinaStockSymbol = make_shared<CContainerStockSymbol>();
+
+		// Finnhub处理的数据
+		gl_pDataContainerStockExchange = make_shared<CContainerStockExchange>();
+		gl_pDataFinnhubForexSymbol = make_shared<CContainerFinnhubForexSymbol>();
+		gl_pDataFinnhubCryptoSymbol = make_shared<CContainerFinnhubCrypto>();
+		gl_pDataContainerFinnhubCountry = make_shared<CContainerFinnhubCountry>();
+		gl_pDataContainerFinnhubEconomicCalendar = make_shared<CContainerFinnhubEconomicCalendar>();
+		gl_pDataContainerFinnhubForexExchange = make_shared<CContainerFinnhubForexExchange>();
+		gl_pDataContainerFinnhubCryptoExchange = make_shared<CContainerFinnhubCryptoExchange>();
+		gl_pDataContainerFinnhubStock = make_shared<CContainerFinnhubStock>();
+
+		// Tiingo处理的数据
+		gl_pDataContainerTiingoStock = make_shared<CContainerTiingoStock>();
+		gl_pDataContainerTiingoNewSymbol = make_shared<CContainerTiingoSymbol>();
+		gl_pDataContainerTiingoDelistedSymbol = make_shared<CContainerTiingoSymbol>();
+		gl_pDataContainerTiingoCryptoSymbol = make_shared<CContainerTiingoCryptoSymbol>();
+		gl_pDataContainerTiingoFundamentalDefinition = make_shared<CContainerTiingoFundamentalDefinition>();
+
+		gl_pDataContainerTiingoChosenStock = make_shared<CContainerTiingoChosenStock>();
+		gl_pDataContainerChosenWorldForex = make_shared<CContainerChosenForex>();
+		gl_pDataContainerChosenWorldCrypto = make_shared<CContainerChosenCrypto>();
+
+		gl_pDataContainerAlpacaStockSymbol = make_shared<CContainerAlpacaStockSymbol>();
+	}
+
 	void CreateDataSource() {
 		// 此五个要在gl_pChinaMarket前生成
 		ABSL_DCHECK(gl_pChinaMarket == nullptr);
@@ -98,16 +164,6 @@ namespace {
 		gl_vDataSource.push_back(gl_pAlpacaDataSource);
 		gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
 		gl_vDataSource.push_back(gl_pAccessoryDataSource);
-	}
-
-	void CreateWebSocket() {
-		// WebSocket要在gl_pWorldMarket之前生成
-		ABSL_DCHECK(gl_pWorldMarket == nullptr);
-		gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
-		gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
-		gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
-		gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
-		gl_pAlpacaIEXWebSocket = make_shared<CAlpacaIEXWebSocket>();
 	}
 
 	void CreateMarket() {
@@ -133,10 +189,67 @@ namespace {
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	}
+
+	void DestroyMarkets() {
+		gl_pWorldMarket = nullptr;
+		gl_pChinaMarket = nullptr;
+	}
+
+	void DestroyDataSources() {
+		ABSL_DCHECK(gl_pWorldMarket == nullptr);
+		gl_pAccessoryDataSource = nullptr;
+		gl_pAlpacaDataSource = nullptr;
+		gl_pFinnhubDataSource = nullptr;
+		gl_pTiingoDataSource = nullptr;
+
+		ABSL_DCHECK(gl_pChinaMarket == nullptr);
+		gl_pSinaRTDataSource = nullptr;
+		gl_pTengxunRTDataSource = nullptr;
+		gl_pTengxunDayLineDataSource = nullptr;
+		gl_pEastmoneyDayLineDataSource = nullptr;
+	}
+
+	void DestroyDataContainers() {
+		gl_pDataContainerChinaStock = nullptr;
+		gl_pDataContainerChinaStockSymbol = nullptr;
+
+		gl_pDataContainerStockExchange = nullptr;
+		gl_pDataFinnhubForexSymbol = nullptr;
+		gl_pDataFinnhubCryptoSymbol = nullptr;
+		gl_pDataContainerFinnhubCountry = nullptr;
+		gl_pDataContainerFinnhubEconomicCalendar = nullptr;
+		gl_pDataContainerFinnhubForexExchange = nullptr;
+		gl_pDataContainerFinnhubCryptoExchange = nullptr;
+		gl_pDataContainerFinnhubStock = nullptr;
+
+		gl_pDataContainerTiingoStock = nullptr;
+		gl_pDataContainerTiingoNewSymbol = nullptr;
+		gl_pDataContainerTiingoDelistedSymbol = nullptr;
+		gl_pDataContainerTiingoCryptoSymbol = nullptr;
+		gl_pDataContainerTiingoFundamentalDefinition = nullptr;
+
+		gl_pDataContainerTiingoChosenStock = nullptr;
+		gl_pDataContainerChosenWorldForex = nullptr;
+		gl_pDataContainerChosenWorldCrypto = nullptr;
+
+		ABSL_DCHECK(gl_pAlpacaDataSource == nullptr);
+		ABSL_DCHECK(gl_pTiingoDataSource == nullptr);
+		gl_pDataContainerAlpacaStockSymbol = nullptr;
+	}
+
+	void DestroyWebSockets() {
+		gl_pFinnhubWebSocket = nullptr;
+		gl_pTiingoIEXWebSocket = nullptr;
+		gl_pTiingoCryptoWebSocket = nullptr;
+		gl_pTiingoForexWebSocket = nullptr;
+		ABSL_DCHECK(gl_pAlpacaIEXWebSocket && gl_pAlpacaIEXWebSocket->IsClosed());
+		gl_pAlpacaIEXWebSocket = nullptr;
+	}
 }
 
 void InitializeMarkets() {
 	CreateWebSocket();
+	CreateDataContainers();
 	CreateDataSource();
 	CreateMarket();
 	CreateMarketContainer();	//生成市场容器
@@ -202,25 +315,10 @@ void SystemInitialization() {
 }
 
 void SystemShutdown() {
-	gl_pWorldMarket = nullptr;
-	gl_pChinaMarket = nullptr;
-
-	gl_pAccessoryDataSource = nullptr;
-	gl_pAlpacaDataSource = nullptr;
-	gl_pFinnhubDataSource = nullptr;
-	gl_pTiingoDataSource = nullptr;
-
-	gl_pSinaRTDataSource = nullptr;
-	gl_pTengxunRTDataSource = nullptr;
-	gl_pTengxunDayLineDataSource = nullptr;
-	gl_pEastmoneyDayLineDataSource = nullptr;
-
-	gl_pFinnhubWebSocket = nullptr;
-	gl_pTiingoCryptoWebSocket = nullptr;
-	gl_pTiingoForexWebSocket = nullptr;
-	gl_pTiingoIEXWebSocket = nullptr;
-	ABSL_DCHECK(gl_pAlpacaIEXWebSocket && gl_pAlpacaIEXWebSocket->IsClosed());
-	gl_pAlpacaIEXWebSocket = nullptr;
+	DestroyMarkets();
+	DestroyDataSources();
+	DestroyDataContainers();
+	DestroyWebSockets();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -344,4 +442,3 @@ void CloseDataSourceBackgroundThread() {
 		pDataSource->StopThread();
 	}
 }
-

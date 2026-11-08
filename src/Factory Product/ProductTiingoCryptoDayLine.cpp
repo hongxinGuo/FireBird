@@ -34,7 +34,7 @@ void CProductTiingoCryptoDayLine::InquireData(const std::stop_token& st) {
 			WebStatusCheck(m_r);
 			return;
 		}
-		const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_index);
+		const auto pCrypto = gl_pDataFinnhubCryptoSymbol->GetItem(m_index);
 		const CDayLinesPtr pvDayLine = Parse(m_r.text);
 		pCrypto->SetUpdateDayLine(false);
 	}
@@ -69,7 +69,7 @@ void CProductTiingoCryptoDayLine::UpdateSystemStatus() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<string>> CProductTiingoCryptoDayLine::CreateMessage() {
-	const auto pCrypto = gl_dataContainerTiingoCryptoSymbol.GetCrypto(GetIndex());
+	const auto pCrypto = gl_pDataContainerTiingoCryptoSymbol->GetCrypto(GetIndex());
 	string strParam = pCrypto->m_strName + "&startDate=2010-01-02&resampleFreq=1day"; // 永远申请完整日线
 	pCrypto->SetUpdateDayLine(false);
 	m_strInquiringSymbol = pCrypto->GetSymbol();

@@ -54,13 +54,13 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
+			const CChinaStockPtr pStock = gl_pDataContainerChinaStock->GetStock("600008.SS");
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
 			s_tCurrentMarketTime = GetUTCTime();
 		}
 
 		static void TearDownTestSuite() {
-			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
+			const CChinaStockPtr pStock = gl_pDataContainerChinaStock->GetStock("600008.SS");
 			pStock->SetActive(true);
 
 			SCOPED_TRACE("");
@@ -74,8 +74,8 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 			const TengxunRTData* pData = GetParam();
 			m_iCount = pData->m_iCount;
-			if (gl_dataContainerChinaStock.IsSymbol(pData->m_strSymbol)) {
-				pStock = gl_dataContainerChinaStock.GetStock(pData->m_strSymbol);
+			if (gl_pDataContainerChinaStock->IsSymbol(pData->m_strSymbol)) {
+				pStock = gl_pDataContainerChinaStock->GetStock(pData->m_strSymbol);
 				pStock->ClearRTDataDeque();
 				pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
 			}
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 			pRTData = make_shared<CWebRTData>();
 			pRTData->SetDataSource(pData->m_iSourceType);
 			pRTData->SetSymbol(pData->m_strSymbol);
-			if (!gl_dataContainerChinaStock.IsSymbol(pData->m_strSymbol)) { // 新股票代码
+			if (!gl_pDataContainerChinaStock->IsSymbol(pData->m_strSymbol)) { // 新股票代码
 				pRTData->SetStockName("abcde");// 需要设置股票名称，以保证能够创建新股票
 			}
 			pRTData->SetActive(pData->m_fActive);
@@ -114,7 +114,7 @@ namespace FireBirdTest {
 
 	TEST_P(TaskDistributeTengxunRTDataToProperStockTest, TestCheck) {
 		string strMessage, strRight;
-		auto lTotalStock = gl_dataContainerChinaStock.Size();
+		auto lTotalStock = gl_pDataContainerChinaStock->Size();
 		string strSymbol;
 
 		gl_qChinaMarketRTData.enqueue(pRTData);
@@ -147,16 +147,16 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->IsActive());
 			break;
 		case 6:
-			EXPECT_EQ(lTotalStock + 1, gl_dataContainerChinaStock.Size()) << "发现新的股票，股票总数增加了一个";
+			EXPECT_EQ(lTotalStock + 1, gl_pDataContainerChinaStock->Size()) << "发现新的股票，股票总数增加了一个";
 			EXPECT_EQ(pStock, nullptr) << "新股票代码，则不预置此指针";
-			pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
+			pStock = gl_pDataContainerChinaStock->GetStock(pRTData->GetSymbol());
 			EXPECT_TRUE(pStock->IsActive());
 			EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
 			strSymbol = pStock->GetSymbol();
-			gl_dataContainerChinaStock.Delete(pStock);
-			EXPECT_EQ(lTotalStock, gl_dataContainerChinaStock.Size()) << "删除了新增加的股票";
-			EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(strSymbol)) << "刚刚删除了此股票代码";
+			gl_pDataContainerChinaStock->Delete(pStock);
+			EXPECT_EQ(lTotalStock, gl_pDataContainerChinaStock->Size()) << "删除了新增加的股票";
+			EXPECT_FALSE(gl_pDataContainerChinaStock->IsSymbol(strSymbol)) << "刚刚删除了此股票代码";
 
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1);
 

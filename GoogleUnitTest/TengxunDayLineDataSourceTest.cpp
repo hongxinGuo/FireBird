@@ -86,7 +86,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct1) {
 		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20230201));
-		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
+		const auto pStock = gl_pDataContainerChinaStock->GetStock("600008.SS");
 		const chrono::local_days lEndDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(toLocalDays(20200101)); // 日期间隔小于八年
 
@@ -95,7 +95,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(vProduct.size(), 1) << "日期间隔小于八年，只有一个申请";
 		const auto& pProduct = vProduct.at(0);
 		EXPECT_STREQ(typeid(*pProduct).name(), "class CProductTengxunDayLine");
-		EXPECT_EQ(pProduct->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
+		EXPECT_EQ(pProduct->GetIndex(), gl_pDataContainerChinaStock->GetOffset(pStock));
 		EXPECT_EQ(pProduct->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2019-12-31,2023-02-01,2000,,") << "起始日期为日线结束日期的前一天";
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct)->GetInquiryNumber(), 1);
 
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct2) {
 		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20230201));
-		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
+		const auto pStock = gl_pDataContainerChinaStock->GetStock("600008.SS");
 		const chrono::local_days lEndDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(toLocalDays(20110101)); // 日期间隔大于七年小于十四年
 
@@ -115,12 +115,12 @@ namespace FireBirdTest {
 		const auto& pProduct1 = vProduct.at(0);
 		const auto& pProduct2 = vProduct.at(1);
 		EXPECT_STREQ(typeid(*pProduct1).name(), "class CProductTengxunDayLine");
-		EXPECT_EQ(pProduct1->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
+		EXPECT_EQ(pProduct1->GetIndex(), gl_pDataContainerChinaStock->GetOffset(pStock));
 		EXPECT_EQ(pProduct1->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2010-12-31,2016-12-31,2000,,") << "起始日期为日线结束日期的前一天";
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 2);
 
 		EXPECT_STREQ(typeid(*pProduct2).name(), "class CProductTengxunDayLine");
-		EXPECT_EQ(pProduct2->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
+		EXPECT_EQ(pProduct2->GetIndex(), gl_pDataContainerChinaStock->GetOffset(pStock));
 		EXPECT_EQ(pProduct2->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2017-01-01,2023-02-01,2000,,");
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 2);
 
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct3) {
 		gl_pChinaMarket->TEST_SetMarketDate(toLocalDays(20230201));
-		const auto pStock = gl_dataContainerChinaStock.GetStock("600008.SS");
+		const auto pStock = gl_pDataContainerChinaStock->GetStock("600008.SS");
 		const chrono::local_days lEndDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(toLocalDays(20000101)); // 日期间隔大于十六年
 
@@ -142,7 +142,7 @@ namespace FireBirdTest {
 		const auto& pProduct3 = vProduct.at(2);
 		const auto& pProduct4 = vProduct.at(3);
 		EXPECT_STREQ(typeid(*pProduct1).name(), "class CProductTengxunDayLine");
-		EXPECT_EQ(pProduct1->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
+		EXPECT_EQ(pProduct1->GetIndex(), gl_pDataContainerChinaStock->GetOffset(pStock));
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 4);
 		EXPECT_EQ(pProduct1->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,1999-12-31,2005-12-31,2000,,") << "起始日期为日线结束日期的前一天";
 		EXPECT_EQ(pProduct2->GetInquiryFunction(), "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2006-01-01,2012-12-31,2000,,") << "起始日期为日线结束日期的前一天";

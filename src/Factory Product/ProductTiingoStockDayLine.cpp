@@ -40,7 +40,7 @@ void CProductTiingoStockDayLine::InquireData(const std::stop_token& st) {
 			WebStatusCheck(m_r);
 		}
 
-		const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
+		const auto pTiingoStock = gl_pDataContainerTiingoStock->GetStock(m_index);
 		auto pvDayLine = Parse(m_r.text);
 		if (!pvDayLine->empty()) {
 			long lastClose = 0;
@@ -60,8 +60,8 @@ void CProductTiingoStockDayLine::InquireData(const std::stop_token& st) {
 		// 清除tiingo stock的日线更新标识
 		pTiingoStock->SetUpdateDayLine(false);
 		pTiingoStock->SetUpdateProfileDB(true);
-		if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 新股票？
-			gl_dataContainerTiingoNewSymbol.Delete(pTiingoStock); // 下载完日线数据后，就从Tiingo新代码容器中删除之。
+		if (gl_pDataContainerTiingoNewSymbol->IsSymbol(pTiingoStock->GetSymbol())) { // 新股票？
+			gl_pDataContainerTiingoNewSymbol->Delete(pTiingoStock); // 下载完日线数据后，就从Tiingo新代码容器中删除之。
 		}
 	}
 }
@@ -91,7 +91,7 @@ void CProductTiingoStockDayLine::UpdateSystemStatus() {
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<string>> CProductTiingoStockDayLine::CreateMessage() {
-	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
+	const auto pStock = gl_pDataContainerTiingoStock->GetStock(GetIndex());
 	ABSL_DCHECK(pStock->IsActive()); // 活跃股票
 	chrono::local_days lStartDate{ 1980y / 01 / 01 };
 	if (pStock->GetDayLineEndDate() > toLocalDays(19800101)) lStartDate = pStock->GetDayLineEndDate() - chrono::days(needMoreDayLineData_);

@@ -142,11 +142,11 @@ namespace FireBirdTest {
 		pStock->SetDayLineEndDate(toLocalDays(19800101));
 
 		// 添加到容器
-		gl_dataContainerTiingoStock.Add(pStock);
+		gl_pDataContainerTiingoStock->Add(pStock);
 
 		// 创建 product 并设置 index 到刚添加的股票
 		CProductAlpacaStockDayLine product;
-		product.SetIndex(gl_dataContainerTiingoStock.GetOffset("Test"));
+		product.SetIndex(gl_pDataContainerTiingoStock->GetOffset("Test"));
 
 		// 调用待测试函数
 		auto urls = product.CreateMessageInternal("&adjustment=raw");
@@ -162,20 +162,20 @@ namespace FireBirdTest {
 		}
 
 		// 清理
-		gl_dataContainerTiingoStock.Delete("Test");
+		gl_pDataContainerTiingoStock->Delete("Test");
 	}
 
 	TEST_F(CProductAlpacaStockDayLineTest, CreateMessageInternal2) {
 		vector<local_days> vEndDate;
 		for (size_t i = 0; i < 10; i++) { // 测试数据库中的日线结束日期较早，人工设置为较近的日期以生成多个股票的查询串。共十个。
-			vEndDate.push_back(gl_dataContainerTiingoStock.GetStock(i)->GetDayLineEndDate());
-			gl_dataContainerTiingoStock.GetStock(i)->SetDayLineEndDate(toLocalDays(year_month_day(gl_pWorldMarket->GetMarketDate() - std::chrono::days(5))));
+			vEndDate.push_back(gl_pDataContainerTiingoStock->GetStock(i)->GetDayLineEndDate());
+			gl_pDataContainerTiingoStock->GetStock(i)->SetDayLineEndDate(toLocalDays(year_month_day(gl_pWorldMarket->GetMarketDate() - std::chrono::days(5))));
 		}
 		gl_pAlpacaDataSource->SetInquireStockNumber(100);
 
 		// 创建 product
 		CProductAlpacaStockDayLine product;
-		product.SetIndex(gl_dataContainerTiingoStock.GetOffset("A"));
+		product.SetIndex(gl_pDataContainerTiingoStock->GetOffset("A"));
 
 		// 调用待测试函数
 		auto urls = product.CreateMessageInternal("&adjustment=raw");
@@ -186,7 +186,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		for (size_t i = 0; i < 10; i++) {
-			gl_dataContainerTiingoStock.GetStock(i)->SetDayLineEndDate(vEndDate.at(i));
+			gl_pDataContainerTiingoStock->GetStock(i)->SetDayLineEndDate(vEndDate.at(i));
 		}
 	}
 } // namespace FireBirdTest

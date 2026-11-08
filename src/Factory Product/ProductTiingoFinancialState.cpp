@@ -121,7 +121,7 @@ void CProductTiingoFinancialState::InquireData(const std::stop_token& st) {
 		if (IsWebError()) {
 			WebStatusCheck(m_r);
 		}
-		const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_index);
+		const auto pTiingoStock = gl_pDataContainerTiingoStock->GetStock(m_index);
 		const auto pvTiingoFinancialState = Parse(m_r.text);
 
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
@@ -157,7 +157,7 @@ void CProductTiingoFinancialState::UpdateSystemStatus() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<string>> CProductTiingoFinancialState::CreateMessage() {
-	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
+	const auto pStock = gl_pDataContainerTiingoStock->GetStock(GetIndex());
 	string strParam = "/" + pStock->GetSymbol() + "/statements?startDate=";
 	m_strInquiringSymbol = pStock->GetSymbol();
 	string sDate = ConvertDateToTimeStamp(pStock->GetCompanyFinancialStatementUpdateDate());
@@ -203,7 +203,7 @@ shared_ptr<vector<string>> CProductTiingoFinancialState::CreateMessage() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::Parse(const string& text) {
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
-	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_index);
+	CTiingoStockPtr pStock = gl_pDataContainerTiingoStock->GetStock(m_index);
 	string symbol = pStock->GetSymbol();
 	string exchange = "US";
 	string s1;

@@ -28,8 +28,8 @@ bool CContainerChosenCrypto::LoadDB() {
 		size_t rows = result.size();
 		Reserve(rows + 10);
 		for (const auto& row : result) {
-			if (gl_dataFinnhubCryptoSymbol.IsSymbol(string{ row.Symbol })) { // 在
-				auto pStock = gl_dataFinnhubCryptoSymbol.GetItem(string{ row.Symbol });
+			if (gl_pDataFinnhubCryptoSymbol->IsSymbol(string{ row.Symbol })) { // 在
+				auto pStock = gl_pDataFinnhubCryptoSymbol->GetItem(string{ row.Symbol });
 				m_mapSymbol[string{ row.Symbol }] = m_mapSymbol.size();
 				m_vStock.push_back(pStock);
 			}

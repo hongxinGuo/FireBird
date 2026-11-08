@@ -51,9 +51,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
-		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
+		gl_pDataContainerFinnhubStock->GetItem(1)->SetUpdateCompanyNews(true);
 		companyNews.SetIndex(1);
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(1);
+		const CFinnhubStockPtr pStock = gl_pDataContainerFinnhubStock->GetItem(1);
 		string strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
 		chrono::local_days iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
 		const chrono::local_days iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
@@ -66,9 +66,9 @@ namespace FireBirdTest {
 		strMessage += sTemp;
 
 		EXPECT_EQ(companyNews.CreateMessage()->front(), strMessage);
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->GetItem(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";
 
-		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
+		gl_pDataContainerFinnhubStock->GetItem(1)->SetUpdateCompanyNews(true);
 	}
 
 	namespace {
@@ -92,13 +92,13 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
+			m_pStock = gl_pDataContainerFinnhubStock->GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry("");
 			m_text = pData->m_data;
 			m_FinnhubCompanyNews.Test_checkAccessRight_(m_text);
 
-			m_FinnhubCompanyNews.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
+			m_FinnhubCompanyNews.SetIndex(gl_pDataContainerFinnhubStock->GetOffset(pData->m_strSymbol));
 		}
 
 		void TearDown() override {

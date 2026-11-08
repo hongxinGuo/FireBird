@@ -210,4 +210,4 @@ private:
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;
 
-extern CWorldMarketPtr gl_pWorldMarket; // 股票市场。 单一实例变量，仅允许存在一个实例。
+inline CWorldMarketPtr gl_pWorldMarket = nullptr; // 股票市场。 单一实例变量，仅允许存在一个实例。

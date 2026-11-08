@@ -14,10 +14,9 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
-extern concurrencpp::runtime gl_runtime;
-extern concurrencpp::thread_pool_executor gl_webInquiryExecutor; // 网络申请线程池工作线程运行调度器
+inline concurrencpp::runtime gl_runtime;// 工作线程运行调度器
 
-extern long gl_concurrency_level; // 并行计算允许最大数量
+inline long gl_concurrency_level = 4; // 并行计算允许最大数量。默认为四个协程。目前八核状态下，更多的协程并不能提升效率。
 
 void TaskSchedulePer100ms(); // 主任务调度函数，由定时timer gl_timerMainSchedule发起，其他任务皆由此生成
 void TaskSchedulePerSecond(); // 每秒执行一次的各辅助任务。

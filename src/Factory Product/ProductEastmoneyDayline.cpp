@@ -93,7 +93,7 @@ void CProductEastmoneyDayLine::InquireData(const std::stop_token& st) {
 
 		auto pDayLineData = make_shared<CDayLineWebData>();
 		const string strSymbol = GetInquiringSymbol();
-		ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+		ABSL_DCHECK(gl_pDataContainerChinaStock->IsSymbol(strSymbol));
 
 		const shared_ptr<vector<CDayLine>> pvDayLine = Parse(m_r.text, strSymbol);
 		if (pvDayLine->empty()) return; // 如果没有日线，则不处理

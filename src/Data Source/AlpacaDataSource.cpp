@@ -91,17 +91,17 @@ bool CAlpacaDataSource::GenerateTradingAsset() {
 }
 
 bool CAlpacaDataSource::GenerateStockDayLine() {
-	const auto size = gl_dataContainerTiingoStock.Size();
+	const auto size = gl_pDataContainerTiingoStock->Size();
 	bool haveInquiry = false;
 	CTiingoStockPtr item;
 	if (IsUpdateStockDayLine()) {
 		bool found = false;
 		size_t pos;
 		for (pos = 0; pos < size; ++pos) {
-			item = gl_dataContainerTiingoStock.GetItem(pos);
+			item = gl_pDataContainerTiingoStock->GetItem(pos);
 			if (item->IsUpdateDayLine()) {
 				// Alpaca活跃证券中有大量option、ETF、债券等其他品种，只能作为辅助信息来源。
-				if (gl_dataContainerAlpacaStockSymbol.IsSymbol(item->GetSymbol())) { // 如果同时alpaca证券集中有才申请。
+				if (gl_pDataContainerAlpacaStockSymbol->IsSymbol(item->GetSymbol())) { // 如果同时alpaca证券集中有才申请。
 					found = true;
 					break;
 				}

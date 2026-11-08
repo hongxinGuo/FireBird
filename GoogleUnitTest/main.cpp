@@ -124,15 +124,15 @@ namespace FireBirdTest {
 			gl_pWorldMarket->ResetMarket();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			EXPECT_LE(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			EXPECT_LE(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
 
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
 			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL); //
 
-			//EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateProfileDB());
-			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
-				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
+			//EXPECT_TRUE(gl_pDataContainerChinaStock->IsUpdateProfileDB());
+			for (size_t i = 0; i < gl_pDataContainerChinaStock->Size(); i++) {
+				const auto pStock = gl_pDataContainerChinaStock->GetStock(i);
 				if (pStock->GetDayLineEndDate() > toLocalDays(20251101)) {
 					pStock->SetDayLineEndDate(toLocalDays(20250101));//Todo: 测试用，避免日线结束日期过晚,过一段时间后删除此行
 					pStock->SetUpdateProfileDB(true);
@@ -146,18 +146,18 @@ namespace FireBirdTest {
 				}
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
 			}
-			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB());
+			EXPECT_FALSE(gl_pDataContainerChinaStock->IsUpdateProfileDB());
 
-			for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-				auto pStock = gl_dataContainerTiingoStock.GetStock(i);
+			for (size_t i = 0; i < gl_pDataContainerTiingoStock->Size(); i++) {
+				auto pStock = gl_pDataContainerTiingoStock->GetStock(i);
 				pStock->SetUpdateProfileDB(false);
 				pStock->SetUpdateDayLineDB(false);
 				pStock->SetUpdateDayLine(true);
 			}
-			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+			EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			EXPECT_GT(gl_dataContainerChinaStock.Size(), 4800);
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
+			EXPECT_GT(gl_pDataContainerChinaStock->Size(), 4800);
 			EXPECT_FALSE(gl_pChinaMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			gl_pChinaMarket->SetSystemReady(true); // 测试系统默认为准备好了
 
@@ -168,7 +168,7 @@ namespace FireBirdTest {
 
 			EXPECT_FALSE(gl_pWorldMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			gl_pWorldMarket->SetSystemReady(true);// 测试系统默认为准备好了
-			const auto pStock1 = gl_dataContainerFinnhubStock.GetItem("AAPL");
+			const auto pStock1 = gl_pDataContainerFinnhubStock->GetItem("AAPL");
 			pStock1->SetUpdateCompanyProfile(true);
 
 			// 清空预装入的finnhubInaccessibleExchange
@@ -191,22 +191,22 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
 
-			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
-				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
+			for (size_t i = 0; i < gl_pDataContainerChinaStock->Size(); i++) {
+				const auto pStock = gl_pDataContainerChinaStock->GetStock(i);
 				EXPECT_TRUE(pStock->IsUpdateDayLine()) << pStock->GetSymbol();
 			}
 
 			gl_systemConfiguration.SetExitingSystem(true);
 
-			for (size_t i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
-				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
+			for (size_t i = 0; i < gl_pDataContainerChinaStock->Size(); i++) {
+				const auto pStock = gl_pDataContainerChinaStock->GetStock(i);
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
 				EXPECT_FALSE(pStock->IsUpdateProfileDB());
 				pStock->SetUpdateProfileDB(false);	//此处重置此标识，防止更新数据库。
 			}
-			ASSERT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
+			ASSERT_THAT(gl_pDataContainerChinaStock->IsUpdateProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
 			if (CMFCVisualManager::GetInstance() != nullptr) {
 				delete CMFCVisualManager::GetInstance(); // 在生成gl_pMockMainFrame时，会生成一个视觉管理器。故而在此删除之。

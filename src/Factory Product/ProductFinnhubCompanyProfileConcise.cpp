@@ -33,13 +33,13 @@ void CProductFinnhubCompanyProfileConcise::InquireData(const std::stop_token& st
 			return;
 		}
 
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		pStock->SetUpdateCompanyProfile(false);
 		const bool fSucceed = Parse(m_r.text, pStock);
 		if (fSucceed) {
 			pStock->SetShareOutstanding(pStock->GetShareOutstanding());
-			if (gl_dataContainerTiingoStock.IsSymbol(pStock->GetSymbol())) { // 同时更新tiingo的股本数据
-				CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(pStock->GetSymbol());
+			if (gl_pDataContainerTiingoStock->IsSymbol(pStock->GetSymbol())) { // 同时更新tiingo的股本数据
+				CTiingoStockPtr pTiingoStock = gl_pDataContainerTiingoStock->GetStock(pStock->GetSymbol());
 				pTiingoStock->SetShareOutstanding(pStock->GetShareOutstanding()); // finnhub的单位是百万股
 				pTiingoStock->SetMarketCapitalization(pStock->GetMarketCapitalization()); // 单位为百万元。
 				pTiingoStock->SetUpdateProfileDB(true);
@@ -68,7 +68,7 @@ void CProductFinnhubCompanyProfileConcise::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyProfileConcise::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_inquiryString = m_strInquiryFunction + pStock->GetSymbol();

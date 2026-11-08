@@ -24,4 +24,6 @@ protected:
 	size_t m_lastTotalSymbol;
 };
 
-extern CContainerAlpacaStockSymbol gl_dataContainerAlpacaStockSymbol;
+using CContainerAlpacaStockSymbolPtr = shared_ptr<CContainerAlpacaStockSymbol>;
+
+inline CContainerAlpacaStockSymbolPtr gl_pDataContainerAlpacaStockSymbol = nullptr;

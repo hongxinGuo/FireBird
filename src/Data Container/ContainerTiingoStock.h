@@ -56,4 +56,5 @@ public:
 	void Update5YearLowStockDB();
 };
 
-extern CContainerTiingoStock gl_dataContainerTiingoStock;
+using CContainerTiingoStockPtr = std::shared_ptr<CContainerTiingoStock>;
+inline CContainerTiingoStockPtr gl_pDataContainerTiingoStock;

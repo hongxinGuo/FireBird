@@ -39,10 +39,10 @@ namespace FireBirdTest {
 			s_pMockChinaMarket->ResetMarket();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			EXPECT_LE(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			EXPECT_LE(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
 
-			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
-				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
+			for (int i = 0; i < gl_pDataContainerChinaStock->Size(); i++) {
+				const auto pStock = gl_pDataContainerChinaStock->GetStock(i);
 				if (pStock->GetDayLineEndDate() > toLocalDays(20251101)) {
 					pStock->SetDayLineEndDate(toLocalDays(20250101));//Todo: 测试用，避免日线结束日期过晚,过一段时间后删除此行
 					pStock->SetUpdateProfileDB(true);
@@ -55,23 +55,23 @@ namespace FireBirdTest {
 				}
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
 			}
-			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB());
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			EXPECT_FALSE(gl_pDataContainerChinaStock->IsUpdateProfileDB());
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
 
 			while (!s_pMockChinaMarket->IsMarketTaskEmpty()) s_pMockChinaMarket->DiscardCurrentMarketTask();
 
 			EXPECT_TRUE(s_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
-			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateDayLineDB());
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
+			EXPECT_FALSE(gl_pDataContainerChinaStock->IsUpdateDayLineDB());
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedSaveNumber(), 0);
 
 			EXPECT_FALSE(s_pMockChinaMarket->IsSystemReady());
 			s_pMockChinaMarket->SetSystemReady(true);// 测试系统默认为准备好了
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateDayLineDB());
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
+			EXPECT_FALSE(gl_pDataContainerChinaStock->IsUpdateDayLineDB());
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedSaveNumber(), 0);
 
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			s_pMockChinaMarket = nullptr;
@@ -84,19 +84,19 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			//EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedSaveNumber(), 0);
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
 			EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 		}
 
 		void TearDown() override {
 			// clearUp
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
-			if (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0) {
-				for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
-					const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(i);
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
+			EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedSaveNumber(), 0);
+			if (gl_pDataContainerChinaStock->GetDayLineNeedSaveNumber() > 0) {
+				for (int i = 0; i < gl_pDataContainerChinaStock->Size(); i++) {
+					const CChinaStockPtr pStock = gl_pDataContainerChinaStock->GetStock(i);
 					if (pStock->IsUpdateDayLineDB()) {
 						EXPECT_EQ(pStock->GetSymbol(), "");
 					}

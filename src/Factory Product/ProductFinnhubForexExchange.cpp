@@ -34,8 +34,8 @@ void CProductFinnhubForexExchange::InquireData(const std::stop_token& st) {
 
 		const auto pvForexExchange = Parse(m_r.text);
 		for (const auto& str : *pvForexExchange) {
-			if (!gl_dataContainerFinnhubForexExchange.IsExchange(str)) {
-				gl_dataContainerFinnhubForexExchange.Add(str);
+			if (!gl_pDataContainerFinnhubForexExchange->IsExchange(str)) {
+				gl_pDataContainerFinnhubForexExchange->Add(str);
 			}
 		}
 	}

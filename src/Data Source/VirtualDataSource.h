@@ -102,7 +102,7 @@ public:
 
 	template <typename Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename IsAccessible, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
 	bool GenerateInquiryIterateWithAccessCheck(
-		Container& container,
+		shared_ptr<Container> pContainer,
 		int inquireType,
 		IsNeedUpdate isNeedUpdate,
 		IsItemNeedUpdate isItemNeedUpdate,
@@ -113,15 +113,15 @@ public:
 		SetUpdateFlag setUpdateFlag,
 		const std::string& finishedMsg
 	) {
-		const auto size = container.Size();
+		const auto size = pContainer->Size();
 		bool haveInquiry = false;
 
 		if (isNeedUpdate()) {
 			bool found = false;
 			long pos;
 			for (pos = 0; pos < size; ++pos) {
-				auto item = container.GetItem(pos);
-				if (isItemNeedUpdate(item) && isAccessible(inquireType, container.GetItemExchangeCode(pos))) {
+				auto item = pContainer->GetItem(pos);
+				if (isItemNeedUpdate(item) && isAccessible(inquireType, pContainer->GetItemExchangeCode(pos))) {
 					found = true;
 					break;
 				}
@@ -130,7 +130,7 @@ public:
 				auto product = createProduct(inquireType);
 				setIndex(product, pos);
 				StoreInquiry(product);
-				setMessage(container.GetItem(pos));
+				setMessage(pContainer->GetItem(pos));
 				haveInquiry = true;
 			}
 			else {
@@ -144,7 +144,7 @@ public:
 
 	template <typename Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
 	bool GenerateInquiryIterateWithoutAccessCheck(
-		Container& container,
+		shared_ptr<Container> pContainer,
 		int inquireType,
 		IsNeedUpdate isNeedUpdate,
 		IsItemNeedUpdate isItemNeedUpdate,
@@ -154,14 +154,14 @@ public:
 		SetUpdateFlag setUpdateFlag,
 		const std::string& finishedMsg
 	) {
-		const auto size = container.Size();
+		const auto size = pContainer->Size();
 		bool haveInquiry = false;
 
 		if (isNeedUpdate()) {
 			bool found = false;
 			long pos;
 			for (pos = 0; pos < size; ++pos) {
-				auto item = container.GetItem(pos);
+				auto item = pContainer->GetItem(pos);
 				if (isItemNeedUpdate(item)) {
 					found = true;
 					break;
@@ -171,7 +171,7 @@ public:
 				auto product = createProduct(inquireType);
 				setIndex(product, pos);
 				StoreInquiry(product);
-				setMessage(container.GetItem(pos));
+				setMessage(pContainer->GetItem(pos));
 				haveInquiry = true;
 			}
 			else {

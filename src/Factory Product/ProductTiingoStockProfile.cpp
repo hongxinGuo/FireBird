@@ -55,8 +55,8 @@ void CProductTiingoStockProfile::InquireData(const std::stop_token& st) {
 			return s.compare(pData2->GetSymbol()) < 0;
 		});
 
-		gl_dataContainerTiingoDelistedSymbol.Reset();
-		gl_dataContainerTiingoNewSymbol.Reset();
+		gl_pDataContainerTiingoDelistedSymbol->Reset();
+		gl_pDataContainerTiingoNewSymbol->Reset();
 
 		if (pvTiingoStock->empty()) return;
 
@@ -67,21 +67,21 @@ void CProductTiingoStockProfile::InquireData(const std::stop_token& st) {
 			auto pTiingoStock = m_containerCurrentTiingoSymbols.GetStock(index);
 			auto symbol = pTiingoStock->GetSymbol();
 			if (!pTiingoStock->IsActive()) { // 退市股票？
-				if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
-					gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(false);
-					gl_dataContainerTiingoDelistedSymbol.Add(pTiingoStock); // 存入退市代码集中，准备删除其日线数据。
+				if (gl_pDataContainerTiingoStock->IsSymbol(symbol)) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
+					gl_pDataContainerTiingoStock->GetStock(symbol)->SetActive(false);
+					gl_pDataContainerTiingoDelistedSymbol->Add(pTiingoStock); // 存入退市代码集中，准备删除其日线数据。
 				}
 			}
-			else if (gl_dataContainerTiingoStock.IsSymbol(symbol)) { // 已存在代码
-				gl_dataContainerTiingoStock.GetStock(symbol)->SetActive(true);
+			else if (gl_pDataContainerTiingoStock->IsSymbol(symbol)) { // 已存在代码
+				gl_pDataContainerTiingoStock->GetStock(symbol)->SetActive(true);
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
-					gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
+					gl_pDataContainerTiingoStock->UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
 				}
 			}
 			else { // 新股票代码
 				pTiingoStock->SetUpdateProfileDB(true);
-				gl_dataContainerTiingoStock.Add(pTiingoStock); // 将此股票存入数据库。
-				gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
+				gl_pDataContainerTiingoStock->Add(pTiingoStock); // 将此股票存入数据库。
+				gl_pDataContainerTiingoNewSymbol->Add(pTiingoStock); // 也存入新股容器中。
 			}
 		}
 		gl_pWorldMarket->SetDeleteTiingoDelistedStock(true); // 设置删除已经退市的股票标志
@@ -318,8 +318,8 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 
 		db(sqlpp::delete_from(t));
 		int nValues = 0;
-		for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
-			auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
+		for (size_t index = 0; index < gl_pDataContainerTiingoNewSymbol->Size(); index++) {
+			auto pStock = gl_pDataContainerTiingoNewSymbol->GetStock(index);
 			multi_insert.add_values(
 				t.Symbol = pStock->GetSymbol(),
 				t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate())
@@ -343,8 +343,8 @@ void CProductTiingoStockProfile::SaveDelistedSymbol() {
 
 		db(sqlpp::delete_from(t).where(t.Date == toFormattedDate(gl_pWorldMarket->GetMarketDate())));
 		int nValues = 0;
-		for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
-			auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
+		for (size_t index = 0; index < gl_pDataContainerTiingoDelistedSymbol->Size(); index++) {
+			auto pStock = gl_pDataContainerTiingoDelistedSymbol->GetStock(index);
 			multi_insert.add_values(t.Symbol = pStock->GetSymbol(), t.Date = toFormattedDate(gl_pWorldMarket->GetMarketDate()));
 			++nValues;
 		}

@@ -34,7 +34,7 @@ void CProductFinnhubForexDayLine::InquireData(const std::stop_token& st) {
 			return;
 		}
 
-		const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_index);
+		const auto pForexSymbol = gl_pDataFinnhubForexSymbol->GetItem(m_index);
 		const CDayLinesPtr pvDayLine = Parse(m_r.text);
 		pForexSymbol->SetUpdateDayLine(false);
 		if (!pvDayLine->empty()) {
@@ -75,7 +75,7 @@ void CProductFinnhubForexDayLine::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubForexDayLine::CreateMessage() {
-	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_index);
+	const auto pForexSymbol = gl_pDataFinnhubForexSymbol->GetItem(m_index);
 
 	m_strInquiringExchange = pForexSymbol->GetExchange();
 	m_inquiryString = m_strInquiryFunction + pForexSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());

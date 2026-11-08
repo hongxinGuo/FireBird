@@ -21,17 +21,16 @@ using namespace std;
 ///
 /// Note: 此数据使用stock_market数据库中的finnhub_stock_exchange表，且必须第一个装载，以初始化sqlpp的连接池。
 ///
-///
+/// 由于存在全局变量，故而数据库必须在第一个使用sqlpp的类中初始化连接池。否则，sqlpp的连接池将无法正常工作。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 CContainerStockExchange::CContainerStockExchange() {
-	InitSqlppMySQLConnectionPool("FireBird", "firebird", "stock_market");
-
-	LoadDB(); // 生成时即装载数据库。
+	ABSL_DCHECK(gl_bDatabaseInitialized);
+	LoadDB(); // 生成时即装载数据库。此数据库不更新，只装载一次，故而在生成时即执行装载数据库的操作。
 }
 
 void CContainerStockExchange::Reset() {
-	m_vStockExchange.empty();
+	m_vStockExchange.clear();
 	m_mapStockExchange.clear();
 }
 

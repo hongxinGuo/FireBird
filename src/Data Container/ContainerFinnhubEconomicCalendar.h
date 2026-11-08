@@ -30,4 +30,5 @@ protected:
 	size_t m_lLastTotalEconomicCalendar;
 };
 
-extern CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
+using CContainerFinnhubEconomicCalendarPtr = shared_ptr<CContainerFinnhubEconomicCalendar>;
+inline CContainerFinnhubEconomicCalendarPtr gl_pDataContainerFinnhubEconomicCalendar = nullptr;

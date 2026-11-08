@@ -18,7 +18,7 @@ CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;
 
 	m_strMarketId = "Warning: CVirtualMarket Called.";
-	m_exchange = gl_dataContainerStockExchange.GetItem("L"); // 默认使用伦敦交易所
+	m_exchange = gl_pDataContainerStockExchange->GetItem("L"); // 默认使用伦敦交易所
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

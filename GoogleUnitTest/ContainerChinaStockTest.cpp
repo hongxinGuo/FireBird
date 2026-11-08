@@ -35,7 +35,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			CChinaStockPtr pStock = nullptr;
 			for (int i = 0; i < 100; i++) {
-				pStock = gl_dataContainerChinaStock.GetStock(i);
+				pStock = gl_pDataContainerChinaStock->GetStock(i);
 				m_containerChinaStock.Add(pStock);
 			}
 		}
@@ -173,18 +173,18 @@ namespace FireBirdTest {
 		pNewStock->SetExchange(string_view("Test"));
 		pNewStock->SetNewStock(true);
 		pNewStock->SetUpdateProfileDB(true);
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(newSymbol));
-		gl_dataContainerChinaStock.Add(pNewStock);
-		EXPECT_TRUE(gl_dataContainerChinaStock.IsSymbol(newSymbol));
+		EXPECT_FALSE(gl_pDataContainerChinaStock->IsSymbol(newSymbol));
+		gl_pDataContainerChinaStock->Add(pNewStock);
+		EXPECT_TRUE(gl_pDataContainerChinaStock->IsSymbol(newSymbol));
 
 		// Modify an existing stock in-memory and mark it for update
-		auto pExistStock = gl_dataContainerChinaStock.GetStock(existingSymbol);
+		auto pExistStock = gl_pDataContainerChinaStock->GetStock(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
 		pExistStock->SetExchange(string_view("china"));
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
-		gl_dataContainerChinaStock.UpdateProfileDB(std::stop_token());
+		gl_pDataContainerChinaStock->UpdateProfileDB(std::stop_token());
 
 		// Verify DB: existing stock updated
 		{
@@ -211,14 +211,14 @@ namespace FireBirdTest {
 		}
 
 		// Cleanup in-memory container
-		auto pRetrievedNew = gl_dataContainerChinaStock.GetStock(newSymbol);
+		auto pRetrievedNew = gl_pDataContainerChinaStock->GetStock(newSymbol);
 		ASSERT_NE(pRetrievedNew, nullptr);
-		gl_dataContainerChinaStock.Delete(pRetrievedNew);
+		gl_pDataContainerChinaStock->Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
 		pExistStock->SetUpdateProfileDB(false);
 
 		// Final assertions: flags cleared
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB());
+		EXPECT_FALSE(gl_pDataContainerChinaStock->IsUpdateProfileDB());
 	}
 }

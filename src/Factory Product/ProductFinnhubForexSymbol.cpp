@@ -23,8 +23,8 @@ void CProductFinnhubForexSymbol::InquireData(const std::stop_token& st) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString },
-		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::Timeout{ 600000 },       // 600s
+		               cpr::ConnectTimeout{ 600000 } // 600s
 		);
 
 		if (IsWebError()) {
@@ -35,9 +35,9 @@ void CProductFinnhubForexSymbol::InquireData(const std::stop_token& st) {
 		const auto pvForexSymbol = Parse(m_r.text);
 		if (pvForexSymbol->empty()) return;
 		for (const auto& pSymbol : *pvForexSymbol) {
-			if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {
-				pSymbol->SetExchange(gl_dataContainerFinnhubForexExchange.GetItem(m_index));
-				gl_dataFinnhubForexSymbol.Add(pSymbol);
+			if (!gl_pDataFinnhubForexSymbol->IsSymbol(pSymbol->GetSymbol())) {
+				pSymbol->SetExchange(gl_pDataContainerFinnhubForexExchange->GetItem(m_index));
+				gl_pDataFinnhubForexSymbol->Add(pSymbol);
 			}
 		}
 	}
@@ -63,7 +63,7 @@ void CProductFinnhubForexSymbol::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubForexSymbol::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerFinnhubForexExchange.GetItem(m_index);
+	m_strInquiringExchange = gl_pDataContainerFinnhubForexExchange->GetItem(m_index);
 	m_inquiryString = m_strInquiryFunction + m_strInquiringExchange;
 	shared_ptr<vector<string>> pInquiry = make_shared<vector<string>>();
 	pInquiry->push_back(m_inquiryString);

@@ -50,7 +50,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerTiingoStockTest, TestUpdateTiingoStockDB) {
-		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+		EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "函数UpdateProfile只运行在付费账户状态下";
 
 		auto pTiingoStock = make_shared<CTiingoStock>(); // 这个是数据库中已存在的证券
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 		pTiingoStock->SetTiingoPermaTicker("");
 		pTiingoStock->SetTiingoSector("");
 		pTiingoStock->SetUpdateProfileDB(true);
-		gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock);
+		gl_pDataContainerTiingoStock->UpdateProfile(pTiingoStock);
 
 		pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->SetActive(true);
@@ -90,11 +90,11 @@ namespace FireBirdTest {
 		pTiingoStock->SetTiingoSector("gfedcba");
 		pTiingoStock->SetUpdateProfileDB(true);
 		pTiingoStock->SetNewStock(true);
-		gl_dataContainerTiingoStock.Add(pTiingoStock);
+		gl_pDataContainerTiingoStock->Add(pTiingoStock);
 
-		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "添加了两个股票";
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->IsUpdateProfileDB()) << "添加了两个股票";
 
-		gl_dataContainerTiingoStock.UpdateProfileDB(std::stop_token{}); // 更新代码集
+		gl_pDataContainerTiingoStock->UpdateProfileDB(std::stop_token{}); // 更新代码集
 
 		// 恢复原状
 		using namespace StockMarket;
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		db(delete_from(t).where(t.Symbol == std::string("ABCDEF")));
 		tx1.commit();
 
-		gl_dataContainerTiingoStock.Delete(pTiingoStock);
+		gl_pDataContainerTiingoStock->Delete(pTiingoStock);
 	}
 
 	TEST_F(CContainerTiingoStockTest, TestSetAllFinancialStateStatus) {
@@ -196,8 +196,8 @@ namespace FireBirdTest {
 		const chrono::local_days lDate = gl_pWorldMarket->GetMarketDate(); //使用最新的日期，防止更新其他股票
 
 		// Ensure no pre-existing test symbol in container
-		if (gl_dataContainerTiingoStock.IsSymbol(symbol)) {
-			gl_dataContainerTiingoStock.Delete(symbol);
+		if (gl_pDataContainerTiingoStock->IsSymbol(symbol)) {
+			gl_pDataContainerTiingoStock->Delete(symbol);
 		}
 
 		// Create a test stock and set fields (values are scaled by GetRatio())
@@ -225,11 +225,11 @@ namespace FireBirdTest {
 		pStock->SetTransactionTime(tt);
 
 		// Add to global container
-		gl_dataContainerTiingoStock.Add(pStock);
+		gl_pDataContainerTiingoStock->Add(pStock);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
 		// Run the function under test
-		gl_dataContainerTiingoStock.BuildDayLine(std::stop_token{}, lDate);
+		gl_pDataContainerTiingoStock->BuildDayLine(std::stop_token{}, lDate);
 
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
@@ -281,7 +281,7 @@ namespace FireBirdTest {
 		tx.commit();
 
 		// remove from in-memory container
-		gl_dataContainerTiingoStock.Delete(symbol);
+		gl_pDataContainerTiingoStock->Delete(symbol);
 
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
@@ -333,12 +333,12 @@ namespace FireBirdTest {
 		pNewStock->SetSymbol(newSymbol);
 		pNewStock->SetNewStock(true);
 		pNewStock->SetUpdateProfileDB(true);
-		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(newSymbol));
-		gl_dataContainerTiingoStock.Add(pNewStock);
-		EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(newSymbol));
+		EXPECT_FALSE(gl_pDataContainerTiingoStock->IsSymbol(newSymbol));
+		gl_pDataContainerTiingoStock->Add(pNewStock);
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->IsSymbol(newSymbol));
 
 		// Modify an existing stock in-memory and mark it for update
-		auto pExistStock = gl_dataContainerTiingoStock.GetStock(existingSymbol);
+		auto pExistStock = gl_pDataContainerTiingoStock->GetStock(existingSymbol);
 		ASSERT_NE(pExistStock, nullptr);
 		const auto originalCurrency = pExistStock->GetReportingCurrency();
 		const auto originalUpdateDayLineEndDate = pExistStock->GetDayLineEndDate();
@@ -347,7 +347,7 @@ namespace FireBirdTest {
 		pExistStock->SetUpdateProfileDB(true);
 
 		// Perform the DB update
-		gl_dataContainerTiingoStock.UpdateProfileDB(std::stop_token{});
+		gl_pDataContainerTiingoStock->UpdateProfileDB(std::stop_token{});
 
 		// Verify DB: existing stock updated
 		{
@@ -382,17 +382,17 @@ namespace FireBirdTest {
 		}
 
 		// Cleanup in-memory container
-		auto pRetrievedNew = gl_dataContainerTiingoStock.GetStock(newSymbol);
+		auto pRetrievedNew = gl_pDataContainerTiingoStock->GetStock(newSymbol);
 		ASSERT_NE(pRetrievedNew, nullptr);
-		gl_dataContainerTiingoStock.Delete(pRetrievedNew);
+		gl_pDataContainerTiingoStock->Delete(pRetrievedNew);
 
 		// Restore in-memory IPO status and flags
 		pExistStock->SetDayLineEndDate(toLocalDays(19800101));
 		pExistStock->SetUpdateProfileDB(false);
 
-		//gl_dataContainerTiingoStock.UpdateProfileDB();
+		//gl_pDataContainerTiingoStock->UpdateProfileDB();
 		// Final assertions: flags cleared
-		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+		EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 	}
 
 	TEST_F(CContainerTiingoStockTest, Update5YearLow70PercentStockDB_InsertsRowsForCurrentVector) {
@@ -417,7 +417,7 @@ namespace FireBirdTest {
 		gl_vCurrent5YearsLow70Percent.emplace_back("TESTSYM2");
 
 		// Act: call the function under test
-		gl_dataContainerTiingoStock.Update5YearLow70PercentStockDB();
+		gl_pDataContainerTiingoStock->Update5YearLow70PercentStockDB();
 
 		// Assert: verify rows were inserted
 		auto db2 = gl_dbStockMarket.get();
@@ -463,7 +463,7 @@ namespace FireBirdTest {
 		gl_vCurrent5YearsLow80Percent.emplace_back("TESTSYM2");
 
 		// Act: call the function under test
-		gl_dataContainerTiingoStock.Update5YearLow80PercentStockDB();
+		gl_pDataContainerTiingoStock->Update5YearLow80PercentStockDB();
 
 		// Assert: verify rows were inserted
 		auto db2 = gl_dbStockMarket.get();
@@ -509,7 +509,7 @@ namespace FireBirdTest {
 		gl_vCurrent5YearsLow90Percent.emplace_back("TESTSYM2");
 
 		// Act: call the function under test
-		gl_dataContainerTiingoStock.Update5YearLow90PercentStockDB();
+		gl_pDataContainerTiingoStock->Update5YearLow90PercentStockDB();
 
 		// Assert: verify rows were inserted
 		auto db2 = gl_dbStockMarket.get();

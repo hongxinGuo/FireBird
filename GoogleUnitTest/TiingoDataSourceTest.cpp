@@ -266,12 +266,12 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-			pStock = gl_dataContainerTiingoStock.GetStock(i);
+		for (size_t i = 0; i < gl_pDataContainerTiingoStock->Size(); i++) {
+			pStock = gl_pDataContainerTiingoStock->GetStock(i);
 			pStock->SetUpdateDayLine(false);
 		}
-		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateDayLine(true);
-		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateDayLine(true);
+		gl_pDataContainerTiingoStock->GetStock(1)->SetUpdateDayLine(true);
+		gl_pDataContainerTiingoStock->GetStock(2)->SetUpdateDayLine(true);
 		m_pTiingoDataSource->SetUpdateDayLine(false);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateDayLine()) << "DayLine Updated";
 
@@ -279,23 +279,23 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateDayLine());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
-		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
+		//auto lStockIndex = gl_pDataContainerTiingoStock->GetOffset(tiingoSymbol1);
 		CVirtualWebProductPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoStockDayLine));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateDayLine());
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->GetStock(1)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->GetStock(2)->IsUpdateDayLine());
 
-		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateDayLine(false);
+		gl_pDataContainerTiingoStock->GetStock(1)->SetUpdateDayLine(false);
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateDayLine());
 		//lStockIndex = gl_dataContainerFinnhubStock.GetOffset(tiingoSymbol2);
 		p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoStockDayLine));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->GetStock(2)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
 
-		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateDayLine(false);
+		gl_pDataContainerTiingoStock->GetStock(2)->SetUpdateDayLine(false);
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine()) << "股票都查询完了";
@@ -303,13 +303,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(str, "2 Tiingo stock dayLine Updated");
 
 		// 恢复原状
-		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-			pStock = gl_dataContainerTiingoStock.GetStock(i);
+		for (size_t i = 0; i < gl_pDataContainerTiingoStock->Size(); i++) {
+			pStock = gl_pDataContainerTiingoStock->GetStock(i);
 			pStock->SetUpdateDayLine(true);
 		}
 
-		for (size_t i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			auto pStock2 = gl_dataContainerFinnhubStock.GetItem(i);
+		for (size_t i = 0; i < gl_pDataContainerFinnhubStock->Size(); i++) {
+			auto pStock2 = gl_pDataContainerFinnhubStock->GetItem(i);
 			pStock2->SetUpdateDayLine(true);
 		}
 
@@ -324,12 +324,12 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-			pStock = gl_dataContainerTiingoStock.GetStock(i);
+		for (size_t i = 0; i < gl_pDataContainerTiingoStock->Size(); i++) {
+			pStock = gl_pDataContainerTiingoStock->GetStock(i);
 			pStock->SetUpdateFinancialState(false);
 		}
-		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateFinancialState(true);
-		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateFinancialState(true);
+		gl_pDataContainerTiingoStock->GetStock(1)->SetUpdateFinancialState(true);
+		gl_pDataContainerTiingoStock->GetStock(2)->SetUpdateFinancialState(true);
 		m_pTiingoDataSource->SetUpdateFinancialState(false);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateFinancialState()) << "FinancialState Updated";
 
@@ -337,23 +337,23 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateFinancialState());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
-		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
+		//auto lStockIndex = gl_pDataContainerTiingoStock->GetOffset(tiingoSymbol1);
 		CVirtualWebProductPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoFinancialState));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsUpdateFinancialState()) << "待数据处理后方重置此标识";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateFinancialState());
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->GetStock(1)->IsUpdateFinancialState()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->GetStock(2)->IsUpdateFinancialState());
 
-		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateFinancialState(false);
+		gl_pDataContainerTiingoStock->GetStock(1)->SetUpdateFinancialState(false);
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateFinancialState());
 		//lStockIndex = gl_dataContainerFinnhubStock.GetOffset(tiingoSymbol2);
 		p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_EQ(typeid(*p), typeid(CProductTiingoFinancialState));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateFinancialState()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_pDataContainerTiingoStock->GetStock(2)->IsUpdateFinancialState()) << "待数据处理后方重置此标识";
 
-		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateFinancialState(false);
+		gl_pDataContainerTiingoStock->GetStock(2)->SetUpdateFinancialState(false);
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateFinancialState()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateFinancialState()) << "股票都查询完了";
@@ -361,8 +361,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(str, "Tiingo financial statements Updated");
 
 		// 恢复原状
-		for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-			pStock = gl_dataContainerTiingoStock.GetStock(i);
+		for (size_t i = 0; i < gl_pDataContainerTiingoStock->Size(); i++) {
+			pStock = gl_pDataContainerTiingoStock->GetStock(i);
 			pStock->SetUpdateFinancialState(true);
 		}
 

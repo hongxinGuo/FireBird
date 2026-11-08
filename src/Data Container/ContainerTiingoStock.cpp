@@ -610,21 +610,21 @@ void CContainerTiingoStock::TaskProcessTodayDayLine(std::stop_token st) {
 	gl_systemMessage.PushInnerSystemInformationMessage("结束处理Tiingo日线任务，开始存储");
 
 	auto result2 = gl_runtime.thread_executor()->submit([] {
-		gl_dataContainerTiingoStock.TaskUpdate52WeekHighDB();
+		gl_pDataContainerTiingoStock->TaskUpdate52WeekHighDB();
 	});
 	auto result3 = gl_runtime.thread_executor()->submit([] {
-		gl_dataContainerTiingoStock.TaskUpdate52WeekLowDB();
+		gl_pDataContainerTiingoStock->TaskUpdate52WeekLowDB();
 	});
 	result2.get();
 	result3.get();
 	if (st.stop_requested()) return;
-	for (size_t i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-		auto pStock = gl_dataContainerTiingoStock.GetStock(i);
+	for (size_t i = 0; i < gl_pDataContainerTiingoStock->Size(); i++) {
+		auto pStock = gl_pDataContainerTiingoStock->GetStock(i);
 		pStock->SetUpdate52WeekHighLowDB(false);
 	}
 
 	gl_runtime.thread_executor()->submit([] {
-		gl_dataContainerTiingoStock.TaskCalculate();
+		gl_pDataContainerTiingoStock->TaskCalculate();
 	}).get();
 
 	ReportHighHigherRate();

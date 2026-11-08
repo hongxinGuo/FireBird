@@ -24,4 +24,6 @@ protected:
 	size_t m_llLastTotalSymbol;
 };
 
-extern CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;
+using CContainerFinnhubCryptoPtr = shared_ptr<CContainerFinnhubCrypto>;
+
+inline CContainerFinnhubCryptoPtr gl_pDataFinnhubCryptoSymbol = nullptr;

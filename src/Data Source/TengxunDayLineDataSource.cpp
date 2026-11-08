@@ -77,7 +77,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
 	}
 
-	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine()
+	if (gl_pChinaMarket->IsSystemReady() && gl_pDataContainerChinaStock->IsUpdateDayLine()
 		&& gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
 		if (!IsInquiring()) {
 			GenerateInquireDayLine();
@@ -89,13 +89,13 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 }
 
 bool CTengxunDayLineDataSource::GenerateInquireDayLine() {
-	const auto lStockSetSize = gl_dataContainerChinaStock.Size();
+	const auto lStockSetSize = gl_pDataContainerChinaStock->Size();
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
 		CChinaStockPtr pStock;
 		bool fFound = false;
 		for (size_t lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			pStock = gl_dataContainerChinaStock.GetStock(lCurrentUpdateDayLinePos);
+			pStock = gl_pDataContainerChinaStock->GetStock(lCurrentUpdateDayLinePos);
 			if (!pStock->IsUpdateDayLine()) { // 需要更新？
 				continue;
 			}
@@ -135,7 +135,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	long lStartDate = toFormattedDate(GetPrevDay(pStock->GetDayLineEndDate())); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = toFormattedDate(gl_pChinaMarket->GetMarketDate());
 	const long yearDiffer = lCurrentDate / 10000 - lStartDate / 10000;
-	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
+	const auto lStockIndex = gl_pDataContainerChinaStock->GetOffset(pStock);
 	vector<CVirtualWebProductPtr> vProduct;
 	long l = 0;
 	int iCounter = 0;

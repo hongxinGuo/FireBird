@@ -42,13 +42,13 @@ void CProductTiingoStockDailyMeta::InquireData(const std::stop_token& st) {
 
 		const auto pTiingoStockDailyMeta = Parse(m_r.text);
 		if (pTiingoStockDailyMeta == nullptr) {
-			auto pStock = gl_dataContainerTiingoStock.GetStock(m_index);
+			auto pStock = gl_pDataContainerTiingoStock->GetStock(m_index);
 			pStock->SetUpdateStockDailyMeta(false);
 			return;
 		}
-		auto pStock = gl_dataContainerTiingoStock.GetStock(m_index);
-		if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
-			auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
+		auto pStock = gl_pDataContainerTiingoStock->GetStock(m_index);
+		if (gl_pDataContainerTiingoStock->IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
+			auto pStock2 = gl_pDataContainerTiingoStock->GetStock(pTiingoStockDailyMeta->m_strCode);
 			auto str = pStock->GetSymbol();
 			if (str == pStock2->GetSymbol()) {
 				pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
@@ -84,7 +84,7 @@ void CProductTiingoStockDailyMeta::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductTiingoStockDailyMeta::CreateMessage() {
-	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
+	const auto pStock = gl_pDataContainerTiingoStock->GetStock(GetIndex());
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_inquiryString = m_strInquiryFunction + m_strInquiringSymbol + "?";

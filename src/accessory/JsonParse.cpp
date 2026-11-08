@@ -739,7 +739,7 @@ CDayLinesPtr ParseTengxunDayLineImp(const string& text, const string& strStockCo
 //
 CDayLineWebDataPtr ParseTengxunDayLine(const string& text, const string& stockSymbol) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
-	ABSL_DCHECK(gl_dataContainerChinaStock.IsSymbol(stockSymbol));
+	ABSL_DCHECK(gl_pDataContainerChinaStock->IsSymbol(stockSymbol));
 
 	const shared_ptr<vector<CDayLine>> pvDayLine = ParseTengxunDayLineImp(text, XferStandardToTengxun(stockSymbol));
 	std::ranges::sort(*pvDayLine, [](const CDayLine& pData1, const CDayLine& pData2) { return pData1.GetDate() < pData2.GetDate(); });

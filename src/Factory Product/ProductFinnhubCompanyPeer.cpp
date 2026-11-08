@@ -28,7 +28,7 @@ void CProductFinnhubCompanyPeer::InquireData(const std::stop_token& st) {
 			WebStatusCheck(m_r);
 			return;
 		}
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		const nlohmannJson jsonPeer = Parse(m_r.text);
 		pStock->SetPeer(jsonPeer);
 	}
@@ -54,7 +54,7 @@ void CProductFinnhubCompanyPeer::WebStatusCheck(cpr::Response& r) {
 
 void CProductFinnhubCompanyPeer::UpdateSystemStatus() {
 	if (!IsWebError()) {
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		pStock->SetPeerUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdatePeer(false);
 		pStock->SetUpdateProfileDB(true);
@@ -62,7 +62,7 @@ void CProductFinnhubCompanyPeer::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyPeer::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_inquiryString = m_strInquiryFunction + pStock->GetSymbol();

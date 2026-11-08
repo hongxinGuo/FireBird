@@ -50,7 +50,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoFinancialStateTest, TestCreatMessage) {
 		financialState.SetIndex(1); // stock code is AA
-		string sDate = ConvertDateToTimeStamp(gl_dataContainerTiingoStock.GetStock(1)->GetCompanyFinancialStatementUpdateDate());
+		string sDate = ConvertDateToTimeStamp(gl_pDataContainerTiingoStock->GetStock(1)->GetCompanyFinancialStatementUpdateDate());
 		string strMessage = "https://api.tiingo.com/tiingo/fundamentals/AA/statements?startDate=";
 		strMessage += sDate;
 		EXPECT_EQ(financialState.CreateMessage()->front(), strMessage);
@@ -207,14 +207,14 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock("NEW SYMBOL")));
-			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock("NEW SYMBOL"))) != nullptr);
+			EXPECT_TRUE(gl_pDataContainerTiingoStock->IsStock("NEW SYMBOL")));
+			EXPECT_TRUE((pTiingoStock = gl_pDataContainerTiingoStock->GetStock("NEW SYMBOL"))) != nullptr);
 			pStock = gl_dataContainerFinnhubStock.GetItem("AA");
 			EXPECT_STREQ(pStock->GetName(), "New Name")) << "更改为此新名字";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
 		// 恢复原状
-			gl_dataContainerTiingoStock.Delete(pTiingoStock);
+			gl_pDataContainerTiingoStock->Delete(pTiingoStock);
 			pStock->SetUpdateProfileDB(false);
 			pStock->SetName("Alcoa Corp");
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());

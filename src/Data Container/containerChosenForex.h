@@ -23,4 +23,5 @@ public:
 protected:
 };
 
-extern CContainerChosenForex gl_dataContainerChosenWorldForex;
+using CContainerChosenForexPtr = shared_ptr<CContainerChosenForex>;
+inline CContainerChosenForexPtr gl_pDataContainerChosenWorldForex = nullptr;

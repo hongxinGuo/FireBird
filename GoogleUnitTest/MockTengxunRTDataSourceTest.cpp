@@ -31,7 +31,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			gl_dataContainerChinaStock.SetTengxunRTDataInquiringIndex(0);
+			gl_pDataContainerChinaStock->SetTengxunRTDataInquiringIndex(0);
 			s_pMockTengxunRTDataSource = make_shared<CMockTengxunRTDataSource>();
 		}
 
@@ -39,7 +39,7 @@ namespace FireBirdTest {
 			// clearUp
 			s_pMockTengxunRTDataSource = nullptr;
 			gl_pChinaMarket->SetSystemReady(true);
-			gl_dataContainerChinaStock.SetTengxunRTDataInquiringIndex(0);
+			gl_pDataContainerChinaStock->SetTengxunRTDataInquiringIndex(0);
 
 			SCOPED_TRACE("");
 			GeneralCheck();

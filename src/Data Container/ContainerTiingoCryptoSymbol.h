@@ -21,4 +21,5 @@ public:
 	bool LoadDB();
 };
 
-extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
+using CContainerTiingoCryptoSymbolPtr = std::shared_ptr<CContainerTiingoCryptoSymbol>;
+inline CContainerTiingoCryptoSymbolPtr gl_pDataContainerTiingoCryptoSymbol = nullptr;

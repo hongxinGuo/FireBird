@@ -48,12 +48,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
-		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
+		gl_pDataContainerFinnhubStock->GetItem(1)->SetUpdateCompanyProfile(true);
 		companyProfileConcise.SetIndex(1);
-		EXPECT_EQ(companyProfileConcise.CreateMessage()->front(), (companyProfileConcise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
+		EXPECT_EQ(companyProfileConcise.CreateMessage()->front(), (companyProfileConcise.GetInquiryFunction() + gl_pDataContainerFinnhubStock->GetItem(1)->GetSymbol()));
+		EXPECT_TRUE(gl_pDataContainerFinnhubStock->GetItem(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
 
-		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
+		gl_pDataContainerFinnhubStock->GetItem(1)->SetUpdateCompanyProfile(true);
 	}
 
 	namespace {
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 		INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData0,
 			                         &finnhubWebData1, &finnhubWebData12,&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
 		TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
-			CTiingoStockPtr pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_pStock->GetSymbol());
+			CTiingoStockPtr pTiingoStock = gl_pDataContainerTiingoStock->GetStock(m_pStock->GetSymbol());
 			pTiingoStock->SetShareOutstanding(0);
 			pTiingoStock->SetUpdateProfileDB(false);
 			m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);

@@ -36,7 +36,7 @@ void CProductFinnhubCompanyInsiderSentiment::InquireData(const std::stop_token& 
 		}
 		CInsiderSentimentsPtr pvInsiderSentiment = Parse(m_r.text);
 		if (!pvInsiderSentiment->empty()) {
-			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+			const CFinnhubStockPtr pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 			pStock->UpdateInsiderSentiment(pvInsiderSentiment);
 			pStock->SetUpdateInsiderSentimentDB(true);
 			pvInsiderSentiment = nullptr;
@@ -63,7 +63,7 @@ void CProductFinnhubCompanyInsiderSentiment::WebStatusCheck(cpr::Response& r) {
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
-	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const CFinnhubStockPtr pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 
 	const string sCurrentDate = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
 	m_inquiryString = m_strInquiryFunction + pStock->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate;
@@ -76,7 +76,7 @@ shared_ptr<vector<string>> CProductFinnhubCompanyInsiderSentiment::CreateMessage
 
 void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus() {
 	if (!IsWebError()) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const CFinnhubStockPtr pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		pStock->SetInsiderSentimentUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateInsiderSentiment(false);
 		pStock->SetUpdateProfileDB(true);

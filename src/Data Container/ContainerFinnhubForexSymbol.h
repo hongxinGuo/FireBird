@@ -24,4 +24,6 @@ protected:
 	size_t m_lastTotalSymbol;
 };
 
-extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
+using CContainerFinnhubForexSymbolPtr = shared_ptr<CContainerFinnhubForexSymbol>;
+
+inline CContainerFinnhubForexSymbolPtr gl_pDataFinnhubForexSymbol = nullptr;

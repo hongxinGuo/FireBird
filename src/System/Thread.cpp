@@ -52,6 +52,11 @@ void TaskSchedulePer100ms() {
 		str += "CException";
 		gl_dailyLogger->warn(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+	} catch (const sqlpp::mysql::exception& e) {
+		s_Processing = false;
+		str += "sqlpp::mysql::exception";
+		str += e.what();
+		gl_dailyLogger->warn(str);
 	} catch (...) {
 		s_Processing = false;
 		str += "Unknown exception";

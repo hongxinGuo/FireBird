@@ -35,7 +35,7 @@ void CProductFinnhubCompanyInsiderTransaction::InquireData(const std::stop_token
 			return;
 		}
 
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		CInsiderTransactionsPtr pvInsiderTransaction = Parse(m_r.text);
 		pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateInsiderTransaction(false);
@@ -67,7 +67,7 @@ void CProductFinnhubCompanyInsiderTransaction::WebStatusCheck(cpr::Response& r) 
 }
 
 shared_ptr<vector<string>> CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 
 	m_strInquiringExchange = pStock->GetExchange();
 	m_inquiryString = m_strInquiryFunction + pStock->GetFinnhubInsiderTransactionInquiryParam(GetUTCTime());
@@ -78,7 +78,7 @@ shared_ptr<vector<string>> CProductFinnhubCompanyInsiderTransaction::CreateMessa
 
 void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus() {
 	if (!IsWebError()) {
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateInsiderTransaction(false);
 		pStock->SetUpdateProfileDB(true);

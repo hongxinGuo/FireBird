@@ -37,9 +37,9 @@ void CProductTiingoCryptoSymbol::InquireData(const std::stop_token& st) {
 		const auto pvTiingoCrypto = Parse(m_r.text);
 		if (!pvTiingoCrypto->empty()) {
 			for (auto& tiingoCrypto : *pvTiingoCrypto) {
-				if (!gl_dataContainerTiingoCryptoSymbol.IsSymbol(tiingoCrypto->GetSymbol())) {
+				if (!gl_pDataContainerTiingoCryptoSymbol->IsSymbol(tiingoCrypto->GetSymbol())) {
 					tiingoCrypto->SetUpdateProfileDB(true);
-					gl_dataContainerTiingoCryptoSymbol.Add(tiingoCrypto);
+					gl_pDataContainerTiingoCryptoSymbol->Add(tiingoCrypto);
 				}
 			}
 		}

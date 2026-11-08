@@ -93,7 +93,7 @@ namespace FireBirdTest {
 		if (gl_pChinaMarket != nullptr) {
 			EXPECT_EQ(gl_pChinaMarket->GetMarketDate(), s_currentChinaMarketDate);
 
-			ASSERT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
+			ASSERT_FALSE(gl_pDataContainerChinaStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
 
 			EXPECT_FALSE(gl_pChinaMarket->IsUpdateChosenStockDB());
 
@@ -111,17 +111,17 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsResetting());
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 
-			//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5701) << "测试数据库装载的股票数";
+			//EXPECT_EQ(gl_pDataContainerChinaStock->GetDayLineNeedUpdateNumber(), gl_pDataContainerChinaStock->Size());
+			EXPECT_EQ(gl_pDataContainerChinaStock->Size(), 5701) << "测试数据库装载的股票数";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 			EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 
-			auto pStock = gl_dataContainerChinaStock.GetStock(0);
+			auto pStock = gl_pDataContainerChinaStock->GetStock(0);
 			pStock->GetDayLineEndDate();
 			EXPECT_EQ(pStock->GetDayLineEndDate(), toLocalDays(20250101)) << "第一个股票（上海指数）的结束日期为20251219";
-			pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
+			pStock = gl_pDataContainerChinaStock->GetStock("000001.SS");
 
 			EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 0);
 
@@ -137,28 +137,28 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsUpdateDB());
 		if (gl_pWorldMarket != nullptr) {
-			ASSERT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
-			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("AAPL");
+			ASSERT_FALSE(gl_pDataContainerFinnhubStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
+			const CFinnhubStockPtr pStock = gl_pDataContainerFinnhubStock->GetItem("AAPL");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			ASSERT_FALSE(pStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
 			//Note EXPECT_TRUE(pStock->IsUpdateDayLine());
 
-			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 12) << "最初装载了12个";
-			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";
+			EXPECT_EQ(gl_pDataContainerFinnhubCryptoExchange->Size(), 12) << "最初装载了12个";
+			EXPECT_EQ(gl_pDataContainerFinnhubForexExchange->Size(), 11) << "最初装载了11个";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 
 			EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty()) << gl_pWorldMarket->GetMarketTask()->GetType();
 
-			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847";
+			EXPECT_EQ(gl_pDataContainerFinnhubStock->Size(), 4847) << "默认状态下数据库总数为4847";
 
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->IsUpdateDayLineDB());
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("AAPL")->IsUpdateDayLineDB());
+			EXPECT_FALSE(gl_pDataContainerFinnhubStock->GetItem("A")->IsUpdateDayLineDB());
+			EXPECT_FALSE(gl_pDataContainerFinnhubStock->GetItem("AAPL")->IsUpdateDayLineDB());
 
-			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 7183) << "默认状态下数据库总数为7183";
-			//Note EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
-			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLineDB());
+			EXPECT_EQ(gl_pDataContainerTiingoStock->Size(), 7183) << "默认状态下数据库总数为7183";
+			//Note EXPECT_TRUE(gl_pDataContainerTiingoStock->GetStock(0)->IsUpdateDayLine());
+			EXPECT_FALSE(gl_pDataContainerTiingoStock->GetStock(0)->IsUpdateDayLineDB());
 
 			//EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem("A"))->IsUpdateInsiderTransaction());
 
@@ -226,7 +226,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_qChinaMarketRTData.try_dequeue(pRTData));
 		EXPECT_FALSE(gl_qDayLine.try_dequeue(pData));
 
-		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+		EXPECT_FALSE(gl_pDataContainerTiingoStock->IsUpdateProfileDB());
 	}
 
 	void WebSocketCheck() {

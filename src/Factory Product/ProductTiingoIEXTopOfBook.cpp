@@ -52,8 +52,8 @@ void CProductTiingoIEXTopOfBook::InquireData(const std::stop_token& st) {
 		if (pvTiingoIEXTopOFBook->empty()) return;
 		for (auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 			if (pIEXTopOFBook->m_timeStamp < st) continue; // 只使用不早于一天的实时数据
-			if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
-			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
+			if (!gl_pDataContainerTiingoStock->IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
+			auto pTiingoStock = gl_pDataContainerTiingoStock->GetStock(pIEXTopOFBook->m_strTicker);
 			pTiingoStock->UpdateRTData(pIEXTopOFBook);
 			i++;
 		}

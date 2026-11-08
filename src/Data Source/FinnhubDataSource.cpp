@@ -234,7 +234,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 	const std::string finishedMsg = "Finnhub market status finished";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerStockExchange,
+		gl_pDataContainerStockExchange,
 		MARKET_STATUS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -260,7 +260,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 	const std::string finishedMsg = "Finnhub market holiday finished";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerStockExchange,
+		gl_pDataContainerStockExchange,
 		MARKET_HOLIDAY_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -286,7 +286,7 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 	const std::string finishedMsg = "Finnhub exchange's stock updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerStockExchange,
+		gl_pDataContainerStockExchange,
 		STOCK_SYMBOLS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -300,7 +300,7 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 }
 
 bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
-	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
+	const auto lStockSetSize = gl_pDataContainerFinnhubStock->Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquireType = COMPANY_PROFILE_CONCISE_;
 
@@ -310,8 +310,8 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 		long lCurrentProfilePos;
 		bool fFound = false;
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
-			if (const auto pStock = gl_dataContainerFinnhubStock.GetItem(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
-				if (gl_dataContainerTiingoStock.IsSymbol(pStock->GetSymbol())) { // 只更新Tiingo股票集中有的股票
+			if (const auto pStock = gl_pDataContainerFinnhubStock->GetItem(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
+				if (gl_pDataContainerTiingoStock->IsSymbol(pStock->GetSymbol())) { // 只更新Tiingo股票集中有的股票
 					if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquireType, pStock->GetExchange())) {
 						fFound = true;
 						break;
@@ -326,7 +326,7 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 			SetInquiring(true);
 			fHaveInquiry = true;
 			string str = "简介:";
-			str += gl_dataContainerFinnhubStock.GetItem(lCurrentProfilePos)->GetSymbol();
+			str += gl_pDataContainerFinnhubStock->GetItem(lCurrentProfilePos)->GetSymbol();
 			gl_systemMessage.SetCurrentFinnhubFunction(str);
 		}
 		else {
@@ -352,7 +352,7 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 	const std::string finishedMsg = "Finnhub company news updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_pDataContainerFinnhubStock,
 		COMPANY_NEWS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -378,7 +378,7 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 	const std::string finishedMsg = "Finnhub dayline updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_pDataContainerFinnhubStock,
 		STOCK_PRICE_CANDLES_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -404,7 +404,7 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 	const std::string finishedMsg = "Finnhub Insider Transaction updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_pDataContainerFinnhubStock,
 		INSIDER_TRANSACTION_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -430,7 +430,7 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 	const std::string finishedMsg = "Finnhub Insider Sentiment updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_pDataContainerFinnhubStock,
 		INSIDER_SENTIMENT_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -451,9 +451,9 @@ bool CFinnhubDataSource::GenerateRTQuote() {
 	product->SetIndex(s_lCurrentRTDataQuotePos);
 	StoreInquiry(product);
 	s_lCurrentRTDataQuotePos++;
-	if (s_lCurrentRTDataQuotePos == gl_dataContainerFinnhubStock.Size()) s_lCurrentRTDataQuotePos = 0;
+	if (s_lCurrentRTDataQuotePos == gl_pDataContainerFinnhubStock->Size()) s_lCurrentRTDataQuotePos = 0;
 	string str = "stock RT: ";
-	str += gl_dataContainerFinnhubStock.GetItem(s_lCurrentRTDataQuotePos)->GetSymbol();
+	str += gl_pDataContainerFinnhubStock->GetItem(s_lCurrentRTDataQuotePos)->GetSymbol();
 	gl_systemMessage.SetCurrentFinnhubFunction(str);
 	return true;
 }
@@ -471,7 +471,7 @@ bool CFinnhubDataSource::GeneratePeer() {
 	const std::string finishedMsg = "Finnhub Peer Updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_pDataContainerFinnhubStock,
 		PEERS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -519,7 +519,7 @@ bool CFinnhubDataSource::GenerateEPSSurprise() {
 	const std::string finishedMsg = "Finnhub EPS Surprise Updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_pDataContainerFinnhubStock,
 		STOCK_ESTIMATES_EPS_SURPRISE_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -545,7 +545,7 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 	const std::string finishedMsg = "Finnhub SEC Filings Updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataContainerFinnhubStock,
+		gl_pDataContainerFinnhubStock,
 		SEC_FILINGS_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -577,9 +577,9 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 		product->SetIndex(s_lCurrentForexExchangePos);
 		StoreInquiry(product);
 		string str = "forex symbol: ";
-		str += gl_dataContainerFinnhubForexExchange.GetItem(s_lCurrentForexExchangePos);
+		str += gl_pDataContainerFinnhubForexExchange->GetItem(s_lCurrentForexExchangePos);
 		gl_systemMessage.SetCurrentFinnhubFunction(str);
-		if (++s_lCurrentForexExchangePos >= gl_dataContainerFinnhubForexExchange.Size()) {
+		if (++s_lCurrentForexExchangePos >= gl_pDataContainerFinnhubForexExchange->Size()) {
 			SetUpdateForexSymbol(false);
 			s_lCurrentForexExchangePos = 0;
 			gl_systemMessage.PushInformationMessage("Finnhub Forex symbols updated");
@@ -626,9 +626,9 @@ bool CFinnhubDataSource::GenerateCryptoSymbol() {
 		product->SetIndex(s_lCurrentCryptoExchangePos);
 		StoreInquiry(product);
 		string str = "crypto symbol: ";
-		str += gl_dataContainerFinnhubCryptoExchange.GetItem(s_lCurrentCryptoExchangePos);
+		str += gl_pDataContainerFinnhubCryptoExchange->GetItem(s_lCurrentCryptoExchangePos);
 		gl_systemMessage.SetCurrentFinnhubFunction(str);
-		if (++s_lCurrentCryptoExchangePos >= gl_dataContainerFinnhubCryptoExchange.Size()) {
+		if (++s_lCurrentCryptoExchangePos >= gl_pDataContainerFinnhubCryptoExchange->Size()) {
 			SetUpdateCryptoSymbol(false);
 			s_lCurrentCryptoExchangePos = 0;
 			gl_systemMessage.PushInformationMessage("Finnhub Crypto symbols updated");
@@ -651,7 +651,7 @@ bool CFinnhubDataSource::GenerateForexDayLine() {
 	const std::string finishedMsg = "Finnhub Forex DayLine Updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataFinnhubForexSymbol,
+		gl_pDataFinnhubForexSymbol,
 		FOREX_CANDLES_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,
@@ -688,7 +688,7 @@ bool CFinnhubDataSource::GenerateCryptoDayLine() {
 	const std::string finishedMsg = "Finnhub Crypto DayLine Updated";
 
 	return GenerateInquiryIterateWithAccessCheck(
-		gl_dataFinnhubCryptoSymbol,
+		gl_pDataFinnhubCryptoSymbol,
 		CRYPTO_CANDLES_,
 		isUpdateNeeded,
 		isUpdateItemNeeded,

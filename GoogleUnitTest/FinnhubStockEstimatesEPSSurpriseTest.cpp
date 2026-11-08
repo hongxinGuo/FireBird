@@ -51,7 +51,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestCreatMessage) {
 		stockEstimatesEPSSurprise.SetIndex(1);
-		EXPECT_TRUE(stockEstimatesEPSSurprise.CreateMessage()->front() == stockEstimatesEPSSurprise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
+		EXPECT_TRUE(stockEstimatesEPSSurprise.CreateMessage()->front() == stockEstimatesEPSSurprise.GetInquiryFunction() + gl_pDataContainerFinnhubStock->GetItem(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestProcessWebData) {
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
+			m_pStock = gl_pDataContainerFinnhubStock->GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_text = pData->m_data;
 			m_finnhubStockEstimatesEPSSurprise.Test_checkAccessRight_(m_text);
@@ -151,5 +151,4 @@ namespace FireBirdTest {
 			break;
 		}
 	}
-
 }

@@ -49,7 +49,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
 		companySymbolProduct.SetIndex(1);
-		EXPECT_EQ(companySymbolProduct.CreateMessage()->front(), (companySymbolProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
+		EXPECT_EQ(companySymbolProduct.CreateMessage()->front(), (companySymbolProduct.GetInquiryFunction() + gl_pDataContainerStockExchange->GetItemExchangeCode(1)));
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_index;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
+			m_pStock = gl_pDataContainerFinnhubStock->GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCurrency("");
 			m_text = pData->m_data;

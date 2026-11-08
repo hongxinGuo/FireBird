@@ -36,8 +36,8 @@ void CProductFinnhubEconomicCountryList::InquireData(const std::stop_token& st) 
 
 		auto pvCountry = Parse(m_r.text);
 		for (const auto& pCountry : *pvCountry) {
-			if (!gl_dataContainerFinnhubCountry.IsCountry(pCountry)) {
-				gl_dataContainerFinnhubCountry.Add(pCountry);
+			if (!gl_pDataContainerFinnhubCountry->IsCountry(pCountry)) {
+				gl_pDataContainerFinnhubCountry->Add(pCountry);
 			}
 		}
 	}

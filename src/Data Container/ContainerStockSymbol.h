@@ -53,4 +53,4 @@ protected:
 
 using CContainerStockSymbolPtr = shared_ptr<CContainerStockSymbol>;
 
-extern CContainerStockSymbol gl_dataContainerChinaStockSymbol;
+inline CContainerStockSymbolPtr gl_pDataContainerChinaStockSymbol = nullptr;

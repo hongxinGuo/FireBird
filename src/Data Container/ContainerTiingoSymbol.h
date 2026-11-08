@@ -18,5 +18,7 @@ public:
 	shared_ptr<CTiingoStock> GetStock(const string& strStockCode);
 };
 
-extern CContainerTiingoSymbol gl_dataContainerTiingoNewSymbol;
-extern CContainerTiingoSymbol gl_dataContainerTiingoDelistedSymbol;
+using CContainerTiingoSymbolPtr = std::shared_ptr<CContainerTiingoSymbol>;
+
+inline CContainerTiingoSymbolPtr gl_pDataContainerTiingoNewSymbol = nullptr;
+inline CContainerTiingoSymbolPtr gl_pDataContainerTiingoDelistedSymbol = nullptr;

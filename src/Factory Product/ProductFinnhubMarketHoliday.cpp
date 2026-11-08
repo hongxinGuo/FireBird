@@ -34,7 +34,7 @@ void CProductFinnhubMarketHoliday::InquireData(const std::stop_token& st) {
 		}
 
 		const auto pvHoliday = Parse(m_r.text);
-		const auto pExchange = gl_dataContainerStockExchange.GetItem(m_index);
+		const auto pExchange = gl_pDataContainerStockExchange->GetItem(m_index);
 		pExchange->SetUpdateMarketHoliday(false);
 
 		gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);
@@ -61,7 +61,7 @@ void CProductFinnhubMarketHoliday::UpdateSystemStatus() {
 }
 
 shared_ptr<vector<string>> CProductFinnhubMarketHoliday::CreateMessage() {
-	const auto strParam = gl_dataContainerStockExchange.GetItemExchangeCode(m_index);
+	const auto strParam = gl_pDataContainerStockExchange->GetItemExchangeCode(m_index);
 
 	m_strInquiringExchange = strParam;
 	m_inquiryString = m_strInquiryFunction + strParam;

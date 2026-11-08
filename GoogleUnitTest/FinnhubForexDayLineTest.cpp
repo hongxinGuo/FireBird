@@ -48,13 +48,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestCreatMessage) {
-		gl_dataFinnhubForexSymbol.GetItem(1)->SetUpdateDayLine(true);
+		gl_pDataFinnhubForexSymbol->GetItem(1)->SetUpdateDayLine(true);
 		forexDayLine.SetIndex(1);
 		EXPECT_TRUE(forexDayLine.CreateMessage()->front() ==
-			forexDayLine.GetInquiryFunction() + gl_dataFinnhubForexSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
-		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetItem(1)->IsUpdateDayLine()) << "接收到的数据处理后方设置此标识";
+			forexDayLine.GetInquiryFunction() + gl_pDataFinnhubForexSymbol->GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
+		EXPECT_TRUE(gl_pDataFinnhubForexSymbol->GetItem(1)->IsUpdateDayLine()) << "接收到的数据处理后方设置此标识";
 
-		gl_dataFinnhubForexSymbol.GetItem(1)->SetUpdateDayLine(true);
+		gl_pDataFinnhubForexSymbol->GetItem(1)->SetUpdateDayLine(true);
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestProcessWebData) {
@@ -94,7 +94,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
 			m_pvDayLine = nullptr;
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
+			EXPECT_TRUE(gl_pDataFinnhubForexSymbol->IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_text = pData->m_data;
 			m_finnhubForexDayLine.Test_checkAccessRight_(m_text);
 		}

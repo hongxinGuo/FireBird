@@ -50,7 +50,7 @@ namespace FireBirdTest {
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestCreatMessage) {
 		cryptoDayLine.SetIndex(1);
 		EXPECT_EQ(cryptoDayLine.CreateMessage()->front(),
-		          (cryptoDayLine.GetInquiryFunction() + gl_dataFinnhubCryptoSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())));
+		          (cryptoDayLine.GetInquiryFunction() + gl_pDataFinnhubCryptoSymbol->GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())));
 	}
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestProcessWebData) {
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_index = pData->m_index;
-			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
+			EXPECT_TRUE(gl_pDataFinnhubCryptoSymbol->IsSymbol(pData->m_strSymbol));
 			m_text = pData->m_data;
 			m_finnhubCryptoDayLine.Test_checkAccessRight_(m_text);
 

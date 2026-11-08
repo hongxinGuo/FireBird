@@ -38,4 +38,6 @@ public:
 	bool IsUpdateSECFilingsDB();
 };
 
-extern CContainerFinnhubStock gl_dataContainerFinnhubStock;
+using CContainerFinnhubStockPtr = std::shared_ptr<CContainerFinnhubStock>;
+
+inline CContainerFinnhubStockPtr gl_pDataContainerFinnhubStock = nullptr;

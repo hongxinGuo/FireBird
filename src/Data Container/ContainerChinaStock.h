@@ -55,4 +55,5 @@ protected:
 	size_t m_lLoadedStock; // 本次装载的股票总数
 };
 
-extern CContainerChinaStock gl_dataContainerChinaStock;
+using CContainerChinaStockPtr = std::shared_ptr<CContainerChinaStock>;
+inline CContainerChinaStockPtr gl_pDataContainerChinaStock = nullptr;

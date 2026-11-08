@@ -36,7 +36,7 @@ void CProductFinnhubCompanyNews::InquireData(const std::stop_token& st) {
 		}
 
 		auto pvFinnhubCompanyNews = Parse(m_r.text);
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 
 		if (!pvFinnhubCompanyNews->empty()) {
 			// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
@@ -71,7 +71,7 @@ void CProductFinnhubCompanyNews::WebStatusCheck(cpr::Response& r) {
 }
 void CProductFinnhubCompanyNews::UpdateSystemStatus() {
 	if (!IsWebError()) {
-		const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+		const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 		pStock->SetCompanyNewsUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateCompanyNews(false);
 		pStock->SetUpdateProfileDB(true);
@@ -85,7 +85,7 @@ void CProductFinnhubCompanyNews::UpdateSystemStatus() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<string>> CProductFinnhubCompanyNews::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_index);
+	const auto pStock = gl_pDataContainerFinnhubStock->GetItem(m_index);
 	string strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	auto limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
 	auto limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();

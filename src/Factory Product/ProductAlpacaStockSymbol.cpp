@@ -78,10 +78,10 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 		return a->GetSymbol() < b->GetSymbol();
 	});
 	for (const auto& pStock : *pvStock) {
-		if (!gl_dataContainerAlpacaStockSymbol.IsSymbol(pStock->GetSymbol())) { // 新代码
+		if (!gl_pDataContainerAlpacaStockSymbol->IsSymbol(pStock->GetSymbol())) { // 新代码
 			pStock->SetUpdateProfileDB(true);
 			pStock->SetNewStock(true);
-			gl_dataContainerAlpacaStockSymbol.Add(pStock); // 存储新代码
+			gl_pDataContainerAlpacaStockSymbol->Add(pStock); // 存储新代码
 		}
 	}
 }

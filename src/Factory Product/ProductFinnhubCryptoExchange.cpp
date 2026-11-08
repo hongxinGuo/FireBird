@@ -32,8 +32,8 @@ void CProductFinnhubCryptoExchange::InquireData(const std::stop_token& st) {
 		}
 		const auto pvCryptoExchange = Parse(m_r.text);
 		for (const auto& str : *pvCryptoExchange) {
-			if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(str)) {
-				gl_dataContainerFinnhubCryptoExchange.Add(str);
+			if (!gl_pDataContainerFinnhubCryptoExchange->IsExchange(str)) {
+				gl_pDataContainerFinnhubCryptoExchange->Add(str);
 			}
 		}
 	}
