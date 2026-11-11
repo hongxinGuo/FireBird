@@ -606,6 +606,10 @@ bool CChinaMarket::SetCheckActiveStockFlag() {
 }
 
 bool CChinaMarket::TaskProcessTodayStock() {
+	if (gl_pTengxunDayLineDataSource->IsUpdateDayLine() && gl_pChinaMarket->GetMarketTime() < local_seconds{ 22h + 0min + 0s }) { // 22时前如果正在更新日线历史数据，则延迟处理本日数据。
+		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, gl_pChinaMarket->GetMarketTime() + 10min); // 延后10分钟执行
+		return false;
+	}
 	if (IsProcessTodayStock() || IsSystemReady() && GetMarketTimeHMS().to_duration() > 15h + 04min) {
 		if (m_jtProcessTodayStock.joinable()) {
 			m_jtProcessTodayStock.request_stop();

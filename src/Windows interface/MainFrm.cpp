@@ -654,6 +654,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 void CMainFrame::OnProcessTodayStock() {
 	if (gl_pChinaMarket->IsSystemReady()) {
+		gl_pTengxunDayLineDataSource->SetUpdateDayLine(false); // 手动处理本日日线数据时，关闭下载历史日线引擎。
 		ProcessChinaMarketStock();
 	}
 }
@@ -1188,19 +1189,11 @@ void CMainFrame::OnBuildChinaStockDaylineAfterSelectedDate() {
 		local_days date{ year(dlg.m_date.GetYear()) / month(dlg.m_date.GetMonth()) / day(dlg.m_date.GetDay()) };
 		if (date < gl_pChinaMarket->GetMarketDate()) { // 如果用户输入的日期小于当前市场日期，则执行更新
 			gl_pChinaMarket->UpdateOneYearStockDayLine(date);
-			gl_pChinaMarket->SetProcessTodayStock(false); //目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
-			gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
-			gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
-			gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
 		}
 	}
 }
 
 void CMainFrame::OnBuildChinaMarketAllStockDayline() {
-	gl_pChinaMarket->SetProcessTodayStock(false);//目前执行全面更新需要花费至少十小时，手动处理当日的实时数据
-	gl_pChinaMarket->DeleteTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
-	gl_pChinaMarket->DeleteDisplayTask(CHINA_MARKET_BUILD_TODAY_DATABASE_);
-	gl_pChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE_, gl_pChinaMarket->GetMarketTime() + 12h); // 开始执行时间为12小时后
 	gl_pChinaMarket->UpdateAllStockDayLine();
 }
 

@@ -78,7 +78,7 @@ public:
 	vector<shared_ptr<CMarketTask>> GetDisplayMarketTask();
 
 	// 时间函数
-	void CalculateTime() noexcept; // 计算本市场的各时间
+	void CalculateTime() noexcept { m_marketClock = m_marketTimeZone->to_local(gl_tpNow); } // 计算本市场的各时间
 	void CreateLocalTimeZone(const string& strLocalNameOfMarket); // 系统启动时执行一次。
 	local_seconds GetMarketOpenTime() const;
 	local_seconds GetMarketCloseTime() const;
@@ -154,9 +154,8 @@ protected:
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 	// 时间区
-	//string m_strLocalMarketTimeZone{ "Europe/London" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
-	string m_strLocalMarketTimeZone{ "America/New_York" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
-	const time_zone* m_marketTimeZone{ nullptr }; // 本市场当地时区
+	string m_strLocalMarketTimeZone{ "" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	const time_zone* m_marketTimeZone{ nullptr }; //Note:微软实现的chrono库中，time_zone静态变量保留至程序退出之后，导致调试系统误报内存泄露。
 	local_seconds m_marketClock; // 本市场的当地时钟 m_marketClock = m_marketDate + m_marketTimeOfDay
 
 private:

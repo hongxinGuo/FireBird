@@ -162,7 +162,6 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					}
 				}
 				else if (js2.contains("subscriptionId")) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
-					ABSL_DCHECK(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, "subscriptionId"));
 				}
 				else {

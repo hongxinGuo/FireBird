@@ -29,6 +29,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
+			virtualMarket.CreateLocalTimeZone("America/New_York");// CVirtualMarket没有设置时区，故而在测试中直接调用CreateLocalTimeZone函数
 		}
 
 		void TearDown() override {

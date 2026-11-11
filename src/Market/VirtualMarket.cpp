@@ -14,7 +14,7 @@
 using namespace std;
 
 CVirtualMarket::CVirtualMarket() {
-	CreateLocalTimeZone(m_strLocalMarketTimeZone);
+	//CreateLocalTimeZone(m_strLocalMarketTimeZone);
 	m_fResetMarket = true;
 
 	m_strMarketId = "Warning: CVirtualMarket Called.";
@@ -187,10 +187,6 @@ vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 	return vector<CMarketTaskPtr>();
 }
 
-void CVirtualMarket::CalculateTime() noexcept {
-	m_marketClock = m_marketTimeZone->to_local(gl_tpNow);
-}
-
 bool CVirtualMarket::IsWorkingDay() const noexcept {
 	if (GetWeekDay() == chrono::Sunday || GetWeekDay() == chrono::Saturday) { // Sunday or Saturday
 		return false;
@@ -278,7 +274,6 @@ void CVirtualMarket::TEST_SetMarketDate(local_days ld) noexcept {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 这个函数导致内存泄漏，估计是调用的时区数据库函数locate_zone()初始化后，程序退出时没有卸载。
 ///Note:微软实现的chrono库中，time_zone静态变量保留至程序退出之后，导致调试系统误报内存泄露。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

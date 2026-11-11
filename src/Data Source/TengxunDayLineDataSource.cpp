@@ -63,13 +63,15 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 	std::random_device r;
 	// Choose a random mean between 1 and 6
 	std::default_random_engine e1(r());
-	uniform_int_distribution<int> uniform_dist(1, 4000);
+	uniform_int_distribution<int> uniform_dist(1000, 4000);
 	int mean = uniform_dist(e1);
+	uniform_int_distribution<int> uniform_dist2(30000, 90000);
+	int mean2 = uniform_dist2(e1);
 	if (GetHTTPStatusCode() == 501) {
-		if (llTickCount < m_PrevInquireTimePoint + milliseconds(60000 + mean)) return false; // 如果腾讯日线服务器拒绝服务，则延长申请间隔时间，一分钟后再申请。
+		if (llTickCount < m_PrevInquireTimePoint + milliseconds(mean2 + mean)) return false; // 如果腾讯日线服务器拒绝服务，则延长申请间隔时间，一分钟后再申请。
 	}
 	else {
-		if (llTickCount < m_PrevInquireTimePoint + milliseconds(2000 + mean)) return false;
+		if (llTickCount < m_PrevInquireTimePoint + milliseconds(2500 + mean)) return false;
 	}
 
 	// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
@@ -77,8 +79,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const local_seconds& curr
 		m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。
 	}
 
-	if (gl_pChinaMarket->IsSystemReady() && gl_pDataContainerChinaStock->IsUpdateDayLine()
-		&& gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
+	if (gl_pChinaMarket->IsSystemReady() && IsUpdateDayLine() && gl_pChinaMarket->GetMarketTimeHMS().to_duration() > 9h + 30min) {
 		if (!IsInquiring()) {
 			GenerateInquireDayLine();
 			s_iSleep++;
