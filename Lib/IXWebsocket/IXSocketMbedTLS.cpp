@@ -102,10 +102,8 @@ namespace ix
 
         return true;
 #else
-        (void)errorMsg;
-        // On macOS we can query the system cert location from the keychain
-        // On Linux we could try to fetch some local files based on the distribution
-        // On Android we could use JNI to get to the system certs
+        errorMsg = "Mbed TLS does not support caFile=SYSTEM on this platform; "
+                   "set caFile to a trusted PEM CA bundle";
         return false;
 #endif
     }
@@ -250,6 +248,36 @@ namespace ix
 
         mbedtls_ssl_set_bio(&_ssl, &_sockfd, mbedtls_net_send, mbedtls_net_recv, NULL);
 
+        return handshake(errMsg, isCancellationRequested);
+    }
+
+    bool SocketMbedTLS::connect(const std::string& host,
+                                int port,
+                                std::string& errMsg,
+                                const CancellationRequest& isCancellationRequested)
+    {
+        {
+            std::lock_guard<std::mutex> lock(_mutex);
+            _sockfd = connectToHost(host, port, errMsg, isCancellationRequested);
+            if (_sockfd == -1) return false;
+        }
+
+        bool isClient = true;
+        bool initialized = init(host, isClient, errMsg);
+        if (!initialized)
+        {
+            close();
+            return false;
+        }
+
+        mbedtls_ssl_set_bio(&_ssl, &_sockfd, mbedtls_net_send, mbedtls_net_recv, NULL);
+
+        return handshake(errMsg, isCancellationRequested);
+    }
+
+    bool SocketMbedTLS::handshake(std::string& errMsg,
+                                  const CancellationRequest& isCancellationRequested)
+    {
         int res;
         do
         {
@@ -301,58 +329,6 @@ namespace ix
         return true;
     }
 
-    bool SocketMbedTLS::connect(const std::string& host,
-                                int port,
-                                std::string& errMsg,
-                                const CancellationRequest& isCancellationRequested)
-    {
-        {
-            std::lock_guard<std::mutex> lock(_mutex);
-            _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested);
-            if (_sockfd == -1) return false;
-        }
-
-        bool isClient = true;
-        bool initialized = init(host, isClient, errMsg);
-        if (!initialized)
-        {
-            close();
-            return false;
-        }
-
-        mbedtls_ssl_set_bio(&_ssl, &_sockfd, mbedtls_net_send, mbedtls_net_recv, NULL);
-
-        int res;
-        do
-        {
-            {
-                std::lock_guard<std::mutex> lock(_mutex);
-                res = mbedtls_ssl_handshake(&_ssl);
-            }
-
-            if (isCancellationRequested())
-            {
-                errMsg = "Cancellation requested";
-                close();
-                return false;
-            }
-        } while (res == MBEDTLS_ERR_SSL_WANT_READ || res == MBEDTLS_ERR_SSL_WANT_WRITE);
-
-        if (res != 0)
-        {
-            char buf[256];
-            mbedtls_strerror(res, buf, sizeof(buf));
-
-            errMsg = "error in handshake : ";
-            errMsg += buf;
-
-            close();
-            return false;
-        }
-
-        return true;
-    }
-
     void SocketMbedTLS::close()
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -377,21 +353,25 @@ namespace ix
     {
         std::lock_guard<std::mutex> lock(_mutex);
 
-        std::ptrdiff_t res = mbedtls_ssl_write(&_ssl, (unsigned char*) buf, nbyte);
-
-        if (res > 0)
+        if (nbyte != 0 && buf == nullptr)
         {
-            return res;
+            Socket::setErrno(EINVAL);
+            return -1;
         }
-        else if (res == MBEDTLS_ERR_SSL_WANT_READ || res == MBEDTLS_ERR_SSL_WANT_WRITE)
+        const int res = mbedtls_ssl_write(&_ssl, (unsigned char*) buf, nbyte);
+        if (res == MBEDTLS_ERR_SSL_WANT_READ || res == MBEDTLS_ERR_SSL_WANT_WRITE)
         {
             Socket::setErrno(EWOULDBLOCK);
             return -1;
         }
-        else
+
+        if (res < 0)
         {
+            // A previous retry may have left the socket's wait status set.
+            Socket::setErrno(EIO);
             return -1;
         }
+        return res;
     }
 
     std::ptrdiff_t SocketMbedTLS::recv(void* buf, size_t nbyte)
@@ -423,14 +403,23 @@ namespace ix
             }
 #endif
 
+            if (res == MBEDTLS_ERR_SSL_PEER_CLOSE_NOTIFY)
+            {
+                Socket::setErrno(0);
+                return 0;
+            }
             if (res == 0)
             {
                 Socket::setErrno(ECONNRESET);
             }
 
-            if (res == MBEDTLS_ERR_SSL_WANT_READ || res == MBEDTLS_ERR_SSL_WANT_WRITE)
+            else if (res == MBEDTLS_ERR_SSL_WANT_READ || res == MBEDTLS_ERR_SSL_WANT_WRITE)
             {
                 Socket::setErrno(EWOULDBLOCK);
+            }
+            else
+            {
+                Socket::setErrno(EIO);
             }
             return -1;
         }

@@ -174,6 +174,7 @@
     <ClInclude Include="..\Lib\IXWebSocket\IXHttpServer.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXNetSystem.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXProgressCallback.h" />
+    <ClInclude Include="..\Lib\ixwebsocket\IXProxyOptions.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSelectInterrupt.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSelectInterruptEvent.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSelectInterruptFactory.h" />
@@ -184,9 +185,11 @@
     <ClInclude Include="..\Lib\IXWebSocket\IXSocketConnect.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSocketFactory.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSocketMbedTLS.h" />
+    <ClInclude Include="..\Lib\ixwebsocket\IXSocketNetwork.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSocketOpenSSL.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSocketServer.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXSocketTLSOptions.h" />
+    <ClInclude Include="..\Lib\ixwebsocket\IXSocks5.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXStrCaseCompare.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXUdpSocket.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXUniquePtr.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="..\Lib\IXWebSocket\IXWebSocketCloseConstants.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXWebSocketCloseInfo.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXWebSocketErrorInfo.h" />
+    <ClInclude Include="..\Lib\ixwebsocket\IXWebSocketExport.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXWebSocketHandshake.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXWebSocketHandshakeKeyGen.h" />
     <ClInclude Include="..\Lib\IXWebSocket\IXWebSocketHttpHeaders.h" />
@@ -237,9 +241,11 @@
     <ClCompile Include="..\Lib\IXWebSocket\IXSocketConnect.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXSocketFactory.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXSocketMbedTLS.cpp" />
+    <ClCompile Include="..\Lib\ixwebsocket\IXSocketNetwork.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXSocketOpenSSL.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXSocketServer.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXSocketTLSOptions.cpp" />
+    <ClCompile Include="..\Lib\ixwebsocket\IXSocks5.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXStrCaseCompare.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXUdpSocket.cpp" />
     <ClCompile Include="..\Lib\IXWebSocket\IXUrlParser.cpp" />

@@ -5,13 +5,13 @@
 /// 20231126：20231127后，stock DayLine和Crypto DayLine不再免费。
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"pch.h"
+#include "pch.h"
 
-#include"SystemConfiguration.h"
-#include"SystemMessage.h"
+#include "SystemConfiguration.h"
+#include "SystemMessage.h"
 
-#include"FinnhubInquiryType.h"
-#include"InaccessibleSymbol.h"
+#include "FinnhubInquiryType.h"
+#include "InaccessibleSymbol.h"
 
 #include "FinnhubDataSource.h"
 
@@ -22,14 +22,14 @@
 #include "ContainerFinnhubStock.h"
 #include "ContainerStockExchange.h"
 #include "ContainerTiingoStock.h"
-#include"VirtualWebProduct.h"
+#include "VirtualWebProduct.h"
 
 #include "TimeConvert.h"
-#include"WorldMarket.h"
-#include"FinnhubStock.h"
+#include "WorldMarket.h"
+#include "FinnhubStock.h"
 #include "FinnhubCrypto.h"
 #include "FinnhubFactory.h"
-#include"FinnhubForex.h"
+#include "FinnhubForex.h"
 #include "JsonParse.h"
 
 using std::exception;
@@ -73,7 +73,8 @@ CFinnhubDataSource::CFinnhubDataSource() {
 }
 
 bool CFinnhubDataSource::Reset() {
-	// Finnhub各申请网络数据标识，每日需要重置。目前共21项。
+	// Finnhub各申请网络数据标识，每日需要重置。目前共22项。
+	m_fUpdateCompanySymbolChange = true;
 	m_fUpdateCountryList = true;
 	m_fUpdateSymbol = true; // 每日需要更新代码
 	m_fUpdateMarketStatus = true;

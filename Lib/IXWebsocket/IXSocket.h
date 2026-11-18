@@ -9,7 +9,9 @@
 #include "IXCancellationRequest.h"
 #include "IXNetSystem.h"
 #include "IXProgressCallback.h"
+#include "IXProxyOptions.h"
 #include "IXSelectInterrupt.h"
+#include "IXWebSocketExport.h"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -36,6 +38,8 @@ namespace ix
         Socket(int fd = -1);
         virtual ~Socket();
         bool init(std::string& errorMsg);
+        // Configure before connecting; proxy options are immutable during connection setup.
+        void setProxyOptions(const ProxyOptions& options);
 
         // Functions to check whether there is activity on the socket
         PollResultType poll(int timeoutMs = kDefaultPollTimeout);
@@ -53,6 +57,8 @@ namespace ix
                              const CancellationRequest& isCancellationRequested);
         virtual void close();
 
+        // Keep the buffer and length unchanged across would-block retries.
+        // Advance the input only after a positive return value.
         virtual std::ptrdiff_t send(char* buffer, size_t length);
         std::ptrdiff_t send(const std::string& buffer);
         virtual std::ptrdiff_t recv(void* buffer, size_t length);
@@ -83,6 +89,11 @@ namespace ix
                                    const SelectInterruptPtr& selectInterrupt);
 
     protected:
+        int connectToHost(const std::string& host,
+                          int port,
+                          std::string& error,
+                          const CancellationRequest& cancelled);
+        ProxyOptions _proxyOptions;
         std::atomic<int> _sockfd;
         std::mutex _socketMutex;
 
@@ -90,8 +101,8 @@ namespace ix
                                                PollResultType* pollResult);
 
     private:
-        static const int kDefaultPollTimeout;
-        static const int kDefaultPollNoTimeout;
+        IXWEBSOCKET_EXPORT static const int kDefaultPollTimeout;
+        IXWEBSOCKET_EXPORT static const int kDefaultPollNoTimeout;
 
         SelectInterruptPtr _selectInterrupt;
     };

@@ -10,9 +10,11 @@
 #pragma once
 
 #include "IXProgressCallback.h"
+#include "IXProxyOptions.h"
 #include "IXSocketTLSOptions.h"
 #include "IXWebSocketCloseConstants.h"
 #include "IXWebSocketErrorInfo.h"
+#include "IXWebSocketExport.h"
 #include "IXWebSocketHttpHeaders.h"
 #include "IXWebSocketMessage.h"
 #include "IXWebSocketPerMessageDeflateOptions.h"
@@ -25,6 +27,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
+#include <vector>
 
 namespace ix
 {
@@ -51,9 +54,12 @@ namespace ix
 
         // send extra headers in client handshake request
         void setExtraHeaders(const WebSocketHttpHeaders& headers);
+        // Suppress generated User-Agent/Origin headers; explicit extra headers still win.
+        void setDisabledDefaultHeaders(const std::vector<std::string>& headers);
         void setPerMessageDeflateOptions(
             const WebSocketPerMessageDeflateOptions& perMessageDeflateOptions);
         void setTLSOptions(const SocketTLSOptions& socketTLSOptions);
+        void setProxyOptions(const ProxyOptions& proxyOptions);
         void setPingMessage(const std::string& sendMessage,
                             SendMessageKind pingType = SendMessageKind::Ping);
         void setPingInterval(int pingIntervalSecs);
@@ -143,10 +149,12 @@ namespace ix
 
         std::string _url;
         WebSocketHttpHeaders _extraHeaders;
+        std::vector<std::string> _disabledDefaultHeaders;
 
         WebSocketPerMessageDeflateOptions _perMessageDeflateOptions;
 
         SocketTLSOptions _socketTLSOptions;
+        ProxyOptions _proxyOptions;
 
         mutable std::mutex _configMutex; // protect all config variables access
 
@@ -159,8 +167,8 @@ namespace ix
 
         // Automatic reconnection
         std::atomic<bool> _automaticReconnection;
-        static const uint32_t kDefaultMaxWaitBetweenReconnectionRetries;
-        static const uint32_t kDefaultMinWaitBetweenReconnectionRetries;
+        IXWEBSOCKET_EXPORT static const uint32_t kDefaultMaxWaitBetweenReconnectionRetries;
+        IXWEBSOCKET_EXPORT static const uint32_t kDefaultMinWaitBetweenReconnectionRetries;
         uint32_t _maxWaitBetweenReconnectionRetries;
         uint32_t _minWaitBetweenReconnectionRetries;
 
@@ -169,19 +177,19 @@ namespace ix
         std::condition_variable _sleepCondition;
 
         std::atomic<int> _handshakeTimeoutSecs;
-        static const int kDefaultHandShakeTimeoutSecs;
+        IXWEBSOCKET_EXPORT static const int kDefaultHandShakeTimeoutSecs;
 
         // enable or disable PONG frame response to received PING frame
         bool _enablePong;
-        static const bool kDefaultEnablePong;
+        IXWEBSOCKET_EXPORT static const bool kDefaultEnablePong;
 
         // Optional ping and pong timeout
         int _pingIntervalSecs;
         int _pingTimeoutSecs;
         std::string _pingMessage;
         SendMessageKind _pingType;
-        static const int kDefaultPingIntervalSecs;
-        static const int kDefaultPingTimeoutSecs;
+        IXWEBSOCKET_EXPORT static const int kDefaultPingIntervalSecs;
+        IXWEBSOCKET_EXPORT static const int kDefaultPingTimeoutSecs;
 
         // Subprotocols
         std::vector<std::string> _subProtocols;

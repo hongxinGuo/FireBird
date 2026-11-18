@@ -287,7 +287,6 @@
     <ClCompile Include="..\src\Factory Product\VirtualWebProduct.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp" />
     <ClCompile Include="..\src\FinnhubInquiryType.cpp" />
-    <ClCompile Include="..\src\globedef.cpp" />
     <ClCompile Include="..\src\Market\ChinaMarket.cpp" />
     <ClCompile Include="..\src\Market\MarketTask.cpp" />
     <ClCompile Include="..\src\Market\MarketTaskQueue.cpp" />

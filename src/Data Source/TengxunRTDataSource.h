@@ -24,4 +24,4 @@ public:
 
 using CTengxunRTDataSourcePtr = shared_ptr<CTengxunRTDataSource>;
 
-extern CTengxunRTDataSourcePtr gl_pTengxunRTDataSource;
+inline CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;

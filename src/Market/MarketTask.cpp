@@ -1,9 +1,7 @@
 #include "pch.h"
 
 #include "MarketTask.h"
-#include"TimeConvert.h"
-
-map<long, string> gl_mapMarketMapIndex;
+#include "TimeConvert.h"
 
 CMarketTask::CMarketTask() {
 	m_lType = 0;

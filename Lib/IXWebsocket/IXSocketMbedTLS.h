@@ -44,6 +44,7 @@ namespace ix
         virtual std::ptrdiff_t recv(void* buffer, size_t length) final;
 
     private:
+        friend struct SocketMbedTLSWriteTestAccess;
         mbedtls_ssl_context _ssl;
         mbedtls_ssl_config _conf;
 #if MBEDTLS_VERSION_MAJOR < 4
@@ -60,6 +61,7 @@ namespace ix
 
         bool init(const std::string& host, bool isClient, std::string& errMsg);
         void initMBedTLS();
+        bool handshake(std::string& errMsg, const CancellationRequest& isCancellationRequested);
         bool loadSystemCertificates(std::string& errMsg);
     };
 

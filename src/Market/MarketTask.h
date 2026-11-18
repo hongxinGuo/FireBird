@@ -73,9 +73,9 @@ using std::array;
 using std::map;
 using std::string;
 
-extern array<concurrencpp::timer, TASK_END_> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
+inline array<concurrencpp::timer, TASK_END_> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
 
-extern map<long, string> gl_mapMarketMapIndex;
+inline map<long, string> gl_mapMarketMapIndex;
 
 class CMarketTask {
 public:

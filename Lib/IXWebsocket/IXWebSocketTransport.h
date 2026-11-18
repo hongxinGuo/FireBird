@@ -6,13 +6,17 @@
 
 #pragma once
 
+#include "IXWebSocketExport.h"
+
 //
 // Adapted from https://github.com/dhbaird/easywsclient
 //
 
 #include "IXCancellationRequest.h"
 #include "IXProgressCallback.h"
+#include "IXProxyOptions.h"
 #include "IXSocketTLSOptions.h"
+#include "IXUtf8Validator.h"
 #include "IXWebSocketCloseConstants.h"
 #include "IXWebSocketHandshake.h"
 #include "IXWebSocketHttpHeaders.h"
@@ -77,12 +81,15 @@ namespace ix
         void configure(const WebSocketPerMessageDeflateOptions& perMessageDeflateOptions,
                        const SocketTLSOptions& socketTLSOptions,
                        bool enablePong,
-                       int pingIntervalSecs);
+                       int pingIntervalSecs,
+                       const ProxyOptions& proxyOptions = {});
 
         // Client
-        WebSocketInitResult connectToUrl(const std::string& url,
-                                         const WebSocketHttpHeaders& headers,
-                                         int timeoutSecs);
+        WebSocketInitResult connectToUrl(
+            const std::string& url,
+            const WebSocketHttpHeaders& headers,
+            int timeoutSecs,
+            const std::vector<std::string>& disabledDefaultHeaders = {});
 
         // Server
         WebSocketInitResult connectToSocket(std::unique_ptr<Socket> socket,
@@ -119,7 +126,10 @@ namespace ix
         WebSocketSendInfo sendHeartBeat(SendMessageKind pingType);
 
     private:
+        friend struct WebSocketTransportTestAccess;
         std::string _url;
+        Utf8Validator _utf8Validator;
+        size_t _validatedBytes = 0;
 
         struct wsheader_type
         {
@@ -142,6 +152,8 @@ namespace ix
             uint64_t N;
             uint8_t masking_key[4];
         };
+
+        bool validateFramePayload(const wsheader_type& ws);
 
         // Tells whether we should mask the data we send.
         // client should mask but server should not
@@ -171,6 +183,9 @@ namespace ix
 
         // Contains all messages that are waiting to be sent
         std::vector<uint8_t> _txbuf;
+        // Retries must keep the same address, contents and length. New frames go into _txbuf.
+        std::vector<uint8_t> _txbufPending;
+        size_t _txbufPendingOffset = 0;
         mutable std::mutex _txbufMutex;
 
         // Hold fragments for multi-fragments messages in a list. We support receiving very large
@@ -216,23 +231,24 @@ namespace ix
 
         // Used to control TLS connection behavior
         SocketTLSOptions _socketTLSOptions;
+        ProxyOptions _proxyOptions;
 
         // Used to cancel dns lookup + socket connect + http upgrade
         std::atomic<bool> _requestInitCancellation;
 
         mutable std::mutex _closingTimePointMutex;
         std::chrono::time_point<std::chrono::steady_clock> _closingTimePoint;
-        static const int kClosingMaximumWaitingDelayInMs;
+        IXWEBSOCKET_EXPORT static const int kClosingMaximumWaitingDelayInMs;
 
         // enable auto response to ping
         std::atomic<bool> _enablePong;
-        static const bool kDefaultEnablePong;
+        IXWEBSOCKET_EXPORT static const bool kDefaultEnablePong;
 
         // Optional ping and pong timeout
         int _pingIntervalSecs;
         std::atomic<bool> _pongReceived;
 
-        static const int kDefaultPingIntervalSecs;
+        IXWEBSOCKET_EXPORT static const int kDefaultPingIntervalSecs;
 
         bool _setCustomMessage;
         std::string _kPingMessage;
@@ -260,6 +276,7 @@ namespace ix
 
         bool wakeUpFromPoll(uint64_t wakeUpCode);
 
+        bool isAbnormalClose() const;
         bool flushSendBuffer();
         bool sendOnSocket();
         bool receiveFromSocket();

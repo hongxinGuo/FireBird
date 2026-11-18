@@ -40,4 +40,4 @@ protected:
 };
 
 extern CFireBirdApp theApp;
-extern HANDLE gl_hFireBirdMutex;
+inline HANDLE gl_hFireBirdMutex{ nullptr };

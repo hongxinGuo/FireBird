@@ -13,10 +13,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"nlohmann/json_fwd.hpp"
+#include "nlohmann/json_fwd.hpp"
 using nlohmannJson = nlohmann::ordered_json; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
-#include"FinnhubInquiryType.h"
+#include "FinnhubInquiryType.h"
 
 #include "Inaccessible.h"
 
@@ -72,5 +72,5 @@ private:
 
 using CInaccessibleSymbolPtr = shared_ptr<CInaccessibleSymbol>;
 
-extern CInaccessibleSymbol gl_finnhubInaccessibleExchange;
-extern CInaccessibleSymbol gl_tiingoInaccessibleStock;
+inline CInaccessibleSymbol gl_finnhubInaccessibleExchange{ "FinnhubInaccessibleExchange.json" };
+inline CInaccessibleSymbol gl_tiingoInaccessibleStock{ "TiingoInaccessibleStock.json" };

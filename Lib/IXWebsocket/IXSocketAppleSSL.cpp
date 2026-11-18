@@ -68,7 +68,9 @@ namespace ix
 
     OSStatus SocketAppleSSL::readFromSocket(SSLConnectionRef connection, void* data, size_t* len)
     {
-        int fd = (int) (long) connection;
+        auto* socket = static_cast<SocketAppleSSL*>(const_cast<void*>(connection));
+        int fd = socket->_sockfd;
+        socket->_handshakeWantsRead = true;
         if (fd < 0) return errSSLInternal;
 
         assert(data != nullptr);
@@ -116,7 +118,9 @@ namespace ix
                                            const void* data,
                                            size_t* len)
     {
-        int fd = (int) (long) connection;
+        auto* socket = static_cast<SocketAppleSSL*>(const_cast<void*>(connection));
+        int fd = socket->_sockfd;
+        socket->_handshakeWantsRead = false;
         if (fd < 0) return errSSLInternal;
 
         assert(data != nullptr);
@@ -176,17 +180,25 @@ namespace ix
             status = SSLHandshake(_sslContext);
 
             // Interrupt the handshake
-            if (isCancellationRequested())
+            if (isCancellationRequested && isCancellationRequested())
             {
                 errMsg = "Cancellation requested";
                 return errSSLInternal;
+            }
+            if (status == errSSLWouldBlock)
+            {
+                const auto ready = _handshakeWantsRead ? isReadyToRead(10) : isReadyToWrite(10);
+                if (ready == PollResultType::Error)
+                {
+                    errMsg = "Socket error during TLS handshake";
+                    return errSSLInternal;
+                }
             }
         } while (status == errSSLWouldBlock || status == errSSLServerAuthCompleted);
 
         return status;
     }
 
-    // No wait support
     bool SocketAppleSSL::connect(const std::string& host,
                                  int port,
                                  std::string& errMsg,
@@ -196,14 +208,14 @@ namespace ix
         {
             std::lock_guard<std::mutex> lock(_mutex);
 
-            _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested);
+            _sockfd = connectToHost(host, port, errMsg, isCancellationRequested);
             if (_sockfd == -1) return false;
 
             _sslContext = SSLCreateContext(kCFAllocatorDefault, kSSLClientSide, kSSLStreamType);
 
             SSLSetIOFuncs(
                 _sslContext, SocketAppleSSL::readFromSocket, SocketAppleSSL::writeToSocket);
-            SSLSetConnection(_sslContext, (SSLConnectionRef)(long) _sockfd);
+            SSLSetConnection(_sslContext, this);
             SSLSetProtocolVersionMin(_sslContext, kTLSProtocol12);
 
             if (!_tlsOptions.disable_hostname_validation)
@@ -242,11 +254,12 @@ namespace ix
     {
         std::lock_guard<std::mutex> lock(_mutex);
 
-        if (_sslContext == nullptr) return;
-
-        SSLClose(_sslContext);
-        CFRelease(_sslContext);
-        _sslContext = nullptr;
+        if (_sslContext != nullptr)
+        {
+            SSLClose(_sslContext);
+            CFRelease(_sslContext);
+            _sslContext = nullptr;
+        }
 
         Socket::close();
     }
@@ -277,6 +290,7 @@ namespace ix
                 return -1;
             }
         }
+        Socket::setErrno(EIO);
         return -1;
     }
 
@@ -294,8 +308,12 @@ namespace ix
 
             // The connection was reset, inform the caller that this
             // Socket should close
-            if (status == errSSLClosedGraceful || status == errSSLClosedNoNotify ||
-                status == errSSLClosedAbort)
+            if (status == errSSLClosedGraceful)
+            {
+                Socket::setErrno(0);
+                return 0;
+            }
+            if (status == errSSLClosedNoNotify || status == errSSLClosedAbort)
             {
                 Socket::setErrno(ECONNRESET);
                 return -1;
@@ -307,6 +325,7 @@ namespace ix
                 return -1;
             }
         }
+        Socket::setErrno(EIO);
         return -1;
     }
 

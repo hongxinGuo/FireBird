@@ -293,4 +293,4 @@ protected:
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;
 
-extern vector<CVirtualDataSourcePtr> gl_vDataSource; // 各数据源，用于主动结束线程时使用。
+inline vector<CVirtualDataSourcePtr> gl_vDataSource; // 各数据源，用于主动结束线程时使用。

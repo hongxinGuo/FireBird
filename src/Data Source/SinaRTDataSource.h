@@ -1,6 +1,6 @@
 #pragma once
 
-#include"VirtualDataSource.h"
+#include "VirtualDataSource.h"
 #include <cpr/cprtypes.h>
 
 class CSinaRTDataSource : public CVirtualDataSource {
@@ -24,4 +24,4 @@ public:
 };
 
 using CSinaRTDataSourcePtr = shared_ptr<CSinaRTDataSource>;
-extern CSinaRTDataSourcePtr gl_pSinaRTDataSource; // 新浪实时数据引擎，唯一实例
+inline CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr; // 新浪实时数据引擎，唯一实例

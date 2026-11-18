@@ -39,6 +39,7 @@ namespace ix
         virtual std::ptrdiff_t recv(void* buffer, size_t length) final;
 
     private:
+        friend struct SocketOpenSSLWriteTestAccess;
         void openSSLInitialize();
         std::string getSSLError(int ret);
         SSL_CTX* openSSLCreateContext(std::string& errMsg);
@@ -52,8 +53,9 @@ namespace ix
         bool openSSLServerHandshake(std::string& errMsg,
                                     const CancellationRequest& isCancellationRequested);
 
-        // Required for OpenSSL < 1.1
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
         static void openSSLLockingCallback(int mode, int type, const char* /*file*/, int /*line*/);
+#endif
 
         SSL* _ssl_connection;
         SSL_CTX* _ssl_context;

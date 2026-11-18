@@ -94,7 +94,9 @@ namespace ix
 
     std::atomic<bool> SocketOpenSSL::_openSSLInitializationSuccessful(false);
     std::once_flag SocketOpenSSL::_openSSLInitFlag;
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
     std::vector<std::unique_ptr<std::mutex>> openSSLMutexes;
+#endif
 
     SocketOpenSSL::SocketOpenSSL(const SocketTLSOptions& tlsOptions, int fd)
         : Socket(fd)
@@ -126,14 +128,15 @@ namespace ix
             }
             CRYPTO_set_locking_callback(SocketOpenSSL::openSSLLockingCallback);
         }
-#endif
 
         (void) OpenSSL_add_ssl_algorithms();
         (void) SSL_load_error_strings();
+#endif
 
         _openSSLInitializationSuccessful = true;
     }
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
     void SocketOpenSSL::openSSLLockingCallback(int mode,
                                                int type,
                                                const char* /*file*/,
@@ -148,6 +151,7 @@ namespace ix
             openSSLMutexes[type]->unlock();
         }
     }
+#endif
 
     std::string SocketOpenSSL::getSSLError(int ret)
     {
@@ -313,7 +317,11 @@ namespace ix
 #endif
                                                std::string& errMsg)
     {
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L && !defined(LIBRESSL_VERSION_NUMBER)
+        X509* server_cert = SSL_get1_peer_certificate(ssl);
+#else
         X509* server_cert = SSL_get_peer_certificate(ssl);
+#endif
         if (server_cert == nullptr)
         {
             errMsg = "OpenSSL failed - peer didn't present a X509 certificate.";
@@ -389,7 +397,7 @@ namespace ix
                 return false;
             }
 
-            if (isCancellationRequested())
+            if (isCancellationRequested && isCancellationRequested())
             {
                 errMsg = "Cancellation requested";
                 return false;
@@ -411,7 +419,9 @@ namespace ix
             bool rc = false;
             if (reason == SSL_ERROR_WANT_READ || reason == SSL_ERROR_WANT_WRITE)
             {
-                rc = true;
+                auto ready = reason == SSL_ERROR_WANT_READ ? isReadyToRead(10) : isReadyToWrite(10);
+                rc = ready != PollResultType::Error;
+                if (!rc) errMsg = "Socket error during TLS handshake";
             }
             else
             {
@@ -719,7 +729,9 @@ namespace ix
                 return false;
             }
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
             SSL_set_ecdh_auto(_ssl_connection, 1);
+#endif
 
             SSL_set_fd(_ssl_connection, _sockfd);
 
@@ -750,7 +762,7 @@ namespace ix
                 return false;
             }
 
-            _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested);
+            _sockfd = connectToHost(host, port, errMsg, isCancellationRequested);
             if (_sockfd == -1) return false;
 
             _ssl_context = openSSLCreateContext(errMsg);
@@ -856,37 +868,33 @@ namespace ix
         }
         else
         {
+            Socket::setErrno(EIO);
             return -1;
         }
     }
 
     std::ptrdiff_t SocketOpenSSL::recv(void* buf, size_t nbyte)
     {
-        while (true)
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_ssl_connection == nullptr || _ssl_context == nullptr)
         {
-            std::lock_guard<std::mutex> lock(_mutex);
-
-            if (_ssl_connection == nullptr || _ssl_context == nullptr)
-            {
-                return 0;
-            }
-
-            ERR_clear_error();
-            std::ptrdiff_t read_result = SSL_read(_ssl_connection, buf, (int) nbyte);
-
-            if (read_result > 0)
-            {
-                return read_result;
-            }
-
-            int reason = SSL_get_error(_ssl_connection, (int) read_result);
-
-            if (reason == SSL_ERROR_WANT_READ || reason == SSL_ERROR_WANT_WRITE)
-            {
-                Socket::setErrno(EWOULDBLOCK);
-            }
-            return -1;
+            Socket::setErrno(0);
+            return 0;
         }
+
+        ERR_clear_error();
+        const int result = SSL_read(_ssl_connection, buf, static_cast<int>(nbyte));
+        if (result > 0) return result;
+
+        const int reason = SSL_get_error(_ssl_connection, result);
+        if (reason == SSL_ERROR_ZERO_RETURN)
+        {
+            Socket::setErrno(0);
+            return 0;
+        }
+        Socket::setErrno(
+            reason == SSL_ERROR_WANT_READ || reason == SSL_ERROR_WANT_WRITE ? EWOULDBLOCK : EIO);
+        return -1;
     }
 
 } // namespace ix

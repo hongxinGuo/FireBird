@@ -15,7 +15,7 @@ int ReportExitToWatchdog();
 int ReportSchedulingExitToWatchdog();
 int ReportCheckRunningExitToWatchdog();
 
-extern UINT gl_MsgFireBirdExit;
-extern UINT gl_MsgFireBirdSchedulingExit;
-extern UINT gl_MsgFireBirdCheckRunningExit;
-extern UINT gl_MsgFireBirdRunning;
+inline UINT gl_MsgFireBirdExit{ 0 };
+inline UINT gl_MsgFireBirdSchedulingExit{ 0 };
+inline UINT gl_MsgFireBirdCheckRunningExit{ 0 };
+inline UINT gl_MsgFireBirdRunning{ 0 };

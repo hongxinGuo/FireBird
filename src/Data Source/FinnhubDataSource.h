@@ -2,7 +2,7 @@
 
 #include <cpr/cprtypes.h>
 
-#include"VirtualDataSource.h"
+#include "VirtualDataSource.h"
 
 class CFinnhubFactory;
 
@@ -94,7 +94,8 @@ public:
 	void SetUpdateCompanySymbolChange(const bool fFlag) noexcept { m_fUpdateCompanySymbolChange = fFlag; }
 
 protected:
-	// 每日更新项目，目前共21项。
+	// 每日更新项目，目前共22项。
+	bool m_fUpdateCompanySymbolChange{ true };
 	bool m_fUpdateSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateMarketStatus{ true }; // 每日查询市场状态
 	bool m_fUpdateMarketHoliday{ true }; // 每日查询市场假日
@@ -116,7 +117,6 @@ protected:
 	bool m_fUpdateEconomicCalendar{ true }; // 每日更新经济日历数据
 	bool m_fUpdateEPSSurprise{ true };
 	bool m_fUpdateSECFilings{ true };
-	bool m_fUpdateCompanySymbolChange{ true };
 
 	unique_ptr<CFinnhubFactory> m_pFinnhubFactory;
 
@@ -128,4 +128,4 @@ private:
 };
 
 using CFinnhubDataSourcePtr = shared_ptr<CFinnhubDataSource>;
-extern CFinnhubDataSourcePtr gl_pFinnhubDataSource;
+inline CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;

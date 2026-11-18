@@ -1,12 +1,12 @@
-#include"pch.h"
+#include "pch.h"
 
 #include <gtest/gtest.h>
-#include"GeneralCheck.h"
+#include "GeneralCheck.h"
 
-#include"VirtualMarket.h"
-#include"TimeConvert.h"
+#include "VirtualMarket.h"
+#include "TimeConvert.h"
 
-#include"MarketTask.h"
+#include "MarketTask.h"
 
 using namespace std;
 using std::literals::chrono_literals::operator ""s;
@@ -29,6 +29,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
+			EXPECT_TRUE(virtualMarket.GetLocalMarketTimeZoneString() == "") << "CVirtualMarket本地市场时区字符串应为空";
 			virtualMarket.CreateLocalTimeZone("America/New_York");// CVirtualMarket没有设置时区，故而在测试中直接调用CreateLocalTimeZone函数
 		}
 

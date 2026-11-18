@@ -10,6 +10,7 @@
 #include "IXSelectInterrupt.h"
 #include "IXSelectInterruptFactory.h"
 #include "IXSocketConnect.h"
+#include "IXSocks5.h"
 #include <algorithm>
 #include <array>
 #include <assert.h>
@@ -116,38 +117,39 @@ namespace ix
             // The InterruptEvent was signaled
             readSelectInterruptRequest(selectInterrupt, &pollResult);
         }
-        else if (sockfd != -1 && readyToRead && fds[0].revents & POLLIN)
+        else if (sockfd != static_cast<socket_t>(-1) && readyToRead && fds[0].revents & POLLIN)
         {
             pollResult = PollResultType::ReadyForRead;
         }
-        else if (sockfd != -1 && !readyToRead && fds[0].revents & POLLOUT)
+        else if (sockfd != static_cast<socket_t>(-1) && !readyToRead &&
+                 (fds[0].revents & (POLLOUT | POLLERR | POLLHUP | POLLNVAL)))
         {
-            pollResult = PollResultType::ReadyForWrite;
-
-#ifdef _WIN32
-            // On connect error, in async mode, windows will write to the exceptions fds
-            if (fds[0].revents & POLLERR)
+            int error = 0;
+            socklen_t length = sizeof(error);
+            if (getsockopt(
+                    sockfd, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&error), &length) != 0)
             {
+                // Preserve the getsockopt error, rather than overwriting it with zero.
                 pollResult = PollResultType::Error;
             }
-#else
-            int optval = -1;
-            socklen_t optlen = sizeof(optval);
-
-            // getsockopt() puts the errno value for connect into optval so 0
-            // means no-error.
-            if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &optval, &optlen) == -1 || optval != 0)
+            else if (error != 0)
             {
+                Socket::setErrno(error);
                 pollResult = PollResultType::Error;
-
-                // set errno to optval so that external callers can have an
-                // appropriate error description when calling strerror
-                errno = optval;
             }
-#endif
+            else if (fds[0].revents & (POLLERR | POLLHUP | POLLNVAL))
+            {
+                Socket::setErrno((fds[0].revents & POLLNVAL) ? EBADF : ECONNRESET);
+                pollResult = PollResultType::Error;
+            }
+            else
+            {
+                pollResult = PollResultType::ReadyForWrite;
+            }
         }
-        else if (sockfd != -1 && (fds[0].revents & POLLERR || fds[0].revents & POLLHUP ||
-                                  fds[0].revents & POLLNVAL))
+        else if (sockfd != static_cast<socket_t>(-1) &&
+                 (fds[0].revents & POLLERR || fds[0].revents & POLLHUP ||
+                  fds[0].revents & POLLNVAL))
         {
             pollResult = PollResultType::Error;
         }
@@ -236,8 +238,29 @@ namespace ix
 
         if (!_selectInterrupt->clear()) return false;
 
-        _sockfd = SocketConnect::connect(host, port, errMsg, isCancellationRequested);
+        _sockfd = connectToHost(host, port, errMsg, isCancellationRequested);
         return _sockfd != -1;
+    }
+
+    void Socket::setProxyOptions(const ProxyOptions& options)
+    {
+        _proxyOptions = options;
+    }
+
+    int Socket::connectToHost(const std::string& host,
+                              int port,
+                              std::string& error,
+                              const CancellationRequest& cancelled)
+    {
+        if (_proxyOptions.host.empty()) return SocketConnect::connect(host, port, error, cancelled);
+        if (!Socks5::validate(_proxyOptions, error)) return -1;
+        int fd = SocketConnect::connect(_proxyOptions.host, _proxyOptions.port, error, cancelled);
+        if (fd != -1 && !Socks5::connect(fd, host, port, _proxyOptions, error, cancelled))
+        {
+            Socket::closeSocket(fd);
+            return -1;
+        }
+        return fd;
     }
 
     void Socket::close()
@@ -283,6 +306,11 @@ namespace ix
 #endif
     }
 
+    // Darwin TSan can confuse reused per-thread errno storage with shared memory.
+    // These accessors touch only OS thread-local error state; keep callers instrumented.
+#if defined(__APPLE__) && defined(__clang__)
+    __attribute__((no_sanitize("thread")))
+#endif
     int Socket::getErrno()
     {
         int err;
@@ -296,6 +324,9 @@ namespace ix
         return err;
     }
 
+#if defined(__APPLE__) && defined(__clang__)
+    __attribute__((no_sanitize("thread")))
+#endif
     void Socket::setErrno(int err)
     {
 #ifdef _WIN32
@@ -469,7 +500,8 @@ namespace ix
                 }
                 bytesRead += ret;
             }
-            else if (ret <= 0 && !Socket::isWaitNeeded())
+            // A zero return is EOF; the previous socket error is irrelevant.
+            else if (ret == 0 || !Socket::isWaitNeeded())
             {
                 const std::string errorMsg("Recv Error");
                 return std::make_pair(false, errorMsg);
@@ -479,7 +511,7 @@ namespace ix
 
             // Wait with a 1ms timeout until the socket is ready to read.
             // This way we are not busy looping
-            if (isReadyToRead(1) == PollResultType::Error)
+            if (bytesRead != length && isReadyToRead(1) == PollResultType::Error)
             {
                 const std::string errorMsg("Poll Error");
                 return std::make_pair(false, errorMsg);

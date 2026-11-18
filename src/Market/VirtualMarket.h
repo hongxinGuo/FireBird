@@ -6,7 +6,7 @@ class CStockExchange;
 class CVirtualDataSource;
 //class CMarketTask;
 
-#include"MarketTaskQueue.h"
+#include "MarketTaskQueue.h"
 
 using std::vector;
 using std::shared_ptr;
@@ -101,6 +101,7 @@ public:
 	sys_seconds ToUTCTime(const local_seconds& localTime) const { return m_marketTimeZone->to_sys(localTime); } // 将本市场的当地时间转化为UTC时间
 	sys_seconds ConvertToUTCTime(int marketDate, long lMarketTime) const; // 将市场时间转化为UTC时间
 	long ConvertToDate(sys_seconds tp) const noexcept;
+	string GetLocalMarketTimeZoneString() const { return m_strLocalMarketTimeZone; }
 
 	// 测试用
 	void TEST_SetMarketTime(local_seconds ls) noexcept;// 此函数只用于测试
@@ -154,7 +155,7 @@ protected:
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 	// 时间区
-	string m_strLocalMarketTimeZone{ "" }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	string m_strLocalMarketTimeZone{}; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 	const time_zone* m_marketTimeZone{ nullptr }; //Note:微软实现的chrono库中，time_zone静态变量保留至程序退出之后，导致调试系统误报内存泄露。
 	local_seconds m_marketClock; // 本市场的当地时钟 m_marketClock = m_marketDate + m_marketTimeOfDay
 
@@ -164,4 +165,4 @@ private:
 
 using CVirtualMarketWeakPtr = std::weak_ptr<CVirtualMarket>;
 using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;
-extern vector<CVirtualMarketPtr> gl_vMarket; // 各市场指针的容器，只用于执行各市场的ScheduleTask
+inline vector<CVirtualMarketPtr> gl_vMarket{}; // 各市场指针的容器，只用于执行各市场的ScheduleTask

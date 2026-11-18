@@ -29,4 +29,4 @@ protected:
 
 using CAccessoryDataSourcePtr = shared_ptr<CAccessoryDataSource>;
 
-extern CAccessoryDataSourcePtr gl_pAccessoryDataSource;
+inline CAccessoryDataSourcePtr gl_pAccessoryDataSource = nullptr;

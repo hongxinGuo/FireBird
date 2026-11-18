@@ -41,4 +41,4 @@ protected:
 };
 
 using CTengxunDayLineDataSourcePtr = shared_ptr<CTengxunDayLineDataSource>;
-extern CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource;
+inline CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;

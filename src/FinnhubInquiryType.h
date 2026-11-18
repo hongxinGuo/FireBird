@@ -161,4 +161,4 @@ protected:
 	map<string, int> m_mapFinnhubInquiryStringToIndex;
 };
 
-extern CFinnhubInquiryType gl_FinnhubInquiryType;
+inline CFinnhubInquiryType gl_FinnhubInquiryType;

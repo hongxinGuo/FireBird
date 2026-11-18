@@ -156,4 +156,4 @@ protected:
 	atomic_long m_lScheduleTaskTimePerSecond{ 0 };
 };
 
-extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在全局变量初始化时的前面，其他全局变量初始化时用到此变量。
+inline CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在全局变量初始化时的前面，其他全局变量初始化时用到此变量。

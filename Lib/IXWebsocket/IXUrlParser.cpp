@@ -31,8 +31,9 @@
 
 #include "IXUrlParser.h"
 
+#include "IXStrCaseCompare.h"
 #include <algorithm>
-#include <cstdlib>
+#include <cctype>
 #include <cstring>
 
 namespace
@@ -67,6 +68,7 @@ namespace
         std::string m_Port;
         std::string m_Path;
         std::string m_Query;
+        bool m_HasQuery = false;
         std::string m_Fragment;
         std::string m_UserName;
         std::string m_Password;
@@ -83,7 +85,7 @@ namespace
         }
 
         /// helper to convert the port number to int, return 'true' if the port is valid (within the
-        /// 0..65535 range)
+        /// 1..65535 range)
         bool GetPort(int* OutPort) const;
 
         /// parse the URL
@@ -96,13 +98,19 @@ namespace
         }
     };
 
+    static bool IsAsciiAlpha(unsigned char c)
+    {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    }
+
     static bool IsSchemeValid(const std::string& SchemeName)
     {
-        for (auto c : SchemeName)
+        if (SchemeName.empty() || !IsAsciiAlpha(SchemeName[0])) return false;
+        for (unsigned char c : SchemeName)
         {
-            if (!isalpha(c) && c != '+' && c != '-' && c != '.') return false;
+            if (!IsAsciiAlpha(c) && !(c >= '0' && c <= '9') && c != '+' && c != '-' && c != '.')
+                return false;
         }
-
         return true;
     }
 
@@ -113,12 +121,13 @@ namespace
             return false;
         }
 
-        int Port = atoi(m_Port.c_str());
-
-        if (Port <= 0 || Port > 65535)
+        int Port = 0;
+        for (auto c : m_Port)
         {
-            return false;
+            Port = Port * 10 + (c - '0');
+            if (Port > 65535) return false;
         }
+        if (Port == 0) return false;
 
         if (OutPort)
         {
@@ -138,6 +147,9 @@ namespace
     // Note: this is not a full RFC validator; it is a fast parser with targeted syntax checks.
     clParseURL clParseURL::ParseURL(const std::string& URL)
     {
+        if (std::any_of(
+                URL.begin(), URL.end(), [](unsigned char c) { return c <= 0x20 || c == 0x7f; }))
+            return clParseURL(LUrlParserError_NoUrlCharacter);
         clParseURL Result;
         const std::size_t npos = std::string::npos;
         std::size_t current = 0;
@@ -158,7 +170,7 @@ namespace
         std::transform(Result.m_Scheme.begin(),
                        Result.m_Scheme.end(),
                        Result.m_Scheme.begin(),
-                       ::tolower);
+                       [](unsigned char c) { return c >= 'A' && c <= 'Z' ? c + ('a' - 'A') : c; });
 
         current = schemeEnd + 1;
 
@@ -170,7 +182,7 @@ namespace
         current += 2;
 
         // Step 3: locate the authority boundary (<authority> ends at '/' or '?').
-        std::size_t authorityEnd = URL.find_first_of("/?", current);
+        std::size_t authorityEnd = URL.find_first_of("/?#", current);
         if (authorityEnd == npos)
         {
             authorityEnd = URL.size();
@@ -208,7 +220,7 @@ namespace
         }
 
         // Step 5: parse host and optional port from authority tail.
-        authorityEnd = URL.find_first_of("/?", current);
+        authorityEnd = URL.find_first_of("/?#", current);
         if (authorityEnd == npos)
         {
             authorityEnd = URL.size();
@@ -327,7 +339,7 @@ namespace
         }
 
         // Step 7: parse path start (either '/' or query-only '?').
-        if (URL[current] != '/' && URL[current] != '?')
+        if (URL[current] != '/' && URL[current] != '?' && URL[current] != '#')
         {
             return clParseURL(LUrlParserError_NoSlash);
         }
@@ -352,6 +364,7 @@ namespace
         // Step 9: parse optional query after '?', up to '#'.
         if (current < URL.size() && URL[current] == '?')
         {
+            Result.m_HasQuery = true;
             ++current;
 
             std::size_t queryEnd = URL.find('#', current);
@@ -393,6 +406,18 @@ namespace
 
 namespace ix
 {
+    bool UrlParser::isSameOrigin(const std::string& first, const std::string& second)
+    {
+        std::string firstProtocol, firstHost, firstPath, firstQuery;
+        std::string secondProtocol, secondHost, secondPath, secondQuery;
+        int firstPort, secondPort;
+        return parse(first, firstProtocol, firstHost, firstPath, firstQuery, firstPort) &&
+               parse(second, secondProtocol, secondHost, secondPath, secondQuery, secondPort) &&
+               firstProtocol == secondProtocol && firstPort == secondPort &&
+               !CaseInsensitiveLess::cmp(firstHost, secondHost) &&
+               !CaseInsensitiveLess::cmp(secondHost, firstHost);
+    }
+
     bool UrlParser::parse(const std::string& url,
                           std::string& protocol,
                           std::string& host,
@@ -405,12 +430,12 @@ namespace ix
     }
 
     bool UrlParser::parse(const std::string& url,
-                              std::string& protocol,
-                              std::string& host,
-                              std::string& path,
-                              std::string& query,
-                              int& port,
-                              bool& isProtocolDefaultPort)
+                          std::string& protocol,
+                          std::string& host,
+                          std::string& path,
+                          std::string& query,
+                          int& port,
+                          bool& isProtocolDefaultPort)
     {
         clParseURL res = clParseURL::ParseURL(url);
 
@@ -427,6 +452,7 @@ namespace ix
         const auto protocolPort = getProtocolPort(protocol);
         if (!res.GetPort(&port))
         {
+            if (!res.m_Port.empty()) return false;
             port = protocolPort;
         }
         isProtocolDefaultPort = port == protocolPort;
@@ -440,7 +466,7 @@ namespace ix
             path = '/' + path;
         }
 
-        if (!query.empty())
+        if (res.m_HasQuery)
         {
             path += "?";
             path += query;

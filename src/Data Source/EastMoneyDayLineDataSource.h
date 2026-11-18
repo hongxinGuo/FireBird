@@ -60,4 +60,4 @@ protected:
 };
 
 using CEastmoneyDayLineDataSourcePtr = shared_ptr<CEastmoneyDayLineDataSource>;
-extern CEastmoneyDayLineDataSourcePtr gl_pEastmoneyDayLineDataSource;
+inline CEastmoneyDayLineDataSourcePtr gl_pEastmoneyDayLineDataSource = nullptr;

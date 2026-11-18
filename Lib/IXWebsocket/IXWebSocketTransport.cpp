@@ -41,6 +41,7 @@
 #include "IXUtf8Validator.h"
 #include "IXWebSocketHandshake.h"
 #include "IXWebSocketHttpHeaders.h"
+#include <algorithm>
 #include <chrono>
 #include <cstdarg>
 #include <cstdlib>
@@ -92,19 +93,23 @@ namespace ix
         const WebSocketPerMessageDeflateOptions& perMessageDeflateOptions,
         const SocketTLSOptions& socketTLSOptions,
         bool enablePong,
-        int pingIntervalSecs)
+        int pingIntervalSecs,
+        const ProxyOptions& proxyOptions)
     {
         _perMessageDeflateOptions = perMessageDeflateOptions;
         _enablePerMessageDeflate = _perMessageDeflateOptions.enabled();
         _socketTLSOptions = socketTLSOptions;
+        _proxyOptions = proxyOptions;
         _enablePong = enablePong;
         _pingIntervalSecs = pingIntervalSecs;
     }
 
     // Client
-    WebSocketInitResult WebSocketTransport::connectToUrl(const std::string& url,
-                                                         const WebSocketHttpHeaders& headers,
-                                                         int timeoutSecs)
+    WebSocketInitResult WebSocketTransport::connectToUrl(
+        const std::string& url,
+        const WebSocketHttpHeaders& headers,
+        int timeoutSecs,
+        const std::vector<std::string>& disabledDefaultHeaders)
     {
         resetConnectionState();
         std::lock_guard<std::mutex> lock(_socketMutex);
@@ -112,6 +117,7 @@ namespace ix
         std::string protocol, host, path, query;
         int port;
         std::string remoteUrl(url);
+        WebSocketHttpHeaders requestHeaders(headers);
 
         WebSocketInitResult result;
         const int maxRedirections = 10;
@@ -127,7 +133,7 @@ namespace ix
 
             std::string errorMsg;
             bool tls = protocol == "wss";
-            _socket = createSocket(tls, -1, errorMsg, _socketTLSOptions);
+            _socket = createSocket(tls, -1, errorMsg, _socketTLSOptions, _proxyOptions);
             _perMessageDeflate = ix::make_unique<WebSocketPerMessageDeflate>();
 
             if (!_socket)
@@ -141,8 +147,14 @@ namespace ix
                                                   _perMessageDeflateOptions,
                                                   _enablePerMessageDeflate);
 
-            result = webSocketHandshake.clientHandshake(
-                remoteUrl, headers, protocol, host, path, port, timeoutSecs);
+            result = webSocketHandshake.clientHandshake(remoteUrl,
+                                                        requestHeaders,
+                                                        protocol,
+                                                        host,
+                                                        path,
+                                                        port,
+                                                        timeoutSecs,
+                                                        disabledDefaultHeaders);
 
             if (result.http_status >= 300 && result.http_status < 400)
             {
@@ -156,6 +168,11 @@ namespace ix
                     break;
                 }
 
+                if (!UrlParser::isSameOrigin(remoteUrl, it->second))
+                {
+                    requestHeaders.erase("Authorization");
+                    requestHeaders.erase("Cookie");
+                }
                 remoteUrl = it->second;
                 continue;
             }
@@ -219,6 +236,8 @@ namespace ix
         // No state change, return
         if (_readyState == readyState) return;
 
+        // Callbacks must observe the new state, including reentrant close() calls.
+        _readyState = readyState;
         if (readyState == ReadyState::CLOSED)
         {
             if (_onCloseCallback)
@@ -235,8 +254,6 @@ namespace ix
             initTimePointsAfterConnect();
             _pongReceived = false;
         }
-
-        _readyState = readyState;
     }
 
     void WebSocketTransport::setOnCloseCallback(const OnCloseCallback& onCloseCallback)
@@ -318,6 +335,7 @@ namespace ix
 
     WebSocketTransport::PollResult WebSocketTransport::poll()
     {
+        if (isAbnormalClose()) return PollResult::AbnormalClose;
         if (_readyState == ReadyState::OPEN)
         {
             if (pingIntervalExceeded())
@@ -383,14 +401,14 @@ namespace ix
                 return PollResult::AbnormalClose;
             }
         }
-        else if (pollResult == PollResultType::Error)
+        else if (pollResult == PollResultType::Error || pollResult == PollResultType::CloseRequest)
         {
             closeSocket();
+            // Let dispatch consume buffered frames and finish the state transition.
+            return PollResult::AbnormalClose;
         }
-        else if (pollResult == PollResultType::CloseRequest)
-        {
-            closeSocket();
-        }
+
+        if (isAbnormalClose()) return PollResult::AbnormalClose;
 
         if (_readyState == ReadyState::CLOSING && closingDelayExceeded())
         {
@@ -409,9 +427,13 @@ namespace ix
         // Take this lock before _socketMutex, matching sendOnSocket()'s lock order.
         std::lock_guard<std::mutex> lock(_txbufMutex);
         _txbuf.clear();
+        _txbufPending.clear();
+        _txbufPendingOffset = 0;
         _rxbuf.clear();
         _rxbufWanted = 0;
         _chunks.clear();
+        _utf8Validator.reset();
+        _validatedBytes = 0;
         _fragmentedMessageKind = MessageKind::MSG_TEXT;
         _receivedMessageCompressed = false;
     }
@@ -419,7 +441,7 @@ namespace ix
     bool WebSocketTransport::isSendBufferEmpty() const
     {
         std::lock_guard<std::mutex> lock(_txbufMutex);
-        return _txbuf.empty();
+        return _txbuf.empty() && _txbufPending.empty();
     }
 
     template<class Iterator>
@@ -454,6 +476,28 @@ namespace ix
         }
     }
 
+    bool WebSocketTransport::validateFramePayload(const wsheader_type& ws)
+    {
+        if (_readyState != ReadyState::OPEN) return true;
+        const bool text = ws.opcode == wsheader_type::TEXT_FRAME && _chunks.empty() &&
+                          !(_enablePerMessageDeflate && ws.rsv1);
+        const bool continuation = ws.opcode == wsheader_type::CONTINUATION && !_chunks.empty() &&
+                                  _fragmentedMessageKind == MessageKind::MSG_TEXT &&
+                                  !_receivedMessageCompressed;
+        if (!text && !continuation) return true;
+        if (text && _validatedBytes == 0) _utf8Validator.reset();
+
+        const auto available =
+            (std::min) (static_cast<uint64_t>(_rxbuf.size() - ws.header_size), ws.N);
+        for (; _validatedBytes < available; ++_validatedBytes)
+        {
+            uint8_t byte = _rxbuf[ws.header_size + _validatedBytes];
+            if (ws.mask) byte ^= ws.masking_key[_validatedBytes & 3];
+            if (!_utf8Validator.consume(byte)) return false;
+        }
+        return !ws.fin || available != ws.N || _utf8Validator.complete();
+    }
+
     //
     // http://tools.ietf.org/html/rfc6455#section-5.2  Base Framing Protocol
     //
@@ -479,7 +523,8 @@ namespace ix
     void WebSocketTransport::dispatch(WebSocketTransport::PollResult pollResult,
                                       const OnMessageCallback& onMessageCallback)
     {
-        while (true)
+        // Keep processing the close handshake while CLOSING, but stop once CLOSED.
+        while (_readyState != ReadyState::CLOSED)
         {
             wsheader_type ws;
             if (_rxbuf.size() < 2) break;                /* Need at least 2 */
@@ -500,7 +545,7 @@ namespace ix
                 close(WebSocketCloseConstants::kProtocolErrorCode,
                       WebSocketCloseConstants::kProtocolErrorReservedBitUsed,
                       _rxbuf.size());
-                return;
+                break;
             }
 
             //
@@ -538,7 +583,7 @@ namespace ix
             else
             {
                 // invalid payload length according to the spec. bail out
-                return;
+                break;
             }
 
             if (ws.mask)
@@ -560,16 +605,41 @@ namespace ix
             const uint64_t maxFrameSize(1ULL << 63);
             if (ws.N > maxFrameSize)
             {
-                return;
+                break;
+            }
+
+            // Check available text bytes even when TCP has not delivered the whole frame.
+            if (!validateFramePayload(ws))
+            {
+                close(WebSocketCloseConstants::kInvalidFramePayloadData,
+                      WebSocketCloseConstants::kInvalidFramePayloadDataMessage);
+                break;
             }
 
             if (_rxbuf.size() < ws.header_size + ws.N)
             {
                 _rxbufWanted = ws.header_size + ws.N;
-                return; /* Need: ws.header_size+ws.N - _rxbuf.size() */
+                break; /* Need: ws.header_size+ws.N - _rxbuf.size() */
             }
 
             _rxbufWanted = 0;
+            _validatedBytes = 0;
+
+            // After sending Close, consume buffered frames only to find the peer's Close.
+            // In particular, never send a Pong or deliver more data while CLOSING (#620).
+            if (_readyState == ReadyState::CLOSING && ws.opcode != wsheader_type::CLOSE)
+            {
+                _rxbuf.erase(_rxbuf.begin(), _rxbuf.begin() + ws.header_size + (size_t) ws.N);
+                continue;
+            }
+
+            if (ws.opcode == wsheader_type::CLOSE && ws.N > 125)
+            {
+                close(WebSocketCloseConstants::kProtocolErrorCode,
+                      WebSocketCloseConstants::kProtocolErrorMessage);
+                _rxbuf.erase(_rxbuf.begin(), _rxbuf.begin() + ws.header_size + (size_t) ws.N);
+                continue;
+            }
 
             if (!ws.fin && (ws.opcode == wsheader_type::PING || ws.opcode == wsheader_type::PONG ||
                             ws.opcode == wsheader_type::CLOSE))
@@ -577,7 +647,7 @@ namespace ix
                 // Control messages should not be fragmented
                 close(WebSocketCloseConstants::kProtocolErrorCode,
                       WebSocketCloseConstants::kProtocolErrorCodeControlMessageFragmented);
-                return;
+                break;
             }
 
             unmaskReceiveBuffer(ws);
@@ -659,7 +729,7 @@ namespace ix
                     // Unexpected frame type
                     close(WebSocketCloseConstants::kProtocolErrorCode,
                           WebSocketCloseConstants::kProtocolErrorPingPayloadOversized);
-                    return;
+                    break;
                 }
 
                 if (_enablePong)
@@ -737,15 +807,10 @@ namespace ix
                 }
                 else
                 {
-                    // we got the CLOSE frame answer from our close, so we can close the connection
-                    // if the code/reason are the same
-                    bool identicalReason = _closeCode == code && getCloseReason() == reason;
-
-                    if (identicalReason)
-                    {
-                        bool remote = false;
-                        closeSocketAndSwitchToClosedState(code, reason, _rxbuf.size(), remote);
-                    }
+                    // A peer may reply with a different status/reason. Receiving its Close
+                    // completes the handshake; retain our original local close notification.
+                    closeSocketAndSwitchToClosedState(
+                        _closeCode, getCloseReason(), _rxbuf.size(), false);
                 }
             }
             else
@@ -760,8 +825,8 @@ namespace ix
             _rxbuf.erase(_rxbuf.begin(), _rxbuf.begin() + ws.header_size + (size_t) ws.N);
         }
 
-        // if an abnormal closure was raised in poll, and nothing else triggered a CLOSED state in
-        // the received and processed data then close the connection
+        // Finish a failed poll even if parsing stopped on an incomplete or invalid frame.
+        // A buffered Close frame may already have closed the connection with its own code.
         if (pollResult != PollResult::Succeeded)
         {
             _rxbuf.clear();
@@ -808,6 +873,9 @@ namespace ix
                                          bool compressedMessage,
                                          const OnMessageCallback& onMessageCallback)
     {
+        // A previous frame or callback may have started closing the connection.
+        if (_readyState != ReadyState::OPEN) return;
+
         size_t wireSize = message.size();
 
         // When the RSV1 bit is 1 it means the message is compressed
@@ -827,15 +895,7 @@ namespace ix
         }
         else
         {
-            if (messageKind == MessageKind::MSG_TEXT && !validateUtf8(message))
-            {
-                close(WebSocketCloseConstants::kInvalidFramePayloadData,
-                      WebSocketCloseConstants::kInvalidFramePayloadDataMessage);
-            }
-            else
-            {
-                onMessageCallback(message, wireSize, false, messageKind);
-            }
+            onMessageCallback(message, wireSize, false, messageKind);
         }
     }
 
@@ -852,7 +912,8 @@ namespace ix
                                                    bool compress,
                                                    const OnProgressCallback& onProgressCallback)
     {
-        if (_readyState != ReadyState::OPEN && _readyState != ReadyState::CLOSING)
+        if (isAbnormalClose() ||
+            (_readyState != ReadyState::OPEN && _readyState != ReadyState::CLOSING))
         {
             return WebSocketSendInfo(false);
         }
@@ -1081,16 +1142,35 @@ namespace ix
             wsheader_type::TEXT_FRAME, message, _enablePerMessageDeflate, onProgressCallback);
     }
 
+    bool WebSocketTransport::isAbnormalClose() const
+    {
+        return _readyState == ReadyState::CLOSING &&
+               _closeCode == WebSocketCloseConstants::kAbnormalCloseCode;
+    }
+
     bool WebSocketTransport::sendOnSocket()
     {
-        std::lock_guard<std::mutex> lock(_txbufMutex);
-
-        while (_txbuf.size())
+        std::unique_lock<std::mutex> lock(_txbufMutex);
+        if (isAbnormalClose() || _readyState == ReadyState::CLOSED)
         {
+            _txbuf.clear();
+            _txbufPending.clear();
+            _txbufPendingOffset = 0;
+            return false;
+        }
+
+        while (!_txbufPending.empty() || !_txbuf.empty())
+        {
+            if (_txbufPending.empty())
+            {
+                // Detach the batch without copying; appending frames cannot change a retry.
+                _txbufPending.swap(_txbuf);
+            }
             std::ptrdiff_t ret = 0;
             {
-                std::lock_guard<std::mutex> lock(_socketMutex);
-                ret = _socket->send((char*) &_txbuf[0], _txbuf.size());
+                std::lock_guard<std::mutex> socketLock(_socketMutex);
+                ret = _socket->send((char*) _txbufPending.data() + _txbufPendingOffset,
+                                    _txbufPending.size() - _txbufPendingOffset);
             }
 
             if (ret < 0 && Socket::isWaitNeeded())
@@ -1099,16 +1179,20 @@ namespace ix
             }
             else if (ret <= 0)
             {
-                closeSocket();
-                if (_readyState != ReadyState::CLOSING)
-                {
-                    setReadyState(ReadyState::CLOSED);
-                }
+                // close() takes the send-buffer lock when discarding an aborted connection.
+                lock.unlock();
+                close(WebSocketCloseConstants::kAbnormalCloseCode,
+                      WebSocketCloseConstants::kAbnormalCloseMessage);
                 return false;
             }
             else
             {
-                _txbuf.erase(_txbuf.begin(), _txbuf.begin() + ret);
+                _txbufPendingOffset += static_cast<size_t>(ret);
+                if (_txbufPendingOffset == _txbufPending.size())
+                {
+                    _txbufPending.clear();
+                    _txbufPendingOffset = 0;
+                }
             }
         }
 
@@ -1149,6 +1233,7 @@ namespace ix
             else
             {
                 _rxbuf.insert(_rxbuf.end(), _readbuf.begin(), _readbuf.begin() + ret);
+                if (isAbnormalClose()) break;
             }
         }
 
@@ -1213,7 +1298,51 @@ namespace ix
     {
         _requestInitCancellation = true;
 
-        if (_readyState == ReadyState::CLOSING || _readyState == ReadyState::CLOSED)
+        bool startedClose = false;
+        // Keep the terminal-state fast path: close callbacks run under the state
+        // mutex and may call close() again while the transport is CLOSING.
+        if (_readyState != ReadyState::CLOSING && _readyState != ReadyState::CLOSED)
+        {
+            std::lock_guard<std::mutex> lock(_setReadyStateMutex);
+            // Shutdown may have completed while waiting for the lock. Never move
+            // CLOSED back to CLOSING or replace another caller's close request.
+            if (_readyState != ReadyState::CLOSING && _readyState != ReadyState::CLOSED)
+            {
+                if (closeWireSize == 0) closeWireSize = reason.size();
+                setCloseReason(reason);
+                _closeCode = code;
+                _closeWireSize = closeWireSize;
+                _closeRemote = remote;
+
+                {
+                    std::lock_guard<std::mutex> timeLock(_closingTimePointMutex);
+                    _closingTimePoint = std::chrono::steady_clock::now();
+                }
+                // CLOSING has no transition side effects. The state mutex is
+                // already held, so calling setReadyState() here would deadlock.
+                _readyState = ReadyState::CLOSING;
+                startedClose = true;
+            }
+        }
+
+        // An abnormal close has no handshake. Discard pending output and let the I/O
+        // thread close the socket and deliver the terminal callback. Never send 1006 on wire.
+        if (code == WebSocketCloseConstants::kAbnormalCloseCode)
+        {
+            {
+                std::lock_guard<std::mutex> lock(_txbufMutex);
+                _txbuf.clear();
+                _txbufPending.clear();
+                _txbufPendingOffset = 0;
+            }
+            if (_readyState != ReadyState::CLOSED)
+            {
+                wakeUpFromPoll(SelectInterrupt::kCloseRequest);
+            }
+            return;
+        }
+
+        if (!startedClose)
         {
             // Wake up the socket polling thread, as
             // Socket::isReadyToRead() might be still waiting the
@@ -1230,22 +1359,6 @@ namespace ix
             return;
         }
 
-        if (closeWireSize == 0)
-        {
-            closeWireSize = reason.size();
-        }
-
-        setCloseReason(reason);
-        _closeCode = code;
-        _closeWireSize = closeWireSize;
-        _closeRemote = remote;
-
-        {
-            std::lock_guard<std::mutex> lock(_closingTimePointMutex);
-            _closingTimePoint = std::chrono::steady_clock::now();
-        }
-        setReadyState(ReadyState::CLOSING);
-
         sendCloseFrame(code, reason);
 
         // wake up the poll, but do not close yet
@@ -1255,7 +1368,7 @@ namespace ix
     size_t WebSocketTransport::bufferedAmount() const
     {
         std::lock_guard<std::mutex> lock(_txbufMutex);
-        return _txbuf.size();
+        return _txbuf.size() + _txbufPending.size() - _txbufPendingOffset;
     }
 
     bool WebSocketTransport::flushSendBuffer()
@@ -1285,8 +1398,8 @@ namespace ix
 
             if (result == PollResultType::Error)
             {
-                closeSocket();
-                setReadyState(ReadyState::CLOSED);
+                close(WebSocketCloseConstants::kAbnormalCloseCode,
+                      WebSocketCloseConstants::kAbnormalCloseMessage);
                 return false;
             }
             else if (result == PollResultType::ReadyForWrite)
@@ -1303,16 +1416,14 @@ namespace ix
                 // as abnormal close and use "Send Timeout" for the reason.
                 if (now > start + timeoutSecs)
                 {
-                    closeSocketAndSwitchToClosedState(WebSocketCloseConstants::kAbnormalCloseCode,
-                                                      WebSocketCloseConstants::kSendTimeoutMessage,
-                                                      0,
-                                                      false);
+                    close(WebSocketCloseConstants::kAbnormalCloseCode,
+                          WebSocketCloseConstants::kSendTimeoutMessage);
                     return false;
                 }
             }
         }
 
-        return true;
+        return _readyState != ReadyState::CLOSED && !isAbnormalClose();
     }
 
     void WebSocketTransport::setCloseReason(const std::string& reason)

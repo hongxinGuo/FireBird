@@ -992,9 +992,6 @@
     <ClCompile Include="..\src\FinnhubInquiryType.cpp">
       <Filter>Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\globedef.cpp">
-      <Filter>Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
       <Filter>Accessory</Filter>
     </ClCompile>

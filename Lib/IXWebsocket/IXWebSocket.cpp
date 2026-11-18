@@ -79,6 +79,12 @@ namespace ix
         _extraHeaders = headers;
     }
 
+    void WebSocket::setDisabledDefaultHeaders(const std::vector<std::string>& headers)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        _disabledDefaultHeaders = headers;
+    }
+
     const std::string WebSocket::getUrl() const
     {
         std::lock_guard<std::mutex> lock(_configMutex);
@@ -96,6 +102,12 @@ namespace ix
     {
         std::lock_guard<std::mutex> lock(_configMutex);
         _socketTLSOptions = socketTLSOptions;
+    }
+
+    void WebSocket::setProxyOptions(const ProxyOptions& proxyOptions)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        _proxyOptions = proxyOptions;
     }
 
     const WebSocketPerMessageDeflateOptions WebSocket::getPerMessageDeflateOptions() const
@@ -216,15 +228,24 @@ namespace ix
         {
             return WebSocketInitResult(false, 0, "Connection cancelled while waiting for a send");
         }
+        WebSocketHttpHeaders headers;
+        std::vector<std::string> disabledDefaultHeaders;
+        std::vector<std::string> subProtocols;
+        std::string url;
         {
             std::lock_guard<std::mutex> lock(_configMutex);
-            _ws.configure(
-                _perMessageDeflateOptions, _socketTLSOptions, _enablePong, _pingIntervalSecs);
+            _ws.configure(_perMessageDeflateOptions,
+                          _socketTLSOptions,
+                          _enablePong,
+                          _pingIntervalSecs,
+                          _proxyOptions);
+            headers = _extraHeaders;
+            disabledDefaultHeaders = _disabledDefaultHeaders;
+            subProtocols = _subProtocols;
+            url = _url;
         }
 
-        WebSocketHttpHeaders headers(_extraHeaders);
         std::string subProtocolsHeader;
-        const auto &subProtocols = getSubProtocols();
         if (!subProtocols.empty())
         {
             //
@@ -245,7 +266,8 @@ namespace ix
             headers["Sec-WebSocket-Protocol"] = subProtocolsHeader;
         }
 
-        WebSocketInitResult status = _ws.connectToUrl(_url, headers, timeoutSecs);
+        WebSocketInitResult status =
+            _ws.connectToUrl(url, headers, timeoutSecs, disabledDefaultHeaders);
         writeLock.unlock();
         if (!status.success)
         {
@@ -282,8 +304,11 @@ namespace ix
         }
         {
             std::lock_guard<std::mutex> lock(_configMutex);
-            _ws.configure(
-                _perMessageDeflateOptions, _socketTLSOptions, _enablePong, _pingIntervalSecs);
+            _ws.configure(_perMessageDeflateOptions,
+                          _socketTLSOptions,
+                          _enablePong,
+                          _pingIntervalSecs,
+                          _proxyOptions);
         }
 
         WebSocketInitResult status = _ws.connectToSocket(
@@ -397,6 +422,7 @@ namespace ix
 
                 connectErr.reason = status.errorStr;
                 connectErr.http_status = status.http_status;
+                connectErr.headers = status.headers;
 
                 _onMessageCallback(ix::make_unique<WebSocketMessage>(WebSocketMessageType::Error,
                                                                      emptyMsg,

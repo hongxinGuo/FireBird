@@ -65,4 +65,4 @@ private:
 
 using CAlpacaDataSourcePtr = shared_ptr<CAlpacaDataSource>;
 
-extern CAlpacaDataSourcePtr gl_pAlpacaDataSource;
+inline CAlpacaDataSourcePtr gl_pAlpacaDataSource = nullptr;

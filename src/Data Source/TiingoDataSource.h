@@ -82,4 +82,4 @@ protected:
 
 using CTiingoDataSourcePtr = shared_ptr<CTiingoDataSource>;
 
-extern CTiingoDataSourcePtr gl_pTiingoDataSource;
+inline CTiingoDataSourcePtr gl_pTiingoDataSource =nullptr;
