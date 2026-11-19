@@ -11,6 +11,7 @@
 #include "IXSocketConnect.h"
 #include "IXStrCaseCompare.h"
 #include "IXUserAgent.h"
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <fstream>
@@ -32,21 +33,30 @@ namespace
         struct stat info;
         if (stat(path.c_str(), &info) != 0 || !S_ISREG(info.st_mode))
 #endif
+        {
             return std::make_pair(false, memblock);
+        }
 
         std::ifstream file(path, std::ios::binary);
-        if (!file.is_open()) return std::make_pair(false, memblock);
+        if (!file.is_open())
+        {
+            return std::make_pair(false, memblock);
+        }
 
         file.seekg(0, file.end);
         std::streamoff size = file.tellg();
         if (size < 0 || static_cast<uint64_t>(size) > (std::numeric_limits<size_t>::max)())
+        {
             return std::make_pair(false, memblock);
+        }
         file.seekg(0, file.beg);
 
         memblock.resize(static_cast<size_t>(size));
         if (!memblock.empty() && !file.read(reinterpret_cast<char*>(memblock.data()),
                                             static_cast<std::streamsize>(size)))
+        {
             return std::make_pair(false, std::vector<uint8_t>());
+        }
 
         return std::make_pair(true, memblock);
     }
@@ -62,8 +72,11 @@ namespace
     // path never escapes the document root.  Attempts to traverse above /
     // (e.g. GET /../secret) are silently clamped rather than rejected so that
     // the caller receives a predictable 404 instead of a server error.
-    std::string sanitizeUri(const std::string& uri)
+    std::string sanitizeUri(std::string uri)
     {
+#ifdef _WIN32
+        std::replace(uri.begin(), uri.end(), '\\', '/');
+#endif
         std::vector<std::string> parts;
         std::string token;
         std::istringstream stream(uri);
@@ -72,7 +85,10 @@ namespace
         {
             if (token == "..")
             {
-                if (!parts.empty()) parts.pop_back();
+                if (!parts.empty())
+                {
+                    parts.pop_back();
+                }
                 // else: silently ignore attempts to escape above root
             }
             else if (!token.empty() && token != ".")
@@ -94,25 +110,43 @@ namespace
     {
         if (std::string::npos != file_name.find(".html") ||
             std::string::npos != file_name.find(".htm"))
+        {
             return "text/html";
+        }
         else if (std::string::npos != file_name.find(".css"))
+        {
             return "text/css";
+        }
         else if (std::string::npos != file_name.find(".js") ||
                  std::string::npos != file_name.find(".mjs"))
+        {
             return "application/x-javascript";
+        }
         else if (std::string::npos != file_name.find(".ico"))
+        {
             return "image/x-icon";
+        }
         else if (std::string::npos != file_name.find(".png"))
+        {
             return "image/png";
+        }
         else if (std::string::npos != file_name.find(".jpg") ||
                  std::string::npos != file_name.find(".jpeg"))
+        {
             return "image/jpeg";
+        }
         else if (std::string::npos != file_name.find(".gif"))
+        {
             return "image/gif";
+        }
         else if (std::string::npos != file_name.find(".svg"))
+        {
             return "image/svg+xml";
+        }
         else
+        {
             return "application/octet-stream";
+        }
     }
 
 } // namespace
@@ -139,6 +173,11 @@ namespace ix
         _onConnectionCallback = callback;
     }
 
+    void HttpServer::setDocumentRoot(const std::string& documentRoot)
+    {
+        _documentRoot = documentRoot.empty() ? "." : documentRoot;
+    }
+
     void HttpServer::handleConnection(std::unique_ptr<Socket> socket,
                                       std::shared_ptr<ConnectionState> connectionState)
     {
@@ -159,7 +198,8 @@ namespace ix
             else
             {
                 auto response = _onConnectionCallback(request, connectionState);
-                if (!Http::sendResponse(response, socket))
+                // This server handles one ordinary HTTP request per connection.
+                if (!Http::sendResponse(response, socket, true))
                 {
                     logError("Cannot send response");
                 }
@@ -184,7 +224,14 @@ namespace ix
                 headers["Server"] = userAgent();
                 headers["Content-Type"] = response_head_file(uri);
 
-                std::string path("." + uri);
+                std::string path(_documentRoot);
+                if (path.back() == '/'
+#ifdef _WIN32
+                    || path.back() == '\\'
+#endif
+                )
+                    path.pop_back();
+                path += uri;
                 auto res = readAsString(path);
                 bool found = res.first;
                 if (!found)

@@ -85,7 +85,6 @@ bool CAlpacaDataSource::GenerateTradingAsset() {
 		createProduct,
 		[] {
 			gl_systemMessage.SetCurrentAlpacaFunction("Trading asset");
-			gl_systemMessage.PushInformationMessage("Alpaca Trading asset updated");
 		}
 	);
 }

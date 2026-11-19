@@ -1,12 +1,12 @@
-#include"pch.h"
+#include "pch.h"
 
-#include"ProductTengxunRT.h"
+#include "ProductTengxunRT.h"
 
 #include "ChinaMarket.h"
 #include "ContainerChinaStock.h"
-#include"JsonParse.h"
+#include "JsonParse.h"
 #include "TengxunRTDataSource.h"
-#include"cpr/cpr.h"
+#include "cpr/cpr.h"
 
 using std::make_shared;
 
@@ -15,13 +15,14 @@ CProductTengxunRT::CProductTengxunRT() {
 	m_strInquiryFunction = "http://qt.gtimg.cn/q=";
 }
 
-void CProductTengxunRT::InquireData(const std::stop_token& st) {
+void CProductTengxunRT::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		m_r = cpr::Get(cpr::Url{ inquiry },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		               cpr::ProgressCallback([st](cpr::cpr_off_t downLoadTotal, cpr::cpr_off_t downLoadNow, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
 		);
 
 		if (IsWebError()) {

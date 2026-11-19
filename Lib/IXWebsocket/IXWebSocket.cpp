@@ -7,8 +7,10 @@
 #include "IXWebSocket.h"
 
 #include "IXExponentialBackoff.h"
+#include "IXHttpClient.h"
 #include "IXSetThreadName.h"
 #include "IXUniquePtr.h"
+#include "IXUrlParser.h"
 #include "IXUtf8Validator.h"
 #include "IXWebSocketHandshake.h"
 #include <cassert>
@@ -104,6 +106,18 @@ namespace ix
         _socketTLSOptions = socketTLSOptions;
     }
 
+    void WebSocket::setMaxMessageSize(uint64_t bytes)
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        _maxMessageSize = bytes;
+    }
+
+    uint64_t WebSocket::getMaxMessageSize() const
+    {
+        std::lock_guard<std::mutex> lock(_configMutex);
+        return _maxMessageSize;
+    }
+
     void WebSocket::setProxyOptions(const ProxyOptions& proxyOptions)
     {
         std::lock_guard<std::mutex> lock(_configMutex);
@@ -191,7 +205,10 @@ namespace ix
 
     void WebSocket::start()
     {
-        if (_thread.joinable()) return; // we've already been started
+        if (_thread.joinable())
+        {
+            return; // we've already been started
+        }
 
         _thread = std::thread(&WebSocket::run, this);
     }
@@ -200,11 +217,12 @@ namespace ix
     {
         const bool isJoinable = _thread.joinable();
 
-        if(isJoinable)
+        if (isJoinable)
         {
             // we need to set _stop before close()
-            // otherwise automatic reconnection might restart the connection before _stop has a chance to get set
-            // this can happen during high CPU load => _thread.join() below blocks indefinitely
+            // otherwise automatic reconnection might restart the connection before _stop has a
+            // chance to get set this can happen during high CPU load => _thread.join() below blocks
+            // indefinitely
             _stop = true;
             _sleepCondition.notify_one();
         }
@@ -222,27 +240,75 @@ namespace ix
 
     WebSocketInitResult WebSocket::connect(int timeoutSecs)
     {
+        return connectImpl(timeoutSecs, nullptr);
+    }
+
+    WebSocketInitResult WebSocket::connect(HttpClient& httpClient, int timeoutSecs)
+    {
+        return connectImpl(timeoutSecs, &httpClient);
+    }
+
+    WebSocketInitResult WebSocket::connectImpl(int timeoutSecs, HttpClient* httpClient)
+    {
         // Finish any in-flight send before discarding the previous connection's state.
         std::unique_lock<std::mutex> writeLock(_writeMutex, std::defer_lock);
-        if (!waitForWriteLock(writeLock))
+        if (httpClient)
+        {
+            if (!writeLock.try_lock() || _thread.joinable() ||
+                getReadyState() != ReadyState::Closed || _stop)
+            {
+                return WebSocketInitResult(
+                    false, 0, "WebSocket must be stopped and closed before an HTTP upgrade");
+            }
+            if (timeoutSecs <= 0 || !isOnMessageCallbackRegistered())
+            {
+                return WebSocketInitResult(
+                    false, 0, "HTTP upgrade requires a callback and a positive timeout");
+            }
+        }
+        else if (!waitForWriteLock(writeLock))
         {
             return WebSocketInitResult(false, 0, "Connection cancelled while waiting for a send");
         }
+        std::unique_ptr<Socket> connectedSocket;
         WebSocketHttpHeaders headers;
         std::vector<std::string> disabledDefaultHeaders;
         std::vector<std::string> subProtocols;
         std::string url;
         {
             std::lock_guard<std::mutex> lock(_configMutex);
+            url = _url;
+            if (httpClient)
+            {
+                std::string protocol, host, path, query;
+                int port;
+                if (!UrlParser::parse(url, protocol, host, path, query, port) ||
+                    (protocol != "ws" && protocol != "wss"))
+                {
+                    return WebSocketInitResult(
+                        false, 0, "HTTP upgrade requires a ws:// or wss:// URL");
+                }
+                std::string httpUrl = url;
+                httpUrl.replace(0, httpUrl.find(':'), protocol == "wss" ? "https" : "http");
+                std::string error;
+                connectedSocket =
+                    httpClient->takeConnection(httpUrl, _socketTLSOptions, _proxyOptions, error);
+                if (!connectedSocket)
+                {
+                    return WebSocketInitResult(false, 0, error);
+                }
+                // Connection-bound authentication must be repeated by the application.
+                _automaticReconnection = false;
+            }
             _ws.configure(_perMessageDeflateOptions,
                           _socketTLSOptions,
                           _enablePong,
                           _pingIntervalSecs,
-                          _proxyOptions);
+                          _proxyOptions,
+                          _maxMessageSize);
             headers = _extraHeaders;
             disabledDefaultHeaders = _disabledDefaultHeaders;
             subProtocols = _subProtocols;
-            url = _url;
         }
 
         std::string subProtocolsHeader;
@@ -255,7 +321,7 @@ namespace ix
             // 'json,msgpack'
             //
             int i = 0;
-            for (const auto & subProtocol : subProtocols)
+            for (const auto& subProtocol : subProtocols)
             {
                 if (i++ != 0)
                 {
@@ -266,8 +332,8 @@ namespace ix
             headers["Sec-WebSocket-Protocol"] = subProtocolsHeader;
         }
 
-        WebSocketInitResult status =
-            _ws.connectToUrl(url, headers, timeoutSecs, disabledDefaultHeaders);
+        WebSocketInitResult status = _ws.connectToUrl(
+            url, headers, timeoutSecs, disabledDefaultHeaders, std::move(connectedSocket));
         writeLock.unlock();
         if (!status.success)
         {
@@ -308,7 +374,8 @@ namespace ix
                           _socketTLSOptions,
                           _enablePong,
                           _pingIntervalSecs,
-                          _proxyOptions);
+                          _proxyOptions,
+                          _maxMessageSize);
         }
 
         WebSocketInitResult status = _ws.connectToSocket(
@@ -457,7 +524,10 @@ namespace ix
             }
 
             // We can avoid to poll if we want to stop and are not closing
-            if (_stop && !isClosing()) break;
+            if (_stop && !isClosing())
+            {
+                break;
+            }
 
             // 2. Poll to see if there's any new data available
             WebSocketTransport::PollResult pollResult = _ws.poll();
@@ -592,7 +662,10 @@ namespace ix
     {
         // Standard limit ping message size
         constexpr size_t pingMaxPayloadSize = 125;
-        if (text.size() > pingMaxPayloadSize) return WebSocketSendInfo(false);
+        if (text.size() > pingMaxPayloadSize)
+        {
+            return WebSocketSendInfo(false);
+        }
 
         return sendMessage(text, pingType);
     }
@@ -601,7 +674,10 @@ namespace ix
                                              SendMessageKind sendMessageKind,
                                              const OnProgressCallback& onProgressCallback)
     {
-        if (!isConnected()) return WebSocketSendInfo(false);
+        if (!isConnected())
+        {
+            return WebSocketSendInfo(false);
+        }
 
         //
         // It is OK to read and write on the same socket in 2 different threads.

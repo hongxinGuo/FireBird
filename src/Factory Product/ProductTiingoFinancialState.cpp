@@ -109,15 +109,16 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/fundamentals";
 }
 
-void CProductTiingoFinancialState::InquireData(const std::stop_token& st) {
+void CProductTiingoFinancialState::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ s },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
-		);
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		cpr::ProgressCallback([st](cpr::cpr_off_t downLoadTotal, cpr::cpr_off_t downLoadNow, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
+			);
 		if (IsWebError()) {
 			WebStatusCheck(m_r);
 		}

@@ -16,15 +16,16 @@ CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
-void CProductTiingoForexDayLine::InquireData(const std::stop_token& st) {
+void CProductTiingoForexDayLine::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ s },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
-		);
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		cpr::ProgressCallback([st](cpr::cpr_off_t downLoadTotal, cpr::cpr_off_t downLoadNow, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
+			);
 
 		if (IsWebError()) {
 			WebStatusCheck(m_r);

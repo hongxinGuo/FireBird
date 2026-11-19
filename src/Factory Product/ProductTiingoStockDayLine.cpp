@@ -1,19 +1,19 @@
 #include "pch.h"
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
-#include"WorldMarket.h"
+#include "jsonParse.h"
+#include "nlohmannJsonGetValue.h"
+#include "WorldMarket.h"
 #include "ProductTiingoStockDayLine.h"
-#include"TiingoCandleLine.h"
+#include "TiingoCandleLine.h"
 
 #include "ContainerTiingoStock.h"
-#include"TiingoStock.h"
+#include "TiingoStock.h"
 #include "ContainerTiingoSymbol.h"
 #include "SystemMessage.h"
-#include"ContainerTiingoStockDayLine.h"
+#include "ContainerTiingoStockDayLine.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
-#include"cpr/cpr.h"
+#include "cpr/cpr.h"
 
 using namespace std;
 
@@ -26,14 +26,15 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
-void CProductTiingoStockDayLine::InquireData(const std::stop_token& st) {
+void CProductTiingoStockDayLine::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ s },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		               cpr::ProgressCallback([st](cpr::cpr_off_t downLoadTotal, cpr::cpr_off_t downLoadNow, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
 		);
 
 		if (IsWebError()) {

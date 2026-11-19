@@ -34,9 +34,10 @@
 
 #pragma once
 
+#include "IXWebSocketSendData.h"
+#include <cstdint>
 #include <memory>
 #include <string>
-#include "IXWebSocketSendData.h"
 
 namespace ix
 {
@@ -54,7 +55,10 @@ namespace ix
         bool init(const WebSocketPerMessageDeflateOptions& perMessageDeflateOptions, bool isServer);
         bool compress(const IXWebSocketSendData& in, std::string& out);
         bool compress(const std::string& in, std::string& out);
-        bool decompress(const std::string& in, std::string& out);
+        bool decompress(const std::string& in,
+                        std::string& out,
+                        uint64_t maxOutputSize = 0,
+                        bool* limitExceeded = nullptr);
 
     private:
         std::unique_ptr<WebSocketPerMessageDeflateCompressor> _compressor;

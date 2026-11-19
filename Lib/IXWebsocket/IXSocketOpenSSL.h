@@ -43,6 +43,8 @@ namespace ix
         void openSSLInitialize();
         std::string getSSLError(int ret);
         SSL_CTX* openSSLCreateContext(std::string& errMsg);
+        bool configureKeyLogging(SSL_CTX* context, std::string& errMsg);
+        static void keyLogCallback(const SSL* ssl, const char* line);
         bool openSSLAddCARootsFromString(const std::string roots);
         bool openSSLClientHandshake(const std::string& hostname,
                                     std::string& errMsg,
@@ -50,6 +52,7 @@ namespace ix
         bool openSSLCheckServerCert(SSL* ssl, const std::string& hostname, std::string& errMsg);
         bool checkHost(const std::string& host, const char* pattern);
         bool handleTLSOptions(std::string& errMsg);
+        bool configureCredentials(std::string& errMsg);
         bool openSSLServerHandshake(std::string& errMsg,
                                     const CancellationRequest& isCancellationRequested);
 

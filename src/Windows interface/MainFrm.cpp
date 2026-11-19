@@ -1,8 +1,8 @@
 // MainFrm.cpp: CMainFrame 类的实现
-#include"pch.h"
+#include "pch.h"
 
-#include"SystemPublicDeclaration.h"
-#include"SystemMessage.h"
+#include "SystemPublicDeclaration.h"
+#include "SystemMessage.h"
 
 #include "log.h"
 
@@ -10,18 +10,16 @@
 #include "MainFrm.h"
 #include "FireBirdDoc.h"
 
-#include"ChinaStock.h"
-#include"ChinaMarket.h"
-#include"WorldMarket.h"
+#include "ChinaStock.h"
+#include "ChinaMarket.h"
+#include "WorldMarket.h"
 
-#include"SinaRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include"TengxunDayLineDataSource.h"
+#include "SinaRTDataSource.h"
+#include "TengxunRTDataSource.h"
+#include "TengxunDayLineDataSource.h"
 
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
-
-#include <ixwebsocket/IXNetSystem.h>
+#include "FinnhubDataSource.h"
+#include "TiingoDataSource.h"
 
 #include "AlpacaDataSource.h"
 #include "AlpacaIEXWebSocket.h"
@@ -37,7 +35,7 @@
 #include "FinnhubWebSocket.h"
 #include "TimeConvert.h"
 
-#include"Initialization.h"
+#include "Initialization.h"
 #include "InfoReport.h"
 #include "SystemConfiguration.h"
 #include "SystemData.h"
@@ -46,7 +44,7 @@
 #include "TiingoIEXWebSocket.h"
 #include "TiingoStock.h"
 
-#include"concurrencpp/concurrencpp.h"
+#include "concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
 constexpr int iMaxUserToolbars = 10;

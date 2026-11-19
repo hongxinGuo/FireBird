@@ -7,12 +7,12 @@
 #include "pch.h"
 
 #include "VirtualDataSource.h"
-#include"VirtualWebProduct.h"
+#include "VirtualWebProduct.h"
 #include "log.h"
 #include "SystemConfiguration.h"
 #include "SystemMessage.h"
 
-#include"Thread.h"
+#include "Thread.h"
 
 using std::atomic;
 using std::binary_semaphore;
@@ -51,7 +51,7 @@ void CVirtualDataSource::Run(const local_seconds& lMarketTime) {
 		}
 
 		// 启动新的 jthread，支持协作式停止（std::stop_token）
-		m_runThread = std::jthread([this, lMarketTime](const std::stop_token& st) {
+		m_runThread = std::jthread([this, lMarketTime](std::stop_token st) {
 			// 如果被立即请求停止，则直接返回
 			if (st.stop_requested()) return;
 
@@ -73,7 +73,7 @@ namespace {
 // 数据的申请和处理皆位于此处。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::Inquire(const std::stop_token& st) {
+void CVirtualDataSource::Inquire(std::stop_token st) {
 	ABSL_DCHECK(IsInquiring());
 	while (HaveInquiry()) { // 一次申请可以有多个数据
 		if (st.stop_requested()) break;

@@ -44,6 +44,8 @@ namespace ix
 
     using OnTrafficTrackerCallback = std::function<void(size_t size, bool incoming)>;
 
+    class HttpClient;
+
     class WebSocket
     {
     public:
@@ -59,6 +61,10 @@ namespace ix
         void setPerMessageDeflateOptions(
             const WebSocketPerMessageDeflateOptions& perMessageDeflateOptions);
         void setTLSOptions(const SocketTLSOptions& socketTLSOptions);
+        // Incoming payload bytes, before and after decompression. 0 means unlimited.
+        // Configure before connecting; applies to subsequent connections.
+        void setMaxMessageSize(uint64_t bytes);
+        uint64_t getMaxMessageSize() const;
         void setProxyOptions(const ProxyOptions& proxyOptions);
         void setPingMessage(const std::string& sendMessage,
                             SendMessageKind pingType = SendMessageKind::Ping);
@@ -79,6 +85,9 @@ namespace ix
 
         // Run in blocking mode, by connecting first manually, and then calling run.
         WebSocketInitResult connect(int timeoutSecs);
+        // Upgrade a matching idle HTTP connection, preserving TCP/TLS state.
+        // Requires a stopped, closed WebSocket with a callback. Disables automatic reconnection.
+        WebSocketInitResult connect(HttpClient& httpClient, int timeoutSecs);
         void run();
 
         // send is in text mode by default
@@ -97,7 +106,8 @@ namespace ix
                                        const OnProgressCallback& onProgressCallback = nullptr);
         WebSocketSendInfo sendText(const std::string& text,
                                    const OnProgressCallback& onProgressCallback = nullptr);
-        WebSocketSendInfo ping(const std::string& text,SendMessageKind pingType = SendMessageKind::Ping);
+        WebSocketSendInfo ping(const std::string& text,
+                               SendMessageKind pingType = SendMessageKind::Ping);
 
         void close(uint16_t code = WebSocketCloseConstants::kNormalClosureCode,
                    const std::string& reason = WebSocketCloseConstants::kNormalClosureMessage);
@@ -128,6 +138,7 @@ namespace ix
         void setAutoThreadName(bool enabled);
 
     private:
+        WebSocketInitResult connectImpl(int timeoutSecs, HttpClient* httpClient);
         WebSocketSendInfo sendMessage(const IXWebSocketSendData& message,
                                       SendMessageKind sendMessageKind,
                                       const OnProgressCallback& callback = nullptr);
@@ -177,6 +188,7 @@ namespace ix
         std::condition_variable _sleepCondition;
 
         std::atomic<int> _handshakeTimeoutSecs;
+        uint64_t _maxMessageSize = 0;
         IXWEBSOCKET_EXPORT static const int kDefaultHandShakeTimeoutSecs;
 
         // enable or disable PONG frame response to received PING frame

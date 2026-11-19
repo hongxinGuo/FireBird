@@ -1,19 +1,19 @@
 #include "pch.h"
 
 #include "ProductTengxunDayLine.h"
-#include"ChinaMarket.h"
+#include "ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "ContainerChinaStock.h"
-#include"ChinaStock.h"
+#include "ChinaStock.h"
 
-#include"JsonParse.h"
+#include "JsonParse.h"
 #include "SystemData.h"
 #include "TengxunDayLineDataSource.h"
 #include "DayLineWebData.h"
-#include"DayLine.h"
+#include "DayLine.h"
 #include "TimeConvert.h"
 
-#include"cpr/cpr.h"
+#include "cpr/cpr.h"
 
 using std::make_shared;
 using std::chrono_literals::operator ""h;
@@ -49,14 +49,15 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 // 1991年左右的腾讯日线有周六的，需要清除掉。
 // 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductTengxunDayLine::InquireData(const std::stop_token& st) {
+void CProductTengxunDayLine::InquireData(std::stop_token st) {
 	vector<CDayLine> vDayLine;
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		m_r = cpr::Get(cpr::Url{ inquiry },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		               cpr::ProgressCallback([st](cpr::cpr_off_t downLoadTotal, cpr::cpr_off_t downLoadNow, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
 		);
 
 		if (IsWebError()) {

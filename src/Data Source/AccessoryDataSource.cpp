@@ -1,9 +1,8 @@
-#include"pch.h"
+#include "pch.h"
 
 #include "AccessoryDataSource.h"
-#include"AccessoryFactory.h"
+#include "AccessoryFactory.h"
 
-#include "IXUniquePtr.h"
 #include "SystemConfiguration.h"
 
 CAccessoryDataSource::CAccessoryDataSource() {

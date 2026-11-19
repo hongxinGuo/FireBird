@@ -82,14 +82,16 @@ namespace ix
                        const SocketTLSOptions& socketTLSOptions,
                        bool enablePong,
                        int pingIntervalSecs,
-                       const ProxyOptions& proxyOptions = {});
+                       const ProxyOptions& proxyOptions = {},
+                       uint64_t maxMessageSize = 0);
 
         // Client
         WebSocketInitResult connectToUrl(
             const std::string& url,
             const WebSocketHttpHeaders& headers,
             int timeoutSecs,
-            const std::vector<std::string>& disabledDefaultHeaders = {});
+            const std::vector<std::string>& disabledDefaultHeaders = {},
+            std::unique_ptr<Socket> connectedSocket = nullptr);
 
         // Server
         WebSocketInitResult connectToSocket(std::unique_ptr<Socket> socket,
@@ -193,6 +195,8 @@ namespace ix
         // buffer that is resized, as this operation can be slow when a buffer has its
         // size increased 2 fold, while appending to a list has a fixed cost.
         std::list<std::string> _chunks;
+        uint64_t _fragmentedMessageSize = 0;
+        uint64_t _maxMessageSize = 0;
 
         // Record the message kind (will be TEXT or BINARY) for a fragmented
         // message, present in the first chunk, since the final chunk will be a

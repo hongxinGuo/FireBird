@@ -186,7 +186,7 @@ public:
 	virtual bool Reset() { return true; }
 
 	void Run(const local_seconds& lMarketTime);
-	void Inquire(const std::stop_token& st);
+	void Inquire(std::stop_token st);
 	virtual bool GenerateInquiryMessage(const local_seconds&) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual void CheckWebData(const string&) {} // 此WebData内容为错误信息？

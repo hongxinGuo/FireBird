@@ -1,11 +1,11 @@
 #include "pch.h"
 
-#include"cpr/cpr.h"
+#include "cpr/cpr.h"
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+#include "jsonParse.h"
+#include "nlohmannJsonGetValue.h"
 
-#include"Country.h"
+#include "Country.h"
 
 #include "ProductFinnhubEconomicCountryList.h"
 
@@ -19,14 +19,23 @@ CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/country?";
 }
 
-void CProductFinnhubEconomicCountryList::InquireData(const std::stop_token& st) {
+void CProductFinnhubEconomicCountryList::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		               cpr::ProgressCallback([st](cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) {
+			               if (st.stop_requested()) {
+				               ABSL_DLOG(INFO) << "Finnhub company symbol change inquiry stopped by user.";
+			               }
+			               else {
+				               ABSL_DLOG(INFO) << "Finnhub company symbol change inquiry failed.";
+			               }
+			               return !st.stop_requested();
+		               })
 		);
 
 		if (IsWebError()) {

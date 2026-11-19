@@ -13,7 +13,11 @@
 #include "IXSocketConnect.h"
 #include "IXUniquePtr.h"
 #include <cassert>
+#include <climits>
 #include <errno.h>
+#include <fstream>
+#include <memory>
+#include <openssl/pem.h>
 #include <vector>
 #ifdef _WIN32
 #include <shlwapi.h>
@@ -28,6 +32,7 @@
 #ifdef _WIN32
 // For manipulating the certificate store
 #include <windows.h>
+
 #include <wincrypt.h>
 #endif
 
@@ -51,7 +56,8 @@ namespace
         X509_STORE* opensslStore = SSL_CTX_get_cert_store(ssl);
 
         int certificateCount = 0;
-        while ((certificateIterator = CertEnumCertificatesInStore(systemStore, certificateIterator)))
+        while (
+            (certificateIterator = CertEnumCertificatesInStore(systemStore, certificateIterator)))
         {
             X509* x509 = d2i_X509(NULL,
                                   (const unsigned char**) &certificateIterator->pbCertEncoded,
@@ -115,7 +121,10 @@ namespace ix
     void SocketOpenSSL::openSSLInitialize()
     {
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-        if (!OPENSSL_init_ssl(OPENSSL_INIT_LOAD_CONFIG, nullptr)) return;
+        if (!OPENSSL_init_ssl(OPENSSL_INIT_LOAD_CONFIG, nullptr))
+        {
+            return;
+        }
 #else
         (void) OPENSSL_config(nullptr);
 
@@ -225,15 +234,73 @@ namespace ix
             int options = SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_CIPHER_SERVER_PREFERENCE;
 
             SSL_CTX_set_options(ctx, options);
+            if (!configureKeyLogging(ctx, errMsg))
+            {
+                SSL_CTX_free(ctx);
+                return nullptr;
+            }
         }
         return ctx;
+    }
+
+    bool SocketOpenSSL::configureKeyLogging(SSL_CTX* context, std::string& errMsg)
+    {
+        if (_tlsOptions.keyLogFile.empty())
+        {
+            return true;
+        }
+#if OPENSSL_VERSION_NUMBER >= 0x10101000L && !defined(LIBRESSL_VERSION_NUMBER)
+        std::ofstream file(_tlsOptions.keyLogFile, std::ios::app | std::ios::binary);
+        if (!file)
+        {
+            errMsg = "Cannot open TLS key log file: " + _tlsOptions.keyLogFile;
+            return false;
+        }
+        if (SSL_CTX_set_app_data(context, this) != 1)
+        {
+            errMsg = "Cannot configure TLS key logging";
+            return false;
+        }
+        SSL_CTX_set_keylog_callback(context, keyLogCallback);
+        return true;
+#else
+        (void) context;
+        errMsg = "TLS key logging requires OpenSSL 1.1.1 or newer";
+        return false;
+#endif
+    }
+
+    void SocketOpenSSL::keyLogCallback(const SSL* ssl, const char* line)
+    {
+        auto* socket = static_cast<SocketOpenSSL*>(SSL_CTX_get_app_data(SSL_get_SSL_CTX(ssl)));
+        if (!socket || !line)
+        {
+            return;
+        }
+        const int savedError = Socket::getErrno();
+        try
+        {
+            // Different connections can append to the same file; keep each line intact.
+            static std::mutex mutex;
+            std::lock_guard<std::mutex> lock(mutex);
+            std::ofstream file(socket->_tlsOptions.keyLogFile, std::ios::app | std::ios::binary);
+            file << line << '\n';
+        }
+        catch (...)
+        {
+            // A debugging log must not throw through OpenSSL's C callback.
+        }
+        Socket::setErrno(savedError);
     }
 
     bool SocketOpenSSL::openSSLAddCARootsFromString(const std::string roots)
     {
         // Create certificate store
         X509_STORE* certificate_store = SSL_CTX_get_cert_store(_ssl_context);
-        if (certificate_store == nullptr) return false;
+        if (certificate_store == nullptr)
+        {
+            return false;
+        }
 
         // Configure to allow intermediate certs
         X509_STORE_set_flags(certificate_store,
@@ -241,7 +308,10 @@ namespace ix
 
         // Create a new buffer and populate it with the roots
         BIO* buffer = BIO_new_mem_buf((void*) roots.c_str(), static_cast<int>(roots.length()));
-        if (buffer == nullptr) return false;
+        if (buffer == nullptr)
+        {
+            return false;
+        }
 
         // Read each root in the buffer and add to the certificate store
         bool success = true;
@@ -284,7 +354,10 @@ namespace ix
         BIO_free(buffer);
 
         // Make sure we loaded at least one certificate.
-        if (number_of_roots == 0) success = false;
+        if (number_of_roots == 0)
+        {
+            success = false;
+        }
 
         return success;
     }
@@ -295,8 +368,8 @@ namespace ix
     bool SocketOpenSSL::checkHost(const std::string& host, const char* pattern)
     {
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-        (void)host;
-        (void)pattern;
+        (void) host;
+        (void) pattern;
         return true;
 #else
 
@@ -421,7 +494,10 @@ namespace ix
             {
                 auto ready = reason == SSL_ERROR_WANT_READ ? isReadyToRead(10) : isReadyToWrite(10);
                 rc = ready != PollResultType::Error;
-                if (!rc) errMsg = "Socket error during TLS handshake";
+                if (!rc)
+                {
+                    errMsg = "Socket error during TLS handshake";
+                }
             }
             else
             {
@@ -464,7 +540,10 @@ namespace ix
             {
                 auto ready = reason == SSL_ERROR_WANT_READ ? isReadyToRead(10) : isReadyToWrite(10);
                 rc = ready != PollResultType::Error;
-                if (!rc) errMsg = "Socket error during TLS handshake";
+                if (!rc)
+                {
+                    errMsg = "Socket error during TLS handshake";
+                }
             }
             else
             {
@@ -479,33 +558,112 @@ namespace ix
         }
     }
 
+    bool SocketOpenSSL::configureCredentials(std::string& errMsg)
+    {
+        if (_tlsOptions.certFile.empty() != _tlsOptions.keyFile.empty())
+        {
+            errMsg = "certFile and keyFile must be both present, or both absent";
+            return false;
+        }
+        if (!_tlsOptions.hasCertAndKey())
+        {
+            return true;
+        }
+
+        // No password API is exposed. Never prompt on stdin for encrypted keys.
+        SSL_CTX_set_default_passwd_cb(_ssl_context,
+                                      [](char*, int, int, void*) -> int { return 0; });
+        int loaded = 0;
+        if (_tlsOptions.isUsingInMemoryCert())
+        {
+            if (_tlsOptions.certFile.size() > INT_MAX)
+            {
+                errMsg = "PEM certificate chain is too large";
+                return false;
+            }
+            std::unique_ptr<BIO, decltype(&BIO_free)> bio(
+                BIO_new_mem_buf(const_cast<char*>(_tlsOptions.certFile.data()),
+                                static_cast<int>(_tlsOptions.certFile.size())),
+                BIO_free);
+            X509* cert =
+                bio ? PEM_read_bio_X509_AUX(bio.get(), nullptr, nullptr, nullptr) : nullptr;
+            loaded = cert ? SSL_CTX_use_certificate(_ssl_context, cert) : 0;
+            X509_free(cert);
+            while (loaded == 1)
+            {
+                X509* extra = PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr);
+                if (!extra)
+                {
+                    const auto error = ERR_peek_last_error();
+                    if (ERR_GET_LIB(error) == ERR_LIB_PEM &&
+                        ERR_GET_REASON(error) == PEM_R_NO_START_LINE)
+                    {
+                        ERR_clear_error(); // End of the PEM chain, like the file loader.
+                        break;
+                    }
+                    loaded = 0;
+                    break;
+                }
+                // The context owns extra after a successful add.
+                if (SSL_CTX_add_extra_chain_cert(_ssl_context, extra) != 1)
+                {
+                    X509_free(extra);
+                    loaded = 0;
+                }
+            }
+        }
+        else
+        {
+            loaded = SSL_CTX_use_certificate_chain_file(_ssl_context, _tlsOptions.certFile.c_str());
+        }
+        if (loaded != 1)
+        {
+            errMsg = "OpenSSL failed to load certificate chain: ";
+            errMsg += ERR_error_string(ERR_get_error(), nullptr);
+            return false;
+        }
+
+        if (_tlsOptions.isUsingInMemoryKey())
+        {
+            if (_tlsOptions.keyFile.size() > INT_MAX)
+            {
+                errMsg = "PEM private key is too large";
+                return false;
+            }
+            std::unique_ptr<BIO, decltype(&BIO_free)> bio(
+                BIO_new_mem_buf(const_cast<char*>(_tlsOptions.keyFile.data()),
+                                static_cast<int>(_tlsOptions.keyFile.size())),
+                BIO_free);
+            EVP_PKEY* key = bio ? PEM_read_bio_PrivateKey(
+                                      bio.get(),
+                                      nullptr,
+                                      [](char*, int, int, void*) -> int { return 0; },
+                                      nullptr)
+                                : nullptr;
+            loaded = key ? SSL_CTX_use_PrivateKey(_ssl_context, key) : 0;
+            EVP_PKEY_free(key);
+        }
+        else
+        {
+            loaded = SSL_CTX_use_PrivateKey_file(
+                _ssl_context, _tlsOptions.keyFile.c_str(), SSL_FILETYPE_PEM);
+        }
+        if (loaded != 1 || SSL_CTX_check_private_key(_ssl_context) != 1)
+        {
+            // Never include PEM contents (especially private keys) in diagnostics.
+            errMsg = "OpenSSL failed to load private key or certificate/key mismatch: ";
+            errMsg += ERR_error_string(ERR_get_error(), nullptr);
+            return false;
+        }
+        return true;
+    }
+
     bool SocketOpenSSL::handleTLSOptions(std::string& errMsg)
     {
         ERR_clear_error();
-        if (_tlsOptions.hasCertAndKey())
+        if (!configureCredentials(errMsg))
         {
-            if (SSL_CTX_use_certificate_chain_file(_ssl_context, _tlsOptions.certFile.c_str()) != 1)
-            {
-                auto sslErr = ERR_get_error();
-                errMsg = "OpenSSL failed - SSL_CTX_use_certificate_chain_file(\"" +
-                         _tlsOptions.certFile + "\") failed: ";
-                errMsg += ERR_error_string(sslErr, nullptr);
-            }
-            else if (SSL_CTX_use_PrivateKey_file(
-                         _ssl_context, _tlsOptions.keyFile.c_str(), SSL_FILETYPE_PEM) != 1)
-            {
-                auto sslErr = ERR_get_error();
-                errMsg = "OpenSSL failed - SSL_CTX_use_PrivateKey_file(\"" + _tlsOptions.keyFile +
-                         "\") failed: ";
-                errMsg += ERR_error_string(sslErr, nullptr);
-            }
-            else if (!SSL_CTX_check_private_key(_ssl_context))
-            {
-                auto sslErr = ERR_get_error();
-                errMsg = "OpenSSL failed - cert/key mismatch(\"" + _tlsOptions.certFile + ", " +
-                         _tlsOptions.keyFile + "\")";
-                errMsg += ERR_error_string(sslErr, nullptr);
-            }
+            return false;
         }
 
         ERR_clear_error();
@@ -632,27 +790,16 @@ namespace ix
                 return false;
             }
 
-            ERR_clear_error();
-            if (_tlsOptions.hasCertAndKey())
+            if (!configureKeyLogging(_ssl_context, errMsg))
             {
-                if (SSL_CTX_use_certificate_chain_file(_ssl_context,
-                                                       _tlsOptions.certFile.c_str()) != 1)
-                {
-                    auto sslErr = ERR_get_error();
-                    errMsg = "OpenSSL failed - SSL_CTX_use_certificate_chain_file(\"" +
-                             _tlsOptions.certFile + "\") failed: ";
-                    errMsg += ERR_error_string(sslErr, nullptr);
-                }
-                else if (SSL_CTX_use_PrivateKey_file(
-                             _ssl_context, _tlsOptions.keyFile.c_str(), SSL_FILETYPE_PEM) != 1)
-                {
-                    auto sslErr = ERR_get_error();
-                    errMsg = "OpenSSL failed - SSL_CTX_use_PrivateKey_file(\"" +
-                             _tlsOptions.keyFile + "\") failed: ";
-                    errMsg += ERR_error_string(sslErr, nullptr);
-                }
+                return false;
             }
 
+            ERR_clear_error();
+            if (!configureCredentials(errMsg))
+            {
+                return false;
+            }
 
             ERR_clear_error();
             if (!_tlsOptions.isPeerVerifyDisabled())
@@ -763,7 +910,10 @@ namespace ix
             }
 
             _sockfd = connectToHost(host, port, errMsg, isCancellationRequested);
-            if (_sockfd == -1) return false;
+            if (_sockfd == -1)
+            {
+                return false;
+            }
 
             _ssl_context = openSSLCreateContext(errMsg);
             if (_ssl_context == nullptr)
@@ -884,7 +1034,10 @@ namespace ix
 
         ERR_clear_error();
         const int result = SSL_read(_ssl_connection, buf, static_cast<int>(nbyte));
-        if (result > 0) return result;
+        if (result > 0)
+        {
+            return result;
+        }
 
         const int reason = SSL_get_error(_ssl_connection, result);
         if (reason == SSL_ERROR_ZERO_RETURN)

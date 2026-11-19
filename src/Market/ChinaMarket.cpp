@@ -849,7 +849,7 @@ void CChinaMarket::TaskProcessAndUpdateDayLineDB() {
 		m_jtProcessAndUpdateDayLineDB.request_stop();
 		m_jtProcessAndUpdateDayLineDB.join();
 	}
-	m_jtProcessAndUpdateDayLineDB = std::jthread([this](const std::stop_token& st) {
+	m_jtProcessAndUpdateDayLineDB = std::jthread([this](std::stop_token st) {
 		if (IsDayLineNeedProcess()) {
 			this->ProcessDayLine();
 		}

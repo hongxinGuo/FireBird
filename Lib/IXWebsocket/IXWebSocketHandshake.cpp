@@ -99,7 +99,8 @@ namespace ix
         const std::string& path,
         int port,
         int timeoutSecs,
-        const std::vector<std::string>& disabledDefaultHeaders)
+        const std::vector<std::string>& disabledDefaultHeaders,
+        bool alreadyConnected)
     {
         _requestInitCancellation = false;
 
@@ -107,8 +108,7 @@ namespace ix
             makeCancellationRequestWithTimeout(timeoutSecs, _requestInitCancellation);
 
         std::string errMsg;
-        bool success = _socket->connect(host, port, errMsg, isCancellationRequested);
-        if (!success)
+        if (!alreadyConnected && !_socket->connect(host, port, errMsg, isCancellationRequested))
         {
             std::stringstream ss;
             ss << "Unable to connect to " << host << " on port " << port << ", error: " << errMsg;
@@ -182,7 +182,9 @@ namespace ix
 
         // Keep the wire line ending out of error messages that include the status line.
         while (!line.empty() && (line.back() == '\r' || line.back() == '\n'))
+        {
             line.pop_back();
+        }
 
         // Validate status
         auto statusLine = Http::parseStatusLine(line);
@@ -232,7 +234,7 @@ namespace ix
         //
         // See https://github.com/apache/thrift/commit/7c4bdf9914fcba6c89e0f69ae48b9675578f084a
         //
-        if (!insensitiveStringCompare(headers["connection"], "Upgrade"))
+        if (!hasHttpHeaderToken(headers, "Connection", "Upgrade"))
         {
             std::ostringstream oss;
             oss << "Invalid connection value: " << headers["connection"];

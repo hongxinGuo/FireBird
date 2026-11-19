@@ -8,19 +8,19 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
-#include"jsonParse.h"
+#include "jsonParse.h"
 
 #include "ProductTiingoStockDailyMeta.h"
 #include "TiingoStockDailyMeta.h"
 
 #include "ContainerTiingoStock.h"
 #include "log.h"
-#include"simdjsonGetValue.h"
+#include "simdjsonGetValue.h"
 #include "SystemMessage.h"
 #include "TiingoDataSource.h"
 #include "WorldMarket.h"
 #include "TiingoStock.h"
-#include"cpr/cpr.h"
+#include "cpr/cpr.h"
 
 using namespace std;
 using namespace simdjson;
@@ -29,12 +29,14 @@ CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 	m_strInquiryFunction = "https://api.tiingo.com/tiingo/daily/";
 }
 
-void CProductTiingoStockDailyMeta::InquireData(const std::stop_token& st) {
+void CProductTiingoStockDailyMeta::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string s = inquiry + "&token=" + gl_pTiingoDataSource->GetToken();
-		m_r = cpr::Get(cpr::Url{ s });
+		m_r = cpr::Get(cpr::Url{ s },
+		               cpr::ProgressCallback([st](cpr::cpr_off_t downLoadTotal, cpr::cpr_off_t downLoadNow, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
+		);
 
 		if (IsWebError()) {
 			WebStatusCheck(m_r);

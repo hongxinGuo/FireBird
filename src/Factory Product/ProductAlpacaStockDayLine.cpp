@@ -81,7 +81,7 @@ CProductAlpacaStockDayLine::CProductAlpacaStockDayLine() {
 /// Note: Alpaca的日线数据不提供split信息，故而需要两次申请来确定股票的split信息。第一次申请是获取股票的原始日线数据，第二次申请是获取股票的前向除权数据。
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
+void CProductAlpacaStockDayLine::InquireData(std::stop_token st) {
 	shared_ptr<vector<TiingoDayLine>> pvDayLineWithSplit;
 	shared_ptr<vector<TiingoDayLine>> pvDayLine;
 	const auto pTiingoStock = gl_pDataContainerTiingoStock->GetStock(m_index);
@@ -92,8 +92,9 @@ void CProductAlpacaStockDayLine::InquireData(const std::stop_token& st) {
 		if (st.stop_requested()) break;
 		m_r = cpr::Get(cpr::Url{ inquiry }, gl_pAlpacaDataSource->GetHeader(),
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
-		);
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		cpr::ProgressCallback([st](cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
+			);
 
 		if (IsWebError()) {
 			WebStatusCheck(m_r);

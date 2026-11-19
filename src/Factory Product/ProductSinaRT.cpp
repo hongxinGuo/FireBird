@@ -23,7 +23,7 @@ CProductSinaRT::CProductSinaRT() {
 // Note 8个核心的cpu，并行数只能设置为4个左右，更高的设置并不能缩短执行时间，且导致执行时间延长，原因待查。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductSinaRT::InquireData(const std::stop_token& st) {
+void CProductSinaRT::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;

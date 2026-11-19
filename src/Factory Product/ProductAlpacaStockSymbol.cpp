@@ -56,7 +56,7 @@ CProductAlpacaStockSymbol::CProductAlpacaStockSymbol() {
 /// 
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
+void CProductAlpacaStockSymbol::InquireData(std::stop_token st) {
 	shared_ptr<vector<CAlpacaStockPtr>> pvStock = make_shared<vector<CAlpacaStockPtr>>();
 	shared_ptr<vector<string>> pInquiry = CreateMessage();
 
@@ -64,8 +64,9 @@ void CProductAlpacaStockSymbol::InquireData(const std::stop_token& st) {
 	ABSL_DCHECK(inquireStrings->size() == 1);
 	m_r = cpr::Get(cpr::Url{ inquireStrings->at(0) }, gl_pAlpacaDataSource->GetHeader(),
 	               cpr::Timeout{ 60000 },       // 60s
-	               cpr::ConnectTimeout{ 60000 } // 60s
-	);
+	               cpr::ConnectTimeout{ 60000 }, // 60s
+	cpr::ProgressCallback([st](cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
+		);
 
 	if (IsWebError()) {
 		WebStatusCheck(m_r);
@@ -112,6 +113,7 @@ void CProductAlpacaStockSymbol::WebStatusCheck(cpr::Response& r) {
 
 void CProductAlpacaStockSymbol::UpdateSystemStatus() {
 	if (!IsWebError()) {
+		gl_systemMessage.PushInformationMessage("Alpaca Trading asset updated");
 		gl_pAlpacaDataSource->SetUpdateTradingAsset(false);
 	}
 }

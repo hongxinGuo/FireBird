@@ -8,7 +8,7 @@ CProductDummy::CProductDummy() {
 	m_strInquiryFunction = "";
 }
 
-void CProductDummy::InquireData(const std::stop_token& st) {
+void CProductDummy::InquireData(std::stop_token st) {
 }
 
 void CProductDummy::WebStatusCheck(cpr::Response& r) {

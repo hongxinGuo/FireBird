@@ -52,7 +52,10 @@ namespace ix
                                4, // memory level 1-9
                                Z_DEFAULT_STRATEGY);
 
-        if (ret != Z_OK) return false;
+        if (ret != Z_OK)
+        {
+            return false;
+        }
 
         _flush = (clientNoContextTakeOver) ? Z_FULL_FLUSH : Z_SYNC_FLUSH;
 
@@ -67,7 +70,10 @@ namespace ix
     template<typename T>
     bool WebSocketPerMessageDeflateCompressor::endsWithEmptyUnCompressedBlock(const T& value)
     {
-        if (kEmptyUncompressedBlock.size() > value.size()) return false;
+        if (kEmptyUncompressedBlock.size() > value.size())
+        {
+            return false;
+        }
         auto N = value.size();
         return value[N - 1] == kEmptyUncompressedBlock[3] &&
                value[N - 2] == kEmptyUncompressedBlock[2] &&
@@ -200,7 +206,10 @@ namespace ix
 #ifdef IXWEBSOCKET_USE_ZLIB
         int ret = inflateInit2(&_inflateState, -1 * inflateBits);
 
-        if (ret != Z_OK) return false;
+        if (ret != Z_OK)
+        {
+            return false;
+        }
 
         _flush = (clientNoContextTakeOver) ? Z_FULL_FLUSH : Z_SYNC_FLUSH;
 
@@ -212,8 +221,15 @@ namespace ix
 #endif
     }
 
-    bool WebSocketPerMessageDeflateDecompressor::decompress(const std::string& in, std::string& out)
+    bool WebSocketPerMessageDeflateDecompressor::decompress(const std::string& in,
+                                                            std::string& out,
+                                                            uint64_t maxOutputSize,
+                                                            bool* limitExceeded)
     {
+        if (limitExceeded)
+        {
+            *limitExceeded = false;
+        }
 #ifdef IXWEBSOCKET_USE_ZLIB
         //
         // 7.2.2.  Decompression
@@ -246,14 +262,24 @@ namespace ix
                 return false; // zlib error
             }
 
-            out.append(reinterpret_cast<char*>(&_compressBuffer.front()),
-                       _compressBuffer.size() - _inflateState.avail_out);
+            const size_t produced = _compressBuffer.size() - _inflateState.avail_out;
+            if (maxOutputSize && produced > maxOutputSize - out.size())
+            {
+                if (limitExceeded)
+                {
+                    *limitExceeded = true;
+                }
+                out.clear();
+                return false;
+            }
+            out.append(reinterpret_cast<char*>(&_compressBuffer.front()), produced);
         } while (_inflateState.avail_out == 0);
 
         return true;
 #else
         (void) in;
         (void) out;
+        (void) maxOutputSize;
         return false;
 #endif
     }

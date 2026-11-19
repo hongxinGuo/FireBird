@@ -1,33 +1,34 @@
 #include "pch.h"
 
-#include"TimeConvert.h"
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+#include "TimeConvert.h"
+#include "jsonParse.h"
+#include "nlohmannJsonGetValue.h"
 
-#include"WorldMarket.h"
-#include"FinnhubStock.h"
-#include"InsiderSentiment.h"
+#include "WorldMarket.h"
+#include "FinnhubStock.h"
+#include "InsiderSentiment.h"
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
 #include "ContainerFinnhubStock.h"
 #include "FinnhubDataSource.h"
 
-#include"cpr/cpr.h"
+#include "cpr/cpr.h"
 
 using std::make_shared;
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/insider-sentiment?symbol=";
 }
-void CProductFinnhubCompanyInsiderSentiment::InquireData(const std::stop_token& st) {
+void CProductFinnhubCompanyInsiderSentiment::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		               cpr::ProgressCallback([st](cpr::cpr_off_t downLoadTotal, cpr::cpr_off_t downLoadNow, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
 		);
 
 		if (IsWebError()) {

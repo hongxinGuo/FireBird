@@ -31,7 +31,7 @@ public:
 	CVirtualWebProduct& operator=(const CVirtualWebProduct&&) noexcept = delete;
 	virtual ~CVirtualWebProduct() = default;
 
-	virtual void InquireData(const std::stop_token&) { ABSL_DCHECK(false); } // default do nothing
+	virtual void InquireData(std::stop_token) { ABSL_DCHECK(false); } // default do nothing
 	virtual void WebStatusCheck(cpr::Response& r); // cpr新接口的网络状态检查
 	virtual void UpdateSystemStatus() {} // default do nothing
 

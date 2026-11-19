@@ -1,7 +1,9 @@
 #include "pch.h"
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+#include <atomic>
+
+#include "jsonParse.h"
+#include "nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubStockSymbol.h"
 #include "FinnhubStock.h"
@@ -11,7 +13,7 @@
 #include "FinnhubDataSource.h"
 #include "SystemMessage.h"
 
-#include"cpr/cpr.h"
+#include "cpr/cpr.h"
 
 using std::make_shared;
 
@@ -19,7 +21,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/stock/symbol?exchange=";
 }
 
-void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
+void CProductFinnhubStockSymbol::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
@@ -27,7 +29,13 @@ void CProductFinnhubStockSymbol::InquireData(const std::stop_token& st) {
 		m_r = cpr::Get(cpr::Url{ inquireString },
 		               cpr::Timeout{ 600000 },       // 600s
 		               cpr::ConnectTimeout{ 600000 }, // 600s
-		               cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL } // 允许重定向
+		               cpr::Redirect{ 5, true, true, cpr::PostRedirectFlags::POST_ALL },// 允许重定向
+		               cpr::ProgressCallback([st](cpr::cpr_off_t downloadTotal, cpr::cpr_off_t downloadNow, cpr::cpr_off_t uploadTotal, cpr::cpr_off_t uploadNow, intptr_t userdata) {
+			               if (st.stop_requested()) {
+				               ABSL_DCHECK(false) << "Finnhub company symbol inquiry stopped by user.";
+			               }
+			               return !st.stop_requested();
+		               })
 		);
 
 		if (IsWebError()) {

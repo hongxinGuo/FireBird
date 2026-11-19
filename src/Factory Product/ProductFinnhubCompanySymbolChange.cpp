@@ -8,17 +8,17 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
-#include"SystemMessage.h"
+#include "SystemMessage.h"
 
-#include"jsonParse.h"
-#include"nlohmannJsonGetValue.h"
+#include "jsonParse.h"
+#include "nlohmannJsonGetValue.h"
 
 #include "ProductFinnhubCompanySymbolChange.h"
-#include"FinnhubCompanySymbolChange.h"
+#include "FinnhubCompanySymbolChange.h"
 
 #include "FinnhubDataSource.h"
 #include "SystemConfiguration.h"
-#include<cpr/cpr.h>
+#include <cpr/cpr.h>
 
 #include "TimeConvert.h"
 #include "worldMarket.h"
@@ -29,16 +29,16 @@ CProductFinnhubCompanySymbolChange::CProductFinnhubCompanySymbolChange() {
 	m_strInquiryFunction = "https://finnhub.io/api/v1/ca/symbol-change?";
 }
 
-void CProductFinnhubCompanySymbolChange::InquireData(const std::stop_token& st) {
+void CProductFinnhubCompanySymbolChange::InquireData(std::stop_token st) {
 	auto inquireStrings = CreateMessage();
 	for (const auto& inquiry : *inquireStrings) {
 		if (st.stop_requested()) break;
 		string inquireString = inquiry + "&token=" + gl_pFinnhubDataSource->GetToken();
 		m_r = cpr::Get(cpr::Url{ inquireString },
 		               cpr::Timeout{ 60000 },       // 60s
-		               cpr::ConnectTimeout{ 60000 } // 60s
+		               cpr::ConnectTimeout{ 60000 }, // 60s
+		               cpr::ProgressCallback([st](cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, cpr::cpr_off_t, intptr_t) { return !st.stop_requested(); })
 		);
-
 		if (IsWebError()) {
 			WebStatusCheck(m_r);
 			return;
